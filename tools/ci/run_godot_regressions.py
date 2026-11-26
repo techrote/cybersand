@@ -24,12 +24,14 @@ import execution_policy
 import execution_telemetry
 import godot_scheduling as scheduling
 import run_art_local_close
+import _architecture_campaign_context as architecture_context
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
 # The Lab compiler and Art's local HTTP fixture run outside the Godot process.
 # Retain their exact inputs in addition to the existing Git/runtime identity.
-INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue", "tools/ci/run_art_local_close.py")
+INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue", "tools/ci/run_art_local_close.py",
+                "tools/ci/_architecture_campaign_context.py")
 
 
 def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]:
@@ -127,6 +129,10 @@ class Case:
     timeout: int
     weight: float
     requires_display: bool = False
+
+
+class ShardCapacityError(ValueError):
+    """The registered indivisible cases need another shard bin."""
 
 
 def case_diagnostic_error(name: str, output: str, returncode: int | None) -> bool:
@@ -241,7 +247,7 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
             _weight(p.stem, profile=profile, root=root),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.
-            requires_display=p.stem.endswith("_render"),
+            requires_display=p.stem.endswith("_render") or p.stem in architecture_context.GRAPHICAL_CASES,
         )
         for p in sorted((root / "godot/tests").glob("test_*.gd"))
     ]
@@ -268,6 +274,8 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
     if not cases:
         return [[] for _ in range(shard_count)], [0.0] * shard_count
 
+    validate_shard_plan(cases, [cases])
+    units = architecture_context.scheduling_units(cases)
     canonical_order = {case.name: index for index, case in enumerate(cases)}
     shards: list[list[Case]] = [[] for _ in range(shard_count)]
     totals = [0.0] * shard_count
@@ -278,14 +286,22 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
         raise ValueError("Scheduling weights must be finite and positive")
     # Longest-processing-time first balances expected cost. Watchdog admission
     # happens at execution time; summing every rare ceiling caused 150+ jobs.
-    for case in sorted(cases, key=lambda item: (-item.weight, item.name)):
-        index = min((i for i in range(shard_count) if len(shards[i]) < capacity),
+    assigned_units = [[] for _ in range(shard_count)]
+    for unit in sorted(units, key=lambda items: (-sum(case.weight for case in items), items[0].name)):
+        fitting = [i for i in range(shard_count) if len(shards[i]) + len(unit) <= capacity]
+        if not fitting:
+            raise ShardCapacityError("Indivisible Architecture component cannot fit shard case capacity")
+        index = min(fitting,
                     key=lambda i: (totals[i], len(shards[i]), i))
-        shards[index].append(case)
-        totals[index] += case.weight
+        shards[index].extend(unit)
+        assigned_units[index].append(unit)
+        totals[index] += sum(case.weight for case in unit)
 
-    for shard in shards:
-        shard.sort(key=lambda case: canonical_order[case.name])
+    # Sort units, never their members: alphabetical discovery must not put a
+    # consumer before its producer or undo the fresh-process reopen sequence.
+    for index, units_in_shard in enumerate(assigned_units):
+        units_in_shard.sort(key=lambda unit: min(canonical_order[case.name] for case in unit))
+        shards[index] = [case for unit in units_in_shard for case in unit]
     validate_shard_plan(cases, shards)
     return shards, totals
 
@@ -351,6 +367,8 @@ def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[s
         command += ["--rendering-method", "gl_compatibility", "--audio-driver", "Dummy"]
         if platform.startswith("linux"):
             command += ["--display-driver", "x11"]
+        elif platform == "win32":
+            command += ["--rendering-driver", "opengl3_angle"]
     else:
         command.append("--headless")
     return [*command, "--path", str(ROOT / "godot"), *case.flags]
@@ -709,8 +727,18 @@ def verify_life010_case(case: Case, record: dict, output_dir: Path, source: str)
                                 verifier_identity=life010_verifier_identity)
 
 
+def context_case_kwargs(case: Case, contexts: dict, results: list[dict]) -> dict:
+    if case.name not in contexts:
+        return {}
+    # run_case's env is complete, so preserve PATH and the source/runtime
+    # identity before applying the component's isolated evidence/profile paths.
+    return {"env": {**os.environ, **contexts[case.name]},
+            "failed_context_producers": tuple(architecture_context.failed_dependencies(case.name, results))}
+
+
 def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
-             env: dict[str, str] | None = None) -> tuple[dict, bool]:
+             env: dict[str, str] | None = None,
+             failed_context_producers: tuple[str, ...] = ()) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
     snapshot_path = output_dir / (case.name + ".timeout-diagnostics.txt")
     command = case_command(godot, case)
@@ -806,6 +834,14 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         status = "skipped"
     else:
         status = "passed"
+    process_status = status
+    if failed_context_producers:
+        # Still execute and retain the original consumer command/log. An
+        # unsuccessful upstream run cannot qualify its consumer's context,
+        # even if that process happens to accept a partial producer artifact.
+        failed = True
+        if status == "passed":
+            status = "failed"
     record = {
         "name": case.name,
         "execution_policy": execution_policy.identity(),
@@ -836,6 +872,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "last_heartbeat": diagnostics.last_progress(output),
         "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
+    if failed_context_producers:
+        record.update(process_status=process_status, failed_context_producers=list(failed_context_producers))
     contract = case_readback_contract(case)
     if not failed and contract is not None:
         # The engine footer is necessary but insufficient for this adversarial
@@ -969,6 +1007,7 @@ def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
         )
 
     results = timing["results"]
+    contexts = architecture_context.prepare_contexts(assigned, args.output)
     timing["identity"] = identity
     write_json(args.output / "timings.json", timing)
 
@@ -989,7 +1028,8 @@ def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
     for index, case in enumerate(assigned):
         if not admit_case(budget, case, timing, assigned[index:], args.output / "timings.json"):
             return 1
-        record, failed = run_case(args.godot, case, args.output, "case")
+        record, failed = run_case(args.godot, case, args.output, "case",
+                                  **context_case_kwargs(case, contexts, results))
         results.append(record)
         write_json(args.output / "timings.json", timing)
         if failed:
