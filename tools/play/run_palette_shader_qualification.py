@@ -22,7 +22,6 @@ import uuid
 import zipfile
 
 import palette_qualification_contract as c
-import materialize_lfs
 
 ROOT = c.ROOT
 SCOPES = ('.gitattributes', 'build_windows_msvc.bat', 'tools/launch_desktop.ps1',
@@ -37,7 +36,7 @@ REQUIRED_APPARATUS = {
     'tools/play/palette_checkout_custody.py', 'tools/play/palette_qualification_contract.py',
     'tools/play/palette_windows_compiler.py', 'tools/play/run_palette_shader_qualification.py',
     'tools/ci/execution_policy.py', 'tools/ci/play_execution_contract.py',
-    'tools/ci/materialize_lfs.py', 'tools/ci/godot_timeout_diagnostics.py',
+    'tools/ci/materialize_lfs.py', 'tools/ci/lfs_runtime_artifact.py', 'tools/ci/godot_timeout_diagnostics.py',
     'godot/tests/palette_qualification_context.gd', 'godot/tests/support/ci_execution_policy.gd',
     'godot/tests/support/ci_execution_policy.json',
 }
@@ -567,7 +566,9 @@ def execute(output: Path, source: str, archive: Path, group: str, shard_index: i
     return 0 if report['status'] == 'passed' else 1
 
 
-def prepare_dependencies(output: Path, source: str, archive: Path | None, *, reader_only=False) -> int:
+def prepare_dependencies(output: Path, source: str, archive: Path | None, *, reader_only=False,
+                         lfs_artifact: Path | None = None, run_id: str | None = None,
+                         attempt: int | None = None) -> int:
     """Hosted setup with separate full dependency clocks and retained receipts."""
     output.mkdir(parents=True, exist_ok=False)
     result = {'schema': 'palette-dependency-preparation-v1', 'source_commit': source,
@@ -605,6 +606,8 @@ def prepare_dependencies(output: Path, source: str, archive: Path | None, *, rea
         seconds = c.policy.watchdog_seconds('dependency_prepare_seconds')
         if not reader_only:
             c.require(archive is not None and not archive.exists(), 'Refusing missing/reused engine archive output')
+            c.require(lfs_artifact is not None and run_id is not None and attempt is not None,
+                      'Exact same-attempt runtime artifact and workflow identity required')
             if sys.platform == 'linux':
                 for program in ('xvfb-run', 'Xvfb', 'xauth'):
                     c.require(shutil.which(program) is not None, 'Missing hosted graphical prerequisite: ' + program)
@@ -617,12 +620,21 @@ def prepare_dependencies(output: Path, source: str, archive: Path | None, *, rea
                 c.require(sys.platform == 'win32', 'Unregistered hosted shader OS')
                 url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
             started = time.monotonic()
-            row = {'label': 'lfs-materialization', 'allowance_seconds': seconds,
-                   'status': 'failed', 'receipt': 'lfs/receipt.json'}
+            row = {'label': 'same-attempt-lfs-install', 'allowance_seconds': seconds,
+                   'status': 'failed', 'receipt': 'lfs-install.json'}
             result['commands'].append(row)
             try:
-                materialize_lfs.materialize(ROOT, sorted(runtime_paths(sys.platform)), source,
-                                            output / 'lfs', seconds)
+                install_command = [sys.executable, str(ROOT / 'tools/ci/lfs_runtime_artifact.py'),
+                                   'install', '--root', str(ROOT), '--expected-source', source,
+                                   '--run-id', run_id, '--attempt', str(attempt),
+                                   '--artifact', str(lfs_artifact), '--allowance-seconds', str(seconds),
+                                   '--output', str(output / 'lfs-install.json')]
+                for path in sorted(runtime_paths('linux') | runtime_paths('win32')):
+                    install_command.extend(['--available', path])
+                for path in sorted(runtime_paths(sys.platform)):
+                    install_command.extend(['--include', path])
+                row['command'] = install_command
+                subprocess.run(install_command, cwd=ROOT, check=True, timeout=seconds)
                 row['status'] = 'passed'
             finally:
                 row['seconds'] = time.monotonic() - started
@@ -654,6 +666,9 @@ def main() -> int:
     parser.add_argument('--plan-json', action='store_true')
     parser.add_argument('--prepare-dependencies', action='store_true')
     parser.add_argument('--prepare-reader', action='store_true')
+    parser.add_argument('--lfs-artifact', type=Path)
+    parser.add_argument('--run-id')
+    parser.add_argument('--attempt', type=int)
     parser.add_argument('--verify-only', action='store_true')
     parser.add_argument('--verify-suite', action='store_true')
     args = parser.parse_args()
@@ -663,7 +678,9 @@ def main() -> int:
     if args.prepare_dependencies or args.prepare_reader:
         return prepare_dependencies(args.output.resolve(), args.expected_source_sha,
                                     args.godot_archive.resolve() if args.godot_archive is not None else None,
-                                    reader_only=args.prepare_reader)
+                                    reader_only=args.prepare_reader,
+                                    lfs_artifact=args.lfs_artifact.resolve() if args.lfs_artifact is not None else None,
+                                    run_id=args.run_id, attempt=args.attempt)
     if args.verify_suite:
         c.require(not args.output.is_symlink(), 'Shader suite directory is a symlink')
         print(json.dumps(verify_suite(args.output.absolute(), args.expected_source_sha), sort_keys=True)); return 0
