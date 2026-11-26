@@ -1,0 +1,23 @@
+2026-11-26T07:53:56.9570633Z test_all_four_files_must_be_in_launcher_userdata (__main__.LauncherAdmission.test_all_four_files_must_be_in_launcher_userdata) ... ok
+2026-11-26T07:53:56.9572370Z test_empty_failed_or_duplicate_terminal_refuses (__main__.LauncherAdmission.test_empty_failed_or_duplicate_terminal_refuses) ... ok
+2026-11-26T07:53:56.9573944Z test_graphical_needs_actual_renderer_record (__main__.LauncherAdmission.test_graphical_needs_actual_renderer_record) ... ok
+2026-11-26T07:53:56.9575837Z test_real_natural_zero_preserves_both_streams (__main__.LauncherAdmission.test_real_natural_zero_preserves_both_streams) ... skipped 'POSIX process control; actual cmd suite runs separately'
+2026-11-26T07:53:56.9578323Z test_real_timeout_and_error_hang_are_not_natural_success (__main__.LauncherAdmission.test_real_timeout_and_error_hang_are_not_natural_success) ... skipped 'POSIX adverse process controls; actual cmd suite runs separately'
+2026-11-26T07:53:56.9580891Z test_real_zero_exit_with_engine_error_refuses (__main__.LauncherAdmission.test_real_zero_exit_with_engine_error_refuses) ... skipped 'POSIX adverse process controls; actual cmd suite runs separately'
+2026-11-26T07:53:56.9583004Z test_space_containing_cmd_has_outer_and_inner_quotes (__main__.LauncherAdmission.test_space_containing_cmd_has_outer_and_inner_quotes) ... FAIL
+2026-11-26T07:53:56.9725795Z test_truncated_save_and_duplicate_user_location_refuse (__main__.LauncherAdmission.test_truncated_save_and_duplicate_user_location_refuse) ... ok
+2026-11-26T07:53:56.9727332Z test_two_engine_starts_and_requested_reopen_required (__main__.LauncherAdmission.test_two_engine_starts_and_requested_reopen_required) ... ok
+2026-11-26T07:53:56.9728119Z
+2026-11-26T07:53:56.9728278Z ======================================================================
+2026-11-26T07:53:56.9729150Z FAIL: test_space_containing_cmd_has_outer_and_inner_quotes (__main__.LauncherAdmission.test_space_containing_cmd_has_outer_and_inner_quotes)
+2026-11-26T07:53:56.9730056Z ----------------------------------------------------------------------
+2026-11-26T07:53:56.9730506Z Traceback (most recent call last):
+2026-11-26T07:53:56.9737024Z   File "D:\a\cybersand\cybersand\workspace\source\tools\ci\test_qualify_ultima_launcher.py", line 52, in test_space_containing_cmd_has_outer_and_inner_quotes
+2026-11-26T07:53:56.9737978Z     self.assertIn('/d /s /c ""C:/evidence/launcher copy with spaces/Open Workbench.cmd" ', command)
+2026-11-26T07:53:56.9739515Z AssertionError: '/d /s /c ""C:/evidence/launcher copy with spaces/Open Workbench.cmd" ' not found in '"C:/Windows/System32/cmd.exe" /d /s /c ""C:\\evidence\\launcher copy with spaces\\Open Workbench.cmd" --headless --script res://tests/test_paint_editor_history.gd"'
+2026-11-26T07:53:56.9740513Z
+2026-11-26T07:53:56.9740660Z ----------------------------------------------------------------------
+2026-11-26T07:53:56.9740978Z Ran 9 tests in 0.044s
+2026-11-26T07:53:56.9741106Z
+2026-11-26T07:53:56.9741201Z FAILED (failures=1, skipped=3)
+2026-11-26T07:53:57.0077771Z ##[error]Process completed with exit code 1.

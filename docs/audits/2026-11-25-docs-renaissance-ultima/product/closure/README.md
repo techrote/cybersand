@@ -114,6 +114,18 @@ passes, qualify the apparatus on their actual Linux host. They do **not** claim
 that Windows `cmd.exe`, the shipped batch file or Windows rendering ran there.
 The final hosted Windows/package receipt must supply that evidence.
 
+The first actual Windows run at `fe24da6f` stopped before engine acquisition:
+all 79 package guards passed, but one launcher unit assertion incorrectly
+expected forward slashes from Windows `Path`. The actual command retained the
+required nested quotes and correctly used native backslashes. The
+[failure and correction receipt](launcher-portability-review.json) preserves
+the exact hosted failure excerpt. The corrected test checks an explicit
+`PureWindowsPath` command on every host and the host's native path separately;
+it keeps the shell-metacharacter refusals. Nine local controls then passed.
+The graphical qualification argument also explicitly selects the existing
+Windows ANGLE software path; ordinary shipped-launcher defaults are unchanged.
+An actual hosted rerun is still required for the corrected Windows outcome.
+
 ## Remaining practical boundary
 
 The earlier explicit browser security-policy denial remains in force; no new

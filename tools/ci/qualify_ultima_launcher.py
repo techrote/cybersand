@@ -216,8 +216,11 @@ def qualify(args) -> dict:
                 ("authored-save", common + ["--script", SCRIPT], False, False),
                 ("authored-reopen", common + ["--script", SCRIPT], True, False)]
         if args.graphical:
+            # Match the admitted hosted Windows software path. This is an
+            # explicit qualification argument, not a shipped-launcher default.
             plan.append(("ordinary-graphical-startup", ["--audio-driver", "Dummy", "--rendering-method",
-                         "gl_compatibility", "--resolution", "1366x768", "--quit-after", "120"], None, True))
+                         "gl_compatibility", "--rendering-driver", "opengl3_angle",
+                         "--resolution", "1366x768", "--quit-after", "120"], None, True))
         authored = None
         for name, flags, reopened, graphical in plan:
             case_directory = output / name

@@ -2,7 +2,7 @@
 """Adverse controls for launcher evidence admission; real .cmd runs need Windows."""
 import json
 import os
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import sys
 import tempfile
 import unittest
@@ -47,10 +47,19 @@ class LauncherAdmission(unittest.TestCase):
                                           graphical=True)["renderer_lines"]), 1)
 
     def test_space_containing_cmd_has_outer_and_inner_quotes(self):
-        command = subject.command_line(Path("C:/evidence/launcher copy with spaces/Open Workbench.cmd"),
-                                       ["--headless", "--script", subject.SCRIPT], "C:/Windows/System32/cmd.exe")
-        self.assertIn('/d /s /c ""C:/evidence/launcher copy with spaces/Open Workbench.cmd" ', command)
-        self.assertTrue(command.endswith('test_paint_editor_history.gd"'))
+        arguments = ["--headless", "--script", subject.SCRIPT]
+        # Exercise Windows spelling on every host. Native Path normalizes the
+        # same input to backslashes on Windows, so a POSIX-only literal was an
+        # invalid expectation there, not a defect in the shipped command.
+        windows_launcher = PureWindowsPath("C:/evidence/launcher copy with spaces/Open Workbench.cmd")
+        command = subject.command_line(windows_launcher, arguments, r"C:\Windows\System32\cmd.exe")
+        self.assertEqual(command,
+                         r'"C:\Windows\System32\cmd.exe" /d /s /c ""C:\evidence\launcher copy with spaces\Open Workbench.cmd" '
+                         '--headless --script res://tests/test_paint_editor_history.gd"')
+        native_launcher = Path("C:/evidence/launcher copy with spaces/Open Workbench.cmd")
+        native_command = subject.command_line(native_launcher, arguments, "cmd.exe")
+        self.assertIn(f'/d /s /c ""{native_launcher}" ', native_command)
+        self.assertTrue(native_command.endswith('test_paint_editor_history.gd"'))
         for unsafe in ("C:/%TEMP%/Open.cmd", "C:/x&y/Open.cmd", "C:/x!y/Open.cmd"):
             with self.assertRaisesRegex(ValueError, "metacharacter"):
                 subject.command_line(Path(unsafe), [], "cmd.exe")
