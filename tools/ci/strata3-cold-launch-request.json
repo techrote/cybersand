@@ -1,0 +1,15 @@
+{
+  "schema": "strata3-cold-launch-request-v1",
+  "armed": false,
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "package_run_id": null,
+  "package_artifact_id": null,
+  "package_artifact_name": null,
+  "package_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+  "package_sha256": null,
+  "package_bytes": null,
+  "manifest_sha256": null,
+  "timeout_seconds": 180,
+  "quit_after_callbacks": 180
+}
