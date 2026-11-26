@@ -556,14 +556,26 @@
       "independent_reviewers": [
         "A"
       ],
-      "aliases": [],
+      "aliases": [
+        "A-ULT-17"
+      ],
       "remaining_boundary": null,
       "locators": [
         {
           "path": ".github/workflows/in-tools-361-a01-independent-qualification.yml",
           "sha256": "1b06830273a03ba8b83cc7488df03f6fbde87a307cfa9c1b2af6e80fb173cd52"
         }
-      ]
+      ],
+      "closure_followup": {
+        "source": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+        "observed": "Actual v4 successor21-test suite passed, then stale19-count wrapper failed; historical14-test witness remains unchanged.",
+        "fix": "Current wrapper expects21 from two additional reviewed custody controls; no source guard or historical count changed.",
+        "reviewers": [
+          "A",
+          "lead"
+        ],
+        "status": "fixed-awaiting-specified-qualification"
+      }
     },
     {
       "id": "ULT-UX-01",
@@ -1431,6 +1443,49 @@
       ],
       "remaining_boundary": "Original holdout adjudication cannot be reproduced from a digest. Fresh public-suite/context qualification is separate and cannot retroactively establish that experiment.",
       "next_action": "Complete fresh final public/context qualification; preserve original seal and chronology. If the original private payload is later supplied, verify its seal and resume the original adjudication without method tuning."
+    },
+    {
+      "id": "ULT-CI-07",
+      "priority": "P2",
+      "owner": "lead",
+      "title": "Aggregate regression campaign shares retained files across independent Art fixtures",
+      "status": "fixed-awaiting-specified-qualification",
+      "observed_failure_or_question": "fe24 full Linux qualification passes all7 storage matrices, then ArtSession exact clean-profile count fails because two files were intentionally retained by the preceding Art panel fixture.",
+      "expected_contract": "Each independent scenario receives isolated disposable userdata; explicit save/reopen pairs share only their own scenario profile.",
+      "implemented_outcome": "Runner binds allfour userdata/config roots per scenario. Unchanged panel/session and paint/reopen fixtures pass actual engine execution, including12/35/1884/1920 checks; no Art product change or weakened assertion.",
+      "evidence": [
+        "closure/fe24-linux-failure.json",
+        "closure/scenario-isolation/report.json"
+      ],
+      "independent_reviewers": [
+        "A"
+      ],
+      "aliases": [
+        "A-ULT-18"
+      ],
+      "remaining_boundary": "Complete resulting-source29-record and7-matrix campaigns pending.",
+      "next_action": "Execute corrected aggregate on Linux and Windows; verify retained source inputs and fresh-process reopen."
+    },
+    {
+      "id": "ULT-CI-08",
+      "priority": "P2",
+      "owner": "B",
+      "title": "New launcher quoting test incorrectly assumes POSIX path spelling on Windows",
+      "status": "fixed-awaiting-specified-qualification",
+      "observed_failure_or_question": "Actual Windows fe24 guard job refuses beforeengine because pathlib normalizes the test input to backslashes while assertion hardcodes forwardslashes.",
+      "expected_contract": "Verify real Windows command quoting and native-host path spelling without changing shipped launcher behavior.",
+      "implemented_outcome": "Exact PureWindowsPath assertion now executes on every host plus nativePath assertion; unsafe metacharacter refusals retained. Linux9controls pass. Optional hosted graphical test uses the already established ANGLE driver explicitly.",
+      "evidence": [
+        "product/closure/launcher-portability-review.json",
+        "product/closure/windows-launcher-guard-before.log.txt",
+        "product/closure/launcher-portable-controls-after.log.txt"
+      ],
+      "independent_reviewers": [
+        "A",
+        "lead"
+      ],
+      "remaining_boundary": "Windows must execute6 platform-applicable guard tests (3POSIX controls explicitly skipped) and the separate actual4case launcher campaign.",
+      "next_action": "Run corrected Windows guard, application, module and shippedlauncher qualification before evaluatorupload."
     }
   ]
 }
