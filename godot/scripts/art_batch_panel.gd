@@ -739,17 +739,15 @@ func _save_settings() -> Error:
 	if not _profile_session_error.is_empty():
 		input_error = _profile_session_error
 		return ERR_FILE_CANT_READ
-	# Never truncate the only committed profile/session pointer. Reuse the native
-	# same-directory replacement; Godot's Windows rename first deletes its target.
-	var temporary := "user://art-provider.cfg."+Crypto.new().generate_random_bytes(16).hex_encode()+".partial"
-	var err := settings.save(temporary)
-	if err == OK:
-		var result: Dictionary = Provider.Archive.atomic_replace(temporary,"user://art-provider.cfg")
-		if not bool(result.get("ok",false)): err = ERR_FILE_CANT_WRITE
-	if err != OK:
-		DirAccess.remove_absolute(temporary)
-		input_error = "Could not save Art preferences; the previous configuration file is retained (%d)." % err
-	return err
+	# ConfigFile.save can report success after a buffered short write. Verify the
+	# complete encoded configuration after close before replacing the old file.
+	var saved: Dictionary = preload("res://scripts/workbench_file_transaction.gd").write_text(
+		"user://art-provider.cfg", settings.encode_to_text(), MAX_PROFILE_BYTES)
+	if not bool(saved.get("ok",false)):
+		input_error = "Could not save Art preferences; " + str(saved.error)
+		return ERR_FILE_CANT_WRITE
+	if input_error.begins_with("Could not save Art preferences; "): input_error = ""
+	return OK
 
 var previous_mode := 1
 
@@ -976,7 +974,8 @@ static func _persist_history_receipt(item: Dictionary) -> bool:
 	if schema == 2:
 		record["turn"] = item.turn
 		record["order"] = order
-	var payload := (JSON.stringify(record)+"\n").to_utf8_buffer()
+	var text := JSON.stringify(record)+"\n"
+	var payload := text.to_utf8_buffer()
 	if payload.size() > MAX_HISTORY_RECEIPT_BYTES: return false
 	var count := 0
 	var bytes := payload.size()
@@ -988,14 +987,18 @@ static func _persist_history_receipt(item: Dictionary) -> bool:
 		bytes += existing.get_length()
 		if bytes > MAX_HISTORY_JOURNAL_BYTES: return false
 	# Keep the independent same-directory temporary name short on Windows.
+	# Retain a pending receipt only after its complete closed bytes verify;
+	# get_error() alone does not observe every buffered short write.
 	var temporary := HISTORY_RECEIPT_DIR.path_join("pending-"+Crypto.new().generate_random_bytes(16).hex_encode()+".partial")
 	var file := FileAccess.open(temporary,FileAccess.WRITE)
 	if file == null: return false
-	file.store_buffer(payload)
+	var stored := file.store_buffer(payload)
 	file.flush()
 	var error := file.get_error()
-	file = null
-	if error == OK and bool(Provider.Archive.atomic_replace(temporary,destination).get("ok",false)):
+	file.close()
+	var verification := preload("res://scripts/workbench_file_transaction.gd").FileOperations.new()
+	if stored and error == OK and verification.verify(temporary,payload).is_empty() \
+			and bool(Provider.Archive.atomic_replace(temporary,destination).get("ok",false)):
 		_history_receipt_clock_us = maxi(_history_receipt_clock_us,tick)
 		if schema == 2: item["order"] = order
 		item["file"] = destination
@@ -1085,7 +1088,7 @@ func _queue_history_receipt(receipt: Dictionary, epoch: int) -> bool:
 		input_error = _history_persistence_error
 		return false
 	if not durable:
-		_history_persistence_error = "Confirmed Art receipt awaits a durable journal. Restore access/free space; keep Workbench open for automatic retry."
+		_history_persistence_error = "Confirmed Art receipt awaits a verified journal file. Restore access/free space; keep Workbench open for automatic retry."
 		input_error = _history_persistence_error
 	return durable
 
