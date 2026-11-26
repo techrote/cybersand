@@ -1,0 +1,231 @@
+{
+  "schema": 1,
+  "reviewer": "Mergedown Specialist A, source/evidence review only",
+  "source": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "source_tree": "f3dc13c5c7143c4bff1b7875d445486290869576",
+  "donor": "ae0fa2483ce8aabc1cb2f524a5efa646285745a1",
+  "utility_comment_followup": "b0dabd099f8ba90d7f0a870f85fe150b8c876411",
+  "disposition": "APPROVE narrow preparation; protected programme remains Draft/HOLD, resulting source and Windows gates pending",
+  "files_sha256": {
+    "godot/scripts/art_batch_panel.gd": "f49cb12c8b5c02bbc538f9ae9d95f5589cb0bbdcb44ac29e1d3cf85406e3ab4d",
+    "godot/scripts/workbench_file_transaction.gd": "13ef034bc836763546957c60a3f0731f6934f99a7d9ef384969b15bb2a1852f2",
+    "godot/tests/art_storage_fault_child.gd": "a8e6973917a5ecc28af62f1c0ad09db89058060efbe0f95784fde3a733cc5ade",
+    "tools/ci/run_art_storage_qualification.py": "37d0024fffb27a431f95ad148fca0e5bb008029c7f1ba6047caf22bb15deda46"
+  },
+  "dependency": "Shared verified file transaction from e559/f59 plus existing native replacement; unlike export-only a03, these panel changes require the utility",
+  "original_failures": [
+    {
+      "kind": "settings",
+      "fault": "actual Linux RLIMIT_FSIZE128 with SIGXFSZ ignored",
+      "before": {
+        "acknowledged": true,
+        "bytes": 1108,
+        "error": "",
+        "format_loadable": true,
+        "kind": "settings",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg",
+        "sha256": "836bbb29100f48908d3fd73b2005b4e89c4da67db96f79ff30e6c949420e1e19",
+        "value": 7,
+        "exit_code": 0,
+        "log": "settings-normal.log",
+        "log_sha256": "80877f4bf6b824ace09b1533bf3918029a226d0249a960eeba1ca43db16d614d"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "error": "",
+        "format_loadable": false,
+        "kind": "settings",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg",
+        "sha256": "f192e5863a2df091620b6d96b1878f24217c985f9a4ef9731583562608dd2108",
+        "value": null,
+        "exit_code": 0,
+        "log": "settings-rlimit.log",
+        "log_sha256": "92ce7c2412f6f5814ffbe85a8ba94c2052cbb2ade27048b9d77041641476fa53"
+      }
+    },
+    {
+      "kind": "pending-history",
+      "fault": "actual Linux RLIMIT_FSIZE128 with SIGXFSZ ignored",
+      "before": {
+        "acknowledged": true,
+        "bytes": 1528,
+        "error": "",
+        "format_loadable": true,
+        "kind": "pending-history",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json",
+        "sha256": "57ea78d88d2d68e533de2302a184e4bc7f910550850cb31dd318c5170af958dd",
+        "value": 7.0,
+        "exit_code": 0,
+        "log": "pending-history-normal.log",
+        "log_sha256": "180f3cfb1248ccb20d222c424313d8b5a42caff8690701938308d8816e0be9ed"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "error": "",
+        "format_loadable": false,
+        "kind": "pending-history",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000008-00000000000000000000000000000008.json",
+        "sha256": "9f5c3d63bfb062a9e1c608224e4fe765d9fb4350cbf7ea35c407a29a01ffa305",
+        "value": null,
+        "exit_code": 0,
+        "log": "pending-history-rlimit.log",
+        "log_sha256": "16ef95b3b758c813a110cb4bad5d260a1f4cdd9bcee2cc19cbf9c74e080b66ad"
+      }
+    }
+  ],
+  "reported_qualification": {
+    "linux_matrix_cases": 13,
+    "linux_all_passed": true,
+    "linux_input_stability": true,
+    "independent_linux_cases": 13,
+    "independent_approval": "APPROVE",
+    "normal_cases": [
+      {
+        "name": "test_art_storage_integrity",
+        "status": "passed",
+        "natural_completion": true,
+        "diagnostic_error": false
+      },
+      {
+        "name": "test_art_traffic_integrity",
+        "status": "passed",
+        "natural_completion": true,
+        "diagnostic_error": false
+      },
+      {
+        "name": "test_art_traffic_panel_safety",
+        "status": "passed",
+        "natural_completion": true,
+        "diagnostic_error": false
+      },
+      {
+        "name": "test_art_session_log",
+        "status": "passed",
+        "natural_completion": true,
+        "diagnostic_error": false
+      },
+      {
+        "name": "test_art_panel_ui",
+        "status": "passed",
+        "natural_completion": true,
+        "diagnostic_error": false
+      },
+      {
+        "name": "test_art_history_receipt_identity",
+        "status": "passed",
+        "natural_completion": true,
+        "diagnostic_error": false
+      }
+    ],
+    "reported_normal_assertions": 400,
+    "windows_plan": [
+      [
+        "export",
+        "none"
+      ],
+      [
+        "export",
+        "locked-target"
+      ],
+      [
+        "new-event",
+        "none"
+      ],
+      [
+        "append",
+        "none"
+      ],
+      [
+        "append",
+        "locked-target"
+      ],
+      [
+        "settings",
+        "none"
+      ],
+      [
+        "settings",
+        "locked-target"
+      ],
+      [
+        "pending-history",
+        "none"
+      ],
+      [
+        "pending-history",
+        "existing-receipt"
+      ]
+    ],
+    "windows_status": "not run by this lane; pending final exact-source hosted nine-case qualification"
+  },
+  "source_equivalence": {
+    "qualified_panel_reconstructed_by_reversing_only_reviewed_message": true,
+    "qualified_utility_reconstructed_by_reversing_only_comment": true,
+    "child_and_runner_exact_independent_hash_match": true
+  },
+  "current_art_reconciliation": {
+    "target": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+    "preserve": [
+      "Current cached serialized settings no-op path",
+      "Actual prior profile-admission guard",
+      "MAX_PROFILE_BYTES before I/O",
+      "Update cached text/valid flag only after verified successful commit",
+      "Clear only save-owned error on successful retry or valid cached no-op",
+      "Short Windows pending staging names and all receipt schema/order/epoch/projection/clock validation",
+      "Session-only conversation behavior; no automatic journal or conversation restore"
+    ],
+    "avoid": [
+      "Whole-function overwrite that removes the current settings cache",
+      "Importing unrelated ULTIMA diagnostic/Tower/documentation programme",
+      "Importing ULTIMA abff8949 materialize_lfs implementation, which overlaps separately qualified mergedown helper"
+    ]
+  },
+  "next_action": "Coordinate complete a03 + ae0 + utility/test donor set; reconcile cache explicitly; qualify final Art/Architecture source with original faults, panel/history, large requests, owned transport and native mount; obtain real Windows nine-case evidence",
+  "evidence": [
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-before.json",
+      "bytes": 3634,
+      "sha256": "ea84faa72f6b6dd616104aef4c186c2fc84bbe2ae7dab028cde670b803e82a6f",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-before.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-linux.json",
+      "bytes": 25121,
+      "sha256": "c0c4918f3145b8605191c84c6d529c4444dd8fa2d93ebdda945c5ba38061c6a6",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-linux.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-regressions.json",
+      "bytes": 16366,
+      "sha256": "75d45f7314e39c839a9716f4d139555d15d63509187bdb249d49f15b1cafddaf",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-regressions.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-source-binding.json",
+      "bytes": 2255,
+      "sha256": "b60497b09bbcdfd9fa4951b467ec297ad91dca0bb651a3f4454e87a1f6cf68b5",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/technical/art-panel-storage-source-binding.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-final-storage-and-ci-by-c.json",
+      "bytes": 9102,
+      "sha256": "a57612eadaf018df1fec89a6104c0921b809f4a5676720e2a6162b10445fdfb9",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-final-storage-and-ci-by-c.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/final-storage-review-originals.json.gz",
+      "bytes": 11395,
+      "sha256": "1ef1852ba4c6ba7941b8c1ea4aeaf6b6f4e7b57c91f22f38d68924cf2eca8878",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/final-storage-review-originals.json.gz"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/diagnostic-and-art-storage-raw.json.gz",
+      "bytes": 51065,
+      "sha256": "56445f04919de6305165872dce7e2111593774b94aa1c9b8e0539dfa19049b64",
+      "url": "https://github.com/techrote/cybersand/blob/7919e8a752e87e68c4193b3a04960164ab62e117/docs/audits/2026-11-25-docs-renaissance-ultima/technical/diagnostic-and-art-storage-raw.json.gz"
+    }
+  ],
+  "scope_limit": "No new Godot/OS execution in this review; original failure and qualified input identities remain historical evidence, not final application acceptance"
+}

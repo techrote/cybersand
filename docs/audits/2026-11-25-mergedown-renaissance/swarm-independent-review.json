@@ -1,0 +1,784 @@
+{
+  "application_source": "fc7743eb8b49287bb78da48c47e7eb24a15e9b2c",
+  "application_tree": "27939ecf0c300bf649227d43fd378a84661aa86a",
+  "native_producer": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "tests": [
+    {
+      "mode": "create",
+      "checks": 255,
+      "failures": [],
+      "completed": true,
+      "native_can_apply": true,
+      "applied": true,
+      "historical_only": false,
+      "process_id": 808,
+      "runtime_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "runtime_sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+      "plane_sha256": {
+        "applied": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+        "baseline": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541",
+        "expected": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+        "preview": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541",
+        "regenerated": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+        "saved": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+        "undone": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541"
+      },
+      "transport_refusals": {
+        "failed_child_positive": true,
+        "preexisting_job_directory": true,
+        "runtime_manifest_changed": true
+      }
+    },
+    {
+      "mode": "reopen",
+      "checks": 79,
+      "failures": [],
+      "completed": true,
+      "native_can_apply": true,
+      "applied": false,
+      "historical_only": true,
+      "process_id": 941,
+      "runtime_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "runtime_sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+      "plane_sha256": {
+        "expected": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+        "reopened": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+      },
+      "transport_refusals": {}
+    }
+  ],
+  "headless_native_assertions_passed": true,
+  "total_checks": 334,
+  "original_windows_ui_verifier_errors": {
+    "create": [
+      "actual Windows graphical execution is required"
+    ],
+    "reopen": [
+      "actual Windows graphical execution is required"
+    ]
+  },
+  "original_full_example_verifier": {
+    "passed": false,
+    "validation_errors": [
+      "missing original full-window PNG: native-preview.png",
+      "missing original full-window PNG: native-applied.png",
+      "missing original full-window PNG: native-undone.png",
+      "missing original full-window PNG: native-saved.png",
+      "missing original full-window PNG: native-reopened.png",
+      "missing original full-window PNG: inspector-final-joints.png",
+      "missing original full-window PNG: inspector-final-unresolved.png",
+      "missing original full-window PNG: inspector-final-clearance.png",
+      "missing original full-window PNG: inspector-final-revisions.png"
+    ],
+    "native_plane_sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436",
+    "screenshots_sha256": {},
+    "process_ids": {
+      "create": 808,
+      "reopen": 941
+    },
+    "recipe": {
+      "activation": [
+        [
+          64.0,
+          48.0
+        ]
+      ],
+      "border": 4,
+      "gentek_parameters": {
+        "frame": {
+          "branching": 0.55,
+          "clutter": 0.0,
+          "cohesion": 0.35,
+          "destruction": 0.0,
+          "environment_affinity": 0.25,
+          "irregularity": 0.05,
+          "variation": 0.65
+        },
+        "mosaic": {
+          "branching": 0.55,
+          "clutter": 0.0,
+          "cohesion": 0.35,
+          "destruction": 0.0,
+          "environment_affinity": 0.25,
+          "irregularity": 0.05,
+          "variation": 0.65
+        }
+      },
+      "layout": "centered_frame_rectangle",
+      "optional": true,
+      "orientation": -1.0,
+      "origin": [
+        0.0,
+        0.0
+      ],
+      "profile": "viaduct_like",
+      "rounds": 2.0,
+      "seed": 4099.0,
+      "shared_extent": 13.0,
+      "shared_ownership": false,
+      "size": [
+        128.0,
+        96.0
+      ]
+    },
+    "reciprocal_witness": {
+      "all_foreign_closed": true,
+      "both_footprints_changed": true,
+      "foreign_joined": 8,
+      "frame_occupied_changes": 55,
+      "joint_count": 8,
+      "mosaic_occupied_changes": 264,
+      "obligation_count": 8,
+      "scope": "array-derived native reciprocal revision and joint/closure witness; synthetic World only, offer causality independently controlled",
+      "unresolved": 0
+    }
+  },
+  "graphical_qualification": false,
+  "owner_acceptance": false,
+  "qualification": {
+    "started_at": "2026-11-26T00:21:19.104954+00:00",
+    "source": "fc7743eb8b49287bb78da48c47e7eb24a15e9b2c",
+    "tree": "27939ecf0c300bf649227d43fd378a84661aa86a",
+    "scope": "Independent headless native generated reciprocal Apply/Undo/Save and fresh-process reopen; not graphical/Windows or owner acceptance.",
+    "results": [
+      {
+        "name": "import",
+        "execution_policy": {
+          "schema_version": 1,
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "watchdogs": {
+            "main_ack_seconds": 600.0,
+            "graphical_case_seconds": 1200.0,
+            "godot_import_seconds": 1200.0,
+            "operation_seconds": 300.0,
+            "complex_fixture_seconds": 3600.0,
+            "hosted_job_minutes": 180.0,
+            "diagnostic_capture_seconds": 30.0,
+            "terminate_grace_seconds": 10.0,
+            "native_suite_seconds": 7200.0,
+            "native_compile_seconds": 3600.0,
+            "native_case_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "aggregate_headroom_seconds": 600.0,
+            "ordinary_case_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_setup_seconds": 4200.0,
+            "godot_metadata_seconds": 900.0
+          },
+          "advisories": {
+            "warning_ratio": 1.5,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "minimum_baseline_samples": 3,
+            "drift_window": 5,
+            "drift_ratio": 1.2
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+        },
+        "natural_completion": true,
+        "resources": {
+          "scope": "direct_process_only",
+          "available": true,
+          "cpu_seconds": 5.33,
+          "peak_rss_bytes": 780259328
+        },
+        "role": "preflight",
+        "status": "passed",
+        "seconds": 6.662,
+        "diagnostic_seconds": 0.0,
+        "timeout_seconds": 1200.0,
+        "timeout_kind": null,
+        "returncode": 0,
+        "diagnostic_error": false,
+        "launch_error": null,
+        "capture_error": null,
+        "skip_messages": [],
+        "requires_display": false,
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/swarm-integration/godot",
+          "--editor",
+          "--quit"
+        ],
+        "log": "import.log",
+        "log_sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+        "pid": 22,
+        "timeout_diagnostics": null,
+        "timeout_diagnostic_error": null,
+        "last_progress": null,
+        "last_heartbeat": null,
+        "diagnostics": null
+      },
+      {
+        "name": "reciprocal-create",
+        "execution_policy": {
+          "schema_version": 1,
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "watchdogs": {
+            "main_ack_seconds": 600.0,
+            "graphical_case_seconds": 1200.0,
+            "godot_import_seconds": 1200.0,
+            "operation_seconds": 300.0,
+            "complex_fixture_seconds": 3600.0,
+            "hosted_job_minutes": 180.0,
+            "diagnostic_capture_seconds": 30.0,
+            "terminate_grace_seconds": 10.0,
+            "native_suite_seconds": 7200.0,
+            "native_compile_seconds": 3600.0,
+            "native_case_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "aggregate_headroom_seconds": 600.0,
+            "ordinary_case_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_setup_seconds": 4200.0,
+            "godot_metadata_seconds": 900.0
+          },
+          "advisories": {
+            "warning_ratio": 1.5,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "minimum_baseline_samples": 3,
+            "drift_window": 5,
+            "drift_ratio": 1.2
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+        },
+        "natural_completion": true,
+        "resources": {
+          "scope": "direct_process_only",
+          "available": true,
+          "cpu_seconds": 22.46,
+          "peak_rss_bytes": null
+        },
+        "role": "case",
+        "status": "passed",
+        "seconds": 21.988,
+        "diagnostic_seconds": 0.0,
+        "timeout_seconds": 420,
+        "timeout_kind": null,
+        "returncode": 0,
+        "diagnostic_error": false,
+        "launch_error": null,
+        "capture_error": null,
+        "skip_messages": [],
+        "requires_display": false,
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/swarm-integration/godot",
+          "--script",
+          "res://tests/swarm456_reciprocal_ui.gd"
+        ],
+        "log": "reciprocal-create.log",
+        "log_sha256": "2d3e27891c47accf6ec919bb921fc637816cdedbca447057cfe088aeaa835dfa",
+        "pid": 808,
+        "timeout_diagnostics": null,
+        "timeout_diagnostic_error": null,
+        "last_progress": null,
+        "last_heartbeat": null,
+        "diagnostics": null
+      },
+      {
+        "name": "reciprocal-reopen",
+        "execution_policy": {
+          "schema_version": 1,
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "watchdogs": {
+            "main_ack_seconds": 600.0,
+            "graphical_case_seconds": 1200.0,
+            "godot_import_seconds": 1200.0,
+            "operation_seconds": 300.0,
+            "complex_fixture_seconds": 3600.0,
+            "hosted_job_minutes": 180.0,
+            "diagnostic_capture_seconds": 30.0,
+            "terminate_grace_seconds": 10.0,
+            "native_suite_seconds": 7200.0,
+            "native_compile_seconds": 3600.0,
+            "native_case_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "aggregate_headroom_seconds": 600.0,
+            "ordinary_case_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_setup_seconds": 4200.0,
+            "godot_metadata_seconds": 900.0
+          },
+          "advisories": {
+            "warning_ratio": 1.5,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "minimum_baseline_samples": 3,
+            "drift_window": 5,
+            "drift_ratio": 1.2
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+        },
+        "natural_completion": true,
+        "resources": {
+          "scope": "direct_process_only",
+          "available": true,
+          "cpu_seconds": 6.17,
+          "peak_rss_bytes": null
+        },
+        "role": "case",
+        "status": "passed",
+        "seconds": 6.387,
+        "diagnostic_seconds": 0.0,
+        "timeout_seconds": 420,
+        "timeout_kind": null,
+        "returncode": 0,
+        "diagnostic_error": false,
+        "launch_error": null,
+        "capture_error": null,
+        "skip_messages": [],
+        "requires_display": false,
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/swarm-integration/godot",
+          "--script",
+          "res://tests/swarm456_reciprocal_ui.gd"
+        ],
+        "log": "reciprocal-reopen.log",
+        "log_sha256": "4f988a03745a770c735f9f4d46d8ef35585a9f6452874f04a4ced2c351b4c106",
+        "pid": 941,
+        "timeout_diagnostics": null,
+        "timeout_diagnostic_error": null,
+        "last_progress": null,
+        "last_heartbeat": null,
+        "diagnostics": null
+      }
+    ],
+    "status": "passed",
+    "owner_acceptance": false,
+    "graphical_qualification": false,
+    "initial_cli_override": false,
+    "custody_unchanged": true,
+    "finished_at": "2026-11-26T00:21:54.955634+00:00"
+  },
+  "schema": "cybersand-swarm-independent-prepared-review-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-26T00:25:16.037786+00:00",
+  "prepared_source_disposition": "APPROVE BOUNDED INTEGRATION FINDINGS",
+  "merge_disposition": "HOLD \u2014 current main reconciliation, full platform/package qualification and physical owner acceptance remain",
+  "original_packet_readback": {
+    "original_source": "fc7743eb8b49287bb78da48c47e7eb24a15e9b2c",
+    "original_tree": "27939ecf0c300bf649227d43fd378a84661aa86a",
+    "source_packet_commit": "678391cc7",
+    "verified_logs": [
+      {
+        "name": "import",
+        "bytes": 46727,
+        "sha256": "4564d9f14917b2fe15f032801965a3e9feb1e843b01b83281b6268167aa50611",
+        "assertions": null
+      },
+      {
+        "name": "test_ambient_default_off_integration",
+        "bytes": 4102,
+        "sha256": "737c7477463a5958c1e268c057d1411d4a35b0138ac3ab22904689e051fe65ad",
+        "assertions": 68
+      },
+      {
+        "name": "test_workbench_reciprocal_protocol",
+        "bytes": 320,
+        "sha256": "233d5a9b807175dfc5b680c6ea27fb0437d450a318d5f47a7d59ed27673c50bc",
+        "assertions": 294
+      },
+      {
+        "name": "test_workbench_reciprocal_runtime",
+        "bytes": 391,
+        "sha256": "0fa432a28acf68725c65ce23d671b36e9e75b4cf4b815ccc99d33b9ebdd1ee51",
+        "assertions": 12
+      },
+      {
+        "name": "test_workbench_reciprocal_controller",
+        "bytes": 397,
+        "sha256": "fda9cd5eda13c938bd49729ececebda059d8abda89166b4922e9160171a02b0c",
+        "assertions": 40
+      },
+      {
+        "name": "swarm45_reciprocal_controls",
+        "bytes": 1702,
+        "sha256": "a0379677f61e8e2fc0101b0daf0cd78786d61f37bfe0f865663325dba0bbb208",
+        "assertions": 287
+      },
+      {
+        "name": "test_workbench_authoring_patch",
+        "bytes": 275,
+        "sha256": "3d840d5394b326b33090649f12f347bd5392ca5ef598d72e82a9f403efd18b7d",
+        "assertions": 126
+      },
+      {
+        "name": "test_ambient_workbench",
+        "bytes": 269,
+        "sha256": "deb8d897c3921fe2138282a989fc16cfee5124658f14f81f98c37bd9f58686cd",
+        "assertions": 43
+      },
+      {
+        "name": "test_goblin_contract",
+        "bytes": 375,
+        "sha256": "fe67bf589c39bf833464e2381f35bbe54d5dae9055fd42e494966d90b2cec0c2",
+        "assertions": 173
+      },
+      {
+        "name": "test_workbench_actor_composition_native",
+        "bytes": 535,
+        "sha256": "4b1b59226c70f2ee96d0af1ea7eacccd081f522a76f76a2a4f3710548ffc1de2",
+        "assertions": 323
+      }
+    ],
+    "assertions": 1366,
+    "strict_gates_passed": true
+  },
+  "custody": {
+    "before_equals_after": true,
+    "native_inputs": {
+      "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+      "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+      "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+      "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+      "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+      "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+      "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+      "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+      "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+      "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+      "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+      "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+      "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+      "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+      "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+      "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+      "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+      "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+      "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+      "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+      "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+      "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+      "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+      "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+      "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+      "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+      "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+      "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+      "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+      "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+      "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+      "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+      "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+      "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+      "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+      "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+      "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+      "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+      "native/include/cybersand/workbench_authoring_patch.hpp": "ac2b359e9b4daba1d6ef57fa65e813475d247dddb49cc634b0104262f0517314",
+      "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+      "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+      "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+      "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+      "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+      "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+      "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+      "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+      "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+      "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+      "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+      "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+      "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+      "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+      "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+      "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+      "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+      "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+      "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+      "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+      "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+      "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+      "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+      "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+      "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+      "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+      "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+      "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+      "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+      "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+      "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+      "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+      "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+      "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+      "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+      "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+      "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+      "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+      "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+      "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+      "godot/native_extension/cyber_prepared_liquid_world.hpp": "92c0d6795025f0aaab86d5d5fe9176d87c0797b90503e7a9d0f70e562faa4032",
+      "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+      "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+      "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+      "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+      "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+      "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+      "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+      "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+      "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+      "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+      "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+      "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+      "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+      "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+      "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+      "godot/native_extension/workbench_retained_setup.hpp": "801fd58a1560a57cd5d14383ee69b8d243d8245719f786806f196a5ec06edb36"
+    },
+    "definition_inputs": {
+      "native/experiments/gentek_swarm/admission_main.cpp": "fdbf37cf5f3aa73643c036b8b543ef7e42b796f2813f51c57f2a76f3e93fe4c0",
+      "native/experiments/gentek_swarm/admission_resilience_tests.cpp": "0201d2af2cdfec823a0dc596996ca258dd35e313c253ede53b5cae36ea642ac8",
+      "native/experiments/gentek_swarm/admission_tests.cpp": "7cd4aa43f6648ba82fc143d1f0f974748fbf7cb5c5fe589c030c3bbf39c79889",
+      "native/experiments/gentek_swarm/assembly.cpp": "d4546d654f7af516e471b791ac6460ef5daa90506f8265a3e0f17e90f428df8d",
+      "native/experiments/gentek_swarm/assembly_tests.cpp": "10d18fdf68e04f4f571ae70273127cdaae8a0085d62f16583b6cdd155598e221",
+      "native/experiments/gentek_swarm/common.cpp": "df5a180b86ad978a2dd91e415c3a38a25828b20f7a9739d6f7f2ea31edcc3941",
+      "native/experiments/gentek_swarm/custody_hash_tests.cpp": "c99185f4eef26e41f65b17c3b5b00805639326832e908ff6938fc5ed2636bf17",
+      "native/experiments/gentek_swarm/fixtures.cpp": "2d5025763ad0f741f5fd77d25d38f9f448cef601cbcd9a6c9b58a70e0c2d8142",
+      "native/experiments/gentek_swarm/frameweaver.cpp": "95c06e44eaab98a3562042ce421a5203992a095aeb8d025149f2d6bc9af4c6f1",
+      "native/experiments/gentek_swarm/io.cpp": "e3e6f012a28a17952af1a3c95c947631cef620eb2d6de3e49abe6a8e0f29c1a2",
+      "native/experiments/gentek_swarm/main.cpp": "1e101edb2d197c7e425eea058098c5a3310b1c8a5703a55ba5b6d817329921c0",
+      "native/experiments/gentek_swarm/meshing.cpp": "4fc5961f62c00f24a0c5405a2b8ed94bc82cb0a17eaa1859dcce9b65460b5f29",
+      "native/experiments/gentek_swarm/mosaic.cpp": "34ef8871890b3510f96bc5ad97754bad0f064979f146e608098512c91d2d2ee4",
+      "native/experiments/gentek_swarm/mosaic_admission.cpp": "3ab2cf07a02858859b7ecb979f3d1f2dfb2c68c683905708f1ee165608819b30",
+      "native/experiments/gentek_swarm/mosaic_recovery.cpp": "ec9dbe6dd227b7b376763961c51b12b94ff7cb143f43e4999d3a6e2eec678850",
+      "native/experiments/gentek_swarm/negotiated.cpp": "c16618da630d5d3da68f5be003229c8d1f11694cdf01468a2688535ec0a34eea",
+      "native/experiments/gentek_swarm/negotiated_main.cpp": "b3ce696435f43a7ea88554783d37dc2b1710b7d6f0456a7de4c05db7a0e7e6d0",
+      "native/experiments/gentek_swarm/negotiated_tests.cpp": "a7390f42f204ed801c0ef9e6172426fb6d6521fa32f1a2fdef53ae9487dcb3d1",
+      "native/experiments/gentek_swarm/receptor.cpp": "c6bef593754c055cea373bdbc139f82035b513582b4c20fcb9771c87c80e72d5",
+      "native/experiments/gentek_swarm/reciprocal.cpp": "3954349cda20b42904459d017c1540cface45502b62b97c1aa1a24e322be619f",
+      "native/experiments/gentek_swarm/reciprocal_causal.cpp": "cb2e828d70fb1f4c44d2c1bd750bfe35f5a520270a3c4a611f7b9884112f7ba2",
+      "native/experiments/gentek_swarm/reciprocal_io.cpp": "cd44b2fc9b99b48f7a102737f5219b2fe7c520bce4d3043b54c365f892365e91",
+      "native/experiments/gentek_swarm/reciprocal_main.cpp": "892f648df02c9ad2ceb4dff619b613be68c7543094759cc01bdb5b927c7a4034",
+      "native/experiments/gentek_swarm/reciprocal_mosaic.cpp": "94a38e05026e6f16b84d1ba2e506775f4159e21424c958e4886e4981cc65579d",
+      "native/experiments/gentek_swarm/reciprocal_mosaic_tests.cpp": "d9bc4880851c44c8a9f0fcbbde1744527b65f1a141ea49b55aad3489ebebc982",
+      "native/experiments/gentek_swarm/reciprocal_tests.cpp": "a53b63867e8222e18dcc27fe523be2cd077ae7b59d5b2a2137d90562cb8b780b",
+      "native/experiments/gentek_swarm/recovery_admission.cpp": "a4357637f9eaaff6d62b670fa7b7486bc43fb3eb82ea8baa36c3396ad487a71f",
+      "native/experiments/gentek_swarm/recovery_admission_tests.cpp": "ff6c4f95308235c469f2518c83e0c711aee0e821916a339f8b6d53c3aa04e737",
+      "native/experiments/gentek_swarm/resilience_main.cpp": "c2b3d31b58e6762a7e39a61cba5502ce12e2b197e43a8123cc3597ffe5fc60a2",
+      "native/experiments/gentek_swarm/resilience_solver.cpp": "ba6f72bc4768875f377c296b7910e24b1227d5dcec0cf9ac267d921a47a66206",
+      "native/experiments/gentek_swarm/resilience_solver_tests.cpp": "6c5c53ad6080017de739f18d3f88b06ede81d64fd568f142cf2b9f85009f5d01",
+      "native/experiments/gentek_swarm/resilience_tests.cpp": "5b52b859e2302ea828a5498834315767a1af2223ad0c0d0e37d01d9117cddf14",
+      "native/experiments/gentek_swarm/swarm005_research_tests.cpp": "c7226cae0f92858dad52ff8e285eee22b40274e7c1a01d45d7e840fd3a4861b1",
+      "native/experiments/gentek_swarm/swarm006_experiment_main.cpp": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+      "native/experiments/gentek_swarm/swarm006_recovery_tests.cpp": "f099a2841fdb78f5bbadfd418719a7ec04f7bf7cebfed776a85fcf3d2418ffc9",
+      "native/experiments/gentek_swarm/swarm006_source_tests.cpp": "1685e8c5326bd2d1bb99da52dbe6c62d41db2a99422c4904327c697e2169e48d",
+      "native/experiments/gentek_swarm/tests.cpp": "ad5dea12e3941eab55816d611ab4ca140aba8c18c2d105e3bde64ab98bb69b96",
+      "native/experiments/gentek_swarm/assembly.hpp": "2c1b589be93d0e5381b4e5974e931e8d01d93b8c9583ab6bda2c03ef423055f4",
+      "native/experiments/gentek_swarm/custody_hash.hpp": "d29089cd225047455e989c4dd39e2566741bb6d719dda4bd4fade834828309da",
+      "native/experiments/gentek_swarm/mosaic_admission.hpp": "c6b8f8435a238b1c55be09127450865401768dc0081de61edd5e29ac210769d9",
+      "native/experiments/gentek_swarm/negotiated.hpp": "b6be864cc02e225070dd0aa78e6fd22302f1f150ef4b7460d6beb79eecb15e9a",
+      "native/experiments/gentek_swarm/reciprocal.hpp": "a4264ec0bafbb814b642589f6ef39524ebe2704ebe41522bc06aa49f5e8877cb",
+      "native/experiments/gentek_swarm/reciprocal_io.hpp": "5a4d01b97aa844b0cb58f11d2e87d76bf18aa2c648743fcb012ba74638fd7f2d",
+      "native/experiments/gentek_swarm/reciprocal_mosaic.hpp": "c80252918dd32478ef7fd71c422904f1972a31d46b6fcf4b22fe72dccb2a88b3",
+      "native/experiments/gentek_swarm/recovery_admission.hpp": "792e0705d07885800a50ecc6d2c9029eb64103f3f9bfdbda52ed369ce41d2799",
+      "native/experiments/gentek_swarm/resilience.hpp": "134250470152e0a56b23fddad706d507642dfd47dcb400b431ee9f0653800a5c",
+      "native/experiments/gentek_swarm/resilience_solver.hpp": "a13f5f0b68796024a030f683fbc6c15ae86b3ec7e3d9a0d397b377f5a86fbccd",
+      "native/experiments/gentek_swarm/swarm.hpp": "f1739832a3f695bb127f6064a1ac622c7ebb30134d291f0e3712304db3bb53f6",
+      "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+      "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+      "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a"
+    },
+    "runtime_bytes": [
+      {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "bytes": 5844992,
+        "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+      },
+      {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "bytes": 5278840,
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+      },
+      {
+        "path": "godot/tools/gentek_reciprocal",
+        "bytes": 1554128,
+        "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+      },
+      {
+        "path": "godot/tools/gentek_reciprocal.exe",
+        "bytes": 3283968,
+        "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+      },
+      {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "bytes": 117275416,
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    ],
+    "tracked_file_count": 4515,
+    "untracked_generated_uid_count": 621,
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "original_artifacts": [
+    {
+      "path": "custody-after.json",
+      "bytes": 630648,
+      "sha256": "161c57420d3ed0abfba28156c44b21a85eb34bb3ca6252aeec450fbc233be42c"
+    },
+    {
+      "path": "custody-before.json",
+      "bytes": 630648,
+      "sha256": "161c57420d3ed0abfba28156c44b21a85eb34bb3ca6252aeec450fbc233be42c"
+    },
+    {
+      "path": "evidence/applied-native.le16",
+      "bytes": 524288,
+      "sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+    },
+    {
+      "path": "evidence/baseline-native.le16",
+      "bytes": 524288,
+      "sha256": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541"
+    },
+    {
+      "path": "evidence/create.json",
+      "bytes": 9500,
+      "sha256": "a341d01cfca75aa1df7a1b92fa126decf7147ffff731f0374ca2f542239de549"
+    },
+    {
+      "path": "evidence/expected-native.le16",
+      "bytes": 524288,
+      "sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+    },
+    {
+      "path": "evidence/initial-material.le16",
+      "bytes": 24576,
+      "sha256": "e6edb847c232fcd28567ae93dbc22a12eea4750795d660ce74e86a059aa59b02"
+    },
+    {
+      "path": "evidence/initial-native-pixels.png",
+      "bytes": 1046,
+      "sha256": "c6a185db54d262c21ee1e5c96a8165a4f66136ad88ccb9f776d57c2dcaba2f2d"
+    },
+    {
+      "path": "evidence/initial-request.txt",
+      "bytes": 123094,
+      "sha256": "a6d306b1bcbf82799ced9a499f3d58138b8bf60e661a71b46737f990363c8400"
+    },
+    {
+      "path": "evidence/initial-result.json",
+      "bytes": 3342268,
+      "sha256": "6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1"
+    },
+    {
+      "path": "evidence/preview-native.le16",
+      "bytes": 524288,
+      "sha256": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541"
+    },
+    {
+      "path": "evidence/regenerated-material.le16",
+      "bytes": 24576,
+      "sha256": "e6edb847c232fcd28567ae93dbc22a12eea4750795d660ce74e86a059aa59b02"
+    },
+    {
+      "path": "evidence/regenerated-native-pixels.png",
+      "bytes": 1046,
+      "sha256": "c6a185db54d262c21ee1e5c96a8165a4f66136ad88ccb9f776d57c2dcaba2f2d"
+    },
+    {
+      "path": "evidence/regenerated-native.le16",
+      "bytes": 524288,
+      "sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+    },
+    {
+      "path": "evidence/regenerated-request.txt",
+      "bytes": 123094,
+      "sha256": "a6d306b1bcbf82799ced9a499f3d58138b8bf60e661a71b46737f990363c8400"
+    },
+    {
+      "path": "evidence/regenerated-result.json",
+      "bytes": 3342268,
+      "sha256": "6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1"
+    },
+    {
+      "path": "evidence/reopen.json",
+      "bytes": 4897,
+      "sha256": "f05aaba646457963e5ef303f8bf91a8ab8ef18ca21206cf90b708d68450a96df"
+    },
+    {
+      "path": "evidence/reopened-native.le16",
+      "bytes": 524288,
+      "sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+    },
+    {
+      "path": "evidence/saved-native.le16",
+      "bytes": 524288,
+      "sha256": "ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436"
+    },
+    {
+      "path": "evidence/undone-native.le16",
+      "bytes": 524288,
+      "sha256": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541"
+    },
+    {
+      "path": "import.log",
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+      "text": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Started Project initialization (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Scanning file structure...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Loading global class names...\u001b[39m\u001b[0m\n[  33% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Verifying GDExtensions...\u001b[39m\u001b[0m\n[  50% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Creating autoload scripts...\u001b[39m\u001b[0m\n[  66% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Initializing plugins...\u001b[39m\u001b[0m\n[  83% ] \u001b[90m\u001b[1mfirst_scan_filesystem\u001b[22m | Starting file scan...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mfirst_scan_filesystem\u001b[22m\n\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Started Loading editor (5 steps)\u001b[39m\u001b[0m\n[   0% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading editor layout...\u001b[39m\u001b[0m\n[  16% ] \u001b[90m\u001b[1mloading_editor_layout\u001b[22m | Loading docks...\u001b[39m\u001b[0m\n\u001b[92m[ DONE ]\u001b[39m \u001b[1mloading_editor_layout\u001b[22m\n\u001b[0m\n"
+    },
+    {
+      "path": "independent-native-readback.json",
+      "bytes": 12993,
+      "sha256": "f4760852f72cb900834efbef5d6ee671b867e7a4d553d854f4f7b3b71ff55a2a"
+    },
+    {
+      "path": "original-nine-case-readback.json",
+      "bytes": 2122,
+      "sha256": "955f20a700ce5da59b29eaf454369785f38872a751711d4a55fdb2cb9270b0fb"
+    },
+    {
+      "path": "performance.jsonl",
+      "bytes": 12355,
+      "sha256": "aca103f8c54156ad8699767a57ec6e0b32ff4202ec2c37aff095a3e76a9f129e"
+    },
+    {
+      "path": "qualification.json",
+      "bytes": 7857,
+      "sha256": "d4e4c23f8fd2e2714f30ecaa2a98409776d402844bc85505c1292df7dadab0dc"
+    },
+    {
+      "path": "reciprocal-create.log",
+      "bytes": 8515,
+      "sha256": "2d3e27891c47accf6ec919bb921fc637816cdedbca447057cfe088aeaa835dfa",
+      "text": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nRECIPROCAL_REQUEST status=complete joints=8 apply=1\nRECIPROCAL_REQUEST status=complete joints=8 apply=1\nRECIPROCAL_REQUEST status=complete joints=8 apply=1\nRECIPROCAL_REQUEST status=complete joints=8 apply=1\nSWARM004_WORKBENCH {\"applied\":true,\"apply_disabled\":true,\"checks\":255,\"completed\":true,\"controller_phase\":\"installed\",\"display\":\"headless\",\"engine\":\"4.7-stable (official)\",\"example\":\"reciprocal\",\"failures\":[],\"historical_only\":false,\"inspector_evidence\":{\"initial\":{\"default_final\":true,\"final_only_layers\":true,\"letterbox_refusal\":true,\"native_cell_picks\":true,\"native_pixels\":true,\"restored_final\":true,\"round_count\":3,\"round_indices\":[-1,0,1,2,-1],\"schema\":1,\"source\":\"5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\"},\"regenerated\":{\"default_final\":true,\"final_only_layers\":true,\"letterbox_refusal\":true,\"native_cell_picks\":true,\"native_pixels\":true,\"restored_final\":true,\"round_count\":3,\"round_indices\":[-1,0,1,2,-1],\"schema\":1,\"source\":\"5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\"}},\"integration_refusals\":{},\"joint_count\":8,\"material_count\":4001,\"mode\":\"create\",\"native_can_apply\":true,\"native_evidence_sha256\":{\"initial\":{\"initial-material.le16\":\"e6edb847c232fcd28567ae93dbc22a12eea4750795d660ce74e86a059aa59b02\",\"initial-native-pixels.png\":\"c6a185db54d262c21ee1e5c96a8165a4f66136ad88ccb9f776d57c2dcaba2f2d\",\"initial-request.txt\":\"a6d306b1bcbf82799ced9a499f3d58138b8bf60e661a71b46737f990363c8400\",\"initial-result.json\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\"},\"regenerated\":{\"regenerated-material.le16\":\"e6edb847c232fcd28567ae93dbc22a12eea4750795d660ce74e86a059aa59b02\",\"regenerated-native-pixels.png\":\"c6a185db54d262c21ee1e5c96a8165a4f66136ad88ccb9f776d57c2dcaba2f2d\",\"regenerated-request.txt\":\"a6d306b1bcbf82799ced9a499f3d58138b8bf60e661a71b46737f990363c8400\",\"regenerated-result.json\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\"}},\"native_planes_sha256\":{\"applied\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"baseline\":\"07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541\",\"expected\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"preview\":\"07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541\",\"regenerated\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"saved\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"undone\":\"07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541\"},\"native_reason\":\"complete native composition with qualified obligations\",\"native_receipt\":{\"changed_cells\":4001,\"operation\":\"build\",\"patch_sha256\":\"1504e93ed407f82179ff7fd08b10b2ee644b5e867021c3552cc16dbaf83c03e1\",\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"protected_cells\":0,\"schema\":1,\"semantics\":\"retained-native-transaction-v1\",\"source_native_generation\":5,\"source_revision\":5,\"source_tick\":0},\"native_recipe\":{\"activation\":[[64.0,48.0]],\"border\":4,\"gentek_parameters\":{\"frame\":{\"branching\":0.55,\"clutter\":0.0,\"cohesion\":0.35,\"destruction\":0.0,\"environment_affinity\":0.25,\"irregularity\":0.05,\"variation\":0.65},\"mosaic\":{\"branching\":0.55,\"clutter\":0.0,\"cohesion\":0.35,\"destruction\":0.0,\"environment_affinity\":0.25,\"irregularity\":0.05,\"variation\":0.65}},\"layout\":\"centered_frame_rectangle\",\"optional\":true,\"orientation\":-1.0,\"origin\":[0.0,0.0],\"profile\":\"viaduct_like\",\"rounds\":2.0,\"seed\":4099.0,\"shared_extent\":13.0,\"shared_ownership\":false,\"size\":[128.0,96.0]},\"native_source\":{\"ok\":true,\"path\":\"/workspace/scratch/2e90cf7b4aa3/swarm-integration/godot/tools/gentek_reciprocal\",\"sha256\":\"8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206\",\"source\":\"5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\"},\"native_status\":\"complete\",\"native_stop_reason\":\"round_cap\",\"native_transactions\":{\"first_apply\":{\"installed_capture\":{\"extent\":[512,512],\"native_generation\":4,\"revision\":4,\"tick\":0},\"installed_material_sha256\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"operation\":\"build\",\"receipt\":{\"changed_cells\":4001,\"operation\":\"build\",\"patch_sha256\":\"1504e93ed407f82179ff7fd08b10b2ee644b5e867021c3552cc16dbaf83c03e1\",\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"protected_cells\":0,\"schema\":1,\"semantics\":\"retained-native-transaction-v1\",\"source_native_generation\":3,\"source_revision\":3,\"source_tick\":0},\"source_capture\":{\"extent\":[512,512],\"native_generation\":3,\"revision\":3,\"tick\":0},\"source_material_sha256\":\"07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541\"},\"reapply\":{\"installed_capture\":{\"extent\":[512,512],\"native_generation\":6,\"revision\":6,\"tick\":0},\"installed_material_sha256\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"operation\":\"build\",\"receipt\":{\"changed_cells\":4001,\"operation\":\"build\",\"patch_sha256\":\"1504e93ed407f82179ff7fd08b10b2ee644b5e867021c3552cc16dbaf83c03e1\",\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"protected_cells\":0,\"schema\":1,\"semantics\":\"retained-native-transaction-v1\",\"source_native_generation\":5,\"source_revision\":5,\"source_tick\":0},\"source_capture\":{\"extent\":[512,512],\"native_generation\":5,\"revision\":5,\"tick\":0},\"source_material_sha256\":\"07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541\"},\"undo\":{\"installed_capture\":{\"extent\":[512,512],\"native_generation\":5,\"revision\":5,\"tick\":0},\"installed_material_sha256\":\"07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541\",\"operation\":\"remove\",\"receipt\":{\"changed_cells\":4001,\"operation\":\"remove\",\"patch_sha256\":\"61fec1df9a960cdc944ca7802555e5f30aed1a56e430629448c3c5a6e17f850d\",\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"protected_cells\":0,\"schema\":1,\"semantics\":\"retained-native-transaction-v1\",\"source_native_generation\":4,\"source_revision\":4,\"source_tick\":0},\"source_capture\":{\"extent\":[512,512],\"native_generation\":4,\"revision\":4,\"tick\":0},\"source_material_sha256\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\"}},\"native_work\":{\"assembly_validation_work\":25899.0,\"both_genteks_revised\":1.0,\"candidate_native_contacts\":8.0,\"conservative_memory_bound_bytes\":9437184.0,\"coordinator_created_cells\":0.0,\"damage_lost_required\":0.0,\"foreign_joined_required\":0.0,\"frame_candidates\":366.0,\"frame_changed_rounds\":1.0,\"frame_footprint_changed_rounds\":1.0,\"frame_work\":283752.0,\"input_header_only\":0.0,\"invalid_proposal_rounds\":0.0,\"local_terminations\":0.0,\"mosaic_changed_rounds\":1.0,\"mosaic_footprint_changed_rounds\":1.0,\"mosaic_work\":842974.0,\"new_assembly_required\":8.0,\"original_required\":0.0,\"original_still_required\":0.0,\"qualified_joints\":8.0,\"rejected_joint_source_bindings\":0.0,\"shared_work\":825147.0,\"solver_work\":935744.0,\"still_required\":0.0,\"total_charged_work\":2887617.0,\"unchecked_candidate_contacts\":0.0},\"obligation_count\":8,\"owner_visual_acceptance\":\"pending\",\"platform\":\"Linux\",\"process_id\":808,\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"reciprocal_programme_acceptance\":false,\"reciprocal_witness\":{\"all_foreign_closed\":true,\"both_footprints_changed\":true,\"foreign_joined\":8,\"frame_occupied_changes\":55,\"joint_count\":8,\"mosaic_occupied_changes\":264,\"obligation_count\":8,\"scope\":\"array-derived native reciprocal revision and joint/closure witness; synthetic World only, offer causality independently controlled\",\"unresolved\":0},\"reciprocal_witness_passed\":true,\"saved_artifacts\":{\"evidence_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"map_sha256\":\"29c7944db2ea21d947361ccbe8d3ab1e51bdca19fc30aefa9a16af7356ad0c81\",\"sidecar_sha256\":\"993dde4dbb1b8ab15b2d50104622b9560ed5d18e8fe82a300c835d1a355f9e1e\"},\"schema\":2,\"scope\":\"actual native authoring transaction and persistence; reciprocal research acceptance remains separate\",\"startup\":{\"applied\":true,\"busy\":false,\"message\":\"Choose a flyer to pilot, or use Place model to add an independent body.\",\"milliseconds\":1404,\"native_error\":\"\",\"pending\":{},\"watchdog_msec\":120000,\"worker_failed\":false},\"test_sha256\":\"fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164\",\"timeout_diagnostics\":[],\"transport_refusals\":{\"failed_child_positive\":true,\"preexisting_job_directory\":true,\"runtime_manifest_changed\":true},\"undo_disabled\":false}\n"
+    },
+    {
+      "path": "reciprocal-reopen.log",
+      "bytes": 4463,
+      "sha256": "4f988a03745a770c735f9f4d46d8ef35585a9f6452874f04a4ced2c351b4c106",
+      "text": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nSWARM004_WORKBENCH {\"applied\":false,\"apply_disabled\":true,\"checks\":79,\"completed\":true,\"controller_phase\":\"historical\",\"display\":\"headless\",\"engine\":\"4.7-stable (official)\",\"example\":\"reciprocal\",\"failures\":[],\"historical_only\":true,\"inspector_evidence\":{\"reopened\":{\"default_final\":true,\"final_only_layers\":true,\"letterbox_refusal\":true,\"native_cell_picks\":true,\"native_pixels\":true,\"restored_final\":true,\"round_count\":3,\"round_indices\":[-1,0,1,2,-1],\"schema\":1,\"source\":\"5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\"}},\"integration_refusals\":{},\"joint_count\":8,\"material_count\":4001,\"mode\":\"reopen\",\"native_can_apply\":true,\"native_evidence_sha256\":{},\"native_planes_sha256\":{\"expected\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\",\"reopened\":\"ef057497c4d7ff17cb3dbe0b99bb64771406223cab7743351bda0161302ea436\"},\"native_reason\":\"complete native composition with qualified obligations\",\"native_receipt\":{\"changed_cells\":4001.0,\"operation\":\"build\",\"patch_sha256\":\"1504e93ed407f82179ff7fd08b10b2ee644b5e867021c3552cc16dbaf83c03e1\",\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"protected_cells\":0.0,\"schema\":1.0,\"semantics\":\"retained-native-transaction-v1\",\"source_native_generation\":5.0,\"source_revision\":5.0,\"source_tick\":0.0},\"native_recipe\":{\"activation\":[[64.0,48.0]],\"border\":4,\"gentek_parameters\":{\"frame\":{\"branching\":0.55,\"clutter\":0.0,\"cohesion\":0.35,\"destruction\":0.0,\"environment_affinity\":0.25,\"irregularity\":0.05,\"variation\":0.65},\"mosaic\":{\"branching\":0.55,\"clutter\":0.0,\"cohesion\":0.35,\"destruction\":0.0,\"environment_affinity\":0.25,\"irregularity\":0.05,\"variation\":0.65}},\"layout\":\"centered_frame_rectangle\",\"optional\":true,\"orientation\":-1.0,\"origin\":[0.0,0.0],\"profile\":\"viaduct_like\",\"rounds\":2.0,\"seed\":4099.0,\"shared_extent\":13.0,\"shared_ownership\":false,\"size\":[128.0,96.0]},\"native_source\":{\"sha256\":\"8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206\",\"source\":\"5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\"},\"native_status\":\"complete\",\"native_stop_reason\":\"round_cap\",\"native_transactions\":{},\"native_work\":{\"assembly_validation_work\":25899.0,\"both_genteks_revised\":1.0,\"candidate_native_contacts\":8.0,\"conservative_memory_bound_bytes\":9437184.0,\"coordinator_created_cells\":0.0,\"damage_lost_required\":0.0,\"foreign_joined_required\":0.0,\"frame_candidates\":366.0,\"frame_changed_rounds\":1.0,\"frame_footprint_changed_rounds\":1.0,\"frame_work\":283752.0,\"input_header_only\":0.0,\"invalid_proposal_rounds\":0.0,\"local_terminations\":0.0,\"mosaic_changed_rounds\":1.0,\"mosaic_footprint_changed_rounds\":1.0,\"mosaic_work\":842974.0,\"new_assembly_required\":8.0,\"original_required\":0.0,\"original_still_required\":0.0,\"qualified_joints\":8.0,\"rejected_joint_source_bindings\":0.0,\"shared_work\":825147.0,\"solver_work\":935744.0,\"still_required\":0.0,\"total_charged_work\":2887617.0,\"unchecked_candidate_contacts\":0.0},\"obligation_count\":8,\"owner_visual_acceptance\":\"pending\",\"platform\":\"Linux\",\"process_id\":941,\"proposal_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"reciprocal_programme_acceptance\":false,\"reciprocal_witness\":{\"all_foreign_closed\":true,\"both_footprints_changed\":true,\"foreign_joined\":8,\"frame_occupied_changes\":55,\"joint_count\":8,\"mosaic_occupied_changes\":264,\"obligation_count\":8,\"scope\":\"array-derived native reciprocal revision and joint/closure witness; synthetic World only, offer causality independently controlled\",\"unresolved\":0},\"reciprocal_witness_passed\":true,\"saved_artifacts\":{\"evidence_sha256\":\"6eb2e4684f7e3bd9567a286600cb39482854ac4fcb6683d65282bfa6ca0630a1\",\"map_sha256\":\"29c7944db2ea21d947361ccbe8d3ab1e51bdca19fc30aefa9a16af7356ad0c81\",\"sidecar_sha256\":\"993dde4dbb1b8ab15b2d50104622b9560ed5d18e8fe82a300c835d1a355f9e1e\"},\"schema\":2,\"scope\":\"actual native authoring transaction and persistence; reciprocal research acceptance remains separate\",\"startup\":{\"applied\":true,\"busy\":false,\"message\":\"Choose a flyer to pilot, or use Place model to add an independent body.\",\"milliseconds\":1319,\"native_error\":\"\",\"pending\":{},\"watchdog_msec\":120000,\"worker_failed\":false},\"test_sha256\":\"fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164\",\"timeout_diagnostics\":[],\"transport_refusals\":{},\"undo_disabled\":true}\n"
+    }
+  ],
+  "reviewer_runner": "from pathlib import Path\nimport datetime, hashlib, json, os, subprocess, sys, time\nroot=Path('/workspace/scratch/2e90cf7b4aa3/swarm-integration')\nout=Path('/workspace/scratch/2e90cf7b4aa3/qa-artifacts/swarm-independent-fc7743-v2')\nout.mkdir(parents=True,exist_ok=False)\nrepo=Path('/workspace/scratch/2e90cf7b4aa3/cybersand-qa')\npacket=json.loads(subprocess.check_output(['git','show','678391cc7:docs/audits/2026-11-25-mergedown-renaissance/swarm-foundation-integration.json'],cwd=repo))\nsource='fc7743eb8b49287bb78da48c47e7eb24a15e9b2c'\nproducer='5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f'\nengine=Path('/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64')\nsys.path.insert(0,str(root/'tools/ci'))\nimport run_godot_regressions as runner\nimport execution_policy\n\ndef git(*args):\n    return subprocess.check_output(['git',*args],cwd=root)\ndef sha(p):\n    h=hashlib.sha256()\n    with p.open('rb') as f:\n        for b in iter(lambda:f.read(1024*1024),b''): h.update(b)\n    return h.hexdigest()\ndef snapshot():\n    assert git('rev-parse','HEAD').decode().strip()==source\n    assert git('rev-parse','HEAD^{tree}').decode().strip()==packet['candidate_tree']\n    assert not git('status','--porcelain','--untracked-files=no').strip()\n    native=packet['runtime_custody']['native_source_inputs']\n    definition=packet['runtime_custody']['native_definition_inputs']\n    for inputs in (native,definition):\n        assert not git('diff','--name-only',producer+'..'+source,'--',*inputs).strip()\n        for name,expected in inputs.items():\n            assert hashlib.sha256((root/name).read_bytes().replace(b'\\r\\n',b'\\n')).hexdigest()==expected,name\n    runtimes=[]\n    for row in packet['runtime_custody']['runtime_bytes']:\n        p=root/row['path']; assert p.stat().st_size==row['bytes']; assert sha(p)==row['sha256'],str(p)\n        runtimes.append({k:row[k] for k in ['path','bytes','sha256']})\n    tracked={}\n    for name in git('ls-files','-z').decode().split('\\0'):\n        if name and (root/name).is_file(): tracked[name]=sha(root/name)\n    untracked=git('ls-files','--others','--exclude-standard','-z').decode().split('\\0')\n    untracked=[x for x in untracked if x]\n    assert all(x.endswith(('.gd.uid','.gdshader.uid')) for x in untracked),untracked[:5]\n    return {'source':source,'tree':packet['candidate_tree'],'native_inputs':native,\n            'definition_inputs':definition,'runtime_bytes':runtimes,\n            'tracked_file_sha256':tracked,'untracked_generated_uid_companions':untracked,\n            'engine_sha256':sha(engine)}\nbefore=snapshot()\nassert before['engine_sha256']=='f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75'\n(out/'custody-before.json').write_text(json.dumps(before,indent=2)+'\\n')\nreport={'started_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source':source,\n        'tree':packet['candidate_tree'],'scope':'Independent headless native generated reciprocal Apply/Undo/Save and fresh-process reopen; not graphical/Windows or owner acceptance.',\n        'results':[],'status':'running','owner_acceptance':False,'graphical_qualification':False,\n        'initial_cli_override':False}\ndef save():\n    (out/'qualification.json').write_text(json.dumps(report,indent=2)+'\\n')\nsave()\nbase_env=dict(os.environ)\nfor key in ['CYBERSAND_SWARM004_CLI','CYBERSAND_SWARM004_SOURCE','CYBERSAND_SWARM004_SHA256']:\n    base_env.pop(key,None)\nbase_env.update(GODOT_SILENCE_ROOT_WARNING='1',CYBERSAND_SOURCE_REVISION=source,\n                SWARM004_UI_EXAMPLE='reciprocal',SWARM004_UI_EVIDENCE=str(out/'evidence'),\n                SWARM004_REQUIRE_GRAPHICS='0')\nfor key in ['XDG_DATA_HOME','XDG_CONFIG_HOME','XDG_CACHE_HOME']:\n    p=out/'profile'/key;p.mkdir(parents=True);base_env[key]=str(p)\n(out/'evidence').mkdir()\ncases=[runner.Case('import',('--editor','--quit'),execution_policy.watchdog_seconds('godot_import_seconds'),3),\n       runner.Case('reciprocal-create',('--script','res://tests/swarm456_reciprocal_ui.gd'),420,1),\n       runner.Case('reciprocal-reopen',('--script','res://tests/swarm456_reciprocal_ui.gd'),420,1)]\ntry:\n    for case in cases:\n        env=dict(base_env)\n        if case.name!='import': env['SWARM004_UI_MODE']=case.name.split('-',1)[1]\n        result,failed=runner.run_case(str(engine),case,out,'preflight' if case.name=='import' else 'case',env=env)\n        report['results'].append(result);save()\n        print(json.dumps({'case':case.name,'result':result,'failed':failed}),flush=True)\n        if failed:\n            report['status']='failed';break\n    else: report['status']='passed'\nfinally:\n    after=snapshot()\n    (out/'custody-after.json').write_text(json.dumps(after,indent=2)+'\\n')\n    report['custody_unchanged']=before==after\n    if not report['custody_unchanged']: report['status']='failed'\n    report['finished_at']=datetime.datetime.now(datetime.timezone.utc).isoformat()\n    save()\n    print(json.dumps({'status':report['status'],'custody_unchanged':report['custody_unchanged']}),flush=True)\nraise SystemExit(report['status']!='passed')\n\n",
+  "initial_reviewer_admission": {
+    "status": "reviewer harness admission refused before Godot",
+    "source": "fc7743eb8b49287bb78da48c47e7eb24a15e9b2c",
+    "cause": "Reviewer initially allowed only generated .gd.uid companions; four already-existing .gdshader.uid files are also part of the observed621 imported UID companions. No source or runtime changed and no application test started.",
+    "correction": "Explicitly inventory both generated UID extensions; preserve all existing files and still refuse every other untracked file."
+  }
+}

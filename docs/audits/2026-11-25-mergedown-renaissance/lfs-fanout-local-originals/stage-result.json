@@ -1,0 +1,9 @@
+{
+  "allowance_seconds": 600.0,
+  "attempt": 1,
+  "run_id": "1",
+  "schema": "cybersand-lfs-runtime-artifact-v1-stage",
+  "seconds": 2.3728620279998722,
+  "source_commit": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "status": "payload_verified"
+}

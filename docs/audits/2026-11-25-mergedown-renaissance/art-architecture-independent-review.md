@@ -114,7 +114,7 @@ C independently approves the prepared source at
 implementation with AMBIENT foundation `0c1152c21427125066df931cf06a53b7dda0075d`.
 Art/Architecture production guards, native inputs, runtime manifests and bytes,
 the PNG repair, provider admission/redaction, and bridge fixture are unchanged
-from the independently reviewed `9d1b1f4b` implementation below. The Main and
+from the independently reviewed `9d1b1f4b` implementation. The Main and
 Workbench additions are the existing AMBIENT foundation hooks; no second
 authoring or actor owner is introduced. Both provisional scheduling hints
 remain, with original watchdogs unchanged.

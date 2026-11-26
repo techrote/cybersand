@@ -76,3 +76,38 @@ Preserve #781 as the authoritative successor, reconcile it against the final
 accepted foundation/main identities, then qualify that actual resulting source
 and relevant actor interactions. Keep the original frozen Windows evaluator and
 its acceptance limitations separate from this Linux integration evidence.
+
+## Independently reproduced Goblin / AMBIENT integration
+
+The subsequent prepared source `21c9a6670e05cfb8b8eeb76d02b03fb75019468f`,
+tree `72447242d2088d66c2f7f10ed5fead66a7c15ae0`, includes the AMBIENT foundation
+and a registered native integration case. C reviewed the new test and registry
+entry, then independently ran the exact clean source through the canonical
+isolated Goblin runner and a fresh import. The result is **447 integration
+checks, zero failures, eleven typed actions**, strict clean diagnostics, and a
+9.587-second process. The sampled owned-tree peak is 590,127,104 bytes across
+94 samples; no owned process survives. All source/runtime identities remain
+unchanged afterward, and all 845 retained source archive entries match the
+1,005-input snapshot.
+
+The test exercises real Ambient play and native material queries, Goblin pilot,
+human drive, hand-back, authored Save/Reopen, stale command refusal, and the
+same native worker/World/session/body identities during handoff. A separate
+human actor retains its authored controller and a passive actor receives no
+autonomous command. Reopen installs a new paused source-bound actor session
+while preserving the authored Ambient profile; old-session commands remain
+refused. The inner gameplay oracles record **410 passes and one explicit
+not-applicable result**: native body protection prevents full material capture
+for the authored-reopen material comparison. No evolved material-equality
+claim is made.
+
+The original test-development failures are retained. `d3ddcbd8` requested a
+policy observation after Pause, when the real session correctly refuses new
+authority. `af5efb57` expected immediate sensor-cache retirement inside handoff,
+whereas the Main owner performs retirement on its next ordinary process pass.
+The final test captures a live issued observation, explicitly checks the paused
+authority refusal, and awaits the existing ordinary owner acknowledgement with
+the original operation watchdog. These are test-only corrections; they neither
+mutate the sensor owner directly nor relax a correctness condition. Prepared
+source/test approval is extended to this exact combined source; current hosted
+platform and owner gates remain outstanding.

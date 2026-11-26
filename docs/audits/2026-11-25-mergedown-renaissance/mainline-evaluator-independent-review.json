@@ -63,5 +63,35 @@
     "passed": 21,
     "scope": "Synthetic custody and real temporary-Git refusal tests; not Windows product qualification"
   },
-  "tree": "bb2ff1a41f8dcfc788e4aac31598ce8d6920b172"
+  "tree": "bb2ff1a41f8dcfc788e4aac31598ce8d6920b172",
+  "final_acquisition_audio_followup": {
+    "reviewer": "Specialist C",
+    "source_commit": "fa68e697cbb368e1c57c9215ed4ee44548acc2a6",
+    "source_tree": "aad878ab4555a8f0052936583e5011611421fe90",
+    "previous_approval": "d87ee19950bd2614bc0c67ce7cfa4a8547f964db",
+    "disposition": "APPROVE SOURCE FOR FUTURE ADMITTED ACCEPTED-MAIN PACKAGE CAMPAIGN",
+    "independent_tests": {
+      "command": "python -m unittest discover -s tools/ci -p test_mainline_evaluator.py",
+      "methods": 21,
+      "failures": 0,
+      "duration_seconds": 0.675,
+      "status": "passed"
+    },
+    "source_contract_product": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+    "verified_helper_hashes": {
+      "tools/ci/materialize_lfs.py": "9a98d7c1d5535691afeb1d0a794e1b2ae7258f1aaaa89df4ae25607267a01efb",
+      "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd"
+    },
+    "lfs_acquisition_seconds": 600,
+    "unchanged_setup_seconds": 4200,
+    "unchanged_default_off_seconds": 3940,
+    "unchanged_complete_seconds": 20420,
+    "unchanged_parent_minutes": 360,
+    "retry_scope": "At most3 total attempts (2 retries), and only for the observed Git LFS batch-service timeout; exact committed pointer object bytes remain mandatory",
+    "hosted_cmd_proof_arguments": "--audio-driver Dummy --quit-after 180",
+    "interactive_launcher_changed": false,
+    "strict_error_and_actual_angle_gates_retained": true,
+    "request_admitted": false,
+    "actual_windows_campaign_pass_claimed": false
+  }
 }

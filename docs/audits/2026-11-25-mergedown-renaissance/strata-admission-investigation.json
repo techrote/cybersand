@@ -1,0 +1,290 @@
+{
+  "source": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "disposition": "RECONCILE THEN QUALIFY; 45-second admission gate remains FAILED; physical owner acceptance outstanding",
+  "method": "Read-only source review and extraction of original qualified campaign observations; no new runtime measurement",
+  "observation_source": {
+    "path": "docs/audits/2026-11-24-strata-theatre-002/final-qualified-observations.json",
+    "sha256": "473f5fd663061845bf6ba428f14213424d877ff54229aacb812678795388f79b"
+  },
+  "target_ms": 45000,
+  "campaign_rows": [
+    {
+      "campaign": "source-linux",
+      "scene": "orbital-terminal",
+      "extent": [
+        2048,
+        1024
+      ],
+      "install_ms": 14970,
+      "reopen_ms": 12100,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 92.109,
+      "decorative_prepare_fraction_of_install": 0.006153,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4"
+    },
+    {
+      "campaign": "source-linux",
+      "scene": "neon-rain-arcology",
+      "extent": [
+        2048,
+        1024
+      ],
+      "install_ms": 14290,
+      "reopen_ms": 12265,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 117.569,
+      "decorative_prepare_fraction_of_install": 0.008227,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4"
+    },
+    {
+      "campaign": "source-linux",
+      "scene": "industrial-underworks",
+      "extent": [
+        1024,
+        1024
+      ],
+      "install_ms": 14358,
+      "reopen_ms": 11583,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 60.694,
+      "decorative_prepare_fraction_of_install": 0.004227,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4"
+    },
+    {
+      "campaign": "source-linux",
+      "scene": "abyss-foundry",
+      "extent": [
+        1024,
+        1024
+      ],
+      "install_ms": 14375,
+      "reopen_ms": 11866,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 64.802,
+      "decorative_prepare_fraction_of_install": 0.004508,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4"
+    },
+    {
+      "campaign": "source-linux",
+      "scene": "vertical-transfer-spine",
+      "extent": [
+        1024,
+        1536
+      ],
+      "install_ms": 15238,
+      "reopen_ms": 12338,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 79.898,
+      "decorative_prepare_fraction_of_install": 0.005243,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4"
+    },
+    {
+      "campaign": "source-win32",
+      "scene": "orbital-terminal",
+      "extent": [
+        2048,
+        1024
+      ],
+      "install_ms": 35101,
+      "reopen_ms": 4284,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 164.481,
+      "decorative_prepare_fraction_of_install": 0.004686,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978"
+    },
+    {
+      "campaign": "source-win32",
+      "scene": "neon-rain-arcology",
+      "extent": [
+        2048,
+        1024
+      ],
+      "install_ms": 38687,
+      "reopen_ms": 4456,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 199.315,
+      "decorative_prepare_fraction_of_install": 0.005152,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978"
+    },
+    {
+      "campaign": "source-win32",
+      "scene": "industrial-underworks",
+      "extent": [
+        1024,
+        1024
+      ],
+      "install_ms": 35818,
+      "reopen_ms": 4156,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 101.686,
+      "decorative_prepare_fraction_of_install": 0.002839,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978"
+    },
+    {
+      "campaign": "source-win32",
+      "scene": "abyss-foundry",
+      "extent": [
+        1024,
+        1024
+      ],
+      "install_ms": 40047,
+      "reopen_ms": 4294,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 91.07,
+      "decorative_prepare_fraction_of_install": 0.002274,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978"
+    },
+    {
+      "campaign": "source-win32",
+      "scene": "vertical-transfer-spine",
+      "extent": [
+        1024,
+        1536
+      ],
+      "install_ms": 31849,
+      "reopen_ms": 4218,
+      "install_target_met": true,
+      "decorative_native_prepare_ms": 178.375,
+      "decorative_prepare_fraction_of_install": 0.005601,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978"
+    },
+    {
+      "campaign": "extracted-windows",
+      "scene": "orbital-terminal",
+      "extent": [
+        2048,
+        1024
+      ],
+      "install_ms": 51619,
+      "reopen_ms": 8881,
+      "install_target_met": false,
+      "decorative_native_prepare_ms": 275.268,
+      "decorative_prepare_fraction_of_install": 0.005333,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac"
+    },
+    {
+      "campaign": "extracted-windows",
+      "scene": "neon-rain-arcology",
+      "extent": [
+        2048,
+        1024
+      ],
+      "install_ms": 66316,
+      "reopen_ms": 8891,
+      "install_target_met": false,
+      "decorative_native_prepare_ms": 355.426,
+      "decorative_prepare_fraction_of_install": 0.00536,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac"
+    },
+    {
+      "campaign": "extracted-windows",
+      "scene": "industrial-underworks",
+      "extent": [
+        1024,
+        1024
+      ],
+      "install_ms": 66200,
+      "reopen_ms": 7636,
+      "install_target_met": false,
+      "decorative_native_prepare_ms": 186.224,
+      "decorative_prepare_fraction_of_install": 0.002813,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac"
+    },
+    {
+      "campaign": "extracted-windows",
+      "scene": "abyss-foundry",
+      "extent": [
+        1024,
+        1024
+      ],
+      "install_ms": 59958,
+      "reopen_ms": 7622,
+      "install_target_met": false,
+      "decorative_native_prepare_ms": 177.786,
+      "decorative_prepare_fraction_of_install": 0.002965,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac"
+    },
+    {
+      "campaign": "extracted-windows",
+      "scene": "vertical-transfer-spine",
+      "extent": [
+        1024,
+        1536
+      ],
+      "install_ms": 54804,
+      "reopen_ms": 7706,
+      "install_target_met": false,
+      "decorative_native_prepare_ms": 236.223,
+      "decorative_prepare_fraction_of_install": 0.00431,
+      "generation": 1,
+      "retired_worlds": 0,
+      "original_report_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac"
+    }
+  ],
+  "reviewed_source_files": {
+    "godot/scripts/depth/workbench_strata_controller.gd": "ee5fd855f520fda97e59b625778f8ef552d558678ee0181d45e5c52236fee4e9",
+    "godot/scripts/depth/workbench_layer_owner.gd": "ec1b91eebfeb20b91a13f0d955b64702f71f7f5d6cc0fa2134f7f5185134daf4",
+    "godot/scripts/depth/strata_showcase_scenes.gd": "da58d083a00d62ee4ed95e77d7d2e508a520b35f2d820d98110636b0c3578236",
+    "godot/scripts/depth/workbench_strata_presentation.gd": "2094cf7096b3235c99b06232936f2c0b4fd139a78ce6e76a825a2f341ac64e4b",
+    "godot/scripts/shared_workbench.gd": "089e5ffeb44d3917115462db9ac0d300cd23d6060638178043ccfbc81257f5ae",
+    "godot/scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+    "godot/tools/qualify_workbench_strata2.gd": "48070844e8c27e9dfb094bcb862f5bcc5abbda6521cc06ddfd0d4eaa6ac015b8"
+  },
+  "findings": [
+    {
+      "finding": "The native construction and initial copied snapshot phase for the three decorative Worlds accounts for less than 0.7% of every original extracted Windows cold admission.",
+      "status": "measured-original-evidence",
+      "limit": "Timer starts after Document.validate and excludes texture preparation and ordinary Play admission."
+    },
+    {
+      "finding": "Cold setup passes through repeated document/setup validation, three decorative owner preparations, surfaces and copied packets, then ordinary Workbench authored-start preparation/adoption.",
+      "status": "source-traced"
+    },
+    {
+      "finding": "Scenes.make calls _read and then metadata calls _read again, repeating bounded JSON acquisition, validation and provenance hashing.",
+      "status": "source-proven redundant work",
+      "limit": "No isolated timing; not established as cause of the 45-second failure."
+    },
+    {
+      "finding": "Source Windows timings pass the target while the same frozen-source extracted Windows timings fail all five scenes.",
+      "status": "measured-original-evidence",
+      "limit": "Different process/host observations do not establish packaging or rendering as the cause."
+    }
+  ],
+  "next_action": "At the exact frozen source, instrument recipe read/validation, decorative owner prepare, presentation prepare/upload, ordinary Setup.rectangles/native Play preparation/adoption separately; preserve the same scenes, actual extracted Windows package, renderer, 45-second target, original comparison sources and PUBPRES ownership. Optimize only a measured phase, then rerun actual resulting-source and extracted-package qualification.",
+  "runtime_gate": "The original source-matched evaluator remains historical evidence; no new evaluator or current-main qualification is claimed.",
+  "protected_programmes_unchanged": [
+    767,
+    783
+  ]
+}

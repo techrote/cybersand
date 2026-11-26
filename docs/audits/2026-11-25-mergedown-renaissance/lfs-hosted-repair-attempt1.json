@@ -1,0 +1,2168 @@
+{
+  "aggregate": {
+    "all_owned_commands_joined": true,
+    "linux_producer": "three service-timeout attempts exhausted",
+    "windows_cohorts": 24,
+    "windows_failed": 5,
+    "windows_passed": 19,
+    "windows_passed_attempt_counts": {
+      "1": 16,
+      "2": 1,
+      "3": 2
+    }
+  },
+  "archive_bytes": 3420987,
+  "archive_count": 25,
+  "attempt": 1,
+  "candidate_tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+  "disposition": "Real bounded recovery observed on three Windows hosts; six acquisition sites remain failed. No source/hash/helper correctness defect found. Complete unchanged-source attempt2 registered by lead; no limit expansion.",
+  "head_source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+  "original_conclusion": "failure",
+  "originals": [
+    {
+      "archive_bytes": 2426,
+      "archive_sha256": "b3228a8e47fac1cd16e1ee037b3f214242a62cd61f327275390adba68d7f72d2",
+      "artifact_id": 15072790585,
+      "artifact_name": "windows-godot-headless-20-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 7576,
+            "returncode": 0,
+            "seconds": 0.32799999999997453,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.625,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "e4750bb5ec1998b6065947adf89841ed0a11b2866c8fb1595ecfd8351baef611",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232654.5700593.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 8140,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.702999999999975,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 575.922,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "bdf00e2905564a5bd0834c30adce7969ad00730d21327497fe80b95e2c10e6fa",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232708.0698982.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 7364,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.484000000000151,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 560.422,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 385,
+            "log_sha256": "e97f2de1eabf89b50ec16ed0cbe36042d8a437c0a1939c3de3c15f1ec570434b",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232723.6180732.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 2488,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.531000000000176,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 41.10900000000015,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "failed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "5ef68640ccb8cd2c5e656a0ede1fb97d96853f19097b09185463782abc0a50df"
+    },
+    {
+      "archive_bytes": 139977,
+      "archive_sha256": "fd89cd33f559c271fb15eaf5229b4869d5e6d89aa0b6d4a9957bca386022d52f",
+      "artifact_id": 15072780373,
+      "artifact_name": "windows-godot-headless-4-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 5668,
+            "returncode": 0,
+            "seconds": 0.39099999999999113,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.562,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "4e9e2522bcf0571c44e778a9f4620a1e489e65cacb4cae17dcd0c4907a5ee579",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232028.9028714.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 1700,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.812000000000012,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 575.75,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "f687fcf31ae3eed54683515886e8bdb90a1f0c33f1043e835ca2c598c3dfeeb8",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232042.4154999.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 4632,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.5,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 560.25,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 4568,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 12.905999999999977,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 42.702999999999975,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "0ce9b7231b850e405bf4c67567c8dc0812c897aabc04181b3e2b0d596b56b782"
+    },
+    {
+      "archive_bytes": 315026,
+      "archive_sha256": "f09647f86afc10ec0dab9d49975f07089abc8ccac4d2fbb7fb039795c161cbcc",
+      "artifact_id": 15072705307,
+      "artifact_name": "windows-godot-headless-1-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9529999999997,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 3180,
+            "returncode": 0,
+            "seconds": 0.3129999999998745,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.6399999999999,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 7980,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.4529999999999745,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.8439999999998236,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "73862ff87675f073efe9f261baafffb648a5d30d8f3ce369dcef3da642d6e639"
+    },
+    {
+      "archive_bytes": 323205,
+      "archive_sha256": "c71fad9a03062b1459275d82cfc713f5412e01104538558d35c4438ab5173b2d",
+      "artifact_id": 15072676233,
+      "artifact_name": "windows-godot-headless-15-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9689999999999,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 3920,
+            "returncode": 0,
+            "seconds": 0.26599999999999113,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.703,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 2508,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.578000000000003,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.906000000000006,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "381119129779e8bf4a90ea478f7086b3136aaaeb08fd19cbb8037f2276167631"
+    },
+    {
+      "archive_bytes": 189671,
+      "archive_sha256": "ee559a1b51b0ce980558bdf95510204f3b5d44b715df1766658200947d8074c9",
+      "artifact_id": 15072631545,
+      "artifact_name": "windows-godot-headless-13-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9530000000001,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 1428,
+            "returncode": 0,
+            "seconds": 0.2820000000000107,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.671,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "fb1b0414329d6c4a9e409213b3837afd8e24058d00e13714c0a94905dfb1306b",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232350.0990111.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 7040,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 12.46799999999999,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 575.2030000000001,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "c8598bd8b8fa6bc59f010369779855ed637ce94d8586812e318ca10ae78d6f89",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232403.4742502.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 1936,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.360000000000014,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 559.8430000000001,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 3984,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 10.281000000000006,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 40.45400000000001,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "7785a208282814cfb90b4a9d7f8d9e6ae12800a7dac0c38457d5e7673b122205"
+    },
+    {
+      "archive_bytes": 103603,
+      "archive_sha256": "571d53d74f3a77a73499726c4ac2b738850cdff6eceee104a83f33ebc9499a30",
+      "artifact_id": 15072507273,
+      "artifact_name": "windows-godot-headless-23-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.969,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 3652,
+            "returncode": 0,
+            "seconds": 0.26600000000001955,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.703,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 2664,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.9369999999999834,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 2.265999999999991,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "f9e17915494ea97bff0ddde5f9f983bfc8d81ef964889557ea56e21338fbb11f"
+    },
+    {
+      "archive_bytes": 2414,
+      "archive_sha256": "71e598641c351f7ba782a0c12d1c088de1ff17fce05ce491b46d6b28958c94d1",
+      "artifact_id": 15072506607,
+      "artifact_name": "windows-godot-headless-19-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9689999999999,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 7108,
+            "returncode": 0,
+            "seconds": 0.25,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.7189999999999,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "6ac687d6c2c94d0fe1dcc33823a1a780cb380a80127dc6e3493cd5a8b67abca6",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232530.0733692.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 6572,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.843999999999994,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 575.875,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "247e7fac7c5c7e2c5b81001806407ab2e1c0fbfdb53c79805dacf1db419d5dc8",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232544.1285619.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 6096,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 12.046999999999969,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 559.828,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 385,
+            "log_sha256": "70386ab0a5472d900af32d1a0582f7ee3e9a0b7a7460445bc024902c6b1a17f4",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232559.4590344.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 8120,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.328000000000031,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 41.5,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "failed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "07f88ab446265d1e1e2f96f031399fc39c8473ad698a19d4b1043f12547e2a78"
+    },
+    {
+      "archive_bytes": 146575,
+      "archive_sha256": "df3b876a506e06e3a4acf077665cb269e85b11490d7168bb2f76ea8853130def",
+      "artifact_id": 15072466109,
+      "artifact_name": "windows-godot-headless-9-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9689999999999,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 1956,
+            "returncode": 0,
+            "seconds": 0.2809999999999775,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.688,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 740,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.3440000000000225,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.6869999999999834,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "81ba37326b20667bfd4b148cb0ad116d0bc8be0073836f8c97c28dc307a6e39e"
+    },
+    {
+      "archive_bytes": 2418,
+      "archive_sha256": "44047e26263909fb15debda6fb8d146bde17908abfdf957a35a035ef350efdaa",
+      "artifact_id": 15072396410,
+      "artifact_name": "windows-godot-headless-12-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9679999999998,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 1036,
+            "returncode": 0,
+            "seconds": 0.18700000000001182,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.7809999999998,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "92783be1d9fccc4f9422b5eea9278cfddb3c91b0b711dff7539194ec4543da58",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232331.4755599.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 7000,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.422000000000025,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 576.3589999999998,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "be4c335c590c7c2ee992fcab549b20d651504d1acadb0ee36152f74924e2d51e",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232345.0624962.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 5916,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.577999999999975,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 560.7809999999998,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 385,
+            "log_sha256": "c4ef4b55c51f9defbf3d8b6f46531019165808d35139622859abea1cd1c845f3",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232400.3492605.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 3096,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.280999999999949,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 40.5,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "failed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "97a9cfed73425909b28d362b7f99d7857f065d0c15ea764ad090463ab11d1bc4"
+    },
+    {
+      "archive_bytes": 128127,
+      "archive_sha256": "178df5fea541c193a7afeb86f94aeed423812f2e13dbf6fc7f004a8bea466306",
+      "artifact_id": 15072361844,
+      "artifact_name": "windows-godot-headless-8-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.938,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 6276,
+            "returncode": 0,
+            "seconds": 0.375,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.563,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 1420,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.8440000000000225,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 2.328000000000003,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "4d6aa019b58eb876ecaf9161a1b3e224ce6eb6718002d2edf39819949a405336"
+    },
+    {
+      "archive_bytes": 131478,
+      "archive_sha256": "1534a30808b74a7315aa1234abd9c4fad244959e9cd96533530adbb008284981",
+      "artifact_id": 15072331447,
+      "artifact_name": "windows-godot-headless-2-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.968,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 6436,
+            "returncode": 0,
+            "seconds": 0.32800000000000296,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.64,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 5640,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.2340000000000089,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.6100000000000136,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "973024d4eceddde9bcd4afd0a964e0cb79573b315e91e628c0da9e9005ba87e9"
+    },
+    {
+      "archive_bytes": 316101,
+      "archive_sha256": "7a1b7228765535ca6340fbdb70a50f90581eff51c6f406ca2c148752b256e826",
+      "artifact_id": 15072307903,
+      "artifact_name": "windows-godot-headless-17-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9529999999999,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 1724,
+            "returncode": 0,
+            "seconds": 0.3129999999999882,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.6399999999999,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 6900,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.4210000000000491,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.8129999999999882,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "808c32ef90e1bb5dc7597872b2bf4ffa58b798956ef75f1697703ff77685f767"
+    },
+    {
+      "archive_bytes": 315126,
+      "archive_sha256": "71ff86681ce048b355207744c88c8b5974a1c048974b21f0110da5aa387ca84a",
+      "artifact_id": 15072038082,
+      "artifact_name": "windows-godot-headless-18-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 6032,
+            "returncode": 0,
+            "seconds": 0.21800000000001774,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.7349999999999,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 776,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.8279999999999745,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 2.1090000000000373,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "d16cefa0a31b17569f16b4232c2ba85f17eaf983e73f84391814cce5afcba6f9"
+    },
+    {
+      "archive_bytes": 115092,
+      "archive_sha256": "03a0040a0ba7a4a4b3a9bb0688ab215644984c88f7956214d59bf9b6979c35cd",
+      "artifact_id": 15071992632,
+      "artifact_name": "windows-godot-headless-16-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 1416,
+            "returncode": 0,
+            "seconds": 0.29699999999999704,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.656,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 1568,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.718999999999994,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 2.078000000000003,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "23f89700f185c8da57514224806fb013b23b1be273c4f5be5ff7589eaa36e0e9"
+    },
+    {
+      "archive_bytes": 185897,
+      "archive_sha256": "e2a7124bc1195d5d439910d762bed7a251692ad8cb08615b173f1314535c192e",
+      "artifact_id": 15071898181,
+      "artifact_name": "windows-godot-headless-10-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.969,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 1860,
+            "returncode": 0,
+            "seconds": 0.3280000000000314,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.641,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 1768,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.406000000000006,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.7970000000000255,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "ff8c3a2376893e85d3eed1fd588ced599819682d04d02aef0e898d1af1df62e1"
+    },
+    {
+      "archive_bytes": 151818,
+      "archive_sha256": "ff0288eb25902ac5de5ca1247688b24722b3b231cf7bf790297ce0bd6f0e9c6f",
+      "artifact_id": 15071772596,
+      "artifact_name": "windows-godot-headless-5-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 6560,
+            "returncode": 0,
+            "seconds": 0.26600000000001955,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.687,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 3320,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 2.406000000000006,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 2.7339999999999804,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "20ca44592484ee7fc616ef90891f685b75ba97b14e64f17b630ca0bfb4ac7fa2"
+    },
+    {
+      "archive_bytes": 138118,
+      "archive_sha256": "574080e5fdbc152a57467d91ba662b023a708d80cf7a64fd822fef327a905dea",
+      "artifact_id": 15071639178,
+      "artifact_name": "windows-godot-headless-22-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9529999999999,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 840,
+            "returncode": 0,
+            "seconds": 0.34400000000005093,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.6089999999998,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 5936,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 2.0779999999999745,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 2.5,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "dd4d9f8b634021d8cb23cfde0616a917097275f3a8815bec2ca97b11f47f58ae"
+    },
+    {
+      "archive_bytes": 141048,
+      "archive_sha256": "0aa8ac9aee29cf62dfc08366c19be616295f82b4c90c9aac0b9b011c63e2f9c1",
+      "artifact_id": 15071493578,
+      "artifact_name": "windows-godot-headless-6-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.969,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 5820,
+            "returncode": 0,
+            "seconds": 0.32799999999997453,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.6410000000001,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 7312,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.3120000000001255,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.7029999999999745,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "545cc446388c1a4927bb2e3a7079a973311f3266957d72d486c8925c7efa0550"
+    },
+    {
+      "archive_bytes": 88757,
+      "archive_sha256": "093132994397dd11ba12a79e79d7c043069a6d9e8522e6dbd0da765a7c7bceb3",
+      "artifact_id": 15071433089,
+      "artifact_name": "windows-godot-headless-3-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 8128,
+            "returncode": 0,
+            "seconds": 0.32800000000000296,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.625,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 7204,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.453000000000003,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.8590000000000089,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "4d70a2ede663d08ad6fbdb22866058aa3916a18b1a1d3f6e05389b8799ca5581"
+    },
+    {
+      "archive_bytes": 2512,
+      "archive_sha256": "acbe16ec3a3af221e4d9519cd501559756a1cb55747d8b75af06b4a0e4ebb0fe",
+      "artifact_id": 15071422456,
+      "artifact_name": "godot-build-timing-linux-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 1200.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 1189.996828755,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 2277,
+            "returncode": 0,
+            "seconds": 0.031652404999931605,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 1189.96481077,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 400,
+            "log_sha256": "2705388831db830efd17ebf6fba740363ec9c6baca94317d6673db676599ec4d",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261125T231348.948094643.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 2308,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.19198591899999,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 1176.7714649220002,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 400,
+            "log_sha256": "463e7f067ec2879cf61198462f60dd159c16cfedfc512b70bb5e088e41aa94d6",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261125T231402.496627261.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 2340,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.546304625000062,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 1161.2239011890001,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 400,
+            "log_sha256": "1ea3575f24b306c7a66574d62bcd01b0be834570b732bee99890badc43d3d7dc",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261125T231417.810517408.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 2374,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.293157907000023,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 117275416,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 40.06980910699997,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "failed"
+      },
+      "receipt_member": "lfs-acquisition/receipt.json",
+      "receipt_sha256": "5fa6d992e7e54010dd4bb660112d7340ab93a362c3b26aa8bee342ab27a2f17d"
+    },
+    {
+      "archive_bytes": 2430,
+      "archive_sha256": "3db34fd73b475e79e4d83bbd7fbcd2d37e78602e77173d60c493a82c9bee7073",
+      "artifact_id": 15071403683,
+      "artifact_name": "windows-godot-headless-14-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 3296,
+            "returncode": 0,
+            "seconds": 0.23500000000001364,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.718,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "f71ce98078a665988bd3941c77e4e84b99d78cdb0d20a936d2fe8f987eda3c00",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232411.8318136.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 8028,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.514999999999986,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 576.203,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "531f8c4adc866412f1a2dacc0163f9659d8420ff2a1734b8f3eaec21b80e4df6",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232426.1719365.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 7972,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 12.328000000000003,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 559.875,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 385,
+            "log_sha256": "cebf935a4027a12912ee295f6c7c03d34f8522ad14920a222b2749c394ad2a3e",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232441.5053396.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 1244,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.360000000000014,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 41.485000000000014,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "failed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "f07fbeea7ff868a5284d56ab07ed714b30aa61e3b809bc24f69c8ad7655fc78c"
+    },
+    {
+      "archive_bytes": 128298,
+      "archive_sha256": "4eafaba54e2824ad5584593a3b9ec3aba3e9b338947f9252f922401bb2242fa5",
+      "artifact_id": 15071354973,
+      "artifact_name": "windows-godot-headless-7-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9680000000001,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 4760,
+            "returncode": 0,
+            "seconds": 0.3590000000000373,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.609,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "577f1c8119dc13630ab5db61a183188e73f45a2c3537ac873f0372b97c93462e",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232001.1183459.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 760,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 12.656000000000006,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 574.953,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 4904,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 13.031999999999982,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 28.093999999999994,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "7d0bcc553b7f5e82ea2526cbb98a97e2b7402733d9e2268e9cb7913479784f3e"
+    },
+    {
+      "archive_bytes": 2424,
+      "archive_sha256": "d8ec21c2165c291d076621dfc7575fec6e8d5d37654260eb239f7c6b1eed2e11",
+      "artifact_id": 15071329516,
+      "artifact_name": "windows-godot-headless-0-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [
+          2.0,
+          4.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9530000000004,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 7188,
+            "returncode": 0,
+            "seconds": 0.34400000000005093,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.6090000000004,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 385,
+            "log_sha256": "91b37961bde998cf56bfd643e7ea47fefb0fd153c21032fd41929300c64230a5",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T231959.9306945.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 1072,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.625,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 575.9690000000003,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 385,
+            "log_sha256": "47638638cbd6b13ab2fb31ec0f5475bdd2dd783c5da8ab05a71c069c32d41aa1",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232014.2797625.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 7656,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 12.32899999999995,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 559.6250000000002,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-3",
+            "log": "lfs-pull-3.log",
+            "log_bytes": 385,
+            "log_sha256": "a49be20fd51e6a35f0694bf09145376309448826317d0db8599e74a56a39054f",
+            "original_text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T232029.7904819.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+            "pid": 3140,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 11.5,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 41.875,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "failed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "f5f5185d9fb8b33c4f2b17246e36b0693f5c92633847b496167509026914cbe1"
+    },
+    {
+      "archive_bytes": 139931,
+      "archive_sha256": "f18ae0bccb4597bdf213878e3e4321b345df8a335be9f727e210d053dd8346b1",
+      "artifact_id": 15071284942,
+      "artifact_name": "windows-godot-headless-21-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.9530000000001,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 5012,
+            "returncode": 0,
+            "seconds": 0.3129999999999882,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.6400000000001,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 5896,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.469000000000051,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.8599999999999,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "7166a6a7930f5a4e4a73fce8acce26993fb350285f88e828b1b659cef9dd954a"
+    },
+    {
+      "archive_bytes": 208515,
+      "archive_sha256": "e3b25a99cdedfffad205100261859b2411b1f488fcb9dee33e7fd6a1d8a321bd",
+      "artifact_id": 15071029764,
+      "artifact_name": "windows-godot-headless-11-45719650698-1",
+      "receipt": {
+        "allowance_seconds": 600.0,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.953,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "original_text": "Updated Git hooks.\nGit LFS initialized.\n",
+            "pid": 2724,
+            "returncode": 0,
+            "seconds": 0.5620000000000118,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.391,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "original_text": "",
+            "pid": 4772,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 2.6409999999999627,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 3.2970000000000255,
+        "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "status": "passed"
+      },
+      "receipt_member": "acquisition/receipt.json",
+      "receipt_sha256": "8320df80bd82edc72cc8192ae216a5957c6bd215ac3fca1c204cb0ec99ca088a"
+    }
+  ],
+  "retry_registration": "https://github.com/techrote/cybersand/pull/775#issuecomment-7178090351",
+  "run_id": 45719650698,
+  "schema": "cybersand-mergedown-hosted-lfs-repair-readback-v1",
+  "secondary_failures": [
+    {
+      "cause": "No linux-runtime-45719650698-1 artifact because producer acquisition failed",
+      "job_id": 139574917959,
+      "scope": "Linux coverage"
+    },
+    {
+      "cause": "Complete reducer correctly required24 original reports and found19",
+      "job_id": 139582292702,
+      "scope": "Windows coverage"
+    }
+  ],
+  "source_commit_values": [
+    "247d290a5bcbb6cc72c93b66e8b65530860e879a"
+  ]
+}

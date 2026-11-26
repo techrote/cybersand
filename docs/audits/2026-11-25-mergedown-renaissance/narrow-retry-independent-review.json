@@ -1,0 +1,253 @@
+{
+  "schema": "cybersand-independent-platform-retry-admission-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-26T00:31:28.996235+00:00",
+  "disposition": "ADMIT AFTER AFFECTED WORKFLOW TERMINAL",
+  "candidate": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "synthetic_source": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+  "target": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+  "gde": {
+    "run": 45727973062,
+    "retry_job": 139602551095,
+    "required_scope": "Windows producer and all descendants, including every Windows shard and coverage reducer",
+    "planned_attempt": 2,
+    "retained_linux_attempt": 1,
+    "execution_plan_reuse": "successful outputs at identical source; no attempt-specific plan artifact consumed by Windows reducer",
+    "windows_report_attempt_must_match": true,
+    "same_attempt_native_and_rapier_artifacts_required": true,
+    "all_cases_reconstructed_from_source": true,
+    "timing_claim": "actual observed attempt-2 Windows rows only; no new Linux timing claim"
+  },
+  "art": {
+    "run": 45727972762,
+    "retry_job": 139602549515,
+    "linux_independent": true,
+    "first_failed_windows_artifact_absent": true,
+    "original_decoded_log": {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready26317-art-windows-139602549515.log",
+      "bytes": 18071,
+      "sha256": "f20a8ecbb9b4357273b0ad6d66111f942d2810dda220f0fe4defefa476dd1f56",
+      "encoding": "connector-decoded text; LF normalized"
+    }
+  },
+  "original_producer_readback": [
+    {
+      "artifact": 15075561307,
+      "name": "windows-lfs-runtime-45727973062-1",
+      "zip_sha256": "8669ccf5f58b8537d5f83ea5522fec8c6dbef22296e5ab9f7ce16b5a5728226c",
+      "bytes": 2324,
+      "receipt": {
+        "allowance_seconds": 599.996338335,
+        "backoff_seconds": [
+          2.0
+        ],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.994031796,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "pid": 2182,
+            "returncode": 0,
+            "seconds": 0.03164175599999908,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.961934751,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 400,
+            "log_sha256": "62287254f193d8016728949d8cc4e7f6f543e995917af4daa69dbdd299a3d069",
+            "pid": 2212,
+            "retryable_service_timeout": true,
+            "returncode": 2,
+            "seconds": 13.005622218000013,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 574.954829837,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-2",
+            "log": "lfs-pull-2.log",
+            "log_bytes": 352,
+            "log_sha256": "59961df6d69929754112e1d7fab1f816d06d8cb2fa3bc736ee72c09b076d6f08",
+            "pid": 2244,
+            "retryable_service_timeout": false,
+            "returncode": 2,
+            "seconds": 6.434452701999987,
+            "timed_out": false
+          }
+        ],
+        "error": "RuntimeError: Git LFS acquisition failed without an admissible retry; see retained original log",
+        "max_attempts": 3,
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 21.476604003999995,
+        "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "status": "failed"
+      },
+      "stage": {
+        "allowance_seconds": 600.0,
+        "attempt": 1,
+        "error": "RuntimeError: Git LFS acquisition failed without an admissible retry; see retained original log",
+        "run_id": "45727973062",
+        "schema": "cybersand-lfs-runtime-artifact-v1-stage",
+        "seconds": 21.480658328000004,
+        "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "status": "failed"
+      },
+      "usable_manifest": false,
+      "members": [
+        "acquisition/lfs-pull-1.log",
+        "acquisition/receipt.json",
+        "acquisition/lfs-pull-2.log",
+        "acquisition/lfs-setup.log",
+        "stage-result.json"
+      ]
+    },
+    {
+      "artifact": 15074558949,
+      "name": "palette-lfs-runtime-45727972728-1",
+      "zip_sha256": "1155f88856e63ed88650ddf04d4417c4d6464ed204aba2d5eaa2b11afb8eb30f",
+      "bytes": 27549652,
+      "receipt": {
+        "allowance_seconds": 1199.9890157260002,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 1189.9792199630003,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "pid": 2470,
+            "returncode": 0,
+            "seconds": 0.06394014099998913,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 1189.9144891750002,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "pid": 2500,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 5.427157954999984,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 5820416,
+            "actual_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+            "bytes": 5820416,
+            "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+          },
+          {
+            "actual_bytes": 5253776,
+            "actual_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "bytes": 5253776,
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+          },
+          {
+            "actual_bytes": 117275416,
+            "actual_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "bytes": 117275416,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 5.610524505000001,
+        "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+        "status": "passed"
+      },
+      "stage": {
+        "allowance_seconds": 1200.0,
+        "attempt": 1,
+        "run_id": "45727972728",
+        "schema": "cybersand-lfs-runtime-artifact-v1-stage",
+        "seconds": 5.890019977999998,
+        "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+        "status": "payload_verified"
+      },
+      "usable_manifest": true,
+      "members": [
+        "acquisition/lfs-pull-1.log",
+        "acquisition/receipt.json",
+        "acquisition/lfs-setup.log",
+        "manifest.json",
+        "payload/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "payload/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "payload/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "payload/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "stage-result.json"
+      ]
+    }
+  ],
+  "source_mutation_by_reviewer": false,
+  "retry_by_reviewer": false,
+  "merge_approval": false,
+  "owner_acceptance": false
+}

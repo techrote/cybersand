@@ -1,0 +1,242 @@
+{
+  "schema": 1,
+  "reviewer": "Mergedown Specialist A, independent source and custody review",
+  "protected_programme": 783,
+  "checkpoint": "77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7",
+  "checkpoint_tree": "fa3e703bbffd14520f44062e6f2527dacb241e3b",
+  "programme_disposition": "Draft/HOLD; expanded hosted qualification and Art settings/pending-operation repairs remain pending",
+  "disposition": "APPROVE narrow donor source for coordinated resulting-source preparation; no merge or current-platform approval",
+  "read_only": true,
+  "donors": {
+    "shared_file_transaction": {
+      "introduced_by": "e55921c56b746da43874ef05fdd3b8b5f3265104",
+      "latest_wording": "f59ebc889cf995b6c9c41ba8e870c4a11d98f343",
+      "projection": "Utility file and applicable tests only; e559 also changes ordinary/generated/architectural consumers outside this narrow donor"
+    },
+    "art": {
+      "implementation": "a03b83eab8cba84f095043888075b370659d1aac",
+      "files": [
+        "godot/scripts/art_provider.gd",
+        "godot/scripts/art_traffic_archive.gd",
+        "godot/scripts/art_batch_panel.gd",
+        "godot/tests/test_art_storage_integrity.gd",
+        "godot/tests/art_storage_fault_child.gd",
+        "tools/ci/run_art_storage_qualification.py"
+      ],
+      "runtime_dependency": "Already accepted CyberDemoBridge.replace_material_baseline_file; no workbench_file_transaction dependency",
+      "windows_test_dependency": "tools/ci/run_workbench_save_qualification.py.windows_lock"
+    },
+    "goblin": {
+      "implementation": "e3b8fbe14c2efb9d4570c7bd8fa9cce89da1359e",
+      "fault_tests": "08058e3fc3f7227052ef4324465a7bd4254f3709",
+      "dependency": "workbench_file_transaction.gd plus existing native replacement",
+      "test_dependency": "run_diagnostic_storage_qualification.py imports require/sha/windows_lock from run_workbench_save_qualification.py; full matrix also assumes three unrelated diagnostic consumers are repaired"
+    }
+  },
+  "files": [
+    {
+      "path": "godot/scripts/workbench_file_transaction.gd",
+      "bytes": 5628,
+      "sha256": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+      "last_path_commit": "f59ebc889cf995b6c9c41ba8e870c4a11d98f343"
+    },
+    {
+      "path": "godot/tests/test_workbench_file_transaction.gd",
+      "bytes": 8140,
+      "sha256": "61b22c7f53a12545acf3a55ae99e02e052f81110526d8aa31b288f28e98225f4",
+      "last_path_commit": "6d2b9200144ecc8e938e625b32ad48e1c227ba69"
+    },
+    {
+      "path": "godot/tests/workbench_save_fault_child.gd",
+      "bytes": 6324,
+      "sha256": "d0c19e3610a3b60a584665ae28ebf33a6eba2cfb99a7701e0ee8a4571d105786",
+      "last_path_commit": "e55921c56b746da43874ef05fdd3b8b5f3265104"
+    },
+    {
+      "path": "tools/ci/run_workbench_save_qualification.py",
+      "bytes": 17039,
+      "sha256": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117",
+      "last_path_commit": "0395a0e1dcb8d397943883a675ca9861cf62acdd"
+    },
+    {
+      "path": "godot/scripts/art_provider.gd",
+      "bytes": 57164,
+      "sha256": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+      "last_path_commit": "a03b83eab8cba84f095043888075b370659d1aac"
+    },
+    {
+      "path": "godot/scripts/art_traffic_archive.gd",
+      "bytes": 20469,
+      "sha256": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+      "last_path_commit": "a03b83eab8cba84f095043888075b370659d1aac"
+    },
+    {
+      "path": "godot/scripts/art_batch_panel.gd",
+      "bytes": 79828,
+      "sha256": "f851b6394c3619c22cebc088ece57346d024af13bfedb5673de149abeba92227",
+      "last_path_commit": "a03b83eab8cba84f095043888075b370659d1aac"
+    },
+    {
+      "path": "godot/tests/test_art_storage_integrity.gd",
+      "bytes": 4999,
+      "sha256": "da8b19a86019a2fd2b551d1bb914b087e99ae48d9618fbd6e750a99b3591a4df",
+      "last_path_commit": "a03b83eab8cba84f095043888075b370659d1aac"
+    },
+    {
+      "path": "godot/tests/art_storage_fault_child.gd",
+      "bytes": 4264,
+      "sha256": "ff5be72bb0f73ec3b97e2a7a589601a6f127adc96054c69f48a78929c65092f5",
+      "last_path_commit": "a03b83eab8cba84f095043888075b370659d1aac"
+    },
+    {
+      "path": "tools/ci/run_art_storage_qualification.py",
+      "bytes": 8207,
+      "sha256": "1eea6e36400d689b5bdba0502d6e0860317b2696066bdbb4d6e2ce6874d18c61",
+      "last_path_commit": "a03b83eab8cba84f095043888075b370659d1aac"
+    },
+    {
+      "path": "godot/goblin/goblin_controller.gd",
+      "bytes": 18368,
+      "sha256": "6d539462faa10e70e66dc111fc015c57b24b26d728aa7691f08a8f3557261a17",
+      "last_path_commit": "e3b8fbe14c2efb9d4570c7bd8fa9cce89da1359e"
+    },
+    {
+      "path": "godot/tests/goblin_storage_fault_child.gd",
+      "bytes": 2232,
+      "sha256": "a3a5fc4926c85ede36cafdddd443fc11080ea496f2210a12e0874c034376efc2",
+      "last_path_commit": "08058e3fc3f7227052ef4324465a7bd4254f3709"
+    },
+    {
+      "path": "tools/ci/run_diagnostic_storage_qualification.py",
+      "bytes": 13466,
+      "sha256": "f586a2ee1a1883e2986219a4f5358d5c967cdbc88ed8b25ef92c29ee5c338fc5",
+      "last_path_commit": "08058e3fc3f7227052ef4324465a7bd4254f3709"
+    }
+  ],
+  "independent_donor_evidence": {
+    "art": {
+      "original_real_os_cases": 6,
+      "before_passed": false,
+      "after_passed": true,
+      "independent_assertions": 278,
+      "current_provider_matches_later_delta_review": true,
+      "current_provider_matches_lead_after_execution": true
+    },
+    "goblin": {
+      "independent_extended_matrix_cases": 12,
+      "goblin_cases": [
+        {
+          "kind": "goblin",
+          "fault": "none",
+          "evidence_class": "guarded-audit-writer"
+        },
+        {
+          "kind": "goblin",
+          "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+          "evidence_class": "real-os-failure"
+        },
+        {
+          "kind": "goblin",
+          "fault": "directory-permission-denied",
+          "evidence_class": "real-os-failure"
+        }
+      ],
+      "controller_hash_matches_independent_execution": true
+    },
+    "shared_utility": {
+      "deterministic_checks": 84,
+      "original_qualification_cases": 13,
+      "current_utility_hash_matches_later_goblin_review": true
+    },
+    "archive_custody": {
+      "original_members": 169,
+      "all_original_size_and_sha256_verified": true,
+      "both_cross_review_zip_crc_verified": true
+    },
+    "limits": [
+      "Original execution evidence is Linux/headless and independently source-hashed; no fresh OS/Godot execution in this mergedown review",
+      "No Windows, physical-owner, generative-model, hostile concurrent filesystem writer, or power-loss acceptance",
+      "Art append failure retains the previous complete prefix and refuses acknowledgement; it does not promise whole-file rollback of an interrupted append"
+    ]
+  },
+  "reconciliation": {
+    "art_target": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+    "read_only_merge_tree": "6ecdb061988fd41c9260465f770934471d352139",
+    "conflicts": [
+      "godot/scripts/art_batch_panel.gd: export progress and cancel feedback; retain current _set_traffic_path with donor verification/refusal text"
+    ],
+    "semantic_checks": [
+      "Retain current request guard, asynchronous encoded/prepared byte path, traffic namespace and history receipt admission",
+      "Run storage faults plus original admission/preparation, response/logging, owned transport and actual Architecture mount cases on resulting source",
+      "Do not replace entire current Art provider/panel files with old-checkpoint donor files"
+    ],
+    "goblin002_target": "21c9a667",
+    "goblin002_requirements": [
+      "Keep expanded fixed output allowlist and actual profile containment guard",
+      "Keep compact serialization, Corpus.MAX_BYTES versus Transcript.MAX_BYTES, cumulative MAX_PROFILE_EVIDENCE_BYTES before any staging write",
+      "Replace only direct write/flush/rename with verified utility; do not copy the simpler Goblin001 function wholesale",
+      "Run storage faults, full current controller/corpus/replay/reduction persistence and budget refusals"
+    ]
+  },
+  "remaining_gate": [
+    "Preserve coordinated donor handoff and current platform receipts when ULTIMA publishes them",
+    "Prepare source-pinned narrow candidate without importing unfinished programme",
+    "Qualify actual resulting Art/Goblin source and Windows file-lock paths",
+    "Keep settings and pending-operation corrections separate until their exact reviewed donor appears"
+  ],
+  "evidence": [
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-art-storage-by-c.json",
+      "bytes": 5602,
+      "sha256": "9572f86fafd0fb30e22518c50c0e0d917eae9fbc661f83f9b1072ee44e2e0dc1",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-art-storage-by-c.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-diagnostic-goblin-by-c.json",
+      "bytes": 3246,
+      "sha256": "a50603ce5a080bd3e05e90da211cec4d1d54f2997a4268a40413c9869dba77f0",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-diagnostic-goblin-by-c.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-persistence-by-c.json",
+      "bytes": 14258,
+      "sha256": "12f45d0f0d5034e8b18dd6dec44403326eb39354ce2b82fe26e4cda243dfac37",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/review-persistence-by-c.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/product/persistence-independent.json",
+      "bytes": 9807,
+      "sha256": "e6067c93b6c66322b4e8f2f9c0385dfbcf20cea9da90ca160f81701361311a18",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/product/persistence-independent.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/storage/report.json",
+      "bytes": 26314,
+      "sha256": "c4f37707660a56ab7852fc067dad1fbd0480d05b1dfd4fc7982ac5bdcc186a34",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/lead/storage/report.json"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/storage/lead-storage-originals.json.gz",
+      "bytes": 50283,
+      "sha256": "c746dc03abd8c18f79a04dafd391b79db537c82e0fd1769d37202434f7f8d679",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/lead/storage/lead-storage-originals.json.gz"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/storage-cross-review-originals.zip",
+      "bytes": 55532,
+      "sha256": "eee18be473c1c50a028cff3babc86abc297576d68655f54c9d099da60fa1e8d4",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/storage-cross-review-originals.zip"
+    },
+    {
+      "path": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/diagnostic-goblin-cross-review-originals.zip",
+      "bytes": 44360,
+      "sha256": "f455c122f6d8f9d401cda0a95969f2048e476de4127402a8525c5bd99b4b3da6",
+      "url": "https://github.com/techrote/cybersand/blob/77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7/docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/diagnostic-goblin-cross-review-originals.zip"
+    }
+  ],
+  "coordination_comments": [
+    7177081321,
+    7177472609,
+    7177952318
+  ]
+}

@@ -4,7 +4,7 @@ status: Historical
 document-kind: audit
 scope: Source-pinned integration decisions, qualification and remaining owner gates for the 25 November 2026 mergedown
 canonical-for: []
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [../../operations/github-development-and-release.md]
 ---
 
@@ -33,12 +33,13 @@ Use ancestry-preserving merges. Each new source checkpoint receives appropriate 
 
 ## Protected work and negative results
 
-#767 PUBPRES and #783 Docs ULTIMA remain active and untouched. #774 is evidence custody, not an independent merge target. RAM-first #732/#733 and nonselected GDE concurrency #731/#735/#739 remain excluded. Do not overwrite historical runs, packages, source identities or negative results.
+#767 PUBPRES, #783 Docs ULTIMA and newly refreshed #785 Strata003 remain active and untouched. #774 is evidence custody, not an independent merge target. RAM-first #732/#733 and nonselected GDE concurrency #731/#735/#739 remain excluded. Do not overwrite historical runs, packages, source identities or negative results.
 
 ## Durable records
 
 - [Candidate inventory](inventory.json): exact intake sources, targets and disposition.
 - [Decision register](decisions.json): authority, reviews, actual merges and next gates.
+- [Shared contracts](shared-contracts.md): the authoritative owners, actual semantic conflicts and source-bound integration decisions.
 - [Art/Architecture integration](art-architecture-integration.md): implemented native-authority seam, original reproduced failures and exact local qualification.
 - [Goblin001 final independent approval](goblin001-final-independent-approval.md).
 - [Material/AMBIENT independent review](material-ambient-independent-review.md).
@@ -50,9 +51,9 @@ Use ancestry-preserving merges. Each new source checkpoint receives appropriate 
 - #758 merged as `be87b18b30506ccead610c7035ae1ffa8e65a347`.
 - #771 plus exact #778 donor passed full Ready qualification at `0da970283d076ae4660a9d93efd0e5180d313247` and merged as `5e29b111be6202a76c0042976f74de98bd8ead78`; original ancestry is preserved. The actual main tree equals the qualified candidate tree. All five applicable post-merge workflows passed, including full Native/GDE coverage.
 - #772 Goblin001 passed full resulting-source Ready qualification and merged as `c8421a81b8f7f61516ed055f3200b49aee57bd65`; its exact merge tree equals the qualified `950bff73` candidate. Ordinary startup remains unchanged; physical owner acceptance remains outstanding.
-- #775 AMBIENT001 candidate `0c1152c2` is undergoing current Ready qualification against that accepted main. Its68-assertion default-OFF regression and native/runtime invariants independently passed locally; the original current Palette failure is being investigated and is not waived.
+- #775 AMBIENT001 candidate `26317ada` (tree `984c94a6`) is undergoing current Ready qualification against that accepted main. Palette producer, all six cohorts and strict 19-case readback passed. GDE Windows producer and Art Windows dependency acquisition failed before Godot; independently admitted source-pinned recovery preserves separate platform attempts. The preceding candidate was `120f0d08`. Its 68-assertion default-OFF regression and native/runtime invariants independently passed locally. The original `0c1152c2` Palette campaign recovered on complete attempt 2, while its GDE campaign failed dependency acquisition. The new bounded-acquisition candidate also encountered persistent LFS service timeouts before Godot; those failures remain open and are not waived.
 - Original older-main dependency acquisition failures remain recorded in [recovered failures](recovered-failures.json); they are not relabeled successful.
-- Superseded exact-ancestor PRs #720/#770 and #769 are closed in favor of #777 and #776, with branches and original evidence retained.
+- Superseded exact-ancestor PRs #720/#770, #769 and #763/#765/#766/#773 are closed in favor of #777, #776 and #780, with branches and original evidence retained. Art physical acceptance issues #713/#744 remain open. #749 retains unique unincorporated research and remains open.
 - #762 ordinary PR qualification is awaiting a maintainer workflow approval; the existing feature evaluator is not substituted for those unexecuted checks.
 - Goblin001/AMBIENT001 combined local default-OFF, actor control, native painting/history and persistence checks pass; final resulting-source hosted gates remain separate.
 - [Initial independent tooling review](independent-review.md) and [CI-wave independent review](ci-wave-independent-review.md) retain their source and actual evidence scopes.
@@ -104,3 +105,9 @@ Substantial prepared successor implementation is now retained:
 [Exact local source histories](integration-source-history.json) preserve the
 qualified commit objects in incremental Git bundles. Remote publication uses
 explicit exact-tree joins; no established evidence history is rewritten.
+
+## Runtime transport and current recovery
+
+Repeated independent LFS requests across all shards were replaced by bounded producer acquisition and exact source/run/attempt-bound artifacts. Every consumer verifies the complete artifact inventory and committed LFS sizes/hashes before installing its selected files. There is no network fallback or stale-attempt substitution. The producer and Windows/Linux Palette consumers are now verified from actual hosted artifacts; [original readback](lfs-fanout-hosted-263-attempt1.json) retains all identities. [Local real-byte controls](lfs-fanout-local-real-byte-control.json) are explicitly Linux controls with a synthetic run envelope, not a hosted or Windows execution claim. [Independent review](lfs-transport-independent-review-a.md) preserves the initially discovered deadline-seal defect and its repaired controls.
+
+The exact [publication join](lfs-fanout-publication.json), [Windows recovery admission](runtime-fanout-recovery-registration.md), [SWARM independent native persistence review](swarm-independent-review.md), [Art closure receipts](art-historical-closure-receipts.json) and distinct [ULTIMA storage handoff](ultima-art-panel-storage-donor-review.md) are durable. No incomplete campaign is relabeled passed. The mainline evaluator remains prepared, awaiting an actually accepted product checkpoint and Windows execution.

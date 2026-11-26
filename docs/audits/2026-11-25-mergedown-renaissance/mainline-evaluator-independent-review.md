@@ -54,3 +54,32 @@ foundations land. Current Ready Native/GDE qualification remains separate from
 this focused package campaign. Actual Windows execution still has to pass before
 delivery. Physical owner acceptance, public release and a complete new AMBIENT
 feature campaign are explicitly not claimed.
+## Final acquisition and hosted-audio follow-up
+
+Specialist C independently approves harness source
+`fa68e697cbb368e1c57c9215ed4ee44548acc2a6`, tree
+`aad878ab4555a8f0052936583e5011611421fe90`, extending the source approval of
+`d87ee19950bd2614bc0c67ce7cfa4a8547f964db`. C reviewed the complete intervening
+diff and reran all 21 adversarial adapter tests successfully.
+
+The harness now calls the separately reviewed source-bound LFS helper for the
+two literal committed Windows runtime paths, with a 600-second acquisition
+allowance inside the unchanged 4,200-second setup budget. The original service
+timeout is the only retryable failure; authentication, missing-object and
+integrity failures remain terminal. Every attempt log/receipt is retained, and
+actual object sizes/hashes must match the original Git pointers. C independently
+verified the canonical helper and existing owned-process cleanup source hashes
+against exact product candidate `120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6`.
+
+Only the automated actual-CMD proof supplies `--audio-driver Dummy`, matching the
+established hosted AMBIENT graphics contract. The delivered interactive CMD and
+its ordinary owner audio defaults are unchanged. The real ANGLE renderer,
+native-ready marker, strict error gate and process cleanup remain mandatory.
+This avoids presenting absence of a hosted physical audio endpoint as an
+application defect; it does not suppress error output or invent physical audio
+acceptance.
+
+The 3,940-second default-OFF case, 20,420-second complete budget and 360-minute
+parent are unchanged. This is source approval for a future campaign after the
+accepted product checkpoint passes its gates. No Windows package or execution
+success is claimed by this follow-up review.

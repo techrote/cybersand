@@ -1,0 +1,646 @@
+{
+  "schema": "cybersand-mergedown-closure-review-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-25T23:54:31.583Z",
+  "scope": "Recommendations only; lead owns remote closure",
+  "open_pr_count": 271,
+  "open_inventory_page_counts": [
+    100,
+    100,
+    71
+  ],
+  "pagination_complete": true,
+  "remote_mutations_performed": false,
+  "open_acceptance_issues": [
+    713,
+    744
+  ],
+  "protected_active_programmes": [
+    767,
+    783
+  ],
+  "candidates": [
+    {
+      "pr": 749,
+      "head_sha": "a6fce059fa5620fcf4adb60cb9d2e7ed79050401",
+      "branch": "experiment/gip013-gremlin-20261122",
+      "state": "open",
+      "draft": true,
+      "recommended_action": "CLOSE AS FROZEN SUPERSEDED REFERENCE-MODEL RESEARCH",
+      "implementation_fully_incorporated": false,
+      "authoritative_successor_prs": [
+        772,
+        781
+      ],
+      "ancestry": {
+        "pr": 749,
+        "head": "a6fce059fa5620fcf4adb60cb9d2e7ed79050401",
+        "target": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+        "head_is_ancestor_of_target": false,
+        "prepared_successor": "36d82cae75e5fd8dad11646663248de8003f5bf9",
+        "head_is_ancestor_of_prepared_successor": false,
+        "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "changed_paths": [
+          ".github/workflows/gip013-gremlin.yml",
+          "docs/operations/gip013-gremlin-protocol.md",
+          "docs/reference/retrieval-corpus.json",
+          "tools/gip013/gremlin.py",
+          "tools/gip013/qualification.py",
+          "tools/gip013/test_gremlin.py"
+        ],
+        "paths_absent_from_target": [
+          ".github/workflows/gip013-gremlin.yml",
+          "docs/operations/gip013-gremlin-protocol.md",
+          "tools/gip013/gremlin.py",
+          "tools/gip013/qualification.py",
+          "tools/gip013/test_gremlin.py"
+        ]
+      },
+      "open_target_branch_dependencies": [],
+      "new_explicit_keep_open_instruction_found": false,
+      "reviewed_comment_ids": [],
+      "source_matched_workflows": [
+        {
+          "id": 45066785034,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6281,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785034/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785034/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45066785110,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6076,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785110/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785110/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45066785038,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4476,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785038/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785038/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45066785030,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6056,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785030/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785030/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45066785091,
+          "name": "GIP-013 deterministic contract-model qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 7,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785091/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45066785091/logs",
+          "workflow_id": 427122928
+        }
+      ],
+      "preserve_branch": true,
+      "preserve_original_evidence": true,
+      "merge_or_owner_acceptance_claimed": false,
+      "unique_findings": [
+        "Bounded synthetic contract model and independent invariants",
+        "Optional loopback Sprocket proposer, not qualified native gameplay",
+        "Reference transcript replay/shrinking and injected-oracle negative controls"
+      ],
+      "qualification": {
+        "run": 45066785091,
+        "artifact": 14771737423,
+        "scope": "Python reference-model qualification; Native/GDE skipped"
+      },
+      "mandatory_closure_language": "Not merged or fully incorporated; unique reference-model research and exact branch/evidence retained; native QA authority now #772/#781."
+    },
+    {
+      "pr": 763,
+      "head_sha": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "branch": "fix/art-conversation-bounded-713-20261123",
+      "state": "open",
+      "draft": true,
+      "recommended_action": "CLOSE AS INCORPORATED PREDECESSOR; OWNER GATES RETAINED",
+      "implementation_fully_incorporated": true,
+      "authoritative_successor_prs": [
+        780
+      ],
+      "ancestry": {
+        "pr": 763,
+        "head": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+        "target": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+        "head_is_ancestor_of_target": true,
+        "prepared_successor": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "head_is_ancestor_of_prepared_successor": true,
+        "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "changed_paths": [
+          "godot/scripts/art_conversation_editor.gd",
+          "godot/tests/test_art_panel_ui.gd"
+        ],
+        "paths_absent_from_target": []
+      },
+      "open_target_branch_dependencies": [],
+      "new_explicit_keep_open_instruction_found": false,
+      "reviewed_comment_ids": [],
+      "source_matched_workflows": [
+        {
+          "id": 45103823987,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6367,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823987/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823987/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45103823968,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4560,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823968/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823968/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45103823956,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 619,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823956/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823956/logs",
+          "workflow_id": 417954798
+        },
+        {
+          "id": 45103824089,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6142,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824089/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824089/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45103824140,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6162,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824140/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824140/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45103823960,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 57,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823960/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823960/logs",
+          "workflow_id": 426427472
+        }
+      ],
+      "preserve_branch": true,
+      "preserve_original_evidence": true,
+      "merge_or_owner_acceptance_claimed": false,
+      "owner_gate_issue": 713,
+      "unique_findings": [
+        "Viewport-bounded Note editor and outside-scroll Apply/Cancel footer",
+        "Screen-space geometry and nested Cancel fixture corrections"
+      ],
+      "qualification": {
+        "run": 45103823960,
+        "scope": "Art hosted source suite; broader Draft native gates skipped"
+      }
+    },
+    {
+      "pr": 765,
+      "head_sha": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "branch": "investigation/art-local-close-744-20261123",
+      "state": "open",
+      "draft": true,
+      "recommended_action": "CLOSE AS INCORPORATED PREDECESSOR; OWNER GATES RETAINED",
+      "implementation_fully_incorporated": true,
+      "authoritative_successor_prs": [
+        780
+      ],
+      "ancestry": {
+        "pr": 765,
+        "head": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+        "target": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+        "head_is_ancestor_of_target": true,
+        "prepared_successor": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "head_is_ancestor_of_prepared_successor": true,
+        "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "changed_paths": [
+          ".github/workflows/art-session-logging.yml",
+          "docs/audits/2026-11-23-art-local-close/README.md",
+          "godot/scripts/art_batch_panel.gd",
+          "godot/scripts/art_provider.gd",
+          "godot/tests/test_art_local_close.gd",
+          "tools/ci/run_art_local_close.py"
+        ],
+        "paths_absent_from_target": []
+      },
+      "open_target_branch_dependencies": [],
+      "new_explicit_keep_open_instruction_found": false,
+      "reviewed_comment_ids": [
+        7094871368
+      ],
+      "source_matched_workflows": [
+        {
+          "id": 45104013350,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6368,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013350/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013350/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45104013320,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 58,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013320/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013320/logs",
+          "workflow_id": 426427472
+        },
+        {
+          "id": 45104013318,
+          "name": "Palette shader actual backend qualification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 1733,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013318/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013318/logs",
+          "workflow_id": 403062058
+        },
+        {
+          "id": 45104013480,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6163,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013480/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013480/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45104013344,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6143,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013344/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013344/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45104013313,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4561,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013313/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013313/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45104013348,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 620,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013348/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013348/logs",
+          "workflow_id": 417954798
+        }
+      ],
+      "preserve_branch": true,
+      "preserve_original_evidence": true,
+      "merge_or_owner_acceptance_claimed": false,
+      "owner_gate_issue": 744,
+      "unique_findings": [
+        "Primary owner reproduction has LM Studio not running",
+        "404-heavy mock qualification does not resolve absent-listener physical Windows freeze",
+        "Art X intentionally hides, without implicit Stop"
+      ],
+      "owner_correction_comment": 7094871368,
+      "qualification": {
+        "run": 45104013320,
+        "scope": "Headless source-bound loopback and timing probe"
+      }
+    },
+    {
+      "pr": 766,
+      "head_sha": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "branch": "fix/art-invalid-model-close-latency-744-20261123",
+      "state": "open",
+      "draft": true,
+      "recommended_action": "CLOSE AS INCORPORATED PREDECESSOR; OWNER GATES RETAINED",
+      "implementation_fully_incorporated": true,
+      "authoritative_successor_prs": [
+        780
+      ],
+      "ancestry": {
+        "pr": 766,
+        "head": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+        "target": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+        "head_is_ancestor_of_target": true,
+        "prepared_successor": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "head_is_ancestor_of_prepared_successor": true,
+        "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "changed_paths": [
+          ".github/workflows/art-session-logging.yml",
+          "godot/scripts/art_batch_panel.gd",
+          "godot/scripts/art_provider.gd",
+          "godot/tests/test_art_invalid_local_model_close.gd"
+        ],
+        "paths_absent_from_target": []
+      },
+      "open_target_branch_dependencies": [],
+      "new_explicit_keep_open_instruction_found": false,
+      "reviewed_comment_ids": [
+        7090874487
+      ],
+      "source_matched_workflows": [
+        {
+          "id": 45106738619,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 63,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738619/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738619/logs",
+          "workflow_id": 426427472
+        },
+        {
+          "id": 45106738499,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6149,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738499/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738499/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45106738536,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6169,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738536/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738536/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45106738489,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 625,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738489/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738489/logs",
+          "workflow_id": 417954798
+        },
+        {
+          "id": 45106738540,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4567,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738540/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738540/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45106738539,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6374,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738539/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738539/logs",
+          "workflow_id": 344993860
+        }
+      ],
+      "preserve_branch": true,
+      "preserve_original_evidence": true,
+      "merge_or_owner_acceptance_claimed": false,
+      "owner_gate_issue": 744,
+      "unique_findings": [
+        "Failed HTTP response is retained fully redacted without fictitious usage/assistant records",
+        "Hidden UI skips cosmetic refresh while authoritative work continues",
+        "Original two fixture failures retained"
+      ],
+      "qualification": {
+        "run": 45106738619,
+        "checks_each_platform": 12,
+        "linux_max_frame_gap_ms": 7.005,
+        "windows_max_frame_gap_ms": 8.367,
+        "scope": "Hosted loopback, not physical absent-listener acceptance"
+      }
+    },
+    {
+      "pr": 773,
+      "head_sha": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "branch": "art/workbench-final-001",
+      "state": "open",
+      "draft": false,
+      "recommended_action": "CLOSE AS INCORPORATED PREDECESSOR; OWNER GATES RETAINED",
+      "implementation_fully_incorporated": true,
+      "authoritative_successor_prs": [
+        780
+      ],
+      "ancestry": {
+        "pr": 773,
+        "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+        "target": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+        "head_is_ancestor_of_target": true,
+        "prepared_successor": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "head_is_ancestor_of_prepared_successor": true,
+        "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "changed_paths": [
+          ".github/workflows/art-session-logging.yml",
+          ".github/workflows/gdextension.yml",
+          "docs/README.md",
+          "docs/audits/2026-11-23-art-local-close/README.md",
+          "docs/audits/2026-11-24-art-workbench-final/README.md",
+          "docs/audits/2026-11-24-art-workbench-final/intake.json",
+          "docs/audits/2026-11-24-art-workbench-final/legacy-retrieval-questions-art-traffic-v2.json",
+          "docs/audits/2026-11-24-art-workbench-final/linux-desktop-observation.json",
+          "docs/audits/2026-11-24-art-workbench-final/preparation-baseline-receipt.json",
+          "docs/audits/2026-11-24-art-workbench-final/prepublication-refresh.json",
+          "docs/operations/art-workbench-final-evaluation.md",
+          "docs/operations/ci-execution-and-performance.md",
+          "docs/operations/cybersand-codex-development-handover.md",
+          "docs/reference/retrieval-corpus.json",
+          "docs/reference/retrieval-index.md",
+          "docs/reference/retrieval-questions-art-traffic.json",
+          "docs/reference/status-and-roadmap.md",
+          "docs/systems/workbench-art-providers.md",
+          "godot/scripts/art_batch_panel.gd",
+          "godot/scripts/art_conversation_editor.gd",
+          "godot/scripts/art_conversation_text_edit.gd",
+          "godot/scripts/art_provider.gd",
+          "godot/scripts/art_redaction.gd",
+          "godot/scripts/art_response_preparation.gd",
+          "godot/tests/run_art_owner_evaluator.gd",
+          "godot/tests/run_art_workbench_final.gd",
+          "godot/tests/test_art_conversation_clipboard.gd",
+          "godot/tests/test_art_conversation_paging.gd",
+          "godot/tests/test_art_invalid_local_model_close.gd",
+          "godot/tests/test_art_local_close.gd",
+          "godot/tests/test_art_model_roster.gd",
+          "godot/tests/test_art_owner_evaluator.gd",
+          "godot/tests/test_art_panel_ui.gd",
+          "godot/tests/test_art_provider_failure_lifecycle.gd",
+          "godot/tests/test_art_redaction_equivalence.gd",
+          "godot/tests/test_art_request_admission.gd",
+          "godot/tests/test_art_request_preparation.gd",
+          "godot/tests/test_art_response_preparation.gd",
+          "godot/tests/test_art_session_log.gd",
+          "tools/ci/art_evaluator_qualification_scope.py",
+          "tools/ci/run_art_local_close.py",
+          "tools/ci/run_art_workbench_final.py",
+          "tools/ci/test_art_evaluator_packaging.py",
+          "tools/ci/test_art_evaluator_qualification_scope.py",
+          "tools/ci/test_godot_job_plan.py",
+          "tools/package_art_workbench_final.py",
+          "tools/play/run_palette_shader_qualification.py"
+        ],
+        "paths_absent_from_target": []
+      },
+      "open_target_branch_dependencies": [],
+      "new_explicit_keep_open_instruction_found": false,
+      "reviewed_comment_ids": [
+        7142617220,
+        7145397326,
+        7146994148,
+        7148153448,
+        7149057968
+      ],
+      "source_matched_workflows": [
+        {
+          "id": 45522038728,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 699,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038728/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038728/logs",
+          "workflow_id": 417954798
+        },
+        {
+          "id": 45522038760,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6464,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038760/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038760/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45522038703,
+          "name": "Palette shader actual backend qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 1807,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038703/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038703/logs",
+          "workflow_id": 403062058
+        },
+        {
+          "id": 45522038721,
+          "name": "Art Workbench final qualification",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 139,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038721/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038721/logs",
+          "workflow_id": 426427472
+        },
+        {
+          "id": 45522038718,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4655,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038718/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038718/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45522038903,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6239,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038903/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038903/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45522038886,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_number": 6260,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038886/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45522038886/logs",
+          "workflow_id": 344993861
+        }
+      ],
+      "preserve_branch": true,
+      "preserve_original_evidence": true,
+      "merge_or_owner_acceptance_claimed": false,
+      "owner_gate_issues": [
+        713,
+        744
+      ],
+      "preserve_active_programme_pr": 783,
+      "qualified_package": {
+        "source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+        "run": 45497650568,
+        "artifact": 14968792395
+      },
+      "current_failed_ready_runs": [
+        45522038721,
+        45522038886
+      ],
+      "unique_findings": [
+        "Historical package failures retained",
+        "Current Ready Art and GDE failures remain failed",
+        "Displayed Windows performance failure remains a separate gate",
+        "Prepared Art/Architecture Linux integration is not full Windows or creative acceptance"
+      ]
+    }
+  ],
+  "input_receipts": {
+    "historical-closure-intake-20261125.json": "06432ea77ad467a58c1703ea95481f018f3d7f2d7ba5435d6a68b2a2ee22ddfe",
+    "historical-closure-ancestry-20261125.json": "101c1301db5860212558ca0155a7a4da75796fefe1e63f500397f01dfb9efacd",
+    "historical-closure-evidence-20261125.json": "6acac0c468bbd06ad8080bfaaf7c3d67c8021159fa7b2a4de807ddc684a29ab3"
+  },
+  "required_final_refresh": "Lead refreshes exact heads, target dependencies and newer owner comments immediately before remote PR-state change."
+}

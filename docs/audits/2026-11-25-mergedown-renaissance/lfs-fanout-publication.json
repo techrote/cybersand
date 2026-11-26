@@ -1,0 +1,51 @@
+{
+  "local_source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "remote_source": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "previous_head": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+  "branch": "feature/ambient-001-20261124",
+  "files": [
+    {
+      "path": ".github/workflows/gdextension.yml",
+      "sha": "806caee565c948dd5ed7484cb84ac8fa6d90c25b"
+    },
+    {
+      "path": ".github/workflows/palette-shader-qualification.yml",
+      "sha": "57b9d4f827e557e50382d50c56667f1d78a767b3"
+    },
+    {
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "sha": "e343efe863fcd035a9f0d3adaf4619ad014b45e5"
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha": "8a75bbb232160a53b5bae6af7747b0ee8cbdf540"
+    },
+    {
+      "path": "tools/ci/lfs_runtime_artifact.py",
+      "sha": "8e6d74d759bad2c52a057f508188add8c2768da0"
+    },
+    {
+      "path": "tools/ci/run_windows_godot_regressions.py",
+      "sha": "3dcccd469b3f870567fbdfeb288858157723f094"
+    },
+    {
+      "path": "tools/ci/test_lfs_runtime_artifact.py",
+      "sha": "f4f91334c5bc0d055528c84baed1faff3ee0feb1"
+    },
+    {
+      "path": "tools/play/palette_qualification_contract.py",
+      "sha": "ea02998eb0067d0916c4f85e80afb0f13a540ea9"
+    },
+    {
+      "path": "tools/play/run_palette_shader_qualification.py",
+      "sha": "4ea6746919fba8373089df4ac62d96bee02e4589"
+    },
+    {
+      "path": "tools/play/test_palette_qualification.py",
+      "sha": "67acb46ee6d28b8d5eafeead65c0342bbaa92932"
+    }
+  ],
+  "source_review": "A, B and C approve source admission; full hosted qualification required",
+  "main": "c8421a81b8f7f61516ed055f3200b49aee57bd65"
+}

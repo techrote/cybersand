@@ -1,0 +1,151 @@
+{
+  "schema": "cybersand-lfs-fanout-independent-review-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-26T00:16:59.047724+00:00",
+  "candidate": "4bb903109321bdc343eaebcb3da86bfec19bd4dc",
+  "tree": "985955bf0f9cec25b1b78742950deb8000900fc0",
+  "parent": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+  "disposition": "APPROVE SOURCE ADMISSION FOR FULL READY QUALIFICATION",
+  "merge_approval": false,
+  "owner_acceptance": false,
+  "hosted_execution_claim": false,
+  "no_product_native_runtime_changes": true,
+  "same_attempt_transport_required": true,
+  "mandatory_qualification_unchanged": true,
+  "independent_controls": {
+    "transport": 20,
+    "palette": 38,
+    "planner": 12,
+    "checkout_custody": 14,
+    "windows_runner": 22,
+    "total": 106
+  },
+  "provider_policy": "passed",
+  "actionlint": {
+    "version": "1.7.12",
+    "workflows": [
+      ".github/workflows/gdextension.yml",
+      ".github/workflows/palette-shader-qualification.yml"
+    ],
+    "returncode": 0
+  },
+  "test_receipt": {
+    "started_at": "2026-11-26T00:13:21.601383+00:00",
+    "source_head_before": "4bb903109321bdc343eaebcb3da86bfec19bd4dc",
+    "files_before": {
+      ".github/workflows/gdextension.yml": "df7c9896799b6e3fe25db8ea8c093b94c2eb4c70766ae36b6e86c6bf528136e7",
+      ".github/workflows/palette-shader-qualification.yml": "15f48d97148bbd877fa479fb5d11c3baa4570b1ddb9bfaf4db880fbd250a3dc0",
+      "tools/ci/lfs_runtime_artifact.py": "ebec1b0fc7634641695956f8a4c9b2748e45ddc7553d69755b476595e08231b3",
+      "tools/ci/test_lfs_runtime_artifact.py": "bdda838096942248f6d1d66c894a4839df9b22e7be119ac073da06d71ec659d1",
+      "tools/ci/run_windows_godot_regressions.py": "6beb14a4c99e1db5d010cb41b6a36fafb310a175469984afd891be35afebe8cc",
+      "tools/play/palette_qualification_contract.py": "0898d29986d8b30b546deb6cc5c19820e8427854e46f4757d46993aa02055e23",
+      "tools/play/run_palette_shader_qualification.py": "2eb12a27b16b7bbb7a54a09b579271e9c97a3baae30c67558a314ccf1bba604f",
+      "tools/play/test_palette_qualification.py": "4ba3c1dff54a187b051193dd0df64609935b55f61195778082218bb5ed1c2b2c",
+      "tools/ci/materialize_lfs.py": "9a98d7c1d5535691afeb1d0a794e1b2ae7258f1aaaa89df4ae25607267a01efb",
+      "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+    },
+    "tests": [
+      {
+        "command": [
+          "python",
+          "tools/ci/test_lfs_runtime_artifact.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.9846038670002599,
+        "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/test_lfs_runtime_artifact.log",
+        "sha256": "5c63a1cdfcc322bd6cf7912e5c18e236979f0fa7eb70ebebd6d5bdad8ff0564c",
+        "bytes": 119
+      },
+      {
+        "command": [
+          "python",
+          "tools/play/test_palette_qualification.py"
+        ],
+        "returncode": 0,
+        "seconds": 2.469306699998924,
+        "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/test_palette_qualification.log",
+        "sha256": "a65a4434cef78a5cf4dde46820386be6d54ed84f168f95b4d67031dc8464a419",
+        "bytes": 4867
+      },
+      {
+        "command": [
+          "python",
+          "tools/ci/test_godot_job_plan.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.7673187300006248,
+        "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/test_godot_job_plan.log",
+        "sha256": "c2a0cc7015b66e759de47bc74a325be26bdeecb4f0bb9b71e8909a539b88ba98",
+        "bytes": 111
+      },
+      {
+        "command": [
+          "python",
+          "tools/play/test_palette_checkout_custody.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.04451539999899978,
+        "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/test_palette_checkout_custody.log",
+        "sha256": "ff3b1438544d9aa2c552401f0123d54eac06b91b0295f3773671c14161e22544",
+        "bytes": 113
+      },
+      {
+        "command": [
+          "python",
+          "tools/ci/test_windows_godot_regressions.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.466553236999971,
+        "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/test_windows_godot_regressions.log",
+        "sha256": "1ac993fd0acda09c5c737d85425dda883dd01d8015bccd80fd34c54aacc3cd71",
+        "bytes": 121
+      },
+      {
+        "command": [
+          "python",
+          "tools/ci/check_ci_provider_policy.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.0876798310000595,
+        "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/check_ci_provider_policy.log",
+        "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+        "bytes": 280
+      }
+    ],
+    "source_head_after": "4bb903109321bdc343eaebcb3da86bfec19bd4dc",
+    "files_after": {
+      ".github/workflows/gdextension.yml": "df7c9896799b6e3fe25db8ea8c093b94c2eb4c70766ae36b6e86c6bf528136e7",
+      ".github/workflows/palette-shader-qualification.yml": "15f48d97148bbd877fa479fb5d11c3baa4570b1ddb9bfaf4db880fbd250a3dc0",
+      "tools/ci/lfs_runtime_artifact.py": "ebec1b0fc7634641695956f8a4c9b2748e45ddc7553d69755b476595e08231b3",
+      "tools/ci/test_lfs_runtime_artifact.py": "bdda838096942248f6d1d66c894a4839df9b22e7be119ac073da06d71ec659d1",
+      "tools/ci/run_windows_godot_regressions.py": "6beb14a4c99e1db5d010cb41b6a36fafb310a175469984afd891be35afebe8cc",
+      "tools/play/palette_qualification_contract.py": "0898d29986d8b30b546deb6cc5c19820e8427854e46f4757d46993aa02055e23",
+      "tools/play/run_palette_shader_qualification.py": "2eb12a27b16b7bbb7a54a09b579271e9c97a3baae30c67558a314ccf1bba604f",
+      "tools/play/test_palette_qualification.py": "4ba3c1dff54a187b051193dd0df64609935b55f61195778082218bb5ed1c2b2c",
+      "tools/ci/materialize_lfs.py": "9a98d7c1d5535691afeb1d0a794e1b2ae7258f1aaaa89df4ae25607267a01efb",
+      "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+    },
+    "reviewed_files_unchanged": true,
+    "finished_at": "2026-11-26T00:13:26.429116+00:00",
+    "frozen_source": {
+      "commit": "4bb903109321bdc343eaebcb3da86bfec19bd4dc",
+      "tree": "985955bf0f9cec25b1b78742950deb8000900fc0",
+      "all_reviewed_files_match": true,
+      "tracked_status": ""
+    }
+  },
+  "documentation_note": "The obsolete shard-acquisition sentence is corrected in the exact final two-file follow-up.",
+  "followup": {
+    "source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+    "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+    "returncode": 0,
+    "seconds": 1.1982430799998838,
+    "log": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/lfs-fanout-independent/test_lfs_runtime_artifact-d64b3886.log",
+    "sha256": "8f1941778879c44201cc4b2ac8badd486dc805d0934cac0dc1ae8469b13a416f",
+    "test_sha256": "33dedbc5e73e432d314c3bb364c51dc3dd18ae852d567f9234e11ac662d0fb10",
+    "scope": "documentation correction plus canonical temporary fixture root only; production and workflows unchanged",
+    "disposition": "APPROVE SOURCE ADMISSION FOR FULL READY QUALIFICATION"
+  },
+  "final_candidate": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "final_tree": "984c94a6e312261120dffb4ad3625a6030d2f359"
+}

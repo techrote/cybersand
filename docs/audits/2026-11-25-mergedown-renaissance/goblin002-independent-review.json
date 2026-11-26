@@ -474,5 +474,99 @@
     "Current resulting-source full platform qualification",
     "Relevant Goblin/AMBIENT actor interactions",
     "Programme owner acceptance decisions and physical playfeel remain unclaimed"
-  ]
+  ],
+  "combined_ambient_foundation_review": {
+    "case": {
+      "case": "goblin_ambient_integration",
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-ambient-independent-21c9a667/project",
+        "--script",
+        "res://goblin/tests/test_ambient_integration.gd"
+      ],
+      "completion_marker": "GOBLIN_AMBIENT_INTEGRATION_RESULT ",
+      "completion_observed": true,
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 347,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 9.587,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 347,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "d1135d3e71c78ff8ced7af2e32eade90891d40bc8de9729526ebd7da8439c5fc",
+      "memory_limit_mib": 3072,
+      "observed_processes": 1,
+      "peak_tree_rss_bytes": 590127104,
+      "process_exit_status": "pass",
+      "resource_samples": 94,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 180
+    },
+    "original_failures": [
+      {
+        "classification": "Fixture requested a policy observation after ordinary Pause suspended authority",
+        "diagnostic_errors": [
+          "ERROR: GOBLIN_AMBIENT: ambient owner supplies a source-bound issued observation"
+        ],
+        "directory": "goblin-ambient-d3dd",
+        "elapsed_seconds": 6.373,
+        "log_sha256": "0aa53cc760e2a822939271dbfe68ef56cdcae0a1f06432f215c747375d92d9e9",
+        "source": "d3ddcbd829f0355cc381cdf20344fc9daf6731c6",
+        "status": "test_failure",
+        "tree": "2dd70473ffe36c36ac70e9105af93dc324f1fba1"
+      },
+      {
+        "classification": "Fixture expected synchronous sensor retirement; actual Main performs retirement on its next ordinary process pass",
+        "diagnostic_errors": [
+          "ERROR: GOBLIN_AMBIENT: last ambient producer's pilot handoff retires its native material cache"
+        ],
+        "directory": "goblin-ambient-policy-fix",
+        "elapsed_seconds": 7.899,
+        "log_sha256": "5f43cb7cec17f97e98e0d0203c5e43a6ac4eaffa058aaffd9d3f42227b676ab7",
+        "source": "af5efb579dac7549f0abd900dce28b76fc6dbecc",
+        "status": "test_failure",
+        "tree": "c26170ea503480364e677f9129d8e2ee3e1276dc"
+      }
+    ],
+    "report_sha256": "eea51542bb6537200fe70b1af96c0826c39c6611b6721842806403b452308a33",
+    "runtime_custody_before_after_equal": true,
+    "snapshot_inputs": 1005,
+    "source": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
+    "source_archive_sha256": "e3a6ad7b0ba0759528809320b7d972231937c9fc59fadbc657701767f788411f",
+    "tree": "72447242d2088d66c2f7f10ed5fead66a7c15ae0",
+    "verified_archived_source_entries": 845,
+    "integration_check_count": 447,
+    "typed_actions": [
+      "play",
+      "pause",
+      "actor_pilot",
+      "play",
+      "actor_drive",
+      "pause",
+      "actor_hand_back",
+      "play",
+      "pause",
+      "save_layout",
+      "reopen_layout"
+    ],
+    "native_oracle_status_counts": {
+      "pass": 410,
+      "not_applicable": 1
+    },
+    "application_report_sha256": "13c857acc1eb59be0089d1b747b595c6fe7446683ad3c70a184862e8798dfc7f",
+    "reviewer": "Specialist C",
+    "disposition": "APPROVE PREPARED SOURCE AND TEST; CURRENT FULL-PLATFORM AND OWNER GATES REMAIN",
+    "independently_executed": true,
+    "fixture_repairs_change_production": false,
+    "inner_not_applicable": {
+      "id": "authored_reopen_materials",
+      "reason": "Native body protection prevents full capture.",
+      "status": "not_applicable"
+    }
+  }
 }
