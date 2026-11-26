@@ -1,0 +1,40 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_SESSION_CHECK archive directory available true
+ART_SESSION_CHECK legacy pending-history directory available true
+ART_SESSION_CHECK retained legacy fixture true
+ART_SESSION_CHECK retained legacy receipt fixture true
+ART_SESSION_CHECK old profile points to missing archive true
+ART_SESSION_CHECK ordinary startup constructs no Art panel true
+ART_SESSION_CHECK Art starts with empty in-memory conversation even when profile points to deleted archive true
+ART_SESSION_CHECK old predecessor never opened, copied or linked true
+ART_SESSION_CHECK idle Art creates no new file true
+ART_SESSION_CHECK revealing Art cannot load previous session true
+ART_SESSION_CHECK native Workbench ready true
+ART_SESSION_CHECK new session begins with writable audit true
+ART_SESSION_CHECK first event creates independent root JSONL true
+ART_SESSION_CHECK first log has no parent true
+ART_SESSION_CHECK root file holds the current turn without a linked predecessor true
+ART_SESSION_CHECK missing or surviving historical chat never enters current session true
+ART_SESSION_CHECK model context includes only current-session turns true
+ART_SESSION_CHECK Key dialog registers secret immediately true
+ART_SESSION_CHECK direct JSON write reaches terminal log event true
+ART_SESSION_CHECK manual operation and native result share the same file true
+ART_SESSION_CHECK pre-Send Direct JSON audit redacts custom credential values and nested dictionary keys true
+ART_SESSION_CHECK missing saved log cannot block Send true
+ART_SESSION_CHECK Send appends to the same session file true
+ART_SESSION_CHECK request snapshots store manual replay parameters true
+ART_SESSION_CHECK request parameters and body redact the selected key before the first event true
+ART_SESSION_CHECK preferences remain readable true
+ART_SESSION_CHECK new profile does not persist a conversation log pointer true
+ART_SESSION_CHECK hide/reveal reuses the same live conversation and file true
+ART_SESSION_CHECK legacy archive and native receipts remain byte-identical true
+ART_SESSION_CHECK new Workbench never remembers previous model context true
+ART_SESSION_CHECK new Workbench does not reuse prior file true
+ART_SESSION_CHECK new session opens its own root audit true
+ART_SESSION_CHECK distinct game sessions create distinct files true
+ART_SESSION_CHECK second log is independent and contains only its own turns true
+ART_SESSION_CHECK new session never changes previous files true
+ART_SESSION_RESULT {"checks":35,"failures":[],"first":"user://art-traffic/57553d8a1e3939c3d669fbe6f21ae08b.jsonl","godot":"4.7-stable (official)","os":"Linux","second":"user://art-traffic/2cfdff1b3de891e5b1d3bdf34eb4e1c9.jsonl"}

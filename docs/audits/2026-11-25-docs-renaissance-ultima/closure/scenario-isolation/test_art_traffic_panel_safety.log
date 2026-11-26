@@ -1,0 +1,17 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_TRAFFIC_PANEL_CHECK stale profile configured true
+ART_TRAFFIC_PANEL_CHECK corrupt old archive does not become model context true
+ART_TRAFFIC_PANEL_CHECK no restoration or predecessor binding true
+ART_TRAFFIC_PANEL_CHECK new in-memory Conversation can open despite old archive true
+ART_TRAFFIC_PANEL_CHECK new session writes despite invalid old archive true
+ART_TRAFFIC_PANEL_CHECK new session has independent file true
+ART_TRAFFIC_PANEL_CHECK past-session failure does not block native Undo/Redo true
+ART_TRAFFIC_PANEL_CHECK current-session audit exports true
+ART_TRAFFIC_PANEL_CHECK export contains only current session data true
+ART_TRAFFIC_PANEL_CHECK Stop does not rotate session file true
+ART_TRAFFIC_PANEL_CHECK preferences no longer persist traffic pointers true
+ART_TRAFFIC_PANEL_CHECK legacy traffic and journal untouched true
+ART_TRAFFIC_PANEL {"checks":12,"failures":[],"scope":"no-history-restore"}

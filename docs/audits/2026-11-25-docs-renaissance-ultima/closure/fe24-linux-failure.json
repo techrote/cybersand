@@ -1,0 +1,11 @@
+{
+  "source": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "tree": "9c14659bc6a57c1f1e28b71e10c504b184078d63",
+  "archive": "fe24-linux-failed-profile-isolation.zip",
+  "sha256": "a077decbca500b0bb55e3777c88697f6ef6811faf2c55e913076c7477254cc67",
+  "bytes": 407778,
+  "files": 188,
+  "scope": "Original local Linux failed aggregate; complete7 storage matrices passed.17 normal records passed, ArtSession failed its clean-profile precondition; remaining11 normal records not reached. No owner data or generated profile directory included.",
+  "status": "failed",
+  "failure": "Art session test exact file-count assertion sees two retained files from preceding independent Art panel fixture; product idle behavior unchanged."
+}
