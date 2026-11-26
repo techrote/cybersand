@@ -1,0 +1,29 @@
+{
+  "authority": "historical-non-authoritative",
+  "command": "PYTHONPATH=tools/ci python -m unittest tools.ci.test_qualify_ultima_launcher",
+  "exit_code": 0,
+  "inputs_sha256": {
+    "tools/ci/package_ultima_evaluator.py": "7324a8d3cd9bbad6ae3e6aed41e543eaaa639463abdc2efe18b244a4edc9b35e",
+    "tools/ci/qualify_ultima_launcher.py": "4bc34838ac8f92ae5c61255c9d9fbbe730fa9db9795329d53cc1de28dfad8d55",
+    "tools/ci/test_qualify_ultima_launcher.py": "c206a3bd16dbf34727fcfcd97dcebd730c800d98c5ae10c7397bc75f8b2721ea"
+  },
+  "inputs_unchanged": true,
+  "limits": [
+    "These tests ran on Linux, including actual disposable POSIX child processes",
+    "Windows cmd parsing, pinned Windows engine startup and graphical renderer must still execute in the hosted gate",
+    "No live owner profile, credentials or paid provider used"
+  ],
+  "review_scope": [
+    "Read entire helper, controls and shipped batch generator",
+    "Copy bound to independently retained manifest digest and every original payload byte",
+    "Actual .cmd must launch pinned import and runtime, use directory with spaces and isolated disposable userdata",
+    "Authored four-file save/reopen requires correct formats, fixture values and unchanged bytes across processes",
+    "Engine error, timeout, forced termination, skip, duplicate or failed terminal and leaked userdata refuse",
+    "Optional renderer run accurately labelled automatic graphical startup; no manual or physical endorsement"
+  ],
+  "reviewer": "Specialist C",
+  "schema": 1,
+  "status": "approved",
+  "test_count": 9,
+  "test_log": ".........\n----------------------------------------------------------------------\nRan 9 tests in 0.674s\n\nOK\n"
+}

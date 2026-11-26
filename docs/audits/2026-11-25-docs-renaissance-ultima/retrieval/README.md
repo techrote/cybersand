@@ -140,3 +140,29 @@ blind experiment. Original treatment outputs and judgments remain retained.
 Final accepted-main integration and any subsequent source-matched evaluations
 are separate checkpoints; these records never attach an earlier score or GUI
 observation to a changed source.
+
+## Closure recovery after the scratch reset
+
+The earlier sections retain their original checkpoint scope. The environment
+reset on 26 November removed unpublished scratch outputs. The
+[recovery inventory](closure-recovery-custody.json) distinguishes published
+historical/v1/v2 records from missing final e487 context/comparison receipts.
+The original held-out payload is unavailable: its retained seal and chronology
+cannot reproduce that evaluation. No replacement is represented as the original.
+The unpublished comparison-checker experiment was never shipped and is not a
+validation dependency of the delivered retriever.
+
+The fresh closure pass reconciled accepted main `67c1413a` without changing the
+frozen method, original evaluator or fixtures. [Authority and custody review](closure-main-authority-review.json)
+records the 155-document corpus, four explicit AMBIENT evidence routes, two
+historical acquisition notes, six verified remote original identities, and
+69 passing isolation/selection/cache tests. The original six records were
+already excluded by the v4 selector; this correction makes metadata and
+reader routes consistent, rather than claiming a newly reproduced answer leak.
+
+[Acquisition review](closure-lfs-independent-review.json) records 37 independent
+local tests of the reconciled source-bound LFS and runtime-transport helpers.
+[Launcher admission review](closure-launcher-independent-review.json) records
+nine local controls and review of the shipped batch invocation. Windows batch
+and graphics execution still require their actual hosted gate; neither receipt
+claims physical owner acceptance or recovery of the live LFS service.
