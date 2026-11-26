@@ -1,0 +1,14 @@
+test_all_four_files_must_be_in_launcher_userdata (test_qualify_ultima_launcher.LauncherAdmission.test_all_four_files_must_be_in_launcher_userdata) ... ok
+test_empty_failed_or_duplicate_terminal_refuses (test_qualify_ultima_launcher.LauncherAdmission.test_empty_failed_or_duplicate_terminal_refuses) ... ok
+test_graphical_needs_actual_renderer_record (test_qualify_ultima_launcher.LauncherAdmission.test_graphical_needs_actual_renderer_record) ... ok
+test_real_natural_zero_preserves_both_streams (test_qualify_ultima_launcher.LauncherAdmission.test_real_natural_zero_preserves_both_streams) ... ok
+test_real_timeout_and_error_hang_are_not_natural_success (test_qualify_ultima_launcher.LauncherAdmission.test_real_timeout_and_error_hang_are_not_natural_success) ... ok
+test_real_zero_exit_with_engine_error_refuses (test_qualify_ultima_launcher.LauncherAdmission.test_real_zero_exit_with_engine_error_refuses) ... ok
+test_space_containing_cmd_has_outer_and_inner_quotes (test_qualify_ultima_launcher.LauncherAdmission.test_space_containing_cmd_has_outer_and_inner_quotes) ... ok
+test_truncated_save_and_duplicate_user_location_refuse (test_qualify_ultima_launcher.LauncherAdmission.test_truncated_save_and_duplicate_user_location_refuse) ... ok
+test_two_engine_starts_and_requested_reopen_required (test_qualify_ultima_launcher.LauncherAdmission.test_two_engine_starts_and_requested_reopen_required) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.675s
+
+OK
