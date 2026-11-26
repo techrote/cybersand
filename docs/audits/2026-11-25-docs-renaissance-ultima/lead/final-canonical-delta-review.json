@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Astra lead",
+  "date": "2026-11-26",
+  "prior_source": "32eb3e86de2095db1323d3ddf405509224225175",
+  "current_document_snapshot": "21f5f78e85bd9a6323bc4b3bb768fe89f1ee7fde",
+  "prior_all151_hashes_verified_against_git_snapshot": true,
+  "documents": [
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "prior_complete_review_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066",
+      "current_sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583",
+      "diff_sha256": "b25e5b08e85aa45262f090f10cdc31f29f2900f20177d282eca0720a273256f9",
+      "diff_bytes": 1966,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Reviewed each newly named caller against the shared per-file mechanism and actual failure receipts; retained generated embedded recipe and recorder multi-file boundary."
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "prior_complete_review_sha256": "bf07fe2f9781906e4db8c226dd8fc33020b99927f6fdba681d49c45a39891f55",
+      "current_sha256": "0eafa45b1c6c0bf840340c91242f9e14980a70d978d3b2197030d8da9e465194",
+      "diff_sha256": "e07b3878bd8f7d00fc2d0ac1645ce8ff4d1ce6d523706a91acf5df1f0ddd6d27",
+      "diff_bytes": 3203,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Verified accepted #771/#778 source status, exact engine asset identity and unchanged provenance controls; prior source inventory is explicitly dated."
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "prior_complete_review_sha256": "57f5a6e0162d8f6f91e009e8cc52b9dfacfccd3602c503a2eda51a8a5a542bef",
+      "current_sha256": "d9dd0dab4ae46e06050e5e8b0b2f369fa3a3d5f8de4cb8d36ff1d5b8244f4ec0",
+      "diff_sha256": "9595b89ce3b9990ebb4c1e3b46a36494e5d057b80839fba8136051f8620b4592",
+      "diff_bytes": 2576,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Verified unchanged frozen32 and accepted33 identities, separate corrected CI fixture, CLI --queries support and no historical-source admission to obtain a score."
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "prior_complete_review_sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8",
+      "current_sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631",
+      "diff_sha256": "0f98028204651ba14360283dda8e0a3bcc4831e0ba9d66ac5d678c81617b6df5",
+      "diff_bytes": 2558,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Compared policy/observation buttons, independent status, verified-byte commit and clipboard readback with source and B/A/C actual cases; blind/physical/browser boundaries remain."
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "prior_complete_review_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "current_sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9",
+      "diff_sha256": "dda176f7389ffa5e0284a3be40ae0f0fc9ff0a828796c1655929c3daa91fed2a",
+      "diff_bytes": 2387,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Reconciled accepted #758 merge be87b18b with source-exact tooling versus historical ZIP and unexecuted physical owner acceptance."
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "prior_complete_review_sha256": "7d2d376a06f4fb80731a54d93abfa5326901d032840f358915d241eda9f17c08",
+      "current_sha256": "41422db565378841a3ac135dfde94541e0026488a76ab194f6249216ff772d74",
+      "diff_sha256": "08cea26e18963bc04e086e7c1bdb653bc482f19abc2a6273b3ddabd1e08c3fee",
+      "diff_bytes": 2941,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Read the complete changed Status section and surrounding current comparison/campaign boundary; independently verified #215/#217/#226 merges and accepted e95 ancestry. No ranking alias or fixture change."
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "prior_complete_review_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "current_sha256": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d",
+      "diff_sha256": "f1436417f740a00c8ab8f5bb378e7110389103a4019de5dd8379fb3ded0a3826",
+      "diff_bytes": 1786,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Compared Save experiment envelope with actual helper, file dialog refusal and profile regression receipts; candidate preset and compiled bundle remain separate paths."
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "prior_complete_review_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+      "current_sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41",
+      "diff_sha256": "059cd034c74ed504db066cac9c97816a7e5fd69dc488be4a17ba929a9b1e4772",
+      "diff_bytes": 3085,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Reviewed both new blocks against authored Art implementation: preferences/live controls, bounded closed export verification/cancel, append-tail refusal, private receipt inactivity and no automatic replay."
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "prior_complete_review_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+      "current_sha256": "fc47275b4e037182c4d438cb1cf0dcfaea4528d9a852d7055115cb5fb4d140ad",
+      "diff_sha256": "84cf1142d328cad468b1297e6c5bd7c280ad346c4eec6206f853ffea6977df12",
+      "diff_bytes": 12713,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Reviewed complete accepted-foundation and active-candidate delta against live main c842, accepted #736/#758/#771/#778/#772 and unmerged successors; no candidate feature silently promoted."
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "prior_complete_review_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "current_sha256": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3",
+      "diff_sha256": "59279bdf0f2675ec79d2a136c62a3e70e1313b5c680eea6c656163f1e62342ea",
+      "diff_bytes": 1727,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Checked Save user copy and separate Apply/restart control, preserved prior file/editor/running profile on refusal and native/browser boundary."
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "prior_complete_review_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "current_sha256": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2",
+      "diff_sha256": "ba86d5ce6939fb01bcb791514088b9441871160dd5fed7e596ef113366020aeb",
+      "diff_bytes": 2113,
+      "depth": "Complete intervening diff and affected context read; targeted source/evidence checks. Prior complete-body review retained, not relabelled as a new exhaustive full-document source audit.",
+      "finding": "Checked Save accepted acknowledgement after verified replacement, retained accepted preview and scoped dialog/retry path with source and actual B/A receipts."
+    }
+  ],
+  "limits": [
+    "This is semantic amendment review with selected source/experiment checks, not a new GUI run or exhaustive proof of every claim.",
+    "Current canonical source identities are separate from accepted-main and final runtime qualification identities."
+  ]
+}

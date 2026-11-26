@@ -1,0 +1,53 @@
+{
+  "file": {
+    "bytes": 9562,
+    "sha256": "f8ce769a2778ea2c40b01ce65284dc7d7c51ccb23ef0f8f52c6f8fab5fd7e16d"
+  },
+  "clipboard_saved_from_actual_Mousepad_paste": {
+    "bytes": 9562,
+    "sha256": "f8ce769a2778ea2c40b01ce65284dc7d7c51ccb23ef0f8f52c6f8fab5fd7e16d"
+  },
+  "byte_equal": true,
+  "parsed_equal": true,
+  "context_keys": [
+    "active",
+    "active_blocks",
+    "actor_prototypes",
+    "actor_usables",
+    "floor",
+    "input_limit",
+    "inputs",
+    "liquid_construction_attempt",
+    "liquid_construction_receipt",
+    "liquid_host_observation",
+    "liquid_solver_policy",
+    "micro_active",
+    "micro_capture",
+    "micro_capture_serial",
+    "microscenario",
+    "moves",
+    "native_default_demo",
+    "paused",
+    "player_environment_profile",
+    "profile",
+    "profile_hash",
+    "sampled_character_enabled",
+    "sampled_runtime_recovery_enabled",
+    "scenario_request_applied",
+    "scenario_request_serial",
+    "status",
+    "tick",
+    "visited_cells",
+    "water_accounting",
+    "water_actions",
+    "water_active",
+    "water_blind_label",
+    "water_exit_request_applied",
+    "water_exit_request_serial",
+    "water_observations",
+    "water_policy",
+    "water_policy_hash",
+    "water_policy_provenance",
+    "water_recipe_hash"
+  ]
+}

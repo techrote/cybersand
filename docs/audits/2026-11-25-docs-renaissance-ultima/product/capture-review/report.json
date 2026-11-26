@@ -1,0 +1,258 @@
+{
+  "schema": "microscenario-capture-qualification-v1",
+  "authority": "historical-non-authoritative",
+  "source_head": "63e8f753ecce5d2f19c54808a4bfbd8da406ab23",
+  "platform": "linux",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "input_sha256": {
+    "godot/scripts/main.gd": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1",
+    "godot/tests/run_microscenario.gd": "17b60c51f554fa3a7749e7f2430e842714c5586b072f42b9ca1c3cdafda6d79e",
+    "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "godot/tests/microscenario_capture_fault_child.gd": "75430a7df18ee1c27cb7efe893180ef5a01ae026f902cbadaa9998dc2c4aa8ba",
+    "tools/ci/run_microscenario_capture_qualification.py": "0063fad09aacde7904730c72788ebd7c3f610aba1eb0bc316304a46ffe5b95d1",
+    "tools/ci/run_workbench_save_qualification.py": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117"
+  },
+  "status": "passed",
+  "completed": true,
+  "cases": [
+    {
+      "kind": "controller",
+      "evidence_class": "real-public-caller",
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "12707fb4e1b3e5f03fe799bafd91504edf867e302824dbfe0a0a05bb1828c6b1",
+        "bytes": 851,
+        "value": "old",
+        "json_valid": true,
+        "log": "1-controller-old.log",
+        "log_sha256": "5b07c2996318769ae76ac024eb514fb944aadaaf805e7beb842644864408d6fc",
+        "acknowledgements": 1,
+        "acknowledged_value": "old"
+      },
+      "replacement": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "beeee068d7a8ecfb113342345a179c1987a7b7fb3a7977f81f8d2716208b8c20",
+        "bytes": 851,
+        "value": "new",
+        "json_valid": true,
+        "log": "2-controller-new.log",
+        "log_sha256": "663bedd472cd028b47f607ca43fbaa2cb740c206cad33c96d464ad11da5aff24",
+        "acknowledgements": 1,
+        "acknowledged_value": "new"
+      },
+      "stale_tmp_sha256": "bb6bb1535f45f7184353766d52eaf9dff45ae900cb95b79808566b54895dd706"
+    },
+    {
+      "kind": "controller",
+      "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "12707fb4e1b3e5f03fe799bafd91504edf867e302824dbfe0a0a05bb1828c6b1",
+        "bytes": 851,
+        "value": "old",
+        "json_valid": true,
+        "log": "3-controller-old.log",
+        "log_sha256": "5b07c2996318769ae76ac024eb514fb944aadaaf805e7beb842644864408d6fc",
+        "acknowledgements": 1,
+        "acknowledged_value": "old"
+      },
+      "refusal": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "MicroScenario capture: Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "exit_code": 0,
+        "sha256": "12707fb4e1b3e5f03fe799bafd91504edf867e302824dbfe0a0a05bb1828c6b1",
+        "bytes": 851,
+        "value": "old",
+        "json_valid": true,
+        "log": "4-controller-new.log",
+        "log_sha256": "5fa4872fb6815d531a7a2ac9840355921b4794f7912df6946723ae924ac86274",
+        "acknowledgements": 0,
+        "acknowledged_value": "previously acknowledged"
+      },
+      "retry": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "beeee068d7a8ecfb113342345a179c1987a7b7fb3a7977f81f8d2716208b8c20",
+        "bytes": 851,
+        "value": "new",
+        "json_valid": true,
+        "log": "5-controller-new.log",
+        "log_sha256": "663bedd472cd028b47f607ca43fbaa2cb740c206cad33c96d464ad11da5aff24",
+        "acknowledgements": 1,
+        "acknowledged_value": "new"
+      },
+      "limit_bytes": 128
+    },
+    {
+      "kind": "controller",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "12707fb4e1b3e5f03fe799bafd91504edf867e302824dbfe0a0a05bb1828c6b1",
+        "bytes": 851,
+        "value": "old",
+        "json_valid": true,
+        "log": "6-controller-old.log",
+        "log_sha256": "5b07c2996318769ae76ac024eb514fb944aadaaf805e7beb842644864408d6fc",
+        "acknowledgements": 1,
+        "acknowledged_value": "old"
+      },
+      "refusal": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "MicroScenario capture: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "exit_code": 0,
+        "sha256": "12707fb4e1b3e5f03fe799bafd91504edf867e302824dbfe0a0a05bb1828c6b1",
+        "bytes": 851,
+        "value": "old",
+        "json_valid": true,
+        "log": "7-controller-new.log",
+        "log_sha256": "fbff578e2e213b88b89c49b28c0499d308388ca41a59e70d2faec4817a5d6db9",
+        "acknowledgements": 0,
+        "acknowledged_value": "previously acknowledged"
+      },
+      "retry": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/profile-dx729wnm/godot/app_userdata/Cyber Sand Reference Sandbox/microscenario-observation.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "beeee068d7a8ecfb113342345a179c1987a7b7fb3a7977f81f8d2716208b8c20",
+        "bytes": 851,
+        "value": "new",
+        "json_valid": true,
+        "log": "8-controller-new.log",
+        "log_sha256": "663bedd472cd028b47f607ca43fbaa2cb740c206cad33c96d464ad11da5aff24",
+        "acknowledgements": 1,
+        "acknowledged_value": "new"
+      }
+    },
+    {
+      "kind": "cli",
+      "evidence_class": "real-public-caller",
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "8af6c467fd93e475bc2c2f33e800393ab5325adb511b224ec8458574f169e581",
+        "bytes": 14205,
+        "value": 11,
+        "json_valid": true,
+        "log": "9-cli-old.log",
+        "log_sha256": "ade4f3124bee575076c7f520baca3f0d6f296a585227266cb8b47e8dc1ace994",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "replacement": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "3a5311596b948d09f16bae40473a05f7e7c201852d9d02852181aeb322a790f0",
+        "bytes": 14206,
+        "value": 12,
+        "json_valid": true,
+        "log": "10-cli-new.log",
+        "log_sha256": "0792b4bba5db72d6d311fd8c943e91553451adceea5996d8dcabac678dabb0a2",
+        "output_argument": "../../b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "stale_tmp_sha256": "bb6bb1535f45f7184353766d52eaf9dff45ae900cb95b79808566b54895dd706"
+    },
+    {
+      "kind": "cli",
+      "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "f231709d115d307edcf2b149bd4e151ec2613ef97f2a4b99e094bf1b46ba5acc",
+        "bytes": 14205,
+        "value": 11,
+        "json_valid": true,
+        "log": "11-cli-old.log",
+        "log_sha256": "ade4f3124bee575076c7f520baca3f0d6f296a585227266cb8b47e8dc1ace994",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "refusal": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "MICROSCENARIO_ERROR: MicroScenario capture: Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "exit_code": 2,
+        "sha256": "f231709d115d307edcf2b149bd4e151ec2613ef97f2a4b99e094bf1b46ba5acc",
+        "bytes": 14205,
+        "value": 11,
+        "json_valid": true,
+        "log": "12-cli-new.log",
+        "log_sha256": "9bb54ebbacbe15a8bed8ab4a069d28530514a6d04c5ab249d71d35bfd0fcbb69",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "retry": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "849f23306803ddf976361a06cf785fc25bd819bec3a643e5d249e80f5622ff19",
+        "bytes": 14206,
+        "value": 12,
+        "json_valid": true,
+        "log": "13-cli-new.log",
+        "log_sha256": "11088c1d421776658a98933122e3b024b25a6650120c4d84279365d53e89a4e3",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "limit_bytes": 12416
+    },
+    {
+      "kind": "cli",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "b59973461d50d24126b980a514e566965bb0e89f4b4e27a7bd923e5a54ac77a9",
+        "bytes": 14205,
+        "value": 11,
+        "json_valid": true,
+        "log": "14-cli-old.log",
+        "log_sha256": "ade4f3124bee575076c7f520baca3f0d6f296a585227266cb8b47e8dc1ace994",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "refusal": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "MICROSCENARIO_ERROR: MicroScenario capture: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "exit_code": 2,
+        "sha256": "b59973461d50d24126b980a514e566965bb0e89f4b4e27a7bd923e5a54ac77a9",
+        "bytes": 14205,
+        "value": 11,
+        "json_valid": true,
+        "log": "15-cli-new.log",
+        "log_sha256": "76ed721a113dfc9e9bc51fba75bea695b050926f842deff39e9e1483d53d1014",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      },
+      "retry": {
+        "path": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json",
+        "error": "",
+        "exit_code": 0,
+        "sha256": "538161006a07bc6c71a8f299d1e4e5427ef9d84cf348e56531a5556791e281e6",
+        "bytes": 14206,
+        "value": 12,
+        "json_valid": true,
+        "log": "16-cli-new.log",
+        "log_sha256": "11088c1d421776658a98933122e3b024b25a6650120c4d84279365d53e89a4e3",
+        "output_argument": "/workspace/scratch/1c5fccfbe328/b-capture-final-review with spaces/outputs/cli.json"
+      }
+    }
+  ],
+  "limits": [
+    "Headless controller method and native CLI, not fresh graphical/browser observation",
+    "No physics acceptance or power-loss/storage durability claim",
+    "Same helper fault-boundary suite is qualified separately"
+  ]
+}

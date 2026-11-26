@@ -1,0 +1,30 @@
+{
+  "scope": "actual manual Linux software-rendered profile UI; no physical/browser qualification",
+  "source_head_at_launch": "38ec43e2341c061e9021f692c898813c499357ad",
+  "tracked_dirty_at_launch": " M godot/scripts/main.gd\n M godot/scripts/material_lab_panel.gd\n M godot/scripts/tower_panel.gd\n M godot/scripts/transport_profile_panel.gd\n M godot/scripts/worldgen_workbench.gd\n",
+  "command": [
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--audio-driver",
+    "Dummy",
+    "--resolution",
+    "1366x1024",
+    "res://worldgen_workbench.tscn"
+  ],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "inputs_before": {
+    "godot/scripts/worldgen_workbench.gd": "7c735ab9816ce5217497c687c5795670e29b43c3f7d46d1de4845be2bec4b5b6",
+    "godot/scripts/material_lab_panel.gd": "a5edcf827660300fbfa7985c54cfa6c4cb4b07d820275a5ec2d547f06ecf36f9",
+    "godot/scripts/transport_profile_panel.gd": "83ef93ba5e520eb06289f82008734d3593af9b5d3605d1e749977a75c6cc3e8b",
+    "godot/scripts/main.gd": "31baa5fa3428769dcf00cace26d4425e46fc5de5c541630eafb456eb0a4b0af1",
+    "godot/scripts/tower_panel.gd": "89db69ec0d9e96427eec63d1bf821d46330f73fa20d34b1898dfbba54175e58e",
+    "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa"
+  },
+  "started_utc": "2026-11-25T22:43:11.331166+00:00"
+}

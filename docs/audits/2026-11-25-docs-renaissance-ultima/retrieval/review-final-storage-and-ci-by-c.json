@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "reviewed_root_head": "9be42a26a50b887335277065c09384eda2155da0",
+  "input_sha256": {
+    "tools/ci/materialize_lfs.py": "cd39d0e97a829f5f8db64c0b59585338905ebf9f2d35010fe2054c078bda279a",
+    "tools/ci/test_materialize_lfs.py": "e104450864dd5c6eae91e1ceb57f455c5a1cf91725bad05ae2f0d09500b2423a",
+    ".github/workflows/in-tools-361-windows-gate.yml": "ba9c1f8907b5231932942d1eb194882f0be2e26eeb296e1b3c84e3d4472b321c",
+    ".github/workflows/art-session-logging.yml": "c7e8d9ab74ab07f3e3a780836eec1db2a8359696cbe1a0835879ae738cca8794",
+    ".github/workflows/ultima-qualification.yml": "6a7efd9efded202fb2f6dccbf21298958036911920a90977f6e7d5aa65ac23ef",
+    "tools/ci/run_ultima_qualification.py": "d71f2feb8e20f63bc16a2f9e68edf4cd138eb9c7ee188bd8c191356ebd1baf05",
+    "tools/ci/package_ultima_evaluator.py": "7324a8d3cd9bbad6ae3e6aed41e543eaaa639463abdc2efe18b244a4edc9b35e",
+    "tools/ci/test_package_ultima_evaluator.py": "73be3302fbf9c28fda6611a1080b93d50f7de7073deb4d16b16b506d409de7b1",
+    "godot/scripts/art_batch_panel.gd": "f49cb12c8b5c02bbc538f9ae9d95f5589cb0bbdcb44ac29e1d3cf85406e3ab4d",
+    "godot/tests/art_storage_fault_child.gd": "a8e6973917a5ecc28af62f1c0ad09db89058060efbe0f95784fde3a733cc5ade",
+    "tools/ci/run_art_storage_qualification.py": "37d0024fffb27a431f95ad148fca0e5bb008029c7f1ba6047caf22bb15deda46",
+    "tools/ci/run_tower_observation_qualification.py": "ef2122cb1a070e244ac3865afc37c6edee5647f4f3cb31eb06924eef7e29422a"
+  },
+  "lfs_acquisition": {
+    "verdict": "APPROVE",
+    "implementer": "Lead",
+    "commit": "171f5e970",
+    "independent_tests": 9,
+    "result": "PASS",
+    "checks": [
+      "Only recognized transient service/connection errors retry;401/403/404,authorization,permission and ambiguous failures stop, including mixed outputs",
+      "Total shared dependency allowance and three-attempt bound preserved; process timeout retains partial log then fails",
+      "Existing selected artifacts, engine checks and causal/source provenance gates unchanged",
+      "Fresh output directory required after C identified possible prior-log overwrite; existing receipt bytes preserved and no command invoked in negative test"
+    ],
+    "limits": "No service recovery is inferred; earlier real hosted LFS outage still requires an actual subsequent acquisition run."
+  },
+  "package_admission": {
+    "verdict": "APPROVE after independently reproduced contradiction fixed",
+    "implementer": "Lead",
+    "fix_commit": "75139a64a",
+    "independent_tests": 78,
+    "result": "PASS",
+    "normal_required_cases": 26,
+    "windows_matrices": {
+      "Art": 9,
+      "diagnostic": 8,
+      "Tower": 4
+    },
+    "original_counterexamples": "art-package-contradiction-before.json",
+    "fixed_counterexamples": "art-package-contradiction-after.json",
+    "actual_linux_panel_records_independently_validated": 7,
+    "checks": [
+      "Distinct required normal and failure tuples, exact source/engine identity and natural completion; skip/failure summaries refused",
+      "Diagnostic/Tower before7 replacement8 and failed-write unchanged digest/bytes/ACK enforced",
+      "New Art panel rows cannot contradict their passed summary: missing/invalid results, lost bytes/receipt/order/clock, false guards and leaked staging are rejected"
+    ],
+    "limits": "Synthetic package admission and actual Linux-result positive controls; no Windows execution by C."
+  },
+  "art_panel": {
+    "verdict": "APPROVE",
+    "implementer": "A",
+    "fix_commit": "73da90d5b",
+    "independent_run_source_head": "fbd1068d1bbfc533504bc222b58fbd7d294ba7ea",
+    "independent_input_sha256": {
+      "scripts/art_provider.gd": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+      "scripts/art_traffic_archive.gd": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+      "scripts/art_batch_panel.gd": "833c459bf58e2f3d2ac4e56c061c9d2448b30d8ab3d5a5c5c036cc0bf8833d2d",
+      "scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+      "native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "tests/art_storage_fault_child.gd": "a8e6973917a5ecc28af62f1c0ad09db89058060efbe0f95784fde3a733cc5ade"
+    },
+    "runner_sha256": "37d0024fffb27a431f95ad148fca0e5bb008029c7f1ba6047caf22bb15deda46",
+    "report_sha256": "ecc87c5a7e9d19d32f5701abb87872b66353880335f26060f8e35b596ef67a33",
+    "cases": 13,
+    "passed": true,
+    "inputs_unchanged_during_run": true,
+    "post_run_difference": "Final source changes only the separate message awaits a durable journal. to awaits a verified journal file.; reversing that exact phrase reconstructs the recorded complete file hash. The13-case run is not relabelled as a later exact-head run.",
+    "checks": [
+      "Settings typed/Unicode ConfigFile reload, old7 retained under real failures and retry8",
+      "1MiB and prior profile-admission guards remain; successful retry clears only own save error",
+      "Pending journal retains short staging names, schema1 prior receipt and schema2 frozen projection/order, refusal clock, retry and stale-file custody",
+      "Existing-receipt negative is a real admission refusal, not an OS lock"
+    ],
+    "limits": [
+      "Mounted private panel storage methods, not a provider request/native drawing or restored conversation",
+      "Linux13 executed; Windows9 needs separate hosted receipt",
+      "No fsync/power-loss/hostile-directory interference guarantee"
+    ]
+  },
+  "tower_export": {
+    "verdict": "APPROVE",
+    "implementer": "B",
+    "independent_run_source_head": "68c8d47d9a4cf9d32ab6eef25db8b26442f2c8ed",
+    "input_sha256": {
+      "godot/scripts/main.gd": "033bea857f26715825bd9f80090dcb4de3eab94f9905ff35c524b146f642c30c",
+      "godot/scripts/tower_panel.gd": "4b9f16268c423cbbcf5f2eebcc478e2bee71b8341f7d41a632c186459e7e908f",
+      "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+      "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "godot/scripts/experiment_tower.gd": "aa65451d8bacba91c715445a41cd64ef3849d6dce4e207166abc1a9410a545e8",
+      "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+      "godot/scripts/water_experiment_blind.gd": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85",
+      "godot/scripts/water_feel_scenarios.gd": "3eed68b0cf4a986c516f7b7962b91ad71e1059998ca794c0563026322b8628f7",
+      "godot/tests/tower_observation_fault_child.gd": "c6fdaa77f40bb95f11641b477dee2bddf849b331bdbfa625cbeabe021f846b9a",
+      "tools/ci/run_tower_observation_qualification.py": "ef2122cb1a070e244ac3865afc37c6edee5647f4f3cb31eb06924eef7e29422a",
+      "tools/ci/run_workbench_save_qualification.py": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117"
+    },
+    "report_sha256": "622d23674605e52a5392ec670c00615db9bdb00a1d0e076bbbd7ed479f450b19",
+    "cases": 6,
+    "status": "passed",
+    "all11_inputs_equal_reviewed_root": true,
+    "checks": [
+      "Ordinary and Water/blind public controller/button paths preserve report format",
+      "Real buffered-tail and permission refusal preserve old digest/value7; retry reloads8",
+      "Visible result and direct return truthful; unrelated live context/status and stale staging unchanged",
+      "Clipboard unavailable is reported accurately; revealed hidden_mapping remains engineering metadata"
+    ],
+    "limits": [
+      "Headless caller/format check; B native X11 clipboard and manual GUI evidence remain separate",
+      "No physical Windows/NVIDIA or formal blinded-study acceptance"
+    ]
+  },
+  "product_evidence_review": {
+    "verdict": "APPROVE after full read",
+    "paths": [
+      "../product/owner-qualification-checklist.md",
+      "../product/tower-export/README.md"
+    ],
+    "checks": [
+      "Manual Linux, automatic X11 clipboard and headless properties are separate evidence classes",
+      "Each source/dirty-input receipt remains scoped; later final-head execution is not inferred",
+      "Browser policy denial and physical owner residual steps are explicit without workaround",
+      "Owner test procedure uses disposable data and keeps production-release/Ready/merge boundaries separate"
+    ]
+  },
+  "lcb_provenance": {
+    "verdict": "Lead independently approved C implementation",
+    "commit": "a274b839f3eee179c43a2e40969c2d5291bc81b5",
+    "integrated_commit": "68c8d47d9",
+    "checks": [
+      "Catalogue parent blob verified equal root before patch",
+      "Primary215/217/226 merge chain and e95fe85d ancestor independently verified",
+      "Natural contract/runner/prepass source routes added; no question alias, fixture change or claim of new campaign execution"
+    ],
+    "residual": "Frozen canonical-page ranking must be measured unchanged and may remain a miss."
+  }
+}

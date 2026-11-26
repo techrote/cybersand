@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Issue 16 staged native representation research, preregistered before candidate code; no production migration
 canonical-for: [cell-layout-experiment]
-last-reviewed: 2026-09-11
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, architecture-programme-prompts/cell-layout.md, ../audits/2026-09-10-issue-16-cell-layout.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [architecture-programme.md, architecture-programme-prompts/ce
 
 ## Status and boundaries
 
-**Current research checkpoint:** issue16's local research is complete. L1/L2/L3/L4
+**Completed research checkpoint, September 2026:** issue16's local research is complete. L1/L2/L3/L4
 finish196/448/280/1400 registered timing processes with exact scoped comparisons.
 L5 records compatibility limits; L6 has a supported non-admission. The
 [dated evidence and final G-L](../audits/2026-09-10-issue-16-cell-layout.md#l4-measured-results-and-final-g-l-september11)
@@ -22,7 +22,15 @@ The owner released the uncontended windows in the active task. No merge, deploym
 remote mutation or loaded DLL replacement occurred. Stage registrations below
 remain the pre-code contracts and historical review sequence.
 
-Editing/build root: `C:/kybersand/worktrees/issue-16-cell-layout`, branch
+**Current applicability:** the four-byte layouts below are historical experiment
+controls. Current `World::Chunk::Cell` is an eight-byte, eight-byte-aligned
+[`PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp), aliased
+in [`world.cpp`](../../native/src/world.cpp). The [storage contract](../architecture/chunk-tile-and-buffer-model.md)
+owns current implementation. Reproduction requires the original source and
+registered fixtures; these completed task instructions do not assign an active
+branch or authorize new implementation.
+
+**Original reproduction workspace:** `C:/kybersand/worktrees/issue-16-cell-layout`, branch
 `codex/issue-16-cell-layout`, base `b16408c28de67e3b30ebb1f0172e78d594296052`.
 The baseline checkout `C:/kybersand/source` is read-only. All generated files go
 in the experiment worktree's ignored `build/issue-16` and `validation/local/issue-16`.
@@ -150,8 +158,9 @@ interface. Controls preserve original byte offsets0/1/2/3 and sizes4/8. Primary
 comparisons use explicit alignment4 for both byte4 and packed8/16/8, alignment8
 for both byte8 and packed16/40/8. Thus type alignment matches within each primary
 pair; it differs from the alignment1 L1 controls and is not silently attributed
-to packing. Array stride remains4 or8. Default unselected builds remain4 bytes
-and alignment1. Inspect optimized access/clear/constructor code for all variants.
+to packing. In this dated experiment, array stride remained4 or8 and its
+unselected build used4 bytes with alignment1. These are historical controls, not
+the current eight-byte production cell. Inspect optimized access/clear/constructor code for all variants.
 
 The16-bit material field uses only current IDs; the public/internal `Material`
 enum and every adapter remain8-bit. Getters return the legacy enum. Its upper
@@ -256,6 +265,13 @@ make the hitch more frequent; no width is selected. This admits the bounded L4
 neutral carrier below. Hardware-cache attribution remains unmeasured.
 
 ## L4 concrete preregistration, September11
+
+**Historical synthetic carrier, not current World storage.** L4 compares legacy
+four-byte slots plus optional neutral payloads. Current production
+`World::Chunk::Cell` uses eight-byte, eight-byte-aligned
+[`PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp). Nothing
+in this preregistration imposes a sidecar-only or four-byte rule on later accepted
+source. Results remain tied to the registered September fixture.
 
 New standalone modules `native/bench/cell_sidecar.cpp` and
 `tools/experiments/cell_sidecar.py` will compare a neutral uint32 tag, zero absent,

@@ -1,0 +1,23 @@
+{
+  "schema": "ultima-independent-launcher-portability-review-v1",
+  "reviewer": "Specialist A",
+  "finding": "ULT-CI-08",
+  "status": "approved-source-and-nine-linux-controls-hosted-windows-pending",
+  "source_inputs": {
+    "tools/ci/qualify_ultima_launcher.py": "dd526fe0285d0c93dd6749352d911bd57a52c047e809317e83110346e68605c9",
+    "tools/ci/test_qualify_ultima_launcher.py": "9f0ab631332f2689c19161fde184e02c20ad28bc041f290c1dddbad6dfb3da9f"
+  },
+  "log_sha256": "1ce6d57379883e63855a56092cfc8e40d85e488cdb41e4ecdeeb0810435e7220",
+  "checks": 9,
+  "actual_host": "Linux",
+  "findings": [
+    "Actual Windows preflight failed because the test expected POSIX slashes after native Windows Path normalization; the received command still had complete nested quoting.",
+    "PureWindowsPath exact full-command expectation now runs on every host, retaining native-Path and unsafe-metacharacter controls.",
+    "Qualification-only graphical arguments explicitly select opengl3_angle, matching the established copied-package module probe. The shipped launcher is unchanged."
+  ],
+  "limits": [
+    "These controls do not execute Windows cmd.exe on Linux.",
+    "Three POSIX process controls remain explicitly Windows-skipped; separate actual Windows launcher campaign is required."
+  ],
+  "harness_note": "Initial unittest module-style entry could not import the script-local helper; corrected direct-script invocation passes."
+}

@@ -6,6 +6,7 @@ extends SceneTree
 const Contract = preload("res://scripts/microscenario_contract.gd")
 const Catalogue = preload("res://scripts/microscenario_catalogue.gd")
 const Host = preload("res://scripts/microscenario_host.gd")
+const CaptureFileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 var error_message: String = ""
 
 func _init() -> void:
@@ -80,17 +81,14 @@ func _run() -> void:
 	report["runner"] = {"scope":"native-only, no character, Rapier or render", "requested_ticks":ticks,
 		"completed_ticks":completed, "run_wall_usec":elapsed, "error":error_message,
 		"wall_scope":"advance loop including enabled observers; setup/export excluded"}
-	var temporary: String = str(options.output) + ".tmp"
-	var output := FileAccess.open(temporary, FileAccess.WRITE)
-	if output == null:
-		_finish("Cannot create output; parent directory must exist")
-		return
-	output.store_string(JSON.stringify(report, "  ") + "\n")
-	output.flush()
-	var write_error: Error = output.get_error()
-	output.close()
-	if write_error != OK or DirAccess.rename_absolute(temporary, options.output) != OK:
-		_finish("Could not commit result file")
+	var encoded: String = JSON.stringify(report, "  ") + "\n"
+	var destination := ProjectSettings.globalize_path(str(options.output))
+	# FileAccess's existing relative CLI outputs resolve from the project root.
+	if not destination.is_absolute_path():
+		destination = ProjectSettings.globalize_path("res://").path_join(destination)
+	var saved := CaptureFileTransaction.write_text(destination, encoded, encoded.to_utf8_buffer().size())
+	if not saved.get("ok", false):
+		_finish("MicroScenario capture: " + str(saved.error))
 		return
 	print("MICROSCENARIO_RESULT ", options.output, " / ", completed, " ticks / ", report.definition_hash)
 	quit(0 if error_message.is_empty() and report.outcome != "fail" else 1)

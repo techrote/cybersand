@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "recorded_root_head": "fbd1068d1bbfc533504bc222b58fbd7d294ba7ea",
+  "reviews": [
+    {
+      "implementation": "B Tower observation f7788985",
+      "verdict": "APPROVE source and independently executed Linux6",
+      "source_review": "Full production diff, public child and OS runner; report keys/hidden_mapping unchanged, file commit precedes clipboard mutation, explicit clipboard readback, separate UI status, strict natural exit/error checks.",
+      "evidence": "../product/tower-export/independent-linux.json",
+      "evidence_sha256": "b51bc74cd9e85b8fdfc13809ff82b3269d26775ffa4718838633942b8ce575f6",
+      "input_hashes_match_commit": "f7788985",
+      "limits": "Headless controller/button calls; B X11 clipboard2 evidence is separate; no physical or blind-study acceptance."
+    },
+    {
+      "implementation": "B Art manual21c35a0e against lead f6335800",
+      "verdict": "APPROVE source-grounded traffic/export description",
+      "source_review": "Closed length/digest verification, cooperative precommit cancellation, prior complete-prefix recovery, read-only failed append and source preservation match actual code. Does not cover new preferences/journal defect or claim generative/model execution."
+    },
+    {
+      "implementation": "Lead Goblin34ae4faa",
+      "verdict": "APPROVE bounded source fix and guarded writer12case integration",
+      "source_review": "Fixed-path allowlist and real profile marker/containment run before writes. Same formatted envelope and builder budgets; checkedmkdir then verified replacement. Existing causal error remains visible. Probe calls fixed TRANSCRIPT_PATH and explicitly disclaims campaign/replay validity.",
+      "evidence": "diagnostic-storage-linux-with-goblin.json",
+      "limits": "Single fixed audit writer, not whole Goblin evidence transaction or actual campaign."
+    },
+    {
+      "implementation": "Lead materialize_lfs.py and Art/IN-TOOLS workflow wiring",
+      "verdict": "APPROVE source and9 independent negative controls",
+      "source_sha256": {
+        "tools/ci/materialize_lfs.py": "cd39d0e97a829f5f8db64c0b59585338905ebf9f2d35010fe2054c078bda279a",
+        "tools/ci/test_materialize_lfs.py": "e104450864dd5c6eae91e1ceb57f455c5a1cf91725bad05ae2f0d09500b2423a"
+      },
+      "source_review": "Exact include selection every attempt, subprocess argv without shell, transient-only bounded3tries, permanent/ambiguous/timeout failures stop, every failed output retained, existing evidence reuse refused, existing downstream source/artifact gates remain.",
+      "tests": "python3 -m unittest discover -s tools/ci -p test_materialize_lfs.py -v",
+      "tests_passed": 9,
+      "limits": "Simulated acquisition controls, not network-service recovery proof; acquisition success does not establish binary/source acceptance."
+    }
+  ]
+}

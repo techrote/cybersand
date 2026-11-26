@@ -1,0 +1,59 @@
+{
+  "schema": "ultima-independent-causal-artifact-review-v1",
+  "reviewer": "Specialist A",
+  "status": "approved-with-scoped-causal-disposition",
+  "source_commit": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "source_tree": "9c14659bc6a57c1f1e28b71e10c504b184078d63",
+  "run_id": 45778534596,
+  "job_id": 139768040161,
+  "artifact_id": 15097815134,
+  "archive": "fe24-causal-windows.zip",
+  "archive_sha256": "bcce7d7a60984734573eb8244b3093b6d5da8dc71eccde65e9be0fec01117405",
+  "archive_bytes": 13713,
+  "footer": {
+    "assertions": 86,
+    "failures": 0
+  },
+  "natural_completion": true,
+  "process_exit": 0,
+  "wrapper_exit": 0,
+  "fixture_seconds": 14.434,
+  "wrapper_seconds": 17.765,
+  "source_admission": {
+    "schema": "in-tools-current-main-admission-result-v4",
+    "authority_paths": 13,
+    "all_working_and_git_authority_blobs_recorded": true,
+    "adversarial_controls": 21,
+    "preserved_runtime_qualified": false,
+    "preserved_gameplay_qualified": false,
+    "planned_execution": "NOT_RUN"
+  },
+  "native_source_inputs_verified_against_exact_git_blobs": 105,
+  "materialized_runtime_objects": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "size": 5820416
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "size": 9987072
+    }
+  ],
+  "godot_identity": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "archive_size": 83764371,
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "causal_disposition": "historical_crash_not_reproduced_causality_unresolved",
+  "historical_access_violation_reproduced": false,
+  "limits": [
+    "Actual hosted Windows headless fixture; not physical NVIDIA or manual GUI acceptance.",
+    "No claim that historical 0xC0000005 cause is explained.",
+    "Source admission itself remains non-runtime/non-gameplay qualification; this separate fixture receipt proves only its executed scope.",
+    "Artifact/native/source evidence readback performed independently; no local Windows execution was simulated."
+  ]
+}

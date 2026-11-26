@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "Synthetic report-consistency negative; not actual runtime loss",
+  "package_source_sha256": "e2a93c2578d9a45716f9eb038354795e89ddb9b5214e7aa45a9e377681b33f0e",
+  "findings": [
+    {
+      "operation": "settings",
+      "fault": "locked-target",
+      "actual_outcome": "admitted",
+      "contradictory_result": {
+        "first": {
+          "success": true,
+          "old_preserved": false,
+          "value": 8
+        },
+        "retry": {
+          "success": false,
+          "loadable": false
+        },
+        "guards_preserved": false,
+        "stale_preserved": false,
+        "partial_files": [
+          "leaked.tmp"
+        ]
+      }
+    },
+    {
+      "operation": "pending-history",
+      "fault": "existing-receipt",
+      "actual_outcome": "admitted",
+      "contradictory_result": {
+        "first": {
+          "success": true,
+          "clock_unchanged": false,
+          "item_has_file": true
+        },
+        "retry": {
+          "success": false,
+          "values": [
+            8
+          ],
+          "schema": 1
+        },
+        "guards_preserved": false,
+        "stale_preserved": false,
+        "partial_files": [
+          "pending-leak.partial"
+        ]
+      }
+    }
+  ]
+}

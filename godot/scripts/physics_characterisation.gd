@@ -7,6 +7,7 @@ extends RefCounted
 const DT: float = 1.0 / 60.0
 const MAX_TICKS: int = 7200
 const MAX_CASES: int = 512
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 
 static func run(host: Node, cases: Array, output_dir: String = "") -> Dictionary:
 	var reports: Array = []
@@ -554,10 +555,13 @@ static func run_case(host: Node, spec: Dictionary, output_dir: String = "") -> D
 		report["error"] = "hard-floor control exceeded two-cell fixture tolerance"
 	if not output_dir.is_empty():
 		var path: String = output_dir.path_join(str(spec.get("id","fixture"))+".json")
-		var file: FileAccess = FileAccess.open(path,FileAccess.WRITE)
-		if file == null: return {"ok":false,"error":"output file", "path":path}
-		file.store_string(JSON.stringify(report))
-		file.close()
+		var destination := ProjectSettings.globalize_path(path)
+		if not destination.is_absolute_path():
+			destination = ProjectSettings.globalize_path("res://").path_join(destination)
+		var encoded := JSON.stringify(report)
+		var saved := FileTransaction.write_text(destination,encoded,encoded.to_utf8_buffer().size())
+		if not saved.ok:
+			return {"ok":false,"error":"Physics result save: " + str(saved.error),"path":path}
 	# Console/DOM summary remains bounded; detailed traces live in result files.
 	report.erase("frames")
 	return report

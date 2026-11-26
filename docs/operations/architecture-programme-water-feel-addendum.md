@@ -2,9 +2,9 @@
 title: Architecture programme addendum — Water presentation, feel and semantic budgets
 status: Current
 document-kind: design
-scope: Post-G-P refinement of #19/#18 ordering and evaluation authority; supplements rather than rewrites completed C/L/P evidence
+scope: Dated post-G-P #19/#18 refinement, preserved evaluation principles and present applicability; original sequencing is not a current implementation ban
 canonical-for: [architecture-experimental-programme-water-feel-refinement]
-last-reviewed: 2026-09-12
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, architecture-programme-prompts/fractional-presentation.md, water-feel-lab-experiment.md, state-precision-experiment.md, experiment-tower.md, ../audits/2026-09-11-issue-17-state-precision.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
@@ -14,12 +14,27 @@ related-documents: [architecture-programme.md, architecture-programme-prompts/fr
 
 This dated addendum records an owner-led refinement after completed G-C, G-L and G-P. It **does not alter the measurements or scientific conclusions of #15–#17** and does not authorize a production migration.
 
-**Current checkpoint, 2026-09-12:** #19 V1/V2 are complete and the Water Feel
-Lab is H-ready under the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md).
-The later human H gate has not run. Accordingly #18 remains open and held, #20
-remains downstream and G-final remains open.
+**Applicability at accepted source `00cdb02f` (24 November 2026):** this page
+retains the September experiment's distinction between numerical precision,
+perceptual choice and physical storage. Its original dependency ladder does not
+prohibit the separately accepted [Water families and defaults](../architecture/liquid-solver-family-policy.md),
+[ballistic Water](../architecture/ballistic-water-v1.md) or
+[eight-byte native carrier](../systems/materials-and-rule-kernels.md).
+The live trackers [#14](https://github.com/techrote/cybersand/issues/14),
+[#18](https://github.com/techrote/cybersand/issues/18) and
+[#20](https://github.com/techrote/cybersand/issues/20) are closed; that fact alone
+neither selects a perceptual winner nor proves the original H/packing gate passed.
+Use the [current state register](../reference/status-and-roadmap.md) and
+[owner intent](../reference/product-intent-and-priorities.md) for present work.
+The [original page](../audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme-water-feel-addendum.md.txt)
+is retained byte for byte.
 
-Completed #17 remains the numerical precision oracle:
+**Historical checkpoint, 12 September 2026:** #19 V1/V2 were complete and the
+Water Feel Lab was H-ready under the [dated acceptance record](../audits/2026-09-12-issue-19-water-feel-lab.md).
+At that checkpoint the later human H gate had not run, #18 was open and held,
+#20 was downstream and G-final was open. These are source-era states.
+
+For reproducing this registered experiment, completed #17 remains its numerical precision oracle:
 
 - mass8 is retained as the quantitative/reference control for downstream experiments;
 - Water coherence values 0..12 are exactly representable in four bits;
@@ -44,7 +59,7 @@ The intended partial-fill renderer exposes a small number of visible fill levels
 
 ## Revised sequencing
 
-Current programme ordering for the affected work is:
+The 12 September 2026 registration ordered the affected experiments as follows; this retained graph is not the current engineering queue:
 
 ```text
 completed C/L/P evidence (#15/#16/#17)
@@ -74,21 +89,22 @@ state budgets              |
                         G-final
 ```
 
-#18 remains technically unimplemented and held for a concrete directional-persistence target. #19/H-preparation may make such a target observable and reproducible; the later H gate decides whether it is actually worth solving. If no meaningful deficit is perceived, #18 may complete by a reasoned no-go rather than inventing a motion requirement.
-
-#20's dependency remains unchanged.
+In this September registration, #18 was technically unimplemented and held for
+a concrete directional-persistence target. #19/H-preparation was intended to
+make that target observable; a reasoned no-go was a valid outcome. #20 retained
+its dependency in this experiment. Later accepted Water/ballistic work has its
+own contracts and evidence; do not restart either closed issue from this graph.
 
 ## #19 expanded responsibility
 
-#19 now owns both:
+The original #19 contract owned both:
 
 1. **V1 presentation:** a four-visible-level fractional Water presentation plus local orientation/fallback experiments on unchanged authoritative states; and
 2. **V2 H-preparation:** extension of #13's Experiment Tower into a deterministic Water Feel Lab with runtime-selectable Water semantic policies.
 
 Its self-contained execution contract is `architecture-programme-prompts/fractional-presentation.md` (historical filename retained to avoid link churn).
 
-#19 completion has made the laboratory technically trustworthy and **H-ready**.
-It did not choose the preferred candidate.
+#19's dated completion established **H-ready** within its recorded engine/laboratory scope. It did not choose a preferred candidate; later formal-capture qualifications must be read separately.
 
 ## Runtime semantic-policy principle
 
@@ -101,7 +117,12 @@ Required semantic axes:
 - intended four-level partial-fill presentation held fixed during semantic comparisons;
 - registered rest-policy selection only where explicitly controlled.
 
-These settings describe **semantic precision/duration**, not physical production packing. Actual packing remains a later architecture decision after useful state requirements are known.
+These settings describe **semantic precision/duration**, not physical production
+packing. Packing remained a later decision within this September experiment.
+Accepted source now uses the eight-byte `PrecisionStorage` carrier; these old
+candidate bit budgets neither describe its physical stride nor forbid its
+material-specific state. See [state precision applicability](state-precision-experiment.md)
+and [current storage](../systems/materials-and-rule-kernels.md).
 
 The same effective policy must be selectable via in-game developer controls, versioned profile/config and launch configuration, all resolving to one validated representation. Simulation-semantic changes use Apply + Reset at the exclusive owner boundary rather than mutation under active workers. Render-only controls may hot-switch where safe.
 
@@ -116,7 +137,12 @@ Mass3/5/7 and shortened coherence are new candidate semantics. They require focu
 
 ## Later H gate
 
-The human evaluation is deliberately not authored as a final issue until #19 exposes the real apparatus and candidate workflow. Once #19 is H-ready, the H charter should use the actual lab capabilities rather than guessed tooling.
+At the September registration, the later human evaluation charter was deliberately
+left until #19 exposed the real apparatus. This section retains the intended
+assessment criteria, not a claim that no H work or formal-capture repair has
+happened since. Source-matched results and the
+[remediation programme](development-claims-remediation-programme.md) separate
+engine readiness, observation integrity and owner preference.
 
 Expected authority layers:
 
@@ -130,7 +156,7 @@ Human judgments should use blinded A/B/C labels where practical and identical de
 
 ## Implications for #18
 
-#18 should consume a **named perceptual deficit**, not technical novelty alone. For example, a later H result might establish that an otherwise preferred low-state candidate loses horizontal emission coherence too rapidly. #18 can then measure whether compact material-local history fixes that specific problem at acceptable cost.
+The original #18 admission rule required a **named perceptual deficit**, not technical novelty alone. For example, a later H result might establish that an otherwise preferred low-state candidate loses horizontal emission coherence too rapidly. #18 can then measure whether compact material-local history fixes that specific problem at acceptable cost.
 
 If H establishes no worthwhile motion deficit, #18 should record no-go rather than implementing history by programme momentum.
 
@@ -148,4 +174,8 @@ G-final must distinguish at least:
 
 No single result silently selects the others.
 
-A later production migration, if any, still requires separately reviewed ABI/save/profile/render/platform/rollback scope and appropriate ADR updates. Current production source remains unchanged until that authorization.
+The original experiment did not authorize production migration. Any new
+migration still needs its own ABI/save/profile/render/platform/rollback scope
+and appropriate ADR review. This restriction is not a claim that accepted main
+has remained at September's cell layout or Water semantics; current source and
+its accepted subsystem contracts establish those facts.

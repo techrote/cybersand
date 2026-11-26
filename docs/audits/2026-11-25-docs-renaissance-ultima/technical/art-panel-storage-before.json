@@ -1,0 +1,77 @@
+{
+  "schema": "art-panel-storage-before-v1",
+  "authority": "historical-non-authoritative",
+  "source_head": "b4257547dd8538e5e67d0f8f305044222b8303fc",
+  "input_sha256": {
+    "godot/scripts/art_batch_panel.gd": "f851b6394c3619c22cebc088ece57346d024af13bfedb5673de149abeba92227",
+    "godot/scripts/art_provider.gd": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+    "godot/scripts/art_traffic_archive.gd": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811"
+  },
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "probe_sha256": "c78a06d027a189dc5c31233c624040a64003ae8c3d82b396a89a87fc2b9f99a6",
+  "scope": "Actual private persistence methods on nonsecret fixture data; no provider/network or native edit executed",
+  "cases": [
+    {
+      "kind": "settings",
+      "fault": "actual Linux RLIMIT_FSIZE128 with SIGXFSZ ignored",
+      "before": {
+        "acknowledged": true,
+        "bytes": 1108,
+        "error": "",
+        "format_loadable": true,
+        "kind": "settings",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg",
+        "sha256": "836bbb29100f48908d3fd73b2005b4e89c4da67db96f79ff30e6c949420e1e19",
+        "value": 7,
+        "exit_code": 0,
+        "log": "settings-normal.log",
+        "log_sha256": "80877f4bf6b824ace09b1533bf3918029a226d0249a960eeba1ca43db16d614d"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "error": "",
+        "format_loadable": false,
+        "kind": "settings",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg",
+        "sha256": "f192e5863a2df091620b6d96b1878f24217c985f9a4ef9731583562608dd2108",
+        "value": null,
+        "exit_code": 0,
+        "log": "settings-rlimit.log",
+        "log_sha256": "92ce7c2412f6f5814ffbe85a8ba94c2052cbb2ade27048b9d77041641476fa53"
+      }
+    },
+    {
+      "kind": "pending-history",
+      "fault": "actual Linux RLIMIT_FSIZE128 with SIGXFSZ ignored",
+      "before": {
+        "acknowledged": true,
+        "bytes": 1528,
+        "error": "",
+        "format_loadable": true,
+        "kind": "pending-history",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json",
+        "sha256": "57ea78d88d2d68e533de2302a184e4bc7f910550850cb31dd318c5170af958dd",
+        "value": 7.0,
+        "exit_code": 0,
+        "log": "pending-history-normal.log",
+        "log_sha256": "180f3cfb1248ccb20d222c424313d8b5a42caff8690701938308d8816e0be9ed"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "error": "",
+        "format_loadable": false,
+        "kind": "pending-history",
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/art-panel-perimeter-before/profile-j2eypn_n/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000008-00000000000000000000000000000008.json",
+        "sha256": "9f5c3d63bfb062a9e1c608224e4fe765d9fb4350cbf7ea35c407a29a01ffa305",
+        "value": null,
+        "exit_code": 0,
+        "log": "pending-history-rlimit.log",
+        "log_sha256": "16ef95b3b758c813a110cb4bad5d260a1f4cdd9bcee2cc19cbf9c74e080b66ad"
+      }
+    }
+  ],
+  "status": "reproduced-both",
+  "completed": true
+}

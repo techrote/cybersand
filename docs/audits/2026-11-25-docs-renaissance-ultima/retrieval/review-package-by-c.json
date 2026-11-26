@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "verdict": "APPROVE after independently reproduced consistency gap was corrected",
+  "source_head_at_review": "5b13750df715bff7ea424cc05df7c85827e7f041",
+  "source_state": "lead working extension bound by exact file hashes; final integrated execution separate",
+  "input_sha256": {
+    "tools/ci/run_ultima_qualification.py": "51358483cb0bb0f0d1860abb5dbc58eff4cfa9c3cd730763607714bcfa34fdc4",
+    "tools/ci/package_ultima_evaluator.py": "c2a69c44825fa655976ebdc9ed30952f39d88adecc852d1a5a134016c71cddc2",
+    "tools/ci/test_package_ultima_evaluator.py": "96486fd25327d7783a01eb0aae775847a134ce47003e25d6fa5d90c258a39412",
+    "tools/ci/run_art_storage_qualification.py": "1eea6e36400d689b5bdba0502d6e0860317b2696066bdbb4d6e2ce6874d18c61"
+  },
+  "executed_tests": 60,
+  "test_command": "python tools/ci/test_package_ultima_evaluator.py",
+  "result": "passed",
+  "review_gap": {
+    "id": "C-REVIEW-13",
+    "priority": "P2",
+    "type": "synthetic contradictory qualification-receipt admission; not an observed runtime failure",
+    "before": "A claimed-passed profile report with false-success refusal, corrupt reload, changed old digest and failed retry was accepted.",
+    "after": "Require each child to complete naturally, load actual format, preserve old value/digest/size on refusal and load new value/digest on success/retry. Original synthetic counterexample now refuses.",
+    "evidence": [
+      "package-contradictory-profile-before.json",
+      "package-contradictory-profile-after.json"
+    ],
+    "disposition": "fixed-and-independently-verified in reviewed working source; final delivery identity recorded separately"
+  },
+  "reviewed_contract": [
+    "schema-v2 rejects older incomplete qualification receipts",
+    "exact20 normal case set, Windows12 profile and5 Art cases, missing/duplicate/failed/non-natural/error controls",
+    "exact engine/source/tree and all tracked qualification input-map checks retained",
+    "new optional evaluator remains test-only with no publication, Ready or physical acceptance authority"
+  ],
+  "limits": [
+    "Synthetic receipt admission tests do not execute Windows or create a qualified owner evaluator.",
+    "The independent Linux Art/profile execution receipts have their own source identities."
+  ]
+}

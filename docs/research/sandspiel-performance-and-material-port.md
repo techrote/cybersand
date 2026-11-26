@@ -4,7 +4,7 @@ document-kind: reference
 canonical-for: [sandspiel-attribution-and-port-status, imported-material-ids]
 status: Current
 scope: Current CyberSand adaptation inventory plus explicitly historical upstream study and hosted performance observations
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-25
 related-documents: [../systems/materials-and-rule-kernels.md, ../systems/water-design.md, ../reference/validation-evidence.md, ../../THIRD_PARTY_NOTICES.md]
 ---
 
@@ -13,8 +13,10 @@ related-documents: [../systems/materials-and-rule-kernels.md, ../systems/water-d
 **Current:** CyberSand preserves Sandspiel IDs 0–19 except invalid slot 10 and
 implements adapted native behavior for each valid entry, including inert
 Empty/Wall. “Adapted” does not mean byte-identical upstream evolution. Native
-Water uses CyberSand conserved mass; upstream Water polarity and GPU wind/
-pressure feedback were not ported as authority.
+Water uses CyberSand quantity accounting and its admitted solver laws; upstream
+Water polarity and GPU wind/pressure feedback were not ported as authority. The
+[Water contract](../systems/water-design.md) distinguishes the original FreeMass
+path from current Wave, PressureFlow and inertial options.
 
 Current sources are [material descriptors](../../native/include/cybersand/material.hpp),
 [World kernels](../../native/src/world.cpp), and the
@@ -36,7 +38,7 @@ Copyright (c) 2018 Max Bittker.
 | 0 | Empty | Empty/static destination |
 | 1 | Wall | Inert hard boundary |
 | 2 | Sand | Powder/density movement |
-| 3 | Water | CyberSand conserved 8-bit pairwise mass |
+| 3 | Water | CyberSand FreeMass fractional mass and separately admitted Wave/PF/IN laws; the active law owns its quantity rules |
 | 4 | Gas / Smoke | Rising discrete material, bounded decay |
 | 5 | Cloner | Capture and initialized emission |
 | 6 | Fire | Short-lived motion and sampled ignition |
@@ -58,14 +60,18 @@ Slot 10 remains invalid. IDs 20–37 are in the
 project-authored IDs 38–80 are in the
 [construction catalogue](../systems/themed-construction-materials.md).
 The JSON records provenance and adaptation intent; runtime does not parse it
-in the hot path. Its prose describing bundled Linux execution is not evidence
-that this workspace's unresolved Linux LFS payload runs.
+in the hot path. Its prose describing bundled Linux execution does not qualify
+a different checkout's runtime. Check the actual materialized binary, its
+source identity and a fresh execution receipt before claiming local execution.
 
 ## Current adoption boundaries
 
-CyberSand uses four-byte hot cells, byte update epochs with explicit wrap clear,
-reused active traversal storage, release optimization/LTO flags, compiled
-descriptors, and bounded kernel families. The native four-phase worker scheduler,
+CyberSand currently uses eight-byte, eight-byte-aligned
+[`PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp) cells,
+byte update epochs with explicit wrap clear, reused active traversal storage,
+release optimization/LTO flags, compiled descriptors and bounded kernel families.
+The four-byte upstream study and historical CyberSand controls below do not
+describe the current `World::Chunk::Cell` alias. The native four-phase worker scheduler,
 sparse chunks, activity, and immutable dirty publication are CyberSand contracts;
 their current details belong in [architecture](../architecture/chunk-tile-and-buffer-model.md)
 and [material kernels](../systems/materials-and-rule-kernels.md).

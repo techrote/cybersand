@@ -4,13 +4,21 @@ status: Current
 document-kind: reference
 scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-25
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
 # Wave flow Water solver (experimental)
 
 Wave Flow entered the shared Workbench through PR #631. New sandbox and Workbench sessions use the owner-approved gameplay profile with waterfall spill and ballistic release. Native callers opt in through `WorldConfig::wave_flow`; disabled Worlds keep their original kernels, physical hashes, save formats and memory use. Wave runs on the FreeMass carrier. The [ramp evaluation](../audits/2026-11-19-wave-water-ramp-003.md) records the default transition and the [Oil tank](../audits/2026-11-20-wave-oil-impinge.md) records the final playtest.
+
+Spill [#672](https://github.com/techrote/cybersand/pull/672), sheet/crest controls
+[#676](https://github.com/techrote/cybersand/pull/676), and the subsequent gameplay
+profile are accepted in the source reviewed here. Their former Draft/HOLD titles
+are historical. Numerical examples of the original v2 law below describe its
+native parameter point; the ordinary player profile deliberately overrides it.
+The applied native readback, not an inherited experiment caption, identifies a
+running session's settings.
 
 The additive C API and Godot evaluator expose the experimental law, worker and
 substep selection, representative scenarios and copied native diagnostics.
@@ -225,8 +233,9 @@ no strip cells. This avoids overflow before a clamp could take effect.
 
 ## Waterwall spill (experimental, WAVE-WATERWALL-001)
 
-**Status:** Draft/HOLD branch `claude/wave-waterwall-001`, stacked on PR #661. It is
-selected through `WaveFlowConfig::spill.enabled`. The Water Ramp player profile enables it. With spill off,
+**Status:** Current accepted implementation from #672; its original branch
+`claude/wave-waterwall-001` was stacked on #661. Spill is selected through
+`WaveFlowConfig::spill.enabled`. The ordinary gameplay profile enables it. With spill off,
 the law is the qualified Wave law: `test_wave_spill` pins cells, `state_hash`,
 `physical_state_hash` and `content_hash` for 12 scenes (1/4 workers, 1/3
 substeps, a selected region) to values computed from the unmodified #661 source.
@@ -277,7 +286,10 @@ throws through the same parcel pool, so it needs `ballistic_water_v1` enabled;
 the Workbench sets `launch_budget` to 0 when Ballistic Water is on without
 Ballistic release, so spill then drains faces through the grid only. The
 per-cell WCX-FR face scan is admitted under Wave only while spill is off, because
-spill owns exposed faces. With spill on, parcels pass through falling Wave Water. They may not
+spill owns exposed faces. With spill on, parcels pass through falling Wave Water
+while their age is at most the four-tick self-contact grace, or whenever
+`catch_falling` is off. With the default `catch_falling` on, older parcels instead
+merge into that falling Water. They may not
 land beyond a wall one cell thick, including a diagonal one, and they may not
 step diagonally through such a wall even when the diagonal destination already
 contains Water. Connected Water neighbours retain the existing merge priority.
@@ -323,7 +335,8 @@ save remains refused for every Wave World.
 
 **Limits.** Spill is an approximation: grid-only spill drops straight down, and
 only ballistic release throws Water outward. Parcels are one cell each, at most
-`launch_budget` per tick and at most the pool capacity (4096) live. A face
+`launch_budget` per tick and at most the configured pool capacity live (default
+4,096; native maximum 65,536). A face
 beyond those limits keeps spilling through the grid. Sealed reservoirs, narrow
 slots, sub-threshold films and contained pools are unchanged in kind, although
 pool feed makes bulk levelling faster.
@@ -337,8 +350,9 @@ pool feed makes bulk levelling faster.
 | Head | `int32` | Derived, rebuilt every round |
 | Meta (gain, full, solid, wet, depth class) | `uint8` | Derived, with previous-full support retained into the next column pass |
 
-The dense side arrays add nine bytes per resident cell on the existing
-eight-byte cell. Per-column dryness flags, chunk metadata, task/roster capacity
+The base dense side arrays add nine bytes per resident cell on the existing
+eight-byte cell. Selecting flux smoothing adds a four-byte-per-cell retained-flux
+snapshot for the smoothing pass. Per-column dryness flags, chunk metadata, task/roster capacity
 and reusable column scratch are additional; `storage_bytes` includes their
 allocated capacities. Nothing is allocated for this law when disabled.
 
@@ -461,10 +475,17 @@ Workbench can keep reading spray and stepping the World after this reaction.
 
 ## Controls
 
-| Setting | Default | Meaning |
+| Setting | Bare native default | New ordinary player/Workbench profile |
 |---|---|---|
-| `WorldConfig::wave_flow.enabled` | `false` | Opt in at construction |
-| `WorldConfig::wave_flow.substeps` | `1` | Rounds per tick, 1–8 |
+| `WorldConfig::wave_flow.enabled` | `false` | `true` |
+| `WorldConfig::wave_flow.substeps` | `1` | `2`; valid range is 1–8 |
+| `WorldConfig::wave_flow.spill.enabled` | `false` | `true`, with ballistic release and full-face spill |
+
+The ordinary profile is defined by
+[`CyberNativeCellWorld::select_gameplay_water`](../../godot/native_extension/cyber_native_cell_world.cpp).
+The standalone evaluator has its own initial selection (three substeps) and
+explicit Reset controls. Authored or reconstructed sessions may retain a
+different accepted selection; opening a panel does not replace it.
 
 The ordinary feature launcher has **Wave Flow**. The equivalent direct route is
 `-- --wave-flow` or `res://wave_flow_evaluation.tscn`; the Windows evaluation ZIP
@@ -499,7 +520,8 @@ Regressions: [`test_wave_flow.cpp`](../../native/tests/test_wave_flow.cpp)
 
 Wave Flow remains an experimental overlay on the `freemass_v1` Water carrier,
 but the development Workbench now exposes its kinetic tuning profile directly.
-The historical qualified-v2 constants remain the defaults. A Workbench rebuild
+The historical qualified-v2 constants remain the bare native defaults; the new
+ordinary session uses the gameplay profile described above. A Workbench rebuild
 may vary substeps, active response depth, open/confined gain, sealed stiffness,
 normal/calm damping, coasting, levelling, sleep/wake thresholds, rest/stick
 thresholds, calm threshold, sealed saturation mass, empty/wet donor shares and
@@ -570,7 +592,10 @@ remain separate source-bound evidence.
 
 ## Waterwall 002 sheet, crest and scale-selective damping
 
-The Draft/HOLD successor to #672 exposes four optional integers. Zero selects the preceding behavior for each control.
+The accepted #676 successor to #672 exposes four optional integers. Zero selects
+the preceding behavior for each control. The current gameplay profile selects
+nonzero values; this table describes available controls rather than a default-off
+claim about ordinary Workbench sessions.
 
 | Control | Native setting and bounds | Effect |
 |---|---|---|

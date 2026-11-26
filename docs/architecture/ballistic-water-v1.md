@@ -2,26 +2,35 @@
 title: Ballistic Water and hybrid spray (experimental)
 status: Current
 document-kind: reference
-scope: Experimental-branch BW-001 ballistic_water_v1 parcel owner, IN-B1 signed-vertical inertial law and the WCX workbench impact-spray/jet adapter law; ownership, transfer lifecycle, conservation and momentum accounting, persistence/identity versions, capacity, cost and controls; not on main, no default changed
+scope: Accepted BW-001 Water parcel owner, optional IN-B1 and WCX controls, Wave gameplay release, accounting and versioned persistence; native constructor defaults and player presets are distinct
 canonical-for: [ballistic-water-v1, inertial-b1-signed-vertical, water-impact-spray]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-24
 related-documents: [inertial-cellular-v1.md, pressure-flow-v1.md, liquid-solver-family-policy.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-05-wcx-ballistic-water.md]
 ---
 
 # Ballistic Water and hybrid spray (experimental)
 
-**Status:** implemented on the experimental branch `claude/water-ballistic-hybrid`
-(Draft PR), **not on main**. Every feature here is opt-in; a World that does
-not enable it keeps its Current hashes, persistence format, quantity schema,
-run receipt and behaviour. Owner decisions on #362/#20/#45 remain open, and no
-default or production carrier is migrated. Evidence lives in the
-[dated WCX record](../audits/2026-11-05-wcx-ballistic-water.md).
+**Current on accepted main `00cdb02f`, checked 24 November 2026.**
+The native Water parcel owner, signed-vertical IN option and Workbench spray
+controls are present. Plain `WorldConfig` keeps ballistic Water disabled;
+fresh native sandbox/Workbench sessions explicitly enable it with the
+[Wave gameplay profile](wave-flow-v1.md). The default-off statement from the
+original experimental branch therefore applies to native construction, not to
+all current player sessions.
+
+This is bounded **Water** transport, not proof of a general arbitrary-material
+ballistic system or acceptance of every #20/#362/#45 goal. The current
+[solver policy](liquid-solver-family-policy.md) and
+[configuration reference](../reference/configuration-reference.md#water-constructor-defaults-and-player-profile)
+separate these contracts. The [original WCX record](../audits/2026-11-05-wcx-ballistic-water.md)
+retains its historical source and runtime scope.
 
 ## Why a separate owner
 
-[#362 Phase A (draft PR #376)](https://github.com/techrote/cybersand/pull/376) showed that
-Current splash is collision-driven relocation only, never upward momentum, and
-that a submerged body leaves its overlap Water masked under it. Re-working every
+[#362 Phase A (draft PR #376)](https://github.com/techrote/cybersand/pull/376) recorded the earlier
+collision-relocation splash without upward momentum and masked overlap Water
+under a submerged body. That is the historical comparator, not a description of
+all accepted Water motion today. Re-working every
 bulk kernel to carry upward momentum (architecture A) would touch four families
 and their scheduling. A bounded native parcel owner (architecture B) gives every
 family ballistic Water at the cost of one serial pass, and a cellular
@@ -94,6 +103,13 @@ The complete validators run on save, restore and the authority-scan ledger check
 | Persistence | CYPS2/CYPS3 unchanged | CYPS4 with extension flags (bit0 IN, bit1 parcels, bit2 IN-B1) |
 | Quantity schema | 1 | 2 (`water_ballistic`) |
 | Run receipt | unchanged bytes | schema-2 quantity term and an explicit ballistic section |
+
+The table describes the ordinary non-C2048, non-Wave format branches. Current
+[`World::physical_state_format_version()`](../../native/include/cybersand/world.hpp)
+selects CYPS5 for the admitted C2048 gas-capacity profile. Wave selects physical
+hash version 6 and **save format 0**, refusing exact save/restore even when
+ballistic Water is enabled. A hash version is not a save format; consult the
+[complete version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions).
 
 `clear()` resets parcels and ledgers. A failed tick quarantines the World as
 before. Workbench retained rebuilds (reset/replace body) carry parcels into a
@@ -238,14 +254,18 @@ numbers and their advisory limits.
 
 ## Limits and open decisions
 
-- Experimental only: no default, production carrier or #45 decision changes.
+- This Water extension is experimental behavior in accepted source. Plain native
+  construction keeps it off; the current player Wave profile explicitly enables
+  ballistic release. Its existence does not admit arbitrary solids, actor
+  equipment or a general #45 architecture.
 - PressureFlow overfill cells are refused as launch sources; parcels do not carry
   pressure, gas or temperature (deposits use ambient defaults).
 - Parcels treat non-resident chunks as hard boundaries. Outside Wave, an
   excluded simulation region still receives deposits; the Wave-specific region
   refusals are described above.
-- Human gameplay acceptance, Windows/Linux CI, source-matched runtime publication
-  and independent review remain open.
+- Qualification remains attached to the exact source and platform in the linked
+  BW/WCX/Wave records. Their original pending gates are historical; neither a
+  merge nor this documentation update supplies a new physical owner evaluation.
 
 ## Wave Waterwall 002 crest flight
 

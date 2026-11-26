@@ -6,7 +6,7 @@ status: Current
 scope: REC-001 desktop material-state recording, ownership, bounded pressure, evidence format, controls and validation limits
 keywords: [recording, gameplay review, material state, immutable snapshot, bounded queue, dropped frames, REC-001]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/rendering-and-gameplay-bridges.md, microscenarios.md, testing-validation-and-replay.md]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-25
 ---
 
 # Desktop gameplay state recording
@@ -35,7 +35,14 @@ allowed to block or skip authoritative simulation work.
 
 ## Starting and stopping a recording
 
-Desktop builds expose a **Start Recording / F10** control. Starting a session:
+The ordinary desktop Main sandbox/showcase host exposes **Start Recording /
+F10**. This is not a general Workbench shortcut: Shared Workbench hides the old
+Main controls and returns from its own key handler before the F10 recorder
+branch. Separate hosts such as Deepworks and Strata Theatre do not acquire this
+recorder merely by using native materials. Source: [Main input](../../godot/scripts/main.gd)
+and [Workbench setup](../../godot/scripts/shared_workbench.gd).
+
+Starting a supported session:
 
 1. freezes the current camera ROI for that session;
 2. records runtime/source/configuration identity;
@@ -58,6 +65,21 @@ The following user arguments override the defaults for a run:
 
 The output root is `user://recordings/`. The control tooltip and stdout identify
 the session directory.
+
+**ULTIMA candidate storage prerequisite:** disk recording requires the
+source-matched native runtime's file-replacement capability. A missing or stale
+runtime is refused before creating a recording directory. This is a new candidate
+boundary, not a claim that every historical GDScript-only Main host supported
+safe replacement. The in-memory test mode performs no file I/O and remains
+independent of that capability. Each disk recording creates a new session;
+existing session directories are refused rather than resumed or overwritten.
+Programmatic session names accept ASCII letters, digits, underscores and hyphens.
+
+**Current capture extent:** `gameplay_recorder.gd::start_recording` clamps the
+requested ROI to the legacy `CyberCellWorld.WORLD_WIDTH/HEIGHT` bounds, currently
+1024×1024. This is a source limit, not a dynamic promise to capture a larger
+Workbench canvas. Inspect the retained manifest ROI before interpreting an
+image as a complete scene; the bytes remain a cropped material-ID view.
 
 ## Retained frame format
 
@@ -137,6 +159,10 @@ while the session's desktop configuration records the profile active at recordin
 start. These are tuning/provenance inputs, not evidence that a candidate is
 physically calibrated or owner-accepted.
 
+The `.ids` byte format is the current render projection, not the authoritative
+eight-byte Cell carrier or the two-byte-per-cell Flatten baseline. It cannot
+substitute for either persistence format.
+
 REC-001 v2 retains the serialized material-ID channel only. The render
 visual-condition channel is explicitly omitted. Temperature is not present in
 the immutable desktop render publication and is therefore recorded as
@@ -166,6 +192,33 @@ The recording is suitable for frame-by-frame behavior comparison and owner
 review. It is not sufficient to resume or deterministically replay a simulation.
 CYSD1/replay contracts remain separate.
 
+### Candidate write verification and recovery
+
+The ULTIMA correction verifies every newly written frame file after close against
+its complete intended bytes. A frame is counted as written only after its `.ids`
+(when retained), `.bmp` and `.json` writes succeed. A failed write stops admission,
+marks the session incomplete and may leave a partial frame in the new session
+directory. Keep that directory as failed evidence; an isolated file or image is
+not proof that the whole recording completed.
+
+`recording.json` uses the shared
+[staged replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling).
+The final manifest replaces the initial valid manifest only after the complete
+staged bytes have been verified. If final publication fails, the recorder reports
+failure and retains the previous valid manifest, usually with disposition
+`recording`. That unfinished disposition must not be interpreted as `complete`,
+even if some frames are readable. Recover those frames only as partial evidence,
+retain the failure message, and start any retry in a fresh session.
+
+This is per-file verification and manifest replacement, **not a transaction over
+all recording files**. It does not promise filesystem synchronization, power-loss
+durability, protection against a hostile process modifying the same directory,
+or exact replay. The local qualification exercised pinned Godot 4.7 on Linux with
+actual file-size limits, plus injected final-manifest replacement refusal and
+session-collision tests. Windows storage behavior requires its own execution;
+the [ULTIMA product evidence](../audits/2026-11-25-docs-renaissance-ultima/product/README.md)
+records the actual platform results rather than inferring them from Linux.
+
 ## Queue pressure, drops and failures
 
 The queue has one producer (presentation consumption) and one writer. It is
@@ -193,6 +246,8 @@ The implementation exposes the counters needed for the issue, but its presence
 does not establish "zero overhead." Before #135 is called complete, run matched
 desktop recordings with recording OFF and ON on the same machine, fixture,
 source/runtime and worker configuration.
+The candidate's closed-byte verification adds writer-thread reads; include that
+cost in the matched comparison rather than reusing an older writer measurement.
 
 At minimum retain:
 
@@ -209,8 +264,10 @@ include at least one active/falling-material case, such as the collapse region
 in that fixture or `fixtures/sand-release`. Preserve negative and ambiguous
 results. Do not convert owner taste into an automated acceptance score.
 
-#135 is the finite first implementation child. Parent #130 remains open for
-future recording, comparison, export and review ergonomics.
+#135 is the finite first implementation child and remains open at the
+24 November status check. Parent #130 tracks future recording, comparison,
+export and review ergonomics; implementation presence does not close the owner
+and performance evidence gates.
 
 
 ## REC-001 integration correction
@@ -230,3 +287,30 @@ gaps. Schema v2 corrects them without changing simulation semantics:
 These corrections do not satisfy #135's remaining owner/performance evidence
 gate by themselves. Matched recording OFF/ON measurements and useful retained
 desktop clips are still required before closing #135.
+
+## Focused storage regression
+
+Use the pinned engine and materialized source-matched native/Rapier libraries
+from the [build guide](local-build-and-validation.md). Run from the repository
+root with a disposable user-data profile:
+
+```bash
+"$GODOT" --headless --audio-driver Dummy --path godot --script res://tests/test_gameplay_recorder.gd
+```
+
+The OS fault runner creates fresh disposable output and first commits a valid
+manifest. On Linux it then installs `RLIMIT_FSIZE=128` with `SIGXFSZ` ignored and
+checks the refused frame, failed status and unchanged prior manifest. On Windows
+it holds the actual manifest open without delete sharing and checks that a fully
+written frame cannot make a refused final manifest report completion. Each
+platform also runs a normal successful recording:
+
+```bash
+python3 tools/ci/run_recorder_storage_qualification.py --godot "$GODOT" --project godot --evidence build/recorder-storage-check
+```
+
+The evidence directory must not already exist. This focused check does not run
+the interactive F10 workflow, the owner performance comparison or a power-loss
+test. The portable unit fixture also covers missing capability before output,
+unsafe names, existing sessions, partial-frame detection and final-manifest
+refusal.

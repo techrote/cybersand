@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Current-main opt-in Water pressure family — admission, state, gas topology, heads, kernel laws, lifecycle, physical identity and persistence; merged cached/dormant mechanisms and comparison hosts have separate canonical owners and source-bound acceptance
 canonical-for: [pressure-flow-v1, gas-compartments, physical-state-hash, physical-state-persistence]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-25
 related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-matrix.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, ../audits/2026-10-24-lcb001-pressure-reference-publication.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, pressure-optimization.md]
 ---
 
@@ -12,7 +12,7 @@ related-documents: [lcb-pressure-inertial-handoff.md, liquid-state-transition-ma
 
 ## Implementation status and admission
 
-**Current-main checkpoint — 2026-11-03.** Inspected main
+**Accepted pressure contract; original 3 November checkpoint.** Inspected main
 `89020b9eb6d540383a5bb64b58dcd29a87592c32` admits Water with `reference`, `cached`
 and `cached_dormant`; #253 merged the latter two after #245/#246. All three are
 implementation variants of one pressure law and are exposed by the normal
@@ -20,12 +20,18 @@ eight-preset liquid panel. Other materials cannot select PF. The
 [optimization contract](pressure-optimization.md) owns cache/dormancy semantics;
 the [#359 reassessment](../audits/2026-11-03-lcb-reassessment.md) preserves actual
 performance evidence and distinguishes normal application execution from fair
-four-family comparison and full-host acceptance. Default Water remains FreeMass.
+four-family comparison and full-host acceptance. Native policy defaults remain
+FreeMass, while new player sessions separately enable the Wave gameplay profile.
+The [family policy](liquid-solver-family-policy.md#status) distinguishes those
+configuration layers; PF is available but is not the current new-player default.
 
 PF Water carries visible quantity plus hidden overfill and signed horizontal
 flow; optional gas compartments label Empty regions. This is distinct from IN's
 retained velocity, which has no gas-pressure operator. A PF-only/non-IN World
-uses hash2/CYPS2; assigning Brine IN in the same World selects hash3/CYPS3.
+uses hash2/CYPS2 in the original extension set; assigning Brine IN selects3.
+Ballistic/signed-IN and larger gas-capacity extensions can select4 or5.
+Use the [actual-instance version table](../reference/level-saves-and-replay.md#current-native-physical-state-versions),
+not PF selection alone, to determine persistence support.
 Pressure caching/dormancy must be measured against pressure reference, including
 complete native tick preparation and fallback cost. Their measured ratios are
 source/workload specific, not an additional solver-family ranking.
@@ -37,7 +43,7 @@ merged at `03785c3`, with the shared native successor accepted through
 [PR #246](../audits/2026-10-25-lcb001-shared-contract-acceptance.md) at
 `ec58d919` on 2026-10-25. It is **opt-in**: only
 a World whose applied liquid policy assigns Water to `pressure_flow_v1/reference`
-runs it. The production default stays `freemass_v1` and every Current golden is
+runs it. At that historical admission, the production default stayed `freemass_v1` and every Current golden was
 unchanged. The owner lifted the hold on the pressure reference and the inertial
 family on 2026-10-24 (LCB continuous-execution instruction). Evidence, including
 failed attempts and runtime identities, is in the
@@ -52,7 +58,7 @@ cost admission. Source-matched Windows/Linux scoped publication passed at
 ([publication evidence](../audits/2026-10-25-lcb002-pressure-variants.md#source-matched-windowslinux-publication--2026-10-25)).
 These variants are implementations of one family, not new physics.
 All retain the optional overfill/flow/gas sidecar and World compartment table.
-Other materials keep their kernels and default Water remains FreeMass.
+At that checkpoint other materials kept their kernels and default Water remained FreeMass.
 
 Accepted main also supplies W-CY, explicit normalization, typed native
 receipts and exact shared quantity accounting. Their construction, ownership,
@@ -127,13 +133,14 @@ or is reused; the sentinel is not an allocatable identity.
 ## Tick structure
 
 ```text
-begin_tick → explosions → prepare_pressure_tick()      (serial, deterministic)
+begin_tick → explosions → prepare_pressure_tick()      (serialized owner)
                1. resolve_gas_topology()   (gas_enabled only)
                2. compute_pressure_heads() (+ state-only wake of sleeping blocks)
           → active-chunk list → unchanged phased kernels → update_water_pressure()
 ```
 
-Preparation runs before the active-chunk list, so its wakes take effect in the
+Preparation is deterministic and can use the accepted Workbench pooled
+subpasses described below. It runs before the active-chunk list, so its wakes take effect in the
 same tick. Kernels read the immutable head snapshot plus their own rule radius
 (x±2 reads, ±1 writes), exactly like the Current kernels, so 1 and 4 workers
 produce identical physical states.
@@ -160,7 +167,7 @@ resolves deterministically (components by smallest root, regions by lowest
 
 | Component | Result |
 |---|---|
-| no old compartment, region holds atmosphere cells (it was open to the air) | **create**: new id, generation 0, amount = volume: atmospheric gas in the whole sealed volume, including kernel-vacated cells (#406 branch, owner approved 2026-11-06) |
+| no old compartment, region holds atmosphere cells (it was open to the air) | **create**: new id, generation 0, amount = volume: atmospheric gas in the whole sealed volume, including kernel-vacated cells (accepted source; original #406 owner approval 2026-11-06) |
 | no old compartment, unresolved cells but no atmosphere cells | **create**: new id, generation 0, amount = unresolved cells (atmospheric for its free volume) |
 | no old compartment, vacuum cells only | stays `kVacuumLabel`; no compartment |
 | one old → one region | **continue**: same id/generation; volume recomputed; amount += atmosphere cells absorbed |
@@ -195,7 +202,7 @@ plugged chamber sealed at gauge −38 before and ≥ 0 after). The Godot pressur
 policy, LCB contract, scenario-catalogue, WEX-001 and Water Feel regressions are
 unchanged. Evidence: [PF dormant + ballistic record](../audits/2026-11-06-pf-ballistic-tick-cost.md).
 
-**Masked labels at retirement (Current repair branch, acceptance pending).**
+**Masked labels at retirement (accepted source correction).**
 A transient body excludes an Empty cell from gas volume and overlap; it does
 not replace the stored cell. After the identity reducer installs the next live
 table, the existing resident relabel pass changes any unvisited positive label
@@ -290,7 +297,7 @@ still publishes dirty/wake/discovery witnesses if its pressure state changed.
 | start / moving dead band | 128 / 10 (per 255 of a row) | fixed, scaled by `maximum()` |
 | overfill limit | `maximum()` | fixed |
 | `kOverfillStiffnessRows` | 0 | fixed |
-| compartment volume limit / capacity / history | 16 384 / 1024 / 64 | fixed |
+| compartment volume limit / base capacity / history | 16 384 / 1024 / 64 | Base defaults; the separately admitted gas-capacity profile uses 2048 compartments and CYPS5 |
 
 These are **Proposed** values chosen with the characterization harness, not
 owner-frozen. p_atm = 32 keeps the gauge noise of one integer amount unit in a
@@ -313,6 +320,8 @@ records them.
 
 ## Physical-state hash v2
 
+This section describes the base pressure extension. Newer IN, ballistic and
+gas-capacity combinations select the actual-instance versions linked above.
 `World::physical_state_hash()` (`kPhysicalStateHashVersion = 2`, 64-bit FNV-1a,
 16 hex digits through GDExtension) covers the tick clock, epoch, interest/core
 regions, physics configuration (chunk/scheduler geometry, interaction, Water,
@@ -447,4 +456,4 @@ they do not describe source `349d593`.
 
 ## Desktop development workbench execution
 
-On Draft #394, the workbench reference variant can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. On the #406 branch (2026-11-06), the cached and cached_dormant variants also take this route, and the row repair/wake pass also runs as sub-band tasks. Both stay exact to the serial pass, including certificate and work counters. Gas topology labelling (the BFS and the compartment reducer) still runs on the owner. Since a later #406 change, its whole-world seed scan uses a read-only pooled pre-pass that marks seed candidates, and its label pass runs one pool task per chunk, with identical labels and gas work counters ([evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)). The base scientific host retains its existing execution path. The workbench "Fine cores" option is a separate, non-exact geometry choice. Measurements are in the [tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).
+Accepted Workbench source can assign independent vertical head columns to the native worker pool during preparation. The serial-reference comparison covers identical heads, gas, quantity, wakes and physical state. The cached and cached_dormant variants also take this route, and the row repair/wake pass can run as sub-band tasks when its ownership guards admit pooling. Both preserve the serial pass's certificate and work counters. Gas topology labelling (the BFS and the compartment reducer) still runs on the owner. Its whole-world seed scan uses a read-only pooled pre-pass that marks seed candidates, and its label pass runs one pool task per chunk, with identical labels and gas work counters. These paths entered through the historical #394/#406 work ([dated evidence](../audits/2026-11-06-pf-ballistic-tick-cost.md)); their presence in accepted source is distinct from a new performance measurement. The base scientific host retains its existing execution path. The Workbench "Fine cores" option is a separate, non-exact geometry choice. Measurements are in the [tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Fixed-work timings and the native parity fixture are in the [dated workbench audit](../audits/2026-11-04-workbench-boundary-and-pacing.md).

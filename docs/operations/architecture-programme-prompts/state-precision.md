@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture experiment: measure liquid state precision at fixed layout and semantics
 status: Planned
 document-kind: runbook

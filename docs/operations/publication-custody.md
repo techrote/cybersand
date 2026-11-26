@@ -2,9 +2,9 @@
 title: Runtime publication custody preflight
 status: Current
 document-kind: runbook
-scope: Additive offline custody verifier on the CI-ENGINEERING-CLOSURE-001 Draft candidate; no existing publisher integration or product acceptance
+scope: Accepted read-only custody verifier and owner-controlled publisher migration; trusted artifact contracts and branch leases grant no publication or semantic acceptance
 canonical-for: [publication-custody-preflight]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [github-development-and-release.md, ci-execution-and-performance.md, ci-engineering-closure-001/FINAL-DECISION-PACKET.md]
 ---
 
@@ -15,94 +15,31 @@ related-documents: [github-development-and-release.md, ci-execution-and-performa
 [publication_custody.py](../../tools/ci/publication_custody.py) checks a prepared
 two-platform Git/LFS publication stage, or replays the custody of an immutable
 publication child. It reads Git, local binary/LFS bytes and retained artifact
-archives. It does not stage, commit, upload, push, cancel, dispatch, promote or
+archives. Stage inspection additionally reads the configured remote branch to
+check its lease; immutable replay needs the original Git, LFS and artifact inputs
+available. It does not stage, commit, upload, push, cancel, dispatch, promote or
 merge anything. Its success means **custody verified within the supplied trusted
-contract**. It always emits `publication_authorized: false`,
+contract**. A successful custody result still emits `publication_authorized: false`,
 `qualification_semantics_verified: false` and
 `remote_lfs_storage_verified: false`.
 
-This helper is implemented only on the CI-ENGINEERING-CLOSURE-001 Draft candidate.
-No active Actor, PUBPRES, ObjectShard, Equipment, Art, Batch Lab, SWARM or other
-programme workflow consumes it. Existing source, execution, graphical,
-installed-package and human acceptance gates remain in force. It is an additive
-integrity check, not a replacement for the programme's semantic reducer.
+The standalone helper entered accepted main through [the CI closure merge](https://github.com/techrote/cybersand/commit/5e29b111be6202a76c0042976f74de98bd8ead78)
+on 25 November 2026. That merge did not add a call to it in an active programme
+publisher. Existing source, execution, graphical, installed-package and human
+acceptance gates remain in force. An owning programme must qualify any future
+publisher integration; the helper does not replace its semantic reducer.
 
 ## Recovered publication evidence
 
-Accepted `main` inspected on 24 November is
-`00cdb02f103265b6dc5224c68283e9a0c8cb449f`. Its Actor publisher does not contain
-the later unchanged-pointer helper. The permanent Actor-specific implementation
-belongs to [Draft #762](https://github.com/techrote/cybersand/pull/762), head
-`47e87cb84cf302b4e283cfc7e8f884e01b7b4c73`. It is not accepted-main behaviour.
+<a id="actual-immutable-verifier-replay-on-24-november"></a>
 
-| Evidence | Exact identity | Observed disposition |
-|---|---|---|
-| Original [#748 qualification](https://github.com/techrote/cybersand/actions/runs/45068056417) | Run `45068056417`, attempt `1`; source `a85b3a5655e7f711ce27fbfc8fee7819332006f0`; tree `71abcb257f775db8ba4751b23d50d9428dd7c9ee` | Linux and Windows qualification jobs succeeded; publication job `137361496328` failed its fixed four-changed-path stage. The workflow remains **failure**. |
-| Isolated [custody recovery](https://github.com/techrote/cybersand/actions/runs/45073351155) | Run `45073351155`, attempt `1`; verifier workflow source `66218ba9170939b6517b5452f837fb838c88cd72` | Reused the original immutable campaign for tested source `a85b3a…`; published its single child `30a4c3032fbbc0feb4b31b66bcfa64632ea3d84a`. The workflow source is not a new tested product source. |
-| Later [#762 full campaign](https://github.com/techrote/cybersand/actions/runs/45112739808) | Run `45112739808`, attempt `1`; source `af13c6a3926da0749a32708a44a12b66ed5d0c7c`; tree `3ab33cfd661b2204d965803f0e9f8312e7e43aa0` | Three required jobs succeeded: Linux `137488547370`, Windows/package `137494640600`, publication `137502992790`. Published single child `47e87cb…`, with four changed paths. |
-
-Actual downloaded artifact ZIPs were compared with their GitHub API SHA-256
-digests before inspection; no historical record was changed. In the original
-campaign the Linux SO is 5,253,840 bytes, SHA-256
-`1aa42ed85b2fafa31d1c521224ed9d4f8199709b41cbe8b9c1299f9c2392fb4f`.
-The rebuilt bytes equal the parent's retained LFS identity. The Windows DLL is
-5,811,200 bytes, SHA-256
-`db24ec1de3a259608a4a44ad7b8a46c7f87d1eb4758a99fd75ed62aa06ca9336`.
-The actual publication child changes the Windows pointer and both provenance
-files: **three** tracked changes. The original publisher's printed four-path
-intent list is not proof of four changed Git paths.
-
-The later #762 source campaign's retained Linux, Windows and extracted Windows
-reports contain respectively **42, 42 and 18 unique process records**. Each
-record has natural completion and exit code zero, and every original raw log
-matches its recorded hash. Their report SHA-256 identities are respectively
-`c98552bac765bf45c99b54cac482c7bd7d6587e65c97a553d4ad097db3273366`,
-`ecffe70c3b4543dee9892cc978e1b99b2a15a9f1fe2710e69b30362d8f69d11b`, and
-`eda699699bca4cc2acdf996597f8010611fb8c8e757a09942d8bfc771a5bd7ca`.
-The retained provenance refers to these exact reports. The new closure helper's
-local tests are not additional native or graphical execution of that source.
-
-| Retained #762 artifact | API archive SHA-256 | Inspection scope |
-|---|---|---|
-| [Linux 14791386230](https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791386230) | `84795b2c9911164423a9649bed3a63a229398326a6827d5ea46352ab19f6e6eb` | Actual SO, candidate, report, all 42 log joins |
-| [Windows runtime 14790766458](https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14790766458) | `35b5fd89968aeebcdc40c57f1317b59d95938cad768005bdf14a60fbc716c8b4` | Actual DLL and candidate identities |
-| [Windows evidence 14791814169](https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791814169) | `1fffbe456cad79b9db2b5ada3ddc5dc6b2d56cd37f33066a67169cb2981113ad` | Source/extracted reports and all 60 log joins |
-| [Publication 14792097545](https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14792097545) | `f9f23fc15e94bb9433d613f9f11ed481c45802054e946a955f8f0c4d223a1b09` | Source/run/attempt provenance, publication child, passed repository check |
-
-The closure review did not redownload the 94 MB portable evaluator. Its prior
-owner-package claim remains attributed to #762's own qualification and retained
-installed-package records. No physical Windows/NVIDIA acceptance is claimed.
-See [#761](https://github.com/techrote/cybersand/issues/761) for the original
-follow-up contract and the closure decision packet for the final disposition.
-
-### Actual immutable verifier replay on 24 November
-
-The closure lane additionally replayed the real #762 immutable child through
-the new helper: **custody verified**, with contract SHA-256
-`172f77d2f56c6cece5c7ddebdd10abf3c4a2e800d76e859ee7b918e34958583c`.
-The [complete pinned contract](ci-engineering-closure-001/actor-custody-replay-contract.json),
-[acquisition and reducer pins](ci-engineering-closure-001/actor-custody-replay-pin.json),
-[authenticated acquisition record](ci-engineering-closure-001/actor-custody-replay-acquisition.json),
-[verifier receipt](ci-engineering-closure-001/actor-custody-replay-result.json) and
-[publication evidence inventory](ci-engineering-closure-001/publication-evidence.json)
-are retained together.
-
-The isolated replay store recovered 57 initially absent blobs by their exact
-Git object identities. It derived **105 native source inputs and 1,283 build
-inputs** from the original source's selectors and compared them with the retained
-ledgers; actual file hashes were verified from that source's Git blobs. Both
-real candidate binaries and their local LFS object bytes were rehashed. The
-original source's Actor semantic reducers also passed against the unchanged
-42/42/18 report sets, including original assertions, readbacks and framebuffer
-receipts. All nine imported reducer helpers and the execution policy matched
-their original source hashes.
-
-This is a verifier replay of the existing `af13c6a…` campaign and its
-`47e87cb…` publication child. It launches no product process, changes no Actor
-branch, establishes no new remote LFS availability and does not qualify the
-closure candidate as new product source. The helper's own result remains
-`qualification_semantics_verified: false`; the separate original-owner reducer
-replay is recorded explicitly in the pin file.
+The [immutable 24 November recovery record](https://github.com/techrote/cybersand/blob/5e29b111be6202a76c0042976f74de98bd8ead78/docs/operations/publication-custody.md#recovered-publication-evidence)
+retains the failed Actor publication, isolated recovery, later #762 campaign,
+artifact digests, process counts and exact replay inputs. Its complete original
+bytes remain in accepted Git history. The [dated closure packet](ci-engineering-closure-001/FINAL-DECISION-PACKET.md)
+links the associated evidence. Those records qualify only their named historical
+sources and artifacts. They do not attest this checkout's runtime, a new package,
+remote LFS availability or physical owner acceptance.
 
 ## Trust boundary and contract
 
@@ -208,9 +145,9 @@ receipt artifacts requires a reviewed bounded change, not silently skipped data.
 
 ## Migration contract and remaining gates
 
-Integration remains **HOLD** while another team owns its active publisher.
-The following work belongs to that owner, after its current campaign ends or an
-explicit handoff establishes source ownership:
+Acceptance of the standalone helper does not integrate it into another
+programme's publisher. The following work belongs to that owner, after its current
+campaign ends or an explicit handoff establishes source ownership:
 
 1. Keep all existing native, target-platform graphical, original process/log,
    installed-package and independent semantic reducers.
@@ -252,19 +189,7 @@ archives, lease movement, index movement, extra child commits and merge parents.
 The test remote is local and no hosted jobs run. Full resulting-source CI
 required by repository policy is separate; local tests are not a Ready gate.
 
-The complete local suite passed **38/38 tests in 103.081 seconds** before the
-final archive-path race repair described below. Independent
-review found and reproduced an index-movement race; lead review found a
-same-commit local branch-switch race. Both were repaired with final identity
-checks and actual-Git regressions. A prior independent complete run passed 36
-tests in 59.468 seconds; independent review then passed all three focused
-branch-switch, malformed-report and index-movement regressions in 2.806 seconds.
-The review keeps these exact scopes separate from the complete 38-test run.
-
-A later independent review reproduced substitution of a ZIP pathname after its
-hash had been checked but before its members were decoded. The helper now hashes
-and decodes one captured byte buffer. A real filesystem replacement regression
-failed against the previous implementation and passes after the repair. The
-39-test inventory includes that regression; five focused archive-integrity,
-budget and path tests passed in 2.714 seconds after the repair. This final delta
-did not require another product execution or broad qualification campaign.
+The [original local qualification and repaired race evidence](https://github.com/techrote/cybersand/blob/5e29b111be6202a76c0042976f74de98bd8ead78/docs/operations/publication-custody.md#local-qualification)
+retain their exact test counts, timings and source scope. Run the commands above
+against the intended integration source; historical unit results and immutable
+verifier replay do not establish new product execution or publisher acceptance.

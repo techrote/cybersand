@@ -1,28 +1,43 @@
 ---
 title: GIP-014 goblin in-game gameplay QA
-status: Planned
+status: Current
 document-kind: research
-scope: Branch-scoped developer-only real Godot gameplay tests; Draft/HOLD
+authority: current-documentation
+retrieval: explicit-only
+scope: Accepted optional GIP-014 developer-test foundation and explicitly dated predecessor qualification; retained campaigns and evaluator bytes do not qualify the current checkout or GOBLIN002 successor
 canonical-for: [gip014-goblin-gameplay-qa]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-25
 related-documents: [../operations/local-build-and-validation.md, ../operations/github-development-and-release.md]
 ---
 
-# GIP-014 goblin gameplay QA — Draft/HOLD
+# GIP-014 goblin gameplay QA — accepted optional foundation
 
-This candidate starts from accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`.
-It owns only an opt-in developer scene, bounded in-game action adapters, disposable
-fixtures, policies, evidence readers and focused documentation. It does not change
-ordinary Workbench startup or production gameplay. No Ready promotion or merge is
-authorized. The branch now implements a real in-process Godot controller and has
-passed native Linux campaigns, the actual hosted Windows developer UI test and
-the separate extracted-package custody gate. The qualified Windows developer
-evaluator is an unchanged source-matched artifact of commit
-`3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`; this final documentation update
-does not change or relabel that runtime. [PR #772](https://github.com/techrote/cybersand/pull/772)
-remains Draft/HOLD.
+<a id="gip-014-goblin-gameplay-qa--drafthold"></a>
+
+The optional [GIP-014 foundation #772](https://github.com/techrote/cybersand/pull/772)
+entered accepted main at
+[`c8421a81b8f7f61516ed055f3200b49aee57bd65`](https://github.com/techrote/cybersand/commit/c8421a81b8f7f61516ed055f3200b49aee57bd65).
+It provides an opt-in developer scene, bounded in-game action adapters,
+disposable fixtures, policies and evidence readers. Ordinary Workbench startup
+does not load it. The persistent laboratory successor
+[#781](https://github.com/techrote/cybersand/pull/781) remains a separate candidate;
+its experiment memory and expanded coverage are not admitted by this foundation.
+
+This explicitly selected page retains the original programme's procedures and
+dated qualification record. Its complete original is preserved at the
+[accepted merge](https://github.com/techrote/cybersand/blob/c8421a81b8f7f61516ed055f3200b49aee57bd65/docs/research/gip014-goblin-gameplay-qa.md).
+The historical Linux campaigns, hosted Windows developer UI test and extracted
+package gate below apply only to their recorded sources. The retained Windows
+developer evaluator is an unchanged source-matched artifact of commit
+`3e3aa217b49036ac4a87dd57073ad2cbb5a314c8`; this documentation update does not
+turn it into a current-main or ULTIMA build. Fresh execution is required for a
+changed checkout. The status of a tool, a dated artifact and physical owner
+acceptance remain distinct.
 
 ## Shared progress and ownership ledger
+
+The following is the original GIP-014 team's dated ledger, not the current ULTIMA
+team's assignment or an instruction to modify another active programme.
 
 | Lane | Owned files | Current checkpoint |
 | --- | --- | --- |
@@ -31,13 +46,14 @@ remains Draft/HOLD.
 | B — behavior | Policy, fixtures, policy test and controller lifecycle test | Six persistent seeded policies, five authored fixtures; independent controller/replay review |
 | C — independent regression | Assertions, transcript, contract tests, Python evidence reader and package builder | Independent native readback, replay projection, negative controls and extracted-package gate |
 
-All lanes work in one isolated checkout with disjoint write ownership. The lead
-serializes source checkpoints and execution; no lane rewrites another active
-programme. Review rotates across adapter, policy, evidence and UI ownership.
+Those lanes worked in one isolated checkout with disjoint write ownership. Its
+lead serialized source checkpoints and execution, with review across adapter,
+policy, evidence and UI ownership.
 
 ## Recovered foundation
 
-[PR #749](https://github.com/techrote/cybersand/pull/749) remains Draft/HOLD at
+The retained pre-GIP-014 record describes [PR #749](https://github.com/techrote/cybersand/pull/749)
+as Draft/HOLD at
 `a6fce059fa5620fcf4adb60cb9d2e7ed79050401`. The original
 [run 45066785091](https://github.com/techrote/cybersand/actions/runs/45066785091)
 has a successful `contract-model-only` job. Its retained artifact
@@ -73,6 +89,10 @@ are never reported as discovered gameplay defects.
 
 ### Qualified Windows developer evaluator
 
+This is the source-pinned historical evaluator described above. Check artifact
+availability and its retained identities; it does not qualify the current main
+or ULTIMA source merely because the foundation merged.
+
 Download the qualified evaluator artifact from
 [run 45474099351](https://github.com/techrote/cybersand/actions/runs/45474099351).
 GitHub's outer artifact ZIP contains the inner `CyberSand-goblin.zip`; unpack
@@ -98,8 +118,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\Open goblin.ps1" -Mod
 Use the repository's pinned Godot `4.7.stable.official.5b4e0cb0f` and materialized
 native/Rapier libraries whose retained source-input manifests match this checkout.
 The existing [local build guide](../operations/local-build-and-validation.md)
-defines that reuse rule for GDScript-only changes. This mission does not rewrite
-runtime manifests or claim a fresh native build.
+defines that reuse rule for GDScript-only changes. A new invocation must retain
+its own source and artifact identities; the historical campaigns below do not
+establish a fresh native build.
 
 From the source root, substitute the pinned executable and a new disposable output
 directory for each command:
@@ -219,8 +240,12 @@ not a second engine or expected-state simulator.
 seed, source/runtime identities, bounded action arguments, admission, status,
 classification, actual native/editor receipts, before/after observations and
 independent assertions. It retains every attempt, including refusals and partial
-work. A pending proposal is atomically saved before dispatch and updated with its
-actual application admission before awaiting completion.
+work. The controller writes a pending proposal before dispatch and records its
+actual application admission before awaiting completion. These are separate
+fixed-file writes, not a transaction over the whole evidence set. The accepted
+foundation's buffered-write path is under the separately reviewed ULTIMA storage
+correction; do not infer previous-file preservation or power-loss durability from
+a rename or a successful historic campaign.
 
 Replay validates source/runtime/snapshot and initial-scene identity before actions.
 Semantic replay compares observable authored state, native material captures,
@@ -246,9 +271,12 @@ fixtures can test the reducer but cannot become real-game defect findings.
 
 ## Qualification and findings ledger
 
-No ordinary production gameplay defect has yet been independently verified by
-this candidate. Earlier failed attempts exposed harness mistakes or execution-host
-limits, preserved below. Production owners' sources remain untouched.
+**Dated foundation evidence:** the following original findings and numerical
+campaign records describe their named checkpoints. They are preserved claims of
+that programme, not newly executed ULTIMA results or the current source's defect
+register. The original programme reported no independently verified ordinary
+production gameplay defect. Its failed attempts exposed harness mistakes or
+execution-host limits and remain preserved below.
 
 | Evidence | Result and scope |
 | --- | --- |
@@ -378,7 +406,7 @@ BUILDER campaign and 24-action UI replay each pass 180 assertions. Semantic fiel
 match; exact asynchronous observations differ. The recorded renderer is ANGLE
 on Microsoft Basic Render Driver, using gl_compatibility.
 
-The lead and a specialist independently hash all 1162 declared payload members,
+The original lead and a specialist independently hashed all 1162 declared payload members,
 check exact source/manifest/report bindings, verify all four permitted import
 descriptor receipts, inspect raw campaign tapes and view the actual PNG. The
 final raw hashes remain byte-exact after extraction and execution. The four
@@ -428,8 +456,9 @@ developer evaluator requires source tests, replay, both extracted CONTROL64
 actor/save cases, independent evidence readback and the actual ANGLE developer UI
 test. A failure retains evidence and prevents evaluator upload. Hosted rendering
 and process-frame timings cannot establish owner acceptance on physical NVIDIA
-hardware. No Ready, merge, production enablement or general CI-policy change is
-part of this lane.
+hardware. The foundation is now accepted, but these historical artifact results
+grant no successor Ready promotion, runtime publication, production enablement or
+general CI-policy change.
 
 Pure policy/contract tests join the existing automatic `godot/tests/test_*.gd`
 discovery. Real adapter/controller/interactive tests live in `godot/goblin/tests`

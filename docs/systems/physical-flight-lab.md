@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Experimental single-host physics episode API and scored frozen teacher; external final-custody signoff and learned-policy qualification remain separately gated
 canonical-for: [4ly-flight-lab, 4ly-episodes, 4ly-scripted-teacher, 4ly-training-contract]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-11-24
 related-documents: [physical-free-flight.md, physical-actor-rigs.md, ../operations/physical-actor-programme.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../audits/2026-10-23-4ly003-checkpoint.md, ../audits/2026-10-24-4ly003-final-qualification.md]
 ---
 
@@ -15,10 +15,13 @@ related-documents: [physical-free-flight.md, physical-actor-rigs.md, ../operatio
 Issue [#207](https://github.com/techrote/cybersand/issues/207) follows
 4LY-001/#205 and 4LY-002/#206, merged as [PR #223](https://github.com/techrote/cybersand/pull/223)
 at `1f9336388f11be39abaae340a781a5eef52115d4`.
-All four real physical profile hashes and the unchanged source controller
+All four physical profile hashes and the unchanged **normalized controller digest**
 `fb86190c68c6a87e7d2ef7e845b1fb97305f188723a326f67f07caa6971cc8ae`
-are prospective admission requirements. The source string
-`calibration = "candidate_4ly002"` remains untouched.
+are prospective admission requirements. `controller_hash()` returns the embedded
+normalized digest: the conformance test replaces the `SOURCE_SHA256` declaration's
+value with `<CONTROLLER_HASH>` before hashing the UTF-8 source. It is not the raw
+file SHA-256. The source string `calibration = "candidate_4ly002"` remains a frozen
+profile label; it does not mean the available flight lab is an unmerged feature.
 
 **Current implementation** provides a native-material flight course, playable
 lab frontend, real synchronous episode owner, bounded local ray sensing and
@@ -31,12 +34,16 @@ teacher and suite hashes. The run-local final-suite generator was authored
 after the teacher freeze, but not held by a separate external custodian;
 an automated reviewer label does not establish independent human signoff.
 Earlier public layouts remain retired by [split amendment v3](../../godot/tests/fixtures/4ly003_split_amendment_v3.json).
-The runtime still refuses final access without separately supplied exact
-source/teacher/suite admission. This is **not** a 4LY-004 learner admission.
+The explicit [final qualification runner](../../godot/qualification/4ly003_teacher_qualification.gd)
+refuses a final score without `--admit-final` and the separately supplied matching
+teacher/source/suite admission. The lower-level course loader has the narrower
+checks described below. Neither a preflight flag nor a reviewer string proves
+independent human custody. This is **not** a 4LY-004 learner admission.
 
 In-game entry: choose **4LY Flight Lab** in the feature menu, click
-**4LY flight lab** in the main sandbox, or launch with `--flight-lab`.
-The independent lab scene is **an entry mode of the same Godot application**,
+**4LY flight lab** in the ordinary Main sandbox, or pass `--flight-lab` as a
+Godot user argument. The [Shared Workbench's actor selection](physical-free-flight.md)
+is a separate host route. The independent lab scene is **an entry mode of the same Godot application**,
 not an alternate physics engine. It uses the existing
 `CyberPhysicalActorArena` and `CyberPhysicalActorSession`:
 `CyberNativeCellWorld` -> copied native rigid-body mask ->
@@ -51,8 +58,10 @@ each 60 Hz Godot physics callback.
 Game view: profile, scenario and producer selectors all perform a **fresh
 physical reset**. W/A/S/D or arrow keys request normalized desired velocity;
 scripted teacher and optional external policy submit through the same owner.
-External policy mode does not advance until an actual action is supplied;
-it does not fake a learned policy. Rendered start, goal/radius,
+At a decision boundary, external policy mode waits for an actual action;
+it does not substitute a learned policy. The screen starts with Trainer,
+`unsupported_hover`, human control and development seed 0. Use **Fresh physical
+reset** to discard the current episode and start the selected setup again. Rendered start, goal/radius,
 obstacles and current rigid-body footprint are presentation only. F2/Exit
 returns to feature selection. Existing sandbox maps, actor selector,
 scientific fixtures, materials and learned Jolt lane are untouched.
@@ -93,13 +102,24 @@ still binds per-profile gates. Geometry-only
 [split amendment v2](../../godot/tests/fixtures/4ly003_split_amendment_v2.json)
 repairs pure vertical/horizontal/hover semantics; the later
 [v3 amendment](../../godot/tests/fixtures/4ly003_split_amendment_v3.json)
-explicitly retires disclosed public final examples. The published game
-checkout **cannot access the new final suite**. For genuine final admission,
-an independent reviewer must supply separately held
-`user://4ly003_sealed_final_suite.json` and an
-`user://4ly003_final_admission.json` binding the exact approved teacher,
-GitHub checkout source and suite SHA-256. Until then final episode reset
-fails closed. No final geometry is passed to a policy.
+explicitly retires disclosed public final examples. The published game checkout does not include the new final geometry. The
+qualification protocol requires a separately held
+`user://4ly003_sealed_final_suite.json` and
+`user://4ly003_final_admission.json`, with the approved teacher, checkout and suite
+identities. Keep these checks distinct:
+
+- [`physical_flight_sealed_suite.gd::resolve`](../../godot/scripts/physical_flight_sealed_suite.gd)
+  checks the admission version, nonempty reviewer, preflight flag, suite SHA-256,
+  matching nonempty `GITHUB_SHA`, and bounded scenario geometry. This is the
+  lower-level `reset(..., "final", ...)` path; it does not itself compare a
+  teacher digest or establish external custody.
+- The explicit qualification runner additionally requires `--admit-final` and
+  matches `teacher_sha256` to the actual teacher source before scoring. Plant
+  conformance and independent retained-trace readback remain part of the
+  qualification procedure, not an inference from a successful reset.
+
+Missing or mismatched required input is refused. No final geometry is passed to
+a policy, and the historical one-use score is not a current-source rerun.
 
 ## Episode lifecycle and authority
 
@@ -247,8 +267,8 @@ The first tick of each goal has zero progress reward (no prior distance).
 its consumed ticks; `transition(0)` grants zero reward, preventing duplicate
 training credit. Per-step terms and cumulative totals are retained in the
 evaluator trace and metrics only. Administrative deadline is a
-**truncation**, not an independently penalized failure. No neural-policy
-training has been performed.
+**truncation**, not an independently penalized failure. This flight-lab implementation and its retained teacher evidence establish no
+neural-policy training result.
 
 `godot/tests/test_physical_flight_lab.gd` supplies actual-host development
 smoke, privilege checks and negative controls; it does not score final.
@@ -284,6 +304,7 @@ Jolt neural learning are not modified by this feature.
 
 An actual positive teacher navigation score is **Measured on the recorded
 one-use Linux final suite**, rather than merely planned. External custody
-and reviewer signoff remain unverified, and the companion learned-policy
-evaluation is still unrun. Never promote the retained score to a different
+and reviewer signoff remain unverified in that record, which did not execute a
+companion learned-policy evaluation. Current companion work retains its own
+programme and acceptance authority. Never promote the retained score to a different
 source/runtime identity without its own conformance evidence.

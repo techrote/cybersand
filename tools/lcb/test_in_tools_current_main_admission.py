@@ -25,12 +25,63 @@ class AdmissionTests(unittest.TestCase):
     def test_current_checkout_and_minimal_authority(self) -> None:
         result = subject.check()
         self.assertEqual(result["status"], "admitted")
-        self.assertEqual(result["adopted_main"], "24a8bbe8ccf0d17196ebbab580b924930a964584")
+        self.assertEqual(result["adopted_main"], subject.ADOPTED_MAIN)
+        self.assertEqual(result["causal_fixture"]["path"], subject.CAUSAL_FIXTURE)
         self.assertEqual(result["authority_count"], 13)
         self.assertEqual(result["planned_count"], 6)
         self.assertEqual(result["planned_execution"], "NOT_RUN")
         self.assertFalse(result["gameplay_qualified"])
         self.assertFalse(result["runtime_qualified"])
+
+    def test_original_registration_still_refuses_current_source(self) -> None:
+        legacy = subject.parse_json(subject.LEGACY_RECORD.read_text(encoding="utf-8"))
+        subject.validate_record(legacy)
+        with self.assertRaisesRegex(subject.AdmissionError, "working source changed"):
+            subject.check(record=legacy)
+
+    def test_previous_ultima_registration_still_refuses_current_source(self) -> None:
+        previous = subject.parse_json(subject.PREVIOUS_RECORD.read_text(encoding="utf-8"))
+        subject.validate_record(previous)
+        with self.assertRaisesRegex(subject.AdmissionError, "working source changed"):
+            subject.check(record=previous)
+
+    def test_previous_registration_mutation_refuses_and_restores(self) -> None:
+        target = subject.PREVIOUS_RECORD
+        original = target.read_bytes()
+        try:
+            target.write_bytes(original + b"\n")
+            with self.assertRaisesRegex(subject.AdmissionError, "historical registration source bytes changed"):
+                subject.check()
+        finally:
+            target.write_bytes(original)
+        self.assertEqual(subject.check()["status"], "admitted")
+
+    def test_causal_fixture_cannot_be_substituted_or_repinned(self) -> None:
+        record = copy.deepcopy(self.record)
+        record["causal_fixture"]["path"] = "README.md"
+        with self.assertRaisesRegex(subject.AdmissionError, "causal fixture authority"):
+            subject.check(record=record)
+        record = copy.deepcopy(self.record)
+        record["causal_fixture"]["git_blob"] = "0" * 40
+        with self.assertRaisesRegex(subject.AdmissionError, "registered blob is stale"):
+            subject.check(record=record)
+
+    def test_historical_registration_custody_is_immutable(self) -> None:
+        record = copy.deepcopy(self.record)
+        record["supersedes_registration"]["git_blob"] = "0" * 40
+        with self.assertRaisesRegex(subject.AdmissionError, "historical registration custody"):
+            subject.validate_record(record)
+
+    def test_actual_historical_registration_mutation_refuses(self) -> None:
+        target = subject.LEGACY_RECORD
+        original = target.read_bytes()
+        try:
+            target.write_bytes(original + b"\n")
+            with self.assertRaisesRegex(subject.AdmissionError, "historical registration source bytes changed"):
+                subject.check()
+        finally:
+            target.write_bytes(original)
+        self.assertEqual(subject.check()["status"], "admitted")
 
     def test_duplicate_json_key_refuses(self) -> None:
         with self.assertRaisesRegex(subject.AdmissionError, "duplicate JSON key"):

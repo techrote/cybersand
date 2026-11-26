@@ -60,7 +60,7 @@ func _run() -> void:
 		"timing_scope": "driver loop with observations/controllers/native/snapshots and optional external file I/O; setup/final JSON excluded"}
 	if not Driver.write_json(options.output, report):
 		driver.close()
-		_fail("Cannot write result; the output parent directory must exist")
+		_fail("Result save refused; the previous output was not replaced. Check the output directory, available storage and source-matched native runtime.")
 		return
 	print("THUNDERBOWL_RESULT ", options.output, " / tick=", report.tick, " / reason=", report.reason,
 		" / hp=", report.hp, " / rewards=", report.rewards, " / elapsed_usec=", elapsed)

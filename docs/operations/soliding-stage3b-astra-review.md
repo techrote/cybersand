@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Issue 12 Stage 3B Astra architecture review packet
 status: Planned
 document-kind: runbook

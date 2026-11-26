@@ -4,7 +4,7 @@ document-kind: contract
 canonical-for: [material-runtime-model, material-kernel-cadence, reactive-material-families]
 status: Current
 scope: Native material identity, descriptors, mutable state, kernel execution, current interactions, and extension boundaries
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-25
 related-documents: [themed-construction-materials.md, material-appearance-and-rendering.md, water-design.md, smoke-heat-pressure-roadmap.md, ../research/sandspiel-performance-and-material-port.md]
 ---
 
@@ -44,6 +44,35 @@ state. Stone `state_b` distinguishes
 brace-aware Stone from explosion-created granular falling Stone. Temperature
 is a separate optional field; [its current uses](smoke-heat-pressure-roadmap.md)
 do not constitute a heat solver.
+
+## What the material catalogue and Materials Lab currently control
+
+At accepted main `00cdb02f`, the canonical authored source and compiler coexist
+with the production native descriptor/kernel owners. Only specific consumers
+have migrated; “the catalogue exists” does not mean every runtime property can
+be hot-swapped.
+
+| Surface | Current authority and effect |
+|---|---|
+| Material IDs, descriptors, kernels and initial state | Compiled [`material.hpp`](../../native/include/cybersand/material.hpp) and World; IDs0–131 except reserved10 remain unchanged |
+| Native hard/granular capabilities | `MaterialRules::is_hard_surface` and `supports_granular_load` consume generated [`material_capabilities.hpp`](../../native/include/cybersand/material_capabilities.hpp) maps |
+| Capability source and validation | [`materials/catalogue/catalogue.json`](../../materials/catalogue/catalogue.json), [`compiler.py`](../../tools/material_catalogue/compiler.py), [`native_capabilities.py`](../../tools/material_catalogue/native_capabilities.py); the generator owns two four-word masks only |
+| Inspector facts | Copied native catalogue and effective-consumer readback; declaration, consumer and observed outcome remain separate |
+| Lab candidate | Validated isolated preset and optional external native descriptor/World comparison; `runtime_active=false`, no production candidate installer |
+| Current-scene audition | Owner-approved direction and separate unmerged implementation work; not the accepted Lab v1 workflow |
+
+The Lab only exposes supported effective changes. For example,
+[`lab.py::supported_fields`](../../tools/material_catalogue/lab.py) admits descriptor
+viscosity for selected yielding/Cement/MoltenGlass templates; Water-CY uses its
+applied policy, and Lava/Acid/Oil have specialized movement. Unsupported edits
+refuse rather than implying that an inert slider changed the World. Extended
+endpoint effects run only in the admitted compiled-World comparison; the simpler
+descriptor/resolver probe does not execute them. Synthetic powder132 is an
+isolated fixture, not a new production material.
+
+The [Materials Lab guide](../operations/materials-lab-authoring.md) owns the
+workflow. The [programme design](../architecture/material-authoring-catalogue-plan.md#current-implementation-and-remaining-design)
+preserves broader migration plans and their historical admission checkpoints.
 
 ## Kernel execution and cadence
 
@@ -114,9 +143,11 @@ after failed rolls and sleep, but this is documented legacy rest; it does not
 inherit Water-CY's separately implemented retry obligation. Preserve current
 generic trajectories unless a versioned policy is separately approved.
 
-Phase A admits tests, tooling and documentation only. #354 remains open, and
-production deadline implementation and the #371 protected-source transition
-remain pending. Exact execution and platform claims belong to the audit/PR ledger.
+Phase A admits tests, tooling and documentation only. #354 remains open and its
+production deadline implementation remains pending. #371 is already merged;
+changing its protected source requires a newly qualified transition of the
+existing provenance guards. Exact execution and platform claims belong to the
+audit/PR ledger.
 
 ## Current material families
 
@@ -127,7 +158,7 @@ Exact triggering and writes are in `update_rule_kernel` and
 | Family | Representative behavior |
 |---|---|
 | Sand, Stone, Dust | Gravity/settling; brace-aware or granular Stone; ignitable Dust |
-| Water | Conserved pairwise mass; [Water contract](water-design.md) owns numeric semantics |
+| Water | Several admitted motion laws with explicit quantity accounting; [Water contract](water-design.md) owns each law's numeric semantics |
 | Smoke, Steam, Foam | Buoyancy and distinct decay/phase behavior |
 | Fire, Wood, Oil, Coal | Ignition/burn state, emission and selected extinguishing reactions |
 | Lava, Ice, Glass, Molten Glass | Material/compact-state melting, freezing, cooling and quenching |
@@ -139,7 +170,11 @@ Exact triggering and writes are in `update_rule_kernel` and
 | Toxic Sludge, Mercury | Purification reaction and high-density liquid exchange |
 | Paste, Slush | Viscous whole-cell yield that can retain heaps |
 
-Water alone uses `FreeMass`; `CellularYield` liquids retain whole-cell movement.
+The unmodified **descriptor defaults** assign Water to `FreeMass` and ten other
+liquids to `CellularYield`. Applied native policy can select supported alternatives
+for Water and Brine; the current player profile additionally enables Wave over
+Water's FreeMass carrier. These are not identical flow/quantity semantics.
+See [Water routing](water-design.md) and the [family policy](../architecture/liquid-solver-family-policy.md).
 Viscosity is dimensionless gameplay tuning, separate from yield and adhesion.
 
 ## Why does burning Coal leave a purple layer?
@@ -186,8 +221,10 @@ that separately from kernel policy.
 mirrors IDs manually and implements a narrower fallback. It treats themed and
 building surfaces as static but does not reproduce native combustion or pair
 reactions.
-Native descriptors, fallback constants, and appearance tables are not generated
-from one catalogue.
+Native descriptors, fallback constants and appearance tables are not fully
+generated from one catalogue. A bounded accepted consumer **does** generate the
+native hard-surface and granular-support masks from the canonical catalogue;
+those two predicates must not be described as still using an ID-range heuristic.
 
 Before adding/changing a material, identify state-byte meaning, numeric units,
 radii, conversion/source-sink accounting, cadence, wake/dirty, save/hash impact,
@@ -214,7 +251,10 @@ actual stored pairs for swaps and kernel-visible sources for contact attempts.
 Its immutable construction overrides leave the shared descriptor table and
 production defaults unchanged. A diagnostic target-wide exchange veto proves
 causality; issue #10 now implements the [versioned granular policy](granular-interaction-policy.md).
-Barrel bearing and feedback correction remain **Planned** for #11.
+Accepted REM-002 source now supplies bounded generic-rectangle bearing and
+feedback correction; the [coupling contract](../architecture/rigid-body-and-cellular-coupling.md#what-does-rem-002-establish-on-current-source)
+states its actual envelope. Broad body/granular acceptance remains REM-004 / #83;
+the older #11 status is not the current implementation boundary.
 
 ## Sampled player support
 

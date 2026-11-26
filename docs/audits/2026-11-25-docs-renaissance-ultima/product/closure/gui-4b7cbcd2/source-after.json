@@ -1,0 +1,57 @@
+{
+  "source_head": "4b7cbcd2a0ac90e3ee5b5abfd14b6b6cba24c8b0",
+  "tracked_diff_after": "",
+  "tracked_cached_diff_after": "",
+  "admission_files_equal_after": {
+    "godot/scripts/art_batch_panel.gd": true,
+    "godot/scripts/main.gd": true,
+    "godot/scripts/tower_panel.gd": true,
+    "godot/scripts/shared_workbench.gd": true,
+    "godot/scripts/workbench_setup.gd": true,
+    "godot/scripts/workbench_actor_panel.gd": true,
+    "godot/scripts/ambient/ambient_profile_editor.gd": true,
+    "godot/scripts/workbench_file_transaction.gd": true,
+    "godot/project.godot": true,
+    "godot/.godot/extension_list.cfg": true,
+    "godot/.godot/global_script_class_cache.cfg": true
+  },
+  "additional_unchanged_source_files": {
+    "godot/scripts/art_provider.gd": {
+      "committed_sha256": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+      "after_sha256": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789"
+    },
+    "godot/scripts/art_traffic_archive.gd": {
+      "committed_sha256": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+      "after_sha256": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811"
+    },
+    "godot/scripts/web_demo_controller.gd": {
+      "committed_sha256": "d3d8ad3359865e42145c5e56024e72aaae34531a457806e5e03d2d349c9aed47",
+      "after_sha256": "d3d8ad3359865e42145c5e56024e72aaae34531a457806e5e03d2d349c9aed47"
+    },
+    "godot/scripts/feature_launcher.gd": {
+      "committed_sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604",
+      "after_sha256": "230a684df591f0fe6affe5a281bcfb95b735e464e0bdc5ac2440019e85a67604"
+    }
+  },
+  "generated_untracked_uid_count": 620,
+  "runtime_after": {
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": {
+      "bytes": 144186224,
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "bytes": 5253776,
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "bytes": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "kernel": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "node_scope": "shared Linux desktop; no physical GPU acceptance",
+  "root_comparison_head": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "godot_path_differences_from_root": [
+    "godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-26.json"
+  ]
+}

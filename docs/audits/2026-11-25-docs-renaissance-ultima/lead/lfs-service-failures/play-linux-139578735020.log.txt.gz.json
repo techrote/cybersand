@@ -1,0 +1,15 @@
+{
+  "run": 45720873696,
+  "job": 139578735020,
+  "log_gzip": "play-linux-139578735020.log.txt.gz",
+  "decoded_bytes": 131975,
+  "decoded_sha256": "a8f971eff417692d4b630000fabf05d9a8ccf1548979b300928ad47a26b620d8",
+  "gzip_bytes": 21893,
+  "gzip_sha256": "73b246c559e97d33731e3a3094fbd2d6dba826845879f2b207059309eb218729",
+  "failure": "GitHub LFS service timeout; runtime execution not reached",
+  "url": "https://github.com/techrote/cybersand/actions/runs/45720873696/job/139578735020",
+  "requested_head": "77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7",
+  "source_note": "Requested PR head; checkout and execution identity must be read from retained original log. No runtime result is claimed.",
+  "candidate_checkout_completed": false,
+  "checkout_failure": "All three LFS fetch attempts failed before candidate checkout"
+}

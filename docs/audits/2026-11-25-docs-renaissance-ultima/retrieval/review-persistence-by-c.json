@@ -1,0 +1,376 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C (non-implementer)",
+  "disposition": "approve-with-platform-scope",
+  "source_head": "fb0ebc9e75e19eec01c2dfb485fbdec980f73983",
+  "source_inputs": {
+    "godot/scripts/workbench_file_transaction.gd": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac",
+    "godot/scripts/workbench_setup.gd": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0",
+    "godot/scripts/workbench_generated_map.gd": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a",
+    "godot/scripts/architectural_generator_dialog.gd": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b",
+    "godot/scripts/workbench_material_baseline.gd": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "godot/tests/test_workbench_file_transaction.gd": "61b22c7f53a12545acf3a55ae99e02e052f81110526d8aa31b288f28e98225f4",
+    "godot/tests/workbench_save_fault_child.gd": "d0c19e3610a3b60a584665ae28ebf33a6eba2cfb99a7701e0ee8a4571d105786",
+    "tools/ci/run_workbench_save_qualification.py": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117"
+  },
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+  "full_independent_report_sha256": "4a53686dff7f708da6bdef904fc598184f7718afd6a46f2597137fa28e7f0f15",
+  "command": "python tools/ci/run_workbench_save_qualification.py --godot <pinned-Godot-4.7-linux> --project godot --evidence <new-disposable-output>",
+  "result": "passed",
+  "case_count": 13,
+  "cases": [
+    {
+      "kind": "shared-helper",
+      "evidence_class": "injected-and-native-boundaries",
+      "injected_checks": 84,
+      "failures": []
+    },
+    {
+      "kind": "ordinary",
+      "evidence_class": "real-writer-fresh-process-reload",
+      "before": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "file_bytes": 475,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "replacement": {
+        "after_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "error": "",
+        "file_bytes": 476,
+        "material": 14,
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "ordinary",
+      "fault": "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "file_bytes": 475,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "file_bytes": 475,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "error": "",
+        "file_bytes": 476,
+        "material": 14,
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "ordinary",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "file_bytes": 475,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "file_bytes": 475,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "error": "",
+        "file_bytes": 476,
+        "material": 14,
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "generated",
+      "evidence_class": "real-writer-fresh-process-reload",
+      "before": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "",
+        "file_bytes": 2262,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "replacement": {
+        "after_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "error": "",
+        "file_bytes": 2263,
+        "material": 14,
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "generated",
+      "fault": "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "",
+        "file_bytes": 2262,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "file_bytes": 2262,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "error": "",
+        "file_bytes": 2263,
+        "material": 14,
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "generated",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "",
+        "file_bytes": 2262,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "file_bytes": 2262,
+        "material": 2,
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "error": "",
+        "file_bytes": 2263,
+        "material": 14,
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "project",
+      "evidence_class": "real-writer-fresh-process-reload",
+      "before": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "replacement": {
+        "after_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "error": "",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 456
+      }
+    },
+    {
+      "kind": "project",
+      "fault": "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "refusal": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "Refused \u00b7 Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "retry": {
+        "after_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "error": "",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 456
+      }
+    },
+    {
+      "kind": "project",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "refusal": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "Refused \u00b7 Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "retry": {
+        "after_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "error": "",
+        "file_bytes": 1954,
+        "read_error": "",
+        "readable": true,
+        "seed": 456
+      }
+    },
+    {
+      "kind": "helper",
+      "fault": "replacement-directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "staging_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+      "before": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "",
+        "file_bytes": 46,
+        "read_error": "",
+        "readable": true,
+        "value": "old"
+      },
+      "refusal": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "Save refused; this save did not replace the previous file. Atomic material baseline replacement failed: Permission denied Temporary file remains at /workspace/scratch/1c5fccfbe328/c-results/persistence-independent-values/profile-j40ofzak/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json.756ff57f3f39705d2b1ec64d44a4b6c1.tmp; it is not a saved start.",
+        "file_bytes": 46,
+        "read_error": "",
+        "readable": true,
+        "value": "old"
+      },
+      "retry": {
+        "after_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+        "error": "",
+        "file_bytes": 46,
+        "read_error": "",
+        "readable": true,
+        "value": "new"
+      }
+    },
+    {
+      "kind": "helper",
+      "fault": "process-termination-before-commit",
+      "evidence_class": "real-process-termination",
+      "staging_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+      "exit_code": -9,
+      "termination": "SIGKILL",
+      "before": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "",
+        "file_bytes": 46,
+        "read_error": "",
+        "readable": true,
+        "value": "old"
+      },
+      "retry": {
+        "after_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+        "error": "",
+        "file_bytes": 46,
+        "read_error": "",
+        "readable": true,
+        "value": "new"
+      },
+      "after": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "",
+        "file_bytes": 46,
+        "read_error": "",
+        "readable": true,
+        "value": "old"
+      }
+    },
+    {
+      "kind": "helper",
+      "evidence_class": "real-concurrent-processes",
+      "final": {
+        "after_sha256": "45dcc8796bdeac31cdf53b769d9008be0530fd53ba11240c82a267661f21dcc2",
+        "error": "",
+        "file_bytes": 49,
+        "read_error": "",
+        "readable": true,
+        "value": "second"
+      },
+      "first": {
+        "after_sha256": "45dcc8796bdeac31cdf53b769d9008be0530fd53ba11240c82a267661f21dcc2",
+        "error": "",
+        "file_bytes": 49,
+        "read_error": "",
+        "readable": true,
+        "value": "second"
+      },
+      "second": {
+        "after_sha256": "45dcc8796bdeac31cdf53b769d9008be0530fd53ba11240c82a267661f21dcc2",
+        "error": "",
+        "file_bytes": 49,
+        "read_error": "",
+        "readable": true,
+        "value": "second"
+      }
+    }
+  ],
+  "reviewed_code": [
+    "workbench_file_transaction.gd shared mechanism",
+    "ordinary/generated/project public save entry points",
+    "material_baseline_file.cpp native replace primitive",
+    "fault runner and child fixture"
+  ],
+  "conclusion": "The independently exercised Linux failure model preserves previous save bytes, reports refusal, reloads valid documents, and permits a subsequent successful replacement. Closed-byte verification prevents silent buffered-write loss. Shared native replacement avoids delete-before-move. Source/format validation remains with callers.",
+  "review_finding": {
+    "id": "C-PERSIST-TEST-01",
+    "priority": "P2",
+    "observed": "Original normal writer tests asserted changed digest and readable JSON but not requested semantic values.",
+    "fix": "A added old/new material and project-seed plus post-fault retry value assertions in fb0ebc9e.",
+    "independent_verification": "Entire 13-case matrix re-executed with strengthened assertions and passed."
+  },
+  "limits": [
+    "Native Windows sharing/locking qualification requires its own actual hosted result.",
+    "No physical NVIDIA owner acceptance, power-loss/fsync/directory-sync durability, hostile same-directory race or cross-process edit-conflict protocol claim.",
+    "Native material-baseline writer and replacement primitive are unchanged by this patch; their regression results are independently scoped in A evidence."
+  ]
+}

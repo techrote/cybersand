@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Rosework Gatehouse showcase and qualification
 status: Current
 document-kind: runbook

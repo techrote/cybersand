@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+PROFILE_SAVE_RESULT {"acknowledged":false,"bytes":373,"details":{"applications":0,"draft_unchanged":true,"draft_value":0,"editor_unchanged":true},"format_loadable":true,"invalid_input":false,"kind":"transport","loaded_value":7.0,"path":"/workspace/scratch/1c5fccfbe328/b-profile-independent-01/profile-fj841a5d/godot/app_userdata/Cyber Sand Reference Sandbox/transport-profile.json","requested_value":8,"sha256":"85185473d9911f82f372d88cad5f0863c6432790ea852c12b1d1935dd965c83e","status":"Profile save: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory. Running profile unchanged."}

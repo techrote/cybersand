@@ -1,0 +1,586 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "32eb3e86de2095db1323d3ddf405509224225175",
+  "documents": [
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "1c1e28b76a7b0deb0256624748f8f85e88e26b5882ebb13d5398389c66a700b3",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "bf07fe2f9781906e4db8c226dd8fc33020b99927f6fdba681d49c45a39891f55",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "a9714e480367aec4a36dff190bf7b42296fd3b7d54958f854f054b788511e374",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "a1fc1f741b052f67b73669110ef4bb64bb8efba1753f8500d559e9e58eaf12b6",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/gentek-interlaced-viaduct.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "0436034bac0454bc26a8dd479d0e89d927eae3d6c1ff78d7e9156a09edc0c1df",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/gentek-rosework-showcase.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "9c3205a5d8898508d8ee4e25d90f88d0b278e8c4348177b6973fe6044ad4e62b",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/gentek-showcase-integration-001.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "2a2713a1b6925082c9091c393c123386110bc0fd80a41f8aaccf8e5ddfb1860a",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/in-tools-fixtures-and-playtest.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "d5c802af37192b7cb92bb3979280211818b4b90f49f685c14a1271259361ea0c",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "155555f1c6c8bb5049d1b204b43f961886ca89bc7a3e7c4d80b88458b2ad4ddc",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "7d2d376a06f4fb80731a54d93abfa5326901d032840f358915d241eda9f17c08",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "08e898438a60ea861d9a769374513685f67bc7fdfd1a72047304325203e56826",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "1c8debbfdc152a2f810edd7036c29ddc93a5fbe754716be40bd8f97acabc69ed",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "check_groups": [
+        "examples-and-showcases"
+      ]
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "88015ba52ce2499e75861306443d20140bbae445ca63ac59cd77a1e9a4c90ed2",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "check_groups": [
+        "build-and-ci"
+      ]
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "c392ce43a64f7f389c3f01b35ec53f8e726a4fd05f32b47d86de31b999b354f4",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "51e2b5b789476c8da9ce33706ceba3ec4fc6b2fca61cd866bc3822c78d8d2a88",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "477487fb418a8a6480d6f8da80fa4c1ad45e63e33c6044760aa4fb3a7a46ce59",
+      "check_groups": [
+        "comparison-and-historical-programmes"
+      ]
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b",
+      "check_groups": [
+        "current-runtime-contracts"
+      ]
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "check_groups": [
+        "authoring-and-evidence-workflows"
+      ]
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "reviewer": "Astra lead",
+      "review_depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution",
+      "document_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "check_groups": [
+        "current-runtime-contracts"
+      ],
+      "specific_scope": "All289lines; current WaterLab versus original evaluator/standalone paths, native-v2 versus gameplay defaults, approved acceptance boundaries and no exact Wave continuation. Selected bounds corroborated with the source-qualified Wave contract and panel definitions; historical144comparisons not rerun."
+    }
+  ],
+  "review_groups": {
+    "build-and-ci": {
+      "documents": [
+        "local-build-and-validation",
+        "github-development-and-release",
+        "current-and-historical-validation",
+        "testing-validation-and-replay",
+        "source-checkpoint-and-recovery",
+        "in-tools-fixtures-and-playtest",
+        "ci-execution-and-performance",
+        "profiling-observability-and-performance",
+        "troubleshooting",
+        "cybersand-codex-development-handover"
+      ],
+      "checks": "Full command/authority read; pinned engine/native/toolchain and actual materialization, qualified causal source transition, runtime/CI boundaries. Executed checks are in the lead and hosted receipts; historical campaigns were not all repeated.",
+      "sources": [
+        {
+          "path": "tools/ci/run_ultima_qualification.py",
+          "sha256": "db034694974bdcc346935fb5c90fd0f75c3ec60050f940ea87044a9f481c2baa"
+        },
+        {
+          "path": "third_party/godot-runtime.lock.json",
+          "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        },
+        {
+          "path": "tools/ci/check_repository.py",
+          "sha256": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983"
+        }
+      ]
+    },
+    "current-runtime-contracts": {
+      "documents": [
+        "configuration-and-capacity-budgets",
+        "activity-dirty-regions-and-waking",
+        "world-storage-and-interest-region",
+        "materials-and-rule-kernels",
+        "granular-interaction-policy",
+        "intermaterial-interactions",
+        "water-design"
+      ],
+      "checks": "Native metadata wake/deadline source, finite adapter extent, granular support/generated capability masks, scope of pair chemistry versus specialized kernels, Water family and physical continuation distinctions. Corrected extent/bearing/protected-source status; existing thermal-liveness production work remains separately owned.",
+      "sources": [
+        {
+          "path": "native/src/world.cpp",
+          "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+        },
+        {
+          "path": "native/src/material_rules.cpp",
+          "sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+        },
+        {
+          "path": "native/include/cybersand/material_capabilities.hpp",
+          "sha256": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8"
+        },
+        {
+          "path": "godot/native_extension/cyber_native_cell_world.cpp",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+        },
+        {
+          "path": "godot/scripts/workbench_setup.gd",
+          "sha256": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0"
+        }
+      ]
+    },
+    "comparison-and-historical-programmes": {
+      "documents": [
+        "lcb-manual-comparison-ux",
+        "lcb-water-comparison-and-fixtures",
+        "lcb-scenario-catalogue",
+        "architecture-programme",
+        "water-hybrid-pressure-extension-programme",
+        "architecture-programme-water-feel-addendum",
+        "cell-layout-experiment",
+        "state-precision-experiment",
+        "liquid-characterization",
+        "development-claims-remediation-programme",
+        "web-threading"
+      ],
+      "checks": "Full reader/authority read; actual eight comparison presets/two setups/prepared opt-in semantics,25 registered fixture definitions, source versus old experiments and superseded Web/owner directions. Dated numerical scientific outcomes retained with scope, not rerun or promoted.",
+      "sources": [
+        {
+          "path": "godot/scripts/liquid_comparison_panel.gd",
+          "sha256": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        },
+        {
+          "path": "tools/lcb/scenario_catalogue.py",
+          "sha256": "492d8ea2d132d735c7fbe92ed7c69e6a2f436aacc2758feaa18286a47354cf50"
+        }
+      ]
+    },
+    "authoring-and-evidence-workflows": {
+      "documents": [
+        "experiment-tower",
+        "water-feel-lab-experiment",
+        "material-liveness-investigation",
+        "material-catalogue-shadow",
+        "atlas-agent-runner",
+        "play-desktop-manual-qualification",
+        "world-art-preview",
+        "world-art-capture"
+      ],
+      "checks": "Full procedure read; exact formal-study nonreadiness versus ordinary revealed engineering captures; owner#84 not-planned; unsafe catalogue rollback after migrated consumers; runnable offline Atlas and material compiler/capability checks. No paid model or formal study executed.",
+      "sources": [
+        {
+          "path": "godot/scripts/main.gd",
+          "sha256": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1"
+        },
+        {
+          "path": "godot/scripts/water_experiment_blind.gd",
+          "sha256": "25dab75373382c09d11afeda4e3b9ab027e491c4f83f6d4b526f5f824a11ae85"
+        },
+        {
+          "path": "tools/material_catalogue/native_capabilities.py",
+          "sha256": "a72f20047ac1619d0149ee3da29e97477c53815f79d79f6b2981542c8ae7e2d5"
+        },
+        {
+          "path": "tools/material_catalogue/compiler.py",
+          "sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098"
+        },
+        {
+          "path": "tools/material_catalogue/lab.py",
+          "sha256": "730710e02f4c7a2fc65e43bb98b6f5c138d843d2f1ca05b91992cf9c094cd1c9"
+        }
+      ]
+    },
+    "examples-and-showcases": {
+      "documents": [
+        "gentek-showcase-integration-001",
+        "gentek-rosework-showcase",
+        "gentek-interlaced-viaduct",
+        "gentek80-evaluation",
+        "semantic-depth-authoring",
+        "deepworks-exhibition",
+        "blacksite-nine-demo",
+        "neon-reliquary-demo"
+      ],
+      "checks": "Full guide read with historical/native-render provenance boundaries;80 geometry/material-ID table rows independently compared with source defaults; documented Blacksite,showcase,Deepworks,semantic-plane and LCB fixtures executed at7cb780b6. This is not fresh physical Windows acceptance or a semantic check of every image label.",
+      "sources": [
+        {
+          "path": "godot/tests/test_blacksite_nine.gd",
+          "sha256": "62cc5264590ce43f3101e4fccb1a2d01ad79aa68a2d86dc37c29ef0fcc9e402d"
+        },
+        {
+          "path": "godot/tests/test_showcase_tiles.gd",
+          "sha256": "5694cf1a261970ddda2eeee5c9e72f81360ed814e3bcb11d9c54f3c8bcb7bf47"
+        },
+        {
+          "path": "godot/tests/test_deepworks.gd",
+          "sha256": "0880f5c3fa2e99fd68fc357c0b771efd26e1bf7b061efba1a879b07a11c81748"
+        },
+        {
+          "path": "godot/tests/test_semantic_planes_examples.gd",
+          "sha256": "d76064275810c84c440d3be1f943f1f94ae0691057cf5d7994859d1ddfa85856"
+        },
+        {
+          "path": "godot/tests/test_lcb_fixture_manifests.gd",
+          "sha256": "2635a7d12d0d69257a593c58db011cf3fbdbbc450da050c0a8f0175ef46449ef"
+        }
+      ]
+    }
+  },
+  "limits": [
+    "Full-text review is distinct from checking every claim against source and distinct from runtime or GUI execution.",
+    "Recorded document hashes identify integrated content after independently reviewed patches; historical experiment counts remain dated evidence.",
+    "All graphical observations are SpecialistB evidence; lead did not simulate an independent physical walkthrough."
+  ],
+  "latest_review": {
+    "local_build_sanitizer_correction": "All three copyable recipes retain Makefile leak-enabled default; hosted exception is explicitly scoped. Lead inspected source and dry-run; B independently reviewed. 21 worldgen inventory tests passed. Full sanitizer binaries were not executed for this documentation-only correction."
+  }
+}

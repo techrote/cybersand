@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "accepted_source": "5e29b111be6202a76c0042976f74de98bd8ead78",
+  "original_packet": {
+    "path": "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+    "git_blob": "4bc85abad6324e9339c268114408b5654403d2c6",
+    "bytes": 23210,
+    "sha256": "e5647538ba093a2d5ad6591c1fc590d4311461587cf7a0a135082348725943c6",
+    "body_bytes": 22727,
+    "body_sha256": "d205c6ce5cf2d3e0197ae704e6a3418cd5d522382cebe3ab7172e6448bcd9549",
+    "immutable_url": "https://github.com/techrote/cybersand/blob/5e29b111be6202a76c0042976f74de98bd8ead78/docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+    "preservation": "Complete byte-exact original retained in accepted Git ancestry; no source rewrite",
+    "current_disposition": "Navigation/explicit-only wrapper; all original11 heading anchors preserved"
+  },
+  "historical_policy": "No shared authority-policy relaxation and no original evaluator edit. Direct/default/fallback answer ingestion rejects or excludes navigation; manual immutable history route remains explicit.",
+  "new_current_guides": [
+    "docs/operations/ci-campaign-coordination.md",
+    "docs/operations/publication-custody.md"
+  ],
+  "guide_review": "Both complete bodies read; collection/summarization and custody input/archive/report/verify functions source-checked. CLI help executed; original campaigns not rerun by these source checks.",
+  "external_primary_check": {
+    "url": "https://docs.github.com/en/actions/reference/limits",
+    "checked": "2026-11-25",
+    "facts": "Official standard-hosted totals Pro40/Team60, support-adjustable; not proof of this account entitlement."
+  },
+  "fixture_custody": {
+    "frozen32_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+    "frozen32_source": "20170bd6259498c3d2774ab274567febb043fc1d",
+    "new_frozen_path": "docs/reference/retrieval-questions-frozen32.json",
+    "accepted33_path": "docs/reference/retrieval-questions.json",
+    "accepted33_sha256": "e056df8e611a01efa341835d5d958391fd64b0295e17bbd7b221b7a5f783dae7",
+    "all_previous32_objects_unchanged": true,
+    "corrected_additive_case": "docs/reference/retrieval-questions-ci-closure-current-v1.json",
+    "corrected_case_before_execution": true
+  }
+}

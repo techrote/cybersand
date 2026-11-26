@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Architecture experiment: fractional liquid presentation and Water Feel Lab
 status: Current
 document-kind: runbook

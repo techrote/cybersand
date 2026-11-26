@@ -1,6 +1,7 @@
 ---
 title: GENTEK-WINDOWS-FINAL-B physical owner acceptance
 status: Draft
+retrieval: explicit-only
 document-kind: guide
 scope: Source-bound portable Windows evaluator, physical acceptance and no-upload evidence export
 canonical-for: [gentek-windows-final-owner-acceptance]

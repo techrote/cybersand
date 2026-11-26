@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "21fa575f6af8ac249739e6b76fcd2bc37ebf28e1",
+  "command": [
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/1c5fccfbe328/ultima-a/godot",
+    "--script",
+    "res://tests/test_tower_observation_inheritance.gd"
+  ],
+  "exit_code": 0,
+  "natural_completion": true,
+  "engine_error_detected": false,
+  "seconds": 2.2343407890000435,
+  "web_sha256": "d3d8ad3359865e42145c5e56024e72aaae34531a457806e5e03d2d349c9aed47",
+  "fixture_sha256": "f7a57f4ee66af620db781c8c9d49742cae99c0db6d59c67f15b7c9afa5ea775f",
+  "log": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nTOWER_INHERITANCE_RESULT {\"checks\":12,\"failures\":[],\"scope\":\"Desktop inheritance/return/order fixture; Water observation hooks substituted\"}\n",
+  "passed": true
+}

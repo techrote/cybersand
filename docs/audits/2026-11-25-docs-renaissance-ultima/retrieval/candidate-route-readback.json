@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "observed_utc": "2026-11-25",
+  "records": [
+    {
+      "number": 778,
+      "url": "https://github.com/techrote/cybersand/pull/778",
+      "title": "[Draft/HOLD] CI-READY-RECOVERY-001 \u2014 exact Godot asset and scalable regression planning",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head_sha": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "base": "main",
+      "updated_at": "2026-11-25T20:33:49Z",
+      "body_sha256": "8659a3e00897334ce09139c7be042f34c05ffc663ef1b80fb10a79c4235d0b7c",
+      "body_scope": "Read directly for lifecycle/candidate routing; reported application qualification remains attributed, not rerun by C."
+    },
+    {
+      "number": 779,
+      "url": "https://github.com/techrote/cybersand/pull/779",
+      "title": "Draft/HOLD: AMBIENT-002 living inhabitants, spatial memory and settlements",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head_sha": "957190050ea6b32b47523234e508c7690a2abba9",
+      "base_sha": "d0af9b6015c27417fddd67f79afdcf656a609571",
+      "base": "feature/ambient-001-20261124",
+      "updated_at": "2026-11-25T06:55:40Z",
+      "body_sha256": "fab642dc58950a20c9fd810391c787d9fd27329283bca9b8a58e581eaa012099",
+      "body_scope": "Read directly for lifecycle/candidate routing; reported application qualification remains attributed, not rerun by C."
+    },
+    {
+      "number": 780,
+      "url": "https://github.com/techrote/cybersand/pull/780",
+      "title": "[Draft/HOLD] ART-WORKBENCH-COLLABORATIVE-002 \u2014 Conversational native world authoring",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head_sha": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "base": "main",
+      "updated_at": "2026-11-25T06:57:53Z",
+      "body_sha256": "1eed6263af5d9972a647afd4c041e5acc1f6f944e629932c9a7abefc70ebd542",
+      "body_scope": "Read directly for lifecycle/candidate routing; reported application qualification remains attributed, not rerun by C."
+    },
+    {
+      "number": 781,
+      "url": "https://github.com/techrote/cybersand/pull/781",
+      "title": "Draft/HOLD: GIP-014 goblin 002 persistent gameplay discovery laboratory",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head_sha": "36d82cae75e5fd8dad11646663248de8003f5bf9",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "base": "main",
+      "updated_at": "2026-11-25T09:45:48Z",
+      "body_sha256": "fdea521310659db4f47b379ba6334d59397b33f761a8019ec95909929eb136b4",
+      "body_scope": "Read directly for lifecycle/candidate routing; reported application qualification remains attributed, not rerun by C."
+    },
+    {
+      "number": 783,
+      "url": "https://github.com/techrote/cybersand/pull/783",
+      "title": "DOCS-RENAISSANCE-ULTIMA-001: failure-safe authoring, trusted retrieval and compact knowledge custody",
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head_sha": "bfa40c84964b10b8bc15b2d836ce93d389f20836",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "base": "main",
+      "updated_at": "2026-11-25T20:44:59Z",
+      "body_sha256": "7dcf579a4d9f551a1a76e3756e04f864acb066e1fdece317b92243b76117bdca",
+      "body_scope": "Read directly for lifecycle/candidate routing; reported application qualification remains attributed, not rerun by C."
+    }
+  ],
+  "independent_review": "B independently reviewed exact readback plus status diff; approves candidate-only boundaries and donor adoption distinct from merge."
+}

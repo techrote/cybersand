@@ -6,7 +6,7 @@ status: Approved design
 scope: Accepted fidelity direction and constraints; fixed current cadence is separate from planned adaptive policy
 keywords: [ADR, approximation, fidelity, strict replay, frame pacing, temporal sampling, coarsening]
 related-documents: [../architecture/simulation-tick-and-threading.md, ../architecture/determinism-and-boundary-transfers.md, ../operations/profiling-observability-and-performance.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-24
 ---
 
 # ADR-008: Bounded approximate fidelity under load
@@ -86,8 +86,14 @@ owns schema, inheritance, units, immutable native tables and explicit owner rest
 The Tower applies validated profiles through restart. Actual powder falls and
 lateral Water mass transport drive bounded optional mixing and grain pickup;
 horizontal sampling and cadence are separate fixed experiments.
-Ordinary gameplay keeps Baseline; chemistry cadence, compact cells and CYSD1
-are unchanged. No unsynchronized live descriptor mutation is introduced.
+The retained v1 transport settings below apply only where the selected native
+law admits them. Current player Water uses Wave Flow, whose native constructor
+rejects configured custom transport; the prepared Workbench path admits its
+exact Baseline profile by converting it to native default transport. See the
+[current profile contract](../systems/flow-transport-and-profiles.md) for that
+solver boundary. Issue #13 did not change chemistry cadence, then-current cell
+storage or CYSD1. The versioned settings remain the retained decision; descriptor
+changes still require explicit owner reconstruction.
 
 
 ## Issue #13 version decision, 2026-09-10

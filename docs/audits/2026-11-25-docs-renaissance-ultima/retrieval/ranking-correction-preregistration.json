@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "created_before_experiment": true,
+  "source": "162b80977f3ce615ec5f31237d3b9ac1c4548eab",
+  "baseline": "source-bound-field-bm25-v1",
+  "trigger": "Final unchanged frozen32 Q01 regressed from top5 to rank6 after truthful corpus edits. Generic recover heading receives 3.2806 extra IDF points above an already heading-inclusive BM25; new one-token LCB heading scores8.473 against broader source-custody7.944.",
+  "holdout": "Lead already executed a sealed holdout on v1; implementer has not seen questions, targets, contexts, results or aggregate outcomes. Lead authorized independent frozen/development-only correction; subsequent holdout rerun must disclose this chronology.",
+  "hypotheses": [
+    {
+      "id": "field-bonus-rollback",
+      "description": "Remove explicit heading/title bonuses, since original chunk text already includes both fields. Retain document diversity and declared primary-intent link-follow."
+    },
+    {
+      "id": "coverage-scaled-field-bonus",
+      "description": "Keep original BM25 and field constants0.7/0.2, but multiply the total explicit field bonus by the fraction of distinct query tokens present in the chunk. No additional numeric tuning parameter. A narrow partial heading match no longer receives the full query-independent bonus."
+    }
+  ],
+  "constraints": [
+    "No fixture/expected/scoring changes",
+    "No query-specific aliases, path boosts or lookup tables",
+    "No canonical text changes for ranking",
+    "Full five-suite and natural development comparisons for both hypotheses; retain failed hypothesis",
+    "Separate frozen algorithm results from any new proposed version",
+    "Independent review and safety tests before source integration"
+  ],
+  "selection": "Choose only a general mechanism with useful full-suite behavior; no perfect-score requirement, no concealment of lost ranks."
+}

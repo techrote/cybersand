@@ -1,0 +1,6 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+RECORDER_TEST_READY {"bytes":4597,"manifest":"/workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-04/normal/output/session/recording.json","sha256":"f631600e07bab72dd547fa8ee8e3b7029513dc720cb648b915d107878fd92cfd"}
+RECORDER_TEST_RESULT {"frame_bytes":1024,"manifest_bytes":4606,"manifest_disposition":"complete","manifest_sha256":"434776916520074cdb21b4a7fce5918f3bb5f65818188da280d2b4ad6658156a","prior_manifest_preserved":false,"status":{"accepting":false,"active":false,"capture_attempts":1,"capture_copy_usec_max":49,"capture_copy_usec_total":49,"capture_hz":60,"dropped_frames":0,"enqueued_frames":1,"failed":false,"failure_reason":"","finalizing":false,"incomplete_reason":"","primed":true,"queue_capacity":8,"queue_high_water":1,"queued_frames":0,"render_patch_apply_usec_max":73,"render_patch_apply_usec_total":73,"render_publications_observed":1,"session_path":"/workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-04/normal/output/session","writer_write_usec_max":1395,"writer_write_usec_total":1395,"written_frames":1}}

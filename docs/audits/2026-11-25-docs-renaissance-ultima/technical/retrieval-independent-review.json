@@ -1,0 +1,133 @@
+{
+  "reviewer": "A independent hostile review",
+  "source_files": {
+    "tools/docs/retrieval_policy.py": "ab2eca7e2be79cda5741d7c3896aaeb9c603ca30ffdf27786afef4afb004f158",
+    "tools/docs/knowledge_retrieval.py": "5b6a9a4ce6a384b8233ba6d648e1ef1a7633e776b1cf9a55ce470648bb58e0b3",
+    "tools/docs/retrieval_eval.py": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5"
+  },
+  "controls": [
+    {
+      "name": "live object status downgrade",
+      "before_hits": 1,
+      "refusal": "Authority boundary: docs/systems/current.md is not a default document"
+    },
+    {
+      "name": "malformed scalar/list manifest",
+      "refusal": "Unsupported list continuation after scalar frontmatter"
+    },
+    {
+      "name": "malformed scalar/list direct",
+      "refusal": "Unsupported list continuation after scalar frontmatter"
+    },
+    {
+      "name": "malformed scalar/list adapter",
+      "refusal": "Unsupported list continuation after scalar frontmatter"
+    },
+    {
+      "name": "malformed scalar/list fallback",
+      "refusal": "Unsupported list continuation after scalar frontmatter"
+    },
+    {
+      "name": "untyped fallback",
+      "refusal": "Incomplete current-source metadata: canonical-for, document-kind, last-reviewed, related-documents, scope, status, title"
+    },
+    {
+      "name": "untyped direct",
+      "refusal": "Incomplete current-source metadata: canonical-for, document-kind, last-reviewed, related-documents, scope, status, title"
+    }
+  ],
+  "initial_invocation_failure": {
+    "exit_code": 1,
+    "output": "EE................................\n======================================================================\nERROR: test_historical_retrieval (unittest.loader._FailedTest.test_historical_retrieval)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_historical_retrieval\nTraceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/1c5fccfbe328/ultima-c/tools/ci/test_historical_retrieval.py\", line 11, in <module>\n    import check_docs\nModuleNotFoundError: No module named 'check_docs'\n\n\n======================================================================\nERROR: test_current_retrieval_selection (unittest.loader._FailedTest.test_current_retrieval_selection)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_current_retrieval_selection\nTraceback (most recent call last):\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/unittest/loader.py\", line 137, in loadTestsFromName\n    module = __import__(module_name)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/1c5fccfbe328/ultima-c/tools/ci/test_current_retrieval_selection.py\", line 18, in <module>\n    import check_docs\nModuleNotFoundError: No module named 'check_docs'\n\n\n----------------------------------------------------------------------\nRan 34 tests in 0.089s\n\nFAILED (errors=2)\n"
+  },
+  "unit": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/ci/test_historical_retrieval.py"
+      ],
+      "exit_code": 0,
+      "output": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.021s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/ci/test_current_retrieval_selection.py"
+      ],
+      "exit_code": 0,
+      "output": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.367s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/ci/test_knowledge_retrieval.py"
+      ],
+      "exit_code": 0,
+      "output": "................................\n----------------------------------------------------------------------\nRan 32 tests in 0.096s\n\nOK\n"
+    }
+  ],
+  "source_files_final": {
+    "tools/docs/retrieval_policy.py": "ab2eca7e2be79cda5741d7c3896aaeb9c603ca30ffdf27786afef4afb004f158",
+    "tools/docs/knowledge_retrieval.py": "839bf5e3afffd97cc415a09a33f9cf3fd3024457d69d933071aa51390d841972",
+    "tools/docs/retrieval_eval.py": "abc58fba9c9991b694c8e415755bf68f2c0ab661c6ee5b912ffb998ee18154f5"
+  },
+  "cache_controls": [
+    {
+      "name": "selected source",
+      "refusal": "Cache must be outside the source repository"
+    },
+    {
+      "name": "symlink source alias",
+      "refusal": "Cache must be outside the source repository"
+    },
+    {
+      "name": "other worktree source",
+      "refusal": "Cache must be outside every Git worktree and metadata directory"
+    },
+    {
+      "name": "other worktree metadata",
+      "refusal": "Cache must be outside every Git worktree and metadata directory"
+    },
+    {
+      "name": "external cache positive control",
+      "cache_exists": true,
+      "state": "created"
+    },
+    {
+      "name": "final live instance downgrade refusal",
+      "refusal": "Authority boundary: docs/systems/current.md is not a default document"
+    }
+  ],
+  "unit_final": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/ci/test_historical_retrieval.py"
+      ],
+      "exit_code": 0,
+      "output": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.018s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/ci/test_current_retrieval_selection.py"
+      ],
+      "exit_code": 0,
+      "output": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.337s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "tools/ci/test_knowledge_retrieval.py"
+      ],
+      "exit_code": 0,
+      "output": "...................................\n----------------------------------------------------------------------\nRan 35 tests in 0.083s\n\nOK\n"
+    }
+  ],
+  "verdict": "APPROVE within documented local reference-adapter scope after live-instance freshness, strict shared metadata and non-source cache fixes. No production external-index or generative-model acceptance implied.",
+  "remaining_limits": [
+    "Local source must remain available; full source validation each query adds measured latency.",
+    "This is a retrieval/context/source-following adapter, not a model evaluation or deployment.",
+    "Source edits racing within one verification/read interval are not an atomic repository snapshot; use a pinned checkout for qualification."
+  ]
+}

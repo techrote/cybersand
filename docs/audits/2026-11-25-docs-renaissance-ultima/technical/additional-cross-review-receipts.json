@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "integrated_head": "dd5fdd9defc01ee404cc168ed3411b8c2adc12b1",
+  "review_depth": "Independent complete diffs and indicated consequential source inspections; not a claim of complete semantic reread of these additional documents. A full assigned canonical coverage is separately recorded.",
+  "C_physics_runtime_identity": {
+    "verdict": "APPROVE",
+    "source_sha256": {
+      "tools/physics/runtime_identity.py": "e12720f5c0b12f9395fe2a7e398c5892f8010a95827214b6daab66a0e9a9bf6e",
+      "tools/physics/test_runtime_identity.py": "a6e02556e671efb734c10b0db821785cd2a779c939928879859a86a23c5bd356",
+      "tools/physics/run.py": "8de559870667babf05628c4bb06c9a339ebaeb8e8fba27f68847b1ca501ac174",
+      "tools/physics/capture.py": "d1c6fe32f9f45eb6415b08eb088345e45937a430f54c9067fc8c23d6e9fc104d",
+      "tools/physics/issue10.py": "6127a8b7a7bff09e4cd868a2a77a56baa324e64c50eab8cd9c5ff5cd23994f3f"
+    },
+    "tests": {
+      "command": "python3 -m unittest discover -s tools/physics -p test_runtime_identity.py -v",
+      "executed": 10,
+      "passed": 10,
+      "exit_code": 0
+    },
+    "checked": [
+      "Actual selected x86_64 platform entry is derived from both GDExtension descriptors; Linux receipts no longer hash Windows DLL pointers.",
+      "Missing selected runtime, pointer text, outside-project path, unsupported platform/architecture and ambiguous differing debug/release inputs refuse rather than fabricate identity.",
+      "Pinned engine version checked; descriptor/lock/runtime changes after execution invalidate receipt.",
+      "Fresh evidence directories preserve previous attempts; capture is configured-runtime identity, not loaded-module or source-to-binary attestation.",
+      "Native-only issue10 campaign and Godot player path retain their distinct actual executable inputs."
+    ],
+    "actual_local_identity_checked": {
+      "platform": "Linux x86_64",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "scope": "Independent identity extraction and synthetic negative controls; no new broad physics or loaded-module campaign claimed."
+  },
+  "lead_programme_and_storage_material_docs": {
+    "verdict": "APPROVE",
+    "paths_sha256": {
+      "docs/operations/architecture-programme.md": "1c1e28b76a7b0deb0256624748f8f85e88e26b5882ebb13d5398389c66a700b3",
+      "docs/operations/water-hybrid-pressure-extension-programme.md": "51e2b5b789476c8da9ce33706ceba3ec4fc6b2fca61cd866bc3822c78d8d2a88",
+      "docs/operations/lcb-water-comparison-and-fixtures.md": "08e898438a60ea861d9a769374513685f67bc7fdfd1a72047304325203e56826",
+      "docs/systems/world-storage-and-interest-region.md": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b",
+      "docs/systems/materials-and-rule-kernels.md": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500"
+    },
+    "checked": [
+      "Dated September/October work orders remain readable while later accepted architecture/Water/Wave/ballistic changes and accepted synthesis are distinguished.",
+      "Optional disposable Web work follows explicit owner issue3 not_planned disposition; old Web gate is not silently activated.",
+      "Workbench prepared comparison route carries opt-in normalization and receipt; legacy direct constructors remain a distinct contract.",
+      "refresh_simulation_region clips to actual adapter extent_, not a universal1024 square; pending persistence/GEN006 status remains separate.",
+      "Generated material capabilities and accepted REM002 bearing behavior replace stale pending claims; thermal PhaseA production boundary is retained."
+    ]
+  },
+  "C_operations_scope_corrections": {
+    "verdict": "APPROVE",
+    "paths_sha256": {
+      "docs/operations/soliding-programme.md": "b0ad52b6a1a3c3ff223169fd1534c5d0fa0dd270a40239a99294b7b01036d28c",
+      "docs/operations/soliding-macro-fracture-fixture.md": "e2bdfd2b2cc22736a5a6f9427f4f758cd35298390577cf1331f8aa6627b95daf",
+      "docs/operations/soliding-stage3-freeze.md": "7a8165abea78774fdb2c31e7cb45308acd6afcaab32b684f3272e7ce7797aaeb",
+      "docs/operations/physics-characterisation-plan.md": "847b29e3d90476c194055680fbc6448ce24df2be14a52776325511e45d0cf004",
+      "docs/operations/microscenarios-programme.md": "1f44f348acd689dd93e7a2e78985d5d0d0ee62918dd4a7b2dcb6e423ed7b5349"
+    },
+    "checked": [
+      "Current scope wrappers date old work orders and distinguish already accepted observer integration from still-gated lifecycle adoption.",
+      "Owner issue3 Web decision is routed explicitly without rewriting frozen numerical/native recipes.",
+      "No historical experiment is relabelled as freshly executed."
+    ]
+  },
+  "B_combined_runbook_and_blind_export": {
+    "verdict": "APPROVE",
+    "implementer_commit": "129361815e376925060e6008e7ffe2908682cf2e",
+    "checked": [
+      "Shared runbook uses candidate verified replacement with accepted native baseline boundary.",
+      "Tower export_metadata contains hidden_mapping; whole batch is not a blind answer sheet.",
+      "Main tower capture writes fixed user://tower-observation.json; reviewed instruction preserves each observation explicitly rather than claiming automatic unique paths."
+    ],
+    "scope": "Source/diff review; interactive owner perception study not executed."
+  },
+  "C_accepted_main_fixture_migration": {
+    "verdict": "APPROVE code and custody; corrected semantic facts independently assigned to B",
+    "review_depth": "Read complete three-file diff and fixture inputs; independently executed all17 current-selection cases and checked immutable predecessor/main bytes",
+    "source_sha256": {
+      "tools/ci/check_docs.py": "6f113786f9864fb1cf0e7cbafe8c6d8f0a695aa09d8e1ea97da9071042d88974",
+      "tools/ci/test_current_retrieval_selection.py": "756a9be309988fa3b8ca8ed5c8145320c9b7c404cfcb30a5d87e0ea8e58c7b95",
+      "tools/docs/evaluate_knowledge.py": "77503fe3599845f8418abf149a5d3c1948b8393d8d9dac31a61bbe01d23f9f22"
+    },
+    "frozen32_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+    "accepted33_sha256": "e056df8e611a01efa341835d5d958391fd64b0295e17bbd7b221b7a5f783dae7",
+    "corrected_case_sha256": "d42fe626f0cba5e308b23fc02f5417543ee4cbf370ba71e22093efe8f8c74c17",
+    "original32_equal_to_predecessor_bytes": true,
+    "accepted33_equal_to_main_5e29_bytes": true,
+    "accepted_first32_objects_equal_original": true,
+    "tests": {
+      "command": "python tools/ci/test_current_retrieval_selection.py",
+      "passed": 17,
+      "exit_code": 0
+    },
+    "harness_attempt": "Initial module-style unittest invocation failed because check_docs was not on the import path; the supported script entry point passed. No product-code workaround.",
+    "checked": [
+      "Both structurally checked fixture families still require an admitted current canonical route; excluded routes refuse.",
+      "Missing corrected input fails validation.",
+      "Accepted33 retained untouched as dated input; frozen evaluator uses byte-exact original32 copy.",
+      "No scorer, rank method, holdout or query-specific treatment changed."
+    ]
+  },
+  "B_authored_profile_manuals": {
+    "verdict": "APPROVE",
+    "source_commit": "8c08e006",
+    "paths_sha256": {
+      "docs/systems/generation-workbench-2.md": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2",
+      "docs/operations/materials-lab-authoring.md": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d",
+      "docs/systems/flow-transport-and-profiles.md": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3",
+      "docs/operations/experiment-tower.md": "b1457feb637e10d2fc29e19601ea130f35fa55b3213a2342f8d96205878ea695"
+    },
+    "checked": [
+      "Complete four-file diff read against five production caller/UI changes.",
+      "Generation saves accepted recipe, not arbitrary unaccepted editor text; refusal appears in existing dialog and outer status.",
+      "Materials envelope differs from candidate/backend exports and live continuation.",
+      "Transport Save versus Apply and draft/editor retention match actual call order.",
+      "Tower existing Save Water policy, blind refusal and dedicated status are distinct from observation export.",
+      "Candidate-only native/platform caveats retain absence of browser or power-loss qualification."
+    ]
+  }
+}

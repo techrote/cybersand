@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+TOWER_OBSERVATION_BEFORE {"bytes":374,"clipboard_available":false,"json_loadable":true,"loaded_value":7.0,"path":"/workspace/scratch/1c5fccfbe328/b-tower-before-02/profile/godot/app_userdata/Cyber Sand Reference Sandbox/tower-observation.json","requested_value":7,"returned_value":null,"sha256":"984606bdc82519c308c2b71b4fff345593acef911b5ac1330840e6624490bef0"}

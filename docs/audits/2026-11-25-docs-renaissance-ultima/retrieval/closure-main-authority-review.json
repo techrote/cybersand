@@ -1,0 +1,277 @@
+{
+  "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "authority": "historical-non-authoritative",
+  "corpus_documents": 155,
+  "explicit_routes": "Four excluded navigation wrappers link to all original accepted67c bodies; old heading anchors retained. Two audit originals remain exact body suffixes. All six remote files were fetched at pinned Git identities.",
+  "fixture_change": false,
+  "independent_review": "B full-read four wrappers, verified all original Git identities and audit body suffixes; requested removal of blank table separator; corrected. No old campaign or physical acceptance inferred.",
+  "merge_commit": "5bd1e282efd792166e104fd3843024b6ca87d360",
+  "method_change": false,
+  "probe": {
+    "authority": "historical-non-authoritative",
+    "before_after": [
+      {
+        "corrected_direct_current": {
+          "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/authoring-ledger.md",
+          "refused": true
+        },
+        "original_direct_current": {
+          "admitted": false,
+          "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/authoring-ledger.md"
+        },
+        "path": "docs/research/ambient-001/authoring-ledger.md"
+      },
+      {
+        "corrected_direct_current": {
+          "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/behaviour-ledger.md",
+          "refused": true
+        },
+        "original_direct_current": {
+          "admitted": false,
+          "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/behaviour-ledger.md"
+        },
+        "path": "docs/research/ambient-001/behaviour-ledger.md"
+      },
+      {
+        "corrected_direct_current": {
+          "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/mission-ledger.md",
+          "refused": true
+        },
+        "original_direct_current": {
+          "admitted": false,
+          "error": "Incomplete current-source metadata: related-documents"
+        },
+        "path": "docs/research/ambient-001/mission-ledger.md"
+      },
+      {
+        "corrected_direct_current": {
+          "error": "Default retrieval excludes explicit-only or navigation document: docs/research/ambient-001/perception-ledger.md",
+          "refused": true
+        },
+        "original_direct_current": {
+          "admitted": false,
+          "error": "Incomplete current-source metadata: related-documents"
+        },
+        "path": "docs/research/ambient-001/perception-ledger.md"
+      },
+      {
+        "corrected_direct_current": {
+          "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md is not a default document",
+          "refused": true
+        },
+        "original_direct_current": {
+          "admitted": false,
+          "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md is not a default document"
+        },
+        "path": "docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md"
+      },
+      {
+        "corrected_direct_current": {
+          "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md is not a default document",
+          "refused": true
+        },
+        "original_direct_current": {
+          "admitted": false,
+          "error": "Authority boundary: docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md is not a default document"
+        },
+        "path": "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md"
+      }
+    ],
+    "check_docs": {
+      "canonical_claims": 285,
+      "documents": 155,
+      "errors": [],
+      "heading_anchors": 511,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 3641,
+      "navigation_link_documents": 8,
+      "question_fixtures": [
+        "reference/retrieval-questions-frozen32.json",
+        "reference/retrieval-questions-ci-closure-current-v1.json"
+      ],
+      "questions": 33,
+      "status": "passed",
+      "warnings": []
+    },
+    "current_manifest_documents": 155,
+    "fallback_equality": "Actual repository fallback equality test passed in the69-test suite; all four wrappers remain excluded.",
+    "limits": "Technical historical experiments are not rerun here. Direct-current refusal and source routing are the tested contracts.",
+    "original_source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "schema": 1,
+    "scope": "Post-reset fresh probe using immutable accepted67c originals and the unchanged frozen v4 selector/original evaluator. No ranking changes. Root merge in progress; exact current file hashes in companion originals map.",
+    "six_dated_records_selected": false,
+    "tests": {
+      "adapter_cache": 36,
+      "historical": 16,
+      "selection": 17,
+      "status": "passed",
+      "total": 69
+    }
+  },
+  "remote_readback": [
+    {
+      "bytes": 20230,
+      "git_blob": "f7a64d90acc0ad20fb7eafe876c1e1bf0455f8dd",
+      "path": "docs/research/ambient-001/authoring-ledger.md",
+      "sha256": "d83c05006d8236ab29844123648aae9796955c8d73a04b8af9134f3e038702f1",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/authoring-ledger.md",
+      "verified": true
+    },
+    {
+      "bytes": 19855,
+      "git_blob": "79edd8d11f1ce6a68df7fef3d364c9d7fe75d548",
+      "path": "docs/research/ambient-001/behaviour-ledger.md",
+      "sha256": "1865c6e94e668ff8e60d35978a6cfdfcb520f8f022103bebb1c8fa0933bafddd",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/behaviour-ledger.md",
+      "verified": true
+    },
+    {
+      "bytes": 20337,
+      "git_blob": "818be04de3a888b746032a6efaebdeffd06601f2",
+      "path": "docs/research/ambient-001/mission-ledger.md",
+      "sha256": "b466b357f00ce0738190b0c5b3ae70b9aa1c09e53142649f67b7b40b9221e36f",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/mission-ledger.md",
+      "verified": true
+    },
+    {
+      "bytes": 23883,
+      "git_blob": "b0481e79069a91ade2b8e59663b2ad382a020740",
+      "path": "docs/research/ambient-001/perception-ledger.md",
+      "sha256": "307495227df6c9f6f0d66cc5d3a276241d6dd4df6fb50101bef93e34ad4957a5",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/perception-ledger.md",
+      "verified": true
+    },
+    {
+      "bytes": 4712,
+      "git_blob": "b1826d16a66a16a97edd53974766461f9749d528",
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "sha256": "5d77b9845607e3c03c5b47167f8505d4edb4f6208322dd8936c043947d19aae4",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "verified": true
+    },
+    {
+      "bytes": 5284,
+      "git_blob": "e343efe863fcd035a9f0d3adaf4619ad014b45e5",
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "sha256": "2e5e1a6a5845a775147776d3ea003ef667f534d5e363f462080e1f59217510db",
+      "url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "verified": true
+    }
+  ],
+  "reviewed_corpus_sha256": "6e4b43e21fc7b9c88cf5050dde46a239ea95037f895f1aa15d116dd3d8e2978b",
+  "reviewed_index_sha256": "fa6ade9a0fca02600f3d59c2d0e71ae072039cc26a51d9b8b8fc935c4d844837",
+  "reviewer": "Specialist C",
+  "root_head_at_readability_correction": "26c0c09f201e39f2e4ca1194b5085707acb936cc",
+  "schema": 1,
+  "selection_policy_change": false,
+  "sources": [
+    {
+      "body_preserved_as_exact_suffix": false,
+      "disposition": "Concise current navigation/explicit-only custody wrapper; full original bytes and body preserved in immutable accepted Git",
+      "original_blob": "f7a64d90acc0ad20fb7eafe876c1e1bf0455f8dd",
+      "original_bytes": 20230,
+      "original_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_sha256": "d83c05006d8236ab29844123648aae9796955c8d73a04b8af9134f3e038702f1",
+      "original_url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/authoring-ledger.md",
+      "path": "docs/research/ambient-001/authoring-ledger.md",
+      "pre_readability_result_sha256": "feddc60ee944c3b3898e7fa2a7153b7e258735505b5a9aa1c397295e6728d636",
+      "preserved_body_bytes": 19973,
+      "preserved_body_sha256": "148a88bd784a7cba2f1cf6efe75aed0faef44531ff8f2402ba4739c8e9f73b37",
+      "preserved_inbound_heading_anchors": 8,
+      "preserved_original_by_git_show_verified": true,
+      "result_bytes": 2653,
+      "result_sha256": "38adf44c7835dbea5e88ee6e8d690f32c25ffa5dd495e296278b3f94214f01e1",
+      "review_depth": "Full body read for dated scope, source custody and authority; no new runtime/scientific execution"
+    },
+    {
+      "body_preserved_as_exact_suffix": false,
+      "disposition": "Concise current navigation/explicit-only custody wrapper; full original bytes and body preserved in immutable accepted Git",
+      "original_blob": "79edd8d11f1ce6a68df7fef3d364c9d7fe75d548",
+      "original_bytes": 19855,
+      "original_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_sha256": "1865c6e94e668ff8e60d35978a6cfdfcb520f8f022103bebb1c8fa0933bafddd",
+      "original_url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/behaviour-ledger.md",
+      "path": "docs/research/ambient-001/behaviour-ledger.md",
+      "pre_readability_result_sha256": "ca0f304dd79c76aea4e823f60e544ef0cf1af97f45668bb5df22ccad2141df3d",
+      "preserved_body_bytes": 19428,
+      "preserved_body_sha256": "aae4755942a5f486f0ff4547f46bcc97c596cb7e1e71c5d752006f3daf42a208",
+      "preserved_inbound_heading_anchors": 9,
+      "preserved_original_by_git_show_verified": true,
+      "result_bytes": 2699,
+      "result_sha256": "985b51bb5d2327987782a7faddf04dfe1245c138e893b7c78cd6d2b2fa0fea0e",
+      "review_depth": "Full body read for dated scope, source custody and authority; no new runtime/scientific execution"
+    },
+    {
+      "body_preserved_as_exact_suffix": false,
+      "disposition": "Concise current navigation/explicit-only custody wrapper; full original bytes and body preserved in immutable accepted Git",
+      "original_blob": "818be04de3a888b746032a6efaebdeffd06601f2",
+      "original_bytes": 20337,
+      "original_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_sha256": "b466b357f00ce0738190b0c5b3ae70b9aa1c09e53142649f67b7b40b9221e36f",
+      "original_url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/mission-ledger.md",
+      "path": "docs/research/ambient-001/mission-ledger.md",
+      "pre_readability_result_sha256": "58acd3cedd9f4992eee40771d2aaa5ef0ddb4d8d7d1735588bddd7a868c7ab87",
+      "preserved_body_bytes": 20070,
+      "preserved_body_sha256": "374cee342c8c25d69cd22ba96dea1321778937940a090630aa6fe955b62fd087",
+      "preserved_inbound_heading_anchors": 11,
+      "preserved_original_by_git_show_verified": true,
+      "result_bytes": 2867,
+      "result_sha256": "0cf0e941b75b62bc73fb6906a06466c0dd350389eca4b9a8295ff1471e3a413a",
+      "review_depth": "Full body read for dated scope, source custody and authority; no new runtime/scientific execution"
+    },
+    {
+      "body_preserved_as_exact_suffix": false,
+      "disposition": "Concise current navigation/explicit-only custody wrapper; full original bytes and body preserved in immutable accepted Git",
+      "original_blob": "b0481e79069a91ade2b8e59663b2ad382a020740",
+      "original_bytes": 23883,
+      "original_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_sha256": "307495227df6c9f6f0d66cc5d3a276241d6dd4df6fb50101bef93e34ad4957a5",
+      "original_url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/research/ambient-001/perception-ledger.md",
+      "path": "docs/research/ambient-001/perception-ledger.md",
+      "pre_readability_result_sha256": "bee1c2f114227cb88dfde9140473bda0a95d090102375ace1858f2aab5ce8a59",
+      "preserved_body_bytes": 23591,
+      "preserved_body_sha256": "0dab5a7e8d2ebf85d78466809068b6743f75e2a1a13be95b693a1c613d7abf26",
+      "preserved_inbound_heading_anchors": 10,
+      "preserved_original_by_git_show_verified": true,
+      "result_bytes": 2761,
+      "result_sha256": "014bf7270ffec36052ac754f9618377cccdfc656d65963b85b4c9d8ccf4b552b",
+      "review_depth": "Full body read for dated scope, source custody and authority; no new runtime/scientific execution"
+    },
+    {
+      "body_preserved_as_exact_suffix": true,
+      "original_blob": "b1826d16a66a16a97edd53974766461f9749d528",
+      "original_bytes": 4712,
+      "original_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_sha256": "5d77b9845607e3c03c5b47167f8505d4edb4f6208322dd8936c043947d19aae4",
+      "original_url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "pre_readability_result_sha256": "8c7d51e9b5c02bb82e4dff0e50c4489a23ff7f94f7f11cb92c21b11fcb71fb06",
+      "preserved_body_bytes": 4712,
+      "preserved_body_sha256": "5d77b9845607e3c03c5b47167f8505d4edb4f6208322dd8936c043947d19aae4",
+      "result_bytes": 5682,
+      "result_sha256": "8c7d51e9b5c02bb82e4dff0e50c4489a23ff7f94f7f11cb92c21b11fcb71fb06",
+      "review_depth": "Full body read for dated scope, source custody and authority; no new runtime/scientific execution"
+    },
+    {
+      "body_preserved_as_exact_suffix": true,
+      "original_blob": "e343efe863fcd035a9f0d3adaf4619ad014b45e5",
+      "original_bytes": 5284,
+      "original_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_sha256": "2e5e1a6a5845a775147776d3ea003ef667f534d5e363f462080e1f59217510db",
+      "original_url": "https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "path": "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "pre_readability_result_sha256": "6c99dcc45eb2aea4430a2590b6a186cdd4d676e48786e8ada6955f9b45e4e9af",
+      "preserved_body_bytes": 5284,
+      "preserved_body_sha256": "2e5e1a6a5845a775147776d3ea003ef667f534d5e363f462080e1f59217510db",
+      "result_bytes": 6289,
+      "result_sha256": "6c99dcc45eb2aea4430a2590b6a186cdd4d676e48786e8ada6955f9b45e4e9af",
+      "review_depth": "Full body read for dated scope, source custody and authority; no new runtime/scientific execution"
+    }
+  ],
+  "status": "approved with B independently verified preservation and scope; one table-break corrected"
+}

@@ -2,24 +2,41 @@
 title: Liquid material and solver state-transition matrix
 status: Approved design
 document-kind: design
-scope: Operation-by-operation rules for default liquids, accepted native W-CY/pressure variants/Brine IN and isolated published Water IN; historical Proposed requirements retain their source qualification — ownership, state movement, exact quantity/source-sink, invalidation and family applicability; no production Cell layout choice
+scope: Operation-by-operation reference model with current admission routes for accepted W-CY, pressure variants and Water/Brine IN; historical Proposed rows retain their original model and qualification scope
 canonical-for: [liquid-state-transition-matrix]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-25
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-prepared-setup-and-receipts.md, lcb-pressure-inertial-handoff.md, data-ownership-and-lifetimes.md, ../audits/2026-10-23-lcb-physics-mechanism-report.md, ../systems/water-design.md, pressure-optimization.md]
 ---
 
 # Liquid material and solver state-transition matrix
 
-**Unmerged application integration:** the [final source union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
+**Recorded application integration checkpoint:** the [final source union](liquid-prepared-setup-and-receipts.md#final-application-source-union)
 applies the existing WholeCell ingress rule to scheduled Water actions for both
 CY and IN before any owner swap. Setup normalization cannot authorize future
 fractional ingress. Actual desktop and synchronous refusal controls retain the
 old owner/receipt/record. The integration adds no new state-transition law,
 cell ABI or physical-save host-mask/body continuation claim.
 
-**Current source and qualification:** the [Brine IN reference](inertial-cellular-v1.md) implements its declared ownership/law scope and is accepted on main through #250. The isolated [Water IN successor](inertial-cellular-v1.md#water-in-native-successor--2026-10-25) adds its material/carrier contract and actual sourceaa8af247 Windows/Linux publication. Final ready-PR and full application/scientific qualification remain pending. The standalone model and historical Proposed rows below retain their separate evidence meaning.
+**Current accepted source, 24 November:** both [Brine and Water IN](inertial-cellular-v1.md)
+are implemented (#250/#254), alongside W-CY and all three PF variants. The
+[family policy](liquid-solver-family-policy.md) owns current admission; the
+[Water Lab](../operations/workbench-water-lab.md) is the ordinary application
+entry. The old source aa8af247 publication and then-pending Ready/merge gates
+remain historical. Availability does not establish the complete scientific
+comparison or physical owner acceptance. The standalone model and Proposed rows
+below retain their original evidence meaning; they are not a current list of
+unimplemented features.
 
 ## Status and inputs
+
+**Applicability:** the rows preserve the October 23–25 reference-model and
+native-integration checkpoints. Accepted current Water/Brine IN and PF variants
+are identified above. Old references to hash2/CYPS2, pre-code widths and pending
+branches describe those checkpoints. Current physical formats select versions
+2–5; Wave hash6 has no exact continuation format. Use the
+[current version contract](../reference/level-saves-and-replay.md#current-native-physical-state-versions).
+Current cells use eight-byte `PrecisionStorage`; the original Gate-B no-migration
+constraint below does not override the [current storage contract](chunk-tile-and-buffer-model.md).
 
 - **Default-family baseline rows** retain the historical prepass at `9012425`/`4caa2c3`. Current PF and W-CY refinements are identified separately below.
 - **Proposed rows** are the contract that #200 (policy, `pressure_flow_v1`,
@@ -110,11 +127,20 @@ cell ABI or physical-save host-mask/body continuation claim.
 | Operation | Owner | Rule |
 |---|---|---|
 | FreeMass partial transfer | `transfer_water` | Current: `amount = min(requested, source, capacity)`. Zero source → Empty; Empty destination → Water. |
-| Whole-cell Water (W-CY main; isolated Water IN successor) | family | Current native W-CY and isolated Water IN successor: every Water cell holds exactly `maximum()`. Fractional ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink); no Godot normalization opt-in yet. |
+| Whole-cell Water (accepted W-CY and Water IN) | family | Every Water cell holds exactly `maximum()`. Fractional initial ingress refuses or uses explicit native `water-normalize-v1` preparation (up when `2·m ≥ maximum()`, exact setup-only source/sink). The accepted Godot comparison panel supplies this opt-in; it does not legalize fractional future sources. |
 | Overfill (PF) | family | Current: Water can hold `maximum()` + overfill, with overfill ≤ `maximum()`. Overfill enters native quantity accounting and observations and is never rendered as an extra cell. |
 | Observation of quantity | host | `water_integer` for FM/PF (visible + overfill for PF); `maximum()` per cell for whole-cell families |
 
 ## 5. Velocity and momentum (IN; PF flow)
+
+**Historical model scope.** The illustrative `vmax = 64`, four-cell travel and
+nonnegative `vy` model below are preserved original registration values, not the
+current native constants or a universal upward-motion prohibition. Accepted IN
+uses q16 velocity bounds of 32 and read3/write2 geometry. Its original vertical
+law uses `vy >= 0`; the separately selected signed IN-B1 law admits upward
+velocity. [Current native IN](inertial-cellular-v1.md) and
+[Water ballistic ownership](ballistic-water-v1.md) own those actual boundaries.
+Do not rewrite the worked examples to manufacture new measured equivalence.
 
 **Inertial update `inertial-update-v1` (Proposed, #212; correction 2026-10-23).**
 The earlier rows were inconsistent ([re-review finding 2](https://github.com/techrote/cybersand/pull/226#issuecomment-6362824493)):
@@ -228,6 +254,14 @@ corner travel, and lighter-below non-support.
 
 ## 9. Sleep, wake, reset, save and reconstruction
 
+**Dated checkpoint table.** The hash2/CYPS2 and #201 branch wording below records
+the original comparison contract. Current cached/dormant pressure and Water/Brine
+IN are accepted. Their later state extensions select physical versions 2–5;
+Wave refuses exact physical save/restore. Native healthy-state continuation is
+also distinct from Workbench authored Save and material Flatten. Use the
+[current save contract](../reference/level-saves-and-replay.md) before implementing
+or operating persistence; old table entries do not grant failed-owner restore.
+
 | Operation | Rule |
 |---|---|
 | Sleep | Current: ordinary quiet threshold 3; W-CY retains deadlines for legal future cadence/yield opportunities and blocked pools may sleep. Current #201 branch motion certificates prove a bounded no-op and preserve no-motion body contacts/material work; they cannot freeze nonzero flow or suppress other families. Execution3 warmup/backoff selects ordinary motion during deferred proofs; final qualification remains pending ([contract](pressure-optimization.md)). |
@@ -263,6 +297,11 @@ completed N+1.
 | Cross-family boundary | gas abuts a non-pressure liquid: the liquid is an impermeable boundary; volume counts only Empty cells |
 
 ## Acceptance hooks
+
+The following hooks/counts are the original October checkpoint inventory.
+Implemented PF/IN/application paths now have the current contracts linked above;
+a historical pending row is not present-day feature absence. None of those
+later merges automatically re-executes this registered scientific campaign.
 
 | Contract | Coverage |
 |---|---|

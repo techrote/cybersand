@@ -2,13 +2,31 @@
 title: Water Feel Lab experiment registration
 status: Current
 document-kind: runbook
-scope: Preregistered Issue 19 V1 presentation and V2 H-preparation experiments
+scope: Retained Issue 19 V1 presentation and V2 H-preparation registration, current source applicability and separately dated qualification; not the ordinary Shared Workbench Water Lab manual
 canonical-for: [water-feel-lab-experiment, water-presentation-experiment]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-24
 related-documents: [architecture-programme.md, architecture-programme-water-feel-addendum.md, architecture-programme-prompts/fractional-presentation.md, experiment-tower.md, state-precision-experiment.md, ../systems/water-design.md, ../architecture/rendering-and-gameplay-bridges.md, ../audits/2026-09-12-issue-19-water-feel-lab.md]
 ---
 
 # Water Feel Lab experiment
+
+## Current route and experimental scope
+
+For ordinary scene authoring use the [Shared Workbench Water Lab guide](workbench-water-lab.md).
+This page owns the earlier Water Feel comparison apparatus and its frozen
+experimental rules. It is not a claim that the Workbench's Wave gameplay profile
+uses every mass/coherence/presentation arm below.
+
+Issue [#19](https://github.com/techrote/cybersand/issues/19) is closed. The source
+still contains the Water Feel constructor, policy and comparison controls in
+[`main.gd`](../../godot/scripts/main.gd) and
+[`WaterExperimentPolicy`](../../native/include/cybersand/water_experiment_policy.hpp).
+Accepted App/Trial integration also contains bounded prepared Water Feel paths.
+The [prepared-owner contract](../architecture/liquid-prepared-setup-and-receipts.md#ordinary-water-feel-preparation)
+owns their current source boundary and original qualification records. An old
+“unmerged” annotation does not make those source paths unavailable, and accepted
+source does not establish a new blind study, perceptual winner or physical owner
+evaluation.
 
 ## Registration before candidate code
 
@@ -29,16 +47,24 @@ changes presentation only. V2 semantic comparisons hold presentation fixed.
 
 ## Current implementation outcome
 
-**Current, 2026-09-12:** the preregistration below was implemented without changing
-its experimental dimensions. V1 and V2 pass their available acceptance gates and
-the lab is H-ready. The [dated completion record](../audits/2026-09-12-issue-19-water-feel-lab.md)
+**Historical implementation result, 2026-09-12:** the preregistration below was implemented without changing
+its experimental dimensions. V1 and V2 passed their available gates and the lab
+was recorded as H-ready. The [dated completion record](../audits/2026-09-12-issue-19-water-feel-lab.md)
 owns source/artifact identity, platform results, failures, independent review and
 the later-human-evaluation boundary. The frozen sections remain here so current
 behavior can be checked against the pre-code contract.
 
+That dated label does not qualify today's ordinary export as a formal blinded
+study record. The [September closure audit](../audits/2026-09-20-development-claims-closure-audit.md)
+identified operator-visible candidate identity and overwriteable observations.
+Its corrective [REM-005 #84](https://github.com/techrote/cybersand/issues/84) was
+closed **not planned** on 15 November, with no completion record in that issue.
+Treat the legacy export as revealed engineering metadata; a future formal human
+study requires its own admitted capture mechanism and platform qualification.
+
 ## Frozen normalized policy
 
-**Subsequent unmerged LCB-003 extension, 2026-10-25:** the normal liquid panel
+**Historical LCB-003 extension checkpoint, 2026-10-25:** the normal liquid panel
 can rebuild an unblinded body-free Water Feel run under an explicit family.
 It retains the sampled player, original recipe/actions, independent version1
 Water policy and ordinary control/ledger behavior, and requires Exploratory.
@@ -185,6 +211,10 @@ platform access is a named gap, never inferred acceptance. This issue prepares
 the later H study and records no perceptual winner.
 
 ## Implementation package DAG
+
+**Historical execution plan for the completed #19 implementation.** The named
+roles, write sets and sequence below preserve its original division of work;
+they do not assign work or override current branch ownership.
 
 | ID | Objective | Frozen inputs/interfaces | Output and bounded write set | Depends on | Spark tier | Oracle | Independent review | Parallel |
 |---|---|---|---|---|---|---|---|---|

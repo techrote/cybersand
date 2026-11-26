@@ -6,96 +6,147 @@ status: Current
 scope: Current execution paths and authority map; routes to the contracts that govern changes
 keywords: [architecture, native authority, Godot, Rapier, desktop, Web]
 related-documents: [module-boundaries.md, data-ownership-and-lifetimes.md, simulation-tick-and-threading.md, ../reference/status-and-roadmap.md]
-last-reviewed: 2026-10-20
+last-reviewed: 2026-11-24
 ---
 
 # Architecture overview
 
+CyberSand combines a native cellular World, a Godot authoring and presentation
+host, and main-thread Rapier actors. The ordinary Shared Workbench brings those
+owners together; each still has a distinct mutation and lifetime boundary.
+This overview is source-inspected against accepted main `00cdb02f` on
+24 November 2026. Runtime qualification remains a separate
+[evidence record](../reference/validation-evidence.md).
+
 ## Which simulation actually runs?
 
-**Current:** `cybersand::World` owns cellular state and rules. The Godot
-`CyberNativeCellWorld` adapter owns one World. Desktop selects that adapter when
-the extension class is available and otherwise selects the older
-`CyberCellWorld` GDScript solver. Web requires the native adapter and reports
-load failure instead of falling back. The two solvers are alternatives; their
-Water behavior and performance are not equivalent.
+**Current:** `cybersand::World` owns native cells, material state, activity,
+liquid policies and authoritative simulation. `CyberNativeCellWorld` adapts that
+World to Godot. The ordinary desktop worker selects this adapter when its class
+is available and otherwise selects the older `CyberCellWorld` GDScript solver.
+Web requires the native extension and reports load failure instead of falling
+back. Native-only Workbench operations check their own capabilities; the fallback
+does not provide native authoring, material chemistry or solver parity.
 
-Source: [World](../../native/include/cybersand/world.hpp),
-[desktop `_create_world`](../../godot/scripts/simulation_worker.gd), and
+Sources: [World](../../native/include/cybersand/world.hpp),
+[desktop `_create_world`](../../godot/scripts/simulation_worker.gd),
+[native adapter](../../godot/native_extension/cyber_native_cell_world.cpp), and
 [Web controller](../../godot/scripts/web_demo_controller.gd).
-Source identity and platform execution evidence have separate homes in the
-[checkpoint record](../operations/source-checkpoint-and-recovery.md) and
-[validation ledger](../reference/validation-evidence.md). A Current source
-description is not an all-platform acceptance claim.
 
-The opt-in [player control playground](../systems/player-control-playground.md)
-uses an exclusive synchronous owner. Mechanical presets reuse the physical
-arena; Sand/Water presets call a bounded native material field before normal
-ticks. That scene requires the matching native extension and does not attach a
-second owner to the ordinary sandbox World.
+Fresh native sandbox and Shared Workbench sessions select the
+[Wave gameplay Water profile](wave-flow-v1.md). The plain C++ `WorldConfig`
+default remains FreeMass with Wave and ballistic Water disabled. A constructor
+default, a user-selected applied law and an application's gameplay preset are
+different facts. The [configuration reference](../reference/configuration-reference.md#water-constructor-defaults-and-player-profile)
+records this distinction and its exact source.
+
+The [player playground](../systems/player-control-playground.md) uses its own
+exclusive synchronous owner. Mechanical presets reuse the physical arena;
+Sand/Water presets invoke a bounded native material field before normal ticks.
+That standalone scene does not attach another owner to the sandbox World.
 
 ## Who owns each kind of truth?
 
-| State | Current authority | Boundary |
+| State | Current owner | What crosses the boundary |
 |---|---|---|
-| Materials, compact state, optional temperature, activity | Native World, or the selected desktop fallback | Godot receives copies and bulk query results |
-| External rigid-body transforms and velocity | Rapier2D through Godot PhysicsServer2D | Packed samples become a separate cellular obstacle mask |
-| Sampled character | Desktop pacing owner; Web main-thread controller | Reads cellular occupancy; it is not a Rapier body |
-| Articulated player presets | Main-thread physical session and Rapier | Leased actions request bounded forces and joint targets |
-| Sand/Water player field | Dedicated serialized playground owner invoking native World | Native cells remain authoritative; copied receipts describe local relocation |
-| Images, textures, UI, input, shaders | Godot main thread | Presentation never mutates cellular storage |
+| Cells, compact material state, temperature, activity and liquid accounting | Native World | Copied observations, stored-material captures and render publications |
+| Body poses, joints, velocity and contacts | Main-thread physical session and Rapier through Godot | Value-only body samples and bounded cellular responses |
+| Authored start, ordered edits and history | Workbench authoring controller, coordinated with the exclusive native worker | Validated requests, completion receipts and durable authored data |
+| Actor control authority | Main-thread physical session | Issued observations and bounded action leases, retired on handoff/reset |
+| Provider conversation and proposed drawing | Art controller/provider adapter | Proposed bounded commands; native completion is still required |
+| Images, textures, camera and UI | Godot main thread | Immutable copied RG8 material/condition data |
 
-Rapier is the sole current rigid-body backend, behind
-`CyberRapierPhysicsBridge`. Native cellular workers never call Godot or Rapier.
-The Godot pacing owner may call its exclusively owned adapter/value APIs; it
-does not own live scene-tree objects. Exact resource lifetimes belong in
+The fallback, where selected, owns its own alternate cell arrays; it is never
+synchronized as a second authoritative copy of a native World. Rapier is the
+current rigid-body backend behind engine-owned adapters. Native pool workers
+call neither Godot nor Rapier. The GDScript pacing thread may call the adapter
+it exclusively owns, but it may not access live scene-tree or Rapier objects.
+
+```mermaid
+flowchart TD
+    UI["Godot main: input and Workbench"] -->|"copied requests"| Owner["Exclusive cellular owner"]
+    Owner --> World["Native World"]
+    World --> Pool["Native job pool"]
+    Pool -->|"joined phase results"| World
+    World -->|"copied snapshots and receipts"| Owner
+    Owner -->|"immutable publication"| UI
+    Physics["Main-thread Rapier session"] -->|"copied body samples"| Owner
+    Owner -->|"bounded body responses"| Physics
+```
+
+The diagram shows ownership and message direction, not concurrent permission to
+call World. Exact leases, prepared replacements and failure windows belong to
 [data ownership](data-ownership-and-lifetimes.md).
 
 ## How does data move on desktop and Web?
 
-Desktop rendering reads immutable published snapshots while a dedicated Godot
-Thread advances the character and cells. Rapier steps on the main thread and
-exchanges copied body samples/results with that asynchronous owner. A cellular
-result can therefore lag behind body motion.
+Desktop has two scheduling levels: a dedicated Godot pacing Thread serializes
+World calls, and World's native pool parallelizes eligible jobs inside a tick.
+Rapier and presentation run on the main thread. Their copied observations can
+have different ages; high render FPS or a new status counter alone does not
+prove that native or physical progression is healthy.
 
-Web runs Rapier, body masking, cells and the character sequentially in
-`_physics_process`. Compatibility Web has one cellular worker; threaded Web
-can dispatch the same native pool while the main thread waits. Separate render
-publication cadence does not make Web simulation asynchronous. Character order,
-terrain gating and failure handling differ between controllers; use the
-[tick contract](simulation-tick-and-threading.md) before changing either.
+Web runs its controller and waits for native ticks on the main thread.
+Compatibility Web uses one cellular worker. Threaded Web may dispatch native
+pool work while the main thread waits; that is not asynchronous Web ownership.
+The [tick contract](simulation-tick-and-threading.md) records actual ordering,
+failure and pause behavior for each host.
 
-Both native paths use sparse storage and bounded phased jobs. Dirty RG8
-material/condition copies update a persistent CPU image, followed by a full
-GPU texture update. Render-only shaders derive colour, motion and lighting.
-The [bridge contract](rendering-and-gameplay-bridges.md) explains payloads and
-publication failures; the [coupling contract](rigid-body-and-cellular-coupling.md)
-defines rectangle displacement and Rapier hard contact.
+Native dirty RG8 patches update a persistent CPU image. Accepted main still uses
+`ImageTexture.update` on the full backing image; patch bytes are not GPU upload
+bytes. Palette, motion, relief and glow shaders derive appearance without
+changing stored material. The [render contract](rendering-and-gameplay-bridges.md)
+owns acknowledgements, dirty retention and this limitation. PUBPRES publication
+and presentation successors must be assessed through the
+[current roadmap](../reference/status-and-roadmap.md), rather than assumed to be
+present because their experimental documentation exists.
+
+## How does authoring become a running scene?
+
+A setup, native generator proposal or material-only baseline supplies the
+starting terrain. Workbench validates the complete authored document, prepares
+native and physical candidates, and adopts them through the existing owner
+transaction. Refusal preserves the valid running session. Painting uses its
+own bounded owner requests and completion/history checks; an accepted queue
+entry does not prove that pixels changed or that Save contains them.
+
+[Ordinary Save start](../reference/level-saves-and-replay.md#workbench-starting-constructions)
+records reconstruction data. [Flatten](shared-workbench-authoring-data.md#flatten-and-storage-compatibility)
+captures stored material identities, replaces the authored baseline and discards
+previous construction/Undo history. It leaves the live World and Rapier state
+unchanged and does not save automatically. Neither operation is complete physical
+continuation. Wave Worlds explicitly refuse exact physical save/restore.
 
 ## Are the named production modules already separate classes?
 
 **Approved:** SimulationCore, SimulationScheduler, WorldStorage, TileJob,
 MaterialRules, RenderBridge and GameplayBridge name intended responsibilities.
-**Current:** World still combines much of the core, storage and scheduler.
-Material descriptors and native snapshot exchange already have separate APIs;
-a generalized bounded gameplay queue does not exist. The
-[module boundary map](module-boundaries.md) distinguishes actual symbols from
-the proposed extraction. Renaming World alone would not complete it.
+**Current:** World still combines much of core, storage and scheduling.
+Material descriptors, prepared ownership and native snapshot exchange have
+separate interfaces; a universal gameplay command/replay service does not exist.
+The [module boundary map](module-boundaries.md) distinguishes actual symbols from
+future extraction. Naming a responsibility does not establish that extraction.
 
 ## Which contract should foundational work load next?
 
-- Ownership or concurrency: [resource lifetimes](data-ownership-and-lifetimes.md),
-  [step order](simulation-tick-and-threading.md), [geometry](chunk-tile-and-buffer-model.md).
-- Reproducibility: [native ordering and hashes](determinism-and-boundary-transfers.md),
-  [level saves versus exact replay](../reference/level-saves-and-replay.md).
-- Physics: [rigid-body coupling](rigid-body-and-cellular-coupling.md),
-  [Water](../systems/water-design.md), [invariants](../reference/invariants.md).
-- Scope and decisions: [principles](principles-and-non-goals.md),
+- Ownership/concurrency: [lifetimes](data-ownership-and-lifetimes.md),
+  [tick order](simulation-tick-and-threading.md), [spatial geometry](chunk-tile-and-buffer-model.md).
+- Materials and Water: [kernels](../systems/materials-and-rule-kernels.md),
+  [solver distinctions](../systems/water-design.md), [native policy](liquid-solver-family-policy.md).
+- Authoring: [shared data](shared-workbench-authoring-data.md),
+  [save boundaries](../reference/level-saves-and-replay.md),
+  [actor composition](../systems/workbench-actor-composition.md).
+- Physics/presentation: [coupling](rigid-body-and-cellular-coupling.md),
+  [render bridge](rendering-and-gameplay-bridges.md),
+  [standalone Strata Theatre](../systems/depth-layers-and-parallax.md).
+- Evidence and decisions: [invariants](../reference/invariants.md),
   [roadmap](../reference/status-and-roadmap.md), [ADRs](../decisions/).
 
-**Planned:** generalized shapes/torque, complete replay, safe live capacity
-reconfiguration and typed production command/result queues.
-**Deferred:** general world streaming, fully asynchronous Web ownership and
-GPU field experiments. **Rejected:** shared mutable rendering reads,
-per-cell locks, full-world double buffering as the normal model and current
-GPU terrain authority. These limits are decisions, not absent documentation.
+**Approved direction, not accepted implementation at this source:** persistent
+areas with bounded catch-up, ordinary Workbench four-plane authoring, live-scene
+material audition and further physical-structure integration. Follow their
+programme records before claiming availability. **Planned:** complete application
+replay, safe live capacity reconfiguration and broader typed command contracts.
+**Deferred:** asynchronous Web ownership and GPU field experiments.
+**Rejected in the current architecture:** shared mutable rendering reads,
+per-cell locks and full-world double buffering as the ordinary model.

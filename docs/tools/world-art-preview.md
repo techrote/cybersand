@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Standalone Godot World Art inspection, navigation, comparison and export controls
 canonical-for: [world-art-interactive-viewer]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [art-pipeline-unification.md, world-art-capture.md, world-art-evaluation.md]
 ---
 
@@ -16,7 +16,9 @@ material palette, appearance LUT, emission and glow shaders. It is an art
 inspection tool with explicit synthetic material conditions. It does not run
 the native simulation or require native extensions, Rapier, Git LFS binaries
 or a C++ build. The [integration contract](art-pipeline-unification.md) owns
-architecture, capacities and native compatibility boundaries.
+architecture, capacities and native compatibility boundaries. The standalone
+pipeline is accepted source through [#685](https://github.com/techrote/cybersand/pull/685);
+it remains separate from the in-scene [Workbench Art workflow](../operations/workbench-art.md).
 
 ## Open the Windows evaluation package
 
@@ -29,8 +31,8 @@ additional inputs, capture examples and verification commands.
 
 ## Launch one integrated checkout
 
-From this repository root, with Python 3.10+ and a real Godot 4.7 desktop
-executable installed:
+From this repository root, with Python 3.10+ and the pinned Godot
+`4.7.stable.official.5b4e0cb0f` desktop executable installed:
 
 ```powershell
 python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle
@@ -42,7 +44,9 @@ On Linux:
 python3 tools/world_art_preview_launcher.py --godot=godot --rendering-driver=opengl3
 ```
 
-Use your actual installed Godot path. The owner-confirmed Windows example above
+In the examples, `godot` means that pinned executable; check `godot --version`
+or supply its absolute path. Use your actual installed Godot path. The
+owner-confirmed Windows example above
 is not automatically installed by the source launcher. To locate Godot on PATH,
 run `Get-Command godot, godot4 -ErrorAction SilentlyContinue` in PowerShell.
 The launcher reports a missing executable before opening the viewer.
@@ -51,7 +55,7 @@ A fresh source checkout can omit all unrelated Git LFS runtimes:
 
 ```powershell
 $env:GIT_LFS_SKIP_SMUDGE = "1"
-git clone --depth 1 --single-branch --branch tools/art-pipeline-unification-001-20261120 https://github.com/techrote/cybersand.git cybersand-art
+git clone --depth 1 --single-branch --branch main https://github.com/techrote/cybersand.git cybersand-art
 Remove-Item Env:\GIT_LFS_SKIP_SMUDGE
 cd cybersand-art
 python tools/world_art_preview_launcher.py --godot="C:\Godot_v4.7-stable_win64_console.exe" --rendering-driver=opengl3_angle
@@ -164,5 +168,8 @@ xvfb-run -a python3 tools/world_art_preview_launcher.py --godot=godot \
 ```
 
 Inspect retained PNGs as well as logs. Windows hosted ANGLE results do not imply
-acceptance on the owner's physical NVIDIA GPU. The integration remains
-**Draft/HOLD** until explicit owner acceptance; donor PRs remain historical.
+acceptance on the owner's physical NVIDIA GPU. The pipeline was merged in #685;
+the [physical acceptance harness](world-art-evaluation.md#physical-windowsnvidia-acceptance-owner-hardware)
+collects a separate owner result. For a new candidate, source qualification and
+owner Ready/merge authority remain separate. Original donor records retain their
+historical scope.

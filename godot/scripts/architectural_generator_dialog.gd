@@ -3,6 +3,7 @@ extends ConfirmationDialog
 # Focused authoring form. This owns a declarative project, never raster cells or
 # the live World. Native admission and preview stay in the existing GEN-007 host.
 const Project = preload("res://scripts/architectural_generator_project.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const MAX_FILE_BYTES := 1024 * 1024
 const DIMENSIONS := [
 	["room_size", "Room / bay", 12, 256],
@@ -436,20 +437,9 @@ func save_project(path: String) -> bool:
 	if body.to_utf8_buffer().size() > MAX_FILE_BYTES:
 		_status.text = "Refused · Project exceeds the bounded 1 MiB file limit."
 		return false
-	var target := ProjectSettings.globalize_path(path)
-	var temporary := target + "." + Crypto.new().generate_random_bytes(8).hex_encode() + ".tmp"
-	var file := FileAccess.open(temporary, FileAccess.WRITE)
-	if file == null:
-		_status.text = "Refused · Cannot write the selected project file."
-		return false
-	file.store_string(body)
-	file.flush()
-	var state := file.get_error()
-	file.close()
-	if state == OK: state = DirAccess.rename_absolute(temporary, target)
-	if state != OK:
-		DirAccess.remove_absolute(temporary)
-		_status.text = "Refused · Could not atomically replace the project file; previous file preserved."
+	var saved := FileTransaction.write_text(path, body, MAX_FILE_BYTES)
+	if not saved.ok:
+		_status.text = "Refused · " + str(saved.error)
 		return false
 	_project = result.project.duplicate(true)
 	_status.text = "Saved complete architectural project: " + path

@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "old_accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "new_accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "first_parent_merges": [
+    "be87b18b Merge PR #758: source-exact Windows acceptance tooling",
+    "dacd5976 Merge PR #736: qualify Palette Windows cohort parallelism"
+  ],
+  "changed_paths": [
+    "A\t.github/workflows/gentek-windows-final-owner-kit.yml",
+    "A\t.github/workflows/gentek-windows-final-source.yml",
+    "M\t.github/workflows/palette-shader-qualification.yml",
+    "A\tdocs/operations/gentek80-physical-owner-acceptance.md",
+    "M\tdocs/reference/retrieval-corpus.json",
+    "A\tgodot/tools/qualify_gentek80_compositions.gd",
+    "A\ttools/acceptance/gentek80_owner.ps1",
+    "A\ttools/acceptance/stage_gentek80_examples.py",
+    "A\ttools/acceptance/tests/test_gentek80_owner.py",
+    "A\ttools/acceptance/tests/test_gentek80_workbench_process.py",
+    "A\ttools/acceptance/tests/test_stage_gentek80_examples.py",
+    "A\ttools/architecture/gentek80_compositions.py",
+    "M\ttools/architecture/gentek80_workbench.py",
+    "M\ttools/package_explore001_candidate.py"
+  ],
+  "protected_prefixes_and_paths_compared": [
+    "native",
+    "godot/scripts",
+    "godot/native_extension",
+    "godot/addons",
+    "godot/project.godot",
+    "tools/lcb",
+    "tools/play/run_in_tools_successor_windows_gate.py",
+    "godot/tests/fixtures/lcb/in_tools"
+  ],
+  "protected_diff_empty": true,
+  "explicit_blob_comparisons": [
+    {
+      "path": "godot/scripts/physical_actor_session.gd",
+      "old_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+      "new_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e"
+    },
+    {
+      "path": "godot/scripts/workbench_setup.gd",
+      "old_blob": "760268107874198c2323dd590d8c0921692c5ba4",
+      "new_blob": "760268107874198c2323dd590d8c0921692c5ba4"
+    },
+    {
+      "path": "godot/scripts/workbench_generated_map.gd",
+      "old_blob": "5522ece7af755a40766804deed7fd9f817159322",
+      "new_blob": "5522ece7af755a40766804deed7fd9f817159322"
+    },
+    {
+      "path": "godot/scripts/architectural_generator_dialog.gd",
+      "old_blob": "dfec2ec9dc2e5c432fa5742c515222517d3b0ef9",
+      "new_blob": "dfec2ec9dc2e5c432fa5742c515222517d3b0ef9"
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "old_blob": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1",
+      "new_blob": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1"
+    },
+    {
+      "path": "godot/scripts/gameplay_recorder.gd",
+      "old_blob": "e2d8d72361d38f48b15a8eba213a72ff7ca68c0d",
+      "new_blob": "e2d8d72361d38f48b15a8eba213a72ff7ca68c0d"
+    }
+  ],
+  "admission_guard_review": "Current v3 admission checks ancestry from its independently qualified00cdb adoption, exact13production sourceblobs, the unchanged causalfixture, actual working bytes and legacy registration custody. Both later accepted merges preserve these bytes, so integration does not authorize or require changing expected pins. It does require rerunning the existing guard on the resulting candidate.",
+  "scope": "Production save/actor/native/binding/addon source equivalence and guard implications only. New Godot qualification script, Windows packaging/acceptance tooling, Palette CI and one new corpus guide still require their own semantic review and integration qualification. No new accepted-main runtime execution or physical owner acceptance is claimed.",
+  "verdict": "APPROVE unchanged production authority; broader integration qualification remains lead-owned"
+}

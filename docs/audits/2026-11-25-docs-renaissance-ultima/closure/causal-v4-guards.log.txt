@@ -1,0 +1,26 @@
+test_actual_historical_registration_mutation_refuses (__main__.AdmissionTests.test_actual_historical_registration_mutation_refuses) ... ok
+test_authority_allowlist_exactly_matches_reviewed_paths (__main__.AdmissionTests.test_authority_allowlist_exactly_matches_reviewed_paths) ... ok
+test_causal_fixture_cannot_be_substituted_or_repinned (__main__.AdmissionTests.test_causal_fixture_cannot_be_substituted_or_repinned) ... ok
+test_current_checkout_and_minimal_authority (__main__.AdmissionTests.test_current_checkout_and_minimal_authority) ... ok
+test_duplicate_json_key_refuses (__main__.AdmissionTests.test_duplicate_json_key_refuses) ... ok
+test_duplicate_path_and_world_omission_refuse (__main__.AdmissionTests.test_duplicate_path_and_world_omission_refuse) ... ok
+test_fixture_cannot_be_relabelled_current_or_passed (__main__.AdmissionTests.test_fixture_cannot_be_relabelled_current_or_passed) ... ok
+test_foreign_accepted_main_makefile_refuses (__main__.AdmissionTests.test_foreign_accepted_main_makefile_refuses) ... ok
+test_historical_a01_and_predecessor_lineage_is_pinned (__main__.AdmissionTests.test_historical_a01_and_predecessor_lineage_is_pinned) ... ok
+test_historical_registration_custody_is_immutable (__main__.AdmissionTests.test_historical_registration_custody_is_immutable) ... ok
+test_malformed_authority_and_stale_identity_refuse (__main__.AdmissionTests.test_malformed_authority_and_stale_identity_refuse) ... ok
+test_missing_or_extra_authority_refuses (__main__.AdmissionTests.test_missing_or_extra_authority_refuses) ... ok
+test_original_registration_still_refuses_current_source (__main__.AdmissionTests.test_original_registration_still_refuses_current_source) ... ok
+test_previous_registration_mutation_refuses_and_restores (__main__.AdmissionTests.test_previous_registration_mutation_refuses_and_restores) ... ok
+test_previous_ultima_registration_still_refuses_current_source (__main__.AdmissionTests.test_previous_ultima_registration_still_refuses_current_source) ... ok
+test_qualification_flags_cannot_be_predeclared (__main__.AdmissionTests.test_qualification_flags_cannot_be_predeclared) ... ok
+test_real_descendant_world_commit_cannot_hide_behind_restored_worktree (__main__.AdmissionTests.test_real_descendant_world_commit_cannot_hide_behind_restored_worktree) ... ok
+test_same_count_world_substitution_refuses (__main__.AdmissionTests.test_same_count_world_substitution_refuses) ... ok
+test_stale_registered_blob_refuses (__main__.AdmissionTests.test_stale_registered_blob_refuses) ... ok
+test_working_copy_mutation_refuses_and_is_restored (__main__.AdmissionTests.test_working_copy_mutation_refuses_and_is_restored) ... ok
+test_world_working_copy_mutation_refuses_and_restores (__main__.AdmissionTests.test_world_working_copy_mutation_refuses_and_restores) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 1.113s
+
+OK

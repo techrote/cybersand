@@ -1,3 +1,21 @@
+---
+title: Bounded LFS acquisition repair
+status: Historical
+document-kind: evidence
+authority: historical-non-authoritative
+retrieval: explicit-only
+scope: Dated source-specific dependency acquisition repair and qualification record; later source requires its own admission and evidence; no current execution authority
+canonical-for: []
+last-reviewed: 2026-11-26
+related-documents: [../../operations/ci-execution-and-performance.md]
+---
+
+**Historical source record.** This note retains the original repair rationale,
+instructions and checks for its named source. It does not qualify a later source
+or authorize a new campaign. Use the current project workflow and its source-bound
+admission contract when preparing another run.
+The [complete original file](https://github.com/techrote/cybersand/blob/67c1413a2a84077b47fa542cf91d2bd6ba5520ee/docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md) is preserved at its immutable accepted-main identity.
+
 # Bounded LFS acquisition repair
 
 Base: AMBIENT resulting source

@@ -4,11 +4,40 @@ status: Planned
 document-kind: design
 scope: Issue 12 stage dependencies, acceleration and macro-dynamics objectives, and current-main successor admission
 canonical-for: [scalable-soliding-programme]
-last-reviewed: 2026-09-20
+last-reviewed: 2026-11-25
 related-documents: [architecture-programme.md, ../architecture/soliding-lifecycle.md, soliding-measurement.md, soliding-stage3-freeze.md, ../audits/2026-09-19-issue-12-phase0-reuse.md]
 ---
 
 # Scalable reversible soliding programme
+
+## Current applicability and the two tracks
+
+**Accepted source `00cdb02f`, checked 24 November 2026:** the native World has
+bounded read-only settled-region discovery. The standalone lifecycle model and
+ordinary independent Rapier bodies do not establish integrated arbitrary native
+terrain detachment, stationary acceleration or complete reversible aggregates.
+See the [lifecycle implementation boundary](../architecture/soliding-lifecycle.md)
+and [discovery contract](../systems/settled-region-discovery.md).
+
+The **27 October owner routing in [#12](https://github.com/techrote/cybersand/issues/12)**
+separates two tracks. Track A, [#281](https://github.com/techrote/cybersand/issues/281),
+targets an actual native solid structure that loses support and topples/rolls
+through an admitted native-to-Rapier handoff. Track B retains settled-region
+scaling, the Stage-3B dependency chain and separate stationary-acceleration
+admission. Completing Track B is **not automatically a prerequisite** for a
+bounded local Track A proof; demonstrate any real shared dependency in source.
+The proposed Track A documentation in [#282](https://github.com/techrote/cybersand/pull/282)
+is still Draft/unmerged. Its design and candidate evidence are not accepted-main
+runtime behavior.
+
+At this live check #12 and #281 remain open; #62, #63 and #65 are closed, while
+Track B's #66 → #67 → #68 → #70 remains open. These are issue lifecycle facts,
+not new technical acceptance or execution permission. The
+[current-state register](../reference/status-and-roadmap.md) routes newer
+ObjectShard candidates separately. The [14 November owner intent](../decisions/2026-11-14-owner-authoring-intent.md)
+allows useful prepared destruction without requiring full structural-integrity
+analysis; it does not select a detachment algorithm or erase conservation,
+ownership and refusal requirements.
 
 ## What does issue 12 now own?
 
@@ -20,7 +49,8 @@ material, not the endpoint. This page supersedes the old
 [bounded supplement](architecture-programme-prompts/soliding-supplement.md) for
 current scope and order, without rewriting its dated evidence or the #14 intake.
 
-**Intake native baseline:** `de332ea` (main including MS-000); successor branch
+**Historical September intake, not a current branch instruction:** `de332ea`
+(then main including MS-000); successor branch
 `codex/issue-12-incremental-foundation`, separate worktree under `C:/kybersand/worktrees/`.
 The [Phase 0 audit](../audits/2026-09-19-issue-12-phase0-reuse.md) owns the precise
 reuse/adapt/historical/obsolete map. Original `0b96ce2` remains a recoverable
@@ -44,6 +74,9 @@ programme's gates; #201 must route any such additional dependency here.
 
 ## Stage 3B live checkpoint — 2026-09-20
 
+**Retained 20 September checkpoint.** Its then-live PR/issue states and runtime
+receipt are preserved below; use the current applicability section for routing.
+
 The read-only architecture review and parent reconciliation are complete. #56-#61,
 #64 and #69 are complete; #64 landed through PR #98 at
 `bb6f12a7845f7249d68693a277c934e5fef5561d`. #62 is implemented in draft
@@ -61,6 +94,10 @@ must inspect live Stage-3B ownership and stop on a real collision.
 
 ## Which stage may proceed?
 
+This original stage ladder remains the Track B and broader representation
+programme's gate structure. It is not a universal serial prerequisite for the
+separately authorized finite Track A proof.
+
 | Stage | Entry and work | Exit required before dependent work |
 |---|---|---|
 | 1. Reconciliation | Audit all PR #23 changes against pinned current main, retain historical evidence and blockers | Compatible reusable primitives, or explicit retained Phase 0 control while a successor replaces them |
@@ -69,19 +106,26 @@ must inspect live Stage-3B ownership and stop on a real collision.
 | 3B. Discovery locality/scalability | Replace whole-capacity/global scans and fixed-maximum storage where evidence requires; preserve 3A invariants | Change-proportional producer and lookup costs, capacity-sized memory, bounded split reconstruction and an explicit local/subregion consumer contract |
 | 4. Stationary bake-off | Compare Current sleep, summary/skip, derived proxy and justified compact/boundary representations | Reproducible saving and break-even curves, or explicit evidence-backed rejection of that tier |
 | 5. Eligibility | Use material/state authority, preserve support loss/avalanche and wake paths | Useful Sand/Stone stationary behavior without invented rigidity |
-| 6. Production dynamics | Admitted coherence plus registry/queue/shape/body/destination capacity and worker/main-thread protocol | Multiple translating/rotating aggregates, exact payload ownership, declared mass/inertia/units, real desktop/Web evidence |
+| 6. Production dynamics | Admitted coherence plus registry/queue/shape/body/destination capacity and worker/main-thread protocol | Multiple translating/rotating aggregates, exact payload ownership, declared mass/inertia/units and real desktop evidence; Web only within a separately commissioned experiment |
 | 7. Geometry/fracture | Measured shape ladder and bounded partition/capacity rules | Coherent children inherit useful parent motion; only loose material reactivates; bounded local rebuilding |
 | 8. Persistence | Versioned payload/identity/representation schema and safe pending-state handling | Truthful restore/refusal with source/config identities; no implied exact replay |
 | 9. Campaign | Source-matched representation arms and representative worlds | Retained wins/losses, break-even, conservation, behavior and all applicable platform evidence |
 
 Stages are not collapsed to maximize apparent progress. A standalone transition
 model tests a contract; it is not a production worker/Rapier ownership kernel.
+The [owner's Web policy](../reference/product-intent-and-priorities.md#disposable-web-experiments)
+does not require maintained Web CI or reproducible Web releases for desktop work.
+Retained Web experiment requirements describe the coverage needed for a claimed
+Web result, rather than an additional desktop admission gate.
 The first discovery increment may publish complete block summaries while leaving
 cross-block connected-region discovery open. The integrated reference now covers
 connected regions, but its negative scaling evidence keeps Stage 3B open. Neither
 the Stage-3A reference nor boundedness alone admits acceleration.
 
 ## Parallel work and protected baselines
+
+The exact branch heads below are historical controls. They do not identify
+current active worktrees or authorize resuming those branches.
 
 - #26 Water experiments remain pinned to their own source-matched controls.
   Intake remote head: `7068efa5caea3798e42f80d25d147dce1f870030`.
@@ -141,7 +185,9 @@ architectural correctness contract. PR #47 merged the Stage-3A reference at `fc2
 The read-only Stage-3B architecture review is complete and its supervising-parent
 reconciliation is recorded in the
 [Stage-3B parent decision](../audits/issue-12-2026-09-19/stage3b-parent-decision.md).
-The active execution route is now the
+The retained Track B execution route is the
 [Stage-3B production plan](soliding-stage3b-production-plan.md), issues #56-#70.
 Stage-3B implementation may proceed only through that dependency/gate structure;
-Stage 4 remains blocked. No Stage-3 cost result selects a representation or threshold.
+its Stage 4 remains separately gated. This does not impose Track B as a blanket
+block on the owner-prioritized Track A. No Stage-3 cost result selects a
+representation or threshold, and no dated branch assignment grants new execution authority.

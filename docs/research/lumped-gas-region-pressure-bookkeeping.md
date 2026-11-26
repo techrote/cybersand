@@ -2,13 +2,31 @@
 title: Lumped gas-region pressure bookkeeping feasibility
 document-kind: reference
 canonical-for: [lumped-gas-region-pressure-bookkeeping-research]
-status: Planned
-scope: WEX-003 research result for optional connected-gas-region pressure bookkeeping; no production atmosphere solver, Water head solver or runtime adoption
-last-reviewed: 2026-09-20
+status: Current
+scope: Reference to completed September 2026 WEX-003 feasibility research; retained proposals and branch ownership below are historical research context, not current implementation permission or runtime adoption
+last-reviewed: 2026-11-25
 related-documents: [../operations/water-hybrid-pressure-extension-programme.md, ../systems/smoke-heat-pressure-roadmap.md, ../systems/water-design.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../decisions/ADR-008-bounded-approximate-fidelity.md]
 ---
 
 # Lumped gas-region pressure bookkeeping feasibility
+
+## Current reading and follow-on outcome
+
+WEX-003 / #93 completed as feasibility research. Its admission of #94 was
+subsequently exercised: WEX-004 completed on **2026-09-24 with NARROW-USE
+disposition**, as recorded in the
+[accepted programme](../operations/water-hybrid-pressure-extension-programme.md#wex-004--conditional-decompression-event-proof)
+and [dated execution record](../audits/2026-09-24-wex004-decompression-disposition.md).
+The bounded local proof did not implement the gas-region topology proposed here
+and did not authorize a production atmosphere system.
+
+The original feasibility analysis below remains useful for understanding the
+research tradeoffs. Its active-branch ownership and proposed next steps describe
+September 2026; they do not reserve current write sets or authorize new runtime
+work. This review followed the accepted records and isolated diagnostic source,
+without rerunning their experiments. The complete
+[earlier reference at accepted main](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/research/lumped-gas-region-pressure-bookkeeping.md)
+preserves the text before this reading guidance.
 
 ## Disposition
 

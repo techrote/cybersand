@@ -4,48 +4,40 @@ status: Current
 document-kind: guide
 scope: Executable test selection and future gates; dated results and save format live in separate references
 canonical-for: [test-inventory, test-selection, future-validation-gates]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-24
 related-documents: [local-build-and-validation.md, ../reference/validation-evidence.md, ../reference/level-saves-and-replay.md]
 ---
 
 # Testing, validation, and replay
 
-The [completed local35-case plus import run](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
-passes every actual process and the strict current003 result verifier on
-functionale8f1d37b/DLL93d3ee3f. Separate [compat77/threaded76 actual Web tests](../audits/2026-10-25-lcb003-web-common-water.md)
-qualify only the body-free6+4 functional apparatus/POST outcome. Rendered/manual
-Web, body-bearing browser play, source-matched desktop publication and complete
-programme acceptance remain separate; no test deadlines were weakened.
+Use source-matched tests for the question being asked. Structural checks,
+compilation, native execution, Godot integration, graphical output and physical
+owner acceptance provide different evidence. The [build guide](local-build-and-validation.md)
+owns commands and input pins; [validation evidence](../reference/validation-evidence.md)
+owns dated outcomes. Never transfer a pass from an old source/runtime to a new one.
 
-The [final application integration](../audits/2026-10-25-lcb003-final-integration.md)
-retains every Water-IN and initial-capacity registration in the ordinary suite:
-163 groups plus seven independently encoded receipt vectors pass locally.
-Focused ASan/UBSan runs37 registered pressure/IN/Water/capacity groups plus the
-retained head API group; they are not a full sanitizer/platform matrix. The
-003 host profile requires import plus35 real cases with original finite budgets,
-strict Water005 and actual structured body/native-family results. Exact-head
-publication/browser/scientific gates remain separately required.
+## Pick a bounded first check
 
-The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
-at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
-eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,
-WaterFeel72, import73, UI105, poses50, desktopWater75 and ordinary117. Each
-uses its own180s timeout, complete source/project fences and strict exit/
-error checks. Actual native readback verifies all threePF variants and FM;
-the first label-only family coverage and other apparatus failures remain
-preserved and are superseded only in their stated scope. No new DLL build
-or final Wasm/release/Brine-contact/Water-IN acceptance is claimed. Before
-arming003, integrate this new case plus the incoming strict Water005 proof
-and final native/default sources into its still-unarmed publisher.
+| Change or investigation | First useful check | Still required when applicable |
+|---|---|---|
+| Documentation, links or metadata | `python3 tools/ci/check_docs.py` | Source-claim review and actual retrieval context review |
+| Current source/runtime custody | `python3 tools/ci/check_repository.py` | Materialized runtime checks and target-platform execution |
+| Historical evidence integrity | `python3 tools/ci/check_m11_consistency.py` | Current source/runtime gates remain separate |
+| C interface shape | `make c-header-check` | Native semantic tests and binding execution |
+| Retriever selection/authority | Historical and current-selection unittest suites | Manifest/fallback ranking plus independent answer applicability review |
+| Specific native/Godot behavior | Existing focused source fixture | Applicable complete platform, sanitizer and graphical gates |
+
+A NOT RUN, BLOCKED, failed, timed-out or explicitly out-of-scope case is not a
+pass. Preserve original failure evidence when a retry succeeds. Use isolated
+synthetic user profiles for destructive or large authoring tests.
 
 ## Which tests should a simulation change run?
 
-**Current inventory:** [native/tests/test_world.cpp](../../native/tests/test_world.cpp)
-contains 46 native tests at the coordinated issue #1/#2 checkpoint; [test_c_header.c](../../native/tests/test_c_header.c)
-checks C11 header inclusion. The Godot directory has 16 `test_*.gd` runners at that checkpoint.
-Counts identify this inspected source inventory, not a pass for a later revision.
-[Build instructions](local-build-and-validation.md) give commands and timeouts;
-[validation evidence](../reference/validation-evidence.md) gives dated results.
+**Current inventory comes from source.** [The Makefile](../../Makefile) and
+[native tests](../../native/tests) define the native targets and registrations;
+[Godot tests](../../godot/tests) and the runner's discovery rules define the Godot
+cases. The old 46-native/16-Godot counts describe the coordinated issue #1/#2
+checkpoint, not today's suite. A count of discovered tests is not execution.
 
 | Change | Focused executable coverage |
 |---|---|
@@ -70,62 +62,44 @@ when an existing regression does not exercise the suspected path.
 
 ## CI execution sharding
 
-Linux hosted GDExtension validation may execute the current Godot suite as four
-isolated shards after a single verified runtime build. Sharding is an execution
-schedule only: automatic `test_*.gd` discovery, both explicit profile probes and
-scene startup remain in the suite, every non-import case must occur exactly once
-across the four shards, and every shard performs its own import preflight. A failed
-shard fails the aggregate Linux gate while the remaining shards continue to retain
-evidence.
+The accepted [GDExtension workflow](../../.github/workflows/gdextension.yml) uses
+source-derived Linux and Windows matrices from
+[godot_job_plan.py](../../tools/ci/godot_job_plan.py). Sharding changes execution
+schedule; it does not weaken assertions, omit unknown tests or turn a missing
+readback into a pass. Each shard has its own import. Every assigned original case
+must appear exactly once in the complete source/run/attempt evidence.
 
-The deterministic planner records the complete assignment and per-case timings.
-Approximate weights are scheduling hints from dated CI evidence, not acceptance
-limits. The initial migration checkpoint executed the unsharded suite against the same
-source/runtime artifact and proved exact case coverage equivalence. The serial lane
-is retained as an explicit opt-in diagnostic, while ordinary PR validation uses the
-four isolated shards.
+[Linux](../../tools/ci/verify_linux_godot_shards.py) and
+[Windows](../../tools/ci/verify_windows_godot_shards.py) independent readers check
+original logs, complete assignments, runtime identity and natural completion.
+`max-parallel` caps simultaneous jobs, while the planner determines the actual
+number of shards and parent budgets. The old fixed four-shard examples are
+historical migration evidence. [CI execution policy](ci-execution-and-performance.md)
+owns current budget arithmetic and scheduling; open optimization experiments
+are not adopted policy.
 
-Every discovered `test_*_render.gd` case requires a display and executes with the
-OpenGL compatibility renderer. Linux CI provides Xvfb and Mesa software rendering;
-logic cases and import retain `--headless`. An explicit skip, missing display or
-executable, timeout, nonzero exit, or engine/script error fails the applicable
-case. An exit code of zero alone cannot satisfy the gate. Pixel assertions are
-rendered-output evidence for the recorded software backend, not target-GPU
-performance evidence.
+Linux rendered cases use a display and the OpenGL compatibility renderer. Missing
+display, explicit skip, timeout, nonzero exit, engine/script error, incomplete
+readback and cleanup failure retain their failure meaning. Software-rendered
+pixels are evidence for that backend, not target-GPU performance or playfeel.
+`--keep-going` preserves later outcomes after ordinary case failure; failed import
+stops the shard because the test project was not prepared.
 
-`--keep-going` retains outcomes for all assigned cases after an ordinary test
-failure; an import failure still stops that shard because the project could not
-be prepared. `timings.json` records the executed command, display requirement,
-skip/error details, completion state and aggregate status. The planner and runner
-regressions execute child processes to check failure, timeout, skip and
-continuation handling as well as exact discovery and assignment.
-
-The separate GitHub-hosted Windows lane runs import and every applicable headless
-case against the retained Windows DLL, after verifying the committed LFS bytes,
-provenance and complete current native-input set. It uses the same discovery,
-per-case timeouts and strict failure semantics, continues after individual case
-failures, and records graphical cases as explicitly outside its scope. Its
-`windows-execution.json` includes exact case coverage, tool/source/runtime
-identities, commands, log hashes and drift/completion checks. The
-[Windows execution procedure](local-build-and-validation.md#windows-retained-runtime-execution)
-owns the job bounds and artifact route. This actual execution gate and the
-separate Windows cross-build check must retain their distinct evidence scopes.
+The Windows helper receives a source-built candidate in accepted CI and can also
+validate a retained runtime through its explicit alternative path. Windows
+headless execution, cross-build validation and graphical qualification remain
+separate claims. Source/runtime mismatch fails admission before a runtime pass
+can be claimed. The [build guide](local-build-and-validation.md#windows-retained-runtime-execution)
+owns invocation and artifact details.
 
 ### Parallel Native and four-way Windows admission
 
-The2026-10-31 [production CI integration](../audits/2026-10-31-ci-parallel-production-integration.md)
-keeps the Native test/scientific command set intact while executing its six
-families concurrently. Its stable `native` reducer rejects any failed, missing,
-duplicate or foreign source/run/attempt evidence, and all original command
-budgets remain in force. In particular, historical TSan exit124 is not repaired
-by rescheduling or a larger time limit.
-
-Windows and Linux now use the complete source-derived matrix from
-[godot_job_plan.py](../../tools/ci/godot_job_plan.py). Both independent coverage
-readers require every assigned original case exactly once, source/runtime
-identity, natural completion and original logs. See the
-[execution policy](ci-execution-and-performance.md) for current parent arithmetic
-and advisory timing. Historical four-shard timing is not current-source evidence.
+This retained heading preserves older bookmarks. Current Native families run
+under the [accepted execution policy](ci-execution-and-performance.md), with
+complete original scientific commands and independent aggregate admission.
+Historical four-way Windows timing does not define the current matrix. The
+[2026-10-31 integration audit](../audits/2026-10-31-ci-parallel-production-integration.md)
+retains its measured source and results; later source needs its own qualification.
 
 ## Physical regression timeout diagnostics
 
@@ -173,9 +147,12 @@ per-platform median, nearest-rank p95, maximum and failure frequencies. Record
 the checkout SHA in the artifacts as well as the workflow head SHA: ordinary PR
 jobs can execute GitHub's synthetic merge checkout. Missing or ambiguous timing
 must remain qualified. A passing rerun never replaces a preceding timeout.
-For a `progress_watchdog` timeout, `seconds` is process elapsed time when 45 idle
-seconds are detected, rather than a fixed 45-second duration. Compare it with
-#233's 180-second full-deadline observations using that detection difference.
+**Historical #233/#234 timing cohort:** its `progress_watchdog` timeout rows
+recorded process elapsed time when the then-configured 45 idle seconds were
+detected, rather than a fixed 45-second process duration. Compare those retained
+rows with #233's original 180-second full-deadline observations using that
+detection difference. These old values do not replace the current 300-second
+capture, 3,600-second idle or 3,940-second complex-case policy described above.
 An internal guard error can produce an ordinary failed result rather than a
 timeout; preserve both outcome classes.
 

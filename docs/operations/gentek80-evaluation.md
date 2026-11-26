@@ -2,58 +2,74 @@
 title: GENTEK 80 Windows evaluation
 status: Current
 document-kind: guide
-scope: Selection and Test It procedure for the source-qualified Draft/HOLD 80-Gentek integration candidate
+scope: Accepted 80-Gentek selection and comparison, with separately qualified Windows evaluator and historical package evidence
 canonical-for: [gentek80-selection-and-evaluation]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-25
 related-documents: [../systems/architectural-generator.md, architectural-generator-playtest.md, ../research/gentek-80-integration-001.md]
 ---
 
 # GENTEK 80 — Windows evaluation
 
-This candidate provides **72 compact CLASSIC Genteks and eight advanced
-showcases** through the ordinary Architectural Generator. The thirteen accepted
-presets remain available, giving 93 choices. It remains Draft/HOLD until the owner
-accepts the delivered package. The source/runtime manifest and dated qualification
-receipts identify what was actually built and executed.
+The accepted Architectural Generator provides **72 compact CLASSIC Genteks and
+eight advanced showcases**, alongside the thirteen earlier presets: 93 choices.
+The catalogue and main integration were accepted through
+[#684](https://github.com/techrote/cybersand/pull/684) and
+[#691](https://github.com/techrote/cybersand/pull/691). A separate evaluator's
+qualification and physical owner acceptance remain distinct from catalogue
+availability.
+
+Use [Getting started](getting-started.md) for the accepted-source launch and
+[the Architectural Generator walkthrough](architectural-generator-playtest.md)
+for a first composition. This page adds comparison suggestions and the complete
+Gentek defaults table.
 
 ## Integration with accepted Workbench main
 
-PR #691 reconciles accepted main
-`69209acaffb34ebe18c45e19290b5976b7fb2c82`, including accepted Water, actor
-composition, SCRIPT-HOTPATH, lazy Art traffic restoration and large-landscape
-host-claim admission. Its Art durability repair preserves confirmed native
-Undo/Redo receipts through profile and archive failures. That repair changes no
-Gentek geometry, Water behavior, actor composition or production defaults.
-The complete public gallery retains its original source identity. Use the
-delivered `candidate-manifest.json` and the current
-[PR qualification handoff](https://github.com/techrote/cybersand/pull/691) for the
-actual application source, native library identity, qualification runs and ZIP
-hash; historical runtime identities are not the delivered package's authority.
+Current generation uses the ordinary Workbench's preview, installation, painting
+and authored-save paths. An installed generated start is not an exact evolved
+physical checkpoint; [saving](workbench-saving.md) explains that boundary.
+Current Art conversation starts empty in each new Workbench session after
+accepted #727. Old automatic traffic-restoration procedures are not current
+startup instructions; use [the Art guide](workbench-art.md).
 
-The bounded supplemental runner is
-`python tools/architecture/gentek80_main_integration.py --godot <pinned-Godot-4.7> --output <new-evidence-directory> --fixture-dir <pinned-landscape-fixtures> --graphical`.
-It exercises the six repaired CLASSIC styles and Cathedral Megaframe through
-the ordinary form, generated-start installation and independent-process reopening.
-The same Workbench admits the original 2048 × 1024 Graftloom landscape with
-13,839 construction rectangles before and after generator use. Keyboard-controlled
-Midge flight, native material motion, authored painting, lazy unopened Art and an
-unchanged synthetic traffic archive are separate assertions. It uses the existing
-host-claim manifest and refuses changed fixture, source or runtime identities.
+**Tooling acceptance, 25 November 2026:**
+[#758](https://github.com/techrote/cybersand/pull/758) merged source-exact Windows
+evaluation and owner-acceptance tooling at
+[`be87b18b`](https://github.com/techrote/cybersand/commit/be87b18b30506ccead610c7035ae1ffa8e65a347).
+The [physical owner-acceptance guide](gentek80-physical-owner-acceptance.md)
+explains independent archive/manifest verification, isolated launch and local
+evidence collection. This tooling merge does not qualify a new ZIP or establish
+physical Windows/NVIDIA acceptance. Each package still needs its exact source,
+runtime manifest and executed qualification; historical ZIPs retain their own
+evidence and availability. Consult the [current-state register](../reference/status-and-roadmap.md#active-candidates-and-integration-boundaries)
+before using a later package.
 
-This focused integration run supplements the existing native/project/UI,
-installed-preview, paint, Art lifetime and host-admission suites. It does not
-replace the full 80-style gallery, ordinary Workbench or extracted Windows
-package gates required for the repaired PR #691 publication. Prior results keep
-their original source identities. Actual platform results and the exact combined
-application SHA belong to the dated PR qualification handoff; package and native
-manifests record their respective application and build identities.
+**Historical #691 qualification:** the original integration record reconciled
+`69209acaffb34ebe18c45e19290b5976b7fb2c82` and documented a then-current Art
+archive/durability path. Later #727 changed the session contract. The original
+source, commands, fixtures, negative evidence and ZIP qualification remain in
+[the source-pinned guide](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/gentek80-evaluation.md#integration-with-accepted-workbench-main)
+and [PR #691](https://github.com/techrote/cybersand/pull/691); they are not fresh
+results for the current documentation head.
+
+The retained supplemental runner
+[`gentek80_main_integration.py`](../../tools/architecture/gentek80_main_integration.py)
+checks the ordinary form, generated-start installation, independent-process
+reopening and a pinned Graftloom fixture, with source/runtime checks and explicit
+graphical mode. Its original receipts keep their original identities. A new run
+needs its actual admitted source, fixtures, runtime and display; the existence of
+the runner or old passing output does not qualify a new package. No integration
+or Windows graphical campaign was rerun for this documentation correction. The
+public gallery likewise retains its original render identity.
 
 ## Launch and select
 
-Extract the complete Windows ZIP into a new directory and double-click
-**Open Workbench.cmd**. This launches the bundled Godot 4.7 and matching native
-runtime directly into Shared Workbench. No separate engine installation, source
-compiler or configuration editing is needed. Keep the bundled files together.
+From an accepted-source checkout, launch through [Getting started](getting-started.md)
+and select **Development workbench**. If you instead have a complete, identified
+Windows evaluator, extract its entire ZIP to a new directory and use its supplied
+**Open Workbench.cmd**. A complete package supplies its pinned Godot and matching
+native runtime; keep the project, dependencies and manifests together. Its
+manifest, rather than this general procedure, identifies the candidate you run.
 
 Open **New from generator → Architectural Generator**. Each of the five style
 cards has a dropdown and a **Find style** field. Search by a name such as
@@ -140,7 +156,7 @@ stability. Use the ordinary paint tools to finish joins and traversal spaces.
    stroke and erase through another wall. Use **Step** or briefly **Play** to
    confirm the ordinary material World runs, then pause again.
 5. Save a distinct named start. Exit Godot completely, relaunch
-   **Open Workbench.cmd**, and load that name. Confirm the same generated start
+   the same source launcher or **Open Workbench.cmd**, and load that name. Confirm the same generated start
    and ordered paint/erase edits return. The save describes the authored start,
    not an arbitrary evolved simulation snapshot.
 6. Open a new proposal with different settings, then **Stop preview**. The

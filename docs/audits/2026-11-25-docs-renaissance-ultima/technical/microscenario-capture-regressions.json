@@ -1,0 +1,29 @@
+{
+  "source_implementation": "fcec6b70576fec06b868142160747e2cc8f6f27f",
+  "source_note": "Executed the reviewed working bytes before their commit; final integrated hosted qualification separately binds the complete candidate.",
+  "scope": "Headless functional scripts; no new graphical/browser observation",
+  "cases": [
+    {
+      "case": "test_workbench_file_transaction",
+      "exit_code": 0,
+      "log_sha256": "3aa4ab0653791f31a7324abf0c2048b4c84ad826a8aaa7f5cfbf9c868c87ea7a",
+      "output_tail": "2b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"capability\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"capability\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"create\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"create\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"write\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"write\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"silent-truncate\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"verify\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"same-length-corruption\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"verify\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"flush\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"write\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"close\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"write\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"verify\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"verify\",\"replacement_calls\":0},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"replace\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"replace\",\"replacement_calls\":1},{\"after_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"fault\":\"cleanup\",\"kind\":\"injected\",\"old_sha256\":\"a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f\",\"phase\":\"replace\",\"replacement_calls\":1}],\"checks\":84,\"failures\":[],\"native_commit\":\"CyberDemoBridge.replace_material_baseline_file\",\"platform\":\"Linux\",\"schema\":1}\n"
+    },
+    {
+      "case": "test_microscenario_workbench",
+      "exit_code": 0,
+      "log_sha256": "9995248e33bda24cbe5f4c257941433b842be37e39b3aa0ccb2a7ccac2a2580b",
+      "output_tail": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nWEB_RAPIER_PROBE {\"ok\":true,\"reason\":\"Manual-step/CCD probe passed\",\"y\":72.5059432983398}\nWEB_DEMO_READY CYBERSAND/NATIVE \u00b7 THREADED \u00b7 1 WORKERS \u00b7 RAPIER2D \u00b7 AUTO (9 logical threads)\nMICROSCENARIO_WORKBENCH: 38 assertions; 0 failures; display=headless\n"
+    },
+    {
+      "case": "test_microscenario_reference_pack_ui",
+      "exit_code": 0,
+      "log_sha256": "445b5d88b5b6de75245f99431f87b1e32a643fc309e6599e03c4f56f2dcc5481",
+      "output_tail": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nMICROSCENARIO_REFERENCE_PACK_UI: 27 assertions; 0 failures\n"
+    }
+  ],
+  "superseded_attempt": {
+    "path": "a-results/microscenario-after/report.json",
+    "failure": "Harness attempted to write its evidence log inside the directory it had chmod0555. The finally block restored permissions; output paths were moved into a dedicated subdirectory and the entire6-case matrix reran successfully."
+  }
+}

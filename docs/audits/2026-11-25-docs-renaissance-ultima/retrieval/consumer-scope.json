@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "inspected_source": "b4b90eef",
+  "scope": "Repository/tooling discovery and bounded local executable availability, not an inventory of unseen owner deployments",
+  "repository_findings": [
+    "Accepted repository has the offline lexical evaluator and documentation CI integration.",
+    "No production embedding/vector/RAG deployment was identified in tools, .github workflows and maintenance guidance inspected.",
+    "Workbench Art provider clients are a distinct runtime product interface, not proof of a deployed documentation retriever.",
+    "ULTIMA adds a local reference retrieval/source-follow/cache consumer, with no network/model invocation."
+  ],
+  "local_model_executables": {
+    "ollama": null,
+    "llama-cli": null,
+    "llama-server": null,
+    "vllm": null
+  },
+  "local_model_packages": {
+    "transformers": false,
+    "llama_cpp": false,
+    "sentence_transformers": false,
+    "vllm": false
+  },
+  "huggingface_model_cache_present": false,
+  "generative_evaluation": "NOT RUN; no enumerated local executor/model present, and no paid/external provider invoked. Context review and source-follow are separately reported."
+}

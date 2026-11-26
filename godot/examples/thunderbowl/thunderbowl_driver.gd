@@ -5,6 +5,7 @@ extends RefCounted
 const Arena = preload("res://scripts/thunderbowl_arena.gd")
 const Contract = preload("res://scripts/thunderbowl_contract.gd")
 const Factory = preload("res://examples/thunderbowl/controller_factory.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 var arena: CyberThunderbowlArena
 var config: Dictionary = {}
 var last_error: String = ""
@@ -164,12 +165,9 @@ func _smart_exchange(actor_id: int, controller: RefCounted, view: Dictionary) ->
 
 
 static func write_json(path: String, value: Dictionary) -> bool:
-	var temporary: String = path + ".tmp"
-	var file: FileAccess = FileAccess.open(temporary, FileAccess.WRITE)
-	if file == null:
-		return false
-	file.store_string(JSON.stringify(value, "  ") + "\n")
-	file.flush()
-	var result: Error = file.get_error()
-	file.close()
-	return result == OK and DirAccess.rename_absolute(temporary, path) == OK
+	var destination := ProjectSettings.globalize_path(path)
+	if not destination.is_absolute_path():
+		destination = ProjectSettings.globalize_path("res://").path_join(destination)
+	var encoded := JSON.stringify(value, "  ") + "\n"
+	var saved := FileTransaction.write_text(destination,encoded,encoded.to_utf8_buffer().size())
+	return bool(saved.ok)

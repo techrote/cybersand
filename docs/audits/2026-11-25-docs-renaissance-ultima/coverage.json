@@ -1,0 +1,1788 @@
+{
+  "authority": "historical-non-authoritative",
+  "current_documents": 153,
+  "full_text_reviewed_current_documents": 153,
+  "missing": [],
+  "scope": "All 153 canonical current document bodies have a recorded semantic review. Eleven later amendments have complete lead diff/context follow-up and separately named lane reviews. Full-text coverage is distinct from source validation of selected consequential claims, actual runtime execution, GUI tasks, and reference-context applicability.",
+  "documents": [
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review and selected actual UI tasks"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/ballistic-water-v1.md",
+      "sha256": "2382cdc3ed30c5e5d71a47c0b925198f37025de7ca70eb7ee3c9653b2d8d03ce",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/chunk-tile-and-buffer-model.md",
+      "sha256": "6af955f407ffab9affd050c109e3115b5e4f3a32c77d85d3f48b3db19e8f55f6",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "c382c04501c3e728ddd4563eeec840a616503e6719cdd497300f482d999c87f3",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/determinism-and-boundary-transfers.md",
+      "sha256": "a97e34d229fabd027dee7ad6f365d02cb1c06d36df7ff35453ed5a1acfdf6e7a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/inertial-cellular-v1.md",
+      "sha256": "4e38574f0079d4029a2f49b50632cd63a96d4b0f66e413469c0d89ee8b96b45c",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/item-authored-material-programs.md",
+      "sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/lcb-pressure-inertial-handoff.md",
+      "sha256": "1cdfbe3b0fdc3934a06d323e5d3c7a9f12640f8e3100805c71efc550328671c8",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/liquid-prepared-setup-and-receipts.md",
+      "sha256": "883f61c74979f243f10cbe2e7f409af569b6eff8175dee9476e0367906d30c07",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/liquid-solver-family-policy.md",
+      "sha256": "eb3515d1a77f3d6c1def6badfe1fc8c692df0782f05a6a8ba3f77676a91338a8",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/liquid-state-transition-matrix.md",
+      "sha256": "749a4098434ac43b77bc428625f90d87287ed107647604cbf0f2f576ceec0487",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/material-authoring-catalogue-plan.md",
+      "sha256": "6d89f7d92cd8a7224c63574f3bb8c44b9f3109a93b7457b4b6cfb2faa9d8da32",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/module-boundaries.md",
+      "sha256": "b5ec9e133f8eafef523a27b29da2c50adcbe3de42f10eeffbfe344f6f63f3bdb",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/overview.md",
+      "sha256": "6c2a6b6e81007862899d55dc6be62ddf98fb324720323ad46db93998aee51230",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/pressure-flow-v1.md",
+      "sha256": "18e325b6c36f15d00879c37e70c1b01079666302f7341b0bf4d2f1be47d876bd",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/pressure-optimization.md",
+      "sha256": "3502e02dac7d99cb6e01dca8b0b5aeb4d8ae8996565193b7c68abe9b33cb3a28",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/principles-and-non-goals.md",
+      "sha256": "c7a2afe35840f6c56068119da280bf89497ed28e600239e2ff33867ea95b9cfc",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/rendering-and-gameplay-bridges.md",
+      "sha256": "504615420b8e632714c0de149e36d72dcd04c58f35026333c86aee9debbf6848",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/rigid-body-and-cellular-coupling.md",
+      "sha256": "2024bd87238db198680e64e8b6777e9532589f42b33033fb063e60dced64e928",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583"
+        }
+      ],
+      "prior_coverage_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066"
+    },
+    {
+      "path": "docs/architecture/simulation-tick-and-threading.md",
+      "sha256": "757643b98bc0da3f18d5de599309e1a51f70226ac17587b5a765c3ee8a21c170",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/soliding-lifecycle.md",
+      "sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/architecture/wave-flow-v1.md",
+      "sha256": "c29922e5faf37b41cecc6383ac62d666679a056af5c3182ef21ec8c79bd90017",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/2026-11-14-owner-authoring-intent.md",
+      "sha256": "0336a6d8a516e123ff2953f0e1e6cf3a9d7ae599e5547bd95f262bc8a4e63dc7",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-001-native-simulation-core.md",
+      "sha256": "183256ad4f0bb86477ebb52917ef5f39dbb473befe42a2ca9c8af7a1388cd0bf",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-002-double-buffered-tile-jobs.md",
+      "sha256": "b621c6eac703579ed9c737e07fe67516f04b8e02deb90bc10745aba759ce2991",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-003-godot-bridge-and-immutable-snapshots.md",
+      "sha256": "5f6f4317020f9b423a326945dbc54d3d04d50ace0a911aa66d2d5228d333c343",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-004-interest-region-and-reconfiguration.md",
+      "sha256": "9d445644a387b0ebcb75d2488409d52e1cf5739b8c79b4d063bb73be12689c3c",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-005-water-model.md",
+      "sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-006-gpu-compute-deferral.md",
+      "sha256": "de55bb1adf6d8bdb3324c80558ccdbb71e422a4e494df09dccbfcb0bf909ca00",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-007-rigid-body-cellular-coupling.md",
+      "sha256": "7951fded8c76b1eeb257d60a40e2ff84b341e7ef34f6a9f5ec9171a7125d07b2",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-008-bounded-approximate-fidelity.md",
+      "sha256": "12e10c62c36ee72c5a4acab2d7eb8015a48922eabbfb6792ec653dc087691223",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-009-rapier-2d-rigid-body-backend.md",
+      "sha256": "cf30e85c27ee2a63785ceac700c766b14f1227e761398d42d60c301d3d3c85ac",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-011-granular-interaction-policy.md",
+      "sha256": "5a07c52304294fcd4ab0ec21a3442c661c2b6911d9864be41356ce3ad27d3f26",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-013-canonical-semantic-generation.md",
+      "sha256": "208ba8ca556dda6d5d52f867986d379c9bb8a2a2dbcc5e0c1a515ee7b61fc07a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/decisions/ADR-014-semantic-plane-admission.md",
+      "sha256": "f43cf3261ead2dfe86e895c3b73c5df7a173c48997a2989f5a254502184857a4",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, selected source tracing and real native GUI workflow"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/architecture-programme.md",
+      "sha256": "1c1e28b76a7b0deb0256624748f8f85e88e26b5882ebb13d5398389c66a700b3",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/atlas-agent-runner.md",
+      "sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/blacksite-nine-demo.md",
+      "sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/cell-layout-experiment.md",
+      "sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/ci-campaign-coordination.md",
+      "sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c-new-main.json",
+          "reviewer": "Specialist C",
+          "depth": "full-body semantic read and targeted source-contract/authority review",
+          "reviewed_sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/accepted-ci-reader-review.json",
+          "reviewer": "Specialist B",
+          "depth": "Independent current-reader and accepted-source boundary review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "0eafa45b1c6c0bf840340c91242f9e14980a70d978d3b2197030d8da9e465194",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "0eafa45b1c6c0bf840340c91242f9e14980a70d978d3b2197030d8da9e465194"
+        }
+      ],
+      "prior_coverage_sha256": "bf07fe2f9781906e4db8c226dd8fc33020b99927f6fdba681d49c45a39891f55"
+    },
+    {
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/current-and-historical-validation.md",
+      "sha256": "a9714e480367aec4a36dff190bf7b42296fd3b7d54958f854f054b788511e374",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "a1fc1f741b052f67b73669110ef4bb64bb8efba1753f8500d559e9e58eaf12b6",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/deepworks-exhibition.md",
+      "sha256": "5c13bc4973788c772c266b892739ed54c88a67761341f3704b3a8382c3536562",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/development-claims-remediation-programme.md",
+      "sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/documentation-maintenance.md",
+      "sha256": "d9dd0dab4ae46e06050e5e8b0b2f369fa3a3d5f8de4cb8d36ff1d5b8244f4ec0",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "d9dd0dab4ae46e06050e5e8b0b2f369fa3a3d5f8de4cb8d36ff1d5b8244f4ec0"
+        }
+      ],
+      "prior_coverage_sha256": "57f5a6e0162d8f6f91e009e8cc52b9dfacfccd3602c503a2eda51a8a5a542bef"
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631"
+        }
+      ],
+      "prior_coverage_sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8"
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "sha256": "624ea59925efc795e86c2834ff4627e32c975570aafd7c35bc2f42cb99a70180",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9"
+        }
+      ],
+      "prior_coverage_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db"
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with actual interactive task execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/github-development-and-release.md",
+      "sha256": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "sha256": "155555f1c6c8bb5049d1b204b43f961886ca89bc7a3e7c4d80b88458b2ad4ddc",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/lcb-scenario-catalogue.md",
+      "sha256": "41422db565378841a3ac135dfde94541e0026488a76ab194f6249216ff772d74",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "41422db565378841a3ac135dfde94541e0026488a76ab194f6249216ff772d74"
+        }
+      ],
+      "prior_coverage_sha256": "7d2d376a06f4fb80731a54d93abfa5326901d032840f358915d241eda9f17c08"
+    },
+    {
+      "path": "docs/operations/lcb-water-comparison-and-fixtures.md",
+      "sha256": "08e898438a60ea861d9a769374513685f67bc7fdfd1a72047304325203e56826",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/liquid-characterization.md",
+      "sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/material-catalogue-shadow.md",
+      "sha256": "1c8debbfdc152a2f810edd7036c29ddc93a5fbe754716be40bd8f97acabc69ed",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/material-liveness-investigation.md",
+      "sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "sha256": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review and selected actual UI tasks"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d"
+        }
+      ],
+      "prior_coverage_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6"
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "sha256": "7fcf79dd6e9589cf63e90586b34a2b28505ba7e4165e72cbf63bf25f16d0185e",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/microscenarios-programme.md",
+      "sha256": "1f44f348acd689dd93e7a2e78985d5d0d0ee62918dd4a7b2dcb6e423ed7b5349",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "sha256": "ada3ca97404341bdbc496843a97ce4fe9514431b0d631c453b8ab65dc9f19086",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/neon-reliquary-demo.md",
+      "sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/physical-actor-programme.md",
+      "sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/physics-characterisation-plan.md",
+      "sha256": "847b29e3d90476c194055680fbc6448ce24df2be14a52776325511e45d0cf004",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "sha256": "a3f45b9bab5f7e34fd79bd5c73833e4f54a25c33db073a849a69c007e7785bde",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/play-desktop-manual-qualification.md",
+      "sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/profiling-observability-and-performance.md",
+      "sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/publication-custody.md",
+      "sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c-new-main.json",
+          "reviewer": "Specialist C",
+          "depth": "full-body semantic read and targeted source-contract/authority review",
+          "reviewed_sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/accepted-ci-reader-review.json",
+          "reviewer": "Specialist B",
+          "depth": "Independent current-reader and accepted-source boundary review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/rapier-2d-migration-runbook.md",
+      "sha256": "081fa7d9831c8af6606ddb9023a25e47383383d1a37e2b0b04c76aa9bb1eeeff",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/semantic-depth-authoring.md",
+      "sha256": "be6b9a9f6c2d1a4893a1a136e18544ec38a57c21ef6938b9c1d5e96d76314dc6",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic and route review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "sha256": "e2bdfd2b2cc22736a5a6f9427f4f758cd35298390577cf1331f8aa6627b95daf",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/soliding-measurement.md",
+      "sha256": "a6d26cad646ce6ab4055885d70a463b600999d6e00fc47ae243187c52c1a7e23",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/soliding-programme.md",
+      "sha256": "b0ad52b6a1a3c3ff223169fd1534c5d0fa0dd270a40239a99294b7b01036d28c",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/soliding-stage3-freeze.md",
+      "sha256": "7a8165abea78774fdb2c31e7cb45308acd6afcaab32b684f3272e7ce7797aaeb",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/soliding-stage3b-production-plan.md",
+      "sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/source-checkpoint-and-recovery.md",
+      "sha256": "88015ba52ce2499e75861306443d20140bbae445ca63ac59cd77a1e9a4c90ed2",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/state-precision-experiment.md",
+      "sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/testing-validation-and-replay.md",
+      "sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/troubleshooting.md",
+      "sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "sha256": "c392ce43a64f7f389c3f01b35ec53f8e726a4fd05f32b47d86de31b999b354f4",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/water-hybrid-pressure-extension-programme.md",
+      "sha256": "51e2b5b789476c8da9ce33706ceba3ec4fc6b2fca61cd866bc3822c78d8d2a88",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/wave-flow-evaluation.md",
+      "sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/web-threading.md",
+      "sha256": "477487fb418a8a6480d6f8da80fa4c1ad45e63e33c6044760aa4fb3a7a46ce59",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected UI/catalogue/authority checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, selected source tracing and non-generative UI exercise"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41"
+        }
+      ],
+      "prior_coverage_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570"
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with actual interactive task execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review and selected source-contract tracing"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "sha256": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, source tracing and independent actual OS-fault reproduction"
+        }
+      ]
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review and selected actual UI tasks"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/configuration-reference.md",
+      "sha256": "ae00ab5a85159c1df0d5f626400e47c03802a6f8ca607d72c5e1ca9a708e6fe6",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/glossary.md",
+      "sha256": "5070cbef45b180c5b025e91338d639f10d4bebb11916771f588e0c818663e9fb",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c6b6bc3d060a0ade58daa526316693d30f1887e4e3b70d987e248fd45873de9f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/invariants.md",
+      "sha256": "330c28bc57266f63fe46f3cf2d3acade2c86a97ba9f95f1402aa2c3e31e7b72a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "sha256": "3f40b00906d08488a46221df6a9a5f6ff3efd430f35203c0bd9a7a2f6d0c9884",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/material-effects-register.md",
+      "sha256": "f03644b0232579cab5d990eea7a2f1cb541fa2501575a2d1a270258b226de3c4",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/procedural-spatial-operators.md",
+      "sha256": "2aa8a05ab1566fae6b5cf9a187954a3d16bb6b95b999aa15f89d24e1c31e1037",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/product-intent-and-priorities.md",
+      "sha256": "8a7f8ee36debc2a486322caf2ebf705f7572a216b96471eaa724ebc38fe54aaa",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "fc47275b4e037182c4d438cb1cf0dcfaea4528d9a852d7055115cb5fb4d140ad",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "fc47275b4e037182c4d438cb1cf0dcfaea4528d9a852d7055115cb5fb4d140ad"
+        }
+      ],
+      "prior_coverage_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408"
+    },
+    {
+      "path": "docs/reference/validation-evidence.md",
+      "sha256": "c6e31c1a6dc9d092d6f4cec3dde36a1880a0520e45ccce49c3488018245a86ff",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/research/bounded-decompression-impulse-events.md",
+      "sha256": "2ef9c449a3e165fd4b861dd2998382c2417cc8d0e1773f4b088b0f1620ae0899",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/research/lumped-gas-region-pressure-bookkeeping.md",
+      "sha256": "3a247783431ff151e9a07fe4fe8eb373eb1a785109926861f2017dc070868673",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/research/sandspiel-performance-and-material-port.md",
+      "sha256": "5136561b12f794640dafe1fd89ac0f5fdac588ba9e756def489bdbbf9d053d36",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/actor-control-prototypes.md",
+      "sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/actor-rigs.md",
+      "sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/actor-usables.md",
+      "sha256": "d6e21bca28dce870028b4dee3355ccba90eacc8698ba352c78e15e80e7a40b26",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "sha256": "33b98ea01957c4627788519f5b4891e7b2edc187c509e80d08a57f873bb75e53",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, selected source tracing and real native GUI workflow"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected material/presentation source checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected ownership/source checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, selected source tracing and real native GUI workflow"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/flow-transport-and-profiles.md",
+      "sha256": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "5fc33e5ead91b1764b6d53bbbb148f0bf6339a5a727e6987dfdda2485d8008d3"
+        }
+      ],
+      "prior_coverage_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc"
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "sha256": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected native API and ownership checks"
+        },
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/final-canonical-delta-review.json",
+          "reviewer": "Astra lead",
+          "depth": "Prior full-body review plus complete intervening diff/context/source follow-up",
+          "reviewed_sha256": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2"
+        }
+      ],
+      "prior_coverage_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606"
+    },
+    {
+      "path": "docs/systems/granular-interaction-policy.md",
+      "sha256": "d3c64b172e1b701471cf4a4823cc1919f9a1dcf9cb49be5dad5805c387644688",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/intermaterial-interactions.md",
+      "sha256": "6f14a73e463009579b64a0c9522254c17bb6ded2b8ba192b677c732e255115c6",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected material/presentation source checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected material/presentation source checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/materials-and-rule-kernels.md",
+      "sha256": "dc124c27ee2d6cc5b74a0de51cc114fa78889606d986fb36478d77e2fcf34500",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review and selected source-contract tracing"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/physical-actor-rigs.md",
+      "sha256": "a929013cc84ce6098cf16d1812f316b339d7620650e0a7dad27fbfb03369ebb5",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/physical-flight-lab.md",
+      "sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/physical-free-flight.md",
+      "sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/player-control-playground.md",
+      "sha256": "06267c18af62ab933c9b0349aa0940e91121da5b8f54c8e082af3b2e412347da",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "sha256": "79179b8a4e34b72348675d3b77e9e19c61c041d6b8a7cab78007f46ab4b1c3d9",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/retrieval/coverage-c.json",
+          "reviewer": "Specialist C",
+          "depth": "full-text semantic read plus targeted source/authority review"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected native API and ownership checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected native API and ownership checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected native API and ownership checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected native API and ownership checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected native API and ownership checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/settled-region-discovery.md",
+      "sha256": "3ce104b7fe9e0b537f6805ba862517ac02836b64eac359cf042b3f40e82bab5f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/technical/technical-review-coverage.json",
+          "reviewer": "Specialist A",
+          "depth": "complete-body semantic read plus targeted consequential source inspection"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected material/presentation source checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "sha256": "ef1b0bb1ae9bac86a03eca944cbb3e136623222fe39936e0e8abd2de9cfc75a5",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review and focused catalogue qualification"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/water-design.md",
+      "sha256": "cb52dc3a1f7bd0368212606e9afc247d9dee079cc715191e1c70bf898ff5f8ed",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected UI/catalogue/authority checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, selected source tracing and non-generative UI exercise"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review, selected source tracing and non-generative UI exercise"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/systems/world-storage-and-interest-region.md",
+      "sha256": "65a4875625c5894a7b9d65b311fba14deb31d480a41b7f266e7e207413059a4b",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/tools/world-art-capture.md",
+      "sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/product/coverage.json",
+          "reviewer": "Specialist B",
+          "depth": "full-text semantic review with selected source-contract checks"
+        }
+      ]
+    },
+    {
+      "path": "docs/tools/world-art-preview.md",
+      "sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "reviews": [
+        {
+          "record": "docs/audits/2026-11-25-docs-renaissance-ultima/lead/coverage.json",
+          "reviewer": "Astra lead",
+          "depth": "full-text semantic read; selected source/procedure checks, not exhaustive runtime execution"
+        }
+      ]
+    }
+  ],
+  "source_head": "21f5f78e85bd9a6323bc4b3bb768fe89f1ee7fde",
+  "latest_amendment_review": "lead/final-canonical-delta-review.json"
+}

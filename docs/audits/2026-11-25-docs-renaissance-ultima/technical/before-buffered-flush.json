@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source": "20170bd6259498c3d2774ab274567febb043fc1d",
+  "operation": "Unmodified production Setup.write_named",
+  "fault": "Actual Linux RLIMIT_FSIZE 128 bytes, SIGXFSZ ignored; buffered write then failing flush",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "rows": [
+    {
+      "phase": "prepare",
+      "exit": 0,
+      "result": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "before_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "intended_bytes": 475,
+        "load": {
+          "setup": {
+            "actors": [],
+            "brush": 8,
+            "edits": [],
+            "extent": [
+              512,
+              512
+            ],
+            "fire": false,
+            "liquid_policy": [
+              1279479895,
+              1,
+              1,
+              -2102023270,
+              1854385793,
+              1886533889,
+              84225930,
+              1522979054,
+              582168604,
+              -646713377,
+              -939672877,
+              868616440,
+              1977866421,
+              1930370363,
+              -2119873090,
+              -6981196,
+              870342995,
+              1443932351,
+              -1569267145,
+              11,
+              3,
+              1,
+              0,
+              8,
+              2,
+              0,
+              12,
+              2,
+              0,
+              16,
+              2,
+              0,
+              20,
+              2,
+              0,
+              21,
+              2,
+              0,
+              24,
+              2,
+              0,
+              30,
+              2,
+              0,
+              32,
+              2,
+              0,
+              33,
+              2,
+              0,
+              36,
+              2,
+              0,
+              0,
+              0
+            ],
+            "material": 2,
+            "next_id": 1,
+            "normalize": false,
+            "response": "LA-SELECTIVE",
+            "rule_radius": 2,
+            "selected": 0,
+            "source": [],
+            "version": 2
+          }
+        },
+        "observed_bytes": 475,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/before-user/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "prepare"
+      }
+    },
+    {
+      "phase": "refusal",
+      "exit": 0,
+      "result": {
+        "after_sha256": "848dc86a94a4551f9594941a874fa696371895d4155734ee6f95fe0e541f2e45",
+        "before_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "intended_bytes": 476,
+        "load": {
+          "error": "Invalid setup JSON at line 0."
+        },
+        "observed_bytes": 128,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/before-user/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "refusal"
+      }
+    }
+  ],
+  "failed_attempt": "Using --log-file /dev/null crashed the engine before script execution; removed that optional redirection. No save was touched in that attempt."
+}

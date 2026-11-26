@@ -1,0 +1,128 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "old_accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "previous_refresh": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "new_accepted_main": "5e29b111be6202a76c0042976f74de98bd8ead78",
+  "new_accepted_tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+  "changed_paths_since_previous_refresh": [
+    "M\t.github/workflows/documentation.yml",
+    "M\t.github/workflows/gdextension.yml",
+    "M\tdocs/README.md",
+    "A\tdocs/audits/2026-11-24-ci-engineering-closure/independent-review.json",
+    "A\tdocs/audits/2026-11-24-ci-engineering-closure/independent-review.md",
+    "A\tdocs/audits/2026-11-24-ci-engineering-closure/performance.json",
+    "A\tdocs/audits/2026-11-24-ci-engineering-closure/performance.md",
+    "A\tdocs/operations/ci-campaign-coordination.md",
+    "A\tdocs/operations/ci-engineering-closure-001/CI_REQUEST_LEDGER.json",
+    "A\tdocs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.json",
+    "A\tdocs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+    "A\tdocs/operations/ci-engineering-closure-001/actor-custody-replay-acquisition.json",
+    "A\tdocs/operations/ci-engineering-closure-001/actor-custody-replay-contract.json",
+    "A\tdocs/operations/ci-engineering-closure-001/actor-custody-replay-pin.json",
+    "A\tdocs/operations/ci-engineering-closure-001/actor-custody-replay-result.json",
+    "A\tdocs/operations/ci-engineering-closure-001/campaign-observation-20261124.json",
+    "A\tdocs/operations/ci-engineering-closure-001/campaign-status-20261124.json",
+    "A\tdocs/operations/ci-engineering-closure-001/current-contract-inventory.json",
+    "A\tdocs/operations/ci-engineering-closure-001/local-validation.json",
+    "A\tdocs/operations/ci-engineering-closure-001/publication-evidence.json",
+    "A\tdocs/operations/ci-engineering-closure-001/reducer-imports-verified.json",
+    "M\tdocs/operations/ci-execution-and-performance.md",
+    "A\tdocs/operations/publication-custody.md",
+    "M\tdocs/reference/retrieval-corpus.json",
+    "M\tdocs/reference/retrieval-index.md",
+    "M\tdocs/reference/retrieval-questions.json",
+    "A\ttools/ci/ci_campaign_status.py",
+    "M\ttools/ci/ci_run_metrics.py",
+    "A\ttools/ci/publication_custody.py",
+    "A\ttools/ci/test_ci_campaign_status.py",
+    "M\ttools/ci/test_ci_run_metrics.py",
+    "M\ttools/ci/test_godot_job_plan.py",
+    "A\ttools/ci/test_publication_custody.py",
+    "M\ttools/play/run_palette_shader_qualification.py"
+  ],
+  "production_authority_prefixes": [
+    "native",
+    "godot/scripts",
+    "godot/native_extension",
+    "godot/addons",
+    "godot/project.godot",
+    "third_party",
+    "tools/lcb",
+    "tools/play/run_in_tools_successor_windows_gate.py",
+    "godot/tests/fixtures/lcb/in_tools"
+  ],
+  "production_authority_diff_empty": true,
+  "shared_778_source_commits": {
+    "7a95e836": "7a95e836877780b4f65faf77d058c8325f14165c",
+    "0da97028": "0da970283d076ae4660a9d93efd0e5180d313247",
+    "5e29b111": "5e29b111be6202a76c0042976f74de98bd8ead78",
+    "67245ba5": "67245ba5456956c86c6360e7cf54258f15068feb"
+  },
+  "shared_778_four_file_equivalence": [
+    {
+      "path": ".github/workflows/gdextension.yml",
+      "blobs": {
+        "7a95e836": "df4e943fd3c830f83c55b2f0d7a10fbd46917df6",
+        "0da97028": "df4e943fd3c830f83c55b2f0d7a10fbd46917df6",
+        "5e29b111": "df4e943fd3c830f83c55b2f0d7a10fbd46917df6",
+        "67245ba5": "df4e943fd3c830f83c55b2f0d7a10fbd46917df6"
+      }
+    },
+    {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "blobs": {
+        "7a95e836": "8b4df2bfa8cee135fe613dd8cf96951458f98f02",
+        "0da97028": "8b4df2bfa8cee135fe613dd8cf96951458f98f02",
+        "5e29b111": "8b4df2bfa8cee135fe613dd8cf96951458f98f02",
+        "67245ba5": "8b4df2bfa8cee135fe613dd8cf96951458f98f02"
+      }
+    },
+    {
+      "path": "tools/ci/test_godot_job_plan.py",
+      "blobs": {
+        "7a95e836": "39f3a486b6bee5a6dc37ab631e7ee4f74837cfed",
+        "0da97028": "39f3a486b6bee5a6dc37ab631e7ee4f74837cfed",
+        "5e29b111": "39f3a486b6bee5a6dc37ab631e7ee4f74837cfed",
+        "67245ba5": "39f3a486b6bee5a6dc37ab631e7ee4f74837cfed"
+      }
+    },
+    {
+      "path": "tools/play/run_palette_shader_qualification.py",
+      "blobs": {
+        "7a95e836": "7578dd77a56f57a7e30bdc622bda5a44ff036eb5",
+        "0da97028": "7578dd77a56f57a7e30bdc622bda5a44ff036eb5",
+        "5e29b111": "7578dd77a56f57a7e30bdc622bda5a44ff036eb5",
+        "67245ba5": "7578dd77a56f57a7e30bdc622bda5a44ff036eb5"
+      }
+    }
+  ],
+  "guard_implications": "The current candidate IN-TOOLS v3 guard still checks exact13production blobs and causal fixture against independently qualified00cdb plus ancestry and legacy custody. This accepted CI merge changes none of those authorities; do not replace expected hashes merely because main advanced. Resulting integration still requires its own guard/CI run.",
+  "publication_source_review": {
+    "complete_file_read": "tools/ci/publication_custody.py",
+    "findings": [],
+    "scope": "Read-only additive verifier requires an independently pinned trusted contract, exact source/tree, two materialized platform slots and LFS objects, strict original source/input/provenance identities, bounded ZIP custody, actual case/log identities and three original platform/installed-package reports. It checks unchanged stage/index/remote lease observations or an immutable one-child replay. It does not execute or publish a runtime, decide semantic assertion correctness, prove remote LFS retention or grant promotion.",
+    "draft_policy": "The existing documentation runtime-provenance Draft condition is byte-preserved. New workflow steps only execute coordination/custody contract tests.",
+    "verdict": "APPROVE additive custody mechanism within declared read-only trust model"
+  },
+  "independent_test": {
+    "source": "5e29b111be6202a76c0042976f74de98bd8ead78",
+    "method": "Exact Git blobs extracted into isolated directory; synthetic temporary Git/LFS repositories and ZIP artifacts; no active-worktree mutation, hosted execution or runtime publication",
+    "source_inputs": {
+      "publication_custody.py": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873",
+      "test_publication_custody.py": "97f9d570d27cc92af4c883aee574306955c3ac5b642d6eadcd752f50aa897376"
+    },
+    "command": "python test_publication_custody.py",
+    "test_count": 39,
+    "status": "PASS",
+    "exit_code": 0,
+    "log": "accepted-publication-custody-tests.log.txt",
+    "log_sha256": "49c7a5f5eaa309693fc9622d72b39727ec45efe500aced4501e28458b24133c1"
+  },
+  "remaining_integration_scope": [
+    "New CI coordination/publication manuals and accepted retrieval-fixture additions require separate canonical review and frozen-suite preservation.",
+    "Complete source-map/archive content changes require fresh exact-source qualification; old artifact results are not relabelled as new-head execution.",
+    "Incoming accepted evidence stays in its original programme custody and is not current answer authority."
+  ]
+}

@@ -2,9 +2,9 @@
 title: Level saves and exact replay
 status: Current
 document-kind: contract
-scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
+scope: Authored Workbench starts and material-only Flatten, CYSD1 finite-level exchange, native CYPS2–5 continuation, Wave save refusal and remaining full-application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-25
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -16,6 +16,50 @@ generic import of identical native tuples retires its native generation and
 cannot acquire Water recipe/transport origin from the UI label. This adds no
 save schema or policy persistence; moving-body imports and separately restored
 host masks remain unsupported work.
+
+## Choose the right persistence contract
+
+| Operation | Preserves | Does not promise |
+|---|---|---|
+| Workbench **Save start** | Applied authored setup, supported ordered edits, actors/options, and the existing generated or material baseline | The current evolved cellular layout unless explicitly captured; live actor momentum, leases or Undo-session continuation |
+| Workbench **Flatten / Bake History**, then Save | A uint16 stored-material plane plus later acknowledged authored edits | Temperature, fractional quantities, airborne parcels or exact evolved state; Flatten itself does not write a file |
+| CYSD1 level exchange | Fixed 1024-square logical cells and selected demo metadata | Full native/Rapier continuation or arbitrary Workbench canvas coverage |
+| Native CYPS2–5 | Supported non-Wave native tick-boundary state with version-specific authority | Full host, Rapier, provider or user-input replay |
+| Wave physical save | Explicit refusal, format version 0 | No exact Wave continuation format exists at this source |
+
+Source inspection at accepted main `00cdb02f` checks
+[`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd),
+[`workbench_material_baseline.gd`](../../godot/scripts/workbench_material_baseline.gd),
+[`demo_save_codec.gd`](../../godot/scripts/demo_save_codec.gd) and
+[`World`](../../native/include/cybersand/world.hpp).
+Save, Flatten, Reset/Restore and native physical export are different actions.
+A successful round-trip of one format does not qualify another.
+
+On-disk replacement safety is a separate contract from the contents of these
+formats. The [ULTIMA save-file correction](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+adds complete staged-byte validation and failure-safe native replacement to the
+three JSON writers without expanding what their saves preserve. It remains
+candidate behavior until accepted; it does not add exact physical continuation.
+
+## Authored Save and physical continuation
+
+Ordinary Workbench **Save start** writes the acknowledged authored setup,
+generated recipe or flattened material baseline, with its supported ordered
+edits and actor/equipment configuration. Loading reconstructs that starting
+scene. It does not restore the exact next simulation tick, live actor poses or
+momentum, solver queues, pending input, Undo/Redo stacks or the Art conversation.
+Pending native edits and owner transactions must settle before Save is admitted;
+the save file is not a queue checkpoint.
+
+Flatten captures stored material IDs from the evolved World, then changes the
+authored baseline without resetting that live World. A later Save persists the
+baseline; reopening initializes the materials and actors again. Complete
+physical continuation would additionally need the applicable native solver
+state and all host-owned future-affecting state. Even supported native CYPS
+exports omit Rapier and other host state, and Wave refuses exact physical save.
+See the [practical save guide](../operations/workbench-saving.md),
+[`shared_workbench.gd::save_setup`](../../godot/scripts/shared_workbench.gd)
+and the [current native versions](#current-native-physical-state-versions).
 
 ## Does an identical save reproduce the next tick?
 
@@ -93,7 +137,7 @@ when Rapier is unavailable before native import. This guarantee concerns the
 checked import paths; it is not a general transaction guarantee for simulation
 ticks or arbitrary later scene allocation failures.
 
-**Current bounded unmerged #202 source:** the normal synchronous application's
+**Current bounded application path, accepted through the #256 integration:** the normal synchronous application's
 liquid panel can explicitly arm the next ordinary body-free import with a copied
 policy, normalization opt-in and geometry in Exploratory mode. The separate
 `prepare_liquid_level` API preserves thermal tuples and stages native World,
@@ -141,7 +185,7 @@ explicit strict-mode implementation. Do not infer those contracts from CYSD1.
 **Current on main through accepted PR #246 (`ec58d919`, 2026-10-25).**
 `World::save_physical_state()`/`restore_physical_state()` and the bridge's
 `export_physical_state`/`import_physical_state` write and read **CYPS2**
-(`kPhysicalStateFormatVersion` 2), an exact tick-boundary continuation for LCB
+(the base `kPhysicalStateFormatVersion` is 2), an exact tick-boundary continuation for LCB
 comparison Worlds. Its canonical description is the
 [pressure persistence contract](../architecture/pressure-flow-v1.md#persistence-cyps-v2)
 and [shared native setup/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md).
@@ -172,6 +216,26 @@ level import still reconstructs defaults; native candidate CYSD1 ingress
 preflights nonzero fractional W-CY Water and returns `normalization_required`
 rather than silently rounding. The old Godot dictionary run getter is not the
 typed native receipt and provides no full host-replay proof.
+
+## Current native physical-state versions
+
+[`World::physical_state_hash_version()` and `physical_state_format_version()`](../../native/include/cybersand/world.hpp)
+select the following branches in order. The decoder in
+[`world_pressure.inc`](../../native/src/world_pressure.inc) accepts versions
+2–5 after digest and invariant validation; it rejects CYPS1 and unknown versions.
+
+| Applied native configuration | Physical hash | Save format | Scope |
+|---|---:|---:|---|
+| Wave enabled | 6 | 0 (unsupported) | Save throws; restore into a Wave execution configuration refuses |
+| Admitted 2048 gas-compartment profile, non-Wave | 5 | CYPS5 | Capacity-profile identity and applicable extension flags |
+| Ballistic Water or signed-vertical IN, ordinary gas capacity | 4 | CYPS4 | Applicable IN/parcel/signed-law extensions |
+| IN enabled, without the above extensions | 3 | CYPS3 | Inertial carrier state and accounting |
+| Other supported non-Wave comparison World | 2 | CYPS2 | Base policy, cells, scheduling/accounting and pressure state |
+
+This table describes selection and decoding, not new execution evidence for every
+combination. Save requires a healthy World outside a tick and refuses settled
+discovery. Native continuation still requires the caller to reconstruct omitted
+host-owned body masks and Rapier authority before claiming an application replay.
 
 ## Which evidence applies?
 
@@ -217,7 +281,7 @@ refuse ordinary CYSD1 level import/export while active. See the
 
 ## Workbench starting constructions
 
-The Draft desktop workbench has a separate, bounded named JSON recipe for
+The accepted desktop Workbench has a separate, bounded named JSON recipe for
 authored starts. It reconstructs native material placement and body settings
 through the worker and a prepared Rapier session. The file omits evolved
 physics state. CYSD1 and solver checkpoints keep their existing interfaces.
@@ -227,7 +291,7 @@ describe the stored fields and explicit refusal behavior.
 
 ## Workbench material-only Flatten
 
-The GEN-008 candidate adds an independent authored-start representation described
+Accepted GEN-008 / #572 supplies an independent authored-start representation described
 in the [shared authoring contract](../architecture/shared-workbench-authoring-data.md#flatten-and-storage-compatibility).
 Flatten captures complete stored material IDs as uint16 little-endian bytes on
 the exclusive owner, changes only authoring baseline/history, and leaves the

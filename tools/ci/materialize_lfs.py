@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Materialize exact committed LFS objects with a bounded service-timeout retry.
+"""Materialize exact committed LFS objects with a bounded transient-service retry.
 
 This is acquisition only. Original source/runtime verification and all execution
 gates remain mandatory. No fallback object, alternate source or cache is chosen.
@@ -10,6 +10,7 @@ import argparse
 import hashlib
 import json
 import math
+import os
 from pathlib import Path, PurePosixPath
 import re
 import subprocess
@@ -21,16 +22,16 @@ from godot_timeout_diagnostics import stop_process_tree
 
 MAX_ATTEMPTS = 3
 BACKOFF_SECONDS = (2.0, 4.0)
-SERVICE_TIMEOUT = "we couldn't respond to your request in time"
+TRANSIENT = re.compile(r"couldn.t respond to your request in time|no server is currently available to service your request|timed out|i/o timeout|connection reset|\b(?:429|502|503|504)\b", re.IGNORECASE)
 POINTER = re.compile(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n")
 
 
 def retryable(returncode: int, text: str) -> bool:
-    """Retry only the observed server refusal, never an auth or integrity failure."""
+    """Retry enumerated transient service failures, never auth or integrity failure."""
     lower = text.lower()
     permanent = re.search(r"\b(?:401|403|404|authentication|authorization|quota|billing)\b|"
-                          r"permission denied|hash mismatch|integrity|not found", lower)
-    return returncode == 2 and permanent is None and "batch response:" in lower and SERVICE_TIMEOUT in lower
+                          r"access denied|permission denied|hash mismatch|integrity|not found", lower)
+    return returncode == 2 and permanent is None and bool(TRANSIENT.search(lower))
 
 
 def run_logged(command: list[str], root: Path, log: Path, seconds: float) -> dict:
@@ -77,7 +78,7 @@ def materialize(root: Path, paths: list[str], expected_source: str, output: Path
     root, output = root.resolve(), output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     receipt_path = output / "receipt.json"
-    if receipt_path.exists() or list(output.glob("*.log")):
+    if any(output.iterdir()):
         raise ValueError("Refusing to overwrite retained LFS acquisition evidence")
     started = clock()
     deadline = started + allowance_seconds
@@ -86,7 +87,8 @@ def materialize(root: Path, paths: list[str], expected_source: str, output: Path
         raise ValueError("LFS acquisition policy cannot contain the existing owned-tree cleanup")
     receipt = {"schema": "cybersand-lfs-acquisition-v1", "source_commit": expected_source,
                "allowance_seconds": allowance_seconds, "cleanup_reserve_seconds": cleanup,
-               "max_attempts": MAX_ATTEMPTS, "retry_scope": "observed Git LFS batch service timeout only",
+               "max_attempts": MAX_ATTEMPTS, "retry_scope": "enumerated transient Git LFS failures; permanent and ambiguous failures refuse",
+               "run_id": os.getenv("GITHUB_RUN_ID"), "run_attempt": os.getenv("GITHUB_RUN_ATTEMPT"),
                "status": "running", "commands": [], "objects": [], "backoff_seconds": []}
 
     def save() -> None:

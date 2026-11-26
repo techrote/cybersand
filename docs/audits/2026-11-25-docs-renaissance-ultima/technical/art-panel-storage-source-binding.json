@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "implemented_commit": "73da90d5b1b7f907b7e30510762c8b7f4488d20d",
+  "qualified_working_head": "fbd1068d1bbfc533504bc222b58fbd7d294ba7ea",
+  "actual_linux13": "art-panel-storage-linux.json",
+  "actual_linux13_sha256": "c0c4918f3145b8605191c84c6d529c4444dd8fa2d93ebdda945c5ba38061c6a6",
+  "normal400": "art-panel-storage-regressions.json",
+  "normal400_sha256": "75d45f7314e39c839a9716f4d139555d15d63509187bdb249d49f15b1cafddaf",
+  "method_sha256": {
+    "_save_settings": "03c06907e1a6149bf4cd0cd1bbdfdbb65e6bfb30810b25d1c0a841da51c6be42",
+    "_persist_history_receipt": "daaa8f0106f9d6c9b08c9beaf069c4e3b8376ffcdd4ecbb9d2dad86551c178a2"
+  },
+  "final_commit_input_binding": {
+    "all_other_inputs_and_runner_identical": true,
+    "panel_only_difference": "One separately lead-reviewed inactive _queue_history_receipt error replaces awaits a durable journal with awaits a verified journal file. Both implemented function bodies are byte-identical to the qualified inputs.",
+    "qualified_panel_sha256": "833c459bf58e2f3d2ac4e56c061c9d2448b30d8ab3d5a5c5c036cc0bf8833d2d",
+    "committed_panel_sha256": "f49cb12c8b5c02bbc538f9ae9d95f5589cb0bbdcb44ac29e1d3cf85406e3ab4d"
+  },
+  "independent_review": {
+    "lane": "C",
+    "verdict": "APPROVE source and real Linux13",
+    "report_sha256": "ecc87c5a7e9d19d32f5701abb87872b66353880335f26060f8e35b596ef67a33",
+    "receipt_location": "C evidence packet; no duplicate raw report here"
+  },
+  "scope": "Actual mounted-panel private storage methods on nonsecret fixtures; no provider request, native edit, automatic old history restoration, fsync or browser qualification.",
+  "windows_plan": [
+    [
+      "export",
+      "none"
+    ],
+    [
+      "export",
+      "locked-target"
+    ],
+    [
+      "new-event",
+      "none"
+    ],
+    [
+      "append",
+      "none"
+    ],
+    [
+      "append",
+      "locked-target"
+    ],
+    [
+      "settings",
+      "none"
+    ],
+    [
+      "settings",
+      "locked-target"
+    ],
+    [
+      "pending-history",
+      "none"
+    ],
+    [
+      "pending-history",
+      "existing-receipt"
+    ]
+  ],
+  "windows_status": "not run by this lane; pending final exact-source hosted nine-case qualification"
+}

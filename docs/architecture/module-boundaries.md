@@ -6,7 +6,7 @@ status: Approved design
 scope: Approved responsibility boundaries mapped to current source; no claim that every named module is a class
 keywords: [SimulationCore, SimulationScheduler, WorldStorage, TileJob, MaterialRules, RenderBridge, GameplayBridge]
 related-documents: [overview.md, data-ownership-and-lifetimes.md, rendering-and-gameplay-bridges.md]
-last-reviewed: 2026-10-21
+last-reviewed: 2026-11-25
 ---
 
 # Module boundaries
@@ -23,13 +23,13 @@ and [implementation](../../native/src/world.cpp).
 |---|---|---|
 | SimulationCore | Authoritative cell/field semantics and invariants | World kernels and tick entry; extraction remains incomplete |
 | SimulationScheduler | Work planning, pool, barriers, deterministic coordination and overload metrics | `World::tick_phased`, `ParallelState`; desktop wall-clock pacing is still GDScript and Web owns synchronous callbacks |
-| WorldStorage | Chunk lifetime, optional fields, activity and capacity; future persistence | `World::Chunk`, `chunks_`, reservation/query methods and explicit fresh generated-chunk admission; general streaming and live resize are absent |
+| WorldStorage | Chunk lifetime, optional fields, activity, capacity and native state ownership | `World::Chunk`, `chunks_`, reservation/query methods, fresh generated-chunk admission and bounded native physical checkpoints; general streaming and live resize are absent |
 | Procedural generator | Compile generation guidance and prepare complete deterministic material proposals | Opt-in `generation::Generator`/`GenerationJob`, immutable scalar/typed graphs, canonical semantic plans, aggregates and prepared modules; no mutable World access; [generation contract](../systems/procedural-world-generation.md) |
 | TileJob | Temporary bounded work assignment and local observations | Core indices, `JobEffects`, local `TickStats`; no public type-enforced bounded rule context |
-| MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; executable kernels remain inside World |
+| MaterialRules | Immutable descriptors, traits and kernel selection | Descriptor/pair-reaction APIs are separate; generated hard-surface/granular-load maps have accepted native consumers, while executable kernels remain inside World |
 | RenderBridge | Consume immutable simulation publication and update presentation | Native `RenderSnapshotExchange`, copied Godot packets and CPU-image consumer; GPU subregion writes are absent |
-| GameplayBridge | Translate intent into tick-boundary data and immutable results | Narrow emission/input/body methods; generalized typed queues and pressure policy are absent |
-| Rigid-body adapter | Own backend calls and translate body value data | `CyberRapierPhysicsBridge` plus native rectangle projection; general shape and torque interfaces are absent |
+| GameplayBridge | Translate intent into tick-boundary data and immutable results | Bounded emission/input/body paths, prepared construction transactions, native receipts and per-World liquid policy exist; a single generalized gameplay command framework remains separate work |
+| Rigid-body adapter | Own backend calls and translate body value data | `CyberRapierPhysicsBridge` plus native rectangle projection; Shared Workbench adds validated per-body impulse/torque wrenches through `workbench_physics_bridge.gd`; generalized contour coupling remains separate |
 
 Adding a native class is justified when it establishes a usable responsibility
 or lifetime boundary. A cosmetic rename is not architectural progress.
@@ -116,9 +116,21 @@ owns reusable publication slots independently of Godot.
 The [Godot adapter](../../godot/native_extension/cyber_native_cell_world.cpp)
 contains finite-demo setup, packed rectangle coupling and Godot value conversion.
 Its existence does not make those integration responsibilities part of the
-Godot-free core. Fixed-demo encoding is a separate
-[level save contract](../reference/level-saves-and-replay.md), not the planned
-general WorldStorage persistence module.
+Godot-free core. Fixed-demo encoding and Workbench authored starts have a
+separate [save contract](../reference/level-saves-and-replay.md). Native
+`World::save_physical_state`/`restore_physical_state` also support declared healthy
+World configurations through CYPS2–5; Wave refuses exact continuation, and host
+body masks/Rapier state are outside those bytes. These accepted APIs do not
+establish generalized application persistence or replay.
+
+The current prepared-value boundary is specified in
+[native setup and receipts](liquid-prepared-setup-and-receipts.md). Pressure and
+other admitted liquid families are selected by immutable per-World policy;
+[family admission](liquid-solver-family-policy.md) is implemented source, not a
+future GameplayBridge proposal. Source owners are
+[`PreparedWorldBuilder`](../../native/include/cybersand/prepared_world.hpp),
+[`LiquidSolverPolicy`](../../native/include/cybersand/liquid_solver_policy.hpp)
+and the [checkpoint implementation](../../native/src/world_pressure.inc).
 
 ## How should a new field or feature cross these boundaries?
 
@@ -137,10 +149,12 @@ rules live in [ownership](data-ownership-and-lifetimes.md),
 
 ## What remains undecided?
 
-**Planned:** final class/API extraction, production command/result schemas,
+**Planned:** final class/API extraction, generalized command/result schemas,
 stable generalized entity IDs, bounded public rule views, generalized
 serialization and safe live reconfiguration. Their names are architectural
-concepts; no signature or failure policy is approved by this page.
+concepts; no new signature or failure policy is approved by this page. Existing
+typed construction receipts, actor commands and acknowledged authoring edits
+retain their narrower current contracts.
 
 The rationale is recorded in [ADR-001](../decisions/ADR-001-native-simulation-core.md),
 [ADR-002](../decisions/ADR-002-double-buffered-tile-jobs.md) and

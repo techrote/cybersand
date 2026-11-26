@@ -63,7 +63,7 @@ jobs:
           set -euo pipefail
           curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 \
             -o "$RUNNER_TEMP/godot.zip" \
-            'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+            'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           mkdir -p "$RUNNER_TEMP/engine"
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/engine"

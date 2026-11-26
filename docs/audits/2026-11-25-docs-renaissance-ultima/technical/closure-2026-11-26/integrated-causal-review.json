@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "verdict": "approve Linux resulting-source compatibility; actual final Windows remains separately required",
+  "source_head": "26c0c09f201e39f2e4ca1194b5085707acb936cc",
+  "source_tree": "2a59de42aa4f964da3dc1e8025c2f044a350e809",
+  "tracked_dirty_paths": [
+    ".github/workflows/ultima-qualification.yml",
+    "tools/ci/package_ultima_evaluator.py",
+    "tools/ci/run_ultima_qualification.py",
+    "tools/ci/test_package_ultima_evaluator.py",
+    "tools/lcb/in_tools_current_main_admission.py",
+    "tools/lcb/test_in_tools_current_main_admission.py"
+  ],
+  "raw_report": "../../closure/causal-main-compatibility/report.json",
+  "raw_report_sha256": "878d4fb0e05162af4573b0fbbf74d88e116cd5148dcb7b4b4a9f4dee28728cd3",
+  "cases": [
+    {
+      "case": "import",
+      "log_sha256": "b30813ff93af7d0462669dd919ad0253ff773f8acc00c2de27e2e69dab984ace",
+      "natural_completion": true,
+      "exit_code": 0,
+      "seconds": 7.341
+    },
+    {
+      "case": "test_tower_observation_inheritance",
+      "log_sha256": "f7e3b4f3ac8c11b8908d96a1c07330d64028b3061dc1f412f79f340995d7f553",
+      "natural_completion": true,
+      "exit_code": 0,
+      "seconds": 1.747
+    },
+    {
+      "case": "test_water_feel_controller",
+      "log_sha256": "ececb88b2ddcda73486d5d908b7f269193236a590c7bf675840016c3fe60c23d",
+      "natural_completion": true,
+      "exit_code": 0,
+      "seconds": 5.293
+    },
+    {
+      "case": "test_liquid_desktop_default_host",
+      "log_sha256": "b01204caf85e6fa0f70c3180e6fd48f571284dd67be3a12d623e1e4cfde968e7",
+      "natural_completion": true,
+      "exit_code": 0,
+      "seconds": 16.087
+    },
+    {
+      "case": "test_ambient_default_off_integration",
+      "log_sha256": "79edc7aaa3e70e65edfc71614538bca5ddfb522767853c7aa6a241f70653d2de",
+      "natural_completion": true,
+      "exit_code": 0,
+      "seconds": 6.045
+    },
+    {
+      "case": "test_ambient_clock",
+      "log_sha256": "9bc6f340449e5a964b178a0b9ab8f8a406cfa2fe0f173d9861af2c6674a0c4b8",
+      "natural_completion": true,
+      "exit_code": 0,
+      "seconds": 0.668
+    }
+  ],
+  "source_review": "causal-source-review.json",
+  "causal_footer": {
+    "assertions": 86,
+    "failures": 0
+  },
+  "limits": [
+    "Independent readback of lead-executed Linux tests, not another execution by A",
+    "No inference of a cause for historical Windows access violation",
+    "No browser, physical NVIDIA or whole-AMBIENT programme acceptance"
+  ]
+}

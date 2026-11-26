@@ -6,13 +6,37 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-26
 ---
 
 # Data ownership and lifetimes
 
-The opt-in [AMBIENT-001 actor controller](../systems/ambient-actors.md) adds no
-World or physics owner. One main-thread session cache copies existing native
+## Current owner map
+
+Source inspection at accepted main `00cdb02f` distinguishes five kinds of
+ownership that are easy to conflate:
+
+| Owner | Mutable resources | Boundary rule |
+|---|---|---|
+| Native `World` | Cells, activity/deadlines, selected liquid state, native edit buffers | One serialized caller; its pool jobs mutate only admitted work domains |
+| `CyberSimulationWorker` | Installed native adapter, queued edits, reset state and copied publication | Adapter calls stay on this exclusive desktop owner |
+| Main-thread physical session | Rapier bodies/joints, controls and issued policy observations | Send copied samples/actions; accept only matching responses |
+| Workbench authoring controller | Applied starting document, confirmed edit ordering, Undo/Redo and material baseline | Update authored state at the operation's acknowledgement/adoption boundary |
+| Render consumer | CPU images, textures and presentation history | Consume immutable copied packets; rendering owns no mutable cells |
+
+Sources: [worker](../../godot/scripts/simulation_worker.gd),
+[Workbench](../../godot/scripts/shared_workbench.gd),
+[physical session](../../godot/scripts/physical_actor_session.gd),
+[native World](../../native/include/cybersand/world.hpp).
+A prepared candidate may exist privately while the installed owner remains
+valid. Only the explicit commit changes the active owner; a queued proposal,
+preview, provider answer or copied observation cannot perform that commit.
+
+## Accepted opt-in AMBIENT ownership
+
+The opt-in [AMBIENT-001 actor controller](../systems/ambient-actors.md) is accepted through
+[#775](https://github.com/techrote/cybersand/pull/775), remains off until selected,
+and adds no World or physics owner. One main-thread session cache copies existing native
 material-ID publications while preserving their epoch, generation, revision,
 serial and native tick. Pure modules receive copied values; only the existing
 session issues policy observations and submits bounded normalized commands.
@@ -21,7 +45,9 @@ Retiring the session clears the cache and every actor's private intention state.
 Pause revokes command authority while preserving gameplay timers; handback
 reconfigures ephemeral state. Debug inspection does not issue observations.
 
-The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
+## Accepted Workbench actors
+
+The accepted [Workbench actor-composition implementation](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
 keeps the existing native worker and main-thread Rapier owner. Each multipart
 actor has stable authored identity and distinct per-part native response owners;
 compound proxies share only their actual body owner. The copied body/equipment
@@ -57,7 +83,7 @@ physics rebind or Godot API crosses a native worker boundary.
 
 ## Explicit imported-level ownership
 
-The unmerged #202 synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+The current synchronous [normal import route](liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 keeps the running World/player/receipt/record until native preparation, private
 sampled-player configuration, qualified observation and final serial guard all
 pass. Native exclusively owns the pending World; the private level session owns
@@ -69,7 +95,7 @@ object crosses a worker boundary, and this synchronous route adds no tick work.
 
 ## Water IN actual carrier and scratch ownership
 
-**Current isolated Water successor:** the native slot follows its complete Water
+**Current accepted Water IN implementation:** the native slot follows its complete Water
 tuple through every immediate carrying swap. `mix_after_motion` returns the
 actual carrier coordinate; later IN movement/probes/final store use it, while
 foreign grain/vacancy slots remain zero. `MotionFootprint` and body-contact target
@@ -82,7 +108,7 @@ owns coherence/cadence, future work and remaining qualification.
 
 ## Pressure gas labels beneath host body masks
 
-**Current repair branch, acceptance pending:** native World owns retained gas
+**Current accepted source:** native World owns retained gas
 labels, live compartments and retirement ledgers. A host-owned transient mask
 excludes an Empty pixel from topology volume and overlap without replacing the
 stored cell. Serial final relabelling removes labels whose compartment retired,
@@ -195,7 +221,7 @@ but must not touch live scene-tree or Rapier objects.
 | Delayed pair deadline | Workers report through fixed disjoint job spans into two preallocated `ParallelState` flag/deadline buffers; the coordinator reduces the earliest deadline into shared block metadata after the phase barrier and wakes it at healthy tick entry | One persistent scalar per block plus bounded scheduler scratch; buffers outlive job spans and pool, excluded blocks retain deadlines, clear/replacement discards them |
 | Native snapshot slots | One serialized producer writes only an unleased slot | Shared exchange state outlives its facade while leases exist; no-slot/capacity failure retains dirty state |
 | Desktop world, sampled character and optional actor prototypes | Godot pacing Thread after startup handoff | Worker lifetime; stopped/joined before destruction; actor session reset invalidates old input epochs |
-| Controlled liquid preparation candidate and token (experimental #202 source) | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Other constructors and full evidence stay open |
+| Controlled liquid preparation candidate and token | The exclusive native adapter owns one pending World, render exchange, final setup and copied native receipt | Final configuration precedes capture; one-use token commit checks retained state and the desktop queue-mutex request/reset/stop fence. Discard/supersession/refusal retain the applied session; [sampled owners](liquid-prepared-setup-and-receipts.md#staged-sampled-actors-and-exploratory-owners) and [desktop articulated physical owners](liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners) prepare before commit. Physical graph/space stays main-owned, frozen and permanent; copied readiness and actual initial masks bind its nonblocking continuation. Covered constructors and source/platform qualification are specified in the prepared-boundary contract |
 | Live body nodes, RIDs and physics state | Main-thread Rapier bridge and PhysicsServer2D | Scene/bridge lifetime; never passed to cellular workers |
 | Physical actor rigs, joints and local controllers | Main-thread `CyberPhysicalActorSession`; at most eight rigs/eight total parts each | Run/actor/epoch-bound command leases; cancel discards future work, close retires bodies/joints |
 | 4LY profile and local force/torque response | Validated copied profile and a main-thread pure controller under the same physical session; own velocity/attitude inputs only | Single chassis with explicit absent equipment; cancellation/expiry reset response state and select passive fallback without changing body momentum; see [free-flight contract](../systems/physical-free-flight.md) |
@@ -301,8 +327,13 @@ reused. Lazy coordinator preparation may allocate chunks during a tick;
 preallocation prevents the tracked chunk/temperature allocation classes for
 covered regions. This is not proof that every adapter allocation is absent.
 
-Desktop frame inputs and body arrays are replaced under a mutex. Emissions use
-a dynamic `Array[Vector4i]` with no production capacity/full-queue result.
+Desktop frame inputs and body arrays are replaced under a mutex. Disc emissions
+use a dynamic `Array[Vector4i]`, but admission is bounded at eight pending
+commands; the explicit-footprint queue has its own eight-command bound.
+`queue_emit_disc` and `queue_emit_cells` return false on capacity or ownership
+refusal. A true result admits or coalesces a command; it does not acknowledge
+native application. The legacy `queue_paint` wrapper returns void and discards
+that admission result.
 Pending render arrays also grow dynamically, then switch to a finite full
 refresh when byte or patch thresholds are exceeded. This recovery bounds the
 retained display representation; it does not implement generalized bounded
@@ -314,8 +345,8 @@ The ACT-004 physical effect queue and ACT-005 physical usable queue each admit a
 whole incoming batch within eight pending requests or publish an explicit refusal.
 ACT-005 also counts extracted in-flight requests against its one-per-actor and
 global capacity until consumption or retirement; its copied physical frame and
-body sample are latched at the same mutex boundary. These queues do not bound the
-older generic emission queue described above. The occupancy field belongs
+body sample are latched at the same mutex boundary. Their capacities are
+independent of the generic emission queues described above. The occupancy field belongs
 to World; it is separate from material identity. See
 [coupling](rigid-body-and-cellular-coupling.md) for displacement and overflow.
 
@@ -514,10 +545,16 @@ steps, including same-definition resets; at most one already-admitted step may f
 ## Standalone soliding successor contracts
 
 The [soliding lifecycle](soliding-lifecycle.md) defines reviewed future owner
-transitions and tests a synthetic bounded ledger. The [discovery substrate](../systems/settled-region-discovery.md)
-owns copied observations only. Neither is connected to World/Godot/Rapier or
-changes Current owners. Production hooks, barriers, queues and payload transitions
-remain separately gated; the source reader must stay serialized and read-only.
+transitions and tests a synthetic bounded ledger; that representation-handoff
+model is not connected to live Godot/Rapier owners. The
+[discovery substrate](../systems/settled-region-discovery.md) already has optional
+native World producer hooks, a bounded journal and separately enabled region
+connectivity. `World::initialize_settled_discovery` constructs the observer;
+serialized owner hooks and post-barrier reports feed copied observations.
+`WorldConfig::settled_discovery_enabled` is false by default. This read-only
+observer does not skip simulation, transfer material ownership, create Rapier
+bodies or implement the lifecycle handoff. Its source reader remains serialized
+and read-only; representation transitions retain their separate gates.
 
 The desktop [physical actor trial](../operations/physical-actor-programme.md) uses one main-thread Rapier rectangle and the existing immutable body-value publication. It disables the sampled owner, adds no worker-side Rapier access and does not attach the generation preview to live cell storage.
 
@@ -539,7 +576,7 @@ on identity changes. This is authoring isolation, not world mutation rebasing.
 
 ## Prepared native-default owner transaction
 
-On unmerged66bf30f8 the exclusive desktop worker owns the native default candidate
+In accepted source the exclusive desktop worker owns the native default candidate
 and private sampled owner; Main owns the frozen permanent body graph and live
 Rapier objects. Copied native origin/session identity authorizes this constructor;
 Main reads immutable published host records rather than the live World. Final
@@ -549,5 +586,7 @@ capacity refusal precedes capture/token/swap; retained World/graph/receipt/recor
 remain usable. Construction-only capacity vectors never enter tick execution.
 The [canonical prepared boundary](liquid-prepared-setup-and-receipts.md#desktop-native-default-owner-and-initial-pressure-capacity)
 and [dated proof](../audits/2026-10-25-lcb003-desktop-native-default-host.md) keep
-local Windows qualification, test-resource lifetime remediation and final
-combined/platform/full-host gaps separate.
+the original `66bf30f8` local Windows qualification, test-resource lifetime
+remediation and that checkpoint's combined/platform/full-host gaps separate.
+Those historical merge prerequisites do not make the accepted constructor
+unavailable or qualify a new runtime.

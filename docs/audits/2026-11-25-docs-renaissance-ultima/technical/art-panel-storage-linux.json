@@ -1,0 +1,695 @@
+{
+  "schema": 1,
+  "scope": "actual disposable storage faults; no GPU, power-loss or physical acceptance",
+  "platform": "linux",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "source_head": "fbd1068d1bbfc533504bc222b58fbd7d294ba7ea",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "inputs": {
+    "scripts/art_provider.gd": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+    "scripts/art_traffic_archive.gd": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+    "scripts/art_batch_panel.gd": "833c459bf58e2f3d2ac4e56c061c9d2448b30d8ab3d5a5c5c036cc0bf8833d2d",
+    "scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+    "native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "tests/art_storage_fault_child.gd": "a8e6973917a5ecc28af62f1c0ad09db89058060efbe0f95784fde3a733cc5ade"
+  },
+  "runner_sha256": "37d0024fffb27a431f95ad148fca0e5bb008029c7f1ba6047caf22bb15deda46",
+  "cases": [
+    {
+      "passed": true,
+      "operation": "export",
+      "fault": "none",
+      "evidence_class": "real-public-caller",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 84,
+        "old_sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+        "operation": "export",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/export-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl"
+      },
+      "result": {
+        "bytes": 2660,
+        "expected_export_equal": true,
+        "last_event_stored": false,
+        "log_path_empty": true,
+        "message": "",
+        "old_prefix_preserved": false,
+        "old_preserved": false,
+        "operation": "export",
+        "partial_files": [],
+        "recovered_count": 1,
+        "replay_ok": true,
+        "sha256": "0d1db35c124515d4f1493ee718ab510f2e6726b1e672205ffc8b47c15a811a50",
+        "source_unchanged": true,
+        "success": true
+      },
+      "log_sha256": "6c69a08af122216f86721d1966195101df711bc52fcdad30cd337dc12c28e183"
+    },
+    {
+      "passed": true,
+      "operation": "export",
+      "fault": "short-write",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 84,
+        "old_sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+        "operation": "export",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/export-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/export.jsonl"
+      },
+      "result": {
+        "bytes": 84,
+        "expected_export_equal": false,
+        "last_event_stored": false,
+        "log_path_empty": true,
+        "message": "Export refused; this export did not replace the destination. The closed output is incomplete; check free space and write permissions.",
+        "old_prefix_preserved": true,
+        "old_preserved": true,
+        "operation": "export",
+        "partial_files": [],
+        "recovered_count": 1,
+        "replay_ok": true,
+        "sha256": "ed28f7f45d943a0e950e3d2b022bf4d65c0d223e2eeeaf4b9c2e908724352265",
+        "source_unchanged": true,
+        "success": false
+      },
+      "log_sha256": "635842b9e01752d5243c7b638fcf4f01d82f3b529538a361138d3c0c412ad326"
+    },
+    {
+      "passed": true,
+      "operation": "new-event",
+      "fault": "none",
+      "evidence_class": "real-public-caller",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 0,
+        "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "operation": "new-event",
+        "target": ""
+      },
+      "result": {
+        "bytes": 2915,
+        "expected_export_equal": false,
+        "last_event_stored": true,
+        "log_path_empty": false,
+        "message": "",
+        "old_prefix_preserved": true,
+        "old_preserved": false,
+        "operation": "new-event",
+        "partial_files": [],
+        "recovered_count": 1,
+        "replay_ok": true,
+        "sha256": "f2fa901a9d9b254ac87fe549d1c50d259ca09eff0e529f7e3a526e16e81e3b42",
+        "source_unchanged": true,
+        "success": true
+      },
+      "log_sha256": "461402c354c78288be93c6e3c39c2c655b3dde681c476005cb8386ca7621f5a8"
+    },
+    {
+      "passed": true,
+      "operation": "new-event",
+      "fault": "short-write",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 0,
+        "old_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "operation": "new-event",
+        "target": ""
+      },
+      "result": {
+        "bytes": 0,
+        "expected_export_equal": false,
+        "last_event_stored": false,
+        "log_path_empty": true,
+        "message": "Traffic write failed; the new event was not confirmed. Prior complete events remain in the session log.",
+        "old_prefix_preserved": true,
+        "old_preserved": true,
+        "operation": "new-event",
+        "partial_files": [],
+        "recovered_count": -1,
+        "replay_ok": false,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_unchanged": true,
+        "success": false
+      },
+      "log_sha256": "c478414efad797d0832e2bb40e692b2905541512aebe873cab4093ecd7fd0aaf"
+    },
+    {
+      "passed": true,
+      "operation": "append",
+      "fault": "none",
+      "evidence_class": "real-public-caller",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 338,
+        "old_sha256": "c36630a2632a703c2472de73924f6f368c1e1bd49889731cea9b47a6f385ba8e",
+        "operation": "append",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/append-normal/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/085d8f04e359f8107402ddb1d842d3f2.jsonl"
+      },
+      "result": {
+        "bytes": 3159,
+        "expected_export_equal": false,
+        "last_event_stored": true,
+        "log_path_empty": false,
+        "message": "",
+        "old_prefix_preserved": true,
+        "old_preserved": false,
+        "operation": "append",
+        "partial_files": [],
+        "recovered_count": 2,
+        "replay_ok": true,
+        "sha256": "4084fdbc18a3198d1be0a6ce9e36837dda3ab88fdfe77c4c32ac4693c5db87bb",
+        "source_unchanged": true,
+        "success": true
+      },
+      "log_sha256": "fc4d38c20e289808db72819e2b70b744a38709b3f8ae8aa5cc1c3df57ad79b76"
+    },
+    {
+      "passed": true,
+      "operation": "append",
+      "fault": "short-write",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 338,
+        "old_sha256": "6ab7933c1f0fc027eb67ebbe06260cec807bab7a50ef2246003f3190640340ec",
+        "operation": "append",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/append-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-traffic/9fcb0953e072c452ba663e4c059ff23d.jsonl"
+      },
+      "result": {
+        "bytes": 466,
+        "expected_export_equal": false,
+        "last_event_stored": false,
+        "log_path_empty": false,
+        "message": "Traffic write failed; the new event was not confirmed. Prior complete events remain in the session log.",
+        "old_prefix_preserved": true,
+        "old_preserved": false,
+        "operation": "append",
+        "partial_files": [],
+        "recovered_count": 1,
+        "replay_ok": true,
+        "sha256": "804e02e06dd13c5b9ca8af1a681677b7e4706edb62140252417c827ce2520a0d",
+        "source_unchanged": true,
+        "success": false
+      },
+      "log_sha256": "52e73e4eb266e32ffd77713ec1e6b0e4fa63ce087e274e71889e572da6f078b2"
+    },
+    {
+      "passed": true,
+      "operation": "settings",
+      "fault": "none",
+      "evidence_class": "real-private-writer",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 1970,
+        "old_sha256": "78076fbf5bff993aadd6497e45d6de37ec879fd5c8c12aa99b1e477554e99aea",
+        "operation": "settings",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/settings-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg"
+      },
+      "result": {
+        "first": {
+          "bytes": 1970,
+          "clock_unchanged": true,
+          "loadable": true,
+          "message": "",
+          "old_preserved": false,
+          "roundtrip": true,
+          "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c",
+          "success": true,
+          "value": 8
+        },
+        "guards_preserved": true,
+        "operation": "settings",
+        "partial_files": [],
+        "retry": {
+          "bytes": 1970,
+          "loadable": true,
+          "message": "",
+          "old_preserved": false,
+          "roundtrip": true,
+          "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c",
+          "success": true,
+          "value": 8
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "eb38069851093463decf7b6ddc9f7e2907394e9ea588a17673acc3daa57f7160"
+    },
+    {
+      "passed": true,
+      "operation": "settings",
+      "fault": "short-write",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 1970,
+        "old_sha256": "78076fbf5bff993aadd6497e45d6de37ec879fd5c8c12aa99b1e477554e99aea",
+        "operation": "settings",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/settings-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg"
+      },
+      "result": {
+        "first": {
+          "bytes": 1970,
+          "clock_unchanged": true,
+          "loadable": true,
+          "message": "Could not save Art preferences; Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+          "old_preserved": true,
+          "roundtrip": true,
+          "sha256": "78076fbf5bff993aadd6497e45d6de37ec879fd5c8c12aa99b1e477554e99aea",
+          "success": false,
+          "value": 7
+        },
+        "guards_preserved": true,
+        "operation": "settings",
+        "partial_files": [],
+        "retry": {
+          "bytes": 1970,
+          "loadable": true,
+          "message": "",
+          "old_preserved": false,
+          "roundtrip": true,
+          "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c",
+          "success": true,
+          "value": 8
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "e4211da83384257f6f9b43dc02af4b95231511d30f77a83030c276e7dd633947"
+    },
+    {
+      "passed": true,
+      "operation": "settings",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 1970,
+        "old_sha256": "78076fbf5bff993aadd6497e45d6de37ec879fd5c8c12aa99b1e477554e99aea",
+        "operation": "settings",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/settings-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg"
+      },
+      "result": {
+        "first": {
+          "bytes": 1970,
+          "clock_unchanged": true,
+          "loadable": true,
+          "message": "Could not save Art preferences; Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+          "old_preserved": true,
+          "roundtrip": true,
+          "sha256": "78076fbf5bff993aadd6497e45d6de37ec879fd5c8c12aa99b1e477554e99aea",
+          "success": false,
+          "value": 7
+        },
+        "guards_preserved": true,
+        "operation": "settings",
+        "partial_files": [],
+        "retry": {
+          "bytes": 1970,
+          "loadable": true,
+          "message": "",
+          "old_preserved": false,
+          "roundtrip": true,
+          "sha256": "eb48b6dd0e2300d18950fbb18d1686e1fc588953f64c7f127ccaec203946de7c",
+          "success": true,
+          "value": 8
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "9bed6d382053dcffc3c1e250e954d1413cf08b19857047a19cdfaa6881732583"
+    },
+    {
+      "passed": true,
+      "operation": "pending-history",
+      "fault": "none",
+      "evidence_class": "real-private-writer",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 2298,
+        "old_sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932",
+        "operation": "pending-history",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/pending-history-none/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json"
+      },
+      "result": {
+        "first": {
+          "clock_unchanged": false,
+          "frozen_projection": true,
+          "item_has_file": true,
+          "item_has_order": true,
+          "loadable": true,
+          "message": "",
+          "old_preserved": true,
+          "schema": 2,
+          "success": true,
+          "values": [
+            7,
+            8
+          ]
+        },
+        "guards_preserved": true,
+        "operation": "pending-history",
+        "partial_files": [],
+        "retry": {
+          "frozen_projection": true,
+          "item_has_file": true,
+          "item_has_order": true,
+          "loadable": true,
+          "message": "",
+          "old_preserved": true,
+          "schema": 2,
+          "success": true,
+          "values": [
+            7,
+            8
+          ]
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "3528f9edc74c57d61aa8b4cceaff5c439c9f4204c19579ac7d3f9b10b56fc429"
+    },
+    {
+      "passed": true,
+      "operation": "pending-history",
+      "fault": "existing-receipt",
+      "evidence_class": "real-admission-refusal",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 2298,
+        "old_sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932",
+        "operation": "pending-history",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/pending-history-existing-receipt/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json"
+      },
+      "result": {
+        "first": {
+          "clock_unchanged": true,
+          "frozen_projection": false,
+          "item_has_file": false,
+          "item_has_order": false,
+          "loadable": true,
+          "message": "Pending receipt was not admitted; keep its in-memory item for retry.",
+          "old_preserved": true,
+          "schema": 1,
+          "success": false,
+          "values": [
+            7
+          ]
+        },
+        "guards_preserved": true,
+        "operation": "pending-history",
+        "partial_files": [],
+        "retry": {
+          "frozen_projection": true,
+          "item_has_file": true,
+          "item_has_order": true,
+          "loadable": true,
+          "message": "",
+          "old_preserved": true,
+          "schema": 2,
+          "success": true,
+          "values": [
+            7,
+            8
+          ]
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "954f4c4fc203fcd26b6dcba59dc85870f797316ecdd0b549d67b35c4b43fa3a7"
+    },
+    {
+      "passed": true,
+      "operation": "pending-history",
+      "fault": "short-write",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 2298,
+        "old_sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932",
+        "operation": "pending-history",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/pending-history-short-write/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json"
+      },
+      "result": {
+        "first": {
+          "clock_unchanged": true,
+          "frozen_projection": false,
+          "item_has_file": false,
+          "item_has_order": false,
+          "loadable": true,
+          "message": "Pending receipt was not admitted; keep its in-memory item for retry.",
+          "old_preserved": true,
+          "schema": 0,
+          "success": false,
+          "values": [
+            7
+          ]
+        },
+        "guards_preserved": true,
+        "operation": "pending-history",
+        "partial_files": [],
+        "retry": {
+          "frozen_projection": true,
+          "item_has_file": true,
+          "item_has_order": true,
+          "loadable": true,
+          "message": "",
+          "old_preserved": true,
+          "schema": 2,
+          "success": true,
+          "values": [
+            7,
+            8
+          ]
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "cba45f1b404381106db2c2f67aefe4055af9fbb094e44ec9055628c9cc7dc5fb"
+    },
+    {
+      "passed": true,
+      "operation": "pending-history",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/cybersand/godot",
+        "--script",
+        "res://tests/art_storage_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "natural_completion": true,
+      "engine_error_detected": false,
+      "windows_lock": null,
+      "ready": {
+        "old_bytes": 2298,
+        "old_sha256": "bda2168c70ca798797303e3426e5738d05d1e8ac1922032d888dbb2cbc1ac932",
+        "operation": "pending-history",
+        "target": "/workspace/scratch/1c5fccfbe328/a-art-panel-after-02/pending-history-directory-permission-denied/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-pending-history/00000000000000000007-00000000000000000000000000000007.json"
+      },
+      "result": {
+        "first": {
+          "clock_unchanged": true,
+          "frozen_projection": false,
+          "item_has_file": false,
+          "item_has_order": false,
+          "loadable": true,
+          "message": "Pending receipt was not admitted; keep its in-memory item for retry.",
+          "old_preserved": true,
+          "schema": 0,
+          "success": false,
+          "values": [
+            7
+          ]
+        },
+        "guards_preserved": true,
+        "operation": "pending-history",
+        "partial_files": [],
+        "retry": {
+          "frozen_projection": true,
+          "item_has_file": true,
+          "item_has_order": true,
+          "loadable": true,
+          "message": "",
+          "old_preserved": true,
+          "schema": 2,
+          "success": true,
+          "values": [
+            7,
+            8
+          ]
+        },
+        "scope": "Mounted panel private storage methods; nonsecret fixtures, no provider request or native edit",
+        "stale_preserved": true
+      },
+      "log_sha256": "6fe4099497bf7a98bf0b1818e054803427e4cad4fab438da3081688fd047a95b"
+    }
+  ],
+  "passed": true,
+  "status": "passed",
+  "completed": true,
+  "inputs_unchanged": true
+}

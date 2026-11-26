@@ -2,6 +2,7 @@ extends RefCounted
 
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const ActorCatalog = preload("res://scripts/workbench_actor_catalog.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
@@ -691,20 +692,7 @@ static func write_named(label: String, setup: Dictionary) -> String:
 		return "Setup exceeds the file budget."
 	if DirAccess.make_dir_recursive_absolute(DIRECTORY) != OK:
 		return "Cannot create the setup directory."
-	var temp := path + "." + Crypto.new().generate_random_bytes(8).hex_encode() + ".tmp"
-	var file := FileAccess.open(temp, FileAccess.WRITE)
-	if file == null:
-		return "Cannot create temporary setup file."
-	file.store_string(content)
-	file.flush()
-	var result := file.get_error()
-	file.close()
-	if result == OK:
-		result = DirAccess.rename_absolute(temp,path)
-	if result != OK:
-		DirAccess.remove_absolute(temp)
-		return "Could not replace the named setup (%s)." % error_string(result)
-	return ""
+	return str(FileTransaction.write_text(path, content, BYTE_LIMIT).error)
 
 
 # All three authored formats use this after strict Setup.validate, so an

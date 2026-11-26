@@ -1,0 +1,9 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+TOWER_OBSERVATION_BEFORE {"bytes":128,"clipboard_available":false,"json_loadable":false,"loaded_value":null,"path":"/workspace/scratch/1c5fccfbe328/b-tower-before-01/profile/godot/app_userdata/Cyber Sand Reference Sandbox/tower-observation.json","requested_value":8,"returned_value":null,"sha256":"71ff4414db0b7342986b4f9be51a1b83c8b55f705c5ae20fdae51f14b2aff65e"}
+ERROR: Parse JSON failed. Error at line 8: Unterminated string
+   at: parse_string (core/io/json.cpp:629)
+   GDScript backtrace (most recent call first):
+       [0] run (/workspace/scratch/1c5fccfbe328/b-tower-before-child.gd:17)

@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "accepted_baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "reviews": [
+    {
+      "subject": "A shared persistence mechanism and callers",
+      "implementer": "Specialist A",
+      "reviewed_source": "fb0ebc9e plus independently recorded input hashes",
+      "verdict": "APPROVE",
+      "evidence": "review-persistence-by-c.json",
+      "scope": "Full helper/caller/native replacement source challenge plus independently executed 13 real/injected Linux cases and 84 focused checks; actual old/new semantic values required. No native Windows or power-loss inference."
+    },
+    {
+      "subject": "A MicroScenario capture callers",
+      "implementer": "Specialist A",
+      "reviewed_source": "fcec6b70576fec06b868142160747e2cc8f6f27f",
+      "verdict": "APPROVE",
+      "evidence": "review-capture-by-c.json",
+      "scope": "Real controller writer/CLI, truthful ACK and complete staging source review; six actual Linux cases with value, digest, retry, relative-space-path and stale-stage assertions."
+    },
+    {
+      "subject": "A data ownership discovery and bounded emission contracts",
+      "implementer": "Specialist A",
+      "reviewed_source": "20c82d6e discovery correction plus later emission correction",
+      "verdict": "APPROVE",
+      "documents": [
+        "docs/architecture/data-ownership-and-lifetimes.md"
+      ],
+      "source_inputs": {
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
+      },
+      "scope": "Direct source: disabled World observer is connected to production mutation producers, separate from standalone lifecycle handoff; Water IN accepted; queue_emit_disc/cells have independent eight-command budgets and queue_paint discards result. Admission is not native application ACK."
+    },
+    {
+      "subject": "Lead material catalogue lifecycle/rollback correction",
+      "implementer": "Lead",
+      "reviewed_source": "root pending diff subsequently integrated",
+      "verdict": "APPROVE",
+      "documents": [
+        "docs/operations/material-catalogue-shadow.md"
+      ],
+      "source_inputs": {
+        "tools/material_catalogue/compatibility.py": "d44c0a6fbc34bfd1b75c2cad8dcd99ffda30dfefd2e144533527d9be8d80dc2b",
+        "tools/material_catalogue/native_capabilities.py": "a72f20047ac1619d0149ee3da29e97477c53815f79d79f6b2981542c8ae7e2d5",
+        "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d"
+      },
+      "scope": "Full diff and actual native capability consumers inspected. Accepted #371/#563/#562 ancestry verified. Tools-only rollback is incomplete after native consumers; admitted tool liveness is separate from remaining H1 production repair. No 552-case campaign rerun by C."
+    },
+    {
+      "subject": "Lead compact practical LCB manual and registry/depth corrections",
+      "implementer": "Lead",
+      "reviewed_source": "root pending compact rewrite subsequently integrated",
+      "verdict": "APPROVE",
+      "documents": [
+        "docs/operations/lcb-manual-comparison-ux.md",
+        "docs/operations/lcb-water-comparison-and-fixtures.md",
+        "docs/operations/lcb-scenario-catalogue.md"
+      ],
+      "source_inputs": {
+        "godot/scripts/liquid_comparison_panel.gd": "e02c6fe044d376ca35025c2491736b16c2733b93d2e62a770d51b2895f9b314a",
+        "godot/scripts/main.gd": "61ddba74a87bf06bfbf08b50e9002242c22d3d55bc0a10ed7defac419105fcf1",
+        "godot/tests/fixtures/lcb/lcb-scenario-registry.json": "ec9bca70028914dd9bdd461e618e9306ca74608c5462bb158ef418ed6a7220e2"
+      },
+      "scope": "Read full compact manual and companion diffs, source-checked eight presets/two setups, modes/radius/damping/normalization, requested-versus-applied owner routes and existing registered three-depth fixtures. Original chronology retained via immutable201 source; no fixture/scoring edit, generic name boost or inferred full scientific comparison."
+    },
+    {
+      "subject": "A accepted pressure and inertial contract reconciliation",
+      "implementer": "Specialist A",
+      "reviewed_source": "f591124e",
+      "verdict": "APPROVE",
+      "documents": [
+        "docs/architecture/pressure-flow-v1.md",
+        "docs/architecture/inertial-cellular-v1.md"
+      ],
+      "source_inputs": {
+        "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+        "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e"
+      },
+      "scope": "Full diffs and focused implementation bodies checked: masked label retirement, admitted owner/column/row pooling, base1024/admitted2048 capacity, actual hash/getter, Water and Brine INradius3. Original publisher/campaign remains dated."
+    },
+    {
+      "subject": "A five final prepared liquid/version/cache corrections",
+      "implementer": "Specialist A",
+      "reviewed_source": "5c0fcdc8",
+      "verdict": "APPROVE",
+      "documents": [
+        "docs/architecture/lcb-pressure-inertial-handoff.md",
+        "docs/architecture/liquid-prepared-setup-and-receipts.md",
+        "docs/architecture/liquid-solver-family-policy.md",
+        "docs/architecture/liquid-state-transition-matrix.md",
+        "docs/architecture/pressure-optimization.md"
+      ],
+      "source_inputs": {
+        "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+        "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+        "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+        "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+        "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+        "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+        "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+        "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+      },
+      "accepted_ancestors": [
+        "06451f8ac9e8ac9b23a105d2fe22393375dc2d6b",
+        "ee92dc45b12455f01218394fd773da516caf356e",
+        "81bbd5ff5cf366159e2b8a630609359c13560080"
+      ],
+      "scope": "Full diff/source review: ballistic quantity schema2 equation versus nonballistic1; default1024/Workbench2048 limits; actual hash2\u20136/CYPS2\u20135/Wave0; accepted WaterIN/panel normalization; execution4 sleeping bits and camera-only retention. Each listed merge independently verified ancestor of accepted00cdb02f. No runtime laws or campaign results changed."
+    },
+    {
+      "subject": "B first-session/save/Art authority and evidence scope",
+      "implementer": "Specialist B",
+      "reviewed_source": "root f7b4fbcb",
+      "verdict": "APPROVE-with-explicit-interim-evidence-scope",
+      "documents": [
+        "docs/operations/workbench-first-session.md",
+        "docs/operations/workbench-saving.md",
+        "docs/operations/workbench-art.md"
+      ],
+      "document_inputs": {
+        "docs/operations/workbench-first-session.md": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+        "docs/operations/workbench-saving.md": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a",
+        "docs/operations/workbench-art.md": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570"
+      },
+      "scope": "Read all three complete guides and interim product README. Authored save/Flatten/generated install and native ACK boundaries agree with reviewed source; candidate helper clearly separate from accepted00cd; GUI evidence identifies predecessor201 Linux llvmpipe and does not imply physical owner acceptance. C did not personally operate UI. Interim product record still requires B final source/results update; no final GUI endorsement in this receipt."
+    },
+    {
+      "subject": "Lead fast documentation CI gate for physics identity",
+      "implementer": "Lead",
+      "reviewed_source": "f7b4fbcb plus two-line documentation.yml diff",
+      "verdict": "APPROVE",
+      "scope": "Runs python3 -m unittest tools.physics.test_runtime_identity under unchanged shared operation_seconds timeout; synthetic mapping/file/version negative controls only, no engine or scientific campaign implied. C and A independently passed10tests."
+    },
+    {
+      "subject": "A four profile-save writers and caller feedback",
+      "implementer": "Specialist A",
+      "reviewed_source": "b698a2b2447ece2076bfa83ac56093f34487450f",
+      "verdict": "APPROVE",
+      "evidence": "review-profile-by-c.json",
+      "scope": "Full source/test review plus16 actual Linux cases; old payload/format preserved on failures, new payload loaded on success/retry. No Windows/GPU/power-loss inference."
+    },
+    {
+      "subject": "Lead Art export/new-segment/append integrity",
+      "implementer": "Lead",
+      "reviewed_source": "Exact inputs bound in review; subsequent three-line cleanup/message delta separately reviewed",
+      "verdict": "APPROVE",
+      "evidence": "review-art-storage-by-c.json",
+      "scope": "Six actual Linux cases and278 focused checks; export/newsegment publication and append-prefix recovery remain distinct."
+    },
+    {
+      "subject": "Lead source-qualified owner evaluator extension",
+      "implementer": "Lead",
+      "reviewed_source": "Exact qualifier/package/test hashes in receipt",
+      "verdict": "APPROVE after demonstrated contradictory-receipt consistency correction",
+      "evidence": "review-package-by-c.json",
+      "scope": "Schema-v2 and20 normal/12 Windows-profile/5 Windows-Art gates reviewed;60 synthetic admission tests passed. Does not constitute Windows execution."
+    },
+    {
+      "subject": "A diagnostic result writers",
+      "implementer": "Specialist A",
+      "reviewed_source": "e6796b8e226d061b415195a1993737832e7c38c6",
+      "verdict": "APPROVE",
+      "evidence": "review-diagnostic-storage-by-c.json",
+      "scope": "Three real one-tick CLIs,9 Linux replacement/refusal/retry cases; source formats/simulation unchanged. Goblin later fourth-kind extension separate."
+    },
+    {
+      "subject": "Lead accepted CI/status reconciliation at5e29",
+      "implementer": "Lead",
+      "reviewed_source": "Accepted5e29 versus00c and root doc diff reviewed before c842 drift",
+      "verdict": "APPROVE source/authority scope",
+      "scope": "Only new optional Gentek Godot tool within runtime-tree path; native/ordinary runtime/dependencies unchanged. Official asset/lock/version and GDE8/8 preserved; helper availability separate from publisher adoption and ULTIMA candidate."
+    },
+    {
+      "subject": "Lead optional Goblin fixed-writer correction and A extended probe",
+      "implementer": "Lead controller34ae4faa; A probe/runner",
+      "reviewed_source": "Root2f977fa0 plus exact test hashes",
+      "verdict": "APPROVE",
+      "evidence": "review-diagnostic-goblin-by-c.json",
+      "scope": "Independent12 actual Linux storage cases, including real profile containment/wrong-path/wrong-profile refusal. A private fixed-writer probe, not campaign, model or physical acceptance."
+    },
+    {
+      "subject": "Lead accepted c842 Goblin status reconciliation",
+      "implementer": "Lead",
+      "reviewed_source": "Root c842 status diff; accepted merge/source and optional launcher independently inspected",
+      "verdict": "APPROVE",
+      "scope": "Accepted foundation actions/seeded policies/transcript/replay separated from unmerged#781 persistent memory. Original ordinary launcher unchanged and old artifacts not requalified."
+    }
+  ],
+  "review_limit": "Source review and actual execution are explicitly distinguished. Final integrated input equivalence/revalidation is owned by the lead qualification matrix."
+}

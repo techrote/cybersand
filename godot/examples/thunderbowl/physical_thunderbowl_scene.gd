@@ -89,7 +89,7 @@ func _build_ui() -> void:
 	title.add_theme_font_size_override("font_size", 24)
 	column.add_child(title)
 	var note := Label.new()
-	note.text = "41 articulated Rapier rigs · native material interactions · scripted local feedback · full evaluator camera"
+	note.text = "%d articulated Rapier rigs · native material interactions · scripted local feedback · full evaluator camera" % Catalog.RIG_IDS.size()
 	note.add_theme_font_size_override("font_size", 13)
 	column.add_child(note)
 	var bar := HBoxContainer.new()

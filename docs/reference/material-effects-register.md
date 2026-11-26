@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Register of presentation effects — implemented (Current), planned, potential and rejected — with stage, materials, inputs, motion, cost class and evidence
 canonical-for: [material-effects-register]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-25
 related-documents: [../systems/material-visual-pattern-library.md, ../systems/material-appearance-and-rendering.md, ../systems/building-material-catalogue.md, status-and-roadmap.md, ../audits/2026-10-18-material-readability-pass.md, ../audits/2026-10-18-material-fidelity-pass-2.md]
 ---
 
@@ -16,6 +16,16 @@ design guidance live in the
 cost live in the [appearance contract](../systems/material-appearance-and-rendering.md);
 dated evidence is in the
 [2026-10-18 review](../audits/2026-10-18-material-readability-pass.md).
+
+These are **presentation effects**. The ordinary palette shader consumes copied
+material/condition textures, neighbours, LUTs and presentation time; it does not
+receive the full native Cell or a general velocity field. Native IN momentum,
+Wave face flux and ballistic parcels therefore do not automatically become
+inputs to the effects listed here. See the
+[actual shader](../../godot/shaders/material_palette.gdshader) and
+[material-selected condition projection](../../native/include/cybersand/material_appearance.hpp).
+The timings below retain the October scene, source and GPU scope; this register
+does not claim a fresh performance or owner-acceptance measurement.
 
 Statuses follow the [documentation contract](../operations/documentation-maintenance.md):
 
@@ -72,8 +82,14 @@ reshaped the effect:
 | Swirling chemical eddies, bubbles, fizz, froth; darker sludge with filaments | Acid, Toxic Sludge | — | yes | A | base/P6 |
 | Etching fizz on solids | Acid, Toxic Sludge | neighbours | yes | A | P3 |
 | Swirling liquid-metal reflections and pin highlights (replaces bands) | Mercury | — | yes | A | P6 |
-| Crust plates, seams, pops | Lava, Molten Glass | heat | yes | A | P2 |
+| Crust plates, seams, pops | Lava, Molten Glass | procedural heat appearance; Molten Glass cooling condition | yes | A | P2 |
 | Depth heat, molten skin, water flashes | Lava, Molten Glass | depth, neighbours | yes | R3 | P3 |
+
+Lava's projected condition byte is zero. Its hot appearance is procedural;
+Molten Glass additionally uses its selected cooling/state projection. Neither
+effect reads a general native temperature field, as shown by
+[`project_visual_state`](../../native/include/cybersand/material_appearance.hpp)
+and the shader's `flair == 31` branch.
 
 ### Fire, gases and atmosphere
 
@@ -156,7 +172,7 @@ reshaped the effect:
 
 | Effect or work | Why | Notes |
 |---|---|---|
-| User-facing quality tier | Cumulative world-pass GPU cost is about 6× the original in the effect scene (p95 ≈ 1.9 ms on a TITAN RTX) | Wire `structured_detail` and a reduced-noise path into desktop/Web settings; measure weaker GPUs and browser |
+| User-facing quality tier | The retained October effect-scene measurement reported about 6× the original world-pass GPU cost (p95 ≈ 1.9 ms on its TITAN RTX) | Wire `structured_detail` and a reduced-noise path into desktop/Web settings; measure weaker GPUs and browser |
 | Target-GPU and browser/WebAssembly measurement | Only one Windows/NVIDIA Compatibility profile is measured | Use the existing cost script; record per profile |
 | Owner acceptance of the new finishes | Visual acceptance is the author's, not the owner's | Review the pattern-library plates in game |
 | True GPU subregion uploads | Pre-existing Planned item in the appearance contract | Independent of these effects |
@@ -169,7 +185,7 @@ reshaped the effect:
 | Region-anchored patterns beyond 8 cells | Panel-anchored stripes and signage | Needs longer probes or a prepass; capped extents today |
 | Heat haze and refraction above fire and lava | Strong atmosphere | Needs sampling the rendered colour of other pixels (a second pass) |
 | Coloured light spill over several cells | Neon and fire lighting walls further away | Glow halo partly covers it; true spill needs a light buffer |
-| Water surface spray and droplets in Empty | Livelier water | No velocity input exists; must not invent motion state |
+| Decorative Water surface spray and droplets in Empty | Livelier material-shader presentation | No general velocity input exists in this shader contract; native ballistic spray is a separate implemented path, not an invented shader velocity |
 | Emission crossfade | Halo matches palette crossfade on disappearance | Would double emission sampling |
 | Smoke lit by nearby fire | Volumetric feel | Neighbour classification over a wider radius |
 | Rain and wetness overlays | Mood | Scene-level state, not a material property |

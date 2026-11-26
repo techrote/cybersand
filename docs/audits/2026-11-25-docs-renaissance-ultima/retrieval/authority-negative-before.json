@@ -1,0 +1,27 @@
+[
+  {
+    "case": "copied-historical-status",
+    "outcome": "admitted",
+    "authority": "current-documentation"
+  },
+  {
+    "case": "evidence-kind-default",
+    "outcome": "admitted",
+    "authority": "current-documentation"
+  },
+  {
+    "case": "research-kind-default",
+    "outcome": "admitted",
+    "authority": "current-documentation"
+  },
+  {
+    "case": "duplicate-status",
+    "outcome": "admitted",
+    "authority": "current-documentation"
+  },
+  {
+    "case": "malformed-delimiter",
+    "outcome": "admitted",
+    "authority": "current-documentation"
+  }
+]

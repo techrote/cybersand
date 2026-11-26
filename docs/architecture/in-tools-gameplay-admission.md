@@ -1,9 +1,10 @@
 ---
+retrieval: explicit-only
 title: IN-TOOLS gameplay command admission — current-main successor
 status: Planned
 scope: Issue 361 current-main admission for opt-in inertial liquid leaks, drains, nozzles and gameplay usables; design and qualification authority only, not gameplay implementation
 canonical-for: [in-tools-gameplay-admission, in-tools-command-ownership]
-last-reviewed: 2026-11-07
+last-reviewed: 2026-11-26
 related-documents: [../audits/2026-11-07-in-tools-361-source-authority-renewal.md, ../operations/in-tools-fixtures-and-playtest.md, ../systems/actor-usables.md]
 ---
 
@@ -15,7 +16,31 @@ related-documents: [../audits/2026-11-07-in-tools-361-source-authority-renewal.m
 
 Historical predecessor PR #379 is frozen at `e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1` / tree `3b5acd41fd7fb49ac8b06c94719fa1a700d8fd57`. Its actual-Windows `0xC0000005` shutdown result remains historical evidence tied to that exact source.
 
-The renewed current-main successor is separately based on accepted `main` `24a8bbe8ccf0d17196ebbab580b924930a964584` (2026-11-07) and has a **new versioned registration** `godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-07.json`. Historical Draft #404 A01 head `20e668ce66536f9365d07718bfbb5266a2f8502c`, tree `19e8842f778f3a916f83805aa8af83307b4756d8`, and its adopted base `ba9cbc89029be88b812af59b19e5c59829bbcd90` remain frozen; they were *not* silently repinned. Exactly six registered authority blobs changed and seven stayed identical, as recorded in the [dated source renewal](../audits/2026-11-07-in-tools-361-source-authority-renewal.md). The intermediate #508 checkpoint at `68c1ac8da02d6527abdcd8776135cb67d82b0c73` on `ab12ccef49ba2afaed2520d4d9a86eb14c7779cb` passed 15/15 source tests, documentation and actual Windows [42333211705](https://github.com/techrote/cybersand/actions/runs/42333211705), but its four subsequently changed protected blobs and intervening native runtime require new exact-head qualification. The successful [#404 immutable witness 42332630429](https://github.com/techrote/cybersand/actions/runs/42332630429) is source execution proof **only for old #404**, not for the new successor.
+The ULTIMA continuation adds a new **source-admission registration**, based on
+accepted main `67c1413a2a84077b47fa542cf91d2bd6ba5520ee`:
+[`in-tools-current-main-admission.2026-11-26.json`](../../godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-26.json).
+The 7 and 25 November registrations remain byte-preserved and deliberately refuse
+this later source. Since the 25 November registration, only
+`physical_actor_session.gd` changed among the thirteen protected paths: accepted
+AMBIENT hooks extend the opt-in policy path. The new registration keeps the same
+thirteen guards and unchanged causal fixture, checks both historical registrations'
+Git and working bytes, and refuses unregistered future changes. All six proposed
+gameplay fixtures remain Planned / NOT_RUN.
+
+The [earlier source transition](../audits/2026-11-25-docs-renaissance-ultima/lead/in-tools-source-drift.json)
+retains its original base and results. The
+[fresh Linux compatibility execution](../audits/2026-11-25-docs-renaissance-ultima/closure/causal-main-compatibility/report.json)
+records application source `26c0c09f`, its tree, engine, disclosed dirty qualification
+apparatus and original logs. The unchanged causal fixture passed 86 assertions
+with natural exit zero; accepted AMBIENT default-off integration and bridge-clock
+checks passed separately. These are focused Linux results, not final integrated
+or Windows qualification. Read the resulting-source Windows receipt separately;
+source registration alone establishes neither Windows behavior nor the cause of
+the old crash.
+
+The [7 November source renewal](../audits/2026-11-07-in-tools-361-source-authority-renewal.md)
+and the original #404/#508 observations retain their exact earlier bases, blob
+sets, Windows receipts and limits. This renewal does not rewrite them.
 
 ## Current behavior inherited from main
 
@@ -35,7 +60,7 @@ Current main also owns the World, quantity ledger, Water normalization, IN execu
 
 ## Minimal production authority
 
-The reviewed current-main source set has thirteen inputs:
+The reviewed current-main production source set has thirteen inputs, plus the separately pinned causal test:
 
 1. `godot/scripts/usable_catalog.gd`
 2. `godot/scripts/usable_runtime.gd`
@@ -92,7 +117,10 @@ Any later #361 gameplay command implementation admitted under this successor mus
 
 - Qualification uses deterministic native/readback facts sufficient to verify actual quantity, refusal and resulting state.
 - A caller-provided before/after hash is not authentication.
-- Current workbench integration may host a future implementation, but no workbench-specific #361 command is Current here.
+- Current workbench integration may host a future implementation, but the proposed v2 commands are not made Current by this design registration.
+  Separately accepted [Workbench liquid equipment](../systems/workbench-liquid-equipment.md)
+  has its own implemented controls and qualified contracts; it is not erased by
+  this older six-fixture design scope.
 
 ## Planned fixtures
 

@@ -4,7 +4,7 @@ status: Current
 document-kind: design
 scope: Accepted-main LCB-002 cached and cached_dormant implementation — derived head and sealed-component caches, conservative motion certificates, execution identity, source-qualified cost and remaining product/platform boundaries
 canonical-for: [pressure-optimization, pressure-motion-certificates]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-25
 related-documents: [pressure-flow-v1.md, liquid-solver-family-policy.md, liquid-state-transition-matrix.md, liquid-prepared-setup-and-receipts.md, ../reference/configuration-reference.md, ../reference/invariants.md, ../audits/2026-10-25-lcb002-pressure-variants.md, ../audits/2026-11-04-lcb201-pressure-idle-cost.md]
 ---
 
@@ -31,7 +31,9 @@ and `cached_dormant` (2), with the same physical parameters, material stages,
 gas identity and Water quantity law. Other material/family compatibility remains
 source-derived; unsupported requests refuse before session replacement.
 
-The production Water default remains `freemass_v1`. A cache miss or incomplete
+The native policy Water default remains `freemass_v1`; new player sessions
+separately enable the [Wave gameplay profile](wave-flow-v1.md). This pressure
+implementation runs only when PF is selected. A cache miss or incomplete
 derived result executes the complete admitted pressure reference operator.
 Reference capacity failure retains the failed-World quarantine contract. These
 variants never substitute FreeMass, a default material kernel or GDScript.
@@ -55,7 +57,8 @@ The owner indexes resident chunk coordinates into sparse column and row groups.
 It marks affected columns and repairs their complete vertical closure, including
 foreign-liquid boundary loads. A changed base head dirties the corresponding row
 closure. Final heads use the reference interpolation and feed the same motion
-kernel. Required wake scans still run every tick, including cache reuse ticks.
+kernel. Wake decisions still run every tick, including cache reuse ticks;
+accepted execution4 can elide proven-clean sleeping segments as described below.
 
 Dirty group queues and bitmaps have admitted capacities. An incomplete index or
 insufficient repair budget selects a complete reference preparation before
@@ -84,7 +87,8 @@ to be unchanged, with no discovery allocations. This includes final sanitation
 of unvisited labels whose compartment retired beneath a body mask; reference,
 cached and dormant variants share that authority repair. Still-live masked
 labels remain intact. The [repair evidence](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
-retains the six-arm failing control and pending acceptance. Equal compartment amounts alone
+retains the six-arm failing control and then-pending acceptance; the correction
+was subsequently included in accepted #253. Equal compartment amounts alone
 do not establish that fixed point. Gas resolution revokes all Water motion
 certificates because a remote volume/gauge change can alter a local gradient.
 
@@ -235,8 +239,10 @@ implements P1/P1b; P2 remains Planned.
 
 ## Execution version 4: sleeping-segment wake summaries
 
-**Source state:** in this change set (#201 P1, PR #382). It is Current on main
-only once merged, and only with that PR's republished runtimes and gates.
+**Accepted source:** execution4 sleeping-segment summaries are present in
+`PressureCache` and the current version constant. The original #201 P1 / PR #382
+record below retains its dated publication, controls and measurement scope;
+it is not a pending implementation branch.
 
 Cached and cached_dormant keep one derived **wake-clean bit per indexed cell**
 in `PressureCache` (`world_pressure_cache_state.inc`), reserved at construction.
@@ -274,9 +280,10 @@ camera window and then the scenario's fixed interest on every step. Each
 `World::set_simulation_region` selected-core change calls `cache->cold()`, so
 in-app cached/dormant cost more than reference. The worker now leaves a
 fixed-interest scenario's region to the scenario
-([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). A moving
-camera window still makes the cache cold whenever its selected cores change.
-Narrowing that native invalidation is a separate, unimplemented follow-up.
+([region-flip record](../audits/2026-11-04-lcb201-region-flip.md)). At that
+checkpoint a moving camera window still made the cache cold when selected cores
+changed. The later accepted camera-only retention correction below removed that
+invalidation; actual authority changes retain their separate invalidations.
 
 ## Acceptance and remaining application work
 
@@ -289,15 +296,16 @@ pending events, reconstruction and moving/rotating native masks.
 
 Native mask parity does not establish actual Rapier rotation/displacement or
 full application constructor support. Those host/platform checks remain #202
-and integrated #203 work. The full ready-PR Documentation/provenance, Native,
-Windows/Linux Godot and applicable Water apparatus gates remain required before
-this branch merges. Current defaults and earlier pressure characterization
+and integrated #203 work. The original branch required Documentation/provenance,
+Native, Windows/Linux Godot and applicable Water apparatus gates before its
+accepted merge; a later implementation must qualify its own affected source.
+Current defaults and earlier pressure characterization
 retain their original source/artifact qualifications.
 
 ## Camera-only derived-cache retention (#201 / PR #405, 2026-11-07)
 
 A selected-core change by itself does not mutate PressureFlow derived-state
-inputs. The #405 candidate removes only the selected-camera-core
+inputs. The accepted #405 correction removes only the selected-camera-core
 `pressure_->cache->cold()` call in `World::set_simulation_region`; the settled
 discovery inclusion wake and all actual authority-change invalidations remain.
 There is **no** new global/thread-local chunk pointer cache, and the accepted

@@ -1,0 +1,34 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist B; non-implementing reader and source reviewer",
+  "date": "2026-11-25",
+  "reviewed_source": "c3da716523d535f654eeb786397dd4496e4b0c84",
+  "accepted_merge": "5e29b111be6202a76c0042976f74de98bd8ead78",
+  "verdict": "approve",
+  "scope": "Full current runbook and navigation-wrapper reading; selected implementation/control checks; additive CI expected-fact review before scoring. No hosted execution, publication, physical acceptance or new performance experiment.",
+  "documents": {
+    "docs/operations/ci-campaign-coordination.md": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+    "docs/operations/publication-custody.md": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+    "docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md": "49e859534019e04f969f7f6ffc6507a80f66abdcbab027a7a5fe835e7b627167",
+    "docs/reference/retrieval-questions-ci-closure-current-v1.json": "d42fe626f0cba5e308b23fc02f5417543ee4cbf370ba71e22093efe8f8c74c17",
+    "docs/reference/retrieval-questions-frozen32.json": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+    "docs/reference/retrieval-questions.json": "e056df8e611a01efa341835d5d958391fd64b0295e17bbd7b221b7a5f783dae7"
+  },
+  "source_checks": {
+    "tools/ci/ci_campaign_status.py": "fc88a08b5c74dacf4bf105776ed47891e63b6366e36c405c7e56dcabe50779c6",
+    "tools/ci/publication_custody.py": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873",
+    ".github/workflows/palette-shader-qualification.yml": "0250e3618af6e56f8b21b5f1e310e4d0fdf85fdb6e134d4c2690743fbfc64431",
+    ".github/workflows/gdextension.yml": "7ce419097b5e5c0c0b3584bf1b0b42650c78fae650aa8647736b8fa5f58087b3"
+  },
+  "observations": [
+    "Accepted standalone tooling is distinguished from later publisher adoption and programme semantic qualification.",
+    "Current programme ledgers are distinct from the dated 24 November retained example; neither observations nor a capacity ceiling authorize dispatch.",
+    "Stage-mode remote lease reads are disclosed; successful custody still emits publication_authorized=false, qualification_semantics_verified=false and remote_lfs_storage_verified=false.",
+    "B found the prior always-emits phrasing inaccurate for rejected results; C corrected it in a separate follow-up commit without changing code or historical evidence.",
+    "Windows Palette cap 3/Linux cap 2 and GDExtension 8/8 match actual workflow source. New additive CI facts preserve original research/source scope and do not create capacity or RAM-storage decisions.",
+    "Original frozen 32 file is byte-identical to 20170bd6; accepted 33 file is byte-identical to 5e29b111. The separately corrected one-case fixture was reviewed before evaluation and must be reported separately.",
+    "Historical packet complete SHA256 e5647538ba093a2d5ad6591c1fc590d4311461587cf7a0a135082348725943c6 matches immutable Git. Body SHA256 d205c6ce5cf2d3e0197ae704e6a3418cd5d522382cebe3ab7172e6448bcd9549 starts immediately after the closing frontmatter line and includes its following blank line.",
+    "The compact portal conflict resolution retains the existing current portal and adds accepted coordination/custody routes plus an explicitly dated closure-evidence link."
+  ],
+  "cli_scope": "Previously executed both accepted helper --help commands only; no online collection or publisher action. Source contracts, not fresh campaign results."
+}

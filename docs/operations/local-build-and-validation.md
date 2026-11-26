@@ -4,484 +4,126 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-26
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
 
-## AMBIENT-001 scoped gameplay qualification
+## First launch from a source checkout
 
-The opt-in [ambient implementation](../systems/ambient-actors.md) reuses the
-retained native and Rapier binaries only when all covered native source inputs
-and binary hashes match their published provenance. Commit the gameplay inputs,
-then run the focused sequential campaign with the repository-pinned Godot 4.7:
+Use this repository's launcher and retained runtime for a first exploration. A
+native rebuild is a separate development task. The [player getting-started
+guide](getting-started.md) walks through opening the Workbench; this page owns
+the build, identity and validation procedure.
 
-```sh
-python3 tools/qualify_ambient.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-ambient-evidence
-```
+The required engine is **Godot `4.7.stable.official.5b4e0cb0f`**. Native builds
+use **godot-cpp `101ae38034304346a46ea9ea84ae156d3e860496` and API `4.7`**;
+another 4.7 patch executable or a different binding checkout is not the same
+input. The [complete input table](#which-build-inputs-are-required) links the
+authoritative locks and platform toolchains.
 
-The runner checks source before and after execution and retains every process
-receipt, log, save/reopen pair and available gameplay report. `--allow-source-delta`
-is an explicitly labelled development run and cannot authorize packaging.
-`--case` supports narrow debugging or extracted-package checks; the package
-builder requires the complete committed-source campaign. Headless native/Rapier
-motion is distinct from rendered or physical Windows/NVIDIA playfeel acceptance.
-
-The [dedicated workflow](../../.github/workflows/ambient-001-qualification.yml)
-uses `windows-2022` and exact retained-runtime verification. It runs only on an
-explicit qualification-request marker change on the mission branch, or manual
-dispatch. It performs no native rebuild, runtime publication or Ready transition.
-The [package tool](../../tools/package_ambient_evaluator.py) records host source
-and original DLL build identity separately, includes ordinary authored examples
-and checksums, and verifies pristine extraction before delivery. Actual results
-and blockers belong to the [mission ledger](../research/ambient-001/mission-ledger.md).
-
-## Large authored Workbench landscape admission
-
-**Draft/HOLD candidate, 2026-11-20:** WORKBENCH-HOST-CLAIMS-001 keeps the
-complete validated construction definition and bounds only its redundant,
-unverified observation representation. See the
-[authoring contract](../architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
-and [dated qualification](../audits/2026-11-20-workbench-host-claims-qualification.md).
-
-Use the repository-pinned Godot 4.7 and materialized, source-matched native and
-Rapier libraries. The runner verifies every native input and the actual retained
-binary bytes before starting; an old library's 4,096-record budget is not evidence
-about the host observation repair. No runtime rebuild is needed when those
-native inputs still match their retained publication.
+From a new checkout with Git and Git LFS installed:
 
 ```sh
-godot --headless --path godot --script res://tests/test_workbench_host_claim_capacity.gd
-godot --headless --path godot --script res://tests/test_workbench_host_claim_native.gd
-python3 tools/qualify_workbench_landscapes.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-evidence-directory
+git clone https://github.com/techrote/cybersand.git
+cd cybersand
+git lfs install --local
+git lfs pull
+git rev-parse HEAD
+git status --short
+python3 tools/ci/check_repository.py --require-materialized
 ```
 
-The full runner imports the real project, executes both focused regressions, and
-downloads the commit-pinned original maps in
-`tools/fixtures/workbench_host_claim_landscapes.json`. Each map has two separate
-Godot processes and its own isolated user-data directory. Ordinary Shared
-Workbench Load start, real retained Midge/Rapier play, a refused replacement,
-read-only complete native stored-material capture, paint/erase, Save start and
-fresh-process reopening all require explicit successful receipts. The Python
-reducer independently replays the saved geometry and checks the complete material
-identity; evolved simulation state is not expected to equal an authored start.
-Raw logs, original map bytes, saves and failure results remain in the output.
+On Windows, use `python` instead of `python3` when that is the installed command.
+`git lfs pull` obtains the committed runtime payloads. A small text pointer is not
+a usable DLL or shared library. `check_repository.py` checks the runtime bytes
+and recorded source inputs; it also checks documentation and dependencies, so
+read the actual failure rather than assuming every failure means a broken DLL.
 
-`--fixture-dir` reuses already verified source bytes. `--map NAME` restricts an
-explicit extracted-package retest. `--project` selects that extracted project
-while retaining strict source/binary identity checks. `--allow-source-delta` is
-for labeled local debugging only and cannot qualify an evaluation package.
+**Windows:** install the [exact Godot pin](#which-build-inputs-are-required), then
+run from this repository root in PowerShell:
 
-The bounded `Workbench host claims — native landscape admission` workflow uses
-the retained Windows DLL on `windows-2022`. It builds an owner ZIP, verifies the
-extracted bytes, repeats the largest landscape's install/reopen there and runs
-the ordinary interactive Workbench launcher. Its success is Windows native
-process evidence; physical GPU/display feel and owner acceptance remain separate.
-Neither the workflow nor the packaging tool merges or promotes the Draft PR.
+```powershell
+.\launch-desktop.cmd -Godot C:\path\to\Godot_v4.7-stable_win64.exe -PrintIdentityOnly
+.\launch-desktop.cmd -Godot C:\path\to\Godot_v4.7-stable_win64.exe
+```
 
-## Source-built Windows candidate validation — 2026-11-08
+The path is an example: use the actual executable location. The launcher also
+accepts `CYBERSAND_GODOT`, or searches `C:\Godot47`. It validates the pinned Godot
+version, materialized Windows runtimes and CyberSand DLL hash; it prints the
+checkout/runtime identity and performs no build or replacement. The default
+project scene is [Feature Launcher](../../godot/project.godot), which routes to
+the ordinary **Shared Workbench** and standalone scenes. `-Editor` opens the same
+project in the editor. `dev.cmd` is not required for a source-only checkout.
 
-GDExtension Windows shards consume the same-run `native-candidate-windows`
-artifact after its production build. `tools/ci/native_candidate_identity.py`
-binds the DLL SHA-256/size, complete native input inventory, source commit and
-tree; the Windows runner's explicit `--native-candidate` mode and independent
-coverage reducer verify those bytes. The default retained-runtime mode keeps
-its original committed provenance checks. Candidate manifests do not rewrite
-published provenance or waive `check_repository.py`.
-Candidate download and verification each have a five-minute allowance. Rapier
-comes from its separate same-attempt producer artifact, with five minutes for
-download and five for committed-pointer and byte verification. The complete setup remains within
-the existing 70-minute reserve. Use **rerun all jobs** when retrying this
-same-run/attempt artifact chain, so producer and consumers share an attempt.
+**Linux x86_64:** with the pinned Godot executable and materialized Linux runtimes,
+use an explicit executable path:
 
-GDExtension and Palette producers use
-[`materialize_lfs.py`](../../tools/ci/materialize_lfs.py) for exact committed LFS
-objects. A single monotonic allowance covers source/pointer admission, setup,
-all download attempts, backoff, byte verification and bounded owned-process
-cleanup. Linux uses its existing 1,200-second dependency allowance. The Windows
-native producer acquires Rapier once within 600 seconds; the Palette plan
-acquires its four exact retained objects once within 1,200 seconds. Ten seconds
-are reserved for owned-process cleanup inside the acquisition allowance.
-No test or native execution timeout changes.
+```sh
+CYBERSAND_GODOT=/absolute/path/to/Godot_v4.7-stable_linux.x86_64
+"$CYBERSAND_GODOT" --version
+"$CYBERSAND_GODOT" --headless --editor --path godot --import --quit
+"$CYBERSAND_GODOT" --path godot
+```
 
-Only the observed Git LFS batch service-timeout response may be retried, at most
-three total attempts (two retries), with two- and four-second backoff.
-Authentication, permanent and unknown errors, exhausted allowance, source movement and wrong materialized
-bytes remain failures. Each original attempt retains its full output, exit,
-elapsed time and log hash beside a source/pointer/actual-byte receipt. Existing
-native, Rapier and downstream qualification checks remain mandatory; successful
-acquisition alone is not runtime qualification.
+The version output must match the table below. The last command requires a
+graphical session. Import and launch are separate steps; successful project
+import is not proof that native gameplay or every feature ran. A software display
+is useful for reproducible graphical tests, but does not establish the owner's
+Windows/NVIDIA playfeel.
 
-[`lfs_runtime_artifact.py`](../../tools/ci/lfs_runtime_artifact.py) stages that
-producer's exact bytes and original acquisition logs in a source/run/attempt-bound
-artifact. Each consumer verifies the complete expected object inventory against
-its own committed LFS pointers, the actual bytes, original command receipts and
-sealed logs before installing its explicitly selected platform files. Palette
-requires all four objects even when installing only its platform pair. Consumers
-never fall back to the LFS service, a different attempt, or another runtime.
-Final seal and receipt writes are part of the shared deadline; a late seal is
-retained as failed evidence and cannot authorize execution.
+## Choose the right development path
 
-The Windows shard retains its original ten-minute dependency slot as five
-minutes for artifact download and five for verified installation. Palette
-retains its independent dependency clocks and adds the separately budgeted
-artifact-download step. Producer parents explicitly include moved acquisition
-and upload costs; case watchdogs, native inputs and concurrency are unchanged.
-Retry a complete source/attempt chain: GDE's common `ready_scope` ancestor or
-Palette's `plan`, including producers, all consumers and reducers. A failed-only
-consumer retry cannot satisfy same-attempt runtime custody.
+| Task | Inputs and procedure | Evidence it can establish |
+|---|---|---|
+| Explore accepted software | Source checkout, materialized retained runtime, exact Godot | Actual launch and exercised behavior on that machine |
+| Review a portable evaluator | Exact package manifest, bundled launcher and its matching source | Only that package/source; candidate does not become main |
+| Change documentation or retrieval | Python, Git and [structural/retrieval checks](documentation-maintenance.md#checks-and-evaluation-interpretation) | Documentation structure, containment and inspected claims |
+| Change native C++ | Pinned compiler/dependencies; [native commands](#repository-native-build-and-test-commands) | Focused or complete native tests actually executed |
+| Change Godot scripts or bindings | Source-matched extension, pinned Godot; [test-selection guide](testing-validation-and-replay.md) | Actual tested script/native integration; bindings may require rebuild |
+| Qualify Web | Separate Web godot-cpp, exact SDK/templates and actual browser execution | The named compat/threaded artifact, not desktop parity |
 
-The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
-`tools/package_explore001_candidate.py` from committed project/profile bytes,
-verified LFS dependencies, official pinned Godot, and the source-built artifact.
-Generated imports and caches are omitted. Two processes test a disposable copy
-of the packaged project, leaving the delivered bundle pristine. The dated
-[QA record](../audits/2026-11-08-explore001-integration-qa.md) separates candidate
-execution, retained publication and pending human acceptance.
+Inspect the actual Git root, branch, HEAD, dirty files and required LFS state
+before work. The companion workspace contains optional host-specific wrappers;
+this source repository contains the application, tests and native build entry
+points. [Source identity](source-checkpoint-and-recovery.md) owns that boundary.
 
-## PLAY LIFE010 raw-evidence gate — 2026-10-31
+For a bounded first validation pass from the repository root:
 
-The five `test_play_life010_<rig>.gd` wrappers are discovered by the unchanged
-ordinary Windows/Linux shard planner. Each actual engine process retains its
-180-second bound; import240s, fixture150s, operations/teardown15s and initial
-Main acknowledgement30s remain unchanged. A passing engine summary alone is
-insufficient: the common runner retains the original engine receipt, then runs
-`tools/ci/verify_play_life010.py --self-test` against the exact source, raw log,
-result and packet files under a separate15-second readback bound. Missing,
-failed, late or incomplete readback fails the case while preserving the actual
-engine exit and original log. An existing readback directory is refused instead
-of overwriting its original receipt.
+```sh
+python3 tools/ci/check_docs.py
+python3 tools/ci/check_repository.py --require-materialized
+make c-header-check
+make -n test
+```
 
-The [dated LIFE010 record](../audits/2026-10-31-play-life010-live-delivery.md)
-separates actual-host and source-bound local evidence from future hosted gates.
-Standalone independent readback accepts ordinary receipts with explicit status;
-the original local five-field receipt format requires the deliberately named
-`--local-process-receipt` option. This compatibility path does not authorize a
-missing status in hosted evidence. The independent reader checks both positive
-native/physical effects and21 reason-specific corrupt-evidence controls.
+The C-header probe needs Make and a C compiler. It compiles
+`native/tests/test_c_header.c` with `-std=c11 -Wall -Wextra -Wpedantic`, the native
+include directory and `-fsyntax-only`; it checks the public header as C without
+linking a game or running simulation. `make -n test` displays the native
+build/run plan without executing it. Use the smallest meaningful subsystem test
+during iteration, following [test selection](testing-validation-and-replay.md);
+the full applicable matrix remains the implementation gate.
 
-## PLAY INPUT011 ordinary UI authority and raw-evidence gate — 2026-10-31
+## Isolated test data and diagnostics
 
-The five `test_play_input011_<rig>.gd` cases use the same bounded parent
-readback mechanism as LIFE010. Their v2 trace exercises six ordinary UI/focus
-transitions, including the explicit Pause / resume button while Seed text
-focus remains, plus a real-host cancellation-bypass negative. The separate
-`test_play_input011_legacy_pause.gd` case retains its ordinary legacy-controller
-contract and is not interpreted as a five-rig trace.
+Godot tests and graphical captures must not overwrite the owner's saved scenes,
+Art traffic or local provider configuration. Use the repository's
+[isolated Godot runner](../../tools/physics/isolated_godot.py) or the appropriate
+existing test/capture harness with its own user profile. Inspect that harness's
+arguments and refusal rules before invoking it; a normal interactive launch
+intentionally uses the user's ordinary application data.
 
-The parent preserves the engine receipt and original log, extracts the exact
-single JSON payload into a new readback directory, and invokes
-`tools/ci/verify_play_input011.py --self-test` under one **15-second overall
-readback bound**. It binds the verifier, consumed scripts, rig wrapper and
-existing shared-host helper to the declared Git source, retaining actual and
-canonical hashes. Original process/log/result and source hashes must remain
-unchanged through readback. All 23 trace and five process adverse controls are
-required. Completed held/fresh sample totals retain their existing minimums;
-additional fully validated physics callbacks do not become false failures.
-Windows input custody includes both LIFE010 and INPUT011 verifiers.
-
-The common `ReadbackContract` owns only explicit verifier paths, source
-dependencies, arguments and summary/control requirements. LIFE010's entry
-points, raw packet checks and original limits remain. Missing, malformed,
-late, nonzero, mutated or source-mismatched readback fails its parent case
-without changing the actual engine exit or overwriting an earlier attempt.
-The [dated INPUT011 record](../audits/2026-10-31-play-input011-authority-transitions.md#life010-integration-and-focused-button-correction)
-separates original v1 evidence, the v2 focused-button failure, the correction
-and resulting-head qualification still required in hosted CI.
-
-## PLAY LIFE011 composed-policy raw-evidence gate — 2026-10-31
-
-The five `test_play_life011_<rig>.gd` cases add an explicit contract to the same
-ordinary parent hook. Their original external JSON result, log and engine
-receipt are retained and passed to `tools/ci/verify_play_life011.py --platform
-Linux|Windows --self-test` with the exact source. Each rig must retain eight
-presets, eight builds, eight resets, 72 nonneutral completed physical samples,
-eight old-owner and eight old-generation refusals, eleven actual native policy
-refusals, sixteen retired graphs and all 37 reason-specific adverse controls.
-
-One 15-second overall readback budget includes source checks, reduction and
-result validation. Canonical and actual before/after hashes cover the verifier,
-fixture, preset script, rig wrapper, shared-host helper, two policy-contract
-Python dependencies, capability matrix and two native catalogue headers.
-Windows execution custody includes the exact Python and JSON dependency paths;
-its existing native-header scope is preserved. Original process/log/result
-digests, the reduced result and verifier log remain independently checkable.
-The engine180s, import240s, fixture150s, operation/teardown15s and first-Main30s
-bounds are unchanged. A late, partial or failed readback fails its parent case.
-
-The [dated LIFE011 record](../audits/2026-10-31-play-life011-composed-solver-matrix.md)
-separates the original frozen 704de34 local campaign from this integration.
-Headless native/Rapier results do not establish graphical or physical-device
-qualification, and a cherry-pick does not qualify the resulting source.
-
-## Trial successor correction after accepted App — 2026-10-25
-
-App #256 is merged as main56422c05 after all four exact-dc2 required gates.
-The [Trial correction record](../audits/2026-10-25-lcb003-trial-body-constructors.md#failed-full-matrix-and-unsupported-rig-correction--2026-10-25)
-preserves the actual ff2 Windows/Linux failed obsolete barrel-refusal assertion,
-the catalog-unsupported negative with unchanged old-owner/no-queue fences and
-fresh actual E3 Windows sampled71/Trial117/default86 successful assertions.
-Native80/compiled139 and runtime bytes remain exact; historical535 has seven
-explicit script/test differences. Corrected-head CI/review remain required;
-local proof does not close other constructors, full-host/scientific or #203
-qualification. Older preparation/pending-App sections retain their source
-snapshots. Further Web testing is owner-deferred until after the epic.
-
-## Current Trial consumption of corrected App — preparation only
-
-This Trial branch consumes exact Appdc2eee94 (sourcefix152a5074), retaining all
-ten f65f3de9 Trial files and the two incoming identity-test hashes. Native80 and
-compiled139 remain exact. The historical535 build set now has six changed
-entries (four Trial plus two App tests), other529 exact, and six new Trial
-paths give current541. The following App-only two-test/533-entry statements
-retain that narrower source scope; they do not describe the combined Trial set.
-
-The [combined-source qualification](../audits/2026-10-25-lcb003-trial-body-constructors.md#corrected-app-consumption--preparation-only--2026-10-25)
-keeps actual117/86 proof at ad3 and actual corrected38/29 App cohorts separate.
-This merge has no engine execution. Root's corrected #256 is ready for fresh
-gates/review; #257 Trial remains draft/downstream. Earlier ea96 gate greens do
-not cover either successor. Runtimes/profiles/requests stay inherited; Web deferred.
-
-## Published and development identity-test controls
-
-The [two-test correction ledger](../audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25)
-records actual published-e3 and same-native-source development46a cohorts:
-import240s plus host-evidence38/owner-observation29 cases, each180s. All six
-actual Windows processes pass with held source/project, Native80 and compiled139
-maps. The tests independently read real file/manifest hashes and add copied
-match/mismatch/unavailable controls while retaining unverified module/scripts
-and full-host=false. Neither cohort invents actual matching artifact bytes.
-Historical535 build inputs have exactly two changed test entries; no Native,
-profile/request/runtime/manifest edit or rebuild is required. The failed Linux
-40232042725 mismatch premises remain preserved, and corrected Linux/new-head full
-CI still needs execution. Older72-process proof stays at source5f02. Web deferred.
-
-## Consumed App publication — source5f02 and checkpoint ea96 — 2026-10-25
-
-The [actual003 publication](../audits/2026-10-25-lcb003-runtime-publication.md#actual-sequence1-windowslinux-publication--2026-10-25) now binds source
-`5f02d089ee4cff8b34421cc4ca58bb4ef50dd92c`, run40226343524 and four-path bot
-`0c9b197754d57e1eb579a52d745a1ca8fd0d2b32`. Windows runtimee3f17363
-(4,824,064 bytes) and Linux02ea0661 (4,222,304 bytes) each pass import plus
-all35 strict host/control cases:72 actual processes total, with matched
-native80/build535 input ledgers and642 policy assertions per OS. The
-earlier eight App provenance comparisons describe pre-publication inputs;
-the new manifests cover all80 current native inputs.
-
-The six approval-held bot follow-ups are not validation greens. Final
-exact-head CI/review, remaining constructors and complete host/scientific/
-manual qualification stay open; #202 and #203 are not complete. The owner
-defers additional Web/browser/shader work until after this epic. Historical
-Web functional success and rendering failure are retained; no rendering
-pass or fallback is claimed. All non-Web requirements remain in force.
-
-PR #254 is now accepted on main
-`06451f8ac9e8ac9b23a105d2fe22393375dc2d6b`, after its exact02c Documentation,
-Native, GDExtension/Godot and #49 gates and bounded reviews passed. The
-[publication ledger](../audits/2026-10-25-lcb003-runtime-publication.md#accepted-water-main-and-content-identical-integration--2026-10-25)
-binds those receipts. Local normal mergea704ce50 consumes that main with the
-unchanged bot0c9 tree; all615 publication inputs and139 compiled inputs remain
-exact. This does not substitute Water's gates for the application's final
-exact-head CI or close #202/#203.
-
-## Integrated desktop Trial successor — 2026-10-25
-
-This unmerged Trial successor now consumes App checkpoint
-`ea96d4851621c4bed37d5e6997a0320215450f79`, including the actual source5f02/
-bot0c9 publication and accepted main06451f8a. The ten Trial source files remain
-exactly sourcef65f3de9; its recorded Windows executions are not relabeled as
-tests of this merged head. All80 native manifest inputs and139 recorded native
-build inputs still match. The original535-entry build/execution ledger has
-four changed GDScript/test entries and omits six new Trial source paths; it
-retains its original5f02 execution identity. Those historical build-input changes
-are separate from native-source provenance, not eight native rebuild errors.
-The [dated Trial integration record](../audits/2026-10-25-lcb003-trial-body-constructors.md#app-publication-integration-preparation-only--2026-10-25)
-owns the exact drift and remaining fresh acceptance. No new engine test, request,
-profile, runtime publication or Web work occurs in this merge.
-
-The original separate `codex/lcb003-trial-body` worktree started from5f02d089 and added
-bounded desktop barrel8×14/Ripper18×8 preparation. Its ten-file overlay leaves
-native139 and the publishing final-integration branch untouched. Apply retains
-exact actual server motion; Restart/F5 stage authored fresh state. One-body
-epoch/mask/readiness guards and candidate-only F5 preferences preserve the old
-World/graph/receipt/input on refusal. The default PF gas-capacity refusal remains.
-
-The [dated source/runtime/failure ledger](../audits/2026-10-25-lcb003-trial-body-constructors.md) binds final
-source mapb4eae1ba, developmentDLL46a, focused117/0, prior retained regressions
-and Root's independently executed published-runtime117/0 at the preceding
-test-leaf snapshot. This is local Windows host proof, not another platform,
-scientific acceptance, all-constructor or full-host claim. No publication
-request/runtime files are changed in this slice. The inherited parent request
-stays unchanged across the later App merge; the old runtime/test proof keeps
-its original source identity. Further Web/browser/
-shader work remains owner-deferred until after the epic.
-
-## Historical preparation and Water-artifact consumption
-
-The earlier source-bound records below retain their original unarmed,
-runtime-mismatch and pending-publication statements. They do not describe
-the actual003 publication above or relabel older executions.
-
-The application branch now normally consumes reviewed Water source/publication
-checkpoint02c33341 through merge108b84d1, including actual sequence2 sourceaa8af247,
-run40220697738 and bot03cccd8f. Merge1d376fb3 also consumes the separately reviewed
-Web evidencec8bd9623. All139 inputs of the development DLL46a remain equal to
-compiled18d/tested3d. The local164 native/39 sanitizer/import-plus35-host results
-retain those source identities. Relative to the696-source executed snapshot,
-691 entries stay exact; four published runtime/provenance paths and Water's
-sequence2 request are explicit later exceptions, with no native or host-code
-change. This is not a fresh host execution at the new merge head.
-
-Fresh proper-companion provenance reports eight remaining App input mismatches,
-four per OS: cyber_demo_bridge.hpp, cyber_native_cell_world.cpp/.hpp and
-prepared_world.hpp. The published kernel clears the earlier world.cpp pair;
-no mismatch is waived. The [runtime-consumption record](../audits/2026-10-25-lcb003-final-integration.md#published-water-sequence2-consumption--2026-10-25)
-binds the source/artifact exceptions and six passing cheap gates.003 remains
-unarmed/request absent with no push. Its source-matched Windows/Linux runtime
-publication and fresh35-case execution, final exact-head gates, remaining host
-constructors and scientific/feel acceptance remain required. The consumed
-[Web evidence](../audits/2026-10-25-lcb003-web-common-water.md) retains77/76 functional success and the rendering failure;
-minimal-palette diagnostics do not qualify full appearance or manual play.
-
-**Earlier local execution, before this runtime-artifact merge:**
-
-The [packed worker storage and startup local preparation](../audits/2026-10-25-lcb003-final-integration.md#packed-worker-storage-and-startup-local-preparation--2026-10-25)
-records18d compiled/tested3d, native139/DLL46a8b4d9, native164 and focusedSAN39.
-Fresh import plus all35 host cases pass with696 source,646 post-import project
-and139 native inputs held. The first matrix's sampled-test process crash,
-old-DLL A/B and exact helper-only correction are preserved. Earlier dd00/f34
-and source4948 browser records stay source-qualified.003 remains unarmed,
-with ten real C9 source/runtime blockers pending final Water sequence2 bot/docs
-and combined publication; actual browser functional proof does not clear the
-observed shader/black-viewport visual failure.
-
-The [final local host matrix](../audits/2026-10-25-lcb003-final-integration.md#complete-local-host-matrix-and-actual-web-result)
-passes all36 processes with unchanged budgets, no errors/warnings/skips and
-held693 source/643 staged project/139 native inputs. The [separate Web build
-and actual browser record](../audits/2026-10-25-lcb003-web-common-water.md)
-binds both85-input Wasm modules/exports and original201 POSTs: compat77 checks,
-threaded76, six common Water/four mixed arms. Ordinary visual/manual play and
-combined Windows/Linux publication still require their own acceptance.
-
-The [final application integration record](../audits/2026-10-25-lcb003-final-integration.md)
-binds native139/DLL93d3ee3f, LLVM163 ordinary groups plus seven receipt byte
-oracles and38 focused ASan/UBSan groups with the ordinary1MiB PE stack. Focused
-host cases pass167 default API,76 Water Feel and93 synchronous Water assertions.
-The unarmed003 profile now preserves the complete Water005 proof and requires
-35 cases plus import and a76-check/six-Water native Web prerequisite. Local
-Windows development results remain separate from combined publication,
-Windows/Linux exact-head CI, actual compat/threaded browser and visual acceptance.
-
-The subsequent [synchronous Water Feel body checkpoint](../audits/2026-10-25-lcb003-synchronous-water-reference-body.md)
-at source45b6ed9d reuses verified unchanged native135/DLL79f35666 and passes
-eight strict processes/656 assertions: new Water91, corrected PhysicsPit73,
-WaterFeel72, import73, UI105, poses50, desktopWater75 and ordinary117. Each
-uses its own180s timeout, complete source/project fences and strict exit/
-error checks. Actual native readback verifies all threePF variants and FM;
-the first label-only family coverage and other apparatus failures remain
-preserved and are superseded only in their stated scope. No new DLL build
-or final Wasm/release/Brine-contact/Water-IN acceptance is claimed. Before
-arming003, integrate this new case plus the incoming strict Water005 proof
-and final native/default sources into its still-unarmed publisher.
-
-The [synchronous Physics Pit checkpoint](../audits/2026-10-25-lcb003-synchronous-reference-body.md)
-reuses unchanged native135/DLL79f35666 and passes six strict Godot processes,
-490 assertions including the new70 actual normal Apply/Restart/body transaction
-checks. Three PF variants each execute240 authored native/Rapier ticks with
-positive consumed signed feedback, exact937,125 Water and closing gas ledgers.
-The first96-tick premise and a strict-caught diagnostic array-type error remain
-retained; none is acceptance. This does not qualify final merged native source,
-Wasm/visual flow, released runtime or Brine IN rest contacts.
-
-The [shared explicit-pose helper proof](../audits/2026-10-25-lcb003-water-reference-body.md#shared-explicit-pose-helper)
-passes50 focused assertions plus the retained75-assertion actual Water Feel body
-case on unchanged135-input development DLL79f35666. Omitted/default native masks
-match exactly; explicit rotations survive32 actual frozen physics frames and
-invalid length/nonfinite arrays refuse before private allocation. It qualifies
-the shared helper only, with no newly supported constructor or final release.
-
-The [four ordinary synchronous demo checkpoint](../audits/2026-10-25-lcb003-ordinary-demo-host.md)
-reuses the unchanged135-input development DLL after before/after verification.
-`test_liquid_ordinary_demo_host.gd` passes117 assertions through actual normal
-Apply/Restart/Import controls: eight quality0/2 cohorts, initial tuple equality,
-private sampled refusal/final barrier, matched IN/Current geometry and real native
-quarantine recovery. Five affected cases separately pass on the final copied
-source, including73 import assertions and33 native Web-prerequisite checks.
-Native headless execution does not qualify the final Wasm/visual, released runtime
-or known Brine IN resting-body repair; later native integration needs a fresh DLL.
-
-The [explicit normal-menu level-import proof](../audits/2026-10-25-lcb003-level-import-host.md)
-reuses the unchanged135-input development DLL after verifying every native input,
-then runs fresh import and eight affected Godot processes. The original44-assertion
-`test_liquid_level_import_host.gd` requires all five JSON sections true and uses
-actual panel/Import/Restart callbacks. This does not claim a new native build or
-Wasm execution. The prepared [LCB-003 publisher profile](../audits/2026-10-25-lcb003-runtime-publication.md)
-is unarmed; its dedicated Windows/Linux gates and source-matched publication
-must qualify the frozen final source before release/full exact-head acceptance.
-The expanded profile requires 34 cases plus import per target OS, retaining
-existing case deadlines and adding ordinary demos, explicit poses, Physics Pit
-and reserved native/default desktop-owner cases. Missing reserved source refuses
-admission; a successful terminal JSON never overrides a crashed process.
-The settings-refusal correction separately passes73 import assertions/all five
-sections, UI105 and33 native Web-prerequisite checks. It preserves inherited
-nondefault-law/transport refusal, native component identity and the older proof
-as Baseline-only; it does not qualify Brine IN resting-body contact.
-
-The later [prepared Water Feel reference-body checkpoint](../audits/2026-10-25-lcb003-water-reference-body.md)
-adds `test_liquid_water_reference_body.gd`: actual frozen poses across32 physics
-frames, deterministic refusal/retained receipts and four fresh ordinary unpaused
-pressure/FM application cohorts through96 native ticks. It uses a new DLL after
-the narrow native moving-mask gas repair; older runtime seals cannot qualify it.
-The focused case checks positive age-bounded accepted feedback and exact
-Water/gas accounting. Its local Windows proof leaves Web bodies, complete
-host-mask continuation and source-matched release/platform gates open.
-
-The [combined LCB host checkpoint](../audits/2026-10-25-lcb003-combined-host-web-prerequisite.md) records
-sixteen fresh Windows native/headless passes on `871fba33`, then the explicit
-Web apparatus prerequisite and actual Rapier applied-feedback parity on
-`3b4db1dd`. The actual process commands and before-input fences are retained
-with its local evidence. `test_liquid_host_web_probe.gd` runs the same explicit
-apparatus natively; `test_liquid_pressure_rapier.gd` compares all PF variants
-and one/four-worker actual body/authority traces. Both are ordinary discovered
-Godot regression cases. Native execution does not qualify Wasm/browser execution.
-
-For fresh Web builds retain Emscripten4.0.20, SCons4.10.1, Godot4.7 and pinned
-godot-cpp; the binding profile includes `FileAccess`, and the source list includes
-the generator's semantic-plane implementation. Materialize the exact pinned
-Rapier compat/threaded LFS objects before export. Export metadata remains
-explicitly unqualified for browser execution. In actual browser runs capture
-console/network before navigation, wait for terminal
-`?test=1&liquid-host-test=1` JSON and successful `/physics-results` capture, and
-perform an ordinary user walkthrough separately. Historical9704 exports and
-their retained POST501/early-capture gaps are not current qualification.
-
-## Water publisher guards and publication checks
-
-`python tools/ci/test_lcb005_water_inertial_runtime_publication.py` exercises the
-separate branch/schema/source lease, unchanged15-process schedule, strict Water
-proof, complete input/four-path guards and same-process profile isolation.
-Retain the original005/001 guard suites and run
-`python tools/ci/check_ci_provider_policy.py` for its new workflow. The [preparation record](../audits/2026-10-25-water-inertial-publication.md)
-keeps historical unarmed/sequence1 preparation separate from actual sequence2 at
-sourceaa8af247/run40220697738/bot03cccd8f. Both target OSes pass all15 processes
-and642 policy assertions with fresh independent artifact/source/LFS/floor review.
-Synthetic guards alone remain insufficient. Approval-held bot PR runs have no
-job results; root must obtain the actual final ready-head full matrix.
-
-## Water IN native successor checks
-
-On the isolated Water successor, build the ordinary native executable with
-`make build/tests`, then run `build/tests "Water IN"` for its focused groups.
-`python tools/lcb/water_inertial_footprint.py` separately checks the complete
-persisted-occupancy DDA/carrier stencil. Existing `LCB-005`, `LCB-002`, whole-Water
-and complete receipt-byte gates remain mandatory. No test selects a larger
-geometry implicitly: IN requests3 and matched controls use identical geometry;
-ordinary Current stays2. The [dated native record](../audits/2026-10-25-water-inertial-native.md)
-owns exact Windows LLVM inputs, normal1MiB stack,120s focused and600s ordinary
-limits and raw failures. The [separate Water publication record](../audits/2026-10-25-water-inertial-publication.md#actual-sequence2-windowslinux-publication--2026-10-25)
-qualifies both target runtimes; full ready-PR and scientific/full-host gates
-remain open.
-
+For a useful failure report, record the checkout SHA and dirty state, exact Godot
+version, native runtime/provenance identity, platform, command, fixture or small
+synthetic setup, steps, expected result, actual result and whether the operation
+was queued, applied, displayed or refused. Include the first relevant error and
+completion status, not only a green process exit. Preserve the original failed
+result alongside a successful retry. Art prompts, traffic, endpoint credentials
+and owner maps may be private: inspect and redact attachments, and prefer a
+synthetic reproduction. [Troubleshooting](troubleshooting.md) covers common launch,
+focus, runtime and capacity failures.
 
 ## Which build inputs are required?
 
@@ -503,9 +145,9 @@ Keep native and Web godot-cpp checkouts separate: generated bindings and archive
 are target-specific. Python 3.12.14 was used locally; the workspace helper requires
 Python 3.10+. Do not silently update pins while debugging a simulation change.
 
-The historical runtime lock still labels templates `absent-and-unpinned` although
-the local Windows setup has exact templates. This is an unresolved release-lock
-gap. The configured Web CI also disagrees with the builder; see
+The runtime lock labels export templates `absent-and-unpinned`; the repository
+does not establish reproducible current exports merely because a local machine
+has templates installed. The configured Web CI also disagrees with the builder; see
 [release prerequisites](github-development-and-release.md#unresolved-ci-contradictions).
 
 ## Windows development commands
@@ -558,7 +200,7 @@ the established `C:\Godot47` location. It requires exactly
 Windows DLL/provenance file and Rapier Windows DLL are present, verifies the
 CyberSand DLL SHA-256 against `runtime-provenance.json`, and prints checkout,
 Godot and runtime identities before launch. The default action runs
-`godot/project.godot` through its configured `main.tscn`; `-Editor` opens the
+`godot/project.godot` through its configured `feature_launcher.tscn`; `-Editor` opens the
 same project in the editor.
 
 The launcher deliberately contains **no build step**. A missing, hash-mismatched or
@@ -578,77 +220,139 @@ validation build with this override is not bit-identical M11 reproduction.
 From the source root on a configured Linux host:
 
 ```sh
-timeout 120 make test
-timeout 300 make sanitize
-timeout 300 make thread-sanitize
-# GODOT_CPP_ROOT and SCONS_PYTHON identify the pinned dependencies:
-timeout 3600 tools/build_pinned_godot_cpp.sh linux
-timeout 3600 tools/build_native_extension.sh
-timeout 60 tools/check_linux_runtime_floor.sh
+make c-header-check
+make -n test
+make -j2 test
+make sanitize
+make thread-sanitize
 ```
 
-These are executable entry points, **not current Linux pass claims**.
-[Makefile](../../Makefile) defines Debug `-O0 -g3` tests, ASan+UBSan and TSan.
-The default sanitizer target enables leak detection; the historical M11 run
-disabled it after a hosted `/proc` limitation. Preserve that distinction.
-Windows cross-builds use `build_pinned_godot_cpp.sh windows` and
-[build_native_extension_windows.sh](../../tools/build_native_extension_windows.sh)
-with `LLVM_MINGW_ROOT`/`WINDOWS_CXX`. PE/import inspection alone cannot prove a
-Windows runtime launch.
+`make test` includes the current native World, soliding, worldgen and material
+baseline targets. The [Makefile](../../Makefile) is the executable inventory;
+`make sanitize` and `make thread-sanitize` have distinct target coverage, so do
+not claim that either alone executes every subsystem sanitizer. Focused generation
+and soliding sanitizer targets remain available. The default AddressSanitizer
+configuration enables leak detection. Existing hosted wrappers explicitly
+disable LeakSanitizer under their scoped execution policy; that exception is not
+the default for a local build.
 
-Each GitHub-hosted Native family job retains a 90-minute overall allowance;
-the separate policy job has 5 minutes and the `native` evidence aggregate has
-10 minutes. The original individual
-build, test and benchmark commands retain their separate deadlines; increasing
-the job allowance does not skip cases or relax sanitizer failures. The
-[pressure-reference acceptance](../audits/2026-10-24-lcb001-pressure-reference-publication.md#exact-head-acceptance-and-merge)
-records the 45-minute aggregate cancellation and successful 50-minute rerun.
-The [MAT-002 completion audit](../audits/2026-10-19-mat002-review-and-validation.md#completion-resumed--2258-utc)
-retains the earlier 35-minute cancellation and preceding successful durations.
+These commands may compile substantial native source. They are procedures, not
+pass claims. Set a budget appropriate to the selected target and host; do not reuse
+historical 120/300-second examples as current full-suite budgets. The accepted
+[CI execution policy](ci-execution-and-performance.md) derives hosted allowances
+without weakening scientific cases or sanitizer failures.
+
+A GDExtension rebuild additionally needs pinned godot-cpp and SCons:
+
+```sh
+export GODOT_CPP_ROOT=/absolute/path/to/pinned-godot-cpp
+export SCONS_PYTHON=/absolute/path/to/build-venv/bin/python
+SCONS_JOBS=2 tools/build_pinned_godot_cpp.sh linux
+CYBERSAND_NATIVE_OUTPUT="$PWD/build/libcybersand_native.linux.x86_64.so" \
+  tools/build_native_extension.sh
+```
+
+The example writes the candidate extension under ignored `build/`, leaving the
+retained library alone. Inspect and qualify the candidate before installing it
+into a test project. Installing a locally built library does not create accepted
+runtime provenance: [guarded publication](github-development-and-release.md#source-matched-runtime-publication)
+requires its actual source, input hashes, target-platform execution and lease.
+The build scripts enforce pinned dependency revision and source checks; do not
+use `CYBERSAND_ALLOW_TOOLCHAIN_DRIFT` to report a reproducible release.
+
+For Windows GDExtension cross-builds, use `build_pinned_godot_cpp.sh windows` and
+[build_native_extension_windows.sh](../../tools/build_native_extension_windows.sh)
+with the pinned `LLVM_MINGW_ROOT`/`WINDOWS_CXX` inputs. A PE/import inspection is
+separate from execution on Windows. The root `build_windows_msvc.bat` is a native
+core build entry point with its explicit test list, not the complete Godot/native
+qualification matrix. The [Windows execution helper](../../tools/ci/run_windows_godot_regressions.py)
+and accepted workflow own source-bound Windows Godot execution.
 
 ## Linux GDExtension CI sharding
 
-**Current:** the [GDExtension workflow](../../.github/workflows/gdextension.yml)
-builds the pinned Linux runtime once on GitHub-hosted `ubuntu-24.04`, verifies its
-ABI/runtime floor and publishes that exact extension plus the pinned Rapier Linux
-runtime as a short-lived artifact. Four isolated GitHub-hosted regression jobs
-restore the same source/runtime identity and run deterministic subsets of the
-Godot suite. Each shard performs its own clean headless import. Active external
-or self-hosted runner routing is rejected by the repository policy checker.
+The accepted [GDExtension workflow](../../.github/workflows/gdextension.yml)
+builds a source-matched Linux runtime and plans regression jobs from the current
+source inventory. The [execution planner](../../tools/ci/godot_job_plan.py)
+supplies shard counts and budgets; `max-parallel` is a concurrency cap, not a
+fixed number of required tests or a promise that four shards are sufficient.
+Do not copy an unmerged runner experiment into the current procedure.
 
-The local/default invocation remains serial. Linux rendered-output tests need a
-display; a software-rendered run can use Xvfb:
+The local/default invocation is serial. Rendered cases need a display; this
+source-supported software-rendered route is useful on a prepared Linux host:
 
 ```sh
 LIBGL_ALWAYS_SOFTWARE=1 LP_NUM_THREADS=2 GALLIVM_PERF=nopt xvfb-run -a \
   -s '-screen 0 1920x1080x24 -nolisten tcp' \
-  python3 tools/ci/run_godot_regressions.py --godot <godot> \
+  python3 tools/ci/run_godot_regressions.py --godot "$CYBERSAND_GODOT" \
   --output build/godot-regressions --keep-going
 ```
 
-CI uses `--shard-count 4 --shard-index 0..3`. The runner still discovers every
-`godot/tests/test_*.gd` automatically and explicitly includes
-`profile_native_world.gd`, `profile_scheduler.gd` and scene startup. Approximate
-historical timings only influence deterministic scheduling; they are not test
-thresholds. Unknown/new tests receive a conservative default weight and must appear
-exactly once in the union of shards.
+The runner discovers `godot/tests/test_*.gd`, includes the explicit profile probes
+and scene startup, and performs a clean import. Cases requiring actual pixels
+use the compatibility renderer. Missing display/executable, timeout, explicit
+skip, engine/script error and incomplete evidence are distinct failures; process
+exit zero alone is insufficient. `--keep-going` retains later case results after
+ordinary failure, while import failure stops the shard.
 
-`test_*_render.gd` cases automatically request the compatibility renderer; other
-cases and import remain headless. Explicit skips are required-case failures,
-including the former headless pixel-test skip. `--keep-going` records the rest of
-the assigned cases after test failure, while import failure stops immediately.
-Read each record and the final completion/status fields in `timings.json` before
-claiming a pass. The [test-selection guide](testing-validation-and-replay.md#ci-execution-sharding)
-owns these acceptance rules.
+The independent [Linux coverage reader](../../tools/ci/verify_linux_godot_shards.py)
+requires complete unique assignments, original logs and source/runtime identity.
+The accepted [test-selection guide](testing-validation-and-replay.md#ci-execution-sharding)
+and [CI policy](ci-execution-and-performance.md) own coverage and parent budgets.
+Historical four-shard migration timings remain dated evidence, not a current
+source inventory or physical GPU performance measurement.
 
-The initial migration PR proved exact serial/sharded coverage equivalence on the
-same source/runtime/Godot identity. That serial lane is now opt-in only via
-`GDEXT_SERIAL_EQUIVALENCE=1`; ordinary PRs use the sharded gate. The active workflow
-uses literal GitHub-hosted runner labels and pinned build inputs; source/runtime
-identity and the required exact-head gates are independent of shard scheduling.
-Current build jobs set `SCONS_JOBS=2` directly; the
-[repository provider policy](github-development-and-release.md) owns the runner
-and provider-routing boundary.
+## Exact runtime acquisition and transport
+
+GDExtension Windows shards consume the same-run `native-candidate-windows`
+artifact after its production build. `tools/ci/native_candidate_identity.py`
+binds the DLL SHA-256/size, complete native input inventory, source commit and
+tree; the Windows runner's explicit `--native-candidate` mode and independent
+coverage reducer verify those bytes. The default retained-runtime mode keeps
+its original committed provenance checks. Candidate manifests do not rewrite
+published provenance or waive `check_repository.py`.
+Candidate download and verification each have a five-minute allowance. Rapier
+comes from its separate same-attempt producer artifact, with five minutes for
+download and five for committed-pointer and byte verification. The complete setup remains within
+the existing 70-minute reserve. Use **rerun all jobs** when retrying this
+same-run/attempt artifact chain, so producer and consumers share an attempt.
+
+GDExtension and Palette producers use
+[`materialize_lfs.py`](../../tools/ci/materialize_lfs.py) for exact committed LFS
+objects. A single monotonic allowance covers source/pointer admission, setup,
+all download attempts, backoff, byte verification and bounded owned-process
+cleanup. Linux uses its existing 1,200-second dependency allowance. The Windows
+native producer acquires Rapier once within 600 seconds; the Palette plan
+acquires its four exact retained objects once within 1,200 seconds. Ten seconds
+are reserved for owned-process cleanup inside the acquisition allowance.
+No test or native execution timeout changes.
+
+Enumerated transient Git LFS service failures (timeout, connection reset, HTTP
+429/502/503/504 or the observed no-server-available response) may be retried, at
+most three total attempts, with two- and four-second backoff.
+Authentication, permanent and unknown errors, exhausted allowance, source movement and wrong materialized
+bytes remain failures. Each original attempt retains its full output, exit,
+elapsed time and log hash beside a source/pointer/actual-byte receipt. Existing
+native, Rapier and downstream qualification checks remain mandatory; successful
+acquisition alone is not runtime qualification.
+
+[`lfs_runtime_artifact.py`](../../tools/ci/lfs_runtime_artifact.py) stages that
+producer's exact bytes and original acquisition logs in a source/run/attempt-bound
+artifact. Each consumer verifies the complete expected object inventory against
+its own committed LFS pointers, the actual bytes, original command receipts and
+sealed logs before installing its explicitly selected platform files. Palette
+requires all four objects even when installing only its platform pair. Consumers
+never fall back to the LFS service, a different attempt, or another runtime.
+Final seal and receipt writes are part of the shared deadline; a late seal is
+retained as failed evidence and cannot authorize execution.
+
+The Windows shard retains its original ten-minute dependency slot as five
+minutes for artifact download and five for verified installation. Palette
+retains its independent dependency clocks and adds the separately budgeted
+artifact-download step. Producer parents explicitly include moved acquisition
+and upload costs; case watchdogs, native inputs and concurrency are unchanged.
+Retry a complete source/attempt chain: GDE's common `ready_scope` ancestor or
+Palette's `plan`, including producers, all consumers and reducers. A failed-only
+consumer retry cannot satisfy same-attempt runtime custody.
 
 ## Physical actor timeout investigation
 
@@ -741,53 +445,29 @@ which has the same source tree as that PR head, and per-platform runtime hashes.
 
 ## Windows retained-runtime execution
 
-For intermittent physical actor/usable/flight stalls, use the
-[timeout diagnostic procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics).
-The ordinary 180-second case bound is unchanged. Dispatch the full registered
-600-attempt stress workflow only after it exists on `main`, with `source_sha`
-set to the exact immutable diagnostic source. Inspect the independent reducer
-and raw logs even if the Actions run badge is green or red. The
-[dated audit](../audits/2026-10-24-issue-233-physical-regression-timeouts.md) records
-executions and remaining uncertainties separately from workflow availability.
+The accepted [GDExtension workflow](../../.github/workflows/gdextension.yml)
+executes a source-bound Windows candidate through
+[run_windows_godot_regressions.py](../../tools/ci/run_windows_godot_regressions.py).
+It passes the built candidate with `--native-candidate`; the helper also supports
+its retained-runtime path when no candidate is supplied. These are explicit
+artifact sources, not interchangeable provenance claims.
 
-**Current:** the GDExtension workflow executes the retained Windows DLL on four
-independent GitHub-hosted `windows-2022` runners. This lane is separate from the Windows
-cross-build job. The
-[Windows execution helper](../../tools/ci/run_windows_godot_regressions.py)
-requires an exact workflow checkout, committed LFS bytes, matching runtime
-provenance and complete coverage of the current native source/header input set.
-Any changed or newly added native input requires a matching runtime publication
-before the retained DLL can satisfy this gate. Historical build-input hashes
-continue to describe their original build.
+The helper verifies exact source identity, runtime inputs, pinned official Godot
+archive/version and Rapier before import. It discovers the applicable headless
+cases, profile probes and scene startup. Rendered cases are outside this headless
+Windows lane and require their own graphical evidence. The execution planner
+supplies the current shard count and full-budget allowance; the independent
+[coverage reader](../../tools/ci/verify_windows_godot_shards.py) requires every
+assigned original case exactly once with source/run/attempt identity and logs.
 
-The helper verifies the pinned official Windows Godot 4.7 archive, executable
-version and Rapier runtime before import. It dynamically selects every discovered
-headless case, including the two profile probes and scene startup, and preserves
-the shared runner's per-case timeouts and error/skip rejection. Each applicable
-case must execute exactly once. All discovered `test_*_render.gd` cases are
-explicitly outside this Windows lane; Linux's rendered shards execute them.
-After the ACT-005 integration, the source inventory is 97 Windows headless
-cases and 103 Linux cases, with import counted separately. These counts describe
-discovery, not an executed pass.
-
-Each shard uses `--shard-count 4 --shard-index 0..3` and retains
-`windows-execution.json`, source/runtime/tool identities, commands, individual
-logs and their SHA-256 hashes under its
-`windows-godot-headless-<shard>-<run-id>` artifact even when execution fails.
-The independent coverage reducer requires all four assignments and original
-logs, and cannot pass an admitted failed/missing matrix. The
-[production CI audit](../audits/2026-10-31-ci-parallel-production-integration.md)
-records source-qualified predecessor counts and timings; discover the actual
-current inventory rather than reusing the older ACT-005 count above. The report
-records incomplete import, failed cases, source drift and final completion
-explicitly. Only the four declared Rapier texture `.import` descriptors normalize
-CRLF to LF for content comparison: the hosted checkout and Godot's re-save can
-differ in newline representation. Changes to descriptor content still fail.
-All other tracked inputs use raw SHA-256, including DLLs, images and source, so
-binary byte changes cannot be hidden by text normalization. The execution step
-is bounded to 40 minutes within a 45-minute job.
-Use the dated audit and exact workflow run to establish actual platform results;
-this lane does not establish Windows rendered-output or browser acceptance.
+Retain `windows-execution.json`, commands, runtime/tool identities and raw log
+hashes even when execution fails. Read its completion, source-drift and failed-case
+fields. A successful Windows cross-build does not replace Windows execution, and
+headless Windows execution does not establish physical Windows/NVIDIA playfeel.
+For intermittent physical actor/usable stalls, follow the
+[timeout diagnostic procedure](testing-validation-and-replay.md#physical-regression-timeout-diagnostics)
+with the exact current source and original watchdog contract. Do not dispatch a
+large historical stress campaign merely to validate documentation.
 
 ## Physical usable validation
 
@@ -843,7 +523,7 @@ actor proposals. Run it with the ordinary generation suite:
 
 ```sh
 make worldgen-test
-ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-sanitize
 godot --headless --path godot --script res://tests/test_worldgen_planes.gd
 godot --headless --path godot --script res://tests/test_semantic_planes_runtime.gd
 godot --headless --path godot --script res://tests/test_semantic_planes_examples.gd
@@ -1025,10 +705,12 @@ godot --headless --path godot --script res://tests/test_liquid_sampled_preparati
 
 Retain actor session/rig/usables, existing host/UI/controller/workbench, exploratory
 actor selection and Water Feel lifecycle cases. The [sampled evidence](../audits/2026-10-25-lcb003-sampled-exploratory-host.md)
-records final source/runtime, exact ten-process matrix and failures. Its shared
-native base is still pre-final-fix `9e91a9f7`; repeat the full applicable matrix
-after accepted #246 integration. Physical-body staging, source/runtime
-publication and actual browser qualification remain separate required gates.
+records the October 25 source/runtime, exact ten-process matrix and failures.
+**Historical checkpoint:** that run used pre-final-fix native base `9e91a9f7` and
+required a repeat after #246 integration. That dated requirement does not describe
+a present unmerged blocker. The focused runner remains available; qualify any new
+run against its actual source/runtime and keep physical-body, publication and
+actual browser claims separate.
 
 ### Staged articulated physical host slice
 
@@ -1047,93 +729,30 @@ facts, stale/tampered continuation refusal, final request/reset/settings/stop
 fences, admitted paint/profile disposition and actual panel/application graph
 adoption or retained-owner refusal. Keep ordinary physical integration/equipment,
 sampled/controlled/UI, MicroScenario, actor-selection and Water Feel cases in the
-same scoped matrix. This local pre-final-#246 native base still needs fresh main
-integration, published source-matched runtimes, Linux and actual Web gates.
+same scoped matrix. **Historical checkpoint:** the October 25 run used a
+pre-final-#246 native base, so its evidence could not qualify later integration,
+publication, Linux or Web. Current runs must use current source-matched runtimes;
+the old outstanding gates are not a claim about today's branch state.
 
 ### Branch-scoped runtime publishers
 
-**Retired after accepted PR #285, 2026-10-28:** the temporary PLAY-AUTO-002
-workflow, scoped profile/guard test and sequence-1 request are removed. Their
-[implementation remains in Git](https://github.com/techrote/cybersand/tree/d7e35aa3897ffa0bde422ece98226c551588040e).
-They published both desktop libraries only after six focused fixtures and the
-repeated reference campaign passed on each actual target OS. The
-[dated audit and byte-identical raw reports](../audits/2026-10-27-play-auto002-worker-matrix-candidate.md#actual-windowslinux-publication-and-repeated-results--2026-10-28)
-retain that source and its exact acceptance gates. Existing historical
-publishers/requests are unchanged; future native inputs need a newly scoped
-publisher and request.
+[Runtime publication custody](github-development-and-release.md#source-matched-runtime-publication)
+owns the current generic requirements. A publisher/request is scoped to its
+branch, source inputs, schema, runtime paths and actual execution evidence.
+Inspect the applicable current publisher; do not restore a historical workflow
+and treat its old authorization or source lease as active.
 
-The [standalone repeated campaign](../../tools/play/run_auto_campaign.py),
-its adversarial tests, benchmark and published runtime/provenance files remain
-available. To repeat against the matching retained platform runtime, use a
-fresh output directory:
+Earlier GEN/PLAY/Water publishers and their retained failures remain in the
+[source-pinned previous procedure](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/local-build-and-validation.md#branch-scoped-runtime-publishers)
+and the original linked audits. Their source-qualified artifacts remain evidence
+for their recorded input sets. Retiring or modifying a publisher belongs to its
+authorized implementation/publication task, not documentation cleanup.
 
-```text
-python tools/play/run_auto_campaign.py --godot <pinned-godot-executable> --output <new-directory>
-```
-
-Choose a fresh output path outside the source checkout or beneath its ignored
-`build/` directory so retained JSON evidence does not appear as an untracked
-implementation input in the strict source check.
-The normal standalone path verifies retained runtime/source bytes before
-executing. It preserves 50 fresh processes, 60 warm-up and 120 measured ticks
-per row and immutable failure evidence. Do not pass the publisher-only fresh
-build assertion as a substitute for building and binding new native inputs.
-
-Source-matched Linux and Windows runtimes have been published by **temporary,
-branch-scoped publisher workflows**. Each workflow:
-
-1. builds both runtimes on GitHub-hosted runners;
-2. runs a focused headless case list on each target OS;
-3. accepts only complete, positive-count, error-free evidence;
-4. fast-forwards the four runtime and provenance paths onto its feature branch.
-
-Exact-head documentation/provenance, Native, full Godot and applicable scoped
-apparatus gates remain required for implementation acceptance.
-
-The six publishers whose branches had merged were **retired on 2026-10-24**:
-GEN-003, GEN-004, GEN-005, GEN-007, player and LCB-001. Their workflow files
-and `tools/ci/*_runtime_publication.py` helpers and unittest guards were removed
-from main. Their dated audits (for example the
-[GEN-005 audit](../audits/2026-10-21-gen005-semantic-planes.md)) and the retained
-`runtime-provenance*.json` build-input hashes still describe the original
-builds; those historical links intentionally resolve only in Git history.
-
-For a new native change, restore the most recent publisher from history, then
-re-scope it before pushing:
-
-```sh
-git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:.github/workflows/lcb001-runtime-publication.yml
-git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/lcb001_runtime_publication.py
-git show a395e33dc0632f5c3f41e8b8b1c18c89f0aaa131:tools/ci/test_lcb001_runtime_publication.py
-```
-
-Re-scoping means renaming it and changing its branch guard, evidence path, case
-list and markers, and running `python3 tools/ci/check_ci_provider_policy.py`.
-Retire it again once its branch merges.
-
-**Retired, 2026-10-24:** the LCB-001 pressure-reference publisher
-(`.github/workflows/lcb001-pressure-reference-runtime-publication.yml`,
-`tools/ci/lcb001_pressure_reference_runtime_publication.py` and
-`tools/ci/test_lcb001_pressure_reference_runtime_publication.py`, re-scoped in
-draft PR #244) is removed with its source-bound request after PR #245.
-Its implementation remains recoverable at
-[`48fb275`](https://github.com/techrote/cybersand/tree/48fb275f506b05b00461e43df813c11d68acb274).
-It published only after an explicit request on the implementation branch and recorded its outcome in the
-[evidence record](../audits/2026-10-24-lcb001-pressure-reference-publication.md).
-A later native checkpoint must use a newly scoped publisher and fresh execution;
-the historical artifacts qualify their recorded source only.
-
-**Prepared residual checkpoint, 2026-10-24:**
-[`lcb001-shared-contract-runtime-publication.yml`](../../.github/workflows/lcb001-shared-contract-runtime-publication.yml)
-and its [helper](../../tools/ci/lcb001_shared_contract_runtime_publication.py)
-are limited to `codex/lcb001-shared-contract`. Its own explicit request arms
-the immutable source checkpoint; ordinary native edits do not request a build.
-Both target OSes must pass import and all twelve scoped cases, including W-CY,
-pressure, worker, native observation and WEX body-mask controls. The
-[residual audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#resumed-execution-and-fresh-main-integration)
-records guard preparation and actual publication status. Full non-draft
-exact-head gates remain separate. Retire this publisher after its bounded
-checkpoint merges.
+The existing [standalone repeated Play campaign](../../tools/play/run_auto_campaign.py)
+remains a deliberate qualification tool. Use a fresh output directory under
+ignored `build/` or outside the checkout; inspect its source/runtime admission
+and required process budget before running it. A campaign result cannot substitute
+for the applicable exact-head platform and owner acceptance gates.
 
 ## Hierarchical generation example and acceptance
 
@@ -1146,7 +765,7 @@ iterating, then the combined generation and sanitizer targets:
 
 ```sh
 make worldgen-test
-ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-sanitize
 godot --headless --path godot --script res://tests/test_worldgen_grammar.gd
 ```
 
@@ -1221,15 +840,17 @@ to the same native targets:
 
 ```sh
 make worldgen-test
-ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 make worldgen-sanitize
+make worldgen-sanitize
 make worldgen-demo
 ./build/worldgen_demo --output build/worldgen-plain.ppm --seed 314159 --plain
 ```
 
-The explicit sanitizer command disables leak detection for environments where
-LeakSanitizer cannot inspect processes under ptrace. Without that override the
-sanitizer runtime enables it; use `detect_leaks=1` in a supported execution
-environment. The [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md) and
+The ordinary commands above retain the Makefile's leak-enabled sanitizer default.
+The existing [hosted native execution policy](../../tools/ci/native_execution_policy.py)
+sets an explicit `detect_leaks=0` exception for its runner environment; it does not
+qualify leak detection. If LeakSanitizer cannot inspect processes under ptrace on
+a local host, retain that infrastructure failure and report leak checking as
+unexecuted rather than silently changing the ordinary recipe. The [GEN-001](../audits/2026-10-18-gen001-procedural-generation.md) and
 [GEN-002](../audits/2026-10-18-gen002-fields-and-aggregates.md) evidence distinguish
 actual LeakSanitizer infrastructure failures from passing ASan/UBSan results.
 The PPM contains actual generated material pixels from Strata, Flow Network
@@ -1306,6 +927,11 @@ does not assess visual GPU throughput or Windows/Web execution.
 
 ## Web compile, export and execution are different checks
 
+The [owner's issue #3 decision](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559)
+makes Web an occasional disposable experiment. These commands describe the
+retained experimental path, not a maintained CI/release obligation or a desktop
+acceptance gate. Qualify the exact inputs and coverage of each new experiment.
+
 From source, with the SDK active and paths adapted to the host:
 
 ```text
@@ -1319,9 +945,10 @@ Both normal profiles package Rapier; `--cellular-only` is a diagnostic option.
 returns before runtime tests/export even if `--native-tests` is present.
 
 `--export-only` checks existing WASM structure, not freshness against source.
-The workspace wrapper still supplies the acquisition base as `--source-commit`;
-that export field is not current HEAD. Capture current source and artifact hashes
-separately until the producer is repaired in an implementation checkpoint.
+An older companion wrapper supplied the acquisition base as `--source-commit`;
+that historical export field is not proof of current HEAD. Inspect the actual
+wrapper used by a new experiment and capture its current source and artifact
+hashes; this repository cannot attest an unseen external wrapper.
 See [source identity](source-checkpoint-and-recovery.md).
 
 Preview generated output through HTTP with WASM MIME and profile headers, then
@@ -1333,9 +960,10 @@ The [Web guide](web-threading.md) owns hosting requirements, and the
 ## How is the physics baseline rebuilt?
 
 Follow [physics characterization](physics-characterisation.md): rebuild the
-native CLI and adapter before running the deterministic P1–P4 matrices, then
-build/export both Web profiles and execute them in a real browser. Capture actual
-HEAD/local file hashes separately from legacy export acquisition labels.
+native CLI and adapter before running the deterministic P1–P4 matrices. If the
+experiment claims Web results, build/export its applicable profiles and execute
+them in a real browser. Capture actual HEAD/local file hashes separately from
+legacy export acquisition labels.
 The [2026-09-09 report](../audits/2026-09-09-physics-characterisation.md) records
 Windows/Web results and the unavailable Linux execution environment. Local
 rebuilt artifacts are measured inputs, not automatically updated published LFS
@@ -1425,6 +1053,35 @@ publication; dynamic Godot discovery includes the new `test_*.gd` files.
 Controls and manual course entry are in the
 [player guide](../systems/player-control-playground.md).
 
+## AMBIENT-001 scoped gameplay qualification
+
+The accepted opt-in [ambient implementation](../systems/ambient-actors.md) reuses the
+retained native and Rapier binaries only when all covered native source inputs
+and binary hashes match their published provenance. Commit the gameplay inputs,
+then run the focused sequential campaign with the repository-pinned Godot 4.7:
+
+```sh
+python3 tools/qualify_ambient.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-ambient-evidence
+```
+
+The runner checks source before and after execution and retains every process
+receipt, log, save/reopen pair and available gameplay report. `--allow-source-delta`
+is an explicitly labelled development run and cannot authorize packaging.
+`--case` supports narrow debugging or extracted-package checks; the package
+builder requires the complete committed-source campaign. Headless native/Rapier
+motion is distinct from rendered or physical Windows/NVIDIA playfeel acceptance.
+
+The [dedicated workflow](../../.github/workflows/ambient-001-qualification.yml)
+uses `windows-2022` and exact retained-runtime verification. It runs only on an
+explicit qualification-request marker change on `feature/ambient-001-20261124`,
+or manual dispatch of that same branch. Its job guard does not admit a dispatch
+from `main` or an unrelated successor. It performs no native rebuild, runtime
+publication or Ready transition.
+The [package tool](../../tools/package_ambient_evaluator.py) records host source
+and original DLL build identity separately, includes ordinary authored examples
+and checksums, and verifies pristine extraction before delivery. Actual results
+and blockers belong to the [mission ledger](../research/ambient-001/mission-ledger.md).
+
 ## Actor control prototype checks
 
 ### Shared Play session and owner qualification
@@ -1501,7 +1158,8 @@ Use the pinned Godot 4.7/Rapier 0.35.2 and source-matched native runtime. The
 64-body adapter change requires a rebuild; a previous retained binary does not
 implement it merely because new scripts load. All `test_*.gd` runners are
 automatically discovered by `tools/ci/run_godot_regressions.py` and included once
-in the existing four GitHub-hosted shards. The original
+in the source-derived GitHub-hosted shard plan. The current planner determines
+shard counts from the inventory and time budgets; four is not a fixed suite size. The original
 `test_physical_actor_trial.gd`, sampled rig/session, Thunderbowl and protected
 scenario regressions remain in that suite.
 
@@ -1912,7 +1570,7 @@ passes actual Windows/Linux import and14 scoped cases perOS at source
 regression. The runtime-only append is `fcf0e9b6`; full exact-head ready-PR
 matrix remains a separate gate.
 
-The unmerged native default-demo API has a focused
+The accepted native default-demo API has a focused
 `test_liquid_default_demo_preparation.gd` case. It requires a fresh staged DLL
 with the new binding, compares the complete old-DLL tuple controls at four
 Water/transport configurations and exercises candidate masks, token/refusal,
@@ -1931,3 +1589,25 @@ separate results; seven affected Godot processes pass1078 assertions. Keep old
 failures, final EOF-only transition, raw/canonical source bindings and actual
 runtime identities. Fresh integrated native/publication/full platform gates
 remain required; do not substitute the old development DLL for them.
+
+## Earlier checkpoint procedures
+
+<a id="consumed-app-publication--source5f02-and-checkpoint-ea96--2026-10-25"></a>
+<a id="current-trial-consumption-of-corrected-app--preparation-only"></a>
+<a id="historical-preparation-and-water-artifact-consumption"></a>
+<a id="integrated-desktop-trial-successor--2026-10-25"></a>
+<a id="large-authored-workbench-landscape-admission"></a>
+<a id="play-input011-ordinary-ui-authority-and-raw-evidence-gate--2026-10-31"></a>
+<a id="play-life010-raw-evidence-gate--2026-10-31"></a>
+<a id="play-life011-composed-policy-raw-evidence-gate--2026-10-31"></a>
+<a id="published-and-development-identity-test-controls"></a>
+<a id="source-built-windows-candidate-validation--2026-11-08"></a>
+<a id="trial-successor-correction-after-accepted-app--2026-10-25"></a>
+<a id="water-in-native-successor-checks"></a>
+<a id="water-publisher-guards-and-publication-checks"></a>
+
+These earlier bookmarks refer to dated checkpoint procedures. The
+[source-pinned previous guide](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/local-build-and-validation.md)
+preserves their commands, identities, results and original limits. Use the current
+procedures above for new work; old source leases, authorizations and pass claims
+do not transfer to a new checkout.

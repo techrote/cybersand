@@ -2,15 +2,15 @@
 title: Material catalogue shadow compiler and compatibility guards
 status: Current
 document-kind: guide
-scope: Merged MAT-AUTH-001 353-A shadow tooling and source guards; legacy production authority persists, with consumer migration and production liveness corrections separately gated
+scope: Accepted shadow compiler, native hard/granular capability consumer and isolated Materials Lab candidate workflow; full descriptor/reaction cutover remains separate
 canonical-for: [material-catalogue-shadow-compiler, material-catalogue-compatibility-guards, material-catalogue-authoring-workflow]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-24
 related-documents: [../architecture/material-authoring-catalogue-plan.md, ../systems/materials-and-rule-kernels.md, ../systems/intermaterial-interactions.md, ../architecture/liquid-solver-family-policy.md, documentation-maintenance.md]
 ---
 
 # Material catalogue shadow compiler and compatibility guards
 
-**Separate native capability candidate — [Draft #563](https://github.com/techrote/cybersand/pull/563):**
+**Accepted native capability consumer — [#563](https://github.com/techrote/cybersand/pull/563):**
 the [bounded native cutover](../audits/2026-11-11-material-native-capability-cutover.md)
 generates only the hard/granular capability maps used by `MaterialRules`.
 It preserves every existing result, both digest-bearing headers, policy/save
@@ -19,15 +19,33 @@ separate native output; the code-pinned generated route authenticates the
 canonical source, validator, generator and header at the reviewed source commit.
 The original shadow output directory remains unconsumed. Descriptor/reaction
 authority and the independent #384 display-name migration are unchanged.
-The candidate still requires its own runtime publication and platform gates.
+That consumer is present in accepted source; its original publication and
+platform results retain their dated source identity. Current verification does
+not require reviving its old candidate branch or merge hold.
 
-**11 November review candidate:** the [Materials Lab v1](materials-lab-authoring.md)
+**Accepted Materials Lab — [#562](https://github.com/techrote/cybersand/pull/562):**
+the [Materials Lab v1](materials-lab-authoring.md)
 adds an actual desktop authoring consumer of this compiler. It validates and
 round-trips presets, compiles generated candidates into an external native probe,
 and mounts native inspection plus existing-material MicroScenarios. Generated
 definitions remain unconsumed by production World and fallback; the immutable
 lock and production IDs are unchanged. The [new authorization and boundary](../architecture/material-authoring-catalogue-plan.md#15-materials-lab-v1-implementation-boundary--2026-11-11)
-supersede unstarted #355/#356 statements only for this bounded candidate workflow.
+supersede the earlier unstarted #355/#356 statements for this bounded workflow.
+Compiled candidate/reference Worlds are isolated; native responses must say
+`runtime_active: false`. This does not install arbitrary candidate definitions
+in the running Workbench or make all displayed fields effective consumers.
+
+| Data or output | Current consumer boundary |
+|---|---|
+| `materials/catalogue/generated/` shadows | Inspection/compatibility output; no production native/Godot import |
+| `native/include/cybersand/material_capabilities.hpp` | Generated hard-surface and granular-load maps consumed by `MaterialRules` |
+| Native descriptors and specialized kernels | Existing compiled behavior; not replaced wholesale by the shadow compiler |
+| Materials Lab candidates | External compiled probes and isolated candidate/reference Worlds; no live scene activation |
+
+Source owners are [`material_rules.cpp`](../../native/src/material_rules.cpp),
+[`native_capabilities.py`](../../tools/material_catalogue/native_capabilities.py),
+[`compatibility.py`](../../tools/material_catalogue/compatibility.py) and the
+[Lab service](../../godot/scripts/material_lab_service.gd).
 
 The [adopted-main integration record](../audits/2026-11-04-mat-auth371-integration.md)
 records the escaping correction, independent review and resulting-head gate
@@ -40,10 +58,14 @@ review's corrections and compatibility mitigations. [PR #371](https://github.com
 contains that #353-A response: authored metadata, deterministic candidate outputs,
 independent native parity and source-identity guards. Documentation PR #357 is
 now merged and its corrected architecture is owner-adopted as Planned. The
-shadow output remains unconsumed by production; broad #353 and parent #352
-stay open. #353-B consumer migration and #355/#356 retain their own admission.
+shadow output remains unconsumed by production. That checkpoint preceded the
+later accepted capability consumer and Lab described above. Broad descriptor/
+reaction migration retains its own admission; an old shadow-only restriction
+does not undo these accepted bounded consumers.
 The separately authorized [#354 Phase A investigation](material-liveness-investigation.md)
-adds tests, tooling and documentation only; production corrections remain pending.
+records the original tests/tooling-only investigation boundary. Its current
+[liveness disposition](material-liveness-investigation.md) separates actual
+source behavior from that earlier research result.
 
 The [architecture review](../audits/2026-11-03-mat-auth-000-architecture-review.md)
 and [corrected migration contract](../architecture/material-authoring-catalogue-plan.md#11-current-main-review-and-implementation-admission--2026-11-03)
@@ -67,8 +89,9 @@ defaults or runtime loader. Identity-bearing arrays normalize using declared
 IDs, keys and legacy slots rather than authoring order. It emits inspection
 metadata and C++/GDScript shadows under `materials/catalogue/generated/`.
 No native target or Godot production script consumes that directory.
-Production material physics and the existing generated liquid-policy artifacts
-remain unchanged.
+The original shadow directory is distinct from the separately accepted generated
+native capability header. The compiler does not dynamically replace production
+material physics or the existing generated liquid-policy artifacts.
 
 The records cover all 132 descriptor slots and all 15 descriptor fields,
 explicit hard/granular capabilities, visual-state projections, the 56 ordered
@@ -135,8 +158,8 @@ and the checker fails closed unless all of these hold:
 
 Every other path still requires its baseline hash, and the catalogue and
 capability digests cannot change. `check()` reports the admitted entries as
-`reviewed_transitions`, so parity receipts carry them. The table starts empty;
-each reviewed PR adds its own entry together with its source change. Git runs
+`reviewed_transitions`, so parity receipts carry them. The original table started empty; current source contains the individually
+reviewed transitions. Each admitted change carries its own entry and evidence. Git runs
 without location variables such as `GIT_DIR`, so hooks or `git rebase -x` cannot
 redirect authentication to another repository.
 
@@ -238,13 +261,12 @@ The native query check and the focused generated-C++ regression require a C++20
 compiler; JSON generation and strict validation use Python's standard library.
 CI reuses the existing hosted
 Documentation workflow and execution watchdog. These focused commands do not
-run World scenarios or require a Godot download; expensive draft lanes stay
-suppressed. Under the existing ready-state path classifiers, this tools/data
-implementation also triggers the full Native and Windows/Linux GDExtension/Godot
-gates when #371 becomes ready. Those configured integration checks remain
-required; a draft skip or metadata readback is not a substitute. Freeze and
-independently review the candidate before that transition to avoid redundant
-matrices. Record actual jobs and any skips in the PR ledger.
+run World scenarios or require a Godot download. For a new change, inspect its
+actual path classification and the current task's Draft/Ready boundary. The
+original #371 integration is already merged; its former Ready transition is not
+a new task. Applicable Native and Windows/Linux GDExtension/Godot gates retain
+their separate requirements; a Draft skip or metadata readback is not a
+substitute. Record actual jobs and skips against the source being reviewed.
 
 For optional actual Godot metadata readback, use a complete editor archive and
 executable matching `third_party/godot-runtime.lock.json`. Produce a native
@@ -293,10 +315,13 @@ requiring its own parity/identity review and applicable integration gates.
 
 ## Production cutover, rollback and remaining decisions
 
-#353-A adds tooling and unused candidate data only. Reverting its tools,
-candidate directory, documentation routes and CI step restores the previous
-development workflow; no save or World conversion is needed. Existing kernels
-and policy artifacts remain the production authority throughout.
+The original #353-A introduced tooling and unused candidate data. Its historical
+tools-only rollback predates the accepted #563 capability consumer and #562 Lab.
+Current rollback planning must account for those dependent consumers: revert a
+switched consumer and its generated route together, with the applicable source,
+identity and runtime checks. Do not remove shared tooling while an accepted
+consumer still requires it. No general save or World migration is introduced by
+the original shadow metadata.
 
 #353-B requires a separate review of each proposed consumer switch. Preserve
 the exact header bytes and parser-compatible form where they bind identities,
@@ -304,8 +329,10 @@ or design an explicitly versioned identity transition before changing them.
 Revert a switched consumer and its generated route as one unit. A stale-policy
 failure is evidence to resolve, not permission to update the oracle.
 
-#354 still requires reproduced liveness cases; #355 still owns new endpoint
-effects and their state/quantity contracts. Serialize overlapping World and
+#354's Phase A has reproduced and independently qualified its liveness cases;
+the bounded H1 production correction remains a separate pending decision, as
+the [liveness guide](material-liveness-investigation.md) explains. #355 still owns
+new endpoint effects and their state/quantity contracts. Serialize overlapping World and
 quantity writes under one integration owner. #356 may inspect accepted
 metadata, but a slider requires an actual consumer and applied readback.
 Source fields whose native path ignores them remain read-only/unused.

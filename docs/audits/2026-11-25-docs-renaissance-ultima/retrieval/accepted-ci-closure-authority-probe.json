@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source": "5e29b111be6202a76c0042976f74de98bd8ead78",
+  "case": "Newly accepted dated CI packet admitted as Current decision",
+  "before": {
+    "packet_sha256": "e5647538ba093a2d5ad6591c1fc590d4311461587cf7a0a135082348725943c6",
+    "admitted_packet_chunks": 12,
+    "stale_claim_contexts": [
+      {
+        "heading": "CI-ENGINEERING-CLOSURE-001 \u2014 final decision packet > Performance decisions",
+        "authority": "current-documentation",
+        "context_sha256": "c69760b1bad2908c144da8e07a71b08ad0a078c79107058c9abfc5d82035aaf0"
+      },
+      {
+        "heading": "CI-ENGINEERING-CLOSURE-001 \u2014 final decision packet > Rollback and owner decisions",
+        "authority": "current-documentation",
+        "context_sha256": "712ef5bb9441d7a1ef584bb3bcaad0c900f0f65ffc98367a456a6648cf634672"
+      }
+    ]
+  },
+  "after": {
+    "wrapper_sha256": "49e859534019e04f969f7f6ffc6507a80f66abdcbab027a7a5fe835e7b627167",
+    "current_packet_chunks": 0,
+    "old_live_instance_refusal": "Stale retriever instance: source changed; rebuild before querying",
+    "new_cache_state": "rebuilt-stale-or-corrupt",
+    "direct_current_refusal": "Default retrieval excludes explicit-only or navigation document: docs/operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md",
+    "manifest_fallback_equal": true
+  },
+  "preservation": "Complete original and body hashes bind immutable accepted5e29; navigation keeps11 original anchors. No frozen scorer or shared authority policy change."
+}

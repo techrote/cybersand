@@ -1,0 +1,193 @@
+[
+  {
+    "path": "godot/scripts/usable_catalog.gd",
+    "git_blob": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+    "role": "U10 liquid_drain identity, cost, range and operation",
+    "accepted_blob": "f94d92bbeae0eb510ba5e5d0ed4dc83fd705e358",
+    "changed": false
+  },
+  {
+    "path": "godot/scripts/usable_runtime.gd",
+    "git_blob": "f86a439f659e5dfcb359f704571abc814df4b2c9",
+    "role": "current usable execution path and bounded edits",
+    "accepted_blob": "f86a439f659e5dfcb359f704571abc814df4b2c9",
+    "changed": false
+  },
+  {
+    "path": "godot/scripts/physical_usable_script.gd",
+    "git_blob": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+    "role": "physical usable material selection and liquid sink behavior",
+    "accepted_blob": "f802aea7d80787db540a7e68ef2b3789b15dd0e1",
+    "changed": false
+  },
+  {
+    "path": "godot/scripts/physical_actor_session.gd",
+    "git_blob": "bde4503df99d7e317cfb0987004d525f72177316",
+    "role": "physical actor/session generation and owner lifetime",
+    "accepted_blob": "56df9dde65f3d2a8650bc7575e886fe19a24380e",
+    "changed": true,
+    "diff_numstat": "259\t82\tgodot/scripts/physical_actor_session.gd",
+    "accepted_changes": [
+      "edd2d15f feat(workbench): compose independent physical actor controllers (#589)"
+    ]
+  },
+  {
+    "path": "godot/scripts/physical_usable_equipment.gd",
+    "git_blob": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+    "role": "physical equipment request identity, button lifetime and receipt acceptance",
+    "accepted_blob": "1c33a1b0cad5499161a997e13dfcf7df9a4f5616",
+    "changed": false
+  },
+  {
+    "path": "godot/scripts/physical_usable_runtime.gd",
+    "git_blob": "207a53c7f57ba955cbfadbf5fae1a0af698548c2",
+    "role": "exclusive physical usable cellular-effect owner, admission and readback",
+    "accepted_blob": "d67582b8cdb24cb86e4a5be315cdc4594a82a5b9",
+    "changed": true,
+    "diff_numstat": "15\t3\tgodot/scripts/physical_usable_runtime.gd",
+    "accepted_changes": [
+      "edd2d15f feat(workbench): compose independent physical actor controllers (#589)"
+    ]
+  },
+  {
+    "path": "godot/scripts/simulation_worker.gd",
+    "git_blob": "0e2471d72906cffffdc0a52431e20074dfd3ee4a",
+    "role": "exclusive World worker ownership and execution settings",
+    "accepted_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+    "changed": true,
+    "diff_numstat": "639\t38\tgodot/scripts/simulation_worker.gd",
+    "accepted_changes": [
+      "d461e5ee fix(worker): exclude stepped turns from pause acknowledgements",
+      "a928eedf fix(workbench): acknowledge exact pause intent at native owner boundary",
+      "3c1add4f merge(actor): reconcile Workbench composition with accepted main",
+      "edd2d15f feat(workbench): compose independent physical actor controllers (#589)",
+      "5ea92094 Start player sessions with tuned Wave Water and preserve explicit Water laws",
+      "6b48184b fix(godot): contain native faults across Waterwall adapter boundaries",
+      "db1da118 Workbench: never abort on a quarantined World; surface the coupling error",
+      "d0fefd56 fix(workbench): activate and tune native Wave through the shared owner",
+      "72c15e5f feat(workbench): route Wave tuning through live owner",
+      "99c4b482 feat(workbench): flatten stored materials into a standalone authored baseline",
+      "86d704a2 Add shared native-confirmed Undo and Redo for agent edits",
+      "f206f0c9 merge: preserve accepted liquid equipment in the integrated Workbench",
+      "1458ea43 merge: reconcile complete PAINT and repaired agent Workbench at one native boundary",
+      "df1649a1 fix(art): acknowledge stored native materials and account for deferred human strokes",
+      "eca5828e feat(paint): mount native multi-material editor with capture, undo and saved starts",
+      "1b5d5404 Offer the workbench paint palette for art drawing",
+      "76e4742a Add direct native art batches for WB-ART-002 Stage 1",
+      "fdea66bd feat(workbench): #361 liquid equipment \u2014 valve, drain, pumped nozzle and liquid-lab"
+    ]
+  },
+  {
+    "path": "godot/native_extension/cyber_native_cell_world.cpp",
+    "git_blob": "b43ac4421cf45f6684e2febcad0e793fd1312c16",
+    "role": "Godot/native World adapter, readback and mutation surface",
+    "accepted_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+    "changed": true,
+    "diff_numstat": "674\t62\tgodot/native_extension/cyber_native_cell_world.cpp",
+    "accepted_changes": [
+      "f5665cd2 Expose depth-limited pool feed in Water Lab and restore it on restart",
+      "aa27a6fd Stage full-face spill and fall speed three in the Water Lab",
+      "5ea92094 Start player sessions with tuned Wave Water and preserve explicit Water laws",
+      "d876bd57 Prototype head-driven spill, crest flight and scale-selective Wave response",
+      "7181230b fix(godot): keep failed-World raw material reads diagnosable (ADR-010)",
+      "d07f24c8 feat(wave): stream draw keeps a vertical stream without thinning the throw",
+      "9f96c9c8 feat(wave): admit generic Ballistic Water under Wave Flow",
+      "6b48184b fix(godot): contain native faults across Waterwall adapter boundaries",
+      "db1da118 Workbench: never abort on a quarantined World; surface the coupling error",
+      "2ca63554 Workbench: Body push also scales boundary pressure, displacement and splash from Water",
+      "82b9be93 Wave: adjustable Water push on Rapier bodies (Body push, Push by amount)",
+      "1d71202a WAVE-WATERWALL-001: blobs (default) and stream-share look controls for ballistic release",
+      "751c1a95 WAVE-WATERWALL-001: repair independent-review findings",
+      "f5b9f84f WIP WAVE-WATERWALL-001: Workbench bridge and Water Lab Waterwall spill controls",
+      "29936524 Fix authoritative Workbench Apply status and Deepworks atmosphere corridor",
+      "d0fefd56 fix(workbench): activate and tune native Wave through the shared owner",
+      "9687a823 fix(wave): preserve qualified-v2 config and diagnostic identity",
+      "9e41363c feat(workbench): construct and report Wave tuning",
+      "148b7b5f fix(wave): refuse coherent adapter writes before mutation and rerun publication",
+      "9f1a9c86 build(wave): admit reviewed source and request pinned runtime qualification",
+      "1e7fac9e feat(wave): complete native contracts, Godot evaluation and qualification tooling",
+      "df1649a1 fix(art): acknowledge stored native materials and account for deferred human strokes"
+    ]
+  },
+  {
+    "path": "godot/native_extension/cyber_native_cell_world.hpp",
+    "git_blob": "2acbbd5fceaaeaf2665a73b6d53ec718184ea4d5",
+    "role": "adapter ownership and prepared/native state",
+    "accepted_blob": "59a2a87d4611ec8f09a5db93f97d12570d9dd10f",
+    "changed": true,
+    "diff_numstat": "35\t5\tgodot/native_extension/cyber_native_cell_world.hpp",
+    "accepted_changes": [
+      "3c1add4f merge(actor): reconcile Workbench composition with accepted main",
+      "edd2d15f feat(workbench): compose independent physical actor controllers (#589)",
+      "5ea92094 Start player sessions with tuned Wave Water and preserve explicit Water laws",
+      "6b48184b fix(godot): contain native faults across Waterwall adapter boundaries",
+      "2ca63554 Workbench: Body push also scales boundary pressure, displacement and splash from Water",
+      "1e7fac9e feat(wave): complete native contracts, Godot evaluation and qualification tooling",
+      "df1649a1 fix(art): acknowledge stored native materials and account for deferred human strokes"
+    ]
+  },
+  {
+    "path": "native/include/cybersand/world.hpp",
+    "git_blob": "c44f766e9d3a4d070466952e03807b4a2a97669f",
+    "role": "authoritative World API and quantity ledger contract",
+    "accepted_blob": "d3cb6ecb4a3b3654facdb30f46cf7370c3dd2e4a",
+    "changed": true,
+    "diff_numstat": "37\t3\tnative/include/cybersand/world.hpp",
+    "accepted_changes": [
+      "45a2eba2 Let floating Oil rise and recede with Wave Water",
+      "f2178bf7 Move excess floating Oil along a connected surface",
+      "82b9be93 Wave: adjustable Water push on Rapier bodies (Body push, Push by amount)",
+      "d3c2cacd fix(wave): let disturbed Water come to rest and bind momentum in state_hash",
+      "1e7fac9e feat(wave): complete native contracts, Godot evaluation and qualification tooling",
+      "90a04f98 WAVE-MT-001: apply independent review findings to wave_flow_v1",
+      "1e773274 WIP WAVE-MT-001: experimental wave_flow_v1 bulk Water solver, benches and baseline",
+      "99c4b482 feat(workbench): flatten stored materials into a standalone authored baseline"
+    ]
+  },
+  {
+    "path": "native/src/world.cpp",
+    "git_blob": "3cfc1b47c32dacd00f864cf031588ab637a6b2bd",
+    "role": "authoritative cell/material/quantity execution",
+    "accepted_blob": "b31fe9b37c72603662c04333ff05f50bf030a050",
+    "changed": true,
+    "diff_numstat": "115\t12\tnative/src/world.cpp",
+    "accepted_changes": [
+      "461b1c14 Keep the wet support check directly under the slick",
+      "932a811c Let surface Oil settle without compressing Water against a rigid lid",
+      "0b2a46ce Defer freshly moved Water and prepare warm cross-chunk Oil exchange",
+      "b8db73ce Lift buried Oil through Wave Water using the existing density exchange",
+      "d876bd57 Prototype head-driven spill, crest flight and scale-selective Wave response",
+      "751c1a95 WAVE-WATERWALL-001: repair independent-review findings",
+      "66b7107d fix(wave): refuse coherent zero-mass edits before normalization",
+      "d3c2cacd fix(wave): let disturbed Water come to rest and bind momentum in state_hash",
+      "1e7fac9e feat(wave): complete native contracts, Godot evaluation and qualification tooling",
+      "90a04f98 WAVE-MT-001: apply independent review findings to wave_flow_v1",
+      "24924317 WAVE-MT-001: wave_flow_v1 sparse work, body contacts, regressions and design reference",
+      "1e773274 WIP WAVE-MT-001: experimental wave_flow_v1 bulk Water solver, benches and baseline",
+      "7a2bab58 fix(native): #292 preflight last included signed copy coordinates and avoid exclusive end overflow",
+      "e77ca847 Merge accepted main into PR #405, retaining only verified camera-cache optimization",
+      "6d567730 Reconcile #405 with accepted main: camera cache, chemistry and chunk fallback",
+      "73429b3c perf(lcb201): per-thread generation-keyed chunk lookup cache (#201)",
+      "4be6590f perf(lcb201): tabulate exact pair-chemistry predicates once per process (#201)",
+      "9adb98c1 perf(lcb201): keep PressureFlow caches warm across camera region motion (#201)"
+    ]
+  },
+  {
+    "path": "native/include/cybersand/water_normalization.hpp",
+    "git_blob": "f295e74d7fcc5b442d68530f5b3cd99a14dac5c5",
+    "role": "Water quantity and normalization semantics",
+    "accepted_blob": "cc63976e3de99cd4589ad471929c0f487dc9df97",
+    "changed": true,
+    "diff_numstat": "13\t3\tnative/include/cybersand/water_normalization.hpp",
+    "accepted_changes": [
+      "d0fefd56 fix(workbench): activate and tune native Wave through the shared owner"
+    ]
+  },
+  {
+    "path": "native/src/world_inertial.inc",
+    "git_blob": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+    "role": "current inertial Water motion/state semantics relevant to #361",
+    "accepted_blob": "da44b76b699bb459d88128b8dbc5106f24ddaa17",
+    "changed": false
+  }
+]

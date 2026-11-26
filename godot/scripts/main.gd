@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const CaptureFileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const WAVE_TUNING := [
 	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
@@ -307,6 +308,8 @@ var pending_water_apply: Dictionary = {}
 var pending_water_exit: Dictionary = {}
 var _water_exit_request_serial: int = 0
 var water_policy_available: bool = true
+var water_policy_save_status: String = ""
+var tower_observation_status: String = ""
 
 var brush_shape: String = "circle"
 var brush_size_px: int = 9
@@ -1115,18 +1118,15 @@ func microscenario_capture() -> void:
 
 func _write_microscenario_capture(report: Dictionary) -> void:
 	var target: String = "user://microscenario-observation.json"
-	var file := FileAccess.open(target + ".tmp", FileAccess.WRITE)
-	if file == null:
-		microscenario_error = "Could not write MicroScenario capture"
-		return
 	var text: String = JSON.stringify(report, "  ")
-	file.store_string(text + "\n")
-	file.flush()
-	var error: Error = file.get_error()
-	file.close()
-	if error != OK or DirAccess.rename_absolute(ProjectSettings.globalize_path(target + ".tmp"), ProjectSettings.globalize_path(target)) != OK:
-		microscenario_error = "Could not complete MicroScenario capture write"
+	var encoded := text + "\n"
+	# Preserve the report's existing format and size policy; the helper verifies
+	# exactly these closed bytes before the native same-directory replacement.
+	var saved := CaptureFileTransaction.write_text(target, encoded, encoded.to_utf8_buffer().size())
+	if not saved.get("ok", false):
+		microscenario_error = "MicroScenario capture: " + str(saved.error)
 		return
+	if microscenario_error.begins_with("MicroScenario capture: "): microscenario_error = ""
 	if microscenario_panel != null: microscenario_panel.workbench.accept_capture(report)
 	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(text)
 
@@ -1235,10 +1235,20 @@ func water_lab_reset() -> void:
 func water_lab_save_profile() -> bool:
 	if (not water_policy_available or not water_policy_resolved.get("ok",false)
 		or not water_blind_set.is_empty()
-		or not water_active_blind_label.is_empty()): return false
-	var file: FileAccess=FileAccess.open(WATER_POLICY_PATH,FileAccess.WRITE)
-	if file==null: return false
-	file.store_string(str(water_policy_resolved.canonical_json)+"\n")
+		or not water_active_blind_label.is_empty()):
+		water_policy_save_status="Water policy save refused: no validated unblinded policy is available."
+		return false
+	var encoded: String=str(water_policy_resolved.get("canonical_json",""))+"\n"
+	var checked: Dictionary=CyberWaterExperimentProfiles.parse_profile(encoded)
+	if not checked.get("ok",false):
+		water_policy_save_status="Water policy save refused: "+str(checked.get("error","invalid policy"))
+		return false
+	var saved := CaptureFileTransaction.write_text(WATER_POLICY_PATH,encoded,
+		CyberWaterExperimentProfiles.MAX_PROFILE_BYTES)
+	if not saved.ok:
+		water_policy_save_status="Water policy save: "+str(saved.error)
+		return false
+	water_policy_save_status="Water policy saved to "+WATER_POLICY_PATH
 	return true
 
 func _water_blind_application_allowed(result: Dictionary, blind_label: String) -> bool:
@@ -1435,7 +1445,7 @@ func tower_apply_profile(resolved: Dictionary) -> void:
 	tower_command({"reset":true,"floor":tower_floor,"profile":resolved,
 		"water_exit_request_serial":_water_exit_request_serial})
 
-func tower_observation() -> void:
+func tower_observation() -> bool:
 	var report: Dictionary = {"recipe_version":CyberExperimentTower.VERSION,"seed":0,"floor":tower_floor,"context":tower_context,"platform":OS.get_name(),"utc":Time.get_datetime_string_from_system(true)}
 	if tower_context.get("water_active",false):
 		report["runtime_identity"]=water_runtime_identity()
@@ -1460,9 +1470,22 @@ func tower_observation() -> void:
 					"worker_count":report.worker_count,"action_history":report.action_history})
 			if blind_export.get("ok",false):
 				report["blind"]=blind_export.metadata
-	var file: FileAccess = FileAccess.open("user://tower-observation.json",FileAccess.WRITE)
-	if file != null: file.store_string(JSON.stringify(report,"  "))
-	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD): DisplayServer.clipboard_set(JSON.stringify(report,"  "))
+	var text := JSON.stringify(report,"  ")
+	var saved := CaptureFileTransaction.write_text(
+		"user://tower-observation.json", text, text.to_utf8_buffer().size())
+	if not saved.get("ok", false):
+		tower_observation_status = "Observation export refused · " + str(saved.error)
+		return false
+	tower_observation_status = "Observation exported to user://tower-observation.json."
+	# A failed file export must not replace an unrelated clipboard or appear
+	# successful merely because the report could be copied there.
+	if DisplayServer.has_feature(DisplayServer.FEATURE_CLIPBOARD):
+		DisplayServer.clipboard_set(text)
+		tower_observation_status += " Copied to clipboard." if DisplayServer.clipboard_get() == text \
+			else " Clipboard copy could not be confirmed; the file was saved."
+	else:
+		tower_observation_status += " Clipboard unavailable on this host."
+	return true
 
 func _water_end_blind_session() -> void:
 	if not water_active_blind_label.is_empty() and water_blind_base.get("ok",false):
@@ -1797,7 +1820,7 @@ func toggle_player_environment_tuning() -> void:
 func apply_player_environment_profile(candidate: Dictionary) -> void:
 	if actor_model_selection != &"":
 		player_environment_panel.set_error(
-			"Actor prototypes own their movement settings. Select Current sampled character in F5 to tune PENV."
+			"Actor prototypes own their movement settings. Select Sampled — baseline character (runtime surfacing) in F5 to tune PENV."
 		)
 		return
 	if (

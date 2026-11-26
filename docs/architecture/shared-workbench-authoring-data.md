@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Shared authored baseline, acknowledged edits, material-only Flatten, standalone persistence and live-session separation
 canonical-for: [shared-workbench-authoring-data, workbench-convergence-plan]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-25
 related-documents: [../systems/explore001-generated-playable-maps.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, data-ownership-and-lifetimes.md, liquid-prepared-setup-and-receipts.md, ../operations/github-development-and-release.md]
 ---
 
@@ -19,37 +19,30 @@ authoring and persistence semantics; their permissions and budgets may differ.
 This is a common semantic contract, not a newly implemented schema or permission
 to promote every experimental feature. Preserve each feature's acceptance gates.
 
-**Current candidate:** EXPLORE-001 PR #542 at `9319e689` reconstructs generated
-terrain using generated-start v1 around unchanged Setup-v2. Its baseline comes
-from the exact GEN-007 recipe/global region and material/source receipts; ordered
-edits and actor spawns reconstruct the authored start. It does not save evolved
-simulation state. Source: `godot/scripts/workbench_generated_map.gd`,
-`workbench_setup.gd`, `shared_workbench.gd` and `workbench_generator_dialog.gd`.
-The [generated-map contract](../systems/explore001-generated-playable-maps.md)
-owns current formats, capacity and user controls. Accepted main remains distinct
-from a reviewed or runtime-qualified PR.
+**Current on accepted main `00cdb02f`, checked 24 November 2026:**
+Shared Workbench contains generated starts, direct Art drawing, native PAINT
+history, material-only Flatten and independent actor composition. The accepted
+integration chain includes #542, #564/#565, #572 and #683. The source contracts
+below describe the accepted implementation; newer feature candidates do not
+become available through this status correction.
 
-**Unmerged successor candidate, 2026-11-10:** #559 Stage 1 adds direct batch drawing and worker completion in the existing owner; see the [direct art batch contract](../systems/workbench-direct-art-batches.md). It records confirmed edits in unchanged Setup-v2, without importing #531 runtime admission rules.
+| Accepted contribution | Contract and retained evidence |
+|---|---|
+| EXPLORE-001 generated starts | [Generated-map contract](../systems/explore001-generated-playable-maps.md); the original reviewed source was `9319e689`. Setup-v2 plus generated-start-v1 records exact recipe/global region, receipts, edits and spawns, rather than evolved simulation. |
+| Integrated PAINT and direct Art | [Direct batches](../systems/workbench-direct-art-batches.md) and [integrated runbook](../operations/wb-art-paint-integrated-candidate.md). Native stored-material readback, reciprocal mutation/result exclusion and shared history ordering are present. The #559/#560/#564 development checkpoints retain their original runtime scope. |
+| GEN-008 Flatten | [Qualification and owner workflow](../operations/gen008-flatten-qualification.md). The 11 November revision of #548 superseded the earlier reset-based proposal; #572 integrated the material-only authoring transaction above accepted foundation `ac0d9fb944cb`. |
+| Actor composition | [Current actor contract](../systems/workbench-actor-composition.md). Supported control/equipment/spawn values are authored; live controller, Rapier and lease state are not ordinary save payloads. |
 
-**Integrated candidate, 2026-11-11:** the
-[PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) identifies
-the current heads and their history-preserving reconciliation. It implements
-native stored-material readback, reciprocal mutation/result exclusion, deferred
-human completion and shared authored-history ordering. It retains both original
-interfaces and uses the existing Setup/generated-start formats. It remains Draft;
-its combined source-built acceptance is separate from either PR's earlier results.
-
-**GEN-008 implementation candidate, 2026-11-13:** issue [#548](https://github.com/techrote/cybersand/issues/548)'s
-**11 November revised specification** supersedes the earlier expanded Flatten
-proposal. Accepted foundation `ac0d9fb944cb` includes #564/#565; this dedicated
-Draft adds a native-backed authoring transaction on that foundation. The
-[qualification and Owner workflow](../operations/gen008-flatten-qualification.md)
-separates source-matched tests, retained-runtime publication and human acceptance.
-Keep Draft/HOLD. The dated candidate paragraphs above retain their original scope.
+Accepted source availability is distinct from each dated test run and from
+physical owner acceptance of later repairs. Source:
+[`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd),
+[`workbench_setup.gd`](../../godot/scripts/workbench_setup.gd),
+[`workbench_generated_map.gd`](../../godot/scripts/workbench_generated_map.gd),
+and [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd).
 
 ## Common authored document semantics
 
-The [WB-ACTOR-COMPOSE-001 candidate](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility)
+The accepted [WB-ACTOR-COMPOSE-001 implementation](../systems/workbench-actor-composition.md#authored-data-options-and-compatibility)
 adds an optional versioned actor-control extension within existing Setup-v2,
 generated-start and material-baseline containers. Source, bounded cadence,
 starting equipment and compatible tuning are authored values. Live policy
@@ -79,9 +72,74 @@ Native C++ remains authoritative; the existing worker owns installed cells.
 Godot owns UI/input and main-thread scene/Rapier objects. Immutable copied
 snapshots retain their existing lifetime. Remote adapters do not simulate cells.
 An accepted queue entry is not proof of native application or durable recording;
-future exact-cell authoring seams need acknowledged application and a defined
-capacity/failure outcome for the authored record. This requirement is not a claim
-that today's ordinary brush already has the agent bridge's durable receipts.
+exact-cell authoring uses acknowledged application and explicit capacity/failure
+outcomes in the native PAINT/direct-Art paths. The live disc brush has its own
+bounded authored-stamp recording; it is not a paused before/after transaction
+and does not acquire paused Undo/Redo merely because its queue accepts a sample.
+
+## Save-file replacement and failure handling
+
+**ULTIMA candidate, 25 November 2026; not yet accepted main.** The ordinary
+Setup-v2, generated-start-v1 and architectural project writers share
+[`workbench_file_transaction.gd`](../../godot/scripts/workbench_file_transaction.gd).
+The same per-file mechanism covers desktop/CLI MicroScenario capture, the
+disk recorder's `recording.json` manifest, generation accepted-recipe exports,
+Materials Lab experiment envelopes, Transport user copies, and Tower Water
+policy and observation exports, together with Art preferences. Each caller keeps
+its own format, name, size policy and reader. Ordinary, generated and architectural saves each commit one
+complete file; generated recipes are embedded rather than committed through a
+separate companion-file transaction. A [recording session](../operations/gameplay-recording.md)
+still has multiple frame/metadata files: replacing its manifest does not make
+the whole recording a single atomic transaction.
+
+The owning caller constructs or validates the complete payload before writing. The helper creates a
+uniquely named sibling staging file, writes and closes it, then reopens it and
+compares its length and every byte with the intended UTF-8 payload. It calls the
+existing native same-directory replacement primitive only after that check.
+The primitive uses POSIX `rename` or Windows `MoveFileExW` with replacement,
+without deleting the destination first or falling back to copy/delete. A
+destination that is a directory or symlink is refused. The separate binary
+material-baseline writer retains its existing implementation and contract below.
+
+This corrects a reproduced Linux defect in the preceding writer: with an actual
+128-byte process file-size limit, Godot's buffered write/flush could report no
+error, and the writer replaced a valid 475-byte ordinary start with truncated
+JSON while returning success. The closed-file byte check catches that failure
+before replacement. Failed staging, validation or replacement reports that this
+save did not replace the previous file. Cleanup removes only this attempt's
+staging path; if cleanup also fails, the response names the retained ignored
+staging file. It is not admitted as a named save.
+
+Independent processes use separate staging names. Successful concurrent saves
+have complete-file, last-successful-replacement semantics, not edit merging or
+cross-process locking. Termination before replacement can leave an ignored
+staging file; it cannot make that staging path a valid named start. The
+[technical qualification](../audits/2026-11-25-docs-renaissance-ultima/technical/persistence-design-and-results.md)
+records actual versus injected faults and the source/runtime identities.
+Linux tests establish the recorded process/I/O outcomes. Native Windows lock and
+failure cases require their own execution evidence. No directory fsync,
+power-loss durability, hostile concurrent filesystem-writer protection or
+physical-media guarantee is claimed.
+
+## Authoring lifecycle at a glance
+
+```mermaid
+flowchart TD
+    Start["Setup, generated start or material baseline"] --> Validate["Validate complete authored input"]
+    Validate --> Prepare["Prepare native and physical owners"]
+    Prepare -->|"accepted commit"| Live["Running World and authored start"]
+    Prepare -->|"refusal"| Keep["Keep previous session"]
+    Live --> Edit["Bounded edits and native receipts"]
+    Edit --> History["Record acknowledged authored change"]
+    History --> Save["Explicit Save start"]
+    Live --> Flatten["Flatten stored material IDs"]
+    Flatten --> Baseline["Replace authored baseline and history"]
+    Baseline --> Save
+```
+
+Flatten's authoring transaction leaves the running World in place. Saving a
+recipe or baseline and reopening it creates fresh material state and authored
+actor spawns; it does not resume the live branch of this diagram.
 
 ## World replacement and stale work
 
@@ -100,7 +158,7 @@ Persistent transport sessions do not imply persistence of evolved simulation.
 
 ## Large Workbench starts and host-claim projection
 
-**WORKBENCH-HOST-CLAIMS-001 candidate, 20 November 2026; Draft/HOLD:**
+**Current accepted host-claim projection (#680), checked 24 November 2026:**
 Workbench's source construction budget permits **32,768 rectangles**, while
 `liquid_host_evidence.gd::_claims` permits **32,768 values per Array** in an
 unverified host observation. A rectangle contributes five integer words
@@ -108,7 +166,7 @@ unverified host observation. A rectangle contributes five integer words
 but 6,554 do not. These capacities govern different data and do not establish
 the installed native bridge's actual construction capability.
 
-The candidate keeps four authorities distinct:
+The implementation keeps four authorities distinct:
 
 | Stage | Data and authority |
 |---|---|
@@ -151,12 +209,12 @@ The existing material-baseline format is unchanged. The
 [qualification record](../audits/2026-11-20-workbench-host-claims-qualification.md)
 owns exact source/runtime identities, boundary and refusal controls, installed
 material/actor progression, and fresh-process saved-start results on each
-actually tested platform. Keep this candidate Draft/HOLD until owner approval;
+actually tested platform. Accepted source does not broaden those test results;
 source capacity and static map checks alone do not qualify an installed build.
 
 ## Flatten and storage compatibility
 
-**Current on the GEN-008 implementation branch; approved 11 November 2026:**
+**Current on accepted main through #572; contract approved 11 November 2026:**
 Flatten copies the complete current native **stored material IDs**, including
 Empty and identities produced by material motion or reactions. It captures at a
 completed tick boundary on the existing exclusive worker. It does not read RG8,
@@ -181,6 +239,13 @@ material identity is checked before publication. Old generator recipes, source
 files and pre-Flatten painting instructions are unnecessary. Temperature,
 velocity, fractional fluid quantity, airborne parcels, tick and other transient
 physical state are not persisted by this material-only format.
+
+For example, Flatten does not stop a live Plant by resetting its energy: it
+does not rewrite any live cell. Reopening the saved material layout creates
+fresh Plant cells with normal material initialization. The stored two-byte ID
+does not encode the Plant's prior energy, age or evolved physical state. This
+distinction follows the native [material-only readback](../../native/include/cybersand/material_baseline.hpp)
+and the ordinary fresh-World initialization path; it is not a new growth rule.
 
 ### Native readback, edit fencing and failure atomicity
 

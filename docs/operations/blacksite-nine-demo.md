@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Nine authored districts in one bounded native world; entry, routes, camera map, reset, presentation and reproducible captures; no broad physics qualification
 canonical-for: [blacksite-nine-demo, blacksite-nine-continuity, blacksite-nine-scene-authoring, blacksite-nine-presentation]
-last-reviewed: 2026-10-18
+last-reviewed: 2026-11-24
 related-documents: [neon-reliquary-demo.md, microscenarios.md, ../systems/material-appearance-and-rendering.md, ../systems/world-storage-and-interest-region.md, ../audits/2026-10-18-blacksite-nine.md]
 ---
 
@@ -22,15 +22,28 @@ reciprocal passages connect neighbouring districts. The map buttons select camer
 views of that world. Crossing a district boundary preserves
 the player, materials and edits on both sides; **R restores the entire complex**.
 The separate [Neon Reliquary descent](neon-reliquary-demo.md) retains its four
-independently installed district scenes and its existing F11 launcher.
+independently installed district scenes and its own feature-launcher entry.
 
 ![Blacksite Nine rendered as one connected complex](../images/blacksite-nine/blacksite-nine.png)
 
+Retained graphical capture of the standalone complex. Its
+[original evidence](../audits/2026-10-18-blacksite-nine.md) owns the capture recipe
+and runtime scope; this is not a screenshot of a Shared Workbench integration.
+
 ## Open and explore Blacksite Nine
 
-**Desktop:** press **Shift+F11**, or click **Blacksite Nine / Shift+F11** above the
-world. A normal Godot launch can pass `-- --blacksite-nine` after the project
-arguments. **Web:** choose **Blacksite Nine / 3×3** in the demo menu; Shift+F11 is
+**Desktop:** start the project with the [pinned runtime](getting-started.md) and
+choose **Blacksite Nine — connected industrial complex** in the feature launcher.
+From the ordinary materials sandbox, **Shift+F11** or the **Blacksite Nine /
+Shift+F11** button also installs it. For a direct launch from the repository root:
+
+```sh
+godot --path godot -- --blacksite-nine
+```
+
+Here `godot` means the pinned executable described in the first-run guide.
+Shared Workbench has separate key handling; its Shift+F11 is not this launch route.
+**Web:** choose **Blacksite Nine / 3×3** in the demo menu; Shift+F11 is
 also available while the game has keyboard focus. Both entry points install the
 same native MicroScenario definition, `showcase/blacksite-nine`; the Web demo ID
 is `blacksite_nine`.
@@ -47,7 +60,7 @@ and its connecting passages.
 
 | Control | Action |
 |---|---|
-| Shift+F11 / Blacksite Nine launcher | Install the original, paused nine-district complex |
+| Blacksite Nine launcher / ordinary Main Shift+F11 | Install the original, paused nine-district complex |
 | 3×3 tile map | Open the spatial map and frame one 320 × 320 district |
 | Whole complex | Frame the entire 960 × 960 composition |
 | Follow player / F | Enable a 480 × 270 following view; F toggles follow off again |
@@ -58,14 +71,17 @@ and its connecting passages.
 | Depth & haze | Toggle distant scenery, haze, wall exposure and recess shading |
 | G | Toggle the existing material glow |
 | Mouse paint/erase | Edit the native material cells in the current view |
+| F2 (desktop) | Close this standalone session and return to the feature launcher |
 
 The map highlights the **player's district** and the control row names it.
 Selecting another district view does not move the player. The popup blocks
 painting, movement, jetpack and camera-pan input beneath it. After selecting or
 closing it, release held mouse buttons and movement/pan keys before a new input
 gesture resumes. Ordinary material simulation may continue while the map is
-open. **F10 remains the desktop gameplay recorder**. Plain
-**F11** continues to open Neon Reliquary.
+open. **F10 remains the [desktop gameplay recorder](gameplay-recording.md)**
+in this ordinary Main host. Plain **F11** opens Neon Reliquary and replaces the
+complex. These controls do not supply Shared Workbench's Save start or Paint
+history. F2 closes the session; a later launch starts from the authored complex.
 
 Current controls and accepted-install handling are defined by
 [`CyberBlacksiteNinePresentation`](../../godot/scripts/blacksite_nine_presentation.gd),

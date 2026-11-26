@@ -6,7 +6,7 @@ status: Planned
 scope: Proposed bounded material authoring and item recipes; current compiled substrate is identified separately
 keywords: [visual material editor, item recipe, GUID, bounded IR, compiler, program registry]
 related-documents: [../systems/materials-and-rule-kernels.md, rendering-and-gameplay-bridges.md, ../research/sandspiel-performance-and-material-port.md]
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-24
 ---
 
 # Item-authored material programs
@@ -18,6 +18,12 @@ runtime program registry and equipment/spawner editor are not implemented.
 This page is a proposal, not a runtime API or an accepted serialized schema.
 Its graph-language inspiration is recorded in the retained
 [material research ledger](../research/sandspiel-performance-and-material-port.md).
+
+The accepted [Materials Lab](../operations/materials-lab-authoring.md) already
+provides bounded draft authoring, validation and isolated comparison. The
+[shadow catalogue compiler](../operations/material-catalogue-shadow.md) and
+accepted native capability consumers also exist. They do not implement the
+general particle-program language, runtime registry or item recipe proposed here.
 
 **Current substrate:** [material descriptors](../../native/include/cybersand/material.hpp),
 [MaterialRules](../../native/include/cybersand/material_rules.hpp) and
@@ -55,9 +61,13 @@ kernel behind stable material identity.
 The proposed validator must establish fixed bounds on radius, instructions,
 reads/writes, emitted events and compact-state usage. Optional fields must be
 declared before allocation/scheduling. Names and ranges should explain the
-meaning of each state register. The current maximum rule radius is two cells;
-an authored program must fit its selected geometry rather than silently
-expanding worker write domains.
+meaning of each state register. The ordinary `WorldConfig` default rule radius
+is two cells; an IN World admits radius three because its final support/contact
+reads reach three cells while travel writes reach two. These are distinct
+verified execution domains, not a universal two-cell ceiling. An authored
+program must fit its selected geometry rather than silently expanding worker
+write domains. Source: [IN parameters](../../native/include/cybersand/inertial_cellular.hpp)
+and [World construction](../../native/src/world.cpp).
 
 **Rejected within this proposal:** arbitrary scripts per cell, recursion,
 unbounded loops, hot allocation, file/network access, Godot calls, thread
@@ -67,8 +77,12 @@ does not yet provide generalized worker-produced event emission.
 
 ## How many custom materials would fit?
 
-**Current:** material identity is one byte. IDs 0–80 except 10 are valid: Empty
-plus 79 paintable materials. A proposed fixed resident catalogue has at most
+**Current:** the compiled `Material` enum is one byte. IDs 0–131 except 10 are
+valid: Empty plus 130 paintable materials, through `HeatShieldTile`. The native
+cell carrier is independently eight bytes; its wider material bit field does
+not expand the admitted enum or serialized catalogue. See the
+[current identity and storage contract](../systems/materials-and-rule-kernels.md#identity-descriptors-and-state).
+A proposed fixed resident catalogue has at most
 255 non-empty values before further reservations; it must report exhaustion.
 Silently widening every cell or hiding a program index in an undocumented
 state byte would undermine the current compact-state contract.
@@ -76,7 +90,8 @@ state byte would undermine the current compact-state contract.
 **Deferred experiment:** optional per-chunk program/variant storage if real
 content demonstrates that limit. Evaluate memory traffic, rule lookup, activity,
 snapshot, streaming and save implications before selecting a representation.
-No extra plane or dynamic GUID registry exists today.
+No program-registry plane or dynamic GUID registry for this proposal exists
+today. Existing solver-specific fields have their own accepted contracts.
 
 ## Which decisions and evidence are needed before implementation?
 
@@ -89,7 +104,9 @@ an explicit drained transition and state migration.
 Acceptance must include radius and instruction rejection, deterministic
 one/multiworker execution, conservation where applicable, bounded event
 pressure and safe failure of invalid programs. No authoring-specific acceptance
-run exists. The [roadmap](../reference/status-and-roadmap.md) tracks priority;
+run for this proposed general program language exists. Existing Materials Lab
+and catalogue tests qualify their narrower tools. The
+[roadmap](../reference/status-and-roadmap.md) tracks priority;
 [ownership](data-ownership-and-lifetimes.md) and
 [ADR-008](../decisions/ADR-008-bounded-approximate-fidelity.md) constrain any
 future runtime policy.

@@ -1,0 +1,235 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "run_id": 45727145612,
+  "artifacts": [
+    {
+      "id": 15078821152,
+      "name": "ultima-windows-45727145612-1",
+      "size_in_bytes": 350591,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15078821152",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15078821152/zip",
+      "expired": false,
+      "created_at": "2026-11-26T01:24:07Z",
+      "expires_at": "2027-02-24T00:13:09Z",
+      "updated_at": "2026-11-26T01:24:07Z",
+      "digest": "sha256:1862e59abc627d6810140230c5ea6a970b5120a6fb49a879be1a57f765ef58c4",
+      "workflow_run": {
+        "id": 45727145612,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "docs/docs-renaissance-ultima-001",
+        "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117"
+      }
+    },
+    {
+      "id": 15077893698,
+      "name": "ultima-linux-45727145612-1",
+      "size_in_bytes": 395070,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077893698",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077893698/zip",
+      "expired": false,
+      "created_at": "2026-11-26T01:23:48Z",
+      "expires_at": "2027-02-24T00:13:09Z",
+      "updated_at": "2026-11-26T01:23:48Z",
+      "digest": "sha256:e141fc30363b17474a53e448b8ffc145ff6505d8c3bad042f9594bfccaf6d10b",
+      "workflow_run": {
+        "id": 45727145612,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "docs/docs-renaissance-ultima-001",
+        "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "id": 139599856569,
+      "name": "linux",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 45727145612,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Check out pinned companion documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Check out exact candidate with retained runtime objects",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Select Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Check evaluator admission and integrity guards",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Acquire exact official engine archive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Verify materialized provenance and execute authored workflows",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7
+        },
+        {
+          "name": "Retain non-publishing qualification evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Post Select Python 3.12",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 14
+        },
+        {
+          "name": "Post Check out exact candidate with retained runtime objects",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        },
+        {
+          "name": "Post Check out pinned companion documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17
+        }
+      ]
+    },
+    {
+      "id": 139599857053,
+      "name": "windows",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 45727145612,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Check out pinned companion documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Check out exact candidate with retained runtime objects",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Select Python 3.12",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Check evaluator admission and integrity guards",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Acquire exact official engine archive",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Verify materialized provenance and execute authored workflows",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7
+        },
+        {
+          "name": "Stage pinned notices and signed Windows redistribution dependencies",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8
+        },
+        {
+          "name": "Prepare source-matched test-only Workbench evaluator",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Verify copied evaluator module loading with isolated disposable data",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 10
+        },
+        {
+          "name": "Retain test-only Workbench evaluator for owner qualification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        },
+        {
+          "name": "Retain non-publishing qualification evidence",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post Select Python 3.12",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 22
+        },
+        {
+          "name": "Post Check out exact candidate with retained runtime objects",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Post Check out pinned companion documentation",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ]
+    }
+  ]
+}

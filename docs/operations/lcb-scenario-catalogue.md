@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: LCB versioned scenario catalogue, protected Current-default runner and historical campaign accounting; current-main four-family support and bounded successor comparison registration remain distinct from retained results
 canonical-for: [lcb-scenario-catalogue]
-last-reviewed: 2026-11-03
+last-reviewed: 2026-11-25
 related-documents: [lcb-water-comparison-and-fixtures.md, lcb-manual-comparison-ux.md, ../architecture/liquid-solver-family-policy.md, microscenarios.md, ../audits/2026-10-23-lcb003-scenario-qualification.md]
 ---
 
@@ -50,14 +50,26 @@ The following admission/campaign account retains the original2026-10-23–25
 scope. Its then-blocked native-family prerequisites have since landed; their
 retained campaign arms still need separately qualified successor execution.
 
-**LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). Only a separately scoped initial opt-in #200 start is admitted. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) is Current in source; #212 is no longer held but is outside this accepted main checkpoint. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
+**Original October admission record — LCB-000 Gates A–E PASS; #213 closed completed (2026-10-24).** See the [final admission checkpoint](../reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23). That initial decision admitted a separately scoped opt-in #200 start. On 2026-10-24 the owner lifted the hold for the bounded [#200 policy foundation](../reference/status-and-roadmap.md#lcb-001-policy-foundation--2026-10-24) and then authorized the bounded LCB implementation, including the previously held #200 pressure reference and #212 inertial work ([owner decision](../reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)). The opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md) was Current in that October source; #212 was no longer held but remained outside that checkpoint. Both families are implemented in the current source described above. This does not admit production default changes, generic #12 Stage-4 cell↔Rapier ownership, a production Cell-carrier migration, full GEN-006 streaming, new pressure-to-Rapier forces or a schema/ABI freeze.
 
-The #213 prerequisite is satisfied. Remaining arm dependencies below still
-block execution; the registered historical inventories are unchanged.
+The merged foundation comprises the comparison contract and protected fixtures
+in [#215](https://github.com/techrote/cybersand/pull/215), the controlled scenario
+runner and qualification in [#217](https://github.com/techrote/cybersand/pull/217),
+and the mechanism, transition and handoff records in
+[#226](https://github.com/techrote/cybersand/pull/226). Their combined foundation
+entered main at
+[`e95fe85d`](https://github.com/techrote/cybersand/commit/e95fe85d82e108a682a2ae0212d85569f1c03cd8).
+These links establish the original contracts and apparatus in accepted ancestry;
+they are not fresh execution of today's registered campaign.
+
+The original #213 prerequisite was satisfied. The registered historical arm
+inventories below remain unchanged; a blocked registry arm is an unqualified
+campaign, not proof that its named native solver is still absent. Current
+native/app availability is described above and in the canonical family contract.
 
 **Current apparatus.** The scenario definitions, runner, registry tooling and
-regressions on this page exist in source and run against the unchanged native
-World. Every *executed* result is a **Current-defaults** control: Water
+regressions on this page exist in source and use the native World. Every
+*executed result in the retained October campaign* is a **Current-defaults** control: Water
 `freemass_v1`, other liquids `cellular_yield_v1`.
 
 **Campaign accounting** uses the signed rule `lcb-signed-ledger-v7`. It
@@ -191,8 +203,11 @@ These belong to #202's live host and #203's packaged runs.
 
 ## Registry contract (for the LCB-003 UI)
 
-The UI reads `res://tests/fixtures/lcb/lcb-scenario-registry.json` (schema
-`lcb-scenario-registry-v1`). Each entry has:
+The retained `res://tests/fixtures/lcb/lcb-scenario-registry.json` uses schema
+`lcb-scenario-registry-v1`. Its frozen campaign records feed the catalogue
+regressions; full UI consumption remains a #202 requirement. The current
+[comparison panel](lcb-manual-comparison-ux.md) has eight policy presets and two
+protected setups, not a completed 27-scenario registry picker. Each entry has:
 
 | Field | Meaning |
 |---|---|
@@ -207,7 +222,7 @@ The UI reads `res://tests/fixtures/lcb/lcb-scenario-registry.json` (schema
 | `qualification` | Windows local native result, Linux CI route, and Web/Rapier/render status (not executed) |
 | `goldens` | initial Water quantity and tick-30 content/state hashes used by the regression |
 
-UI rules (to be enforced by #202):
+Registry UI rules (remaining #202 integration):
 - offer only arms with `executable_today: true`;
 - show blocked arms with their `reason` and `depends_on`;
 - never fall back to another family.
@@ -242,9 +257,18 @@ distinct families.
 | NC-3 | Native preparation and explicit Godot policy-constructor regressions exercise `normalization_required`, preserving the live session. Current panel/prepared constructors supply explicit initial normalization; future fractional sources still refuse. The retained registry/negative-contract record still needs separately qualified consumption. |
 | NC-4 | Merged #253 executes certificate/revocation and body/material/authority tests. Its source/platform evidence does not promote the retained registry NC-4 arm |
 | NC-5 | **Blocked (#212)** under M1. The Current equivalent is measured (`salt-dissolution`, mixed M0). |
-| NC-6 | Retained cross-family campaign remains blocked/unmeasured. Native/Godot mixed-family controls and hash/CYPS2 (non-IN) or3 (IN) now exist; those controls do not change this registry's campaign status. |
+| NC-6 | Retained cross-family campaign remains blocked/unmeasured. Native/Godot mixed-family controls exist. The original non-IN/IN controls used hash/CYPS2/3; those formats are not a universal current continuation claim and do not change this registry's campaign status. |
 | NC-7 | **Executed:** campaign 1/4-worker parity plus regression tick-30 parity |
 | NC-8, NC-9 | **Blocked (#202):** presentation/exploratory flags live in the UI. Partial cover: the native-only runner refuses player-enabled definitions. |
+
+Current `World::physical_state_hash_version()` and
+`physical_state_format_version()` select by the actual enabled configuration.
+Ballistic/signed-IN and enlarged pressure-gas modes use their later formats;
+Wave has a physical hash but reports format **0**, so exact CYPS save is
+unsupported. These native formats also omit host-owned body masks and do not
+supply complete coupled continuation. Follow the
+[save/physical-state contract](../reference/level-saves-and-replay.md), not an
+older campaign's format number, when choosing a current persistence operation.
 
 Additional contracts executed by `test_lcb_negative_contracts.gd`:
 
@@ -273,9 +297,14 @@ Additional contracts executed by `test_lcb_negative_contracts.gd`:
 
 From the repository root with pinned Godot 4.7 and a source-matched native
 runtime. `<list>` is a file of absolute definition paths, one per line.
+Create distinct fresh output directories before either Godot run; the runner
+writes files but does not create their parents. `--source-sha` is a caller-supplied
+identity, not proof of the loaded native bytes. Retain actual artifact identity,
+source/input matching and the recorded result status. These fixed-tick campaigns
+execute simulation work; they are not required merely to review Markdown.
 
 ```bash
-python tools/lcb/scenario_catalogue.py --check
+python3 tools/lcb/scenario_catalogue.py --check
 ```
 
 ```bash
@@ -287,11 +316,11 @@ godot --headless --path godot --script res://tests/run_lcb_scenario_suite.gd -- 
 ```
 
 ```bash
-python tools/lcb/lcb_registry.py reduce --w1 <dir-w1> --w4 <dir-w4> --out docs/reference/lcb-scenario-controls-<date>.json --date <date> --platform "<platform>" --source-sha <40-hex>
+python3 tools/lcb/lcb_registry.py reduce --w1 <dir-w1> --w4 <dir-w4> --out docs/reference/lcb-scenario-controls-<date>.json --date <date> --platform "<platform>" --source-sha <40-hex>
 ```
 
 ```bash
-python tools/lcb/lcb_registry.py build --check
+python3 tools/lcb/lcb_registry.py build --check
 ```
 
 ```bash
@@ -310,6 +339,13 @@ it is an explicit, reviewed change.
 
 ## Remaining native integration requirements (LCB-003/004)
 
+The numbered list preserves the dependency vocabulary of the October
+registration. Native per-material policy, Water/Brine IN and PF variants have
+since been accepted; those parts are implemented foundations, while recorded
+registry campaign execution and complete #202/#203 qualification remain separate.
+The current panel's accepted constructor routes do not promote the frozen arm
+classifications or close those programmes.
+
 1. **#200:**
    - `LiquidSolverPolicy`, its packed bridge, refusal codes and effective
      readback are Current (2026-10-24 foundation; NC-1, NC-2 and NC-10
@@ -324,22 +360,28 @@ it is an explicit, reviewed change.
      CYPS1 refuses. Actual Windows/Linux publication and all required gates pass
      at the [accepted checkpoint](../audits/2026-10-25-lcb001-shared-contract-acceptance.md).
      Full host/registry campaign qualification remains #202/#203.
-2. **#212:** `inertial_cellular_v1` plus Brine qualification unblocks BRINE-IN,
-   M1 and M2. W-IN requires its own real Water admission/qualification; a Brine
-   proof does not satisfy the approved four-model controlled-Water contract.
-   M1 is the first registered three-family campaign target.
-3. **#201:** pressure `cached`/`cached_dormant` variants with equivalence to
-   `reference`, and cross-family invalidation (NC-4).
+2. **#212 — implemented native prerequisite:** Brine IN and the separately
+   admitted Water IN already exist. A Brine proof alone never qualified Water;
+   the retained BRINE-IN, M1, M2 and W-IN campaign rows still need their own
+   source-matched execution. M1 remains the original registered three-family
+   campaign target.
+3. **#201 — implemented native prerequisite:** pressure `cached` and
+   `cached_dormant` variants exist. Their native equivalence and invalidation
+   evidence does not execute or promote this registry's retained NC-4 arm.
 4. **#202:**
-   - remaining full-application constructor routing, typed receipt/provenance
-     collection and explicit Godot normalization integration;
+   - remaining complete constructor routing and typed receipt/provenance
+     collection beyond the accepted bounded routes; explicit initial Godot
+     normalization is already available in those prepared hosts;
    - registry consumption in the launcher, Tower and comparison panel;
    - exploratory marking (NC-9) and presentation-only overlays (NC-8);
    - live player, Rapier body and render stations, which the native-only
      runner refuses;
    - per-family observation fields such as overfill, velocity and gas.
-5. **#203:** sequential isolated timing, Linux/Windows packaged execution and
-   Web profiles. The Windows-local timings here are characterization only.
+5. **#203:** sequential isolated timing and source-matched packaged execution.
+   Further Web/browser work was deferred for this LCB epic; a future Web
+   experiment follows the [owner's Web scope](web-threading.md), without creating
+   a maintained Web release obligation. The Windows-local timings here remain
+   characterization only.
 6. **Optional runner extension:** a schema-2 observation metric for front
    position and occupied extent. Bands are used today because the contract
    admits only `water_integer`, `material_cells`, `tick` and `cell_state`.

@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "verdict": "APPROVE within verified Linux/headless and source scope",
+  "implementation_lane": "Lead",
+  "source_head": "9893cd376a97b68eac7778ca2f4733989109ca3e",
+  "source_state": "pending lead working patch; exact input hashes bound",
+  "input_sha256": {
+    "godot/scripts/art_provider.gd": "6ccf923917224f7998fe2fc5b457fe0103d6010a055a47ae1384ddc7f7085df1",
+    "godot/scripts/art_traffic_archive.gd": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+    "godot/scripts/art_batch_panel.gd": "f851b6394c3619c22cebc088ece57346d024af13bfedb5673de149abeba92227",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "godot/tests/test_art_storage_integrity.gd": "da8b19a86019a2fd2b551d1bb914b087e99ae48d9618fbd6e750a99b3591a4df",
+    "godot/tests/test_art_traffic_integrity.gd": "eeb44c347738b70958564b0534683ad667505de34ceb65dddf97be468beebcde",
+    "godot/tests/test_art_traffic_panel_safety.gd": "c76d1d2a74752ebe30f65a68fec84be0de8746af5ec433d15f16cca551c83cc4",
+    "godot/tests/test_art_session_log.gd": "f2cf169f47627ca4ed3daf67977c5ee6132b7c931f667485e949463facea42af",
+    "godot/tests/test_art_panel_ui.gd": "462eba70a4ebca1a30c0185bf6b0b1366e210343a4d534738fe76fb640c1af53"
+  },
+  "fault_input_sha256": {
+    "scripts/art_provider.gd": "6ccf923917224f7998fe2fc5b457fe0103d6010a055a47ae1384ddc7f7085df1",
+    "scripts/art_traffic_archive.gd": "6fd1ac21d56646a5d2b87210c486fbe422567642223da939d5576125a8d1e811",
+    "tests/art_storage_fault_child.gd": "ff5be72bb0f73ec3b97e2a7a589601a6f127adc96054c69f48a78929c65092f5"
+  },
+  "runner_sha256": "1eea6e36400d689b5bdba0502d6e0860317b2696066bdbb4d6e2ce6874d18c61",
+  "fault_report_sha256": "97cf360e4824ea91e575e841a084937e8b673177d0e991c763b4c5634e8c9b43",
+  "regression_report_sha256": "9f163b34bb79263e7d55bf9566cae570acfab04b5852f6fb70778c6ab7835bbf",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "real_os_cases": 6,
+  "real_os_passed": true,
+  "checks": [
+    {
+      "script": "test_art_storage_integrity.gd",
+      "checks": 19,
+      "exit_code": 0,
+      "engine_errors": false,
+      "log_sha256": "dbdc923e9c44207e9f0e9d26956501be2b2a630a5b52f934b5e136a93ad08adf"
+    },
+    {
+      "script": "test_art_traffic_integrity.gd",
+      "checks": 148,
+      "exit_code": 0,
+      "engine_errors": false,
+      "log_sha256": "2b82524655a047f2b0edfd7d0e86804c2f2a5f292e1415179a990d2b176ea7bb"
+    },
+    {
+      "script": "test_art_traffic_panel_safety.gd",
+      "checks": 12,
+      "exit_code": 0,
+      "engine_errors": false,
+      "log_sha256": "d4c5f8e62fdc68ede4c314c2121356120d4a0baa96aebd699e88011debed4cbb"
+    },
+    {
+      "script": "test_art_session_log.gd",
+      "checks": 35,
+      "exit_code": 0,
+      "engine_errors": false,
+      "log_sha256": "3dcc080e71efdba32c551aaa2fd1e6c6ea6d7efe2d4c77e08783d9da1d97d1c4"
+    },
+    {
+      "script": "test_art_panel_ui.gd",
+      "checks": 64,
+      "exit_code": 0,
+      "engine_errors": false,
+      "log_sha256": "32a49590dfa67caad9f69ee09accad2c0f7b97dbe147894f82778b740e421ef9"
+    }
+  ],
+  "input_stability": {
+    "during_run": true,
+    "post_run_hashes_equal": true
+  },
+  "source_review": [
+    "Export verifies submitted byte digest after close with bounded cooperative polling and cancellation before existing native replacement.",
+    "New segment verifies header and event before publication/ACK; append verifies only newly submitted bounded region and freezes further session writes on refusal.",
+    "Source alias checks, credential redaction, native-history admission and session-only panel behavior retained.",
+    "No new archive-sized retained buffer; existing 12,588,086-byte legacy-ID test peak static growth169604bytes under8388608byte guard."
+  ],
+  "observed_failure_contract": [
+    "Export short write refuses and preserves old whole file.",
+    "New-event short write refuses without publishing valid log path or stored-event acknowledgement.",
+    "Append short write refuses acknowledgement; old prefix remains byte-identical and replay recovers the prior complete event."
+  ],
+  "limits": [
+    "No Windows, rendered GUI, GPU, power-loss, hostile concurrent same-directory writer or model/provider execution in this review.",
+    "Configured runtime digests are not loaded-module attestation.",
+    "Minor subsequent comment/cleanup-message changes require separately recorded delta review."
+  ],
+  "configured_runtime_files": [
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "bytes": 5253776,
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "bytes": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  ],
+  "later_source_review": {
+    "art_provider_sha256": "19447bbe2e8742c2da1f8277f8c604ec01ad9fec25d88bacd8cfebc20f5bf789",
+    "scope": "Three small deltas reviewed after original execution: stored-pointer comment; cancellation attributes this export only; failed new-segment cleanup checks return and reports retained path.",
+    "verdict": "APPROVE source review; original six-case/278-check receipt remains pinned to its original bytes; final integrated runner must execute delivered version."
+  }
+}

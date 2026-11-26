@@ -1,0 +1,29 @@
+{
+  "admitted": true,
+  "metadata": {
+    "title": "Test",
+    "status": "Current",
+    "document-kind": "contract",
+    "authority": "current-documentation",
+    "scope": "Current instruction",
+    "canonical-for": "[test]",
+    "last-reviewed": "2026-11-25",
+    "related-documents": "[]"
+  },
+  "hit": {
+    "rank": 1,
+    "score": 0.287682,
+    "path": "systems/current.md",
+    "title": "Test",
+    "heading": "Current",
+    "part": 1,
+    "authority": "current-documentation",
+    "retrieval_policy": "historical-isolation-v4",
+    "text": "Document: Test\nPath: systems/current.md\nauthority: current-documentation\ndocument-kind: contract\nstatus: Current\nscope: Current instruction\ncanonical-for: [test]\nlast-reviewed: 2026-11-25\nSection: Current\nResume simulation immediately.",
+    "source_sha256": "b9bfcd2a22b401e70740863a16a552829b529cef6891dca8efdf64a7f0f16c6d",
+    "context_sha256": "dd624df54dce35132b45eea0594ad05676930003cc8c40e30a28ded3fe61d5ea",
+    "status": "Current",
+    "document_kind": "contract",
+    "id": "e79d89e020d4ce4e3f2004439fc7d66987b28028a65f61441ad26e607b89c59c"
+  }
+}

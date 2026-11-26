@@ -1,0 +1,145 @@
+{
+  "source": "7919e8a752e87e68c4193b3a04960164ab62e117",
+  "runs": [
+    {
+      "id": 45727145659,
+      "name": "Documentation and provenance",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145659",
+      "updated_at": "2026-11-26T00:20:47Z"
+    },
+    {
+      "id": 45727145526,
+      "name": "World-art integrated unattended capture qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145526",
+      "updated_at": "2026-11-26T00:21:34Z"
+    },
+    {
+      "id": 45727145660,
+      "name": "Art session-only logging qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145660",
+      "updated_at": "2026-11-26T00:14:45Z"
+    },
+    {
+      "id": 45727145603,
+      "name": "Atlas agent runner CI",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145603",
+      "updated_at": "2026-11-26T00:14:15Z"
+    },
+    {
+      "id": 45727145640,
+      "name": "IN-TOOLS 361 renewed-main Windows causal gate",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145640",
+      "updated_at": "2026-11-26T00:14:22Z"
+    },
+    {
+      "id": 45727146058,
+      "name": "World-art integrated preview real GUI qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727146058",
+      "updated_at": "2026-11-26T00:15:25Z"
+    },
+    {
+      "id": 45727145555,
+      "name": "PLAY desktop manual packet identity",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145555",
+      "updated_at": "2026-11-26T00:15:22Z"
+    },
+    {
+      "id": 45727145822,
+      "name": "GDExtension build and current Godot regression",
+      "status": "completed",
+      "conclusion": "skipped",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145822",
+      "updated_at": "2026-11-26T00:13:11Z"
+    },
+    {
+      "id": 45727145538,
+      "name": "Palette shader actual backend qualification",
+      "status": "completed",
+      "conclusion": "skipped",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145538",
+      "updated_at": "2026-11-26T00:13:19Z"
+    },
+    {
+      "id": 45727145500,
+      "name": "Native C++ validation",
+      "status": "completed",
+      "conclusion": "skipped",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145500",
+      "updated_at": "2026-11-26T00:13:11Z"
+    },
+    {
+      "id": 45727145604,
+      "name": "Native source-scope advisory (report only)",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145604",
+      "updated_at": "2026-11-26T00:13:46Z"
+    },
+    {
+      "id": 45727145762,
+      "name": "IN-TOOLS 361 A01 exact-head independent qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145762",
+      "updated_at": "2026-11-26T00:13:46Z"
+    },
+    {
+      "id": 45727145564,
+      "name": "Architectural Generator A+B source qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145564",
+      "updated_at": "2026-11-26T00:13:52Z"
+    },
+    {
+      "id": 45727145612,
+      "name": "ULTIMA non-publishing authored-workflow qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "head_sha": "7919e8a752e87e68c4193b3a04960164ab62e117",
+      "attempt": 1,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45727145612",
+      "updated_at": "2026-11-26T01:24:12Z"
+    }
+  ]
+}

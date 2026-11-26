@@ -16,19 +16,13 @@ import sys
 from urllib.parse import unquote, urlsplit
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "docs"))
-from retrieval_policy import require_authority, frontmatter_field
+from retrieval_policy import require_authority, frontmatter_field, FOCUSED, NAVIGATION, DOCUMENT_KINDS, default_selection_allowed, retrieval_selection
 from engineering_history import check as check_history
 
 ROOT = Path(__file__).resolve().parents[2]
 STATUSES = {"Current", "Approved", "Approved design", "Planned", "Deferred", "Rejected", "Ambiguous"}
-KINDS = {"contract", "design", "decision", "guide", "runbook", "reference", "evidence", "navigation", "research"}
+KINDS = DOCUMENT_KINDS
 REQUIRED = {"title", "status", "scope", "last-reviewed", "document-kind", "canonical-for", "related-documents"}
-FOCUSED = {"architecture", "systems", "operations", "reference", "decisions", "research"}
-NAVIGATION = (
-    "docs/README.md", "docs/reference/retrieval-index.md", "README.md", "AGENTS.md",
-    "CONTRIBUTING.md", "third_party/README.md", "godot/native_extension/README.md",
-    ".github/pull_request_template.md",
-)
 
 def metadata(text: str) -> dict:
     """Read the deliberately restricted scalar/inline-list metadata convention."""
@@ -42,8 +36,8 @@ def metadata(text: str) -> dict:
         field = frontmatter_field(line)
         if field is not None:
             key, value = field
-            if key == "authority" and key in result:
-                raise ValueError("Duplicate frontmatter authority")
+            if key in {"authority", "retrieval", "document-kind"} and key in result:
+                raise ValueError("Duplicate frontmatter " + key)
             if value.startswith("[") and value.endswith("]"):
                 result[key] = [v.strip().strip("\"'") for v in value[1:-1].split(",") if v.strip()]
             elif value:
@@ -113,6 +107,8 @@ def check(root: Path) -> dict:
         try:
             meta = metadata(text)
             require_authority(path, root, historical=False, metadata=meta)
+            if not default_selection_allowed(path, root, meta):
+                errors.append(f"{relative}: default corpus cannot select explicit-only or navigation documents")
         except ValueError as exc:
             errors.append(f"{relative}: {exc}")
             continue
@@ -146,6 +142,14 @@ def check(root: Path) -> dict:
         relative = path.relative_to(docs).as_posix()
         if relative.split("/")[0] in FOCUSED and relative not in selected and relative not in excluded and relative not in navigation and relative not in known_navigation:
             errors.append(f"Focused document has no corpus or explicit excluded entry: {relative}")
+        if relative.split("/")[0] in FOCUSED and relative in excluded and relative not in selected:
+            try:
+                meta = metadata(path.read_text(encoding="utf-8-sig"))
+                require_authority(path, root, historical=False, metadata=meta)
+                if meta.get("document-kind") != "navigation" and retrieval_selection(meta) != "explicit-only":
+                    errors.append(f"{relative}: excluded focused document needs retrieval: explicit-only for fallback containment")
+            except ValueError as exc:
+                errors.append(f"{relative}: {exc}")
     # Navigation is checked for links without becoming default answer material.
     link_paths = list(paths)
     for relative in navigation:
@@ -184,27 +188,33 @@ def check(root: Path) -> dict:
                 other = texts.setdefault(resolved, resolved.read_text(encoding="utf-8-sig"))
                 if unquote(url.fragment) not in anchors(other):
                     errors.append(f"{relative}: missing heading anchor {target}")
-    fixture_path = docs / "reference/retrieval-questions.json"
+    # Accepted main appended a revision-sensitive CI case to its original file.
+    # Keep that 33-case input unchanged as dated evidence. Current structural
+    # checks use the byte-preserved original 32 and the separately reviewed CI
+    # correction; every checked case still requires an admitted current route.
+    fixture_paths = [docs / "reference/retrieval-questions-frozen32.json",
+                     docs / "reference/retrieval-questions-ci-closure-current-v1.json"]
     question_count = 0
-    try:
-        fixture = json.loads(fixture_path.read_text(encoding="utf-8-sig"))
-        seen = set()
-        for question in fixture["questions"]:
-            question_count += 1
-            qid = question["id"]
-            if qid in seen:
-                errors.append(f"Duplicate retrieval question ID: {qid}")
-            seen.add(qid)
-            if not question.get("facts") or not question.get("query"):
-                errors.append(f"{qid}: retrieval fixture requires a query and expected facts")
-            if not any(c in selected for c in question.get("canonical", [])):
-                errors.append(f"{qid}: no canonical route exists in the retrieval corpus")
-            for source in question.get("sources", []):
-                source_path = source.split("::", 1)[0]
-                if not (docs / source_path).exists():
-                    errors.append(f"{qid}: missing expected-fact source {source_path}")
-    except (OSError, ValueError, KeyError, TypeError) as exc:
-        errors.append(f"Cannot validate retrieval questions: {exc}")
+    seen = set()
+    for fixture_path in fixture_paths:
+        try:
+            fixture = json.loads(fixture_path.read_text(encoding="utf-8-sig"))
+            for question in fixture["questions"]:
+                question_count += 1
+                qid = question["id"]
+                if qid in seen:
+                    errors.append(f"Duplicate retrieval question ID: {qid}")
+                seen.add(qid)
+                if not question.get("facts") or not question.get("query"):
+                    errors.append(f"{qid}: retrieval fixture requires a query and expected facts")
+                if not any(c in selected for c in question.get("canonical", [])):
+                    errors.append(f"{qid}: no canonical route exists in the retrieval corpus")
+                for source in question.get("sources", []):
+                    source_path = source.split("::", 1)[0]
+                    if not (docs / source_path).exists():
+                        errors.append(f"{qid}: missing expected-fact source {source_path}")
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            errors.append(f"Cannot validate retrieval questions from {fixture_path.relative_to(docs)}: {exc}")
     # Isolated history is not answer material, but its maintained records and
     # generated views still need a normal CI integrity gate.
     if (docs / "history/engineering/coverage.json").is_file():
@@ -213,7 +223,7 @@ def check(root: Path) -> dict:
             errors.extend("Historical capture: " + error for error in history["errors"])
         except (OSError, ValueError, KeyError, TypeError) as exc:
             errors.append(f"Cannot validate historical capture: {exc}")
-    return {"status":"failed" if errors else "passed", "documents":len(paths), "navigation_link_documents":len(link_paths)-len(paths), "canonical_claims":len(owners), "local_links":link_count, "heading_anchors":anchor_count, "questions":question_count, "errors":errors,"warnings":warnings,
+    return {"status":"failed" if errors else "passed", "documents":len(paths), "navigation_link_documents":len(link_paths)-len(paths), "canonical_claims":len(owners), "local_links":link_count, "heading_anchors":anchor_count, "questions":question_count, "question_fixtures":[p.relative_to(docs).as_posix() for p in fixture_paths], "errors":errors,"warnings":warnings,
             "limitations":["Does not verify source semantics or runtime claims", "Does not fetch external URLs", "Does not rewrite or reattest historical audits", "Retrieval quality requires the separate lexical evaluation and expected-fact review"]}
 
 def main() -> int:

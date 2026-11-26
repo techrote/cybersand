@@ -1,0 +1,5 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+PROFILE_SAVE_RESULT {"acknowledged":false,"bytes":176,"details":{"resolved_seed":8,"status_label_visible":true,"unrelated_error":"Unrelated retained diagnostic","visible_status":"Water policy save: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory."},"format_loadable":true,"invalid_input":false,"kind":"water","loaded_value":7,"path":"/workspace/scratch/1c5fccfbe328/b-profile-independent-01/profile-fj841a5d/godot/app_userdata/Cyber Sand Reference Sandbox/water-experiment-policy.json","requested_value":8,"sha256":"b8555e9fc615387144977a9b59d2edd79b31bf2a82a702e43949d093ec270507","status":"Water policy save: Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory."}

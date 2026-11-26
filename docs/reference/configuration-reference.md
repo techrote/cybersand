@@ -4,11 +4,64 @@ document-kind: reference
 canonical-for: [current-configuration-values, adapter-worker-policy]
 status: Current
 scope: Exact native, adapter, fallback, presentation, and Web defaults; construction constraints and unimplemented production schema
-last-reviewed: 2026-11-05
+last-reviewed: 2026-11-25
 related-documents: [../operations/configuration-and-capacity-budgets.md, ../systems/world-storage-and-interest-region.md, ../systems/depth-layers-and-parallax.md, ../operations/deepworks-exhibition.md, ../architecture/rigid-body-and-cellular-coupling.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
 ---
 
 # Configuration reference
+
+## Water constructor defaults and player profile
+
+**Source-inspected on accepted main `00cdb02f`, 24 November 2026.**
+[`WorldConfig`](../../native/include/cybersand/world.hpp) and an application's
+selected preset are separate configuration layers. Native `wave_flow.enabled`
+and `ballistic_water.enabled` default to false. Fresh native sandbox and Shared
+Workbench sessions call
+[`CyberNativeCellWorld::select_gameplay_water` / `gameplay_water_options`](../../godot/native_extension/cyber_native_cell_world.cpp)
+and receive the following explicit gameplay overrides:
+
+| Setting | Gameplay profile | Native tuning when otherwise unchanged |
+|---|---:|---:|
+| Wave / ballistic Water | enabled / enabled | disabled / disabled |
+| Rounds (`substeps`) | 2 | 1 |
+| Gain / deep gain / floor gain | 32 / 32 / 1024 | 32 / 0 / 0 |
+| Flux smoothing | 16 | 0 |
+| Coast | 32 | 16 |
+| Damp shift / calm damp shift | 16 / 8 | 7 / 3 |
+| Calm / stick | 128 / 128 | 512 / 512 |
+| Sleep after | 90 | 30 |
+| Spill / full-face release | enabled / enabled | disabled / disabled |
+| Fall speed | 3 | 3 |
+| Sheet rate / coyote ticks | 64 / 4 | 0 / 0 |
+| Pool feed / deep pool feed / feed head limit | 127 / 64 / 255 | 64 / 0 / 255 |
+| Parcel launch budget per native tick | 128 | 256 (requires enabled spill and ballistic owner) |
+
+Unlisted values retain their native defaults in
+[`wave_flow.hpp`](../../native/include/cybersand/wave_flow.hpp). The profile
+requests amount-scaled body push. It does not turn Oil into a Wave-solved
+material or add gas pressure. “Reset Wave defaults” in the UI stages the original
+v2 tuning; it is different from selecting “Gameplay default”. Changes remain
+staged until the documented Apply/Load boundary; inspect the applied receipt.
+[Water Lab](../operations/workbench-water-lab.md) owns user procedures.
+
+## Current Workbench authoring capacities
+
+| Boundary | Accepted source value | Source |
+|---|---|---|
+| Authored canvas | Each axis 512–2048 in multiples of 64; fresh setup 2048×2048 | [`workbench_setup.gd::fresh/validate`](../../godot/scripts/workbench_setup.gd) |
+| Source rectangles / authored stamps | 32,768 each; runtime capability is independently queried | `MAX_RUNS`, `MAX_STAMPS`, `native_rectangle_budget` in the same source |
+| Ordinary/generated JSON | 1 MiB | `workbench_setup.gd::BYTE_LIMIT` |
+| Material-only capture | At most 2048×2048×2 bytes; 15,000,000 µs request timeout | [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) |
+| Actor composition | 8 logical actors; 8 prepared parts each; 64 response bodies and 64 occupancy proxies checked separately | [`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd) |
+| Native material identity | Valid 0–131 except reserved 10; 130 nonempty paintable entries | [`material.hpp`](../../native/include/cybersand/material.hpp) |
+
+The native diagnostic constructor separately admits extents 64–2048; that does
+not enlarge the authoring schema's 512 minimum. CYSD1 remains a 1024-square demo
+format. Ordinary MicroScenario rectangle limits and older installed library
+capabilities do not inherit the Workbench budget. Source capacity is not proof
+that an arbitrary scene meets its actual runtime/admission/performance limits.
+The [host-claim contract](../architecture/shared-workbench-authoring-data.md#large-workbench-starts-and-host-claim-projection)
+explains the separate observation-array bound.
 
 ## Architectural Generator project controls
 
@@ -61,7 +114,7 @@ contain exactly three finite values before any private viewport allocation.
 This is caller-supplied constructor data, not a new global spawn/default or
 admission route. Original size/mass/physical settings and readiness remain.
 
-The unmerged #202 [four ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
+The accepted [four ordinary synchronous demo route](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-synchronous-demo-rebuilding)
 requires explicit Exploratory apply and copies its recipe/policy/normalization/
 radius for Restart. It captures actual quality/view: tested quality0 gives
 buffered region(0,0,336,198), quality2 gives(0,0,704,432), with original player
@@ -70,7 +123,7 @@ and default Current geometry2 remain distinct. Unsupported inherited laws and
 independent transport refuse; prepared-owned Baseline is component/generation/
 receipt bound. No global policy default or settings persistence is introduced.
 
-The unmerged #202 [explicit level-import selection](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
+The accepted [explicit level-import selection](../architecture/liquid-prepared-setup-and-receipts.md#explicit-ordinary-level-import-and-retained-restart)
 is initially unarmed. Exploratory opt-in copies the native-validated liquid
 policy, empty or `water-normalize-v1` rule and explicit radius2/3 for the next
 ordinary body-free import. Its accepted private reconstruction holds one fixed
@@ -411,15 +464,20 @@ at least two distinct real physics frames and complete initial terrain setup.
 The app retains its existing 32-chunk/750-microsecond collider budget. Other body
 constructors remain open; see [staged physical ownership](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
 
-**Integrated #202 IN application control:** prepared options accept explicit
+**Historical #202 IN application-control checkpoint:** prepared options accepted explicit
 `maximum_rule_radius`2 or3(default2). Brine IN requires3; its Current comparator
 must select the same geometry. Original Current and ordinary default
 reconstruction restore protected2. The native-backed panel edits the optional
 family4/block2 `damping_numerator`0..16 over denominator16(default1), and Reset
 retains accepted geometry/parameters. Actual World readback supplies the value,
-effective identity and instance hash/CYPS3; non-IN remains version2. Water IN
-still refuses. These controls do not complete the remaining constructor matrix
-or full source/runtime/host qualification.
+effective identity and instance hash/CYPS3; non-IN used version2 at that
+checkpoint. Accepted #254 subsequently admitted Water IN with whole-cell
+ingress and explicit radius3, as described by the
+[current family policy](../architecture/liquid-solver-family-policy.md#status).
+Newer signed-IN, ballistic, gas-capacity and Wave extensions select additional
+physical identities; use the actual-instance
+[save/version table](level-saves-and-replay.md#current-native-physical-state-versions).
+These controls do not establish full constructor, host or platform qualification.
 
 **Qualified #202 host-observation foundation:** collection runs only at evidence
 boundaries. Version1 bounds manifests/current script files at2MiB each, the
@@ -455,9 +513,12 @@ Default constructors still retire that typed setup and use protected radius2.
 
 The [native prepared setup/receipt/accounting contract](../architecture/liquid-prepared-setup-and-receipts.md)
 owns these bounds, native-issued refusal/failure outcomes, source/host
-qualifications and the narrow owner-requested codec freeze. Complete physical
-hash/CYPS use version2 for non-IN and actual instance version3 for IN, with
-unknown formats and historical CYPS1 refused.
+qualifications and the narrow owner-requested codec freeze. The original physical
+hash/CYPS checkpoint used version2 for non-IN and version3 for IN. Current
+[`World` getters](../../native/include/cybersand/world.hpp) select hash2–6 and
+CYPS2–5 or explicit unsupported format0 according to the applied extensions;
+the [version table](level-saves-and-replay.md#current-native-physical-state-versions)
+owns that precedence. Unknown formats and historical CYPS1 are refused.
 Defaults, historical content/state hashes and the C64-E8 Cell ABI are unchanged.
 Exact shared accounting adds fixed per-job scratch 3816 bytes: 15,630,336 bytes
 at default `active_core_capacity` 4096, plus a 6088-byte World snapshot in the
@@ -511,8 +572,8 @@ see the [region contract](../systems/world-storage-and-interest-region.md#intere
 
 ## LCB-005 explicit standalone execution geometry
 
-The #212 branch's Godot `build_liquid_policy_world` adds one optional final
-`maximum_rule_radius` integer: default2, accepted values2 and3. Brine IN requires
+The accepted Godot `build_liquid_policy_world` API has one optional final
+`maximum_rule_radius` integer: default2, accepted values2 and3. Brine and Water IN require
 explicit3; refusal preserves the live session. Ordinary World/demo/tuned/Water
 Feel construction, reset and CYSD1 reconstruction use2 rather than inheriting
 IN geometry. Exact CYPS imports use the saved geometry. Native scheduler/core
@@ -520,7 +581,7 @@ constraints still apply; this does not enlarge a protected Current comparator.
 Actual applied radius and effective damping numerator0..16/denominator16 are
 copied readback, not live settings. See the [IN binding contract](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry).
 
-The isolated Water IN successor also explicitly requires3. Its original-owner
+The accepted Water IN successor also explicitly requires3. Its original-owner
 MotionFootprint guards include repeated carrying packing and exchange bracing,
 with actual read3/write2 witnesses. Water coherence0..12 gates horizontal-only
 opportunities; retained vx and signed ax remainder follow the declared adapter.
@@ -530,7 +591,7 @@ add no material/family parameter schema, default geometry or Cell ABI change.
 
 ## LCB-002 derived pressure execution limits
 
-**Current in `codex/lcb002-pressure-variants`; final acceptance pending.**
+**Accepted on main through PR #253; current derived execution limits.**
 `WorldConfig::pressure_optimization` controls construction-only derived work,
 not pressure calibration: `index_chunk_capacity` 4096 chunks,
 `head_repair_cell_budget` 4,194,304 cells, `gas_member_capacity` 1,048,576
@@ -777,12 +838,18 @@ are unchanged. No unsynchronized live descriptor mutation is introduced.
 
 ## Soliding successor experiment capacities
 
-**Current standalone tooling:** [lifecycle model](../architecture/soliding-lifecycle.md)
-and [discovery journal](../systems/settled-region-discovery.md) use explicit template
+The [lifecycle model](../architecture/soliding-lifecycle.md) and
+[discovery journal](../systems/settled-region-discovery.md) use explicit template
 capacities. The journal defaults to at most 1024 cells per registered block; a
-producer must refuse or deliberately tile larger custom World geometry. There is
-no WorldConfig flag or gameplay control for either module. These test capacities
-are not selected production thresholds; ordinary runtime remains unchanged.
+producer must refuse or deliberately tile larger custom World geometry.
+Accepted native [`WorldConfig`](../../native/include/cybersand/world.hpp)
+separately exposes the Stage-3B discovery coordinator: `settled_discovery_enabled`
+defaults to false, `settled_discovery_tile_capacity` to 4096 and
+`settled_discovery_tick_budget` to zero. The serialized owner can call
+`advance_settled_discovery(budget)` explicitly. These opt-in discovery controls
+do not install a general gameplay soliding/body lifecycle or change ordinary
+runtime defaults; the [discovery contract](../systems/settled-region-discovery.md)
+owns producer coverage and refusal semantics.
 
 
 ## Player/environment tuning profile

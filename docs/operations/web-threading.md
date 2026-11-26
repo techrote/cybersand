@@ -4,11 +4,17 @@ document-kind: runbook
 canonical-for: [web-worker-profiles, worker-reference-benchmark]
 status: Current
 scope: Compatibility/threaded Web build and hosting, fixed worker policy, synchronous ownership, and reference-test interpretation
-last-reviewed: 2026-09-08
+last-reviewed: 2026-11-25
 related-documents: [github-development-and-release.md, rapier-2d-migration-runbook.md, ../architecture/simulation-tick-and-threading.md, ../reference/configuration-reference.md, ../reference/validation-evidence.md]
 ---
 
 # Web worker profiles and reference tests
+
+**Owner scope:** Web is an occasional disposable experiment, under the
+[explicit closure of issue #3](https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559).
+This page explains the retained implementation and requirements for a particular
+experiment. It does not create maintained Web CI, long-term reproducible Web
+release support, or a desktop release blocker.
 
 **Current:** compatibility Web uses one native cellular worker; optional threaded
 Web uses the existing phased pool. Both synchronously finish a cellular tick in
@@ -30,8 +36,8 @@ resolves worker policy at world construction.
 
 | Profile | Cellular workers | Output | Ownership |
 |---|---|---|---|
-| Compatibility, default | Forced 1 | `source/build/web` | Synchronous Godot callback |
-| Threaded | Auto or explicit request | `source/build/web-threaded` | Same callback; phased jobs may run concurrently |
+| Compatibility, default | Forced 1 | `build/web` | Synchronous Godot callback |
+| Threaded | Auto or explicit request | `build/web-threaded` | Same callback; phased jobs may run concurrently |
 
 Auto chooses 2/4/6 at reported logical-thread thresholds 4 and 12, including two
 when only one logical thread is reported. Exact settings, clamps, and the
@@ -46,40 +52,56 @@ Neither Auto nor the reference benchmark tunes a running pool from timings.
 
 ## Build and preview
 
-From `C:/kybersand`:
+Work from the actual source root. The source tools expose their accepted options
+without compiling or exporting:
 
-```powershell
-.\dev.cmd web --profile threaded
-.local/python/Scripts/python.exe source/tools/serve_web.py --directory source/build/web-threaded --port 8002 --open
+```bash
+python3 tools/build_web.py --help
+python3 tools/serve_web.py --help
 ```
 
-While the preview server is running:
+A Web build requires isolated pinned `godot-cpp`, activated Emscripten, SCons,
+the exact Godot executable and matching dynamic-link Web templates. Native test
+bindings are a **separate checkout** passed through `--native-cpp` when
+`--native-tests` is selected. Export-only requires an existing matching side
+module; packaging alone cannot establish source freshness.
 
-```powershell
-.\dev.cmd http-smoke --profile threaded --url http://127.0.0.1:8002/
+**Current source limitation:** the accepted workflows select Emscripten 4.0.11,
+while `build_web.py` enforces 4.0.20; the workflow's `--native-tests` route omits
+the separately required `--native-cpp`. The
+[Godot lock](../../third_party/godot-runtime.lock.json) still records export
+templates as `absent-and-unpinned`. A fresh source checkout therefore does not
+have a qualified reproducible Web export path merely because these tools exist.
+The [release guide](github-development-and-release.md#unresolved-ci-contradictions)
+owns these source-visible gaps and their owner-deferred scope. An authorized
+future Web experiment must qualify the particular producer/consumer pins,
+templates and runtime paths it uses.
+
+For an **already produced, complete export** whose identity you have checked,
+serve it from the source root:
+
+```bash
+python3 tools/serve_web.py --directory build/web-threaded --port 8002 --open
 ```
 
-`dev.cmd web` builds compatibility. Use export-only only with a matching fresh
-side module; successful packaging does not prove source-to-binary freshness.
-The [build guide](github-development-and-release.md) owns exact dependency pins
-and unresolved CI/toolchain drift. Native/Web generated bindings stay separate.
+Use `build/web` for the compatibility profile. The server verifies required export
+files, binds to loopback by default and supplies COOP `same-origin`, COEP
+`require-corp`, WASM MIME and no-cache headers. Threaded hosting needs HTTPS or
+localhost plus cross-origin isolation. Keep worker JavaScript, PCK, WASM, notices
+and manifest together. HTTP/header checks are structural evidence; actual browser
+execution is a separate gate. Stop the local server with Ctrl+C.
 
-The supplied server sets COOP `same-origin`, COEP `require-corp`, appropriate
-WASM MIME and no-cache behavior. Threaded hosting needs a secure context
-(HTTPS or localhost) and cross-origin isolation. Serve the complete export,
-including worker JavaScript, PCK, WASM, notices and manifest. HTTP/checksum
-success is structural evidence; open the actual browser for execution.
-
-Local delivery is a separate explicit workflow after acceptance:
-`Deliver-Web.ps1 -Profile threaded` copies to `C:/cybersand/web-threaded`;
-compatibility uses `C:/cybersand/web`. Documenting this command does not execute
-delivery or remote publication.
+The former `C:/kybersand`, `dev.cmd web/http-smoke` and `Deliver-Web.ps1` recipes
+belong to the companion workspace and its original configured environment. They
+are preserved in the [source-pinned previous guide](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/web-threading.md#build-and-preview).
+They are not scripts supplied by a standalone source clone and do not grant
+publication authority.
 
 ## Reference benchmark and parity checks
 
 Open Web **Performance**:
 
-- **Benchmark:** supported actual worker counts from requested 1, 2, 4, 6;
+- **Benchmark:** requested 1, 2, 4, 6 and Auto, resolved/clamped to the runtime;
   deterministic 480×480 and 960×960 Sand/Water worlds; ten warmup ticks then
   120 measured ticks per case with deterministic replenishment.
 - **Stress test:** Auto at 960×960, ten warmup then 600 measured ticks.
@@ -87,22 +109,27 @@ Open Web **Performance**:
   A native tick already running must finish before cancellation.
 
 [worker_benchmark.gd](../../godot/scripts/worker_benchmark.gd) uses temporary
-worlds, restores the process worker setting, and compares final exported-level
+worlds without rewriting the process worker setting, and compares final exported-level
 hashes. Reports include requested/actual workers, mean/p95/max native time,
 test frame intervals, moves, parallel phases, and level hash. Frame intervals
 include test/UI scheduling, not normal gameplay rendering. Copy results selects
 JSON and attempts clipboard copy; the last successful report is stored at
 `user://last_worker_benchmark.json`.
 
-Local commands use the same headless Godot fixture:
+The source checkout has a direct headless runner. With the exact pinned Godot
+and source-matched native runtime available, use an isolated user profile as
+explained in [local validation](local-build-and-validation.md):
 
-```powershell
-.\dev.cmd benchmark
-.\dev.cmd stress-test
+```bash
+godot --headless --path godot --script res://tests/run_worker_benchmark.gd
+godot --headless --path godot --script res://tests/run_worker_benchmark.gd -- --stress
 ```
 
-Logs/reports go to `validation/local/<timestamp>/`. Compare native tick timings
-with browser tick timings, not headless versus browser frame intervals.
+These execute benchmark workloads; they are not documentation-only smoke checks.
+The runner prints `WORKER_BENCHMARK` JSON and accepts `--report=<path>` for an
+explicit output file. It does not automatically create the companion workspace's
+old `validation/local/<timestamp>/` tree. Compare native tick timings with browser
+tick timings, not headless frame intervals with browser frame intervals.
 
 The opt-in URL `?test=1&parity=1` additionally runs the one/four-worker
 four-demo probe: 30 ticks each, 120 exported-level hashes. It is also
@@ -112,9 +139,9 @@ Rapier trajectory equivalence, or all-platform equality.
 
 ## Acceptance and unresolved limits
 
-Use the [local validation procedure](local-build-and-validation.md) and the
-host guide at `C:/kybersand/docs/BROWSER_VALIDATION.md`, then verify
-both profiles: actual worker count, native exception rejection, render patches,
+Use the [local validation procedure](local-build-and-validation.md) and
+source-matched export evidence. The old companion `BROWSER_VALIDATION.md` is not
+a source-checkout prerequisite. Verify both profiles: actual worker count, native exception rejection, render patches,
 input/menu/pause/reset, level import and replacement-world lifecycle. Physics
 Pit has separate [Rapier acceptance](rapier-2d-migration-runbook.md).
 

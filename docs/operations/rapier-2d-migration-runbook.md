@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Current pinned backend verification and change procedure; migration history and coupling semantics are linked separately
 canonical-for: [rapier-dependency-validation, rapier-packaging]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-11-24
 related-documents: [../architecture/rigid-body-and-cellular-coupling.md, ../reference/validation-evidence.md, web-threading.md]
 ---
 
@@ -50,9 +50,31 @@ Do not rerun activation as if migration were still unimplemented.
 
 ## Verify dependency before diagnosing coupling
 
-Use exact Godot and the intended architecture's real library bytes. Run these
-scripts with `godot --headless --path godot --script res://tests/<name>.gd` from
-source, bounded to 180 seconds each, or use the workspace `dev.cmd godot-test`.
+Use exact Godot and the intended architecture's materialized library bytes.
+Complete the [source-root import and runtime checks](local-build-and-validation.md)
+first. The companion workspace is optional; `dev.cmd` is not supplied by this
+repository. Choose the smallest fixture that answers the failure.
+
+For a bounded Linux headless backend check from the source root:
+
+```bash
+CYBERSAND_GODOT=/absolute/path/to/Godot_v4.7-stable_linux.x86_64
+CYBERSAND_PROFILE=$(mktemp -d)
+CYBERSAND_CASE_SECONDS=$(python3 tools/ci/execution_policy.py seconds ordinary_case_seconds)
+env XDG_CONFIG_HOME="$CYBERSAND_PROFILE/config" \
+  XDG_DATA_HOME="$CYBERSAND_PROFILE/data" XDG_CACHE_HOME="$CYBERSAND_PROFILE/cache" \
+  timeout "$CYBERSAND_CASE_SECONDS" "$CYBERSAND_GODOT" --headless --path godot \
+  --script res://tests/test_rapier_backend_preflight.gd
+```
+
+The [committed watchdog policy](../../godot/tests/support/ci_execution_policy.json)
+and [execution-policy helper](../../tools/ci/execution_policy.py) own current
+allowances. Do not apply the old blanket 180-second deadline to every fixture or
+treat an elapsed-time advisory as correctness. Preserve a timeout and its
+diagnostics; an enlarged new attempt never changes the failed result. Full
+Godot suites use their [current runners](testing-validation-and-replay.md),
+which preserve case/aggregate budgets and platform-specific evidence. The
+command above checks one headless backend fixture, not the whole application.
 
 | Runner | What it checks |
 |---|---|
@@ -76,7 +98,10 @@ and after export; the lock is their canonical home. Exported files include
 `godot_rapier.wasm`, `RAPIER_LICENSE.txt` and `RAPIER_THIRDPARTY.txt`.
 `--cellular-only` remains an explicit diagnostic path.
 
-Build/serve the selected profile using [Web threading](web-threading.md), then
+The build path has separate SDK, native-Web and template prerequisites in
+[Web threading](web-threading.md); this runbook does not establish that a fresh
+export is reproducible. For an already identified and verified export, serve
+the selected profile, then
 open a fresh URL with `?test=1&rapier=1`. Read `rapier_test` in the opt-in
 `cybersand-test-state` DOM node or the `WEB_RAPIER_TEST` console record. The fixture
 temporarily owns the test scene and returns to Neon Works; normal play URLs do

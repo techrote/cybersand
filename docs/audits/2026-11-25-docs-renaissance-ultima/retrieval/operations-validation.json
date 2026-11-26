@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "source_head": "b4b90eefed1c90ef0ba0a37c1c8446b10869dcd1",
+  "scope": "Copied documentation commands against synthetic corruption fixtures, source review and deterministic plan generation; no scientific or timing campaign executed",
+  "inputs": {
+    "tools/experiments/stage3b_validation.py": "b68893f4a0674492c066d7d531a0b88d8ae4455a17f507d3095b2a2674fc4385",
+    "tools/experiments/run_stage3_cost.py": "b1bfe6b24bf1a4bab5d7e9f0e8b23352947d994f65d37ee9bcfdbfb63681a019",
+    "tools/experiments/test_stage3_cost_runner.py": "c60c0569336fddc5b7e4ac6f800a622f781d3c7da76c13e9ca59bd6c3cb8ea67",
+    "tools/experiments/summarize_soliding_baseline.py": "387c86f112c2dac63cc2d2087d00d585dd58e6169d4c20b5acbd098c6ef47aa6",
+    "tools/experiments/test_soliding_baseline_reduction.py": "a2cbce81981ce47dd4889e257e313b2fe463816169d3227a18bd0e4a298a2b8c",
+    "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+    "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+    "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5"
+  },
+  "plan": {
+    "fixtures": 168,
+    "run_records": 6488,
+    "execution_authority": {
+      "status": "must-freeze-before-#70-execution",
+      "authoritative_simulation_material_baseline": null,
+      "notes": null,
+      "rule": "Matched observer arms share one authority where possible; unmatched Stage-3A stays a separate reference series."
+    },
+    "arm_availability": {
+      "current-discovery-disabled": "available",
+      "stage3a-untouched": "reference-series",
+      "stage3a-runtime-sized": "unavailable",
+      "stage3b-sparse-producer": "unavailable",
+      "stage3b-indexed-graph": "unavailable",
+      "stage3b-candidate": "unavailable"
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "tools/experiments/test_stage3_cost_runner.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/experiments",
+        "-p",
+        "test_soliding_baseline_reduction.py"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": "................\n----------------------------------------------------------------------\nRan 16 tests in 0.024s\n\nOK\n"
+    }
+  ]
+}

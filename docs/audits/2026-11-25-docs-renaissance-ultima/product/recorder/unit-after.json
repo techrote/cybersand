@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+    "--script",
+    "res://tests/test_gameplay_recorder.gd"
+  ],
+  "exit_code": 0,
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "inputs": {
+    "godot/scripts/gameplay_recorder.gd": "4e66f09c3c640221c86595ca7289e7d8b4cf85cd710c31faeace65a05d40f97f",
+    "godot/scripts/workbench_file_transaction.gd": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac",
+    "godot/tests/test_gameplay_recorder.gd": "3212cf766ba07ff5f01e77be16313622d8e53748972fbc8335a59456028a885c"
+  },
+  "log_sha256": "9bfbe7e03c7ebfc2b39c76b6a5419e7ff731ed4c5ea059140c74be2f17611f5f",
+  "checks": 94
+}

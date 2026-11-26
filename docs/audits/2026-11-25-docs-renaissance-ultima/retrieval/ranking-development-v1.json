@@ -1,0 +1,231 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "scope": "C-authored natural development questions sealed before corrective scoring results; implementer-authored and source-familiar, not blind or independent holdout",
+  "questions": [
+    {
+      "id": "DEV01",
+      "query": "Before switching branches, how can I preserve local edits and identify the checkout that produced my result?",
+      "canonical": [
+        "operations/source-checkpoint-and-recovery.md",
+        "operations/cybersand-codex-development-handover.md"
+      ],
+      "facts": [
+        "Record actual HEAD/dirty inputs and verified backup coverage; source identity is not proof every local edit is recoverable."
+      ]
+    },
+    {
+      "id": "DEV02",
+      "query": "On a clean Linux checkout, which engine and native dependencies do I need before launching the desktop?",
+      "canonical": [
+        "operations/local-build-and-validation.md",
+        "operations/getting-started.md"
+      ],
+      "facts": [
+        "Use pinned engine/dependencies and materialized matching libraries."
+      ]
+    },
+    {
+      "id": "DEV03",
+      "query": "A retrieved old audit tells me to resume a held experiment; is that enough authority to run it?",
+      "canonical": [
+        "operations/documentation-maintenance.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "facts": [
+        "Historical evidence is not current execution authorization."
+      ]
+    },
+    {
+      "id": "DEV04",
+      "query": "I want to close the game and later resume every velocity and temperature. Does Save start do that?",
+      "canonical": [
+        "operations/workbench-saving.md",
+        "reference/level-saves-and-replay.md",
+        "architecture/shared-workbench-authoring-data.md"
+      ],
+      "facts": [
+        "Ordinary authored saving does not supply complete physical continuation."
+      ]
+    },
+    {
+      "id": "DEV05",
+      "query": "An Art operation is queued. When can I say its drawing actually changed the native canvas?",
+      "canonical": [
+        "operations/workbench-art.md",
+        "systems/workbench-direct-art-batches.md",
+        "reference/interfaces-and-message-contracts.md"
+      ],
+      "facts": [
+        "Wait for actual acknowledged native result; cancellation can be partial."
+      ]
+    },
+    {
+      "id": "DEV06",
+      "query": "Can I reuse a documentation retrieval cache after the source branch or document status changes?",
+      "canonical": [
+        "operations/documentation-maintenance.md"
+      ],
+      "facts": [
+        "Source/authority drift invalidates the live instance and persistent snapshot; rebuild."
+      ]
+    },
+    {
+      "id": "DEV07",
+      "query": "Where is the owner's primary statement about game-time catch-up and fixed authored canvases?",
+      "canonical": [
+        "decisions/2026-11-14-owner-authoring-intent.md"
+      ],
+      "facts": [
+        "Owner record specifies game-time catch-up and fixed authored canvases, not offline wall clock."
+      ]
+    },
+    {
+      "id": "DEV08",
+      "query": "May I add a ninth actual actor by assuming the continuous-play successor has landed?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md",
+        "reference/status-and-roadmap.md"
+      ],
+      "facts": [
+        "Accepted actor capacity remains eight; unmerged successor does not admit it."
+      ]
+    },
+    {
+      "id": "DEV09",
+      "query": "My liquid controls show a new requested solver. How do I check which law the installed World uses?",
+      "canonical": [
+        "operations/workbench-water-lab.md",
+        "operations/lcb-manual-comparison-ux.md"
+      ],
+      "facts": [
+        "Requested control is separate from applied native readback and explicit preparation."
+      ]
+    },
+    {
+      "id": "DEV10",
+      "query": "Can cloud Art infer without a key, and are the preset model names a current availability guarantee?",
+      "canonical": [
+        "operations/workbench-art.md",
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "Presets are accepted source values, service availability separate; configured cloud credentials needed."
+      ]
+    },
+    {
+      "id": "DEV11",
+      "query": "Why does Flatten store two bytes per cell if runtime cell storage has more fields?",
+      "canonical": [
+        "architecture/shared-workbench-authoring-data.md",
+        "architecture/chunk-tile-and-buffer-model.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "Flatten stores material IDs, not all native state or presentation."
+      ]
+    },
+    {
+      "id": "DEV12",
+      "query": "Does the free-flight controller know a route or position goal, or only its own motion?",
+      "canonical": [
+        "systems/physical-free-flight.md",
+        "systems/physical-flight-lab.md"
+      ],
+      "facts": [
+        "Local controller sees motion and outputs bounded force/torque, not a route planner."
+      ]
+    },
+    {
+      "id": "DEV13",
+      "query": "Must desktop acceptance wait for a maintained Web CI release pipeline?",
+      "canonical": [
+        "reference/product-intent-and-priorities.md",
+        "operations/github-development-and-release.md",
+        "operations/web-threading.md"
+      ],
+      "facts": [
+        "Owner closed standing Web obligations; a commissioned experiment still needs honest scope."
+      ]
+    },
+    {
+      "id": "DEV14",
+      "query": "Can a gameplay recording be treated as an exact native physical checkpoint?",
+      "canonical": [
+        "operations/gameplay-recording.md",
+        "reference/level-saves-and-replay.md"
+      ],
+      "facts": [
+        "Presentation/diagnostic capture is distinct from exact physical continuation."
+      ]
+    },
+    {
+      "id": "DEV15",
+      "query": "Are storage chunks, scheduling cores and macro-fracture pieces the same geometry?",
+      "canonical": [
+        "architecture/chunk-tile-and-buffer-model.md",
+        "reference/product-intent-and-priorities.md"
+      ],
+      "facts": [
+        "Storage/scheduler/destruction domains remain distinct."
+      ]
+    },
+    {
+      "id": "DEV16",
+      "query": "What prevents a delayed equipment receipt from applying after a tool was dropped or replaced?",
+      "canonical": [
+        "reference/interfaces-and-message-contracts.md",
+        "systems/actor-usables.md"
+      ],
+      "facts": [
+        "Generation/epoch/instance/request fences and bounded worker transactions."
+      ]
+    },
+    {
+      "id": "DEV17",
+      "query": "The tracked runtime file exists but is a tiny LFS text pointer. Is that enough to validate an engine run?",
+      "canonical": [
+        "reference/validation-evidence.md",
+        "operations/current-and-historical-validation.md",
+        "operations/local-build-and-validation.md"
+      ],
+      "facts": [
+        "Pointer integrity differs from materialized binary execution/provenance."
+      ]
+    },
+    {
+      "id": "DEV18",
+      "query": "Where does Water quantity in airborne ballistic parcels appear in the native conservation equation?",
+      "canonical": [
+        "architecture/ballistic-water-v1.md",
+        "architecture/liquid-prepared-setup-and-receipts.md"
+      ],
+      "facts": [
+        "Ballistic ledger schema2 includes exact in-flight quantity; no physical source/sink from transport."
+      ]
+    },
+    {
+      "id": "DEV19",
+      "query": "Did the bounded LCB admission authorize generic cell-to-Rapier ownership and production defaults?",
+      "canonical": [
+        "reference/status-and-roadmap.md",
+        "architecture/lcb-pressure-inertial-handoff.md"
+      ],
+      "facts": [
+        "Bounded admission did not authorize broad defaults or generic ownership."
+      ]
+    },
+    {
+      "id": "DEV20",
+      "query": "Will reopening the Workbench restore the last Art conversation or attach its old traffic archive?",
+      "canonical": [
+        "operations/workbench-art.md",
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "Conversation session-local; traffic persists separately and is not reattached."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2417 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "classification": "fresh-closure-verification",
+  "verified_at": "2026-11-25T00:17:47.933500+00:00",
+  "baseline": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "source_head": "700c89c451903fac07188196a2f94b5c8997cb53",
+  "method": "Compare every .md.txt preserved file to exact baseline Git blob bytes, SHA-256 and content length; independently recheck inbound anchors.",
+  "total": 82,
+  "pass": 82,
+  "fail": 0,
+  "records": [
+    {
+      "original_path": "CONTRIBUTING.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "3ef2434b9ea6f30dcdde61f42e8d68354931e2d8",
+      "original_content_sha256": "4c0a2319e69acf1c58a552f397fd1be545c15806578d2a6a9d41be13be35cfd7",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/CONTRIBUTING.md.txt",
+      "preserved_content_sha256": "4c0a2319e69acf1c58a552f397fd1be545c15806578d2a6a9d41be13be35cfd7",
+      "preserved_bytes": 1201,
+      "current_replacement_destination": "CONTRIBUTING.md",
+      "current_replacement_sha256": "bc291623ae12a4923d4b52329d5a8858fdc9316241bb7a0b97d71f8c9effc1af",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/CONTRIBUTING.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/CONTRIBUTING.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 1,
+      "retained_current_heading_count": 1,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "README.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "3de60482900957bee558364a1d4ddd5bf20dfad6",
+      "original_content_sha256": "8f9e4ae34375a970fe2473e1fb1bb27af308a688f1e7e1f70dd3d5de1453f971",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/README.md.txt",
+      "preserved_content_sha256": "8f9e4ae34375a970fe2473e1fb1bb27af308a688f1e7e1f70dd3d5de1453f971",
+      "preserved_bytes": 14465,
+      "current_replacement_destination": "README.md",
+      "current_replacement_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/README.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/README.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 1,
+      "original_only_headings": [
+        "blacksite-nine",
+        "deepworks--the-exhibition-below",
+        "development",
+        "generation-workbench-2",
+        "neon-reliquary-and-the-city-below",
+        "player-playground",
+        "semantic-depth-examples",
+        "world-art-viewer-and-capture"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/MATERIAL_LAB.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "e30abc8cc2e7eb40138448ecfd6456a7c09f58c2",
+      "original_content_sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt",
+      "preserved_content_sha256": "e0ce169ba2538df93df15fd5f589698bfcc19405af7628e10e6b44aa68d10a7f",
+      "preserved_bytes": 13377,
+      "current_replacement_destination": "docs/MATERIAL_LAB.md",
+      "current_replacement_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/MATERIAL_LAB.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__MATERIAL_LAB.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/README.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "127aeaff4089b60dcaba0ebbb00b661dc411fa57",
+      "original_content_sha256": "69a1ce59b0fa7405ba73e7e2ec8591756b7b8b34f222d1a52b5481e9e39f8ab3",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__README.md.txt",
+      "preserved_content_sha256": "69a1ce59b0fa7405ba73e7e2ec8591756b7b8b34f222d1a52b5481e9e39f8ab3",
+      "preserved_bytes": 60508,
+      "current_replacement_destination": "docs/README.md",
+      "current_replacement_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/README.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__README.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 23,
+      "retained_current_heading_count": 23,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 9,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/architecture/item-authored-material-programs.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "6a375cf4c71135677967087d08e425edc1a5e90e",
+      "original_content_sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__item-authored-material-programs.md.txt",
+      "preserved_content_sha256": "facc6f3209743cafff997bd775ab1b77114f05439bead78c17624e62c32ecd72",
+      "preserved_bytes": 5204,
+      "current_replacement_destination": "docs/architecture/item-authored-material-programs.md",
+      "current_replacement_sha256": "7f824d454bc2e09d5844973f7ba256fd6855947e698ab88a41de5c9114aa4b34",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/architecture/item-authored-material-programs.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__item-authored-material-programs.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 6,
+      "retained_current_heading_count": 6,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/architecture/soliding-lifecycle.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "2efaa708025a34564b61c99a4bd77ddae84f44f5",
+      "original_content_sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__soliding-lifecycle.md.txt",
+      "preserved_content_sha256": "10832029af506bd5b593cfc8cb4eadc39ce6097674c66eb220ea745cdb191f80",
+      "preserved_bytes": 19320,
+      "current_replacement_destination": "docs/architecture/soliding-lifecycle.md",
+      "current_replacement_sha256": "209ee12ef6d69238bd990d4c83ac66adf248c8e611ef9db6623ea81e05561233",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/architecture/soliding-lifecycle.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__soliding-lifecycle.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 8,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/architecture/wave-flow-v1.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "0153f2ea188a245c529df40b5c96dbed3cc69984",
+      "original_content_sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__wave-flow-v1.md.txt",
+      "preserved_content_sha256": "95cf0c00bddce7f8a15f2fd0a06b1c2a233bf5575bd6baa3b19acab7763c546c",
+      "preserved_bytes": 47213,
+      "current_replacement_destination": "docs/architecture/wave-flow-v1.md",
+      "current_replacement_sha256": "3af556a23ccac6a77ebccf8fe0b48434d585ea214112c8912c4702f297fead16",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/architecture/wave-flow-v1.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__architecture__wave-flow-v1.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 23,
+      "retained_current_heading_count": 23,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 31,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/decisions/ADR-005-water-model.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "d503e67360185edcd8b923864b50365826d43a1a",
+      "original_content_sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__decisions__ADR-005-water-model.md.txt",
+      "preserved_content_sha256": "ca741af1d41237c2c6cc70c80e5f098bf10b4cca3098183168a1f386aa0ab9bc",
+      "preserved_bytes": 4594,
+      "current_replacement_destination": "docs/decisions/ADR-005-water-model.md",
+      "current_replacement_sha256": "23f7173bfe63d4afc55d66adb3ac84ec55d69eebccf2b3fda60c0ba166f7d777",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/decisions/ADR-005-water-model.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__decisions__ADR-005-water-model.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 6,
+      "retained_current_heading_count": 6,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 5,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "51f870d9905cb3094e82bb0ec929ddc49663f360",
+      "original_content_sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__decisions__ADR-010-failed-tick-quarantine.md.txt",
+      "preserved_content_sha256": "7c3e320ab521c0dbfffc5f8831507f948c6614775dc294ca6f77aa5c742b7000",
+      "preserved_bytes": 2879,
+      "current_replacement_destination": "docs/decisions/ADR-010-failed-tick-quarantine.md",
+      "current_replacement_sha256": "6507edc0f0e0dfd0042bfdc21c34c0d55de22e5398e476dc7e914e4e495e6d74",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/decisions/ADR-010-failed-tick-quarantine.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__decisions__ADR-010-failed-tick-quarantine.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/architectural-generator-playtest.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "651d5987c437f3e1eeb484ac4bb26e226a90e916",
+      "original_content_sha256": "22c82ce2edb6e615cf097a45d6a36b505cd7a057d782439c7949db0b1a0b3e41",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architectural-generator-playtest.md.txt",
+      "preserved_content_sha256": "22c82ce2edb6e615cf097a45d6a36b505cd7a057d782439c7949db0b1a0b3e41",
+      "preserved_bytes": 7714,
+      "current_replacement_destination": "docs/operations/architectural-generator-playtest.md",
+      "current_replacement_sha256": "6c1678616d7941a5b360d65aca28b21d514e44b715fa655fdeb047ed6c903ec2",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/architectural-generator-playtest.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architectural-generator-playtest.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 6,
+      "original_only_headings": [
+        "architectural-generator--owner-walkthrough"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 16,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "15dd4f15b057b2bd78165ce8cbb5e64ddb0279a4",
+      "original_content_sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme-water-feel-addendum.md.txt",
+      "preserved_content_sha256": "ace6c7f6d05d1fbc8087bbbfb9ed93481df88835f9bf974eaa6b0e0e10f6ea51",
+      "preserved_bytes": 8984,
+      "current_replacement_destination": "docs/operations/architecture-programme-water-feel-addendum.md",
+      "current_replacement_sha256": "0f089ed943bd8ca4eb971dc4eabfbbf181dda4ff70e1674b517d1470190d5bf5",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/architecture-programme-water-feel-addendum.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme-water-feel-addendum.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 10,
+      "retained_current_heading_count": 10,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 1,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/architecture-programme.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "1dd3d6c09fae1e53dbfe72dff48347fcd257dc2d",
+      "original_content_sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme.md.txt",
+      "preserved_content_sha256": "b5ddf2a279d68287130b4a3d96674336818cfe11da4c0c2c3230762b36f0c58d",
+      "preserved_bytes": 54792,
+      "current_replacement_destination": "docs/operations/architecture-programme.md",
+      "current_replacement_sha256": "5d731e1cda5c71ccca87228271e9d1a9954673dda813926a65f7e9a774c9b861",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/architecture-programme.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__architecture-programme.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 25,
+      "retained_current_heading_count": 25,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 28,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/atlas-agent-runner.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "49031450fa2a1028e683e44c9eaca97e37c21054",
+      "original_content_sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__atlas-agent-runner.md.txt",
+      "preserved_content_sha256": "a1ed093f8e55ead40a267f0669ec7892e13a550389ad051ec3497c23432c8343",
+      "preserved_bytes": 19010,
+      "current_replacement_destination": "docs/operations/atlas-agent-runner.md",
+      "current_replacement_sha256": "291b7a5fc7c7709227b6626317ec68bfde1ec3f3f4758dfb6227258038baa887",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/atlas-agent-runner.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__atlas-agent-runner.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 11,
+      "retained_current_heading_count": 11,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 0,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/blacksite-nine-demo.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "bf9ff4e165a56bd46d8b2350631de5512c0541dc",
+      "original_content_sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__blacksite-nine-demo.md.txt",
+      "preserved_content_sha256": "f94c5f0241a0ed0bfa022e448a0a973977681f4310238132c2982d18e5c76d97",
+      "preserved_bytes": 13714,
+      "current_replacement_destination": "docs/operations/blacksite-nine-demo.md",
+      "current_replacement_sha256": "9963047a3fd09d16c15ba8f179dc4758a59ca60f918429c348ff3fb80f778e38",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/blacksite-nine-demo.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__blacksite-nine-demo.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 15,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/cell-layout-experiment.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "30c8e8462865d950a8348c7c96d160779b2c60a5",
+      "original_content_sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cell-layout-experiment.md.txt",
+      "preserved_content_sha256": "92d2ae798728bbd5203ed648b36dc16cf69c436880ac78a3f7af07e7ca3c6e58",
+      "preserved_bytes": 26101,
+      "current_replacement_destination": "docs/operations/cell-layout-experiment.md",
+      "current_replacement_sha256": "15124d9ac60922c90bf93bdecccafcdc0dfac187de0e4356cb8d80c5a1fc5118",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/cell-layout-experiment.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cell-layout-experiment.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 10,
+      "retained_current_heading_count": 10,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 3,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/configuration-and-capacity-budgets.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "9ddb9b0a6f3e9eca581fada4e940e06a1081236b",
+      "original_content_sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__configuration-and-capacity-budgets.md.txt",
+      "preserved_content_sha256": "6510df0048c1696de614b396cd91c2e1c3ada2f53dfdc97a7735d6408e5956c2",
+      "preserved_bytes": 12906,
+      "current_replacement_destination": "docs/operations/configuration-and-capacity-budgets.md",
+      "current_replacement_sha256": "9b09de395ce27b1248e04428074d4f441ea7e4f8da2db8ebef4a50e09881f91a",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/configuration-and-capacity-budgets.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__configuration-and-capacity-budgets.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 9,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/current-and-historical-validation.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "3d88a925b3c5b7ac0562611b28d55911bea51ccb",
+      "original_content_sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__current-and-historical-validation.md.txt",
+      "preserved_content_sha256": "37d75f33ea23ef837d0661df3ce81324ba07941181cd506ebd1d502e81317b0c",
+      "preserved_bytes": 7539,
+      "current_replacement_destination": "docs/operations/current-and-historical-validation.md",
+      "current_replacement_sha256": "7b9c88ef5161e88f11ec5a787f479cd3cd0e164552547bcd7083ba80c25f3d52",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/current-and-historical-validation.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__current-and-historical-validation.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 17,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/cybersand-codex-development-handover.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "7053b77baf4e706c00a60c7305f88d2c2589bf91",
+      "original_content_sha256": "6419dd47e240b6d16023cacf50215952996ab7a08b9213cb188ef6ecf4efb870",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cybersand-codex-development-handover.md.txt",
+      "preserved_content_sha256": "6419dd47e240b6d16023cacf50215952996ab7a08b9213cb188ef6ecf4efb870",
+      "preserved_bytes": 128043,
+      "current_replacement_destination": "docs/operations/cybersand-codex-development-handover.md",
+      "current_replacement_sha256": "eeb249869cab527056bf528aa44902ac1ff8e61383b8234d387699af5ad993a8",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/cybersand-codex-development-handover.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__cybersand-codex-development-handover.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 83,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [
+        "4ly-single-chassis-flight-contract--2026-10-22",
+        "accepted-lcb-001-shared-contract--2026-10-25",
+        "accepted-parent-and-qualified-water-publication--2026-10-25",
+        "active-manual-play-continuation--2026-10-31",
+        "actor-control-prototypes--2026-10-18",
+        "architectural-generator-runtime-repair--2026-11-15",
+        "ballistic-water-experiment-362--2026-11-05",
+        "brine-in-contact-review-blocker--2026-10-25",
+        "ci-parallel-integration-checkpoint--2026-10-31",
+        "combined-features-and-physical-actors--2026-10-18",
+        "combined-pressure-and-in-source--2026-10-25",
+        "connected-scene-content--2026-10-18",
+        "consumed-app-publication--source5f02-and-checkpoint-ea96--2026-10-25",
+        "corrected-brine-in-runtime-publication--2026-10-25",
+        "coupling-lockstep-feasibility--2026-11-06",
+        "current-owner-policy-and-accepted-baseline--2026-10-31",
+        "current-trial-consumption-of-corrected-app--preparation-only",
+        "deepworks-exhibition-and-depth-dimensions--2026-10-20",
+        "desktop-native-default-owner-checkpoint--2026-10-25",
+        "development-claims-remediation-routing--2026-09-20",
+        "exploratory-actor-picker-follow-up--2026-10-18",
+        "gen-007-workbench-2-qualification--2026-10-21",
+        "hierarchical-generation-checkpoint--2026-10-21",
+        "historical-preparation-and-water-artifact-consumption",
+        "integrated-desktop-trial-successor--2026-10-25",
+        "integrated-lcb-003-in-host--2026-10-25",
+        "issue-10-handoff",
+        "issue-12-successor-handoff-2026-09-19",
+        "issue-13-experiment-checkpoint",
+        "issue-26--water-bulk-head-handoff-2026-09-19",
+        "issue-49-water-successor-apparatus-v2-handoff-2026-09-20",
+        "lcb-001-pressure-reference-operations-accepted-2026-10-25",
+        "lcb-002-branch-source-and-qualification--2026-10-25",
+        "lcb-003-combined-source-integration--2026-10-25",
+        "lcb-003-controlled-host-preparation--2026-10-24",
+        "lcb-003-thermal-import-api--2026-10-25",
+        "lcb-005-standalone-adapter-checkpoint--2026-10-25",
+        "lcb-reassessment-and-bounded-successors--2026-11-03",
+        "mat-auth-002-phase-a-handover--2026-11-04",
+        "mat-auth-002-phase-a-integration-gate--2026-11-04",
+        "mat-auth-adopted-main-reconciliation--2026-11-04",
+        "mat-auth-architecture-decision-hold--2026-11-03",
+        "mat-auth-documentation-adoption-handover--2026-11-04",
+        "material-consistency-repair--2026-10-18",
+        "materials-lab-windows-evaluation--2026-11-12",
+        "moving-body-pressure-gas-blocker--2026-10-25",
+        "ms-000-handover-2026-09-19",
+        "native-desktop-default-recipe--2026-10-25",
+        "opt-in-transport-profiles",
+        "pchar-player-representation-experiment--2026-09-25",
+        "penv-001-playerenvironment-tuning-handoff",
+        "physical-actor-timeout-investigation--2026-10-23",
+        "physical-usable-integration-checkpoint--2026-10-19",
+        "physics-measurement-handoff-2026-09-09",
+        "play-convergence-checkpoint--2026-10-30",
+        "player-control-playground--2026-10-20",
+        "post-publication-two-test-correction--2026-10-25",
+        "procedural-fields-and-masked-authoring--2026-10-18",
+        "procedural-generation-candidates--2026-10-18",
+        "programme-gate-handoff-2026-09-11",
+        "publication-and-legacy-validation-follow-up",
+        "qualified-water-sequence2-publication--2026-10-25",
+        "reconstructed-depth-prototype--2026-10-18",
+        "recovery-and-ci-checkpoint--2026-09-24",
+        "semantic-plane-generation-checkpoint--2026-10-21",
+        "shared-workbench-review-transition--2026-11-08",
+        "stopped-play-recovery-reconciliation--2026-11-02",
+        "thunderbowl-control-laboratory--2026-10-18",
+        "trial-successor-correction-after-accepted-app--2026-10-25",
+        "typed-spatial-generation-checkpoint--2026-10-20",
+        "water-in-isolated-successor---2026-10-25",
+        "wave-flow-water-solver-experiment-wave-mt-001--2026-11-15",
+        "wb-art-002-stage-1--2026-11-10",
+        "wex-005--lcb-000-gate-a-handoff-2026-10-23",
+        "wex-water-hybrid--pressure-extension-handoff-2026-09-20",
+        "workbench-001-shared-desktop-destination",
+        "workbench-art-traffic-lifetime--2026-11-20",
+        "world-art-finisher--2026-11-20"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 13,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/development-claims-remediation-programme.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "cdfcd47987a05b346ddd27e1a73aaf822e19bad6",
+      "original_content_sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__development-claims-remediation-programme.md.txt",
+      "preserved_content_sha256": "91508be4c98b959775070251a3a2f7b8f7a2bda9d93876564b582294f4d47711",
+      "preserved_bytes": 14706,
+      "current_replacement_destination": "docs/operations/development-claims-remediation-programme.md",
+      "current_replacement_sha256": "45786abc96c06f5fa2dc1cbe134d7736c81494104941f9085f1afaf15efde8d3",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/development-claims-remediation-programme.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__development-claims-remediation-programme.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 15,
+      "retained_current_heading_count": 15,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 11,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/documentation-maintenance.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "236888a9512c35e9b63ce305978a4217ec9d7eca",
+      "original_content_sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__documentation-maintenance.md.txt",
+      "preserved_content_sha256": "f3de7a4bab92bc23e8efbf1c8540c74ca124c3c56314c4ca793fd41ad2ef6068",
+      "preserved_bytes": 6809,
+      "current_replacement_destination": "docs/operations/documentation-maintenance.md",
+      "current_replacement_sha256": "d1f928da8a0b60abc88e427c2901f79a4b409155cc787b3925727e97ade1c3f8",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/documentation-maintenance.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__documentation-maintenance.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 4,
+      "retained_current_heading_count": 4,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 16,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/experiment-tower.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "ccda8444b88fe19decd19338dba468c8b5ec1244",
+      "original_content_sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__experiment-tower.md.txt",
+      "preserved_content_sha256": "71a70c087f71062db5d417562ae4e3cad3c50e26233c63dee264d0555c377865",
+      "preserved_bytes": 14079,
+      "current_replacement_destination": "docs/operations/experiment-tower.md",
+      "current_replacement_sha256": "9c91e05e91b81cd4e2c9cff68bc3c2fde80e3b6e73d409ad8fc617327ee37168",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/experiment-tower.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__experiment-tower.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 10,
+      "retained_current_heading_count": 10,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 10,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/explore001-desktop-playtest.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "122f2fa1e268a5bda777d9c0b181a9237dfef0b0",
+      "original_content_sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__explore001-desktop-playtest.md.txt",
+      "preserved_content_sha256": "25924e5ef1d7ab96eab8255404d5cc0611c2ed492748fd7d78c43fea90fbeb56",
+      "preserved_bytes": 3762,
+      "current_replacement_destination": "docs/operations/explore001-desktop-playtest.md",
+      "current_replacement_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/explore001-desktop-playtest.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__explore001-desktop-playtest.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 2,
+      "retained_current_heading_count": 2,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/gameplay-recording.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "19d941e3680bc1e91fe2e2233697d748ede6d99f",
+      "original_content_sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gameplay-recording.md.txt",
+      "preserved_content_sha256": "4af142f26f132ca52d7d28e56719f97827b2934f7601559df30140366872fa06",
+      "preserved_bytes": 12266,
+      "current_replacement_destination": "docs/operations/gameplay-recording.md",
+      "current_replacement_sha256": "840d059852178c0ef0af8f51bcc232dbee074d608e2b629f2a0dc89d7ecec5c4",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/gameplay-recording.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gameplay-recording.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 8,
+      "retained_current_heading_count": 8,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 5,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/gen008-flatten-qualification.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "66c2638f45c69ab2ffb11a136290c4982be0a001",
+      "original_content_sha256": "f3083780031d5512435c07d4d454ef8f5bdb029ac33f2e1d7181e0b52fa1c862",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gen008-flatten-qualification.md.txt",
+      "preserved_content_sha256": "f3083780031d5512435c07d4d454ef8f5bdb029ac33f2e1d7181e0b52fa1c862",
+      "preserved_bytes": 14140,
+      "current_replacement_destination": "docs/operations/gen008-flatten-qualification.md",
+      "current_replacement_sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/gen008-flatten-qualification.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gen008-flatten-qualification.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 8,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/gentek80-evaluation.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "e26f5763cce0c928609c87bed4b6f01f113603dc",
+      "original_content_sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gentek80-evaluation.md.txt",
+      "preserved_content_sha256": "ea32d8026224f9e21c3bbdcf3eb9de8a5fc60edf6ac5de384e11d945d2b80013",
+      "preserved_bytes": 18806,
+      "current_replacement_destination": "docs/operations/gentek80-evaluation.md",
+      "current_replacement_sha256": "b5fc499aaeac87801ca99119ae4c3be39e5b51f750c9b5d1f260801aa1e788db",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/gentek80-evaluation.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__gentek80-evaluation.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/github-development-and-release.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "07f3d6bbb6d41b8d5f3ad00c219bf11ad54871f1",
+      "original_content_sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__github-development-and-release.md.txt",
+      "preserved_content_sha256": "cf6a4e6581d354bce92672d8c5aa4601ebde1d1538b30bb53b99f70895bbf9c7",
+      "preserved_bytes": 18051,
+      "current_replacement_destination": "docs/operations/github-development-and-release.md",
+      "current_replacement_sha256": "df4d8f9bffdee8d9a8f977544c2c0ac498894aee00a36f7765c9518421d88cc1",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/github-development-and-release.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__github-development-and-release.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 32,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/lcb-manual-comparison-ux.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "a48c764c068383d26c6bfa6a62428bc9a8d3260a",
+      "original_content_sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-manual-comparison-ux.md.txt",
+      "preserved_content_sha256": "e8e92b94b6484a504ccb885bf5952a06bff56e6c437d5081a52881d57dc0b9d4",
+      "preserved_bytes": 36321,
+      "current_replacement_destination": "docs/operations/lcb-manual-comparison-ux.md",
+      "current_replacement_sha256": "7213689d6f783d5d7a08f7ca1a6f77c87d43fb9f7174bb98b23fa6d82315f23c",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/lcb-manual-comparison-ux.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-manual-comparison-ux.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 16,
+      "retained_current_heading_count": 16,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 19,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/lcb-scenario-catalogue.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "e01538e01181decc49febf42296a6aa3bf1befc7",
+      "original_content_sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-scenario-catalogue.md.txt",
+      "preserved_content_sha256": "aebe1afadaea2858edfbd9d88391eec77f4f992b83bc484170bab9820378ecbc",
+      "preserved_bytes": 25219,
+      "current_replacement_destination": "docs/operations/lcb-scenario-catalogue.md",
+      "current_replacement_sha256": "b9d479bd5e564622d7a65c2cd9061e879644cbbfa64570a11fad0befb278aa59",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/lcb-scenario-catalogue.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__lcb-scenario-catalogue.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 10,
+      "retained_current_heading_count": 10,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/liquid-characterization.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "45d0ed1f31eede410bc1a6188632e66ffd77390f",
+      "original_content_sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__liquid-characterization.md.txt",
+      "preserved_content_sha256": "d18df9a9ed150165d6f51fff5469f77ce531374a4c7673a020955a194a826147",
+      "preserved_bytes": 4710,
+      "current_replacement_destination": "docs/operations/liquid-characterization.md",
+      "current_replacement_sha256": "7dc564b6f3bf3e18a5d8bcb296b6c48f12da0ef414951966ded13624099d4769",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/liquid-characterization.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__liquid-characterization.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 5,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/local-build-and-validation.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "cf7ba0c191bcb7516716bcf449565e5b21ffdada",
+      "original_content_sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__local-build-and-validation.md.txt",
+      "preserved_content_sha256": "21850919dd7c470a5723d44b9dc5335d114fa377b3af3c933d07b8e120547c30",
+      "preserved_bytes": 117202,
+      "current_replacement_destination": "docs/operations/local-build-and-validation.md",
+      "current_replacement_sha256": "2cf4854de2c2eb84a8e412afa66ad5af451c3ada873934d7753005632ee337b7",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/local-build-and-validation.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__local-build-and-validation.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 52,
+      "retained_current_heading_count": 52,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 66,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/material-liveness-investigation.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "1fcfcde17f92cb8c03a8a688f8b377cd4a799a0c",
+      "original_content_sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__material-liveness-investigation.md.txt",
+      "preserved_content_sha256": "58a260b2f86fa0fc3f47804bbffac83275e77b618bb79fb4cd372bea6b13c0a1",
+      "preserved_bytes": 13039,
+      "current_replacement_destination": "docs/operations/material-liveness-investigation.md",
+      "current_replacement_sha256": "7501de3e1cdad2d8764e7e38f375c6398d2e64d9ef63410111be4d5dfc2e4a5f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/material-liveness-investigation.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__material-liveness-investigation.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/materials-lab-authoring.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "4b12411b88f985d7f37059038f3c6abbe9fc1280",
+      "original_content_sha256": "ae468a2213585d4be04d8e9b333f5d432981c6e1da37b764b52696708a4e9267",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__materials-lab-authoring.md.txt",
+      "preserved_content_sha256": "ae468a2213585d4be04d8e9b333f5d432981c6e1da37b764b52696708a4e9267",
+      "preserved_bytes": 32150,
+      "current_replacement_destination": "docs/operations/materials-lab-authoring.md",
+      "current_replacement_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/materials-lab-authoring.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__materials-lab-authoring.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 13,
+      "retained_current_heading_count": 13,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 20,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/microscenario-reference-pack.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "a59212d1cc38c278f49cbe2c95dd576c7ad3ada5",
+      "original_content_sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenario-reference-pack.md.txt",
+      "preserved_content_sha256": "b366797634e5aaf632873395b78d53f582750a5226a335ea96c471c0d60df456",
+      "preserved_bytes": 17952,
+      "current_replacement_destination": "docs/operations/microscenario-reference-pack.md",
+      "current_replacement_sha256": "d76abc1c36c28f8c6597c43ad19419394cdff2b7e19a7dd8671bc839b2adba20",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/microscenario-reference-pack.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenario-reference-pack.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 11,
+      "retained_current_heading_count": 11,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 9,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/microscenarios-programme.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "ec564c81bf8176b06cb43a043d67e4c2c0de31c6",
+      "original_content_sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios-programme.md.txt",
+      "preserved_content_sha256": "c8c713f43a8ccb4bcd7f5428456c70abcab9564bb221ed35563eb82dbda881ae",
+      "preserved_bytes": 29208,
+      "current_replacement_destination": "docs/operations/microscenarios-programme.md",
+      "current_replacement_sha256": "2d041aa1cf9ed44cf16c94daa427fde5dac7873f2f51377195d745cffbcec83c",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/microscenarios-programme.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios-programme.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 26,
+      "retained_current_heading_count": 26,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 13,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/microscenarios.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "cde4892bce4e4845c0c2868dada757213be8bbe2",
+      "original_content_sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios.md.txt",
+      "preserved_content_sha256": "37a3dc17233192b630252c72647194b07f429b018e49982bb285df0711d2459e",
+      "preserved_bytes": 20649,
+      "current_replacement_destination": "docs/operations/microscenarios.md",
+      "current_replacement_sha256": "cb16396e805d9224d47b11eb4010eb273e68343b822f2e1998dd0f59606245e6",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/microscenarios.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__microscenarios.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 10,
+      "retained_current_heading_count": 10,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 17,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/neon-reliquary-demo.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "594aae69561d10d0013791c7cb8afe150c2013e4",
+      "original_content_sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__neon-reliquary-demo.md.txt",
+      "preserved_content_sha256": "db57bf8976427464069e8dab42a05b78e5876a3be31feaa90a1ba9e1ba5e84ca",
+      "preserved_bytes": 14168,
+      "current_replacement_destination": "docs/operations/neon-reliquary-demo.md",
+      "current_replacement_sha256": "93ad1d75438113dd40d03271a0072b684452aefb7e741a232556135d02dbaa39",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/neon-reliquary-demo.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__neon-reliquary-demo.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 13,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/physical-actor-programme.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "54cbd5f92020ebfaf5c3cc2374eff2c1199dedac",
+      "original_content_sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physical-actor-programme.md.txt",
+      "preserved_content_sha256": "383b894b238bfd883e786f6f2f2cf10423e4c9c960e44fd64efbed4b348aab10",
+      "preserved_bytes": 15666,
+      "current_replacement_destination": "docs/operations/physical-actor-programme.md",
+      "current_replacement_sha256": "3772607516778fd59e889b01ff76e06fc8925b08b870450daedbfe4c4d68ee65",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/physical-actor-programme.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physical-actor-programme.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 8,
+      "retained_current_heading_count": 8,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 12,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/physics-characterisation-plan.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "3069018a7536d2770b1e63007ca39179a8189014",
+      "original_content_sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation-plan.md.txt",
+      "preserved_content_sha256": "c306e1e0539835caefa668c72f5a118f2d34f0fb0235305ce7462aaca75d3a0d",
+      "preserved_bytes": 22957,
+      "current_replacement_destination": "docs/operations/physics-characterisation-plan.md",
+      "current_replacement_sha256": "c7e18727676c0db238f09e04eccca16061c73d30c10657ae8eb262ad6224173b",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/physics-characterisation-plan.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation-plan.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 14,
+      "retained_current_heading_count": 14,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/physics-characterisation.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "648bae4c145e7591d7d2ecdf6ec939eb5dec068f",
+      "original_content_sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation.md.txt",
+      "preserved_content_sha256": "cec934e26ddc204d538ad2cfb79b9a670b9c62a0d3464b13695de0894ca634f3",
+      "preserved_bytes": 22281,
+      "current_replacement_destination": "docs/operations/physics-characterisation.md",
+      "current_replacement_sha256": "819fa3cae011b127aaad1d9d053caf2cf6519f4af5f9d5347995a8818ef2b33f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/physics-characterisation.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__physics-characterisation.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 17,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/play-desktop-manual-qualification.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "c3b70a7ad362719ec99238fca9c815aa83248f92",
+      "original_content_sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__play-desktop-manual-qualification.md.txt",
+      "preserved_content_sha256": "67b59b8c82feb2ddf269a60fb418f36a92990f169f8856ce8ea72b4e7c09c784",
+      "preserved_bytes": 9578,
+      "current_replacement_destination": "docs/operations/play-desktop-manual-qualification.md",
+      "current_replacement_sha256": "43e2386f793c1c63bae26cfcdc791942cb99950009b2c2c9eb138989d2a76274",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/play-desktop-manual-qualification.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__play-desktop-manual-qualification.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 3,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/profiling-observability-and-performance.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "6ec90727c68682cbd6c3249c480214c935743b6c",
+      "original_content_sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__profiling-observability-and-performance.md.txt",
+      "preserved_content_sha256": "2f218b3b07dee019d2432eb8a677380c244ff027611754bb7ad8c126a1990588",
+      "preserved_bytes": 11287,
+      "current_replacement_destination": "docs/operations/profiling-observability-and-performance.md",
+      "current_replacement_sha256": "28de3d138f5283317bf2bcfeb0508b4c7a1e15ee37d80e4971616be434e9c391",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/profiling-observability-and-performance.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__profiling-observability-and-performance.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/rapier-2d-migration-runbook.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "4b9c7649e8ab4c24d552aba5f825e54fb9e77b27",
+      "original_content_sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__rapier-2d-migration-runbook.md.txt",
+      "preserved_content_sha256": "9ed786d3217f87a1ec6641b9744b8b196009da59cf8d56f673b6537a8efb98e7",
+      "preserved_bytes": 6574,
+      "current_replacement_destination": "docs/operations/rapier-2d-migration-runbook.md",
+      "current_replacement_sha256": "081fa7d9831c8af6606ddb9023a25e47383383d1a37e2b0b04c76aa9bb1eeeff",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/rapier-2d-migration-runbook.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__rapier-2d-migration-runbook.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 6,
+      "retained_current_heading_count": 6,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 10,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/soliding-macro-fracture-fixture.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "79f82f06341baf990fb142e4cfa29b3fb35446a1",
+      "original_content_sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-macro-fracture-fixture.md.txt",
+      "preserved_content_sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "preserved_bytes": 8314,
+      "current_replacement_destination": "docs/operations/soliding-macro-fracture-fixture.md",
+      "current_replacement_sha256": "a5f29551330843705a1360108965609a9973d0d167604755dd9ba5b9d8ffdd43",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/soliding-macro-fracture-fixture.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-macro-fracture-fixture.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 0,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/soliding-measurement.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "4b9ee5e29212534b68227adeaf4863c73be745b9",
+      "original_content_sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-measurement.md.txt",
+      "preserved_content_sha256": "029b9fc75960e23e00737fd4a8ef5de4d93a9b68b53173a31b144890246f7127",
+      "preserved_bytes": 16631,
+      "current_replacement_destination": "docs/operations/soliding-measurement.md",
+      "current_replacement_sha256": "a6d26cad646ce6ab4055885d70a463b600999d6e00fc47ae243187c52c1a7e23",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/soliding-measurement.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-measurement.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/soliding-programme.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "23477f6e9b8c23656b710c4e5a37d80847f9f78d",
+      "original_content_sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-programme.md.txt",
+      "preserved_content_sha256": "dc5630e2b4c41dd8f83ca3df9013a831a08f5cc8ee94250f546a3a408bb6a74b",
+      "preserved_bytes": 10536,
+      "current_replacement_destination": "docs/operations/soliding-programme.md",
+      "current_replacement_sha256": "c3ab1939d9b7bda74b6698866829b1ffcaacac6375a5c23f04150e01d07ecca9",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/soliding-programme.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-programme.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 9,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/soliding-stage3-freeze.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "f6d0394fe0eba6bd0fef1303cfbbfbbc0bed3600",
+      "original_content_sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt",
+      "preserved_content_sha256": "e9bb416fbc00534936f31ec823ff4200084b9839e29b104ca06c6e5842a8f855",
+      "preserved_bytes": 25036,
+      "current_replacement_destination": "docs/operations/soliding-stage3-freeze.md",
+      "current_replacement_sha256": "f84be54eb5e0e1e6aded867e297da84d25a99f3b5b8765572ef5d420b1978245",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/soliding-stage3-freeze.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3-freeze.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 31,
+      "retained_current_heading_count": 31,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/soliding-stage3b-production-plan.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "fc63ccbe57ff2ac4022da9dcf7f451ba66ca5bd6",
+      "original_content_sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3b-production-plan.md.txt",
+      "preserved_content_sha256": "a2c8b0df12e69eaddb5e36200fdac89d978d43ce5190242022cf83a6bef43919",
+      "preserved_bytes": 22377,
+      "current_replacement_destination": "docs/operations/soliding-stage3b-production-plan.md",
+      "current_replacement_sha256": "b5d435ce1411db0efe6b36aea7e0369fac2c003b2860b236908fa9f839f3f083",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/soliding-stage3b-production-plan.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__soliding-stage3b-production-plan.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 20,
+      "retained_current_heading_count": 20,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 3,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/source-checkpoint-and-recovery.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "53b34dfa759d4b4e056b9f5dc92d5e4e29f1ab6d",
+      "original_content_sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__source-checkpoint-and-recovery.md.txt",
+      "preserved_content_sha256": "9b140c00a949cd9d3a3753c0c5f079cf188d7f23c55018a87161c3650fc3b431",
+      "preserved_bytes": 27552,
+      "current_replacement_destination": "docs/operations/source-checkpoint-and-recovery.md",
+      "current_replacement_sha256": "6be41bec27eef6ac034444d80812edbb8d0ff46584a8d9c1720ac83435de8471",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/source-checkpoint-and-recovery.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__source-checkpoint-and-recovery.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 21,
+      "retained_current_heading_count": 4,
+      "original_only_headings": [
+        "consumed-app-publication--source5f02-and-checkpoint-ea96--2026-10-25",
+        "current-recoverable-water-sequence2-checkpoint--2026-10-25",
+        "current-trial-consumption-of-corrected-app--preparation-only",
+        "historical-preparation-and-water-artifact-consumption",
+        "integrated-desktop-trial-successor--2026-10-25",
+        "issue-10-intake",
+        "issue-13-experiment-checkpoint",
+        "issue17-precision-checkpoint-2026-09-11",
+        "local-issues-12-implementation-branch",
+        "physics-characterization-checkpoint-2026-09-09",
+        "recoverable-final-application-integration-source--2026-10-25",
+        "recoverable-post-publication-identity-test-overlay",
+        "recoverable-water-in-publication-checkpoint--2026-10-25",
+        "trial-successor-correction-after-accepted-app--2026-10-25",
+        "unmerged-desktop-native-default-owner--2026-10-25",
+        "water-leveling-follow-up",
+        "what-is-secured-and-what-is-not-established"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 28,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/state-precision-experiment.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "b779561504d126835e7c6cf12ceb1b1a43ff9b62",
+      "original_content_sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__state-precision-experiment.md.txt",
+      "preserved_content_sha256": "5ec8493d0aea4114c3049380cd6eae3be4d34a0dfc4ca8bfbebc67df3e800c0a",
+      "preserved_bytes": 10075,
+      "current_replacement_destination": "docs/operations/state-precision-experiment.md",
+      "current_replacement_sha256": "4b0798c75cac7eb955ff3924fbaae5dcb323eee577f474be8985a326017e5bcc",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/state-precision-experiment.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__state-precision-experiment.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/testing-validation-and-replay.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "895bcaf13e97b3f5985a4c72890979bb48837188",
+      "original_content_sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__testing-validation-and-replay.md.txt",
+      "preserved_content_sha256": "4ca126819d5ae73123dfe68bc410a2c69ae83f63c6085e3a3f279e7e717d4dab",
+      "preserved_bytes": 32428,
+      "current_replacement_destination": "docs/operations/testing-validation-and-replay.md",
+      "current_replacement_sha256": "244876e784691c222381e0e7d0a2be9222b917626802d553ddcc40b3646944ab",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/testing-validation-and-replay.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__testing-validation-and-replay.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 18,
+      "retained_current_heading_count": 18,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 20,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/troubleshooting.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "44f2a7b8cc7aae4df0dc272d5d5039d7d0a3b827",
+      "original_content_sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__troubleshooting.md.txt",
+      "preserved_content_sha256": "eddf1c8591c8396dc22c2d257410e249caee20d189ff998601d472784f731b7d",
+      "preserved_bytes": 5027,
+      "current_replacement_destination": "docs/operations/troubleshooting.md",
+      "current_replacement_sha256": "42d179c577849df74306e4fc415d2e32555423bdfaeafb654e50820256584cdf",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/troubleshooting.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__troubleshooting.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 3,
+      "retained_current_heading_count": 3,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/water-feel-lab-experiment.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "5e9f632f127dc117666b576b9ca838c6de7b36cb",
+      "original_content_sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__water-feel-lab-experiment.md.txt",
+      "preserved_content_sha256": "6591cef26939419b7421ad5ddd25c7164ce08869f76b181aef6a8223c3e6e3d9",
+      "preserved_bytes": 15503,
+      "current_replacement_destination": "docs/operations/water-feel-lab-experiment.md",
+      "current_replacement_sha256": "49c2564896cc7eeacc4bbbc83e1bbf74ddccefb47fadb07b84025cbe30724e1f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/water-feel-lab-experiment.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__water-feel-lab-experiment.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 1,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/wave-flow-evaluation.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "41fed45115ed309e597b198f02333217d309ad8e",
+      "original_content_sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt",
+      "preserved_content_sha256": "06c835853789226ee90968c4b93adf7b4b3436ac342534d4a6a1279cc4466bb4",
+      "preserved_bytes": 17230,
+      "current_replacement_destination": "docs/operations/wave-flow-evaluation.md",
+      "current_replacement_sha256": "bbc699fd50f0f526f5c5274da37982e8b03a783002370a145c2b04cfa72ea03f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/wave-flow-evaluation.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wave-flow-evaluation.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 7,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "05510d3d4e816a2ecfb83cc95059f8d450e2e680",
+      "original_content_sha256": "de75e024d6b86b5a40cd7a0d148ea86295acc3dfd91565a3f917f16a13e37db8",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wb-art-paint-integrated-candidate.md.txt",
+      "preserved_content_sha256": "de75e024d6b86b5a40cd7a0d148ea86295acc3dfd91565a3f917f16a13e37db8",
+      "preserved_bytes": 40397,
+      "current_replacement_destination": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "current_replacement_sha256": "6c131293e6b71b97e3d11e955ca36970d6a5e67cec1b57ecaa154e44bd78f6b2",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/wb-art-paint-integrated-candidate.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__wb-art-paint-integrated-candidate.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 14,
+      "retained_current_heading_count": 14,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/web-threading.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "bb75fe6b7787cf57475ddbeda4388322ca83e20f",
+      "original_content_sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__web-threading.md.txt",
+      "preserved_content_sha256": "47c5c6b5e10363f9d5a8bf18c643470e94bcbc70e92d15337310cfa341ec55c4",
+      "preserved_bytes": 6183,
+      "current_replacement_destination": "docs/operations/web-threading.md",
+      "current_replacement_sha256": "44e06717dcc4b44ab11704c5aa04742e4cdf41ec3f73e548bc8f38f9af08c0f0",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/web-threading.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__web-threading.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 10,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/workbench-actor-composition.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "3b3b253730e7fee3abf9d55b500574cdf261d83a",
+      "original_content_sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__workbench-actor-composition.md.txt",
+      "preserved_content_sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f",
+      "preserved_bytes": 13944,
+      "current_replacement_destination": "docs/operations/workbench-actor-composition.md",
+      "current_replacement_sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/workbench-actor-composition.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__workbench-actor-composition.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 17,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/operations/workbench-water-lab.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "f5b3daff023519bf1e76402e282c61bfc7020a2f",
+      "original_content_sha256": "726497a27ac4745af06a4941cf4b658983a2833e0aa9c0eef3aed4c28342b35b",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__workbench-water-lab.md.txt",
+      "preserved_content_sha256": "726497a27ac4745af06a4941cf4b658983a2833e0aa9c0eef3aed4c28342b35b",
+      "preserved_bytes": 15344,
+      "current_replacement_destination": "docs/operations/workbench-water-lab.md",
+      "current_replacement_sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/operations/workbench-water-lab.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__operations__workbench-water-lab.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 19,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/reference/material-effects-register.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "58c96bf0a30e84d0c87d150a902bacd85d571979",
+      "original_content_sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__material-effects-register.md.txt",
+      "preserved_content_sha256": "21f4071dd5d558ad5e85f7b7f273dc56bc3f8a30d33141faed77faac0e0bc00b",
+      "preserved_bytes": 12618,
+      "current_replacement_destination": "docs/reference/material-effects-register.md",
+      "current_replacement_sha256": "e2fed44f9b1e6f9b5df0c32aa14c3f6ad9426f1e9602d4c395c09a7afcd26cae",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/material-effects-register.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__material-effects-register.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 10,
+      "retained_current_heading_count": 10,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 6,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/reference/product-intent-and-priorities.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "b28fdb88434db9d30028839f3cdda9512f1d0858",
+      "original_content_sha256": "fc8f06018d923481d37c766acea8113130d7739b99c84871ce3ad89e760b573b",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__product-intent-and-priorities.md.txt",
+      "preserved_content_sha256": "fc8f06018d923481d37c766acea8113130d7739b99c84871ce3ad89e760b573b",
+      "preserved_bytes": 20969,
+      "current_replacement_destination": "docs/reference/product-intent-and-priorities.md",
+      "current_replacement_sha256": "4f36520b8606bde8853d484e292639a62697efb4edcddd6b80ec252f62da0471",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/product-intent-and-priorities.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__product-intent-and-priorities.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 21,
+      "retained_current_heading_count": 2,
+      "original_only_headings": [
+        "backend-generic-body-and-water-clarification-2026-09-20",
+        "bounded-lcb-implementation-authorization-2026-10-24",
+        "delegated-issue-2-activation-choice-2026-09-08",
+        "exploratory-microscenario-workflow-2026-09-18",
+        "failure-policy-judgement-2026-09-08",
+        "fields-sidechains-and-context-aware-authoring--2026-10-18",
+        "issue-13-experiment-checkpoint",
+        "owner-clarification--2026-11-14",
+        "physical-actor-preferences--2026-10-18",
+        "physics-direction-recorded-2026-09-08",
+        "play-convergence-and-acceptance-boundary--2026-10-30",
+        "procedural-generation-direction-2026-10-18",
+        "provisional-actor-controls--2026-10-18",
+        "shared-workbench-convergence--2026-11-08",
+        "should-all-actors-use-rapier-physics",
+        "water-approximation-and-liquid-comparison-2026-10-22",
+        "what-are-we-building-toward",
+        "what-requires-a-new-owner-or-architecture-decision",
+        "where-is-approximation-acceptable"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 14,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/reference/retrieval-index.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "62977d632e48b875b41183685397b3ec6f719515",
+      "original_content_sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__retrieval-index.md.txt",
+      "preserved_content_sha256": "1941b1fc69fc10ed55f9ccd92be53b37fa487eeb5b7d94e85d8379c77db6ce47",
+      "preserved_bytes": 73249,
+      "current_replacement_destination": "docs/reference/retrieval-index.md",
+      "current_replacement_sha256": "37aa6cc9c04af60c8fa7a3b89c2fbc732e63db560434abe612de9fa5f04f51b6",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/retrieval-index.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__retrieval-index.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 29,
+      "retained_current_heading_count": 29,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/reference/status-and-roadmap.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "285050f30b33fc6e048019711085eaee2ef3dfc0",
+      "original_content_sha256": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__status-and-roadmap.md.txt",
+      "preserved_content_sha256": "7584a74452405b66816f5c8fc3ed1d72138541741ff060cef4848be2c8ea3a33",
+      "preserved_bytes": 161415,
+      "current_replacement_destination": "docs/reference/status-and-roadmap.md",
+      "current_replacement_sha256": "2e0cca0d1daeded450e16bdecdb5c0101940970bb496936a5c656bc78b96b2dc",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/status-and-roadmap.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__status-and-roadmap.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 93,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [
+        "4ly-shared-physical-free-flight--2026-10-22",
+        "accepted-parent-and-qualified-water-publication--2026-10-25",
+        "approved-planned-deferred-and-rejected-work",
+        "architectural-generator-phase-ab--owner-refined-v2--2026-11-15",
+        "architecture-gate-reconciliation-2026-09-11",
+        "architecture-investigation-after-the-water-checkpoint",
+        "ballistic-water-in-b1-and-workbench-spray-362--2026-11-05",
+        "brine-in-body-contact-blocker--2026-10-25",
+        "ci-opt-003-soliding-compilation-reuse--2026-11-21",
+        "ci-opt-003-worldgen-showcase-execution--2026-11-21",
+        "combined-desktop-features-and-physical-actor-trial--2026-10-18",
+        "consumed-app-publication--source5f02-and-checkpoint-ea96--2026-10-25",
+        "corrected-brine-in-runtime-publication--2026-10-25",
+        "current-owner-policy-and-accepted-baseline--2026-10-31",
+        "current-trial-consumption-of-corrected-app--preparation-only",
+        "decisions-and-defects-to-resolve",
+        "desktop-native-default-owner-checkpoint--2026-10-25",
+        "development-claims-remediation-checkpoint--2026-09-20",
+        "experimental-gentek-catalogue-integration--drafthold-2026-11-17",
+        "exploratory-actor-integration-and-physical-migration--2026-10-18",
+        "explore-001-generated-playable-maps--2026-11-08",
+        "floating-oil-in-wave-water",
+        "full-face-water-release",
+        "gen-007-authoring-and-qualification--2026-10-21",
+        "gen-008-flatten--bake-history--2026-11-13",
+        "gentek-80-integration-candidate--20-november-2026",
+        "hierarchical-places-checkpoint--2026-10-21",
+        "historical-preparation-and-water-artifact-consumption",
+        "int-000-implementation-checkpoint-2026-09-19",
+        "integrated-desktop-trial-successor--2026-10-25",
+        "is-the-foundation-ready-to-extend",
+        "isolated-water-in-native-successor---2026-10-25",
+        "issue-10-player-and-exchange-checkpoint",
+        "issue-12-successor-programme-2026-09-19",
+        "issue-13-experiment-checkpoint",
+        "issue-19-water-feel-lab-checkpoint",
+        "issue-26-post-merge-review-and-49-correction",
+        "issue-26-water-headleveling-disposition",
+        "issue17-precision-completion",
+        "lcb-001-residual-shared-contract--2026-10-24",
+        "lcb-001-shared-contract-accepted--2026-10-25",
+        "lcb-002-pressure-variants-branch--2026-10-25",
+        "lcb-003-controlled-application-host-slice--2026-10-24",
+        "lcb-003-thermal-level-preparation--2026-10-25",
+        "lcb-005-native-brine-checkpoint--2026-10-24",
+        "lcb-current-main-reassessment--2026-11-03",
+        "mat-auth-reviewed-per-file-transitions--2026-11-04",
+        "material-authoring-planned-adoption--2026-11-04",
+        "material-authoring-review--2026-11-03",
+        "material-shadow-foundation-and-integration--2026-11-04",
+        "materials-lab-v1--2026-11-11",
+        "microscenarios-and-intermaterial-interaction-programme",
+        "moving-body-pressure-gas-blocker--2026-10-25",
+        "ms-000-common-microscenarios-checkpoint",
+        "ms-001-reference-pack-checkpoint",
+        "native-default-demo-constructor--2026-10-25",
+        "next-implementation-checkpoints",
+        "opt-in-transport-profiles",
+        "pchar-001-player-representation-checkpoint",
+        "penv-001-playerenvironment-tuning-checkpoint",
+        "physical-actor-regression-hangs--2026-10-23",
+        "physical-actor-usable-checkpoint--2026-10-19",
+        "play-composable-desktop-checkpoint--2026-10-30",
+        "play-desktop-continuation--2026-10-31",
+        "player-control-playground--2026-10-20",
+        "post-publication-identity-test-correction",
+        "pressureflow-desktop-region-flip-201--2026-11-04",
+        "pressureflow-idle-cost-201--2026-11-04",
+        "procedural-fields-and-aggregate-checkpoint--2026-10-18",
+        "procedural-generation-candidate-checkpoint--2026-10-18",
+        "production-ci-parallelism--2026-10-31",
+        "provisional-actor-control-checkpoint--2026-10-18",
+        "qualified-water-sequence2-publication--2026-10-25",
+        "recovery--current-ci-checkpoint--2026-09-24",
+        "semantic-depth-checkpoint--2026-10-21",
+        "shared-workbench-actor-composition--589--2026-11-20",
+        "stopped-play-recovery--2026-11-02",
+        "strata-theatre-integration--2026-10-18",
+        "trial-successor-correction-after-accepted-app--2026-10-25",
+        "typed-spatial-generation-checkpoint--2026-10-20",
+        "unified-world-art-pipeline--2026-11-20",
+        "water-hybrid--pressure-extension-checkpoint--2026-09-20",
+        "water-ramp-and-player-defaults",
+        "wave-flow-water-solver-wave-mt-001--2026-11-15",
+        "wave-waterwall-002-owner-evaluation",
+        "wb-art-002-direct-drawing--2026-11-10",
+        "workbench-001--391-integration-candidate",
+        "workbench-liquid-equipment-361--2026-11-09"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 91,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/reference/validation-evidence.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "a1bb549448286da963b811008a714a823183f88c",
+      "original_content_sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__validation-evidence.md.txt",
+      "preserved_content_sha256": "2cd6260a09dbd2f891d951ffc7b491b63fdf2fa353a64bc21e476cbbfc657cce",
+      "preserved_bytes": 77127,
+      "current_replacement_destination": "docs/reference/validation-evidence.md",
+      "current_replacement_sha256": "04a439539e5603c8c61630418fc6fce0ae4e58a249ba9713266e25e3248f1341",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/reference/validation-evidence.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__reference__validation-evidence.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 54,
+      "retained_current_heading_count": 1,
+      "original_only_headings": [
+        "2026-09-19-ms-000-harness-extraction",
+        "2026-09-19-ms-001-reference-pack-acceptance",
+        "2026-10-18-material-readability-pass",
+        "accepted-lcb-001-shared-native-contract--2026-10-25",
+        "accepted-parent-and-qualified-water-publication--2026-10-25",
+        "chunk-run-render-copy-on-current-main--2026-11-01",
+        "ci-parallelism-evidence-boundary--2026-10-31",
+        "combined-feature-local-checkpoint--2026-10-18",
+        "combined-lcb-005-pressurein-local-proof--2026-10-25",
+        "corrected-brine-in-runtime-publication--2026-10-25",
+        "deepworks-exhibition-and-depth-dimensions--2026-10-20",
+        "exploratory-map-actor-integration---2026-10-18",
+        "gen-003-typed-spatial-computation--2026-10-20",
+        "gen-004-hierarchical-places--2026-10-21",
+        "gen-005-semantic-four-plane-generation--2026-10-21",
+        "gen-007-authoring-and-qualification--2026-10-21",
+        "intermittent-physical-actor-timeouts--2026-10-23",
+        "issue-10-exchange-acceptance-2026-09-09",
+        "issue-10-player-checkpoint-2026-09-09",
+        "issue-12-successor-foundation-2026-09-19",
+        "issue-13-experiment-checkpoint",
+        "issue-19-water-feel-lab-2026-09-12",
+        "issue-26-post-merge-validation-qualification-2026-09-19",
+        "issue-26-water-headleveling-characterization-2026-09-19",
+        "issue-49-successor-apparatus-v2-evidence--2026-09-20",
+        "issue17-fixed-carrier-state-precision-2026-09-11",
+        "lcb-002-pressure-variants-branch--2026-10-25",
+        "lcb-003-thermal-level-preparation--2026-10-25",
+        "lcb-005-standalone-adapter--2026-10-25",
+        "lcb-reassessment-evidence-boundary--2026-11-03",
+        "mat-002-review-and-test-completion--2026-10-19",
+        "mat-auth-002-phase-a-evidence-boundary--2026-11-04",
+        "mat-auth-architecture-review--2026-11-03",
+        "mat-auth-documentation-adoption-boundary--2026-11-04",
+        "mat-auth-shadow-adopted-main-qualification--2026-11-04",
+        "moving-body-pressure-gas-blocker--2026-10-25",
+        "native-default-demo-api-proof--2026-10-25",
+        "physical-actor-usables--2026-10-19",
+        "player-control-playground--2026-10-20",
+        "programme-gate-reconciliation-2026-09-11",
+        "qualified-water-sequence2-publication--2026-10-25",
+        "recovery-and-stage-3b-65-evidence--2026-09-22",
+        "rem-001-claim-state-reconciliation-2026-09-20",
+        "rem-002-bounded-generic-bodygranular-reconciliation-2026-09-24",
+        "rem-003-sampled-playergranular-c1--2026-09-25",
+        "resting-brine-body-contact-correction--2026-10-25",
+        "water-exit-acknowledgement-correction-2026-10-22",
+        "water-in-native-source-and-current-identity-control---2026-10-25",
+        "water-leveling-2026-09-10",
+        "what-do-the-rapier-and-save-passes-not-prove",
+        "what-has-actually-passed",
+        "which-binaries-and-dependencies-did-e-audit-use",
+        "which-gates-remain-absent-or-failing"
+      ],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 54,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/activity-dirty-regions-and-waking.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "1ea988d85a6ab22f601e94724b9aa53a96c4686f",
+      "original_content_sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__activity-dirty-regions-and-waking.md.txt",
+      "preserved_content_sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "preserved_bytes": 12979,
+      "current_replacement_destination": "docs/systems/activity-dirty-regions-and-waking.md",
+      "current_replacement_sha256": "7015ad1a820b6f5ab9153f816bed23e2c178d832a1f94f1464a6c897e555b44a",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/activity-dirty-regions-and-waking.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__activity-dirty-regions-and-waking.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 0,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/actor-control-prototypes.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "8bcbb6d0cdbbfb9bb4c64b13cafb9216a5c03aeb",
+      "original_content_sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__actor-control-prototypes.md.txt",
+      "preserved_content_sha256": "8138d39e7323c4fdfa22b93eb8718a7dddaa3f1ac972f01c8deedde1b961495f",
+      "preserved_bytes": 18075,
+      "current_replacement_destination": "docs/systems/actor-control-prototypes.md",
+      "current_replacement_sha256": "17dbba20b0ef8835f86a3c2416845d25a87fb1d9471b81883a25ec3398cc5ce8",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/actor-control-prototypes.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__actor-control-prototypes.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 11,
+      "retained_current_heading_count": 11,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 12,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/actor-rigs.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "7bd01631079e215fd73a590369270dbb474a24e7",
+      "original_content_sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__actor-rigs.md.txt",
+      "preserved_content_sha256": "3d8894b3be355871c4b1086e91c9ca53445ca447354996587c7adac5b4945f6c",
+      "preserved_bytes": 25275,
+      "current_replacement_destination": "docs/systems/actor-rigs.md",
+      "current_replacement_sha256": "93a07caa1e7a072b2d24e80208ba819d8a5068a53c31bcf4d9c020a785b6b375",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/actor-rigs.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__actor-rigs.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 15,
+      "retained_current_heading_count": 15,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 14,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/depth-layers-and-parallax.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "ca6c85a09bc3bd73a1708a25f6bf17d6f14bde9b",
+      "original_content_sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__depth-layers-and-parallax.md.txt",
+      "preserved_content_sha256": "9f31c71e5608871265a0cabd8dcbba43040294ccdd9c67180b2844c5c10af446",
+      "preserved_bytes": 12257,
+      "current_replacement_destination": "docs/systems/depth-layers-and-parallax.md",
+      "current_replacement_sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/depth-layers-and-parallax.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__depth-layers-and-parallax.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 12,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/explore001-generated-playable-maps.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "660c093596db34c2eeaa58a4c939625f0f5e9ea5",
+      "original_content_sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__explore001-generated-playable-maps.md.txt",
+      "preserved_content_sha256": "f017e09591b12e75de8d9144263a3367b39604b9595bb70872958e6efa4a8111",
+      "preserved_bytes": 13442,
+      "current_replacement_destination": "docs/systems/explore001-generated-playable-maps.md",
+      "current_replacement_sha256": "56480ea61d2477da7a1980f824f08ce6f9f0dd4f71414aef2411beff8018746b",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/explore001-generated-playable-maps.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__explore001-generated-playable-maps.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/flow-transport-and-profiles.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "18a4abd0ab96b58a1bd29af622b6f8f8c3334abe",
+      "original_content_sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__flow-transport-and-profiles.md.txt",
+      "preserved_content_sha256": "fd452353ab27a31c73cbffa72afeecf447af16d05cd7b211dcc2db03761d2e4c",
+      "preserved_bytes": 7881,
+      "current_replacement_destination": "docs/systems/flow-transport-and-profiles.md",
+      "current_replacement_sha256": "eca8776b795a2795a82cb5f9dbdb07418773ab2bb9a975e4144c65e17d5024cc",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/flow-transport-and-profiles.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__flow-transport-and-profiles.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 5,
+      "retained_current_heading_count": 5,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 19,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/generation-workbench-2.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "b139846c7eaeeaa7f69b5aa628c71d822eccae4d",
+      "original_content_sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__generation-workbench-2.md.txt",
+      "preserved_content_sha256": "4600d90476a96137ddec0da2b0d279488f87ade7d71cad6a6d9cff485a6acf46",
+      "preserved_bytes": 21861,
+      "current_replacement_destination": "docs/systems/generation-workbench-2.md",
+      "current_replacement_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/generation-workbench-2.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__generation-workbench-2.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 11,
+      "retained_current_heading_count": 11,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 8,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/material-visual-pattern-library.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "228dc7597065fc5b69599ea232b10b491603d0bd",
+      "original_content_sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__material-visual-pattern-library.md.txt",
+      "preserved_content_sha256": "ec9f21593de8f92af9499ba217993330378782abddf1e3481f1a8e9943206b8a",
+      "preserved_bytes": 23049,
+      "current_replacement_destination": "docs/systems/material-visual-pattern-library.md",
+      "current_replacement_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/material-visual-pattern-library.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__material-visual-pattern-library.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 15,
+      "retained_current_heading_count": 15,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 3,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/paint-editor-bounded-shapes.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "c4fd23c442bd7b7efeb2976ed226b985144db936",
+      "original_content_sha256": "cb0ad9d255d648064362b2c13dfa9e5c76eae388705d52ed47988024a5fe714c",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__paint-editor-bounded-shapes.md.txt",
+      "preserved_content_sha256": "cb0ad9d255d648064362b2c13dfa9e5c76eae388705d52ed47988024a5fe714c",
+      "preserved_bytes": 23872,
+      "current_replacement_destination": "docs/systems/paint-editor-bounded-shapes.md",
+      "current_replacement_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/paint-editor-bounded-shapes.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__paint-editor-bounded-shapes.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 9,
+      "retained_current_heading_count": 9,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 5,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/physical-flight-lab.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "9a1a98d6d5a70a698d88514d6f12572ef63b8064",
+      "original_content_sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-flight-lab.md.txt",
+      "preserved_content_sha256": "aef00ef8bef9327a46491c20b00ce093273ac16305adce440655ac019f4b9874",
+      "preserved_bytes": 17283,
+      "current_replacement_destination": "docs/systems/physical-flight-lab.md",
+      "current_replacement_sha256": "92b45eaffd9f14520c81f1b842dbd6d7961a8aa6a406824618f56df39e757621",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/physical-flight-lab.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-flight-lab.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 8,
+      "retained_current_heading_count": 8,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 7,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/physical-free-flight.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "ff4e64a8e90e88e14df6a809128437722b6b5456",
+      "original_content_sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-free-flight.md.txt",
+      "preserved_content_sha256": "da8dc262e3bba975e04f9fc2706ce0cf82aeb4afb17a899a04570146eb2c33b3",
+      "preserved_bytes": 21218,
+      "current_replacement_destination": "docs/systems/physical-free-flight.md",
+      "current_replacement_sha256": "17d2c3e3cac679cbe9eb0e6bd793ed0bec30c2a7cf875b36b6e53abd658e10fe",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/physical-free-flight.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__physical-free-flight.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 11,
+      "retained_current_heading_count": 11,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 15,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/player-control-playground.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "b7657de852063a77d7b90f2e21f55da69176c836",
+      "original_content_sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-control-playground.md.txt",
+      "preserved_content_sha256": "2d2c0eea6d986ee6d78222fc66088047242613d9cb30943dc0e3b688872b210f",
+      "preserved_bytes": 62162,
+      "current_replacement_destination": "docs/systems/player-control-playground.md",
+      "current_replacement_sha256": "e2f2356c14035994147979e12393df0ac56ffc5facaab03e733ca3dbacacb3ce",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/player-control-playground.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-control-playground.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 23,
+      "retained_current_heading_count": 23,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 24,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/player-environment-profiles-and-traversal.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "481ca98b2b0f17b1d877d17fa84b29cf5f3b8db5",
+      "original_content_sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-environment-profiles-and-traversal.md.txt",
+      "preserved_content_sha256": "d2d3b683c30868f4f9161ad9a8b7b9b26146e99049be950443f3557554f38042",
+      "preserved_bytes": 6898,
+      "current_replacement_destination": "docs/systems/player-environment-profiles-and-traversal.md",
+      "current_replacement_sha256": "1dcbea578bc953e131dde0a9918f3afa5e4846e563d56389b6bd9b94487b2e10",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/player-environment-profiles-and-traversal.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__player-environment-profiles-and-traversal.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "6db65b04c7bcfb007d5b37f81915c3843c8d8c24",
+      "original_content_sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__smoke-heat-pressure-roadmap.md.txt",
+      "preserved_content_sha256": "a147e13269dac95dd5b4d57c329686c2761acec4c64209c6a49c2e2d8ba2019c",
+      "preserved_bytes": 6117,
+      "current_replacement_destination": "docs/systems/smoke-heat-pressure-roadmap.md",
+      "current_replacement_sha256": "435d8a828e2103084027163fb80aaa7f318df5a604b08e66ec0ac6c1917355c8",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/smoke-heat-pressure-roadmap.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__smoke-heat-pressure-roadmap.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 6,
+      "retained_current_heading_count": 6,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 2,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/thunderbowl-control-reference.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "b4b18a057c523931b903aa544151acee03560c62",
+      "original_content_sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__thunderbowl-control-reference.md.txt",
+      "preserved_content_sha256": "71c2487a64b566b0a708a79278e47ce2303778c014a3e94a7fe922b24a0f9107",
+      "preserved_bytes": 41184,
+      "current_replacement_destination": "docs/systems/thunderbowl-control-reference.md",
+      "current_replacement_sha256": "62e0f51b7f54799370e10872fee9d61f8926853cb766e190771a919bdc4ac836",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/thunderbowl-control-reference.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__thunderbowl-control-reference.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 16,
+      "retained_current_heading_count": 16,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 13,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/workbench-art-providers.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "fa7a4d9e9dcc9ce0a18bff82ab17fb07f4a53c2e",
+      "original_content_sha256": "e3d659856dff8529cf5b85237c4b1aae3db31f6e11c975eab561a38501560ee0",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__workbench-art-providers.md.txt",
+      "preserved_content_sha256": "e3d659856dff8529cf5b85237c4b1aae3db31f6e11c975eab561a38501560ee0",
+      "preserved_bytes": 26400,
+      "current_replacement_destination": "docs/systems/workbench-art-providers.md",
+      "current_replacement_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/workbench-art-providers.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__workbench-art-providers.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 10,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/systems/workbench-direct-art-batches.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "20be5cc7bb437448cf368ac37b975d76441e65cb",
+      "original_content_sha256": "0608fbdc4ed4a4b38cd3ce47422bbbaeee07ce1c0a080b555f820d377692538d",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__workbench-direct-art-batches.md.txt",
+      "preserved_content_sha256": "0608fbdc4ed4a4b38cd3ce47422bbbaeee07ce1c0a080b555f820d377692538d",
+      "preserved_bytes": 13532,
+      "current_replacement_destination": "docs/systems/workbench-direct-art-batches.md",
+      "current_replacement_sha256": "4f7b86cea54c975ad73fd3068bc65fdae8b31b08bda0472f37efd8a2a1caefb1",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/systems/workbench-direct-art-batches.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__systems__workbench-direct-art-batches.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 8,
+      "retained_current_heading_count": 8,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 8,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/tools/art-pipeline-unification.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "a89a990f59b693225efc9649198bccb020d5df5f",
+      "original_content_sha256": "d24aa9fe1631a5506044ace6653cc035e2f469d0add9bc5f037943b6c483f281",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__art-pipeline-unification.md.txt",
+      "preserved_content_sha256": "d24aa9fe1631a5506044ace6653cc035e2f469d0add9bc5f037943b6c483f281",
+      "preserved_bytes": 11786,
+      "current_replacement_destination": "docs/tools/art-pipeline-unification.md",
+      "current_replacement_sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/tools/art-pipeline-unification.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__art-pipeline-unification.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 8,
+      "retained_current_heading_count": 8,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/tools/world-art-capture.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "dd6f9ffe3dfd4bce1a6dbebfcf53a78abeb06029",
+      "original_content_sha256": "4aa4f20c295f3dd92fc4854d4c02e5571c3acb49a3cf90c1e0538909ceaae72a",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__world-art-capture.md.txt",
+      "preserved_content_sha256": "4aa4f20c295f3dd92fc4854d4c02e5571c3acb49a3cf90c1e0538909ceaae72a",
+      "preserved_bytes": 16243,
+      "current_replacement_destination": "docs/tools/world-art-capture.md",
+      "current_replacement_sha256": "0773ed6b947638e4fd274c98cb554475ae08dd36ddb11c90ac44c1a19d5aa50f",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/tools/world-art-capture.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__world-art-capture.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 12,
+      "retained_current_heading_count": 12,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    },
+    {
+      "original_path": "docs/tools/world-art-preview.md",
+      "original_source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "original_git_blob": "dfd61c03e9a2a56b27aee859e5657faa1af08828",
+      "original_content_sha256": "99ce3e3d637d456d18d93fbf1e22f1fcf713df1753a24dd2928b4702bce34b44",
+      "preserved_destination": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__world-art-preview.md.txt",
+      "preserved_content_sha256": "99ce3e3d637d456d18d93fbf1e22f1fcf713df1753a24dd2928b4702bce34b44",
+      "preserved_bytes": 8616,
+      "current_replacement_destination": "docs/tools/world-art-preview.md",
+      "current_replacement_sha256": "3a66b808b1828e63251033afed55eb6552df6a97c19ce5c4a16beaa4badee41b",
+      "reason": "Replace or condense current guidance while retaining the complete original dated source and evidence.",
+      "historical_routing": {
+        "immutable_rendered_source": "https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/tools/world-art-preview.md",
+        "exact_byte_copy": "docs/audits/2026-11-24-docs-renaissance/preserved/docs__tools__world-art-preview.md.txt",
+        "default_retrieval": "excluded by audit path; text suffix is not an ordinary Markdown answer page"
+      },
+      "original_heading_count": 7,
+      "retained_current_heading_count": 7,
+      "original_only_headings": [],
+      "inbound_link_disposition": {
+        "current_inventoried_references": 4,
+        "newly_broken_references": [],
+        "disposition": "PASS; surviving callers retain valid routes, rewritten callers preserve original source through baseline links"
+      },
+      "verification_status": "PASS"
+    }
+  ]
+}

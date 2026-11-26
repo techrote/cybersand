@@ -540,11 +540,11 @@ func microscenario_capture() -> void:
 	if not water_blind_set.is_empty() or not water_active_blind_label.is_empty() or not micro_host.active(): return
 	_write_microscenario_capture(micro_host.capture(CyberMicroScenarioIdentity.current()))
 
-func tower_observation() -> void:
+func tower_observation() -> bool:
 	if tower_context.get("water_active",false):
 		water_current_integer=int(_water_observe_web().get("water_integer",water_current_integer))
 		_update_water_web_context()
-	super.tower_observation()
+	return super.tower_observation()
 
 func _update_water_web_context() -> void:
 	if not tower_context.get("water_active",false): return

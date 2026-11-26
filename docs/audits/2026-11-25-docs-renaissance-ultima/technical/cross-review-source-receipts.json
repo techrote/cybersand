@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "review_type": "independent complete-diff and targeted causal-source inspection",
+  "lead_work": {
+    "verdict": "APPROVE within explicit non-publishing/headless scope",
+    "source_paths_sha256": {
+      "tools/ci/run_ultima_qualification.py": "e98115bf3420a55c58fec28095fd91b1d06f40a1683bcae81f8380e7e90d4def",
+      ".github/workflows/ultima-qualification.yml": "79bcbb5e06ee3648f7b98464d55a3358234a2e90b96948b740342456fabfc4a9",
+      ".github/workflows/in-tools-361-a01-independent-qualification.yml": "1b06830273a03ba8b83cc7488df03f6fbde87a307cfa9c1b2af6e80fb173cd52",
+      "docs/operations/current-and-historical-validation.md": "a9714e480367aec4a36dff190bf7b42296fd3b7d54958f854f054b788511e374",
+      "docs/operations/github-development-and-release.md": "91dcec6f46f017c932827922c2e7e2e39dd6d020f14ea3ee5c9d5f0372411f1d",
+      "docs/operations/local-build-and-validation.md": "dd453ddab7133f2e2bc0bc1e55d2da7feadf4892de66fbe8553a631c7bf84992",
+      "docs/operations/web-threading.md": "477487fb418a8a6480d6f8da80fa4c1ad45e63e33c6044760aa4fb3a7a46ce59"
+    },
+    "resolved_findings": [
+      "Added pre-existing tracked dirty-file refusal before qualification, excluding only Godot import cache",
+      "Expected source SHA supplied by event/head instead of self-derived tautology",
+      "Input map excludes Godot import cache and normalizes only the pre-existing four Rapier descriptor exceptions",
+      "V3 source-admission test count 19 matches independently executed tests; historical 14 witness unchanged"
+    ],
+    "source_review": [
+      "No publishing, release export, Ready promotion, checksum bypass or reduced inherited normal-fixture watchdog/error/natural-exit semantics",
+      "All 18 materialized LFS identities are checked independently from execution",
+      "Pinned source input maps before/after process runs; platform-specific line-ending bytes retained",
+      "Web scope correction follows explicit closed/not_planned owner issue 3 comment 5593128559; no new owner decision inferred"
+    ],
+    "owner_record": {
+      "url": "https://github.com/techrote/cybersand/issues/3#issuecomment-5593128559",
+      "intake_sha256": "0dd224c0537c85c65074965c25aba97b41c70ce28c4c2164631cf6c1244496c7"
+    },
+    "executed_receipt": "hosted-independent-review.json"
+  },
+  "C_reference_corrections": {
+    "verdict": "APPROVE source-grounded corrections; no fresh runtime execution implied",
+    "document_sha256": {
+      "docs/reference/configuration-reference.md": "ae00ab5a85159c1df0d5f626400e47c03802a6f8ca607d72c5e1ca9a708e6fe6",
+      "docs/reference/interfaces-and-message-contracts.md": "c6b6bc3d060a0ade58daa526316693d30f1887e4e3b70d987e248fd45873de9f",
+      "docs/reference/invariants.md": "330c28bc57266f63fe46f3cf2d3acade2c86a97ba9f95f1402aa2c3e31e7b72a",
+      "docs/reference/material-effects-register.md": "f03644b0232579cab5d990eea7a2f1cb541fa2501575a2d1a270258b226de3c4"
+    },
+    "source_review": [
+      "World actual physical hash2\u20136/CYPS2\u20135 or unsupported 0 precedence, accepted Brine/Water IN radius 3",
+      "Stage 3B disabled-by-default native World discovery observer; lifecycle/Rapier handoff remains separate",
+      "Both generic emission queues independently bounded at 8; true means admitted/coalesced, queue_paint (void) discards result",
+      "World::begin_tick applies newly-included regionwake; test_world1415\u20131502 establishes bounded expected behavior, not universal material/sleep acceptance",
+      "physical_flight_profile defines four distinct candidate_4ly002 profiles, not three placeholders",
+      "material_appearance projects Lava Zero / Molten Glass StateA; shader flair 31 heat procedural, condition only for glass"
+    ],
+    "source_paths_sha256": {
+      "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+      "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+      "native/tests/test_world.cpp": "17719612e2ba29dc14d8964db54fdd0d4700909a9a1c81c8af6c4df1ef648933",
+      "godot/scripts/simulation_worker.gd": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+      "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+      "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+    }
+  },
+  "B_rig_header": {
+    "verdict": "APPROVE source correction; visual acceptance remains B task",
+    "source_paths_sha256": {
+      "godot/examples/thunderbowl/physical_thunderbowl_scene.gd": "7076e53909af8b510ad0f052ded3803ee0d8b64458bde8b325f28b5a4547a23a",
+      "godot/scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8"
+    },
+    "reason": "Header derives count from the same 46-entry RIG_IDS array used by the picker. Other recognized Flight/reference barrel IDs are not silently counted."
+  },
+  "A_queue_correction": {
+    "reviewer": "Specialist C",
+    "verdict": "APPROVE after full diff and both actual queue implementations",
+    "path": "docs/architecture/data-ownership-and-lifetimes.md",
+    "scope": "Corrects false no-capacity claim; no runtime change"
+  }
+}

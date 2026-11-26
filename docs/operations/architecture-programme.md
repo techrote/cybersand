@@ -2,13 +2,23 @@
 title: CyberSand architecture synthesis and experimental programme
 status: Planned
 document-kind: design
-scope: Evidence gates for Cell representation, liquid state and transport, presentation, and conditional sparse motion; no production architecture selection
+scope: Retained September-October experimental gates and decisions for Cell, Water and presentation; historical holds and work orders do not override later accepted source or current owner priorities
 canonical-for: [architecture-experimental-programme]
-last-reviewed: 2026-10-24
+last-reviewed: 2026-11-25
 related-documents: [architecture-programme-source-ledger.md, physics-characterisation.md, physics-characterisation-plan.md, microscenarios-programme.md, water-hybrid-pressure-extension-programme.md, ../decisions/ADR-005-water-model.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md]
 ---
 
 # CyberSand architecture experimental programme
+
+This is the retained September–October programme. Its dated “current” states,
+holds and execution ordering belong to those checkpoints. Later accepted
+[Water families](../architecture/liquid-solver-family-policy.md),
+[Wave](../architecture/wave-flow-v1.md),
+[ballistic Water](../architecture/ballistic-water-v1.md) and Workbench authoring
+have their own source contracts. The [current state register](../reference/status-and-roadmap.md)
+and [later owner intent](../reference/product-intent-and-priorities.md) route
+today's work; this programme does not reopen closed #14/#18/#20 or assign an old
+implementation branch. Its frozen scientific controls remain unchanged.
 
 **Planned programme, not an adopted replacement architecture.** Establish what
 useful state costs, what behavior it enables, and where that state should live.
@@ -22,11 +32,14 @@ all four complete conversations, later refinements, rejected alternatives and
 repository conflicts. It is the traceability record; this page owns the programme.
 Future implementers use the linked prompts without needing those conversations.
 
-**REM-001 current-truth qualification (2026-09-20):** use the source-qualified
-[storage contract](../architecture/chunk-tile-and-buffer-model.md) for the physical
-current-main Cell carrier. Older four-byte wording on this programme page records
-its experiment/control context and must not be promoted to a current-main storage
-claim; #85 owns the full current-truth cleanup without changing G-L/G-P history.
+**Current implementation qualification (2026-11-24):** accepted source uses an
+eight-byte, eight-byte-aligned `detail::PrecisionStorage` cell, aliased by
+`World::Chunk::Cell`; see the [storage contract](../architecture/chunk-tile-and-buffer-model.md),
+[`precision_storage.hpp`](../../native/include/cybersand/precision_storage.hpp) and
+[`world.cpp`](../../native/src/world.cpp). The four-byte controls, no-migration
+constraints and admission decisions below belong to the dated experiment. They
+do not prohibit storage or Water features subsequently accepted in source. This
+qualification preserves the G-L/G-P evidence and makes no new architecture choice.
 For broad #10/#11 acceptance and issue-state routing, use the
 [development-claims remediation programme](development-claims-remediation-programme.md).
 
@@ -149,8 +162,11 @@ programme's #45/#18 gates.
 
 C/G-C, L/G-L and P/G-P are complete. [Issue17 evidence](../audits/2026-09-11-issue-17-state-precision.md)
 retains mass8 and proves Water-specific delay4 equivalence for controlled downstream
-budgets. Current4-byte production baseline remains pending G-final. M still needs
-a concrete measured motion-target admission; V independent; B blocked; G-final open.
+budgets. At that September 11 checkpoint, the four-byte production control was
+retained pending G-final; M required a measured motion-target admission, V was
+independent and B was blocked. Those are dated programme decisions. Current
+production storage is eight bytes as qualified above; later feature acceptance
+is recorded in the [current state register](../reference/status-and-roadmap.md).
 Earlier dated staged decisions below retain their original prerequisite context.
 
 ## Parallel MicroScenarios apparatus lane
@@ -169,11 +185,15 @@ revalidated against its pinned source/profile identity.
 
 ## A. Current relevant architecture and accepted decisions
 
-Intake is local `8f4ffb96e03dc50cb43ab9c84de17ccb44c03774` in
-`C:/kybersand/source`. The existing rebuilt Windows DLL is deliberately dirty;
-its identity is in the ledger. Remote main is older. Source changes and runtime
-evidence from #9/#10/#13 plus September 10 Water work are local baseline inputs,
-not silently certified by GitHub issue closure or a profile hash.
+**Dated intake, September 2026.** The table in this section describes source
+`8f4ffb96e03dc50cb43ab9c84de17ccb44c03774`, then located at
+`C:/kybersand/source`, with the dirty rebuilt Windows DLL recorded in the ledger.
+Its local/remote relationship is historical. Source and runtime evidence from
+#9/#10/#13 and September 10 Water work do not certify later source or runtime.
+For current cell storage, Water families and actor capacity use the
+[storage contract](../architecture/chunk-tile-and-buffer-model.md),
+[materials reference](../systems/materials-and-rule-kernels.md) and
+[actor contract](../systems/physical-actor-rigs.md).
 
 **ACT-004 capacity qualification, 2026-10-18:** the retained intake table below
 describes its original 16-body coupling limit. Current source now admits 64
@@ -183,13 +203,13 @@ does not select generalized shapes or revise this programme's scientific gates.
 
 | Authority | Relevant baseline |
 |---|---|
-| CURRENT / VALIDATED within dated fixtures | Native `World::Chunk::Cell` is 4 bytes: 8-bit material, state_a, state_b, updated_epoch. Material state is typed by each material's behavior; temperature is optional persistent chunk SoA state. |
+| DATED CONTROL / validated in September fixtures | The experiment's `World::Chunk::Cell` was 4 bytes: 8-bit material, state_a, state_b, updated_epoch. Material state is typed by each material's behavior; temperature is optional persistent chunk SoA state. |
 | ACCEPTED / ADR-001/003/007/009 | Native owns material; Rapier owns independent bodies on the main thread. Packed values cross owner boundaries. Separate transient body-ID occupancy is stable during cellular work. Retained immutable render payloads never expose mutable cells. |
-| CURRENT with known limitations | Rectangle coupling accepts at most 16 bodies, bounded sweep/ejection, capped central impulses and stale-sample handling. Failed ejection retains material and reports overlap. #9 documents masked-source feedback and barrier-crossing ejection; this programme does not assume #11 fixed them. |
+| DATED CONTROL with known limitations | The intake rectangle coupling accepted at most 16 bodies, bounded sweep/ejection, capped central impulses and stale-sample handling. Failed ejection retains material and reports overlap. #9 documents masked-source feedback and barrier-crossing ejection; this programme does not assume #11 fixed them. |
 | ACCEPTED / ADR-002/004/010 | Phased in-place four-phase worker execution; excluded regions pause without catch-up. A failed World is quarantined until reset/replacement; no global transaction/automatic retry. Buffered is not executable rollback. |
-| ACCEPTED / ADR-005; CURRENT POLICY | FreeMass Water has exact closed-operation integer conservation and stable equilibrium. Current lateral request is floor(3*imbalance/4), with one-unit tolerance, gravity first, 12-tick coherent delay and supported film at mass <=48/255. |
-| CURRENT | Water alone has fractional quantity. Other liquids use whole-cell paths, generally CellularYield; Oil has specialized movement. A mobility roll and scheduler sleep are not an explicit stress/yield model. No generic persistent cellular vx/vy exists. |
-| CURRENT POLICY / ADR-011 and #13 | Powder density sorting is excluded, player packing/support is separate, Mercury permeability defaults to period 30. Motion-driven mixing/carrying is opt-in; gameplay Baseline remains disabled. Horizontal candidates 2 and cadence 1 are protected defaults. |
+| DATED WATER CONTROL / ADR-005 | The registered FreeMass Water control has exact closed-operation integer conservation and stable equilibrium. Current lateral request is floor(3*imbalance/4), with one-unit tolerance, gravity first, 12-tick coherent delay and supported film at mass <=48/255. |
+| DATED CONTROL | In that intake, Water alone had fractional quantity. Other liquids use whole-cell paths, generally CellularYield; Oil has specialized movement. A mobility roll and scheduler sleep are not an explicit stress/yield model. No generic persistent cellular vx/vy exists. |
+| DATED POLICY / ADR-011 and #13 | Powder density sorting is excluded, player packing/support is separate, Mercury permeability defaults to period 30. Motion-driven mixing/carrying is opt-in; gameplay Baseline remains disabled. Horizontal candidates 2 and cadence 1 are protected defaults. |
 | ACCEPTED / ADR-008 | Explicit bounded approximation does not waive occupancy, ownership, capacity or current conservation contracts. New approximation needs its own measured policy. |
 
 Storage chunk 128², activity block 32², scheduling core 64², and radius-two
@@ -278,13 +298,21 @@ limits honestly; energetic reversal must wait for a selected motion representati
 
 ## D. Candidate matrix and controlled variables
 
+**Historical experiment matrix.** These controls were registered against the
+September intake, including its four-byte cell and byte-sized public material
+IDs. They are not a description of current production storage. Accepted source
+now aliases `World::Chunk::Cell` to an eight-byte, eight-byte-aligned
+[`PrecisionStorage`](../../native/include/cybersand/precision_storage.hpp); see the
+[current storage contract](../architecture/chunk-tile-and-buffer-model.md). The
+comparison results remain evidence about the original registered controls.
+
 | Question | Baseline / candidates | Change versus fixed controls | Required measurement |
 |---|---|---|---|
-| Raw Cell width | Current 4 B; 8 B with four original bytes and four unused bytes | Change stride only. Same semantics, epoch width, geometry, traversal, input, descriptors and compact snapshots. Verify compiler actually emits an 8-byte stride. | Equal content/events/work; tick distribution, ns/visited cell, memory/traffic, worker scaling. |
+| Raw Cell width | Registered four-byte control; padded eight-byte candidate with four unused bytes | Change stride only. Same semantics, epoch width, geometry, traversal, input, descriptors and compact snapshots. Verify compiler actually emits an 8-byte stride. | Equal content/events/work; tick distribution, ns/visited cell, memory/traffic, worker scaling. |
 | Packed access | Packed 8/16/8 control; 16/40/8 with only legacy state used; padded 8 B control | Access arrangement/ID extraction; fixed semantic values, epoch and unused capacity. | Masks/read-modify-write cost, size/alignment, no truncation, generated access path, normalized semantic equality. |
 | Short epoch | Packed 8/16/8 versus 8/18/6, extra two state bits unused | Epoch width/clear period only after access cost is known. | Per-clear duration and exact ticks, p99/max, double-update prevention over wraps/sleep/re-entry. |
 | Optional state allocation | 4 B plus chunk/block SoA or bounded sparse indexed sidecar versus 8 B inline | First legacy-equivalent storage/access; later identical M semantics and state precision. Same populated positions, lifetimes and work policy. | Zero/1/5/15/50/100% use, clustered versus dispersed use, lookup/move/reclaim cost, total bytes incl metadata and saturated capacity. |
-| Material ID headroom | Current 8-bit IDs; 10-bit 10/14/8 alternative; 16-bit candidate | Access cost separated from catalogue expansion. 10/14/8 cannot be a full legacy control unless every material's state is losslessly representable. | Actual catalogue/ID needs and adapter/render/profile/save migration surface. No new material pack loader. |
+| Material ID headroom | Registered 8-bit IDs; 10-bit 10/14/8 alternative; 16-bit candidate | Access cost separated from catalogue expansion. 10/14/8 cannot be a full legacy control unless every material's state is losslessly representable. | Actual catalogue/ID needs and adapter/render/profile/save migration surface. No new material pack loader. |
 | Water mass | 8-bit reference; 4/6/10; 3/12 optional only to locate an observed failure boundary | Fixed tested layout, three-quarter local solver, mass-normalized thresholds, no history. Auxiliary delay remains 12 ticks. | Initial quantization ledger, exact integer mass per precision, normalized levelness/front/rest/film, work and timing. |
 | Auxiliary precision | Original 8-bit Water delay versus 4-bit representation | Only packing; same 0..12 countdown, max-on-merge, pre-decrement suppression. Other materials retain their own full state range. | Exact behavioral equality and bit access cost. Combined budgets only after isolated results. |
 | Yield versus sleeping | Actual Water and representative yield liquids; default quiet threshold 3 versus threshold exceeding fixture horizon | Change sleep diagnostic only; same liquid, viscosity, scene and input. Zero is invalid, not a sleep-disable option. | Late mobility failures, eligible attempts, active-block time, residual slope and wake response. |
@@ -345,8 +373,10 @@ variants, semantic comparator, selected seeds/scenes, physical units, fixed knob
 run horizon, capacity limits, instrumentation cost check, primary metric and gate.
 Use fresh worlds and pinned release builds. Record source HEAD plus delta,
 compiler/flags, CPU/OS, artifact/profile hashes, worker count and exact commands.
-Do not measure while other builds run. Keep raw logs in
-`C:/kybersand/validation/local/<dated-experiment>/`; retain compact tables and
+Do not measure while other builds run. Keep raw logs in the experiment's declared
+evidence directory; the September registration used
+`C:/kybersand/validation/local/<dated-experiment>/`. That historical machine path
+does not assign a directory to a new checkout. Retain compact tables and
 interpretation under source documentation. Missing PMU/GPU counters are named
 gaps, never estimated misses presented as measurements.
 
@@ -464,9 +494,11 @@ conservation. These are conditional extensions, not uncreated mandatory backlog.
 
 Changing Current policy requires a separate reviewed decision with scenario-based
 benefit, honest negative evidence, representational total cost, supported target
-hardware and preserved invariants. Required affected-platform coverage is native
-core, desktop asynchronous owner and real Web compatibility/threaded profiles;
-document fallback scope deliberately. Check snapshot lifetime and bounded queues
+hardware and preserved invariants. The original registration requested native,
+desktop and Web comparisons. Current platform policy requires the affected native
+and desktop checks; Web remains an optional disposable experiment under the
+[owner's later scope decision](../reference/product-intent-and-priorities.md#disposable-web-experiments).
+Declare fallback scope deliberately. Check snapshot lifetime and bounded queues
 where interfaces change. No visual-only win can waive conservation or ownership.
 No raw timing result revises ADRs. Missing target-device/performance evidence
 means experimental status, even if native correctness passes.
@@ -491,8 +523,12 @@ from a local transition protocol. Failed ticks continue to use ADR-010 quarantin
 Keep intake source and each experiment as recoverable commits/branches, with
 reference fixtures and full registered input identity. Build candidates separately;
 never overwrite the only reference executable or the owner's loaded DLL. Preserve
-the intentional dirty DLL and all unrelated work. Raw outputs stay in the active
-workspace; `C:/cybersand` remains the functional-deliverables directory.
+unrelated work and explicitly inventory any local runtime that needs custody.
+The September intake included an intentional dirty DLL and used `C:/cybersand`
+for functional deliverables. Those are historical machine-specific custody facts,
+not instructions to retain a mismatched runtime or use that directory today.
+A new campaign declares its source, runtime identity, active workspace and output
+directories under the current [development and release procedure](github-development-and-release.md).
 
 Use fresh-world A/B selection or distinct binaries, not unsafe live state-layout
 switching. Normalize layout-specific state into semantic records for comparison;
@@ -559,11 +595,13 @@ or the final architecture decision. The [complete retained L evidence](../audits
 and [registration](cell-layout-experiment.md) preserve positive, negative and
 ambiguous results, including rejected preparation and all cost flags.
 
-**Retain the current layout as the experimental/production baseline pending
-G-final. Retaining the current Cell as the baseline is a programme control
-decision pending G-final, not a permanent architectural selection by Issue #16.**
+**Dated G-L decision:** retain the then-current four-byte layout as the
+experimental/production control pending G-final. This was a programme control
+decision, not a permanent architectural selection by Issue #16. Accepted current
+source uses eight-byte `PrecisionStorage`; the measurements below retain their
+original source and do not measure that later production implementation.
 
-- Current 4-byte Cell remains the baseline. L1 doubles Cell arrays at 8 bytes
+- The September four-byte Cell was the control. L1 doubled Cell arrays at 8 bytes
   (sleeping fixture 72.25 to 144.5 MiB), with workload-sensitive penalties;
   sleeping one-worker median paired p95 rises 15.04%.
 - Packed controls establish valid experimental carriers, with modest or adverse

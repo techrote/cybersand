@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+    "--script",
+    "res://tests/test_workbench_generator_discovery.gd"
+  ],
+  "exit_code": 0,
+  "source": "584874f6b670206ce426ee17f2d282c329082c8c",
+  "input_sha256": {
+    "godot/scripts/workbench_generator_dialog.gd": "926d2349600017dc4208a2acd2d0e4e44ff815eb128b225d8a9fc01d9934118d",
+    "godot/tests/test_workbench_generator_discovery.gd": "e41fb74d2205e4fbf3b6b92c509c8ee7d4ec77cc2a469031e23b1e37cf11e0fc"
+  },
+  "log_sha256": "a63165f6031c27783cd4e6c808abf5dde5ffcfc86f67f2395e96fe16bd6cb4c4",
+  "output": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nWB_GENERATOR_DISCOVERY checks=29 failures=0\n"
+}

@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "scope": "actual disposable Linux storage faults; no GPU, power-loss or physical acceptance",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "inputs": {
+    "scripts/gameplay_recorder.gd": "4e66f09c3c640221c86595ca7289e7d8b4cf85cd710c31faeace65a05d40f97f",
+    "scripts/workbench_file_transaction.gd": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac",
+    "tests/gameplay_recorder_fault_child.gd": "ca4b2342006faed4db3e5b537cdecf15b5931d4124469aeb63dae097f70f93f3"
+  },
+  "cases": [
+    {
+      "passed": false,
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+        "--script",
+        "res://tests/gameplay_recorder_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "fault": "none",
+      "limit_bytes": null,
+      "ready": {
+        "bytes": 4597,
+        "manifest": "/workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-01/normal/output/session/recording.json",
+        "sha256": "aa546df5c7362d90650a91edef08cea4412d35e71ccb566298b0ba13ed5558f9"
+      },
+      "result": {
+        "frame_bytes": 0,
+        "manifest_bytes": 4604,
+        "manifest_disposition": "complete",
+        "manifest_sha256": "220884bceea52c281333960ba24d4a35229d2badb6091d048128e07a807db56d",
+        "prior_manifest_preserved": false,
+        "status": {
+          "accepting": false,
+          "active": false,
+          "capture_attempts": 1,
+          "capture_copy_usec_max": 45,
+          "capture_copy_usec_total": 45,
+          "capture_hz": 60,
+          "dropped_frames": 0,
+          "enqueued_frames": 1,
+          "failed": false,
+          "failure_reason": "",
+          "finalizing": false,
+          "incomplete_reason": "",
+          "primed": true,
+          "queue_capacity": 8,
+          "queue_high_water": 1,
+          "queued_frames": 0,
+          "render_patch_apply_usec_max": 74,
+          "render_patch_apply_usec_total": 74,
+          "render_publications_observed": 1,
+          "session_path": "/workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-01/normal/output/session",
+          "writer_write_usec_max": 411,
+          "writer_write_usec_total": 411,
+          "written_frames": 1
+        }
+      },
+      "log_sha256": "539fbe2c2e5ef0ca24100c30fc00c8276287afd30dca85582427dafd934d532e"
+    },
+    {
+      "passed": false,
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+        "--script",
+        "res://tests/gameplay_recorder_fault_child.gd"
+      ],
+      "exit_code": 0,
+      "fault": "actual Linux RLIMIT_FSIZE after initial manifest; SIGXFSZ ignored",
+      "limit_bytes": 128,
+      "ready": {
+        "bytes": 4602,
+        "manifest": "/workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-01/short-write/output/session/recording.json",
+        "sha256": "a6079ecf1d15db0636971e38fea82dc6c6dee702dc4e4398c742524958e379cf"
+      },
+      "result": {
+        "frame_bytes": 0,
+        "manifest_bytes": 4602,
+        "manifest_disposition": "recording",
+        "manifest_sha256": "a6079ecf1d15db0636971e38fea82dc6c6dee702dc4e4398c742524958e379cf",
+        "prior_manifest_preserved": true,
+        "status": {
+          "accepting": false,
+          "active": false,
+          "capture_attempts": 1,
+          "capture_copy_usec_max": 40,
+          "capture_copy_usec_total": 40,
+          "capture_hz": 60,
+          "dropped_frames": 0,
+          "enqueued_frames": 1,
+          "failed": true,
+          "failure_reason": "recording write verification failed for /workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-01/short-write/output/session/frame-000001.ids: The staged file is incomplete; check free space and write permissions.",
+          "finalizing": false,
+          "incomplete_reason": "recording write verification failed for /workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-01/short-write/output/session/frame-000001.ids: The staged file is incomplete; check free space and write permissions.",
+          "primed": true,
+          "queue_capacity": 8,
+          "queue_high_water": 1,
+          "queued_frames": 0,
+          "render_patch_apply_usec_max": 74,
+          "render_patch_apply_usec_total": 74,
+          "render_publications_observed": 1,
+          "session_path": "/workspace/scratch/1c5fccfbe328/b-recording-checks/os-after-01/short-write/output/session",
+          "writer_write_usec_max": 769,
+          "writer_write_usec_total": 769,
+          "written_frames": 0
+        }
+      },
+      "log_sha256": "6882f31d336a83b5cf737df3c62db0e151cb82f63a3b0a72e8086461cd05e23f"
+    }
+  ],
+  "passed": false
+}

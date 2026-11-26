@@ -1,0 +1,9 @@
+{
+  "file": "/workspace/scratch/1c5fccfbe328/b-closure-gui-4b7/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/art-provider.cfg",
+  "identity": {
+    "bytes": 1501,
+    "sha256": "ae9ae30522dbab8c37ab5043c0733b005576612d5af7e09cba851413a2ef51cc"
+  },
+  "manual_retry": "provider LM Studio\u2192OpenAI\u2192LM Studio; UI returned Idle, both live token values retained",
+  "mode": "0o700"
+}

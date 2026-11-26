@@ -6,10 +6,34 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-26
 ---
 
 # Interfaces and message contracts
+
+## Which acknowledgement should a caller wait for?
+
+At accepted main `00cdb02f`, current interfaces have distinct stages:
+
+| Interface observation | Valid conclusion | Invalid inference |
+|---|---|---|
+| Positive queue/request serial | Request admitted to that bounded owner path | Native cells changed or Save contains the edit |
+| Native operation result with matching identity | The identified native operation reached its reported completion/refusal/partial state | A newer World or another operation may use that result |
+| Workbench authored-history reconciliation | Confirmed edit is represented in the applied authoring state | Evolved physics or the whole session is durable |
+| Render serial consumed by Main | That render payload was accepted for display publication | The actor, native tick and UI all share an identical timestamp |
+| Provider response or tool proposal | Text/proposed bounded commands are available | Native execution or owner approval occurred |
+
+Sources: [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd),
+[`workbench_paint_editor_executor.gd`](../../godot/scripts/workbench_paint_editor_executor.gd),
+[`shared_workbench.gd`](../../godot/scripts/shared_workbench.gd),
+[`main.gd`](../../godot/scripts/main.gd).
+[Direct Art batches](../systems/workbench-direct-art-batches.md) and
+[shared authoring](../architecture/shared-workbench-authoring-data.md) own the
+operation-specific receipt/history contracts. The generic GameplayBridge remains
+a planned broader abstraction; these implemented paths are not absent merely
+because the general schema is unfinished.
+
+## Accepted opt-in AMBIENT value schemas
 
 The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
 `ambient-observation/v1` copied environment and authored profile version 1.
@@ -19,7 +43,9 @@ version 2, native material formats and Rapier interfaces remain unchanged.
 `control.ambient` profile select the adapter. Unavailable sensor fields remain
 explicitly unavailable; they do not become safe ground or an absent material.
 
-The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
+## Accepted Wave and native failure interfaces
+
+The accepted [Wave Flow interface](../architecture/wave-flow-v1.md)
 adds versioned construction options and full uint16 Water mass readback without
 changing the existing C ABI. Legacy uint8 mass readback saturates at 255.
 Godot construction and diagnostic getters expose the applied override, complete
@@ -27,7 +53,7 @@ state version, flux, sparse work and capacity outcomes; render consumers still
 receive copied values. See the [evaluation guide](../operations/wave-flow-evaluation.md)
 for actual selection and target-platform qualification boundaries.
 
-The Draft Waterwall follow-up adds exception containment to potentially throwing
+The accepted Waterwall adapter includes exception containment to potentially throwing
 `CyberNativeCellWorld` bindings without changing their argument layouts or native
 Water laws. Unexpected native exceptions quarantine the World and retain one
 operation/error through `get_last_tick_error()` / `get_tick_failure_count()`.
@@ -443,11 +469,14 @@ for the gameplay semantics and owner-acceptance boundary.
 `packed = (material_id & 255) | (emission_flags << 8)`. `queue_paint` forwards to
 `queue_emit_disc`; consecutive identical pending emissions are coalesced.
 The only defined option is coherent-liquid emission. UI slots never cross this
-boundary. The dynamic queue has no production capacity, target-tick ID or
-target-tick acceptance acknowledgement. `queue_emit_disc` now returns false
-when the published owner is failed (true only admits/coalesces a pending command,
-not a promise of application). Failure/reset clears pending emissions without
-replay. Reset/frame inputs are separate latched fields.
+boundary. [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd)
+caps this queue at eight pending commands. `queue_emit_disc` returns false on
+capacity exhaustion, failed-owner state and conflicting authoring/transition
+ownership; true only admits or coalesces the pending command. It supplies no
+target-tick or application acknowledgement. The legacy `queue_paint` wrapper
+returns void, so callers needing admission feedback must use `queue_emit_disc`.
+Failure/reset clears pending emissions without replay. Reset/frame inputs are
+separate latched fields.
 
 **Approved:** future commands need bounded immutable value data, deterministic
 accepted ordering and explicit failure. **Planned:** the generalized schema,
@@ -683,14 +712,14 @@ the C entry points are experimental and not a frozen ABI.
 
 ### LCB-001 pressure reference inspection and persistence (experimental)
 
-**Current pressure APIs from #245, with shared hash2/CYPS2 accepted on main in #246.** These calls
+**Current pressure APIs introduced by #245/#246, with later instance-version extensions.** These calls
 serve the opt-in [`pressure_flow_v1/reference`](../architecture/pressure-flow-v1.md)
 and follow the same serialized-owner rule as the bridge calls above. Results own
 their dictionaries; none exposes live World storage.
 
 | Call | Result |
 |---|---|
-| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()`; Current main version 2 includes exact shared accounting. Historical #245 version 1 is retained evidence; `content_hash`/`state_hash` are unchanged |
+| `CyberNativeCellWorld.get_physical_state_hash()` / `get_physical_state_hash_version()` | 16-hex-digit FNV-1a `World::physical_state_hash()` and actual instance version2–6. Base version2 includes exact shared accounting; newer extensions select the [current precedence](level-saves-and-replay.md#current-native-physical-state-versions). Historical #245 version1 remains evidence; `content_hash`/`state_hash` are unchanged |
 | `inspect_gas_compartments()` | `available` (false outside pressure Worlds), parameters, `topology_revision`, `next_id`, `completed_tick`, `compartments` (id, generation, ancestry, amount, volume, anchor, created tick, topology revision, `gauge_mass`, `vent_state`), retirement `history` with reason and successors, and the `ledger` with `closes` |
 | `inspect_pressure_cell(point)` | `available`, material, `state_a`, `overfill`, `flow`, `gas` (`compartment`/`atmosphere`/`vacuum`/`unresolved`) and `gas_compartment` |
 | `get_pressure_flow_ledger()` | overfill converted/external, flow remainder, contact loss, relief cells and `last_tick` diagnostics |
@@ -698,32 +727,35 @@ their dictionaries; none exposes live World storage.
 | `get_liquid_solver_policy()` | adds `family_parameters` and `physical_state_hash_version`; `admission` is `current_defaults_only` or `qualified_candidate` |
 | `water_experiment_observation` | adds `water_visible` and `water_overfill`; `water_integer` = visible + overfill (overfill is 0 outside pressure Worlds) |
 | `CyberDemoBridge.inspect_cell(world, point)` | adds `family_state` (`family`, `overfill`, `flow`, `gas_label`) in pressure Worlds |
-| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | Current main writes CYPS2 and explicitly refuses historical CYPS1; import re-admits saved policy and preserves the running World on refusal ([persistence](../architecture/pressure-flow-v1.md#persistence-cyps-v2)) |
+| `CyberDemoBridge.export_physical_state(world)` / `import_physical_state(world, bytes)` | Supported non-Wave instances write CYPS2–5 according to their extensions; Wave reports unsupported format0 and refuses exact continuation. Historical CYPS1 is refused. Import re-admits saved policy and preserves the running World on refusal; see the [complete save contract](level-saves-and-replay.md#current-native-physical-state-versions) |
 
 Native counterparts on `World` are `pressure_flow_enabled`,
 `pressure_flow_parameters`, `pressure_cell`, `gas_compartments`, `gas_history`,
 `gas_ledger`, `gas_topology_revision`, `gas_next_id`, `pressure_flow_ledger`,
 `pressure_flow_diagnostics`, `water_quantity`, `physical_state_hash` and
-`save_physical_state`/`restore_physical_state` (`kPhysicalStateFormatVersion` 2)
+`save_physical_state`/`restore_physical_state` (base `kPhysicalStateFormatVersion` 2;
+query the instance getter for actual format support)
 in [`world.hpp`](../../native/include/cybersand/world.hpp) and
 [`pressure_flow.hpp`](../../native/include/cybersand/pressure_flow.hpp). No C API
 entry point exposes them. The C API/global ABI is not frozen by these additions.
 
 ### LCB-005 standalone instance readback
 
-Current #212 branch source exposes copied `get_physical_state_format_version()`
+Accepted source exposes copied `get_physical_state_format_version()`
 and `inspect_inertial_cell(point)` beside the actual instance hash-version
-getter. Non-IN instances report2 and IN instances3. Applied policy readback
+getter. The original #212 checkpoint reported non-IN2 and IN3; later extensions
+use the [actual-instance version table](level-saves-and-replay.md#current-native-physical-state-versions).
+Applied policy readback
 includes the actual IN damping/extension digest and execution radius; policy-only
 validation labels its values as predictions. The old dictionary run identity
 binds actual version and IN parameter identity without becoming typed host proof.
 
 `build_liquid_policy_world(..., maximum_rule_radius=2)` accepts exactly2/3 and
-requires explicit3 for Brine IN. Ordinary/default/CYSD1 reconstruction returns
+requires explicit3 for Brine or Water IN. Ordinary/default/CYSD1 reconstruction returns
 to2. CYPS continuation retains saved geometry. Calls remain serialized to the
 exclusive adapter owner; outputs expose no mutable World storage. The
 [IN reference](../architecture/inertial-cellular-v1.md#standalone-godot-readback-and-explicit-geometry)
-owns fields, refusal behavior and the local Windows-only qualification.
+owns fields, refusal behavior and separately dated platform qualification.
 
 CYPS omits host-owned transient masks and body graphs. Exact body-coupled
 continuation requires separate restoration of the same mask configuration and
@@ -732,7 +764,7 @@ provide that complete prepared owner restoration. The
 [moving-mask gas repair record](../audits/2026-10-25-pressure-moving-mask-gas-retirement.md)
 retains this #202/#203 qualification and the strict native live-label invariant.
 
-The isolated Water successor adds native `World::whole_cell_water_enabled()`:
+The accepted Water successor adds native `World::whole_cell_water_enabled()`:
 true for Water CY or Water IN, distinct from the CY-only dispatch accessor.
 Internal/live ingress, CYSD preflight, final legacy overlays and CYPS validation
 share that regime. `mix_after_motion` now returns the actual native carrier
@@ -743,7 +775,7 @@ their contracts; capability/policy digests are freshly regenerated.
 
 ### LCB-002 copied pressure optimization observations
 
-**Current in #201 branch source, pending runtime and final CI:** the exclusive
+**Accepted on main through PR #253:** the exclusive
 adapter owner serializes these calls with ticks. No result exposes mutable
 World/cache storage or authorizes simulation skipping.
 
@@ -774,11 +806,13 @@ from the applied run and cannot replace its World, receipt or generation.
 provide copied completed-boundary native facts. Exclusive-owner capture creates
 the immutable `NativeFacts`; caller setup dictionaries cannot construct it.
 Typed native-v1 applied/attempt receipts bind actual policy/configuration,
-setup/normalization identities, complete hash2 and exact accounting. Shaped
-source/runtime values remain caller claims and full matched eligibility stays
-false until #202 supplies actual verification. The older Godot dictionary
-getter above remains a different encoding; no Godot typed normalization opt-in
-or full comparison host is supplied by that residual native checkpoint. Detailed shapes, absence rules,
+setup/normalization identities, the applicable physical hash and exact accounting.
+At the original #246 native checkpoint that hash used version2; no Godot typed
+normalization opt-in or full comparison host was supplied by that checkpoint.
+The accepted application integration below adds bounded owner preparation and
+source observations, while caller-supplied source/runtime values remain claims
+and do not alone establish full matched eligibility. The older Godot dictionary
+getter above remains a different encoding. Detailed shapes, absence rules,
 capacities and the narrow native codec freeze belong to
 [native prepared setup and receipts](../architecture/liquid-prepared-setup-and-receipts.md).
 
@@ -910,7 +944,8 @@ typed refusal without mutating a World. Applied `get_liquid_solver_policy()` add
 actual `maximum_rule_radius`, instance hash/format versions and IN
 `family_parameters` with the native effective identity and `readback_source`.
 `get_physical_state_hash_version()` and `get_physical_state_format_version()`
-query the actual instance (IN3, non-IN2). `inspect_inertial_cell(point)` copies
+query the actual instance, including newer signed-IN, ballistic, gas-capacity
+and Wave extensions. `inspect_inertial_cell(point)` copies
 healthy finite cell material/family/availability and signed motion/accumulators.
 Invalid points or failed Worlds return an explicit error.
 
@@ -1009,12 +1044,18 @@ provenance/coverage semantics.
 
 ## Soliding model and discovery values
 
-**Current standalone modules only:** [lifecycle](../architecture/soliding-lifecycle.md)
+The standalone [lifecycle model](../architecture/soliding-lifecycle.md)
 uses incarnation/slot/generation handles and immutable transaction tokens;
 [discovery](../systems/settled-region-discovery.md) returns complete copied tile
-classifications under an independent revision witness. Neither adds a C API,
-GDExtension method, worker message or live runtime admission. Real World producer
-witnesses and cross-owner queues remain Planned.
+classifications under an independent revision witness. Accepted Stage-3B source
+also integrates a disabled-by-default native World producer and bounded
+coordinator. Its native `advance_settled_discovery`, tile/coverage/metrics and
+capacity-status APIs are declared in
+[`world.hpp`](../../native/include/cybersand/world.hpp); the
+[configuration reference](configuration-reference.md#soliding-successor-experiment-capacities)
+owns its construction limits. This observer integration does not admit a general
+cross-owner soliding lifecycle, Rapier mutation or scheduler skipping. There is
+no new general C/GDExtension lifecycle protocol.
 
 The [physical Blacksite experiment](../operations/physical-actor-programme.md) reuses the current body input/result ABI with one rectangle. `apply_trial_impulses` is a main-thread bridge method; no native field layout or sampled actor action/observation stride changes.
 
@@ -1500,7 +1541,7 @@ World; existing material/semantic admission interfaces keep that responsibility.
 
 ## Native default-demo construction values
 
-The unmerged [native default-demo preparation API](../architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
+The accepted [native default-demo preparation API](../architecture/liquid-prepared-setup-and-receipts.md#native-desktop-default-demo-preparation)
 accepts `(world, liquid_policy, options)` at the exclusive owner boundary. Its
 one-use token is the same private candidate slot used by prepared rectangles and
 thermal levels. No World storage crosses the adapter. Copied native constructor

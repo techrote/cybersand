@@ -2,13 +2,32 @@
 title: WEX-004 bounded decompression impulse-event preregistration
 document-kind: reference
 canonical-for: [wex-004-bounded-decompression-proof]
-status: Planned
-scope: Frozen preregistration for the bounded non-production WEX-004 decompression-event proof; no production atmosphere, gas CFD, Water pressure solver or generic field adoption
-last-reviewed: 2026-09-20
+status: Current
+scope: Reference to completed WEX-004 NARROW-USE research; retained September 2026 preregistration and branch instructions below are historical experimental context, not current work authorization or production adoption
+last-reviewed: 2026-11-25
 related-documents: [lumped-gas-region-pressure-bookkeeping.md, ../operations/water-hybrid-pressure-extension-programme.md, ../systems/smoke-heat-pressure-roadmap.md, ../architecture/rigid-body-and-cellular-coupling.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../decisions/ADR-007-rigid-body-cellular-coupling.md, ../decisions/ADR-008-bounded-approximate-fidelity.md, ../decisions/ADR-009-rapier-2d-rigid-body-backend.md]
 ---
 
 # WEX-004 bounded decompression impulse-event preregistration
+
+## Current reading and completed outcome
+
+WEX-004 / #94 completed on **2026-09-24 with NARROW-USE disposition**.
+The [accepted programme summary](../operations/water-hybrid-pressure-extension-programme.md#wex-004--conditional-decompression-event-proof)
+and [dated execution record](../audits/2026-09-24-wex004-decompression-disposition.md)
+record a finite, direct, local breach effect, with conservative cancellation on
+unrecognized world revisions. They do not establish routed flow, a general gas
+solver or production atmosphere adoption. The isolated diagnostic remains in
+[`decompression_diagnostic.gd`](../../godot/scripts/decompression_diagnostic.gd).
+This review checked those source boundaries; it did not rerun the historical
+experiments or extend their hardware coverage.
+
+The preregistration, adapter amendments, laws and criteria below are retained
+as the experiment's original contract. Statements about active branches,
+pre-execution state and future reruns describe **September 2026**, not current
+implementation permission. Consult the programme for any new work. The complete
+[earlier reference at accepted main](https://github.com/techrote/cybersand/blob/00cdb02f103265b6dc5224c68283e9a0c8cb449f/docs/research/bounded-decompression-impulse-events.md)
+preserves the text before this reading guidance.
 
 ## Status and source identity
 

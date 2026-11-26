@@ -1,0 +1,235 @@
+{
+  "schema": "authoring-profile-before-v1",
+  "authority": "historical-non-authoritative",
+  "source_head": "7c6113fc5a7877d07f70f447cb3574f464097c82",
+  "input_sha256": {
+    "godot/scripts/worldgen_workbench.gd": "12e3cbf7869c7f84058599c2708c14f3c271672a79ecd42a2b785b052f6fc56f",
+    "godot/scripts/material_lab_panel.gd": "ef8630df18316f8e094712df73bd9e145b17554e01168486a2a701601e88abc5",
+    "godot/scripts/transport_profile_panel.gd": "456e6c24213979c8ba2ff983078ad29d530acb80a2c929013aeae24c1b35bd6b",
+    "godot/scripts/main.gd": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84",
+    "godot/scripts/tower_panel.gd": "14cc8fa74867924d08477b76357ee5a958ad7f06ca4853e473b84c2cae79c255",
+    "godot/scripts/material_lab_experiment.gd": "f3512c6eb4663f629d790795be2f259f6484928d16cb1fbf0f52e0b7ada2c34e",
+    "godot/scripts/transport_profiles.gd": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+    "godot/scripts/water_experiment_profiles.gd": "172cd621c16561fce17f3a16e80a060007348201c2b901922531cd620dabaca5",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "child_sha256": "b8e2d82012c8c137c4b354ded0dec6fbb460e381595c7a5081fb52e1c5e0e629",
+  "platform": "linux",
+  "cases": [
+    {
+      "kind": "worldgen",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 128,
+      "before": {
+        "acknowledged": true,
+        "bytes": 3152,
+        "details": {
+          "accepted_recipe_unchanged": true,
+          "last_error": "",
+          "outer_status": ""
+        },
+        "format_loadable": true,
+        "invalid_input": false,
+        "kind": "worldgen",
+        "loaded_value": 7.0,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/worldgen.json",
+        "requested_value": 7,
+        "sha256": "329d1697d7dac15023f4ce2c78512ed80fb55521c542e10fbcd8bde0d8a49d8d",
+        "status": "Saved accepted revision 1 to worldgen.json.",
+        "exit_code": 0,
+        "log": "worldgen-normal.log",
+        "log_sha256": "a97e13663d7260f69b730785bb7a1905567c421cf1854cc08fa5d8cc1c730648"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "details": {
+          "accepted_recipe_unchanged": true,
+          "last_error": "",
+          "outer_status": ""
+        },
+        "format_loadable": false,
+        "invalid_input": false,
+        "kind": "worldgen",
+        "loaded_value": null,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/worldgen.json",
+        "requested_value": 8,
+        "sha256": "8132aacb42081cd286bc3ab45891d0439a722fb60dfd828470eb6a4fca68f13b",
+        "status": "Saved accepted revision 1 to worldgen.json.",
+        "exit_code": 0,
+        "log": "worldgen-rlimit.log",
+        "log_sha256": "fd110d62553de90ae36e7e40f37a070fcd37de97b37d453478bf87c2efdc6d67"
+      }
+    },
+    {
+      "kind": "material-lab",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 4224,
+      "before": {
+        "acknowledged": true,
+        "bytes": 4570,
+        "details": {
+          "experiment_active": true,
+          "experiment_tick": 0
+        },
+        "format_loadable": true,
+        "invalid_input": false,
+        "kind": "material-lab",
+        "loaded_value": 7.0,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/material-lab.json",
+        "requested_value": 7,
+        "sha256": "f45447d8b29afbe8ec08ca8b75a0e543cebbb1ed96f9e7c055eb5073b83ee31e",
+        "status": "Saved reproducible test case: /workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/material-lab.json",
+        "exit_code": 0,
+        "log": "material-lab-normal.log",
+        "log_sha256": "dcced89a38501ce92fcb545f78b6773fe41cb6b1018e9f14b81c38a314c8cdf3"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 4224,
+        "details": {
+          "experiment_active": true,
+          "experiment_tick": 0
+        },
+        "format_loadable": false,
+        "invalid_input": false,
+        "kind": "material-lab",
+        "loaded_value": null,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/material-lab.json",
+        "requested_value": 8,
+        "sha256": "7b68847a9027e7b92bd7a8f667bcbb675393f314fbde96ef4998333888178f15",
+        "status": "Saved reproducible test case: /workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/material-lab.json",
+        "exit_code": 0,
+        "log": "material-lab-rlimit.log",
+        "log_sha256": "5afa2983e5e21d40b8de7ac7a3b1a84f6ffefdc55eb120b230209b9c15a0d10c"
+      }
+    },
+    {
+      "kind": "transport",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 128,
+      "before": {
+        "acknowledged": true,
+        "bytes": 373,
+        "details": {
+          "applications": 0,
+          "draft_unchanged": false,
+          "draft_value": 7.0,
+          "editor_unchanged": false
+        },
+        "format_loadable": true,
+        "invalid_input": false,
+        "kind": "transport",
+        "loaded_value": 7.0,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/profile-wgccmymd/godot/app_userdata/Cyber Sand Reference Sandbox/transport-profile.json",
+        "requested_value": 7,
+        "sha256": "85185473d9911f82f372d88cad5f0863c6432790ea852c12b1d1935dd965c83e",
+        "status": "User copy saved to user://transport-profile.json",
+        "exit_code": 0,
+        "log": "transport-normal.log",
+        "log_sha256": "45ca86014cd44b5194751099e0ba9fe3efdcf639d1cfe7d146bb81957c16dbda"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "details": {
+          "applications": 0,
+          "draft_unchanged": false,
+          "draft_value": 8.0,
+          "editor_unchanged": false
+        },
+        "format_loadable": false,
+        "invalid_input": false,
+        "kind": "transport",
+        "loaded_value": null,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/profile-wgccmymd/godot/app_userdata/Cyber Sand Reference Sandbox/transport-profile.json",
+        "requested_value": 8,
+        "sha256": "cc4e7d0ec2f5afa01ac926684ee6a40bf4c22e02f50877d311c3f64e97571043",
+        "status": "User copy saved to user://transport-profile.json",
+        "exit_code": 0,
+        "log": "transport-rlimit.log",
+        "log_sha256": "908ccd4555de652e10b439964c5317230ac0377b793e86f12274a74bca8b5d40"
+      }
+    },
+    {
+      "kind": "water",
+      "fault": "real-Linux-RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "limit_bytes": 128,
+      "before": {
+        "acknowledged": true,
+        "bytes": 176,
+        "details": {
+          "resolved_seed": 7,
+          "scope": "Old public method boolean; old Tower callback ignores it and has no save-status label",
+          "unrelated_error": "Unrelated retained diagnostic"
+        },
+        "format_loadable": true,
+        "invalid_input": false,
+        "kind": "water",
+        "loaded_value": 7,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/profile-wgccmymd/godot/app_userdata/Cyber Sand Reference Sandbox/water-experiment-policy.json",
+        "requested_value": 7,
+        "sha256": "b8555e9fc615387144977a9b59d2edd79b31bf2a82a702e43949d093ec270507",
+        "status": "",
+        "exit_code": 0,
+        "log": "water-normal.log",
+        "log_sha256": "129e919920d9a2ff89c9d0eb67f633156293e6777975174f2c99184d29c88d95"
+      },
+      "after": {
+        "acknowledged": true,
+        "bytes": 128,
+        "details": {
+          "resolved_seed": 8,
+          "scope": "Old public method boolean; old Tower callback ignores it and has no save-status label",
+          "unrelated_error": "Unrelated retained diagnostic"
+        },
+        "format_loadable": false,
+        "invalid_input": false,
+        "kind": "water",
+        "loaded_value": null,
+        "path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/profile-perimeter-before-all/profile-wgccmymd/godot/app_userdata/Cyber Sand Reference Sandbox/water-experiment-policy.json",
+        "requested_value": 8,
+        "sha256": "632ec8d2ea4bf1784abecae9758a69f11561e29a7a5ab67ca31b7ff7e57212b0",
+        "status": "",
+        "exit_code": 0,
+        "log": "water-rlimit.log",
+        "log_sha256": "90f4f84730cfba8d4305034abed57edf142393ed1317bccf975a890842247b67"
+      }
+    }
+  ],
+  "status": "reproduced-all-four",
+  "completed": true,
+  "predecessor_writer_identity": [
+    {
+      "path": "godot/scripts/worldgen_workbench.gd",
+      "method": "save_profile",
+      "predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "method_bytes_equal": true,
+      "method_sha256": "ec89053d68b0a06ccb5c73792fe6175839cf20e2711e0e521584665dc7fb54d3"
+    },
+    {
+      "path": "godot/scripts/material_lab_panel.gd",
+      "method": "_file_selected",
+      "predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "method_bytes_equal": true,
+      "method_sha256": "d397eeb5714d3f3a414fff90ec6b1f7b2c58b377bb6749e982307ab6250b0c67"
+    },
+    {
+      "path": "godot/scripts/transport_profile_panel.gd",
+      "method": "save_copy",
+      "predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "method_bytes_equal": true,
+      "method_sha256": "30db1bf34d18e2d405010d5827c9acd8aa4480a09139e983ccf62c91fb5c1ef7"
+    },
+    {
+      "path": "godot/scripts/main.gd",
+      "method": "water_lab_save_profile",
+      "predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "method_bytes_equal": true,
+      "method_sha256": "5b8b316c55c5110c263d4ac28033f10686bcc5a4d33b1135cc19345cd0c07efc"
+    }
+  ],
+  "source_and_materialized_runtime_bytes_match_recorded_git_head": true
+}

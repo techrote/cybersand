@@ -1,0 +1,188 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist A",
+  "implementer": "Specialist B",
+  "verdict": "APPROVE within stated per-file local-filesystem process-failure model",
+  "reviewed_commit": "56117d19",
+  "source_sha256": {
+    "godot/scripts/gameplay_recorder.gd": "4e66f09c3c640221c86595ca7289e7d8b4cf85cd710c31faeace65a05d40f97f",
+    "godot/tests/test_gameplay_recorder.gd": "3212cf766ba07ff5f01e77be16313622d8e53748972fbc8335a59456028a885c",
+    "godot/tests/gameplay_recorder_fault_child.gd": "a5e2201a4636ed47f5868a17226011c8134727141f6d11f64176c9b1d44eeb40",
+    "tools/ci/run_recorder_storage_qualification.py": "6ecc2ee537bc48b27edeaecff02c8ecd6ff2831bbea88df8ff3bbb6923c82141",
+    "docs/operations/gameplay-recording.md": "624ea59925efc795e86c2834ff4627e32c975570aafd7c35bc2f42cb99a70180"
+  },
+  "independent_execution": {
+    "unit": {
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+        "--script",
+        "res://tests/test_gameplay_recorder.gd"
+      ],
+      "exit": 0,
+      "log_sha256": "9bfbe7e03c7ebfc2b39c76b6a5419e7ff731ed4c5ea059140c74be2f17611f5f",
+      "log": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nGameplay recorder regression passed: 94 checks\n"
+    },
+    "final_real_os_matrix": {
+      "schema": 1,
+      "scope": "actual disposable storage faults; no GPU, power-loss or physical acceptance",
+      "platform": "linux",
+      "engine_version": "4.7.stable.official.5b4e0cb0f",
+      "source_head": "56117d19e66b2484810a60d3ebb16c20d4e3b4dd",
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "inputs": {
+        "scripts/gameplay_recorder.gd": "4e66f09c3c640221c86595ca7289e7d8b4cf85cd710c31faeace65a05d40f97f",
+        "scripts/workbench_file_transaction.gd": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac",
+        "tests/gameplay_recorder_fault_child.gd": "a5e2201a4636ed47f5868a17226011c8134727141f6d11f64176c9b1d44eeb40"
+      },
+      "runner_sha256": "6ecc2ee537bc48b27edeaecff02c8ecd6ff2831bbea88df8ff3bbb6923c82141",
+      "cases": [
+        {
+          "passed": true,
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+            "--script",
+            "res://tests/gameplay_recorder_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "fault": "none",
+          "limit_bytes": null,
+          "windows_lock": null,
+          "ready": {
+            "bytes": 4612,
+            "manifest": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/recorder-independent-final/normal/output/session/recording.json",
+            "sha256": "83485260ec6a28ed215ab6755a81e3f2514dd7a27d42020e54c5b4ce29b6f552"
+          },
+          "result": {
+            "frame_bytes": 1024,
+            "manifest_bytes": 4619,
+            "manifest_disposition": "complete",
+            "manifest_sha256": "4ef0bb07a9d2ab41ea51da9f9be57287bb901523df301e7cb850013049949f9e",
+            "prior_manifest_preserved": false,
+            "status": {
+              "accepting": false,
+              "active": false,
+              "capture_attempts": 1,
+              "capture_copy_usec_max": 39,
+              "capture_copy_usec_total": 39,
+              "capture_hz": 60,
+              "dropped_frames": 0,
+              "enqueued_frames": 1,
+              "failed": false,
+              "failure_reason": "",
+              "finalizing": false,
+              "incomplete_reason": "",
+              "primed": true,
+              "queue_capacity": 8,
+              "queue_high_water": 1,
+              "queued_frames": 0,
+              "render_patch_apply_usec_max": 73,
+              "render_patch_apply_usec_total": 73,
+              "render_publications_observed": 1,
+              "session_path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/recorder-independent-final/normal/output/session",
+              "writer_write_usec_max": 839,
+              "writer_write_usec_total": 839,
+              "written_frames": 1
+            }
+          },
+          "log_sha256": "0921c41c46d1d80b66b8068fd1f0cf27e6339ce27024af011590a58ef92b8706"
+        },
+        {
+          "passed": true,
+          "command": [
+            "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+            "--script",
+            "res://tests/gameplay_recorder_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "fault": "short-write",
+          "limit_bytes": 128,
+          "windows_lock": null,
+          "ready": {
+            "bytes": 4617,
+            "manifest": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/recorder-independent-final/short-write/output/session/recording.json",
+            "sha256": "cbaaac79923e9cb3eecee77d636155412fed04efea11ba59cfb80ebac0a5a135"
+          },
+          "result": {
+            "frame_bytes": 128,
+            "manifest_bytes": 4617,
+            "manifest_disposition": "recording",
+            "manifest_sha256": "cbaaac79923e9cb3eecee77d636155412fed04efea11ba59cfb80ebac0a5a135",
+            "prior_manifest_preserved": true,
+            "status": {
+              "accepting": false,
+              "active": false,
+              "capture_attempts": 1,
+              "capture_copy_usec_max": 67,
+              "capture_copy_usec_total": 67,
+              "capture_hz": 60,
+              "dropped_frames": 0,
+              "enqueued_frames": 1,
+              "failed": true,
+              "failure_reason": "recording write verification failed for /workspace/scratch/1c5fccfbe328/ultima-a/a-results/recorder-independent-final/short-write/output/session/frame-000001.ids: The staged file is incomplete; check free space and write permissions.",
+              "finalizing": false,
+              "incomplete_reason": "recording write verification failed for /workspace/scratch/1c5fccfbe328/ultima-a/a-results/recorder-independent-final/short-write/output/session/frame-000001.ids: The staged file is incomplete; check free space and write permissions.",
+              "primed": true,
+              "queue_capacity": 8,
+              "queue_high_water": 1,
+              "queued_frames": 0,
+              "render_patch_apply_usec_max": 76,
+              "render_patch_apply_usec_total": 76,
+              "render_publications_observed": 1,
+              "session_path": "/workspace/scratch/1c5fccfbe328/ultima-a/a-results/recorder-independent-final/short-write/output/session",
+              "writer_write_usec_max": 167,
+              "writer_write_usec_total": 167,
+              "written_frames": 0
+            }
+          },
+          "log_sha256": "1b1bfa901137ec6495412420c68de5715df5206039f62d6a568517a366d837f3"
+        }
+      ],
+      "passed": true,
+      "status": "passed",
+      "completed": true
+    },
+    "additional_disk_readback": {
+      "normal_ids": "1024 exact bytes of material2",
+      "limited_ids": "128 exact bytes of material2, not counted as completed frame",
+      "normal_manifest": "valid complete, written_frames1",
+      "failure_manifest": "valid initial recording disposition retained"
+    }
+  },
+  "source_review": [
+    "No native requirement for writer_enabled=false; disk capability refusal precedes output directory creation and queue/frame mutation.",
+    "Session name is a safe leaf; final session directory is created exclusively; existing session refuses rather than overwriting retained files.",
+    "Immutable new frame files are not overwritten; full post-close bytes gate each write and written_frames increments only after all three applicable frame files succeed.",
+    "One writer thread owns disk output; immutable snapshots and existing mutex/semaphore lifecycle remain unchanged; no new access to mutable World, Rapier or live scene tree.",
+    "Initial and final recording.json use the reviewed shared native replacement helper. Failure to replace leaves initial valid recording disposition and reports failed; no complete recording inferred from partial frame files.",
+    "Shared utility only creates a RefCounted bridge and performs file replacement; the ordinary distribution supplies the native capability but historical GDScript-only hosts explicitly refuse disk recording."
+  ],
+  "review_requests_resolved": [
+    "Added engine-error-log refusal even when process exits zero and expected result markers exist.",
+    "Guide now describes Linux file-size fault and Windows locked-manifest runner separately."
+  ],
+  "limits": [
+    "Linux actual RLIMIT_FSIZE and normal recording executed independently here; Windows requires its own hosted receipt.",
+    "A recording spans multiple files; it is not a transaction, exact replay, power-loss guarantee or hostile-concurrent-filesystem protection.",
+    "Extra writer reads need inclusion in future matched owner recording OFF/ON performance evaluation; none claimed here."
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "schema": "ultima-independent-profile-isolation-review-v1",
+  "finding": "ULT-CI-07",
+  "alias": "A-ULT-18",
+  "source_before": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "driver_sha256": "d22be2b2a10aba88414645ad6a2edafe9decc3f82726ea559ed1b62049541eaa",
+  "status": "approved-source-and-executed-focused-evidence",
+  "independently_verified_log_records": [
+    {
+      "name": "test_art_traffic_panel_safety",
+      "sha256": "d4c5f8e62fdc68ede4c314c2121356120d4a0baa96aebd699e88011debed4cbb",
+      "profile": "/workspace/scratch/1c5fccfbe328/closure-results/scenario-isolation-focused/profiles/test_art_traffic_panel_safety",
+      "seconds": 7.023,
+      "terminal": [
+        "ART_TRAFFIC_PANEL {\"checks\":12,\"failures\":[],\"scope\":\"no-history-restore\"}"
+      ]
+    },
+    {
+      "name": "test_art_session_log",
+      "sha256": "ec387d8ff921f8e05467060c89dc2ddda8da3eab4590ef03fa56f53e93c004c9",
+      "profile": "/workspace/scratch/1c5fccfbe328/closure-results/scenario-isolation-focused/profiles/test_art_session_log",
+      "seconds": 11.75,
+      "terminal": [
+        "ART_SESSION_RESULT {\"checks\":35,\"failures\":[],\"first\":\"user://art-traffic/57553d8a1e3939c3d669fbe6f21ae08b.jsonl\",\"godot\":\"4.7-stable (official)\",\"os\":\"Linux\",\"second\":\"user://art-traffic/2cfdff1b3de891e5b1d3bdf34eb4e1c9.jsonl\"}"
+      ]
+    },
+    {
+      "name": "test_paint_editor_history",
+      "sha256": "1a7c682a66ed3e0ecdcbb7cb9bd302f40b73e2e747712b866f638e5f5bd6b5ef",
+      "profile": "/workspace/scratch/1c5fccfbe328/closure-results/scenario-isolation-focused/profiles/test_paint_editor_history",
+      "seconds": 2.416,
+      "terminal": [
+        "PAINT_EDITOR_HISTORY checks=1884 failures=0 reopened=false"
+      ]
+    },
+    {
+      "name": "test_paint_editor_history-reopen",
+      "sha256": "7b2fb0c74026660c6b02a07be7a9f940687b73cfedd12c238a435bae2358b255",
+      "profile": "/workspace/scratch/1c5fccfbe328/closure-results/scenario-isolation-focused/profiles/test_paint_editor_history",
+      "seconds": 3.375,
+      "terminal": [
+        "PAINT_EDITOR_HISTORY checks=1920 failures=0 reopened=true"
+      ]
+    }
+  ],
+  "unchanged_complete_plan": true,
+  "independent_helper_controls": "Distinct fixtures separated; explicit reopen samepath; four environment roots bound; marker retained; seven invalid scenario names refused.",
+  "full_campaign_status": "Final resulting-source full campaign still required; previous aggregate failure remains failed.",
+  "independent_clean_fixture": "art-session-isolation-control/report.json",
+  "source_packet": "../../closure/scenario-isolation/report.json",
+  "failed_aggregate": {
+    "status": "failed",
+    "completed": false,
+    "report_sha256": "f2be2f11e3c33ca2b4bca8025309ddf8b3b48d4ade8dba57541187ba7a28106c",
+    "log_sha256": "d91900381b6bab98a1db09bf097f070693b9947a5a1c80119033a70f120c1795",
+    "actual_checks": 35,
+    "actual_failures": [
+      "idle Art creates no new file"
+    ],
+    "scope": "All7 storage matrices passed; aggregate refused at Art session fixture; later normalcases not executed.",
+    "process_records_passed": 17,
+    "process_records_failed": 1,
+    "process_records_not_reached": 11
+  },
+  "observed_preexisting_fixture_files": [
+    {
+      "name": "invalid-old.jsonl",
+      "bytes": 20,
+      "sha256": "9f7e725ed3e8f3ee87f134257d02b177ab98c0ed69e4b1ec5cfdf1b9fff8f1b9",
+      "mtime_utc": "2026-11-26T07:58:50.737330+00:00",
+      "creator": "test_art_traffic_panel_safety.gd:28"
+    },
+    {
+      "name": "3f4d41e8930d1a6605dc120299e7e060.jsonl",
+      "bytes": 327,
+      "sha256": "f366575ec060b2be152e3de289d3bf0b9f261f5d7a34889162c09173162e756d",
+      "mtime_utc": "2026-11-26T07:58:55.134210+00:00",
+      "creator": "test_art_traffic_panel_safety.gd:46, synthetic new-session marker"
+    }
+  ],
+  "causal_readback": "The subsequent session fixture created its legacy-keep at07:58:57.117 and checked filecount==1 while these two older fixture files remained. Provider.log_path was empty and allother34checks passed. The unchanged fixture passes35/0 with a fresh profile."
+}

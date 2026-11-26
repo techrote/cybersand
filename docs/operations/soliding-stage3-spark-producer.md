@@ -1,4 +1,5 @@
 ---
+retrieval: explicit-only
 title: Issue 12 Stage 3 Spark packet A - World producer integration
 status: Planned
 document-kind: runbook

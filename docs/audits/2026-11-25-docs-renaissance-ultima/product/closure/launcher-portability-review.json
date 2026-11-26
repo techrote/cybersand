@@ -1,0 +1,57 @@
+{
+  "schema": "ultima-launcher-portability-correction-v1",
+  "before_source": "fe24da6fc790a38760de28a0ef08c3f5904cd3a6",
+  "actual_windows_run": "https://github.com/techrote/cybersand/actions/runs/45778534551",
+  "actual_windows_job": "https://github.com/techrote/cybersand/actions/runs/45778534551/job/139768161914",
+  "before_result": {
+    "platform": "Windows Server2022 10.0.20348",
+    "package_guard_tests": 79,
+    "package_guard_failed": 0,
+    "launcher_discovered": 9,
+    "launcher_skipped_POSIX_only": 3,
+    "launcher_failed": 1,
+    "failure": "The test expected POSIX forward slashes from pathlib.Path; actual Windows Path correctly emitted backslashes inside the required nested quoting.",
+    "engine_acquisition_and_actual_launcher": "not reached"
+  },
+  "decoded_full_job_log_LF_normalized": {
+    "bytes": 164075,
+    "sha256": "feb0ce3edd646f74b313a7fd9a93818346d50cd8d1a9c613dcf499c3a06446bf",
+    "compressed_path": "windows-job-139768161914.log.gz",
+    "compressed_bytes": 29054,
+    "compressed_sha256": "6c567656a1ce166ddabb17da925f30bd1104c5897da1568e65600066ce58a32d",
+    "normalization": "GitHub decoded job text; CRLF normalized to LF before durable compression."
+  },
+  "retained_failure_excerpt": {
+    "path": "windows-launcher-guard-before.log.txt",
+    "bytes": 3114,
+    "sha256": "49dc33fadc170eb56c17749d399c960c05ed4b7fa7d3dbea80e8ce2f2be7ac45",
+    "normalization": "Decoded excerpt uses LF and removes trailing spaces on timestamp-only lines; failure text unchanged."
+  },
+  "correction": {
+    "production_command_builder": "unchanged",
+    "test": "PureWindowsPath exact full command on every host plus separate native-Path nested quote check; unsafe metacharacter checks unchanged.",
+    "graphical_qualification_only": "Explicit opengl3_angle matches existing Windows module/WorldArt adapter; shipped launcher defaults unchanged.",
+    "inputs": {
+      "tools/ci/qualify_ultima_launcher.py": {
+        "bytes": 15435,
+        "sha256": "dd526fe0285d0c93dd6749352d911bd57a52c047e809317e83110346e68605c9"
+      },
+      "tools/ci/test_qualify_ultima_launcher.py": {
+        "bytes": 7418,
+        "sha256": "9f0ab631332f2689c19161fde184e02c20ad28bc041f290c1dddbad6dfb3da9f"
+      }
+    }
+  },
+  "after_local": {
+    "platform": "Linux",
+    "tests": 9,
+    "failures": 0,
+    "skipped": 0,
+    "log": {
+      "path": "launcher-portable-controls-after.log.txt",
+      "bytes": 1324,
+      "sha256": "be8245140b75d81b2535d5b178fb33469e6afb0467ba0377987889bdc1da4ffd"
+    }
+  },
+  "native_Windows_after": "pending separate hosted source-bound rerun; this receipt does not claim completion"
+}

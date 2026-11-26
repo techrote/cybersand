@@ -8,6 +8,7 @@ extends RefCounted
 # bounded single-producer queue. A dedicated writer thread performs JSON/BMP/raw
 # encoding and disk I/O. Queue pressure drops capture attempts, never simulation
 # ticks.
+const FileTransaction = preload("res://scripts/workbench_file_transaction.gd")
 const SCHEMA_ID: String = "cybersand-state-recording-v2"
 const EVIDENCE_KIND: String = "simulation-state-evidence-not-exact-replay"
 const DEFAULT_CAPTURE_HZ: int = 15
@@ -24,6 +25,9 @@ var _mutex: Mutex = Mutex.new()
 var _writer_semaphore: Semaphore = Semaphore.new()
 var _writer_thread: Thread = Thread.new()
 var _queue: Array[Dictionary] = []
+# FileOperations also supplies the closed-byte verifier. The injectable boundary
+# is used by focused fault tests; ordinary recording uses the default operations.
+var _file_io: FileTransaction.FileOperations = FileTransaction.FileOperations.new()
 
 var _active: bool = false
 var _accepting: bool = false
@@ -133,11 +137,33 @@ func start_recording(
 	if not writer_enabled:
 		return OK
 
+	# Persisted manifests require the accepted safe replacement capability;
+	# refuse a stale/missing runtime before creating any output directories.
+	var bridge := _file_io.replacement_bridge()
+	if bridge == null or not bridge.has_method(&"replace_material_baseline_file"):
+		_failed = true
+		_failure_reason = "recording requires a source-matched native runtime with safe file replacement"
+		_incomplete_reason = _failure_reason
+		_accepting = false
+		_active = false
+		return ERR_UNAVAILABLE
+	if not _valid_session_name(_session_name):
+		_failed = true
+		_failure_reason = "recording session name must contain only ASCII letters, digits, underscores or hyphens"
+		_incomplete_reason = _failure_reason
+		_accepting = false
+		_active = false
+		return ERR_INVALID_PARAMETER
+
 	var absolute_session: String = ProjectSettings.globalize_path(_session_path)
-	var mkdir_error: Error = DirAccess.make_dir_recursive_absolute(absolute_session)
+	var mkdir_error: Error = DirAccess.make_dir_recursive_absolute(absolute_session.get_base_dir())
+	if mkdir_error == OK:
+		# A recording is a new session, never implicit resume. Creating only the
+		# final directory exclusively prevents retained frames being overwritten.
+		mkdir_error = DirAccess.make_dir_absolute(absolute_session)
 	if mkdir_error != OK:
 		_failed = true
-		_failure_reason = "could not create recording directory: error %d" % int(mkdir_error)
+		_failure_reason = "could not create a new recording directory (existing sessions are retained): error %d" % int(mkdir_error)
 		_incomplete_reason = _failure_reason
 		_accepting = false
 		_active = false
@@ -791,37 +817,35 @@ static func _put_u32_le(bytes: PackedByteArray, offset: int, value: int) -> void
 
 
 func _write_binary_file(path: String, bytes: PackedByteArray) -> String:
+	if _file_io.exists(ProjectSettings.globalize_path(path)):
+		return "recording output already exists and was not replaced: " + path
 	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	if file == null:
 		return "could not open recording output for write: " + path
-	file.store_buffer(bytes)
+	var stored: bool = file.store_buffer(bytes)
 	file.flush()
 	var error: Error = file.get_error()
 	file.close()
-	if error != OK:
+	if not stored or error != OK:
 		return "recording write failed for %s: error %d" % [path, int(error)]
+	# Godot's buffered flush/close can miss a real short write. A frame is not
+	# counted written until the complete closed file matches its intended bytes.
+	var verification := _file_io.verify(ProjectSettings.globalize_path(path), bytes)
+	if not verification.is_empty():
+		return "recording write verification failed for %s: %s" % [path, verification]
 	return ""
 
 
 func _write_text_file(path: String, text: String) -> String:
-	var file: FileAccess = FileAccess.open(path, FileAccess.WRITE)
-	if file == null:
-		return "could not open recording metadata for write: " + path
-	file.store_string(text)
-	file.flush()
-	var error: Error = file.get_error()
-	file.close()
-	if error != OK:
-		return "recording metadata write failed for %s: error %d" % [path, int(error)]
-	return ""
+	return _write_binary_file(path, text.to_utf8_buffer())
 
 
 func _write_manifest_file(disposition: String) -> String:
 	var payload: Dictionary = _manifest_payload(disposition)
-	return _write_text_file(
-		_session_path.path_join("recording.json"),
-		JSON.stringify(payload, "  ") + "\n"
-	)
+	var text := JSON.stringify(payload, "  ") + "\n"
+	var result := FileTransaction.write_text(_session_path.path_join("recording.json"),
+		text, text.to_utf8_buffer().size(), _file_io)
+	return "" if result.get("ok", false) else "recording manifest was not committed: " + str(result.error)
 
 
 func _manifest_payload(disposition: String) -> Dictionary:
@@ -945,6 +969,16 @@ func _status_locked() -> Dictionary:
 		"writer_write_usec_total": _write_usec_total,
 		"writer_write_usec_max": _write_usec_max,
 	}
+
+
+static func _valid_session_name(value: String) -> bool:
+	if value.is_empty(): return false
+	for i: int in value.length():
+		var ch := value.unicode_at(i)
+		if not ((ch >= 48 and ch <= 57) or (ch >= 65 and ch <= 90) \
+				or (ch >= 97 and ch <= 122) or ch == 45 or ch == 95):
+			return false
+	return true
 
 
 func _default_session_name() -> String:

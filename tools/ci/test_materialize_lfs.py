@@ -81,6 +81,36 @@ class AcquisitionTests(unittest.TestCase):
         for row in result["commands"]:
             self.assertEqual(hashlib.sha256((self.output / row["log"]).read_bytes()).hexdigest(), row["log_sha256"])
 
+    def test_service_unavailable_and_enumerated_transients_then_success(self):
+        for text in ("Fatal error: No server is currently available to service your request.",
+                     "HTTP 429", "HTTP 502", "HTTP 503", "HTTP 504", "connection reset", "i/o timeout"):
+            with self.subTest(text=text):
+                self.output = self.root / ("transient-" + str(self.pull_count))
+                before = self.pull_count
+                self.responses = [(2, text, 1.0, False), (0, "Downloaded exact object.", 1.0, False)]
+                result = self.run_acquisition()
+                self.assertEqual(self.pull_count, before + 2)
+                self.assertEqual(result["status"], "passed")
+                self.assertEqual((self.output / "lfs-pull-1.log").read_text(), text)
+
+    def test_permanent_precedence_over_every_transient(self):
+        for text in (TIMEOUT, "No server is currently available to service your request.", "HTTP 503", "connection reset"):
+            for error in ("401", "403", "404", "authentication", "authorization", "permission denied",
+                          "access denied", "quota", "billing", "hash mismatch", "integrity", "not found"):
+                with self.subTest(text=text, error=error):
+                    self.assertFalse(subject.retryable(2, text + " " + error))
+            self.assertFalse(subject.retryable(1, text))
+
+    def test_previous_ultima_evidence_is_not_overwritten(self):
+        self.output.mkdir()
+        original = self.output / "acquisition.json"
+        original.write_bytes(b'{"status":"failed","unique":"old-contract-receipt"}\n')
+        before = original.read_bytes()
+        with self.assertRaisesRegex(ValueError, "overwrite retained"):
+            self.run_acquisition()
+        self.assertEqual(original.read_bytes(), before)
+        self.assertEqual(self.pull_count, 0)
+
     def test_auth_and_permanent_errors_do_not_retry(self):
         for error in ("batch response: HTTP 403 forbidden", "Authentication failed", "batch response: repository not found", "unknown network failure"):
             with self.subTest(error=error):

@@ -1,0 +1,139 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "reviewer": "Specialist C",
+  "verdict": "APPROVE original three diagnostic writers within actual Linux storage scope",
+  "source_commit": "e6796b8e226d061b415195a1993737832e7c38c6",
+  "report_source_head": "e6796b8e226d061b415195a1993737832e7c38c6",
+  "input_sha256": {
+    "godot/scripts/physics_characterisation.gd": "e57fabab6ff5f53ac26e67517569c0a1d09df3f72efd29ff0068e2701065afd5",
+    "godot/tests/test_physics_characterisation.gd": "d5a93b5cb4b9eef772380ad954bd7ab7b0229bd1f88f12ed7cf52b83e5839d30",
+    "godot/examples/thunderbowl/thunderbowl_driver.gd": "b5b6b8237c48a5c377a2448a1cb35d1431f543e211744548bc5eccae91af93a4",
+    "godot/examples/thunderbowl/run_thunderbowl.gd": "f0d83cca8d03699ca272c72a91a64c96e1da9cb5bd0d147c783d27dd4c9f4f8c",
+    "godot/examples/thunderbowl/run_physical_thunderbowl.gd": "09d0289aaa38182cd28b995834a3e63804ecf84ed2f5e6da3f70714b2def580f",
+    "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "tools/ci/run_diagnostic_storage_qualification.py": "d81d747334635099c28e3228bb9bbc868df93daab012687506192cdaac59811d",
+    "tools/ci/run_workbench_save_qualification.py": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117",
+    "godot/examples/thunderbowl/matches/mixed.json": "ad6a679921844345f95b5d3a446ca66c4a00bd4e0bcd459a188b0785d95627ba"
+  },
+  "executed_inputs_equal_commit": true,
+  "subsequently_changed_paths": [],
+  "report_sha256": "f36eb67beb3ff6e7a925e41c5345d8442e28f9b0aa52d187d6254e6665689033",
+  "cases": [
+    {
+      "kind": "physics",
+      "fault": "none",
+      "old_value": 7.0,
+      "old_bytes": 3883,
+      "old_sha256": "c5dfe6ad7f1c46b16c5780df3c2e6e38575fbf44ecdc06b90d666b7ae9dd62bd",
+      "observed_value": 8.0,
+      "acknowledged": true,
+      "old_preserved": null,
+      "retry_value": null
+    },
+    {
+      "kind": "physics",
+      "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "old_value": 7.0,
+      "old_bytes": 3883,
+      "old_sha256": "81796ab00cf63d1993263c9c1af69bb1dd11558f4279ec917c8f068d3fba19f8",
+      "observed_value": 7.0,
+      "acknowledged": false,
+      "old_preserved": true,
+      "retry_value": 8.0
+    },
+    {
+      "kind": "physics",
+      "fault": "directory-permission-denied",
+      "old_value": 7.0,
+      "old_bytes": 3883,
+      "old_sha256": "f1a7fea57bd221143d8c42d13a48ba2663116e22a0f6f49b8c7160909bbeb0e0",
+      "observed_value": 7.0,
+      "acknowledged": false,
+      "old_preserved": true,
+      "retry_value": 8.0
+    },
+    {
+      "kind": "thunderbowl",
+      "fault": "none",
+      "old_value": 7,
+      "old_bytes": 71579,
+      "old_sha256": "fdc131e2b4c6ca91dd6a2d38ebcebd821bf2509496e03d3817778e989abc77c2",
+      "observed_value": 8,
+      "acknowledged": true,
+      "old_preserved": null,
+      "retry_value": null
+    },
+    {
+      "kind": "thunderbowl",
+      "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "old_value": 7,
+      "old_bytes": 71579,
+      "old_sha256": "7c439d0d18ea9b9d5ff2be21b89187e50a95e3b6ba006fc95555144709073656",
+      "observed_value": 7,
+      "acknowledged": false,
+      "old_preserved": true,
+      "retry_value": 8
+    },
+    {
+      "kind": "thunderbowl",
+      "fault": "directory-permission-denied",
+      "old_value": 7,
+      "old_bytes": 71579,
+      "old_sha256": "42bd5825d030b281d98f8ae86f19b4af15c5c53af7df948fc64c9f94ab80a720",
+      "observed_value": 7,
+      "acknowledged": false,
+      "old_preserved": true,
+      "retry_value": 8
+    },
+    {
+      "kind": "physical-thunderbowl",
+      "fault": "none",
+      "old_value": 7,
+      "old_bytes": 9063,
+      "old_sha256": "3dfaf46de6b57552f57410f73aaf0a081d0718b393a71a74dba3f9db42ad671c",
+      "observed_value": 8,
+      "acknowledged": true,
+      "old_preserved": null,
+      "retry_value": null
+    },
+    {
+      "kind": "physical-thunderbowl",
+      "fault": "RLIMIT_FSIZE-buffered-tail-SIGXFSZ-ignored",
+      "old_value": 7,
+      "old_bytes": 9063,
+      "old_sha256": "6f37ec7a62cdca501f6fbdbd15dafc6db1d69cdbf5ce6e389f7052110c60cce2",
+      "observed_value": 7,
+      "acknowledged": false,
+      "old_preserved": true,
+      "retry_value": 8
+    },
+    {
+      "kind": "physical-thunderbowl",
+      "fault": "directory-permission-denied",
+      "old_value": 7,
+      "old_bytes": 9062,
+      "old_sha256": "08ef061f16b3563d14f4d44996553011548101ba24ea1426be79238bd766166f",
+      "observed_value": 7,
+      "acknowledged": false,
+      "old_preserved": true,
+      "retry_value": 8
+    }
+  ],
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "source_review": [
+    "Only diagnostic output writing/status changes; original simulation/controllers/report formats retained.",
+    "Existing prospectively bounded serialized report length used as maximum; relative project paths and paths with spaces verified.",
+    "Failed output preserves old complete report and emits refusal/nonzero CLI status; retry reloads actual new seed.",
+    "Physics in-memory/DOM result path remains unchanged when output_dir is empty.",
+    "Shared transactional helper/native replacement unchanged."
+  ],
+  "limits": [
+    "One-tick actual CLI result storage, not physics/controller acceptance or a fresh research campaign",
+    "No browser/graphical/physical-owner or power-loss qualification",
+    "Shared deterministic I/O-boundary tests are qualified separately",
+    "Goblin fourth-kind addition is a separate later source/test delta, not covered by this nine-case execution."
+  ]
+}

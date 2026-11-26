@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Exploratory Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test definitions on the shared host, with fresh-reset A/B, world-state objectives and bounded telemetry
 canonical-for: [microscenario-reference-pack, materials-laboratory-readiness, flood-control-scenario, simulation-stress-test, microscenario-workbench-controls]
-last-reviewed: 2026-11-11
+last-reviewed: 2026-11-24
 related-documents: [microscenarios.md, microscenarios-programme.md, experiment-tower.md, ../reference/status-and-roadmap.md, ../audits/2026-09-19-issue-28-ms001.md]
 ---
 
@@ -12,23 +12,29 @@ related-documents: [microscenarios.md, microscenarios-programme.md, experiment-t
 
 ## Implementation and readiness disposition
 
-The only authoritative #28 branch/PR is `codex/issue-28-ms001` / **PR #44**, based
-on selected MS-000 PR #40, `de332eaf8f4e70b25b097bed0c2e2a7b2aac0173`.
-`microscenario_reference_pack.gd` generates complete schema-2 definitions for the
+**Current accepted implementation:** MS-000 landed through #40 and this MS-001
+reference pack through [#44](https://github.com/techrote/cybersand/pull/44),
+merge `c1edf907cce1693fa45f89e9f1f573f05483c1e4`. Subsequent INT-000 infrastructure
+landed through [#55](https://github.com/techrote/cybersand/pull/55), merge
+`910717aac101363ec2b1b89e4041a22bc9a97b97`. Those original branches identify
+provenance; a reader does not need to check out an unmerged #28 candidate.
+[`microscenario_reference_pack.gd`](../../godot/scripts/microscenario_reference_pack.gd)
+generates complete schema-2 definitions for the
 same `microscenario_host.gd` used by Play, Inspect, Benchmark and the native-only
 CLI. PR #36 / `micro_scenario_*.gd` remains superseded, not an additional module.
 
-**Current source, exploratory:** all three first-pack scenarios are implemented on
-PR #44: Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test. The
+**Current source, exploratory:** all three first-pack scenarios remain available:
+Materials Laboratory, Flood-Control Puzzle and Simulation Stress Test. The
 [execution ledger](../audits/2026-09-19-issue-28-ms001.md) owns exact source/runtime
-identities, measured outcomes and platform limits. The retained Linux/Windows native
-runtimes are refreshed for the schema-2 observation adapter; Windows is a pinned
-cross-build only, not Windows execution. Actual browser/WebAssembly and target-GPU
+identities, measured outcomes and platform limits. That original checkpoint's
+Windows runtime was a pinned cross-build, not Windows execution. It does not
+describe the identity or qualification of every later retained runtime. Actual browser/WebAssembly and target-GPU
 acceptance remain explicitly separate from source/functional acceptance.
 
 The [programme](microscenarios-programme.md) owns admission: stable MS-000 plus
-this Lab readiness can unblock #29 without waiting for Flood Control or Simulation
-Stress Test. It does not authorize this #28 worker to implement #29. No #18/#20/
+this Lab readiness supplied #29's prerequisite independently of Flood Control or
+Simulation Stress Test. That infrastructure is now landed; any further material
+tuning still needs its own bounded task and evidence. No #18/#20/
 #26/#14 gate is satisfied or waived, and no material/Water/support/soliding/motion
 physics is retuned to make these worlds pass.
 
@@ -137,8 +143,10 @@ scope.
 Catalogue ID `ms001/flood-control` is a compact hydraulic world with a finite
 reservoir, a scheduled ordinary gate removal at tick 20 and a protected generator
 zone. The only objective is the declared `protected-water` observation at tick 180:
-zero completes; any positive Water quantity fails. The untreated seed-0 control
-records **5,031 integer Water units** in that zone and therefore fails.
+zero completes; any positive Water quantity fails. The original source-bound
+MS-001 untreated seed-0 run recorded **5,031 integer Water units** in that zone
+and therefore failed. The numbers below retain that measurement's source and
+fixture identity; they are not a fresh run against today's physics.
 
 Three retained acceptance witnesses preserve the exact same objective and change
 ordinary setup geometry only:
@@ -155,9 +163,10 @@ runtime solution flags. The selectable puzzle admits ordinary paint/erase tools 
 a user can discover other solutions; organic edits are not silently treated as a
 matched benchmark input.
 
-Play, Inspect and Benchmark produce the same untreated seed-0 native content/Water
-state at tick 180. One-worker instrumented and four-worker observer-off runs also
-match. No pump, drain, flood-specific solver hook or scenario callback is added.
+The retained Play, Inspect and Benchmark runs produced the same untreated seed-0
+native content/Water state at tick 180. Their one-worker instrumented and
+four-worker observer-off runs also matched. The fixture adds no pump, drain,
+flood-specific solver hook or scenario callback.
 
 ## Simulation Stress Test
 
@@ -170,17 +179,18 @@ The canonical `ms001/stress/*` profiles are deterministic, finite 180-tick workl
 | `gas-column` | long-lived Smoke motion | setup only; no recurring generator |
 | `mixed` | Sand + Water + Smoke | one support erase plus five Water fills |
 
-Every profile stays under the unchanged 24-event / 24-observation limits, completes
-with `budget_outcome=admitted`, and records 180 successful telemetry samples when
-instrumentation is enabled. Seed-0 one-worker visited-cell sums are **2,111,536**
+The definitions stay under the 24-event / 24-observation limits. In the original
+MS-001 campaign each completed with `budget_outcome=admitted` and recorded 180
+successful telemetry samples when instrumentation was enabled. Its seed-0
+one-worker visited-cell sums were **2,111,536**
 Water, **9,815,552** granular, **6,117,120** gas and **9,491,522** mixed. These are
 functional workload identities, not target-PC performance thresholds.
 
 Available native counters include visited/moved cells, scheduled cores,
 chunk/temperature-field allocations and deferred events. Queue high-water, total
 heap allocations and per-worker utilization remain unavailable and are named as
-such. Four-worker observer-off Play runs match one-worker instrumented Benchmark
-native content/Water outcomes while retaining no optional observation/work/timing
+such. The retained four-worker observer-off Play runs matched one-worker
+instrumented Benchmark native content/Water outcomes while retaining no optional observation/work/timing
 payloads.
 
 ## Inspection, control and fresh-reset A/B
@@ -220,10 +230,17 @@ Different completed ticks/runtime/seed/workers do not receive a matched flag. Ev
 matching flags do not certify unmatched manual brush input as a controlled experiment.
 Blind workflows keep this generic definition/capture route disabled.
 
-GUI capture atomically writes `user://microscenario-observation.json` and copies it
-to the clipboard where supported. Capture is a definition plus observations, **not
-a save/replay** of all runtime state or organic input. Existing controlled-scenario
-CYSD1 save restrictions remain.
+GUI capture writes `user://microscenario-observation.json`. In the **ULTIMA
+candidate**, desktop capture and the native CLI verify complete staged bytes
+before the native file-replacement operation. A refused write leaves the previous
+valid capture intact; clipboard and GUI acknowledgement follow a successful
+commit. This repairs an observed buffered-write failure in the accepted writer,
+which could acknowledge truncated output. The guarantee is scoped to the
+[verified replacement contract](../architecture/shared-workbench-authoring-data.md#save-file-replacement-and-failure-handling)
+and its actual platform tests; it does not establish browser persistence,
+filesystem synchronization or power-loss durability. Capture is a definition plus
+observations, **not a save/replay** of all runtime state or organic input. Existing
+controlled-scenario CYSD1 save restrictions remain.
 
 For INT-000 batch evidence, use the same catalogue definitions through
 `tools/interactions/batch.py`. The run command executes the declared proof set at
@@ -285,5 +302,6 @@ not simulation retuning.
 The pack remains **exploratory/versioned** against the named baseline. Its world
 outcomes are useful discovery and regression evidence but are not production Water,
 interaction, support, soliding or motion acceptance. Relevant later physics changes
-require targeted version bump/revalidation. #29 implementation remains separate;
+require targeted version bump/revalidation. Accepted #29 interaction infrastructure
+is separate from permission for further tuning;
 #18/#20/#26/#14 gates are neither satisfied nor waived here.

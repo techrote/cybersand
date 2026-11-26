@@ -4,16 +4,19 @@ status: Current
 document-kind: contract
 scope: Six sets of 29 optional desktop sampled actor rigs, their shared player/policy actions, observations and bounded gameplay mechanics; excludes learned inference and generalized rigid-body or pressure physics
 canonical-for: [actor-rig-sets, actor-policy-input, actor-rig-observations-v2]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 related-documents: [actor-control-prototypes.md, actor-usables.md, granular-interaction-policy.md, ../architecture/data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../reference/configuration-reference.md, ../operations/local-build-and-validation.md, ../reference/status-and-roadmap.md]
 ---
 
 # Provisional actor rigs and shared control interface
 
 This page owns the **retained sampled ACT-002 reference**. The default desktop
-physical counterparts for all 29 IDs and twelve new SetX examples are documented
+physical counterparts for all 29 IDs, twelve SetX examples and five SetP movement
+presets form the separate 46-rig catalogue documented
 in [Articulated Rapier actors](physical-actor-rigs.md). Physical v2 envelopes,
 part/joint observations and mechanics do not reinterpret the sampled fields below.
+Shared Workbench's broader actor chooser uses its
+[composition contract](workbench-actor-composition.md), not these sampled motors.
 
 ## Which actor rigs are available?
 
@@ -168,8 +171,15 @@ or connected by selecting a rig.
 
 ## How are rigs selected and controlled on desktop?
 
-**F5** opens the actor selector. Choose a set and rig, then keyboard, scripted
-demonstration or external policy input. The comparison option adds the other rigs
+Choose **Actor sandbox** in the feature launcher, or press **F5** in an ordinary
+sandbox or supported exploratory map. Choose a set, then explicitly choose a
+**Sampled — …** rig for the controls and observations on this page. Selecting a
+set initially highlights its **Articulated Rapier — …** counterpart; that is a
+different controller and physical owner. Shared Workbench has separate
+Actor Composition controls and returns before the ordinary F5 handler.
+
+Then choose keyboard, scripted demonstration or external policy input.
+The comparison option adds the other sampled rigs
 in the selected set as scripted NPCs, for at most seven actors in that UI selection.
 The session itself retains its separate eight-slot capacity. Applying a selection
 restores the current exploratory map (or ordinary sandbox) and waits for the
@@ -178,7 +188,9 @@ rigs Sampled and separately offers Rapier barrel/Ripper keyboard trials. R retai
 the choice; authored-map geometry is retained but live edits reset. Controlled
 apparatus and Benchmark mode remain protected. Choosing the sampled baseline
 leaves the rig session. See the [physical actor programme](../operations/physical-actor-programme.md)
-for current scope and the approved full-roster Rapier migration.
+for the accepted physical counterparts, current host scope and separate
+qualification limits. Current picker identities are defined by
+[`actor_prototype_panel.gd::_populate_models`](../../godot/scripts/actor_prototype_panel.gd).
 
 | Desktop input | Shared channel |
 |---|---|

@@ -4,7 +4,7 @@ status: Approved design
 document-kind: contract
 scope: Issue12 successor state machine, eligibility boundaries and bounded identity/ownership invariants; executable model is separate from production runtime
 canonical-for: [soliding-representation-lifecycle, soliding-eligibility-tiers]
-last-reviewed: 2026-09-19
+last-reviewed: 2026-11-24
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/level-saves-and-replay.md, ../systems/granular-interaction-policy.md]
 ---
 
@@ -27,6 +27,14 @@ The Current ownership and collision contracts remain
 [ownership](data-ownership-and-lifetimes.md) and
 [coupling](rigid-body-and-cellular-coupling.md).
 
+Accepted source also contains disabled-by-default, read-only
+[settled-region discovery](../systems/settled-region-discovery.md), including
+World producer hooks, bounded tile observations and optional connectivity.
+`World::settled_discovery_tile` and `World::settled_region` return copied
+observations. This is implemented discovery, not a production connection of
+the representation-transfer model below. The unmerged ObjectShard programme
+has its own [current-state boundary](../reference/status-and-roadmap.md#active-candidates-and-integration-boundaries).
+
 **Current standalone contract model:**
 [`soliding_lifecycle.hpp`](../../native/include/cybersand/soliding_lifecycle.hpp)
 implements bounded slot identities, synthetic exact payload accounting, staged
@@ -40,8 +48,9 @@ second canonical copy of live World cells.
 
 **Planned runtime:** each state, reservation, material admission and fence below
 must be connected to its actual native/main-thread owner and revalidated before
-promotion becomes possible. Discovery may first produce read-only summaries with
-cells retaining sole authority; it must not treat this model as runtime admission.
+promotion becomes possible. Existing read-only discovery keeps cells as sole
+authority; it must not treat this model as runtime admission for acceleration
+or ownership transfer.
 
 ## Which representation owns the material?
 
@@ -56,7 +65,7 @@ under their own scheduler contract and are not preserved as fictitious replay st
 |---|---|---|---|
 | Active cells | Native cells | Current cellular neighborhood and derived terrain/contact | Current |
 | Ordinary sleeping cells | Native cells | Current wake rules; sleep alone proves no soliding eligibility | Current |
-| Tracked settled summary | Native cells | Derived stability/connectivity observations; ordinary boundaries remain authoritative | Planned, model only |
+| Tracked settled summary | Native cells | Derived stability/connectivity observations; ordinary boundaries remain authoritative | Read-only discovery exists; integration with this lifecycle model remains Planned |
 | Stationary cells with skip/proxy metadata | Native cells | Must preserve active neighboring rules and one hard-contact owner | Planned alternative, model only |
 | Stationary compact payload | Native region store | Exact reversible payload and admitted boundary interface; cannot silently read Empty interior as terrain truth | Planned alternative, model only |
 | Dynamic coherent aggregate | Native aggregate store | Rapier alone owns transform/contact/motion; cellular mask is descriptive occupancy | Planned, model only |
@@ -269,8 +278,10 @@ and Web synchronous outer ownership remain distinct platform contracts.
 suppressed in every nonstable phase; diagnostic copies remain available for owner
 census. This is not a runtime render exchange or lease implementation.
 
-**Current runtime:** [CYSD1](../reference/level-saves-and-replay.md) restores cellular
-levels, not complete motion/replay state. **Approved/Planned:** unsupported stored
+**Current runtime:** [authored saves and native checkpoints](../reference/level-saves-and-replay.md)
+have separate bounded contracts. CYSD1 restores cellular levels; supported native
+CYPS2–5 checkpoints omit host/Rapier state, and Wave refuses exact continuation.
+None serializes this proposed aggregate lifecycle. **Approved/Planned:** unsupported stored
 payload, pending transitions, exclusion and quarantine must explicitly refuse or
 safely drain before a cellular-only save; never omit aggregate-owned material.
 The model's `cell_save_admissible()` is a logical ownership boundary query and

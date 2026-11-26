@@ -1,0 +1,487 @@
+{
+  "schema": 1,
+  "authority": "historical-non-authoritative",
+  "finding": "C-ULT-09",
+  "title": "Linux physics manifests attributed Windows DLL pointer bytes",
+  "status": "fixed-and-independently-verified",
+  "implementer": "Specialist C",
+  "reviewer": "Specialist A",
+  "source_scope": "b5427a16 plus exact tool working-input hashes below; canonical guide changed afterward only",
+  "input_sha256": {
+    "tools/physics/runtime_identity.py": "e12720f5c0b12f9395fe2a7e398c5892f8010a95827214b6daab66a0e9a9bf6e",
+    "tools/physics/run.py": "8de559870667babf05628c4bb06c9a339ebaeb8e8fba27f68847b1ca501ac174",
+    "tools/physics/capture.py": "d1c6fe32f9f45eb6415b08eb088345e45937a430f54c9067fc8c23d6e9fc104d",
+    "tools/physics/issue10.py": "6127a8b7a7bff09e4cd868a2a77a56baa324e64c50eab8cd9c5ff5cd23994f3f",
+    "tools/physics/test_runtime_identity.py": "a6e02556e671efb734c10b0db821785cd2a779c939928879859a86a23c5bd356"
+  },
+  "original_behavior": "Actual Linux Godot smoke completed five one-tick cases while manifest listed Windows DLLs (locally LFS pointer bytes), omitted both materialized Linux libraries and silently tolerated absent requested artifacts.",
+  "fix": "Select configured Linux/Windows x86-64 GDExtension paths, require materialized artifact bytes and exact pinned engine version, verify artifacts and descriptor/lock identities again afterward, and refuse an existing evidence output. Native-only runs require their own CLI without unrelated engine dependencies.",
+  "unit_test": {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "tools.physics.test_runtime_identity"
+    ],
+    "returncode": 0,
+    "output": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.009s\n\nOK\n",
+    "tests": 10,
+    "scope": "Disposable byte fixtures including simulated platform mappings, missing/pointer/drift/malformed descriptor/version and existing-output refusals; simulated Windows is not native Windows execution."
+  },
+  "actual_executions": [
+    {
+      "label": "physics-before-linux",
+      "source_head": "81817f84ae4ea82b8afdb2e5fc657e014b93ad4e",
+      "utc": "2026-11-25T21:23:19.808377+00:00",
+      "actual_tool_sha256": {
+        "tools/physics/runtime_identity.py": null,
+        "tools/physics/run.py": "60a663ab384c14ba3633cb73e553d0fc35b542e619f125bc6acf7ad1ed6941d9",
+        "tools/physics/capture.py": "3f83278f6947d99a77819b42f6305bfcbef2fd4657a6eba7ce66afcf8e142daa",
+        "tools/physics/issue10.py": "dc24c76253e272039b5b4aa81395280a3160256cf27209fa32e636fe90bdf007",
+        "tools/physics/test_runtime_identity.py": null
+      },
+      "artifacts": {
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "/workspace/scratch/1c5fccfbe328/c-frozen/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "2e96ee9366df690b0ab9645c1d47c821c456579d4651b2e2a1eec239b8fd2057",
+        "/workspace/scratch/1c5fccfbe328/c-frozen/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "6672da180bcdc8d0380b1dbebe85e7deb05f6c764ffd0e9b26460766c9a82c5d"
+      },
+      "runtime_selection": null,
+      "post_verification": null,
+      "cases": [
+        {
+          "path": "000-player-Sand-flat-s00.json",
+          "sha256": "fa2866b45ea0915907b168f157274d78ffb6cda61633d65efce66676f3bce705",
+          "bytes": 4040,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "000-player-Sand-flat-s00",
+            "layout": "flat",
+            "material": 2.0,
+            "mode": "player",
+            "name": "player-Sand-flat",
+            "seed": 0.0,
+            "ticks": 1.0
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "001-player-Dust-flat-s00.json",
+          "sha256": "cf1a039b27ab0e39c3ed3aa3eca9919eda2f238332053e2db720d2c3e27cacda",
+          "bytes": 4040,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "001-player-Dust-flat-s00",
+            "layout": "flat",
+            "material": 14.0,
+            "mode": "player",
+            "name": "player-Dust-flat",
+            "seed": 0.0,
+            "ticks": 1.0
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "002-barrel-Sand-flat-s00.json",
+          "sha256": "5f180a8b7de9d1ab94612c6b4f95fe7d7d2d2dd3c4cc1a5b5154e6bca18d2049",
+          "bytes": 71211,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "002-barrel-Sand-flat-s00",
+            "layout": "flat",
+            "material": 2.0,
+            "mode": "barrel",
+            "name": "barrel-Sand-flat",
+            "seed": 0.0,
+            "ticks": 1.0,
+            "visual": true
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "003-barrel-Empty-hard-s00.json",
+          "sha256": "c0c95705e6a35899413cdd154a23fa38347c786a3fbce322f1d5e770c5485652",
+          "bytes": 71095,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "003-barrel-Empty-hard-s00",
+            "layout": "hard",
+            "material": 0.0,
+            "mode": "barrel",
+            "name": "barrel-Empty-hard",
+            "seed": 0.0,
+            "ticks": 1.0,
+            "visual": true
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "004-freefall-s00.json",
+          "sha256": "80ecefc633996168504f184a08963bfe45877874d23f511108bb8465e4167801",
+          "bytes": 3910,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "004-freefall-s00",
+            "layout": "flat",
+            "material": 0.0,
+            "mode": "barrel",
+            "name": "freefall",
+            "seed": 0.0,
+            "ticks": 1.0
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        }
+      ],
+      "raw_file_digests": {
+        "000-player-Sand-flat-s00.json": {
+          "sha256": "fa2866b45ea0915907b168f157274d78ffb6cda61633d65efce66676f3bce705",
+          "bytes": 4040
+        },
+        "001-player-Dust-flat-s00.json": {
+          "sha256": "cf1a039b27ab0e39c3ed3aa3eca9919eda2f238332053e2db720d2c3e27cacda",
+          "bytes": 4040
+        },
+        "002-barrel-Sand-flat-s00.json": {
+          "sha256": "5f180a8b7de9d1ab94612c6b4f95fe7d7d2d2dd3c4cc1a5b5154e6bca18d2049",
+          "bytes": 71211
+        },
+        "003-barrel-Empty-hard-s00.json": {
+          "sha256": "c0c95705e6a35899413cdd154a23fa38347c786a3fbce322f1d5e770c5485652",
+          "bytes": 71095
+        },
+        "004-freefall-s00.json": {
+          "sha256": "80ecefc633996168504f184a08963bfe45877874d23f511108bb8465e4167801",
+          "bytes": 3910
+        },
+        "batch-0000.json": {
+          "sha256": "c5c55b9a94f3bd697159aa37d80ce53aa0ce9bd78593d68d432b15c3fee5edac",
+          "bytes": 709
+        },
+        "batch-0000.log": {
+          "sha256": "9d4bb84e63f4b7a30ee5c0273b0540cddb314d2812e4cac5f0f810456c2c41fe",
+          "bytes": 20605
+        },
+        "batch-0000.manifest.json": {
+          "sha256": "6ae22e1bce185c103bc9b68a38b32b4fec16173924d286382af4a5c164221f49",
+          "bytes": 210976
+        },
+        "cases.json": {
+          "sha256": "4c9b7d3cfdd1d00a5652c325c2e36181fff21cf9f3460da40d3a8d399dab6cac",
+          "bytes": 889
+        },
+        "manifest.json": {
+          "sha256": "d5c54325e9de9dfd4083b30ea3beb0b6bbfd706fd0001c016bb1e5639e86f313",
+          "bytes": 211323
+        }
+      }
+    },
+    {
+      "label": "physics-after-linux",
+      "source_head": "b5427a168e1af630c1b90a896cdb91e825581e17",
+      "utc": "2026-11-25T21:24:23.273748+00:00",
+      "actual_tool_sha256": {
+        "tools/physics/runtime_identity.py": "e12720f5c0b12f9395fe2a7e398c5892f8010a95827214b6daab66a0e9a9bf6e",
+        "tools/physics/run.py": "8de559870667babf05628c4bb06c9a339ebaeb8e8fba27f68847b1ca501ac174",
+        "tools/physics/capture.py": "d1c6fe32f9f45eb6415b08eb088345e45937a430f54c9067fc8c23d6e9fc104d",
+        "tools/physics/issue10.py": "6127a8b7a7bff09e4cd868a2a77a56baa324e64c50eab8cd9c5ff5cd23994f3f",
+        "tools/physics/test_runtime_identity.py": "a6e02556e671efb734c10b0db821785cd2a779c939928879859a86a23c5bd356"
+      },
+      "artifacts": {
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "runtime_selection": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "architecture": "x86_64",
+        "selection": "matching debug/release x86_64 GDExtension entries",
+        "descriptors": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14"
+        },
+        "scope": "Configured executable/library bytes; not loaded-module or source-to-binary attestation",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "version_command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--version"
+        ],
+        "engine_lock": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        }
+      },
+      "post_verification": {
+        "artifacts": {
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+        },
+        "scope": "unchanged configured artifact bytes after completed campaign",
+        "descriptors": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14"
+        },
+        "engine_lock": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        }
+      },
+      "cases": [
+        {
+          "path": "000-player-Sand-flat-s00.json",
+          "sha256": "ea74194b9f7be161c5a5df2d30b06bbc87b6910089ea98ce2ba597c3729057ef",
+          "bytes": 4040,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "000-player-Sand-flat-s00",
+            "layout": "flat",
+            "material": 2.0,
+            "mode": "player",
+            "name": "player-Sand-flat",
+            "seed": 0.0,
+            "ticks": 1.0
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "001-player-Dust-flat-s00.json",
+          "sha256": "e22f3b33d6f427668aca93e72f84bb66f8fb4993fb193c2c224bc6d5f3f6e05d",
+          "bytes": 4040,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "001-player-Dust-flat-s00",
+            "layout": "flat",
+            "material": 14.0,
+            "mode": "player",
+            "name": "player-Dust-flat",
+            "seed": 0.0,
+            "ticks": 1.0
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "002-barrel-Sand-flat-s00.json",
+          "sha256": "404eaa71e9527c3fbeb9d10096249e8a4c198a95ec57224ff186a5193f9dbe1e",
+          "bytes": 71211,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "002-barrel-Sand-flat-s00",
+            "layout": "flat",
+            "material": 2.0,
+            "mode": "barrel",
+            "name": "barrel-Sand-flat",
+            "seed": 0.0,
+            "ticks": 1.0,
+            "visual": true
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "003-barrel-Empty-hard-s00.json",
+          "sha256": "704e74077b425195ef4cc79147bc24f2f3f4f2cd1e7d7cfdaf068a1fc66738f9",
+          "bytes": 71095,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "003-barrel-Empty-hard-s00",
+            "layout": "hard",
+            "material": 0.0,
+            "mode": "barrel",
+            "name": "barrel-Empty-hard",
+            "seed": 0.0,
+            "ticks": 1.0,
+            "visual": true
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        },
+        {
+          "path": "004-freefall-s00.json",
+          "sha256": "9487fd828e265aa5efe223a70364233832e1be0419925a4478a069ba609c7dd4",
+          "bytes": 3910,
+          "ok": true,
+          "completed_ticks": 1,
+          "spec": {
+            "id": "004-freefall-s00",
+            "layout": "flat",
+            "material": 0.0,
+            "mode": "barrel",
+            "name": "freefall",
+            "seed": 0.0,
+            "ticks": 1.0
+          },
+          "platform": "Linux",
+          "godot": "4.7-stable (official)"
+        }
+      ],
+      "raw_file_digests": {
+        "000-player-Sand-flat-s00.json": {
+          "sha256": "ea74194b9f7be161c5a5df2d30b06bbc87b6910089ea98ce2ba597c3729057ef",
+          "bytes": 4040
+        },
+        "001-player-Dust-flat-s00.json": {
+          "sha256": "e22f3b33d6f427668aca93e72f84bb66f8fb4993fb193c2c224bc6d5f3f6e05d",
+          "bytes": 4040
+        },
+        "002-barrel-Sand-flat-s00.json": {
+          "sha256": "404eaa71e9527c3fbeb9d10096249e8a4c198a95ec57224ff186a5193f9dbe1e",
+          "bytes": 71211
+        },
+        "003-barrel-Empty-hard-s00.json": {
+          "sha256": "704e74077b425195ef4cc79147bc24f2f3f4f2cd1e7d7cfdaf068a1fc66738f9",
+          "bytes": 71095
+        },
+        "004-freefall-s00.json": {
+          "sha256": "9487fd828e265aa5efe223a70364233832e1be0419925a4478a069ba609c7dd4",
+          "bytes": 3910
+        },
+        "batch-0000.json": {
+          "sha256": "c5c55b9a94f3bd697159aa37d80ce53aa0ce9bd78593d68d432b15c3fee5edac",
+          "bytes": 709
+        },
+        "batch-0000.log": {
+          "sha256": "07d6b1fd60b501f22698cc7a9159ea485489bb5b956472b0fea1361881c7a9bb",
+          "bytes": 20603
+        },
+        "batch-0000.manifest.json": {
+          "sha256": "459944f4ef3e3b4950c845efe673ef2967a0876e1b4e19df6999d3b20f136647",
+          "bytes": 212116
+        },
+        "cases.json": {
+          "sha256": "4c9b7d3cfdd1d00a5652c325c2e36181fff21cf9f3460da40d3a8d399dab6cac",
+          "bytes": 889
+        },
+        "manifest.json": {
+          "sha256": "c4622bf04495d86602e0670b81a1b43701ae588563cefe23593e20580b05184e",
+          "bytes": 212462
+        },
+        "runtime-verification.json": {
+          "sha256": "e79a7455a3122a7d75ddfaa3b8fff7c9ac972a3450d44f513ce8a989f9c234e0",
+          "bytes": 1183
+        }
+      }
+    },
+    {
+      "label": "physics-after-capture",
+      "source_head": "b5427a168e1af630c1b90a896cdb91e825581e17",
+      "utc": "2026-11-25T21:24:23.274389+00:00",
+      "actual_tool_sha256": {
+        "tools/physics/runtime_identity.py": "e12720f5c0b12f9395fe2a7e398c5892f8010a95827214b6daab66a0e9a9bf6e",
+        "tools/physics/run.py": "8de559870667babf05628c4bb06c9a339ebaeb8e8fba27f68847b1ca501ac174",
+        "tools/physics/capture.py": "d1c6fe32f9f45eb6415b08eb088345e45937a430f54c9067fc8c23d6e9fc104d",
+        "tools/physics/issue10.py": "6127a8b7a7bff09e4cd868a2a77a56baa324e64c50eab8cd9c5ff5cd23994f3f",
+        "tools/physics/test_runtime_identity.py": "a6e02556e671efb734c10b0db821785cd2a779c939928879859a86a23c5bd356"
+      },
+      "artifacts": {
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "runtime_selection": {
+        "system": "Linux",
+        "machine": "x86_64",
+        "architecture": "x86_64",
+        "selection": "matching debug/release x86_64 GDExtension entries",
+        "descriptors": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14"
+        },
+        "scope": "Configured executable/library bytes; not loaded-module or source-to-binary attestation",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "version_command": [
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+          "--version"
+        ],
+        "engine_lock": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        }
+      },
+      "post_verification": {
+        "artifacts": {
+          "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+        },
+        "descriptors": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+          "/workspace/scratch/1c5fccfbe328/ultima-c/godot/addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14"
+        },
+        "engine_lock": {
+          "/workspace/scratch/1c5fccfbe328/ultima-c/third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+        },
+        "scope": "unchanged configured artifact bytes after metadata capture; no fixture executed"
+      },
+      "cases": [],
+      "raw_file_digests": {
+        "manifest.json": {
+          "sha256": "e1e90fabe7c22d220c642855c9489bd357a703d1629d05b6393f549f7cf014e5",
+          "bytes": 215815
+        },
+        "runtime-verification.json": {
+          "sha256": "4a46cd14959fe5cea2be233cde628ecafb236c614370963fef7257739311baf6",
+          "bytes": 1202
+        },
+        "tracked-source.patch": {
+          "sha256": "7c081e33c7534efd09a2ee59c9930462fb552622743ec017511be045e3ff414e",
+          "bytes": 13609
+        }
+      }
+    }
+  ],
+  "reproduce": {
+    "linux_smoke": [
+      "python3",
+      "tools/physics/run.py",
+      "godot",
+      "--group",
+      "smoke",
+      "--seeds",
+      "1",
+      "--ticks",
+      "1",
+      "--godot",
+      "<pinned-Godot-4.7>",
+      "--output",
+      "<new-evidence-directory>"
+    ],
+    "capture": [
+      "python3",
+      "tools/physics/capture.py",
+      "<new-capture-directory>",
+      "--godot",
+      "<pinned-Godot-4.7>",
+      "--cxx",
+      "c++"
+    ]
+  },
+  "raw_archive": {
+    "path": "physics-provenance-originals.zip",
+    "sha256": "00c7bff0e3201dd210d10dd2e633554b28161bbddb0aeb7cebe91dac64941fcf",
+    "bytes": 408902,
+    "contents": "Original top-level manifests, fixture inputs/results, logs, final verifications and tracked patch from the three measurements. Reconstruct with Python zipfile; verify each original using raw_file_digests."
+  },
+  "independent_review": {
+    "verdict": "APPROVE",
+    "review": "A read helper and all three consumers, independently passed 10 synthetic tests and executed desktop_runtime on the actual pinned engine/materialized Linux libraries. Configured identity only; no loaded-module or source-binary attestation."
+  },
+  "limits": [
+    "One-tick five-case smoke proves provenance plumbing, not physical behaviour or campaign acceptance.",
+    "No native Windows execution of these Python measurement consumers in this receipt.",
+    "No loaded-module/source-to-binary attestation or publication inference.",
+    "Historical Windows-only auxiliary campaign scripts retain their scope; common identity now refuses missing requested artifacts."
+  ]
+}

@@ -6,7 +6,7 @@ status: Current
 scope: Rectangle occupancy, bounded displacement/impulses and Rapier hard contact; generalized physics and exact replay remain absent
 keywords: [Rapier2D, occupancy mask, sweep, CCD, terrain budget, impulse, unresolved overlap]
 related-documents: [simulation-tick-and-threading.md, data-ownership-and-lifetimes.md, ../reference/interfaces-and-message-contracts.md, ../operations/rapier-2d-migration-runbook.md, ../audits/2026-09-24-rem002-issue11-integration-forensics.md, ../audits/2026-09-25-pchar001-player-representation-experiment.md]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-25
 ---
 
 # Rigid-body and cellular coupling
@@ -90,8 +90,10 @@ Water conservation does not establish general body/cell energy conservation.
 Duplicate sample serials are not applied twice. Sample wrap and age constants
 are in [Rapier `apply_cellular_results`](../../godot/scripts/rapier_physics_bridge.gd).
 
-Packed rotation is `Transform2D.get_rotation()`, a float32 `atan2` from the
-platform libm, stored in `PackedFloat32Array`. Native rasterization then uses
+Ordinary packed rotation uses `Transform2D.get_rotation()`, a float32 `atan2`
+from the platform libm, stored in `PackedFloat32Array`. The explicit lockstep
+mode sets `deterministic_rotation_packing` and instead evaluates `atan2` from
+the basis in double before the float32 pack. Native rasterization then uses
 double `std::cos`/`std::sin`. On 2026-11-06, Windows and WSL Linux packed
 different last-ulp rotations from bit-identical Rapier transforms; see the
 [lockstep feasibility audit](../audits/2026-11-06-coupling-lockstep-feasibility.md).
@@ -117,7 +119,7 @@ Hard-terrain extraction creates 64×64 packets: 256 units for the 1024² demo.
 The consumer checks a 32-chunk/750-microsecond soft rebuild budget between units.
 The preceding native `get_hard_surface_chunk_rectangles` extraction is outside
 that budget, and one indivisible changed chunk may exceed it. This is bounded
-consumer granularity, not an end-to-end frame-time guarantee. On the #406 branch,
+consumer granularity, not an end-to-end frame-time guarantee. In accepted source,
 the extraction reads a one-bit hard-surface mask straight from stored cells
 (`World::copy_hard_surface_bits`). It rebuilds only the 64×64 packets whose mask
 changed since the previous revision, and reuses the others. The packet is
@@ -141,8 +143,11 @@ platforms, artifact identity, inputs and tolerance are in the
 is not complete trajectory replay; see
 [level saves](../reference/level-saves-and-replay.md).
 
-**Planned:** generalized shapes/contours, torque feedback, fracture membership,
-particle conversion, serialized sweep/CCD policy and wider numerical acceptance.
+**Planned:** generalized shapes/contours, fracture membership, particle
+conversion, serialized sweep/CCD policy and wider numerical acceptance. The
+ordinary nine-float rectangle response does not carry torque. Shared Workbench
+already has a separate bounded per-body wrench with torque, described below;
+a general torque-feedback framework is not implied by that narrower interface.
 The sampled character reads the body mask but is not a PhysicsServer collider
 and does not push a body. Rectangle sweep coverage and capped pressure are a
 bounded gameplay approximation, not exact continuum mechanics or a guarantee
@@ -228,14 +233,41 @@ owner.
 
 ## Development workbench physical ownership
 
-The Draft #391 host stages one bounded multi-body roster at a time. Each
+The accepted Shared Workbench host stages one bounded multi-body roster at a time. Each
 instance has one session/epoch, generation, actual mass/inertia/centre of mass,
 gravity, drive sample and response budget. Collision rectangles contribute to
 the same body's wrench. The worker owns the cellular state, checks the copied
 geometry and samples in the native adapter, and publishes value-only rows.
 The main-thread bridge rejects retired or duplicated results and checks sample
 age and corner travel before applying the wrench to that instance's Rapier RID.
-The finite canvas owns interest independently of presentation. The
+The native [`workbench_granular_coupling.inc`](../../godot/native_extension/workbench_granular_coupling.inc)
+produces each row's impulse and torque about its sampled centre of mass.
+[`workbench_physics_bridge.gd::apply_packet`](../../godot/scripts/workbench_physics_bridge.gd)
+validates the complete batch, translates the moment to the current centre of
+mass, applies the sample-age scale, and calls `body_apply_torque_impulse` on the
+main thread. This cellular response is separate from actor propulsion or trial
+actuation torque. The finite canvas owns interest independently of presentation. The
 [workbench guide](../systems/player-control-playground.md#development-workbench-on-desktop)
 and [qualification record](../audits/2026-11-04-workbench-consolidation.md)
 distinguish authoring controls, observed behavior and unresolved review gates.
+
+
+## Current actor and destructible-structure boundary
+
+Accepted main includes [Workbench actor composition](../systems/workbench-actor-composition.md)
+through the existing prepared physical/native owner. A composition admits at
+most eight logical actors, eight prepared parts per actor, and separately
+checks its 64 response-body and 64 native-proxy budgets. A compound hull's several
+proxies share its actual body's response authority; they do not multiply mass.
+Equipment chassis remain reserved after release.
+
+This existing actor/body coupling does not establish ordinary Workbench
+ObjectShard detachment, moving-body material chemistry or arbitrary structure
+fracture. Those active successors require their own integration and qualification;
+consult the [current roadmap](../reference/status-and-roadmap.md). The
+[owner's desired destructible structures](../decisions/2026-11-14-owner-authoring-intent.md#physical-character-and-destructible-structures)
+remain explicit intent rather than an inherited claim of delivery.
+
+Sources: [`workbench_actor_catalog.gd`](../../godot/scripts/workbench_actor_catalog.gd),
+[`workbench_physics_bridge.gd`](../../godot/scripts/workbench_physics_bridge.gd), and
+[`physical_actor_session.gd`](../../godot/scripts/physical_actor_session.gd).

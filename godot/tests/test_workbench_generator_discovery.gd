@@ -48,6 +48,23 @@ func run() -> void:
 	dialog._browse.file_selected.emit(ProjectSettings.globalize_path(manual_path))
 	check(not dialog._preview_button.disabled and dialog._profile_error.is_empty(), "manual profile selection recovers missing-profile state")
 	check(str(dialog._profile.get_item_metadata(dialog._profile.selected)) == ProjectSettings.globalize_path(manual_path), "manual chooser retains selected file")
+	dialog._start()
+	check(dialog._phase in ["chunks", "plane", "render"], "manual profile starts an actual native preview")
+	dialog._cancel_preview()
+	check(dialog._phase == "idle" and dialog._ready_packet.is_empty() and dialog.get_ok_button().disabled,
+		"cancelled preview has no installable result")
+	check(dialog._status.text.contains("Preview cancelled") and
+			dialog._composition.text == "No installable material proposal.",
+		"cancelled preview clears its in-progress composition message")
+	var selected_profile: String = dialog._profile.get_item_text(dialog._profile.selected)
+	dialog._saved_recipe = {"schema":1,"seed":9,"chunk_size":64,"candidate":"strata"}
+	dialog._invalidate()
+	check(dialog._profile.text == "Embedded saved recipe" and
+			dialog._profile.get_item_text(dialog._profile.selected) == selected_profile,
+		"saved recipe is labelled honestly without renaming packaged profile choices")
+	dialog._profile.item_selected.emit(dialog._profile.selected)
+	check(dialog._saved_recipe.is_empty() and dialog._profile.text == selected_profile,
+		"explicit profile choice leaves saved-recipe mode and restores its real label")
 	dialog._select_profile_file(ProjectSettings.globalize_path("user://wb-profile-does-not-exist.json"))
 	dialog._start()
 	check(dialog._status.text.contains("Cannot read profile") and dialog._status.text.contains("Choose profile file"), "unreadable profile identifies file and recovery action")

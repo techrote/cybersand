@@ -1,0 +1,662 @@
+{
+  "schema": "workbench-save-qualification-v1",
+  "authority": "historical-non-authoritative",
+  "platform": "linux",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "source_head": "fb0ebc9e75e19eec01c2dfb485fbdec980f73983",
+  "input_sha256": {
+    "godot/scripts/workbench_file_transaction.gd": "1f6cb12ac7997c283421112cb8b76f577a6e6cdea507dc1b320756055e2c7fac",
+    "godot/scripts/workbench_setup.gd": "6fbc2a070f575db0c09475e9d9eef9ba046c5edbb2dfe086d3f983965d0b8aa0",
+    "godot/scripts/workbench_generated_map.gd": "733277021ea6f2c266949605595b459a5d47f7c51b2d1eb3d6aba3cd745d7d8a",
+    "godot/scripts/architectural_generator_dialog.gd": "947e358106384a91920c9299e06a959f4955abaf8477c30fca5a2b7fd151885b",
+    "godot/scripts/workbench_material_baseline.gd": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "godot/tests/test_workbench_file_transaction.gd": "61b22c7f53a12545acf3a55ae99e02e052f81110526d8aa31b288f28e98225f4",
+    "godot/tests/workbench_save_fault_child.gd": "d0c19e3610a3b60a584665ae28ebf33a6eba2cfb99a7701e0ee8a4571d105786",
+    "tools/ci/run_workbench_save_qualification.py": "3ea27cd2103cdb423a15443bc8b4b0e371e3c2f1db79a594e03d6e1cb573e117"
+  },
+  "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+  "status": "passed",
+  "completed": true,
+  "cases": [
+    {
+      "kind": "shared-helper",
+      "evidence_class": "injected-and-native-boundaries",
+      "result": {
+        "cases": [
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "capability",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "capability",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "create",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "create",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "write",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "write",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "silent-truncate",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "verify",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "same-length-corruption",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "verify",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "flush",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "write",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "close",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "write",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "verify",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "verify",
+            "replacement_calls": 0
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "replace",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "replace",
+            "replacement_calls": 1
+          },
+          {
+            "after_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "fault": "cleanup",
+            "kind": "injected",
+            "old_sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f",
+            "phase": "replace",
+            "replacement_calls": 1
+          }
+        ],
+        "checks": 84,
+        "failures": [],
+        "native_commit": "CyberDemoBridge.replace_material_baseline_file",
+        "platform": "Linux",
+        "schema": 1
+      }
+    },
+    {
+      "kind": "ordinary",
+      "evidence_class": "real-writer-fresh-process-reload",
+      "before": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "file_bytes": 475,
+        "kind": "ordinary",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "prepare",
+        "pid": 23,
+        "prior_sha256": "",
+        "read_error": "",
+        "readable": true
+      },
+      "replacement": {
+        "after_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "error": "",
+        "file_bytes": 476,
+        "kind": "ordinary",
+        "material": 14,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "attempt",
+        "pid": 37,
+        "prior_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "ordinary",
+      "fault": "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "file_bytes": 475,
+        "kind": "ordinary",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "prepare",
+        "pid": 51,
+        "prior_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "file_bytes": 475,
+        "kind": "ordinary",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "attempt",
+        "pid": 65,
+        "prior_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "error": "",
+        "file_bytes": 476,
+        "kind": "ordinary",
+        "material": 14,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "attempt",
+        "pid": 79,
+        "prior_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "ordinary",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "",
+        "file_bytes": 475,
+        "kind": "ordinary",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "prepare",
+        "pid": 93,
+        "prior_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "file_bytes": 475,
+        "kind": "ordinary",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "attempt",
+        "pid": 107,
+        "prior_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "d089cd8f4d926afc2137dd4285dfa7f30823c87c70705b7d912d09c9af46cc7f",
+        "error": "",
+        "file_bytes": 476,
+        "kind": "ordinary",
+        "material": 14,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-ordinary.json",
+        "phase": "attempt",
+        "pid": 121,
+        "prior_sha256": "f456d08154e8a0886e7dfc6aae357ae8ff6d46d7e8b2f5da287a9765028098c0",
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "generated",
+      "evidence_class": "real-writer-fresh-process-reload",
+      "before": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "",
+        "file_bytes": 2262,
+        "kind": "generated",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "prepare",
+        "pid": 135,
+        "prior_sha256": "",
+        "read_error": "",
+        "readable": true
+      },
+      "replacement": {
+        "after_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "error": "",
+        "file_bytes": 2263,
+        "kind": "generated",
+        "material": 14,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "attempt",
+        "pid": 149,
+        "prior_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "generated",
+      "fault": "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "",
+        "file_bytes": 2262,
+        "kind": "generated",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "prepare",
+        "pid": 163,
+        "prior_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "file_bytes": 2262,
+        "kind": "generated",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "attempt",
+        "pid": 177,
+        "prior_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "error": "",
+        "file_bytes": 2263,
+        "kind": "generated",
+        "material": 14,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "attempt",
+        "pid": 191,
+        "prior_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "generated",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "",
+        "file_bytes": 2262,
+        "kind": "generated",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "prepare",
+        "pid": 205,
+        "prior_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "read_error": "",
+        "readable": true
+      },
+      "refusal": {
+        "after_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "file_bytes": 2262,
+        "kind": "generated",
+        "material": 2,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "attempt",
+        "pid": 219,
+        "prior_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "read_error": "",
+        "readable": true
+      },
+      "retry": {
+        "after_sha256": "4251464b2a915378317689e178ae73f5bfc261dcf2d13d7ca639771aa39277f6",
+        "error": "",
+        "file_bytes": 2263,
+        "kind": "generated",
+        "material": 14,
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-generated.json",
+        "phase": "attempt",
+        "pid": 233,
+        "prior_sha256": "bc658ea70c08481029e618ec73627a223031c24c079d71716ed7c5d2989dd146",
+        "read_error": "",
+        "readable": true
+      }
+    },
+    {
+      "kind": "project",
+      "evidence_class": "real-writer-fresh-process-reload",
+      "before": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "prepare",
+        "pid": 247,
+        "prior_sha256": "",
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "replacement": {
+        "after_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "error": "",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "attempt",
+        "pid": 304,
+        "prior_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "read_error": "",
+        "readable": true,
+        "seed": 456
+      }
+    },
+    {
+      "kind": "project",
+      "fault": "RLIMIT_FSIZE-128-SIGXFSZ-ignored",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "prepare",
+        "pid": 361,
+        "prior_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "refusal": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "Refused \u00b7 Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "attempt",
+        "pid": 418,
+        "prior_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "retry": {
+        "after_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "error": "",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "attempt",
+        "pid": 475,
+        "prior_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "read_error": "",
+        "readable": true,
+        "seed": 456
+      }
+    },
+    {
+      "kind": "project",
+      "fault": "directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "prepare",
+        "pid": 532,
+        "prior_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "refusal": {
+        "after_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "error": "Refused \u00b7 Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "attempt",
+        "pid": 589,
+        "prior_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "read_error": "",
+        "readable": true,
+        "seed": 123
+      },
+      "retry": {
+        "after_sha256": "af8a6526a0d61985bd441afb6e96c8f2fd7d585e4a06cea68a87a85a5a577670",
+        "error": "",
+        "file_bytes": 1954,
+        "kind": "project",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-project.json",
+        "phase": "attempt",
+        "pid": 646,
+        "prior_sha256": "472a7aa9da83d7b12731472a2ddeba5eb776156e1552950e9b860163bc9a3f17",
+        "read_error": "",
+        "readable": true,
+        "seed": 456
+      }
+    },
+    {
+      "kind": "helper",
+      "fault": "replacement-directory-permission-denied",
+      "evidence_class": "real-os-failure",
+      "before": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "",
+        "file_bytes": 46,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "prepare",
+        "pid": 703,
+        "prior_sha256": "",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": true,
+          "error": "",
+          "ok": true,
+          "phase": "committed",
+          "staging_retained": ""
+        },
+        "value": "old"
+      },
+      "refusal": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "Save refused; this save did not replace the previous file. Atomic material baseline replacement failed: Permission denied Temporary file remains at /workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json.833f779475c0a4f7c9e96718eb320df7.tmp; it is not a saved start.",
+        "file_bytes": 46,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "attempt",
+        "pid": 717,
+        "prior_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": false,
+          "error": "Save refused; this save did not replace the previous file. Atomic material baseline replacement failed: Permission denied Temporary file remains at /workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json.833f779475c0a4f7c9e96718eb320df7.tmp; it is not a saved start.",
+          "ok": false,
+          "phase": "replace",
+          "staging_retained": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json.833f779475c0a4f7c9e96718eb320df7.tmp"
+        },
+        "value": "old"
+      },
+      "retry": {
+        "after_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+        "error": "",
+        "file_bytes": 46,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "attempt",
+        "pid": 732,
+        "prior_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": true,
+          "error": "",
+          "ok": true,
+          "phase": "committed",
+          "staging_retained": ""
+        },
+        "value": "new"
+      },
+      "staging_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+      "lock": null
+    },
+    {
+      "kind": "helper",
+      "fault": "process-termination-before-commit",
+      "evidence_class": "real-process-termination",
+      "before": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "",
+        "file_bytes": 46,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "prepare",
+        "pid": 746,
+        "prior_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": true,
+          "error": "",
+          "ok": true,
+          "phase": "committed",
+          "staging_retained": ""
+        },
+        "value": "old"
+      },
+      "after": {
+        "after_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "error": "",
+        "file_bytes": 46,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "verify",
+        "pid": 775,
+        "prior_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "read_error": "",
+        "readable": true,
+        "value": "old"
+      },
+      "retry": {
+        "after_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+        "error": "",
+        "file_bytes": 46,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "attempt",
+        "pid": 789,
+        "prior_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": true,
+          "error": "",
+          "ok": true,
+          "phase": "committed",
+          "staging_retained": ""
+        },
+        "value": "new"
+      },
+      "staging_sha256": "3a9041c1471fd4246d8dcb2c4636416912f677e96714cd4dcf0dce81b8b09110",
+      "exit_code": -9,
+      "termination": "SIGKILL"
+    },
+    {
+      "kind": "helper",
+      "evidence_class": "real-concurrent-processes",
+      "first": {
+        "after_sha256": "a0c007367a40af972cc524c69a640453afe0bd646795f04963197b18f77cfef6",
+        "error": "",
+        "file_bytes": 48,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "attempt",
+        "pid": 817,
+        "prior_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": true,
+          "error": "",
+          "ok": true,
+          "phase": "committed",
+          "staging_retained": ""
+        },
+        "value": "first"
+      },
+      "second": {
+        "after_sha256": "45dcc8796bdeac31cdf53b769d9008be0530fd53ba11240c82a267661f21dcc2",
+        "error": "",
+        "file_bytes": 49,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "attempt",
+        "pid": 832,
+        "prior_sha256": "061935d5f213531e2c867577514f40fcd4c9d997145ff8eb5b04203a062367af",
+        "read_error": "",
+        "readable": true,
+        "transaction": {
+          "committed": true,
+          "error": "",
+          "ok": true,
+          "phase": "committed",
+          "staging_retained": ""
+        },
+        "value": "second"
+      },
+      "final": {
+        "after_sha256": "a0c007367a40af972cc524c69a640453afe0bd646795f04963197b18f77cfef6",
+        "error": "",
+        "file_bytes": 48,
+        "kind": "helper",
+        "path": "/workspace/scratch/1c5fccfbe328/a-qualification/matrix-final/profile-e6jty29j/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-ultima-save-helper.json",
+        "phase": "verify",
+        "pid": 847,
+        "prior_sha256": "a0c007367a40af972cc524c69a640453afe0bd646795f04963197b18f77cfef6",
+        "read_error": "",
+        "readable": true,
+        "value": "first"
+      }
+    }
+  ],
+  "limits": [
+    "No power-loss/fsync/directory-sync durability claim",
+    "No physical NVIDIA owner acceptance",
+    "No multi-file transaction exists in these three formats",
+    "No hostile cross-process filesystem interference or conflict-detection guarantee"
+  ]
+}

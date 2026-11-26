@@ -1,0 +1,17 @@
+{
+  "authority": "historical-non-authoritative",
+  "source_head": "32eb3e86de2095db1323d3ddf405509224225175",
+  "change_commit": "54897896cc2103b75d986f503c3d102f6da824ef",
+  "commands": [
+    {
+      "command": "make -n worldgen-sanitize",
+      "result": "pass; dry-run only, no native sanitizer execution"
+    },
+    {
+      "command": "python -m unittest discover -s tools/ci -p test_worldgen_build_inventory.py",
+      "result": "21 tests passed"
+    }
+  ],
+  "reviewer": "Specialist B",
+  "scope": "Only the three local documentation recipes and explanatory wording changed. Existing Makefile and hosted exception policy remain unchanged. This does not claim LeakSanitizer execution."
+}

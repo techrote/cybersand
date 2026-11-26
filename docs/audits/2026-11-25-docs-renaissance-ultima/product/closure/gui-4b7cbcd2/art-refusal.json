@@ -1,0 +1,12 @@
+{
+  "phase": "real-permission-refusal",
+  "bytes": 1383,
+  "sha256": "c6e7998d4eacf4779402f226f49d315cfaf2215c4663ee415748fb31b3afe957",
+  "old_file_unchanged": true,
+  "visible_status": [
+    "Could not save Art preferences; Save refused; this save did not replace the previous file.",
+    "Cannot create a temporary file in the selected directory."
+  ],
+  "manual_actions": "OpenAI Toks8192\u21928194, select LM Studio; displayed LM Studio8193 while refused disk config remains original",
+  "provider_requests": 0
+}

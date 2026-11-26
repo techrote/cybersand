@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+    "--script",
+    "/workspace/scratch/1c5fccfbe328/b-recording-checks/reproduce.gd"
+  ],
+  "source": "129361815e376925060e6008e7ffe2908682cf2e",
+  "file_sha256": "d16aed6fdec7e5757522fd838ecc5e0c6f94ffdf4db2f71d6dabb3c4cb7b7c90",
+  "fault": "actual Linux RLIMIT_FSIZE128 / SIGXFSZ ignored",
+  "exit_code": 0,
+  "stdout": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nB_RECORDER_RESULT {\"binary_bytes\":128,\"binary_error\":\"\",\"expected_binary_bytes\":1024,\"text_bytes\":128,\"text_error\":\"\",\"text_valid_json\":false}\n",
+  "stderr": "ERROR: Parse JSON failed. Error at line 0: Unterminated string\n   at: parse_string (core/io/json.cpp:629)\n   GDScript backtrace (most recent call first):\n       [0] _initialize (/workspace/scratch/1c5fccfbe328/b-recording-checks/reproduce.gd:11)\n"
+}

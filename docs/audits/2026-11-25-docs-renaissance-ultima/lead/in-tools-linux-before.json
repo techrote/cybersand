@@ -1,0 +1,31 @@
+{
+  "source_head": "7a95e836877780b4f65faf77d058c8325f14165c",
+  "source_tree": "573540d793b12401a879426f5cc7bebffecb5532",
+  "candidate_delta": "three Godot acquisition URL substitutions only during this run; no runtime code changes",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "fixture": "godot/tests/test_liquid_desktop_default_host.gd",
+  "fixture_git_blob": "0c5cd28c2bf018b55587e6f994aeeefcf9369424",
+  "command": "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/test_liquid_desktop_default_host.gd",
+  "environment": "Linux x86_64; isolated XDG profile; source-matched actual native/Rapier; exact Godot4.7",
+  "exit_code": 0,
+  "natural_completion": true,
+  "assertions": 86,
+  "failures": 0,
+  "log_sha256": "893a3082d300695c50ec9265583ef328c47db953c0d46339822048ac5949779d",
+  "observations": [
+    "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)",
+    "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+    "",
+    "\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m",
+    "LIQUID_DESKTOP_DEFAULT_PLAY: {\"ages\":{\"0\":48,\"1\":138,\"2\":9,\"3\":3},\"applications\":7,\"attempted_tick\":97,\"completed_ticks\":97,\"contacts\":111,\"failed\":false,\"gas\":{},\"initial_water\":628320,\"rapier_steps\":96,\"signed_impulse\":[8.41965961456299,-0.632685542106628],\"snapshot_failed\":false,\"variant\":\"freemass\",\"water\":628320}",
+    "LIQUID_DESKTOP_DEFAULT_CAPACITY_REFUSAL: {\"actual_receipt_hash\":\"a47795c754169b57d84155814c4799abf6b04e55045cb977ab8ddc3beaf58a9a\",\"attempt_kind\":\"construction_attempt\",\"error\":\"Prepared native default demo refused; Liquid solver policy refused; running world preserved: capacity_refused: initial pressure gas compartment capacity exceeds 1024\",\"healthy\":true,\"retained_receipt_hash\":\"a47795c754169b57d84155814c4799abf6b04e55045cb977ab8ddc3beaf58a9a\",\"tick\":0,\"variant\":\"reference\"}",
+    "LIQUID_DESKTOP_DEFAULT_CAPACITY_REFUSAL: {\"actual_receipt_hash\":\"a47795c754169b57d84155814c4799abf6b04e55045cb977ab8ddc3beaf58a9a\",\"attempt_kind\":\"construction_attempt\",\"error\":\"Prepared native default demo refused; Liquid solver policy refused; running world preserved: capacity_refused: initial pressure gas compartment capacity exceeds 1024\",\"healthy\":true,\"retained_receipt_hash\":\"a47795c754169b57d84155814c4799abf6b04e55045cb977ab8ddc3beaf58a9a\",\"tick\":0,\"variant\":\"cached\"}",
+    "LIQUID_DESKTOP_DEFAULT_CAPACITY_REFUSAL: {\"actual_receipt_hash\":\"a47795c754169b57d84155814c4799abf6b04e55045cb977ab8ddc3beaf58a9a\",\"attempt_kind\":\"construction_attempt\",\"error\":\"Prepared native default demo refused; Liquid solver policy refused; running world preserved: capacity_refused: initial pressure gas compartment capacity exceeds 1024\",\"healthy\":true,\"retained_receipt_hash\":\"a47795c754169b57d84155814c4799abf6b04e55045cb977ab8ddc3beaf58a9a\",\"tick\":0,\"variant\":\"cached_dormant\"}",
+    "LIQUID_DESKTOP_DEFAULT_PLAY: {\"ages\":{\"0\":84,\"1\":111},\"applications\":4,\"attempted_tick\":96,\"completed_ticks\":96,\"contacts\":90,\"failed\":false,\"gas\":{},\"initial_water\":628320,\"rapier_steps\":96,\"signed_impulse\":[6.77743101119995,-1.12242460250854],\"snapshot_failed\":false,\"variant\":\"whole\",\"water\":628320}",
+    "LIQUID_DESKTOP_DEFAULT_HOST: 86 assertions; 0 failures"
+  ],
+  "limits": [
+    "Linux headless causal fixture only; not actual Windows causal qualification.",
+    "No claim of cause for old Windows crash or unchanged complete physical trajectory."
+  ]
+}

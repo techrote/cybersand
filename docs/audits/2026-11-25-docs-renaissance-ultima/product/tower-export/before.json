@@ -1,0 +1,57 @@
+{
+  "schema": "tower-observation-before-v1",
+  "authority": "historical-non-authoritative",
+  "source_head": "21c35a0e14bcae4b709f5ee44d8b1322dc406f02",
+  "method_equal_to_predecessor": "20170bd6259498c3d2774ab274567febb043fc1d",
+  "method_sha256": "87b019aa5dc80375301c456871df53591ea00433d90adc86fd96fb5369e3affb",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "main_sha256": "0618d921c4441040c09236ead6aaa989ca6cfcbab62d5831263235071c7e83a9",
+  "child_sha256": "51fece4793ad61e5e9557b29d54cd4b1971d867ec066910c6eb6d9a5fe4f6dd2",
+  "command": [
+    "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/1c5fccfbe328/ultima-b/godot",
+    "--script",
+    "/workspace/scratch/1c5fccfbe328/b-tower-before-child.gd"
+  ],
+  "fault": {
+    "real_os": "RLIMIT_FSIZE",
+    "bytes": 128,
+    "SIGXFSZ": "ignored"
+  },
+  "before": {
+    "bytes": 374,
+    "clipboard_available": false,
+    "json_loadable": true,
+    "loaded_value": 7.0,
+    "path": "/workspace/scratch/1c5fccfbe328/b-tower-before-02/profile/godot/app_userdata/Cyber Sand Reference Sandbox/tower-observation.json",
+    "requested_value": 7,
+    "returned_value": null,
+    "sha256": "984606bdc82519c308c2b71b4fff345593acef911b5ac1330840e6624490bef0",
+    "natural_completion": true,
+    "exit_code": 0,
+    "log_sha256": "99d496f6469c0aeb5485e58ac817b22b138f443cb87f009a4d2a8425834052ef"
+  },
+  "failure": {
+    "bytes": 128,
+    "clipboard_available": false,
+    "json_loadable": false,
+    "loaded_value": null,
+    "path": "/workspace/scratch/1c5fccfbe328/b-tower-before-02/profile/godot/app_userdata/Cyber Sand Reference Sandbox/tower-observation.json",
+    "requested_value": 8,
+    "returned_value": null,
+    "sha256": "71ff4414db0b7342986b4f9be51a1b83c8b55f705c5ae20fdae51f14b2aff65e",
+    "natural_completion": true,
+    "exit_code": 0,
+    "log_sha256": "f4ec956462bff58edf9fe6d963f862f838c5ecef2d923fc02272fa98d7b783eb"
+  },
+  "retained_first_attempt": {
+    "path": "b-tower-before-01",
+    "problem": "The expected invalid file was parsed with JSON.parse_string, which emitted an engine error; strict runner rejected that harness attempt. A JSON instance with checked parse result avoids the expected diagnostic without relaxing engine-error rejection."
+  },
+  "conclusion": "The old public action silently truncated the valid prior report; its void return supplied no failure acknowledgement. Clipboard is unavailable on this headless host."
+}

@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "scope": "Same synthetic contradictory profile receipt as independent before; no real execution fabricated",
+  "package_sha256": "917d500c4b630208750c0fc3c620cc9f0ae641b5101f5bb26ee34a350487262e",
+  "accepted": false,
+  "reason": "Profile matrix child did not finish cleanly",
+  "test_count": 60
+}

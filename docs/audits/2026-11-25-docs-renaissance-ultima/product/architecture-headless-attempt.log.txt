@@ -1,0 +1,25 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: ARCHITECTURE: architectural style 2 fits within the 1280px form without horizontal scrolling / Choose a flyer to pilot, or use Place model to add an independent body.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_architectural_generator.gd:51)
+       [1] architectural_form_views (res://tests/test_architectural_generator.gd:644)
+ERROR: ARCHITECTURE: architectural style 3 fits within the 1280px form without horizontal scrolling / Choose a flyer to pilot, or use Place model to add an independent body.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_architectural_generator.gd:51)
+       [1] architectural_form_views (res://tests/test_architectural_generator.gd:644)
+ERROR: ARCHITECTURE: architectural style 4 fits within the 1280px form without horizontal scrolling / Choose a flyer to pilot, or use Place model to add an independent body.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_architectural_generator.gd:51)
+       [1] architectural_form_views (res://tests/test_architectural_generator.gd:644)
+ERROR: ARCHITECTURE: architectural style 5 fits within the 1280px form without horizontal scrolling / Choose a flyer to pilot, or use Place model to add an independent body.
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_architectural_generator.gd:51)
+       [1] architectural_form_views (res://tests/test_architectural_generator.gd:644)
+ARCHITECTURE_RESULTS phase=author checks=62 failures=4 complete=true
