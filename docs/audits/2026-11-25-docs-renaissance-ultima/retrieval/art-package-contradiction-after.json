@@ -1,0 +1,20 @@
+{
+  "authority": "historical-non-authoritative",
+  "package_sha256": "7324a8d3cd9bbad6ae3e6aed41e543eaaa639463abdc2efe18b244a4edc9b35e",
+  "original_contradictions": [
+    {
+      "operation": "settings",
+      "fault": "locked-target",
+      "outcome": "refused",
+      "reason": "Art panel storage result contradicts successful refusal/retry or cleanup"
+    },
+    {
+      "operation": "pending-history",
+      "fault": "existing-receipt",
+      "outcome": "refused",
+      "reason": "Art panel storage result contradicts successful refusal/retry or cleanup"
+    }
+  ],
+  "actual_independent_linux_panel_cases_validated": 7,
+  "scope": "Package report-consistency controls, not a Windows run"
+}
