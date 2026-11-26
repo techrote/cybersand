@@ -1,0 +1,159 @@
+name: Stress canvas matched PF / gas / splash ablations — Windows
+
+on:
+  push:
+    branches: [perf/stress-canvas-pf-ballistic-splash-20261107]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stress-pf-splash-${{ github.sha }}
+  cancel-in-progress: false
+
+env:
+  GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+  GODOT_WINDOWS_SHA512: 41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9
+  GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
+
+jobs:
+  workbench-stress:
+    runs-on: windows-2022
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        case:
+          - full-pf-off
+          - half-pf-off
+          - half-pf-gas-off
+          - half-pf-gas-on
+          - half-pf-gas-on-nospray
+          - half-pf-gas-on-noface
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Preserve source line endings
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Verify diagnostic-only source scope and provider
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git merge-base --is-ancestor 4c2c97323d862afdd3ec6730017127cc8e4ec05c HEAD
+          python tools/ci/check_ci_provider_policy.py
+          git diff --check
+          git diff --name-only 4c2c97323d862afdd3ec6730017127cc8e4ec05c...HEAD | sort > source-changed.txt
+          printf '%s\n'             .github/workflows/stress-pf-splash-windows.yml             godot/tests/performance/stress_pf_splash_windows.gd | sort > source-allowed.txt
+          diff -u source-allowed.txt source-changed.txt
+
+      - name: Restore unchanged current-main native / Rapier DLLs
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          test "$(stat -c %s godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll)" -gt 1000000
+          test "$(stat -c %s godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll)" -gt 1000000
+
+      - name: Run real workbench / native worker / Rapier simulation
+        env:
+          CYBERSAND_STRESS_CASE: ${{ matrix.case }}
+          CYBERSAND_STRESS_ALLOW_HEADLESS: '1'
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          PYTHONUTF8: '1'
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, pathlib, subprocess, hashlib, json, sys, urllib.request, zipfile, time
+          root=pathlib.Path.cwd()
+          out=root/"build/stress-pf-splash"/os.environ["CYBERSAND_STRESS_CASE"]
+          out.mkdir(parents=True,exist_ok=True)
+          def write(name,s):
+              (out/name).write_text(s,encoding="utf-8")
+          manifest={
+              "commit":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+              "case":os.environ["CYBERSAND_STRESS_CASE"],
+              "godot_fixture_sha256":hashlib.sha256((root/"godot/tests/performance/stress_pf_splash_windows.gd").read_bytes()).hexdigest(),
+              "native_sha256":hashlib.sha256((root/"godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll").read_bytes()).hexdigest(),
+              "rapier_sha256":hashlib.sha256((root/"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll").read_bytes()).hexdigest()
+          }
+          write("source-runtime.json",json.dumps(manifest,indent=2)+"\n")
+          archive=pathlib.Path(os.environ["RUNNER_TEMP"])/"godot-stress.zip"
+          urllib.request.urlretrieve(os.environ["GODOT_WINDOWS_URL"],archive)
+          if hashlib.sha512(archive.read_bytes()).hexdigest()!=os.environ["GODOT_WINDOWS_SHA512"]:
+              raise RuntimeError("Godot archive identity mismatch")
+          engine_dir=pathlib.Path(os.environ["RUNNER_TEMP"])/"godot-stress"
+          engine_dir.mkdir(exist_ok=True)
+          with zipfile.ZipFile(archive) as z:
+              if z.testzip() is not None: raise RuntimeError("Godot archive CRC failure")
+              for name in ["Godot_v4.7-stable_win64.exe","Godot_v4.7-stable_win64_console.exe"]:
+                  z.extract(name,engine_dir)
+          engine=engine_dir/"Godot_v4.7-stable_win64_console.exe"
+          version=subprocess.check_output([str(engine),"--version"],text=True,timeout=30).strip()
+          if version!=os.environ["GODOT_VERSION"]:
+              raise RuntimeError("Godot version mismatch "+version)
+          manifest["godot_version"]=version
+          write("source-runtime.json",json.dumps(manifest,indent=2)+"\n")
+          env={**os.environ,"CYBERSAND_STRESS_OUTPUT":str((out/"result.json").resolve())}
+          cmds=[
+              ("import.log",[str(engine),"--headless","--editor","--path","godot","--import"],180),
+              ("execution.log",[str(engine),"--headless","--path","godot","--script","res://tests/performance/stress_pf_splash_windows.gd"],240)
+          ]
+          for logname,argv,timeout in cmds:
+              write(logname+".command.json",json.dumps(argv,indent=2)+"\\n")
+              if logname=="execution.log":
+                  logpath=out/logname
+                  with logpath.open("w",encoding="utf-8") as stream:
+                      p=subprocess.Popen(argv,stdout=stream,stderr=subprocess.STDOUT,text=True,env=env)
+                      try:
+                          deadline=time.monotonic()+timeout
+                          while p.poll() is None:
+                              if time.monotonic()>=deadline:
+                                  raise RuntimeError(logname+" timed out after "+str(timeout)+" seconds")
+                              time.sleep(1)
+                              stream.flush()
+                              observed=logpath.read_text(encoding="utf-8",errors="replace")
+                              if "SCRIPT ERROR:" in observed or "Failed to load script" in observed:
+                                  raise RuntimeError("GDScript runtime error: "+observed[-5000:])
+                      except BaseException:
+                          p.kill()
+                          p.wait(timeout=15)
+                          raise
+                  if p.returncode:
+                      raise RuntimeError(logname+" exit "+str(p.returncode)+": "+logpath.read_text(encoding="utf-8",errors="replace")[-5000:])
+              else:
+                  p=subprocess.run(argv,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                      text=True,timeout=timeout,env=env)
+                  write(logname,p.stdout)
+                  if p.returncode:
+                      raise RuntimeError(logname+" exit "+str(p.returncode)+": "+p.stdout[-5000:])
+          record=json.loads((out/"result.json").read_text(encoding="utf-8"))
+          if record.get("stage")!="complete" or record.get("failures"):
+              raise RuntimeError("invalid or incomplete workbench receipt: "+repr(record.get("failures")))
+          print("STRESS_PF_SPLASH_CI "+json.dumps({"case":record["case"],"summary":record["summary"],"source":manifest},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: stress-pf-splash-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/stress-pf-splash/${{ matrix.case }}/
+          if-no-files-found: warn
+          retention-days: 14
