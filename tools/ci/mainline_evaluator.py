@@ -319,9 +319,9 @@ def assemble(args) -> None:
     verify_constituent_identities(admission, goblin)
     run_verifiers(args.product, args.output)
     sys.path.insert(0, str(args.product.resolve() / "tools"))
-    stage = importlib.import_module("package_explore001_candidate")
-    ambient_runner = importlib.import_module("qualify_ambient")
-    runtime = ambient_runner.windows.verify_retained_runtime(args.product.resolve())
+    stage = product_module(args.product, "package_explore001_candidate")
+    ambient_runner = product_module(args.product, "qualify_ambient")
+    runtime = product_module(args.product, "run_windows_godot_regressions").verify_retained_runtime(args.product.resolve())
     require(len(runtime["native_source_inputs"]) == 105, "Changed native input contract")
     require(runtime["cybersand_runtime"]["sha256"] == goblin["provenance"]["native_sha256"]
             and runtime["rapier_runtime"]["sha256"] == goblin["provenance"]["rapier_sha256"]
@@ -514,6 +514,13 @@ def verify_goblin_auxiliary_logs(package: Path, report: dict) -> dict:
             "graphical_terminal": result}
 
 
+def verify_workbench_launcher(arguments: str, text: str) -> None:
+    require(arguments == "--audio-driver Dummy --quit-after 180"
+            and re.search(r"OpenGL.*ANGLE|ANGLE.*OpenGL", text)
+            and sum(line.startswith("SHARED_WORKBENCH_LAUNCH_READY") for line in text.splitlines()) == 1,
+            "Delivered ordinary CMD requires its actual native-ready and graphical ANGLE evidence")
+
+
 def finalize(args) -> None:
     manifest = verify(args.extracted)
     launchers = read(args.launchers)
@@ -530,9 +537,7 @@ def finalize(args) -> None:
             require(sha(Path(row[key])) == row[key + "_sha256"], "Launcher evidence changed")
         if name == "workbench":
             text = Path(row["stdout"]).read_text(encoding="utf-8") + Path(row["stderr"]).read_text(encoding="utf-8")
-            require(row.get("arguments") == "--quit-after 180" and re.search(r"OpenGL.*ANGLE|ANGLE.*OpenGL", text)
-                    and sum(line.startswith("SHARED_WORKBENCH_LAUNCH_READY") for line in text.splitlines()) == 1,
-                    "Delivered ordinary CMD requires its actual native-ready and graphical ANGLE evidence")
+            verify_workbench_launcher(row.get("arguments"), text)
     report_path = Path(launchers["goblin_report"])
     require(sha(report_path) == launchers["goblin_report_sha256"], "Goblin report changed after execution")
     auxiliary = verify_goblin_auxiliary_logs(args.extracted / "workbench", read(report_path))

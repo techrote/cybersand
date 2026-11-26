@@ -8,6 +8,7 @@ import json
 import importlib
 import os
 from pathlib import Path
+import re
 import stat
 import subprocess
 import tempfile
@@ -143,6 +144,38 @@ class DeliveryCustody(unittest.TestCase):
 
     def test_matching_constituent_identities_are_admitted(self):
         delivery.verify_constituent_identities(*self.identities())
+
+    def test_assembly_calls_the_source_owned_runtime_helper(self):
+        # Reach the real assembly join with a deliberately refused runtime.
+        # qualify_ambient has no `windows` attribute; that obsolete indirection
+        # must not fail before the actual source-owned verifier gets authority.
+        product = Path(__file__).resolve().parents[2]
+        admission, goblin = self.identities()
+        admission_path = self.root / "admission.json"
+        delivery.write(admission_path, admission)
+        archive = self.archive([("CyberSand-goblin/goblin-evaluator-manifest.json",
+                                 json.dumps(goblin).encode())])
+        runtime = delivery.product_module(product, "run_windows_godot_regressions")
+        args = SimpleNamespace(product=product, admission=admission_path,
+                               goblin_archive=archive, output=self.root / "assembly",
+                               archive=self.root / "delivery.zip")
+        with mock.patch.object(delivery, "run_verifiers"), mock.patch.object(
+                runtime, "verify_retained_runtime", side_effect=ValueError("Deliberately refused runtime")) as check:
+            with self.assertRaisesRegex(ValueError, "Deliberately refused runtime"):
+                delivery.assemble(args)
+        check.assert_called_once_with(product)
+
+    def test_finalizer_accepts_actual_delivered_proof_options_and_refuses_drift(self):
+        proof = (Path(__file__).parent / "verify_mainline_launchers.ps1").read_text()
+        matches = re.findall(r"Invoke-DeliveredCmd 'workbench' 'Open Workbench.cmd' '([^']+)'", proof)
+        self.assertEqual(len(matches), 1)
+        text = "OpenGL API ANGLE synthetic fixture\nSHARED_WORKBENCH_LAUNCH_READY synthetic fixture\n"
+        delivery.verify_workbench_launcher(matches[0], text)
+        for arguments, changed in (("--quit-after 180", text), (matches[0] + " --headless", text),
+                                   (matches[0], text.replace("OpenGL API ANGLE", "headless")),
+                                   (matches[0], text + text)):
+            with self.subTest(arguments=arguments, log=changed), self.assertRaises(ValueError):
+                delivery.verify_workbench_launcher(arguments, changed)
 
     def test_other_source_and_other_runtime_are_refused(self):
         for mutate in (lambda g: g.update(source_commit="9" * 40),
