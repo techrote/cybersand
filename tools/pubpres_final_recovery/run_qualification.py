@@ -231,6 +231,10 @@ def main():
     parser.add_argument("--focus", choices=("all", "submission", "water", "members", "frozen"), default="all")
     parser.add_argument("--render-thread", choices=("safe", "separate"), default="safe")
     parser.add_argument("--lookahead", type=int, choices=(0, 4), default=0)
+    parser.add_argument("--development-engine-proof", type=Path,
+                        help="Exact local Linux build custody; application qualification remains required")
+    parser.add_argument("--import-engine", type=Path,
+                        help="Pinned stock Linux editor used to import for a local template runtime")
     engine_admission.add_arguments(parser)
     args = parser.parse_args()
     source_root, engine, output = args.source.resolve(), args.engine.resolve(), args.output.resolve()
@@ -239,10 +243,20 @@ def main():
     native = validate_runtime(source_root, source, args.runtime.resolve(), args.allow_development_toolchain_drift)
     platform = "windows" if os.name == "nt" else "linux"
     engine_proof = None
-    if args.engine_payload:
+    import_engine = engine
+    if args.development_engine_proof:
+        need(args.engine_payload is None and platform == "linux" and args.import_engine is not None,
+             "Local development gates require an explicit stock importer and no Windows payload role")
+        from development_engine import admit_build
+        engine_proof = admit_build(engine, args.development_engine_proof)
+        import_engine = args.import_engine.resolve()
+        need(digest(import_engine) == ENGINE_SHA256["linux"], "Local template import requires exact official Godot4.7 editor bytes")
+    elif args.engine_payload:
+        need(args.import_engine is None, "Windows payload qualification uses its admitted editor")
         actual, engine_proof = engine_admission.admit(args)
         need(actual == engine, "Actual correctness executable differs from admitted engine payload")
     else:
+        need(args.import_engine is None, "Stock control imports with its exact tested engine")
         need(digest(engine) == ENGINE_SHA256[platform], "Stock control requires the exact official Godot 4.7 executable")
         need(args.render_thread == "safe", "Unregistered stock Separate control")
         need(args.lookahead == 0, "Stock reference has no bounded engine treatment")
@@ -265,6 +279,7 @@ def main():
               "complete": False, "physical_acceptance": "HOLD", "headless_only": args.headless_only,
               "focus": args.focus, "full_qualification": False,
               "engine_admission": engine_proof, "render_thread": args.render_thread,
+              "import_engine_sha256": digest(import_engine),
               "lookahead": args.lookahead,
               "frozen_inventory_reader_sha256": digest(ROOT / "tools/pubpres_final/run_qualification.py")}
     def save():
@@ -298,7 +313,7 @@ def main():
                 environment[SUPPLEMENTAL[test]["output_environment"]] = str(folder / "receipt.json")
         if test == "test_workbench_physics_causal_trace":
             environment["CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE"] = "1"
-        command = [str(engine), "--path", str(project), "--audio-driver", "Dummy"]
+        command = [str(import_engine if test == "import" else engine), "--path", str(project), "--audio-driver", "Dummy"]
         if graphical:
             command += ["--rendering-method", "gl_compatibility", "--rendering-driver", driver, "--render-thread", args.render_thread]
         else:

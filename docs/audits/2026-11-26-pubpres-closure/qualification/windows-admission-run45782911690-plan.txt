@@ -1,0 +1,233 @@
+2026-11-26T08:24:40.7537272Z Current runner version: '2.338.2'
+2026-11-26T08:24:40.7564296Z ##[group]Runner Image Provisioner
+2026-11-26T08:24:40.7565718Z Hosted Compute Agent
+2026-11-26T08:24:40.7566482Z Version: 20261111.635
+2026-11-26T08:24:40.7567164Z Commit: b8a594ea514ff44cadb5342986c68b1eac6e22ed
+2026-11-26T08:24:40.7567946Z Build Date: 2026-11-11T01:49:01Z
+2026-11-26T08:24:40.7568661Z Worker ID: {3b08f649-c07c-4754-9a79-4982e1480f2c}
+2026-11-26T08:24:40.7569379Z Region: northcentralus
+2026-11-26T08:24:40.7570060Z Cloud: Azure
+2026-11-26T08:24:40.7570836Z ##[endgroup]
+2026-11-26T08:24:40.7572473Z ##[group]Operating System
+2026-11-26T08:24:40.7573138Z Ubuntu
+2026-11-26T08:24:40.7573666Z 24.04.5
+2026-11-26T08:24:40.7574228Z LTS
+2026-11-26T08:24:40.7574789Z ##[endgroup]
+2026-11-26T08:24:40.7575919Z ##[group]Runner Image
+2026-11-26T08:24:40.7576810Z Image: ubuntu-24.04
+2026-11-26T08:24:40.7577420Z Version: 20261116.376.1
+2026-11-26T08:24:40.7579207Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261116.376/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-26T08:24:40.7580818Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261116.376
+2026-11-26T08:24:40.7582545Z ##[endgroup]
+2026-11-26T08:24:40.7583791Z ##[group]GITHUB_TOKEN Permissions
+2026-11-26T08:24:40.7587191Z Actions: read
+2026-11-26T08:24:40.7587890Z Contents: read
+2026-11-26T08:24:40.7588749Z Metadata: read
+2026-11-26T08:24:40.7589322Z ##[endgroup]
+2026-11-26T08:24:40.7591502Z Secret source: Actions
+2026-11-26T08:24:40.7592631Z Cache mode: write
+2026-11-26T08:24:40.7593550Z Prepare workflow directory
+2026-11-26T08:24:40.8010338Z Prepare all required actions
+2026-11-26T08:24:40.8060513Z Getting action download info
+2026-11-26T08:24:41.0509430Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-11-26T08:24:41.3300848Z Complete job name: plan
+2026-11-26T08:24:41.4311733Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-11-26T08:24:41.4312912Z with:
+2026-11-26T08:24:41.4313382Z   persist-credentials: false
+2026-11-26T08:24:41.4313926Z   repository: techrote/cybersand
+2026-11-26T08:24:41.4318264Z   token: ***
+2026-11-26T08:24:41.4318765Z   ssh-strict: true
+2026-11-26T08:24:41.4319320Z   ssh-user: git
+2026-11-26T08:24:41.4319817Z   clean: true
+2026-11-26T08:24:41.4320284Z   sparse-checkout-cone-mode: true
+2026-11-26T08:24:41.4320822Z   fetch-depth: 1
+2026-11-26T08:24:41.4321275Z   fetch-tags: false
+2026-11-26T08:24:41.4321735Z   show-progress: true
+2026-11-26T08:24:41.4322204Z   lfs: false
+2026-11-26T08:24:41.4322621Z   submodules: false
+2026-11-26T08:24:41.4323082Z   set-safe-directory: true
+2026-11-26T08:24:41.4324081Z env:
+2026-11-26T08:24:41.4324552Z   GIT_LFS_SKIP_SMUDGE: 1
+2026-11-26T08:24:41.4325461Z   PUBPRES_HISTORICAL_MAIN: 00cdb02f103265b6dc5224c68283e9a0c8cb449f
+2026-11-26T08:24:41.4326318Z   PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+2026-11-26T08:24:41.4327141Z   PUBPRES_ENGINE_BUILD_SOURCE: 1290c31dc262cdc6d31e9d53bde80fe3527585d7
+2026-11-26T08:24:41.4327968Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-26T08:24:41.4328961Z   RAPIER_LINUX: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+2026-11-26T08:24:41.4330202Z   RAPIER_WINDOWS: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+2026-11-26T08:24:41.4332194Z ##[endgroup]
+2026-11-26T08:24:41.7396137Z Syncing repository: techrote/cybersand
+2026-11-26T08:24:41.7398831Z ##[group]Getting Git version info
+2026-11-26T08:24:41.7399692Z Working directory is '/home/runner/work/cybersand/cybersand'
+2026-11-26T08:24:41.7401020Z [command]/usr/bin/git version
+2026-11-26T08:24:41.7510370Z git version 2.56.1
+2026-11-26T08:24:41.7536759Z ##[endgroup]
+2026-11-26T08:24:41.7554488Z Temporarily overriding HOME='/home/runner/work/_temp/e358e226-afaa-46c9-a4a6-6a2b46f16cdc' before making global git config changes
+2026-11-26T08:24:41.7557399Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-26T08:24:41.7561602Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cybersand/cybersand
+2026-11-26T08:24:41.7623348Z Deleting the contents of '/home/runner/work/cybersand/cybersand'
+2026-11-26T08:24:41.7630974Z ##[group]Initializing the repository
+2026-11-26T08:24:41.7636915Z [command]/usr/bin/git init /home/runner/work/cybersand/cybersand
+2026-11-26T08:24:41.7780338Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-26T08:24:41.7782664Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-26T08:24:41.7784506Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-26T08:24:41.7786376Z hint: call:
+2026-11-26T08:24:41.7787371Z hint:
+2026-11-26T08:24:41.7788389Z hint: 	git config --global init.defaultBranch <name>
+2026-11-26T08:24:41.7789541Z hint:
+2026-11-26T08:24:41.7790371Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-26T08:24:41.7791961Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-26T08:24:41.7793483Z hint:
+2026-11-26T08:24:41.7794266Z hint: 	git branch -m <name>
+2026-11-26T08:24:41.7795486Z hint:
+2026-11-26T08:24:41.7796783Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-26T08:24:41.7799114Z Initialized empty Git repository in /home/runner/work/cybersand/cybersand/.git/
+2026-11-26T08:24:41.7816984Z [command]/usr/bin/git remote add origin https://github.com/techrote/cybersand
+2026-11-26T08:24:41.7881565Z ##[endgroup]
+2026-11-26T08:24:41.7883401Z ##[group]Disabling automatic garbage collection
+2026-11-26T08:24:41.7886590Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-26T08:24:41.7933767Z ##[endgroup]
+2026-11-26T08:24:41.7935770Z ##[group]Setting up auth
+2026-11-26T08:24:41.7939138Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-26T08:24:41.7996312Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-26T08:24:41.8488623Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-26T08:24:41.8541599Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-26T08:24:41.8812124Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-26T08:24:41.8872188Z ##[endgroup]
+2026-11-26T08:24:41.8886737Z ##[group]Fetching the repository
+2026-11-26T08:24:41.8890273Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6f533ff5d8b23e0c3b5254d265e38fb374340dda:refs/remotes/origin/codex/pubpres-playability-final-001-20261124
+2026-11-26T08:24:47.1467799Z From https://github.com/techrote/cybersand
+2026-11-26T08:24:47.1471600Z  * [new ref]         6f533ff5d8b23e0c3b5254d265e38fb374340dda -> origin/codex/pubpres-playability-final-001-20261124
+2026-11-26T08:24:47.1477953Z ##[endgroup]
+2026-11-26T08:24:47.1480006Z ##[group]Determining the checkout info
+2026-11-26T08:24:47.1482233Z ##[endgroup]
+2026-11-26T08:24:47.1484243Z [command]/usr/bin/git sparse-checkout disable
+2026-11-26T08:24:47.1558961Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-26T08:24:47.1602038Z ##[group]Checking out the ref
+2026-11-26T08:24:47.1609611Z [command]/usr/bin/git checkout --progress --force -B codex/pubpres-playability-final-001-20261124 refs/remotes/origin/codex/pubpres-playability-final-001-20261124
+2026-11-26T08:24:48.1733290Z Updating files:  79% (4008/5056)
+2026-11-26T08:24:48.1780733Z Updating files:  80% (4045/5056)
+2026-11-26T08:24:48.1829265Z Updating files:  81% (4096/5056)
+2026-11-26T08:24:48.1877347Z Updating files:  82% (4146/5056)
+2026-11-26T08:24:48.1958023Z Updating files:  83% (4197/5056)
+2026-11-26T08:24:48.2017613Z Updating files:  84% (4248/5056)
+2026-11-26T08:24:48.2057077Z Updating files:  85% (4298/5056)
+2026-11-26T08:24:48.2094461Z Updating files:  86% (4349/5056)
+2026-11-26T08:24:48.2129175Z Updating files:  87% (4399/5056)
+2026-11-26T08:24:48.2169226Z Updating files:  88% (4450/5056)
+2026-11-26T08:24:48.2211933Z Updating files:  89% (4500/5056)
+2026-11-26T08:24:48.2249153Z Updating files:  90% (4551/5056)
+2026-11-26T08:24:48.2295861Z Updating files:  91% (4601/5056)
+2026-11-26T08:24:48.2344439Z Updating files:  92% (4652/5056)
+2026-11-26T08:24:48.2393152Z Updating files:  93% (4703/5056)
+2026-11-26T08:24:48.2430970Z Updating files:  94% (4753/5056)
+2026-11-26T08:24:48.2468883Z Updating files:  95% (4804/5056)
+2026-11-26T08:24:48.2509120Z Updating files:  96% (4854/5056)
+2026-11-26T08:24:48.2556753Z Updating files:  97% (4905/5056)
+2026-11-26T08:24:48.2587091Z Updating files:  98% (4955/5056)
+2026-11-26T08:24:48.2632150Z Updating files:  99% (5006/5056)
+2026-11-26T08:24:48.2632816Z Updating files: 100% (5056/5056)
+2026-11-26T08:24:48.2633353Z Updating files: 100% (5056/5056), done.
+2026-11-26T08:24:48.2698865Z Switched to a new branch 'codex/pubpres-playability-final-001-20261124'
+2026-11-26T08:24:48.2705710Z branch 'codex/pubpres-playability-final-001-20261124' set up to track 'origin/codex/pubpres-playability-final-001-20261124'.
+2026-11-26T08:24:48.3234562Z ##[endgroup]
+2026-11-26T08:24:48.3305263Z [command]/usr/bin/git log -1 --format=%H
+2026-11-26T08:24:48.3343734Z 6f533ff5d8b23e0c3b5254d265e38fb374340dda
+2026-11-26T08:24:48.3357945Z ##[group]Removing auth
+2026-11-26T08:24:48.3364631Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-26T08:24:48.3418413Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-26T08:24:48.3707086Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-26T08:24:48.3750724Z http.https://github.com/.extraheader
+2026-11-26T08:24:48.3760909Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-26T08:24:48.3808407Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-26T08:24:48.4053179Z ##[endgroup]
+2026-11-26T08:24:48.4270649Z ##[group]Run python3 tools/pubpres_recovery_windows/closure_request.py
+2026-11-26T08:24:48.4271264Z [36;1mpython3 tools/pubpres_recovery_windows/closure_request.py[0m
+2026-11-26T08:24:48.4295241Z shell: /usr/bin/bash -e {0}
+2026-11-26T08:24:48.4295510Z env:
+2026-11-26T08:24:48.4295713Z   GIT_LFS_SKIP_SMUDGE: 1
+2026-11-26T08:24:48.4296055Z   PUBPRES_HISTORICAL_MAIN: 00cdb02f103265b6dc5224c68283e9a0c8cb449f
+2026-11-26T08:24:48.4296532Z   PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+2026-11-26T08:24:48.4296970Z   PUBPRES_ENGINE_BUILD_SOURCE: 1290c31dc262cdc6d31e9d53bde80fe3527585d7
+2026-11-26T08:24:48.4297406Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-26T08:24:48.4297942Z   RAPIER_LINUX: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+2026-11-26T08:24:48.4298637Z   RAPIER_WINDOWS: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+2026-11-26T08:24:48.4299129Z ##[endgroup]
+2026-11-26T08:24:48.4828899Z {
+2026-11-26T08:24:48.4829371Z   "schema": "pubpres-closure-run-v1",
+2026-11-26T08:24:48.4829865Z   "phase": "runtimes",
+2026-11-26T08:24:48.4830484Z   "purpose": "Fresh pinned native dependencies and Windows admission; prepared atomic picking awaits graphical replay",
+2026-11-26T08:24:48.4831150Z   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+2026-11-26T08:24:48.4831569Z   "current_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+2026-11-26T08:24:48.4832259Z   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+2026-11-26T08:24:48.4832755Z   "payload_sha256": "38a4990c1788ee547f5246822d603be741a28a6642baf8237d26e97d24d78568",
+2026-11-26T08:24:48.4833201Z   "physical_acceptance": "HOLD"
+2026-11-26T08:24:48.4833433Z }
+2026-11-26T08:24:48.4952169Z ##[group]Run python3 tools/ci/check_ci_provider_policy.py
+2026-11-26T08:24:48.4952663Z [36;1mpython3 tools/ci/check_ci_provider_policy.py[0m
+2026-11-26T08:24:48.4953142Z [36;1mpython3 -m unittest discover -s tools/pubpres_final_windows -p 'test_*.py'[0m
+2026-11-26T08:24:48.4953759Z [36;1mpython3 -m unittest discover -s tools/pubpres_recovery_windows -p 'test_*.py'[0m
+2026-11-26T08:24:48.4954357Z [36;1mpython3 -m unittest discover -s tools/pubpres_final_recovery -p 'test_*.py'[0m
+2026-11-26T08:24:48.4975198Z shell: /usr/bin/bash -e {0}
+2026-11-26T08:24:48.4975560Z env:
+2026-11-26T08:24:48.4975775Z   GIT_LFS_SKIP_SMUDGE: 1
+2026-11-26T08:24:48.4976142Z   PUBPRES_HISTORICAL_MAIN: 00cdb02f103265b6dc5224c68283e9a0c8cb449f
+2026-11-26T08:24:48.4976646Z   PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+2026-11-26T08:24:48.4977085Z   PUBPRES_ENGINE_BUILD_SOURCE: 1290c31dc262cdc6d31e9d53bde80fe3527585d7
+2026-11-26T08:24:48.4977552Z   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+2026-11-26T08:24:48.4978080Z   RAPIER_LINUX: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+2026-11-26T08:24:48.4978768Z   RAPIER_WINDOWS: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+2026-11-26T08:24:48.4979255Z ##[endgroup]
+2026-11-26T08:24:48.6310079Z {
+2026-11-26T08:24:48.6310457Z   "status": "passed",
+2026-11-26T08:24:48.6310892Z   "scope": "active CI provider and runner routing",
+2026-11-26T08:24:48.6311367Z   "errors": [],
+2026-11-26T08:24:48.6311671Z   "policy": {
+2026-11-26T08:24:48.6312026Z     "routine_provider": "GitHub-hosted Actions",
+2026-11-26T08:24:48.6312745Z     "external_provider_config": "forbidden unless policy is explicitly changed",
+2026-11-26T08:24:48.6313533Z     "runner_indirection": "forbidden"
+2026-11-26T08:24:48.6313918Z   }
+2026-11-26T08:24:48.6314173Z }
+2026-11-26T08:24:49.7789031Z ..............
+2026-11-26T08:24:49.7789582Z ----------------------------------------------------------------------
+2026-11-26T08:24:49.7790164Z Ran 14 tests in 0.984s
+2026-11-26T08:24:49.7790400Z 
+2026-11-26T08:24:49.7790513Z OK
+2026-11-26T08:24:50.6293265Z .......................
+2026-11-26T08:24:50.6293829Z ----------------------------------------------------------------------
+2026-11-26T08:24:50.6294418Z Ran 23 tests in 0.710s
+2026-11-26T08:24:50.6294652Z 
+2026-11-26T08:24:50.6294779Z OK
+2026-11-26T08:24:51.3932972Z ......F........
+2026-11-26T08:24:51.3933442Z ======================================================================
+2026-11-26T08:24:51.3934508Z FAIL: test_old_green_journal_fixture_cannot_grant_qualification (test_qualification_preservation.JournalOnlyIsNotAtomic.test_old_green_journal_fixture_cannot_grant_qualification)
+2026-11-26T08:24:51.3935991Z ----------------------------------------------------------------------
+2026-11-26T08:24:51.3936547Z ValueError: Incomplete supplemental assertions: test_workbench_presentation_submission
+2026-11-26T08:24:51.3936936Z 
+2026-11-26T08:24:51.3937153Z During handling of the above exception, another exception occurred:
+2026-11-26T08:24:51.3937456Z 
+2026-11-26T08:24:51.3937565Z Traceback (most recent call last):
+2026-11-26T08:24:51.3938367Z   File "/home/runner/work/cybersand/cybersand/tools/pubpres_final_recovery/test_qualification_preservation.py", line 85, in test_old_green_journal_fixture_cannot_grant_qualification
+2026-11-26T08:24:51.3939256Z     with self.assertRaisesRegex(ValueError, "Journal-only"):
+2026-11-26T08:24:51.3939923Z AssertionError: "Journal-only" does not match "Incomplete supplemental assertions: test_workbench_presentation_submission"
+2026-11-26T08:24:51.3940435Z 
+2026-11-26T08:24:51.3940587Z ----------------------------------------------------------------------
+2026-11-26T08:24:51.3941247Z Ran 15 tests in 0.609s
+2026-11-26T08:24:51.3941386Z 
+2026-11-26T08:24:51.3941476Z FAILED (failures=1)
+2026-11-26T08:24:51.4072313Z ##[error]Process completed with exit code 1.
+2026-11-26T08:24:51.4295739Z Post job cleanup.
+2026-11-26T08:24:51.5213869Z [command]/usr/bin/git version
+2026-11-26T08:24:51.5262606Z git version 2.56.1
+2026-11-26T08:24:51.5304563Z Temporarily overriding HOME='/home/runner/work/_temp/6ffbe0b7-5dd8-4e38-9f1e-4320158224f0' before making global git config changes
+2026-11-26T08:24:51.5306103Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-26T08:24:51.5311363Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/cybersand/cybersand
+2026-11-26T08:24:51.5359765Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-26T08:24:51.5406926Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-26T08:24:51.5702688Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-26T08:24:51.5758901Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-26T08:24:51.6216151Z Evaluate and set job outputs
+2026-11-26T08:24:51.6223882Z Set output 'phase'
+2026-11-26T08:24:51.6226039Z Set output 'current_main'
+2026-11-26T08:24:51.6227190Z Cleaning up orphan processes
+2026-11-26T08:24:51.6812154Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

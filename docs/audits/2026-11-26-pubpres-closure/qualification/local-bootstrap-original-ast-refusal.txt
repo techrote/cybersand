@@ -1,0 +1,14 @@
+....F..........
+======================================================================
+FAIL: test_every_original_invocation_gate_is_preserved (test_qualification_preservation.FrozenPredicates.test_every_original_invocation_gate_is_preserved)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/scratch/9cef565acfec/cybersand/tools/pubpres_final_recovery/test_qualification_preservation.py", line 42, in test_every_original_invocation_gate_is_preserved
+    self.assertEqual(ast.dump(old, include_attributes=False), ast.dump(normalized, include_attributes=False))
+AssertionError: "Func[3027 chars]rgs=[Name(id='engine', ctx=Load())], keywords=[10542 chars]=[])" != "Func[3027 chars]rgs=[IfExp(test=Compare(left=Name(id='test', c[10699 chars]=[])"
+Diff is 33707 characters long. Set self.maxDiff to None to see it.
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.588s
+
+FAILED (failures=1)

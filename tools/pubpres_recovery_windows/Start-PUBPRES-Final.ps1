@@ -490,6 +490,9 @@ try {
     if($Record.source -ceq 'C') {
         Assert-PP ($Recovery.water_api_available -eq $true -and $Recovery.actual_submission_api_available -eq $true -and
             $Recovery.sample_idle_api_available -eq $true) 'Candidate recovery readback is unavailable'
+        Assert-PP ($Recovery.task_completion.schema -ceq 'PUBPRES-TASK-COMPLETION-V1' -and
+            $Recovery.task_completion.mode -ceq 'all_workers' -and
+            $Recovery.task_completion.completed_dispatches -ge 0 -and $Recovery.task_completion.completed_tasks -ge 0) 'Actual native completion mode differs from the unselected all-worker owner configuration'
         Assert-PP ($Material.full_image_slots -eq $Record.full_image_slots -and $Material.full_image_slots_requested -ceq [string]$Record.full_image_slots) 'Actual Full slot treatment differs'
         $Deadline=$Ready.material_deadline
         Assert-PP ($null -ne $Deadline -and $Deadline.schema -ceq 'pubpres-material-deadline-v1' -and

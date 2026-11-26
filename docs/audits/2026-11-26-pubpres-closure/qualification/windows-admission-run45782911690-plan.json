@@ -1,0 +1,33 @@
+{
+  "schema": "pubpres-closure-hosted-attempt-v1",
+  "workflow_run": 45782911690,
+  "attempt": 1,
+  "source_commit": "6f533ff5d8b23e0c3b5254d265e38fb374340dda",
+  "source_tree": "9372e3178a02aafc54c6c5ae65dd78223eda7ae9",
+  "phase": "runtimes",
+  "job": 139782462317,
+  "stage": "plan",
+  "conclusion": "FAIL",
+  "reason": "Journal-only synthetic refusal fixture retained checks40 after additive submission receipt raised minimum110; rejection occurred at assertion inventory instead of intended Journal-only predicate. Production failed closed.",
+  "actual_windows_execution": false,
+  "native_build_started": false,
+  "engine_build_started": false,
+  "source_fingerprint_gate": "PASS",
+  "final_package_tests": {
+    "pass": 14,
+    "fail": 0
+  },
+  "recovery_package_tests": {
+    "pass": 23,
+    "fail": 0
+  },
+  "recovery_reader_tests": {
+    "pass": 14,
+    "fail": 1
+  },
+  "correction_original_commit": "aedab9a7",
+  "replay_required": true,
+  "log_sha256": "78e375346e191ac1a06d96bf4dd4223a508dfa85e934ae82698f382bfd973e44",
+  "scope": "Original failed admission preserved. No runtime, graphical, Windows or evaluator acceptance.",
+  "log_file": "windows-admission-run45782911690-plan.txt"
+}

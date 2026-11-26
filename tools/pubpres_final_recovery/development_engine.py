@@ -10,9 +10,10 @@ from engine_admission import load_bounded_payload
 from qualification_gate import load_qualification
 
 
-def admit(binary,proof_path,gates_path,source,water):
+def admit_build(binary,proof_path):
+    """Admit build custody for executing the still-required application gates."""
     need(sys.platform.startswith('linux'),'Local development engine is registered only on Linux')
-    binary,proof_path,gates_path=map(lambda p:Path(p).resolve(),(binary,proof_path,gates_path))
+    binary,proof_path=map(lambda p:Path(p).resolve(),(binary,proof_path))
     proof=json.loads(proof_path.read_bytes())
     contract=load_bounded_payload().contract
     lock=json.loads((ROOT/contract.DIRECTORY/'engine.lock.json').read_bytes())
@@ -29,6 +30,15 @@ def admit(binary,proof_path,gates_path,source,water):
     need(isinstance(flags,list) and all(isinstance(item,str) for item in flags)
          and all(flag in flags for flag in ('platform=linuxbsd','arch=x86_64','threads=yes','disable_path_overrides=no')),
          'Local engine did not preserve actual script dispatch or CPU owners')
+    return {'proof':proof,'proof_sha256':digest(proof_path),'engine_qualified':False,
+        'disposition':'DEVELOPMENT_BUILD_ONLY / APPLICATION_GATES_PENDING',
+        'scope':'Exact Linux build/source/binary custody only; this admits execution of application qualification, never comparison or Windows/device acceptance.'}
+
+
+def admit(binary,proof_path,gates_path,source,water):
+    build=admit_build(binary,proof_path)
+    binary,proof_path,gates_path=map(lambda p:Path(p).resolve(),(binary,proof_path,gates_path))
+    proof=build['proof']
     gates=json.loads(gates_path.read_bytes())
     need(gates.get('schema')=='pubpres-recovery-local-integration-gates-v1'
          and gates.get('source_commit')==source['source_commit'] and gates.get('engine_sha256')==digest(binary)

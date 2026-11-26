@@ -1,4 +1,4 @@
-# PUBPRES recovery owner test
+# PUBPRES closure owner test
 
 **Draft / HOLD.** Record PASS, FAIL or NOT RUN. A hosted software renderer cannot
 certify your Windows 11 NVIDIA device. The package does not promote or merge code.
@@ -36,7 +36,11 @@ response remain owner observations unless independently instrumented on-device.
 
 ## Required physical NVIDIA evidence
 
-Use the ordinary official-4.7 / Safe / Full-two-slot control for this matrix.
+Begin with the package's selected configuration through the five ordinary
+launchers. Record its actual engine, render ownership and presentation policy;
+the printed source-bound selection identifies which configuration is being
+evaluated. Repeat useful matched rows through **Open Stock Safe Fallback.cmd**
+and label any **Open Bounded Experimental.cmd** observations separately.
 Record the full package/source identity and actual startup adapter/driver, then
 the NVIDIA model and driver, Windows build, resolution, refresh rate and window
 mode. The shipped standard evaluator uses the native OpenGL path by default;

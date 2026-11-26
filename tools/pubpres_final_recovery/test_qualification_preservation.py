@@ -24,6 +24,20 @@ class FrozenPredicates(unittest.TestCase):
         new = nested_invoke(HERE / "run_qualification.py")
 
         class RemoveOnlyAdditions(ast.NodeTransformer):
+            import_substitutions = 0
+
+            def visit_IfExp(self, node):
+                # A local runtime template cannot import editor assets. Only
+                # the exact import command may use the independently pinned
+                # stock editor; every actual test still uses its admitted
+                # runtime. Normalize this one expression, never an arbitrary
+                # command or runtime-engine change.
+                expected = ast.parse('import_engine if test == "import" else engine', mode="eval").body
+                if ast.dump(node) == ast.dump(expected):
+                    self.import_substitutions += 1
+                    return ast.Name(id="engine", ctx=ast.Load())
+                return self.generic_visit(node)
+
             def visit_If(self, node):
                 if isinstance(node.test, ast.Compare) and ast.dump(node.test) == ast.dump(ast.parse("test in SUPPLEMENTAL", mode="eval").body):
                     # New dispatch branch has the complete original oracle
@@ -38,7 +52,9 @@ class FrozenPredicates(unittest.TestCase):
                     return ast.Constant("safe")
                 return self.generic_visit(node)
 
-        normalized = RemoveOnlyAdditions().visit(copy.deepcopy(new))
+        normalizer = RemoveOnlyAdditions()
+        normalized = normalizer.visit(copy.deepcopy(new))
+        self.assertEqual(normalizer.import_substitutions, 1)
         self.assertEqual(ast.dump(old, include_attributes=False), ast.dump(normalized, include_attributes=False))
 
     def test_frozen_headless_and_graphical_inventory_remains_present(self):
@@ -78,12 +94,16 @@ class JournalOnlyIsNotAtomic(unittest.TestCase):
             name = "test_workbench_presentation_submission"
             program = project / "tests" / (name + ".gd")
             program.write_text("# source-bound development fixture\n")
-            data = {"schema": "workbench-actual-submission-graphical-v1", "checks": 40, "failures": [],
+            # Reach the actual atomic-admission predicate even when additive
+            # resulting-source adversaries raise the required assertion count.
+            # This synthetic claim is never accepted as graphical evidence.
+            checks = module.SUPPLEMENTAL[name]["minimum_checks"]
+            data = {"schema": "workbench-actual-submission-graphical-v1", "checks": checks, "failures": [],
                     "source_revision": "a" * 40, "display": "Windows", "input_hashes": {
                         "res://tests/" + name + ".gd": hashlib.sha256(program.read_bytes()).hexdigest()}}
             (folder / "receipt.json").write_text(json.dumps(data))
             with self.assertRaisesRegex(ValueError, "Journal-only"):
-                module.supplemental_result(name, 'ACTUAL_SUBMISSION_RESULT {"checks":40,"failures":[]}',
+                module.supplemental_result(name, 'ACTUAL_SUBMISSION_RESULT '+json.dumps({"checks":checks,"failures":[]}),
                                            folder, {"source_commit": "a" * 40}, project)
 
 

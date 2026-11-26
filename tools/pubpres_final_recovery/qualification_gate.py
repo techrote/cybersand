@@ -15,6 +15,40 @@ def load_qualification():
     return module
 
 
+def verify_engine_binding(proof, engine):
+    """Bind recorded admission to the actual executable and original payload.
+
+    Full source/API/PE admission remains the existing engine reader's job. This
+    replay prevents a modified summary from changing an observation's engine
+    role or atomic selector by changing only a truthy metadata field.
+    """
+    from run_focus import ENGINE_SHA256
+    engine=Path(engine)
+    engine_sha=digest(engine)
+    recorded=proof.get('engine_admission')
+    if engine_sha in ENGINE_SHA256.values():
+        need(recorded is None,'Official stock observation carries a foreign atomic engine admission')
+        return None
+    need(isinstance(recorded,dict) and isinstance(recorded.get('admission'),dict)
+         and isinstance(recorded.get('build'),dict),'Custom observation lacks its original engine admission')
+    build=recorded['build']; admission=recorded['admission']
+    gui=Path(build.get('gui_executable',''))
+    need(not gui.is_absolute() and len(gui.parts)>=1 and '..' not in gui.parts,
+         'Custom engine GUI path differs')
+    payload=engine
+    for _ in gui.parts:payload=payload.parent
+    original=payload/'build-provenance.json'
+    need((payload/gui).resolve()==engine.resolve() and original.is_file()
+         and digest(original)==admission.get('proof_sha256')
+         and json.loads(original.read_bytes())==build
+         and build.get('application_source')==admission.get('build_source')
+         and str(build.get('workflow_run'))==str(admission.get('build_run'))
+         and str(build.get('workflow_attempt'))==str(admission.get('build_attempt'))
+         and build.get('executables',{}).get(gui.name,{}).get('sha256')==engine_sha,
+         'Custom observation engine source/run/proof or actual executable differs')
+    return recorded
+
+
 def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
     path=Path(path); proof=json.loads(path.read_bytes())
     need(proof.get('schema')=='pubpres-recovery-correctness-v1' and proof.get('complete') is True
@@ -27,6 +61,7 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
          and proof['native']['binary_sha256']==source['native_runtime']['binary_sha256']
          and proof['import_source_mutations']==proof['final_source_mutations']==[],
          'Correctness source, driver, native, engine or authored bytes differ')
+    verify_engine_binding(proof,engine)
     expected={'frozen':19,'submission':2,'water':4,'members':4}[focus]
     need(len(proof['outcomes'])==expected and len({(row['test'],row['slots']) for row in proof['outcomes']})==expected,
          'Correctness inventory is incomplete or duplicated')
@@ -98,6 +133,11 @@ def verify_inventory(path,source,driver,stock,custom,water):
          and len(proof['font'])==3 and len(proof['startup'])==len(proof['two_slot'])==2
          and all(row.get('passed') is True for key in ('font','startup','two_slot') for row in proof[key]),
          'Required font, ordinary startup or original-size GPU first-read qualification is incomplete')
+    original_engine=verify_engine_binding({'engine_admission':proof.get('engine')},custom)
+    pin=data['request']['engine_artifact']
+    need(original_engine['admission']=={'build_source':pin['source'],'build_run':pin['run'],
+         'build_attempt':pin['attempt'],'proof_sha256':pin['proof_sha256']},
+         'Hosted application observations differ from their registered original engine')
     from run_graphical_controls import load_font_controls
     font=load_font_controls()
     build=proof['engine']['build']

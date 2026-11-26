@@ -36,7 +36,7 @@ Hosted Windows graphics remain distinct from physical Windows 11/NVIDIA acceptan
 
 ## Local admission recorded before hosted execution
 
-- 23 recovery package/policy/authoring tests passed.
+- 25 recovery package/policy/authoring and source-seal tests passed.
 - 15 recovery evidence reader and frozen-predicate tests passed.
 - 14 unchanged final package tests passed.
 - Python compilation, workflow YAML parsing and CI provider policy passed.

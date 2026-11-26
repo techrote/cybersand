@@ -1,4 +1,4 @@
-# CyberSand recovery Windows evaluator
+# CyberSand closure Windows evaluator
 
 **Draft / HOLD.** Extract the complete ZIP into a fresh writable folder and double-click **Open Workbench.cmd**. The package includes its engine, native runtime, Rapier, resources and launchers. It needs no installed Git, Python, compiler or Godot.
 

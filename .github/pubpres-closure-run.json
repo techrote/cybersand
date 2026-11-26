@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
   "phase": "runtimes",
-  "purpose": "Fresh pinned native dependencies and Windows admission; prepared atomic picking awaits graphical replay",
+  "purpose": "Corrected journal-only fixture and exact local importer preservation; all platform admission suites pass",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "38a4990c1788ee547f5246822d603be741a28a6642baf8237d26e97d24d78568",
+  "payload_sha256": "f8e8fcab8fe1f8eb2906267e8b5a83b488ae4c9431c8c48432531ba4a8d95b85",
   "physical_acceptance": "HOLD"
 }
