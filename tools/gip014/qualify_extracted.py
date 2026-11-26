@@ -9,6 +9,15 @@ from pathlib import Path
 from owned_process import execute, read_log_prefix
 
 
+# The unchanged SelfTest admits one import (240), authored-lineage (300),
+# three campaigns (180 each), portable replay (at most 1200), three memory
+# admissions (60 each), and graphical smoke (180). The parent must permit
+# every child's full existing allowance, plus hashing/reporting and cleanup.
+SELFTEST_CHILD_SECONDS = 240 + 300 + 3 * 180 + 1200 + 3 * 60 + 180
+SELFTEST_PARENT_RESERVE_SECONDS = 120
+SELFTEST_WALL_SECONDS = SELFTEST_CHILD_SECONDS + SELFTEST_PARENT_RESERVE_SECONDS
+
+
 MODULE_PROBE = r'''$ErrorActionPreference = 'Stop'
 try {
     $command = Get-Command -Name Get-FileHash -CommandType Function,Cmdlet -ErrorAction Stop
@@ -87,7 +96,11 @@ def main(argv=None):
         return 130 if preflight.get("operator_cancelled") else 2
     command = ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(root / "Open goblin.ps1"),
                "-Mode", "SelfTest", "-GraphicalSmoke"]
-    result = execute(command, windows_powershell_environment(environment), args.log, 1200, cwd=root, memory_limit_mib=3072)
+    result = execute(command, windows_powershell_environment(environment), args.log, SELFTEST_WALL_SECONDS,
+                     cwd=root, memory_limit_mib=3072)
+    result["selftest_envelope"] = {"child_allowance_seconds": SELFTEST_CHILD_SECONDS,
+                                   "parent_reserve_seconds": SELFTEST_PARENT_RESERVE_SECONDS,
+                                   "wall_limit_seconds": SELFTEST_WALL_SECONDS}
     args.log.with_suffix(".process.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     if result.get("interrupted"):
         print(json.dumps({"status": "cancelled", "operator_cancelled": True, "retained_log": str(args.log)}))

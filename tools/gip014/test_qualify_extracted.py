@@ -4,12 +4,37 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import re
 import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
 import qualify_extracted as qualification
+
+
+class CompleteSelfTestEnvelopeControls(unittest.TestCase):
+    def test_parent_covers_the_source_owned_selftest_children_and_cleanup(self):
+        # Read the independent launcher contract, including call multiplicity,
+        # so adding or lengthening a child cannot silently outrun this parent.
+        source = Path(__file__).with_name("Open-goblin.ps1").read_text(encoding="utf-8")
+        limits = {name: int(seconds) for name, seconds in re.findall(
+            r"Invoke-FixedGodot \$(?:profile|preflight|Profile) '([^']+)' [^\r\n]+\) (\d+)", source)}
+        self.assertEqual(limits["import"], 240)
+        self.assertEqual(limits["authored-lineage"], 300)
+        self.assertIn("foreach ($fixture in @('actor_workshop', 'save_reopen'))", source)
+        self.assertIn("$discovery = Invoke-CampaignCase 'alchemy' 'COVERAGE_HUNTER'", source)
+        self.assertIn("foreach ($item in @($FirstCase, $LastCase))", source)
+        self.assertIn("$imported = Import-ProfileMemory $fresh $current", source)
+        self.assertIn("[Math]::Min(1200, [Math]::Max(210, $actionCount * 1.2 + 60))", source)
+        complete = (limits["import"] + limits["authored-lineage"] + 3 * limits["campaign"]
+                    + 1200 + 3 * limits["corpus-admission"] + limits["interactive-smoke"])
+        self.assertEqual(complete, 2640)
+        self.assertEqual(qualification.SELFTEST_CHILD_SECONDS, complete)
+        self.assertGreaterEqual(qualification.SELFTEST_PARENT_RESERVE_SECONDS, 120)
+        self.assertEqual(qualification.SELFTEST_WALL_SECONDS,
+                         complete + qualification.SELFTEST_PARENT_RESERVE_SECONDS)
+        self.assertLessEqual(qualification.SELFTEST_WALL_SECONDS, 5400)
 
 
 class WindowsPowerShellEnvironmentControls(unittest.TestCase):
