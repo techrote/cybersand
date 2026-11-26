@@ -24,7 +24,7 @@ Use the Optics tab's right-hand scrollbar or mouse wheel to reach **Depth and at
 
 For a particular focal plane, first set the focus mode to **Selected focal plane**, then choose **Rear architecture**, **Atmosphere / effects** or **Distant background** in the next dropdown. That dropdown is disabled in the other focus modes. **Manual optical distance** instead enables the **Focus distance** slider. None of these optical selections changes the native edit target.
 
-The live wipe temporarily uses Classic decorative parallax and keeps procedural atmosphere motifs at Classic opacity across the view. Full-profile gallery images can use different decorative parallax. Architectural textures receive the lens/tonal shader; motifs remain authored in the Atmosphere tab.
+At an intermediate wipe, the live comparison uses Classic decorative parallax and keeps procedural atmosphere motifs at Classic opacity across the view. Full-profile gallery images can use different decorative parallax. Architectural textures receive the lens/tonal shader; motifs remain authored in the Atmosphere tab.
 
 ## Save an optical preset and save a complete scene
 

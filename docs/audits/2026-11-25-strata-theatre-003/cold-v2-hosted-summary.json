@@ -1,0 +1,76 @@
+{
+  "schema": "strata3-cold-hosted-log-summary-v1",
+  "kind": "Exact JSON emitted by the hosted strict reader, extracted from original decoded job log; not a new local artifact verification.",
+  "observer": "92ec0280bba341b49345f292c4f89331b11a341b",
+  "observer_tree": "25dbd1371fa052e5f02de32c57e585d1b4846981",
+  "run": 45743337775,
+  "job": 139653387374,
+  "emitted_at_utc": "2026-11-26T02:38:16.9995106Z",
+  "hosted_controls": 23,
+  "hosted_control_seconds": 0.152,
+  "job_conclusion": "success",
+  "emitted_verification": {
+    "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "observation": {
+      "admission": {
+        "extent": [
+          2048,
+          2048
+        ],
+        "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "strata_enabled": false,
+        "workbench_script": "res://scripts/shared_workbench.gd",
+        "worker_id": "-9223371959310481934",
+        "world_generation": 2
+      },
+      "cmd_process_seconds": 90.025416,
+      "cold_import_command_seconds": 11.1453828,
+      "console_process_ids": [
+        3196,
+        5840
+      ],
+      "engine_process_ids": [
+        3432,
+        6572
+      ],
+      "godot_headers": [
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org"
+      ],
+      "observed_process_tree_cpu_seconds": 152.171875,
+      "ordinary_workbench_command_seconds": 78.8635987,
+      "peak_observed_process_tree_rss_bytes": 757346304,
+      "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    "observer_source": "92ec0280bba341b49345f292c4f89331b11a341b",
+    "package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "schema": "strata3-cold-first-command-verification-v1",
+    "scope": "First shipped CMD on a new extraction with no prior Godot invocation. Cold import command lifetime and ordinary native Workbench admission/shutdown; no nine-scene rerun or physical GPU acceptance.",
+    "verified": true
+  },
+  "artifact": {
+    "id": 15082655904,
+    "name": "strata3-cold-windows-fd0830ab-92ec0280bba341b49345f292c4f89331b11a341b-1",
+    "size_in_bytes": 635667,
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15082655904",
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15082655904/zip",
+    "expired": false,
+    "created_at": "2026-11-26T02:38:18Z",
+    "expires_at": "2027-02-24T02:34:38Z",
+    "updated_at": "2026-11-26T02:38:18Z",
+    "digest": "sha256:8bae9a314d010f5bbe09637bd217c6d15948316a783437d24bfeb76208311e9e",
+    "workflow_run": {
+      "id": 45743337775,
+      "repository_id": 1350077435,
+      "head_repository_id": 1350077435,
+      "head_branch": "qualification/strata-theatre-003-cold-launch",
+      "head_sha": "92ec0280bba341b49345f292c4f89331b11a341b"
+    }
+  },
+  "limitations": [
+    "No independent local extraction/replay of the cold artifact after workspace outage.",
+    "CMD/console times are held process lifetimes; ordinary command includes controlled 180 callback run and shutdown.",
+    "No nine-scene rerun, new 45-second scene-admission measurement, physical NVIDIA performance or human input-to-photon claim.",
+    "Original cold v1 observer rejection remains distinct."
+  ]
+}

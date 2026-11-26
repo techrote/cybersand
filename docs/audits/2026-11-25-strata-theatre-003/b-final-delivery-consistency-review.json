@@ -1,0 +1,76 @@
+{
+  "schema": "strata3-specialist-b-final-delivery-consistency-review-v1",
+  "reviewed_utc": "2026-11-26T02:37:32Z",
+  "reviewed_archive_commit": "8c9a2bb99d2b62cbea87e0e00cddf45464d67b4b",
+  "reviewed_archive_tree": "575b45ef251fbb4d05136fbc6789a8f0d048efd2",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "reviewed_files": [
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/decision-packet.md",
+      "git_blob_sha": "9cf0030b397410651752f75251195f6d61d81fdb"
+    },
+    {
+      "path": "docs/operations/strata-optics-evaluation.md",
+      "git_blob_sha": "a45b12b0b6ad3a209a143a9557e0ff42a7682c59"
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/delivery-provenance.json",
+      "git_blob_sha": "39c53e98985beb532ed53594bbed68c9923a0194"
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/OWNER-GUIDE-ADDENDUM.md",
+      "git_blob_sha": "0319eae1180780fcb5a357672cd45e26c33c9a9d"
+    }
+  ],
+  "scope": "Remote decision-packet, owner-guide/addendum and delivery-provenance consistency review. No local execution, new graphical capture or new package verification.",
+  "links": {
+    "repository_tree_entries": 5003,
+    "tree_truncated": false,
+    "relative_markdown_and_image_targets_checked": 43,
+    "missing": [],
+    "durable_recovery_targets": [
+      "package-recovery-review-a.md",
+      "b-delivery-recovery-2026-11-26.md",
+      "b-delivery-recovery-2026-11-26.json",
+      "c-final-recovery-receipt.md",
+      "c-cold-first-command-v1-rejection.md",
+      "owner-feedback-route.md"
+    ]
+  },
+  "supported_findings": [
+    "Exact evaluator artifact, outer/inner ZIP, manifest, file counts and package evidence identities match B's completed pre-outage verification.",
+    "The main hosted package success is separated from source-campaign timing, cold-first-command qualification and the unconfirmed optional Linux re-read.",
+    "Enabled optical performance failures, 45-second target misses, physical-owner gate and A1 deferral remain explicit.",
+    "Artistic profile recommendations preserve the architecture/readability disagreement and optional Lunar Diorama preference.",
+    "Overview marker/body and sparse movement limits, subtle light-motif limits and bright-daylight corpus gap remain explicit.",
+    "Two-stage extraction, Solo reset, selected focus mode, named preset versus scene Save/Load, and temporary inspection controls are understandable.",
+    "Fixture metadata at exact frozen source confirms the selectable title Optics Readability Challenge."
+  ],
+  "minor_followups": [
+    {
+      "id": "processed_profile_before_bypass",
+      "requested": "Begin owner-guide step5 by selecting a processed profile again; step4 can leave the owner in Classic, where bypass/wipe would appear inert.",
+      "lead_status": "Lead reported correction prepared for final edits; no new canonical-file readback yet."
+    },
+    {
+      "id": "intermediate_motif_wipe",
+      "requested": "Scope the addendum's Classic motif-opacity statement to an intermediate wipe; full processed share1.0 can attenuate motifs.",
+      "lead_status": "Lead reported correction prepared for final edits; no new canonical-file readback yet."
+    },
+    {
+      "id": "cold_status_alignment",
+      "requested": "Keep packet and provenance aligned with the actual v2 observer/run status; no cold pass before its original admitted result.",
+      "observed_v2": {
+        "observer_source": "92ec0280bba341b49345f292c4f89331b11a341b",
+        "run_id": 45743337775,
+        "job_id": 139653387374,
+        "status": "in_progress",
+        "active_step": "Run untouched owner CMD before any editor or test preparation",
+        "metadata_checked_utc": "2026-11-26T02:37:32Z"
+      }
+    }
+  ],
+  "acceptance": "Delivery/artistic/performance documentation is supported within the stated Draft/HOLD scope, with the three small followups recorded. This is not blanket engineering acceptance; the current cold v2 execution and optional interrupted Linux reader are not counted as passes.",
+  "prior_recovery_commit": "803b3260cb9707693378c1f1f242650c237a6e6b"
+}

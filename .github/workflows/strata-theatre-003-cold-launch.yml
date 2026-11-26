@@ -1,0 +1,83 @@
+# Separate external observer; no application or shipped-package mutation.
+name: Strata Theatre 003 cold shipped Windows command
+'on':
+  push:
+    branches:
+    - qualification/strata-theatre-003-cold-launch
+    paths:
+    - .github/workflows/strata-theatre-003-cold-launch.yml
+    - tools/ci/strata3_cold_launcher.py
+    - tools/ci/test_strata3_cold_launcher.py
+    - tools/ci/strata3-cold-launch-request.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: strata3-cold-launch-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.eol
+  GIT_CONFIG_VALUE_1: lf
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+jobs:
+  windows:
+    name: First actual shipped CMD on a fresh portable extraction
+    runs-on: windows-2022
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+    - name: Check out immutable external observer
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ github.sha }}
+        path: observer
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Check out frozen static verifier only
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: fd0830abcfadd9ae19162e5677943bb131223e59
+        path: application
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Validate external observer without invoking Godot
+      run: |
+        python observer/tools/ci/check_ci_provider_policy.py
+        if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+        python observer/tools/ci/test_strata3_cold_launcher.py
+        if ($LASTEXITCODE -ne 0) { throw 'Cold first-command adverse controls failed' }
+    - name: Authenticate one exact already shipped evaluator artifact
+      id: request
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        python observer/tools/ci/strata3_cold_launcher.py prepare --output build/strata3-cold-windows
+        if ($LASTEXITCODE -ne 0) { throw 'Unarmed or mismatched shipped artifact request' }
+    - name: Download exact original evaluator without executing it
+      uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+      with:
+        github-token: ${{ github.token }}
+        repository: techrote/cybersand
+        run-id: ${{ steps.request.outputs.run_id }}
+        artifact-ids: ${{ steps.request.outputs.artifact_id }}
+        merge-multiple: true
+        path: downloads
+    - name: Run untouched owner CMD before any editor or test preparation
+      run: |
+        python observer/tools/ci/strata3_cold_launcher.py run --application-root application --downloads downloads --output build/strata3-cold-windows
+        if ($LASTEXITCODE -ne 0) { throw 'Cold shipped command qualification rejected' }
+    - name: Preserve original cold-command evidence including failures
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: strata3-cold-windows-fd0830ab-${{ github.sha }}-${{ github.run_attempt }}
+        path: build/strata3-cold-windows/
+        include-hidden-files: true
+        if-no-files-found: error
+        retention-days: 90

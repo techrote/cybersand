@@ -1,6 +1,6 @@
 {
   "schema": "strata3-delivery-provenance-v1",
-  "recorded_at_utc": "2026-11-26T02:34:00Z",
+  "recorded_at_utc": "2026-11-26T02:42:04Z",
   "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
   "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
   "draft_pr": 785,
@@ -81,7 +81,7 @@
     }
   },
   "cold_annex": {
-    "state": "v1 rejected before Godot; v2 correction in independent review",
+    "state": "PASS: actual cold first CMD and unchanged hosted strict reader verified exact delivered package; v1 rejection retained",
     "frozen_package_unchanged": true,
     "first_observer": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
     "first_run": 45741693665,
@@ -92,7 +92,52 @@
     "controls_passed": 21,
     "reason": "Dynamically loaded frozen package verifier omitted from sys.modules-based required-source inventory; no Godot process launched.",
     "additional_custody_issue": "Pinned artifact upload default omitted retained observer/.github source; corrected observer must explicitly include hidden files for bounded output.",
-    "timeout_seconds": 180
+    "timeout_seconds": 180,
+    "second_observer": "92ec0280bba341b49345f292c4f89331b11a341b",
+    "second_tree": "25dbd1371fa052e5f02de32c57e585d1b4846981",
+    "second_run": 45743337775,
+    "expected_v2_controls": 23,
+    "second_job": 139653387374,
+    "second_artifact": 15082655904,
+    "second_artifact_bytes": 635667,
+    "second_artifact_sha256": "8bae9a314d010f5bbe09637bd217c6d15948316a783437d24bfeb76208311e9e",
+    "second_verified": true,
+    "actual_v2_controls_passed": 23,
+    "emitted_at_utc": "2026-11-26T02:38:16.9995106Z",
+    "observation": {
+      "admission": {
+        "extent": [
+          2048,
+          2048
+        ],
+        "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "strata_enabled": false,
+        "workbench_script": "res://scripts/shared_workbench.gd",
+        "worker_id": "-9223371959310481934",
+        "world_generation": 2
+      },
+      "cmd_process_seconds": 90.025416,
+      "cold_import_command_seconds": 11.1453828,
+      "console_process_ids": [
+        3196,
+        5840
+      ],
+      "engine_process_ids": [
+        3432,
+        6572
+      ],
+      "godot_headers": [
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org"
+      ],
+      "observed_process_tree_cpu_seconds": 152.171875,
+      "ordinary_workbench_command_seconds": 78.8635987,
+      "peak_observed_process_tree_rss_bytes": 757346304,
+      "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    "scope": "First shipped CMD on a new extraction with no prior Godot invocation. Cold import command lifetime and ordinary native Workbench admission/shutdown; no nine-scene rerun or physical GPU acceptance.",
+    "independent_after_outage_review": "Root/A/C independently read exact hosted log, strict-reader summary, workflow and artifact metadata. No local raw artifact extraction/replay was possible.",
+    "summary_file": "cold-v2-hosted-summary.json"
   },
   "preserved_predecessor": {
     "application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
@@ -121,7 +166,12 @@
       "b": "803b3260cb9707693378c1f1f242650c237a6e6b",
       "c": "da895726985006ff6d422a45ef5a1e873a937c4a"
     },
-    "final_local_doc_gate": "not rerun; isolated archive check lacked six companion expected-fact files; not a pass"
+    "final_local_doc_gate": "not rerun; isolated archive check lacked six companion expected-fact files; not a pass",
+    "final_review_commits": {
+      "a": "0d76c819f2828eeb2d8b8a74e9ff35f9798e54f4",
+      "b": "caf1c9312a1474d8de98c172fa2b2f5034431542",
+      "c": "4c4677a39df21cf20cee957f783235b929b56bc2"
+    }
   },
   "owner_steps": [
     "Extract downloaded GitHub artifact ZIP.",
@@ -132,7 +182,6 @@
   ],
   "remaining": [
     "Enabled-optics physical progression target unmet.",
-    "Cold-first-command v2 execution not yet admitted at this checkpoint.",
     "Physical Windows 11/NVIDIA owner acceptance.",
     "Unprimed human platform/passage understanding.",
     "Bright-daylight native readability corpus.",

@@ -19,8 +19,9 @@ a narrowly reviewed external platform-path adapter also passed the actual
 artifact and eight controls on Linux, with all acceptance gates unchanged.
 The original Linux-side basename rejection is preserved. The main pristine
 extracted Windows evaluator completed 31 cases, the actual shipped command
-and post-execution payload verification. Its cold-first-command annex remains
-separate: v1 rejected its own source inventory before Godot.
+and post-execution payload verification. A separate exact-package cold-first-CMD
+annex also passed at observer `92ec0280`, run `45743337775`, after 23 hosted
+controls. Its first observer rejection before Godot remains preserved.
 
 Each final platform corpus contains 99 matched profile captures from nine native
 scenes, 74 supplementary captures and 40 movement keyframes. Each actual renderer
@@ -176,7 +177,10 @@ checks, exact primary artifact identities and unconfirmed local reads.
 The original hosted package gate passed; the additional Linux full-package
 read has no observed completion and is not counted as another pass.
 The [first cold observer rejection](c-cold-first-command-v1-rejection.md)
-is retained without relabelling it a shipped-command failure.
+is retained without relabelling it a shipped-command failure. The corrected
+[actual cold result](cold-v2-hosted-summary.json) binds the same inner ZIP and
+ordinary native Workbench. CMD lifetime was 90.025416 s, including import and
+the controlled callback run; it is not a Strata scene-admission measurement.
 
 The nine native scenes are predominantly dark. Bright-daylight readability,
 unprimed human understanding, camera rotation and physical Windows 11/NVIDIA

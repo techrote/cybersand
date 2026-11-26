@@ -7,8 +7,8 @@ passed; enabled-optics PERFORMANCE HOLD; Draft/HOLD.**
 **[Download the portable interactive Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776).**
 Extract the GitHub artifact ZIP, then its inner
 **CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip**, and run
-**Open Workbench.cmd**. The separate cold-first-command annex is still an open
-execution gate at this checkpoint; its first observer failed before Godot.
+**Open Workbench.cmd**. The separate cold-first-command annex also passed against this same delivered
+ZIP. Its first observer failure before Godot remains preserved.
 No blanket engineering acceptance or physical Windows 11/NVIDIA result is claimed.
 
 The application is frozen at `fd0830abcfadd9ae19162e5677943bb131223e59`, source
@@ -440,8 +440,33 @@ the untouched delivered CMD before any Godot preparation. Its first observer,
 passed 21 controls and authenticated the exact download, then rejected its own
 missing dynamic verifier inventory before invoking Godot. The
 [original rejection](c-cold-first-command-v1-rejection.md) is preserved.
-A narrowly corrected observer is undergoing fresh execution; no cold pass is
-anticipated in this checkpoint.
+The corrected observer `92ec0280bba341b49345f292c4f89331b11a341b`
+**passed** in [run 45743337775](https://github.com/techrote/cybersand/actions/runs/45743337775),
+job `139653387374`. All 23 actual hosted controls passed, followed by the
+untouched CMD as the first Godot invocation in a fresh spaced-path extraction.
+The unchanged strict reader emitted `verified: true` at 02:38:16.9995106 UTC,
+binding the exact application, observer and delivered ZIP. It observed the
+ordinary 2048-square native Workbench with Strata disabled, generation 2, a
+nonzero opaque worker identity, two pinned Godot stages, actual ANGLE/Microsoft
+Basic presentation, successful ordered shutdown and unchanged original payload.
+
+The [original cold evidence](https://github.com/techrote/cybersand/actions/runs/45743337775/artifacts/15082655904)
+is 635,667 bytes, SHA-256
+`8bae9a314d010f5bbe09637bd217c6d15948316a783437d24bfeb76208311e9e`.
+The upload explicitly retained hidden workflow source. Root, A and C independently
+read the original hosted job and emitted result; their independent
+[A review](cold-first-command-review-a.md) and
+[C review](c-cold-first-command-v2-review.md) retain the source boundaries. The
+[unaltered emitted JSON in a compact summary](cold-v2-hosted-summary.json)
+preserves exactly what was reported; no post-outage local artifact replay is
+claimed.
+
+Held process lifetimes were 90.025416 s for the whole CMD, 11.1453828 s for its
+cold import command and 78.8635987 s for the ordinary Workbench command. The
+latter includes the controlled 180-callback run and shutdown. These are not
+scene-admission or input-to-photon times. The 180-second command watchdog is
+separate from the unchanged 45-second Strata scene target. This annex does not
+rerun the nine-scene campaign or erase its recorded admission failures.
 
 The additional independent Linux full-package re-read was interrupted by loss
 of the local execution environment. A/root re-read commands did not start;
@@ -467,7 +492,8 @@ Use the corrected [owner walkthrough](../../operations/strata-optics-evaluation.
 [25-minute feedback route](owner-feedback-route.md) alongside the immutable
 package guide. Begin with Underworks in Classic. Inspect **Layers → Play →
 Solo**, then **uncheck Solo** and return to Stack. Open **Optics**, compare
-Gameplay Clarity and Deep Focus, and try bypass and the wipe. Before testing
+Gameplay Clarity and Deep Focus, then keep a processed profile selected while
+trying bypass and the wipe. Before testing
 **Show physical Play**, turn Bypass off and set Processed share to 1.0.
 Assistance is bounded suppression; Play Solo is definitive ownership inspection.
 
@@ -519,7 +545,7 @@ FUNCTIONAL GATES PASSED / ENABLED-OPTICS PERFORMANCE HOLD / DRAFT-HOLD FOR OWNER
 ARTISTIC AND PHYSICAL ACCEPTANCE.**
 
 Engineering acceptance is incomplete while enabled-optics progression fails.
-The cold-first-command annex remains separately open at this checkpoint.
+The exact delivered package's cold-first-command gate is complete.
 Bright-daylight native readability, unprimed human route understanding,
 physical Windows 11/NVIDIA performance and camera rotation remain uncovered
 or owner gates. A1 is deferred. The coherent authoring facility and substantial

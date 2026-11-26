@@ -1,0 +1,15 @@
+{
+  "schema": "strata3-cold-launch-request-v1",
+  "armed": true,
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "package_run_id": 45721790366,
+  "package_artifact_id": 15080761776,
+  "package_artifact_name": "strata3-workbench-windows-evaluator-fd0830abcfadd9ae19162e5677943bb131223e59-1",
+  "package_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+  "package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+  "package_bytes": 477296145,
+  "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+  "timeout_seconds": 180,
+  "quit_after_callbacks": 180
+}
