@@ -17,6 +17,8 @@ on:
       - 'godot/scripts/art_batch_executor.gd'
       - 'godot/tools/qualify_gentek80_main_integration.gd'
       - 'tools/ci/run_godot_regressions.py'
+      - 'tools/ci/materialize_lfs.py'
+      - 'tools/ci/test_materialize_lfs.py'
       - 'docs/systems/workbench-art-providers.md'
       - '.github/workflows/art-session-logging.yml'
   workflow_dispatch:
@@ -35,13 +37,22 @@ jobs:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
       - name: Materialize source-matched native runtime
         shell: bash
         run: |
           set -euo pipefail
-          git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          python tools/ci/materialize_lfs.py \
+            --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' \
+            --output evidence/materialization
           test -s godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           test -s godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
       - name: Authenticate official Godot 4.7
@@ -90,12 +101,19 @@ jobs:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
+      - name: Select Python 3.12
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
       - name: Materialize source-matched native runtime
         shell: pwsh
         run: |
-          git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          git rev-parse HEAD | Set-Content evidence/source-sha.txt
+          git rev-parse 'HEAD^{tree}' | Set-Content evidence/source-tree.txt
+          python tools/ci/materialize_lfs.py --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --output evidence/materialization
           if ($LASTEXITCODE -ne 0) { throw 'LFS materialization failed' }
       - name: Authenticate official Godot 4.7
         shell: pwsh

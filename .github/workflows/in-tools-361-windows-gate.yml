@@ -14,6 +14,8 @@ on:
       - 'tools/lcb/in_tools_current_main_admission.py'
       - 'tools/lcb/test_in_tools_current_main_admission.py'
       - 'tools/play/run_in_tools_successor_windows_gate.py'
+      - 'tools/ci/materialize_lfs.py'
+      - 'tools/ci/test_materialize_lfs.py'
   workflow_dispatch:
 
 concurrency:
@@ -51,8 +53,12 @@ jobs:
       - name: Materialize retained Windows runtime inputs
         run: |
           set -euo pipefail
-          git lfs install --local
-          git lfs pull --include="godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          mkdir -p build/in-tools-windows-gate
+          git rev-parse HEAD > build/in-tools-windows-gate/source-sha.txt
+          git rev-parse HEAD^{tree} > build/in-tools-windows-gate/source-tree.txt
+          python tools/ci/materialize_lfs.py \
+            --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' \
+            --output build/in-tools-windows-gate/materialization
 
       - name: Authenticate successor source authority
         run: |
