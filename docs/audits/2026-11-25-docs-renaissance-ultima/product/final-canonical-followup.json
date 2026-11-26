@@ -1,0 +1,490 @@
+{
+  "schema": "ultima-product-final-byte-and-review-delta-v1",
+  "authority": "historical-non-authoritative",
+  "root_snapshot": "e87578b534ef3860547f79161b5cf9da56fec4d2",
+  "proposed_documentation_commit": "7c7a31833",
+  "retained_coverage": "coverage.json",
+  "reviewed_route_count": 53,
+  "meaning": "This inventory fingerprints the current bytes for 53 previously reviewed routes. It preserves each earlier semantic-review hash; differing bytes are not silently called a fresh full-document review. Explicit selected-section re-review is recorded below. All three final manual digests were checked against the integrated root snapshot.",
+  "current_byte_inventory": [
+    {
+      "path": "README.md",
+      "bytes": 8056,
+      "sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "last_recorded_semantic_review_sha256": "4d27b56d643e4510e2c0612aed0ef5fdf3455c8a221ea9831e90aa1a0dc81800",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/README.md",
+      "bytes": 12268,
+      "sha256": "456255166659ec82cd37f2b024f04a872c85937904c643f57ecf431ad1dabf85",
+      "last_recorded_semantic_review_sha256": "e847686021ca136a37e91c741c0482409a2c69cf76ae633eb2f6b5c28a3cc6e6",
+      "byte_identity_only_if_changed": true,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/getting-started.md",
+      "bytes": 6351,
+      "sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "last_recorded_semantic_review_sha256": "4430abf62365c740ff4b9aef216460b9ac9e2d29a6d80b2a3df797fed066367e",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/workbench-first-session.md",
+      "bytes": 5592,
+      "sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+      "last_recorded_semantic_review_sha256": "445d371e4a3f89561c2ec1511fc6ff410fdbf03ec5bb4232a885c2a355a7982a",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/workbench-painting-and-history.md",
+      "bytes": 5546,
+      "sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "last_recorded_semantic_review_sha256": "9a56b3edd817719f61123811ac26254a0939256d36fd357fd799fcb3a680175d",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/paint-editor-bounded-shapes.md",
+      "bytes": 15769,
+      "sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "last_recorded_semantic_review_sha256": "bfd790ad7aa02070eb118d0604a921c0f8a3f9a3487df5daf1c92003d91f3114",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/workbench-saving.md",
+      "bytes": 7863,
+      "sha256": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a",
+      "last_recorded_semantic_review_sha256": "a44e9df8f7680f0d0afd650371a31b64edb7380bf00218469dd8a86cae9e298a",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/workbench-art.md",
+      "bytes": 10554,
+      "sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41",
+      "last_recorded_semantic_review_sha256": "e1494021fffee1756b90cc9f4b9220ba009367d1349a14fdecc53679ef1dc570",
+      "byte_identity_only_if_changed": true,
+      "source": "B commit 7c7a31833, byte-identical to the integrated root snapshot"
+    },
+    {
+      "path": "docs/systems/workbench-direct-art-batches.md",
+      "bytes": 11604,
+      "sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+      "last_recorded_semantic_review_sha256": "2d850b72d8759867bf072a64adeafa58bfb0489fb07e37d1f694049a5221b8d9",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/workbench-art-providers.md",
+      "bytes": 11341,
+      "sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "last_recorded_semantic_review_sha256": "240392989f0ccb46db7d47aa67b22764f92a7322dbb4660c933a6e70f2a10b9d",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/showcase-guide.md",
+      "bytes": 6545,
+      "sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "last_recorded_semantic_review_sha256": "a0c60eb970fb66bae425e7d0f233626c5ba33856277dfb5fa60839dce62421e1",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/architectural-generator-playtest.md",
+      "bytes": 9488,
+      "sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573",
+      "last_recorded_semantic_review_sha256": "4c587fe8504810de89a4757808ff5c70af279a1aa1ef105fe5eba8741c2f0573",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/architectural-generator.md",
+      "bytes": 26733,
+      "sha256": "33b98ea01957c4627788519f5b4891e7b2edc187c509e80d08a57f873bb75e53",
+      "last_recorded_semantic_review_sha256": "33b98ea01957c4627788519f5b4891e7b2edc187c509e80d08a57f873bb75e53",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/explore001-generated-playable-maps.md",
+      "bytes": 15287,
+      "sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac",
+      "last_recorded_semantic_review_sha256": "2529100279ccb2370362e322527170cf559a4e34159e2c7457a76c031cd40fac",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/procedural-world-generation.md",
+      "bytes": 29409,
+      "sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "last_recorded_semantic_review_sha256": "2179bb276ca3e6c1d777b01b7ad1c5cb7841773af29a3da64ccc2c97f1f8c3ab",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/procedural-generation-fields-and-modifiers.md",
+      "bytes": 23128,
+      "sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "last_recorded_semantic_review_sha256": "b9f2f83c192f757dfd145d584fe0bba4e856867cb68fc30fe63874106def96fe",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/procedural-typed-spatial-fields.md",
+      "bytes": 24063,
+      "sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "last_recorded_semantic_review_sha256": "d95cc5205c332a165bab5df6459f72f3ec3377a52b76bdce5fd6ad943adb6b42",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/procedural-hierarchical-generation.md",
+      "bytes": 20322,
+      "sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "last_recorded_semantic_review_sha256": "c5a17691ee02b1eeb3c132093f71596b0f7fe2011e39b41b55f758ecd4ba0897",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/procedural-semantic-planes.md",
+      "bytes": 12923,
+      "sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "last_recorded_semantic_review_sha256": "5f5877cf5deb48f29a18f7aecc48dcddb84a441162166416074fb912c7a98fa1",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/generation-workbench-2.md",
+      "bytes": 23393,
+      "sha256": "fa339fbaa304228b24a68193aa51ff9630763f8bff7dbd042c118e4ae27a4db2",
+      "last_recorded_semantic_review_sha256": "2f1abb97f3015fc1130a1765232e1c7702485a18b6cc550d3e9547711947d606",
+      "byte_identity_only_if_changed": true,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/building-material-catalogue.md",
+      "bytes": 13193,
+      "sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "last_recorded_semantic_review_sha256": "d6c8ade8fdc3783919ac92f4b3b2a310adeba3f1ed903c00b86ea25b67b10afd",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/themed-construction-materials.md",
+      "bytes": 9963,
+      "sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "last_recorded_semantic_review_sha256": "8b9f5995299aef16d2d94939ea904b8445c6b738495d8a6653763f9a02a63170",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/material-appearance-and-rendering.md",
+      "bytes": 18974,
+      "sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "last_recorded_semantic_review_sha256": "aafb26315b208f5771cf53adfea3129fd6ff32ef9208b2daa81bba1f2c01f34b",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/material-visual-pattern-library.md",
+      "bytes": 23882,
+      "sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "last_recorded_semantic_review_sha256": "6f6b6d84b85ec27dffa3b3403de79f8c25f0838070b08b40abd245f6d92a871f",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/depth-layers-and-parallax.md",
+      "bytes": 13126,
+      "sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "last_recorded_semantic_review_sha256": "7769aa8cd51646d9f0cc10d381c5ef1426b1a70ba94c66f71fb1e76ce702a79d",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/thunderbowl-control-reference.md",
+      "bytes": 42072,
+      "sha256": "ef1b0bb1ae9bac86a03eca944cbb3e136623222fe39936e0e8abd2de9cfc75a5",
+      "last_recorded_semantic_review_sha256": "ef1b0bb1ae9bac86a03eca944cbb3e136623222fe39936e0e8abd2de9cfc75a5",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "bytes": 24686,
+      "sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "last_recorded_semantic_review_sha256": "4347e83d0048418d0cb675cf123ba3633a937a8a69e325215ec9f08c32b69790",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "bytes": 14161,
+      "sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "last_recorded_semantic_review_sha256": "819a092ffef17239d44dc10cf0852ffda8ca7135129b3d66ad7c7aef6819819a",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/workbench-water-lab.md",
+      "bytes": 19029,
+      "sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "last_recorded_semantic_review_sha256": "67cb74715b7f50b179156189235b86aa72ed6fc7f64eaaa6cd92e1ea8009f9c0",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/materials-lab-authoring.md",
+      "bytes": 33380,
+      "sha256": "9d001473cdd7ce802c9600f1395f4b3466e081d020117713d40ee71630f0054d",
+      "last_recorded_semantic_review_sha256": "fe7c6895b61b89ae2ceac9ce98197d2a3b8a544e66c820e1fb3f4ede5cb348c6",
+      "byte_identity_only_if_changed": true,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/MATERIAL_LAB.md",
+      "bytes": 16238,
+      "sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "last_recorded_semantic_review_sha256": "75051ba87efa1adbef79836af2f8ce86cf8521f6449388f359fdb22e0f814073",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/local-build-and-validation.md",
+      "bytes": 93031,
+      "sha256": "15621a2c422de5235c56f28960c334e44e4e06456381d5a919bebcd131831269",
+      "last_recorded_semantic_review_sha256": "59455b29c4b437113a0d3ce7c3dc603ecb264a0eac933c283e201249c3be8d48",
+      "byte_identity_only_if_changed": true,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "bytes": 29229,
+      "sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583",
+      "last_recorded_semantic_review_sha256": "8f6184092da1297d416f568dec5ab7a607a4583771d250042d8c38f81dfcb066",
+      "byte_identity_only_if_changed": true,
+      "source": "B commit 7c7a31833, byte-identical to the integrated root snapshot"
+    },
+    {
+      "path": "docs/reference/level-saves-and-replay.md",
+      "bytes": 20025,
+      "sha256": "3f40b00906d08488a46221df6a9a5f6ff3efd430f35203c0bd9a7a2f6d0c9884",
+      "last_recorded_semantic_review_sha256": "3f40b00906d08488a46221df6a9a5f6ff3efd430f35203c0bd9a7a2f6d0c9884",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "bytes": 24503,
+      "sha256": "fc47275b4e037182c4d438cb1cf0dcfaea4528d9a852d7055115cb5fb4d140ad",
+      "last_recorded_semantic_review_sha256": "54b6fcf0cef630ad2fb680d323da8bfbf0f96475cc9e6ab3c1e625a772d65408",
+      "byte_identity_only_if_changed": true,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/systems/workbench-liquid-equipment.md",
+      "bytes": 12405,
+      "sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
+      "last_recorded_semantic_review_sha256": "81a8eb24eeeee7118b2a951cb5bd95cf0ac078bef01bdab3229aefa45cb0f2a6",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/explore001-desktop-playtest.md",
+      "bytes": 4664,
+      "sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "last_recorded_semantic_review_sha256": "8e04346fde6babb6a450de8e1ecbc7f9d7ff1515546af07c2a5a49356a43936e",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/gameplay-recording.md",
+      "bytes": 17202,
+      "sha256": "624ea59925efc795e86c2834ff4627e32c975570aafd7c35bc2f42cb99a70180",
+      "last_recorded_semantic_review_sha256": "624ea59925efc795e86c2834ff4627e32c975570aafd7c35bc2f42cb99a70180",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/gen008-flatten-qualification.md",
+      "bytes": 14701,
+      "sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "last_recorded_semantic_review_sha256": "406d2ad872fd1e02c207046b96abd4d2fdbe8a2280f0d783d2acaac1934f1f6f",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/microscenario-reference-pack.md",
+      "bytes": 19279,
+      "sha256": "7fcf79dd6e9589cf63e90586b34a2b28505ba7e4165e72cbf63bf25f16d0185e",
+      "last_recorded_semantic_review_sha256": "7fcf79dd6e9589cf63e90586b34a2b28505ba7e4165e72cbf63bf25f16d0185e",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/microscenarios.md",
+      "bytes": 22302,
+      "sha256": "ada3ca97404341bdbc496843a97ce4fe9514431b0d631c453b8ab65dc9f19086",
+      "last_recorded_semantic_review_sha256": "ada3ca97404341bdbc496843a97ce4fe9514431b0d631c453b8ab65dc9f19086",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/procedural-qualification.md",
+      "bytes": 21341,
+      "sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "last_recorded_semantic_review_sha256": "15cfd957d8f8763c06aa635533757e991b154d373b5b4e5a821ba01acb6dd414",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/wb-art-paint-integrated-candidate.md",
+      "bytes": 11270,
+      "sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+      "last_recorded_semantic_review_sha256": "0359b35ca3eac976161e8a9b94cbf8d538fabb79dab8122d6a25bbb7fed0f252",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/tools/art-pipeline-unification.md",
+      "bytes": 12921,
+      "sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "last_recorded_semantic_review_sha256": "cdc0ef95db5c0753f992d110d404abe779d0450c9af00f711b340e19db8a2b74",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/tools/world-art-evaluation.md",
+      "bytes": 12488,
+      "sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "last_recorded_semantic_review_sha256": "8f9527023a1636b8cb3e411eb9ada4f5436bb3f2afa5f5f27721e4f1ed87d33f",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/lcb-manual-comparison-ux.md",
+      "bytes": 10544,
+      "sha256": "155555f1c6c8bb5049d1b204b43f961886ca89bc7a3e7c4d80b88458b2ad4ddc",
+      "last_recorded_semantic_review_sha256": "155555f1c6c8bb5049d1b204b43f961886ca89bc7a3e7c4d80b88458b2ad4ddc",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "bytes": 18077,
+      "sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631",
+      "last_recorded_semantic_review_sha256": "bf57cbc40dad4b152fc95abb663ec0bfa78774733377bc6806ba20e1e3df13c8",
+      "byte_identity_only_if_changed": true,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/water-feel-lab-experiment.md",
+      "bytes": 17535,
+      "sha256": "c392ce43a64f7f389c3f01b35ec53f8e726a4fd05f32b47d86de31b999b354f4",
+      "last_recorded_semantic_review_sha256": "c392ce43a64f7f389c3f01b35ec53f8e726a4fd05f32b47d86de31b999b354f4",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/physics-characterisation.md",
+      "bytes": 25422,
+      "sha256": "a3f45b9bab5f7e34fd79bd5c73833e4f54a25c33db073a849a69c007e7785bde",
+      "last_recorded_semantic_review_sha256": "a3f45b9bab5f7e34fd79bd5c73833e4f54a25c33db073a849a69c007e7785bde",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/gentek80-physical-owner-acceptance.md",
+      "bytes": 12737,
+      "sha256": "2c7347c6dc11dc688d0d564f471845bc9537f4572ad6336a818e0fbdeeff6dc3",
+      "last_recorded_semantic_review_sha256": "2c7347c6dc11dc688d0d564f471845bc9537f4572ad6336a818e0fbdeeff6dc3",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/gentek80-evaluation.md",
+      "bytes": 19844,
+      "sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9",
+      "last_recorded_semantic_review_sha256": "02e63ccf8e3980fed5ad5bd6186b1f04bf022d8a28c2c7236c41d6ac269d3ec9",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/ci-campaign-coordination.md",
+      "bytes": 8629,
+      "sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+      "last_recorded_semantic_review_sha256": "8d46855509cceb5a2805767b14918b1bb3a9db9c369d4090cd9b684bdbeb107f",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    },
+    {
+      "path": "docs/operations/publication-custody.md",
+      "bytes": 12131,
+      "sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+      "last_recorded_semantic_review_sha256": "6281223e03720365739edab2fea557c9b54cf9d27df7c1544997624219e96ef7",
+      "byte_identity_only_if_changed": false,
+      "source": "root snapshot"
+    }
+  ],
+  "selected_section_followup": [
+    {
+      "path": "docs/operations/workbench-art.md",
+      "bytes": 10554,
+      "sha256": "cebfbf0b255bd3316bd3ce7c9532e4e16e9cd51d0233ee8f83e783b22828fe41",
+      "depth": "Selected save/traffic/session-contract sections re-read after earlier complete-document review",
+      "source_locators": [
+        "godot/scripts/art_batch_panel.gd::_save_settings",
+        "godot/scripts/art_batch_panel.gd::_persist_history_receipt",
+        "godot/scripts/art_batch_panel.gd::history_edited",
+        "godot/scripts/art_provider.gd::poll_export/_store_event",
+        "godot/scripts/art_traffic_archive.gd::ClosedFileVerification/step"
+      ],
+      "result": "B source-reviewed settings/journal and export/append outcomes; A independently reviewed both manual commits. Preferences remain distinct from session conversation; retained journal adds no restart workflow."
+    },
+    {
+      "path": "docs/architecture/shared-workbench-authoring-data.md",
+      "bytes": 29229,
+      "sha256": "25fba8794526bd69312d6469751470b5f94f62e11bb270a3ca41f5a7ec229583",
+      "depth": "Selected save/traffic/session-contract sections re-read after earlier complete-document review",
+      "source_locators": [
+        "godot/scripts/workbench_file_transaction.gd",
+        "godot/scripts/gameplay_recorder.gd",
+        "godot/scripts/main.gd::tower_observation/water_lab_save_profile",
+        "godot/scripts/worldgen_workbench.gd::save_profile",
+        "godot/scripts/material_lab_panel.gd::_file_selected",
+        "godot/scripts/transport_profile_panel.gd::save_copy",
+        "godot/scripts/art_batch_panel.gd::_save_settings"
+      ],
+      "result": "Names qualified per-file callers without implying multi-file recording atomicity or fsync/power-loss guarantees."
+    },
+    {
+      "path": "docs/operations/experiment-tower.md",
+      "bytes": 18077,
+      "sha256": "3da6e09d9d3b73dbd99aae1f06f35c7bbd8f6ea1c2ce87e26a863344a381d631",
+      "depth": "Selected save/traffic/session-contract sections re-read after earlier complete-document review",
+      "source_locators": [
+        "godot/scripts/main.gd::tower_observation/water_lab_save_profile",
+        "godot/scripts/tower_panel.gd"
+      ],
+      "result": "Separate visible profile/export results, old file/clipboard preservation on refusal, fixed-file successful replacement and unchanged revealed engineering metadata. B Linux 6 / X11 clipboard 2 and A independent Linux 6 bound to f7788985."
+    }
+  ],
+  "additional_explicit_only_research_review": {
+    "path": "docs/research/gip014-goblin-gameplay-qa.md",
+    "depth": "Accepted-versus-candidate wrapper/status and dated-evidence diff; selected source/entry-point checks, not a new full439-line review",
+    "source": "e87578b534ef3860547f79161b5cf9da56fec4d2",
+    "sha256": "2972e8ed91f302aa9aec6515bd639ab09f3f6c2f9a9fbcc18bca8193a2366828",
+    "finding": "Accepted optional #772 verified at c8421a81; ordinary launcher unchanged; #781 remains separate; explicit-only packet retains original immutable record/artifact scope. B approved C correction."
+  },
+  "reviewer": "Specialist B",
+  "independent_reviewer_of_B_manuals": "Specialist A",
+  "graphical_summary": "owner-qualification-checklist.md",
+  "no_model_or_browser_render_claim": true,
+  "documentation_overlay_integrated": true
+}
