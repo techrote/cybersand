@@ -1,2 +1,2 @@
 # Versioned prompt identity must survive Windows autocrlf checkouts and TextEdit.
-prompts/**/*.txt text eol=lf
+*.txt text eol=lf
