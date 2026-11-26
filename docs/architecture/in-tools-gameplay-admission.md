@@ -4,7 +4,7 @@ title: IN-TOOLS gameplay command admission — current-main successor
 status: Planned
 scope: Issue 361 current-main admission for opt-in inertial liquid leaks, drains, nozzles and gameplay usables; design and qualification authority only, not gameplay implementation
 canonical-for: [in-tools-gameplay-admission, in-tools-command-ownership]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-26
 related-documents: [../audits/2026-11-07-in-tools-361-source-authority-renewal.md, ../operations/in-tools-fixtures-and-playtest.md, ../systems/actor-usables.md]
 ---
 
@@ -16,23 +16,27 @@ related-documents: [../audits/2026-11-07-in-tools-361-source-authority-renewal.m
 
 Historical predecessor PR #379 is frozen at `e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1` / tree `3b5acd41fd7fb49ac8b06c94719fa1a700d8fd57`. Its actual-Windows `0xC0000005` shutdown result remains historical evidence tied to that exact source.
 
-The ULTIMA candidate adds a new **source-admission registration**, based on accepted
-main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`:
-[`in-tools-current-main-admission.2026-11-25.json`](../../godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-25.json).
-The 7 November registration remains byte-preserved and deliberately refuses
-current source. Nine of its thirteen protected paths have since changed through
-accepted actor, Workbench, Wave and native work. The new registration retains
-all thirteen source guards, separately pins the unchanged causal fixture, and
-checks the original registration's actual Git and working bytes. It does not
-admit arbitrary future main changes or mark the six proposed fixtures executed.
+The ULTIMA continuation adds a new **source-admission registration**, based on
+accepted main `67c1413a2a84077b47fa542cf91d2bd6ba5520ee`:
+[`in-tools-current-main-admission.2026-11-26.json`](../../godot/tests/fixtures/lcb/in_tools/in-tools-current-main-admission.2026-11-26.json).
+The 7 and 25 November registrations remain byte-preserved and deliberately refuse
+this later source. Since the 25 November registration, only
+`physical_actor_session.gd` changed among the thirteen protected paths: accepted
+AMBIENT hooks extend the opt-in policy path. The new registration keeps the same
+thirteen guards and unchanged causal fixture, checks both historical registrations'
+Git and working bytes, and refuses unregistered future changes. All six proposed
+gameplay fixtures remain Planned / NOT_RUN.
 
-The [source transition and scoped execution record](../audits/2026-11-25-docs-renaissance-ultima/lead/in-tools-source-drift.json)
-identifies each changed blob and accepted ancestry. The current equivalent of the
-original causal fixture is byte-identical to the 7 November fixture; fresh Linux
-headless execution passed all 86 assertions with natural exit zero. Actual Windows
-qualification is a separate gate and must be read from the ULTIMA validation
-receipt; a source-registration pass does not establish Windows behavior or the
-cause of the old crash.
+The [earlier source transition](../audits/2026-11-25-docs-renaissance-ultima/lead/in-tools-source-drift.json)
+retains its original base and results. The
+[fresh Linux compatibility execution](../audits/2026-11-25-docs-renaissance-ultima/closure/causal-main-compatibility/report.json)
+records application source `26c0c09f`, its tree, engine, disclosed dirty qualification
+apparatus and original logs. The unchanged causal fixture passed 86 assertions
+with natural exit zero; accepted AMBIENT default-off integration and bridge-clock
+checks passed separately. These are focused Linux results, not final integrated
+or Windows qualification. Read the resulting-source Windows receipt separately;
+source registration alone establishes neither Windows behavior nor the cause of
+the old crash.
 
 The [7 November source renewal](../audits/2026-11-07-in-tools-361-source-authority-renewal.md)
 and the original #404/#508 observations retain their exact earlier bases, blob

@@ -39,6 +39,23 @@ class AdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(subject.AdmissionError, "working source changed"):
             subject.check(record=legacy)
 
+    def test_previous_ultima_registration_still_refuses_current_source(self) -> None:
+        previous = subject.parse_json(subject.PREVIOUS_RECORD.read_text(encoding="utf-8"))
+        subject.validate_record(previous)
+        with self.assertRaisesRegex(subject.AdmissionError, "working source changed"):
+            subject.check(record=previous)
+
+    def test_previous_registration_mutation_refuses_and_restores(self) -> None:
+        target = subject.PREVIOUS_RECORD
+        original = target.read_bytes()
+        try:
+            target.write_bytes(original + b"\n")
+            with self.assertRaisesRegex(subject.AdmissionError, "historical registration source bytes changed"):
+                subject.check()
+        finally:
+            target.write_bytes(original)
+        self.assertEqual(subject.check()["status"], "admitted")
+
     def test_causal_fixture_cannot_be_substituted_or_repinned(self) -> None:
         record = copy.deepcopy(self.record)
         record["causal_fixture"]["path"] = "README.md"
