@@ -18,6 +18,20 @@ var _pending_draws: Array[Dictionary] = []
 var _retained_step_count := 0
 
 
+func _slider_visibility() -> Dictionary:
+	var slider_rect := _tonal_slider.get_global_rect()
+	var viewport_rect: Rect2 = _live_ui._page.get_global_rect()
+	return {"slider_rect":[slider_rect.position.x,slider_rect.position.y,slider_rect.size.x,slider_rect.size.y],
+		"viewport_rect":[viewport_rect.position.x,viewport_rect.position.y,viewport_rect.size.x,viewport_rect.size.y],
+		"window_visible":bool(strata._window.visible),"slider_visible":_tonal_slider.is_visible_in_tree(),
+		"fully_enclosed":viewport_rect.encloses(slider_rect),"scroll_vertical":int(_live_ui._page.scroll_vertical)}
+
+
+func _slider_is_visible() -> bool:
+	var state := _slider_visibility()
+	return bool(state.window_visible) and bool(state.slider_visible) and bool(state.fully_enclosed)
+
+
 func _resource_state() -> Dictionary:
 	return {"tracked_memory_bytes":int(Performance.get_monitor(Performance.MEMORY_STATIC)),
 		"resource_count":int(Performance.get_monitor(Performance.OBJECT_RESOURCE_COUNT)),
@@ -38,7 +52,8 @@ func _observe_tonal_callback(value: float) -> void:
 	var response := {"requested":value,"authored":authored,"callback_entry_usec":began,
 		"authored_observed_usec":ended,"callback_to_authored_usec":ended-began,
 		"original_callback_invocations":1,"draw_completed_usec":0,"callback_to_next_completed_draw_usec":0,
-		"native_edit_target":str(strata.active_layer()),"physical_paused":host.paused}
+		"native_edit_target":str(strata.active_layer()),"physical_paused":host.paused,
+		"callback_visibility":_slider_visibility()}
 	_active_window.slider_responses.append(response)
 	if not diagnostic_headless: _pending_draws.append(response)
 
@@ -49,6 +64,7 @@ func _observe_completed_draw() -> void:
 	for response: Dictionary in _pending_draws:
 		response.draw_completed_usec = completed
 		response.callback_to_next_completed_draw_usec = completed-int(response.callback_entry_usec)
+		response.draw_visibility = _slider_visibility()
 	_pending_draws.clear()
 
 
@@ -65,6 +81,21 @@ func _mount_live_controls() -> bool:
 	if not check(found,"sustained ordinary Optics tab selected"): return false
 	await settle()
 	_tonal_slider = _live_ui._global_controls.tonal.slider
+	# Visibility in the scene tree alone does not mean the row is inside the
+	# scroll viewport. Center the real control, leaving room for profile text
+	# reflow. Both ordinary widget layout and the screenshot settle before time.
+	_live_ui._page.ensure_control_visible(_tonal_slider)
+	await settle()
+	_live_ui._page.scroll_vertical += int(_tonal_slider.get_global_rect().get_center().y - _live_ui._page.get_global_rect().get_center().y)
+	await settle()
+	record.live_ui_before = _slider_visibility()
+	if not check(_slider_is_visible(),"actual tonal control enclosed by its visible scroll viewport"): return false
+	if not diagnostic_headless:
+		var frame: Image = strata._window.get_texture().get_image()
+		if not check(frame != null and not frame.is_empty() and frame.save_png(output.path_join("sustained-optics-lab.png")) == OK,"actual visible tonal-slider window captured before timing"): return false
+		record.lab_capture = {"filename":"sustained-optics-lab.png","sha256":FileAccess.get_sha256(output.path_join("sustained-optics-lab.png")),
+			"actual_image_size":[frame.get_width(),frame.get_height()],"captured_usec":Time.get_ticks_usec(),
+			"outside_timed_windows":true,"visibility":record.live_ui_before}
 	var connections := _tonal_slider.value_changed.get_connections()
 	if not check(connections.size() == 1 and int(connections[0].flags) == 0,
 		"instrument exactly the one original synchronous tonal-slider callback"): return false
@@ -132,7 +163,8 @@ func _run_uninterrupted() -> void:
 		var selected: String = SUSTAINED_PROFILES[index%SUSTAINED_PROFILES.size()]
 		_active_window = {"index":index,"selected_profile":selected,"quality":"balanced","start_usec":boundary,
 			"before":before,"actor_before":initial_actor,"resources_before":initial_resources,
-			"slider_responses":[],"camera_events":[],"callbacks":[],"paused_callbacks":0}
+			"slider_responses":[],"camera_events":[],"callbacks":[],"paused_callbacks":0,
+			"slider_visibility_checks":0,"slider_visibility_failures":0}
 		var profile_began := Time.get_ticks_usec()
 		check(strata.select_optics_profile(selected),"sustained ordinary live profile "+selected)
 		_active_window.profile_callback_usec = Time.get_ticks_usec()-profile_began
@@ -166,6 +198,8 @@ func _run_uninterrupted() -> void:
 				"process_ms":float(Performance.get_monitor(Performance.TIME_PROCESS))*1000.0})
 			previous_callback = now
 			if host.paused: _active_window.paused_callbacks += 1
+			_active_window.slider_visibility_checks += 1
+			if not _slider_is_visible(): _active_window.slider_visibility_failures += 1
 		var ended := Time.get_ticks_usec()
 		var after := play_identity()
 		var completed: Array = host.optics_completed.duplicate(true)
@@ -179,6 +213,7 @@ func _run_uninterrupted() -> void:
 		check(not host.optics_observer_overflow and not publications.is_empty(),"bounded sustained native-publication observer")
 		check(_pending_draws.is_empty(),"all live-slider completed draws observed within window")
 		check(_active_window.paused_callbacks == 0 and not host.paused,"native play was uninterrupted")
+		check(_active_window.slider_visibility_failures == 0,"live tonal control stays in viewport through profile changes")
 		stable_identity(owner_before,after,"sustained native owner "+str(index))
 		check(decorative_before == _decorative_identity(),"sustained static decorative owners and revisions")
 		check(strata.layer_owner.stats().native_snapshot_calls == capture_before and strata.presenter.diagnostics().full_rg8_uploads == upload_before,"sustained optics recapture/upload isolation")
@@ -216,7 +251,7 @@ func run() -> void:
 	phase = "sustained-session"
 	output = OS.get_environment("STRATA_EVIDENCE")
 	diagnostic_headless = DisplayServer.get_name() == "headless" and OS.get_environment("STRATA3_DIAGNOSTIC_HEADLESS") == "1"
-	record = {"schema":"strata3-sustained-observation-v1","scene":scene_id,"phase":phase,
+	record = {"schema":"strata3-sustained-observation-v2","scene":scene_id,"phase":phase,
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"observer_sha256":OS.get_environment("STRATA3_DRIVER_SHA256"),
 		"observer_source_revision":OS.get_environment("STRATA3_OBSERVER_SOURCE_REVISION"),"completed":false,
 		"process_id":OS.get_process_id(),"display_server":DisplayServer.get_name(),

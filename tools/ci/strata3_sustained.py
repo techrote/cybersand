@@ -115,6 +115,20 @@ def resources(value):
             "Optical/native resource isolation failed")
 
 
+def visibility(value):
+    require(isinstance(value, dict) and value.get("window_visible") is True and value.get("slider_visible") is True
+            and value.get("fully_enclosed") is True and integer(value.get("scroll_vertical")),
+            "Tonal control is not visibly enclosed by its scroll viewport")
+    for key in ("slider_rect", "viewport_rect"):
+        rect = value.get(key)
+        require(isinstance(rect, list) and len(rect) == 4 and all(number(item, -100000) for item in rect)
+                and rect[2] > 0 and rect[3] > 0, "Invalid actual control/viewport rectangle")
+    x, y, width, height = value["slider_rect"]
+    left, top, view_width, view_height = value["viewport_rect"]
+    require(x >= left and y >= top and x+width <= left+view_width and y+height <= top+view_height,
+            "Tonal control rectangle lies outside the recorded viewport")
+
+
 def distribution(values):
     require(values and all(integer(value) for value in values), "Missing original timing population")
     ordered = sorted(values)
@@ -124,7 +138,7 @@ def distribution(values):
 
 
 def validate_observation(result, *, observer_sha256, observer_source_revision):
-    require(result.get("schema") == "strata3-sustained-observation-v1"
+    require(result.get("schema") == "strata3-sustained-observation-v2"
             and result.get("phase") == "sustained-session" and result.get("scene") == "optics-readability-challenge"
             and result.get("completed") is True and result.get("failures") == [] and integer(result.get("checks"), 1),
             "Incomplete sustained session")
@@ -154,6 +168,7 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
             for value in (*before_hashes.values(), *after_hashes.values()))
             and all(before_hashes[key] == after_hashes[key] for key in PLANES - {"play"}),
             "Actual static decorative material preservation failed")
+    visibility(result.get("live_ui_before"))
     session = result.get("session", {})
     require(integer(session.get("start_usec"), 1) and integer(session.get("end_usec"), session["start_usec"] + 300000000)
             and session.get("elapsed_usec") == session["end_usec"] - session["start_usec"]
@@ -164,9 +179,18 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
             and set(session.get("decorative_before", {})) == PLANES - {"play"}
             and session.get("native_capture_delta") == session.get("decorative_upload_delta") == 0
             and session.get("native_edit_target") == "play", "Sustained decorative ownership/isolation failed")
-    for item in session["decorative_before"].values():
-        require(all(isinstance(item.get(key), str) and re.fullmatch(r"-?[1-9][0-9]{0,18}", item[key])
-                    for key in ("owner_id", "native_instance_id"))
+    for plane, item in session["decorative_before"].items():
+        # WorkbenchLayerOwner uses its opaque session:generation:plane fence.
+        # Only native_instance_id is a numeric Godot ObjectID.
+        require(isinstance(item.get("owner_id"), str) and 1 <= len(item["owner_id"]) <= 128
+                and item["owner_id"].endswith(":" + plane)
+                and len(item["owner_id"].rsplit(":", 2)) == 3
+                and item["owner_id"].rsplit(":", 2)[0]
+                and item["owner_id"].rsplit(":", 2)[1].isdigit()
+                and int(item["owner_id"].rsplit(":", 2)[1]) >= 1
+                and not any(ord(character) < 32 for character in item["owner_id"])
+                and isinstance(item.get("native_instance_id"), str)
+                and re.fullmatch(r"-?[1-9][0-9]{0,18}", item["native_instance_id"])
                 and integer(item.get("native_tick")) and integer(item.get("native_revision")), "Missing actual decorative owner witness")
     rows = result.get("windows", [])
     require(isinstance(rows, list) and len(rows) == 12, "Missing sustained window")
@@ -214,6 +238,8 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
             last_tick, last_time = publication["native_tick"], publication["observed_usec"]
         callbacks = row.get("callbacks", [])
         require(isinstance(callbacks, list) and 2 <= len(callbacks) <= 8192, "Incomplete bounded display observations")
+        require(row.get("slider_visibility_checks") == len(callbacks) and row.get("slider_visibility_failures") == 0,
+                "Live tonal control visibility was not maintained through profile refreshes")
         previous_callback = row["start_usec"]
         for callback in callbacks:
             require(integer(callback.get("observed_usec"), previous_callback + 1)
@@ -237,6 +263,7 @@ def validate_observation(result, *, observer_sha256, observer_source_revision):
                     and response.get("native_edit_target") == "play" and response.get("physical_paused") is False,
                     "Slider timing is not bound to the original callback and actual completed draw")
             slider_authored.append(authored-start); slider_draw.append(draw-start)
+            visibility(response.get("callback_visibility")); visibility(response.get("draw_visibility"))
         cameras = row.get("camera_events", [])
         require(isinstance(cameras, list) and len(cameras) == 5, "Missing actual ordinary pan/zoom events")
         for offset, event in enumerate(cameras):
@@ -326,7 +353,7 @@ def observer_identity():
 def verify(folder, application_root):
     q, predecessor = application_modules(application_root)
     record = json.loads((folder / "annex.json").read_text(encoding="utf-8"))
-    require(record.get("schema") == "strata3-sustained-annex-v1" and record.get("completed") is True
+    require(record.get("schema") == "strata3-sustained-annex-v2" and record.get("completed") is True
             and record.get("failures") == [] and record.get("application_project_unchanged") is True,
             "Incomplete sustained annex")
     source = q.identity()
@@ -400,6 +427,14 @@ def verify(folder, application_root):
         require(capture.get("actual_image_size") == [width, height], "Actual framebuffer extent differs from capture")
         require(capture.get("captured_usec", -1) < result["session"]["start_usec"] if index == 0 else
                 capture.get("captured_usec", -1) > result["session"]["end_usec"], "Image readback entered the timed session")
+    lab = result.get("lab_capture", {})
+    lab_path = path_in(folder, "session/sustained-optics-lab.png")
+    require(lab.get("filename") == "sustained-optics-lab.png" and lab.get("sha256") == sha(lab_path)
+            and lab.get("outside_timed_windows") is True and integer(lab.get("captured_usec"), 1)
+            and lab["captured_usec"] < result["session"]["start_usec"] and lab.get("visibility") == result["live_ui_before"],
+            "Actual visible tonal-control screenshot is missing or entered timing")
+    width, height, _ = predecessor.png_rgba(lab_path.read_bytes())
+    require(lab.get("actual_image_size") == [width, height], "Actual Lab framebuffer extent changed")
     require(record.get("summary") == summary, "Sustained summary differs from actual raw observations")
     return summary
 
@@ -423,7 +458,7 @@ def run(args):
     for name in FILES:
         shutil.copyfile(OBSERVER_ROOT / name, retained / Path(name).name)
     script = retained / "strata3_sustained.gd"
-    record = {"schema": "strata3-sustained-annex-v1", "completed": False, "failures": [],
+    record = {"schema": "strata3-sustained-annex-v2", "completed": False, "failures": [],
               "application_source": source, "application_loaded_source_sha256": loaded, "application_assets_sha256": assets,
               "application_execution_project": str(project), "observer_source": observer, "observer_execution_script": str(script),
               "runtime": runtime, "godot": {"sha256": sha(godot), "version": version, "execution_path": str(godot)},

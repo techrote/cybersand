@@ -13,7 +13,7 @@ import strata3_sustained as sustained
 def observation():
     owner = {"world_generation": 3, "physical_epoch": 1, "worker_id": "-9223371953052580148",
              "actor_session_id": "313364849859", "actor_body_ids": ["313482290378"], "native_tick": 0, "rapier_tick": 0}
-    decorations = {key: {"owner_id": str(index+2), "native_instance_id": str(index+20), "native_tick": 0, "native_revision": 1}
+    decorations = {key: {"owner_id": "6cb46451e301c6a66750feec8a6cb50a:1:" + key, "native_instance_id": str(index+20), "native_tick": 0, "native_revision": 1}
                    for index, key in enumerate(("scripted", "effects", "background"))}
     hashes = {key: hashlib.sha256(key.encode()).hexdigest() for key in sustained.PLANES}
     optics = {"play_processed": False, "material_count": 3,
@@ -21,6 +21,8 @@ def observation():
     resources = {"tracked_memory_bytes": 1000000, "resource_count": 100, "node_count": 100, "object_count": 500,
                  "observer_retained_completed_steps": 0, "optics": optics}
     camera = {"origin": [290, 530], "view_size": [240, 135], "world_rect": [400, 130, 750, 420], "window_size": [1600, 1000]}
+    visible = {"slider_rect": [40, 250, 500, 20], "viewport_rect": [0, 0, 800, 600],
+               "window_visible": True, "slider_visible": True, "fully_enclosed": True, "scroll_vertical": 500}
 
     def pose(tick):
         return {"position": [400+tick, 600], "rotation": 0, "linear_velocity": [1, 0], "rapier_tick": tick}
@@ -39,7 +41,8 @@ def observation():
             sliders.append({"requested": target, "authored": target, "callback_entry_usec": start+micros,
                             "authored_observed_usec": start+micros+50, "draw_completed_usec": start+micros+1000,
                             "callback_to_authored_usec": 50, "callback_to_next_completed_draw_usec": 1000,
-                            "original_callback_invocations": 1, "native_edit_target": "play", "physical_paused": False})
+                            "original_callback_invocations": 1, "native_edit_target": "play", "physical_paused": False,
+                            "callback_visibility": copy.deepcopy(visible), "draw_visibility": copy.deepcopy(visible)})
         row = {"index": index, "selected_profile": sustained.PROFILES[index % 4], "quality": "balanced",
                "start_usec": start, "end_usec": start+25000000, "elapsed_usec": 25000000, "before": before, "after": after,
                "actor_before": pose(index*2), "actor_after": pose(index*2+2), "native_edit_target": "play",
@@ -57,13 +60,14 @@ def observation():
                    {"observed_usec": start+offset*5000000, "ordinary_set_view": True, "picking_error": 0,
                     "camera": dict(camera, view_size=[240, 135] if (index+offset) % 2 == 0 else [480, 270]),
                     "actor_state": pose(index*2), "submitted_action": {"move": [.1, -.5], "primary": True, "effort": 1}} for offset in range(5)],
-               "paused_callbacks": 0, "observer_overflow": False, "native_capture_delta": 0, "decorative_upload_delta": 0}
+               "paused_callbacks": 0, "observer_overflow": False, "native_capture_delta": 0, "decorative_upload_delta": 0,
+               "slider_visibility_checks": 2, "slider_visibility_failures": 0}
         for when, value in (("before", config), ("after", final)):
             canonical = json.dumps(value, sort_keys=True, separators=(",", ":"))
             row["configuration_"+when+"_json"] = canonical
             row["configuration_"+when+"_sha256"] = hashlib.sha256(canonical.encode()).hexdigest()
         rows.append(row)
-    return {"schema": "strata3-sustained-observation-v1", "scene": "optics-readability-challenge", "phase": "sustained-session",
+    return {"schema": "strata3-sustained-observation-v2", "scene": "optics-readability-challenge", "phase": "sustained-session",
             "source_revision": sustained.APPLICATION, "observer_sha256": "a"*64, "observer_source_revision": "b"*40,
             "completed": True, "failures": [], "checks": 100, "display_server": "X11", "rendering_method": "gl_compatibility",
             "rendering_adapter": "synthetic-reader-control", "ordinary_workbench": True, "diagnostic_headless": False,
@@ -82,7 +86,7 @@ def observation():
                         "before": owner, "after": rows[-1]["after"], "completed_step_count": 24,
                         "decorative_before": decorations, "decorative_after": copy.deepcopy(decorations),
                         "native_capture_delta": 0, "decorative_upload_delta": 0, "native_edit_target": "play"},
-            "owner_after_pause": rows[-1]["after"], "windows": rows}
+            "owner_after_pause": rows[-1]["after"], "windows": rows, "live_ui_before": visible}
 
 
 def validate(record):
@@ -137,6 +141,14 @@ class SustainedReader(unittest.TestCase):
             row = observation(); row["windows"][0]["slider_responses"][0][key] = value
             with self.assertRaises(RuntimeError): validate(row)
 
+    def test_scene_tree_visibility_cannot_hide_a_clipped_slider(self):
+        for mutate in (lambda row: row["live_ui_before"].update(slider_rect=[40, 850, 500, 20]),
+                       lambda row: row["windows"][0]["slider_responses"][0]["draw_visibility"].update(window_visible=False),
+                       lambda row: row["windows"][0].update(slider_visibility_failures=1),
+                       lambda row: row["windows"][0].update(slider_visibility_checks=1)):
+            row = observation(); mutate(row)
+            with self.assertRaises(RuntimeError): validate(row)
+
     def test_missing_slider_and_camera_events_are_rejected(self):
         for field in ("slider_responses", "camera_events"):
             row = observation(); row["windows"][0][field].pop()
@@ -160,6 +172,15 @@ class SustainedReader(unittest.TestCase):
                        lambda row: row["windows"][9].update(native_capture_delta=1),
                        lambda row: row["session"]["decorative_after"]["effects"].update(native_revision=2)):
             row = observation(); mutate(row)
+            with self.assertRaises(RuntimeError): validate(row)
+
+    def test_opaque_plane_owner_fence_is_distinct_from_numeric_native_instance(self):
+        validate(observation())
+        for field, value in (("owner_id", ""), ("owner_id", "12345"), ("owner_id", "doc:1:effects"),
+                             ("native_instance_id", "doc:1:scripted")):
+            row = observation()
+            row["session"]["decorative_before"]["scripted"][field] = value
+            row["session"]["decorative_after"]["scripted"][field] = value
             with self.assertRaises(RuntimeError): validate(row)
 
     def test_recorded_configuration_hash_is_independent_of_float_serialization(self):
