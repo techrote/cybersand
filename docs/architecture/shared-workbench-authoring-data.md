@@ -85,8 +85,8 @@ Setup-v2, generated-start-v1 and architectural project writers share
 The same per-file mechanism covers desktop/CLI MicroScenario capture, the
 disk recorder's `recording.json` manifest, generation accepted-recipe exports,
 Materials Lab experiment envelopes, Transport user copies, and Tower Water
-policy and observation exports. Each caller keeps its own format, name, size
-policy and reader. Ordinary, generated and architectural saves each commit one
+policy and observation exports, together with Art preferences. Each caller keeps
+its own format, name, size policy and reader. Ordinary, generated and architectural saves each commit one
 complete file; generated recipes are embedded rather than committed through a
 separate companion-file transaction. A [recording session](../operations/gameplay-recording.md)
 still has multiple frame/metadata files: replacing its manifest does not make
