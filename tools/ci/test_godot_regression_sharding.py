@@ -1288,15 +1288,22 @@ class ArchitectureContextTests(unittest.TestCase):
 
     def test_contexts_share_only_the_registered_component_and_fabricate_no_inputs(self):
         with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory)
+            # Hosted Windows may spell the tempfile root using RUNNER~1 while
+            # resolve() returns its long name. Exercise an unresolved lexical
+            # alias on every host as well, and compare canonical roots.
+            alias = Path(directory) / "unresolved-parent"
+            alias.mkdir()
+            output = alias / ".."
             contexts = context.prepare_contexts(registered_cases(), output)
             for _component, names, _paths in context.COMPONENTS:
-                self.assertTrue(all(contexts[name] == contexts[names[0]] for name in names))
+                self.assertTrue(all(contexts[name]["APPDATA"] == contexts[names[0]]["APPDATA"] for name in names))
+                if _component != "batch-provider-workbench":
+                    self.assertTrue(all(contexts[name] == contexts[names[0]] for name in names))
             profiles = [contexts[names[0]]["APPDATA"] for _component, names, _paths in context.COMPONENTS]
             self.assertEqual(len(profiles), len(set(profiles)))
             for overrides in contexts.values():
                 for value in overrides.values():
-                    self.assertTrue(Path(value).is_relative_to(output))
+                    self.assertTrue(Path(value).is_relative_to(output.resolve()))
                 for name in ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME"):
                     self.assertTrue(Path(overrides[name]).is_dir())
             self.assertFalse(any(path.is_file() for path in output.rglob("*")))
@@ -1306,6 +1313,24 @@ class ArchitectureContextTests(unittest.TestCase):
             # inherit an old successful manifest/profile on a later run.
             with self.assertRaises(FileExistsError):
                 context.prepare_contexts(registered_cases(), output)
+
+    def test_batch_provider_precedes_workbench_in_one_profile_with_distinct_retained_outputs(self):
+        cases = registered_cases()
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            contexts = context.prepare_contexts(cases, output)
+            provider = contexts["test_batch_lab_provider"]
+            workbench = contexts["test_batch_lab_workbench"]
+            ui = contexts["test_batch_lab_ui"]
+            for variable in ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME"):
+                self.assertEqual(provider[variable], workbench[variable])
+                self.assertNotEqual(provider[variable], ui[variable])
+            self.assertNotEqual(provider["BATCH_LAB_EVIDENCE_DIR"], workbench["BATCH_LAB_EVIDENCE_DIR"])
+            self.assertTrue(all(Path(ctx["BATCH_LAB_EVIDENCE_DIR"]).is_relative_to(output.resolve())
+                                for ctx in (provider, workbench, ui)))
+            self.assertEqual(context.failed_dependencies("test_batch_lab_workbench", []), ["test_batch_lab_provider"])
+            self.assertEqual(context.failed_dependencies("test_batch_lab_workbench",
+                [{"name": "test_batch_lab_provider", "role": "case", "status": "passed"}]), [])
 
     def test_complete_environment_preserves_source_and_path_and_other_cases_keep_defaults(self):
         cases = registered_cases()

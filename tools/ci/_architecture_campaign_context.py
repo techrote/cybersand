@@ -1,4 +1,4 @@
-"""Private intake registration for the existing Architecture qualification scripts.
+"""Private intake registration for existing Architecture and Batch qualification.
 
 These are the producer/reopen/render groups already invoked by batch_lab/qualify.py.
 This does not add cases, reducers, fallback inputs or a general dependency system.
@@ -47,7 +47,18 @@ COMPONENTS = (
     ("detail", ("test_native_detail_jobs_native",), {
         "NATIVE_DETAIL_EVIDENCE_DIR": "architecture/collaborative/detail",
     }),
+    ("batch-provider-workbench", ("test_batch_lab_provider", "test_batch_lab_workbench"), {}),
+    ("batch-ui", ("test_batch_lab_ui",), {
+        "BATCH_LAB_EVIDENCE_DIR": "batch/ui",
+    }),
 )
+
+# The dedicated Batch driver shares a profile across provider -> mounted editor,
+# while retaining the original processes' separate evidence directories.
+_BATCH_PROCESS_EVIDENCE = {
+    "test_batch_lab_provider": "batch/provider-protocol",
+    "test_batch_lab_workbench": "batch/workbench",
+}
 
 DEPENDENCIES = {
     "test_architecture_stage_reopen": ("test_architecture_stage_native",),
@@ -59,6 +70,7 @@ DEPENDENCIES = {
     "test_architecture_gameplay_reopen": ("test_architecture_gameplay",),
     "test_architecture_hierarchy_reopen": ("test_architecture_hierarchy_native",),
     "test_architecture_hierarchy_render": ("test_architecture_hierarchy_native",),
+    "test_batch_lab_workbench": ("test_batch_lab_provider",),
 }
 
 GRAPHICAL_CASES = frozenset({
@@ -66,6 +78,7 @@ GRAPHICAL_CASES = frozenset({
     "test_architecture_flagships_render", "test_architecture_gameplay",
     "test_architecture_gameplay_reopen", "test_architecture_collaborative_ui",
     "test_architecture_hierarchy_render",
+    "test_batch_lab_ui",
 })
 
 
@@ -116,7 +129,14 @@ def prepare_contexts(cases, output: Path) -> dict[str, dict[str, str]]:
         for name, value in overrides.items():
             path = Path(value)
             (path.parent if name == "ARCHITECTURE_GAMEPLAY_MANIFEST" else path).mkdir(parents=True, exist_ok=True)
-        contexts.update({name: dict(overrides) for name in names if name in selected})
+        for name in names:
+            if name not in selected:
+                continue
+            contexts[name] = dict(overrides)
+            if name in _BATCH_PROCESS_EVIDENCE:
+                directory = root / _BATCH_PROCESS_EVIDENCE[name]
+                directory.mkdir(parents=True, exist_ok=True)
+                contexts[name]["BATCH_LAB_EVIDENCE_DIR"] = str(directory)
     return contexts
 
 

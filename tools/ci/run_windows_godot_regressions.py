@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute the current Windows suite, including registered Architecture graphics."""
+"""Execute the current Windows suite, including registered Architecture/Batch graphics."""
 
 from contextlib import contextmanager
 import argparse
@@ -217,7 +217,7 @@ def plan_cases(report: dict, cases: list[runner.Case], *, shard_count: int, shar
     if not assigned:
         raise RuntimeError("Windows shard must have at least one applicable case")
     report.update({
-        "scope": "Actual Windows headless tests, profiles, scene startup and registered Architecture graphical cases; Linux owns other rendered pixel cases",
+        "scope": "Actual Windows headless tests, profiles, scene startup and registered Architecture/Batch graphical cases; Linux owns other rendered pixel cases",
         "all_discovered_case_count": len(cases), "applicable_case_count": len(selected),
         "out_of_scope_graphical_cases": [case.name for case in excluded],
         "applicable_cases": [case.name for case in selected],

@@ -373,7 +373,7 @@ def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[s
             command += ["--display-driver", "x11"]
         elif platform == "win32" and case.name in architecture_context.GRAPHICAL_CASES:
             # Existing qualification callers carry their own exact driver in
-            # Case.flags. Only these newly admitted generic Architecture cases
+            # Case.flags. Only these registered Architecture/Batch cases
             # need the shared builder to supply ANGLE.
             command += ["--rendering-driver", "opengl3_angle"]
     else:
