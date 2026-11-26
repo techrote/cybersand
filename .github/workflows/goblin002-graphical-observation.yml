@@ -1,0 +1,105 @@
+name: Goblin002 exact-source Windows graphical observation
+
+on:
+  push:
+    branches: [codex/observe-goblin781-graphics-20261126]
+    paths: [.github/workflows/goblin002-graphical-observation.yml]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: goblin002-graphical-observation-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_LFS_SKIP_SMUDGE: '1'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  PYTHONUTF8: '1'
+  GOBLIN_OBSERVED_SOURCE: 189616cb13fc30d44bc0fa3e3ca1a180067daf51
+
+jobs:
+  windows:
+    name: Original cold-profile Goblin002 graphical case on hosted ANGLE
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/observe-goblin781-graphics-20261126'
+    runs-on: windows-2022
+    # setup4200 + metadata900 + original import240 + original case300 +
+    # owned cleanup120 + evidence retention600 =6360seconds, within120minutes.
+    timeout-minutes: 120
+    steps:
+      - name: Check out exact immutable product without observer changes
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 189616cb13fc30d44bc0fa3e3ca1a180067daf51
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Admit source and bounded argument contract
+        shell: pwsh
+        run: |
+          $evidence = Join-Path $env:RUNNER_TEMP 'goblin002-graphical-observation'
+          New-Item -ItemType Directory $evidence | Out-Null
+          'GOBLIN_OBSERVATION_EVIDENCE=' + $evidence | Out-File -Append -FilePath $env:GITHUB_ENV
+          @'
+          import json, os, pathlib, subprocess
+          expected = os.environ['GOBLIN_OBSERVED_SOURCE']
+          actual = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          if actual != expected or subprocess.check_output(['git', 'status', '--porcelain', '--untracked-files=all'], text=True).strip():
+              raise RuntimeError('Observation requires its clean exact product source')
+          budget = {'setup':4200, 'metadata':900, 'import':240, 'graphical_case':300, 'cleanup':120, 'retention':600}
+          if sum(budget.values()) != 6360 or sum(budget.values()) > 120*60:
+              raise RuntimeError('Complete observation budget does not fit its parent')
+          record = {'source_commit':actual, 'source_tree':subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip(), 'budget_seconds':budget,
+                    'scope':'Original cold-profile graphical case; no product edits, cache seeding, deadline changes or physical-owner acceptance'}
+          pathlib.Path(os.environ['GOBLIN_OBSERVATION_EVIDENCE'],'source-admission.json').write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Exact product observation admission failed' }
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'Product provider policy failed' }
+          python -m pip install --disable-pip-version-check --requirement tools/gip014/requirements.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned process ownership dependency unavailable' }
+
+      - name: Materialize exact retained Windows runtime and pinned engine
+        shell: pwsh
+        run: |
+          python tools/ci/materialize_lfs.py --root . --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source $env:GOBLIN_OBSERVED_SOURCE --output (Join-Path $env:GOBLIN_OBSERVATION_EVIDENCE 'lfs-acquisition') --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Committed runtime acquisition failed' }
+          $archive = Join-Path $env:RUNNER_TEMP 'goblin002-observation-godot.zip'
+          curl.exe --fail --location --connect-timeout 20 --max-time 1200 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot acquisition failed' }
+          $env:GOBLIN_OBSERVATION_ARCHIVE = $archive
+          @'
+          import json, os, pathlib, sys
+          sys.path.insert(0,'tools/ci')
+          from run_windows_godot_regressions import prepare_godot, verify_retained_runtime
+          runtime = verify_retained_runtime(pathlib.Path.cwd())
+          binary, engine = prepare_godot(pathlib.Path(os.environ['GOBLIN_OBSERVATION_ARCHIVE']))
+          sys.path.insert(0,'tools/gip014')
+          from run_goblin import runtime_identity
+          identity = runtime_identity(binary)
+          if identity['native_source_input_count'] != 105 or identity['rapier_source_input_count'] != 4 or identity['source_dirty']:
+              raise RuntimeError('Changed native105/Rapier4 or dirty source contract')
+          pathlib.Path(os.environ['GOBLIN_OBSERVATION_EVIDENCE'],'runtime-admission.json').write_text(json.dumps({'runtime':runtime,'engine':engine,'identity':identity},indent=2)+'\n',encoding='utf-8')
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as output:
+              output.write('GOBLIN_OBSERVATION_GODOT='+str(binary)+'\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched runtime or pinned engine admission failed' }
+
+      - name: Execute the unchanged graphical source case in its fresh profile
+        shell: pwsh
+        run: |
+          python tools/gip014/run_goblin.py --godot $env:GOBLIN_OBSERVATION_GODOT --out (Join-Path $env:GOBLIN_OBSERVATION_EVIDENCE 'graphical') --case graphical --timeout-seconds 300 --memory-limit-mib 3072
+          if ($LASTEXITCODE -ne 0) { throw 'Original graphical case failed; retain every raw outcome' }
+
+      - name: Retain original outcome and exact executed source
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: goblin002-graphical-observation-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/goblin002-graphical-observation
+          if-no-files-found: error
+          retention-days: 90
