@@ -136,7 +136,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p "$RUNNER_TEMP/godot"
-          timeout 600 curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7' > evidence/godot-download.log 2>&1
+          timeout 600 curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip' > evidence/godot-download.log 2>&1
           echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
           unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
           chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"

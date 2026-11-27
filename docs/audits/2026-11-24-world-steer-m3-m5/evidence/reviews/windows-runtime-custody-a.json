@@ -1,0 +1,30 @@
+{
+  "schema": "cybersand.windows-runtime-custody.v1",
+  "status": "passed",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+  "run_id": 45454711939,
+  "runtime_artifact_id": 14949014000,
+  "runtime_archive": "runtime.zip",
+  "runtime_archive_bytes": 2106709,
+  "runtime_archive_sha256": "c17042a700e29fe434941044c38e122f385cc3701c8afc9122ad48be876e2adb",
+  "build_artifact_id": 14951455759,
+  "build_archive": "build.zip",
+  "build_archive_bytes": 8262,
+  "build_archive_sha256": "582d3ce4886cefb1267343406be3344dbd6a6cfe95e38580b0e47efd82ccfef6",
+  "native_binary_sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+  "native_binary_bytes": 5820416,
+  "all_native_inputs_verified": 105,
+  "native_inputs_match_commits": [
+    "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "76fcf209e0cda5820aa64e104bfae732075ae7c3"
+  ],
+  "build_returncode": 0,
+  "build_ledger_consistent": true,
+  "build_log_sha256": "c5db20066d262b71041fc057e525b74e9aff99f44b045426e3494785485a62ef",
+  "build_script": "tools/build_native_extension_windows.sh",
+  "build_script_sha256": "f6cf5744b23b7b486da691f6072cf748022f3c56d62d2d81d12f4051f9389ece",
+  "godot_cpp_library_sha256": "bd008069d4ec245f84ba17fc38aafa280b7a21d130345e49e546a627ee13bd2d",
+  "scope": "Original runtime/build artifact digests, source provenance, complete native input equivalence and build-ledger verification. Fresh binary identity is distinct from the previous campaign. No application, graphical or physical owner pass inferred from build alone."
+}

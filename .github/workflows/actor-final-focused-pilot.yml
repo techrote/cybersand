@@ -1,14 +1,7 @@
 name: ACTOR-COMPOSE-FINAL focused pilot / native-source custody
 on:
-  push:
-    branches: [integration/actor-compose-final-001-20261123]
-    paths:
-      - 'godot/scripts/main.gd'
-      - 'godot/scripts/shared_workbench.gd'
-      - 'godot/scripts/workbench_actor_interaction.gd'
-      - 'godot/scripts/workbench_actor_panel.gd'
-      - 'godot/tests/test_workbench_actor_configuration_native.gd'
-      - '.github/workflows/actor-final-focused-pilot.yml'
+  # Historical donor reproduction. Current source pushes run the same actual
+  # Linux/Windows pilot regression inside the source-built sandbox campaign.
   workflow_dispatch:
 
 permissions:

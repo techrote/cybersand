@@ -4,6 +4,7 @@ extends RefCounted
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const ActorCatalog = preload("res://scripts/workbench_actor_catalog.gd")
 const SandboxCapacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 # The first nine are the powders a 4 x 24 source may emit; later entries are
@@ -11,7 +12,6 @@ const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28]
 const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase",
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
-const MAX_BODIES := 8
 # Workbench-only construction budget; other MicroScenario starts still
 # enforce 4096. Ordinary/generated JSON manifests retain the 1 MiB budget;
 # GEN-008 standalone baselines use a separately bounded raw material payload.
@@ -569,7 +569,8 @@ static func _stamp_material(value: Variant) -> bool:
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
 	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else []) \
-			+ (["sandbox_capacity"] if value.has("sandbox_capacity") else [])) \
+			+ (["sandbox_capacity"] if value.has("sandbox_capacity") else []) \
+			+ (["ambient_authoring"] if value.has("ambient_authoring") else [])) \
 			or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
@@ -610,6 +611,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid liquid policy envelope."
 	for word: Variant in value.liquid_policy:
 		if not _integer(word,-2147483648,2147483647): return "Invalid liquid policy word."
+	if value.has("ambient_authoring"):
+		var library_error: String = AmbientAuthoring.validate(value.ambient_authoring)
+		if not library_error.is_empty(): return "Ambient profile library: " + library_error
 	if value.has(EQUIPMENT_KEY):
 		var equipment_error := Equipment.validate(value[EQUIPMENT_KEY],size)
 		if not equipment_error.is_empty(): return "Liquid equipment: " + equipment_error
@@ -738,6 +742,8 @@ static func canonical_actor_numbers(actor: Dictionary) -> void:
 	if actor.has("control"):
 		for key: String in ["version","decision_ticks","usable_index"]:
 			actor.control[key] = int(actor.control[key])
+		if actor.control.has("ambient"):
+			actor.control.ambient = ActorCatalog.AmbientProfile.canonicalize(actor.control.ambient)
 
 
 static func read_named(label: String) -> Dictionary:
@@ -767,4 +773,6 @@ static func read_named(label: String) -> Dictionary:
 		canonical_actor_numbers(a)
 	if setup_data.has(EQUIPMENT_KEY):
 		setup_data[EQUIPMENT_KEY] = Equipment.canonical(setup_data[EQUIPMENT_KEY])
+	if setup_data.has("ambient_authoring"):
+		setup_data["ambient_authoring"] = AmbientAuthoring.canonicalize(setup_data.ambient_authoring)
 	return {"setup":setup_data}

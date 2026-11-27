@@ -1,0 +1,1259 @@
+{
+  "baseline_gdextension_caps": {
+    "linux": 8,
+    "windows": 8
+  },
+  "baseline_palette_caps": {
+    "linux": 2,
+    "windows": 2
+  },
+  "baseline_provider": "GitHub-hosted Actions",
+  "godot": {
+    "linux": {
+      "case_inventory_sha256": "fb52b050bd01e02563d884abb86e7ca176c2a221b153b96e5246944e8d209f67",
+      "cases": 340,
+      "execution_seconds": 16800,
+      "job_minutes": 360,
+      "shard_assignments_sha256": "aafa1e1172552521bb31feb200fb7de20710fc28f037b95abcbb1d9e82ee5eed",
+      "shard_case_names": [
+        {
+          "cases": [
+            "test_play_ui007_overlay_render",
+            "test_semantic_depth_render",
+            "test_tick_failure_regression",
+            "test_wex001_water_body_baseline",
+            "test_workbench_boundary_retention",
+            "test_workbench_reservoir_lab"
+          ],
+          "shard": 0
+        },
+        {
+          "cases": [
+            "test_experiment_tower",
+            "test_microscenarios",
+            "test_physical_actor_catalog",
+            "test_physical_usables_desktop",
+            "test_play_life002_acrobat",
+            "test_play_life010_acrobat",
+            "test_play_ui007_stuntbuggy",
+            "test_semantic_planes_examples",
+            "test_workbench_canvas",
+            "test_workbench_retained_pressure"
+          ],
+          "shard": 1
+        },
+        {
+          "cases": [
+            "test_interaction_policy",
+            "test_material_lab_diagnostics",
+            "test_paint_editor_generated_workbench",
+            "test_physical_flight_handling",
+            "test_play_input010_stuntbuggy",
+            "test_play_life004_acrobat",
+            "test_play_pace001_acrobat",
+            "test_player_playground_course",
+            "test_water_experiment_profiles",
+            "test_workbench_generator_discovery",
+            "test_worldgen_grammar"
+          ],
+          "shard": 2
+        },
+        {
+          "cases": [
+            "test_material_lab_experiment",
+            "test_paint_editor_history",
+            "test_physical_flight_lab",
+            "test_play_input010_trialsbike",
+            "test_play_life004_arcadelander",
+            "test_play_pace001_arcadelander",
+            "test_player_playground_runtime",
+            "test_rem003_player_granular",
+            "test_water_feel_scenarios",
+            "test_workbench_generator_installed",
+            "test_worldgen_planes"
+          ],
+          "shard": 3
+        },
+        {
+          "cases": [
+            "test_lcb_physics_contracts",
+            "test_liquid_pressure_rapier",
+            "test_microscenario_reference_pack_ui",
+            "test_physical_actor_effect_admission",
+            "test_physical_usables_runtime",
+            "test_play_life002_arcadelander",
+            "test_play_life010_arcadelander",
+            "test_play_ui007_trialsbike",
+            "test_semantic_planes_runtime",
+            "test_web_rapier",
+            "test_workbench_combined_authoring",
+            "test_workbench_spray_rearm"
+          ],
+          "shard": 4
+        },
+        {
+          "cases": [
+            "test_liquid_reference_body_poses",
+            "test_microscenario_stress",
+            "test_physical_actor_effect_cancellation",
+            "test_physical_flight_teacher_dev_obstacle",
+            "test_physics_characterisation",
+            "test_play_life002_jetbarrel",
+            "test_play_life010_jetbarrel",
+            "test_play_wait001_acrobat",
+            "test_showcase_backdrop_render",
+            "test_workbench_deferred_paint",
+            "test_workbench_wave",
+            "profile_native_world"
+          ],
+          "shard": 5
+        },
+        {
+          "cases": [
+            "test_depth_surface_render",
+            "test_lcb_inertial_adapter",
+            "test_liquid_sampled_preparation",
+            "test_material_appearance_lut",
+            "test_microscenario_workbench",
+            "test_physical_actor_effects",
+            "test_physics_instrumentation",
+            "test_play_life002_stuntbuggy",
+            "test_play_life010_stuntbuggy",
+            "test_play_wait001_arcadelander",
+            "test_showcase_tiles",
+            "test_workbench_desktop_interest",
+            "test_workbench_wave_render"
+          ],
+          "shard": 6
+        },
+        {
+          "cases": [
+            "test_coupling_lockstep_desktop",
+            "test_exploratory_actor_selection",
+            "test_explore001_generated_workbench",
+            "test_liquid_host_evidence",
+            "test_material_lab_readability",
+            "test_paint_editor_native",
+            "test_physical_flight_lab_scene",
+            "test_play_input011_acrobat",
+            "test_play_life004_jetbarrel",
+            "test_play_pace001_jetbarrel",
+            "test_player_vehicle_controls",
+            "test_water_presentation_model",
+            "test_workbench_hard_placement",
+            "test_worldgen_typed"
+          ],
+          "shard": 7
+        },
+        {
+          "cases": [
+            "test_coupling_lockstep_semantics",
+            "test_failed_world_status_survives",
+            "test_liquid_host_web_probe",
+            "test_material_lab_service",
+            "test_paint_editor_recovery",
+            "test_physical_flight_physics",
+            "test_physical_flight_teacher_dev_free",
+            "test_play_input011_arcadelander",
+            "test_play_life004_stuntbuggy",
+            "test_play_pace001_stuntbuggy",
+            "test_playval001_selectable_player_fixtures",
+            "test_water_presentation_render",
+            "test_workbench_host_claim_capacity",
+            "test_worldgen_workbench"
+          ],
+          "shard": 8
+        },
+        {
+          "cases": [
+            "test_art_history_receipt_identity",
+            "test_brush_owner_commands",
+            "test_explore001_dialog_native_saved_render",
+            "test_lcb_pressure_optimization",
+            "test_lcb_scenario_catalogue",
+            "test_liquid_synchronous_reference_body",
+            "test_native_edge_contact_regression",
+            "test_physical_actor_rigs",
+            "test_play_comp001_existing_host_spike",
+            "test_play_life003_acrobat",
+            "test_play_life011_acrobat",
+            "test_play_wait001_stuntbuggy",
+            "test_thunderbowl_arena",
+            "test_workbench_failure_containment",
+            "test_world_design_pack_adapter"
+          ],
+          "shard": 9
+        },
+        {
+          "cases": [
+            "test_actor_rigs",
+            "test_art_session_log",
+            "test_deepworks",
+            "test_feature_launch_arguments",
+            "test_liquid_inertial_host",
+            "test_material_lab_ui",
+            "test_paint_editor_shapes",
+            "test_physical_flight_pilot",
+            "test_play_input011_jetbarrel",
+            "test_play_life004_trialsbike",
+            "test_play_pace001_trialsbike",
+            "test_play_pace002_acrobat",
+            "test_prepared_physical_owner",
+            "test_wave_flow",
+            "test_workbench_host_claim_native",
+            "test_worker_benchmark"
+          ],
+          "shard": 10
+        },
+        {
+          "cases": [
+            "test_actor_usables_integration",
+            "test_art_stored_material",
+            "test_deepworks_controller",
+            "test_feature_launcher",
+            "test_liquid_level_import_host",
+            "test_material_lab_workbench_integration",
+            "test_microscenario_controllers",
+            "test_paint_editor_workbench",
+            "test_physical_flight_profile",
+            "test_play_input011_legacy_pause",
+            "test_play_life005_failure_recovery",
+            "test_play_pace002_arcadelander",
+            "test_play_pace004_capture_buffer",
+            "test_presentation_controls",
+            "test_wave_flow_render",
+            "test_workbench_input"
+          ],
+          "shard": 11
+        },
+        {
+          "cases": [
+            "test_architectural_generator",
+            "test_art_traffic_integrity",
+            "test_deepworks_reactions",
+            "test_gameplay_recorder",
+            "test_liquid_level_preparation",
+            "test_material_lab_world",
+            "test_palette_crossfade_render",
+            "test_physical_flight_selection",
+            "test_play_input011_stuntbuggy",
+            "test_play_life007_failed_session_restart",
+            "test_play_pace002_jetbarrel",
+            "test_play_ui003_lap_clock",
+            "test_rapier_backend_preflight",
+            "test_water_feel_controller",
+            "test_web_demo_setup",
+            "test_workbench_lcb_salvage"
+          ],
+          "shard": 12
+        },
+        {
+          "cases": [
+            "test_architectural_generator_ui",
+            "test_art_traffic_panel_safety",
+            "test_deepworks_render",
+            "test_gen007_inspection",
+            "test_liquid_ordinary_demo_host",
+            "test_material_presentation_render",
+            "test_palette_shader_compile_bounds",
+            "test_physical_flight_session",
+            "test_play_input011_trialsbike",
+            "test_play_life008_recovery_navigation",
+            "test_play_pace002_stuntbuggy",
+            "test_play_ui003_physics_cadence",
+            "test_rapier_drop_in",
+            "test_water_feel_integration",
+            "test_wex004_decompression",
+            "test_workbench_liquid_edges"
+          ],
+          "shard": 13
+        },
+        {
+          "cases": [
+            "test_architectural_project_contract",
+            "test_art_undo",
+            "test_depth_compositor",
+            "test_gen007_qualification_render",
+            "test_liquid_owner_observation",
+            "test_material_vapour_pipeline_render",
+            "test_pchar001_player_representations",
+            "test_physical_usable_course",
+            "test_physics_async",
+            "test_play_life001_acrobat",
+            "test_play_life009_acrobat",
+            "test_play_pace002_trialsbike",
+            "test_play_ui004_gamepad_events",
+            "test_rapier_manual_step",
+            "test_workbench_actor_catalog",
+            "test_workbench_liquid_equipment"
+          ],
+          "shard": 14
+        },
+        {
+          "cases": [
+            "test_art_batch_native",
+            "test_auto_worker_policy",
+            "test_depth_dimensions",
+            "test_gen007_workbench",
+            "test_liquid_physical_preparation",
+            "test_megablock_project",
+            "test_penv001_player_environment",
+            "test_physical_usable_equipment",
+            "test_play_life001_arcadelander",
+            "test_play_life009_arcadelander",
+            "test_play_ui005_session_selection",
+            "test_rem002_body_granular",
+            "test_transport_probe",
+            "test_workbench_actor_composition",
+            "test_workbench_live_liquid_edit",
+            "scene"
+          ],
+          "shard": 15
+        },
+        {
+          "cases": [
+            "test_actor_prototypes",
+            "test_art_lazy_traffic",
+            "test_building_material_integration",
+            "test_explore001_dialog_native_small_render",
+            "test_liquid_comparison_ui",
+            "test_liquid_synchronous_water_reference_body",
+            "test_liquid_tower_host",
+            "test_native_fire_presentation_regression",
+            "test_physical_actor_script",
+            "test_play_comp002_five_rig_course",
+            "test_play_life003_arcadelander",
+            "test_play_life011_arcadelander",
+            "test_play_wait001_trialsbike",
+            "test_thunderbowl_controllers",
+            "test_workbench_failure_recovery",
+            "test_worldgen_fields"
+          ],
+          "shard": 16
+        },
+        {
+          "cases": [
+            "test_actor_actuator_session",
+            "test_art_batch_native_render",
+            "test_blacksite_nine",
+            "test_depth_dimensions_render",
+            "test_gen007_qualification",
+            "test_gentek_cathedral_showcase",
+            "test_liquid_physical_transaction",
+            "test_microscenario_flood_control",
+            "test_pf_c2048_prepared",
+            "test_physical_usable_lifecycle",
+            "test_play_life001_jetbarrel",
+            "test_play_life009_jetbarrel",
+            "test_play_ui007_acrobat",
+            "test_render_patch_handoff_regression",
+            "test_workbench_actor_composition_native",
+            "test_workbench_material_baseline"
+          ],
+          "shard": 17
+        },
+        {
+          "cases": [
+            "test_actor_prototype_integration",
+            "test_art_deferred_manual",
+            "test_blacksite_nine_integration",
+            "test_depth_lab",
+            "test_hard_surface_incremental_packet",
+            "test_lcb_pressure_reference",
+            "test_liquid_policy_worker",
+            "test_microscenario_materials_lab",
+            "test_physical_actor_actuation",
+            "test_physical_usable_script",
+            "test_play_life001_stuntbuggy",
+            "test_play_life009_stuntbuggy",
+            "test_play_ui007_arcadelander",
+            "test_render_world_generation",
+            "test_workbench_actor_composition_session",
+            "test_workbench_physics_play"
+          ],
+          "shard": 18
+        },
+        {
+          "cases": [
+            "test_actor_prototype_session",
+            "test_art_history_durability",
+            "test_blacksite_nine_render",
+            "test_depth_layer_runtime",
+            "test_lcb_fixture_manifests",
+            "test_liquid_prepared_host",
+            "test_microscenario_native_observation",
+            "test_microscenario_reference_contract",
+            "test_physical_actor_arena",
+            "test_physical_usables_admission",
+            "test_play_life001_trialsbike",
+            "test_play_life009_trialsbike",
+            "test_play_ui007_jetbarrel",
+            "test_script_hotpath_native_fill",
+            "test_workbench_actor_equipment_extent",
+            "test_workbench_pilot_ui"
+          ],
+          "shard": 19
+        },
+        {
+          "cases": [
+            "test_explore001_dialog_native_render",
+            "test_lcb_negative_contracts",
+            "test_liquid_solver_policy",
+            "test_liquid_water_reference_body",
+            "test_microscenario_workbench_lifecycle",
+            "test_physical_actor_integration",
+            "test_play_auto001_shared_course",
+            "test_play_life002_trialsbike",
+            "test_play_life010_trialsbike",
+            "test_play_wait001_jetbarrel",
+            "test_simulation_worker_interest_ownership",
+            "test_workbench_edit_ordering",
+            "test_workbench_wave_spill",
+            "profile_scheduler"
+          ],
+          "shard": 20
+        },
+        {
+          "cases": [
+            "test_actor_rig_session",
+            "test_art_provider",
+            "test_coupling_lockstep",
+            "test_explore001_dialog_small_render",
+            "test_gen007_reactions",
+            "test_interaction_async",
+            "test_liquid_feel_census",
+            "test_material_lab_catalogue",
+            "test_paint_editor_executor",
+            "test_physical_flight_gameplay_render",
+            "test_play_input010_jetbarrel",
+            "test_play_life003_trialsbike",
+            "test_play_life011_trialsbike",
+            "test_player_material_field",
+            "test_usables",
+            "test_workbench_fleet_session"
+          ],
+          "shard": 21
+        },
+        {
+          "cases": [
+            "test_actor_rig_integration",
+            "test_art_panel_ui",
+            "test_ci_execution_policy",
+            "test_explore001_dialog_saved_render",
+            "test_gen007_workbench_render",
+            "test_liquid_desktop_default_host",
+            "test_material_glow_control",
+            "test_neon_reliquary",
+            "test_physical_actor_trial",
+            "test_play_input010_arcadelander",
+            "test_play_life003_stuntbuggy",
+            "test_play_life011_stuntbuggy",
+            "test_player_acrobat_physics",
+            "test_usable_session",
+            "test_web_worker_parity",
+            "test_workbench_flatten_owner_failure"
+          ],
+          "shard": 22
+        },
+        {
+          "cases": [
+            "test_act004_body_capacity",
+            "test_actor_rig_actuation",
+            "test_art_manual_audit",
+            "test_cell_world",
+            "test_explore001_dialog_render",
+            "test_liquid_default_demo_preparation",
+            "test_liquid_trial_body",
+            "test_liquid_water_feel_host",
+            "test_native_render_bridge_regression",
+            "test_physical_actor_session",
+            "test_play_input010_acrobat",
+            "test_play_life003_jetbarrel",
+            "test_play_life011_jetbarrel",
+            "test_player_acrobat",
+            "test_transport_profiles",
+            "test_workbench_flatten"
+          ],
+          "shard": 23
+        }
+      ],
+      "shards": 24
+    },
+    "windows": {
+      "case_inventory_sha256": "09d3ae6248b5bb99c746ee71252f0c6e42d4dc884caa284fc2e90992925480fd",
+      "cases": 317,
+      "execution_seconds": 16800,
+      "job_minutes": 360,
+      "shard_assignments_sha256": "7dd7702251480244e3397890fc1e5f31916a5d115f1d129ab718996a256c28e8",
+      "shard_case_names": [
+        {
+          "cases": [
+            "test_play_wait001_jetbarrel",
+            "test_thunderbowl_arena",
+            "test_wex001_water_body_baseline",
+            "test_workbench_failure_recovery",
+            "test_worldgen_fields"
+          ],
+          "shard": 0
+        },
+        {
+          "cases": [
+            "test_microscenarios",
+            "test_physical_actor_session",
+            "test_play_input010_acrobat",
+            "test_play_life003_arcadelander",
+            "test_play_life011_acrobat",
+            "test_play_wait001_stuntbuggy",
+            "test_thunderbowl_controllers",
+            "test_workbench_flatten",
+            "test_worldgen_grammar"
+          ],
+          "shard": 1
+        },
+        {
+          "cases": [
+            "test_interaction_policy",
+            "test_material_lab_workbench_integration",
+            "test_palette_shader_compile_bounds",
+            "test_physical_flight_session",
+            "test_play_input011_stuntbuggy",
+            "test_play_life005_failure_recovery",
+            "test_play_pace001_trialsbike",
+            "test_prepared_physical_owner",
+            "test_wex004_decompression",
+            "test_workbench_lcb_salvage",
+            "scene"
+          ],
+          "shard": 2
+        },
+        {
+          "cases": [
+            "test_material_lab_world",
+            "test_pchar001_player_representations",
+            "test_physical_usable_course",
+            "test_play_input011_trialsbike",
+            "test_play_life007_failed_session_restart",
+            "test_play_pace004_capture_buffer",
+            "test_presentation_controls",
+            "test_rem003_player_granular",
+            "test_tick_failure_regression",
+            "test_workbench_actor_catalog",
+            "test_workbench_liquid_edges"
+          ],
+          "shard": 3
+        },
+        {
+          "cases": [
+            "test_lcb_physics_contracts",
+            "test_liquid_water_feel_host",
+            "test_neon_reliquary",
+            "test_physical_actor_trial",
+            "test_play_input010_arcadelander",
+            "test_play_life003_jetbarrel",
+            "test_play_life011_arcadelander",
+            "test_play_wait001_trialsbike",
+            "test_transport_profiles",
+            "test_workbench_flatten_owner_failure",
+            "test_worldgen_planes"
+          ],
+          "shard": 4
+        },
+        {
+          "cases": [
+            "test_material_glow_control",
+            "test_paint_editor_executor",
+            "test_physical_flight_handling",
+            "test_physical_flight_teacher_dev_obstacle",
+            "test_play_input010_jetbarrel",
+            "test_play_life003_stuntbuggy",
+            "test_play_life011_jetbarrel",
+            "test_player_acrobat",
+            "test_usable_session",
+            "test_workbench_fleet_session",
+            "test_worldgen_typed"
+          ],
+          "shard": 5
+        },
+        {
+          "cases": [
+            "test_explore001_generated_workbench",
+            "test_liquid_host_evidence",
+            "test_material_appearance_lut",
+            "test_material_lab_catalogue",
+            "test_paint_editor_generated_workbench",
+            "test_physical_flight_lab",
+            "test_play_input010_stuntbuggy",
+            "test_play_life003_trialsbike",
+            "test_play_life011_stuntbuggy",
+            "test_player_acrobat_physics",
+            "test_usables",
+            "test_workbench_generator_discovery",
+            "test_worldgen_workbench"
+          ],
+          "shard": 6
+        },
+        {
+          "cases": [
+            "test_ci_execution_policy",
+            "test_experiment_tower",
+            "test_exploratory_actor_selection",
+            "test_gen007_workbench",
+            "test_liquid_owner_observation",
+            "test_megablock_project",
+            "test_penv001_player_environment",
+            "test_physical_usable_equipment",
+            "test_play_life001_acrobat",
+            "test_play_life008_recovery_navigation",
+            "test_play_ui003_lap_clock",
+            "test_rapier_backend_preflight",
+            "test_workbench_actor_composition",
+            "test_workbench_liquid_equipment"
+          ],
+          "shard": 7
+        },
+        {
+          "cases": [
+            "test_coupling_lockstep",
+            "test_gentek_cathedral_showcase",
+            "test_liquid_physical_preparation",
+            "test_microscenario_flood_control",
+            "test_pf_c2048_prepared",
+            "test_physical_flight_teacher_dev_free",
+            "test_physical_usable_lifecycle",
+            "test_play_life001_arcadelander",
+            "test_play_life009_acrobat",
+            "test_play_ui003_physics_cadence",
+            "test_rapier_drop_in",
+            "test_web_rapier",
+            "test_workbench_actor_composition_native",
+            "test_workbench_live_liquid_edit"
+          ],
+          "shard": 8
+        },
+        {
+          "cases": [
+            "test_art_history_durability",
+            "test_blacksite_nine_integration",
+            "test_feature_launch_arguments",
+            "test_lcb_scenario_catalogue",
+            "test_liquid_inertial_host",
+            "test_material_lab_experiment",
+            "test_microscenario_controllers",
+            "test_paint_editor_native",
+            "test_physical_flight_physics",
+            "test_play_input011_acrobat",
+            "test_play_life004_arcadelander",
+            "test_play_pace001_acrobat",
+            "test_player_playground_course",
+            "test_water_feel_integration",
+            "test_water_feel_scenarios",
+            "test_workbench_hard_placement"
+          ],
+          "shard": 9
+        },
+        {
+          "cases": [
+            "test_actor_rig_integration",
+            "test_art_panel_ui",
+            "test_coupling_lockstep_desktop",
+            "test_hard_surface_incremental_packet",
+            "test_liquid_physical_transaction",
+            "test_microscenario_materials_lab",
+            "test_physical_actor_actuation",
+            "test_physical_usable_script",
+            "test_play_life001_jetbarrel",
+            "test_play_life009_arcadelander",
+            "test_play_pace002_acrobat",
+            "test_play_ui004_gamepad_events",
+            "test_rapier_manual_step",
+            "test_workbench_actor_composition_session",
+            "test_workbench_material_baseline",
+            "profile_native_world"
+          ],
+          "shard": 10
+        },
+        {
+          "cases": [
+            "test_actor_rig_session",
+            "test_art_provider",
+            "test_coupling_lockstep_semantics",
+            "test_lcb_fixture_manifests",
+            "test_liquid_policy_worker",
+            "test_microscenario_native_observation",
+            "test_physical_actor_arena",
+            "test_physical_usables_admission",
+            "test_play_life001_stuntbuggy",
+            "test_play_life009_jetbarrel",
+            "test_play_pace002_arcadelander",
+            "test_play_ui005_session_selection",
+            "test_rem002_body_granular",
+            "test_workbench_actor_equipment_extent",
+            "test_workbench_physics_play"
+          ],
+          "shard": 11
+        },
+        {
+          "cases": [
+            "test_actor_rigs",
+            "test_art_session_log",
+            "test_deepworks",
+            "test_lcb_inertial_adapter",
+            "test_liquid_prepared_host",
+            "test_microscenario_reference_pack_ui",
+            "test_physical_actor_catalog",
+            "test_physical_usables_desktop",
+            "test_play_life001_trialsbike",
+            "test_play_life009_stuntbuggy",
+            "test_play_pace002_jetbarrel",
+            "test_play_ui007_acrobat",
+            "test_render_patch_handoff_regression",
+            "test_workbench_boundary_retention",
+            "test_workbench_pilot_ui"
+          ],
+          "shard": 12
+        },
+        {
+          "cases": [
+            "test_actor_usables_integration",
+            "test_art_stored_material",
+            "test_deepworks_controller",
+            "test_lcb_negative_contracts",
+            "test_liquid_pressure_rapier",
+            "test_microscenario_stress",
+            "test_physical_actor_effect_admission",
+            "test_physical_usables_runtime",
+            "test_play_life002_acrobat",
+            "test_play_life009_trialsbike",
+            "test_play_pace002_stuntbuggy",
+            "test_play_ui007_arcadelander",
+            "test_render_world_generation",
+            "test_workbench_canvas",
+            "test_workbench_reservoir_lab"
+          ],
+          "shard": 13
+        },
+        {
+          "cases": [
+            "test_architectural_generator",
+            "test_art_traffic_integrity",
+            "test_deepworks_reactions",
+            "test_lcb_pressure_optimization",
+            "test_liquid_reference_body_poses",
+            "test_microscenario_workbench",
+            "test_physical_actor_effect_cancellation",
+            "test_physics_characterisation",
+            "test_play_life002_arcadelander",
+            "test_play_life010_acrobat",
+            "test_play_pace002_trialsbike",
+            "test_play_ui007_jetbarrel",
+            "test_script_hotpath_native_fill",
+            "test_workbench_combined_authoring",
+            "test_workbench_retained_pressure"
+          ],
+          "shard": 14
+        },
+        {
+          "cases": [
+            "test_architectural_generator_ui",
+            "test_art_traffic_panel_safety",
+            "test_depth_compositor",
+            "test_liquid_comparison_ui",
+            "test_liquid_sampled_preparation",
+            "test_microscenario_workbench_lifecycle",
+            "test_physical_actor_effects",
+            "test_physics_instrumentation",
+            "test_play_life002_jetbarrel",
+            "test_play_life010_arcadelander",
+            "test_play_ui007_stuntbuggy",
+            "test_semantic_planes_examples",
+            "test_transport_probe",
+            "test_workbench_deferred_paint",
+            "test_workbench_spray_rearm"
+          ],
+          "shard": 15
+        },
+        {
+          "cases": [
+            "test_actor_prototype_session",
+            "test_art_history_receipt_identity",
+            "test_brush_owner_commands",
+            "test_feature_launcher",
+            "test_liquid_level_import_host",
+            "test_liquid_synchronous_water_reference_body",
+            "test_material_lab_readability",
+            "test_paint_editor_recovery",
+            "test_physical_flight_pilot",
+            "test_play_input011_arcadelander",
+            "test_play_life004_jetbarrel",
+            "test_play_pace001_arcadelander",
+            "test_player_playground_runtime",
+            "test_water_feel_controller",
+            "test_water_presentation_model",
+            "test_workbench_host_claim_capacity"
+          ],
+          "shard": 16
+        },
+        {
+          "cases": [
+            "test_act004_body_capacity",
+            "test_architectural_project_contract",
+            "test_art_undo",
+            "test_depth_dimensions",
+            "test_gen007_qualification",
+            "test_liquid_default_demo_preparation",
+            "test_liquid_solver_policy",
+            "test_native_edge_contact_regression",
+            "test_physical_actor_integration",
+            "test_play_auto001_shared_course",
+            "test_play_life002_stuntbuggy",
+            "test_play_life010_jetbarrel",
+            "test_play_ui007_trialsbike",
+            "test_semantic_planes_runtime",
+            "test_workbench_desktop_interest",
+            "test_workbench_wave"
+          ],
+          "shard": 17
+        },
+        {
+          "cases": [
+            "test_actor_actuator_session",
+            "test_art_batch_native",
+            "test_auto_worker_policy",
+            "test_depth_lab",
+            "test_lcb_pressure_reference",
+            "test_liquid_desktop_default_host",
+            "test_liquid_synchronous_reference_body",
+            "test_native_fire_presentation_regression",
+            "test_physical_actor_rigs",
+            "test_play_comp001_existing_host_spike",
+            "test_play_life002_trialsbike",
+            "test_play_life010_stuntbuggy",
+            "test_play_wait001_acrobat",
+            "test_showcase_tiles",
+            "test_workbench_edit_ordering",
+            "test_workbench_wave_spill"
+          ],
+          "shard": 18
+        },
+        {
+          "cases": [
+            "test_actor_prototype_integration",
+            "test_art_deferred_manual",
+            "test_blacksite_nine",
+            "test_depth_layer_runtime",
+            "test_liquid_feel_census",
+            "test_liquid_tower_host",
+            "test_microscenario_reference_contract",
+            "test_native_render_bridge_regression",
+            "test_physical_actor_script",
+            "test_play_comp002_five_rig_course",
+            "test_play_life003_acrobat",
+            "test_play_life010_trialsbike",
+            "test_play_wait001_arcadelander",
+            "test_simulation_worker_interest_ownership",
+            "test_workbench_failure_containment",
+            "test_world_design_pack_adapter"
+          ],
+          "shard": 19
+        },
+        {
+          "cases": [
+            "test_failed_world_status_survives",
+            "test_liquid_host_web_probe",
+            "test_liquid_water_reference_body",
+            "test_material_lab_diagnostics",
+            "test_paint_editor_history",
+            "test_physical_flight_lab_scene",
+            "test_physics_async",
+            "test_play_input010_trialsbike",
+            "test_play_life004_acrobat",
+            "test_play_life011_trialsbike",
+            "test_player_material_field",
+            "test_water_experiment_profiles",
+            "test_workbench_generator_installed",
+            "test_worker_benchmark",
+            "profile_scheduler"
+          ],
+          "shard": 20
+        },
+        {
+          "cases": [
+            "test_actor_rig_actuation",
+            "test_art_manual_audit",
+            "test_cell_world",
+            "test_gen007_inspection",
+            "test_gen007_reactions",
+            "test_interaction_async",
+            "test_liquid_ordinary_demo_host",
+            "test_material_lab_ui",
+            "test_paint_editor_workbench",
+            "test_physical_flight_selection",
+            "test_play_input011_legacy_pause",
+            "test_play_life004_trialsbike",
+            "test_play_pace001_stuntbuggy",
+            "test_playval001_selectable_player_fixtures",
+            "test_web_demo_setup",
+            "test_workbench_input"
+          ],
+          "shard": 21
+        },
+        {
+          "cases": [
+            "test_actor_prototypes",
+            "test_art_lazy_traffic",
+            "test_building_material_integration",
+            "test_gameplay_recorder",
+            "test_liquid_level_preparation",
+            "test_liquid_trial_body",
+            "test_material_lab_service",
+            "test_paint_editor_shapes",
+            "test_physical_flight_profile",
+            "test_play_input011_jetbarrel",
+            "test_play_life004_stuntbuggy",
+            "test_play_pace001_jetbarrel",
+            "test_player_vehicle_controls",
+            "test_wave_flow",
+            "test_web_worker_parity",
+            "test_workbench_host_claim_native"
+          ],
+          "shard": 22
+        }
+      ],
+      "shards": 23
+    }
+  },
+  "native": {
+    "command_inventory_sha256": "1ca76e6d506d1bbf63cd49eff8f55107f6e2a36661ab9dc54f14af450da11ee9",
+    "commands": 20,
+    "families": 6,
+    "family_inventory": {
+      "asan-ubsan": {
+        "commands": [
+          {
+            "command": [
+              "make",
+              "build/tests_sanitized"
+            ],
+            "label": "build-tests-sanitized",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "./build/tests_sanitized"
+            ],
+            "label": "tests-sanitized",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 7880,
+        "hosted_job_minutes": 180
+      },
+      "native-normal": {
+        "commands": [
+          {
+            "command": [
+              "make",
+              "c-header-check"
+            ],
+            "label": "c-header-check",
+            "policy_key": "operation_seconds",
+            "timeout_seconds": 300
+          },
+          {
+            "command": [
+              "make",
+              "build/tests"
+            ],
+            "label": "build-tests",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "./build/tests"
+            ],
+            "label": "tests",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "make",
+              "shared"
+            ],
+            "label": "shared",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "make",
+              "build/benchmark"
+            ],
+            "label": "build-benchmark",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "./build/benchmark"
+            ],
+            "label": "benchmark",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 19140,
+        "hosted_job_minutes": 350
+      },
+      "soliding-asan": {
+        "commands": [
+          {
+            "command": [
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "build/test_settled_regions_sanitized"
+            ],
+            "label": "build-settled-regions-sanitized",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "make",
+              "build/test_soliding_lifecycle_sanitized",
+              "build/test_settled_discovery_sanitized",
+              "build/test_settled_regions_sanitized",
+              "build/test_settled_world_discovery_sanitized",
+              "build/test_stage3b_runtime_storage_sanitized",
+              "build/test_stage3b_bounded_spatial_index_sanitized",
+              "build/test_stage3b_sparse_mutation_witness_sanitized",
+              "build/test_stage3b_sparse_activity_deadline_sanitized"
+            ],
+            "label": "build-soliding-sanitized",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "make",
+              "soliding-sanitize"
+            ],
+            "label": "soliding-sanitize",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 11520,
+        "hosted_job_minutes": 223
+      },
+      "soliding-normal": {
+        "commands": [
+          {
+            "command": [
+              "make",
+              "soliding-test"
+            ],
+            "label": "soliding-test",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "make",
+              "soliding-benchmark-smoke"
+            ],
+            "label": "soliding-benchmark-smoke",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "make",
+              "soliding-stage3b-validation-apparatus-test"
+            ],
+            "label": "soliding-stage3b-validation-apparatus-test",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "make",
+              "soliding-stage3-cost-smoke"
+            ],
+            "label": "soliding-stage3-cost-smoke",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 15160,
+        "hosted_job_minutes": 284
+      },
+      "tsan": {
+        "commands": [
+          {
+            "command": [
+              "make",
+              "build/tests_tsan"
+            ],
+            "label": "build-tests-tsan",
+            "policy_key": "native_compile_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "env",
+              "TSAN_OPTIONS=halt_on_error=1",
+              "./build/tests_tsan"
+            ],
+            "label": "tests-tsan",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 7880,
+        "hosted_job_minutes": 180
+      },
+      "worldgen": {
+        "commands": [
+          {
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1",
+              "make",
+              "physics-characterisation-sanitize"
+            ],
+            "label": "physics-characterisation-sanitize",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 10200
+          },
+          {
+            "command": [
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "-j2",
+              "--output-sync=target",
+              "worldgen-test"
+            ],
+            "label": "worldgen-test",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          },
+          {
+            "command": [
+              "env",
+              "ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1",
+              "UBSAN_OPTIONS=halt_on_error=1",
+              "/usr/bin/time",
+              "-v",
+              "make",
+              "-j2",
+              "--output-sync=target",
+              "worldgen-sanitize"
+            ],
+            "label": "worldgen-sanitize",
+            "policy_key": "native_case_seconds",
+            "timeout_seconds": 3600
+          }
+        ],
+        "family_timeout_seconds": 18120,
+        "hosted_job_minutes": 333
+      }
+    },
+    "physics_dispatch_workers": 8,
+    "physics_invocations": 154
+  },
+  "observed_at": "2026-11-24",
+  "palette": {
+    "case_total": 19,
+    "complete_plan_sha256": "e09aa30747578e171224cac932f340fb77e583788d84ea60e5fc94bdcd152de6",
+    "per_platform": {
+      "linux": {
+        "cases": 10,
+        "groups": [
+          {
+            "cases": 4,
+            "group": "visual",
+            "shard_index": 0
+          },
+          {
+            "cases": 4,
+            "group": "visual",
+            "shard_index": 1
+          },
+          {
+            "cases": 2,
+            "group": "main-cache",
+            "shard_index": 0
+          }
+        ],
+        "jobs": 3
+      },
+      "win32": {
+        "cases": 9,
+        "groups": [
+          {
+            "cases": 4,
+            "group": "visual",
+            "shard_index": 0
+          },
+          {
+            "cases": 3,
+            "group": "visual",
+            "shard_index": 1
+          },
+          {
+            "cases": 2,
+            "group": "main-cache",
+            "shard_index": 0
+          }
+        ],
+        "jobs": 3
+      }
+    },
+    "planned_jobs": 6
+  },
+  "runtime_materialization": "Git LFS pointers only in isolated assurance worktree; not runnable payloads",
+  "schema": "cybersand-ci-closure-contract-inventory-v1",
+  "scope": "Source inspection and local planning only. No runtime execution or hosted acceptance.",
+  "source_files_sha256": {
+    ".github/workflows/documentation.yml": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d",
+    ".github/workflows/gdextension.yml": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+    ".github/workflows/native.yml": "a73ad24005f0a1d4ed899475bd6cc01466dab3f3aad8fc9a4e5375f6618b5919",
+    ".github/workflows/palette-shader-qualification.yml": "42d7b10cbb805d6b2a8ece873e97932e43b09af8c3b26cf9ba1db1876d7568d0",
+    "AGENTS.md": "923c3ed8ef25e22ec0f6a689608dd657fd7e8bee46e019eb905a1fe0f68a3950",
+    "SCHEDUSWARM.md": "832828bbe902f3be4dc7d5156d7a3625530434eacb7808b934dd27c97bcefd7d",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "third_party/godot-runtime.lock.json": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+    "tools/ci/check_ci_provider_policy.py": "7b5ff825db5945b257cb57e4ebfebc8a46b94b7033f44df2dde6a5e5336092a6",
+    "tools/ci/check_ci_scheduling_policy.py": "cbb5218ede61c741e436d7b510c3d52ec8cafb2497a60448f4fe65b8ff2f02f5",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/ci/godot_job_plan.py": "c6023abfd8694ae36188e44e038315089ab402e1b7ca476851dee55a64e92b58",
+    "tools/ci/godot_scheduling_profile.json": "b6c69784aba12b11b622ed337852ed5cf2c6e36ccb65d1fe92fdaf7085e882de",
+    "tools/ci/native_execution_policy.py": "365aa41843222b6fc4e9f316235f28da0384cf7dbfbee807a08bc296905349cb",
+    "tools/ci/run_godot_regressions.py": "f7a9b2c825fe4ef9d42d3846e39fb13d197889f36114600f74d540f7cff27969",
+    "tools/ci/verify_linux_godot_shards.py": "58b9897ffd1fa2ba0e456d17467342bd6e7a60a6d8296933b093438fd0ea08df",
+    "tools/ci/verify_native_shards.py": "b86278278ff0f83ef189a7889d6d4bb729e7adbd587ee24edd29350f48815ead",
+    "tools/ci/verify_windows_godot_shards.py": "27c1b25205335c50fdd1c8daae0de7b231c95d366686839ec30151e570660ba6",
+    "tools/play/run_palette_shader_qualification.py": "7a73aeed07c30f61c42e8e3461f799ba387fc1f2cb426baa5d93ddaae1789bf3"
+  },
+  "source_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "source_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+  "validation": {
+    "provider": "passed",
+    "scheduling": "passed",
+    "scheduling_tests": 10
+  },
+  "workflow_count": 93
+}

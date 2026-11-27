@@ -11,6 +11,22 @@ last-reviewed: 2026-11-22
 
 # Interfaces and message contracts
 
+The [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md) adds strict
+profile version 2 alongside version 1 and an optional scene-local
+`ambient_authoring` library. Copied environments additionally carry explicit
+World generation, bounded navigation and tagged peer observations. The physical
+command ABI and native material wire formats remain unchanged. Group authoring
+uses captured run/epoch/configuration identities and all-member preflight before
+one synchronous owner commit; it grants no new body or World ownership.
+
+The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
+`ambient-observation/v1` copied environment and authored profile version 1.
+These are local value schemas. Existing physical issued observation/command
+version 2, native material formats and Rapier interfaces remain unchanged.
+`control.source = "policy"`, `control.policy = "ambient"` and the validated
+`control.ambient` profile select the adapter. Unavailable sensor fields remain
+explicitly unavailable; they do not become safe ground or an absent material.
+
 The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
 adds versioned construction options and full uint16 Water mass readback without
 changing the existing C ABI. Legacy uint8 mass readback saturates at 255.

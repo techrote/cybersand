@@ -1,0 +1,1775 @@
+{
+  "counts": {
+    "completed_processes": 5,
+    "confirmed_production_defects": 0,
+    "episodes": 7,
+    "episodes_with_raw_tape": 6,
+    "incomplete_processes": 2,
+    "observed_completed_actions": 988,
+    "requested_actions": 1280
+  },
+  "custody": "The original retained files existed and were hashed during recovery. This committed document contains metadata and summaries, not the complete raw tapes; source paths are local evidence locators, not a promise of permanent external artifact availability.",
+  "episodes": [
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": true,
+        "raw_provenance_equal": true,
+        "raw_serializations_semantically_equal": true,
+        "summary_matches_qualification": true
+      },
+      "episode_id": "long-final-1649f086-builder-liquid_channel-s605-b128-a01",
+      "evidence_kind": "headless_godot",
+      "header": {
+        "campaign_timeout_msec": 150000,
+        "fixture_id": "liquid_channel",
+        "fixture_sha256": "92f183fe3eda1b36404af079ce60743cd85b5d1ad25bd7637aa9af6a67d27417",
+        "fixture_state": "installed",
+        "fixture_version": 1,
+        "initial_scene_identity": "92f183fe3eda1b36404af079ce60743cd85b5d1ad25bd7637aa9af6a67d27417",
+        "native_worker_threads": 1,
+        "replay": false,
+        "reproduction_fixture": false
+      },
+      "interpretation": "completed_predecessor_episode",
+      "launch": {
+        "budget": 128,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "liquid_channel",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "BUILDER",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": null,
+      "process": {
+        "campaign_identity_matches": true,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": true,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 31.895,
+        "exit_code": 0,
+        "independent_readback": {
+          "errors": [],
+          "independent_failures": [],
+          "unreported_failures": [],
+          "valid": true
+        },
+        "log_sha256": "eb9ccc94a8b70574465d1ac4b8d81c493d67e1957d7b84557055fe76f2e9551f",
+        "status": "pass",
+        "timeout_seconds": 180,
+        "transcript_sha256": "7f2c86304eeeda19416e9147d284cf67a1f02e9b275e6df5c1bdd855a5f1215c"
+      },
+      "profile": {
+        "bytes": 1410,
+        "path": "profile/goblin-profile.json",
+        "sha256": "0fb220ca50513b4b4dcbcefef8dc3b2df0715b1ca6da7efd9d6325bf7539ce1c"
+      },
+      "qualification": {
+        "bytes": 4588,
+        "path": "qualification.json",
+        "sha256": "fdfac490836230ce5bad2427269b16ff9a29966fe30b0c93fbd6afca8efef695"
+      },
+      "raw_tapes": [
+        {
+          "bytes": 2019365,
+          "matches_qualification_transcript_sha256": true,
+          "paths": [
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "7f2c86304eeeda19416e9147d284cf67a1f02e9b275e6df5c1bdd855a5f1215c"
+        },
+        {
+          "bytes": 2655130,
+          "matches_qualification_transcript_sha256": false,
+          "paths": [
+            "transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "913d08273c86ec937bffa487dc8d96073f0c17140c0dc2eb0c2d46c151b9d27b"
+        }
+      ],
+      "resource_observations": null,
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": {
+        "action_attempts": {
+          "actor_place": 1,
+          "camera": 8,
+          "erase": 8,
+          "pause": 23,
+          "play": 16,
+          "rectangle": 40,
+          "select_material": 24,
+          "wait_ticks": 8
+        },
+        "assertions": {
+          "fail": 0,
+          "not_applicable": 0,
+          "pass": 1457
+        },
+        "attempted_actions": 128,
+        "classification_counts": {
+          "game_observation": 128
+        },
+        "completed_actions": 128,
+        "completed_adjacent_pairs": {
+          "actor_place -> pause": 1,
+          "camera -> select_material": 8,
+          "erase -> play": 8,
+          "pause -> actor_place": 1,
+          "pause -> camera": 8,
+          "pause -> erase": 8,
+          "pause -> pause": 6,
+          "play -> pause": 7,
+          "play -> wait_ticks": 8,
+          "rectangle -> play": 8,
+          "rectangle -> rectangle": 16,
+          "rectangle -> select_material": 16,
+          "select_material -> rectangle": 24,
+          "wait_ticks -> pause": 8
+        },
+        "completed_features": {
+          "actor_place": 1,
+          "camera": 8,
+          "erase": 8,
+          "pause": 23,
+          "play": 16,
+          "rectangle": 40,
+          "select_material": 24,
+          "wait_ticks": 8
+        },
+        "completed_triples": {
+          "actor_place -> pause -> camera": 1,
+          "camera -> select_material -> rectangle": 8,
+          "erase -> play -> pause": 7,
+          "pause -> actor_place -> pause": 1,
+          "pause -> camera -> select_material": 8,
+          "pause -> erase -> play": 8,
+          "pause -> pause -> camera": 6,
+          "play -> pause -> actor_place": 1,
+          "play -> pause -> pause": 6,
+          "play -> wait_ticks -> pause": 8,
+          "rectangle -> play -> wait_ticks": 8,
+          "rectangle -> rectangle -> rectangle": 8,
+          "rectangle -> rectangle -> select_material": 8,
+          "rectangle -> select_material -> rectangle": 16,
+          "select_material -> rectangle -> play": 8,
+          "select_material -> rectangle -> rectangle": 8,
+          "select_material -> rectangle -> select_material": 8,
+          "wait_ticks -> pause -> erase": 8
+        },
+        "distinct_completed_features": 8,
+        "duration_usec": 14456403,
+        "failures": [],
+        "status_counts": {
+          "completed": 128
+        },
+        "termination": "budget_complete"
+      }
+    },
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": true,
+        "raw_provenance_equal": true,
+        "raw_serializations_semantically_equal": true,
+        "summary_matches_qualification": true
+      },
+      "episode_id": "long-final-1649f086-control-material_playground-s605-b128-a01",
+      "evidence_kind": "headless_godot",
+      "header": {
+        "campaign_timeout_msec": 150000,
+        "fixture_id": "material_playground",
+        "fixture_sha256": "aa26825866a97595f6bc31b37eeea0c66067e63d9cd6da7995889eba2189b44e",
+        "fixture_state": "installed",
+        "fixture_version": 1,
+        "initial_scene_identity": "aa26825866a97595f6bc31b37eeea0c66067e63d9cd6da7995889eba2189b44e",
+        "native_worker_threads": 1,
+        "replay": false,
+        "reproduction_fixture": false
+      },
+      "interpretation": "completed_predecessor_episode",
+      "launch": {
+        "budget": 128,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "material_playground",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "CONTROL",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": null,
+      "process": {
+        "campaign_identity_matches": true,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": true,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 50.148,
+        "exit_code": 0,
+        "independent_readback": {
+          "errors": [],
+          "independent_failures": [],
+          "unreported_failures": [],
+          "valid": true
+        },
+        "log_sha256": "d5e2b9d3b0fdeb466f95ace6326558effc72af55db0c838e8a7e90e0aeb3f553",
+        "status": "pass",
+        "timeout_seconds": 180,
+        "transcript_sha256": "895cc02bf7204c08fbe8ab31a88ccf9b7d6bc9bf37547e0adc2a3b9e00b2cf17"
+      },
+      "profile": {
+        "bytes": 1415,
+        "path": "profile/goblin-profile.json",
+        "sha256": "486ada8e10d16ec53798ba03c5d064dd0abdb66eabb46418dd93139bb0b4050e"
+      },
+      "qualification": {
+        "bytes": 6876,
+        "path": "qualification.json",
+        "sha256": "498d4897c8bae8799e854376c80e7f8a133562c2d15a0fef351d4823c73d6954"
+      },
+      "raw_tapes": [
+        {
+          "bytes": 2801098,
+          "matches_qualification_transcript_sha256": true,
+          "paths": [
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "895cc02bf7204c08fbe8ab31a88ccf9b7d6bc9bf37547e0adc2a3b9e00b2cf17"
+        },
+        {
+          "bytes": 3755854,
+          "matches_qualification_transcript_sha256": false,
+          "paths": [
+            "transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "55d7ac8d11f5d1c9b63bd0037707bdc013ac469f46898f9fbcc6fd8b5291f54f"
+        }
+      ],
+      "resource_observations": null,
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": {
+        "action_attempts": {
+          "actor_drive": 4,
+          "actor_pilot": 4,
+          "actor_place": 1,
+          "actor_reset": 4,
+          "actor_select": 4,
+          "brush": 5,
+          "camera": 13,
+          "copy": 4,
+          "fill": 4,
+          "outline": 4,
+          "panel": 8,
+          "paste": 4,
+          "pause": 9,
+          "play": 4,
+          "rectangle": 5,
+          "redo": 4,
+          "reopen_layout": 4,
+          "save_layout": 4,
+          "select_material": 18,
+          "select_region": 9,
+          "single_step": 4,
+          "undo": 4,
+          "wait_ticks": 4
+        },
+        "assertions": {
+          "fail": 0,
+          "not_applicable": 3,
+          "pass": 1660
+        },
+        "attempted_actions": 128,
+        "classification_counts": {
+          "game_observation": 128
+        },
+        "completed_actions": 128,
+        "completed_adjacent_pairs": {
+          "actor_drive -> wait_ticks": 4,
+          "actor_pilot -> play": 4,
+          "actor_place -> actor_select": 1,
+          "actor_reset -> pause": 4,
+          "actor_select -> actor_pilot": 4,
+          "brush -> select_region": 5,
+          "camera -> camera": 4,
+          "camera -> panel": 4,
+          "camera -> select_material": 5,
+          "copy -> paste": 4,
+          "fill -> save_layout": 4,
+          "outline -> select_region": 4,
+          "panel -> actor_place": 1,
+          "panel -> actor_select": 3,
+          "panel -> panel": 4,
+          "paste -> undo": 4,
+          "pause -> camera": 5,
+          "pause -> single_step": 4,
+          "play -> actor_drive": 4,
+          "rectangle -> select_material": 5,
+          "redo -> select_material": 4,
+          "reopen_layout -> camera": 4,
+          "save_layout -> reopen_layout": 4,
+          "select_material -> brush": 5,
+          "select_material -> fill": 4,
+          "select_material -> outline": 4,
+          "select_material -> rectangle": 5,
+          "select_region -> copy": 4,
+          "select_region -> select_material": 4,
+          "single_step -> actor_reset": 4,
+          "undo -> redo": 4,
+          "wait_ticks -> pause": 4
+        },
+        "completed_features": {
+          "actor_drive": 4,
+          "actor_pilot": 4,
+          "actor_place": 1,
+          "actor_reset": 4,
+          "actor_select": 4,
+          "brush": 5,
+          "camera": 13,
+          "copy": 4,
+          "fill": 4,
+          "outline": 4,
+          "panel": 8,
+          "paste": 4,
+          "pause": 9,
+          "play": 4,
+          "rectangle": 5,
+          "redo": 4,
+          "reopen_layout": 4,
+          "save_layout": 4,
+          "select_material": 18,
+          "select_region": 9,
+          "single_step": 4,
+          "undo": 4,
+          "wait_ticks": 4
+        },
+        "completed_triples": {
+          "actor_drive -> wait_ticks -> pause": 4,
+          "actor_pilot -> play -> actor_drive": 4,
+          "actor_place -> actor_select -> actor_pilot": 1,
+          "actor_reset -> pause -> camera": 4,
+          "actor_select -> actor_pilot -> play": 4,
+          "brush -> select_region -> copy": 4,
+          "camera -> camera -> panel": 4,
+          "camera -> panel -> panel": 4,
+          "camera -> select_material -> rectangle": 5,
+          "copy -> paste -> undo": 4,
+          "fill -> save_layout -> reopen_layout": 4,
+          "outline -> select_region -> select_material": 4,
+          "panel -> actor_place -> actor_select": 1,
+          "panel -> actor_select -> actor_pilot": 3,
+          "panel -> panel -> actor_place": 1,
+          "panel -> panel -> actor_select": 3,
+          "paste -> undo -> redo": 4,
+          "pause -> camera -> select_material": 5,
+          "pause -> single_step -> actor_reset": 4,
+          "play -> actor_drive -> wait_ticks": 4,
+          "rectangle -> select_material -> brush": 5,
+          "redo -> select_material -> outline": 4,
+          "reopen_layout -> camera -> camera": 4,
+          "save_layout -> reopen_layout -> camera": 4,
+          "select_material -> brush -> select_region": 5,
+          "select_material -> fill -> save_layout": 4,
+          "select_material -> outline -> select_region": 4,
+          "select_material -> rectangle -> select_material": 5,
+          "select_region -> copy -> paste": 4,
+          "select_region -> select_material -> fill": 4,
+          "single_step -> actor_reset -> pause": 4,
+          "undo -> redo -> select_material": 4,
+          "wait_ticks -> pause -> single_step": 4
+        },
+        "distinct_completed_features": 23,
+        "duration_usec": 25299144,
+        "failures": [],
+        "status_counts": {
+          "completed": 128
+        },
+        "termination": "budget_complete"
+      }
+    },
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": true,
+        "raw_provenance_equal": true,
+        "raw_serializations_semantically_equal": true,
+        "summary_matches_qualification": true
+      },
+      "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a01",
+      "evidence_kind": "headless_godot",
+      "header": {
+        "campaign_timeout_msec": 150000,
+        "fixture_id": "construction",
+        "fixture_sha256": "8de5ae43839f997536a72bdfacb7d6984c5c65aa20115748b71e35959f08b745",
+        "fixture_state": "installed",
+        "fixture_version": 1,
+        "initial_scene_identity": "8de5ae43839f997536a72bdfacb7d6984c5c65aa20115748b71e35959f08b745",
+        "native_worker_threads": 1,
+        "replay": false,
+        "reproduction_fixture": false
+      },
+      "interpretation": "incomplete_process_unattributed_sigkill",
+      "launch": {
+        "budget": 256,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "construction",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "CURIOSITY",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": {
+        "action": {
+          "args": {
+            "radius": 2,
+            "x": 176,
+            "y": 112
+          },
+          "goal": "Investigate the under-exercised brush control",
+          "id": "brush"
+        },
+        "admission": {
+          "accepted": true,
+          "token": 9
+        },
+        "before": {
+          "actor_ids": [],
+          "actor_tick": -1,
+          "actors": [],
+          "authored_digest": "f383d763441e23b5c0ba1d51e3ccb94ed607063440144b1219f5377906d931fa",
+          "brush_radius": 0,
+          "camera": {
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "size": [
+              480,
+              270
+            ]
+          },
+          "can_redo": false,
+          "can_undo": true,
+          "clipboard": {
+            "materials": [],
+            "region": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "clipboard_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "clipboard_size": [
+            0,
+            0
+          ],
+          "controllable_actor_ids": [],
+          "details_open": false,
+          "editor_completed_actions": 68,
+          "fixture_id": "construction",
+          "material": 7,
+          "message": "Rectangle \u00b7 wood \u00b7 radius 0",
+          "mounted": true,
+          "native": {
+            "busy": false,
+            "failed": false,
+            "generation": 19,
+            "paused": true,
+            "revision": 3777,
+            "tick": 0
+          },
+          "native_worker_request": 1,
+          "next_actor_id": 1,
+          "panels": {
+            "details": false
+          },
+          "paused": true,
+          "physical_epoch": 10,
+          "pilot_actor": 0,
+          "redo_available": false,
+          "saved_authored_digest": "",
+          "saved_material_digest": "",
+          "saved_native_tick": -1,
+          "scene_identity": "8de5ae43839f997536a72bdfacb7d6984c5c65aa20115748b71e35959f08b745",
+          "selected_actor": 0,
+          "selection": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "snapshot_tick": 0,
+          "step_observed_serial": 4,
+          "step_serial": 4,
+          "stopped": false,
+          "tool": "Rectangle",
+          "undo_available": true
+        },
+        "index": 220,
+        "observed_after_admission": {
+          "actor_ids": [],
+          "actor_tick": -1,
+          "actors": [],
+          "authored_digest": "f383d763441e23b5c0ba1d51e3ccb94ed607063440144b1219f5377906d931fa",
+          "brush_radius": 2,
+          "camera": {
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "size": [
+              480,
+              270
+            ]
+          },
+          "can_redo": false,
+          "can_undo": false,
+          "clipboard": {
+            "materials": [],
+            "region": [
+              0,
+              0,
+              0,
+              0
+            ]
+          },
+          "clipboard_digest": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "clipboard_size": [
+            0,
+            0
+          ],
+          "controllable_actor_ids": [],
+          "details_open": false,
+          "editor_completed_actions": 68,
+          "fixture_id": "construction",
+          "material": 7,
+          "message": "Planning Human brush\u2026",
+          "mounted": true,
+          "native": {
+            "busy": false,
+            "failed": false,
+            "generation": 19,
+            "paused": true,
+            "revision": 3777,
+            "tick": 0
+          },
+          "native_worker_request": 1,
+          "next_actor_id": 1,
+          "panels": {
+            "details": false
+          },
+          "paused": true,
+          "physical_epoch": 10,
+          "pilot_actor": 0,
+          "redo_available": false,
+          "saved_authored_digest": "",
+          "saved_material_digest": "",
+          "saved_native_tick": -1,
+          "scene_identity": "8de5ae43839f997536a72bdfacb7d6984c5c65aa20115748b71e35959f08b745",
+          "selected_actor": 0,
+          "selection": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "snapshot_tick": 0,
+          "step_observed_serial": 4,
+          "step_serial": 4,
+          "stopped": false,
+          "tool": "Brush",
+          "undo_available": false
+        },
+        "started_msec": 94063,
+        "status": "accepted"
+      },
+      "process": {
+        "campaign_identity_matches": true,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": false,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 95.695,
+        "exit_code": -9,
+        "independent_readback": {
+          "errors": [],
+          "independent_failures": [],
+          "unreported_failures": [],
+          "valid": true
+        },
+        "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+        "status": "crash",
+        "timeout_seconds": 180,
+        "transcript_sha256": "efc3d14ffc17ddd878c086345482a019646ed0681acefc217dd6a022bbaab0db"
+      },
+      "profile": {
+        "bytes": 1410,
+        "path": "profile/goblin-profile.json",
+        "sha256": "b4aa092cce1c8a8798c695ec24b8914a46ac717b10431878192e4066ffa143e1"
+      },
+      "qualification": {
+        "bytes": 10310,
+        "path": "qualification.json",
+        "sha256": "2412217ead834c5169af3d2c403d466f3a1c45e5cdf899f569b4ff8cd5e24ab4"
+      },
+      "raw_tapes": [
+        {
+          "bytes": 4292958,
+          "matches_qualification_transcript_sha256": true,
+          "paths": [
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+          ],
+          "recorded_step_count": 220,
+          "sha256": "efc3d14ffc17ddd878c086345482a019646ed0681acefc217dd6a022bbaab0db"
+        },
+        {
+          "bytes": 5847177,
+          "matches_qualification_transcript_sha256": false,
+          "paths": [
+            "transcript.json"
+          ],
+          "recorded_step_count": 220,
+          "sha256": "4bbf9d07709dea354f0b482a9e1dd07ef3a1141f133e4bedba4e78977f0e6d09"
+        }
+      ],
+      "resource_observations": null,
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": {
+        "action_attempts": {
+          "actor_pilot": 4,
+          "actor_place": 4,
+          "actor_reset": 4,
+          "actor_select": 5,
+          "brush": 4,
+          "camera": 7,
+          "copy": 2,
+          "erase": 4,
+          "fill": 3,
+          "line": 5,
+          "outline": 5,
+          "panel": 5,
+          "paste": 2,
+          "pause": 56,
+          "play": 13,
+          "rectangle": 5,
+          "redo": 20,
+          "reopen_layout": 4,
+          "reset_fixture": 4,
+          "save_layout": 4,
+          "select_material": 27,
+          "select_region": 7,
+          "single_step": 4,
+          "undo": 20,
+          "wait_ticks": 2
+        },
+        "assertions": {
+          "fail": 0,
+          "not_applicable": 3,
+          "pass": 2518
+        },
+        "attempted_actions": 220,
+        "classification_counts": {
+          "game_observation": 220
+        },
+        "completed_actions": 220,
+        "completed_adjacent_pairs": {
+          "actor_pilot -> play": 4,
+          "actor_place -> play": 4,
+          "actor_reset -> play": 4,
+          "actor_select -> actor_pilot": 4,
+          "actor_select -> panel": 1,
+          "brush -> undo": 4,
+          "camera -> pause": 1,
+          "camera -> select_material": 3,
+          "camera -> select_region": 3,
+          "copy -> paste": 2,
+          "erase -> undo": 4,
+          "fill -> pause": 3,
+          "line -> undo": 5,
+          "outline -> select_region": 3,
+          "outline -> undo": 2,
+          "panel -> panel": 1,
+          "panel -> pause": 2,
+          "panel -> reset_fixture": 1,
+          "panel -> single_step": 1,
+          "paste -> panel": 1,
+          "paste -> pause": 1,
+          "pause -> actor_place": 4,
+          "pause -> actor_reset": 4,
+          "pause -> actor_select": 5,
+          "pause -> camera": 5,
+          "pause -> pause": 9,
+          "pause -> reset_fixture": 2,
+          "pause -> save_layout": 4,
+          "pause -> select_material": 21,
+          "pause -> single_step": 2,
+          "play -> pause": 12,
+          "play -> wait_ticks": 1,
+          "rectangle -> undo": 5,
+          "redo -> camera": 1,
+          "redo -> panel": 1,
+          "redo -> pause": 15,
+          "redo -> reset_fixture": 1,
+          "redo -> select_region": 1,
+          "redo -> single_step": 1,
+          "reopen_layout -> panel": 1,
+          "reopen_layout -> pause": 3,
+          "reset_fixture -> camera": 1,
+          "reset_fixture -> pause": 3,
+          "save_layout -> reopen_layout": 4,
+          "select_material -> brush": 4,
+          "select_material -> erase": 4,
+          "select_material -> fill": 3,
+          "select_material -> line": 5,
+          "select_material -> outline": 5,
+          "select_material -> rectangle": 5,
+          "select_region -> copy": 2,
+          "select_region -> pause": 1,
+          "select_region -> play": 1,
+          "select_region -> select_material": 3,
+          "single_step -> pause": 4,
+          "undo -> redo": 20,
+          "wait_ticks -> pause": 1,
+          "wait_ticks -> wait_ticks": 1
+        },
+        "completed_features": {
+          "actor_pilot": 4,
+          "actor_place": 4,
+          "actor_reset": 4,
+          "actor_select": 5,
+          "brush": 4,
+          "camera": 7,
+          "copy": 2,
+          "erase": 4,
+          "fill": 3,
+          "line": 5,
+          "outline": 5,
+          "panel": 5,
+          "paste": 2,
+          "pause": 56,
+          "play": 13,
+          "rectangle": 5,
+          "redo": 20,
+          "reopen_layout": 4,
+          "reset_fixture": 4,
+          "save_layout": 4,
+          "select_material": 27,
+          "select_region": 7,
+          "single_step": 4,
+          "undo": 20,
+          "wait_ticks": 2
+        },
+        "completed_triples": {
+          "actor_pilot -> play -> pause": 4,
+          "actor_place -> play -> pause": 4,
+          "actor_reset -> play -> pause": 4,
+          "actor_select -> actor_pilot -> play": 4,
+          "actor_select -> panel -> panel": 1,
+          "brush -> undo -> redo": 4,
+          "camera -> pause -> select_material": 1,
+          "camera -> select_material -> outline": 3,
+          "camera -> select_region -> copy": 2,
+          "camera -> select_region -> pause": 1,
+          "copy -> paste -> panel": 1,
+          "copy -> paste -> pause": 1,
+          "erase -> undo -> redo": 4,
+          "fill -> pause -> actor_place": 1,
+          "fill -> pause -> camera": 1,
+          "fill -> pause -> save_layout": 1,
+          "line -> undo -> redo": 5,
+          "outline -> select_region -> select_material": 3,
+          "outline -> undo -> redo": 2,
+          "panel -> panel -> pause": 1,
+          "panel -> pause -> actor_reset": 1,
+          "panel -> pause -> select_material": 1,
+          "panel -> reset_fixture -> pause": 1,
+          "panel -> single_step -> pause": 1,
+          "paste -> panel -> single_step": 1,
+          "paste -> pause -> camera": 1,
+          "pause -> actor_place -> play": 4,
+          "pause -> actor_reset -> play": 4,
+          "pause -> actor_select -> actor_pilot": 4,
+          "pause -> actor_select -> panel": 1,
+          "pause -> camera -> select_material": 3,
+          "pause -> camera -> select_region": 2,
+          "pause -> pause -> actor_reset": 1,
+          "pause -> pause -> actor_select": 3,
+          "pause -> pause -> select_material": 5,
+          "pause -> reset_fixture -> pause": 2,
+          "pause -> save_layout -> reopen_layout": 4,
+          "pause -> select_material -> brush": 4,
+          "pause -> select_material -> erase": 4,
+          "pause -> select_material -> line": 5,
+          "pause -> select_material -> outline": 2,
+          "pause -> select_material -> rectangle": 5,
+          "pause -> single_step -> pause": 2,
+          "play -> pause -> pause": 8,
+          "play -> pause -> reset_fixture": 2,
+          "play -> pause -> single_step": 2,
+          "play -> wait_ticks -> wait_ticks": 1,
+          "rectangle -> undo -> redo": 5,
+          "redo -> camera -> pause": 1,
+          "redo -> panel -> pause": 1,
+          "redo -> pause -> actor_place": 2,
+          "redo -> pause -> actor_reset": 1,
+          "redo -> pause -> save_layout": 1,
+          "redo -> pause -> select_material": 11,
+          "redo -> reset_fixture -> camera": 1,
+          "redo -> select_region -> play": 1,
+          "redo -> single_step -> pause": 1,
+          "reopen_layout -> panel -> reset_fixture": 1,
+          "reopen_layout -> pause -> actor_place": 1,
+          "reopen_layout -> pause -> actor_select": 2,
+          "reset_fixture -> camera -> select_region": 1,
+          "reset_fixture -> pause -> save_layout": 1,
+          "reset_fixture -> pause -> select_material": 2,
+          "save_layout -> reopen_layout -> panel": 1,
+          "save_layout -> reopen_layout -> pause": 3,
+          "select_material -> brush -> undo": 4,
+          "select_material -> erase -> undo": 4,
+          "select_material -> fill -> pause": 3,
+          "select_material -> line -> undo": 5,
+          "select_material -> outline -> select_region": 3,
+          "select_material -> outline -> undo": 2,
+          "select_material -> rectangle -> undo": 5,
+          "select_region -> copy -> paste": 2,
+          "select_region -> pause -> camera": 1,
+          "select_region -> play -> wait_ticks": 1,
+          "select_region -> select_material -> fill": 3,
+          "single_step -> pause -> actor_reset": 1,
+          "single_step -> pause -> camera": 2,
+          "single_step -> pause -> save_layout": 1,
+          "undo -> redo -> camera": 1,
+          "undo -> redo -> panel": 1,
+          "undo -> redo -> pause": 15,
+          "undo -> redo -> reset_fixture": 1,
+          "undo -> redo -> select_region": 1,
+          "undo -> redo -> single_step": 1,
+          "wait_ticks -> pause -> pause": 1,
+          "wait_ticks -> wait_ticks -> pause": 1
+        },
+        "distinct_completed_features": 25,
+        "duration_usec": 44571542,
+        "failures": [],
+        "status_counts": {
+          "completed": 220
+        },
+        "termination": "in_progress"
+      }
+    },
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": true,
+        "raw_provenance_equal": true,
+        "raw_serializations_semantically_equal": true,
+        "summary_matches_qualification": true
+      },
+      "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a02",
+      "evidence_kind": "headless_godot",
+      "header": {
+        "campaign_timeout_msec": 150000,
+        "fixture_id": "construction",
+        "fixture_sha256": "8de5ae43839f997536a72bdfacb7d6984c5c65aa20115748b71e35959f08b745",
+        "fixture_state": "installed",
+        "fixture_version": 1,
+        "initial_scene_identity": "8de5ae43839f997536a72bdfacb7d6984c5c65aa20115748b71e35959f08b745",
+        "native_worker_threads": 1,
+        "replay": false,
+        "reproduction_fixture": false
+      },
+      "interpretation": "completed_predecessor_episode",
+      "launch": {
+        "budget": 256,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "construction",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "CURIOSITY",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": null,
+      "process": {
+        "campaign_identity_matches": true,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": true,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 139.336,
+        "exit_code": 0,
+        "independent_readback": {
+          "errors": [],
+          "independent_failures": [],
+          "unreported_failures": [],
+          "valid": true
+        },
+        "log_sha256": "f80336fce3e14110a99200a8ca43f1d6951f17101001790c67b0014cb0840c6d",
+        "status": "pass",
+        "timeout_seconds": 180,
+        "transcript_sha256": "d17c95d08bdbf11271668117569ddf577fecd6fa6972cff08b0e77f79d51d5ac"
+      },
+      "profile": {
+        "bytes": 1410,
+        "path": "profile/goblin-profile.json",
+        "sha256": "b4aa092cce1c8a8798c695ec24b8914a46ac717b10431878192e4066ffa143e1"
+      },
+      "qualification": {
+        "bytes": 10525,
+        "path": "qualification.json",
+        "sha256": "bcd4f992f3b059012fe0b6b2efbdd8d22d881900892c5e675a199cf3d1cdcbf6"
+      },
+      "raw_tapes": [
+        {
+          "bytes": 4939620,
+          "matches_qualification_transcript_sha256": true,
+          "paths": [
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+          ],
+          "recorded_step_count": 256,
+          "sha256": "d17c95d08bdbf11271668117569ddf577fecd6fa6972cff08b0e77f79d51d5ac"
+        },
+        {
+          "bytes": 6727638,
+          "matches_qualification_transcript_sha256": false,
+          "paths": [
+            "transcript.json"
+          ],
+          "recorded_step_count": 256,
+          "sha256": "34b89ded86c36e5594f571b8909149e56cd75a670a19a103a269491c9c742b0c"
+        }
+      ],
+      "resource_observations": {
+        "after": {
+          "major_page_faults": 572,
+          "minor_page_faults": 394150,
+          "peak_rss_kib": 576708,
+          "system_cpu_seconds": 7.832571,
+          "user_cpu_seconds": 140.244973
+        },
+        "before": {
+          "major_page_faults": 40,
+          "minor_page_faults": 5593,
+          "peak_rss_kib": 37764,
+          "system_cpu_seconds": 0.14954299999999998,
+          "user_cpu_seconds": 0.06848499999999999
+        },
+        "environment_after": {
+          "available_disk_bytes": 510865408,
+          "cgroup_files": {
+            "/sys/fs/cgroup/memory.current": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.current'"
+            },
+            "/sys/fs/cgroup/memory.events": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.events'"
+            },
+            "/sys/fs/cgroup/memory.max": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.max'"
+            },
+            "/sys/fs/cgroup/memory.swap.current": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.swap.current'"
+            },
+            "/sys/fs/cgroup/memory.swap.max": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.swap.max'"
+            }
+          },
+          "meminfo": {
+            "MemAvailable": "2302900 kB",
+            "MemTotal": "10206468 kB",
+            "SwapFree": "0 kB",
+            "SwapTotal": "0 kB"
+          },
+          "observed_at_utc": "2026-11-24T19:58:50.072781+00:00"
+        },
+        "environment_before": {
+          "available_disk_bytes": 258912256,
+          "cgroup_files": {
+            "/sys/fs/cgroup/memory.current": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.current'"
+            },
+            "/sys/fs/cgroup/memory.events": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.events'"
+            },
+            "/sys/fs/cgroup/memory.max": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.max'"
+            },
+            "/sys/fs/cgroup/memory.swap.current": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.swap.current'"
+            },
+            "/sys/fs/cgroup/memory.swap.max": {
+              "unavailable": "[Errno 2] No such file or directory: '/sys/fs/cgroup/memory.swap.max'"
+            }
+          },
+          "meminfo": {
+            "MemAvailable": "2483260 kB",
+            "MemTotal": "10206468 kB",
+            "SwapFree": "0 kB",
+            "SwapTotal": "0 kB"
+          },
+          "observed_at_utc": "2026-11-24T19:56:30.735363+00:00"
+        },
+        "schema": "gip014-child-resource-observations-v1",
+        "scope": "RUSAGE_CHILDREN sampled immediately before/after the sole game command. Linux ru_maxrss is KiB and is the cumulative largest child RSS of this short driver, including earlier small custody helpers. No kill cause is inferred from these observations.",
+        "system_cpu_seconds_during_game_command": 7.683028,
+        "user_cpu_seconds_during_game_command": 140.17648799999998
+      },
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": {
+        "action_attempts": {
+          "actor_pilot": 4,
+          "actor_place": 6,
+          "actor_reset": 5,
+          "actor_select": 5,
+          "brush": 5,
+          "camera": 7,
+          "copy": 2,
+          "erase": 5,
+          "fill": 3,
+          "line": 6,
+          "outline": 6,
+          "panel": 5,
+          "paste": 2,
+          "pause": 67,
+          "play": 16,
+          "rectangle": 5,
+          "redo": 24,
+          "reopen_layout": 5,
+          "reset_fixture": 5,
+          "save_layout": 5,
+          "select_material": 30,
+          "select_region": 7,
+          "single_step": 5,
+          "undo": 24,
+          "wait_ticks": 2
+        },
+        "assertions": {
+          "fail": 0,
+          "not_applicable": 3,
+          "pass": 2888
+        },
+        "attempted_actions": 256,
+        "classification_counts": {
+          "game_observation": 256
+        },
+        "completed_actions": 256,
+        "completed_adjacent_pairs": {
+          "actor_pilot -> play": 4,
+          "actor_place -> play": 6,
+          "actor_reset -> play": 5,
+          "actor_select -> actor_pilot": 4,
+          "actor_select -> panel": 1,
+          "brush -> undo": 5,
+          "camera -> pause": 1,
+          "camera -> select_material": 3,
+          "camera -> select_region": 3,
+          "copy -> paste": 2,
+          "erase -> undo": 5,
+          "fill -> pause": 3,
+          "line -> undo": 6,
+          "outline -> select_region": 3,
+          "outline -> undo": 3,
+          "panel -> panel": 1,
+          "panel -> pause": 2,
+          "panel -> reset_fixture": 1,
+          "panel -> single_step": 1,
+          "paste -> panel": 1,
+          "paste -> pause": 1,
+          "pause -> actor_place": 6,
+          "pause -> actor_reset": 5,
+          "pause -> actor_select": 5,
+          "pause -> camera": 5,
+          "pause -> pause": 11,
+          "pause -> reset_fixture": 2,
+          "pause -> save_layout": 5,
+          "pause -> select_material": 24,
+          "pause -> single_step": 3,
+          "play -> pause": 15,
+          "play -> wait_ticks": 1,
+          "rectangle -> undo": 5,
+          "redo -> camera": 1,
+          "redo -> panel": 1,
+          "redo -> pause": 19,
+          "redo -> reset_fixture": 1,
+          "redo -> select_region": 1,
+          "redo -> single_step": 1,
+          "reopen_layout -> panel": 1,
+          "reopen_layout -> pause": 4,
+          "reset_fixture -> camera": 1,
+          "reset_fixture -> pause": 4,
+          "save_layout -> reopen_layout": 5,
+          "select_material -> brush": 5,
+          "select_material -> erase": 5,
+          "select_material -> fill": 3,
+          "select_material -> line": 6,
+          "select_material -> outline": 6,
+          "select_material -> rectangle": 5,
+          "select_region -> copy": 2,
+          "select_region -> pause": 1,
+          "select_region -> play": 1,
+          "select_region -> select_material": 3,
+          "single_step -> pause": 4,
+          "single_step -> reset_fixture": 1,
+          "undo -> redo": 24,
+          "wait_ticks -> pause": 1,
+          "wait_ticks -> wait_ticks": 1
+        },
+        "completed_features": {
+          "actor_pilot": 4,
+          "actor_place": 6,
+          "actor_reset": 5,
+          "actor_select": 5,
+          "brush": 5,
+          "camera": 7,
+          "copy": 2,
+          "erase": 5,
+          "fill": 3,
+          "line": 6,
+          "outline": 6,
+          "panel": 5,
+          "paste": 2,
+          "pause": 67,
+          "play": 16,
+          "rectangle": 5,
+          "redo": 24,
+          "reopen_layout": 5,
+          "reset_fixture": 5,
+          "save_layout": 5,
+          "select_material": 30,
+          "select_region": 7,
+          "single_step": 5,
+          "undo": 24,
+          "wait_ticks": 2
+        },
+        "completed_triples": {
+          "actor_pilot -> play -> pause": 4,
+          "actor_place -> play -> pause": 6,
+          "actor_reset -> play -> pause": 5,
+          "actor_select -> actor_pilot -> play": 4,
+          "actor_select -> panel -> panel": 1,
+          "brush -> undo -> redo": 5,
+          "camera -> pause -> select_material": 1,
+          "camera -> select_material -> outline": 3,
+          "camera -> select_region -> copy": 2,
+          "camera -> select_region -> pause": 1,
+          "copy -> paste -> panel": 1,
+          "copy -> paste -> pause": 1,
+          "erase -> undo -> redo": 5,
+          "fill -> pause -> actor_place": 1,
+          "fill -> pause -> camera": 1,
+          "fill -> pause -> save_layout": 1,
+          "line -> undo -> redo": 6,
+          "outline -> select_region -> select_material": 3,
+          "outline -> undo -> redo": 3,
+          "panel -> panel -> pause": 1,
+          "panel -> pause -> actor_reset": 1,
+          "panel -> pause -> select_material": 1,
+          "panel -> reset_fixture -> pause": 1,
+          "panel -> single_step -> pause": 1,
+          "paste -> panel -> single_step": 1,
+          "paste -> pause -> camera": 1,
+          "pause -> actor_place -> play": 6,
+          "pause -> actor_reset -> play": 5,
+          "pause -> actor_select -> actor_pilot": 4,
+          "pause -> actor_select -> panel": 1,
+          "pause -> camera -> select_material": 3,
+          "pause -> camera -> select_region": 2,
+          "pause -> pause -> actor_reset": 1,
+          "pause -> pause -> actor_select": 3,
+          "pause -> pause -> select_material": 6,
+          "pause -> reset_fixture -> pause": 2,
+          "pause -> save_layout -> reopen_layout": 5,
+          "pause -> select_material -> brush": 5,
+          "pause -> select_material -> erase": 5,
+          "pause -> select_material -> line": 6,
+          "pause -> select_material -> outline": 3,
+          "pause -> select_material -> rectangle": 5,
+          "pause -> single_step -> pause": 2,
+          "pause -> single_step -> reset_fixture": 1,
+          "play -> pause -> pause": 10,
+          "play -> pause -> reset_fixture": 2,
+          "play -> pause -> single_step": 3,
+          "play -> wait_ticks -> wait_ticks": 1,
+          "rectangle -> undo -> redo": 5,
+          "redo -> camera -> pause": 1,
+          "redo -> panel -> pause": 1,
+          "redo -> pause -> actor_place": 4,
+          "redo -> pause -> actor_reset": 2,
+          "redo -> pause -> save_layout": 1,
+          "redo -> pause -> select_material": 12,
+          "redo -> reset_fixture -> camera": 1,
+          "redo -> select_region -> play": 1,
+          "redo -> single_step -> pause": 1,
+          "reopen_layout -> panel -> reset_fixture": 1,
+          "reopen_layout -> pause -> actor_place": 1,
+          "reopen_layout -> pause -> actor_select": 2,
+          "reopen_layout -> pause -> select_material": 1,
+          "reset_fixture -> camera -> select_region": 1,
+          "reset_fixture -> pause -> save_layout": 2,
+          "reset_fixture -> pause -> select_material": 2,
+          "save_layout -> reopen_layout -> panel": 1,
+          "save_layout -> reopen_layout -> pause": 4,
+          "select_material -> brush -> undo": 5,
+          "select_material -> erase -> undo": 5,
+          "select_material -> fill -> pause": 3,
+          "select_material -> line -> undo": 6,
+          "select_material -> outline -> select_region": 3,
+          "select_material -> outline -> undo": 3,
+          "select_material -> rectangle -> undo": 5,
+          "select_region -> copy -> paste": 2,
+          "select_region -> pause -> camera": 1,
+          "select_region -> play -> wait_ticks": 1,
+          "select_region -> select_material -> fill": 3,
+          "single_step -> pause -> actor_reset": 1,
+          "single_step -> pause -> camera": 2,
+          "single_step -> pause -> save_layout": 1,
+          "single_step -> reset_fixture -> pause": 1,
+          "undo -> redo -> camera": 1,
+          "undo -> redo -> panel": 1,
+          "undo -> redo -> pause": 19,
+          "undo -> redo -> reset_fixture": 1,
+          "undo -> redo -> select_region": 1,
+          "undo -> redo -> single_step": 1,
+          "wait_ticks -> pause -> pause": 1,
+          "wait_ticks -> wait_ticks -> pause": 1
+        },
+        "distinct_completed_features": 25,
+        "duration_usec": 63946270,
+        "failures": [],
+        "status_counts": {
+          "completed": 256
+        },
+        "termination": "budget_complete"
+      }
+    },
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": false,
+        "raw_provenance_equal": false,
+        "raw_serializations_semantically_equal": null,
+        "summary_matches_qualification": null
+      },
+      "episode_id": "long-final-1649f086-random-construction-s605-b256-a01",
+      "evidence_kind": "headless_godot",
+      "interpretation": "incomplete_process_unattributed_sigkill",
+      "launch": {
+        "budget": 256,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "construction",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "RANDOM",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": null,
+      "process": {
+        "campaign_identity_matches": null,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": false,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 22.021,
+        "exit_code": -9,
+        "independent_readback": null,
+        "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+        "status": "crash",
+        "timeout_seconds": 180,
+        "transcript_sha256": null
+      },
+      "profile": {
+        "bytes": 1407,
+        "path": "profile/goblin-profile.json",
+        "sha256": "a5817843f1ea43a34144990ddd30bebc21b418c382d823236e485d6a3e501452"
+      },
+      "qualification": {
+        "bytes": 1836,
+        "path": "qualification.json",
+        "sha256": "4c836a1d1f6574fc8c17e3b6411499458fa07004a430cccb8821949af9d8aa09"
+      },
+      "raw_tapes": [],
+      "resource_observations": null,
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": null
+    },
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": true,
+        "raw_provenance_equal": true,
+        "raw_serializations_semantically_equal": true,
+        "summary_matches_qualification": true
+      },
+      "episode_id": "long-final-1649f086-tinkerer-save_reopen-s605-b128-a01",
+      "evidence_kind": "headless_godot",
+      "header": {
+        "campaign_timeout_msec": 150000,
+        "fixture_id": "save_reopen",
+        "fixture_sha256": "5805b08f379d69aaaa3a53a14aefafad3c9c133684a268aee1faf99e7cf2d4d7",
+        "fixture_state": "installed",
+        "fixture_version": 1,
+        "initial_scene_identity": "5805b08f379d69aaaa3a53a14aefafad3c9c133684a268aee1faf99e7cf2d4d7",
+        "native_worker_threads": 1,
+        "replay": false,
+        "reproduction_fixture": false
+      },
+      "interpretation": "completed_predecessor_episode",
+      "launch": {
+        "budget": 128,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "save_reopen",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "TINKERER",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": null,
+      "process": {
+        "campaign_identity_matches": true,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": true,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 50.372,
+        "exit_code": 0,
+        "independent_readback": {
+          "errors": [],
+          "independent_failures": [],
+          "unreported_failures": [],
+          "valid": true
+        },
+        "log_sha256": "230a27fee0342828d96ad863f6d9bd1d3c7335eb711e9134fce9f9c1310d5ca2",
+        "status": "pass",
+        "timeout_seconds": 180,
+        "transcript_sha256": "863582e08a969c85fb2ebf66e81e7a418bf5b1246a6d8fea9fc83a5d8f93c36a"
+      },
+      "profile": {
+        "bytes": 1408,
+        "path": "profile/goblin-profile.json",
+        "sha256": "1942458312965f2f823337d599566f0a82f69d74ac79fcf3345628379998308d"
+      },
+      "qualification": {
+        "bytes": 5083,
+        "path": "qualification.json",
+        "sha256": "0a39fd29939df0ffd52027179bde2629e95bdfc3ac309755188e78f8f4dc8660"
+      },
+      "raw_tapes": [
+        {
+          "bytes": 2285794,
+          "matches_qualification_transcript_sha256": true,
+          "paths": [
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "863582e08a969c85fb2ebf66e81e7a418bf5b1246a6d8fea9fc83a5d8f93c36a"
+        },
+        {
+          "bytes": 2971137,
+          "matches_qualification_transcript_sha256": false,
+          "paths": [
+            "transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "edcf1fc3c68e52874eba9001ea1a93b338fa27deac5a9ee6e2f24760590034a1"
+        }
+      ],
+      "resource_observations": null,
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": {
+        "action_attempts": {
+          "camera": 8,
+          "copy": 8,
+          "line": 8,
+          "panel": 16,
+          "paste": 8,
+          "pause": 16,
+          "play": 8,
+          "redo": 8,
+          "reopen_layout": 8,
+          "reset_fixture": 1,
+          "save_layout": 8,
+          "select_material": 8,
+          "select_region": 8,
+          "single_step": 7,
+          "undo": 8
+        },
+        "assertions": {
+          "fail": 0,
+          "not_applicable": 8,
+          "pass": 1800
+        },
+        "attempted_actions": 128,
+        "classification_counts": {
+          "game_observation": 128
+        },
+        "completed_actions": 128,
+        "completed_adjacent_pairs": {
+          "camera -> select_material": 8,
+          "copy -> paste": 8,
+          "line -> undo": 8,
+          "panel -> camera": 8,
+          "panel -> play": 8,
+          "paste -> save_layout": 8,
+          "pause -> panel": 8,
+          "pause -> single_step": 7,
+          "play -> pause": 8,
+          "redo -> select_region": 8,
+          "reopen_layout -> panel": 8,
+          "reset_fixture -> pause": 1,
+          "save_layout -> reopen_layout": 8,
+          "select_material -> line": 8,
+          "select_region -> copy": 8,
+          "single_step -> pause": 6,
+          "single_step -> reset_fixture": 1,
+          "undo -> redo": 8
+        },
+        "completed_features": {
+          "camera": 8,
+          "copy": 8,
+          "line": 8,
+          "panel": 16,
+          "paste": 8,
+          "pause": 16,
+          "play": 8,
+          "redo": 8,
+          "reopen_layout": 8,
+          "reset_fixture": 1,
+          "save_layout": 8,
+          "select_material": 8,
+          "select_region": 8,
+          "single_step": 7,
+          "undo": 8
+        },
+        "completed_triples": {
+          "camera -> select_material -> line": 8,
+          "copy -> paste -> save_layout": 8,
+          "line -> undo -> redo": 8,
+          "panel -> camera -> select_material": 8,
+          "panel -> play -> pause": 8,
+          "paste -> save_layout -> reopen_layout": 8,
+          "pause -> panel -> camera": 8,
+          "pause -> single_step -> pause": 6,
+          "pause -> single_step -> reset_fixture": 1,
+          "play -> pause -> single_step": 7,
+          "redo -> select_region -> copy": 8,
+          "reopen_layout -> panel -> play": 8,
+          "reset_fixture -> pause -> panel": 1,
+          "save_layout -> reopen_layout -> panel": 8,
+          "select_material -> line -> undo": 8,
+          "select_region -> copy -> paste": 8,
+          "single_step -> pause -> panel": 6,
+          "single_step -> reset_fixture -> pause": 1,
+          "undo -> redo -> select_region": 8
+        },
+        "distinct_completed_features": 15,
+        "duration_usec": 26575253,
+        "failures": [],
+        "status_counts": {
+          "completed": 128
+        },
+        "termination": "budget_complete"
+      }
+    },
+    {
+      "custody_checks": {
+        "qualification_and_profile_provenance_equal": true,
+        "qualifier_transcript_hash_found": true,
+        "raw_provenance_equal": true,
+        "raw_serializations_semantically_equal": true,
+        "summary_matches_qualification": true
+      },
+      "episode_id": "long-final-1649f086-wanderer-actor_workshop-s605-b128-a01",
+      "evidence_kind": "headless_godot",
+      "header": {
+        "campaign_timeout_msec": 150000,
+        "fixture_id": "actor_workshop",
+        "fixture_sha256": "a0d822860e8867b7a614cfeb3e1c0528ba46d616d889c41810a175e8f15145c9",
+        "fixture_state": "installed",
+        "fixture_version": 1,
+        "initial_scene_identity": "a0d822860e8867b7a614cfeb3e1c0528ba46d616d889c41810a175e8f15145c9",
+        "native_worker_threads": 1,
+        "replay": false,
+        "reproduction_fixture": false
+      },
+      "interpretation": "completed_predecessor_episode",
+      "launch": {
+        "budget": 128,
+        "evidence_kind": "headless_godot",
+        "fixture_id": "actor_workshop",
+        "interactive": false,
+        "pacing_ms": 0,
+        "policy": "WANDERER",
+        "replay": false,
+        "reproduce": false,
+        "seed": 605
+      },
+      "pending_action": null,
+      "process": {
+        "campaign_identity_matches": true,
+        "completion_marker": "GOBLIN_CAMPAIGN_COMPLETE",
+        "completion_observed": true,
+        "diagnostic_errors": [],
+        "elapsed_seconds": 58.379,
+        "exit_code": 0,
+        "independent_readback": {
+          "errors": [],
+          "independent_failures": [],
+          "unreported_failures": [],
+          "valid": true
+        },
+        "log_sha256": "6289cf00bb8577d738bd95b9d6b9c1bef093edd67ee42a8bebaaf287c79b5558",
+        "status": "pass",
+        "timeout_seconds": 180,
+        "transcript_sha256": "72bc21a8f688bff2a6464b27abae23c1169ab2e2be9067345c0c14f6996edbc4"
+      },
+      "profile": {
+        "bytes": 1411,
+        "path": "profile/goblin-profile.json",
+        "sha256": "7f9ddde85f81a522be4716a0f79ead21b30cf872abcc5ec24e2659d8693ca429"
+      },
+      "qualification": {
+        "bytes": 4284,
+        "path": "qualification.json",
+        "sha256": "aa653705a87c246a13cd53e7a43f2cb56fb214330381de8a780a7c06744508e7"
+      },
+      "raw_tapes": [
+        {
+          "bytes": 4177661,
+          "matches_qualification_transcript_sha256": true,
+          "paths": [
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+            "profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "72bc21a8f688bff2a6464b27abae23c1169ab2e2be9067345c0c14f6996edbc4"
+        },
+        {
+          "bytes": 5386153,
+          "matches_qualification_transcript_sha256": false,
+          "paths": [
+            "transcript.json"
+          ],
+          "recorded_step_count": 128,
+          "sha256": "e1f7e4d4db195062e3a683011eea8d554568407086118a7d782d3c9528666dbb"
+        }
+      ],
+      "resource_observations": null,
+      "source_provenance": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "project_files_sha256": "e5cea9cde499ad1995fc658fddac32e32a75586b30eb87146dbed22cb7b15196",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+        "source_dirty": false,
+        "source_tree": "5afea5af4f0bb4910f25299603a96fbeea9edb18"
+      },
+      "summary": {
+        "action_attempts": {
+          "actor_drive": 10,
+          "actor_pilot": 11,
+          "actor_select": 11,
+          "brush": 33,
+          "camera": 11,
+          "pause": 21,
+          "play": 10,
+          "select_material": 11,
+          "wait_ticks": 10
+        },
+        "assertions": {
+          "fail": 0,
+          "not_applicable": 0,
+          "pass": 2999
+        },
+        "attempted_actions": 128,
+        "classification_counts": {
+          "game_observation": 128
+        },
+        "completed_actions": 128,
+        "completed_adjacent_pairs": {
+          "actor_drive -> wait_ticks": 10,
+          "actor_pilot -> play": 10,
+          "actor_select -> actor_pilot": 11,
+          "brush -> actor_select": 11,
+          "brush -> brush": 22,
+          "camera -> select_material": 11,
+          "pause -> camera": 11,
+          "pause -> pause": 10,
+          "play -> actor_drive": 10,
+          "select_material -> brush": 11,
+          "wait_ticks -> pause": 10
+        },
+        "completed_features": {
+          "actor_drive": 10,
+          "actor_pilot": 11,
+          "actor_select": 11,
+          "brush": 33,
+          "camera": 11,
+          "pause": 21,
+          "play": 10,
+          "select_material": 11,
+          "wait_ticks": 10
+        },
+        "completed_triples": {
+          "actor_drive -> wait_ticks -> pause": 10,
+          "actor_pilot -> play -> actor_drive": 10,
+          "actor_select -> actor_pilot -> play": 10,
+          "brush -> actor_select -> actor_pilot": 11,
+          "brush -> brush -> actor_select": 11,
+          "brush -> brush -> brush": 11,
+          "camera -> select_material -> brush": 11,
+          "pause -> camera -> select_material": 11,
+          "pause -> pause -> camera": 10,
+          "play -> actor_drive -> wait_ticks": 10,
+          "select_material -> brush -> brush": 11,
+          "wait_ticks -> pause -> pause": 10
+        },
+        "distinct_completed_features": 9,
+        "duration_usec": 18399361,
+        "failures": [],
+        "status_counts": {
+          "completed": 128
+        },
+        "termination": "budget_complete"
+      }
+    }
+  ],
+  "predecessor_source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+  "process_disposition": "Two -9 exits occurred before the declared 180-second process wall limit. SIGKILL cause is unattributed; an OOM, game defect or watchdog cause is not inferred. Curiosity a02 is a separate completed retry and does not overwrite a01.",
+  "raw_digest_note": "Qualification transcript_sha256 identifies the compact native profile transcript. Runner transcript.json is a separate pretty-printed JSON serialization; both byte identities and their checked semantic equality are retained.",
+  "recovered_at": "2026-11-25",
+  "recovery_method": "Read-only extraction from retained original qualifications, launch profiles and unique raw transcript byte streams; no replay or new gameplay execution.",
+  "schema": "cybersand-goblin-predecessor-recovery-v1",
+  "scope": "Ancestral Linux evidence only. This recovery does not qualify the successor source or establish a production gameplay defect.",
+  "source_root_at_recovery": "/workspace/scratch/2e25d5a5c00f/evidence"
+}

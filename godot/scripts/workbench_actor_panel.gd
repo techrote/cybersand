@@ -12,6 +12,7 @@ signal tuning_requested(instance_id: int, options: Dictionary)
 const Catalog = preload("res://scripts/workbench_actor_catalog.gd")
 const Setup = preload("res://scripts/workbench_setup.gd")
 const Usables = preload("res://scripts/usable_catalog.gd")
+const AmbientExamples = preload("res://scripts/ambient/ambient_examples.gd")
 const SOURCE_LABELS := {"human":"Human / Pilot", "scripted":"Scripted NPC",
 	"policy":"External Policy", "passive":"Passive / Uncontrolled"}
 var wb: Control
@@ -69,6 +70,7 @@ var _issued: Dictionary = {}
 var _apply_requests: Dictionary = {}
 var _edit_versions := {"settings":0,"capacity":0,"tuning":0,"placement":0}
 var _last_apply_kind := ""
+var _ambient_examples := OptionButton.new()
 
 
 func mount(workbench: Control) -> void:
@@ -159,6 +161,15 @@ func _build_actors(column: Control) -> void:
 	demo_count.tooltip_text = "Barrel Crowd population. Other examples use their authored cast. Higher counts are experiments, not frame-rate promises."
 	wb._button(row,"Load playground",func() -> void:
 		demo_requested.emit(str(demo.get_item_metadata(demo.selected)),int(demo_count.value)))
+	wb._button(row,"Mixed Actor Workshop",func() -> void: wb.load_mixed_actor_workshop())
+	row = wb._row(column)
+	wb._label(row, "Ambient examples")
+	for example: Dictionary in AmbientExamples.entries():
+		_ambient_examples.add_item(str(example.name))
+		_ambient_examples.set_item_metadata(_ambient_examples.item_count - 1, example.id)
+	row.add_child(_ambient_examples)
+	wb._button(row, "Load scene", func() -> void:
+		if _ambient_examples.selected >= 0: wb.load_ambient_example(str(_ambient_examples.get_item_metadata(_ambient_examples.selected))))
 	row = wb._row(column)
 	wb._label(row,"Family")
 	family.add_item("All physical actors")
@@ -235,6 +246,7 @@ func _build_controllers(column: Control) -> void:
 	row.add_child(policy)
 	policy.item_selected.connect(func(_index: int) -> void: _apply_control())
 	_note(column,"Live source changes preserve bodies and equipment. A grabbed actor temporarily stops its drive; release resumes its compatible source. External Policy is an adapter, not a running model or network service.")
+	wb._button(row, "Behaviour profile…", func() -> void: wb.open_ambient_profile(wb.selected_id()))
 	row = wb._row(column)
 	wb._button(row,"Advanced observations and policy…",func() -> void: details.visible = not details.visible)
 	column.add_child(details)
@@ -621,10 +633,13 @@ func _apply_control() -> void:
 	var a: Dictionary = wb.actor(wb.applied,wb.selected_id())
 	if a.is_empty() or source.selected < 0: return
 	var config := Catalog.control_for(a)
-	config.source = source.get_item_metadata(source.selected)
+	var choice := str(source.get_item_metadata(source.selected))
+	config.source = "policy" if choice == "ambient" else choice
 	config.enabled = enabled.button_pressed
 	config.decision_ticks = int(cadence.value)
-	config.policy = "fixture" if policy.selected == 0 else "external"
+	config.policy = "ambient" if choice == "ambient" else ("fixture" if policy.selected == 0 else "external")
+	if choice == "ambient" and not config.has("ambient"):
+		config["ambient"] = Catalog.AmbientProfile.preset("drifting_flyer" if bool(Catalog.AmbientActuator.capabilities(str(a.model)).vertical) else "oil_moth")
 	wb.set_actor_control(int(a.id),config)
 	refresh(true)
 
@@ -681,9 +696,14 @@ func refresh(force: bool = false) -> void:
 				source.add_item(SOURCE_LABELS[mode])
 				source.set_item_metadata(source.item_count-1,mode)
 				if mode == config.source: source.select(source.item_count-1)
+			if Catalog.AmbientActuator.supports(str(a.model)):
+				source.add_item("Procedural NPC / Ambient")
+				source.set_item_metadata(source.item_count - 1, "ambient")
+				if config.source == "policy" and config.policy == "ambient": source.select(source.item_count - 1)
 			enabled.set_pressed_no_signal(config.enabled)
 			cadence.set_value_no_signal(config.decision_ticks)
 			policy.select(0 if config.policy == "fixture" else 1)
+			policy.visible = config.source == "policy" and config.policy != "ambient"
 			usable.select(maxi(0,usable.get_item_index(int(config.usable_index))))
 			usable.disabled = not bool(Catalog.entry(a.model).equipment)
 	pilot_info.text = "Pilot: %s · Inspecting: %s" % [wb.pilot_description(),"none" if a.is_empty() else "#%d %s" % [inspected,a.model]]

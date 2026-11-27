@@ -1,0 +1,12 @@
+{
+  "source_revision": "941b79154c890098350725f274b85f26b44f77b0",
+  "bytes": 1693724,
+  "sha256": "303952f7652951970d2b2459d7a0d37729da7bbc790f29c22140096fb35c8b07",
+  "git_blob": "b553f0731f803b4e39256b5df3dccb8074d3bd9d",
+  "prerequisites": [
+    "35187eda20fcff25a87e1936f84934247ca617e2",
+    "9278de5757b29b9df40a089e11a4daef744990f7",
+    "83a3db6ffb207761df999abedac77eb1401604a8"
+  ],
+  "scope": "Historical exact local probe commit and its missing local ancestry; engine and retained LFS runtimes remain separately pinned."
+}

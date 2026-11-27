@@ -1,0 +1,1 @@
+Construct {task} in this CyberSand tile. Return only a JSON array of supported drawing operations.

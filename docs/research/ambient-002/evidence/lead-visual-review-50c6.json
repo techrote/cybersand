@@ -1,0 +1,42 @@
+{
+  "schema": "ambient2-lead-visual-review/v1",
+  "application": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "observer": "52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b",
+  "observation_run": 45552888360,
+  "review_kind": "Direct visual inspection of actual original images and an independently plotted source-bound data figure; no new simulation execution",
+  "viewed": [
+    {
+      "name": "ambient2-settlement-contact-sheet.png",
+      "bytes": 467769,
+      "sha256": "6e6db8456658100222dde647c1cc273fb8cf2cd13f3b7cb5c2607140ac2d72ab"
+    },
+    {
+      "name": "frame-0048.png",
+      "bytes": 213111,
+      "sha256": "306b88dda7a09f1a3dae84f3826083b4db925c2ec4cb3562a0e4aaac487d4b93"
+    },
+    {
+      "name": "frame-0060.png",
+      "bytes": 229135,
+      "sha256": "cf50c94cd24ad7050756cab3b99b87dcc1a1ff43e0750e839f1094c265a2cddc"
+    },
+    {
+      "name": "home-recharge-comparison.png",
+      "bytes": 305054,
+      "sha256": "549e3c2ab33d651f054149fd0d7a3452c9fc4169a1a3f6132384702978452619"
+    }
+  ],
+  "findings": [
+    "The ordinary Follow selected camera and visible Workbench controls remain legible in the actual1920x1080 originals.",
+    "Foundry has a consistent side-elevation industrial structure; close-frame selected actor remains small relative to the architecture.",
+    "The frame60 overlay shows home and visited regions, copied sensing/navigation lines and a selected unfamiliar destination; intersecting labels and lines are visibly dense.",
+    "The six-panel contact sheet is useful for spatial sequence but insufficient to judge continuous motion or input latency.",
+    "The two-panel data figure correctly separates copied exploration drive from physical home distance, marks four discrete home-rest samples and shows the distinct20-cell authored acceptance and16-cell comparison metric.",
+    "The drive-gain claim is supported by original copied records and independent A/B/C readbacks, not visual color inference."
+  ],
+  "limits": [
+    "No physical NVIDIA, monitor latency or continuous-video playfeel acceptance.",
+    "Only these listed originals and the plotted figure were personally reviewed here; separate specialists retain broader Windows and graphical reviews.",
+    "A coherent sampled return/rest/depart sequence does not establish a universal home-return rate or solve the long beam-obstruction interval."
+  ]
+}

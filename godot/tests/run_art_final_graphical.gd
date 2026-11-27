@@ -140,6 +140,10 @@ func run() -> void:
 	if not await until(idle,"world-coordinate follow-up finishes",120): quit(1);return
 	await until(func(): return host.image.get_pixel(1210,760).r8==58,"world geometry appears in third area")
 	await capture("06-world-followup")
+	# Model-mode windows intentionally stop presentation refresh while hidden.
+	# Inspect the real visible panel, as an owner would, for the status assertion.
+	panel.popup(Rect2i(680,20,900,700))
+	await process_frame
 	panel.input.text = "SMOKE_STALE intentionally stale geometry"
 	panel.draw.pressed.emit()
 	if not await until(idle,"stale hosted packet finishes without mutation"): quit(1);return

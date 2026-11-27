@@ -1,0 +1,88 @@
+{
+  "schema": "cybersand-sandmaps-reference-cards-v1",
+  "repository": "techrote/sandmapsreference",
+  "source_commit": "99a166e7fcae45eb22be1740e9f33f62faccbcc7",
+  "inspection": "Original PNG bytes fetched by pinned Git object, SHA-256 matched to the source catalogue and visually inspected on 2026-11-21. No original artwork is copied into CyberSand.",
+  "image_boundary": "These AI-generated concept illustrations are not CyberSand output. Their geometry, materials, collision, routes and physics are not authoritative native labels. Cards preserve observations separately from proposed bounded reconstruction.",
+  "rights": "Original assets remain in the owner's source repository. This adapter redistributes only authored observations, identifiers, hashes and immutable links; it grants no new artwork licence.",
+  "cards": [
+    {
+      "id": "works-0027",
+      "source_key": "batch1/image-0060",
+      "family_group": "orbital_assembly_hangars",
+      "cohort": "development",
+      "title": "Orbital assembly hangar",
+      "path": "artwork/works_yards/batch1/orbital_assembly_hangars-assembly_hangar-orderly_mechanics.png",
+      "git_blob": "77a92897f4f39efd14eabed6dbf3661ca3fd4a48",
+      "sha256": "b3c894ba16e288ecde3ae0ee7004b405e029bf932fd718fe9fd01003e61fd4ee",
+      "size_bytes": 2349819,
+      "dimensions": [1774, 887],
+      "url": "https://github.com/techrote/sandmapsreference/blob/99a166e7fcae45eb22be1740e9f33f62faccbcc7/artwork/works_yards/batch1/orbital_assembly_hangars-assembly_hangar-orderly_mechanics.png",
+      "visible_observations": [
+        "A large central hall is framed by tall vertical columns and a continuous roof truss.",
+        "A horizontal overhead crane crosses the upper hall, with a suspended hook above an elongated fuselage on several supports.",
+        "Side rooms and galleries have ladders and short stairs; the lower service level is visually separate from the assembly floor.",
+        "The central volume is relatively open; dense conduits, control panels and railings concentrate around boundaries and machinery."
+      ],
+      "native_proposal": [
+        "Use a bounded orthographic frame with two strong side supports, a roof beam and short attached galleries.",
+        "Reserve a continuous clear floor corridor between the supports; use repeated rectangular brackets and fixtures around the perimeter.",
+        "Treat crane and fuselage details as optional static shape motifs, not functioning equipment or physics claims."
+      ],
+      "uncertainties": ["Pixel art depth and windows do not specify collision planes.", "Visible apparent metal does not determine a CyberSand material ID.", "Ladders and stairs suggest traversal but do not prove a native actor can traverse."],
+      "tags": ["industrial", "assembly", "wide-hall", "frame", "galleries", "negative-space"]
+    },
+    {
+      "id": "biome-0004",
+      "source_key": "batch1/image-0293",
+      "family_group": "mycological_chasm",
+      "cohort": "development",
+      "title": "Mycological chasm",
+      "path": "artwork/living_landscapes/batch1/mycological_chasm-mushroom_cavern-biological_wonder.png",
+      "git_blob": "a2721d02650c1a155f5502d21e91cc60673dfa6a",
+      "sha256": "0a9cf8e3bb37c2f50c40e447c24b8b687ba8c39bff8eb49a36a0b23a321c53a1",
+      "size_bytes": 1914205,
+      "dimensions": [1672, 941],
+      "url": "https://github.com/techrote/sandmapsreference/blob/99a166e7fcae45eb22be1740e9f33f62faccbcc7/artwork/living_landscapes/batch1/mycological_chasm-mushroom_cavern-biological_wonder.png",
+      "visible_observations": [
+        "A tall open chasm and central waterfall separate irregular terraced rock ledges.",
+        "Short diagonal steps connect some adjacent terraces; wooden-looking ladders connect other vertical levels.",
+        "Large purple mushroom caps and branching roots create distinct silhouettes around the void.",
+        "Small fungi and hanging growth follow the ledge surfaces rather than filling the open centre."
+      ],
+      "native_proposal": [
+        "Translate the terrace-following branching rhythm into a connected orthogonal service-pipe spine and bounded risers.",
+        "Keep a declared clear inspection corridor below the pipe branches and cap endpoints visibly.",
+        "This pipework analogy is an inferred construction exercise; it does not claim pipes are present in the source image or simulate its waterfall."
+      ],
+      "uncertainties": ["Decorative roots are not labelled native support geometry.", "Waterfall appearance supplies no Water solver or volume parameters.", "The prototype studies routing relationships, not pixel-perfect geological reconstruction."],
+      "tags": ["organic", "cavern", "terraces", "branches", "large-void", "surface-detail"]
+    },
+    {
+      "id": "techn-0021",
+      "source_key": "batch1/image-0058",
+      "family_group": "amber_canopy_biosphere",
+      "cohort": "development",
+      "title": "Containment-tree arboretum",
+      "path": "artwork/technical_interiors/batch1/amber_canopy_biosphere-containment_tree-biological_dread.png",
+      "git_blob": "b8075c08c4a3cea84a877b036537dea55c87264f",
+      "sha256": "e4413f50496dfca2b41d141c272779d6d7fc956588d45e741dc08f0b0263f93f",
+      "size_bytes": 2414187,
+      "dimensions": [1672, 941],
+      "url": "https://github.com/techrote/sandmapsreference/blob/99a166e7fcae45eb22be1740e9f33f62faccbcc7/artwork/technical_interiors/batch1/amber_canopy_biosphere-containment_tree-biological_dread.png",
+      "visible_observations": [
+        "A large luminous organic pod and branching root silhouette occupy the open middle of an underground research bay.",
+        "Rectangular laboratories are embedded into both rock walls; the right upper room contains a row of specimen vessels.",
+        "A continuous middle walkway crosses the bay above a separate lower service corridor.",
+        "Railings, wall monitors, lift machinery, conduits and small boxes gather around room and walkway edges."
+      ],
+      "native_proposal": [
+        "Place compact service-panel banks and repeated surface details along side walls, preserving the central negative space.",
+        "Use deliberate repeated brackets, ventilation slits and connector motifs instead of unstructured noise.",
+        "Keep luminous organisms and laboratory vessels as visual reference only; this greeble exercise does not invent material reactions or functional actors."
+      ],
+      "uncertainties": ["Green lighting does not identify native organic materials.", "Specimen vessels and displays are artwork, not existing equipment definitions.", "The source suggests a walkable layout but does not prove physical traversability."],
+      "tags": ["biomechanical", "laboratory", "arboretum", "side-rooms", "service-details", "central-void"]
+    }
+  ]
+}

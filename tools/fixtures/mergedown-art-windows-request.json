@@ -1,0 +1,188 @@
+{
+  "schema": "cybersand-mergedown-art-request-v1",
+  "repository": "techrote/cybersand",
+  "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
+  "status": "admitted",
+  "source_commit": "2637cd17d0802419988429bbb56bffa716952e2c",
+  "source_tree": "16e4d267641933f1a4577c67be95473c6ece7c0d",
+  "accepted_main_baseline": "597cfaa68ac4e8940a3e9a93025fd6320765d028",
+  "art_parent": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "architecture_parent": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+  "local_qualified_source": "29a19e5d2bf5676bc4e65d6bf5b0cfe2c63f5b6a",
+  "recovered_source": "368292fe99485e6ea928325f9e8d000d829a4407",
+  "modes": [
+    "retained-core-0",
+    "retained-core-1",
+    "retained-core-2",
+    "retained-headless",
+    "retained-displayed",
+    "storage",
+    "integration-displayed",
+    "collaborative-headless",
+    "collaborative-displayed"
+  ],
+  "native_inputs": 105,
+  "rapier_inputs": 4,
+  "owner_accepted": false,
+  "public_release": false,
+  "source_contracts_sha256": {
+    "tools/ci/run_godot_regressions.py": "de44f7c52fb8319fbc93580529484f4da293737610f7676ca7a7b0a57a3a40ff",
+    "tools/ci/run_windows_godot_regressions.py": "efa0af63383349e4e1497288fc3490c20ac6df1279c6df491f1216bfe2b29a64",
+    "tools/ci/_architecture_campaign_context.py": "ae023d410758cc01b5a1ff45ad2fc240c03def2e4d5aa0cb21be6865be4dddd3",
+    "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd",
+    "tools/ci/godot_process_monitor.py": "8012d2f9d6e8b9153325adf8d5866c9d0ae4e3f95e20ae06eeea0bbcd6904571",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/ci/execution_telemetry.py": "3022c51d9fc08316c840c68f04417108b9b4b91fa644eb2ede1a891ca7f3d137",
+    "tools/ci/godot_scheduling.py": "a4729708e3631ac728aa6a6ebd1dce7ca524f54325b6f62f997587a018712062",
+    "tools/ci/run_art_storage_qualification.py": "a1cec51d0ccc6f7fd283edb234d8b365578497d59fcb3f1bed80cef8c304fcf4",
+    "tools/ci/windows_file_lock.py": "f46d3495eb61862b721188847f788b582643bb697a0b64274283510a8e3d14ef",
+    "tools/ci/run_art_local_close.py": "2bbaa0a3a0bfa2ace6af2ddb0f36da37ffbdb49dab16fa353366c61880546dc0",
+    "tools/ci/run_art_collaborative_gates.py": "8512a7ce461ade9fdb490fc0c0a552c05e0d07885a85fa360edf2f4f521e6962",
+    "tools/ci/run_art_workbench_final.py": "1d00a7e5e6ffab411f576cd6fb277d2983fb205165c4597efe4870ed52f07b2e",
+    "tools/ci/art_evaluator_qualification_scope.py": "47208e195c1841fed0ef5415cdb18e7e45e40039d9e9d425b865cfe7b90c68d7",
+    "tools/package_art_collaborative.py": "4a1b26b24a55d72d787639ef0cb2bce14c1bf70ef8e6250f5f5c0fe9e5ffaa26",
+    "tools/package_art_workbench_final.py": "e23aa5eadfcafd97db25bf283fa8faf94199ff648ede09abced454b15dca6f18",
+    "tools/package_explore001_candidate.py": "d42531fbb399334b5b6d87eb1dd0ab9e9114ef2211dff7729ddee52a15e12d6d",
+    "tools/ci/materialize_lfs.py": "9a98d7c1d5535691afeb1d0a794e1b2ae7258f1aaaa89df4ae25607267a01efb",
+    "tools/ci/lfs_runtime_artifact.py": "ebec1b0fc7634641695956f8a4c9b2748e45ddc7553d69755b476595e08231b3",
+    "godot/tests/art_storage_fault_child.gd": "7d4d4b4e2b4106926308359304842c2a080dee331bdc274ac4ce883b65e54774",
+    "godot/tests/test_workbench_file_transaction.gd": "61b22c7f53a12545acf3a55ae99e02e052f81110526d8aa31b288f28e98225f4",
+    "godot/tests/test_art_storage_integrity.gd": "da8b19a86019a2fd2b551d1bb914b087e99ae48d9618fbd6e750a99b3591a4df",
+    "godot/tests/test_art_architecture_workbench.gd": "106d31702368d6f25d7d380e6cd27bac77035f710e750a058f59970d21d6a370",
+    "godot/tests/test_workbench_combined_authoring.gd": "906e7ed55eb6dcfb7a2a2e79896feafa4d4467486e05ad8d2135843a5c7f0926",
+    "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+    ".github/workflows/art-session-logging.yml": "905211b34cf77df5cb800bf5bcc75c7105349ce6ba3c43ef53cf438492a5fed9",
+    "docs/operations/art-workbench-collaborative-evaluation.md": "4dafcb3c6548be42f6da368d32c79c02e7c3ebba9e0f63336510fd942a410bda"
+  },
+  "qualification_revision": "closure-final-accepted-base-scoped-context-005",
+  "purpose": "Fresh complete Windows qualification of the combined Art/Architecture candidate on accepted main after Goblin002, with concrete prompt custody, fixture visibility/output labels and existing Architecture/Batch CI context and argv integration repairs. Preserve all earlier positive and negative sources, unchanged readiness/native-owner/process limits and physical/creative acceptance holds. No paid inference or default activation.",
+  "published_original_tree_union": "7f7d97a6dda8d0ed2ed6231f1cf7549b342fa221",
+  "prior_campaigns": [
+    {
+      "run_id": 45782333985,
+      "attempt": 1,
+      "harness_commit": "40a8b0d83415afa918e5e2e4a0ef966824c709df",
+      "status": "failed-before-product-import",
+      "failed_modes": 9,
+      "successful_subresults": [
+        "source/run/attempt runtime producer and consumer verification",
+        "source-pinned Godot archive and actual version lookup"
+      ],
+      "cause_boundary": "Product is not clean committed source; original run omitted exact status paths",
+      "product_execution": false,
+      "artifact_delivery": false
+    },
+    {
+      "run_id": 45784917252,
+      "attempt": 1,
+      "harness_commit": "464175d21e6227dcd9c33c94baf5330202d59ee9",
+      "status": "failed-post-exit-complete-response-oracle",
+      "failed_modes": [
+        "retained-headless",
+        "retained-displayed"
+      ],
+      "successful_modes": [
+        "storage",
+        "retained-core-0",
+        "retained-core-1",
+        "retained-core-2",
+        "integration-displayed",
+        "collaborative-headless",
+        "collaborative-displayed"
+      ],
+      "cause_boundary": "Structured JSON credential redaction retained the full response with canonical JSON.stringify spelling; prior independent oracle expected wire-spacing-preserving secret substitution",
+      "original_response_bytes": 1048767,
+      "original_expected_sha256": "3f876eae9073c754def8dcc5cad56569393a212d581d6c27440bbee852cf8af2",
+      "observed_complete_structured_sha256": "39c8510fcaacc687d403861fccda646f65f785bfe0280b6aa2f80da8d7115800",
+      "artifact_delivery": false
+    },
+    {
+      "artifact_delivery": false,
+      "attempt": 1,
+      "cause_boundary": "Original retained-displayed request-preparation fixture failed its initial 90000ms Workbench readiness check; natural exit after 105.75s, not the 300s outer process watchdog. Exact e5 fresh-profile and owned-shader-cache-only local controls both passed unchanged limits; hosted cause remains unproven and this negative is not relabelled.",
+      "failed_job_id": 140186001511,
+      "failed_modes": [
+        "retained-displayed"
+      ],
+      "harness_commit": "29d725b573231fa16b1511aeed81287f79719d22",
+      "initial_readiness_ms": 90000,
+      "original_archive_sha256": "3a348aeaece5dad8f6779eedc6e60990ca49a34de3076f8a70d44e0000f5aa01",
+      "original_artifact_id": 15155594612,
+      "outer_watchdog_seconds": 300,
+      "run_id": 45900478595,
+      "source_commit": "7f6a23f72537f445b5a35c2d9d3bf9df77a6b3c2",
+      "source_tree": "58e8952bdc8832a9a1da3bdbb3e4c559dbe862b8",
+      "status": "failed-initial-workbench-readiness",
+      "successful_modes": [
+        "storage",
+        "retained-core-0",
+        "retained-core-1",
+        "retained-core-2",
+        "retained-headless",
+        "integration-displayed",
+        "collaborative-headless",
+        "collaborative-displayed"
+      ],
+      "timed_out": false
+    },
+    {
+      "run_id": 45904941875,
+      "attempt": 1,
+      "harness_commit": "6653bdc8affeba868e19dc4d8cc3d25163b766b5",
+      "source_commit": "437bf2ab52c4c5e1ba50ce4fab207ff7586f8a4b",
+      "source_tree": "01642f790df4ba259dfa536aca092126387ff4c3",
+      "status": "passed-all-nine-original-modes-and-provisional-delivered-cmd",
+      "successful_modes": [
+        "retained-core-0",
+        "retained-core-1",
+        "retained-core-2",
+        "retained-headless",
+        "retained-displayed",
+        "storage",
+        "integration-displayed",
+        "collaborative-headless",
+        "collaborative-displayed"
+      ],
+      "provisional_package_artifact_id": 15158567476,
+      "provisional_package_artifact_sha256": "55c5170b2767d544a9694c8484bd149149a1fd293ba656ccff5ed59713456454",
+      "provisional_archive_sha256": "4fb42c88d30097d0fbe51c10f7a410a2a7e8ff53ab2ddbfdf0907d8b81cd48e7",
+      "accepted_main": false,
+      "physical_owner_accepted": false,
+      "not_reused_for_successor": true
+    }
+  ],
+  "prior_integration_qualification_failures": [
+    {
+      "head_commit": "6653bdc8affeba868e19dc4d8cc3d25163b766b5",
+      "executed_pr_merge": "e96b1ce12954390b54c9929306cabbf250ffa1e6",
+      "executed_tree": "98725c37cc82d45e9d3f7790f522540a2d0b28e0",
+      "palette_run_id": 45904949278,
+      "godot_run_id": 45904949244,
+      "boundaries": [
+        "Windows legacy scoped argv received duplicate automatic ANGLE despite explicit caller flags; original processes passed and strict command verifier refused.",
+        "Hosted Windows sharding test compared canonical context paths with a lexical tempfile alias.",
+        "Successful Architecture negative-control labels contained reserved skipped wording; original predicates passed and strict skip reader refused.",
+        "Batch UI was discovered headless, and mounted Batch Workbench inherited unrelated raw Art traffic instead of the dedicated driver profile/order."
+      ],
+      "refusal_readers_unchanged": true
+    }
+  ],
+  "retained_local_limit": {
+    "platform": "Windows NVIDIA TITAN RTX ANGLE",
+    "fixture": "test_batch_lab_ui",
+    "source_commit": "6e533c3ca04a15cad943d855453bf46890e799aa",
+    "checks": 164,
+    "first_grid_failure_count": 6,
+    "owner_phase_timeout_ms": 90000,
+    "process_watchdog_seconds": 1200,
+    "first_draw_control": {
+      "head_commit": "d2ae9641dd4e099235ffa4d23e863ab418c8a278",
+      "dirty_fixture_sha256": "263113d0436e5a13017d57371bfe8ba5d6a64b9f3e7716c384d7a07f70b8bd57",
+      "same_failure_count": 6,
+      "first_presentation_ms": 82.007,
+      "natural_process_seconds": 140.437,
+      "applied_to_successor": false
+    },
+    "disposition": "Preserved local cold native-owner phase refusal; no guard or shader/native change. Successor requires unchanged 164-check actual hosted ANGLE case; physical/local cold-performance acceptance remains held."
+  }
+}
