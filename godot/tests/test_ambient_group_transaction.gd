@@ -162,8 +162,53 @@ func run() -> void:
 	session.close()
 	check(session._ambient_world_generation == -1 and session._ambient_peer_observations.is_empty(),
 		"owner close invalidates World identity and peer cache")
+	exercise_expanded_roster(definitions[0])
 	owner.free()
 	print("AMBIENT_GROUP ",JSON.stringify({"checks":checks,"failures":failures,
 		"actual_rapier_steps":steps,"logical_actors":2,"world_identity_probes":"synthetic copied envelopes",
 		"scope":"actual physical group handoff and ownership; no native-material or playfeel claim"}))
 	quit(0 if failures.is_empty() else 1)
+
+
+# Expanded physical rosters must not multiply the independently qualified
+# AMBIENT sensing workload or invalidate manual handback.
+func exercise_expanded_roster(template: Dictionary) -> void:
+	var definitions: Array = []
+	var capacity: Dictionary = Registry.Capacity.defaults()
+	capacity.merge({"logical_limit":40,"body_limit":320,"proxy_limit":320}, true)
+	for index: int in 40:
+		var row := template.duplicate(true)
+		row.instance_id = index + 1
+		row.position = Vector2(32 + 48 * (index % 10), 48 + 48 * floori(index / 10.0))
+		row["workbench_capacity"] = capacity
+		if index >= 8:
+			row.workbench_control.policy = "fixture"
+			row.workbench_control.erase("ambient")
+		definitions.append(row)
+	var ninth: Dictionary = definitions[8]
+	var original_control: Dictionary = ninth.workbench_control
+	ninth.workbench_control = template.workbench_control
+	check(not Session.valid_definitions(definitions), "expanded scene refuses ninth authored AMBIENT controller")
+	ninth.workbench_control = original_control
+	var expanded = Session.new()
+	owner.add_child(expanded)
+	if not expanded.configure(definitions, owner.get_world_2d().space, 74):
+		check(false, "expanded mixed physical cohort configures")
+		expanded.close()
+		return
+	var rid: RID = expanded.bodies()[0].get_rid()
+	var pilot: Dictionary = template.workbench_control.duplicate(true)
+	pilot.source = "human"
+	check(expanded.set_workbench_control(1, pilot), "pilot takeover reserves the inhabitant's AMBIENT slot")
+	var generations: PackedInt64Array = expanded._generations.duplicate()
+	check(not expanded.set_workbench_control(9, template.workbench_control), "ninth live controller is refused")
+	var group := [{"instance_id":9,"expected_configuration":original_control,"configuration":template.workbench_control}]
+	check(not expanded.set_workbench_controls(group, expanded.run_id, expanded.epoch), "group admission enforces same budget atomically")
+	check(generations == expanded._generations, "capacity refusals preserve every control generation")
+	check(expanded.set_workbench_control(1, template.workbench_control) and expanded.bodies()[0].get_rid() == rid,
+		"handback at full policy capacity preserves the body")
+	var observed: Dictionary = expanded._ambient_environment(0, expanded._view(0,false), template.workbench_control.ambient)
+	check(expanded._ambient_peer_observations.size() == Session.AmbientPerception.MAX_PEER_CANDIDATES
+		and observed.neighbors.incomplete and observed.neighbors.actors.size() <= Session.AmbientPerception.MAX_NEIGHBORS,
+		"forty physical actors retain bounded candidate scans and disclose partial peer coverage")
+	expanded.close()

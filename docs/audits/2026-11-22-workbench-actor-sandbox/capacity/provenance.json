@@ -1,0 +1,59 @@
+{
+  "case": "WB-ACTOR-COMPOSE-002R local capacity qualification",
+  "tested_source_commit": "8e9a35fe5ee434307a3b9c1f131389cde3693090",
+  "accepted_base_commit": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+  "native_source_commit": "ed1c920f9fd5ddf4f815f142a066b065530e6a4c",
+  "native_source_ledger_sha256": "f0a92c98d5a5956fd4123abb3922ed6a51fd0682fbc9e3f633898df41a4aef27",
+  "native_binary_sha256": "7a8bf38fcfdfa92a770a67879477a708cfceb6c606b03c3c0a5fd55b5a028a4a",
+  "godot_version": "4.7-stable official 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "godot_binary_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "rapier_version": "0.35.2 repository patched build",
+  "rapier_binary_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "rapier_provenance": "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
+  "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "linker": "GNU ld (GNU Binutils for Debian) 2.44",
+  "local_toolchain_drift_explicitly_enabled": true,
+  "rendering": "headless, gl_compatibility configured, no owner GPU qualification",
+  "native_compile_flags": "-std=c++20 -O3 -DNDEBUG -fPIC -shared -pthread -fno-math-errno; pinned godot-cpp static library",
+  "process_resource": {
+    "peak_rss_bytes": 639418368,
+    "user_seconds": 143.762212,
+    "system_seconds": 6.664743
+  },
+  "files": {
+    "classic-arena-summary.log": "2cac22017ecd9e9c7ee4c123026283c1e3f53b7135f949fd20d74350997c18f9",
+    "native-sanitizers-supported.log": "1b5cd46a184c21805b162e108c89fee8c2eced2d56daeea2444c9c6f2f53872b",
+    "unsupported-local-leak-sanitizer.log": "e89ac1734d528a5990147a7f92bcc1fa13957f2a2eb9acc40b43eee2d4a300cf",
+    "updated-effect-admission-test-failure.log": "114d9b0bcb958556a5846f00ef4823832145e9c68bddfa372249aa61b2a83ddc",
+    "updated-equipment-admission-test-failure.log": "5f94f74da406c18adcc888094251e01e7104a2563fbd4c2dd2bba0a3772e1208",
+    "equipment-extent-final.log": "f723968bcf26befb16a4257196a72394da1d2957f5f725d85c5ea070b77dcfa9",
+    "effect-cancellation-final.log": "3e011e703a2066ec0d5b413d0720d510c849bea978c4959bdaca3f576c5cc78e",
+    "effect-admission-final.log": "17d014885df14155fe24ec23eb6fc7ea984e3d965772b0e8cdbfb318d7823e67",
+    "equipment-admission-final.log": "c3000dcf134a28cb1bf39eeae39b7bfd8ec4b3b75d7debffca9236f7ec22ef7c",
+    "native-source-ledger.json": "f0a92c98d5a5956fd4123abb3922ed6a51fd0682fbc9e3f633898df41a4aef27",
+    "corrected-equipment-test-accounting.log": "daf16c71b26a39ffdae57c0df07c28724d736e3a40dc4e8480dbd9ea87cdba20",
+    "repaired-equipment-first-frame-failure.log": "abe3d16f4094123ed435c6e18e083268552befc876429813f3802097d7101fc0",
+    "repaired-worker-array-failure.log": "571e12f05db06d7e95a86d92688fffde5666da65d50a936720e2fbe5aea88975",
+    "body-protocol-final.log": "348967c9fdbcf3bfc500ff80a5969fc64894ce072aba2df18109af554f2bc867",
+    "native-equipment-final.log": "bc58ac941c821d23d3c541432f17b339bd8518ac72b08b230fb3d824f7686f4f",
+    "native-sanitized-matrix.jsonl": "767dfd6c44d12d3c48ad24b8a8e29ca5e9f417f348bc5e9aea3cf2ab1c5cea77",
+    "workbench-matrix.log": "b2f2541b424323e5e62075b5020bdc5f37fb9349c9c36946aea45cda44437d00",
+    "workbench-matrix.json": "f174321993821ac7d8591e4803b68d8bd4fc2792cf829952348cde88c8462754"
+  },
+  "claims_excluded": [
+    "Windows packaged performance",
+    "owner NVIDIA acceptance",
+    "4096 real actor qualification",
+    "long-running soak stability",
+    "final integrated UI source qualification"
+  ],
+  "post_matrix_regression_commit": "f244a1e",
+  "local_sanitizers": {
+    "address": "pass",
+    "undefined_behavior": "pass",
+    "leak": "not executed successfully: host ptrace prevents LSAN; explicit detect_leaks=0 rerun passed",
+    "native_cases": 14
+  },
+  "log_custody": "Original .log files are retained outside the source repository in the development evidence bundle, preserving the hashes below."
+}

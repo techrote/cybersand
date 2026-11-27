@@ -540,6 +540,16 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 768},)
 
 
+# Scoped actor-capacity bookkeeping; material identities and laws are retained.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'to_lf_sha256': '7a8ee79b188a94b54793e4241b189554e1199f86760923714d8f1d7684e08546',
+  'source_commit': '1b5001072cd703488c6c0ba566c71f12b8f21840',
+  'record': 'docs/audits/2026-11-22-workbench-actor-sandbox/material-source-transition.md',
+  'issue': 737,
+  'pr': 742},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

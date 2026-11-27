@@ -121,11 +121,14 @@ bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& 
     if (!world_ || world_->has_failed() || !workbench_) return false;
     try {
         workbench_->valid = false;
-        WorkbenchSample next;
+        auto& next = workbench_->pending;
+        next.proxies.fill({}); next.geometry.fill({});
+        next.owners.fill({}); next.owner_of.fill(0);
+        next.session = next.epoch = 0;
         if (!parse_workbench_sample(next,*workbench_,states,geometry,owners,session,epoch)) return false;
         workbench_->sample = next;
         current_bodies_ = next.proxies;
-        workbench_->bins = {};
+        for (auto& bins : workbench_->bins) bins.fill({});
         prepare_body_coupling(resolve_overlaps);
         if (world_->has_failed()) return false;
         workbench_->prepared_tick = world_->completed_tick_index();
@@ -373,6 +376,14 @@ Dictionary CyberNativeCellWorld::workbench_coupling_results() const try {
     result["response"]=workbench_->response; result["extent"]=extent_;
     result["proxy_limit"]=cybersand::World::kMaximumTransientBodies;
     result["body_limit"]=static_cast<std::int64_t>(kWorkbenchBodies);
+    std::int64_t active_bodies = 0, active_proxies = 0;
+    for (const auto& owner : workbench_->sample.owners) if (owner.instance) ++active_bodies;
+    for (const auto& proxy : workbench_->sample.proxies) if (proxy.valid) ++active_proxies;
+    result["active_bodies"]=active_bodies;
+    result["active_proxies"]=active_proxies;
+    result["response_workspace_bytes"]=static_cast<std::int64_t>(sizeof(Workbench));
+    result["body_observation_storage_bytes"]=static_cast<std::int64_t>(
+        sizeof(current_bodies_)+sizeof(previous_bodies_)+sizeof(observations_)+sizeof(spray_budget_used_));
     result["world_mask_cell_limit"]=static_cast<std::int64_t>(extent_.x)*extent_.y;
     result["native_mask_reserved"]=static_cast<std::int64_t>(world_->transient_occupancy_capacity());
     result["raster_indices_reserved"]=static_cast<std::int64_t>(raster_indices_.capacity());

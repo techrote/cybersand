@@ -71,9 +71,9 @@ For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.m
 own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
 source-qualified graphical evidence and physical GPU acceptance remain distinct.
 
-WB-ACTOR-COMPOSE-001 / #589 Draft/HOLD: [Shared Workbench actor composition](systems/workbench-actor-composition.md)
+WB-ACTOR-COMPOSE-002R / #737 Draft/HOLD (accepted #683 foundation): [Shared Workbench actor composition](systems/workbench-actor-composition.md)
 integrates the existing physical catalogue, independent producers and live handoff.
-Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-composition.md)
+Use the [continuous-play sandbox owner procedure](operations/workbench-actor-composition.md)
 for ordinary UI controls, policy testing and authored saves; the
 [dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
 separates actual platform evidence from owner playfeel acceptance.

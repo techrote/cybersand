@@ -613,7 +613,7 @@ func _submit(candidate: Dictionary, patch: Dictionary, action: String) -> bool:
 	if _read_only_evidence(): return _say("Saved evidence cannot submit a native transaction; Generate first.")
 	# Controller cleanup must not clear a caller-owned staged history/patch.
 	_pending_setup=candidate.duplicate(true);_pending_patch=patch.duplicate(true);_pending_action=action;phase="submitting"
-	if not bench.apply(candidate,true,0,false,false,{},{},false,patch):
+	if not bench.apply(candidate,true,0,false,false,{},{},false,{},patch):
 		phase="ready";_pending_patch.clear();_pending_setup.clear();return _say(bench.message)
 	phase="installing";status="Preparing atomic native "+action+"; authored history awaits acknowledgement…";_refresh();return true
 

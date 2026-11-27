@@ -1,0 +1,14 @@
+{"registered_identities":16,"native_proxies":16,"workers":1,"native_ticks":3,"elapsed_usec":4752,"status":"pass"}
+{"registered_identities":16,"native_proxies":16,"workers":4,"native_ticks":3,"elapsed_usec":2661,"status":"pass"}
+{"registered_identities":32,"native_proxies":32,"workers":1,"native_ticks":3,"elapsed_usec":4052,"status":"pass"}
+{"registered_identities":32,"native_proxies":32,"workers":4,"native_ticks":3,"elapsed_usec":3772,"status":"pass"}
+{"registered_identities":64,"native_proxies":64,"workers":1,"native_ticks":3,"elapsed_usec":6985,"status":"pass"}
+{"registered_identities":64,"native_proxies":64,"workers":4,"native_ticks":3,"elapsed_usec":27851,"status":"pass"}
+{"registered_identities":128,"native_proxies":128,"workers":1,"native_ticks":3,"elapsed_usec":6280,"status":"pass"}
+{"registered_identities":128,"native_proxies":128,"workers":4,"native_ticks":3,"elapsed_usec":8600,"status":"pass"}
+{"registered_identities":256,"native_proxies":256,"workers":1,"native_ticks":3,"elapsed_usec":3956,"status":"pass"}
+{"registered_identities":256,"native_proxies":256,"workers":4,"native_ticks":3,"elapsed_usec":6762,"status":"pass"}
+{"registered_identities":512,"native_proxies":512,"workers":1,"native_ticks":3,"elapsed_usec":4295,"status":"pass"}
+{"registered_identities":512,"native_proxies":512,"workers":4,"native_ticks":3,"elapsed_usec":9853,"status":"pass"}
+{"registered_identities":4096,"native_proxies":4096,"workers":1,"native_ticks":3,"elapsed_usec":49862,"status":"pass"}
+{"registered_identities":4096,"native_proxies":4096,"workers":4,"native_ticks":3,"elapsed_usec":42340,"status":"pass"}

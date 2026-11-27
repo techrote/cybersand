@@ -799,7 +799,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
                 throw std::invalid_argument("Workbench sample requires complete typed values");
             pending->workbench = std::make_unique<CyberNativeCellWorld::Workbench>();
             pending->workbench->response = response;
-            CyberNativeCellWorld::WorkbenchSample initial;
+            auto& initial = pending->workbench->pending;
             if (!CyberNativeCellWorld::parse_workbench_sample(initial, *pending->workbench,
                     packet.get("states",PackedFloat64Array()), packet.get("geometry",PackedFloat64Array()),
                     packet.get("bodies",Array()), packet.get("session",0), packet.get("epoch",0)))
@@ -835,7 +835,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (options.has("initial_bodies") && options["initial_bodies"].get_type() != Variant::PACKED_FLOAT32_ARRAY)
             throw std::invalid_argument("Initial body input must be a PackedFloat32Array");
         pending->initial_body_input = options.get("initial_bodies", PackedFloat32Array());
-        pending->initial_bodies = CyberNativeCellWorld::parse_body_state_values(pending->initial_body_input, true);
+        CyberNativeCellWorld::parse_body_state_values(pending->initial_bodies, pending->initial_body_input, true);
         cybersand::setup::encoding::Writer body_identity;
         body_identity.text("cybersand-prepared-physical-input-v1");
         body_identity.integer(static_cast<std::uint32_t>(pending->initial_body_input.size()));

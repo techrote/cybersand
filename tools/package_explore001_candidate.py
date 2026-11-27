@@ -77,11 +77,14 @@ def stage_generator_profiles(package_root):
     return {p.name: native.sha(p) for p in recipes}
 
 
-def stage_project_archive(payload, native_candidate, destination, root=ROOT):
+def stage_project_archive(payload, native_candidate, destination, root=ROOT, *, actor_evaluator=False):
     """Stage committed Windows inputs; never require the Linux reciprocal LFS object."""
     with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
         for entry in archive:
             if not entry.isfile() or entry.name.startswith("godot/.godot/"):
+                continue
+            # The Actor evaluator regenerates these mutable editor descriptors at first import.
+            if actor_evaluator and entry.name.startswith("godot/") and entry.name.endswith(".import"):
                 continue
             if entry.name in {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}:
                 continue
@@ -131,9 +134,12 @@ def main():
              "third_party/patches/rapier-0.35.1-cooperative-bvh-join.patch",
              "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md",
              args.readme.as_posix()]
+    actor_evaluator = args.readme.as_posix() == "docs/operations/workbench-actor-composition.md"
+    if actor_evaluator:
+        names.append("tools/ci/actor_results_collector.ps1")
     payload = committed_archive(names)
     args.output.mkdir(parents=True)
-    stage_project_archive(payload, args.native_candidate, args.output)
+    stage_project_archive(payload, args.native_candidate, args.output, actor_evaluator=actor_evaluator)
     profiles = stage_generator_profiles(args.output)
     for engine in (args.engine, console):
         shutil.copyfile(engine, args.output / engine.name)
@@ -153,6 +159,17 @@ def main():
         'call "%~dp0Verify and Open Workbench.cmd"\n'
         'exit /b %errorlevel%\n',
         encoding="utf-8", newline="\r\n")
+    if actor_evaluator:
+        # Manifest-bound, local-only acceptance collector; the original file
+        # is committed and extracted from the same Git tree as the application.
+        collector = args.output / "tools/ci/actor_results_collector.ps1"
+        collector.rename(args.output / "Actor Results Collector.ps1")
+        (args.output / "Collect Actor Results.cmd").write_text(
+            '@echo off\ncd /d "%~dp0"\n'
+            'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Actor Results Collector.ps1"\n'
+            'if errorlevel 1 (echo Actor regression failed. Logs are retained. & pause & exit /b 1)\n'
+            'echo Actor evidence has been saved.\npause\n',
+            encoding="utf-8", newline="\r\n")
     # The guide follows the same committed source as the application payload;
     # a working-tree documentation edit must not enter a source-matched package.
     shutil.copyfile(args.output / args.readme, args.output / "READ-ME.md")

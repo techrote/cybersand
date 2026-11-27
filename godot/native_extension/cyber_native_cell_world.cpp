@@ -449,8 +449,8 @@ bool CyberNativeCellWorld::reset_demo_world(bool gameplay_water) {
         default_demo_recipe_active_ = true;
         reset_demo_coupling_parameters();
         render_snapshot_full_refresh_required_ = true;
-        current_bodies_ = {};
-        previous_bodies_ = {};
+        current_bodies_.fill({});
+        previous_bodies_.fill({});
         clear_observations();
         last_stats_ = {};
         simulation_time_ms_ = 0.0;
@@ -637,17 +637,17 @@ void CyberNativeCellWorld::prepare_body_coupling(bool resolve_overlaps) {
 }
 
 void CyberNativeCellWorld::clear_observations() {
-    observations_ = {};
-    if (body_diagnostics_) *body_diagnostics_ = {};
+    observations_.fill({});
+    if (body_diagnostics_) body_diagnostics_->fill({});
 }
 
 void CyberNativeCellWorld::parse_body_states(const PackedFloat32Array& states) {
-    current_bodies_ = parse_body_state_values(states, false);
+    parse_body_state_values(current_bodies_, states, false);
 }
 
-CyberNativeCellWorld::BodyStates CyberNativeCellWorld::parse_body_state_values(
-    const PackedFloat32Array& states, bool strict) {
-    BodyStates bodies{};
+void CyberNativeCellWorld::parse_body_state_values(
+    BodyStates& bodies, const PackedFloat32Array& states, bool strict) {
+    bodies.fill({});
     if (strict && (states.size() % kInputStride != 0 ||
         states.size() / kInputStride > cybersand::World::kMaximumTransientBodies))
         throw std::invalid_argument("Initial body input exceeds its fixed record bound");
@@ -693,7 +693,6 @@ CyberNativeCellWorld::BodyStates CyberNativeCellWorld::parse_body_state_values(
         body.sample_serial = static_cast<std::int32_t>(serial);
         body.valid = true;
     }
-    return bodies;
 }
 
 void CyberNativeCellWorld::rasterize_body(const BodyState& body) {
@@ -2064,7 +2063,7 @@ bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
         worker_threads_ = config.worker_threads;
         displacement_gain_ = displacement; boundary_gain_ = boundary;
         contact_gain_ = contact; impulse_cap_ = cap; density_limit_ = density;
-        current_bodies_ = {}; previous_bodies_ = {}; clear_observations();
+        current_bodies_.fill({}); previous_bodies_.fill({}); clear_observations();
         last_stats_ = {}; tick_failure_count_ = 0; last_tick_error_ = String{};
         render_cells_revision_ = hard_surface_rectangles_revision_ = hard_surface_chunk_rectangles_revision_ = UINT64_MAX;
         render_snapshot_full_refresh_required_ = true;

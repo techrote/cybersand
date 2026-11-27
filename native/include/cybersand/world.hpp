@@ -201,7 +201,9 @@ class World {
 public:
     // ACT-004 admits eight actors with at most eight rectangular parts each.
     // These are transient occupancy identities, never authoritative cell IDs.
-    static constexpr std::uint16_t kMaximumTransientBodies = 64;
+    // Bounded response workspace: IDs stay uint16 and float32-exact. Authored
+    // Workbench budgets retain 8 actors / 64 bodies unless explicitly expanded.
+    static constexpr std::uint16_t kMaximumTransientBodies = 4096;
 
     explicit World(WorldConfig config = {});
     ~World();
@@ -630,7 +632,13 @@ private:
     std::vector<BallisticParcel> ballistic_parcels_;
     BallisticLedger ballistic_ledger_{};
     std::uint64_t ballistic_advance_nanoseconds_ = 0; // diagnostic only
-    std::array<std::int64_t, kMaximumTransientBodies + 1U> ballistic_body_px_{}, ballistic_body_py_{};
+    // Keep the bounded per-body ballistic impulse lanes on the World-owned heap.
+    // Increasing transient identities to 4096 must not increase every stack-local
+    // World by two 4097-element arrays (including Worlds with ballistic disabled).
+    std::vector<std::int64_t> ballistic_body_px_ =
+        std::vector<std::int64_t>(kMaximumTransientBodies + 1U, 0);
+    std::vector<std::int64_t> ballistic_body_py_ =
+        std::vector<std::int64_t>(kMaximumTransientBodies + 1U, 0);
     enum class BallisticCell : std::uint8_t { Free, Water, Solid, Body, Outside };
     void validate_ballistic_config() const;
     void validate_ballistic_ledger() const;

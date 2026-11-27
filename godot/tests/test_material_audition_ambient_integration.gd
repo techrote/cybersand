@@ -62,8 +62,8 @@ func same_owners(label: String) -> void:
 
 
 func exercise() -> void:
-	check(Catalog.MAX_ACTORS == 8 and Session.MAX_ACTORS == 8,
-		"combined source retains the actual eight-actor limit")
+	check(Catalog.Capacity.defaults().logical_limit == 8 and Catalog.MAX_AMBIENT_CONTROLLERS == 8,
+		"ordinary defaults retain eight logical actors and the AMBIENT policy budget")
 	check_off("ordinary startup before opening material tools", true)
 	if not await until(func() -> bool: return cell(41,41) == 2 and cell(41,42) == 16,
 		"initial native Sand/Oil control pair"): return
