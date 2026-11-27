@@ -6,6 +6,7 @@ const Adapter = preload("res://goblin/goblin_adapter.gd")
 const Fixtures = preload("res://goblin/goblin_fixtures.gd")
 const Assertions = preload("res://goblin/goblin_assertions.gd")
 const Catalog = preload("res://scripts/workbench_actor_catalog.gd")
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
 const Profile = preload("res://scripts/ambient/ambient_profile.gd")
 const Session = preload("res://scripts/physical_actor_session.gd")
 var adapter: Node
@@ -60,8 +61,9 @@ func run() -> void:
 
 
 func exercise() -> void:
-	check(Catalog.MAX_ACTORS == 8 and Session.MAX_ACTORS == 8,
-		"accepted eight-actor capacity remains authoritative")
+	check(Capacity.defaults().logical_limit == 8 and Capacity.MAX_ACTORS == 4096 \
+		and Catalog.MAX_ACTORS == Capacity.MAX_ACTORS and Session.MAX_ACTORS == Capacity.MAX_ACTORS,
+		"eight-actor default and opt-in 4096 ceiling agree across authoring and physical session")
 	var start: Dictionary = Fixtures.build("mixed_stress", adapter.policy())
 	var control: Dictionary = Catalog.control_for(start.actors[0])
 	control.source = "policy"
