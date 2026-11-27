@@ -247,5 +247,105 @@
         "stdout_sha256": "8b2f5fe70a081c354d8b4bb38578e493689e3b01e89d4cdbd4cc51d1da9001bc"
       }
     }
+  },
+  "resulting_source_00478": {
+    "source": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "runtime_sha256": {
+      "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+      "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "tools/gentek_reciprocal": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+    },
+    "platform": "Private WSL2 Xvfb, Mesa llvmpipe, official Godot 4.7 Stock Safe, software OpenGL, two slots, Water composition 1, actual submission 0, all-worker native completion. Three logical CPUs at low priority. These cases qualify functionality.",
+    "command": "xvfb-run -a -s \"-screen 0 1920x1080x24\" Godot_v4.7-stable_linux.x86_64 --path godot --audio-driver Dummy --render-thread safe --rendering-method gl_compatibility --max-fps 60 --script res://<fixture>. The cross-feature cases and modes below repeat the documented ordinary entries. GIP014 uses the command and private display in 2026-11-27-pubpres-goblin-mounted.json with the resulting source and a fresh profile per case.",
+    "timeout_seconds": {
+      "ordinary": 300,
+      "SWARM": 420,
+      "Gentek": 630,
+      "Goblin": 300
+    },
+    "results": [
+      [
+        "test_workbench_actor_manipulation",
+        78,
+        "e549efb5c9fefd24658c03314c8fc32f2393885f0e2dcfd585baa395c425a878"
+      ],
+      [
+        "test_ambient_default_off_integration",
+        68,
+        "0d3103043782ce70a258339dbef7cabdd3fa9c7229fed510ad17a8cb12247882"
+      ],
+      [
+        "test_material_audition_ambient_integration",
+        86,
+        "d60bbd82679383a131289e3026f4c621a2685b31f4b3f4726211741bb3c27b2f"
+      ],
+      [
+        "test_workbench_actor_composition_native",
+        351,
+        "a1c9c58a0f3ee4631fe5c818ba7820b0eb78b3bafa998de8b796c3773f0756cd"
+      ],
+      [
+        "test_workbench_pilot_ui",
+        183,
+        "aaa2873157522640113f2d327e19aaed9193042c54843f6bee14c81cb8729284"
+      ],
+      [
+        "test_art_architecture_workbench",
+        85,
+        "845958a86da3b442267dfacd2bc64cc22e478f10802229e32f056f14414bfcb5"
+      ],
+      [
+        "test_workbench_authoring_patch",
+        132,
+        "bc1c8633d38d555617641885ab6328a32e5a6d9c61098b032b946a1dfb698c2b"
+      ],
+      [
+        "test_workbench_reciprocal_controller",
+        48,
+        "ba96b9ef1f56accad8a88ac9f23b223bc6e434d65a2646b672b9b55b4d69dbd0"
+      ],
+      [
+        "swarm-create",
+        264,
+        "0608dba466e777eefb3c56b2713ad069814fe6aab31a09ca3ea0c19d5049f1a6"
+      ],
+      [
+        "swarm-reopen",
+        81,
+        "830385ae3c31e65cda7327aa53faa20bef790f49edeca255cbd3538997400e1d"
+      ],
+      [
+        "gentek-author",
+        73,
+        "4bb026e49b3718ce9438c183b91c96a9a43a439a061f179347036cb53c242815"
+      ],
+      [
+        "gentek-reopen",
+        53,
+        "577b2c4f204ef86ad171ea4aefd042e59942acc50136a81cd5d7af184acea7f3"
+      ],
+      [
+        "goblin-ambient_integration",
+        447,
+        "c736260cd21094fedf67ce60fac1b5fae409654a705326f04a2bb2e1d01424fb"
+      ],
+      [
+        "goblin-gameplay",
+        149,
+        "8f7cfa5e78fb7a701f6bb25b6a316f4e76a5df5d870127168692be55d326fdab"
+      ],
+      [
+        "goblin-storage",
+        67,
+        "bbc96349e638cb9f4b81e6407a50df8860c355dfd01c29ff80caf95c4fc7cd48"
+      ]
+    ],
+    "result_fields": [
+      "case",
+      "passed_assertions",
+      "original_application_stdout_sha256"
+    ],
+    "initial_goblin_attempt": "GIP014 refused missing psutil==7.2.2 before launching any case. The subsequent run supplied the pinned dependency."
   }
 }

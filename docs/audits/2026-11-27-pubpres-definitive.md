@@ -168,6 +168,13 @@ withholds. The raw receipt SHA-256 is
 
 ## Integrated Workbench checks
 
+On packaged application source `00478f29b`, 15 private graphical runs passed
+2,165 assertions with the selected Stock Safe policy. They exercised pilot and
+manipulation, AMBIENT takeover and handback, Goblin native gameplay and verified
+storage, live Material Audition, Actor Compose, native Art and Architecture,
+SWARM reciprocal, and Gentek 2048² authoring and fresh-process reopening. The
+ordinary pilot case passed all 183 checks. [Resulting-source fixture, library and raw log identities](2026-11-27-pubpres-cross-feature.json)
+
 On 27 November, the source at `cc0a8475` passed actor manipulation (78 checks),
 AMBIENT defaults and handback (68), Material Audition across World replacement
 (86), native Actor Compose (351), Art and Architecture (85), native authoring
