@@ -6,7 +6,7 @@
   "render_lookahead": 0,
   "engineering_disposition": "EXPERIMENTAL / HOLD",
   "physical_acceptance": "HOLD",
-  "rationale": "Prepared owner evaluator: official Stock Safe, Full two-slot publication and repaired Water composition are the primary test route, conditional on exact resulting-source Windows graphical and native qualification. Original all-worker completion is retained after the matched actual-task candidate failed its prospective selection criteria. Bounded atomic Separate4 is exposed only as a separately labelled, independently qualified experimental route; its comparative architecture decision remains HOLD. The explicit fallback keeps Stock Safe and disables recovery Water composition. This package selection does not change production defaults or assert physical owner acceptance.",
-  "experimental_architecture": "atomic_separate4",
+  "rationale": "Use official Stock Safe with Full two-slot publication, Water composition and all-worker native completion. The Stock Safe fallback disables Water composition. Separate0 and Separate4 failed Windows Water framebuffer qualification in run 46022262388. The registered promotion criteria require those checks to pass. Owner evaluation on physical hardware remains open.",
+  "experimental_architecture": "none",
   "task_completion": 0
 }

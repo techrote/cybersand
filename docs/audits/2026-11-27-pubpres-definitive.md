@@ -39,6 +39,21 @@ passed 92 and 15 checks. The tests exercise a new Sand upload before a draw and
 retired or withheld members. The multipart tests use the authored logical
 capacity and the actual maximum physical roster for their respective bounds.
 
+On Windows, the Stock Safe held-limb control passed 12 checks. Each build02
+mode (Safe0, Separate0 and Separate4) passed 125 checks, including accepted-frame
+picking and placing the rotated limb. The original 60-second run timed out while
+creating a 2048² blank before its 512² input case. The replay started directly
+with the registered 512² extent and recorded the native/Workbench installation.
+[Four Windows input receipts](https://github.com/techrote/cybersand/actions/runs/46030558777)
+
+Windows Stock Safe and build02 Safe0 passed the actual Water gates on
+`2ac2c020`. Separate0 and Separate4 failed the opacity, clipping and
+restore framebuffer controls. The experimental engine therefore failed its
+registered Water qualification. The standalone package selects official
+Stock Safe, two slots and Water composition, with a Stock Safe Water-off
+fallback. Both use all-worker native completion.
+[Original Windows renders and logs](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15215285088)
+
 ## Integrated Workbench checks
 
 On 27 November, the source at `cc0a8475` passed actor manipulation (78 checks),
@@ -112,3 +127,17 @@ a 204 ms SceneTree interval without an action within one second. Each case
 retained two sampled texture RIDs, had zero pending hard-terrain chunks at
 sampling, and exited cleanly. Peak process RSS ranged from 772 to 961 MiB.
 [Session receipts, clocks and process data](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15213445404)
+
+## Measurements after the input repair
+
+Linux application `88bb920c` passed the registered N/C/C/N direction on both
+worlds with Stock Safe Water on and off. With Water on, Wave512 rose from
+11.50–11.65 to 12.13 physical steps/s and Wave2048 rose from 5.00–5.05 to
+6.38–6.73. Wave2048 p95 fell from 260–263 to 228–230 ms. Both candidate
+arms stayed below 234 ms maximum, while the main arms had 84 and 70 gaps over
+250 ms. The large case still missed the 100 ms p95 target. The native Water
+replay recorded eight withheld member-draws in 4,928 draws and all five
+restored RGB controls matched exactly.
+[Water-on comparison](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15214796281)
+· [Water-off comparison](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15213628842)
+· [Graphical and native receipts](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15214485857)

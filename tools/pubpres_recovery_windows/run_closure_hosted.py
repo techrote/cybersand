@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 
 import atomic_delivery
+import recovery_policy
 from closure_request import validate
 ROOT=Path(__file__).resolve().parents[2]
 HERE=ROOT/'tools/pubpres_final_recovery'
@@ -19,6 +20,8 @@ from results import need
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--architecture-comparison',action='store_true',
+                        help='Run the full frozen Stock and build02 inventory on the comparison host')
     for name in ('runtime','stock-engine','atomic-root','output'):parser.add_argument('--'+name,type=Path,required=True)
     args=parser.parse_args()
     need(os.name=='nt','This inventory requires actual Windows execution')
@@ -26,7 +29,9 @@ def main():
     output=args.output.resolve();need(not output.exists(),'Preserve original hosted qualification output')
     output.mkdir(parents=True)
     runtime=args.runtime.resolve();stock=args.stock_engine.resolve();atomic_root=args.atomic_root.resolve()
-    build=atomic_delivery.verify_payload(atomic_root);custom=atomic_root/build['gui_executable']
+    stock_delivery=not args.architecture_comparison and not recovery_policy.requires_atomic(recovery_policy.selection())
+    if not stock_delivery:
+        build=atomic_delivery.verify_payload(atomic_root);custom=atomic_root/build['gui_executable']
     pin=atomic_delivery.pin();identity=driver_identity()
     report={'schema':'pubpres-recovery-hosted-v1','closure_request':request,
         'request':{'phase':'integration','engine_artifact':{k:v for k,v in pin.items() if k!='gui_sha256'}},
@@ -34,6 +39,9 @@ def main():
         'attempt':os.environ.get('GITHUB_RUN_ATTEMPT'),'platform':'windows','outcomes':[],'unexecuted':[],
         'closure_members_required':True,'closure_native_owner_required':True,'complete':False,'physical_acceptance':'HOLD',
         'scope':'Closure resulting-source actual Windows application admission. Original frozen19/submission2/water4 retained; multipart4 added. No physical NVIDIA or comparative performance acceptance.'}
+    if stock_delivery:
+        report.update(schema='pubpres-stock-delivery-windows-v1',request={'phase':'stock-delivery'},
+                      scope='Windows Stock Safe native owner, frozen19, Water4 and multipart4 for the selected and fallback launchers.')
     def save():
         (output/'INVENTORY.json').write_text(json.dumps(report,indent=2)+'\n')
     def execute(label,command,timeout=2400):
@@ -53,7 +61,7 @@ def main():
     save()
     stock_native=execute('stock-native-owner',[ROOT/'tools/pubpres_recovery_windows/run_native_owner.py',
         '--source',ROOT,'--runtime',runtime,'--engine',stock,'--output',output/'stock-native-owner'])
-    atomic_native=execute('atomic-native-owner',[ROOT/'tools/pubpres_recovery_windows/run_native_owner.py',
+    atomic_native=not stock_delivery and execute('atomic-native-owner',[ROOT/'tools/pubpres_recovery_windows/run_native_owner.py',
         '--source',ROOT,'--runtime',runtime,'--engine',custom,'--output',output/'atomic-native-owner',*exact])
     stock_ok=stock_native and qualify('stock-frozen-correctness',stock,'frozen')
     if stock_ok:
@@ -62,6 +70,11 @@ def main():
     else:
         water_ok=members_ok=False
         report['unexecuted'].append({'gate':'Water/multipart/atomic','reason':'Original resulting-source Stock correctness failed'})
+    if stock_delivery:
+        report['complete']=stock_ok and water_ok and members_ok
+        save()
+        print(json.dumps({'complete':report['complete'],'scope':report['scope']}))
+        return 0 if report['complete'] else 1
     if stock_ok and water_ok and members_ok and atomic_native:
         atomic_ok=qualify('atomic-frozen-correctness',custom,'frozen')
         if atomic_ok:

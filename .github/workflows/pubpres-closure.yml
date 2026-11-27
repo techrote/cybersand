@@ -27,6 +27,7 @@ jobs:
     outputs:
       phase: ${{ steps.request.outputs.phase }}
       current_main: ${{ steps.request.outputs.current_main }}
+      windows_lanes: ${{ steps.request.outputs.windows_lanes }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: {persist-credentials: false}
@@ -40,8 +41,19 @@ jobs:
           git fetch --depth=1 --no-tags origin "$measured"
           git diff --exit-code "$measured" HEAD -- godot native third_party examples \
             tools/pubpres_final/ tools/pubpres_final_recovery/run_sustained_owner.py \
-            tools/pubpres_final_recovery/sustained_owner.gd tools/pubpres_recovery_windows/selection.json \
+            tools/pubpres_final_recovery/sustained_owner.gd \
             ':(exclude)godot/tests/**' ':(exclude)godot/goblin/tests/**'
+          python3 - "$measured" <<'PY'
+          import json, subprocess, sys
+          sys.path.insert(0, 'tools/pubpres_recovery_windows')
+          import recovery_policy as policy
+          path = 'tools/pubpres_recovery_windows/selection.json'
+          prior = json.loads(subprocess.check_output(['git', 'show', f'{sys.argv[1]}:{path}']))
+          current = policy.selection()
+          for mode in ('selected', 'fallback'):
+              if (policy.configuration(prior, mode), policy.selectors(prior, mode)) != (policy.configuration(current, mode), policy.selectors(current, mode)):
+                  raise ValueError(f'Measured {mode} engine, thread or simulation selectors differ')
+          PY
       - name: Source and focused evidence reader admission
         run: |
           python3 tools/ci/check_ci_provider_policy.py
@@ -53,6 +65,7 @@ jobs:
     needs: plan
     strategy:
       fail-fast: false
+      max-parallel: 4
       matrix:
         arm: ${{ fromJSON(needs.plan.outputs.phase == 'windows-focus' && '["stock-held-placement","atomic-submission-safe-0","atomic-submission-separate-0","atomic-submission-separate-4"]' || '["admission"]') }}
     runs-on: windows-2022
@@ -330,6 +343,11 @@ jobs:
   evaluator-windows:
     needs: [plan, runtimes, dependencies]
     if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        lane: ${{ fromJSON(needs.plan.outputs.windows_lanes) }}
     timeout-minutes: 360
     runs-on: windows-2022
     steps:
@@ -380,17 +398,18 @@ jobs:
           ./tools/pubpres_final/prepare_windows_dependencies.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies')
       - name: Verify ordinary Stock Safe held-limb placement and owner replacement
         id: placement
+        if: matrix.lane != 'comparison'
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --output build/closure-windows/stock-held-placement --focus held-placement
       - name: Actual resulting-source stock and atomic Windows application qualification
         id: application
         if: always() && steps.prepare.outcome == 'success'
-        run: python tools/pubpres_recovery_windows/run_closure_hosted.py --runtime build/runtime/C --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/closure-windows/application
+        run: python tools/pubpres_recovery_windows/run_closure_hosted.py --runtime build/runtime/C --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/closure-windows/application ${{ matrix.lane == 'comparison' && '--architecture-comparison' || '' }}
       - name: Registered observer calibrations and six-arm architecture comparison
         if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') != ''
         run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded
       - name: Assemble source-exact qualified selected and fallback Workbench
         id: package
-        if: always() && steps.prepare.outcome == 'success' && steps.placement.outcome == 'success'
+        if: always() && matrix.lane != 'comparison' && steps.prepare.outcome == 'success' && steps.placement.outcome == 'success' && steps.application.outcome == 'success'
         shell: powershell
         run: |
           $ErrorActionPreference='Stop'
@@ -434,7 +453,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pubpres-closure-windows-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ matrix.lane == 'comparison' && 'pubpres-comparison-windows-evidence' || 'pubpres-closure-windows-evidence' }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/closure-windows/
             !build/closure-windows/**/extracted package with spaces/**
@@ -451,7 +470,7 @@ jobs:
           retention-days: 90
           if-no-files-found: error
       - name: Registered post-consolidation N/C/C/N physical comparison
-        if: always() && hashFiles('build/closure-windows/application/stock-frozen-correctness/SUMMARY.json') != ''
+        if: always() && matrix.lane != 'comparison' && hashFiles('build/closure-windows/application/stock-frozen-correctness/SUMMARY.json') != ''
         shell: bash
         env:
           PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
@@ -462,7 +481,7 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: pubpres-closure-performance-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          name: ${{ matrix.lane == 'comparison' && 'pubpres-bounded-six-arm' || 'pubpres-closure-performance-windows' }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/performance/
             !build/performance/**/project/**

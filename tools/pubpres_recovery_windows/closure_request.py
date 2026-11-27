@@ -63,8 +63,11 @@ def main():
         return
     value=validate()
     if os.environ.get('GITHUB_OUTPUT'):
+        from recovery_policy import requires_atomic, selection
+        windows_lanes=['all'] if requires_atomic(selection()) else ['package','comparison']
         with open(os.environ['GITHUB_OUTPUT'],'a',encoding='utf-8') as stream:
             stream.write('phase='+value['phase']+'\ncurrent_main='+value['current_main']+'\n')
+            stream.write('windows_lanes='+json.dumps(windows_lanes)+'\n')
     print(json.dumps(value,indent=2))
 
 
