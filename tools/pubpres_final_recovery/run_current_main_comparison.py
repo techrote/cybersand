@@ -179,7 +179,11 @@ def main():
             settings[SELECTOR] = '0'
             if role == 'N':
                 settings.update(CYBERSAND_DIAG_PHYSICS_PUBLICATION='combined', CYBERSAND_DIAG_PRESENTATION='legacy',
-                                CYBERSAND_DIAG_RENDER_CADENCE='source-default')
+                                CYBERSAND_DIAG_RENDER_CADENCE='source-default', CYBERSAND_DIAG_MATERIAL_TIMING='legacy')
+                # These policies never existed on accepted main. V3 distinguishes absent requests from OFF.
+                for key in ('CYBERSAND_DIAG_SAME_FRAME_CONTINUATION', 'CYBERSAND_PLAYABILITY_WAVE_COLUMN_TILES',
+                            'CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE'):
+                    settings.pop(key)
             arguments = ['--path', str(project), '--rendering-method', 'gl_compatibility', '--rendering-driver', backend,
                          '--render-thread', thread, '--audio-driver', 'Dummy', '--log-file', str(folder/'godot.log'),
                          '--script', 'res://'+OBSERVER, '--', '--receipt='+str(receipt), '--fixture='+case['fixture'],

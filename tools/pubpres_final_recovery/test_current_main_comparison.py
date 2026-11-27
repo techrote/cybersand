@@ -15,7 +15,7 @@ class CurrentMainAdmission(unittest.TestCase):
         for key in ('minimum_capture_usec', 'minimum_real_steps', 'maximum_capture_usec', 'reported_gap_thresholds_ms'):
             self.assertEqual(new[key], old[key])
         self.assertEqual(new['order'], ['N', 'C', 'C', 'N'])
-        self.assertEqual(new['current_main'], '67c1413a2a84077b47fa542cf91d2bd6ba5520ee')
+        self.assertEqual(new['current_main'], '7a15691a7c537d07ff10a1bc4da9d46491c0b9d6')
 
     def test_complete_cohort_and_independent_corruption_refusals(self):
         with tempfile.TemporaryDirectory() as directory:

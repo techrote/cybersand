@@ -235,7 +235,9 @@ def prepare(root: Path, source: dict, output: Path, campaign: dict, engine: Path
                     ROOT / "tools/pubpres003/pubpres_causal_gameplay.gd" if relative == OBSERVER_TARGET else
                     ROOT / "godot" / relative)
         need(digest(original) == expected, "Observer dependency changed: " + relative)
-        shutil.copyfile(original, template / relative)
+        destination = template / relative
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(original, destination)
     authored = {path.relative_to(template).as_posix(): digest(path)
                 for path in template.rglob("*") if path.is_file()}
     execute(engine, ["--headless", "--audio-driver", "Dummy", "--path", str(template), "--editor", "--import"],

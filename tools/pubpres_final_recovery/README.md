@@ -127,7 +127,7 @@ the complete source and never relabels old M as refreshed accepted main.
 # Current accepted-main reconciliation comparison
 
 `current-main-registration.json` separately registers **N/C/C/N** against accepted
-main `67c1413a2a84077b47fa542cf91d2bd6ba5520ee`. Historical M/C/D sources and their
+main `7a15691a7c537d07ff10a1bc4da9d46491c0b9d6`. Historical M/C/D sources and their
 registrations remain unchanged. `run_current_main_comparison.py` retains the
 original V3 physical/native/material/body/input/framebuffer oracle and the
 existing explicit render-owner extension. It requires the same independently

@@ -1,6 +1,6 @@
 {
   "schema": "pubpres-closure-current-main-comparison-v1",
-  "current_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "order": ["N", "C", "C", "N"],
   "cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
   "candidate_architectures": ["stock_safe", "atomic_safe0", "atomic_separate0", "atomic_separate4"],
