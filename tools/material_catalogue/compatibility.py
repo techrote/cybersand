@@ -550,36 +550,22 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 762},)
 
 
-# OBJECTSHARD-001: opt-in mutation witnesses and shared selected lifecycle decisions.
-# The frozen catalogue/quantity identities and ordinary World behavior remain unchanged.
+# RAMCACHE adds read-only resident-size estimates to the Actor/Material World.
 REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
-  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
-  'to_lf_sha256': 'bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214',
-  'source_commit': '5afe5643097c543f7d8a6840ced9afac58dd053e',
-  'record': 'docs/audits/2026-11-22-objectshard-world-transition.md',
-  'issue': 281,
-  'pr': 726},)
+  'from_lf_sha256': '98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c',
+  'to_lf_sha256': '54a727f6eb0543c2d9cdd868ed0486bf6e68d1b98c03c7a86a260891b49b1c24',
+  'source_commit': '3ad6541a6211f85672789fcf9b8271ab02609d67',
+  'record': 'docs/audits/2026-11-27-persistent-area-world-integration.md',
+  'issue': 591,
+  'pr': 745},)
 
 
-# OBJECTSHARD-001R: one opt-in Fire opportunity cannot ignite both owners.
-# This appends the reviewed inherited consumer change; the frozen lock and
-# authentication rules are unchanged. Ordinary null-journal Worlds are identical.
+# ObjectShard's reviewed World changes composed with the admitted resident World.
 REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
-  'from_lf_sha256': 'bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214',
-  'to_lf_sha256': '5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1',
-  'source_commit': 'c06550371ac5448642bff7e4ecb64fe9cd1df728',
-  'record': 'docs/audits/2026-11-22-objectshard-external-fire-world-transition.md',
-  'issue': 281,
-  'pr': 741},)
-
-
-# Reviewed ObjectShard M4 derived occupancy composition. This authenticates the
-# retained source ancestor; it does not refresh any material identity baseline.
-REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
-  'from_lf_sha256': '5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1',
-  'to_lf_sha256': '1077d5928166100c704af047558d82bf58a98a0318fe7bc86afe4f81409d4b48',
-  'source_commit': 'a12636c28519543d9359d6b2abb5a9767857427d',
-  'record': 'docs/audits/2026-11-24-objectshard-m4-world-transition.md',
+  'from_lf_sha256': '54a727f6eb0543c2d9cdd868ed0486bf6e68d1b98c03c7a86a260891b49b1c24',
+  'to_lf_sha256': 'b568775acb67639ca1e6de96450ea9bd1e7ca1ef1fea34e244038f43f8ed9865',
+  'source_commit': '150efbef147f9f92f8df1cb58395c112ac5016f7',
+  'record': 'docs/audits/2026-11-27-objectshard-integrated-world-transition.md',
   'issue': 281,
   'pr': 754},)
 
