@@ -79,7 +79,7 @@ jobs:
         shell: powershell
         run: git config --global core.autocrlf false
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: {persist-credentials: false, fetch-depth: 64}
+        with: {persist-credentials: false, fetch-depth: 256}
       - name: Actual PowerShell 5.1 parser and configuration refusal
         shell: powershell
         run: ./tools/pubpres_recovery_windows/Test-Configuration.ps1 -Output build/closure-admission/windows-configuration.json
@@ -122,6 +122,10 @@ jobs:
           git fetch --no-tags origin "$REPLAY_SOURCE" "$PUBPRES_ENGINE_BUILD_SOURCE"
           python tools/pubpres_playability_build/download_engine.py --platform windows --output "$RUNNER_TEMP/godot"
           python tools/pubpres_recovery_windows/run_held_replay.py --arm "${{ matrix.arm }}" --runtime build/runtime/C --rapier-transport build/transport-C --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/held-replay
+      - name: Fly the two owner scenes in hosted Windows Follow
+        if: matrix.arm == 'stock-held-placement'
+        shell: bash
+        run: python tools/pubpres_recovery_windows/run_owner_follow.py --qualified build/held-replay/stock-held-placement --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --output build/held-replay/owner-follow
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always() && matrix.arm != 'admission'
         with:
