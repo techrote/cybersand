@@ -1034,6 +1034,40 @@ def verify_qualification(*args, **kwargs) -> None:
     verify_ramcache_evidence(args[0] if args else kwargs["directory"], value)
 
 
+def verify_cross_authoring(directory: Path, value: dict, rows: dict) -> None:
+    # Earlier frozen evaluators predate the integrated Workbench fixture.
+    fixture = "godot/tests/fixtures/persistent_area_cross_authoring.gd"
+    if fixture not in value["source_inputs_sha256"]:
+        return
+    identities = []
+    for mode in ("write", "reopen"):
+        label = f"ramcache-cross-authoring-{mode}"
+        relative = f"cross-authoring/workbench-{mode}.json"
+        require(label in rows and relative in value["files_sha256"], "Missing cross-authoring phase: " + mode)
+        row = rows[label]
+        log = (directory / row["log"]).read_text(encoding="utf-8")
+        marker = completion(log, "PERSISTENT_AREAS_WORKBENCH")
+        receipt = json.loads((directory / relative).read_text(encoding="utf-8"))
+        require(not ERRORS.search(log) and row.get("exit_code") == 0 and not row.get("timed_out")
+            and not row.get("forced_termination") and marker == row.get("completion")
+            and marker.get("pid") == receipt.get("process_id") == row["pid"]
+            and marker.get("mode") == receipt.get("mode") == mode
+            and marker.get("graphical") is True and receipt.get("graphical") is True
+            and isinstance(receipt.get("assertions"), int) and marker.get("checks") == receipt["assertions"] + 1
+            and receipt.get("failures") == [],
+            "Cross-authoring original process or native receipt differs: " + mode)
+        identities.append(row["pid"])
+    original = "cross-authoring/cross-authoring.json"
+    require(original in value["files_sha256"], "Missing native cross-authoring writer result")
+    proof = json.loads((directory / original).read_text(encoding="utf-8"))
+    require(identities[0] != identities[1] and proof.get("process_id") == identities[0]
+        and proof.get("art_changed") == 180 and proof.get("art_receipt_count") == 1
+        and isinstance(proof.get("architecture_receipts"), int) and proof["architecture_receipts"] > 0
+        and re.fullmatch(r"[0-9a-f]{64}", str(proof.get("projected_sha256", "")))
+        and proof.get("session_id") and proof.get("durable_revision", 0) > 0,
+        "Cross-authoring writer, fresh reader or material projection differs")
+
+
 def verify_ramcache_evidence(directory: Path, value: dict) -> None:
     """Rebind the complete successor evidence without requiring a local Git checkout."""
     verify_ramcache(value)
@@ -1044,6 +1078,7 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
         and all(row.get("status") == "passed" and type(row.get("pid")) is int and row["pid"] > 0
             and row.get("log") in value["files_sha256"] for row in original_rows),
         "Required original process evidence is missing, failed or unbound")
+    verify_cross_authoring(directory, value, rows)
     markers = {"ramcache-clock":"GEN006_RAMCACHE_BACKGROUND_CLOCK", "ramcache-ledger":"GEN006_RAMCACHE_CACHE",
         "ramcache-writeback":"GEN006_RAMCACHE_WRITEBACK", "ramcache-metadata-bounds":"GEN006_RAMCACHE_METADATA_BOUNDS",
         "ramcache-owner-review":"GEN006_RAMCACHE_OWNER_REVIEW", "ramcache-prefetch-concurrency":"GEN006_RAMCACHE_PREFETCH_CONCURRENCY"}
