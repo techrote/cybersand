@@ -33,6 +33,15 @@ jobs:
       - name: Admit explicit resulting-source closure request
         id: request
         run: python3 tools/pubpres_recovery_windows/closure_request.py
+      - name: Compare delivery inputs with the measured 88bb application
+        if: steps.request.outputs.phase == 'delivery'
+        run: |
+          measured=88bb920c42755669ac8fba37b9fc46249c5bd0a6
+          git fetch --depth=1 --no-tags origin "$measured"
+          git diff --exit-code "$measured" HEAD -- godot native third_party examples \
+            tools/pubpres_final/ tools/pubpres_final_recovery/run_sustained_owner.py \
+            tools/pubpres_final_recovery/sustained_owner.gd tools/pubpres_recovery_windows/selection.json \
+            ':(exclude)godot/tests/**' ':(exclude)godot/goblin/tests/**'
       - name: Source and focused evidence reader admission
         run: |
           python3 tools/ci/check_ci_provider_policy.py
@@ -112,7 +121,7 @@ jobs:
 
   runtimes:
     needs: [plan, windows-admission]
-    if: needs.plan.outputs.phase == 'runtimes' || needs.plan.outputs.phase == 'full'
+    if: needs.plan.outputs.phase == 'runtimes' || (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
@@ -176,7 +185,7 @@ jobs:
 
   dependencies:
     needs: [plan, windows-admission]
-    if: needs.plan.outputs.phase == 'runtimes' || needs.plan.outputs.phase == 'full'
+    if: needs.plan.outputs.phase == 'runtimes' || (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
@@ -233,7 +242,7 @@ jobs:
     if: |
       always() && needs.plan.result == 'success' &&
       (needs.plan.outputs.phase == 'linux-replay' ||
-       (needs.plan.outputs.phase == 'full' && needs.runtimes.result == 'success' && needs.dependencies.result == 'success'))
+       ((needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery') && needs.runtimes.result == 'success' && needs.dependencies.result == 'success'))
     runs-on: ubuntu-24.04
     timeout-minutes: 300
     env:
@@ -286,7 +295,7 @@ jobs:
       - name: Actual multipart history, root Follow and individual-member mouse qualification
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-members --focus members --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - name: Paused placement of a displayed moving multipart limb on Stock Safe
-        if: needs.plan.outputs.phase == 'full'
+        if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-held-placement --focus held-placement --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
@@ -320,7 +329,7 @@ jobs:
 
   evaluator-windows:
     needs: [plan, runtimes, dependencies]
-    if: needs.plan.outputs.phase == 'full'
+    if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
     timeout-minutes: 360
     runs-on: windows-2022
     steps:
@@ -464,7 +473,7 @@ jobs:
 
   native-authority:
     needs: [plan, windows-admission]
-    if: needs.plan.outputs.phase == 'full'
+    if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     env: {CXX: g++-13, CC: gcc-13}

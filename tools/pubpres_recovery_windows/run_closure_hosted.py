@@ -22,7 +22,7 @@ def main():
     for name in ('runtime','stock-engine','atomic-root','output'):parser.add_argument('--'+name,type=Path,required=True)
     args=parser.parse_args()
     need(os.name=='nt','This inventory requires actual Windows execution')
-    request=validate();need(request['phase']=='full','Full application qualification was not requested')
+    request=validate();need(request['phase'] in ('full','delivery'),'Full application qualification was not requested')
     output=args.output.resolve();need(not output.exists(),'Preserve original hosted qualification output')
     output.mkdir(parents=True)
     runtime=args.runtime.resolve();stock=args.stock_engine.resolve();atomic_root=args.atomic_root.resolve()
