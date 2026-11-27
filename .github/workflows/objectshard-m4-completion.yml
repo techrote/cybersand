@@ -271,7 +271,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Source-bound candidate refused' }
           Copy-Item build/objectshard-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
           git lfs install --local
-          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output evidence/rapier-acquisition.json
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output evidence/windows-runtime-acquisition.json
           if ($LASTEXITCODE -ne 0) { throw 'Rapier download failed' }
           if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier SHA mismatch' }
           $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'

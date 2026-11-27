@@ -123,8 +123,9 @@ sleep state or manufacture angular energy.
 
 ## Occupancy composition protects both body domains
 
-Ordinary immutable GCR bodies retain IDs 1–48; attached mutable material bodies
-use 49–64. Native stages the GCR mask and composes it with the current shard
+The integrated actor runtime reserves IDs 1–4080 for immutable GCR proxies and
+4081–4096 for the 16 possible moving structural bodies. The scene configuration
+still bounds actor admission. Native stages the GCR mask and composes it with the current shard
 mask before publishing either as the World's transient obstacle field.
 Ordinary GCR clear/rebuild work cannot clear a valid shard mask first.
 
@@ -167,8 +168,8 @@ ordinary World owner.
 | One shard's bounding area | 16,384 cells |
 | Aggregate shard bounding area | 65,536 cells, further bounded by the canvas |
 | Shapes in an admitted shard | 512 rectangles |
-| Immutable GCR ID range | 1–48 |
-| Mutable ObjectShard ID range | 49–64 |
+| Immutable GCR proxy ID range while M4 is attached | 1–4080 |
+| Mutable ObjectShard ID range | 4081–4096 |
 
 Admission accounts for reserved and owned storage. Capacity refusal must leave
 the preexisting World and shard ownership intact. These are candidate limits,

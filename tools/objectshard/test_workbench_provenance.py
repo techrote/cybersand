@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -10,6 +11,7 @@ import unittest
 from unittest.mock import patch
 
 import qualify_workbench as qualifier
+import reciprocal_windows_package as reciprocal
 import verify_workbench_package as verifier
 
 
@@ -110,6 +112,12 @@ class DeliveredProvenanceTests(unittest.TestCase):
         manifest = {**self.manifest, "source_commit": source, "source_tree": tree,
                     "native": {"source_inputs": native_inputs}}
         (self.root / verifier.MANIFEST).write_text(json.dumps(manifest))
+        cli = b"fixture executable"
+        binding = json.dumps({"platform": "windows", "artifact": reciprocal.WINDOWS_CLI,
+                              "bytes": len(cli), "sha256": hashlib.sha256(cli).hexdigest()}).encode()
+        (self.root / reciprocal.WINDOWS_CLI).parent.mkdir(parents=True, exist_ok=True)
+        (self.root / reciprocal.WINDOWS_CLI).write_bytes(cli)
+        (self.root / reciprocal.WINDOWS_BINDING).write_bytes(binding)
         native_path, rapier_path = self.root / "native.dll", self.root / "rapier.dll"
         native_path.write_bytes(b"synthetic native identity")
         rapier_path.write_bytes(b"synthetic Rapier identity")
@@ -119,6 +127,7 @@ class DeliveredProvenanceTests(unittest.TestCase):
         with patch.object(qualifier.sys, "platform", "win32"), \
                 patch.object(qualifier.native, "source", return_value=(source, tree, native_inputs)), \
                 patch.object(qualifier, "committed_inputs", return_value=self.expected), \
+                patch.object(reciprocal, "committed_binding", return_value=binding), \
                 patch.object(verifier, "verify", return_value=manifest), \
                 patch.object(qualifier.runner, "runtime_paths", return_value=(native_path, rapier_path)), \
                 patch.dict(qualifier.RAPIER_HASHES, {"win32": verifier.digest(rapier_path)}), \

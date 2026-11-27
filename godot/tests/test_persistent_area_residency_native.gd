@@ -65,7 +65,24 @@ func run() -> void:
 	if owner.has("error"): quit(1); return
 	owner.world.paint_disc(65, 60, 0, 0)
 	for index: int in 17: check(owner.world.simulation_tick(), "real Fire/Water/Sand initial tick")
+	var bounds := Rect2i(0, 0, 512, 512)
+	var structural: Dictionary = owner.world.object_shard_attach(bounds)
+	check(structural.get("ok", false), "real structural coordinator attaches before area admission")
+	var before_refusal: PackedByteArray = owner.bridge.export_physical_state(owner.world)
+	var denied: Dictionary = owner.bridge.resident_admit(owner.world, identity(owner, "A"))
+	check(not denied.get("ok", true) and "structural body coordinator" in str(denied.get("error", "")),
+		"an attached coordinator pins residency even with zero structural bodies")
+	check(owner.bridge.capture_workbench_continuation(owner.world).is_empty() and
+		"structural body coordinator" in str(owner.bridge.get_last_error()),
+		"durable capture refuses retained structural ownership")
+	check(owner.world.object_shard_status().get("attached", false) and
+		owner.bridge.export_physical_state(owner.world) == before_refusal,
+		"refused capture and parking preserve the actual World and its coordinator")
+	check(owner.world.object_shard_retire(), "structural retirement releases the World")
 	var admitted: Dictionary = owner.bridge.resident_admit(owner.world, identity(owner, "A"))
+	var refused_attachment: Dictionary = owner.world.object_shard_attach(bounds)
+	check(not refused_attachment.get("ok", true) and "Persistent Areas" in str(refused_attachment.get("detail", "")),
+		"resident World refuses structural attachment before borrowing native authority")
 	check(admitted.get("ok", false), "active A first native residency admission")
 	if not admitted.get("ok", false): quit(1); return
 	var expected := {"A":owner.bridge.export_physical_state(owner.world)}

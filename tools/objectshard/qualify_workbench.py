@@ -50,6 +50,7 @@ REGRESSIONS = (
     "test_workbench_liquid_equipment", "test_physical_actor_session",
     "test_actor_usables_integration", "test_physical_usable_equipment",
     "test_workbench_actor_composition_native", "test_workbench_actor_composition_session",
+    "test_persistent_area_residency_native",
 )
 SCENES = ("tower", "viaduct", "timber", "mixed", "stress")
 
@@ -215,7 +216,10 @@ def qualify(args: argparse.Namespace) -> dict:
             if manifest["source_commit"] != commit or manifest["source_tree"] != tree or manifest["native"]["source_inputs"] != inputs:
                 raise ValueError("Packaged native source differs from qualification checkout")
             executed_root = args.package.resolve()
-            report["packaged_godot_input_locations"] = verify_committed_godot_inputs(executed_root, script_inputs)
+            import reciprocal_windows_package as reciprocal
+            reciprocal.verify_package(executed_root, ROOT)
+            report["packaged_godot_input_locations"] = verify_committed_godot_inputs(
+                executed_root, script_inputs, foreign_paths=reciprocal.FOREIGN_PATHS)
             verify_packaged_engine(executed_root, args.godot, manifest)
             report["package_manifest_sha256"] = runner.sha256(executed_root / "objectshard-workbench-manifest.json")
         runner.ROOT = executed_root

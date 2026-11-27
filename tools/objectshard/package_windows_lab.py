@@ -24,6 +24,7 @@ sys.path.insert(0, str(ROOT / "tools/ci"))
 sys.path.insert(0, str(ROOT / "tools"))
 import native_candidate_identity as native
 import run_windows_godot_regressions as windows
+import reciprocal_windows_package as reciprocal
 from package_explore001_candidate import stage_vc_runtime, verify_vc_runtime
 from verify_package import verify as verify_package, PREFLIGHT
 
@@ -87,9 +88,10 @@ def copy_committed_tree(destination: Path, candidate: Path, guide: str) -> None:
              "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md"]
     if (ROOT / PREFLIGHT["scene"]).is_file():
         paths.append("docs/operations/objectshard-m3-preflight-playtest.md")
+    replacements = reciprocal.windows_cli_replacement(ROOT)
     with tarfile.open(fileobj=io.BytesIO(git("archive", "HEAD", "--", *paths))) as archive:
         for member in archive:
-            if not member.isfile() or member.name.startswith("godot/.godot/"):
+            if not member.isfile() or member.name.startswith("godot/.godot/") or member.name in reciprocal.FOREIGN_PATHS:
                 continue
             if "/bin/" in member.name and member.name not in (native.NATIVE, windows.RAPIER):
                 continue
@@ -98,6 +100,8 @@ def copy_committed_tree(destination: Path, candidate: Path, guide: str) -> None:
             data = stream.read()
             if member.name == native.NATIVE:
                 data = (candidate / Path(native.NATIVE).name).read_bytes()
+            elif member.name in replacements:
+                data = replacements[member.name].read_bytes()
             elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
                 pointer = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
                 data = (ROOT / member.name).read_bytes()
@@ -106,6 +110,7 @@ def copy_committed_tree(destination: Path, candidate: Path, guide: str) -> None:
             target = destination / member.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
+    reciprocal.verify_package(destination, ROOT)
 
 
 def package(args: argparse.Namespace) -> dict:

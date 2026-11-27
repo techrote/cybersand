@@ -41,7 +41,7 @@ REQUIRED = {
 }
 
 
-def verify_committed_godot_inputs(root: Path, expected: dict[str, str]) -> dict[str, str]:
+def verify_committed_godot_inputs(root: Path, expected: dict[str, str], *, foreign_paths=()) -> dict[str, str]:
     """Bind shipped source bytes, including the deliberately renamed old ledger.
 
     The production ledger describes another retained DLL. Packaging preserves
@@ -55,6 +55,10 @@ def verify_committed_godot_inputs(root: Path, expected: dict[str, str]) -> dict[
         raise ValueError("Committed retained provenance is absent from source custody")
     locations = {}
     for relative, expected_digest in expected.items():
+        if relative in foreign_paths:
+            if (root / relative).exists():
+                raise ValueError("Foreign-platform input in Windows package: " + relative)
+            continue
         if not relative.startswith("godot/"):
             continue
         shipped = RETAINED_REFERENCE if relative == RETAINED_PROVENANCE else relative
