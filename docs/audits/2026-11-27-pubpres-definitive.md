@@ -520,3 +520,53 @@ the comparison cannot separate their effects. Ten Mixed2048 physical gaps
 exceeded 100 ms, all isolated, while the longest draw hitch chain was seven
 consecutive gaps over 100 ms. The small patrol spends part of each lap at the
 camera clamp. Physical NVIDIA output and owner acceptance require a new test.
+
+### Packaged application and wider Follow course
+
+Local Windows package `6d638bc2aecbbe5e44ddd856ec366b5566f66f6c` adds an
+exact zero-emission halo shortcut and binds each interstitial native response
+to its original material turn. The wider course crosses the camera clamp at
+ordinary zoom. The submitted camera must move on more than 10% of draws, the
+pilot must remain airborne on over 90%, and every timed draw must include the
+pilot. A moving-pilot PNG with decoded fill pixels is taken before timing.
+
+| 90-second run | Steps/s | Live pilot / draws | Physical gap p95 / max (ms) | Draw gap p95 / max (ms) |
+|---|---:|---:|---:|---:|
+| Linux llvmpipe, Wave512 | 55.76 | 2,745 / 2,745 | 35 / 62 | 39 / 74 |
+| Linux llvmpipe, Mixed2048 | 29.48 | 2,330 / 2,330 | 45 / 103 | 47 / 114 |
+| Windows hosted ANGLE, Wave512 | 45.03 | 1,152 / 1,152 | 57 / 103 | 81 / 99 |
+| Windows hosted ANGLE, Mixed2048 | 21.05 | 863 / 863 | 87 / 161 | 125 / 166 |
+| Windows headless, Wave512 | 60.02 | No rendered draws | 21 / 27 | — |
+| Windows headless, Mixed2048 | 58.77 | No rendered draws | 21 / 86 | — |
+
+Linux Mixed2048 had two consecutive physical gaps above 100 ms near 37.4 s.
+Windows hosted Mixed2048 had 55 such physical gaps. Its longest chain of
+slow draws lasted 26 intervals (2.96 s), and draw p95 was near 125 ms during
+both camera motion and stationary views. This retains an open graphical
+performance failure. All four graphical flights passed pause and one manual
+step. All pilot selections were live. The hosted adapter was Microsoft Basic
+Render Driver; no physical TITAN RTX execution was used. The same hosted
+campaign passed Stock held-limb input and three atomic picking modes,
+including the newer unsubmitted Sand image. [Windows flight receipts and
+framebuffers](https://github.com/techrote/cybersand/actions/runs/46077817334/artifacts/15235564004)
+· [Windows interaction checks](https://github.com/techrote/cybersand/actions/runs/46077817334)
+
+The Windows ZIP contains 2,864 verified files and has SHA-256
+`cbadb1c824e369f9056c2918ff3d6ee1ee486766dc9743b4d1d36186f968e481`.
+The packaged native DLL is the original `00478f29b` build. Its complete native
+and dependency inputs were compared against the candidate. Two 90-second
+keyed headless sessions and two additional shipped CMD launches produced 51
+independently hash-checked collector entries with zero omissions. Approximate
+cold package check, profile preparation and startup to readiness together
+took 50 s for Wave512 and 33 s for Mixed2048. See the
+[launch and collector procedure](../operations/pubpres-playability-final-001.md#local-follow-flight-retest-27-november).
+
+The protected consumer `godot/shaders/material_palette.gdshader` changed from
+LF SHA-256 `b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f`
+to `c63cc54c572a1c5a3cd26cc3480057f6fcbb4a0280764cafa27cea06ed706057`
+at `1d4b6756b1ef245ecd9c9aeba88733fdce513a19`. A default-false uniform
+allows the shader to skip vegetation and airborne effects only when the
+published material plane consists entirely of IDs 0, 2, 3 and 58. The Empty
+cell still samples its live vapour history. Other material IDs re-enable the
+ordinary dispatch when uploaded. This transition belongs to PR #767 and
+preserves the existing material identities and catalogue lock.

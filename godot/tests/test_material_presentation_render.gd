@@ -387,6 +387,15 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 		{"vapour_trail_texture": trail, "vapour_trail_strength": 0.0})
 	var on: Image = await _render(scene, scene, 2.0, 1.0, Vector2i.ZERO, SIDE,
 		{"vapour_trail_texture": trail, "vapour_trail_strength": 1.0})
+	var certified_plane := _blank()
+	for index in 3:
+		_block(certified_plane, Rect2i(index * 16, 12, 16, 12), [2, 3, 58][index], 150)
+	for strength in [0.0, 1.0]:
+		var settings := {"vapour_trail_texture": trail, "vapour_trail_strength": strength}
+		var reference := await _render(certified_plane, scene, 2.0, 0.5, Vector2i.ZERO, SIDE, settings)
+		settings["ambient_sources_absent"] = true
+		var certified := await _render(certified_plane, scene, 2.0, 0.5, Vector2i.ZERO, SIDE, settings)
+		_expect(reference.get_data() == certified.get_data(), "Empty shortcut changed the palette or retained vapour history")
 	_expect(_difference(plain, off, full) <= TOLERANCE, "disabled vapour trail changed the output")
 	_expect(_mean_luma(on, Rect2i(0, 0, 48, 12)) > _mean_luma(plain, Rect2i(0, 0, 48, 12)) + 0.2,
 		"vapour afterimage did not appear over Empty cells")

@@ -332,6 +332,16 @@ REVIEWED_TRANSITIONS += ({'path': 'godot/shaders/material_palette.gdshader',
   'issue': 353,
   'pr': 682},)
 
+REVIEWED_TRANSITIONS += ({
+    'path': 'godot/shaders/material_palette.gdshader',
+    'from_lf_sha256': 'b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f',
+    'to_lf_sha256': 'c63cc54c572a1c5a3cd26cc3480057f6fcbb4a0280764cafa27cea06ed706057',
+    'source_commit': '1d4b6756b1ef245ecd9c9aeba88733fdce513a19',
+    'record': 'docs/audits/2026-11-27-pubpres-definitive.md',
+    'issue': 717,
+    'pr': 767,
+},)
+
 # Bounded #353-B native capability consumer; retained values and identities are unchanged.
 REVIEWED_TRANSITIONS += ({'path': 'native/src/material_rules.cpp',
  'from_lf_sha256': '3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254',
