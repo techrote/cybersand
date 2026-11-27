@@ -8,6 +8,58 @@ import sys
 from identity import ROOT, digest
 from results import need
 
+WATER_OFF_ADMISSION = 'WATER-OFF-ADMITTED.json'
+WATER_GROUPS = {
+    'stock-water-correctness', 'atomic-water-safe-0',
+    'atomic-water-separate-0', 'atomic-water-separate-4',
+}
+NON_WATER_GROUPS = {
+    'stock-native-owner', 'atomic-native-owner',
+    'stock-frozen-correctness', 'atomic-frozen-correctness',
+    'atomic-submission-safe-0', 'atomic-submission-separate-0', 'atomic-submission-separate-4',
+    'stock-members-correctness', 'atomic-members-safe-0', 'atomic-members-separate-4',
+    'atomic-font-and-first-read',
+}
+
+
+def water_only_failures(report):
+    """Return the failed Water groups only for a fully executed closure comparison."""
+    if (report.get('schema') != 'pubpres-recovery-hosted-v1' or report.get('complete') is not False
+            or report.get('closure_members_required') is not True or report.get('closure_native_owner_required') is not True
+            or report.get('unexecuted') != [] or 'reduction_failure' in report):
+        return []
+    rows = report.get('outcomes', [])
+    expected = NON_WATER_GROUPS | WATER_GROUPS
+    if len(rows) != len(expected) or {row['name'] for row in rows} != expected:
+        return []
+    if any(type(row.get('returncode')) is not int or type(row.get('timed_out')) is not bool for row in rows):
+        return []
+    failed = {row['name'] for row in rows if row['returncode'] != 0 or row['timed_out']}
+    return sorted(failed) if failed <= WATER_GROUPS else []
+
+
+def admit_water_off_comparison(path, source, driver, stock, custom):
+    path = Path(path)
+    data = json.loads(path.read_bytes())
+    failed = water_only_failures(data)
+    need(path.name == 'INVENTORY.json' and failed, 'Water-off timing requires an original Water-only failure')
+    verified = _replay_inventory(path, data, source, driver, stock, custom, False)
+    return {'schema': 'pubpres-water-off-comparison-admission-v1', 'water_composition': 0,
+            'source': source['source_commit'], 'run': data['run'], 'attempt': data['attempt'],
+            'failed_water_groups': {name: digest(path.parent / (name + '.log')) for name in failed},
+            'prerequisites': verified}
+
+
+def verify_bounded_inventory(path, source, driver, stock, custom, water):
+    path = Path(path)
+    if path.name != WATER_OFF_ADMISSION:
+        return verify_inventory(path, source, driver, stock, custom, water)
+    need(water == 0, 'Water-off comparison admission cannot authorize Water composition')
+    proof = json.loads(path.read_bytes())
+    replay = admit_water_off_comparison(path.with_name('INVENTORY.json'), source, driver, stock, custom)
+    need(proof == replay, 'Water-off timing proof differs from original inventory and raw prerequisite replay')
+    return replay
+
 
 def load_qualification():
     spec=importlib.util.spec_from_file_location('recovery_actual_qualification',Path(__file__).with_name('run_qualification.py'))
@@ -113,7 +165,12 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
 
 def verify_inventory(path,source,driver,stock,custom,water):
     path=Path(path); data=json.loads(path.read_bytes())
-    need(data.get('schema')=='pubpres-recovery-hosted-v1' and data.get('complete') is True
+    need(data.get('complete') is True,'Timed atomic Windows integration requires complete exact hosted correctness')
+    return _replay_inventory(path,data,source,driver,stock,custom,water)
+
+
+def _replay_inventory(path,data,source,driver,stock,custom,water):
+    need(data.get('schema')=='pubpres-recovery-hosted-v1'
          and data.get('source')==source['source_commit'] and data.get('driver')==driver
          and data.get('platform')=='windows' and data['request']['phase']=='integration'
          and data.get('unexecuted')==[],'Timed atomic Windows integration requires complete exact hosted correctness')

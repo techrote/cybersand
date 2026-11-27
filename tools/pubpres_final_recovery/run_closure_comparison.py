@@ -20,11 +20,22 @@ def main():
     parser.add_argument("--display-wrapper", type=Path)
     parser.add_argument("--conservative", action="store_true",
                         help="Measure the shipped Stock Safe, Water-composition-off fallback")
+    parser.add_argument("--water-off-fallback", action="store_true",
+                        help="Run the bounded comparison under its independently admitted Water-off scope")
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     register = json.loads((HERE / "registration.json").read_bytes())
     selection = json.loads((ROOT / "tools/pubpres_recovery_windows/selection.json").read_bytes())
+    inventory = args.correctness / "INVENTORY.json"
+    if args.water_off_fallback:
+        from qualification_gate import WATER_OFF_ADMISSION
+        if args.mode != "bounded" or (args.correctness / "ADMITTED.json").exists():
+            parser.error("Water-off fallback requires a bounded comparison without full Water admission")
+        inventory = args.correctness / WATER_OFF_ADMISSION
+        if not inventory.is_file():
+            parser.error("Water-off comparison admission is missing")
+        selection = dict(selection, water_composition=0)
     if args.conservative:
         if args.mode != "current":
             parser.error("--conservative only measures the fallback against current main")
@@ -36,7 +47,7 @@ def main():
     for case in register["primary_cases"]:
         shared.extend(["--case", case])
     pin = json.loads((ROOT / "tools/pubpres_recovery_windows/atomic-engine.json").read_bytes())
-    atomic = ["--correctness-inventory", args.correctness / "INVENTORY.json",
+    atomic = ["--correctness-inventory", inventory,
               "--engine-build-source", pin["source"], "--engine-build-run", str(pin["run"]),
               "--engine-build-attempt", str(pin["attempt"]), "--engine-proof-sha256", pin["proof_sha256"]]
     if args.atomic_root:

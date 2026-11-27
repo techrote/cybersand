@@ -15,6 +15,7 @@ HERE=ROOT/'tools/pubpres_final_recovery'
 sys.path.insert(0,str(HERE))
 from identity import driver_identity,digest
 from process_owner import bounded_process
+from qualification_gate import WATER_OFF_ADMISSION, admit_water_off_comparison, verify_inventory, water_only_failures
 from results import need
 
 
@@ -92,18 +93,26 @@ def main():
         report['unexecuted'].append({'gate':'atomic application integration','reason':'Actual atomic native ownership failed'})
     report['complete']=not report['unexecuted'] and all(row['returncode']==0 and not row['timed_out'] for row in report['outcomes'])
     save()
-    if report['complete']:
+    try_water_off = args.architecture_comparison and bool(water_only_failures(report))
+    if report['complete'] or try_water_off:
         try:
             from run_campaign import source_identity
             from retained_runtime import validate_runtime
-            from qualification_gate import verify_inventory
             source=source_identity(ROOT);source['native_runtime']=validate_runtime(ROOT,source,runtime,False)
-            admitted=verify_inventory(output/'INVENTORY.json',source,identity,stock,custom,True)
-            (output/'ADMITTED.json').write_text(json.dumps(admitted,indent=2)+'\n')
+            if try_water_off:
+                admitted=admit_water_off_comparison(output/'INVENTORY.json',source,identity,stock,custom)
+                marker=WATER_OFF_ADMISSION
+            else:
+                admitted=verify_inventory(output/'INVENTORY.json',source,identity,stock,custom,True)
+                marker='ADMITTED.json'
+            (output/marker).write_text(json.dumps(admitted,indent=2)+'\n')
         except Exception as exc:
-            report['complete']=False
-            report['reduction_failure']={'type':type(exc).__name__,'message':str(exc)}
-            save()
+            if try_water_off:
+                print('Water-off prerequisite replay failed:', exc, flush=True)
+            else:
+                report['complete']=False
+                report['reduction_failure']={'type':type(exc).__name__,'message':str(exc)}
+                save()
     print(json.dumps({'complete':report['complete'],'outcomes':len(report['outcomes']),'unexecuted':report['unexecuted']}))
     return 0 if report['complete'] else 1
 

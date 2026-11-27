@@ -24,7 +24,7 @@ from observer_support import (SELECTOR as PRESENTATION_SELECTOR,execute_with_res
                               validate_observers,calibration_measurements)
 from requested_capture import validate_requested_renderer
 from engine_trace import validate_files as validate_engine_trace
-from qualification_gate import verify_inventory
+from qualification_gate import verify_bounded_inventory
 import engine_admission
 
 OBSERVER='tests/pubpres_recovery_gameplay.gd'
@@ -199,7 +199,7 @@ def main():
     else:
         need(os.name=='nt' and args.correctness_inventory,'Qualified comparison requires Windows engine payload and hosted integration inventory')
         custom,build=engine_admission.admit(args)
-        prerequisite=verify_inventory(args.correctness_inventory,source,driver,stock,custom,args.water_composition)
+        prerequisite=verify_bounded_inventory(args.correctness_inventory,source,driver,stock,custom,args.water_composition)
     external=None
     if args.external_display_record:
         need(args.development_engine is not None and args.display_wrapper is None,'External local display record is development-only')
