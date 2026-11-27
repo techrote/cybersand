@@ -1,0 +1,589 @@
+{
+  "source": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "archive_sha256": "228d070df89b119444a0198c1456cfb396cb1ee72c3c8651b5cf82ba1003c088",
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "native_sha256": "7afd394ff6e8b0e3165eab6980707a51bfbeccd8712291cc48a2f67b93102de6",
+  "original_fixture_sha256": "5134150a5b40050476f25dfe2350e090c7d8db2a0d474e1db4ce2cab741e635a",
+  "fixture_sha256": "6abaa446bd6517d799470521b2e8249409305f674a8a5288b625fe192d30c35a",
+  "rows": [
+    {
+      "captures": [
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Unified configuration inspects the scripted crawler while the human flyer retains piloting authority and both simulation owners continue.",
+          "file": "02-running-controllers.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 31,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 31,
+          "sha256": "9f27f0a8e46d923e9a61aca975913ab39483eb7ed3ac5b85c1414996efb03b10",
+          "size_bytes": 176379,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Physics tab exposes bounded physical-grab response, paused placement increments, optional grid snapping and compatible actor tuning.",
+          "file": "03-physics-configuration.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 33,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 33,
+          "sha256": "597d8b4056856c169b4767611a082a17b41089ab5d88244d85bcb79224fe4b3e",
+          "size_bytes": 203451,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Paused runner placement previews the complete retained assembly at a new position and 15-degree rotation. No native transaction or live body transform occurs before commit.",
+          "file": "04-paused-assembly-preview.png",
+          "grab_active": false,
+          "inspected": 2,
+          "mode": "place",
+          "native_tick": 34,
+          "paused": true,
+          "pilot": 1,
+          "preview_active": true,
+          "rapier_tick": 33,
+          "sha256": "e6491424eb1727ad538ebe6201c698a330549e9f33fff5733fd42ed30d18069d",
+          "size_bytes": 155108,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "A real passive barrel follows a bounded spring at its clicked physical point while independently controlled actors and materials continue.",
+          "file": "05-live-physical-grab.png",
+          "grab_active": true,
+          "inspected": 6,
+          "mode": "grab",
+          "native_tick": 52,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 51,
+          "sha256": "acef7962690ba4a217bceefc7f4a508d112a8a62e155b032b32816ef87209a36",
+          "size_bytes": 154857,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Admitted physical equipment in the mixed workshop after pilot handback and release.",
+          "file": "06-equipped-runner.png",
+          "grab_active": false,
+          "inspected": 5,
+          "mode": "grab",
+          "native_tick": 9,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 9,
+          "sha256": "9e7bb43a2d52d086b9c46310c996bcde5e3bb43bf16715d66db676052f35efe7",
+          "size_bytes": 154780,
+          "size": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "display": "Windows",
+      "end_ticks": [
+        7,
+        8
+      ],
+      "equipment": {
+        "actor_id": 1,
+        "body_id": 7,
+        "equipment_epoch": 1,
+        "usable_index": 2
+      },
+      "failure": "",
+      "handback_id": 0,
+      "ok": true,
+      "pid": 30256,
+      "renderer": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+      "retired": true,
+      "start_ticks": [
+        19,
+        20
+      ],
+      "takeover_id": 5,
+      "exit": 0,
+      "log_sha256": "63da9aa361cb531240051240f1d276662aea4aa8fb25759cf3d1d3fbf6de6749"
+    },
+    {
+      "captures": [
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Unified configuration inspects the scripted crawler while the human flyer retains piloting authority and both simulation owners continue.",
+          "file": "02-running-controllers.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 31,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 31,
+          "sha256": "ed0d6dcd130ecf8d8f06e2412adcd77f7a02f5bd1c0d79e3d953742d00aa461b",
+          "size_bytes": 176372,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Physics tab exposes bounded physical-grab response, paused placement increments, optional grid snapping and compatible actor tuning.",
+          "file": "03-physics-configuration.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 33,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 33,
+          "sha256": "b09326580e61138827a8bc15d3d6b3d2aef6449f1353f1430c7371972a97964d",
+          "size_bytes": 203442,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Paused runner placement previews the complete retained assembly at a new position and 15-degree rotation. No native transaction or live body transform occurs before commit.",
+          "file": "04-paused-assembly-preview.png",
+          "grab_active": false,
+          "inspected": 2,
+          "mode": "place",
+          "native_tick": 34,
+          "paused": true,
+          "pilot": 1,
+          "preview_active": true,
+          "rapier_tick": 33,
+          "sha256": "07917b80e28ad8a608504c4c28befda68efa8c00d839d755e560fac6b11ebad9",
+          "size_bytes": 155100,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "A real passive barrel follows a bounded spring at its clicked physical point while independently controlled actors and materials continue.",
+          "file": "05-live-physical-grab.png",
+          "grab_active": true,
+          "inspected": 6,
+          "mode": "grab",
+          "native_tick": 52,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 51,
+          "sha256": "d1e6b0700a6f230fdb0752df95b2f4afc21000b3b121b0509dc02c637988d78d",
+          "size_bytes": 154851,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Admitted physical equipment in the mixed workshop after pilot handback and release.",
+          "file": "06-equipped-runner.png",
+          "grab_active": false,
+          "inspected": 5,
+          "mode": "grab",
+          "native_tick": 9,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 9,
+          "sha256": "54ddd062a3906c556d871395658be0b4dda945258cad7a47611bb0c018be2dfb",
+          "size_bytes": 154783,
+          "size": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "display": "Windows",
+      "end_ticks": [
+        7,
+        8
+      ],
+      "equipment": {
+        "actor_id": 1,
+        "body_id": 7,
+        "equipment_epoch": 1,
+        "usable_index": 2
+      },
+      "failure": "",
+      "handback_id": 0,
+      "ok": true,
+      "pid": 27180,
+      "renderer": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+      "retired": true,
+      "start_ticks": [
+        19,
+        20
+      ],
+      "takeover_id": 5,
+      "exit": 0,
+      "log_sha256": "af0d45ded54aba6ca730e445b48e7526eb19fe3964bff6ba1449c1ef99795090"
+    },
+    {
+      "captures": [
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Unified configuration inspects the scripted crawler while the human flyer retains piloting authority and both simulation owners continue.",
+          "file": "02-running-controllers.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 31,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 31,
+          "sha256": "2cf7a953034052d8a9b44a51f4204f3cb6b95475a64d755697bc47bda3bc6139",
+          "size_bytes": 176480,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Physics tab exposes bounded physical-grab response, paused placement increments, optional grid snapping and compatible actor tuning.",
+          "file": "03-physics-configuration.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 33,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 33,
+          "sha256": "752fc85026a6b7288004cb87fe97b6628ec50b184f80c15032fb77e493225f75",
+          "size_bytes": 203447,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Paused runner placement previews the complete retained assembly at a new position and 15-degree rotation. No native transaction or live body transform occurs before commit.",
+          "file": "04-paused-assembly-preview.png",
+          "grab_active": false,
+          "inspected": 2,
+          "mode": "place",
+          "native_tick": 34,
+          "paused": true,
+          "pilot": 1,
+          "preview_active": true,
+          "rapier_tick": 33,
+          "sha256": "4c1972281ea5d9a33d905a99519bc0421c1b19ed39faa68f7fbdae1bb2312331",
+          "size_bytes": 155109,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "A real passive barrel follows a bounded spring at its clicked physical point while independently controlled actors and materials continue.",
+          "file": "05-live-physical-grab.png",
+          "grab_active": true,
+          "inspected": 6,
+          "mode": "grab",
+          "native_tick": 52,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 51,
+          "sha256": "d1e6b0700a6f230fdb0752df95b2f4afc21000b3b121b0509dc02c637988d78d",
+          "size_bytes": 154851,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Admitted physical equipment in the mixed workshop after pilot handback and release.",
+          "file": "06-equipped-runner.png",
+          "grab_active": false,
+          "inspected": 5,
+          "mode": "grab",
+          "native_tick": 9,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 9,
+          "sha256": "54ddd062a3906c556d871395658be0b4dda945258cad7a47611bb0c018be2dfb",
+          "size_bytes": 154783,
+          "size": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "display": "Windows",
+      "end_ticks": [
+        7,
+        8
+      ],
+      "equipment": {
+        "actor_id": 1,
+        "body_id": 7,
+        "equipment_epoch": 1,
+        "usable_index": 2
+      },
+      "failure": "",
+      "handback_id": 0,
+      "ok": true,
+      "pid": 37244,
+      "renderer": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+      "retired": true,
+      "start_ticks": [
+        19,
+        20
+      ],
+      "takeover_id": 5,
+      "exit": 0,
+      "log_sha256": "9517e1b6b2c9972dfc56efb89d52295aaa9af9d720fdb416f72cb8cac36e6161"
+    },
+    {
+      "captures": [
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Unified configuration inspects the scripted crawler while the human flyer retains piloting authority and both simulation owners continue.",
+          "file": "02-running-controllers.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 31,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 31,
+          "sha256": "81b1e74976d7f6d4b936f37a75f27bcfed6d502425175870332b6c0307db3766",
+          "size_bytes": 176486,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Physics tab exposes bounded physical-grab response, paused placement increments, optional grid snapping and compatible actor tuning.",
+          "file": "03-physics-configuration.png",
+          "grab_active": false,
+          "inspected": 3,
+          "mode": "paint",
+          "native_tick": 33,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 33,
+          "sha256": "597d8b4056856c169b4767611a082a17b41089ab5d88244d85bcb79224fe4b3e",
+          "size_bytes": 203451,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Paused runner placement previews the complete retained assembly at a new position and 15-degree rotation. No native transaction or live body transform occurs before commit.",
+          "file": "04-paused-assembly-preview.png",
+          "grab_active": false,
+          "inspected": 2,
+          "mode": "place",
+          "native_tick": 34,
+          "paused": true,
+          "pilot": 1,
+          "preview_active": true,
+          "rapier_tick": 33,
+          "sha256": "e6491424eb1727ad538ebe6201c698a330549e9f33fff5733fd42ed30d18069d",
+          "size_bytes": 155108,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "A real passive barrel follows a bounded spring at its clicked physical point while independently controlled actors and materials continue.",
+          "file": "05-live-physical-grab.png",
+          "grab_active": true,
+          "inspected": 6,
+          "mode": "grab",
+          "native_tick": 52,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 51,
+          "sha256": "acef7962690ba4a217bceefc7f4a508d112a8a62e155b032b32816ef87209a36",
+          "size_bytes": 154857,
+          "size": [
+            1280,
+            720
+          ]
+        },
+        {
+          "actors": 6,
+          "actual_bodies": 24,
+          "authored_bodies": 24,
+          "authored_joints": 22,
+          "authored_proxies": 24,
+          "caption": "Admitted physical equipment in the mixed workshop after pilot handback and release.",
+          "file": "06-equipped-runner.png",
+          "grab_active": false,
+          "inspected": 5,
+          "mode": "grab",
+          "native_tick": 9,
+          "paused": false,
+          "pilot": 1,
+          "preview_active": false,
+          "rapier_tick": 9,
+          "sha256": "9e7bb43a2d52d086b9c46310c996bcde5e3bb43bf16715d66db676052f35efe7",
+          "size_bytes": 154780,
+          "size": [
+            1280,
+            720
+          ]
+        }
+      ],
+      "display": "Windows",
+      "end_ticks": [
+        7,
+        8
+      ],
+      "equipment": {
+        "actor_id": 1,
+        "body_id": 7,
+        "equipment_epoch": 1,
+        "usable_index": 2
+      },
+      "failure": "",
+      "handback_id": 0,
+      "ok": true,
+      "pid": 46988,
+      "renderer": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+      "retired": true,
+      "start_ticks": [
+        19,
+        20
+      ],
+      "takeover_id": 5,
+      "exit": 0,
+      "log_sha256": "75ae82f3e0de7083c3a96d41b696b3610c955502b840da154099bdc30e95042e"
+    }
+  ],
+  "package_manifest_sha256": "9f0a3318fcb2c2c6a3c106a656f682eb0dcf22401b20299355eb2f61030c2afa",
+  "artifact_id": 15172236802,
+  "artifact_sha256": "ce58565326b38a27f4c25a6b6e02ad7fe1e7f23c45aefd3d1db44e70a5e8f0b8",
+  "workflow_run": "45936095825",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "scope": "Four separate real Windows ANGLE/TITAN RTX processes, each importing the frozen accepted Workbench's shipped actor-sandbox fixture for actual viewport input. Its native tick and Rapier tick advancement checks ran before and again after the explicit re-equipment session replacement. The owned scene was queue-freed and proven retired before each process returned. These functional observations do not estimate the headless crash rate or physical performance.",
+  "environment": "Use a separate writable WB_ACTOR_CAPTURE_DIR and fresh APPDATA/LOCALAPPDATA per trial. Run the package's actual workbench/Godot_v4.7-stable_win64.exe --path <workbench/godot> --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3_angle --max-fps 60 --script <absolute graphical-equipment.gd>."
+}
