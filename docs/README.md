@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+Current-scene material audition: [Draft/HOLD contract](systems/material-audition.md),
+[consumer capability map](systems/material-audition-consumers.md), and
+[existing Lab controls](operations/materials-lab-authoring.md). Supported profiles
+activate in the current World; reverting configuration does not undo simulation.
+The [definitive decision packet](audits/material-audition-live-20261124/decision-packet.md)
+records source-qualified Linux/Windows execution, the exact tested portable
+evaluator, original evidence and remaining physical owner/integration gates.
+
 **Architectural Workbench / M3–M5 — Draft/HOLD:** [native module library, GOLDMAPS retrieval and staged construction](operations/world-steer-architecture.md) extend the preserved Batch Lab. [Module contract](systems/native-architectural-modules.md), [design knowledge and evaluation](systems/architectural-knowledge-and-evaluation.md), and [staged execution boundary](systems/architecture-staged-construction.md) keep observed native geometry, authored intent, hosted qualification and physical acceptance distinct.
 
 **Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.

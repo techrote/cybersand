@@ -1,0 +1,82 @@
+{
+  "schema": "cybersand.material-audition.concurrent-write-set",
+  "observed_date": "2026-11-24",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "candidate_branch": "mat/audition-live-001",
+  "scope": "Read-only changed-path intake. Candidate remains isolated; no overlapping programme source was absorbed. Shared files require explicit reconciliation and requalification; path intersection is not semantic acceptance.",
+  "programmes": [
+    {
+      "pr": 754,
+      "listed_files": 754,
+      "overlap": [
+        "docs/README.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/simulation_worker.gd",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "tools/material_catalogue/compatibility.py"
+      ],
+      "head": "e39c423872c9e1682a1fc67d0fedde2313068756",
+      "branch": "integration/objectshard-m4-mainline-20261122",
+      "url": "https://github.com/techrote/cybersand/pull/754",
+      "state": "open",
+      "draft": true
+    },
+    {
+      "pr": 757,
+      "listed_files": 231,
+      "overlap": [
+        "docs/README.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/scripts/shared_workbench.gd",
+        "godot/scripts/simulation_worker.gd",
+        "godot/tests/test_material_lab_ui.gd",
+        "tools/material_catalogue/compatibility.py"
+      ],
+      "head": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "branch": "codex/pubpres-completion-001-20261122",
+      "url": "https://github.com/techrote/cybersand/pull/757",
+      "state": "open",
+      "draft": true
+    },
+    {
+      "pr": 766,
+      "listed_files": 4,
+      "overlap": [],
+      "head": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "branch": "fix/art-invalid-model-close-latency-744-20261123",
+      "url": "https://github.com/techrote/cybersand/pull/766",
+      "state": "open",
+      "draft": true
+    },
+    {
+      "pr": 729,
+      "listed_files": 276,
+      "overlap": [
+        "Makefile",
+        "docs/README.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-corpus.json",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "head": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "branch": "integration/swarm004-005-006-unified-20261122",
+      "url": "https://github.com/techrote/cybersand/pull/729",
+      "state": "open",
+      "draft": true
+    }
+  ]
+}

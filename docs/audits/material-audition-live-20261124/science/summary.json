@@ -1,0 +1,270 @@
+{
+  "baseline_sha256": "ba630c2d04735a0edc8b39186b294115db4bf925f9e601726fb1ac3416b312de",
+  "candidate_samples": 36,
+  "candidate_sha256": "4b1980ebdcd6b90d6523a2a152b84ef1dfdce5ca4747fe24a9bfcfdfb0c4518b",
+  "default_cross_source_parity": true,
+  "equivalent_default_parity": true,
+  "groups": [
+    {
+      "accepted_default_elapsed_ms": 326.342,
+      "arms": {
+        "default": {
+          "activation_median_ms": 0,
+          "elapsed_max_ms": 328.328,
+          "elapsed_median_ms": 327.694,
+          "elapsed_min_ms": 327.055,
+          "elapsed_ratio_to_accepted_default": 1.0041428930385916,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 3.41455,
+          "tick_p95_ms": 3.50592,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "equivalent": {
+          "activation_median_ms": 0.004003,
+          "elapsed_max_ms": 327.757,
+          "elapsed_median_ms": 327.325,
+          "elapsed_min_ms": 327.16,
+          "elapsed_ratio_to_accepted_default": 1.003012177408976,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 3.41405,
+          "tick_p95_ms": 3.51129,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "modified": {
+          "activation_median_ms": 0.366595,
+          "elapsed_max_ms": 362.034,
+          "elapsed_median_ms": 360.886,
+          "elapsed_min_ms": 360.56,
+          "elapsed_ratio_to_accepted_default": 1.1058521428440105,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            65536
+          ],
+          "tick_median_ms": 3.78003,
+          "tick_p95_ms": 3.83959,
+          "woken_blocks": [
+            0
+          ]
+        }
+      },
+      "modified_cell_effect_observed": true,
+      "repeats": 3,
+      "side": 256,
+      "ticks": 96,
+      "workers": 1
+    },
+    {
+      "accepted_default_elapsed_ms": 326.045,
+      "arms": {
+        "default": {
+          "activation_median_ms": 0,
+          "elapsed_max_ms": 328.796,
+          "elapsed_median_ms": 328.29,
+          "elapsed_min_ms": 327.897,
+          "elapsed_ratio_to_accepted_default": 1.006885552607769,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 3.4224,
+          "tick_p95_ms": 3.50859,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "equivalent": {
+          "activation_median_ms": 0.003598,
+          "elapsed_max_ms": 327.813,
+          "elapsed_median_ms": 327.328,
+          "elapsed_min_ms": 327.158,
+          "elapsed_ratio_to_accepted_default": 1.0039350396417672,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 3.41392,
+          "tick_p95_ms": 3.5189,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "modified": {
+          "activation_median_ms": 0.372968,
+          "elapsed_max_ms": 361.628,
+          "elapsed_median_ms": 361.619,
+          "elapsed_min_ms": 361.05,
+          "elapsed_ratio_to_accepted_default": 1.1091076385161558,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            65536
+          ],
+          "tick_median_ms": 3.77805,
+          "tick_p95_ms": 3.84922,
+          "woken_blocks": [
+            0
+          ]
+        }
+      },
+      "modified_cell_effect_observed": true,
+      "repeats": 3,
+      "side": 256,
+      "ticks": 96,
+      "workers": 4
+    },
+    {
+      "accepted_default_elapsed_ms": 5266.17,
+      "arms": {
+        "default": {
+          "activation_median_ms": 0,
+          "elapsed_max_ms": 5216.73,
+          "elapsed_median_ms": 5215.04,
+          "elapsed_min_ms": 5197.19,
+          "elapsed_ratio_to_accepted_default": 0.9902908565428006,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 54.1117,
+          "tick_p95_ms": 55.5068,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "equivalent": {
+          "activation_median_ms": 0.004029,
+          "elapsed_max_ms": 5216.52,
+          "elapsed_median_ms": 5199.08,
+          "elapsed_min_ms": 5192.44,
+          "elapsed_ratio_to_accepted_default": 0.9872601909926949,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 54.1036,
+          "tick_p95_ms": 55.3458,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "modified": {
+          "activation_median_ms": 5.83368,
+          "elapsed_max_ms": 5723.14,
+          "elapsed_median_ms": 5722.66,
+          "elapsed_min_ms": 5716.39,
+          "elapsed_ratio_to_accepted_default": 1.086683491038079,
+          "observed_workers": [
+            1
+          ],
+          "scanned_cells": [
+            1048576
+          ],
+          "tick_median_ms": 59.9063,
+          "tick_p95_ms": 60.6319,
+          "woken_blocks": [
+            0
+          ]
+        }
+      },
+      "modified_cell_effect_observed": true,
+      "repeats": 3,
+      "side": 1024,
+      "ticks": 96,
+      "workers": 1
+    },
+    {
+      "accepted_default_elapsed_ms": 2391.12,
+      "arms": {
+        "default": {
+          "activation_median_ms": 0,
+          "elapsed_max_ms": 2431.6,
+          "elapsed_median_ms": 2427.45,
+          "elapsed_min_ms": 2425.07,
+          "elapsed_ratio_to_accepted_default": 1.0151937167519822,
+          "observed_workers": [
+            4
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 25.2491,
+          "tick_p95_ms": 26.2138,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "equivalent": {
+          "activation_median_ms": 0.003648,
+          "elapsed_max_ms": 2426.39,
+          "elapsed_median_ms": 2424.29,
+          "elapsed_min_ms": 2424.29,
+          "elapsed_ratio_to_accepted_default": 1.0138721603265415,
+          "observed_workers": [
+            4
+          ],
+          "scanned_cells": [
+            0
+          ],
+          "tick_median_ms": 25.1879,
+          "tick_p95_ms": 26.0456,
+          "woken_blocks": [
+            0
+          ]
+        },
+        "modified": {
+          "activation_median_ms": 5.75618,
+          "elapsed_max_ms": 2676.98,
+          "elapsed_median_ms": 2673.1,
+          "elapsed_min_ms": 2669.95,
+          "elapsed_ratio_to_accepted_default": 1.117928000267657,
+          "observed_workers": [
+            4
+          ],
+          "scanned_cells": [
+            1048576
+          ],
+          "tick_median_ms": 27.8907,
+          "tick_p95_ms": 28.4567,
+          "woken_blocks": [
+            0
+          ]
+        }
+      },
+      "modified_cell_effect_observed": true,
+      "repeats": 3,
+      "side": 1024,
+      "ticks": 96,
+      "workers": 4
+    }
+  ],
+  "matched_default_samples": 12,
+  "schema": "cybersand.material-audition.performance-summary",
+  "schema_version": 1,
+  "status": "passed",
+  "timing_status": "advisory; shared-host runtime, changed material dynamics change work volume"
+}

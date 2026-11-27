@@ -119,6 +119,10 @@ public:
     // generation counts committed World replacements; refusals never advance it.
     [[nodiscard]] Dictionary get_liquid_solver_policy() const;
     [[nodiscard]] std::int64_t get_liquid_policy_session_generation() const;
+    // MAT-AUDITION-LIVE-001. Exclusive native owner only, between ticks; all
+    // dictionaries are copied values and never expose mutable World storage.
+    [[nodiscard]] Dictionary get_material_audition_state() const;
+    [[nodiscard]] Dictionary apply_material_audition(const Dictionary& request);
     [[nodiscard]] static Dictionary liquid_policy_receipt(
         const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation,
         const cybersand::World* actual = nullptr);

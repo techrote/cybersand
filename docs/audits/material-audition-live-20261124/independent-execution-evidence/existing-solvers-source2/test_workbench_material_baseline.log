@@ -1,0 +1,8 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+MATERIAL_BASELINE_FORMAT_PERF {"file_bytes":525042,"raw_bytes":524288,"read_usec":5674,"save_usec":6071,"side":512,"stage_usec":4048}
+MATERIAL_BASELINE_FORMAT_PERF {"file_bytes":2097911,"raw_bytes":2097152,"read_usec":22536,"save_usec":25693,"side":1024,"stage_usec":11770}
+MATERIAL_BASELINE_FORMAT_PERF {"file_bytes":8389367,"raw_bytes":8388608,"read_usec":91851,"save_usec":104959,"side":2048,"stage_usec":48940}
+WORKBENCH_MATERIAL_BASELINE checks=102 failures=0
