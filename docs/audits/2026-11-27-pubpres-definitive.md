@@ -588,3 +588,21 @@ omissions. Four restored members appeared on the first accepted draw.
 The replay selected zero interstitial coupling responses for wet composition.
 The 174 focused Water checks covered that proof's admission and refusal;
 direct wet framebuffer coverage of the interstitial case remains open.
+
+### TITAN RTX contact report for the local retest
+
+The owner's 23:11 UTC collector for application `6d638bc2a` has SHA-256
+`eee5966923cddabc6d88d6e4b914082adcd8ef9673e165e9c123c7f17c3f7b05`.
+The two Wave512 Follow sessions withheld the on-screen Needle on 9/4,540
+and 71/4,288 active draws. The longest disappearance lasted nine consecutive
+draws. In 156 episodes the selected pose repeated while the physical pilot
+continued travelling. The longest repeated pose lasted 117 ms. In one
+33.34 ms interval the displayed position jumped 27.89 cells while the body
+moved 8.13 cells. Draw gap p95 stayed below 17 ms during the frozen poses.
+The prior clear-air test misses this ordinary contact case.
+
+All 2,946 withheld pilot draws retained from the Mixed2048 session were
+below the fixed Free camera, so they cannot establish an on-screen flicker.
+The owner reports a strong association with wall, Water and thruster Fire.
+The old trace has no per-contact material identity or nozzle insertion
+witness. The 2.8 s Mixed2048 gap just before exit cannot be assigned to Fire.
