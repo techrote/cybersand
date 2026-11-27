@@ -1,0 +1,389 @@
+{
+  "bounds": {
+    "max_pages_per_query": 1,
+    "max_runs": 20
+  },
+  "collection_finished_at": "2026-11-24T17:00:53Z",
+  "collection_started_at": "2026-11-24T17:00:19Z",
+  "collector": "approved GitHub connector GET",
+  "errors": [],
+  "redaction": "Field-selected public API values; runner names, step bodies and unused metadata omitted. Not an account inventory.",
+  "repository": "techrote/cybersand",
+  "run_queries": [
+    {
+      "pages": [
+        {
+          "total_count": 2,
+          "workflow_runs": [
+            {
+              "conclusion": null,
+              "created_at": "2026-11-24T16:28:56Z",
+              "event": "push",
+              "head_branch": "integration/swarm004-005-006-unified-20261122",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 45437617377,
+              "name": "SWARM-004/005/006 unified exact-source qualification",
+              "path": ".github/workflows/swarm456-qualification.yml",
+              "run_attempt": 1,
+              "run_started_at": "2026-11-24T16:28:56Z",
+              "status": "in_progress",
+              "updated_at": "2026-11-24T16:38:08Z"
+            },
+            {
+              "conclusion": null,
+              "created_at": "2026-11-24T16:20:59Z",
+              "event": "push",
+              "head_branch": "codex/pubpres-playability-final-001-20261124",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 45436083078,
+              "name": "PUBPRES playable successor qualification",
+              "path": ".github/workflows/pubpres-playability-final.yml",
+              "run_attempt": 1,
+              "run_started_at": "2026-11-24T16:20:59Z",
+              "status": "in_progress",
+              "updated_at": "2026-11-24T16:31:14Z"
+            }
+          ]
+        }
+      ],
+      "status": "in_progress"
+    },
+    {
+      "pages": [
+        {
+          "total_count": 0,
+          "workflow_runs": []
+        }
+      ],
+      "status": "queued"
+    },
+    {
+      "pages": [
+        {
+          "total_count": 0,
+          "workflow_runs": []
+        }
+      ],
+      "status": "waiting"
+    },
+    {
+      "pages": [
+        {
+          "total_count": 0,
+          "workflow_runs": []
+        }
+      ],
+      "status": "pending"
+    },
+    {
+      "pages": [
+        {
+          "total_count": 0,
+          "workflow_runs": []
+        }
+      ],
+      "status": "requested"
+    }
+  ],
+  "runs": [
+    {
+      "job_pages": [
+        {
+          "jobs": [
+            {
+              "completed_at": "2026-11-24T16:30:07Z",
+              "conclusion": "success",
+              "created_at": "2026-11-24T16:28:57Z",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 138599623926,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "Explicit frozen-source request and helper guards",
+              "run_attempt": 1,
+              "run_id": 45437617377,
+              "runner_id": 1000145371,
+              "started_at": "2026-11-24T16:29:00Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:38:04Z",
+              "conclusion": "success",
+              "created_at": "2026-11-24T16:30:09Z",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 138600454470,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "Windows full-source cross build once",
+              "run_attempt": 1,
+              "run_id": 45437617377,
+              "runner_id": 1000145386,
+              "started_at": "2026-11-24T16:30:12Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:37:56Z",
+              "conclusion": "success",
+              "created_at": "2026-11-24T16:30:09Z",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 138600454506,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "Exact-source revealed 006 corpus and frozen scientific harness",
+              "run_attempt": 1,
+              "run_id": 45437617377,
+              "runner_id": 1000145384,
+              "started_at": "2026-11-24T16:30:13Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": null,
+              "conclusion": null,
+              "created_at": "2026-11-24T16:30:09Z",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 138600454641,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "Linux strict sanitizers all nine GUI examples and known360",
+              "run_attempt": 1,
+              "run_id": 45437617377,
+              "runner_id": 1000145385,
+              "started_at": "2026-11-24T16:30:12Z",
+              "status": "in_progress"
+            },
+            {
+              "completed_at": "2026-11-24T16:40:17Z",
+              "conclusion": "failure",
+              "created_at": "2026-11-24T16:38:04Z",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 138606002356,
+              "labels": [
+                "windows-2022"
+              ],
+              "name": "Real extracted Windows evaluator and accepted-main smokes",
+              "run_attempt": 1,
+              "run_id": 45437617377,
+              "runner_id": 1000145393,
+              "started_at": "2026-11-24T16:38:07Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:39:40Z",
+              "conclusion": "failure",
+              "created_at": "2026-11-24T16:38:04Z",
+              "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+              "id": 138606002438,
+              "labels": [
+                "windows-2022"
+              ],
+              "name": "Actual Windows native and graphical source gates",
+              "run_attempt": 1,
+              "run_id": 45437617377,
+              "runner_id": 1000145392,
+              "started_at": "2026-11-24T16:38:07Z",
+              "status": "completed"
+            }
+          ],
+          "total_count": 6
+        }
+      ],
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-24T16:28:56Z",
+        "event": "push",
+        "head_branch": "integration/swarm004-005-006-unified-20261122",
+        "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+        "id": 45437617377,
+        "name": "SWARM-004/005/006 unified exact-source qualification",
+        "path": ".github/workflows/swarm456-qualification.yml",
+        "run_attempt": 1,
+        "run_started_at": "2026-11-24T16:28:56Z",
+        "status": "in_progress",
+        "updated_at": "2026-11-24T16:38:08Z"
+      },
+      "run_after": {
+        "conclusion": null,
+        "created_at": "2026-11-24T16:28:56Z",
+        "event": "push",
+        "head_branch": "integration/swarm004-005-006-unified-20261122",
+        "head_sha": "b126523158e22d8993b4899710799f88dd0b98d0",
+        "id": 45437617377,
+        "name": "SWARM-004/005/006 unified exact-source qualification",
+        "path": ".github/workflows/swarm456-qualification.yml",
+        "run_attempt": 1,
+        "run_started_at": "2026-11-24T16:28:56Z",
+        "status": "in_progress",
+        "updated_at": "2026-11-24T16:38:08Z"
+      }
+    },
+    {
+      "job_pages": [
+        {
+          "jobs": [
+            {
+              "completed_at": "2026-11-24T16:21:15Z",
+              "conclusion": "success",
+              "created_at": "2026-11-24T16:21:00Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138594132731,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "plan",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145346,
+              "started_at": "2026-11-24T16:21:02Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:31:10Z",
+              "conclusion": "success",
+              "created_at": "2026-11-24T16:21:15Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138594304595,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "runtimes (linux)",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145356,
+              "started_at": "2026-11-24T16:21:18Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:28:20Z",
+              "conclusion": "success",
+              "created_at": "2026-11-24T16:21:15Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138594304600,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "runtimes (windows)",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145357,
+              "started_at": "2026-11-24T16:21:18Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:21:15Z",
+              "conclusion": "skipped",
+              "created_at": "2026-11-24T16:21:15Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138594308317,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "native-authority",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": null,
+              "started_at": "2026-11-24T16:21:15Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:49:11Z",
+              "conclusion": "failure",
+              "created_at": "2026-11-24T16:31:10Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138601182249,
+              "labels": [
+                "windows-2022"
+              ],
+              "name": "evaluator-windows",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145387,
+              "started_at": "2026-11-24T16:31:13Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": null,
+              "conclusion": null,
+              "created_at": "2026-11-24T16:31:10Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138601182296,
+              "labels": [
+                "windows-2022"
+              ],
+              "name": "graphical-windows",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145388,
+              "started_at": "2026-11-24T16:31:13Z",
+              "status": "in_progress"
+            },
+            {
+              "completed_at": "2026-11-24T16:47:09Z",
+              "conclusion": "failure",
+              "created_at": "2026-11-24T16:31:10Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138601182313,
+              "labels": [
+                "ubuntu-24.04"
+              ],
+              "name": "graphical-linux",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145390,
+              "started_at": "2026-11-24T16:31:13Z",
+              "status": "completed"
+            },
+            {
+              "completed_at": "2026-11-24T16:46:02Z",
+              "conclusion": "failure",
+              "created_at": "2026-11-24T16:31:10Z",
+              "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+              "id": 138601182333,
+              "labels": [
+                "windows-2022"
+              ],
+              "name": "renderer-windows",
+              "run_attempt": 1,
+              "run_id": 45436083078,
+              "runner_id": 1000145389,
+              "started_at": "2026-11-24T16:31:12Z",
+              "status": "completed"
+            }
+          ],
+          "total_count": 8
+        }
+      ],
+      "run": {
+        "conclusion": null,
+        "created_at": "2026-11-24T16:20:59Z",
+        "event": "push",
+        "head_branch": "codex/pubpres-playability-final-001-20261124",
+        "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+        "id": 45436083078,
+        "name": "PUBPRES playable successor qualification",
+        "path": ".github/workflows/pubpres-playability-final.yml",
+        "run_attempt": 1,
+        "run_started_at": "2026-11-24T16:20:59Z",
+        "status": "in_progress",
+        "updated_at": "2026-11-24T16:31:14Z"
+      },
+      "run_after": {
+        "conclusion": null,
+        "created_at": "2026-11-24T16:20:59Z",
+        "event": "push",
+        "head_branch": "codex/pubpres-playability-final-001-20261124",
+        "head_sha": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+        "id": 45436083078,
+        "name": "PUBPRES playable successor qualification",
+        "path": ".github/workflows/pubpres-playability-final.yml",
+        "run_attempt": 1,
+        "run_started_at": "2026-11-24T16:20:59Z",
+        "status": "in_progress",
+        "updated_at": "2026-11-24T16:31:14Z"
+      }
+    }
+  ],
+  "schema": "cybersand-ci-status-snapshot-v1"
+}

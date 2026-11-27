@@ -49,6 +49,8 @@ func run() -> void:
 	cfg.set_value("session","traffic_path",missing)
 	cfg.set_value("OpenAI","model","saved-preference-model")
 	check(cfg.save("user://art-provider.cfg") == OK,"old profile points to missing archive")
+	var prior_archives := DirAccess.get_files_at("user://art-traffic")
+	prior_archives.sort()
 	var host: Control = load("res://main.tscn").instantiate()
 	root.add_child(host)
 	check(host.shared_workbench.art_batches == null,"ordinary startup constructs no Art panel")
@@ -56,7 +58,9 @@ func run() -> void:
 	for i in range(3): await process_frame
 	check(panel.conversation_loaded and panel.conversation.is_empty(),"Art starts with empty in-memory conversation even when profile points to deleted archive")
 	check(panel.provider.log_path.is_empty() and panel.provider.parent_log_path.is_empty() and not panel.provider.resume_active,"old predecessor never opened, copied or linked")
-	check(DirAccess.get_files_at("user://art-traffic").size() == 1,"idle Art creates no new file")
+	var idle_archives := DirAccess.get_files_at("user://art-traffic")
+	idle_archives.sort()
+	check(idle_archives == prior_archives,"idle Art creates no new file")
 	panel.show()
 	for i in range(3): await process_frame
 	check(panel.conversation.is_empty() and not panel.provider.resume_active,"revealing Art cannot load previous session")
@@ -75,8 +79,9 @@ func run() -> void:
 	# Key-dialog confirmation must register arbitrary formats even before a
 	# model Send. Direct JSON can carry extra user-defined keys and values.
 	var canary := "art-audit::custom!secret?2026"
+	panel.key_button.pressed.emit()
 	panel.key_field.text = canary
-	panel.key_dialog.confirmed.emit()
+	panel.key_dialog.get_ok_button().pressed.emit()
 	check(panel.provider.secrets.has(canary),"Key dialog registers secret immediately")
 	panel.keys["NVIDIA"] = "other-provider::secret!2026"
 	var nested := {}

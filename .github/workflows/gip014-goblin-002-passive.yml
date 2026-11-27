@@ -1,0 +1,92 @@
+name: GIP-014 goblin002 passive evidence recovery
+on:
+  push:
+    branches:
+      - experiment/gip014-goblin-002-20261125
+    paths:
+      - .github/workflows/gip014-goblin-002-passive.yml
+      - tools/gip014/passive_evidence.py
+      - tools/gip014/passive-evidence-manifest.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: gip014-goblin002-passive-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  passive-phase1:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONNOUSERSITE: "1"
+      GIT_LFS_SKIP_SMUDGE: "1"
+    steps:
+      - name: Check out reviewed passive driver and anchored data
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: driver
+          lfs: false
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Check out exact qualified source for read-only custody
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6f359ce2b24291ee219810773c641d53802fd31d
+          path: qualified-source
+          lfs: false
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up bounded Python reader runtime
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Install exact existing process monitor dependency
+        timeout-minutes: 3
+        run: python -m pip install --disable-pip-version-check -r qualified-source/tools/gip014/requirements.txt
+      - name: Validate passive source syntax and closed manifest
+        timeout-minutes: 2
+        run: |
+          python -B - <<'PY'
+          import json, os, pathlib, py_compile
+          base = pathlib.Path("driver/tools/gip014")
+          for number, name in enumerate(("passive_evidence.py", "evidence/passive/build_archive.py")):
+              py_compile.compile(str(base / name), cfile=str(pathlib.Path(os.environ["RUNNER_TEMP"]) / ("goblin-passive-" + str(number) + ".pyc")), doraise=True)
+          manifest = json.loads((base / "passive-evidence-manifest.json").read_bytes())
+          assert manifest["phase"] == "restore_analyze" and manifest["activation_enabled"] is True
+          assert len(manifest["artifacts"]) == 13
+          assert sum(row["bytes"] for row in manifest["artifacts"]) == 661216192
+          print("PASSIVE_SOURCE_GATE fixed Python parsed;13 immutable artifacts; no native execution")
+          PY
+      - name: Create exclusive disposable evidence root
+        timeout-minutes: 1
+        run: |
+          sudo mkdir -p /home/agent
+          sudo test ! -e /home/agent/goblin002
+          sudo mkdir /home/agent/goblin002
+          sudo chown "$(id -u):$(id -g)" /home/agent/goblin002
+      - name: Restore exact artifacts and run frozen read-only analyses
+        timeout-minutes: 37
+        env:
+          GOBLIN_ARTIFACT_READ_TOKEN: ${{ github.token }}
+        run: python -B driver/tools/gip014/passive_evidence.py
+      - name: Preserve complete passive phase1 stage on every outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-goblin-002-passive-phase1-${{ github.sha }}-${{ github.run_attempt }}
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 0
+          include-hidden-files: true
+          path: |
+            /home/agent/goblin002/evidence/
+            /home/agent/goblin002/passive-supervision/
+            /home/agent/goblin002/review-B-lineage-repair/
+            /home/agent/goblin002/review-B-full142-5ee/
+            /home/agent/goblin002/review-B-action-coverage-5ee/
+            /home/agent/goblin002/review-B-decision-5ee/

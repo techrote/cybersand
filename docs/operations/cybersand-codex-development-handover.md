@@ -10,25 +10,53 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
-## GEN-006 persistent authored-area milestone
+## Persistent authored areas
 
-The current isolated successor is [Draft PR #734](https://github.com/techrote/cybersand/pull/734), branch `exp/gen006-ramcache-001-20261122`, stacked on the unchanged #725 donor at `d0d043f4740ffed5f0dbb4120e437458d7a9bd57`. Read the [residency/ownership contract](../systems/persistent-area-residency.md), [cache evaluator guide](persistent-area-ramcache-evaluation.md) and [new source/performance ledger](../audits/2026-11-22-gen006-ramcache.md) before extending its native ownership. Do not conflate RAM-only state, durable acknowledgement, prepared readiness and unpaid game-time debt.
+[PR #745](https://github.com/techrote/cybersand/pull/745) combines the three-area Current/FreeMass continuation, resident World handoff, bounded catch-up and acknowledged durable publication. The [ownership contract](../systems/persistent-area-residency.md) and [evaluation guide](persistent-area-ramcache-evaluation.md) describe the actor-free domain, strict and deferred modes, and physical Windows evaluation.
 
-The owner-authorised #591 candidate is isolated on `exp/gen006-persistent-areas-001-20261121` and remains Draft/HOLD. Read the [native/profile/time contract](../systems/persistent-authored-areas.md), [owner evaluation guide](persistent-areas-evaluation.md) and [dated source/platform ledger](../audits/2026-11-21-gen006-persistent-areas.md). One fixed active canvas, three native continuation checkpoints and bounded completed game time do not complete broader #194 streaming, selective eviction, actor persistence or recipe reconciliation. Preserve the ordinary Workbench defaults and other active missions.
+## Art storage mergedown — 2026-11-26
 
-## Workbench Art traffic lifetime — 2026-11-20
+The [registered storage integration](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+adapts only the reviewed ULTIMA Art export/event, preference and private-receipt
+repairs to the combined Art/Architecture candidate. Preserve the current settings
+no-op cache, lazy UI, asynchronous value preparation and owned Architecture
+dispatch. The protected ULTIMA programme and its separate CI acquisition helper
+are not imported. The
+[canonical storage boundary](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate)
+distinguishes closed-byte verification from power-loss or physical acceptance.
 
-[Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the
-lazy conversation and immutable segment repair. Read the
-[provider contract](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-for current lifetime, validation, Stop/export and capacity behavior; the
-[dated finisher record](../audits/2026-11-20-wb-art-traffic-lifetime.md) separates
-engineering measurements from exact-source final qualification in the PR ledger.
-All destructive and multi-gigabyte tests use isolated synthetic user data.
-Existing archives remain immutable, and missing history must retain its saved
-pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready,
-merge or enable auto-merge. Hosted Windows evidence does not establish acceptance
-on the owner's physical Windows installation.
+## WORLD-STEER-BATCH-001 — 2026-11-21
+
+Continue `feat/world-steer-batch-001-20261121` as Draft/HOLD. The [canonical guide](world-steer-batch-lab.md) owns the M0–M2 controls, dependency/write-set map, native material isolation, exact-source qualification and Windows acceptance. Preserve the five concurrent missions and existing worker/provider ownership; the Batch Lab workflow is request-scoped to its own branch. Do not turn deterministic fixtures or hosted rendering into model-quality or physical desktop acceptance claims.
+
+## Collaborative Art successor — 2026-11-25
+
+#780 preserves #773's qualified ancestry and evaluator while adding owned
+discussion/proposal responses, bounded actual-native context, a creative brief,
+revision lineage, zero-write previews and fresh native stage approval/readback.
+Start with the [owner guide](art-workbench-collaborative-evaluation.md),
+[provider handoff](../systems/art-owned-proposal-transport.md),
+[native contract](../systems/art-native-context-proposals.md) and
+[mission ledger](../audits/2026-11-25-art-workbench-collaborative-002/README.md).
+The [environment recovery record](../audits/2026-11-25-art-workbench-collaborative-002/ENVIRONMENT-RECOVERY.md)
+distinguishes lost provisional outputs from durable source and fresh qualification.
+Architecture owns its StageSession and native composition; no combined evaluator
+is inferred from the provider probe. Remain Draft/HOLD. #773's actual non-Draft
+flag is recorded and left unchanged; the physical no-listener case stays pending.
+
+## Art Workbench finisher — 2026-11-24
+
+Accepted #727 supplies an empty conversation and one lazy root JSONL per new
+Workbench game session. Closing/hiding Art preserves the current in-memory
+conversation; old archives are never automatically restored. Historical #681
+linked restoration remains a diagnostic/reference path, not normal product flow.
+
+ART-WORKBENCH-FINAL-001 reconciles #763/#756/#765/#766 on accepted `00cdb02f`.
+Read the [evaluation guide](art-workbench-final-evaluation.md) and
+[provider contract](../systems/workbench-art-providers.md). The exact primary
+reproduction is Send to an absent LM Studio server followed by ordinary X/Hide;
+a mock HTTP404 does not reproduce it. The new candidate remains Draft/HOLD,
+without native rebuild, unrelated feature imports or merge authority.
 
 ## World Art finisher — 2026-11-20
 

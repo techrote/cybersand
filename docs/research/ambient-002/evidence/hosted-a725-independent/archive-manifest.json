@@ -1,0 +1,123 @@
+{
+  "archive": "original-custody-and-analysis.zip",
+  "archive_bytes": 1475848,
+  "archive_sha256": "ba567b16a042bfb6e050bd8bf93ba1653be91ed511c95f441488b362e106edff",
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "full_original_artifact_id": 14990266435,
+  "full_original_artifact_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "files": {
+    "original-hosted/episodes-full/custody.json": {
+      "bytes": 250441,
+      "sha256": "bd4d3be53ecc99a0d4b1cb21e5a8c8ada969d8871a78456c865c370ef8f3eff3"
+    },
+    "original-hosted/episodes-full/runner-receipt.json": {
+      "bytes": 1728,
+      "sha256": "e702069cc46e8fd3367e356e0c89522942b0700750085c2abced246a174f80c3"
+    },
+    "original-hosted/episodes-full/registration/attempt-001/report.json": {
+      "bytes": 37558,
+      "sha256": "f058c6121521a73566f2d1e2d14b4af8c0d777e0b787c473cf9b0c1c11adfda4"
+    },
+    "original-hosted/episodes-full/registration/attempt-001/execution.json": {
+      "bytes": 777,
+      "sha256": "cb0ea9d3f6dd4b516ebd3a13d92b75776e80bf607516dc1c3166b3a1ef7ac37b"
+    },
+    "original-hosted/episodes-full/registration/attempt-001/console.log": {
+      "bytes": 347,
+      "sha256": "140893a23add2247e6bbce53c2d75202fa9f43f500bce8b4cd939bfa54cac8ca"
+    },
+    "original-hosted/analysis/summary.json": {
+      "bytes": 2350599,
+      "sha256": "80e563bb3349aa4a9f12f11bec118c99fe980e52c522330177147d8e6a272245"
+    },
+    "original-hosted/independent-review/independent-review.json": {
+      "bytes": 275624,
+      "sha256": "6eecec124ef0cd08587ca5bf3f14086175775007f5e97a041ba2335530826970"
+    },
+    "original-hosted/independent-review/independent-review.md": {
+      "bytes": 4922,
+      "sha256": "42f9b617b112042ce9ebc1cbd8d683a7c277934f4f947a847807369a18e7560c"
+    },
+    "original-hosted/ambient/qualification.json": {
+      "bytes": 270100,
+      "sha256": "4b2433c84d7ee142d114f88470d8afe2a0177db0cc2c7e21c9e1fb23ebfa2d94"
+    },
+    "original-hosted/ambient/living_spatial/report.json": {
+      "bytes": 2190,
+      "sha256": "988d2141428d5f4a0fe4870e283af6c33c2a31cd9945a84b4e36ae30c7337fde"
+    },
+    "original-hosted/ambient/living_spatial/process.json": {
+      "bytes": 456,
+      "sha256": "086a7bfb1dd73323916f412139aded161655edd7c2723f315bac5f86c423f0f2"
+    },
+    "original-hosted/ambient/living_spatial/process.log": {
+      "bytes": 2095,
+      "sha256": "b530778fded426ce6c298112a929e9cb9ee7ff07fff61d527b3db1fcd47bf92e"
+    },
+    "original-hosted/ambient/perception/report.json": {
+      "bytes": 10435,
+      "sha256": "ad404a2fad19d278843d0ca5345d07cc41665a09c3b1c56cb7186ece6f7b0dfc"
+    },
+    "original-hosted/ambient/perception/process.json": {
+      "bytes": 458,
+      "sha256": "be23e8f03911202ff0fe26fec2e59b78b5ea061f75b4298673b9b1d392a4bc9c"
+    },
+    "original-hosted/ambient/perception/process.log": {
+      "bytes": 7839,
+      "sha256": "7a09cd2592b2ed6d796ad0cb281426bb3562add90b25ebb3c8b398cface63927"
+    },
+    "original-hosted/analysis/catalogue-timelines.png": {
+      "bytes": 136116,
+      "sha256": "1c5348f432784b883dae66e744eab935f6eb0d9bf0338cbd718ec9e344d80b34"
+    },
+    "original-hosted/analysis/behaviour-timelines.png": {
+      "bytes": 165309,
+      "sha256": "73fab06f44121faf508b4a2f849b05df585d54d8fbb6d23c76cdc954cf408871"
+    },
+    "original-hosted/analysis/catalogue-trajectories.png": {
+      "bytes": 252808,
+      "sha256": "9c8ea03501bf14cfee41b4887ead1376410e1ceba42fb57a04de6a7e08693f39"
+    },
+    "original-hosted/analysis/matched-trajectories.png": {
+      "bytes": 208392,
+      "sha256": "29b884539dc3ab65a518645aeaecd1c52669a012407694704d326f4f3aa2ef6d"
+    },
+    "original-hosted/analysis/social-trajectories.png": {
+      "bytes": 559126,
+      "sha256": "4863cf1d8d124367dbc5334b52aa61e764a6bd4c9b3c6775c1502a4de65ce079"
+    },
+    "local-audit/audit_hosted_a725.py": {
+      "bytes": 11122,
+      "sha256": "e1b5adc3d6f1d954128550250ff0fc7f2feca077f4634d6935658ed8fbaeac4b"
+    },
+    "local-audit/audit-attempt-001.py": {
+      "bytes": 11123,
+      "sha256": "ee05888151b3c0e513932fad1f0036efc1faa684aa970050ec74edeb322f6352"
+    },
+    "local-audit/audit-attempt-001.log": {
+      "bytes": 412,
+      "sha256": "b5c8d1ae7f3b5554cba842f90ba1db66c27e4565c84deba7752063107c222c49"
+    },
+    "local-audit/audit-attempt-002.log": {
+      "bytes": 1877,
+      "sha256": "c49c7fca5df63ba4b606be1f3368b09710870b5e7e8e02960f7cf40174cd26c4"
+    },
+    "local-audit/receipt-chain-and-science.json": {
+      "bytes": 156216,
+      "sha256": "d24cf63ed7543677c563909dc4ad57ec84e0a29220078c6b0ade700302d7fb26"
+    },
+    "local-audit/figures.json": {
+      "bytes": 757,
+      "sha256": "ddfa590892f9402918e4865ec49b98782ea11d5e047174090461dcf89c268f23"
+    },
+    "local-audit/curiosity-independent-readback.json": {
+      "bytes": 4222,
+      "sha256": "85d3e924adad3de9e80dcfca96469e76ebb07dd603d685631275e408c89cc777"
+    },
+    "local-audit/baseline-duplicate-reclamation.json": {
+      "bytes": 564,
+      "sha256": "073187ce0aef9685a5cda54290ad766648f4aed2ba4827d1b1a125ebfd8ff319"
+    }
+  },
+  "scope": "Compact exact-original custody and scientific readback. Full raw194 report and122 original shard chains remain in the separately bound complete original hosted artifact."
+}

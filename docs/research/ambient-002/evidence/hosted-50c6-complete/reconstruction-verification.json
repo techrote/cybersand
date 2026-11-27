@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "verified_parts": [
+    "ambient-002-linux-50c6.zip.part-01",
+    "ambient-002-linux-50c6.zip.part-02",
+    "ambient-002-linux-50c6.zip.part-03",
+    "ambient-002-linux-50c6.zip.part-04",
+    "ambient-002-linux-50c6.zip.part-05"
+  ],
+  "original_bytes": 42796506,
+  "original_sha256": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac",
+  "output": null
+}

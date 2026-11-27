@@ -1,0 +1,118 @@
+{
+  "pass": true,
+  "checks": 23,
+  "check_descriptions": [
+    "original published Linux artifact SHA256",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: original successful source-bound execution",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: report, console and original full-custody hashes",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: complete original report",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: exactly one completion terminal",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: terminal/report agreement",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: exact original physical case",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: actual recorded intervention at tick900",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: five retained failure events without forgetting or eviction",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: all five recorded failures precede15s wall",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful: exact300-sample10Hz trace",
+    "adverse-blocked_route-runner-s605-t30-n1-stateful:9.1selected withdrawal seconds",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: original successful source-bound execution",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: report, console and original full-custody hashes",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: complete original report",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: exactly one completion terminal",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: terminal/report agreement",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: exact original physical case",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: actual recorded intervention at tick900",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: five retained failure events without forgetting or eviction",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: all five recorded failures precede15s wall",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful: exact300-sample10Hz trace",
+    "adverse-blocked_route-runner-s1701-t30-n1-stateful:9.1selected withdrawal seconds"
+  ],
+  "frozen_application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "original_artifact_id": 14990266435,
+  "original_artifact_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "reviewer_source_sha256": "e343f0763a7765a0da94e575b38f45eacb45eadcd5f7a80f12341ee64415ed71",
+  "original_full_custody_sha256": "bd4d3be53ecc99a0d4b1cb21e5a8c8ada969d8871a78456c865c370ef8f3eff3",
+  "cases": [
+    {
+      "case_id": "adverse-blocked_route-runner-s605-t30-n1-stateful",
+      "seed": 605,
+      "report_sha256": "6d2cb3e9aa45f3be6529eba921a8e3f2a88aa7ce0d328a15e66b8563be4c25a0",
+      "execution_sha256": "ed88abb28798eb148facb0c3d1a9ca96157f2743b9ba00e67498a0c93e5ae31e",
+      "console_sha256": "a10ce555c91c470ebafc2933b013f28c12e8f2d9bce6838f4439d0e8b65d3965",
+      "intervention_tick": 900,
+      "intervention_seconds": 15.0,
+      "retained_failure_events": 5,
+      "retained_obstruction": {
+        "attempts": 5,
+        "direction": [
+          1.0,
+          0.0
+        ],
+        "key": "10:8:0",
+        "last_seen": 12.6000000000002,
+        "position": [
+          253.511535644531,
+          195.150939941406
+        ]
+      },
+      "selected_withdrawal_windows_seconds": [
+        [
+          5.5,
+          8.5
+        ],
+        [
+          13.5,
+          16.5
+        ],
+        [
+          22.3,
+          25.4
+        ]
+      ],
+      "withdrawal_seconds": 9.1,
+      "withdrawal_before_intervention_seconds": 4.5,
+      "withdrawal_after_intervention_seconds": 4.6
+    },
+    {
+      "case_id": "adverse-blocked_route-runner-s1701-t30-n1-stateful",
+      "seed": 1701,
+      "report_sha256": "523c240b29687ff8cb069507342f7f76b051da773aa10482fd627f1da37c6793",
+      "execution_sha256": "950a9f568f04d4d540ed4040854219d03f96b934e91a30d724b14b7e23531342",
+      "console_sha256": "bc3d08784f25cc995b7423c20ce55330e7442d398350f159f9c96088854880fc",
+      "intervention_tick": 900,
+      "intervention_seconds": 15.0,
+      "retained_failure_events": 5,
+      "retained_obstruction": {
+        "attempts": 5,
+        "direction": [
+          1.0,
+          0.0
+        ],
+        "key": "10:8:0",
+        "last_seen": 12.6000000000002,
+        "position": [
+          253.710388183594,
+          195.364654541016
+        ]
+      },
+      "selected_withdrawal_windows_seconds": [
+        [
+          5.4,
+          8.4
+        ],
+        [
+          13.4,
+          16.4
+        ],
+        [
+          22.1,
+          25.2
+        ]
+      ],
+      "withdrawal_seconds": 9.1,
+      "withdrawal_before_intervention_seconds": 4.6,
+      "withdrawal_after_intervention_seconds": 4.5
+    }
+  ],
+  "interpretation": "Both final-source stateful blocked-route episodes retained five failures last recorded at12.6s, before the15s native wall intervention. Selected withdrawals after15s reuse this earlier record. The matched memory ablation demonstrates utility of memory in the changing fixture; it does not demonstrate learning the newly painted wall.",
+  "scope": "Independent original-data readback only. Two already-counted primary case identities; no new physical execution or episode count. Samples define half-open0.1s selected-intention intervals; primary traces do not identify individual failure-event timestamps or goal instances."
+}

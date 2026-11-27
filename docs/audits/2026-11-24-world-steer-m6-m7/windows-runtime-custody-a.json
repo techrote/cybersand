@@ -1,0 +1,51 @@
+{
+  "schema": "cybersand.windows-runtime-custody.v1",
+  "status": "passed",
+  "source_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "source_tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "run_id": 45520561849,
+  "runtime_artifact_id": 14978269731,
+  "runtime_archive": "/dev/shm/m67-final-custody/45520561849/owner-runtime/runtime-17c6b5b35049.zip",
+  "runtime_archive_bytes": 2106710,
+  "runtime_archive_sha256": "ad2ca41bfb8111a17fe20e21d6dd133fa43a81da02957b1ac9de03e412d6d3ad",
+  "build_artifact_id": 14980481166,
+  "build_archive": "/dev/shm/m67-final-custody/45520561849/owner-runtime/build-17c6b5b35049.zip",
+  "build_archive_bytes": 8230,
+  "build_archive_sha256": "b4375848209601366a66670d2f613f9e0c58b799eee51b7f03095eb4deec4c4a",
+  "native_binary_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+  "native_binary_bytes": 5820416,
+  "all_native_inputs_verified": 105,
+  "native_inputs_match_commits": [
+    "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "d948deab5d280adfe1e890bddf85725b2efd59bc",
+    "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+    "f5f6e9f35727d81868bcced4da8b913b470ea635",
+    "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "76fcf209e0cda5820aa64e104bfae732075ae7c3"
+  ],
+  "build_returncode": 0,
+  "build_ledger_consistent": true,
+  "build_log_sha256": "6f3b8a25eb677e4075113e228bbab8c17f62ed58b7be4f5eb72429eac4532abb",
+  "build_script": "tools/build_native_extension_windows.sh",
+  "build_script_sha256": "f6cf5744b23b7b486da691f6072cf748022f3c56d62d2d81d12f4051f9389ece",
+  "godot_cpp_library_sha256": "86e4aa8ed3aa8362b0d32061eb4cbeb73ebf948feab40bb4604cd321de34490f",
+  "build_artifact_log_hashes": {
+    "build-godot-cpp.log": {
+      "bytes": 60046,
+      "sha256": "8e2edb5b747f1910b07a4fcc4d5e8a8b45e8332759f9ae6a8fae56e554179733"
+    },
+    "build-native.log": {
+      "bytes": 188,
+      "sha256": "b5b08a54e546f9a5c9dcd9aad1d2f328f83840a603e9db9836175a543d39109a"
+    },
+    "scons-install.log": {
+      "bytes": 358,
+      "sha256": "2693eed51ee3a184f29adecbb396f3dd1c8755a0fccd0e4a6e8ac989fc71d9cb"
+    }
+  },
+  "failed_campaigns_preserved_unchanged": [
+    45506178712,
+    45512988153
+  ],
+  "scope": "Original third-run runtime/build artifact digests, source provenance, all105 normalized native inputs and build-ledger verification. Rebuilt binary identity is distinct from all prior builds. This source/build audit establishes no application, graphical, extracted-launcher, physical owner or general gameplay result."
+}

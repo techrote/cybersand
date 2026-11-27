@@ -1,0 +1,38 @@
+{
+  "kind": "retained original reader-development failure",
+  "tool_chunk_id": "734767",
+  "exit_code": 1,
+  "source_sha256": "ce9d6cad03c58f28e392d3d3bd222b9171b38eb794a602d954328617c1f36975",
+  "failed_expression": "profiles[\"stateful\"] == profiles[\"no_memory\"] and starts[\"stateful\"] == starts[\"no_memory\"]",
+  "actual_profile_difference_only": {
+    "memory.enabled": [
+      true,
+      false
+    ]
+  },
+  "actual_outcome_observer_differences": {
+    "ingest_usec_max": [
+      65,
+      62
+    ],
+    "ingest_usec_total": [
+      65,
+      62
+    ],
+    "query_samples": [
+      212516,
+      212511
+    ],
+    "query_usec_max": [
+      911,
+      956
+    ],
+    "query_usec_total": [
+      248365,
+      243033
+    ]
+  },
+  "cause": "The first reader compared the entire outcome_observer diagnostics object as if it were an input scope. It contains actual query work and elapsed timing, which may differ after trajectories diverge. Native initial materials, poses, geometry and all other authored fields matched.",
+  "correction": "Retain exact profile comparison outside memory.enabled; compare initial materials/poses/geometry and fixed observer backend/extent/budget configuration, not observed cost or sample-count outcomes. This changes no runtime or experiment record.",
+  "evidence_scope": "Copied from the actual failed tool result and the subsequent direct difference inspection; not a Godot/physics failure and not a new actor episode."
+}

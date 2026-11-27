@@ -1,0 +1,116 @@
+{
+  "format": "cybersand-m67-heldout-briefs-v1",
+  "author": "independent-specialist-a",
+  "registration_commit": "a42b3b7a5",
+  "cohort_scope": "Independently authored composition briefs frozen before any confirmatory outcomes are inspected; not unseen artwork or blind human preference.",
+  "briefs": [
+    {
+      "id": "heldout-a-offset-service-handoff",
+      "cohort": "heldout",
+      "family": "offset_service_handoff",
+      "intent": "Carry a service feed from the upper left through a downward elbow into a lower branching spine, then through an offset in-line mechanical chamber. Preserve the inner elbow void, the chamber's access cavities and a continuous empty band above the lower deck. The junction must be a real four-cell face handoff rather than two visually nearby isolated objects.",
+      "slots": [
+        {
+          "id": "upper-return",
+          "region": [24, 40, 32, 32],
+          "part_types": ["pipework"],
+          "preferred_tags": ["elbow", "connector"],
+          "target_extent": [32, 32],
+          "align": "top-left",
+          "transforms": ["identity"],
+          "connection_types": ["pipe-4"],
+          "connector_contract": "face-adjacent-grid-v2"
+        },
+        {
+          "id": "lower-junction",
+          "region": [30, 72, 48, 32],
+          "part_types": ["pipework"],
+          "preferred_tags": ["junction", "three-way"],
+          "target_extent": [48, 32],
+          "align": "top-left",
+          "transforms": ["identity"],
+          "connection_types": ["pipe-4"],
+          "connector_contract": "face-adjacent-grid-v2"
+        },
+        {
+          "id": "offset-chamber",
+          "region": [78, 68, 48, 40],
+          "part_types": ["mechanical_housing"],
+          "preferred_tags": ["valve", "mechanical"],
+          "target_extent": [48, 40],
+          "align": "top-left",
+          "transforms": ["identity"],
+          "connection_types": ["pipe-4"],
+          "connector_contract": "face-adjacent-grid-v2"
+        }
+      ],
+      "required_empty_regions": [[24, 44, 28, 28], [93, 79, 18, 7], [93, 90, 18, 7], [8, 156, 240, 16]],
+      "anchors": [[20, 40, 4, 4, 58], [8, 172, 240, 4, 58]],
+      "relations": [
+        {"kind": "face-contact", "a": "upper-return", "b": "lower-junction", "role": "pipe", "compatibility": "pipe-4"},
+        {"kind": "face-contact", "a": "lower-junction", "b": "offset-chamber", "role": "pipe", "compatibility": "pipe-4"}
+      ],
+      "expectations": {
+        "hard_constraints": [
+          "Every assigned part stays within its supplied slot and the shared 256 by 192 canvas.",
+          "Both declared handoffs use compatible opposing occupied four-cell pipe faces.",
+          "All four declared empty regions remain Empty; the lower deck and feed anchor are retained.",
+          "No source material or protected marker outside the authorized writes changes."
+        ],
+        "architectural_intent": [
+          "The feed changes level before branching, giving the assembly an intentionally asymmetric topology.",
+          "The chamber's top spindle and paired access cavities distinguish equipment from generic surface clutter.",
+          "A lower empty band remains available for a separate horizontal circulation design; no actor-traversal claim is made."
+        ]
+      }
+    },
+    {
+      "id": "heldout-a-vault-and-split-crown",
+      "cohort": "heldout",
+      "family": "arched_industrial_support",
+      "intent": "Organize a broad vaulted lower level beneath a narrow central support that splits into a wide upper crown. The arch's occupied crown must meet the upper pedestal through an exact bearing interface. Keep the lower arch void and the upper branching gap visibly empty, with a common deck below the arch feet.",
+      "slots": [
+        {
+          "id": "wide-vault-rib",
+          "region": [48, 96, 96, 52],
+          "part_types": ["beam_truss"],
+          "preferred_tags": ["arch", "curved", "macro-void"],
+          "target_extent": [96, 52],
+          "align": "top-left",
+          "transforms": ["identity"],
+          "connection_types": ["bearing-16"],
+          "connector_contract": "face-adjacent-grid-v2"
+        },
+        {
+          "id": "split-upper-support",
+          "region": [76, 32, 40, 64],
+          "part_types": ["column_support"],
+          "preferred_tags": ["fork", "splayed-support"],
+          "target_extent": [40, 64],
+          "align": "top-left",
+          "transforms": ["identity"],
+          "connection_types": ["bearing-16"],
+          "connector_contract": "face-adjacent-grid-v2"
+        }
+      ],
+      "required_empty_regions": [[72, 124, 48, 24], [91, 38, 10, 20], [8, 152, 240, 24]],
+      "anchors": [[8, 148, 240, 4, 58], [76, 28, 40, 4, 58]],
+      "relations": [
+        {"kind": "face-contact", "a": "wide-vault-rib", "b": "split-upper-support", "role": "support", "compatibility": "bearing-16"}
+      ],
+      "expectations": {
+        "hard_constraints": [
+          "The lower rib and upper support fit their different target scales without rescaling geometry.",
+          "The facing bearing spans meet across the y=95 and y=96 cell boundary with sixteen occupied cells on each side.",
+          "All declared lower and upper voids remain Empty.",
+          "Source anchors, the common deck and the protected marker remain unchanged."
+        ],
+        "architectural_intent": [
+          "A large lower void and a smaller branching upper gap create two distinct spatial scales.",
+          "The central support reads as a continuation of the arch crown, not a floating object.",
+          "The declared contact is a geometric construction interface, not a physical load-bearing certificate."
+        ]
+      }
+    }
+  ]
+}

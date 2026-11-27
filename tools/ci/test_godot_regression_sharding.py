@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
 """Unit tests for deterministic Godot regression shard planning."""
 
+from collections import Counter
 from contextlib import redirect_stdout
 import io
 import json
 import os
 from pathlib import Path
+import socket
 import sys
 import tempfile
 import time
 import unittest
+from urllib.parse import urlsplit
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import run_godot_regressions as subject
+import _architecture_campaign_context as context
+import godot_job_plan
+import run_windows_godot_regressions as windows
 
 
 def fake(name: str, weight: float) -> subject.Case:
@@ -283,6 +289,40 @@ class ResultTests(unittest.TestCase):
             self.assertFalse(failed)
             self.assertEqual(result["status"], "passed")
             self.assertEqual((output / "fixture-artifacts/pixel-control.txt").read_text(), "retained child output")
+
+    def test_local_close_gets_real_fixture_and_always_retires_listener(self):
+        program = """
+import json, os, urllib.request, urllib.error
+endpoint = os.environ['WB_ART_CLOSE_ENDPOINT']
+print(json.dumps({'endpoint':endpoint}), flush=True)
+for model, expected in [('fixture-valid',200), ('fixture-invalid',404)]:
+    request = urllib.request.Request(endpoint + '/chat/completions',
+        data=json.dumps({'model':model}).encode(),
+        headers={'Content-Type':'application/json'})
+    try:
+        response = urllib.request.urlopen(request, timeout=2)
+    except urllib.error.HTTPError as error:
+        response = error
+    with response:
+        assert response.status == expected
+        body = json.loads(response.read())
+        assert ('choices' in body) == (expected == 200)
+"""
+        for exit_code in (0, 7):
+            with self.subTest(exit_code=exit_code), tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+                command = [sys.executable, "-c", program + f"\nraise SystemExit({exit_code})\n"]
+                output = Path(directory)
+                with mock.patch.object(subject, "case_command", return_value=command):
+                    result, failed = subject.run_case("unused", fake("test_art_local_close", 1), output, "case",
+                        env={**os.environ, "WB_ART_CLOSE_ENDPOINT":"https://untrusted.invalid/v1"})
+                self.assertEqual(failed, exit_code != 0)
+                self.assertEqual(result["returncode"], exit_code)
+                self.assertEqual(result["status"], "passed" if exit_code == 0 else "failed")
+                endpoint = json.loads((output / "test_art_local_close.log").read_text().splitlines()[0])["endpoint"]
+                parsed = urlsplit(endpoint)
+                self.assertEqual(parsed.hostname, "127.0.0.1")
+                with self.assertRaises(OSError):
+                    socket.create_connection((parsed.hostname, parsed.port), timeout=0.2)
 
     def test_zero_exit_with_script_error_fails(self):
         result, failed = self.run_child("print('SCRIPT ERROR: assertion failed')")
@@ -1181,6 +1221,198 @@ class ReadbackRegistrationTests(unittest.TestCase):
                      "docs/reference/liquid-solver-capability-matrix.json"):
             self.assertIn(path, windows.INPUT_SCOPES)
         self.assertIn("native/include", windows.INPUT_SCOPES)
+
+
+def registered_cases():
+    names = {name for _component, members, _paths in context.COMPONENTS for name in members}
+    return [case for case in subject.discover_cases() if case.name in names]
+
+
+class ArchitectureContextTests(unittest.TestCase):
+    def test_legacy_graphical_driver_flags_keep_the_exact_original_windows_command(self):
+        flags = ("--rendering-driver", "opengl3_angle", "--script", "res://tests/test_water_presentation_render.gd")
+        case = subject.Case("water-render", flags, 1200, 0, True)
+        command = subject.case_command("godot", case, "win32")
+        self.assertEqual(command, ["godot", "--rendering-method", "gl_compatibility", "--audio-driver", "Dummy",
+                                   "--path", str(subject.ROOT / "godot"), *flags])
+        self.assertEqual(command.count("--rendering-driver"), 1)
+        for name in context.GRAPHICAL_CASES:
+            architecture = subject.Case(name, ("--script", "res://tests/" + name + ".gd"), 1200, 0, True)
+            command = subject.case_command("godot", architecture, "win32")
+            self.assertEqual(command.count("--rendering-driver"), 1)
+            self.assertEqual(command[command.index("--rendering-driver") + 1], "opengl3_angle")
+
+    def test_registered_graphics_use_the_graphical_watchdog_without_shortening_complex_cases(self):
+        original = {case.name: case for case in subject.discover_cases()}
+        policy = json.loads(json.dumps(subject.execution_policy.identity()))
+        ordinary = policy["watchdogs"]["ordinary_case_seconds"]
+        policy["watchdogs"]["graphical_case_seconds"] += 500
+        with mock.patch.object(subject.execution_policy, "identity", return_value=policy):
+            changed = {case.name: case for case in subject.discover_cases()}
+        for name in context.GRAPHICAL_CASES:
+            expected = (policy["watchdogs"]["graphical_case_seconds"]
+                if original[name].timeout == ordinary else original[name].timeout)
+            self.assertEqual(changed[name].timeout, expected)
+            self.assertTrue(changed[name].requires_display)
+        self.assertEqual(changed["test_architecture_gameplay"].timeout, original["test_architecture_gameplay"].timeout)
+        self.assertGreater(changed["test_architecture_gameplay"].timeout, policy["watchdogs"]["graphical_case_seconds"])
+
+    def test_complete_hosted_plans_keep_components_whole_ordered_and_every_case_once(self):
+        discovered = subject.discover_cases()
+        for platform in ("linux", "windows"):
+            cases = [case for case in discovered if platform == "linux" or context.windows_applicable(case)]
+            plan = godot_job_plan.plan(cases, platform=platform)
+            shards, totals = subject.build_shard_plan(cases, plan["shard_count"])
+            self.assertEqual(Counter(c.name for shard in shards for c in shard), Counter(c.name for c in cases))
+            self.assertEqual(totals, [sum(c.weight for c in shard) for shard in shards])
+            for shard in shards:
+                self.assertLessEqual(len(shard), subject.scheduling.MAX_CASES_PER_SHARD)
+                # The original Case objects, flags, display bits and complete
+                # watchdogs survive scheduling, rather than synthetic wrappers.
+                self.assertTrue(all(any(case is original for original in cases) for case in shard))
+            for _component, names, _paths in context.COMPONENTS:
+                containing = [shard for shard in shards if any(c.name in names for c in shard)]
+                self.assertEqual(len(containing), 1)
+                self.assertEqual([c.name for c in containing[0] if c.name in names], list(names))
+
+    def test_partial_component_and_duplicate_case_are_refused(self):
+        cases = registered_cases()
+        cases = [case for case in cases if case.name != "test_architecture_stage_native"]
+        with self.assertRaisesRegex(RuntimeError, "Incomplete Architecture context"):
+            subject.build_shard_plan(cases, 2)
+        with tempfile.TemporaryDirectory() as directory:
+            with self.assertRaisesRegex(RuntimeError, "Incomplete Architecture context"):
+                context.prepare_contexts(cases, Path(directory))
+        with self.assertRaisesRegex(RuntimeError, "exactly once"):
+            subject.build_shard_plan([subject.Case("duplicate", (), 1200, 1)] * 2, 1)
+
+    def test_contexts_share_only_the_registered_component_and_fabricate_no_inputs(self):
+        with tempfile.TemporaryDirectory() as directory:
+            # Hosted Windows may spell the tempfile root using RUNNER~1 while
+            # resolve() returns its long name. Exercise an unresolved lexical
+            # alias on every host as well, and compare canonical roots.
+            alias = Path(directory) / "unresolved-parent"
+            alias.mkdir()
+            output = alias / ".."
+            contexts = context.prepare_contexts(registered_cases(), output)
+            for _component, names, _paths in context.COMPONENTS:
+                self.assertTrue(all(contexts[name]["APPDATA"] == contexts[names[0]]["APPDATA"] for name in names))
+                if _component != "batch-provider-workbench":
+                    self.assertTrue(all(contexts[name] == contexts[names[0]] for name in names))
+            profiles = [contexts[names[0]]["APPDATA"] for _component, names, _paths in context.COMPONENTS]
+            self.assertEqual(len(profiles), len(set(profiles)))
+            for overrides in contexts.values():
+                for value in overrides.values():
+                    self.assertTrue(Path(value).is_relative_to(output.resolve()))
+                for name in ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME"):
+                    self.assertTrue(Path(overrides[name]).is_dir())
+            self.assertFalse(any(path.is_file() for path in output.rglob("*")))
+            manifest = Path(contexts["test_architecture_gameplay"]["ARCHITECTURE_GAMEPLAY_MANIFEST"])
+            self.assertFalse(manifest.exists())
+            # Even a previous empty context cannot be reused to accidentally
+            # inherit an old successful manifest/profile on a later run.
+            with self.assertRaises(FileExistsError):
+                context.prepare_contexts(registered_cases(), output)
+
+    def test_batch_provider_precedes_workbench_in_one_profile_with_distinct_retained_outputs(self):
+        cases = registered_cases()
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            contexts = context.prepare_contexts(cases, output)
+            provider = contexts["test_batch_lab_provider"]
+            workbench = contexts["test_batch_lab_workbench"]
+            ui = contexts["test_batch_lab_ui"]
+            for variable in ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME"):
+                self.assertEqual(provider[variable], workbench[variable])
+                self.assertNotEqual(provider[variable], ui[variable])
+            self.assertNotEqual(provider["BATCH_LAB_EVIDENCE_DIR"], workbench["BATCH_LAB_EVIDENCE_DIR"])
+            self.assertTrue(all(Path(ctx["BATCH_LAB_EVIDENCE_DIR"]).is_relative_to(output.resolve())
+                                for ctx in (provider, workbench, ui)))
+            self.assertEqual(context.failed_dependencies("test_batch_lab_workbench", []), ["test_batch_lab_provider"])
+            self.assertEqual(context.failed_dependencies("test_batch_lab_workbench",
+                [{"name": "test_batch_lab_provider", "role": "case", "status": "passed"}]), [])
+
+    def test_complete_environment_preserves_source_and_path_and_other_cases_keep_defaults(self):
+        cases = registered_cases()
+        case = next(c for c in cases if c.name == "test_architecture_stage_native")
+        with tempfile.TemporaryDirectory() as directory, mock.patch.dict(os.environ, {"PATH": "retained-path", "CYBERSAND_SOURCE_REVISION": "source-id"}):
+            contexts = context.prepare_contexts(cases, Path(directory))
+            kwargs = subject.context_case_kwargs(case, contexts, [])
+            self.assertEqual(kwargs["env"]["PATH"], "retained-path")
+            self.assertEqual(kwargs["env"]["CYBERSAND_SOURCE_REVISION"], "source-id")
+            self.assertEqual(kwargs["env"]["APPDATA"], contexts[case.name]["APPDATA"])
+            self.assertEqual(subject.context_case_kwargs(subject.Case("unrelated", (), 1200, 1), contexts, []), {})
+
+    def test_failed_producer_still_runs_consumers_and_cannot_qualify_partial_inputs(self):
+        # Real independent child processes: a failing producer leaves a file
+        # that would otherwise let its consumer exit successfully. Keep both
+        # raw logs and classify the consumer's context as failed nevertheless.
+        names = context.COMPONENTS[3][1]
+        cases = [subject.Case(name, ("--script", name + ".gd"), 3940, 1, name.endswith("_render")) for name in names]
+        programs = {
+            names[0]: "import os;from pathlib import Path;p=Path(os.environ['ARCHITECTURE_HIERARCHY_DIR'])/'hierarchy-native.json';p.write_text('{}');print('producer partial input');raise SystemExit(7)",
+            names[1]: "import os;from pathlib import Path;assert (Path(os.environ['ARCHITECTURE_HIERARCHY_DIR'])/'hierarchy-native.json').is_file();print('consumer actually executed')",
+            names[2]: "print('graphical consumer actually executed')",
+        }
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            output = Path(directory)
+            report = {"status": "running", "completed": False, "results": [], "log_sha256": {}}
+            def command(_godot, case):
+                if case.name == "import":
+                    return [sys.executable, "-c", "print('imported')"]
+                capture = ("import os;from pathlib import Path;"
+                    "a=Path(os.environ['CYBERSAND_TEST_ARTIFACT_DIR']);a.mkdir();"
+                    f"(a/'case.txt').write_text({case.name!r});")
+                return [sys.executable, "-c", capture + programs[case.name]]
+            with mock.patch.object(subject, "case_command", side_effect=command):
+                windows.execute_cases("unused", output, report, cases)
+            self.assertTrue(report["completed"])
+            self.assertEqual(report["status"], "failed")
+            self.assertEqual([r["name"] for r in report["results"]], ["import", *names])
+            self.assertEqual([r["status"] for r in report["results"]], ["passed", "failed", "failed", "failed"])
+            self.assertEqual([r["timeout_seconds"] for r in report["results"]][1:], [3940] * 3)
+            for row in report["results"][2:]:
+                self.assertEqual(row["returncode"], 0)
+                self.assertEqual(row["process_status"], "passed")
+                self.assertEqual(row["failed_context_producers"], [names[0]])
+                self.assertIn("actually executed", (output / row["log"]).read_text())
+                self.assertEqual(row["log_sha256"], subject.sha256(output / row["log"]))
+            for name in names:
+                self.assertEqual((output / (name + "-artifacts") / "case.txt").read_text(), name)
+
+    def test_graphical_discovery_windows_intake_and_matrix_agree_without_broadening_scope(self):
+        cases = subject.discover_cases()
+        by_name = {case.name: case for case in cases}
+        self.assertTrue(all(by_name[name].requires_display for name in context.GRAPHICAL_CASES))
+        self.assertFalse(context.windows_applicable(subject.Case("unrelated_render", (), 1200, 1, True)))
+        expected = [case for case in cases if context.windows_applicable(case)]
+        with tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+            path = Path(directory) / "plan.json"
+            with mock.patch.object(sys, "argv", ["planner", "--output", str(path)]):
+                self.assertEqual(godot_job_plan.main(), 0)
+            plan = json.loads(path.read_text())["windows"]
+        report = {}
+        windows.plan_cases(report, cases, shard_count=plan["shard_count"], shard_index=0)
+        self.assertEqual(report["applicable_cases"], [case.name for case in expected])
+        self.assertEqual(Counter(c["name"] for s in plan["shards"] for c in s["cases"]), Counter(report["applicable_cases"]))
+        self.assertEqual(set(case.name for case in expected if case.requires_display), context.GRAPHICAL_CASES)
+        self.assertEqual(report["case_plan"], plan["shards"][0]["cases"])
+        command = subject.case_command("godot", by_name["test_architecture_gameplay"], "win32")
+        self.assertNotIn("--headless", command)
+        self.assertEqual(command[command.index("--rendering-method") + 1], "gl_compatibility")
+        self.assertEqual(command[command.index("--rendering-driver") + 1], "opengl3_angle")
+
+    def test_failed_context_does_not_erase_a_consumers_original_skip_or_timeout(self):
+        for program, timeout, expected in (("print('SKIP: missing input')", 5, "skipped"),
+                                            ("import time;time.sleep(30)", 0.1, "timeout")):
+            with self.subTest(expected=expected), tempfile.TemporaryDirectory() as directory, redirect_stdout(io.StringIO()):
+                case = subject.Case("fixture", (), timeout, 1)
+                with mock.patch.object(subject, "case_command", return_value=[sys.executable, "-c", program]):
+                    row, failed = subject.run_case("unused", case, Path(directory), "case", failed_context_producers=("producer",))
+                self.assertTrue(failed)
+                self.assertEqual(row["status"], expected)
+                self.assertEqual(row["process_status"], expected)
+                self.assertEqual(row["failed_context_producers"], ["producer"])
 
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ extends Window
 # Visibility has no effect on controller scheduling or physics lifetime.
 const Catalog = preload("res://scripts/workbench_actor_catalog.gd")
 const Usables = preload("res://scripts/usable_catalog.gd")
+const AmbientExamples = preload("res://scripts/ambient/ambient_examples.gd")
 const SOURCE_LABELS := {"human":"Human / Pilot", "scripted":"Scripted NPC",
 	"policy":"External Policy", "passive":"Passive / Uncontrolled"}
 var wb: Control
@@ -26,6 +27,7 @@ var _last_refresh := 0
 var _shown_id := -1
 var _roster_key := ""
 var _issued: Dictionary = {}
+var _ambient_examples := OptionButton.new()
 
 
 func mount(workbench: Control) -> void:
@@ -50,6 +52,14 @@ func mount(workbench: Control) -> void:
 	wb._button(row,"Mixed Actor Workshop",func() -> void: wb.load_mixed_actor_workshop())
 	wb._button(row,"Play / Pause",wb.toggle_pause)
 	wb._button(row,"Close",hide)
+	row = wb._row(column)
+	wb._label(row, "Ambient examples")
+	for example: Dictionary in AmbientExamples.entries():
+		_ambient_examples.add_item(str(example.name))
+		_ambient_examples.set_item_metadata(_ambient_examples.item_count - 1, example.id)
+	row.add_child(_ambient_examples)
+	wb._button(row, "Load scene", func() -> void:
+		if _ambient_examples.selected >= 0: wb.load_ambient_example(str(_ambient_examples.get_item_metadata(_ambient_examples.selected))))
 	pilot_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	column.add_child(pilot_info)
 	row = wb._row(column)
@@ -109,6 +119,7 @@ func mount(workbench: Control) -> void:
 	policy.add_item("External submissions")
 	row.add_child(policy)
 	policy.item_selected.connect(func(_index: int) -> void: _apply_control())
+	wb._button(row, "Behaviour profile…", func() -> void: wb.open_ambient_profile(wb.selected_id()))
 	row = wb._row(column)
 	wb._label(row,"Mounted equipment")
 	usable.add_item("None",-1)
@@ -174,10 +185,13 @@ func _apply_control() -> void:
 	var a: Dictionary = wb.actor(wb.applied,wb.selected_id())
 	if a.is_empty() or source.selected < 0: return
 	var config := Catalog.control_for(a)
-	config.source = source.get_item_metadata(source.selected)
+	var choice := str(source.get_item_metadata(source.selected))
+	config.source = "policy" if choice == "ambient" else choice
 	config.enabled = enabled.button_pressed
 	config.decision_ticks = int(cadence.value)
-	config.policy = "fixture" if policy.selected == 0 else "external"
+	config.policy = "ambient" if choice == "ambient" else ("fixture" if policy.selected == 0 else "external")
+	if choice == "ambient" and not config.has("ambient"):
+		config["ambient"] = Catalog.AmbientProfile.preset("drifting_flyer" if bool(Catalog.AmbientActuator.capabilities(str(a.model)).vertical) else "oil_moth")
 	wb.set_actor_control(int(a.id),config)
 	refresh(true)
 
@@ -207,9 +221,14 @@ func refresh(force: bool = false) -> void:
 				source.add_item(SOURCE_LABELS[mode])
 				source.set_item_metadata(source.item_count-1,mode)
 				if mode == config.source: source.select(source.item_count-1)
+			if Catalog.AmbientActuator.supports(str(a.model)):
+				source.add_item("Procedural NPC / Ambient")
+				source.set_item_metadata(source.item_count - 1, "ambient")
+				if config.source == "policy" and config.policy == "ambient": source.select(source.item_count - 1)
 			enabled.set_pressed_no_signal(config.enabled)
 			cadence.set_value_no_signal(config.decision_ticks)
 			policy.select(0 if config.policy == "fixture" else 1)
+			policy.visible = config.source == "policy" and config.policy != "ambient"
 			usable.select(maxi(0,usable.get_item_index(int(config.usable_index))))
 			usable.disabled = not bool(Catalog.entry(a.model).equipment)
 	pilot_info.text = "Pilot: %s · Inspecting: %s" % [wb.pilot_description(),"none" if a.is_empty() else "#%d %s" % [inspected,a.model]]

@@ -1,0 +1,283 @@
+{
+  "schema": "ambient2-curiosity-delivery-receipt/v1",
+  "application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "application_tree": "a038e6df65d58529f4c496c01f26c65975654fa6",
+  "diagnostic_source": "31f8ecf8b6d8821740b545e046501f90c86e06f3",
+  "recovery_source": "e003dff2193063e4d42f6bd7a44e91ff5816f8e3",
+  "analysis_source": "6eb97a5f70aa8d75b3908ff6b637399a3b0b2f76",
+  "complete": true,
+  "completed_physical_episodes": 6,
+  "incomplete_process_attempts": 1,
+  "incomplete_attempt_progress": "Unestablished: no report or completion marker.",
+  "included_in_primary194": false,
+  "apparatus_checks": 45078,
+  "independently_recomputed_numeric_values": 48,
+  "full_custody_unchanged": true,
+  "loaded_project_inputs": 855,
+  "source_identity": {
+    "captured_utc": "2026-11-25T03:56:46",
+    "display_server": "headless",
+    "external_diagnostic_sha256": "cb6eae5981fec8fe5100a767e2730daf868c2d747bd87e066615f3b6eaa7d735",
+    "godot": "4.7-stable (official)",
+    "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "platform": "Linux",
+    "runtime_sha256": {
+      "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "runtime_supported": true,
+    "sha256": {
+      "data/ambient/profiles.json": "9b5cfcf22a653f7d76d9c9f205a6222c442ec577e90eabcff8ad9d46f39cfb87",
+      "scripts/ambient/ambient_actuator.gd": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef",
+      "scripts/ambient/ambient_engine.gd": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2",
+      "scripts/ambient/ambient_memory.gd": "36d61c69440850a295c85bfb1b855c6ca3e455a34ba3c18f049c26ca98cc4f32",
+      "scripts/ambient/ambient_modules.gd": "fb085974637fbd51628ad0e17b981c87f26250867453f2576a0d469e44ca59da",
+      "scripts/ambient/ambient_perception.gd": "61f4e05fe4441d2c83c26429463254d963aa6d1f2447b4351ad587f8fa11ef0b",
+      "scripts/ambient/ambient_profile.gd": "149979a6cf3d4ae0437c9eecaf5807f9598a9e6d135d9f0d7cfcf1e54c5cd689",
+      "scripts/ambient/ambient_stateful_modules.gd": "37c9c039cd8581a31bf4bb46a9eb8c796309cb95983ea30eed6266ddbcb00f8a",
+      "scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+      "scripts/physical_actor_effects.gd": "e85b3902d753b207a4d3aea81c77e2034a97bb39e85cb0e263aeddffe8dc34da",
+      "scripts/physical_actor_rig.gd": "a91255907101ca211574897345324c51f684baccac865d765ad54609ec575ea0",
+      "scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+      "scripts/physical_actor_session.gd": "b7bdb607106ae00dd43ac0bc1af09437fff161672dfa0b3696d64a9a9bb70c09",
+      "scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+      "scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+      "scripts/physical_usable_runtime.gd": "f1bb3377da73df672e24abbe06a84621042c64ced45fa96ec6de01616a3c7b18",
+      "scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+      "scripts/workbench_actor_catalog.gd": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7",
+      "scripts/workbench_actor_control.gd": "342a925a2ba0df06599768879fbb04e9f687dac21c0d72147cb1253b51c0cbff",
+      "scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+      "tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json": "7c7c13125fcbf4e6f07317efa2190656840417c8ce328820adb7dfea7ba9f78e",
+      "tests/test_ambient2_episodes.gd": "1664063cb8016e18823852e5af15a0ed4579ea4b7aa267136d04a48111933923"
+    },
+    "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+    "supplementary_scope": "Six curiosity-only contrasts; excluded from the primary194 registry."
+  },
+  "external_custody": {
+    "source_commit": "31f8ecf8b6d8821740b545e046501f90c86e06f3",
+    "sha256": {
+      "tools/ambient/diagnostics/curiosity_contrast.gd": "cb6eae5981fec8fe5100a767e2730daf868c2d747bd87e066615f3b6eaa7d735",
+      "tools/ambient/diagnostics/run_curiosity_contrast.py": "7db49bc056eec5f5e8902d8be3f92089b6fbfea1c78c25e822358cf98c695abb",
+      "docs/research/ambient-002/curiosity-preregistration.md": "ca358780cd3d5762b14eccff3c610148562785d58fb3bbe8b387fa092c6e2fe4"
+    }
+  },
+  "report_sha256": "f633961b80157c280f79a55375939892a65af81486956863c87805e80b380fbe",
+  "comparison_sha256": "1a68b31afcbc4f4efc54b8a93b0ea8064550d6cf838924592976b0afd076cb19",
+  "independent_readback_sha256": "5f53b43e8fa7f20d4547b89e22d1b5e2630b2cc8a4d804ff107a61744ba88f66",
+  "archive": {
+    "path": "docs/research/ambient-002/evidence/curiosity-31f-complete.zip",
+    "bytes": 2228174,
+    "sha256": "b096cdbd0d69942065f973d860d041b49cda65ac5d511feccc2091afd8aa4ae9",
+    "git_blob": "eb5e5bb38a9bc5cd1bd3ee5254ddbf5746b98334",
+    "file_count": 49
+  },
+  "files": {
+    "README.txt": {
+      "bytes": 1292,
+      "sha256": "a28232393dd2ad45215a78efd1b0fc7a36660f191648c2a84cc09a088c496a15"
+    },
+    "analysis-source.bundle": {
+      "bytes": 836687,
+      "sha256": "be0de74580291e6fc3fd0bee5980eb1f86f187cd3e99900124d86a48a06e67ab"
+    },
+    "comparison.json": {
+      "bytes": 81813,
+      "sha256": "1a68b31afcbc4f4efc54b8a93b0ea8064550d6cf838924592976b0afd076cb19"
+    },
+    "curiosity-contrasts.png": {
+      "bytes": 297848,
+      "sha256": "5ddf969d14a9733cb9c64d0bb06e21ea5eb631954721844d6758cca765ed7884"
+    },
+    "custody.json": {
+      "bytes": 250423,
+      "sha256": "9654a41373e3a00c8ae56a349c9dd6554b7abe91875297f0b9a3aed1702bbea7"
+    },
+    "diagnostic-source.bundle": {
+      "bytes": 142346,
+      "sha256": "81f31ee9c782f74515d1039f3023877c7a0f16253e90c44030efb6a00854ed1b"
+    },
+    "episodes.json": {
+      "bytes": 7042900,
+      "sha256": "f633961b80157c280f79a55375939892a65af81486956863c87805e80b380fbe"
+    },
+    "external-custody.json": {
+      "bytes": 464,
+      "sha256": "46ef5cdb627634ea21830d3f2f462c947e081488b39869820e8e4d577f952b07"
+    },
+    "independent-readback.json": {
+      "bytes": 14411,
+      "sha256": "5f53b43e8fa7f20d4547b89e22d1b5e2630b2cc8a4d804ff107a61744ba88f66"
+    },
+    "independent-reader.log": {
+      "bytes": 162,
+      "sha256": "b6a6ffaf9959c4095164e417778802b042fa0cc2e9bde1f13820fa1650a4a382"
+    },
+    "initial-runner.log": {
+      "bytes": 1404,
+      "sha256": "72b97394644223c12ff2b318f1a48bd5f44d0f2045174418f90c13b6bc68d7d3"
+    },
+    "original/custody.json": {
+      "bytes": 250423,
+      "sha256": "9654a41373e3a00c8ae56a349c9dd6554b7abe91875297f0b9a3aed1702bbea7"
+    },
+    "original/episodes.json": {
+      "bytes": 5821478,
+      "sha256": "43a76b0d157396b50477d9361af9deca69a0dc26ac2822a9ce86dbc9c0bd0fe8"
+    },
+    "original/external-custody.json": {
+      "bytes": 464,
+      "sha256": "46ef5cdb627634ea21830d3f2f462c947e081488b39869820e8e4d577f952b07"
+    },
+    "original/registration/console.log": {
+      "bytes": 345,
+      "sha256": "e6946ac66a915a7fa6162ebb8a8c25e814f9304163cbe337e1e0f9ce861b837d"
+    },
+    "original/registration/execution.json": {
+      "bytes": 800,
+      "sha256": "0ee433b8f1cc6ab92aec396eb1b4d95c2ab3d5cf8d5f726ec84ef27df0136c29"
+    },
+    "original/registration/report.json": {
+      "bytes": 5583,
+      "sha256": "3bb98f1a5273b8c53f6759e921b141b1b87567a573ba97e196f300c685537982"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s1701-t30-n1-high_curiosity/console.log": {
+      "bytes": 914,
+      "sha256": "3e6e46e0c6e6e51af6ee14be8cadec5e7c02f580c3131eb3f3118c95ac571f25"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s1701-t30-n1-high_curiosity/execution.json": {
+      "bytes": 866,
+      "sha256": "f98baf25d20ef00bc44d5688c7fde8765fe0eff1edfc3ed73b1d576fdb1f3349"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s1701-t30-n1-high_curiosity/report.json": {
+      "bytes": 926407,
+      "sha256": "32590cd7804d53c9dce85929d15bc3f703dbe4420522715aa7d74dca4b5da91c"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s1701-t30-n1-low_curiosity/console.log": {
+      "bytes": 911,
+      "sha256": "31fdb49ac60b40e7bbdc7e0f363c9ee67c3110ac5e08aece8c1dd740525900ed"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s1701-t30-n1-low_curiosity/execution.json": {
+      "bytes": 865,
+      "sha256": "ed8731ddd218456687293a9440316709c09264b1a1f6f467f016cc0644fe7c86"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s1701-t30-n1-low_curiosity/report.json": {
+      "bytes": 854344,
+      "sha256": "5b537a12ead9009f254b321eae112f04bdb23c128a34877455f407b48e96717d"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity/console.log": {
+      "bytes": 221,
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity/execution.json": {
+      "bytes": 781,
+      "sha256": "0ec920c8baed9917564f08309871c20e6380bf3939dc03a71866483e7c7109a9"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-low_curiosity/console.log": {
+      "bytes": 910,
+      "sha256": "1d85417c95cd09f2379790564ce02c86f2439e7650ff45dd7d1727f581d8c7d2"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-low_curiosity/execution.json": {
+      "bytes": 866,
+      "sha256": "9b2b277e0776147840490e81c237696be794c651b6699b273342320453b77af6"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-low_curiosity/report.json": {
+      "bytes": 854344,
+      "sha256": "99a1bb01c94faaf44ef902d6aaa7cba1e5006a048967ed31631723a0dae7ccab"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s605-t30-n1-high_curiosity/console.log": {
+      "bytes": 911,
+      "sha256": "daa6451866f026345d6ca28c960b2751ff02c587fb91450adf69f1106ea97f3a"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s605-t30-n1-high_curiosity/execution.json": {
+      "bytes": 866,
+      "sha256": "5704c6b2f4e09259c60b27eff2f9973612cb236e0d7f91c9362a73a8acf79ee8"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s605-t30-n1-high_curiosity/report.json": {
+      "bytes": 926400,
+      "sha256": "bdf214fac2937821847d75a812457e9fdddc29e5c7e8dd851b6a58a3b6befbb3"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s605-t30-n1-low_curiosity/console.log": {
+      "bytes": 907,
+      "sha256": "b15f31a316f11414b12709daa4cc6a0bf20868544a817abb14f429d682855819"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s605-t30-n1-low_curiosity/execution.json": {
+      "bytes": 865,
+      "sha256": "5a124553ae50b357afe2fd5eac21b0ce8ddb9491530d4b423b2448e2351e2b39"
+    },
+    "original/shards/curiosity_contrast-opposed_interest-runner-s605-t30-n1-low_curiosity/report.json": {
+      "bytes": 854336,
+      "sha256": "e20b8f1a27a12a6600b920791aa86f86d230355667622dc49f608415cd7221af"
+    },
+    "primary-pairs.csv": {
+      "bytes": 497,
+      "sha256": "594b8c5b958da47fc13e8c074c258a2976f1fc316bf9ba31f6f451eef9dc0842"
+    },
+    "profiles/high_curiosity.json": {
+      "bytes": 1836,
+      "sha256": "710cd9650c134361252828ed204298929a5a986700ec954344c558aab6642412"
+    },
+    "profiles/low_curiosity.json": {
+      "bytes": 1836,
+      "sha256": "2b6dc0c18f57656b9363505909d654a33e9e86236e6f8e64b57df5fe9823db71"
+    },
+    "recovery-runner.log": {
+      "bytes": 202,
+      "sha256": "bb625af719de759c4e0deddb8caaac5f46c4d9e2a9a479c29a28183f86c8cb39"
+    },
+    "retry/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity/console.log": {
+      "bytes": 926,
+      "sha256": "679feb520667a7d1f05986918dde3ac0e27fb11cd4ebc051b71e178a1ac5918b"
+    },
+    "retry/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity/execution.json": {
+      "bytes": 868,
+      "sha256": "dabe67572a29893f1681f432be66e8db8ceeb575079442003a2a37af20087e7b"
+    },
+    "retry/curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity/report.json": {
+      "bytes": 926411,
+      "sha256": "3170ed4b7757053f346e641a6e3b94ba862920530583fdf6ea34518f6868173a"
+    },
+    "sources/docs/research/ambient-002/curiosity-preregistration.md": {
+      "bytes": 6421,
+      "sha256": "ca358780cd3d5762b14eccff3c610148562785d58fb3bbe8b387fa092c6e2fe4"
+    },
+    "sources/tools/ambient/diagnostics/complete_curiosity_retry.py": {
+      "bytes": 8012,
+      "sha256": "8c8d80f1275db2c88cf543508dd18250d03b21d103b3eef7fb5a26ecc13d82e5"
+    },
+    "sources/tools/ambient/diagnostics/curiosity_contrast.gd": {
+      "bytes": 3449,
+      "sha256": "cb6eae5981fec8fe5100a767e2730daf868c2d747bd87e066615f3b6eaa7d735"
+    },
+    "sources/tools/ambient/diagnostics/plot_curiosity_contrast.py": {
+      "bytes": 4307,
+      "sha256": "127ffc855c35af4b28b29e7e3549661edd8b5e23ade6abc58682835665f0197f"
+    },
+    "sources/tools/ambient/diagnostics/review_curiosity_contrast.py": {
+      "bytes": 5877,
+      "sha256": "3ddd6807ecb81eac2ef6e46bb87b75daadf1ea753f95d649cbc91d0ed02d835b"
+    },
+    "sources/tools/ambient/diagnostics/run_curiosity_contrast.py": {
+      "bytes": 10518,
+      "sha256": "7db49bc056eec5f5e8902d8be3f92089b6fbfea1c78c25e822358cf98c695abb"
+    },
+    "specialist-b-independent-readback.json": {
+      "bytes": 4210,
+      "sha256": "4e432cf2ce124413468ed712fe7d4d55a449d6aa6be274cde8bb3efa7c00affe"
+    }
+  },
+  "claims": {
+    "first10s_investigation_high_low_seconds": [
+      4.3,
+      0.0
+    ],
+    "first10s_horizontal_approach_gain_high_low_cells": [
+      32.252136230469006,
+      0.0
+    ],
+    "supporting_pairs": 3,
+    "all_position_sequences_identical_within_each_arm_across_seeds": true,
+    "negative": "Later same-goal switching at a24cell novelty grid boundary; inspection still moves physically; no explicit habituation completion."
+  },
+  "files_scope": "Every files entry names the original byte stream inside the complete ZIP. Repository presentation copies may use Git-normalized line endings; original reports and consoles remain byte-for-byte in the ZIP.",
+  "repository_csv_sha256": "cd4ef992ea6f7665e33d33d169301cf77750cece428e8bcf3e55d02cc59ceb18"
+}

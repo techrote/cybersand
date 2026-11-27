@@ -1,0 +1,108 @@
+{
+  "schema": "ambient-002-native-scene-checkpoint/v1",
+  "source_commit": "d219a5f327cd6b34b294b0e2f969de01305785f5",
+  "source_tree": "de7acd8f1f323aa985694cb6739ce57aa479d960",
+  "platform": "linux",
+  "status": "passed",
+  "input_custody": "passed",
+  "checks": 210,
+  "failures": [],
+  "actual_actor_assignments": 40,
+  "physical_seconds_per_scene": 4,
+  "qualification_elapsed_seconds": 106.345,
+  "case_elapsed_seconds": 95.359,
+  "original_files": {
+    "native-scenes-d219a5f3-qualification.json": {
+      "sha256": "7456e276f74923182506aef5f16d946563c308e3458e012a2702932bbe53f0e1",
+      "bytes": 249780
+    },
+    "native-scenes-d219a5f3-import-process.json": {
+      "sha256": "58604b803166e53903e96c43dba071c2b63980bc1fd667cb74451a1cb788546d",
+      "bytes": 373
+    },
+    "native-scenes-d219a5f3-import.log": {
+      "sha256": "55bb0af91bc0985fbb5d46de946c93f47cc744ef1c87d14f8f3d60e51607f166",
+      "bytes": 45741
+    },
+    "native-scenes-d219a5f3-process.json": {
+      "sha256": "82cbd4285c072d5848b3d4b7ef2b8188f37f6d671deadbb017ffcb46decb9c78",
+      "bytes": 441
+    },
+    "native-scenes-d219a5f3-process.log": {
+      "sha256": "6ca0a7e8878f9aadd530d8e7d71c5fca75392d375c26b32218555761e953861d",
+      "bytes": 1455
+    }
+  },
+  "compressed_original_report": {
+    "path": "native-scenes-d219a5f3-report.json.gz",
+    "sha256": "869c08f1d552f03560c3ce054169c0517199e83a6bfd7bd345387ba7c7ded77d",
+    "bytes": 204596,
+    "uncompressed_sha256": "e6444a42f3edca2849609174925720d4e4ea7a6620942db05a5f1547e52d350f",
+    "uncompressed_bytes": 3178886,
+    "semantics": "Lossless original report bytes. Decompress before comparing with the original case report_sha256."
+  },
+  "scenes": [
+    {
+      "id": "ambient2-settlement",
+      "actors": 8,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "passed": true,
+      "wall_usec_including_admission": 14294531
+    },
+    {
+      "id": "ambient2-refinery",
+      "actors": 6,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "passed": true,
+      "wall_usec_including_admission": 12515595
+    },
+    {
+      "id": "ambient2-cavern",
+      "actors": 6,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "passed": true,
+      "wall_usec_including_admission": 19350361
+    },
+    {
+      "id": "ambient2-courtyard",
+      "actors": 8,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "passed": true,
+      "wall_usec_including_admission": 12397166
+    },
+    {
+      "id": "ambient2-floodyard",
+      "actors": 6,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "passed": true,
+      "wall_usec_including_admission": 15416692
+    },
+    {
+      "id": "ambient2-aerial-habitat",
+      "actors": 6,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "passed": true,
+      "wall_usec_including_admission": 15537004
+    }
+  ],
+  "adverse_observation": {
+    "scene": "ambient2-refinery",
+    "actor_id": 5,
+    "copied_sealed_oil_assertion": "passed",
+    "stalled_active_intervals": 26,
+    "scope": "Short four-second episode; observation is not a recovery or habituation success."
+  },
+  "limits": [
+    "Actual ordinary native/Rapier owner execution with finite copied poses and admitted commands.",
+    "No actual framebuffer image or graphical performance qualification in this headless case.",
+    "Sampled body path includes gait and is not labelled exploration.",
+    "This branch source predates final integrated behaviour refinements; final frozen source must rerun.",
+    "No Windows execution or physical NVIDIA acceptance."
+  ]
+}
