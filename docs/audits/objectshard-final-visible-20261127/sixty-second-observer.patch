@@ -1,0 +1,12 @@
+--- a/observe.gd
++++ b/observe.gd
+@@ -161 +161 @@
+-	var deadline: int = Time.get_ticks_msec()+Fixture.Watchdogs.milliseconds("operation_seconds")
++	var deadline: int = Time.get_ticks_msec()+mini(90000,Fixture.Watchdogs.milliseconds("operation_seconds"))
+@@ -164 +164 @@
+-	while f.tick() < target and Time.get_ticks_msec() < deadline and str(f.runtime().held_reason) == "":
++	while (f.tick() < target or Time.get_ticks_usec()-started < 60000000) and Time.get_ticks_msec() < deadline and str(f.runtime().held_reason) == "":
+@@ -202,0 +203,3 @@
++	f.expect(elapsed >= 60000000,"long observation reached sixty seconds")
++	result.observation_start_usec = started
++	result.observation_end_usec = started+elapsed

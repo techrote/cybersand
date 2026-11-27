@@ -1,0 +1,12 @@
+{
+  "source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "owner_artifact": 15176676582,
+  "manifest_sha256": "49ce8a9e8602c95bb4aac3fcadf46fa1fbbe07539a7a3a2a948c94af2a965885",
+  "driver_sha256": "4fd02e2ba90e21228f374656c291619c32e9256a991f109683af57be1ae55e4d",
+  "sampler_sha256": "7c6fe5f57098e53344174ae2356bd197bc7f9cd0cb66440f7240f775c303b7db",
+  "wrapper_pid": 4792,
+  "engine_windows_exit": 0,
+  "collector_exit": 0,
+  "cpu_selection": "existing owner package process mask",
+  "sync_brackets": 16
+}

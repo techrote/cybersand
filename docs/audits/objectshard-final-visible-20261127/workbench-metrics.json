@@ -1,0 +1,30 @@
+{
+  "checks": 389,
+  "failures": [],
+  "source_commit": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "observation_start_usec": 43398519,
+  "elapsed_usec": 60012592,
+  "semantic_ticks_per_wall_second": 19.8624981903798,
+  "completed_semantic_ticks": 1192,
+  "actual_physics_steps": 4769,
+  "static_visible_control": {
+    "client_rect": [
+      449,
+      568,
+      1149,
+      821
+    ],
+    "elapsed_usec": 2985447,
+    "native_tick_end": 1,
+    "native_tick_start": 1,
+    "scene": "stress",
+    "world_rect": [
+      3.0,
+      282.0,
+      505.0,
+      183.0
+    ]
+  },
+  "body_count_min": 8,
+  "body_count_max": 8
+}

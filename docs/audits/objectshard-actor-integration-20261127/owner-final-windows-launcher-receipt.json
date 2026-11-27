@@ -1,0 +1,190 @@
+{
+	"checks": 73,
+	"diagnostics": {
+		"attached": true,
+		"body_count": 1,
+		"controls_completed": 191,
+		"deferred_world_uploads": 51,
+		"enabled": true,
+		"has_live_inventory": true,
+		"held_reason": "",
+		"last_motion_permit": {
+			"lease": 38,
+			"ok": true,
+			"outcome": "MotionReserved"
+		},
+		"main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"main_costs": {
+			"owner_control_admission": {
+				"calls": 192,
+				"max_usec": 37,
+				"usec": 4176
+			},
+			"pose_packet_capture": {
+				"calls": 151,
+				"max_usec": 117,
+				"usec": 7300
+			},
+			"rapier_segment": {
+				"calls": 151,
+				"max_usec": 222,
+				"usec": 12733
+			}
+		},
+		"motion_lease": 38,
+		"motion_permits_refused": 9,
+		"native_instance_id": -9223371948875053493,
+		"native_pose_acknowledgements": 50,
+		"native_pose_echo_checks": 50,
+		"native_tick": 38,
+		"owner_replacements": 0,
+		"pending_kind": "motion",
+		"pending_serial": 192,
+		"phase": "ReadyForNextSegment",
+		"physical_intervals": 37,
+		"physical_steps": 151,
+		"physics": {
+			"awaiting_native": false,
+			"bodies": [
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 48.869987487793,
+					"com_y": 58.9033355712891,
+					"generation": 1,
+					"geometry_digest": "10373625284739529515",
+					"geometry_revision": 1,
+					"id": 1,
+					"inertia": 11497506.0,
+					"last_geometry_step": 100,
+					"last_geometry_usec": 0,
+					"mass": 4438.0,
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.453440284729,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"shape_count": 23,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 32.7935829162598,
+					"x": 119.000007629395,
+					"y": 246.514602661133
+				}
+			],
+			"events": [
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 1,
+					"kind": "BodyActivated",
+					"physics_step": 100
+				}
+			],
+			"last_completed_semantic_tick": -1,
+			"last_error": "",
+			"last_physics_session": 1,
+			"last_sampled_pose_serial": 151,
+			"motion": {},
+			"motion_phase": "Idle",
+			"motion_refused": false,
+			"operation_sequence": 0,
+			"physics_steps": 151,
+			"segment_sequence": 0,
+			"session": 1
+		},
+		"physics_ready": false,
+		"publication_sequence": 139,
+		"pump_usec_max": 10235,
+		"pump_usec_total": 673711,
+		"reabsorption_receipt": {},
+		"receipt": {
+			"accepted_pose_serials": [
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 1,
+					"pose_serial": 150,
+					"session": 1
+				}
+			],
+			"applied": true,
+			"detail": "motion segment occupancy and contact applied; semantic tick unchanged",
+			"generation": 0,
+			"id": 0,
+			"native_instance_id": -9223371948875053493,
+			"ok": true,
+			"outcome": "Accepted",
+			"phase": "Active",
+			"semantic_tick": 38,
+			"session": 0,
+			"transaction": 0,
+			"workbench_epoch": 1,
+			"workbench_sample_applied": true,
+			"workbench_session": 1
+		},
+		"redundant_readiness_receipts_suppressed": 85,
+		"save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+		"shared_main_space_id": 18411,
+		"worker_profile": {
+			"actor_work": {
+				"due_effects": 0,
+				"due_usables": 0,
+				"pending_effects": 0,
+				"pending_usables": 0
+			},
+			"counter_scope": "cumulative ordinary worker lifetime",
+			"frame_copy_calls": 86,
+			"frame_copy_max_usec": 249,
+			"frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+			"frame_copy_usec": 10461,
+			"motion_fence": {
+				"completed_sample": 189,
+				"current_sample": 189,
+				"due_sample": -1,
+				"lease": 38,
+				"ordinary_refusal": "",
+				"owner_busy": false,
+				"prepared_sample": 189,
+				"reused_prepared_samples": 37,
+				"tick_due": false
+			},
+			"snapshot_calls": 278,
+			"snapshot_max_usec": 2163,
+			"snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+			"snapshot_usec": 127760
+		},
+		"world_generation": 3
+	},
+	"display_coherence": {
+		"between_callback_observations": 152,
+		"draw_observations": 153,
+		"examples": [],
+		"foreign_draw_callbacks": 0,
+		"incoherent_observations": 0,
+		"scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+	},
+	"display_driver": "Windows",
+	"engine_arguments": [
+		"--script",
+		"res://tests/probe_object_shard_workbench_package.gd"
+	],
+	"failure_details": [],
+	"failures": 0,
+	"host": "ordinary-workbench",
+	"launch_arguments": [
+		"--shared-workbench",
+		"--objectshard-m4-workbench",
+		"--object-shard-scene=tower"
+	],
+	"rendering_driver": "opengl3_angle",
+	"rendering_method": "gl_compatibility",
+	"scene_id": "tower",
+	"schema": "objectshard-m4-workbench-package-launch-v1",
+	"scope": "immutable delivered ZIP / shipped CMD / actual ordinary Workbench; physical GPU acceptance separate",
+	"source_commit": "efe3bc19c68a9b9e292821ef28b735caec538915",
+	"startup_scene": "res://feature_launcher.tscn"
+}

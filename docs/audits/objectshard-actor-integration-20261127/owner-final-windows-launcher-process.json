@@ -1,0 +1,16 @@
+{
+  "source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "tree": "817dfae5f30d00e1b2ee3a10c6e1fa53239eea8a",
+  "archive_sha256": "f815246262bffb39abc6f28c4d1c9b2fa2e39020e6ef71729c5a61f086e61410",
+  "artifact": 15176676582,
+  "args": "--self-test",
+  "launcher": "Open Workbench.cmd",
+  "exit": 0,
+  "seconds": 56.46,
+  "log_sha256": "d785fa99f1d9aa45daab0c959b08f1840be1a4ebec1577621aa6618b5169d8a5",
+  "receipt_sha256": "efe6fd5dfdbfd6a8d08644832cb59b410c63ba8020da43d1dfab785d3a081644",
+  "checks": 73,
+  "native_poses": 50,
+  "display": "Windows",
+  "renderer": "opengl3_angle"
+}
