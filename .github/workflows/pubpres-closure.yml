@@ -130,6 +130,40 @@ jobs:
         if: matrix.arm == 'stock-held-placement'
         shell: bash
         run: python tools/pubpres_recovery_windows/run_owner_follow.py --thruster-fire --qualified build/held-replay/stock-held-placement --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --output build/held-replay/owner-follow
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm == 'stock-held-placement'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46046627411
+          name: pubpres-closure-windows-evaluator-46046627411-1
+          path: ${{ runner.temp }}/owner-original
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm == 'stock-held-placement'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46046627411
+          name: pubpres-closure-shared-runtime-windows-46046627411-1
+          path: ${{ runner.temp }}/owner-original-runtime
+      - name: Package the exact Fire-on flight application
+        if: matrix.arm == 'stock-held-placement'
+        shell: pwsh
+        run: |
+          $source = Join-Path $env:RUNNER_TEMP 'owner-package-source'
+          git worktree add --detach $source $env:GITHUB_SHA
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $original = @(Get-ChildItem (Join-Path $env:RUNNER_TEMP 'owner-original') -File -Recurse -Filter '*.zip')
+          if ($original.Count -ne 1) { throw 'Expected exactly one original evaluator ZIP' }
+          python (Join-Path $source 'tools/pubpres_recovery_windows/local_owner_retest.py') --original-archive $original[0].FullName --original-runtime (Join-Path $env:RUNNER_TEMP 'owner-original-runtime/C') --output (Join-Path $env:RUNNER_TEMP 'owner-release')
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: matrix.arm == 'stock-held-placement'
+        with:
+          name: pubpres-owner-fire-windows-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/owner-release/*.zip
+            ${{ runner.temp }}/owner-release/*.zip.sha256
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always() && matrix.arm != 'admission'
         with:

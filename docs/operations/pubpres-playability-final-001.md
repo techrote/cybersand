@@ -232,3 +232,11 @@ requires the ordinary material path. Stock Safe, two image slots, all-worker
 native completion and the preserved comparison package are still the
 reference. Keep the PR Draft/HOLD pending an owner playtest and integration
 qualification. See the [dated flight results](../audits/2026-11-27-pubpres-definitive.md#owner-follow-flight-repair).
+
+For contact play, enable **Thruster fire** in the Workbench. The contact
+retest records actual native nozzle insertions and refusals, the piloted
+body's native response, and the material texel used by a clipped draw when
+available. A texel in the tested sweep is a presentation observation. The
+nozzle receipt identifies a native write at its recorded cell. Use both
+observations with the recorded pose, camera and completed step to investigate
+a disappearance.

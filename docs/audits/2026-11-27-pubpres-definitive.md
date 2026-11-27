@@ -606,3 +606,60 @@ below the fixed Free camera, so they cannot establish an on-screen flicker.
 The owner reports a strong association with wall, Water and thruster Fire.
 The old trace has no per-contact material identity or nozzle insertion
 witness. The 2.8 s Mixed2048 gap just before exit cannot be assigned to Fire.
+
+### Contact retest
+
+Application `85f7beb84206a56c04f27b78c04b0f7910560e21` clips the verified
+current pose against both material textures where only part of the body is
+obstructed. A bounded crop and an unblocked continuous interior path are
+required; fully engulfed poses and wall crossovers retain the refusal path.
+Accepted-frame picking uses the retained crop. Active owner sessions give
+visible members access to the shared budget before distant members, and
+avoid full-plane equality comparisons for optional cache reuse on large
+images. Paused identity reuse and the same 24,000-cell / 2 ms cap are retained.
+
+The directed course uses the ordinary Fire checkbox and Needle controls,
+a Rapier wall contact, Water entry, and emitted material ID 6 at the hull.
+The pre-repair Mixed2048 run withheld the pilot on 97/198 draws, including
+38/60 wall and 6/20 Water draws. The repaired Linux graphical runs recorded
+zero withheld bodies, zero repeated displayed poses while moving and zero
+catch-up jumps on the following draws. Contact categories can overlap.
+
+| Scene | Draws | Native Fire writes | Fire within one cell of hull | Fire cell centre inside hull | Wall contact | Water contact |
+|---|---:|---:|---:|---:|---:|---:|
+| Wave512 | 103 | 28 | 20 | 5 | 17 | 4 |
+| Mixed2048 | 248 | 38 | 47 | 3 | 35 | 16 |
+
+In six moving contact PNGs, independent decoding reproduced the sampled
+chassis pixels and the ordinary mouse selected the expected actor and
+member. The Wave512 control with Fire off had zero Fire writes and zero
+Fire touching the hull. The contact application passed 197 focused graphical
+checks, 12 held-placement checks and 574 multipart checks.
+
+The subsequent mounted replay found a stationary omission on the same
+application. The paused Needle rested against a wall with part of its chassis
+exposed. Four draws ran out of time rechecking its unchanged 33-cell
+footprint. Application `04cf2684d` retains the exact clipped footprint per
+member. Reuse requires matching native authority, shape, pose and material
+history. A paused two-slot rotation also requires the existing byte-identity
+proof. Changed material and a retired epoch invalidate the entry.
+
+Both 2,338-draw pauses and the first restored frame passed on that cut.
+The longer hosted Fire-on flight nevertheless lost the pilot three times
+in Wave512, each after six completed steps between draws. Each sweep
+reported Fire in the current material texture. Mixed2048 had a separate
+one-draw refusal at a wall when material caching consumed 1,862 µs of the
+2,000 µs allowance. The private short flight had missed both cases.
+[First Fire-on patrol](https://github.com/techrote/cybersand/actions/runs/46082634869/artifacts/15237947080)
+· [Wall and Fire refusal](https://github.com/techrote/cybersand/actions/runs/46083356738/artifacts/15237662274)
+
+Application `d3aa62986` admits the native current pose across exhaust
+when both complete swept crops contain only Empty, Water and Fire, and a
+cell centre inside the endpoint remains exposed in both participating
+images. Fire still occludes the chassis wherever its pixels overlap.
+Any structural material retains the continuous-clear-interior requirement.
+Active large worlds now read the two retained images directly for local
+contact checks. The palette and glow source limit expensive neighbouring
+effects to bounds certified from actual material publications. Those bounds
+include the sampling radius, preserve live appearance edits and still draw
+decaying vapour outside the current source region.
