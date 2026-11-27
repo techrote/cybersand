@@ -539,6 +539,15 @@ pilot. A moving-pilot PNG with decoded fill pixels is taken before timing.
 | Windows headless, Wave512 | 60.02 | No rendered draws | 21 / 27 | — |
 | Windows headless, Mixed2048 | 58.77 | No rendered draws | 21 / 86 | — |
 
+Replaying the identical wider keyboard controller on the rejected application
+gave 14.54 physical steps/s on Wave512 and 12.69 on Mixed2048. The old
+application withheld the dry pilot on 1 of 1,304 and 433 of 1,143 draws,
+respectively. On Mixed2048 the old physical gap p95 / max was 93 / 230 ms,
+and draw gap p95 / max was 93 / 228 ms. The closed-loop controller used
+the measured body position for its next command, so achieved paths and
+numbers of physical steps differed. These single matched flights measure the
+two authored starts; they do not replace the registered main comparison.
+
 Linux Mixed2048 had two consecutive physical gaps above 100 ms near 37.4 s.
 Windows hosted Mixed2048 had 55 such physical gaps. Its longest chain of
 slow draws lasted 26 intervals (2.96 s), and draw p95 was near 125 ms during
@@ -570,3 +579,12 @@ published material plane consists entirely of IDs 0, 2, 3 and 58. The Empty
 cell still samples its live vapour history. Other material IDs re-enable the
 ordinary dispatch when uploaded. This transition belongs to PR #767 and
 preserves the existing material identities and catalogue lock.
+
+The Linux mounted native Water replay on this application passed 208 checks
+and all 16 decoded PNGs (375 RGB samples). It observed 17,030 composed
+member-draws across 4,874 draws. Two submerged and 11 dry-to-wet member-draws
+were withheld. Multipart motion and both 2,338-draw paused intervals had zero
+omissions. Four restored members appeared on the first accepted draw.
+The replay selected zero interstitial coupling responses for wet composition.
+The 174 focused Water checks covered that proof's admission and refusal;
+direct wet framebuffer coverage of the interstitial case remains open.
