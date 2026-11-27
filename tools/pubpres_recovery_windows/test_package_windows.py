@@ -30,13 +30,19 @@ class PowerShellManifestTests(unittest.TestCase):
             $m=[pscustomobject]@{schema='pubpres-local-owner-retest-v1'}
             $r=[pscustomobject]@{source='C';recovery_mode='Selected';settings=[pscustomobject]@{}}
             Remove-Item Env:CYBERSAND_WORKBENCH_FLIGHT_PACING -ErrorAction SilentlyContinue
+            Remove-Item Env:CYBERSAND_WORKBENCH_EMPTY_EFFECTS -ErrorAction SilentlyContinue
+            Remove-Item Env:CYBERSAND_WORKBENCH_COUPLING_CLOCK -ErrorAction SilentlyContinue
             Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_FLIGHT_PACING -ceq '1') 'Local selected default'
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_EMPTY_EFFECTS -ceq '1') 'Local effects default'
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_COUPLING_CLOCK -ceq '1') 'Local coupling default'
             $env:CYBERSAND_WORKBENCH_FLIGHT_PACING='0'
+            $env:CYBERSAND_WORKBENCH_COUPLING_CLOCK='0'
             Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_FLIGHT_PACING -ceq '0') 'Explicit comparator'
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_COUPLING_CLOCK -ceq '0') 'Explicit coupling comparator'
             $r.recovery_mode='Fallback'
-            Assert-PP (-not (Get-PFOwnerLaunchSettings $m $r).Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) 'Fallback leaked pacing'
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).Count -eq 0) 'Fallback leaked local selectors'
             $r.recovery_mode='Selected'; $m.schema='pubpres-playability-recovery-windows-v1'
-            Assert-PP (-not (Get-PFOwnerLaunchSettings $m $r).Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) 'Formal package leaked pacing'
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).Count -eq 0) 'Formal package leaked local selectors'
         '''
         subprocess.run([shutil.which('powershell') or shutil.which('pwsh'), '-NoProfile','-ExecutionPolicy','Bypass',
                         '-Command',command],cwd=package.ROOT/package.TOOLS,check=True,timeout=30)

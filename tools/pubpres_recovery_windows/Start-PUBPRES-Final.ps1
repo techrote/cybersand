@@ -467,10 +467,12 @@ function Get-PFOwnerLaunchSettings($Manifest,$Record) {
     $Settings=[ordered]@{}
     foreach($Entry in $Record.settings.PSObject.Properties) { $Settings[$Entry.Name]=$Entry.Value }
     if($Manifest.schema -ceq 'pubpres-local-owner-retest-v1' -and $Record.source -ceq 'C' -and $Record.recovery_mode -ceq 'Selected') {
-        $Pacing=[Environment]::GetEnvironmentVariable('CYBERSAND_WORKBENCH_FLIGHT_PACING')
-        if([string]::IsNullOrEmpty($Pacing)) { $Pacing='1' }
-        Assert-PP ($Pacing -cin @('0','1')) 'CYBERSAND_WORKBENCH_FLIGHT_PACING must be 0 or 1'
-        $Settings['CYBERSAND_WORKBENCH_FLIGHT_PACING']=$Pacing
+        foreach($Key in @('CYBERSAND_WORKBENCH_FLIGHT_PACING','CYBERSAND_WORKBENCH_EMPTY_EFFECTS','CYBERSAND_WORKBENCH_COUPLING_CLOCK')) {
+            $Value=[Environment]::GetEnvironmentVariable($Key)
+            if([string]::IsNullOrEmpty($Value)) { $Value='1' }
+            Assert-PP ($Value -cin @('0','1')) ($Key+' must be 0 or 1')
+            $Settings[$Key]=$Value
+        }
     }
     return $Settings
 }
@@ -556,6 +558,11 @@ try {
     if($Settings.Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) {
         Assert-PP ($Ready.flight_pacing_requested -ceq $Settings.CYBERSAND_WORKBENCH_FLIGHT_PACING -and
             $Ready.flight_pacing_enabled -is [bool] -and $Ready.flight_pacing_enabled -eq ($Ready.flight_pacing_requested -ceq '1')) 'Actual flight pacing differs from the requested policy'
+        Assert-PP ($Ready.empty_effects_requested -ceq $Settings.CYBERSAND_WORKBENCH_EMPTY_EFFECTS -and
+            $Ready.empty_effects_enabled -is [bool] -and $Ready.empty_effects_enabled -eq ($Ready.empty_effects_requested -ceq '1')) 'Actual empty-effects selection differs'
+        Assert-PP ($Ready.coupling_clock_requested -ceq $Settings.CYBERSAND_WORKBENCH_COUPLING_CLOCK -and
+            $Ready.coupling_clock_enabled -is [bool] -and $Ready.coupling_clock_enabled -eq ($Ready.coupling_clock_requested -ceq '1') -and
+            $Ready.coupling_only_completions -ge 0) 'Actual coupling clock or its published counter differs'
     }
     Assert-PP ($Ready.schema -ceq 'pubpres-recovery-owner-start-v1' -and $Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and
         $Ready.process_id -eq $Process.process_id -and $Ready.native_sha256 -ceq $Item.native.sha256 -and $Ready.rapier_sha256 -ceq $Item.rapier.sha256 -and

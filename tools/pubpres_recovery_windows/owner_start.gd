@@ -135,6 +135,16 @@ func _poll() -> void:
 	if not pacing_request.is_empty():
 		receipt.flight_pacing_requested = pacing_request
 		receipt.flight_pacing_enabled = app.get("_flight_pacing")
+	var effects_request := OS.get_environment("CYBERSAND_WORKBENCH_EMPTY_EFFECTS")
+	if not effects_request.is_empty():
+		receipt.empty_effects_requested = effects_request
+		receipt.empty_effects_enabled = app.get("_check_ambient_sources")
+		receipt.ambient_sources_absent = app.get("_ambient_sources_absent")
+	var clock_request := OS.get_environment("CYBERSAND_WORKBENCH_COUPLING_CLOCK")
+	if not clock_request.is_empty():
+		receipt.coupling_clock_requested = clock_request
+		receipt.coupling_clock_enabled = app.simulation_worker.get("_independent_coupling")
+		receipt.coupling_only_completions = app.latest_snapshot.lab_context.get("coupling_only_completions",-1)
 	var writer := FileAccess.open(receipt_path,FileAccess.WRITE)
 	if writer == null:
 		push_error("PUBPRES could not write startup receipt")
