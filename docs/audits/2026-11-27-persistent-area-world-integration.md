@@ -1,6 +1,6 @@
 # Persistent-area memory accounting on the combined World
 
-The protected path `native/src/world.cpp` gains two read-only size estimates for the scheduler pool and the World. The estimates use the existing containers and their capacities to budget an inactive resident area. They do not change material IDs, density, reaction tables, or per-tick movement. The original RAMCACHE change and measurements remain in the [residency qualification](2026-11-22-gen006-ramcache.md).
+The protected path `native/src/world.cpp` gains read-only estimates for scheduler storage, World storage and World reservations. The estimates use the existing containers and their capacities to budget an inactive resident area. They do not change material IDs, density, reaction tables, or per-tick movement. The original RAMCACHE change and measurements remain in the [residency qualification](2026-11-22-gen006-ramcache.md).
 
 | Source | LF SHA-256 of the protected path |
 | --- | --- |
