@@ -43,7 +43,11 @@ def verify_package(folder: Path) -> dict:
             and manifest.get("disposition") == "Draft/HOLD", "Wrong owner evaluator manifest")
     publication.verify_files(folder, manifest.get("files_sha256"))
     files = manifest["files_sha256"]
-    reciprocal.verify_package(folder, ROOT)
+    built = json.loads((folder / engine.MANIFESTS["windows"]).read_bytes())["build_inputs"]
+    binding = built.get(reciprocal.WINDOWS_BINDING)
+    if "godot/tests/swarm456_reciprocal_ui.gd" in built:
+        require(binding is not None, "Qualified reciprocal source has no Windows generator binding")
+    reciprocal.verify_bound_package(folder, binding)
     require(all(files.get(name) == digest for name, digest in DEPENDENCIES.items()),
             "Evaluator dependency pins differ")
     native_path = engine.RUNTIMES["windows"]
