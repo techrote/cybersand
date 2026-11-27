@@ -1,0 +1,211 @@
+{
+  "source": "f7921ffa3d10da528f61c4a0d72189942a829528",
+  "tree": "7f8756e4a67b3bad5f033edf7c93d420a83a27e7",
+  "native_inputs": 126,
+  "native_input_manifest_sha256": "1bb6a7f8d9071967e4129bdbf96e88007d05dcb7f3952b0d6f91d49831b28396",
+  "fixture_sha256": "e5e0878008dd4b8d3ccd1591fb725e19077c1c85e0ef57e8e1374aa4dde394e6",
+  "native_windows": "4ab4b9ff2577e6c200a0a611f53796ace241e04d0fbc11f503343520ea7ee2aa",
+  "native_linux": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20",
+  "tested_engine": "Godot 4.7, Rapier2D v0.35.2",
+  "execution": "single live authored native World and real Rapier server, headless functional witness",
+  "results": {
+    "linux": {
+      "receipt": {
+        "checks": 72,
+        "failures": [],
+        "material_witnesses": [
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "before attachment",
+            "tick": 0,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "first empty attachment retained sandbox law",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "empty detach preserves World and profile revision",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "reattachment preserves World and profile revision",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "support Cut, inventory promotion and enabled physical body preserve profile",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "density 500 after twelve real Rapier and World advances",
+            "tick": 13,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 2,
+            "sand_above": 2,
+            "sand_density": 3000,
+            "stage": "higher density activated alongside occupied structural body",
+            "tick": 13,
+            "world": "3"
+          },
+          {
+            "below": 2,
+            "revision": 2,
+            "sand_above": 16,
+            "sand_density": 3000,
+            "stage": "density 3000 after twelve more actual coupled advances",
+            "tick": 25,
+            "world": "3"
+          },
+          {
+            "below": 2,
+            "revision": 2,
+            "sand_above": 16,
+            "sand_density": 3000,
+            "stage": "occupied coordinator retirement refused without damaging changed material profile",
+            "tick": 121,
+            "world": "3"
+          },
+          {
+            "mass_after_cut": 8.0,
+            "mass_before": 9.0,
+            "original_inertia": 13.5
+          }
+        ],
+        "native_and_rapier_steps": 120,
+        "no_synthetic_engine": true,
+        "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+        "scope": "actual native World + Godot Rapier shared space: author/cut/atomic debit/install/fall/chemistry/edit/retire"
+      },
+      "raw_log_sha256": "2cfaaad698f9d9af5ae25084c147eabb774d6c2f2ae64f1f8c9fddaa9b8ba6bb"
+    },
+    "windows": {
+      "receipt": {
+        "checks": 72,
+        "failures": [],
+        "material_witnesses": [
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "before attachment",
+            "tick": 0,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "first empty attachment retained sandbox law",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "empty detach preserves World and profile revision",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "reattachment preserves World and profile revision",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "support Cut, inventory promotion and enabled physical body preserve profile",
+            "tick": 1,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 1,
+            "sand_above": 2,
+            "sand_density": 500,
+            "stage": "density 500 after twelve real Rapier and World advances",
+            "tick": 13,
+            "world": "3"
+          },
+          {
+            "below": 16,
+            "revision": 2,
+            "sand_above": 2,
+            "sand_density": 3000,
+            "stage": "higher density activated alongside occupied structural body",
+            "tick": 13,
+            "world": "3"
+          },
+          {
+            "below": 2,
+            "revision": 2,
+            "sand_above": 16,
+            "sand_density": 3000,
+            "stage": "density 3000 after twelve more actual coupled advances",
+            "tick": 25,
+            "world": "3"
+          },
+          {
+            "below": 2,
+            "revision": 2,
+            "sand_above": 16,
+            "sand_density": 3000,
+            "stage": "occupied coordinator retirement refused without damaging changed material profile",
+            "tick": 121,
+            "world": "3"
+          },
+          {
+            "mass_after_cut": 8.0,
+            "mass_before": 9.0,
+            "original_inertia": 13.5
+          }
+        ],
+        "native_and_rapier_steps": 120,
+        "no_synthetic_engine": true,
+        "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+        "scope": "actual native World + Godot Rapier shared space: author/cut/atomic debit/install/fall/chemistry/edit/retire"
+      },
+      "raw_log_sha256": "2cfaaad698f9d9af5ae25084c147eabb774d6c2f2ae64f1f8c9fddaa9b8ba6bb"
+    }
+  }
+}
