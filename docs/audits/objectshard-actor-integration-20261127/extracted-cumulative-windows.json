@@ -1,0 +1,123 @@
+{
+  "schema": "objectshard-integrated-local-extracted-replay-v1",
+  "source_commit": "00d0ffda8d8bf73a73c72a51a25c430c973df202",
+  "source_tree": "e905661606a1b1f2f9bd55ee571e34dadf635b02",
+  "platform": "Windows, pinned Godot 4.7, TITAN RTX",
+  "runtime_sha256": "c15fc4a9e9e844bcd052cdad129ebf6eab23b57838bff75a032ccafc69252a26",
+  "native_inputs": 126,
+  "archive_sha256": "c310b06f70c706c02d2fcbf3322fa2fa35cf2aa093a025eb0f254efb2b8d9729",
+  "archive_bytes": 96645363,
+  "files": 1469,
+  "manifest_sha256": "e80f82a27ae0e876b665e9ea44757f8a7b9db4c823b627f8951d204a452a6872",
+  "launchers": [
+    "Verify Workbench.cmd --noninteractive",
+    "Open Workbench.cmd --self-test"
+  ],
+  "normal_launch_checks": 73,
+  "script_cases": [
+    {
+      "name": "m4_workbench_import",
+      "status": "passed",
+      "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59"
+    },
+    {
+      "name": "test_object_shard_m4_latency_probe",
+      "status": "passed",
+      "log_sha256": "a30c96a2bc9c6864dade2d16d419bdf258ae75bfca81f28f2abf2e2ce645163d"
+    },
+    {
+      "name": "test_object_shard_m4_edit_delivery_fence",
+      "status": "passed",
+      "log_sha256": "74523203c935865ba65d16d4ed9569d807ab2336d98033c322f5ca090a463e54"
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics",
+      "status": "passed",
+      "log_sha256": "c4c3016a9c47840ed0473daf6b7d667ed0f557040a57e8cad9724d66bb89977d"
+    },
+    {
+      "name": "test_object_shard_m4_same_world_extension",
+      "status": "passed",
+      "log_sha256": "abff7c2203ad357886082b2f9e89b79122ee317ecadf563e9157c107e55b0b81"
+    },
+    {
+      "name": "test_object_shard_m4_shared_main_rapier",
+      "status": "passed",
+      "log_sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608"
+    },
+    {
+      "name": "test_object_shard_m4_same_world_physical_chain",
+      "status": "passed",
+      "log_sha256": "85fd852645a0284cd59513f207fe2f653afb0b916d6ef349f3f67d573b1940f4"
+    },
+    {
+      "name": "test_object_shard_m4_compact_motion_packets",
+      "status": "passed",
+      "log_sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a"
+    },
+    {
+      "name": "test_object_shard_m4_workbench_scene_refusal",
+      "status": "passed",
+      "log_sha256": "040847829576b56d3315fe76b2dcc9e82021d6f1d10a09ca4fcb6252610897c6"
+    },
+    {
+      "name": "test_object_shard_m4_workbench_completion",
+      "status": "passed",
+      "log_sha256": "0ef838cf48f82782d262f6954033dccbb6a885fd4ee6216ae395ed260251f81d"
+    },
+    {
+      "name": "m4_fresh_authored_reopen",
+      "status": "passed",
+      "log_sha256": "8ef3fc3c5124ec73b7cfa7e4161b3351388292824a102c73464825977239aec1"
+    },
+    {
+      "name": "test_object_shard_m4_material_only_workbench",
+      "status": "passed",
+      "log_sha256": "a4e74762f54f960301eb2df7438b1aab8bc88e27431b226758a1fd6d561b6d6d"
+    },
+    {
+      "name": "test_object_shard_m4_fragment_reabsorption",
+      "status": "passed",
+      "log_sha256": "96ec5283528212563e8e8da7d3d14dea06b3f1aa6b95feedc1cf518cfea66e4a"
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_adverse",
+      "status": "passed",
+      "log_sha256": "bba6822ab770d6c08e87a0d30de44fecc78a24e2a39c5f6f3cd1181b2a9ddb6a"
+    },
+    {
+      "name": "test_object_shard_m4_completed_sample",
+      "status": "passed",
+      "log_sha256": "393e3acd52df6d547c806ffcbcbc4e247f1a1972c8a8c6e6b47fdee4db9aa416"
+    },
+    {
+      "name": "test_object_shard_m4_equipment_completion",
+      "status": "passed",
+      "log_sha256": "baf7c9729618865f83681242c67f86402251a4a5621536f971ecaf30b5297fc7"
+    },
+    {
+      "name": "test_object_shard_m4_actor_clock",
+      "status": "passed",
+      "log_sha256": "6a28c502545a8b43f4722b276cf563ea05311d04380935c8eb2786a3d8b24731"
+    },
+    {
+      "name": "test_object_shard_m4_long_burn",
+      "status": "passed",
+      "log_sha256": "4ec12c8b69695a6e5c04a6c22dca099362f860e3e3b07f51974134528110e890"
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_fuzz",
+      "status": "passed",
+      "log_sha256": "b56921e6fed357ab0e1c53724a1ef441f6db27bf94d117355b118a83d45968d4"
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics_cli",
+      "status": "passed",
+      "log_sha256": "926c9cb75507836d79de63f3ee9c2e26f4815efdc9cf5a147c4d7d816bc5ff55"
+    }
+  ],
+  "plain_source_replay": "tools/objectshard/qualify_workbench.py --package <fresh extraction> --godot <extracted Godot console> --expected-source-sha <source_commit>",
+  "mounted_toolbar_fix": "703652decff6562326ec314fec3d041ce169dffd",
+  "presented_edit_oracle_fix": "68090d57f7e1ef6682040fb67024abc23a270652",
+  "physical_owner_acceptance": "OWNER-PENDING: Windows 11/NVIDIA display and playfeel"
+}
