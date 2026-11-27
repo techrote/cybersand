@@ -238,9 +238,9 @@ class SandboxPublication(unittest.TestCase):
         return next(row for row in report["results"] if row["name"] == name)
 
     def test_complete_evidence_stages_only_four_runtime_paths(self):
-        files_before = {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        files_before = {p.relative_to(self.root).as_posix(): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         gate.publish_sandbox(self.args)
-        files_after = {str(p.relative_to(self.root)): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
+        files_after = {p.relative_to(self.root).as_posix(): p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         self.assertEqual(set(files_before), set(files_after))
         self.assertEqual({p for p in files_before if files_before[p] != files_after[p]}, set(self.before))
         for platform in gate.NATIVE:
