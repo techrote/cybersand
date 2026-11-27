@@ -45,7 +45,7 @@ takeover, copied policy observations and the research boundary, use the
 [actor composition contract](../systems/workbench-actor-composition.md). For
 Mixed Actor Workshop, controls, tools, painting and authored Save/reopen, use the
 [owner procedure](../operations/workbench-actor-composition.md). The
-[focused actor questions](retrieval-questions-workbench-actors.json) are additive;
+[focused actor questions](retrieval-questions-workbench-actors.json) include paused rotation, live part grabbing, unified configuration and configurable capacity; they are additive;
 the frozen retrieval set is unchanged. Exact platform evidence and remaining
 acceptance belong to the [dated record](../audits/2026-11-20-workbench-actor-composition.md).
 

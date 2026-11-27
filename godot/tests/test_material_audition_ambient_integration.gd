@@ -77,6 +77,11 @@ func verify_demo_admission(demo_id: String) -> bool:
 	if not check(not refused.get("ok",true) and not str(refused.get("error","")).is_empty()
 			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
 			"the Material demo preserves the pending Art writer and queues no replacement"): return false
+	if not check(not bench.load_actor_sandbox("barrels",16)
+			and not bench.set_sandbox_capacity(Catalog.Capacity.defaults())
+			and not bench.set_actor_tuning(303,bench.actor(bench.applied,303).options)
+			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
+			"Actor scene, capacity and tuning preserve the Art writer before acknowledgement"): return false
 	if not await until(func() -> bool: return not art.active,"Art owner settles after refused demo"): return false
 	if not check(art.result.status == "completed" and int(art.result.changed) == 1,
 			"the Art owner receives the original native write acknowledgement"): return false
@@ -86,6 +91,8 @@ func verify_demo_admission(demo_id: String) -> bool:
 	refused = bench.load_material_audition_demo(demo_id)
 	if not check(not refused.get("ok",true) and not str(refused.get("error","")).is_empty()
 			and host.pending_microscenario_apply.is_empty(),"the Material demo preserves Architecture's active source read"): return false
+	if not check(not bench.load_actor_sandbox("barrels",16) and host.pending_microscenario_apply.is_empty(),
+			"Actor sandbox leaves the in-flight Architecture source read intact"): return false
 	if not await until(func() -> bool: return not inspection.is_empty(),"Architecture source inspection settles"): return false
 	return check(inspection.get("ok",false) and inspection.cells.decode_u16(0) == material
 			and int(inspection.generation) == worker_generation and not bench.architecture_lab.authoring_busy(),
@@ -93,8 +100,8 @@ func verify_demo_admission(demo_id: String) -> bool:
 
 
 func exercise() -> void:
-	check(Catalog.MAX_ACTORS == 8 and Session.MAX_ACTORS == 8,
-		"combined source retains the actual eight-actor limit")
+	check(Catalog.Capacity.defaults().logical_limit == 8 and Catalog.MAX_AMBIENT_CONTROLLERS == 8,
+		"ordinary defaults retain eight logical actors and the AMBIENT policy budget")
 	check_off("ordinary startup before opening material tools", true)
 	if not await until(func() -> bool: return cell(41,41) == 2 and cell(41,42) == 16,
 		"initial native Sand/Oil control pair"): return
@@ -137,6 +144,17 @@ func exercise() -> void:
 	check(active_density() == 500 and int(panel.active_state.revision) == default_revision + 1,
 		"Apply activates only the requested native configuration revision")
 	same_owners("paused Apply")
+	var larger_budget: Dictionary = Catalog.Capacity.defaults()
+	larger_budget.logical_limit = 16
+	check(bench.set_sandbox_capacity(larger_budget), "retained actor prepare reaches native material admission")
+	if not await until(func() -> bool: return not bench.busy() and host.pending_microscenario_apply.is_empty(),
+		"retained preparation receives its terminal native receipt"): return
+	check(host.microscenario_error.contains("Reset live material overrides") and not bench.applied.has("sandbox_capacity"),
+		"native refusal identifies active configuration and leaves authored capacity untouched")
+	panel.refresh_scene()
+	check(active_density() == 500 and int(panel.active_state.revision) == default_revision + 1,
+		"refused retained prepare preserves the live override and revision")
+	same_owners("refused retained actor preparation")
 	var after: Dictionary = await bench.capture_batch_source(region)
 	check(after.get("ok",false) and after.get("config",{}).get("source_cells") == before.config.source_cells,
 		"paused configuration Apply preserves the native material plane observed by Architecture")

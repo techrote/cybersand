@@ -540,6 +540,16 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 768},)
 
 
+# Actor Compose on the admitted Material Audition World (original actor record retained).
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'c5bd52b8827e5edef262ae2e9df2ec286abb9140d2e7ba6471b40d187e24ef14',
+  'to_lf_sha256': '98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c',
+  'source_commit': '53b2202408fea7130fd354ae35540880e926ba5e',
+  'record': 'docs/audits/2026-11-27-actor-material-world-transition.md',
+  'issue': 737,
+  'pr': 762},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

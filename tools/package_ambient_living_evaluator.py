@@ -181,7 +181,7 @@ def build(args) -> None:
         "# CyberSand — AMBIENT-002 owner evaluation\n\n"
         "**Draft/HOLD. Experimental and opt-in; owner acceptance remains pending.**\n\n"
         "Extract the complete ZIP into a writable folder and double-click **Open Workbench.cmd**. "
-        "Allow the first local import to finish. Open **Actor Composition…**, select an ambient example "
+        "Allow the first local import to finish. Open **Configuration…**, select **Actors**, choose an **Ambient examples** entry "
         "and click **Load scene**, then **Play**. The ordinary blank start stays passive.\n\n"
         f"Host source: `{identity['source_commit']}`. Native build source: `{runtime['runtime_source_commit']}`. "
         f"The completed automated qualification platform is `{qualified_platform}`. "
@@ -191,7 +191,7 @@ def build(args) -> None:
         "`qualification` contains original case receipts and logs.\n\n"
         "Read the [owner walkthrough](docs/operations/ambient-living-workbench.md) to build a profile, "
         "paint Oil/Water, edit a timer, pilot an actor and save/reopen. "
-        "Choose Foundry Row or Common Ground for eight inhabitants, then open Behaviour profile to edit traits, places, relationships or a group. "
+        "Choose Foundry Row or Common Ground for eight inhabitants, then select **Controllers** and open **Behaviour profile…** to edit traits, places, relationships or a group. "
         "The [module-authoring contract](docs/systems/ambient-living-inhabitants.md) explains the extension API.\n")
     (output / "READ-ME.md").write_text(preface, encoding="utf-8")
     evidence = output / "qualification"

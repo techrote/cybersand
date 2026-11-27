@@ -42,6 +42,12 @@ var _world: Variant
 var _gameplay_water: bool
 
 func _init(gameplay_water: bool = false) -> void:
+	# Bounded identity generations must cover the same hard range as admission.
+	# These two packed arrays cost 64 KiB together, independent of live actors.
+	_physical_effect_generations.resize(PhysicalEffects.MAX_ACTORS)
+	_physical_effect_generations.fill(0)
+	_physical_usable_cancelled_generations.resize(PhysicalUsables.MAX_ACTORS)
+	_physical_usable_cancelled_generations.fill(-1)
 	_gameplay_water = gameplay_water
 	_world = _create_world()
 var _character: CyberSampledCharacter = CyberSampledCharacter.new()
@@ -94,7 +100,7 @@ var _lockstep_hold_usec_max: int = 0
 var _lockstep_timeouts: int = 0
 var _lockstep_ticks: int = 0
 var _physical_effect_epoch: int = 0
-var _physical_effect_generations := PackedInt64Array([0, 0, 0, 0, 0, 0, 0, 0])
+var _physical_effect_generations := PackedInt64Array()
 var _pending_physical_effects: Array = []
 var _physical_effects = PhysicalEffects.new() # Worker-exclusive consumer.
 var _physical_effect_receipts: Array = []
@@ -111,7 +117,7 @@ var _physical_usable_frame: Dictionary = {} # Mutex-owned copied publication.
 var _pending_physical_usables: Array = []
 var _physical_usable_inflight: Dictionary = {} # One unconsumed request per actor, including extracted work.
 var _physical_usable_admission: Dictionary = {}
-var _physical_usable_cancelled_generations := PackedInt64Array([-1, -1, -1, -1, -1, -1, -1, -1])
+var _physical_usable_cancelled_generations := PackedInt64Array()
 
 var _pending_emissions: Array[Vector4i] = []
 var _pending_cell_emissions: Array[Dictionary] = []
@@ -1334,7 +1340,7 @@ func set_workbench_sample(value: Dictionary) -> Dictionary:
 			var serial := int(value.states[10])
 			if serial == _workbench_last_emitter_sample:
 				_workbench_emitter_receipts = [{"status":"duplicate_sample","sample":serial}]
-			elif emitters.size() + _workbench_emitters.size() > 24:
+			elif emitters.size() + _workbench_emitters.size() > CyberRigidBodyCoupling.MAX_BODIES * 3:
 				_workbench_emitter_receipts = [{"status":"capacity_refused","count":emitters.size()}]
 			else:
 				_workbench_last_emitter_sample = serial

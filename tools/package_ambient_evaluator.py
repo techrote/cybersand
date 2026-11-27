@@ -175,7 +175,7 @@ def build(args) -> None:
         "# CyberSand — AMBIENT-001 owner evaluation\n\n"
         "**Draft/HOLD. Experimental and opt-in; owner acceptance remains pending.**\n\n"
         "Extract the complete ZIP into a writable folder and double-click **Open Workbench.cmd**. "
-        "Allow the first local import to finish. Open **Actor Composition…**, select an ambient example "
+        "Allow the first local import to finish. Open **Configuration…**, select **Actors**, choose an **Ambient examples** entry "
         "and click **Load scene**, then **Play**. The ordinary blank start stays passive.\n\n"
         f"Host source: `{identity['source_commit']}`. Native build source: `{runtime['runtime_source_commit']}`. "
         f"The completed automated qualification platform is `{qualified_platform}`. "

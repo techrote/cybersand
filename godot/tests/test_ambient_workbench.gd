@@ -246,7 +246,7 @@ func ledge_clock() -> void:
 func population() -> void:
 	check(wb.load_ambient_example("ambient-settlement"), "ordinary UI loads authored eight-inhabitant settlement")
 	if not await until(installed, "settlement native preparation"): return
-	check(wb.applied.actors.size() == Catalog.MAX_ACTORS, "population uses actual accepted eight-actor capacity")
+	check(wb.applied.actors.size() == Catalog.MAX_AMBIENT_CONTROLLERS, "population uses actual accepted eight-actor capacity")
 	check(wb.toggle_pause(), "Play all eight independent procedural actors")
 	if not await progress(90, "eight-actor actual ambient settlement"): return
 	var rows: Array = []

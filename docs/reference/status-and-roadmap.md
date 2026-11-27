@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-22
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -138,9 +138,26 @@ failure/no-takeover semantics; the [evaluation guide](../tools/world-art-evaluat
 owns owner usage. Exact-source qualification and independent review are recorded
 in PR #685. Hosted ANGLE is separate from owner Windows/NVIDIA acceptance.
 
-## Shared Workbench actor composition / #589 — 2026-11-20
+## Continuous-play actor sandbox / #737 — 2026-11-22
 
-**Implementation candidate, Draft/HOLD; no merge authorization.** The owner
+**WB-ACTOR-COMPOSE-002R implementation candidate, Draft/HOLD.** The owner's
+22 November follow-up expands the original capacity/manipulation scope. The
+accepted #683 foundation is extended by paused whole-assembly drag/rotation,
+optional grid/fine placement, bounded live per-part physical grabbing, one
+tabbed Configuration window, authored orientation/capacity extensions, and three
+playable starts. Live Brush/Eraser are retained and requalified existing features.
+
+The configurable actor/body/proxy admission keeps ordinary defaults at 8/64/64.
+The allocation ceiling is 4096; runtime qualification is narrower and must be
+reported as actual actor/body/proxy/joint counts, independent native/Rapier
+progression and platform measurements. No actor is automatically deleted or
+disabled for poor frame rate. Existing native/Rapier ownership and prepared
+adoption remain authoritative. Owner Windows/NVIDIA playability and merge
+acceptance remain separate from hosted/headless qualification.
+
+## Accepted Workbench actor composition / #589 — 2026-11-20
+
+**Accepted foundation through PR #683.** The owner
 advanced #589's earlier planning boundary through WB-ACTOR-COMPOSE-001. The
 [composition contract](../systems/workbench-actor-composition.md) exposes 59 existing
 physical model identities through one prepared Workbench session: eight flyers,

@@ -4,8 +4,9 @@ extends RefCounted
 # Exclusive cellular-owner consumer for value-only physical usable requests.
 # Recoil belongs to the main-thread actor rig; these receipts report only the
 # cells actually changed through the existing adapter, including refusals.
-const MAX_ACTORS: int = 8
-const MAX_REQUESTS: int = 8
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const MAX_ACTORS: int = Capacity.MAX_ACTORS
+const MAX_REQUESTS: int = Capacity.MAX_ACTORS
 const MAX_WRITES: int = 64
 const MAX_READS: int = 1024
 const MAX_REACH: float = 32.0
@@ -91,7 +92,7 @@ func apply(world: Object, requests: Array, epoch: int,
 		return [_receipt({}, epoch, false, "adapter", 0)]
 	if world.has_method(&"has_failed") and bool(world.has_failed()):
 		return [_receipt({}, epoch, false, "world_failed", 0)]
-	var admitted_actors: int = 0
+	var admitted_actors: Dictionary = {}
 	for value: Variant in requests:
 		if typeof(value) != TYPE_DICTIONARY:
 			receipts.append(_receipt({}, epoch, false, "request_type", 0))
@@ -106,13 +107,13 @@ func apply(world: Object, requests: Array, epoch: int,
 		if sequence <= _sequences[actor]:
 			receipts.append(_receipt(request, epoch, false, "sequence", 0))
 			continue
-		if admitted_actors & (1 << actor):
+		if admitted_actors.has(actor):
 			receipts.append(_receipt(request, epoch, false, "actor_budget", 0))
 			continue
 		# An admitted but obstructed attempt is consumed. Removing the obstruction
 		# cannot make a delayed duplicate produce an unrequested later effect.
 		_sequences[actor] = sequence
-		admitted_actors |= 1 << actor
+		admitted_actors[actor] = true
 		var proxy := EffectWorld.new()
 		proxy.target = world
 		proxy.extent = extent

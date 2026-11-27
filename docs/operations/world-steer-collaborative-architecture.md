@@ -299,8 +299,8 @@ does not restore a prior landed actor pose or running trajectory. Save modules
 separately when the plan depends on their exact content hashes.
 
 For physical review, load the supplied authored start or build the chosen
-flagship. Use **Actor Composition…** to inspect the actor, choose **Human /
-Pilot** explicitly, and use the controls shown for that accepted model. A saved
+flagship. Use **Configuration… → Actors → Inspect** to select the actor,
+choose **Controllers → Pilot inspected**, and use the controls shown for that accepted model. A saved
 external-policy actor will not move merely because Play begins. Choose **Play /
 Pause [P]**, inspect movement through the intended route and landing contacts,
 then pause before painting. Verify ordinary paint, Undo and Redo, save, close the

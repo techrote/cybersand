@@ -69,7 +69,7 @@ static func intents(rig, pose: Transform2D, binding: Dictionary, identity: Dicti
 
 static func apply(world: Object, emitters: Array, extent: Vector2i) -> Array:
 	var receipts: Array = []
-	if emitters.size() > 8 * MAX_NOZZLES or world == null or world.has_failed(): return receipts
+	if emitters.size() > CyberRigidBodyCoupling.MAX_BODIES * MAX_NOZZLES or world == null or world.has_failed(): return receipts
 	var guards: Dictionary = {}
 	for intent: Variant in emitters:
 		if not intent is Dictionary or not intent.get("source") is Vector2 or not intent.get("target") is Vector2: continue
@@ -85,7 +85,7 @@ static func apply(world: Object, emitters: Array, extent: Vector2i) -> Array:
 		var reason: String = ""
 		var cell := Vector2i.ZERO
 		if not _inside(intent.source, extent) or not _inside(intent.target, extent): reason = "bounds"
-		elif proxy.first_proxy < 1 or proxy.count < 1 or proxy.first_proxy + proxy.count - 1 > 64: reason = "identity"
+		elif proxy.first_proxy < 1 or proxy.count < 1 or proxy.first_proxy + proxy.count - 1 > CyberRigidBodyCoupling.MAX_BODIES: reason = "identity"
 		elif intent.get("material") not in [3,6,8,12,26]: reason = "material"
 		else:
 			cell = Vector2i(floori(intent.target.x), floori(intent.target.y))
