@@ -15,9 +15,7 @@ const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source","Grab physical part","Place / rotate (paused)"]
-const CUT_MOVING_TOOL := TOOL_NAMES.size()
-const IGNITE_MOVING_TOOL := CUT_MOVING_TOOL + 1
-const SETTLE_MOVING_TOOL := IGNITE_MOVING_TOOL + 1
+enum { CUT_MOVING_TOOL = 7, IGNITE_MOVING_TOOL, SETTLE_MOVING_TOOL }
 const MOVING_EDIT_TOOLS := [CUT_MOVING_TOOL, IGNITE_MOVING_TOOL]
 const MOVING_TOOLS := [CUT_MOVING_TOOL, IGNITE_MOVING_TOOL, SETTLE_MOVING_TOOL]
 var actor_interaction: RefCounted
