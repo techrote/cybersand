@@ -14,7 +14,7 @@ const SCHEMA := "pubpres-owner-gameplay-v1"
 const FIELDS := {
 	"step":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","manual_steps","gap_usec","fixed_delta_sec","native_tick","worker_handoff_usec","native_completed_usec","completed_body_sample","solver_usec","flush_usec","single_step","selected_actor_instance","selected_root_body_slot","physical_xy","velocity_cells_per_sec","native_started_usec","native_tick_body_sample","native_tick_world","native_start_lateness_usec","first_physics_handoff_usec","coupling_response_usec","coupling_only_completions","thruster_fire_enabled","native_root_response"],
 	"native_root_response":["body_instance","body_generation","body_sample","contacts","displaced","unresolved","arrival_count","correction_xy"],
-	"nozzle":["type","observed_usec","session","epoch","world","material_tick_at_observation","body_sample","actor_instance","sequence","intent_tick","nozzle","material","cell_xy","changed_cells","refusal"],
+	"nozzle":["type","observed_usec","session","epoch","world","material_tick_at_observation","body_sample","actor_instance","sequence","intent_tick","nozzle","material","cell_xy","changed_cells","refusal","generation"],
 	"hold":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","reason","paused","wanted_sample","completed_sample","native_tick","worker_handoff_usec","required_hard_revision","packet_hard_revision","queued_hard_revision","pending_chunks"],
 	"upload":["type","completed_usec","start_usec","process_frame","world","revision","render_serial","material_tick","generated_usec","native_completed_usec","patch_bytes"],
 	"presentation":["type","usec","process_frame","boundary","local_presentation_serial","submission_serial","session","epoch","material_world","revision","render_serial","material_tick","mask_sample_tick","physical_step","paused","camera_mode","camera_xy","view_wh","extent_wh","pilot_slot","whole_frame_valid","whole_frame_reason","resolve_usec","upload_cache_usec","total_bodies","total_parts","scanned_parts","bodies"],
@@ -105,7 +105,7 @@ func physics_step(host: Node, completed_usec: int, snapshot: CyberSimulationSnap
 		var cell: Vector2i = receipt.point
 		_append(["nozzle",completed_usec,bridge._session,bridge._epoch,world,snapshot.tick_index,sample,
 			receipt.instance_id,receipt.sequence,receipt.tick,receipt.nozzle,receipt.material,
-			[cell.x,cell.y],receipt.changed_cells,receipt.reason])
+			[cell.x,cell.y],receipt.changed_cells,receipt.reason,receipt.get("generation",-1)])
 		observed_sample = sample
 	if observed_sample >= 0: _last_nozzle_sample = observed_sample
 	_append(["step",completed_usec,Engine.get_process_frames(),Engine.get_physics_frames(),bridge._session,
