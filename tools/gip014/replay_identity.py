@@ -20,7 +20,19 @@ RUNTIME_FILES = {
     "linux": {"addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so", "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"},
     "windows": {"addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll", "addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"},
 }
+RECIPROCAL_FILES = {
+    "linux": {"tools/gentek_reciprocal", "tools/swarm004-runtime.linux.json"},
+    "windows": {"tools/gentek_reciprocal.exe", "tools/swarm004-runtime.windows.json"},
+}
 AUTHORITY = ("source_commit", "source_tree", "platform", "godot_sha256", "native_sha256", "rapier_sha256")
+
+
+def platform_game_input(name: str, platform: str) -> bool:
+    """Use the same platform payload in source campaign and extracted evaluator."""
+    if "/bin/" in name:
+        return name in RUNTIME_FILES[platform]
+    other_platform = "linux" if platform == "windows" else "windows"
+    return name not in RECIPROCAL_FILES[other_platform]
 
 
 def game_inputs(project: Path, platform: str, names=None) -> dict:
@@ -33,7 +45,7 @@ def game_inputs(project: Path, platform: str, names=None) -> dict:
         parts = Path(name).parts
         if ".godot" in parts or "__pycache__" in parts or name.endswith((".tmp", ".log")):
             continue
-        if "/bin/" in name and name not in RUNTIME_FILES[platform]:
+        if not platform_game_input(name, platform):
             continue
         path = project / name
         if path.is_symlink() or not path.is_file() or not path.resolve().is_relative_to(project.resolve()):
