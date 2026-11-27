@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -25,6 +26,7 @@ from run_campaign import source_identity
 from run_regressions import stage_source, run, validate_completion, terminal_json
 from identity import driver_identity
 from qualification_oracles import ring_result, transition_result, main_recovery_result
+from results import check_framebuffer
 from material_deadline_oracle import main_history_result as deadline_history_result, headless_result as deadline_headless_result
 from material_steps_oracle import main_history_result as steps_history_result, headless_result as steps_headless_result
 import engine_admission
@@ -38,6 +40,48 @@ def digest(path):
 def need(value, message):
     if not value:
         raise ValueError(message)
+
+
+def water_framebuffers(data, folder):
+    labels = ["initial_authoring_framebuffer", "submerged_framebuffer", "water_refill_framebuffer",
+              "restored_authoring_framebuffer", "multipart_limb_framebuffer"]
+    rows = data["framebuffer"]
+    need([row["label"] for row in rows] == labels and rows[-1]["slot"] == 4,
+         "Native Water framebuffer phase or articulated foot inventory differs")
+    motion = [row for row in data["lifecycle"] if row.get("stage") == "multipart_motion"]
+    need(len(motion) == 1 and set(motion[0]["steps"]) == set(motion[0]["origins"]) == set(map(str, range(6)))
+         and motion[0]["steps"]["4"] >= 8, "Moving six-member Water submission is missing")
+    hashes = {}
+    for row in rows:
+        label = row["label"]
+        width, height = row["size"]
+        identity = row["shown_identity"]
+        need(identity and identity == row["hidden_identity"] == row["restored_identity"]
+             and row["policy_order"] == ["1", "0", "1"], label + " control identity differs")
+        x, y = row["pixel_point"]
+        pixels = row["pixels"]
+        points = [[px, py] for py in range(max(0, y-2), min(height, y+3))
+                  for px in range(max(0, x-2), min(width, x+3))]
+        need(points and [p["pixel"] for p in pixels] == points, label + " sample locations differ")
+        differences = {}
+        for treatment in ("hidden", "restored"):
+            need(all(len(p["shown"]) == len(p[treatment]) == 3 and
+                     all(math.isfinite(v) for v in p["shown"] + p[treatment]) for p in pixels),
+                 label + " RGB control is incomplete")
+            differences[treatment] = max(abs(a-b) for p in pixels for a, b in zip(p["shown"], p[treatment]))
+        need(differences["hidden"] > 0.025 and differences["restored"] < 0.025
+             and math.isclose(row["maximum_visible_difference"], differences["hidden"], abs_tol=1e-6)
+             and math.isclose(row["maximum_restored_error"], differences["restored"], abs_tol=1e-6),
+             label + " visible/restored pixel errors differ")
+        names = [label + "-" + state + ".png" for state in ("shown", "hidden-control", "restored")]
+        if label == "multipart_limb_framebuffer":
+            names.append("moving-runner.png")
+        for name in names:
+            path = folder / name
+            check_framebuffer(path, {"width": width, "height": height}, row["size"])
+            hashes[name] = digest(path)
+        need(hashes[names[0]] != hashes[names[1]], label + " shown and hidden PNGs are identical")
+    return hashes
 
 
 SUPPLEMENTAL = {
@@ -62,6 +106,7 @@ SUPPLEMENTAL = {
         "environment": {"CYBERSAND_DIAG_WATER_COMPOSITION": "1"}},
     "test_workbench_water_composition_native": {
         "prefix": "PUBPRES_WATER_COMPOSITION_NATIVE_RESULT ", "minimum_checks": 1,
+        "schema": "pubpres-water-composition-native-v1",
         "environment": {"CYBERSAND_DIAG_WATER_COMPOSITION": "1"},
         "output_environment": "CYBERSAND_WATER_COMPOSITION_OUTPUT"},
 }
@@ -90,6 +135,12 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
              "Supplemental source/failure evidence differs: " + test)
         if "schema" in expected:
             need(data.get("schema") == expected["schema"], "Unknown supplemental receipt schema")
+        if test == "test_workbench_water_composition_native":
+            need(data["graphical"] is True and data["checks"] == terminal["checks"]
+                 and data["selectors"]["water_composition"] == "1"
+                 and (engine_sha is None or data["engine_sha256"] == engine_sha),
+                 "Native Water execution, terminal or engine differs")
+            result["water_framebuffer_sha256"] = water_framebuffers(data, folder)
         if test == "test_workbench_member_presentation":
             need(data == terminal and data.get("graphical") is True
                  and type(data.get("process_id")) is int and data["process_id"] > 0,
