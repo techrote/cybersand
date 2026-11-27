@@ -22,7 +22,6 @@ ENTRY = {"scene": "godot/main.tscn", "startup_scene": "godot/feature_launcher.ts
          "launcher": "Open Workbench.cmd", "opt_in": True, "rendering_driver": RENDERING_DRIVER,
          "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}
 REQUIRED = {
-    WINDOWS_RECIPROCAL, WINDOWS_RECIPROCAL_BINDING, "godot/tests/fixtures/object_shard_m4_authored_reopen.gd",
     NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe",
     "Godot-LICENSE.txt", "Godot-COPYRIGHT.txt", "vcruntime140.dll",
     "Microsoft-Visual-C-Runtime-LICENSE.docx", "Microsoft-Visual-Studio-2022-LICENSE.docx",
@@ -131,15 +130,25 @@ def verify(root: Path) -> dict:
     if (root / RETAINED_PROVENANCE).exists():
         raise ValueError("Active retained runtime provenance is forbidden in an evaluator")
     inventory = manifest.get("files_sha256", {})
-    if not isinstance(inventory, dict) or not REQUIRED.issubset(inventory):
-        raise ValueError("Incomplete Workbench package inventory: " + str(sorted(REQUIRED - inventory.keys())))
+    if not isinstance(inventory, dict):
+        raise ValueError("Invalid Workbench package inventory")
     if {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}.intersection(inventory):
         raise ValueError("Windows package contains a Linux reciprocal generator or binding")
-    binding = json.loads(safe_path(root, WINDOWS_RECIPROCAL_BINDING).read_bytes())
-    if (binding.get("artifact") != WINDOWS_RECIPROCAL or binding.get("platform") != "windows"
-            or binding.get("bytes") != safe_path(root, WINDOWS_RECIPROCAL).stat().st_size
-            or binding.get("sha256") != inventory[WINDOWS_RECIPROCAL]):
-        raise ValueError("Windows reciprocal generator differs from its packaged source binding")
+    reciprocal_inputs = {WINDOWS_RECIPROCAL, WINDOWS_RECIPROCAL_BINDING}
+    has_reciprocal = ("native/include/cybersand/workbench_authoring_patch.hpp" in manifest.get("native", {}).get("source_inputs", {})
+                      or "godot/scripts/workbench_reciprocal_panel.gd" in inventory
+                      or bool(reciprocal_inputs.intersection(inventory)))
+    required = REQUIRED
+    if has_reciprocal:
+        required = REQUIRED | reciprocal_inputs | {"godot/tests/fixtures/object_shard_m4_authored_reopen.gd"}
+    if not required.issubset(inventory):
+        raise ValueError("Incomplete Workbench package inventory: " + str(sorted(required - inventory.keys())))
+    if has_reciprocal:
+        binding = json.loads(safe_path(root, WINDOWS_RECIPROCAL_BINDING).read_bytes())
+        if (binding.get("artifact") != WINDOWS_RECIPROCAL or binding.get("platform") != "windows"
+                or binding.get("bytes") != safe_path(root, WINDOWS_RECIPROCAL).stat().st_size
+                or binding.get("sha256") != inventory[WINDOWS_RECIPROCAL]):
+            raise ValueError("Windows reciprocal generator differs from its packaged source binding")
     verify_inventory(root, inventory)
     for relative, expected in inventory.items():
         if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
