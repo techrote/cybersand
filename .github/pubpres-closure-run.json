@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
   "phase": "windows-focus",
-  "purpose": "Qualify repaired owner flight on Windows using the installed Stock Safe renderer and both shipped scene starts. Preserve graphical atomic picking and live body membership checks, capture the 90-second continuous Follow paths, physical completions, presentation bounds, telemetry and framebuffer witnesses. Preserve Draft/HOLD for physical NVIDIA acceptance.",
+  "purpose": "Reproduce and qualify owner contact play in Wave512 and Mixed2048 with the real thruster Fire toggle, native material 6 writes and on-screen moving contact pixels. Exercise deliberate wall and Water contacts, picking, and both 90-second Fire-on Follow patrols; keep physical owner acceptance HOLD.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "17c6aab1ad1c14261c22c48b094515c7e9491e99dcbeaece29cb6a8e2cf22b9d",
+  "payload_sha256": "c91f62a04b59ea0c380c8797e02957be67ba303fe59c2a0f5b15481998465dfc",
   "physical_acceptance": "HOLD"
 }
