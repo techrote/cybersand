@@ -106,6 +106,25 @@ class JournalOnlyIsNotAtomic(unittest.TestCase):
                 module.supplemental_result(name, 'ACTUAL_SUBMISSION_RESULT '+json.dumps({"checks":checks,"failures":[]}),
                                            folder, {"source_commit": "a" * 40}, project)
 
+    def test_held_part_must_follow_displayed_contact_and_retire_original_owner(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("recovery_held_place", HERE / "run_qualification.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        row = {"part_index": 4, "local_contact": [1.125, 0.25], "accepted_contact": [10, 20],
+               "live_contact_before_press": [22, 11], "preview_contact": [10, 20],
+               "release_target": [27.25, 13.25], "dragged_contact": [27.25, 13.25],
+               "installed_contact": [27.25, 13.25], "limb_rotations": [0.0, 0.47, 0.47],
+               "epochs": [1, 2], "generation_refusal": True, "submitted_serial": -1,
+               "unchanged_framebuffer_sha256": "a"*64}
+        inputs = {"res://scripts/" + name + ".gd": "b"*64 for name in ("main", "shared_workbench", "physical_actor_session",
+                  "physical_actor_rig", "workbench_presentation_submission", "workbench_actor_interaction", "workbench_actor_manipulator")}
+        module.held_placement({"held_limb_placement": row, "input_hashes": inputs}, False)
+        for field, changed in (("preview_contact", [22, 11]), ("installed_contact", [27.25, 13]),
+                               ("epochs", [1, 1]), ("generation_refusal", False), ("submitted_serial", 5)):
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                module.held_placement({"held_limb_placement": {**row, field: changed}, "input_hashes": inputs}, False)
+
 
 if __name__ == "__main__":
     unittest.main()

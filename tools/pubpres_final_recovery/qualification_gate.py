@@ -62,7 +62,7 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
          and proof['import_source_mutations']==proof['final_source_mutations']==[],
          'Correctness source, driver, native, engine or authored bytes differ')
     verify_engine_binding(proof,engine)
-    expected={'frozen':19,'submission':2,'water':4,'members':4}[focus]
+    expected={'frozen':19,'submission':2,'held-placement':2,'water':4,'members':4}[focus]
     need(len(proof['outcomes'])==expected and len({(row['test'],row['slots']) for row in proof['outcomes']})==expected,
          'Correctness inventory is incomplete or duplicated')
     module=load_qualification()
@@ -78,8 +78,12 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
              and row.get('log_sha256')==digest(log) and 'ERROR:' not in text
              and row.get('display_owner_verified',True) is True,'Correctness actual process/log failed or changed')
         if row['test'] in module.SUPPLEMENTAL:
+            if focus=='held-placement':
+                need(row['test']=='test_workbench_presentation_submission' and '--stock-held-limb-placement' in row['command']
+                     and '--headless' not in row['command'], 'Stock held-placement graphical invocation differs')
             actual=module.supplemental_result(row['test'],text,folder,source,project,engine_sha=digest(engine),
-                expected_inline=thread=='safe',expected_lookahead=budget,expected_atomic=bool(proof.get('engine_admission')))
+                expected_inline=thread=='safe',expected_lookahead=budget,expected_atomic=bool(proof.get('engine_admission')),
+                stock_held=focus=='held-placement')
             need(actual==row['evidence'],'Supplemental raw evidence no longer reproduces its exact original result')
         elif row['test']=='import':
             need('--import' in row['command'] and '--editor' in row['command'],'Import did not execute actual editor import')

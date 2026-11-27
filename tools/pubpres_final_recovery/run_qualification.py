@@ -112,8 +112,36 @@ SUPPLEMENTAL = {
 }
 
 
-def supplemental_result(test, text, folder, source, project, *, engine_sha=None, expected_inline=None, expected_lookahead=None, expected_atomic=False, receipt_path=None):
+def held_placement(data, atomic):
+    row = data["held_limb_placement"]
+    start, live, preview, drag, finish, installed = (
+        row[key] for key in ("accepted_contact", "live_contact_before_press", "preview_contact",
+                             "dragged_contact", "release_target", "installed_contact"))
+    need(all(len(v) == 2 and all(math.isfinite(n) for n in v) for v in (start, live, preview, drag, finish, installed))
+         and row["part_index"] == 4 and row["local_contact"] == [1.125, 0.25]
+         and math.dist(start, live) > 5 and math.dist(start, preview) < 0.001
+         and math.dist(finish, [start[0]+17.25, start[1]-6.75]) < 0.001
+         and math.dist(finish, drag) < 0.001 and math.dist(finish, installed) < 0.002,
+         "Held multipart contact, displayed anchor, unsnapped drag or adopted foot differs")
+    before, rotated, adopted = row["limb_rotations"]
+    old, new = row["epochs"]
+    need(all(math.isfinite(v) for v in (before, rotated, adopted))
+         and abs(math.remainder(rotated-before, math.tau)) > 0.4
+         and abs(math.remainder(adopted-rotated, math.tau)) < 0.001
+         and type(old) is int and type(new) is int and 0 <= old < new
+         and row["generation_refusal"] is True and re.fullmatch("[0-9a-f]{64}", row["unchanged_framebuffer_sha256"])
+         and type(row["submitted_serial"]) is int and (row["submitted_serial"] > 0 if atomic else row["submitted_serial"] == -1),
+         "Held multipart rotation, generation refusal, owner adoption or submitted frame differs")
+    inputs = {"res://scripts/" + name + ".gd" for name in ("main", "shared_workbench", "physical_actor_session",
+              "physical_actor_rig", "workbench_presentation_submission", "workbench_actor_interaction", "workbench_actor_manipulator")}
+    need(inputs <= data["input_hashes"].keys(), "Held placement source-input inventory is incomplete")
+
+
+def supplemental_result(test, text, folder, source, project, *, engine_sha=None, expected_inline=None, expected_lookahead=None, expected_atomic=False, receipt_path=None, stock_held=False):
     expected = SUPPLEMENTAL[test]
+    if stock_held:
+        need(test == "test_workbench_presentation_submission" and not expected_atomic, "Stock held-placement scope differs")
+        expected = {**expected, "minimum_checks": 12, "schema": "workbench-stock-held-limb-placement-v1"}
     if "text_footer" in expected:
         need(len(re.findall(expected["text_footer"], text, re.M)) == 1,
              "Missing/duplicate unchanged history completion: " + test)
@@ -190,6 +218,31 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
                  and pixels.get("png_sha256") == digest(Path(path).with_suffix(".png")),
                  "Actual body23 framebuffer show/hide/restore control differs")
         if test == "test_workbench_presentation_submission":
+            # A source-bound fixture predating held placement still replays with
+            # its original atomic assertions. A missing new receipt cannot opt out.
+            fixture = (project / "tests" / (test + ".gd")).read_bytes()
+            if stock_held or b"func _held_limb_placement()" in fixture:
+                need(terminal["checks"] == data["checks"] and data["engine_atomic_admission"] is (not stock_held)
+                     and type(data["process_id"]) is int and data["process_id"] > 0
+                     and (engine_sha is None or data["engine_sha256"] == engine_sha),
+                     "Held placement engine, PID, selector or assertion count differs")
+                if stock_held:
+                    need(data["engine_sha256"] in ENGINE_SHA256.values() and data["render_thread_inline"] is True
+                         and data["requested_render_lookahead"] == "", "Held placement did not run on official Stock Safe")
+                held_placement(data, not stock_held)
+                if b'"native_sha256"' in fixture:
+                    mounted = {"Windows": ("cybersand_native.windows.x86_64.dll", "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"),
+                               "Linux": ("libcybersand_native.linux.x86_64.so", "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")}
+                    native_file, rapier_file = mounted[data["platform"]]
+                    need(data["native_sha256"] == digest(project / "addons/cybersand_native/bin" / native_file)
+                         and data["rapier_sha256"] == digest(project / "addons/godot-rapier2d/bin" / rapier_file),
+                         "Held placement mounted native or Rapier bytes differ")
+                    held = data["held_limb_placement"]
+                    need(type(held["step_before"]) is int and held["step_before"] >= 0
+                         and type(held["step_after_release"]) is int and held["step_after_release"] == held["step_before"]
+                         and type(held["installed_step"]) is int and held["installed_step"] >= 0,
+                         "Held placement fabricated a step in the original physical owner")
+        if test == "test_workbench_presentation_submission" and not stock_held:
             if engine_sha is not None:
                 need(data.get("engine_sha256") == engine_sha and type(data.get("process_id")) is int
                      and data["process_id"] > 0 and data.get("render_thread_inline") is expected_inline
@@ -279,7 +332,7 @@ def main():
     parser.add_argument("--display-wrapper", type=Path)
     parser.add_argument("--allow-development-toolchain-drift", action="store_true")
     parser.add_argument("--headless-only", action="store_true")
-    parser.add_argument("--focus", choices=("all", "submission", "water", "members", "frozen"), default="all")
+    parser.add_argument("--focus", choices=("all", "submission", "held-placement", "water", "members", "frozen"), default="all")
     parser.add_argument("--render-thread", choices=("safe", "separate"), default="safe")
     parser.add_argument("--lookahead", type=int, choices=(0, 4), default=0)
     parser.add_argument("--development-engine-proof", type=Path,
@@ -313,6 +366,8 @@ def main():
         need(args.lookahead == 0, "Stock reference has no bounded engine treatment")
     need(args.render_thread == "safe" or args.focus in ("submission", "water", "members"),
          "Frozen correctness inventory retains its original Safe owner; new Separate gates run separately")
+    need(args.focus != "held-placement" or (not args.headless_only and engine_proof is None),
+         "Held placement requires actual graphical Stock Safe")
     rapier = json.loads((source_root / f"godot/addons/godot-rapier2d/runtime-provenance.{platform}.json").read_text())
     need(digest(source_root / rapier["artifact"]) == rapier["sha256"], "Rapier runtime differs")
     for name, expected in rapier["source_inputs"].items():
@@ -358,6 +413,8 @@ def main():
                 environment["CYBERSAND_ENGINE_RENDER_LOOKAHEAD_TRACE"] = str(folder / "engine-draws.json")
         if test in SUPPLEMENTAL:
             environment.update(SUPPLEMENTAL[test]["environment"])
+            if args.focus == "held-placement":
+                environment["CYBERSAND_DIAG_ACTUAL_SUBMISSION"] = "0"
             if test in ("test_workbench_water_composition_native", "test_workbench_member_presentation"):
                 environment["CYBERSAND_DIAG_ACTUAL_SUBMISSION"] = "1" if engine_proof else "0"
             if SUPPLEMENTAL[test].get("output_environment"):
@@ -394,7 +451,7 @@ def main():
             if test in SUPPLEMENTAL:
                 item["evidence"] = supplemental_result(test, text, folder, source, project, engine_sha=report["engine_sha256"],
                     expected_inline=args.render_thread == "safe", expected_lookahead=args.lookahead,
-                    expected_atomic=bool(engine_proof))
+                    expected_atomic=bool(engine_proof), stock_held=args.focus == "held-placement")
             elif test == "test_full_image_ring_publication":
                 item["evidence"] = ring_result(text, source["source_commit"], project, driver, engine_sha256=report["engine_sha256"])
             elif test == "pubpres_full_image_ring_oracle":
@@ -451,6 +508,8 @@ def main():
             invoke("test_material_steps_main_history", 2, True)
     if imported and args.focus in ("all", "submission") and not args.headless_only:
         invoke("test_workbench_presentation_submission", 2, True)
+    if imported and args.focus == "held-placement":
+        invoke("test_workbench_presentation_submission", 2, True, ["--stock-held-limb-placement"])
     if imported and args.focus in ("all", "water"):
         invoke("test_workbench_water_composition")
         if not args.headless_only:
