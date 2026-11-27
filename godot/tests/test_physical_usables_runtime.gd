@@ -343,7 +343,7 @@ func _payload_lifecycle() -> void:
 	_check(runtime.snapshot().projectiles == frozen.projectiles, "paused simulation advanced payloads")
 
 
-func _processor_pickup_history() -> void:
+func _processor_pickup_history() -> Dictionary:
 	_reset(22)
 	_device_frame()
 	var inputs: Array[Vector2i] = _ports(false)
@@ -371,6 +371,7 @@ func _processor_pickup_history() -> void:
 	var remote: Dictionary = _step([_request("alternate")])
 	_check(not remote.receipts[0].accepted and remote.objects.size() == 1,
 		"alternate remotely retrieved a real deployed processor")
+	return result
 
 
 func _processor_budget_atomicity() -> void:
@@ -490,6 +491,23 @@ func _expanded_capacity_first_frame() -> void:
 		"active same-epoch population change reset existing equipment")
 
 
+func _check_snapshot_lifetime(deployment: Dictionary) -> void:
+	var world_ref: WeakRef = weakref(world)
+	var runtime_ref: WeakRef = weakref(runtime)
+	var engine_ref: WeakRef = weakref(runtime._engine)
+	world = null
+	_check(world_ref.get_ref() == null, "equipment retained the native World between steps")
+	runtime = null
+	_check(runtime_ref.get_ref() == null, "snapshot retained the physical usable runtime")
+	_check(engine_ref.get_ref() == null, "equipment engine outlived its runtime owner")
+	var objects: Array = deployment.get("objects", [])
+	var receipts: Array = deployment.get("receipts", [])
+	_check(objects.size() == 1 and objects[0] is Dictionary and objects[0].get("usable_index") == 22
+		and objects[0].get("stock") == 15 and receipts.size() == 1 and receipts[0] is Dictionary
+		and receipts[0].get("accepted") == true and receipts[0].get("reason") == "deployed",
+		"copied processor stock and deployment receipt did not survive resets and owner release")
+
+
 func _run() -> void:
 	if not ClassDB.class_exists(&"CyberNativeCellWorld"):
 		push_error("USABLE002_NATIVE requires source-matched CyberNativeCellWorld")
@@ -500,9 +518,10 @@ func _run() -> void:
 	_identity_resources_and_copying()
 	_body_masks_and_occlusion()
 	_payload_lifecycle()
-	_processor_pickup_history()
+	var deployment := _processor_pickup_history()
 	_processor_budget_atomicity()
 	_committed_alternate_admission()
 	_expanded_capacity_first_frame()
+	_check_snapshot_lifetime(deployment)
 	print("USABLE002_NATIVE checks=%d failures=%d native=executed catalogue=32" % [checks, failures])
 	quit(1 if failures > 0 else 0)
