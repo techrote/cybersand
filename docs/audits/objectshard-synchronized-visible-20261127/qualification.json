@@ -1,0 +1,350 @@
+{
+  "source": "23e8dcfb083861f2483930c0ee1c7fd1c84e26fc",
+  "runtime_sha256": "4e880cf40c65674481c6a47dd02baf89949ed8e715a468c7133af59f56b05589",
+  "artifact": 15173110182,
+  "pid": 43308,
+  "checks": 388,
+  "workbench_failures": [],
+  "scene": "stress",
+  "live_bodies": [
+    8,
+    8
+  ],
+  "crop_client": [
+    449,
+    568,
+    1149,
+    821
+  ],
+  "crop_world": [
+    3.0,
+    282.0,
+    505.0,
+    183.0
+  ],
+  "frequency": 10000000,
+  "static_pairs": 178,
+  "static_changed_pairs": 0,
+  "active_seconds": 9.472526,
+  "active_any_changed": 304,
+  "invalid_visible_samples": 0,
+  "accumulated_multi_frames": 0,
+  "sample_clock": {
+    "pairs": 16,
+    "max_offset_uncertainty_ms": 7.746,
+    "qpc_minus_godot_time_bounds": [
+      2901578956398.0,
+      2901579033858.0
+    ],
+    "sample_capture_us_max": 1062,
+    "observation_rows": 568
+  },
+  "longest_between_visible_changes": {
+    "desktop_qpc": [
+      2902048870500,
+      2902049541959
+    ],
+    "duration_seconds": 0.0671459,
+    "unchanged_captured_rows": 3,
+    "uncertain_rows": 0,
+    "wholly_interior_observations": 3,
+    "native_ticks": [
+      83,
+      84
+    ],
+    "physical_steps": [
+      332,
+      333
+    ],
+    "pose_acknowledgements": [
+      1576,
+      1584
+    ],
+    "native_publication_sequence": [
+      494,
+      496
+    ],
+    "bodies": {
+      "1:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.5511169433590339,
+        "max_rapier_in_crop_delta_cells": 0.5511169433590339,
+        "max_rapier_in_crop_delta_screen_pixels": 0.7619267031138557,
+        "max_native_in_crop_delta_cells": 0.5486450195309658,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "2:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.5411987304690342,
+        "max_rapier_in_crop_delta_cells": 0.5411987304690342,
+        "max_rapier_in_crop_delta_screen_pixels": 0.7482146382987195,
+        "max_native_in_crop_delta_cells": 0.5386962890630116,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "3:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.53125,
+        "max_rapier_in_crop_delta_cells": 0.53125,
+        "max_rapier_in_crop_delta_screen_pixels": 0.7344603825136612,
+        "max_native_in_crop_delta_cells": 0.5287475585939774,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "4:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.5213012695309658,
+        "max_rapier_in_crop_delta_cells": 0.5213012695309658,
+        "max_rapier_in_crop_delta_screen_pixels": 0.7207061267286029,
+        "max_native_in_crop_delta_cells": 0.518798828125,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "5:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.5113220214840339,
+        "max_rapier_in_crop_delta_cells": 0.5113220214840339,
+        "max_rapier_in_crop_delta_screen_pixels": 0.7069096799751945,
+        "max_native_in_crop_delta_cells": 0.5088500976559658,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "6:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.5013427734379547,
+        "max_rapier_in_crop_delta_cells": 0.5013427734379547,
+        "max_rapier_in_crop_delta_screen_pixels": 0.6931132332229647,
+        "max_native_in_crop_delta_cells": 0.4988403320310226,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "7:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.49133300781204525,
+        "max_rapier_in_crop_delta_cells": 0.49133300781204525,
+        "max_rapier_in_crop_delta_screen_pixels": 0.6792745954997128,
+        "max_native_in_crop_delta_cells": 0.4888305664059658,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "8:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 2,
+        "awake_rows": 2,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.48132324218795475,
+        "max_rapier_in_crop_delta_cells": 0.48132324218795475,
+        "max_rapier_in_crop_delta_screen_pixels": 0.6654359577789757,
+        "max_native_in_crop_delta_cells": 0.4788208007810226,
+        "moving_pairs_in_crop": 1,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      }
+    }
+  },
+  "evidence_sha256": {
+    "visible.csv": "01ec8b85866172a9611899d18f3b70a952dff3c98118433c1e60ed5a61cc4b5f",
+    "sync.json": "300517bc734602d90a3153a18628e25c4fe9ed6f71179e189107c648a47f498d",
+    "transforms.json": "73324247cb5a19d9489c9ae216cb6971efdb53c681dd42745ed763167e19ae46",
+    "workbench.json": "83529102f3d855d3edcdb1a96659ce6932bc5d881caeb6583aafe805ab60f0ba"
+  },
+  "startup_before_first_change": {
+    "desktop_qpc": [
+      2902022357010,
+      2902026183795
+    ],
+    "duration_seconds": 0.3826785,
+    "unchanged_captured_rows": 22,
+    "uncertain_rows": 0,
+    "wholly_interior_observations": 22,
+    "native_ticks": [
+      38,
+      38
+    ],
+    "physical_steps": [
+      148,
+      150
+    ],
+    "pose_acknowledgements": [
+      112,
+      128
+    ],
+    "native_publication_sequence": [
+      266,
+      268
+    ],
+    "bodies": {
+      "1:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.07977294921903422,
+        "max_rapier_in_crop_delta_cells": 0.07977294921903422,
+        "max_rapier_in_crop_delta_screen_pixels": 0.11028719208970304,
+        "max_native_in_crop_delta_cells": 0.1568603515630116,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "2:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.06903076171903422,
+        "max_rapier_in_crop_delta_cells": 0.06903076171903422,
+        "max_rapier_in_crop_delta_screen_pixels": 0.09543597111975768,
+        "max_native_in_crop_delta_cells": 0.1353759765630116,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "3:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.05828857421903422,
+        "max_rapier_in_crop_delta_cells": 0.05828857421903422,
+        "max_rapier_in_crop_delta_screen_pixels": 0.08058475014981233,
+        "max_native_in_crop_delta_cells": 0.11389160156301159,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "4:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.04754638671903422,
+        "max_rapier_in_crop_delta_cells": 0.04754638671903422,
+        "max_rapier_in_crop_delta_screen_pixels": 0.06573352917986698,
+        "max_native_in_crop_delta_cells": 0.09240722656301159,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "5:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.03680419921903422,
+        "max_rapier_in_crop_delta_cells": 0.03680419921903422,
+        "max_rapier_in_crop_delta_screen_pixels": 0.05088230820992162,
+        "max_native_in_crop_delta_cells": 0.07092285156301159,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "6:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.026000976562954747,
+        "max_rapier_in_crop_delta_cells": 0.026000976562954747,
+        "max_rapier_in_crop_delta_screen_pixels": 0.03594670530288279,
+        "max_native_in_crop_delta_cells": 0.04931640625,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "7:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.015197753905965783,
+        "max_rapier_in_crop_delta_cells": 0.015197753905965783,
+        "max_rapier_in_crop_delta_screen_pixels": 0.021011102394586575,
+        "max_native_in_crop_delta_cells": 0.02770996093801159,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      },
+      "8:1:1:1158": {
+        "occupied_cells": 1157,
+        "adjacent_pairs": 21,
+        "awake_rows": 21,
+        "min_safe_centers": 1157,
+        "max_safe_centers": 1157,
+        "max_rapier_delta_cells": 0.00439453125,
+        "max_rapier_in_crop_delta_cells": 0.00439453125,
+        "max_rapier_in_crop_delta_screen_pixels": 0.006075499487704918,
+        "max_native_in_crop_delta_cells": 0.006103515625,
+        "moving_pairs_in_crop": 2,
+        "native_moving_pairs_in_crop": 1,
+        "whole_body_clear_of_crop_all_samples": false
+      }
+    }
+  },
+  "first_and_last_change_scope": "The active time up to the first changed image is left-censored. It is reported separately from intervals between consecutive changed images. The last valid active observation was a changed image.",
+  "method": {
+    "instrumented_diagnostic_base": "33aa6eeb52c07ccb089d5125db53376bedd614af",
+    "canonical_probe_source": "0df4a76410e5ac1f6d1368486dcfeae75280e773",
+    "source_tree": "c3b1e7545634070fbc33811a1f03bfe817d23a35",
+    "native_inputs": 126,
+    "producer_run": 45940208065,
+    "producer_attempt": 1,
+    "platform": "Local Windows TITAN RTX, 581.80, Godot 4.7 ANGLE D3D11, pinned Rapier",
+    "visible_scope": "Unoccluded fixed physical desktop region images via Windows desktop duplication; no monitor-wide FPS inference. Only the eight-body stress fixture was executed.",
+    "clock_scope": "16 request-engine-response QPC brackets bound monotonic offset. Each callback sample counts only when its entire readback plus synchronization interval lies strictly inside the desktop interval.",
+    "motion_scope": "The same occupied alpha pixel centers were mapped by measured Rapier transforms on adjacent callbacks, at least two world cells inside all ROI boundaries. Movement-pair threshold 0.001 native cell. Separately counted exact stored native presentation poses. In-crop screen distances use original crop pixel size divided by world span.",
+    "observer": "Each callback reads only body transforms and sleeping flags, records current native frame/clock identity and the resolved shape alpha mask at first sight. This additional observation is present in the reported acquisition.",
+    "historical_limit": "The earlier 1.734s between-change interval lacked co-timed body data. This single 23e8 run cannot assign its cause or establish owner playfeel acceptance.",
+    "complete_original_file_sha256": {
+      "visible.csv": "01ec8b85866172a9611899d18f3b70a952dff3c98118433c1e60ed5a61cc4b5f",
+      "sync.json": "300517bc734602d90a3153a18628e25c4fe9ed6f71179e189107c648a47f498d",
+      "transforms.json": "73324247cb5a19d9489c9ae216cb6971efdb53c681dd42745ed763167e19ae46",
+      "workbench.json": "83529102f3d855d3edcdb1a96659ce6932bc5d881caeb6583aafe805ab60f0ba"
+    },
+    "retained": "Complete visible-region desktop trace, all callback time/authority counters, all synchronizing brackets, and every body row touching either quantified interval plus its adjacent callbacks."
+  }
+}

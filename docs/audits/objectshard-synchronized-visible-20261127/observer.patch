@@ -1,0 +1,56 @@
+--- a/godot/tests/profile_object_shard_m4_workbench.gd
++++ b/godot/tests/profile_object_shard_m4_workbench.gd
+@@ -12,0 +13,3 @@
++var correlation_rows: Array = []
++var correlation_shapes: Dictionary = {}
++
+@@ -164,0 +168 @@
++		_sample_transforms()
+@@ -342,0 +347 @@
++	await _align_clock("pre")
+@@ -353,0 +359,5 @@
++	if not correlation_rows.is_empty():
++		await _align_clock("post")
++		var output := FileAccess.open(OS.get_environment("CYBERSAND_DXGI_REGION").path_join("transforms.json"),FileAccess.WRITE)
++		output.store_string(JSON.stringify({"rows":correlation_rows,"shapes":correlation_shapes}))
++		output.close()
+@@ -366,0 +377,39 @@
++
++# Test-only time correlation. The external sampler brackets each engine clock read
++# with QPC before publishing a request and after observing its reply.
++func _align_clock(tag: String) -> void:
++	var directory := OS.get_environment("CYBERSAND_DXGI_REGION")
++	for index: int in 8:
++		var prefix := directory.path_join("sync-%s-%d" % [tag,index])
++		var deadline := Time.get_ticks_msec()+6000
++		while not FileAccess.file_exists(prefix+".req") and Time.get_ticks_msec()<deadline:
++			await process_frame
++		if not f.expect(FileAccess.file_exists(prefix+".req"),"external QPC synchronization request "+tag): return
++		var timestamp := Time.get_ticks_usec()
++		var response := FileAccess.open(prefix+".res",FileAccess.WRITE)
++		response.store_string(str(timestamp))
++		response.close()
++
++func _sample_transforms() -> void:
++	var first := Time.get_ticks_usec()
++	var rows: Array = []
++	var frame: Dictionary = f.frame()
++	var runtime: Variant = f.runtime()
++	for shard: Dictionary in frame.get("shards",[]):
++		var id := int(shard.id)
++		if not shard.get("owns_inventory",false) or not runtime.bridge.bodies.has(id): continue
++		var body: Dictionary = runtime.bridge.bodies[id]
++		var rid: RID = body.rid
++		var ref := "%d:%d:%d:%d" % [id,int(shard.generation),int(shard.body_generation),int(shard.material_revision)]
++		if not correlation_shapes.has(ref):
++			var pixels: PackedByteArray = shard.get("rgba",PackedByteArray())
++			var width := int(shard.width)
++			var height := int(shard.height)
++			if pixels.size() == width*height*4 and width>0:
++				var occupied := PackedInt32Array()
++				for index: int in width*height:
++					if pixels[index*4+3]!=0: occupied.append(index)
++				correlation_shapes[ref]={"width":width,"height":height,"occupied":occupied}
++		var pose: Transform2D = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
++		rows.append([ref,str(rid.get_id()),pose.origin.x,pose.origin.y,pose.get_rotation(),int(PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_SLEEPING)),float(shard.position_x),float(shard.position_y),float(shard.rotation)])
++	correlation_rows.append([first,Time.get_ticks_usec(),f.tick(),int(frame.get("publication_sequence",-1)),runtime.physical_steps,runtime.native_pose_acknowledgements,rows])
