@@ -133,12 +133,23 @@ class QualificationGuards(unittest.TestCase):
                 rows[f"ramcache-cross-authoring-{mode}"] = {"log": log, "completion": marker, "pid": pid, "exit_code": 0}
             original = "cross-authoring/cross-authoring.json"
             writer = {"process_id": 111, "art_changed": 180, "art_receipt_count": 1, "architecture_receipts": 1,
-                      "projected_sha256": "a" * 64, "session_id": "b" * 32, "durable_revision": 9}
+                      "projected_sha256": "a" * 64, "session_id": "b" * 32, "durable_revision": 9, "marker": 58}
             (root / original).write_text(json.dumps(writer))
             value["files_sha256"][original] = profile.sha(root / original)
+            restored = "cross-authoring/cross-authoring-reopen.json"
+            reader = {"process_id": 222, "projected_sha256": "a" * 64, "session_id": "b" * 32,
+                      "durable_revision": 11, "marker": 58, "area": "a"}
+            (root / restored).write_text(json.dumps(reader))
+            value["files_sha256"][restored] = profile.sha(root / restored)
             profile.verify_cross_authoring(root, value, rows)
             for changed in ({"process_id": 222}, {"art_changed": 179}, {"architecture_receipts": 0}):
                 (root / original).write_text(json.dumps(writer | changed))
+                with self.subTest(changed=changed), self.assertRaises(RuntimeError):
+                    profile.verify_cross_authoring(root, value, rows)
+            (root / original).write_text(json.dumps(writer))
+            for changed in ({"process_id": 111}, {"projected_sha256": "c" * 64}, {"session_id": "c" * 32},
+                            {"marker": 28}, {"durable_revision": 8}, {"area": "b"}):
+                (root / restored).write_text(json.dumps(reader | changed))
                 with self.subTest(changed=changed), self.assertRaises(RuntimeError):
                     profile.verify_cross_authoring(root, value, rows)
             with self.assertRaises(RuntimeError):

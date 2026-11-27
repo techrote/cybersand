@@ -1058,13 +1058,20 @@ def verify_cross_authoring(directory: Path, value: dict, rows: dict) -> None:
             "Cross-authoring original process or native receipt differs: " + mode)
         identities.append(row["pid"])
     original = "cross-authoring/cross-authoring.json"
-    require(original in value["files_sha256"], "Missing native cross-authoring writer result")
+    reopened = "cross-authoring/cross-authoring-reopen.json"
+    require(original in value["files_sha256"] and reopened in value["files_sha256"],
+        "Missing native cross-authoring writer or reader result")
     proof = json.loads((directory / original).read_text(encoding="utf-8"))
+    restored = json.loads((directory / reopened).read_text(encoding="utf-8"))
     require(identities[0] != identities[1] and proof.get("process_id") == identities[0]
         and proof.get("art_changed") == 180 and proof.get("art_receipt_count") == 1
-        and isinstance(proof.get("architecture_receipts"), int) and proof["architecture_receipts"] > 0
+        and type(proof.get("architecture_receipts")) is int and proof["architecture_receipts"] > 0
         and re.fullmatch(r"[0-9a-f]{64}", str(proof.get("projected_sha256", "")))
-        and proof.get("session_id") and proof.get("durable_revision", 0) > 0,
+        and re.fullmatch(r"[0-9a-f]{32}", str(proof.get("session_id", ""))) and proof.get("marker") in (28, 58)
+        and type(proof.get("durable_revision")) is int and proof["durable_revision"] > 0
+        and restored.get("process_id") == identities[1] and restored.get("area") == "a"
+        and all(restored.get(key) == proof[key] for key in ("session_id", "projected_sha256", "marker"))
+        and type(restored.get("durable_revision")) is int and restored["durable_revision"] >= proof["durable_revision"],
         "Cross-authoring writer, fresh reader or material projection differs")
 
 
