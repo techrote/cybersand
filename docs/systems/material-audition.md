@@ -68,7 +68,7 @@ inapplicable material edits, unknown fields, duplicates, invalid numeric types,
 fractions and out-of-range values are refused before publication.
 
 The session token belongs to the host; the World token is issued by native
-construction. A native clear or replacement retires it. Native move transfers
+construction. A native clear or replacement retires it. A retained-terrain Workbench edit that must build a new World (including actor placement or a capacity change) refuses while effective material overrides are active. Reset the overrides in Materials Lab before retrying. Live grabbing and pilot handoff continue to use the existing owner. Native move transfers
 the token and leaves the moved-from object unable to accept the old token.
 Every successful configuration transaction advances its own revision, including
 a repeated or explicitly equivalent profile. Ordinary simulation ticks do not
