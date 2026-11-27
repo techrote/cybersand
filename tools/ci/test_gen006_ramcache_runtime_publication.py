@@ -115,6 +115,36 @@ def valid_guard_fixture() -> dict:
 
 
 class QualificationGuards(unittest.TestCase):
+    def test_ordinary_water_host_source_and_terminal_are_required(self):
+        from run_persistent_areas_qualification import UNIT_CASES
+        plan = {label: (fixture, marker) for label, fixture, marker in UNIT_CASES[:2]}
+        self.assertEqual(plan, profile.ORDINARY_WATER_HOSTS)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report = {"source_inputs_sha256": {}, "files_sha256": {}}
+            rows = {}
+            for pid, (label, (fixture, marker)) in enumerate(plan.items(), 101):
+                log = label + ".log"
+                original = marker + " 17 assertions; 0 failures\n"
+                (directory / log).write_text(original)
+                report["source_inputs_sha256"]["godot/tests/" + fixture] = "a" * 64
+                report["files_sha256"][log] = profile.sha(directory / log)
+                rows[label] = {"log": log, "pid": pid, "status": "passed", "exit_code": 0,
+                               "command": ["godot", "--headless", "--script", "res://tests/" + fixture],
+                               "completion": profile.completion(original, marker)}
+            profile.verify_ordinary_water_hosts(directory, report, rows)
+            for label in rows:
+                with self.subTest(label=label), self.assertRaises(RuntimeError):
+                    profile.verify_ordinary_water_hosts(directory, report, {k: v for k, v in rows.items() if k != label})
+                with self.subTest(label=label), self.assertRaises(RuntimeError):
+                    profile.verify_ordinary_water_hosts(directory, report, rows | {label: rows[label] | {"timed_out": True}})
+                path = directory / rows[label]["log"]
+                original = path.read_text()
+                path.write_text("SCRIPT ERROR: Invalid access to property id\n" + original)
+                with self.assertRaises(RuntimeError):
+                    profile.verify_ordinary_water_hosts(directory, report, rows)
+                path.write_text(original)
+
     def test_cross_authoring_requires_both_original_processes_and_complete_native_write(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
