@@ -1,26 +1,26 @@
 {
-  "acceptance": "Draft/HOLD. Platform execution below is limited to mounted native World behavior. Graphical, installed application and owner evaluation retain separate gates.",
+  "acceptance": "Draft/HOLD. The native World and installed graphical evaluator receipts have their own scopes. Physical owner acceptance remains open.",
   "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-  "build_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+  "build_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
   "build_custody": {
     "artifact": {
       "attempt": 1,
-      "id": 15208456513,
-      "job": 140577208320,
-      "name": "pubpres-closure-shared-runtime-windows-46019912969-1",
-      "run": 46019912969,
-      "sha256": "7068fe37718f8676984fb2226c69ccd1630cbf3c45b36690752dc2ba6a585183",
-      "source": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae"
+      "id": 15223540829,
+      "job": 140667984711,
+      "name": "pubpres-closure-shared-runtime-windows-46046627411-1",
+      "run": 46046627411,
+      "sha256": "8c9077045907d3b72524454ceb4c3472da8bedd359324c568a6ad6b558b2ef9a",
+      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
     },
-    "build_log_sha256": "d8fc6c9d997dfd90b6c1cfb02f4fdf6cb683cc7bcee6dbf3514ce6ecde974f8f",
-    "build_manifest_sha256": "25d79ed415c780ffdf873a3d88022676ca8006704baccca520d66485b46e8223",
+    "build_log_sha256": "31c6a2f77a30dfca2635083c50aa7a4ee45dc1dc7734004e378cc64420403c90",
+    "build_manifest_sha256": "3696e02b353763f8fa23e6a7ec7c9a96bb3d3cb82d018d56285584cfb2c62c1b",
     "compiler_command": "/home/runner/work/_temp/closure-llvm-mingw/bin/x86_64-w64-mingw32-g++",
-    "dependency_manifest_sha256": "bc5bdd03f5d11f4891e8a8aec2d554ebcefc0b2d76e7e8833866a9a39e4a00cc",
+    "dependency_manifest_sha256": "fee63d3dd63594acf3aa0bd281ad7c9b6253ae2c9f20d12b82c5a0dbdbb33feb",
     "full_dependency_input_inventory": "C/GODOT-CPP-DEPENDENCY.json::source_inputs_sha256",
-    "godot_cpp_library_sha256": "450efd010823422438ab1facb17e9285db3f170e9a9feaf7eef2cd0d2b50c907",
+    "godot_cpp_library_sha256": "be34a1087e5b8475580dcd637c0f49b0ea9e9bd83993bcc8c27666e09aa2fa3c",
     "godot_cpp_tree": "1a7d1ea86a686531bde1db3538dda04b609fcc59",
     "role": "C",
-    "shared_cohort_custody_sha256": "e59dd1c9a33bceab8ce2ed186a86ab3ed0859b9756a48e76b57a4cf7c7e67bfa",
+    "shared_cohort_custody_sha256": "37d2de7cd0b3e3068014c0082433168394b33174ef0220f395a607e455a78bf3",
     "workflow": ".github/workflows/pubpres-closure.yml"
   },
   "build_inputs": {
@@ -35,17 +35,123 @@
   },
   "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
   "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "hosted_graphical_qualification": {
+    "artifact": {
+      "attempt": 1,
+      "id": 15225376523,
+      "job": 140674359385,
+      "name": "pubpres-closure-windows-evidence-46046627411-1",
+      "run": 46046627411,
+      "sha256": "a479bf5b019a2127c67f90a1d5f032f3d6f72ce7a2552b5ac49125c516b24a88",
+      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
+    },
+    "held_placement": {
+      "checks": 12,
+      "epochs": [
+        1,
+        2
+      ],
+      "generation_refusal": true,
+      "installed_contact": [
+        262.975036621094,
+        161.500015258789
+      ],
+      "module_sha256": "91998791a44a7eddad0300f646835b006be42a3d9bf6187846b681e8e3f04a9b",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "receipt_sha256": "a7fbea21ec9c5f98abe89797be182508ea0ff1c4d6bd4bc6bbb3cb499244c546",
+      "release_target": [
+        262.975006103516,
+        161.5
+      ],
+      "schema": "workbench-stock-held-limb-placement-v1",
+      "step_after_release": 0,
+      "step_before": 0,
+      "summary_sha256": "c32d3abb4c44036ef2b99a6da4d1ef04dffc7d7477bf772fe60bca868887c8b1"
+    },
+    "scope": "Source-matched hosted graphics. Each Water control was checked against decoded PNG pixels.",
+    "status": "passed",
+    "water": {
+      "application/stock-water-correctness": {
+        "channel_values": 1125,
+        "moving_png_sha256": "611c7f0d06963dd6d1856caac126affcdb65aa4c86d1cee35e89565611a0dbe5",
+        "observed_frames": 4854,
+        "receipt_sha256": "6d707a1584a2c77f0e18057fc347a24f99f80c5e47bfeb08394ce13707ec16f9",
+        "restored_owner": {
+          "cells": 666,
+          "elapsed_usec": 312,
+          "entry_budget_usec": 1778,
+          "members": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "pause_frames": [
+            2338,
+            2338
+          ],
+          "refusals": 0,
+          "rotated_coverage_reuses": 2,
+          "step": 0
+        },
+        "rgb_triplets": 375,
+        "withheld_body_draws": 0
+      }
+    }
+  },
   "installed_package_qualification": {
-    "status": "pending"
+    "candidate_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+    "evaluator": {
+      "attempt": 1,
+      "id": 15225226778,
+      "name": "pubpres-closure-windows-evaluator-46046627411-1",
+      "run": 46046627411,
+      "sha256": "c57151875a9eb5dca4879b50725dcee8a60420dd2c3caa3d9043b26b52faeb01",
+      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
+    },
+    "evidence": {
+      "attempt": 1,
+      "id": 15225376523,
+      "name": "pubpres-closure-windows-evidence-46046627411-1",
+      "run": 46046627411,
+      "sha256": "a479bf5b019a2127c67f90a1d5f032f3d6f72ce7a2552b5ac49125c516b24a88",
+      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
+    },
+    "inner_archive_sha256": "79abd9beb457a79b0735fbb78e962d72bebacf6ce01ca91200e323197bccc990",
+    "launchers": 14,
+    "manifest_sha256": "5ffd095397ac17017835320138b19b770e596ae063d5b372cefcaee09e12a9a5",
+    "save_and_reopen_modes": [
+      "selected",
+      "fallback"
+    ],
+    "scope": "Pristine extracted graphical CMD launcher execution, collector, installed native authoring and fresh-process reopen",
+    "sha256": "91998791a44a7eddad0300f646835b006be42a3d9bf6187846b681e8e3f04a9b",
+    "status": "passed"
   },
   "kind": "source-matched-pubpres-draft-development-runtime",
   "platform": "windows x86_64",
   "publication_branch": "codex/pubpres-playability-final-001-20261124",
+  "publication_source_comparison": {
+    "additional_test_and_reader": {
+      "godot/tests/test_workbench_water_composition_native.gd": {
+        "publication_parent_sha256": "d0d8c8e9c877c5ff74acaafacfa7de293c75375bcd6da9c8b096f185f434d0d0",
+        "shipped_source_sha256": "63f36ca2c3497bf2a4eee3f641d2c990ec531217fc0c5f0863bced64c868bc79"
+      },
+      "tools/pubpres_final_recovery/run_qualification.py": {
+        "publication_parent_sha256": "dc1ed1a1b2a8910b018f5a31e6fbd55881fc641d7ac112dcc08d9c6dbf7189e9",
+        "shipped_source_sha256": "1c8ed201ace2452526cacf927f4861a737b0e3a32f9677c54d8b0a6630c05f24"
+      }
+    },
+    "package_source": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+    "parent_tree": "d43d467a12679d4ed96278360f78c23809825b3c",
+    "publication_parent": "25c50624b3ee145039144118949616529ebc330c",
+    "scope": "The evaluator and runtime build use the stated package revision. The publication parent adds a Water fixture and reader observation of actual draw acceptance, together with evidence and a workflow request. Production, native and dependency inputs compare equal."
+  },
   "qualification": {
     "checks": 150,
     "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
     "fixture": "godot/tests/test_pubpres_task_completion_native.gd",
-    "host": "Windows desktop, isolated headless process",
+    "host": "GitHub-hosted Windows Server 2022",
     "platform": "windows",
     "processes": [
       {
@@ -78,7 +184,7 @@
       "failures": [],
       "native_descriptor_sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
       "native_resource": "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
-      "native_sha256": "6c0bd5fcc38a4c7178f5205f22feabd64aec2d32956689637514a68b5df35bbb",
+      "native_sha256": "91998791a44a7eddad0300f646835b006be42a3d9bf6187846b681e8e3f04a9b",
       "observations": [
         {
           "candidate": {
@@ -151,12 +257,12 @@
         }
       ],
       "platform": "Windows",
-      "process_id": 11932,
+      "process_id": 6584,
       "schema": "pubpres-task-completion-native-v1",
-      "source_revision": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+      "source_revision": "00478f29b9abaccb1e358137e8a9a48894c1690b",
       "test_sha256": "a1291e0ef2485b9dba1eb18e4241ce76648dba91502b8107e7a1e0e8f526e684"
     },
-    "receipt_sha256": "9b12aa302eeeac7b787fbcb65431b1ac2fed291cd29644375b44544e6c8caa27",
+    "receipt_sha256": "432dbcb6af9ac41f9c8cb60c9a5d5a70c247ed8bc55afeffb33926df445edc71",
     "result": {
       "actual_task_participation": true,
       "checks": 150,
@@ -170,15 +276,15 @@
       "scope": "Actual native module/World ownership and equal-work fixture only; no rendered or performance acceptance."
     },
     "scope": "Actual isolated headless Godot import and mounted native World execution only.",
-    "source_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
-    "source_tree": "e37365a699dd5c3a2bdb910f030f0891db597087",
+    "source_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+    "source_tree": "ad0d4c364f144f8a279f38bceb8e29a182361b1f",
     "status": "passed",
-    "summary_sha256": "f6b1b7bff46384c8830bef73f5740af428f77d34fad93b58e41ef7fdb3e06157"
+    "summary_sha256": "527d12d4256548d223019b342e47621237fd81fcf2b57c81c4bff537a1c73b7a"
   },
   "schema_version": 1,
-  "sha256": "6c0bd5fcc38a4c7178f5205f22feabd64aec2d32956689637514a68b5df35bbb",
+  "sha256": "91998791a44a7eddad0300f646835b006be42a3d9bf6187846b681e8e3f04a9b",
   "size": 5903872,
-  "source_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+  "source_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
   "source_input_hash_kind": "sha256-canonical-lf",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "4ac8fe03c2a90a14b4cda92d0bf519553ba804d191dd0ac7710ce960530b017b",
@@ -292,15 +398,15 @@
     "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
     "native/src/world_wave.inc": "9993b94ef76fcbab33dd332952b009fda29fdb3b7ae4ba6712aab1672f071585"
   },
-  "source_tree": "e37365a699dd5c3a2bdb910f030f0891db597087",
+  "source_tree": "ad0d4c364f144f8a279f38bceb8e29a182361b1f",
   "status": "validated-development-runtime",
   "supersedes": {
-    "build_commit": "466d34506feb62132d5b1badd4a0f9ab4fbb6886",
-    "sha256": "7afd394ff6e8b0e3165eab6980707a51bfbeccd8712291cc48a2f67b93102de6"
+    "build_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+    "sha256": "6c0bd5fcc38a4c7178f5205f22feabd64aec2d32956689637514a68b5df35bbb"
   },
   "toolchain": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/closure-llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/closure-llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
   "validated_platform": "windows x86_64; mounted native World fixture passed",
   "validation_date": "2026-11-27",
   "workflow_attempt": "1",
-  "workflow_run": "46019912969"
+  "workflow_run": "46046627411"
 }

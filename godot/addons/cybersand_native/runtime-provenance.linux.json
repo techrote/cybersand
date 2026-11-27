@@ -1,26 +1,26 @@
 {
-  "acceptance": "Draft/HOLD. Platform execution below is limited to mounted native World behavior. Graphical, installed application and owner evaluation retain separate gates.",
+  "acceptance": "Draft/HOLD. The native World and installed graphical evaluator receipts have their own scopes. Physical owner acceptance remains open.",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "build_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+  "build_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
   "build_custody": {
     "artifact": {
       "attempt": 1,
-      "id": 15209235001,
-      "job": 140577208280,
-      "name": "pubpres-closure-shared-runtime-linux-46019912969-1",
-      "run": 46019912969,
-      "sha256": "62eacf758e5593c0ef165b874e35d0d4befe08c18c0bca9a48540b6ed3f02e0a",
-      "source": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae"
+      "id": 15223746130,
+      "job": 140667984685,
+      "name": "pubpres-closure-shared-runtime-linux-46046627411-1",
+      "run": 46046627411,
+      "sha256": "cc77650f6e8b3247fcab0d73c91cef27516acc5aac21b984d6ae8c63d69a021f",
+      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
     },
-    "build_log_sha256": "403d1d439244f4e5f596a4803ed8f5597678b1a84cf0d428441448759f31ce3a",
-    "build_manifest_sha256": "dd2ff44a6e24b0615e24037749181076f197e1adf0ca023c1e775c4c993b7ed0",
+    "build_log_sha256": "bb079e4edb63d1a26dbde46d7086f607a58c683727871923627e4ea2b55e1ab4",
+    "build_manifest_sha256": "4ba7c3c08d6a83ee1ea3c1ab738c1270b85416a4c4ba2adc0f7f7d1e157eaf8f",
     "compiler_command": "/usr/bin/g++-13",
-    "dependency_manifest_sha256": "93623ab5c739795c19083cb82909124e159f928219cd43a383f83279dc79de79",
+    "dependency_manifest_sha256": "5bef9dc609375e5f46121121f4455951535939af5a1fb24ba51f61a8c8c96554",
     "full_dependency_input_inventory": "C/GODOT-CPP-DEPENDENCY.json::source_inputs_sha256",
     "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
     "godot_cpp_tree": "1a7d1ea86a686531bde1db3538dda04b609fcc59",
     "role": "C",
-    "shared_cohort_custody_sha256": "e3c9ce9bd5d64d9dcebe6a995c25504e828a3939cb2edc80595a63c34ace5481",
+    "shared_cohort_custody_sha256": "0a2204d0ad071b15932bd19f0de25d64dc687aaa7ec7cca2205b556e6bb45f6b",
     "workflow": ".github/workflows/pubpres-closure.yml"
   },
   "build_inputs": {
@@ -35,15 +35,95 @@
   },
   "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
   "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "hosted_graphical_qualification": {
+    "artifact": {
+      "attempt": 1,
+      "id": 15224141603,
+      "job": 140674359240,
+      "name": "pubpres-closure-linux-evidence-46046627411-1",
+      "run": 46046627411,
+      "sha256": "3d49ad63a8181d03787f60318a2beea91a838007d9c3654003b9fef934496d83",
+      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
+    },
+    "held_placement": {
+      "checks": 12,
+      "epochs": [
+        1,
+        2
+      ],
+      "generation_refusal": true,
+      "installed_contact": [
+        262.975036621094,
+        161.500015258789
+      ],
+      "module_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "receipt_sha256": "bacf21bb37527ab232442c0077fc5c5b15cfe887ce747395c16a28bc3f63cd16",
+      "release_target": [
+        262.975006103516,
+        161.5
+      ],
+      "schema": "workbench-stock-held-limb-placement-v1",
+      "step_after_release": 0,
+      "step_before": 0,
+      "summary_sha256": "11784cfe9f076323e952ded71a396334066c40c3e39b3b90cab9cdb8b58e1650"
+    },
+    "scope": "Source-matched hosted graphics. Each Water control was checked against decoded PNG pixels.",
+    "status": "passed",
+    "water": {
+      "stock-water": {
+        "channel_values": 1125,
+        "moving_png_sha256": "0984948eeb51ff0495a72539223741925b1cbb47377c8766c1ecb1e55f90eec2",
+        "observed_frames": 4930,
+        "receipt_sha256": "b0ecc275ef4ed83cf51de7d9b24e330a1b3d98ab8964d4eac3b8fb8f55a69b4a",
+        "restored_owner": {
+          "cells": 666,
+          "elapsed_usec": 249,
+          "entry_budget_usec": 1794,
+          "members": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "pause_frames": [
+            2338,
+            2338
+          ],
+          "refusals": 0,
+          "rotated_coverage_reuses": 2,
+          "step": 0
+        },
+        "rgb_triplets": 375,
+        "withheld_body_draws": 24
+      }
+    }
+  },
   "installed_package_qualification": null,
   "kind": "source-matched-pubpres-draft-development-runtime",
   "platform": "linux x86_64",
   "publication_branch": "codex/pubpres-playability-final-001-20261124",
+  "publication_source_comparison": {
+    "additional_test_and_reader": {
+      "godot/tests/test_workbench_water_composition_native.gd": {
+        "publication_parent_sha256": "d0d8c8e9c877c5ff74acaafacfa7de293c75375bcd6da9c8b096f185f434d0d0",
+        "shipped_source_sha256": "63f36ca2c3497bf2a4eee3f641d2c990ec531217fc0c5f0863bced64c868bc79"
+      },
+      "tools/pubpres_final_recovery/run_qualification.py": {
+        "publication_parent_sha256": "dc1ed1a1b2a8910b018f5a31e6fbd55881fc641d7ac112dcc08d9c6dbf7189e9",
+        "shipped_source_sha256": "1c8ed201ace2452526cacf927f4861a737b0e3a32f9677c54d8b0a6630c05f24"
+      }
+    },
+    "package_source": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+    "parent_tree": "d43d467a12679d4ed96278360f78c23809825b3c",
+    "publication_parent": "25c50624b3ee145039144118949616529ebc330c",
+    "scope": "The evaluator and runtime build use the stated package revision. The publication parent adds a Water fixture and reader observation of actual draw acceptance, together with evidence and a workflow request. Production, native and dependency inputs compare equal."
+  },
   "qualification": {
     "checks": 150,
     "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
     "fixture": "godot/tests/test_pubpres_task_completion_native.gd",
-    "host": "Ubuntu 24.04 on WSL2, isolated headless process",
+    "host": "GitHub-hosted Ubuntu 24.04",
     "platform": "linux",
     "processes": [
       {
@@ -149,12 +229,12 @@
         }
       ],
       "platform": "Linux",
-      "process_id": 3345,
+      "process_id": 3296,
       "schema": "pubpres-task-completion-native-v1",
-      "source_revision": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+      "source_revision": "00478f29b9abaccb1e358137e8a9a48894c1690b",
       "test_sha256": "a1291e0ef2485b9dba1eb18e4241ce76648dba91502b8107e7a1e0e8f526e684"
     },
-    "receipt_sha256": "d21c2b9cb7ce3c1d0f569d0b30c643029f663e8e1cd15bf2a4f271d0d832b861",
+    "receipt_sha256": "b9310ad3dadc791730b49dfa12c897986d71eee8eaaa29a9706c8f4aea04062c",
     "result": {
       "actual_task_participation": true,
       "checks": 150,
@@ -168,15 +248,15 @@
       "scope": "Actual native module/World ownership and equal-work fixture only; no rendered or performance acceptance."
     },
     "scope": "Actual isolated headless Godot import and mounted native World execution only.",
-    "source_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
-    "source_tree": "e37365a699dd5c3a2bdb910f030f0891db597087",
+    "source_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+    "source_tree": "ad0d4c364f144f8a279f38bceb8e29a182361b1f",
     "status": "passed",
-    "summary_sha256": "441a6a3c42a3e93b66a40f2f66ac28569ee705fc059d3ad72cdbbfd18423c3b1"
+    "summary_sha256": "899ec93e2dd364dcde47ca9b2996af7b5da4d488fe13a6b684722f9a0c9b6cb7"
   },
   "schema_version": 1,
   "sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
   "size": 5362200,
-  "source_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+  "source_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
   "source_input_hash_kind": "sha256-canonical-lf",
   "source_inputs": {
     "godot/native_extension/cyber_demo_bridge.hpp": "4ac8fe03c2a90a14b4cda92d0bf519553ba804d191dd0ac7710ce960530b017b",
@@ -290,15 +370,15 @@
     "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
     "native/src/world_wave.inc": "9993b94ef76fcbab33dd332952b009fda29fdb3b7ae4ba6712aab1672f071585"
   },
-  "source_tree": "e37365a699dd5c3a2bdb910f030f0891db597087",
+  "source_tree": "ad0d4c364f144f8a279f38bceb8e29a182361b1f",
   "status": "validated-development-runtime",
   "supersedes": {
-    "build_commit": "466d34506feb62132d5b1badd4a0f9ab4fbb6886",
-    "sha256": "3d02d04ffc27654d141506920320c2525e59dc2331da7addfb9e43b94e136a88"
+    "build_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+    "sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1"
   },
   "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
   "validated_platform": "linux x86_64; mounted native World fixture passed",
   "validation_date": "2026-11-27",
   "workflow_attempt": "1",
-  "workflow_run": "46019912969"
+  "workflow_run": "46046627411"
 }
