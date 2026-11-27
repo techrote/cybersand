@@ -1031,7 +1031,29 @@ def verify_resident_advance_recovery(parent: dict, pair: dict) -> None:
 def verify_qualification(*args, **kwargs) -> None:
     _verify_donor_qualification(*args, **kwargs)
     value = args[1] if len(args) > 1 else kwargs["value"]
-    verify_ramcache_evidence(args[0] if args else kwargs["directory"], value)
+    verify_ramcache_evidence(args[0] if args else kwargs["directory"], value, require_ordinary_water=True)
+
+
+ORDINARY_WATER_HOSTS = {
+    "regression-desktop-default-water": ("test_liquid_desktop_default_host.gd", "LIQUID_DESKTOP_DEFAULT_HOST:"),
+    "regression-f5-water-trial-body": ("test_liquid_trial_body.gd", "LIQUID_TRIAL_BODY:"),
+}
+
+
+def verify_ordinary_water_hosts(directory: Path, value: dict, rows: dict) -> None:
+    for label, (fixture, marker) in ORDINARY_WATER_HOSTS.items():
+        require(label in rows, "Missing ordinary Water host case: " + label)
+        row = rows[label]
+        log = row.get("log")
+        command = row.get("command", [])
+        require("godot/tests/" + fixture in value["source_inputs_sha256"]
+            and log in value["files_sha256"] and row.get("status") == "passed" and row.get("exit_code") == 0
+            and "--headless" in command and command[-2:] == ["--script", "res://tests/" + fixture]
+            and type(row.get("pid")) is int and row["pid"] > 0 and not row.get("timed_out")
+            and not row.get("forced_termination"), "Ordinary Water host has no actual completed process: " + label)
+        original = (directory / log).read_text(encoding="utf-8")
+        require(not ERRORS.search(original) and completion(original, marker) == row.get("completion"),
+            "Ordinary Water host original completion or engine diagnostics differ: " + label)
 
 
 def verify_cross_authoring(directory: Path, value: dict, rows: dict) -> None:
@@ -1075,7 +1097,7 @@ def verify_cross_authoring(directory: Path, value: dict, rows: dict) -> None:
         "Cross-authoring writer, fresh reader or material projection differs")
 
 
-def verify_ramcache_evidence(directory: Path, value: dict) -> None:
+def verify_ramcache_evidence(directory: Path, value: dict, *, require_ordinary_water: bool = False) -> None:
     """Rebind the complete successor evidence without requiring a local Git checkout."""
     verify_ramcache(value)
     verify_files(directory, value.get("files_sha256"))
@@ -1086,6 +1108,9 @@ def verify_ramcache_evidence(directory: Path, value: dict) -> None:
             and row.get("log") in value["files_sha256"] for row in original_rows),
         "Required original process evidence is missing, failed or unbound")
     verify_cross_authoring(directory, value, rows)
+    # The producer always requires both. Existing frozen evaluator archives predate these cases.
+    if require_ordinary_water or ORDINARY_WATER_HOSTS.keys() & rows.keys():
+        verify_ordinary_water_hosts(directory, value, rows)
     markers = {"ramcache-clock":"GEN006_RAMCACHE_BACKGROUND_CLOCK", "ramcache-ledger":"GEN006_RAMCACHE_CACHE",
         "ramcache-writeback":"GEN006_RAMCACHE_WRITEBACK", "ramcache-metadata-bounds":"GEN006_RAMCACHE_METADATA_BOUNDS",
         "ramcache-owner-review":"GEN006_RAMCACHE_OWNER_REVIEW", "ramcache-prefetch-concurrency":"GEN006_RAMCACHE_PREFETCH_CONCURRENCY"}

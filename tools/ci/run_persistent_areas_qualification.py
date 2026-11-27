@@ -32,6 +32,8 @@ RUNTIME_PATHS = {
     "godot/addons/cybersand_native/runtime-provenance.json",
 }
 UNIT_CASES = [
+    ("regression-desktop-default-water", "test_liquid_desktop_default_host.gd", "LIQUID_DESKTOP_DEFAULT_HOST:"),
+    ("regression-f5-water-trial-body", "test_liquid_trial_body.gd", "LIQUID_TRIAL_BODY:"),
     ("native-bridge", "test_persistent_area_native_bridge.gd", "GEN006_NATIVE_BRIDGE"),
     ("clock", "test_persistent_area_clock.gd", "GEN006_CLOCK"),
     ("store-unit", "test_persistent_area_store.gd", "GEN006_STORE"),
