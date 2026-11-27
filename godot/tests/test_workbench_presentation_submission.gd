@@ -68,6 +68,13 @@ func until(predicate: Callable, timeout_ms: int = 60000) -> bool:
 # Main can attach its Workbench after this fixture receives its first scene-tree
 # callback. Poll the live owner each turn. The host's first prepared World must
 # still be accepted before the fixture can request its own recipe.
+func _set_stock_held_canvas_extent() -> void:
+	# The focused Runner fixture uses 512². Set the ordinary New width/height
+	# controls after Main is ready and before the deferred New blank request.
+	if host.shared_workbench != null:
+		for field: SpinBox in host.shared_workbench._extent: field.value = 512
+
+
 func _await_workbench_mount(label: String) -> bool:
 	var started := Time.get_ticks_msec()
 	var deadline := started+90000
@@ -82,6 +89,8 @@ func _await_workbench_mount(label: String) -> bool:
 			var sample := {"case":label,"elapsed_ms":now-started,"process_frame":Engine.get_process_frames(),
 				"native_class":ClassDB.class_exists(&"CyberNativeCellWorld"),"feature":get_meta("cybersand_feature",""),
 				"host_ready":host.is_node_ready(),"ui_attached":ui!=null,"ready":ready,"failed":failed,
+				"requested_extent":[512,512] if stock_limb_only else [2048,2048],
+				"applied_extent":ui.applied.get("extent",[]) if ui!=null else [],
 				"worker_error":snapshot.last_tick_error if snapshot!=null else "", "has_snapshot":snapshot!=null,
 				"native_tick":snapshot.tick_index if snapshot!=null else -1,"world":host.last_uploaded_world_generation,
 				"snapshot_serial":snapshot.serial if snapshot!=null else -1,"upload_serial":host.last_uploaded_render_snapshot_serial,
@@ -94,7 +103,8 @@ func _await_workbench_mount(label: String) -> bool:
 			mount_samples.append(sample)
 			print("ACTUAL_SUBMISSION_MOUNT ",JSON.stringify(sample))
 			next_sample = now+15000
-		if ready or failed or now>=deadline: return check(ready,label)
+		if ready or failed or now>=deadline:
+			return check(ready and (not stock_limb_only or ui.applied.get("extent") == [512,512]),label)
 		await process_frame
 	return false
 
@@ -860,6 +870,7 @@ func _run() -> void:
 	if stock_limb_only:
 		set_meta("cybersand_feature","shared_workbench")
 		host = load("res://main.tscn").instantiate()
+		host.ready.connect(_set_stock_held_canvas_extent,CONNECT_ONE_SHOT)
 		root.add_child(host)
 		root.size = Vector2i(1280,800)
 		if await _await_workbench_mount("ordinary Workbench initializes without atomic submission"):
