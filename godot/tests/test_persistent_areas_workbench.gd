@@ -344,6 +344,21 @@ func rejection_checks() -> void:
 	phase("unsupported dependencies and native refusal atomicity")
 	var generation := int(worker.paint_state().generation)
 	var before: Dictionary = bench.applied.duplicate(true)
+	var actor_configuration: Button
+	for button: Node in bench.find_children("*","Button",true,false):
+		if button.text == "Configuration…":
+			actor_configuration = button
+			break
+	check(is_instance_valid(actor_configuration) and actor_configuration.disabled,
+		"the actor-free profile disables the installed Configuration button")
+	bench.open_actor_composition()
+	check(not is_instance_valid(bench._actor_panel) or not bench._actor_panel.visible,
+		"the actor-only inspector cannot open through a direct activation")
+	if is_instance_valid(bench._actor_panel): bench._actor_panel.hide()
+	bench.actor_interaction.set_mode("grab")
+	check(bench.actor_interaction.mode() == "paint",
+		"a disabled actor tool cannot divert the persistent painting pointer")
+	bench.actor_interaction.set_mode("paint")
 	var with_actor := before.duplicate(true)
 	with_actor.actors = [Setup.instance(Setup.BARREL,1,Vector2(400,80))]
 	with_actor.next_id = 2
