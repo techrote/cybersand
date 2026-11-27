@@ -37,10 +37,20 @@ def windows_cli_replacement(source_root: Path) -> dict[str, Path]:
 
 
 def verify_package(package_root: Path, source_root: Path) -> None:
+    verify_bound_package(package_root, hashlib.sha256(committed_binding(source_root)).hexdigest())
+
+
+def verify_bound_package(package_root: Path, binding_sha256: str | None) -> None:
     if any((package_root / name).exists() for name in FOREIGN_PATHS):
         raise ValueError("Windows evaluator contains a Linux reciprocal generator or binding")
     packaged = package_root / WINDOWS_BINDING
-    expected = committed_binding(source_root)
-    if packaged.is_symlink() or not packaged.is_file() or packaged.read_bytes().replace(b"\r\n", b"\n") != expected:
+    if binding_sha256 is None:
+        if packaged.exists() or (package_root / WINDOWS_CLI).exists():
+            raise ValueError("Reciprocal generator has no admitted source binding")
+        return
+    if packaged.is_symlink() or not packaged.is_file():
+        raise ValueError("Packaged Windows reciprocal binding missing")
+    canonical = packaged.read_bytes().replace(b"\r\n", b"\n")
+    if hashlib.sha256(canonical).hexdigest() != binding_sha256:
         raise ValueError("Packaged Windows reciprocal binding differs from the committed source")
-    check_executable(package_root / WINDOWS_CLI, json.loads(expected))
+    check_executable(package_root / WINDOWS_CLI, json.loads(canonical))

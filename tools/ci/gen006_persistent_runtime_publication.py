@@ -52,6 +52,8 @@ engine.EXECUTION_SCOPE = (
     "acceptance, arbitrary actor persistence or general GEN-006 streaming claim."
 )
 engine.BUILD_EXACT = (set(engine.BUILD_EXACT) - {_old_workflow, _old_request}) | {
+    "tools/ci/reciprocal_windows_package.py", "tools/swarm45/runtime_custody.py",
+    "godot/tools/swarm004-runtime.windows.json",
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE, engine.PRESSURE_CASE,
     "tools/ci/gen006_persistent_runtime_publication.py",
     "tools/ci/test_gen006_persistent_runtime_publication.py",

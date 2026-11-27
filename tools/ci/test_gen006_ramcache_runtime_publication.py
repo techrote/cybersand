@@ -485,6 +485,11 @@ class PublicationGuards(unittest.TestCase):
                                   "native_definition_inputs_sha256": {"example.cpp": "a" * 64}}).encode()
             (root / guard.WINDOWS_BINDING).write_bytes(binding)
             (root / guard.WINDOWS_CLI).write_bytes(content)
+            guard.verify_bound_package(root, hashlib.sha256(binding).hexdigest())
+            with self.assertRaisesRegex(ValueError, "no admitted"):
+                guard.verify_bound_package(root, None)
+            with tempfile.TemporaryDirectory() as historical:
+                guard.verify_bound_package(Path(historical), None)
             with patch.object(guard, "committed_binding", return_value=binding):
                 guard.verify_package(root, root)
                 with patch.object(guard, "definition_inputs", return_value={}):
