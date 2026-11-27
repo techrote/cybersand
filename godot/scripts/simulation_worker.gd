@@ -724,6 +724,8 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if _controlled_liquid_prepare_barrier.is_valid(): _controlled_liquid_prepare_barrier.call()
 	# Retain the previous sessions through the no-fail swap; refusal never calls
 	# clear/configure on them or changes their epochs, equipment or actor state.
+	# The native desktop constructor supplies owner policies and a player start without a MicroScenario ID.
+	var retire_generic_body_packet: bool = physical.is_empty() and definition.get("id", "") == CyberMicroScenarioContract.WORKBENCH_ID
 	var retained_actors: CyberActorPrototypeSession = _actor_session
 	var retained_usables: CyberUsableSession = _usable_session
 	_mutex.lock()
@@ -764,7 +766,7 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		_workbench_prepared_sample = -1
 		_workbench_sample = command.get("controlled_liquid_setup",{}).get("workbench_sample",{}).duplicate(true)
 		_workbench_extent = Vector2i(definition.extent[0],definition.extent[1]) if definition.has("extent") else Vector2i.ZERO
-		if definition.id == CyberMicroScenarioContract.WORKBENCH_ID and physical.is_empty():
+		if retire_generic_body_packet:
 			# An accepted actor-free Workbench owns no generic Main body packet.
 			# Retiring that old copied input is part of the same no-fail swap.
 			_rigid_body_states = PackedFloat32Array()
