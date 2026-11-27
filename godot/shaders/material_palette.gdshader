@@ -34,6 +34,8 @@ uniform vec4 rigid_body_colour : source_color = vec4(0.95, 0.12, 0.16, 1.0);
 // Alias of the CanvasItem TEXTURE. A named sampler lets bounded helper
 // functions inspect four neighbours without a second image or upload.
 uniform bool ambient_sources_absent = false;
+uniform bool ambient_bounds_valid = false;
+uniform vec4 ambient_source_bounds = vec4(0.0);
 uniform sampler2D current_world_texture : filter_nearest, repeat_disable;
 uniform sampler2D previous_world_texture : filter_nearest, repeat_disable;
 uniform sampler2D material_lut : source_color, filter_nearest, repeat_disable;
@@ -2804,7 +2806,12 @@ void fragment() {
 		colour = mix(previous_colour, colour, snapshot_blend);
 	}
 	if (material_id == 0 && inside_view) {
-		if (ambient_sources_absent) {
+		// Growth, sparks, embers and fumes sample the current publication at
+		// most nine cells away. Vapour can outlive the originating material.
+		bool outside_sources = ambient_bounds_valid && (
+			any(lessThan(world_pixel, ambient_source_bounds.xy - vec2(9.0))) ||
+			any(greaterThanEqual(world_pixel, ambient_source_bounds.zw + vec2(9.0))));
+		if (ambient_sources_absent || outside_sources) {
 			colour = apply_vapour_trail(colour, world_pixel);
 		} else {
 			colour = apply_ambient_particles(colour, world_pixel);

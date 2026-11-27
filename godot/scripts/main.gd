@@ -1789,6 +1789,8 @@ var _material_pending_rectangles := PackedInt32Array()
 var _material_image_patch_usec: int = 0
 var _check_ambient_sources := OS.get_environment("CYBERSAND_WORKBENCH_EMPTY_EFFECTS") == "1"
 var _ambient_sources_absent := false
+var _ambient_source_bounds := Rect2i()
+var _ambient_bounds_valid := false
 var _vapour_history_possible := false
 
 var material_appearance_lut: ImageTexture
@@ -7235,20 +7237,52 @@ func view_content_rect() -> Rect2:
 # cells. These four IDs can never seed those effects. Classify the actual
 # first channel of published bytes, independently of authored scene labels,
 # native statistics, condition, and simulation revisions.
-func _no_ambient_source(plane: Image) -> bool:
-	if not _check_ambient_sources or shared_workbench == null or _workbench_submission_requested \
-			or plane == null or plane.is_empty() or plane.has_mipmaps() \
-			or plane.get_format() not in [Image.FORMAT_R8,Image.FORMAT_RG8]: return false
+func _ambient_id_plane(plane: Image) -> Image:
 	var ids := plane
 	if plane.get_format() == Image.FORMAT_RG8:
 		ids = plane.duplicate()
 		ids.convert(Image.FORMAT_R8)
+	return ids
+
+
+func _no_ambient_source(ids: Image) -> bool:
 	var bytes := ids.get_data()
 	return bytes.count(0) + bytes.count(2) + bytes.count(3) + bytes.count(58) == bytes.size()
 
 
+func _reset_ambient_bounds(plane: Image) -> void:
+	_ambient_source_bounds = Rect2i()
+	_ambient_sources_absent = false
+	_ambient_bounds_valid = _check_ambient_sources and shared_workbench != null and not _workbench_submission_requested \
+		and plane != null and not plane.is_empty() and not plane.has_mipmaps() \
+		and plane.get_format() in [Image.FORMAT_R8, Image.FORMAT_RG8]
+	if not _ambient_bounds_valid: return
+	var ids := _ambient_id_plane(plane)
+	_ambient_sources_absent = _no_ambient_source(ids)
+	if _ambient_sources_absent: return
+	# Whole-image edits can introduce sources anywhere. Classify at most 16
+	# disjoint rectangles. Normal patch publications expand this bound directly.
+	var extent := ids.get_size()
+	var block := Vector2i(ceili(extent.x / 4.0), ceili(extent.y / 4.0))
+	for y in range(0, extent.y, block.y):
+		for x in range(0, extent.x, block.x):
+			var start := Vector2i(x, y)
+			var area := Rect2i(start, block.min(extent - start))
+			if not _no_ambient_source(ids.get_region(area)):
+				_ambient_source_bounds = _ambient_source_bounds.merge(area) if _ambient_source_bounds.has_area() else area
+
+
+func _patch_ambient_bounds(plane: Image, area: Rect2i) -> void:
+	if not _ambient_bounds_valid: return
+	# The old bound already contains every possible source in this patch.
+	if _ambient_source_bounds.has_area() and _ambient_source_bounds.encloses(area): return
+	if _no_ambient_source(_ambient_id_plane(plane)): return
+	_ambient_source_bounds = _ambient_source_bounds.merge(area) if _ambient_source_bounds.has_area() else area
+	_ambient_sources_absent = false
+
+
 func create_render_textures() -> void:
-	_ambient_sources_absent = _no_ambient_source(image)
+	_reset_ambient_bounds(image)
 	_material_deadline.cancel("textures_recreated")
 	_material_steps.cancel("textures_recreated")
 	material_presentation_timeline.reset()
@@ -7279,7 +7313,7 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		render_image_format,
 		material_cells
 	)
-	_ambient_sources_absent = _no_ambient_source(image)
+	_reset_ambient_bounds(image)
 	_material_pending_rectangles = _full_material_rectangle()
 	_material_image_patch_usec = Time.get_ticks_usec() - start_usec
 	finish_texture_upload(world_revision, start_usec)
@@ -7370,7 +7404,7 @@ func apply_render_patches_to_image(
 			and image.get_width() == world_extent.x and image.get_height() == world_extent.y \
 			and image.get_format() == render_image_format and not image.has_mipmaps():
 		image.set_data(world_extent.x, world_extent.y, false, render_image_format, patch_cells)
-		_ambient_sources_absent = _no_ambient_source(image)
+		_reset_ambient_bounds(image)
 		return true
 	for metadata_offset: int in range(
 		0,
@@ -7426,7 +7460,7 @@ func apply_render_patches_to_image(
 				]
 			)
 			return false
-		if _ambient_sources_absent: _ambient_sources_absent = _no_ambient_source(patch_image)
+		_patch_ambient_bounds(patch_image, Rect2i(patch_x, patch_y, patch_width, patch_height))
 		image.blit_rect(
 			patch_image,
 			Rect2i(0, 0, patch_width, patch_height),
@@ -7792,8 +7826,15 @@ func update_shader_parameters() -> void:
 	if world_shader == null:
 		return
 	world_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
+	var bounds := Vector4(_ambient_source_bounds.position.x, _ambient_source_bounds.position.y,
+		_ambient_source_bounds.end.x, _ambient_source_bounds.end.y)
+	var localized := _ambient_bounds_valid and _ambient_source_bounds.has_area()
+	world_shader.set_shader_parameter("ambient_bounds_valid", localized)
+	world_shader.set_shader_parameter("ambient_source_bounds", bounds)
 	if glow_source_shader != null:
 		glow_source_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
+		glow_source_shader.set_shader_parameter("ambient_bounds_valid", localized)
+		glow_source_shader.set_shader_parameter("ambient_source_bounds", bounds)
 		_bind_glow_composite_proof()
 	world_shader.set_shader_parameter(
 		"world_size_px",
