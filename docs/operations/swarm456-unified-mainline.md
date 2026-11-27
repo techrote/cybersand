@@ -10,6 +10,28 @@ related-documents: [swarm456-owner-acceptance.md, swarm45-mainline-integration.m
 
 # Unified SWARM-004/005/006 mainline integration
 
+## Native consolidation on 27 November 2026
+
+The integration with Gentek, live Material Audition and Actor Compose retains the
+original reciprocal generator and both platform binding manifests. All 52
+definition inputs still match the published generator from Q7 at
+`5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f`. The combined native Workbench
+extension requires a fresh Linux/Windows build.
+
+On the unified branch the existing Actor sandbox producer builds both complete
+extensions and publishes only its four leased runtime/provenance paths. The
+Linux source run and extracted Windows run also exercise the installed generator
+with seed 4099. Each checks native admission and refusal, actual construction,
+Undo, Save and fresh-process Reopen, including the original full-plane and
+graphical oracles. The generator and historical scientific receipts keep their
+original producer identity. This run cannot publish generator changes. Such
+changes continue to require the eight-path SWARM producer.
+
+Reset an active solver-changing profile in Materials Lab before using a
+reciprocal construction Apply or Undo. These operations prepare a replacement
+World and the native owner refuses the transition while such a profile is active.
+The named profile can be reapplied after the construction operation.
+
 **Draft / HOLD.** The owner authorized one consolidated integration on 22 November
 2026. This supersedes the two separate mergedown operations in [#715](https://github.com/techrote/cybersand/pull/715)
 and [#716](https://github.com/techrote/cybersand/pull/716). It does not waive exact
