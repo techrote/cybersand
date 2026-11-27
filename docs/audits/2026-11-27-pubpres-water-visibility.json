@@ -545,5 +545,36 @@
       ]
     ],
     "decision": "The publication mutex can be changed by the independent SimulationWorker during selection. The stock Safe resolver mutates held pose state per member and has no post-selection failed-owner admission fence before submitting. Batching failure reads would widen this interval. Individual reads accounted for little time on these misses so no change was selected."
+  },
+  "independent_png_pixel_replay": {
+    "library": "Pillow 13.0.0",
+    "method": "Decode all three PNGs in each phase and compare each captured RGB channel to 255 times its raw floating-point value (one quantization level tolerance). Deltas below are measured on the decoded PNG bytes.",
+    "stages": {
+      "initial_authoring_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 113,
+        "restored_delta_RGB8": 0
+      },
+      "submerged_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 214,
+        "restored_delta_RGB8": 0
+      },
+      "water_refill_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 160,
+        "restored_delta_RGB8": 0
+      },
+      "restored_authoring_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 150,
+        "restored_delta_RGB8": 0
+      },
+      "multipart_limb_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 88,
+        "restored_delta_RGB8": 0
+      }
+    }
   }
 }
