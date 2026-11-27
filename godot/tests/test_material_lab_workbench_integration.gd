@@ -236,7 +236,7 @@ func run() -> void:
 	worker = host.simulation_worker
 	if bench != null:
 		editor = bench.paint_editor
-		panel = bench.art_batches
+		panel = bench._ensure_art_batches()
 		art = panel.executor
 	var reopening := OS.get_environment("MAT_WB_REOPEN")=="1"
 	if check(bench!=null and editor!=null,"combined source mounts full Workbench") \

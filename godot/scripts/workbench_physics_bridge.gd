@@ -1,7 +1,8 @@
 extends "res://scripts/rapier_physics_bridge.gd"
 
-# Admitted workbench assemblies contain one rigid body per stable instance.
-# Proxies own no inertia, drive, history, application fence or impulse.
+# Each physical part has one response owner; authored actors retain independent
+# stable identity above this bounded body map. Compound proxies own occupancy
+# only, never duplicate inertia, drive, history or impulse authority.
 const MAX_AGE: int = 1
 const MAX_CORNER_TRAVEL: float = 0.5
 const MAX_SESSION: int = 9007199254740991
@@ -16,6 +17,9 @@ var _response: String = ""
 var _serial: int = 0
 var _geometry := PackedFloat64Array()
 var _members: Array[Dictionary] = []
+var _actor_body_offsets := PackedInt32Array()
+var _actor_body_counts := PackedInt32Array()
+var _actor_instance_ids := PackedInt64Array()
 var _rects: Array = []
 var _history: Array[Dictionary] = []
 var _accepted_samples := PackedInt64Array()
@@ -28,18 +32,36 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 	var owner: MainLoop = Engine.get_main_loop()
 	if owner == null: return ERR_INVALID_DATA
 	var previous_session: int = int(owner.get_meta(SESSION_META,0))
-	if not _initialized or rigs.size() != _body_rids.size() or _session != 0 or previous_session < 0 or previous_session >= MAX_SESSION: return ERR_INVALID_DATA
+	if not _initialized or definitions.size() != rigs.size() or rigs.is_empty() or rigs.size() > 8 \
+		or _session != 0 or previous_session < 0 or previous_session >= MAX_SESSION: return ERR_INVALID_DATA
 	var first: int = 1
-	for slot: int in range(rigs.size()):
-		var rectangles: Array = rigs[slot].collision_rects()
-		if rigs[slot].bodies().size() != 1 or rectangles.is_empty() or first + rectangles.size() - 1 > 64: return ERR_INVALID_DATA
-		var definition: Dictionary = definitions[slot]
-		_members.append({"id":slot + 1, "instance_id":int(definition.instance_id), "generation":epoch,
-			"first_proxy":first, "count":rectangles.size(), "budget":float(definition.workbench_options.budget)})
-		_rects.append(rectangles)
-		for rect: Dictionary in rectangles:
-			_geometry.append_array(PackedFloat64Array([rect.center.x, rect.center.y, rect.size.x, rect.size.y]))
-		first += rectangles.size()
+	var body_index: int = 0
+	# Preserve the original single-body packet identities. Multipart sessions use
+	# private 1..64 body identities; the immutable session/epoch and explicit
+	# authored mapping disambiguate them from identities in every other session.
+	var legacy_identity: bool = rigs.size() == _body_rids.size()
+	for actor_slot: int in range(rigs.size()):
+		var rig_bodies: Array = rigs[actor_slot].bodies()
+		if rig_bodies.is_empty() or rig_bodies.size() > 8: return ERR_INVALID_DATA
+		var definition: Dictionary = definitions[actor_slot]
+		_actor_body_offsets.append(body_index)
+		_actor_body_counts.append(rig_bodies.size())
+		_actor_instance_ids.append(int(definition.instance_id))
+		for part: int in range(rig_bodies.size()):
+			var rectangles: Array = rigs[actor_slot].collision_rects(part)
+			if body_index >= _body_rids.size() or rig_bodies[part].get_rid() != _body_rids[body_index] \
+				or rectangles.is_empty() or rectangles.size() > 8 or first + rectangles.size() - 1 > 64: return ERR_INVALID_DATA
+			_members.append({"id":body_index + 1,
+				"instance_id":int(definition.instance_id) if legacy_identity else body_index + 1,
+				"actor_instance_id":int(definition.instance_id), "actor_slot":actor_slot, "part_index":part,
+				"generation":epoch, "first_proxy":first, "count":rectangles.size(),
+				"budget":float(definition.workbench_options.budget)})
+			_rects.append(rectangles)
+			for rect: Dictionary in rectangles:
+				_geometry.append_array(PackedFloat64Array([rect.center.x, rect.center.y, rect.size.x, rect.size.y]))
+			first += rectangles.size()
+			body_index += 1
+	if body_index != _body_rids.size(): return ERR_INVALID_DATA
 	_response = definitions[0].workbench_options.response
 	_epoch = epoch
 	_session = previous_session + 1
@@ -48,6 +70,50 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 	_accepted_samples.resize(_members.size())
 	_accepted_samples.fill(-1)
 	return OK
+
+
+func actor_body_index(actor_slot: int) -> int:
+	return _actor_body_offsets[actor_slot] if actor_slot >= 0 and actor_slot < _actor_body_offsets.size() else -1
+
+
+func actor_body_count(actor_slot: int) -> int:
+	return _actor_body_counts[actor_slot] if actor_slot >= 0 and actor_slot < _actor_body_counts.size() else 0
+
+
+func proxy_for_body(body_index: int) -> int:
+	return int(_members[body_index].first_proxy) if body_index >= 0 and body_index < _members.size() else 0
+
+
+func actor_proxy_range(actor_slot: int) -> Dictionary:
+	var start: int = actor_body_index(actor_slot)
+	var count: int = actor_body_count(actor_slot)
+	if start < 0 or count == 0: return {}
+	var last: Dictionary = _members[start + count - 1]
+	return {"first_proxy":int(_members[start].first_proxy),
+		"count":int(last.first_proxy) + int(last.count) - int(_members[start].first_proxy)}
+
+
+func equipment_parts(actor_slot: int) -> Array:
+	# Native ACT-005 hit checks consume mask IDs. Compound flyers may reserve
+	# several masks before a later actor's physical equipment body, so copying
+	# generic RID indices here would grant/refuse the wrong body's material hit.
+	var result: Array = []
+	var start: int = actor_body_index(actor_slot)
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized or start < 0: return result
+	for body_index: int in range(start, start + actor_body_count(actor_slot)):
+		# The active-body cache is refreshed before Rapier flush and may omit a
+		# sleeping part. Use the same current RID state as pack_sample: equipment
+		# mounts, parts and native occupancy must describe one physical pose.
+		var direct := PhysicsServer2D.body_get_direct_state(_body_rids[body_index])
+		if direct == null: return []
+		var pose: Transform2D = direct.transform
+		if not pose.is_finite(): return []
+		var proxy: int = proxy_for_body(body_index)
+		for rectangle: Dictionary in _rects[body_index]:
+			result.append({"body_id":proxy, "position":pose * Vector2(rectangle.center),
+				"rotation":pose.get_rotation(), "half_extents":Vector2(rectangle.size) * 0.5})
+			proxy += 1
+	return result
 
 
 func pack_sample(drives: Array[bool]) -> Dictionary:
@@ -91,7 +157,7 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 func display_pose(slot: int, frame: Dictionary) -> Transform2D:
 	# Only display transforms use this path. The actor/input/physics owners
 	# still read the authoritative main-thread RID.
-	if frame.get("session") == _session and frame.get("epoch") == _epoch:
+	if slot >= 0 and slot < _members.size() and frame.get("session") == _session and frame.get("epoch") == _epoch:
 		var member: Dictionary = _members[slot]
 		var entry: Dictionary = frame.instances.get(member.instance_id,{})
 		if entry.get("generation") == member.generation and entry.get("pose") is Transform2D:
@@ -108,7 +174,7 @@ func sampled_pose(instance_id: int, serial: int) -> Dictionary:
 	var frame: Dictionary = _history[serial % _history.size()]
 	if frame.get("serial") != serial: return {}
 	for slot: int in range(_members.size()):
-		if _members[slot].instance_id == instance_id:
+		if _members[slot].actor_instance_id == instance_id and int(_members[slot].part_index) == 0:
 			return {"pose":frame.bodies[slot].pose, "session":_session, "epoch":_epoch, "sample":serial}
 	return {}
 
@@ -211,4 +277,10 @@ func _apply(slot: int, action: Dictionary) -> void:
 func shutdown() -> void:
 	_session = 0
 	_history.clear()
+	_members.clear()
+	_rects.clear()
+	_geometry.clear()
+	_actor_body_offsets.clear()
+	_actor_body_counts.clear()
+	_actor_instance_ids.clear()
 	super.shutdown()

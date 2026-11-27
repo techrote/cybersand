@@ -6,10 +6,26 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-18
+last-reviewed: 2026-11-20
 ---
 
 # Interfaces and message contracts
+
+The [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md) adds strict
+profile version 2 alongside version 1 and an optional scene-local
+`ambient_authoring` library. Copied environments additionally carry explicit
+World generation, bounded navigation and tagged peer observations. The physical
+command ABI and native material wire formats remain unchanged. Group authoring
+uses captured run/epoch/configuration identities and all-member preflight before
+one synchronous owner commit; it grants no new body or World ownership.
+
+The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
+`ambient-observation/v1` copied environment and authored profile version 1.
+These are local value schemas. Existing physical issued observation/command
+version 2, native material formats and Rapier interfaces remain unchanged.
+`control.source = "policy"`, `control.policy = "ambient"` and the validated
+`control.ambient` profile select the adapter. Unavailable sensor fields remain
+explicitly unavailable; they do not become safe ground or an absent material.
 
 The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
 adds versioned construction options and full uint16 Water mass readback without
@@ -1072,6 +1088,13 @@ Sources: [native command and result](../../native/include/cybersand/world.hpp),
 [scene owner](../../godot/scripts/player_playground_runtime.gd).
 
 ## Physical actor control and effects
+
+The [Shared Workbench composition adapter](../systems/workbench-actor-composition.md#producer-and-policy-interface)
+exposes these existing physical issued-observation and leased-command contracts
+by stable authored instance ID. It validates controller/equipment capabilities,
+keeps inspection separate from the human pilot, and preserves body identity
+during producer takeover. Sampled packets are refused at the physical boundary.
+The optional authored control-v1 extension does not serialize command authority.
 
 **Current experimental ACT-004 / ACT-005:**
 [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)

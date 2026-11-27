@@ -2,30 +2,44 @@
 title: Art workbench provider connection, WB-ART-002 Stage 2
 status: Current
 document-kind: contract
-scope: Unmerged OpenAI Responses, NVIDIA and LM Studio art UI, collaboration preview, cancellation, traffic and qualification
+scope: Art providers, same-session collaboration, failure lifecycle, consolidated Draft UI and qualification
 canonical-for: [workbench-art-providers]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-26
 related-documents: [workbench-direct-art-batches.md, ../architecture/shared-workbench-authoring-data.md, ../reference/status-and-roadmap.md]
 ---
 
 # Art workbench provider connection — Stage 2
 
+## Collaborative owned consumers — 25 November 2026
+
+The Draft/HOLD collaborative successor preserves direct painting and adds
+Discuss, Propose, Develop and Review through the same Provider. The
+[owned transport contract](art-owned-proposal-transport.md) defines `send_owned`
+and the injected Architecture dispatch/cancel interface. Owned replies never
+emit ordinary completion-to-paint. World and applied-policy guards protect the
+actual eventual transport admission, including asynchronous preparation.
+Opening Art or a catalogue makes no request.
+
+The [native contract](art-native-context-proposals.md) defines bounded observations,
+palette/protection and zero-write preview. The [owner guide](../operations/art-workbench-collaborative-evaluation.md)
+explains exact-context authorization for remote/custom endpoints. Optional images
+are cropped from the Workbench canvas, with mapping/bytes disclosed; no desktop
+is captured. Admitted images retain their current-session audit references.
+Recent request memory is at most eight turns, 4096 characters each and 16384
+total including omission markers. Complete originals remain in Conversation
+and the redacted audit. Develop's proposal and Review's actual host receipts
+are disclosed. Replies refresh bounded memory; edited conversations require
+updated disclosure before Send. New sessions restore no old conversation or approval.
+
 ## Current candidate and controls
 
-**Unmerged candidate:** #559 Stage 2 extends `codex/agent-art-workbench-v2` and
-Draft PR #560. The [Stage-1 contract](workbench-direct-art-batches.md) owns direct
-geometry, execution-time protection, native completion and authored-start Save.
-No #531 controller, native defaults, prices, catalogs, credit gates or MCP are
-imported. Model prompt and Scanline send the current task, selected conversation
-context, drawing instructions, work area and optional canvas observation. Stored
-traffic remains separate from model context.
-
-The [integrated Draft candidate](../operations/wb-art-paint-integrated-candidate.md)
-preserves this complete interface and adds PAINT alongside it. Native authoring
-uses the repaired stored-material API and shared ordering; the provider protocol,
-model choices, conversation, diagnostics and image-observation controls remain
-owned here. The integrated workflow uses deterministic HTTP/provider fixtures;
-earlier genuine inference evidence below belongs to its original checkpoint.
+The original #559/#560 Art and PAINT integration is present in accepted main.
+Accepted #727 defines the current session-only logging contract below. The
+[Art finisher](../operations/art-workbench-final-evaluation.md) consolidates
+#763/#756/#765/#766 and subsequent responsiveness/lifecycle repairs in a new
+Draft/HOLD candidate based on `00cdb02f`. Its evidence does not qualify unrelated
+pending feature branches. The [direct art contract](workbench-direct-art-batches.md)
+owns geometry, native protection, completion and authored-start Save.
 
 Open **Art batches**, choose **Model prompt**, provider, editable model ID and base
 URL. Endpoint/model, output allowance and timeout occupy two shared rows. Enter a
@@ -39,11 +53,37 @@ native queued/executing/partial and errors are visibly distinct.
 |---|---|---|---|
 | OpenAI | Responses | `https://api.openai.com/v1` | `gpt-5.6-luna`, editable |
 | NVIDIA | Chat Completions | `https://integrate.api.nvidia.com/v1` | `nvidia/nemotron-3.5-super-vl-120b-a12b`, editable |
-| LM Studio | Chat Completions | `http://127.0.0.1:1234/v1` | `wb-art-instruct`, local tested alias, editable |
+| LM Studio | Chat Completions | `http://127.0.0.1:1234/v1` | `kat-coder-v2.5-dev-reap-50@q6_k`, editable |
+
+**Curated model menu — WB-ART-MODEL-ROSTER-001 (#750):**
+
+- **NVIDIA Build:** `moonshotai/kimi-k3_1-pro` (Kimi K3.1 Pro),
+  `mistralai/mistral-large-4-1t-a52b` (Mistral Large 4),
+  `nvidia/nemotron-3.5-super-vl-120b-a12b` (Nemotron 3.5 Super VL).
+- **LM Studio:** `kat-coder-v2.5-dev-reap-50@q6_k`,
+  `daisyrose-27b`,
+  `lfm2.5-24b-a2b-turbo-brilliance-50x-neo-max-imatrix`.
+
+The selector displays these presets above saved/custom model IDs; the model
+field and base URL remain editable and do not enforce a fixed allowlist.
+Previously saved custom IDs remain in configuration even after a preset changes.
+The nonexistent legacy ID `astra5-6` is not presented as a choice; if it was
+the active saved ID, the default is displayed instead. Historical records are
+not silently deleted. Locally served LM Studio IDs must match the active
+server's model identifiers.
+
+**Availability is unverified by a preset.** The selector makes no promise of
+API access, image support or a running local model. Confirm capabilities with
+the configured service when you use it. No availability probe or paid request
+runs on selection. The editable model ID, custom endpoint and saved history
+remain authoritative user configuration.
 
 Use **Key…** for each cloud provider. Keys stay in process memory, separately per
 provider; reopening Key always permits replacement. The button indicates a key
-is present. Profiles/history persist in `user://art-provider.cfg` without keys.
+is present. The dialog captures the provider when it opens, so switching the
+underlying selector cannot assign a key to a different provider. Closing or
+cancelling clears its text. Profiles/history persist in `user://art-provider.cfg`
+without keys; unchanged preferences are not rewritten on each Send.
 
 LM Studio sends no fabricated key; a configured local server token is accepted
 through the same Key control. Local/LAN/manual endpoints are allowed. The numeric
@@ -57,12 +97,59 @@ and HTTP timeout. Tests exercise 4096/8192/16384 separately. Responses uses
 there is no automatic expensive retry or hidden context truncation. Returned
 model/deployment names are informational. Reported input/output usage is shown;
 missing usage/cost remains `?`. Provider rate headers and errors are in Traffic;
-Stage-5 automatic pacing/advanced budgets are not claimed here.
+the optional pacing and user-priced budget controls are described below.
+
+## Responsive conversation editor and Apply/Cancel
+
+The long Art conversation editor keeps its standard **Apply/Cancel** footer
+outside a scrolling body. Note text and unusually long conversation entries
+cannot grow the dialog beyond its parent. Art-owned window minimum sizes and
+bounds account for their content scaling; 720p/1080p and 100/125/150 percent
+geometry are checked separately from physical Windows display acceptance.
+
+The message list fills in slices of at most 128 entries or 2 ms per frame.
+Cancel/reopen invalidates outstanding slices. Apply uses the complete draft even
+while its list is loading. Draft entries copy on edit; cancelling cannot mutate
+the live conversation. Per-frame stale-edit detection checks a revision and
+count, and Apply checks the full baseline again before committing, including
+out-of-band changes. Long captions read a bounded prefix while typing.
+
+Individual messages longer than 4,096 characters use **Previous/Next** parts,
+with a part-number field for direct navigation.
+Only the current part is assigned to the visible text widget. Changing parts
+retains pending edits; Apply joins all parts and preserves the original image
+reference. Cancel/reopen restores the live conversation. Normal-sized notes
+keep the ordinary single editor. This is a display/editing bound, not truncation
+of the stored conversation or an increased replay capacity.
+
+Large clipboard insertions are divided before the visible widget shapes them;
+ordinary Copy/Cut/Paste retain the pinned native editing rules. Part navigation
+and paste spanning parts reset this text editor's local Undo history, as the
+page-control tooltip explains. Cancel still discards the complete draft. Native
+World Undo/Redo remains an independent, unchanged operation.
+
+Conversations with at least 262,144 characters prepare their complete redacted
+value and audit encoding in a bounded Provider-owned worker. The editor shows
+preparation progress and keeps Cancel available; text-changing actions and
+another Apply wait. Small edits retain the immediate path. Cancel, Stop, closing
+the editor, changed conversation/World/credentials, or a retiring owner refuses
+uncommitted work. Read-only navigation and Copy remain available. A queued
+panel, editor, Workbench or host is already retiring before deferred deletion.
+
+The owner thread still performs the complete durable journal append. Only a
+successful append adopts the redacted live conversation, before traffic
+observers run. Failed or cancelled preparation never adopts a partial draft.
+Native World history remains separate. Direct and collaborative requests,
+context refresh and stage approval wait for this pending Apply or its Cancel.
+
+Conversation remains available for persistent collaboration within the current
+Workbench session. Hiding and reopening Art preserves it. A new game session
+starts empty under accepted #727; World Save/Open is a separate native contract.
 
 ## Provider/native boundary and Stop
 
-`art_provider.gd` owns one threaded Godot HTTPRequest and static payload/response
-adapters. `art_batch_panel.gd` supplies compact controls and dispatches parsed
+`art_provider.gd` owns one nonblocking Godot HTTPRequest with a 256 KiB
+download chunk and static payload/response adapters. `art_batch_panel.gd` supplies compact controls and dispatches parsed
 operations to the existing Stage-1 executor. No second simulation or controller
 is introduced. Plain JSON arrays, an operations envelope, a single shape, JSON
 fences and a recognized final packet after `</think>` are accepted. `type`/`operation` alias
@@ -91,6 +178,70 @@ visible/configurable. Automatic HTTP redirects are disabled so a configured base
 URL is the actual credential destination; HTTP redirect/error details remain
 inspectable. These are transport mechanics, not source/pricing authorization.
 
+The timeout must be finite and greater than zero, with a 3600-second maximum.
+Connection refusal, DNS/connect failure, timeout, HTTP failure, malformed JSON
+and response-capacity refusal are distinct failures. A transport or HTTP failure
+does not become an assistant turn or invented token usage. The UI shows a bounded
+redacted error while the admitted complete redacted response remains in JSONL.
+
+Responses of at least 256 KiB prepare their UTF-8 text, redaction, JSON envelope
+and reusable assistant encoding on a bounded value-only worker. It owns copied
+body/header buffers and a credential snapshot, with no SceneTree, World, native
+adapter or filesystem access. A changed credential set requires preparation
+again before publication. There is at most one retained preparation job per
+provider; repeated Send while a cancelled job drains asks the user to retry
+shortly. The main thread reaps completed tasks and owns durable append and
+assistant/native ordering.
+
+Large conversation edits have a separate finite pure-value preparation slot.
+`begin_conversation_edit` snapshots typed turns, a bounded host identity and the
+current credentials; its worker redacts and encodes without accessing the scene,
+native World or filesystem. HTTP `active` remains false. No model request is
+created. New provider dispatch refuses while this slot is preparing or ready.
+
+The deferred completion supplies only the handle, host identity and error. A
+guarded copied preview permits the owner to recognize a no-op. The one-shot
+`commit_conversation_edit` consumes the private prepared value only while the
+same credential set, provider serial, journal identity and owner guards remain
+applicable. Current image/history authority is checked on the main owner.
+After the complete durable append, the owner adopts the redacted turns before
+traffic observers run. Thus an observer's later Stop or new conversation does
+not retroactively undo the already committed edit. No caller-provided sanitized
+flag or replacement encoding grants this authority. Stop, scoped Cancel,
+owner destruction and stale credentials retire unpublished preparation; worker
+completion alone never writes an edited conversation.
+
+Large outgoing bodies also prepare their wire JSON and redacted request encoding
+on that single value-worker slot, starting at a 65,536-character payload weight.
+The request captures its configuration and context once. A main-thread dispatch
+guard checks the current UI/World generation before and after the request audit;
+cancelled or obsolete preparation cannot send HTTP. The user turn is added only
+after HTTP starts, with that request's image offset. Changing visible controls
+while preparation is pending affects a future request, not the captured one.
+
+Stop during response preparation invalidates the generation and records the
+received byte count, request identity and `response_receipt_committed=false`.
+Stop during outgoing request preparation records the request identity and
+`request_receipt_committed=false`; no request has been dispatched. Neither path
+invents an assistant reply or claims that an unpublished body was archived. A
+completed, admitted response retains its complete redacted body in the session
+log; the live/readable views remain bounded. Large-response CPU preparation and
+main-thread publication/write costs are measured separately. A response worker
+does not make synchronous durable filesystem writes instantaneous.
+
+Ordinary **X** hides Art and keeps an active model/native run alive. **Stop**
+explicitly cancels it. Hidden windows skip visible control/layout work, while
+World-epoch invalidation, native result polling, deadlines and durable receipts
+still run. Request-generation checks also fence synchronous audit observers:
+Stop during request/response/conversation logging cannot dispatch a later
+request or admit a stale native drawing batch.
+
+The nonblocking HTTP path fixes the separately reproduced accepted-connection,
+no-response teardown hang. It does not establish the cause of the owner's
+original **no listening LM Studio server → Send → immediate X** freeze. The
+[evaluator](../operations/art-workbench-final-evaluation.md) records transport,
+callback, JSON, audit, UI and native timing without exporting provider settings.
+
 ## Diagnostics and retention
 
 **Traffic…** is a separate hideable window with readable messages/instructions,
@@ -113,82 +264,101 @@ URL userinfo are redacted before display/disk/export. Authorization request
 headers are never added to the logged request object. No log can identify every
 arbitrary secret the user invents; do not put unrelated credentials in prompts.
 
+### Verified closed storage in the mergedown candidate
+
+The unmerged Art/Architecture integration verifies closed output before
+acknowledging a stored event, completed export, preference update or retained
+private history receipt. `art_provider.gd::_store_event` verifies the exact new
+record region against the submitted buffers, without rereading the previous
+archive. An interrupted append leaves prior complete records readable and makes
+that session writer read-only; it does not claim to roll back an incomplete tail
+or repeat an already completed native edit.
+
+Export closes its staging file and cooperatively verifies its exact length and
+SHA-256 before the existing native atomic replacement. Traffic displays the
+verification phase; Stop and Cancel still interrupt it. Refusal or cancellation
+does not publish that export. The destination/source alias guard is checked
+again at commit. This remains a bounded streaming export, independent of model
+context and native painting authority.
+
+`art_batch_panel.gd::_save_settings` uses the shared bounded-text
+`workbench_file_transaction.gd` helper: complete closed-byte verification followed
+by the accepted native sibling-file replacement. Existing unchanged preferences
+keep their no-write cache. A failed write retains the earlier cache and file;
+only verified success updates the cache. Successful retry or reversion to the
+committed settings clears only the save-owned error. The profile's 1 MiB bound
+and prior-profile admission refusal remain authoritative.
+
+The retained private `_persist_history_receipt` method similarly verifies the
+closed payload before publication and before advancing receipt identity/order.
+Its existing schema, frozen projection, epoch and capacity checks remain. This
+does not activate old-journal restoration in ordinary Art sessions. Neither
+helper promises `fsync`, power-loss recovery, a multi-file transaction, or a
+cross-process editing lock; complete concurrent replacements remain
+last-writer-wins.
+
+The direct `test_workbench_file_transaction.gd` and
+`test_art_storage_integrity.gd` regressions exercise verification and refusal.
+`tools/ci/run_art_storage_qualification.py` runs disposable actual OS faults and
+retry, with a shared Windows sharing-lock fixture in `windows_file_lock.py`.
+The [registered mergedown campaign](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+separates inherited failure evidence, resulting-source execution and pending
+Windows/owner acceptance. These source changes do not establish physical
+acceptance or change native runtime inputs.
+
 ### Lazy reopening and traffic storage
 
-Shared Workbench constructs the Art window hidden, but **does not scan, clone or
-resume saved traffic at Workbench startup**. Its provider reads only the small
-profile configuration and remembers the previous session path. Revealing Art
-starts incremental, read-only replay with progress in the status line. **Stop**
-cancels restoration and retains the saved pointer; revealing Art again or
-selecting Conversation retries. Send and conversation edits wait for successful
-restoration. Explicit programmatic history operations also have a synchronous
-replay API for deterministic tests.
+**Retired on 22 November 2026.** This anchor is retained for historical
+documentation links only. The former cross-session transcript-restoration
+contract has been replaced by the session-scoped design immediately below.
 
-Existing JSONL archives are **immutable during continuation**. On the first
-new traffic event, the provider creates a fresh, small segment linked to the
-saved log. Subsequent events append to that segment; the profile tracks the
-latest committed segment. No previous raw request, response, screenshot or
-image-bearing log line is copied. Replay follows the segment chain and
-preserves historical images' source paths and byte offsets. Editing or clearing
-the conversation appends a snapshot to the new segment, never rewriting the
-original audit. New schema-2 segments carry random stable identities,
-monotonic event indices, and the predecessor's committed byte length and SHA-256.
-The first modern child of an older path-only chain also seals its inherited
-ancestors. Identity, length, ordering or content mismatches refuse continuation.
-Legacy single-file archives and the original path-only linked format remain
-readable without conversion.
+### Session-scoped, write-only Art traffic — 22 November 2026
 
-Unavailable or invalid history is a visible refusal, not an empty conversation.
-The panel retains its saved pointer, refuses Send/Edit/Clear for that failed
-restore, and permits another attempt after the missing file is restored.
-Provider/model selection reads the small profile only. Shared PAINT Undo/Redo
-is an explicit history action: its confirmed result may restore and append Art
-context even while the Art window is hidden. A confirmed result arriving during
-incremental restore is retained in a bounded queue and applied once after
-success. Idle construction, selection binding, deferred UI refresh and shutdown
-do not perform that action.
+Each **new Workbench game session begins with an empty in-memory Art conversation**.
+The Send, Conversation and direct drawing controls never reopen, link, scan or
+copy traffic from a previous process or Workbench scene. The user can maintain
+multi-turn context *within the current session*; closing the session discards
+the in-memory conversation. Model/provider/endpoint/control preferences may
+still persist in `user://art-provider.cfg`, but no `traffic_path` is read or
+published. The obsolete profile pointer is removed on the next successful
+preferences save.
 
-The panel publishes `art-provider.cfg` through a complete temporary sibling and
-the existing native `CyberDemoBridge.replace_material_baseline_file` primitive.
-Export and first-segment publication use that same primitive: Godot's ordinary
-Windows rename removes an existing target before moving the source, so it is
-unsuitable here. The provider accepts a first event only after the panel's
-checkpoint callback also succeeds. If checkpoint publication fails, the old
-pointer and live conversation remain active; the unreferenced new segment is
-retained and named in the error, never silently installed by a later edit.
-Credentials remain process-local; no archive is rewritten, compressed or
-deleted by restore.
+On the first Art log event, the existing bounded writer creates **one new root
+JSONL** under `user://art-traffic/`. All following requests, provider responses,
+native results and in-session conversation changes append to that same file
+until the Workbench session ends. Hiding and reopening the Art window within
+the same Workbench does not create a second log. There is no automatic replay,
+linked predecessor, history-resume gate or full-history duplication. An
+unavailable, corrupt or deleted older log cannot prevent Send.
 
-New writes redact structured values before JSON serialization, preserving
-numeric native receipt tokens and valid JSON. The read-only legacy parser
-recognizes the earlier writer's exact unquoted credential-field `[redacted]`
-artifact, reports its use, and preserves every source byte. Unrelated malformed
-JSON, invalid UTF-8, duplicate modern segment/event identities, repeated
-explicit legacy event IDs and corrupt/unrelated image references refuse
-restoration. Modern event identity is the segment ID plus event index; optional
-opaque legacy IDs are validated within their legacy domain. Image validation checks the record boundary,
-segment membership, base64 and actual bounded PNG decoding.
+Each model request writes a redacted `request_parameters` event containing the
+provider/model/endpoint, prompt, guidance, requested work rectangle, allowed
+materials, protected areas, enabled tools, token/time/turn limits and relevant
+image/context settings. The normal request/response/native receipt events
+follow. Direct JSON painting records `manual_program`, `manual_admission`
+and terminal `manual_result`. This provides the values needed for manual
+re-entry later; it does **not** promise to reproduce an evolving World from
+prompts alone or retain exact unlogged source World state.
 
-A terminated process can leave an unterminated record at the end of its newest
-modern segment. Replay visibly recovers only complete preceding events, and a
-new child pins that committed prefix. The interrupted tail remains in the
-original file. Truncated legacy archives and malformed newline-terminated
-records are refused rather than interpreted as crash recovery.
+`Traffic…` displays the current session file path and can explicitly export
+it. Existing legacy and linked archives remain **unchanged** on disk, but are
+never attached to a new game session. The legacy archive parser remains
+available for standalone read-only diagnostics and old evidence tests; it is
+not part of the normal UI lifecycle. No automatic migration, deletion or
+cleanup is performed.
 
-**Save full JSONL…** is the only operation that materializes the whole session
-again: it streams the linked segments in order when explicitly requested.
-The Traffic window polls bounded export work while remaining responsive;
-**Cancel export** and ordinary **Stop** interrupt the operation. A private
-`.partial` sibling is published through the native replacement operation only
-after validation and completion.
-Cancellation or refusal preserves an existing destination. Missing, invalid or
-circular parent chains cannot produce a successful partial export. The live
-Traffic view remains bounded. A Workbench launch with existing saved traffic
-must create **zero** new traffic files and copy **zero** historical bytes.
-The exported file is the complete raw audit in segment order, including the
-original headers and segment-relative image references. Reopening a conversation
-uses its retained linked archives; this byte-exact audit export is not a
-single-file conversation import format.
+PAINT's native authoritative Undo/Redo is independent of Art. When an Art
+window exists, confirmed Undo/Redo events may be appended to its current
+session log. Without an Art session, native editing does not force the Art
+panel or create a cross-session receipt journal. Old `user://art-pending-history`
+records are preserved as historical data and never injected into a new
+session. Disk logging failures remain visible, but must not retroactively
+repeat a native edit.
+
+**Scope boundary:** This is session-local authoring history, not a durable
+conversation database. Save/Open for the authored World and PAINT's own
+material history retain their existing independent contracts. New model
+requests must never trust a stale previous-session continuation pointer.
 
 ### Explicit capacity outcomes
 
@@ -209,18 +379,34 @@ capacity. Existing content exceeding a bound is preserved with a visible
 refusal; full audit export does not accumulate the transcript in memory.
 These are safety capacities, not changes to native World dimensions.
 
+The native-history journal admits at most 4096 committed records, 64 MiB in
+total and 256 KiB per record. Only the corresponding pending receipt IDs and
+fixed-size content digests enter the provider's commit tracker. Filename, source,
+epoch, UTF-8, complete-record and capacity failures refuse replay while keeping
+original data. Unpublished temporary files do not count as committed receipts.
+An unavailable journal may retain at most 64 receipts / 4 MiB in process for
+explicit retry while Workbench stays open; reaching either limit is a visible
+persistence failure, never an unbounded or silently dropping queue. The profile
+reader has a separate 1 MiB bound.
+
 `test_art_lazy_traffic.gd` covers deferred replay and linked append.
 `test_art_traffic_panel_safety.gd` exercises the actual mounted controls for
 unavailable-history refusal/retry, model selection, failed-append pointer
-retention, cancellable export and explicit conversation clearing. Runtime
+retention, cancellable export and explicit conversation clearing.
+`test_art_history_durability.gd` and its process runner exercise real filesystem
+failures, repair, restart and the raw-event/conversation crash boundary.
+`test_art_history_receipt_identity.gd` covers pending-ID capacity, exact
+source/content/epoch matching, provisional replay state, legacy result identity,
+credential redaction and clear/edit deduplication. Runtime
 measurements and platform qualifications belong to the
-[dated finisher evidence](../audits/2026-11-20-wb-art-traffic-lifetime.md);
+[durability qualification record](../audits/2026-11-21-gentek691-art-durability.md);
 passing source checks alone does not establish Windows acceptance.
 
 ## Reproducible qualification and local setup
 
-The original Stage-2 checkpoint used unchanged main native libraries. The
-integrated repair requires its newly built source-matched GDExtension.
+The 2026-11-11 Stage-2/integration qualification below is historical execution
+evidence for its own source and native runtime. The current Art finisher reuses
+accepted main's source-matched native libraries without rebuilding them.
 Real-native and cloud-adapter fixture tests are separate from genuine inference.
 
 ```powershell
@@ -272,8 +458,10 @@ promotion are implied by this implementation.
 ## Collaboration, scanline and pacing preview
 
 Model prompt and Scanline keep a conversation for the mounted workbench. Turns
-limits requests per Send, including refusals and rate retries. Zero continues
-until Stop, completion or another limit. Run s adds an
+limits requests per Send, including refusals and rate retries. Zero requires a
+positive Run s limit. Send refuses when both are zero, even if an estimated
+spending ceiling is set. A positive Turns limit still permits Run s to be zero;
+Stop remains available in either finite mode. Run s adds an
 optional elapsed-time ceiling. After native completion, the next request can
 use the actual changed count and world epoch. An empty array ends the run.
 Stop cancels pending inference, pacing and queued native work. Clear starts
@@ -314,8 +502,9 @@ totals were 11,900 and 6,707 tokens. This was text-only and predates the
 compacted reasoning-prefix omission. The rendered PNG and traffic retain
 the result for owner review.
 
-The workbench restores the last conversation from saved traffic into a
-separate log file on reopen. Full resends historical image bytes when Image
+Hiding and reopening Art preserves its in-memory conversation within the same
+Workbench session. New game sessions start empty; no prior audit is restored.
+Full context can include images retained in the current session when Image
 is enabled and identifies omitted images otherwise. Spend optionally stops
 subsequent requests at a user-priced
 estimate from reported tokens. One response can exceed the ceiling. Rate waits use reported provider timing.
@@ -329,10 +518,9 @@ point-pair polylines and single pixel x/y forms are accepted. Traffic records
 the number of usable primitives. OpenAI retains its existing world-coordinate
 protocol. Native scope, protection and cancellation remain authoritative.
 
-The NVIDIA model dropdown includes Qwen3 Next Instruct, Qwen2.5 Coder,
-Nemotron Lightning and Nemotron Super VL. The two Nemotron presets disable
-thinking for direct drawing to leave output tokens for the drawing packet.
-These presets do not restrict manual model IDs.
+The NVIDIA and LM Studio curated model identifiers are listed above. Manual
+model IDs remain unrestricted. Existing Nemotron request-template compatibility
+is retained; this is not a guarantee of service availability.
 
 
 ### 2026-11-11 scanline qualification

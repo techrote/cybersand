@@ -86,7 +86,8 @@ func test_controls() -> void:
 	host.test_focus=true
 	await ticks(3)
 	check(session._commands[0].is_empty(),"restored focus with held E stays neutral")
-	check(ui.select_instance(2),"switch to Midge")
+	check(ui.select_instance(2) and ui.pilot_id()==1,"inspect Midge without stealing pilot")
+	check(ui.pilot_instance(2),"explicitly pilot Midge")
 	await ticks(4)
 	check(session._commands[0].is_empty() and session._commands[1].is_empty(),"held input cannot transfer actors")
 	# Return the unpiloted Midge to its saved attitude opposite the wall.
@@ -103,7 +104,9 @@ func test_controls() -> void:
 	check(ui.toggle_pause() and session._commands[1].is_empty(),"pause immediately retires held ports")
 	check(ui.toggle_pause() and await ticks(3) and session._commands[1].is_empty(),"held ports cannot resume after pause")
 	release(); await ticks(2)
-	check(ui.select_instance(3) and ui.pilot_slot<0,"passive prop has no pilot")
+	check(ui.select_instance(3) and ui.pilot_id()==2,"inspect passive prop without changing pilot")
+	ui.release_pilot()
+	check(ui.pilot_slot<0,"explicit observer releases human input")
 
 func run() -> void:
 	var pad := CyberPlayerPlaygroundInput.from_state({},Vector2(0.3,-0.7),Vector3i(1,1,0),-1.0)

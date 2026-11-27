@@ -2,6 +2,8 @@ extends RefCounted
 
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
+const ActorCatalog = preload("res://scripts/workbench_actor_catalog.gd")
+const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 # The first nine are the powders a 4 x 24 source may emit; later entries are
@@ -55,6 +57,10 @@ const GUNPOWDER := 26
 const COAL := 27
 const STRESS_LABEL := "stress-canvas"
 const BUILTIN_LABELS := [DEFAULT_LABEL,BENCH_LABEL,STRESS_LABEL]
+# Actor workshop is an additive ordinary authored start. Keep the historical
+# terrain-fixture BUILTIN_LABELS inputs stable.
+const MIXED_ACTOR_LABEL := "mixed-actor-workshop"
+const ACTOR_LABELS := [MIXED_ACTOR_LABEL]
 # IN-TOOLS #361 integrated leak / drain / nozzle apparatus. Kept apart from
 # BUILTIN_LABELS so terrain-only fixture exporters keep their exact inputs.
 const LIQUID_LAB_LABEL := "liquid-lab"
@@ -333,7 +339,48 @@ static func builtin(label: String, policy: PackedInt32Array) -> Dictionary:
 	if label == STRESS_LABEL: return stress_canvas(policy)
 	if label == LIQUID_LAB_LABEL: return liquid_lab(policy)
 	if label == RESERVOIR_LAB_LABEL: return reservoir_lab(policy)
+	if label == MIXED_ACTOR_LABEL: return mixed_actor_workshop(policy)
 	return {}
+
+
+# A normal Setup-v2 starting recipe, not a second application or live snapshot.
+# Separate short patrol lanes make the six independent controllers readable.
+# Sand is deliberately within the crawler's legitimate local equipment reach;
+# the runner stamps bricks and the skimmer's mounted lance adds visible Water.
+static func mixed_actor_workshop(policy: PackedInt32Array) -> Dictionary:
+	var data := fresh(policy, Vector2i(1024,512))
+	var e: Array = data.edits
+	_box(e, Vector2i(0,376), Vector2i(1024,388), WALL)
+	_box(e, Vector2i(0,80), Vector2i(8,376), WALL)
+	_box(e, Vector2i(1016,80), Vector2i(1024,376), WALL)
+	# Low traversable steps and breakable faces, with open space overhead.
+	_box(e, Vector2i(180,368), Vector2i(196,376), WOOD)
+	_box(e, Vector2i(202,360), Vector2i(218,376), WOOD)
+	_box(e, Vector2i(322,368), Vector2i(382,376), SAND)
+	_box(e, Vector2i(366,356), Vector2i(382,368), SAND)
+	_box(e, Vector2i(536,368), Vector2i(552,376), WALL)
+	_box(e, Vector2i(562,360), Vector2i(578,376), WALL)
+	_box(e, Vector2i(800,348), Vector2i(896,352), WOOD)
+	_box(e, Vector2i(790,372), Vector2i(800,376), WALL)
+	_box(e, Vector2i(896,372), Vector2i(906,376), WALL)
+	# Six live actors, each with a stable authored ID and explicit authority.
+	var flyer := Fleet.stable_id(0)
+	data.actors = [instance(flyer,1,Vector2(116,232)),
+		instance("runner",2,Vector2(156,354)),
+		# Ground traction needs actual Rapier support. Approach the loose sand
+		# from the solid floor so the existing vacuum can clear its near face.
+		instance("crawler",3,Vector2(300,350)),
+		instance("skimmer",4,Vector2(834,278)),
+		instance("stuntbuggy",5,Vector2(510,350)),
+		instance(BARREL,6,Vector2(720,350))]
+	for actor: Dictionary in data.actors:
+		actor.control = ActorCatalog.default_control(str(actor.model))
+	data.actors[4].control.source = "policy"
+	data.actors[4].control.policy = "fixture"
+	data.next_id = 7
+	data.selected = 1
+	data.material = SAND
+	return data
 
 # Built-in "liquid-lab" equipment apparatus (#361; used only while no user file
 # of that name exists). Left to right in one 480 x 270 view: an elevated
@@ -412,9 +459,13 @@ static func reservoir_lab(policy: PackedInt32Array) -> Dictionary:
 	return data
 
 static func instance(model: String, id: int, pos: Vector2) -> Dictionary:
-	var index := Fleet.index_for_id(model)
-	return {"id":id,"model":model,"hash":Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1",
+	var actor := {"id":id,"model":model,"hash":ActorCatalog.definition_hash(model),
 		"spawn":[pos.x,pos.y],"options":DEFAULT_OPTIONS.duplicate()}
+	# Keep original flyer/barrel saves byte-compatible until their controller is
+	# explicitly edited. New physical models author their controller at creation.
+	if Fleet.index_for_id(model) < 0 and model != BARREL:
+		actor["control"] = ActorCatalog.default_control(model)
+	return actor
 
 static func extent_of(setup: Dictionary) -> Vector2i:
 	return Vector2i(int(setup.extent[0]),int(setup.extent[1]))
@@ -423,7 +474,7 @@ static func point(pair: Array) -> Vector2:
 	return Vector2(float(pair[0]),float(pair[1]))
 
 static func bounds(model: String) -> Rect2:
-	return Rect2(-4,-7,8,14) if model == BARREL else Fleet.bounds(Fleet.index_for_id(model))
+	return ActorCatalog.bounds(model)
 
 static func _keys(obj: Variant, fields: Array) -> bool:
 	return obj is Dictionary and obj.size() == fields.size() and obj.has_all(fields)
@@ -435,14 +486,17 @@ static func _integer(value: Variant, low: int, high: int) -> bool:
 	return _number(value,low,high) and floor(value) == value
 
 static func _actor_error(a: Variant, size: Vector2i, response: String) -> String:
-	if not _keys(a,["id","model","hash","spawn","options"]) or not _integer(a.id,1,2147483646) or not a.model is String:
+	if not a is Dictionary or not _keys(a,["id","model","hash","spawn","options"] + (["control"] if a.has("control") else [])) \
+			or not _integer(a.id,1,2147483646) or not a.model is String:
 		return "Invalid actor fields or instance ID."
 	var model := str(a.model)
-	var index := Fleet.index_for_id(model)
-	if model != BARREL and index < 0:
+	if not ActorCatalog.has_model(model):
 		return "Unavailable actor definition: " + model
-	if a.hash != (Fleet.definition_hash(index) if index >= 0 else "reference-barrel-v1"):
+	if a.hash != ActorCatalog.definition_hash(model):
 		return "Definition changed for " + model + ". Reload definitions or use its original authoring records."
+	if a.has("control"):
+		var control_error := ActorCatalog.control_error(model,a.control)
+		if not control_error.is_empty(): return control_error
 	if not a.spawn is Array or a.spawn.size() != 2 or not _number(a.spawn[0],0,size.x) or not _number(a.spawn[1],0,size.y):
 		return "Invalid saved spawn."
 	var body_bounds := bounds(model)
@@ -456,6 +510,13 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 		var high := 80.0 if key == "budget" else (8.0 if key == "boost_multiplier" else 64.0)
 		if not _number(a.options[key],low,high):
 			return "Body setting outside admission: " + key
+	if model != BARREL and Fleet.index_for_id(model) < 0:
+		for key: String in ["thrust_multiplier","torque_multiplier","boost_multiplier"]:
+			if a.options[key] != DEFAULT_OPTIONS[key]:
+				return "The " + key.replace("_"," ") + " setting belongs to Workbench flyers; reset it before choosing " + model + "."
+		if StringName(model) in ActorCatalog.Flight.IDS \
+				and (a.options.mass_multiplier != 1.0 or a.options.inertia_multiplier != 1.0):
+			return "4LY profiles retain their authored mass and inertia; both multipliers must be 1."
 	if response == "RFT" and a.options.budget != 20.0:
 		return "RFT requires a budget of 20 on every body."
 	return ""
@@ -493,7 +554,7 @@ static func _stamp_material(value: Variant) -> bool:
 	return bool(_extra_stamp_materials[id])
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else [])) \
+	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else []) + (["ambient_authoring"] if value.has("ambient_authoring") else [])) \
 			or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
@@ -514,6 +575,8 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		if not error.is_empty(): return error
 		if ids.has(int(a.id)) or a.id >= value.next_id: return "Duplicate or retired instance ID."
 		ids[int(a.id)] = true
+	var capacity_error := ActorCatalog.capacity_error(value.actors)
+	if not capacity_error.is_empty(): return capacity_error
 	if not _integer(value.selected,0,2147483646) or (value.selected != 0 and not ids.has(int(value.selected))):
 		return "Selected instance does not exist."
 	if not value.edits is Array: return "Invalid starting paint history."
@@ -527,6 +590,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid liquid policy envelope."
 	for word: Variant in value.liquid_policy:
 		if not _integer(word,-2147483648,2147483647): return "Invalid liquid policy word."
+	if value.has("ambient_authoring"):
+		var library_error: String = AmbientAuthoring.validate(value.ambient_authoring)
+		if not library_error.is_empty(): return "Ambient profile library: " + library_error
 	if value.has(EQUIPMENT_KEY):
 		var equipment_error := Equipment.validate(value[EQUIPMENT_KEY],size)
 		if not equipment_error.is_empty(): return "Liquid equipment: " + equipment_error
@@ -537,8 +603,10 @@ static func physical_definitions(setup: Dictionary) -> Array:
 	for actor: Dictionary in setup.actors:
 		var options: Dictionary = actor.options.duplicate()
 		options.response = setup.response
-		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":"passive" if actor.model == BARREL else "human",
-			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup)})
+		var control := ActorCatalog.control_for(actor)
+		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":ActorCatalog.producer_for(str(control.source)),
+			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup),
+			"workbench_control":control,"usable_index":int(control.usable_index)})
 	return result
 
 # Discs use the same integer circle and clipped extent as native paint_disc.
@@ -642,6 +710,19 @@ static func write_named(label: String, setup: Dictionary) -> String:
 		return "Could not replace the named setup (%s)." % error_string(result)
 	return ""
 
+
+# All three authored formats use this after strict Setup.validate, so an
+# optional control block has the same numeric types after ordinary, generated
+# or material-baseline Save/Load. This never restores a live command or lease.
+static func canonical_actor_numbers(actor: Dictionary) -> void:
+	actor.id = int(actor.id)
+	if actor.has("control"):
+		for key: String in ["version","decision_ticks","usable_index"]:
+			actor.control[key] = int(actor.control[key])
+		if actor.control.has("ambient"):
+			actor.control.ambient = ActorCatalog.AmbientProfile.canonicalize(actor.control.ambient)
+
+
 static func read_named(label: String) -> Dictionary:
 	var path := _path(label)
 	if path.is_empty():
@@ -666,7 +747,9 @@ static func read_named(label: String) -> Dictionary:
 	for i: int in setup_data.edits.size():
 		setup_data.edits[i] = Array(PackedInt32Array(setup_data.edits[i]))
 	for a: Dictionary in setup_data.actors:
-		a.id = int(a.id)
+		canonical_actor_numbers(a)
 	if setup_data.has(EQUIPMENT_KEY):
 		setup_data[EQUIPMENT_KEY] = Equipment.canonical(setup_data[EQUIPMENT_KEY])
+	if setup_data.has("ambient_authoring"):
+		setup_data["ambient_authoring"] = AmbientAuthoring.canonicalize(setup_data.ambient_authoring)
 	return {"setup":setup_data}

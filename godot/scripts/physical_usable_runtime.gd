@@ -25,6 +25,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 	var body_owners: Dictionary = {}
 	var device_history: Dictionary = {} # At most eight actors × ten catalogue processors.
 	var active_world: Object
+	var world_extent := Vector2i(1024,1024)
 	var last_error: String = ""
 	var source_diagnostic: Dictionary = {}
 
@@ -42,7 +43,11 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		last_error = ""
 		source_diagnostic.clear()
 
-	func advance_physical(delta: float, world: Object, next_frame: Dictionary, requests: Array) -> void:
+	func advance_physical(delta: float, world: Object, next_frame: Dictionary, requests: Array,
+			extent: Vector2i = Vector2i(1024,1024)) -> void:
+		if extent.x < 1 or extent.y < 1 or extent.x > 2048 or extent.y > 2048:
+			last_error = "world_extent"
+			return
 		var error: String = CyberPhysicalUsableRuntime.frame_error(next_frame)
 		if not error.is_empty():
 			last_error = error
@@ -76,6 +81,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		last_error = ""
 		_reset_budget()
 		active_world = world
+		world_extent = extent
 		body_owners.clear()
 		_centres.resize(MAX_ACTORS)
 		for actor: Dictionary in frame.actors:
@@ -329,6 +335,11 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		read_count_last += 1
 		return int(active_world.rigid_body_id_at(point.x, point.y))
 
+	func _inside_world(point: Vector2i) -> bool:
+		# The existing exclusive World owner supplies its accepted canvas bounds;
+		# the sampled UsableRuntime keeps its separate 1024-square contract.
+		return point.x >= 0 and point.y >= 0 and point.x < world_extent.x and point.y < world_extent.y
+
 	func _source_clear(pose: Dictionary, world: Object) -> bool:
 		var source: Vector2 = pose.position
 		var target: Vector2 = pose.muzzle
@@ -483,8 +494,9 @@ func reset(epoch: int = -1) -> void:
 	_engine.reset_physical(epoch)
 
 
-func step(delta: float, world: Object, frame: Dictionary, requests: Array = []) -> Dictionary:
-	_engine.advance_physical(delta, world, frame, requests)
+func step(delta: float, world: Object, frame: Dictionary, requests: Array = [],
+		extent: Vector2i = Vector2i(1024,1024)) -> Dictionary:
+	_engine.advance_physical(delta, world, frame, requests, extent)
 	return snapshot()
 
 

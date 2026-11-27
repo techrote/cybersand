@@ -97,7 +97,7 @@ def main() -> int:
             env["CYBERSAND_GENTEK2048_PHASE"]=phase
             env["CYBERSAND_GENTEK2048_PROCESS"]=str(uuid.uuid4())
             marker=rf"GENTEK2048_RESULTS phase={phase} checks=[1-9][0-9]* failures=0 complete=true"
-            receipts[phase]=execute(phase,base+display+["--script","res://tests/test_gentek2048_workbench.gd"],
+            receipts[phase]=execute(phase,base+display+["--script","res://tests/fixtures/gentek2048_workbench.gd"],
                                     env,out,args.timeout,marker)
             if not receipts[phase]["passed"]: break
     reports={}
@@ -112,6 +112,7 @@ def main() -> int:
         for author, reopen in zip(native_cases(reports["author"]),native_cases(reports["reopen"])):
             for key in ("case","origin","seed","modules","zones","native_chunks","native_material_sha256","recipe_sha256","material_bytes","edits"):
                 if author[key]!=reopen[key]: complete=False
+            if not args.headless and (author["display"]=="headless" or reopen["display"]=="headless"): complete=False
             if author["material_bytes"]!=2048*2048 or author["native_chunks"]!=256: complete=False
     passed=complete and len(receipts)==3 and all(v["passed"] for v in receipts.values())
     summary=dict(source=identity,receipts=receipts,reports=reports,passed=passed,

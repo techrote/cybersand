@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Selection and Test It procedure for the source-qualified Draft/HOLD 80-Gentek integration candidate
 canonical-for: [gentek80-selection-and-evaluation]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../systems/architectural-generator.md, architectural-generator-playtest.md, ../research/gentek-80-integration-001.md]
 ---
 
@@ -18,12 +18,17 @@ receipts identify what was actually built and executed.
 
 ## Integration with accepted Workbench main
 
-The final integration reconciles accepted main
-`7b03aa437561ec63e31fd09531171360ab60eeb4`, including lazy Art traffic restoration
-and large-landscape host-claim admission. The catalogue, six reviewed CLASSIC
-repairs, native sources and retained runtime manifests remain unchanged from
-the independently accepted `bf1bd8c8` candidate. Its complete gallery retains
-its original source identity; combined-Workbench execution is recorded separately.
+PR #691 reconciles accepted main
+`69209acaffb34ebe18c45e19290b5976b7fb2c82`, including accepted Water, actor
+composition, SCRIPT-HOTPATH, lazy Art traffic restoration and large-landscape
+host-claim admission. Its Art durability repair preserves confirmed native
+Undo/Redo receipts through profile and archive failures. That repair changes no
+Gentek geometry, Water behavior, actor composition or production defaults.
+The complete public gallery retains its original source identity. Use the
+delivered `candidate-manifest.json` and the current
+[PR qualification handoff](https://github.com/techrote/cybersand/pull/691) for the
+actual application source, native library identity, qualification runs and ZIP
+hash; historical runtime identities are not the delivered package's authority.
 
 The bounded supplemental runner is
 `python tools/architecture/gentek80_main_integration.py --godot <pinned-Godot-4.7> --output <new-evidence-directory> --fixture-dir <pinned-landscape-fixtures> --graphical`.
@@ -37,10 +42,11 @@ host-claim manifest and refuses changed fixture, source or runtime identities.
 
 This focused integration run supplements the existing native/project/UI,
 installed-preview, paint, Art lifetime and host-admission suites. It does not
-replace their receipts or require re-rendering the unchanged complete catalogue.
-Actual platform results and the exact combined application SHA belong to the
-dated PR qualification handoff. The native manifests keep their original build
-SHA; an updated Windows package records its application SHA separately.
+replace the full 80-style gallery, ordinary Workbench or extracted Windows
+package gates required for the repaired PR #691 publication. Prior results keep
+their original source identities. Actual platform results and the exact combined
+application SHA belong to the dated PR qualification handoff; package and native
+manifests record their respective application and build identities.
 
 ## Launch and select
 
@@ -61,6 +67,18 @@ seed **605**, turn automatic tunnels off to inspect the uncut structure, and lea
 doors/windows on. Click **Generate preview**, inspect the completed native map,
 then **Install into workbench**. Installation replaces the current World only
 after confirmation; save valued work before installing another map.
+
+### Qualifying 2048-square authoring
+
+Ready PRs touching the 2048 generator, its native runtime or its fixture run
+the GENTEK-2048 workflow on Linux and Windows. The scoped fixture lives in
+`godot/tests/fixtures/gentek2048_workbench.gd`. Its runner registers two
+graphical processes sharing one isolated profile. The first installs, edits
+and saves both 2048-square maps. The second reopens both and compares their
+native material, recipe, chunk and edit receipts. A standalone invocation
+without a phase cannot perform that test. Use
+`python tools/architecture/qualify_gentek2048.py --godot <Godot-4.7> --out <new-directory>`
+from a clean checkout with the source-matched runtime.
 
 ## Suggested first comparisons
 

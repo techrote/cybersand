@@ -1,0 +1,96 @@
+{
+  "artifact_bytes": 22544923,
+  "artifact_id": 14974697855,
+  "artifact_sha256": "4ad0e55840c858dbc738cdeca003d4cfc0dff2d0df08ae1838d5bc14a5a58a68",
+  "checks": 126,
+  "extracted_evaluator": "not-run",
+  "failure_checks": [
+    "biomechanical-vault: native and Rapier owners both advance the sampled route"
+  ],
+  "format": "cybersand-m67-failed-windows-measurement-review-c-v1",
+  "gameplay_sha256": "27ba4a6079cd64849904b930c6c4d18790a43bb32ffc60bc0f3e6440fae11f58",
+  "job_id": 138844605971,
+  "native_sha256": "0ef1dcb99e679a9d976ef7e23c144b60de85fa5063e80c79f9f581c377cc6fcf",
+  "native_tick_measurement": "legacy main.latest_snapshot render cache; independent diagnostic is direct worker publication",
+  "observed_contact_scope": "Each retained route ends with exactly 12 consecutive recorded grounded samples within 16 cells of its landing x; this is a selected route observation, not broad playability.",
+  "original_pilot": {
+    "attempts": 75,
+    "evaluable": 72,
+    "states": {
+      "completed": 68,
+      "partial": 4,
+      "refused": 2,
+      "stopped": 1
+    }
+  },
+  "packaging": "not-run",
+  "physical_owner_acceptance": "pending",
+  "process_count": 64,
+  "process_statuses": {
+    "failed": 1,
+    "passed": 63
+  },
+  "qualification_sha256": "fa47f6e9537b9e288be73acd1fa6ff32cfbb0b73b9ef8ea0b7153776d0e3586f",
+  "qualification_status": "failed",
+  "routes": [
+    {
+      "actor_ticks": 1102,
+      "cached_gap_max": 4,
+      "cached_gap_min": 0,
+      "cached_native_ticks": 1100,
+      "command_refusals": 0,
+      "contacts": 12,
+      "fresh_published_tick": 1102,
+      "id": "orbital-fabrication",
+      "left_corridor": false,
+      "ordinary_history": true,
+      "status": "completed",
+      "worker_failed": false
+    },
+    {
+      "actor_ticks": 1030,
+      "cached_gap_max": 5,
+      "cached_gap_min": 0,
+      "cached_native_ticks": 1028,
+      "command_refusals": 0,
+      "contacts": 12,
+      "fresh_published_tick": 1030,
+      "id": "terraced-arcology",
+      "left_corridor": false,
+      "ordinary_history": true,
+      "status": "completed",
+      "worker_failed": false
+    },
+    {
+      "actor_ticks": 1054,
+      "cached_gap_max": 4,
+      "cached_gap_min": 0,
+      "cached_native_ticks": 1053,
+      "command_refusals": 0,
+      "contacts": 12,
+      "fresh_published_tick": 1055,
+      "id": "monumental-viaduct",
+      "left_corridor": false,
+      "ordinary_history": true,
+      "status": "completed",
+      "worker_failed": false
+    },
+    {
+      "actor_ticks": 1133,
+      "cached_gap_max": 5,
+      "cached_gap_min": 0,
+      "cached_native_ticks": 1130,
+      "command_refusals": 0,
+      "contacts": 12,
+      "fresh_published_tick": 1133,
+      "id": "biomechanical-vault",
+      "left_corridor": false,
+      "ordinary_history": true,
+      "status": "completed",
+      "worker_failed": false
+    }
+  ],
+  "run_id": 45506178712,
+  "scope": "Failed enclosing source qualification. Actual completed native/render cohorts and landed routes retained; no qualified owner package or corrected-source result is inferred.",
+  "source_revision": "fc8194c00294d54a0e148aa933ccfb57ce194c6e"
+}

@@ -1,0 +1,13 @@
+{
+  "artifact_id": 14994329664,
+  "run_id": 45552888360,
+  "job_id": 138997939605,
+  "application_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "observer_commit": "52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b",
+  "bytes": 25590794,
+  "sha256": "0c13de36d1d60935a6d1e4b20ce764da670851f7199d402caf5059d493bd9447",
+  "zip_members": 156,
+  "zip_crc": "passed",
+  "safe_extraction": "passed",
+  "local_path": "/tmp/ambient-002/evidence/authoring/graphical-watch-52900f9d/ambient-002-observation-52900f9d.zip"
+}

@@ -366,7 +366,13 @@ func inspect() -> void:
 	var common_space := PhysicsServer2D.body_get_space(main.rigid_bodies[0].get_rid())
 	for body: RigidBody2D in main.rigid_bodies:
 		check(common_space == PhysicsServer2D.body_get_space(body.get_rid()),"same actual Rapier space")
-	check(panel.pilot_slot == 1 and panel.applied.source == [1525,1370,14],"selection and source reproduced")
+	# Inspection selection must not silently steal the pilot from the first
+	# eligible human actor. The separate pilot authority is reconstructed from
+	# authored controls, not inferred from the selected inspector item.
+	check(panel.selected_id() == 2 and panel.pilot_id() == 1
+		and panel.pilot_slot == actor_session.slot_for_instance(1)
+		and panel.applied.source == [1525,1370,14],
+		"selection, independently owned pilot and source reproduced")
 	for row: Dictionary in main.tower_context.liquid_solver_policy.assignments:
 		if row.material == 3: check(row.applied_family == "inertial_cellular_v1","Water IN readback")
 	check(main.paused and not panel._stream.button_pressed,"load is paused with neutral source")
@@ -404,6 +410,12 @@ func run() -> void:
 			if check(panel.load_setup(),"load from separate process / "+panel.message+" / "+main.microscenario_error) and await until(installed,"reload acknowledged"):
 				await inspect()
 		else:
+			# The face-release and fine-core controls below compare their explicit
+			# pre-Wave laws. Each case then loads its own native construction.
+			panel.water_spray._choose_studio_solver(0)
+			panel.water_spray._set_spill("workbench_wave_spill",false)
+			panel.water_spray._ballistic.button_pressed = false
+			panel.water_spray._reset_wave_defaults()
 			rectangle_merge()
 			if await builtin_water() and await builtin_bench() and await builtin_stress() and paint_compaction(): await author()
 	else: check(false,"workbench launch")

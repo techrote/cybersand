@@ -39,11 +39,15 @@ def main():
         for status,path in changed:
             local=Path(path)
             actual=local.read_bytes()
+            original=git("show","HEAD:"+path)
+            if actual.replace(b"\r\n", b"\n") != original.replace(b"\r\n", b"\n"):
+                unexpected.append((status,path))
+                continue
             record["restored"].append({
                 "path":path,
                 "imported_sha256":hashlib.sha256(actual).hexdigest(),
                 "committed_sha256":hashlib.sha256(git("show","HEAD:"+path)).hexdigest()})
-        if changed:
+        if changed and not unexpected:
             subprocess.run(["git","restore","--worktree","--",*[p for _,p in changed]],check=True)
     record["status_after"]=[{"status":s,"path":p} for s,p in statuses()]
     record["passed"]=not unexpected and not record["status_after"]

@@ -10,6 +10,43 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**Architectural Workbench / M3–M5 — Draft/HOLD:** [native module library, GOLDMAPS retrieval and staged construction](operations/world-steer-architecture.md) extend the preserved Batch Lab. [Module contract](systems/native-architectural-modules.md), [design knowledge and evaluation](systems/architectural-knowledge-and-evaluation.md), and [staged execution boundary](systems/architecture-staged-construction.md) keep observed native geometry, authored intent, hosted qualification and physical acceptance distinct.
+
+**Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.
+GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/gip014-goblin-002-decision.md), then the [persistent experimental playtester ledger](research/gip014-goblin-002.md) and [qualified predecessor](research/gip014-goblin-gameplay-qa.md). Exact source capabilities, campaign evidence and defect adjudication remain separately scoped.
+
+**AMBIENT-002, opt-in Draft/HOLD:** [living inhabitants, bounded memory, copied peers and group authoring](systems/ambient-living-inhabitants.md); [living Workbench owner guide](operations/ambient-living-workbench.md); [source-bound successor mission ledger](research/ambient-002/mission-ledger.md). The original AMBIENT-001 evaluator remains frozen and separate.
+
+**AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
+[Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),
+and [exact-source qualification and remaining acceptance](research/ambient-001/mission-ledger.md).
+
+For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
+
+For the radius-24 Oil drop and Lava on the Water ramp, see the [Workbench replay](audits/2026-11-19-wave-oil-lava.md).
+
+For full-face Water release, fall speed 3 and the ramp crest investigation, see the [full-face experiment](audits/2026-11-19-wave-water-face-004.md).
+
+For the Water Ramp 003 settings, see the [water ramp evaluation](audits/2026-11-19-wave-water-ramp-003.md) and [Water Lab](operations/workbench-water-lab.md).
+
+For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave law](architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping) and [dated comparison](audits/2026-11-19-wave-waterwall-002.md).
+
+## World Art pipeline
+
+[Architecture, capacity and native compatibility](tools/art-pipeline-unification.md),
+[interactive viewer and one-checkout launch](tools/world-art-preview.md),
+[unattended capture and publication](tools/world-art-capture.md), and
+[portable Windows evaluator with offline gallery](tools/world-art-evaluation.md)
+own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
+source-qualified graphical evidence and physical GPU acceptance remain distinct.
+
+WB-ACTOR-COMPOSE-001 / #589 Draft/HOLD: [Shared Workbench actor composition](systems/workbench-actor-composition.md)
+integrates the existing physical catalogue, independent producers and live handoff.
+Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-composition.md)
+for ordinary UI controls, policy testing and authored saves; the
+[dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
+separates actual platform evidence from owner playfeel acceptance.
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.
@@ -19,7 +56,7 @@ Current clarified intent is separate in the
 Wave Flow PR #631 (inherited from #618): [native contract and limitations](architecture/wave-flow-v1.md),
 [Shared Workbench tuning, Water comparison scenes and Windows evaluation](operations/wave-flow-evaluation.md),
 and [Workbench repair and qualification custody](audits/2026-11-16-wave-workbench-631-finisher.md).
-Experimental and default off; merge and human gameplay acceptance remain owner decisions.
+PR #631 introduced opt-in Wave Flow. Fresh player sessions now use the Wave gameplay profile with spill and ballistic release. The [owner’s final tank playtest](audits/2026-11-20-wave-oil-impinge.md) records the accepted settings and live frame timing.
 
 **80-Gentek integration candidate:** [selection and Windows evaluation](operations/gentek80-evaluation.md),
 [source reconciliation and qualification](research/gentek-80-integration-001.md).
@@ -43,10 +80,9 @@ MoltenGlass H1 from this Materials Lab continuation.
 
 Current Draft: [integrated PAINT + agent Workbench](operations/wb-art-paint-integrated-candidate.md), including standalone generator profiles, native stored-material receipts and one edit ordering boundary. Component contracts: [direct drawing](systems/workbench-direct-art-batches.md), [provider connection/context/scanlines](systems/workbench-art-providers.md), and [full PAINT editor](systems/paint-editor-bounded-shapes.md).
 
-Workbench Art conversation lifetime: [lazy restoration, immutable linked traffic,
-crash handling, atomic checkpoints and cancellable export](systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
-PR #681 remains Draft/HOLD; its qualification ledger owns measured platform
-results and the remaining physical Windows acceptance.
+Workbench Art uses [one write-only audit per game session](systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026), accepted in #727. New sessions do not restore old conversations. The [Art finisher and Windows evaluator](operations/art-workbench-final-evaluation.md) consolidate dialog, provider and responsiveness repairs as a separate Draft/HOLD candidate.
+
+The [collaborative Art successor](operations/art-workbench-collaborative-evaluation.md) adds Discuss, Propose, Develop and Review beside direct drawing. Read the [exclusive provider handoff](systems/art-owned-proposal-transport.md) for Architecture integration and the [native context/proposal contract](systems/art-native-context-proposals.md) for bounded observations, zero-write previews and separately approved native stages. #780 remains Draft/HOLD; qualification identities and retained failures are in its [mission ledger](audits/2026-11-25-art-workbench-collaborative-002/README.md).
 
 Shared authoring: [approved data contract and convergence plan](architecture/shared-workbench-authoring-data.md)
 defines the common desktop/agent/remote foundation and the GEN-008 candidate
@@ -121,6 +157,8 @@ and decision work. Historical pre-merge records below retain their dated scope.
 Stopped PLAY recovery: [canonical ownership and controls](systems/player-control-playground.md#stopped-composed-session-recovery), [preserved failure and current-main reconciliation](audits/2026-10-31-play-stopped-session-recovery.md), and [PR #332 qualification ledger](https://github.com/techrote/cybersand/pull/332). PACE004 #334 is merged (main `070c7a22`, apparatus only) but its exact-head hosted campaign remains a separate PLAY lane.
 
 Native render copy: [canonical bridge contract](architecture/rendering-and-gameplay-bridges.md#how-are-rg8-regions-copied) and [current-main R reconciliation](audits/2026-11-01-render-copy-production-reconciliation.md).
+
+CI engineering closure: [current decision packet](operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md) separates recovered experiment evidence, generic custody tooling and read-only coordination from the remaining exact-source hosted and owner gates.
 
 CI scheduling and capacity: [canonical execution contract](operations/ci-execution-and-performance.md), [qualification evidence](audits/2026-11-01-ci-scheduling-qualification.md), [all-workflow audit](audits/2026-11-01-ci-workflow-audit.md), and [Linux display setup qualification](audits/2026-11-03-linux-display-mesa-utils-removal.md).
 

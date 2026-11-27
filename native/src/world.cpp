@@ -1765,7 +1765,8 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         if (pressure_->cache != nullptr) pressure_->cache->cold();
     }
     if (inertial_enabled_) chunk->inertial = std::make_unique<std::vector<InertialSlot>>(chunk->cells.size());
-    if (wave_ != nullptr) chunk->wave = std::make_unique<WaveChunk>(chunk->cells.size(), static_cast<std::size_t>(config_.chunk_size));
+    if (wave_ != nullptr) chunk->wave = std::make_unique<WaveChunk>(chunk->cells.size(), static_cast<std::size_t>(config_.chunk_size),
+        config_.wave_flow.flux_smoothing != 0);
     if (granular_arrival_enabled_) {
         if (chunk->cells.size() > (std::numeric_limits<std::size_t>::max()-granular_arrival_storage_bytes_)/sizeof(std::uint64_t))
             throw std::runtime_error("arrival witness storage capacity overflow");
@@ -4181,9 +4182,36 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                     }
                 }
             }
+            // Wave moves Water in bulk, so the Oil cell schedules this local
+            // density exchange. Use the ordinary downward Water swap to carry
+            // both complete tuples and stamp the lifted Oil for this tick.
+            if (wave_ != nullptr && cursor.visible(x, y - 1) == Material::Water) {
+                // The scheduled Oil is selected. Its immediate upper neighbour
+                // can only be outside the region across the top edge.
+                const auto upper = address(x, y - 1);
+                const bool water_already_moved =
+                    find_chunk(upper.chunk)->cells[upper.index].epoch_value() == update_epoch_;
+                const bool water_paused = selected_core_region_ &&
+                    scheduler_geometry_.core_for_cell(x, y - 1).y < selected_core_region_->min_y;
+                if (water_already_moved || water_paused) {
+                    keep_cell_active(x, y, effects);
+                } else if (try_move(Material::Water, x, y - 1, x, y, true, effects)) {
+                    return true;
+                }
+            }
             if (try_move(material, x, y, x, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, false, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, false, effects)) return true;
+            // Once afloat, an Oil cell needs a lower opening to spread.
+            // Random level moves on Water keep stirring a resting slick.
+            if (wave_) {
+                const auto support = cursor.visible(x, y + 1);
+                if (support == Material::Water ||
+                    (support == Material::Oil && config_.maximum_rule_radius >= 2 &&
+                     cursor.visible(x, y + 2) == Material::Water)) {
+                    return changed;
+                }
+            }
             if (lateral_due(material,x,y,effects) && try_lateral(material,x,y,direction,false,effects)) return true;
             return changed;
         }
@@ -4836,6 +4864,25 @@ void World::prepare_write_domain(CellRect core_rect) {
             const auto* chunk = find_chunk({chunk_x, chunk_y});
             temperature_field_required =
                 temperature_field_required || (chunk != nullptr && chunk->temperatures != nullptr);
+        }
+    }
+    // Oil can pull warm Water in from the row above this core. If that
+    // row belongs to another chunk, prepare the cold destination on the
+    // owner before its worker can exchange the pair.
+    if (wave_ && !temperature_field_required && core_minimum.local_y == 0) {
+        const auto water_y = core_rect.y - 1;
+        for (auto cx = core_minimum.chunk.x; cx <= core_maximum.chunk.x; ++cx) {
+            const auto* upper = find_chunk({cx, core_minimum.chunk.y - 1});
+            if (!upper || !upper->temperatures) continue;
+            const auto first_x = std::max(core_rect.x, cx * config_.chunk_size);
+            const auto end_x = std::min(core_rect.x + core_rect.width, (cx + 1) * config_.chunk_size);
+            for (auto x = first_x; x < end_x; ++x) {
+                if (get(x, core_rect.y) == Material::Oil && get(x, water_y) == Material::Water &&
+                    stored_temperature(x, water_y) != config_.ambient_temperature) {
+                    ensure_temperature_field(*find_chunk({cx, core_minimum.chunk.y}));
+                    break;
+                }
+            }
         }
     }
     if (temperature_field_required) {

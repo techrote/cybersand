@@ -4,11 +4,50 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
 # Retrieval question index
+
+## Native architectural modules, GOLDMAPS retrieval and staged construction
+
+Use the [owner workflow](../operations/world-steer-architecture.md) for harvesting, starter parts, repeat placement, preview/approval, partial recovery and Windows inspection. The [module contract](../systems/native-architectural-modules.md) owns exact local geometry, typed roles, transformations and imported-evidence limits. The [knowledge contract](../systems/architectural-knowledge-and-evaluation.md) owns source-bound cards, family-excluded retrieval and contextual native evaluation. The [stage contract](../systems/architecture-staged-construction.md) owns host-computed permissions/budgets and the separate Art adapter. [Additive architecture questions](retrieval-questions-world-steer-architecture.json) preserve the frozen retrieval set. All remain Draft/HOLD.
+
+## Native Workbench Batch Lab
+
+For independent native tiles, 2×2/4×4 operation, Stop/replay, P0–P3 controls, source-grounded references, blinded review and Windows evaluator custody, use the [Batch Lab guide](../operations/world-steer-batch-lab.md). This is an M0–M2 Draft/HOLD candidate; model-quality and physical owner acceptance are separate. [Focused questions](retrieval-questions-batch-lab.json) are additive.
+
+## World Art inspection, capture and Windows evaluation
+
+| Question | Canonical route |
+| --- | --- |
+| How do I open all fifteen collections and 120 features without a native build? | [Portable Windows evaluator](../tools/world-art-evaluation.md), [one-checkout viewer](../tools/world-art-preview.md) |
+| Can I inspect 512×8192 or 16384×1024 art, and does that change the native World limit? | [Independent art capacity and compatibility](../tools/art-pipeline-unification.md#compatibility-contract-independent-limits) |
+| How do I capture a 67M-pixel PNG, verify it and safely retry after interruption? | [Unattended capture](../tools/world-art-capture.md) |
+| What is qualified on Windows and what still needs a physical GPU observation? | [Evaluation evidence and boundaries](../tools/world-art-evaluation.md) |
+
+[Additive World Art retrieval questions](retrieval-questions-world-art.json)
+are separate from the frozen evaluation set.
+
+## Independently controlled actors in ordinary Shared Workbench
+
+For **Procedural NPC / Ambient**, material sensing, module composition, timers,
+capability adapters and extension rules, use the
+[ambient contract](../systems/ambient-actors.md). For profile editing, six
+personalities, five playable examples, painting and authored save/reopen, use the
+[ambient owner guide](../operations/ambient-workbench.md). The
+[focused ambient questions](retrieval-questions-ambient-001.json) are additive to
+the unchanged frozen evaluation set. This feature remains opt-in Draft/HOLD.
+
+For actor families, safe composition capacity, controller authority, live
+takeover, copied policy observations and the research boundary, use the
+[actor composition contract](../systems/workbench-actor-composition.md). For
+Mixed Actor Workshop, controls, tools, painting and authored Save/reopen, use the
+[owner procedure](../operations/workbench-actor-composition.md). The
+[focused actor questions](retrieval-questions-workbench-actors.json) are additive;
+the frozen retrieval set is unchanged. Exact platform evidence and remaining
+acceptance belong to the [dated record](../audits/2026-11-20-workbench-actor-composition.md).
 
 For the **Draft/HOLD Gentek research stack only**, including the 72 classic
 samplers, eight advanced showcase modules, exact parent/source identities,
@@ -39,12 +78,13 @@ the frozen evaluation and existing historical fixtures retain their original sco
 
 ## Direct native art batches without inference
 
+For collaborative Discuss/Propose/Develop/Review, finite native construction and offline examples, retrieve the [collaborative owner guide](../operations/art-workbench-collaborative-evaluation.md). For one response consumer, eventual pre-dispatch guards and Architecture's `dispatch(request, completion_callback, pre_dispatch_guard)` seam, retrieve the [owned transport contract](../systems/art-owned-proposal-transport.md). For observed material context, protected regions, typed revisions, copied-value preview and actual native approval/readback, retrieve the [native context and proposal contract](../systems/art-native-context-proposals.md). These remain Draft/HOLD source contracts; fixtures do not prove real-model creativity or physical owner acceptance.
+
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
 
-For duplicate Art archives, hidden Workbench startup, linked session identity,
-missing-history refusal, crash recovery and cancellable full JSONL export,
-retrieve [conversation lifetime](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-and its [explicit capacities](../systems/workbench-art-providers.md#explicit-capacity-outcomes).
+For Art session-only logging, same-session collaboration, provider errors and complete redacted traffic, retrieve the [provider contract](../systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026). For absent-LM-Studio Send/X, the consolidated dialog repair, exact presets and Windows diagnostic evaluator, retrieve the [Art finisher guide](../operations/art-workbench-final-evaluation.md). Old linked archive restoration is an explicit diagnostic path only.
+
+For the unmerged Art integration's verified export, event append, cached preference saves and retained private receipt writes, retrieve [closed storage verification](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate). Native editing and session-only conversation ownership remain separate; real Windows storage and physical owner acceptance require their own evidence.
 
 
 ## Architectural Generator catalogue
@@ -214,6 +254,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 
 | Question family | Canonical route |
 |---|---|
+| How can concurrent qualification campaigns be inspected without cancelling work or accepting metadata as evidence? | [Read-only CI coordination](../operations/ci-campaign-coordination.md); bounded repository observations preserve partial/racing inventories and require each programme verifier. |
+| Can unchanged native LFS pointers satisfy source-exact publication custody? | [Publication custody migration contract](../operations/publication-custody.md); both provenance changes and actual-byte, input, report, LFS and lease checks remain mandatory. |
+| Which CI experiments are selected, which capacity claims are known, and what remains before closure? | [CI engineering closure decision packet](../operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md); historical cohorts do not qualify the resulting tooling source, and capacity observations are scoped lower bounds. |
 | How are CI scheduling costs separated from watchdogs, how do hosted parents admit children, and do performance ratios fail correctness? | [Shared execution and advisory history](../operations/ci-execution-and-performance.md), [focused implementation audit](../audits/2026-10-31-execution-watchdog-modernization.md). Complete original suites and source-matched review remain required; [scheduling qualification](../audits/2026-11-01-ci-scheduling-qualification.md) and [all-workflow audit](../audits/2026-11-01-ci-workflow-audit.md) record capacity and concurrency. |
 | How are imported CYSD temperatures and heated Empty cells preserved when preparing another liquid solver, and is the normal importer complete? | [Native payload preparation and explicit normalization](../architecture/liquid-prepared-setup-and-receipts.md#imported-cysd-payload-preparation), [local Windows proof](../audits/2026-10-25-lcb003-thermal-level-preparation.md). Bounded ordinary body-free import is implemented; physical importers, complete host identity and final platforms remain open. |
 | Can the Water IN publisher run without disturbing the Brine branch, and is its request armed? | [Separate Water profile, actual native-repair sequence2 publication and required final-head gates](../operations/github-development-and-release.md#isolated-water-inertial-runtime-publication). Preparation does not qualify new runtime artifacts or waive full gates. |
@@ -264,7 +307,9 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | Sampled-player gravity, terminal speed, effective mass, jetpack and step/knee/clamber tuning | [Player/environment tuning](../systems/player-environment-profiles-and-traversal.md); use [granular policy](../systems/granular-interaction-policy.md) for REM-003/PCHAR sampled-player response boundaries and [Water design](../systems/water-design.md) for the separate liquid semantic owner |
 | Which Runner, Skimmer and Crawler actions remain compatible with either player or policy input? | [SetA actor controls](../systems/actor-control-prototypes.md), [SetA limits](configuration-reference.md#actor-control-prototype-values) |
 | Which rigs belong to SetB/F/Y/U/V, how do aim/effort/trim/reel work, and are the model personas factual? | [Actor rigs and shared input](../systems/actor-rigs.md), [rig limits](configuration-reference.md#actor-rig-values); SetV is explicitly fictional interface design |
+| How do I stage Sloshy, increase Water over a ledge, and give a crest coyote time? | [Water Lab controls](../operations/workbench-water-lab.md#try-the-waterwall-002-candidate), [Wave sheet and crest mechanics](../architecture/wave-flow-v1.md#waterwall-002-sheet-crest-and-scale-selective-damping), [measurements](../audits/2026-11-19-wave-waterwall-002.md) |
 | What is experimental Wave Flow, how does it make waves without a pressure solve, how is it parallel, and what does it not do? | [Wave Flow contract (PR #631, opt-in/default off, retained flux, explicit persistence refusal)](../architecture/wave-flow-v1.md), [inherited completion evidence](../audits/2026-11-15-wave-mt-001-completion.md) |
+| How does a thick Oil drop spread on Wave Water, and what happens when Lava touches compressed Water? | [Wave Oil surface behavior](../architecture/wave-flow-v1.md#oil-floating-on-wave-water), [quantity accounting](../architecture/liquid-prepared-setup-and-receipts.md), [measured ramp replay](../audits/2026-11-19-wave-oil-lava.md) |
 | How do I select Wave in the Shared Workbench, apply tuning, verify actual native activation, and compare PressureFlow on editable Water scenes? | [Wave Flow Workbench and Windows launch guide](../operations/wave-flow-evaluation.md), [configuration contract](../architecture/wave-flow-v1.md#workbench-authoring-tuning) |
 | How do the workbench valve, drain and pumped nozzle move Water, and how is their quantity accounted? | [Workbench liquid equipment](../systems/workbench-liquid-equipment.md), [inertial reference](../architecture/inertial-cellular-v1.md), [ballistic Water](../architecture/ballistic-water-v1.md) |
 | Which actor tools, ballistic payloads and material processors exist, how do they activate, and what are their budgets? | [Actor usables](../systems/actor-usables.md), [usable limits](configuration-reference.md#actor-usable-values), [recording](../operations/gameplay-recording.md) |
@@ -331,6 +376,8 @@ metadata and [frozen questions](retrieval-questions.json) define the evaluation 
 | API versions, packed samples/results | [Interfaces](interfaces-and-message-contracts.md) |
 | Invariants and incomplete enforcement | [Invariants](invariants.md) |
 | Exact tools, separate native/Web bindings | [Build guide](../operations/local-build-and-validation.md) |
+| Can worldgen showcases run concurrently without losing sanitizer coverage or accepting partial work? | [Parallel worldgen showcase execution](../operations/ci-execution-and-performance.md#parallel-worldgen-showcase-execution); seven required independent showcases precede nine ordered principal tests within the existing two-job Make limit. |
+| How does soliding avoid repeated compilation without reusing stale objects or skipping tests? | [Soliding compilation reuse](../operations/ci-execution-and-performance.md#soliding-compilation-reuse), [local validation](../operations/local-build-and-validation.md#soliding-successor-validation); hosted timings and admission remain source-bound CI-OPT-003 PR evidence. |
 | How do six Native families and four Windows shards preserve CI coverage and deadlines, and may scope advice skip Native? | [Parallel validation contract](../operations/github-development-and-release.md#parallel-validation-and-source-scope-advice--2026-10-31), [exact coverage](../operations/testing-validation-and-replay.md#parallel-native-and-four-way-windows-admission), and [source-bound integration audit](../audits/2026-10-31-ci-parallel-production-integration.md). Scope advice grants no exemption; predecessor timing is not resulting-head qualification. |
 | CI drift, base-only build identity, release readiness | [Repository/release](../operations/github-development-and-release.md) |
 | What is the current CI provider/recovery state, and is main protected? | [Repository/release](../operations/github-development-and-release.md), then the [2026-09-24 recovery audit](../audits/2026-09-24-cybersand-recovery-audit.md) for incident evidence |

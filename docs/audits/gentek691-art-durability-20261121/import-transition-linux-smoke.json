@@ -1,0 +1,12 @@
+{
+  "schema": "gentek691-import-transition-linux-smoke-v1",
+  "passed": true,
+  "development_only": true,
+  "returncode": 0,
+  "source_base": "0d961464cf0afe20e8b8d5594faa901b1c7853f0",
+  "before_after_equal": true,
+  "runner_sha256": "248e7399f042a668a4d44b1afc063c708b73d13b47377ef8834312745d156e68",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+  "full_report_sha256": "bf4e939c7b8ddf37ec08303e8f77fe4cd4e5a054907a2f7ecbcad774d941ac49"
+}

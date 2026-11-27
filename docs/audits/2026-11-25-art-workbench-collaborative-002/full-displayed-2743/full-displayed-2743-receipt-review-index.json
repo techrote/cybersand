@@ -1,0 +1,3409 @@
+{
+  "schema": "art-native-receipt-review-index-v1",
+  "source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "scope": "Derived review index: all original receipt fields except readback arrays. Complete original files and exact native cell readback arrays retained losslessly in full-displayed-2743-original-evidence.tar.gz.",
+  "files": [
+    {
+      "name": "00-industrial_repair-direct-original-native-receipts.json",
+      "original_bytes": 253433,
+      "original_sha256": "27229a2bc9962a997d8f401526e584750507be73bb426252506d6840a93d6452",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 13519,
+            "tick": 0
+          },
+          "changed": 3421,
+          "checked": 3444,
+          "confirmed": 3444,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3444,
+          "revision": 16940,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 23,
+          "readback_review": {
+            "count": 3444,
+            "canonical_json_sha256": "918234d45409bd5d1f50b76b381608185d61d1adffb3be11e5268ffb28a1a1c9"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 16940,
+            "tick": 0
+          },
+          "changed": 2318,
+          "checked": 2318,
+          "confirmed": 2318,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2318,
+          "revision": 19258,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2318,
+            "canonical_json_sha256": "b6d8bb3093806f29f2f378515acc6b808ff4836a526918e0de78e498838d77a8"
+          }
+        }
+      ]
+    },
+    {
+      "name": "00-industrial_repair-original-native-receipts.json",
+      "original_bytes": 245503,
+      "original_sha256": "44ab807779decc9b43cc1994fc9a7224721a55c64a5faeff389332f1955513cf",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 3891,
+            "tick": 0
+          },
+          "changed": 3421,
+          "checked": 3444,
+          "confirmed": 3444,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3444,
+          "revision": 7312,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 23,
+          "readback_review": {
+            "count": 3444,
+            "canonical_json_sha256": "1a6408931e81ca39a45d9f0219da08011c0198957cab6925e5f641b627186c92"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 7312,
+            "tick": 0
+          },
+          "changed": 2318,
+          "checked": 2318,
+          "confirmed": 2318,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2318,
+          "revision": 9630,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2318,
+            "canonical_json_sha256": "1ebd3acde9300d9f759ce09018b0a1ec108a145ee9cc90d5c18f2997f412ef16"
+          }
+        }
+      ]
+    },
+    {
+      "name": "01-structural_facade-direct-original-native-receipts.json",
+      "original_bytes": 527295,
+      "original_sha256": "90c75223d7c5388fb4343e534a09aed9b6ad79207fec61ad5f6d9275f122776e",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 34413,
+            "tick": 0
+          },
+          "changed": 4006,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 38419,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 90,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "8be54db1e8d2d6ee3f524c9f0d5625887d06ed15af0fef7d072abe5b4faa1d27"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 38419,
+            "tick": 0
+          },
+          "changed": 4026,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 42445,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 70,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "0e3132f31460740e9d8f5eb27449e5b6e37fd6bd12d952c1c93f8beb9a77ed94"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 42445,
+            "tick": 0
+          },
+          "changed": 2941,
+          "checked": 3133,
+          "confirmed": 3133,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3133,
+          "revision": 45386,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 192,
+          "readback_review": {
+            "count": 3133,
+            "canonical_json_sha256": "62ff5bf0147806663460d210608958174bebe5bda6b0a32215cccea5ee7df5f1"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 45386,
+            "tick": 0
+          },
+          "changed": 612,
+          "checked": 612,
+          "confirmed": 612,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 612,
+          "revision": 45998,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 612,
+            "canonical_json_sha256": "b4e0f00e736c25a6f97aca9950736d60da8fda3711a587a4a7624899b79d1936"
+          }
+        }
+      ]
+    },
+    {
+      "name": "01-structural_facade-original-native-receipts.json",
+      "original_bytes": 510580,
+      "original_sha256": "4852b797d393a398df065fd6fa1e440cdf89eea1c1ecf4fb92b49acbd486da07",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 21043,
+            "tick": 0
+          },
+          "changed": 4006,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 25049,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 90,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "6b3874b6a70da7cb089bc156651feda4c84773563419f27fbefa748f28a889d2"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 25049,
+            "tick": 0
+          },
+          "changed": 3962,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 29011,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 70,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "6c5169c923b85229aebcc978f5adb324ed07fcf0c97917de5852206e939f1266"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 29011,
+            "tick": 0
+          },
+          "changed": 2373,
+          "checked": 2565,
+          "confirmed": 2565,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2565,
+          "revision": 31384,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 192,
+          "readback_review": {
+            "count": 2565,
+            "canonical_json_sha256": "dac3f9dfbd2be7df59e4f1035da2083ff0a8a8cb4841d6d2e6e8203ac693e1d3"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 31384,
+            "tick": 0
+          },
+          "changed": 632,
+          "checked": 632,
+          "confirmed": 632,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 632,
+          "revision": 32016,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 632,
+            "canonical_json_sha256": "826ad9d7f463026d1d63a498ed7fba01de7504bed7c26165fe1db1ef85f0f544"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 32016,
+            "tick": 0
+          },
+          "changed": 612,
+          "checked": 612,
+          "confirmed": 612,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 612,
+          "revision": 32628,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 612,
+            "canonical_json_sha256": "f3eb3f0f0a1f249e21d45ee72617c29d7e25c655042a6bc52543ab8f448d74ae"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02-scifi_interior-direct-original-native-receipts.json",
+      "original_bytes": 351171,
+      "original_sha256": "b23cd3da38a6c7d45385c47d60c980689b234aaad9fce8de9d2e1c46e4ae1ef3",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 64960,
+            "tick": 0
+          },
+          "changed": 4032,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 68992,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "77efcf17778ee405ab21f33a3136b1bb88ffb90608792c71bb440ba09582fd05"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 68992,
+            "tick": 0
+          },
+          "changed": 673,
+          "checked": 673,
+          "confirmed": 673,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 673,
+          "revision": 69665,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 673,
+            "canonical_json_sha256": "d09bc063879907cde6f8211eb0051afbca382939aafd08bbca002e9ad3c4d403"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 69665,
+            "tick": 0
+          },
+          "changed": 3247,
+          "checked": 3247,
+          "confirmed": 3247,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3247,
+          "revision": 72912,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3247,
+            "canonical_json_sha256": "b6fd80a3ae4972958fd15713e3db5dcf5b50605ff0fda22c860924f86f767fd7"
+          }
+        }
+      ]
+    },
+    {
+      "name": "02-scifi_interior-original-native-receipts.json",
+      "original_bytes": 340303,
+      "original_sha256": "461d11a8326d8cd7435e0d4e20ba426d8a114c6d737d900f62df2efb2a1853ff",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 51503,
+            "tick": 0
+          },
+          "changed": 3648,
+          "checked": 3648,
+          "confirmed": 3648,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3648,
+          "revision": 55151,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3648,
+            "canonical_json_sha256": "a2011acc24d03c99069a3f422690108228605822ea09afe279a349b09f2fc6de"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 55151,
+            "tick": 0
+          },
+          "changed": 1057,
+          "checked": 1057,
+          "confirmed": 1057,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1057,
+          "revision": 56208,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1057,
+            "canonical_json_sha256": "4becfa3693dee0a0486c241bbf35d764db9911c5bf93fd6c64ad3b50a5a5eb68"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 56208,
+            "tick": 0
+          },
+          "changed": 3247,
+          "checked": 3247,
+          "confirmed": 3247,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3247,
+          "revision": 59455,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3247,
+            "canonical_json_sha256": "97df94f7838499ee36aa746fef05b7ad5a6046db67db1e9e6b7b7246c5cbb4e9"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03-revised_arcology-direct-original-native-receipts.json",
+      "original_bytes": 275696,
+      "original_sha256": "8de94751a923921158db5a458fa10e872798d5bc23e48fff6a4ef2d2e8fb17e7",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 82711,
+            "tick": 0
+          },
+          "changed": 3968,
+          "checked": 3968,
+          "confirmed": 3968,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3968,
+          "revision": 86679,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3968,
+            "canonical_json_sha256": "892542887818f3ad3fef2302dd3d154c217a509e6b61df41bdad92aafb9ba481"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 86679,
+            "tick": 0
+          },
+          "changed": 2138,
+          "checked": 2168,
+          "confirmed": 2168,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2168,
+          "revision": 88817,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 30,
+          "readback_review": {
+            "count": 2168,
+            "canonical_json_sha256": "0d018fdaf73429a61e2f0a1b492e44ceba9b2760ce3da1a8335369c91b429d6e"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 88817,
+            "tick": 0
+          },
+          "changed": 123,
+          "checked": 123,
+          "confirmed": 123,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 123,
+          "revision": 88940,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 123,
+            "canonical_json_sha256": "c1546401edab40d2dd1e76752c8d792b279b631c27a5f3fd1c61b88dce639f84"
+          }
+        }
+      ]
+    },
+    {
+      "name": "03-revised_arcology-original-native-receipts.json",
+      "original_bytes": 269862,
+      "original_sha256": "0dbdb979496828607d0c58d2c4e888ab58a38e8917866a8c4461262fa28c48fd",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 74697,
+            "tick": 0
+          },
+          "changed": 3409,
+          "checked": 3409,
+          "confirmed": 3409,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3409,
+          "revision": 78106,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3409,
+            "canonical_json_sha256": "715915f7af05061c5c10cf3a6a5eeedfe47044bc69493c7d7de82f1094471ace"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 78106,
+            "tick": 0
+          },
+          "changed": 1873,
+          "checked": 1885,
+          "confirmed": 1885,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1885,
+          "revision": 79979,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 12,
+          "readback_review": {
+            "count": 1885,
+            "canonical_json_sha256": "2d031c7f7494f38d18a05f469279a87b60126b552076c88e3a82ed8b3905d890"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 79979,
+            "tick": 0
+          },
+          "changed": 824,
+          "checked": 842,
+          "confirmed": 842,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 842,
+          "revision": 80803,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 18,
+          "readback_review": {
+            "count": 842,
+            "canonical_json_sha256": "a73e1a7021ad4ba2d7900d186d6bb88066cd2951b528e6582867eaa7b7516f50"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 80803,
+            "tick": 0
+          },
+          "changed": 123,
+          "checked": 123,
+          "confirmed": 123,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 123,
+          "revision": 80926,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 123,
+            "canonical_json_sha256": "7de534a7571360f41784971462033f26e7fe4838d6795dd6ea9b022929423f5d"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04-protected_courtyard-direct-original-native-receipts.json",
+      "original_bytes": 261325,
+      "original_sha256": "38ff5b56ebf09564acc55dee730fa528f877a998289c18a0ba1ec958c28c51eb",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 102016,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 106112,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "17644a7500abdccd3fe18f5a27c59806e01d689de0a73965bf5c3ce4fb665255"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 106112,
+            "tick": 0
+          },
+          "changed": 848,
+          "checked": 848,
+          "confirmed": 848,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 848,
+          "revision": 106960,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 848,
+            "canonical_json_sha256": "d6b34bd201397feab193dc81afbb03b94b7b64fb5b4933896f2d55ac48d46a5b"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 106960,
+            "tick": 0
+          },
+          "changed": 966,
+          "checked": 966,
+          "confirmed": 966,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 966,
+          "revision": 107926,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 966,
+            "canonical_json_sha256": "e61dccfbb614059f472b0e16cf6f32ea8199abe3ff06d3fe4a1875cfcdaf8fab"
+          }
+        }
+      ]
+    },
+    {
+      "name": "04-protected_courtyard-original-native-receipts.json",
+      "original_bytes": 255837,
+      "original_sha256": "8b7c12b5e779df3f1bacfcd4b829fffd39f5b67f9e428fdda493617e47c919a1",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 92523,
+            "tick": 0
+          },
+          "changed": 3648,
+          "checked": 3648,
+          "confirmed": 3648,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3648,
+          "revision": 96171,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3648,
+            "canonical_json_sha256": "660839b84d76575a791b868de4e56fc3747f2266170d4b5325e8ce6bcb6cf80a"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 96171,
+            "tick": 0
+          },
+          "changed": 1020,
+          "checked": 1020,
+          "confirmed": 1020,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1020,
+          "revision": 97191,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1020,
+            "canonical_json_sha256": "c9839625c6fe8a151c6979daa252ddeac378d99eefb5ea81624b15f852b61cc6"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 97191,
+            "tick": 0
+          },
+          "changed": 276,
+          "checked": 276,
+          "confirmed": 276,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 276,
+          "revision": 97467,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 276,
+            "canonical_json_sha256": "204d99c685bc8a95db79dd620d8f0c461065edbec9cc09492df300e5b5a14b88"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 97467,
+            "tick": 0
+          },
+          "changed": 966,
+          "checked": 966,
+          "confirmed": 966,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 966,
+          "revision": 98433,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 966,
+            "canonical_json_sha256": "b312a8d76ae11133a51ca96a04b2bece3962f14d220e96b4c23936bbfb2ffc12"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05-palette_foundry-direct-original-native-receipts.json",
+      "original_bytes": 461357,
+      "original_sha256": "2901be13568464851a30861a18543bc4fb8571dc6218e3634ab25815a9ebc93a",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 121952,
+            "tick": 0
+          },
+          "changed": 3840,
+          "checked": 3840,
+          "confirmed": 3840,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3840,
+          "revision": 125792,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3840,
+            "canonical_json_sha256": "97270250a7802c8b668086de6e751e878fe3e43d47b8a640447a0ab1b61f51ee"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 125792,
+            "tick": 0
+          },
+          "changed": 3447,
+          "checked": 3447,
+          "confirmed": 3447,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3447,
+          "revision": 129239,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3447,
+            "canonical_json_sha256": "8b3cbd9ec83702900626524cb187f61a1515bb2008f69f6e8457860fdcd22618"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 129239,
+            "tick": 0
+          },
+          "changed": 3169,
+          "checked": 3169,
+          "confirmed": 3169,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3169,
+          "revision": 132408,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3169,
+            "canonical_json_sha256": "c206143e61e8476326ebe173b78320079edf9a8b76b748c27870c76969a48f4d"
+          }
+        }
+      ]
+    },
+    {
+      "name": "05-palette_foundry-original-native-receipts.json",
+      "original_bytes": 451327,
+      "original_sha256": "fbd91c64836a0ef71a83a661fa5ed6af1152d939fef3984929c66553c68fdc0b",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 109711,
+            "tick": 0
+          },
+          "changed": 3904,
+          "checked": 3904,
+          "confirmed": 3904,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3904,
+          "revision": 113615,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3904,
+            "canonical_json_sha256": "b04f2a40aee5c0ac6ba1b658ab014418bbf6d0abf504bc9ae6b7d9624340bd23"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 113615,
+            "tick": 0
+          },
+          "changed": 3383,
+          "checked": 3383,
+          "confirmed": 3383,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3383,
+          "revision": 116998,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3383,
+            "canonical_json_sha256": "9737d53a52d7ad8bc03132f5170f362b3fbfe1c37dc6123337b17fdf07541f3b"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 116998,
+            "tick": 0
+          },
+          "changed": 2641,
+          "checked": 2641,
+          "confirmed": 2641,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2641,
+          "revision": 119639,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2641,
+            "canonical_json_sha256": "0ccdbcb0eb5d3c74e0c2c74139c41c3f83543256c571012df198f9b65d157071"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 119639,
+            "tick": 0
+          },
+          "changed": 528,
+          "checked": 528,
+          "confirmed": 528,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 528,
+          "revision": 120167,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 528,
+            "canonical_json_sha256": "6eb5225bcb35e5bbc60ad2500a6203a7085b594ddd65b7763f4b37b6f6f633ec"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06-stopped_workshop-direct-original-native-receipts.json",
+      "original_bytes": 1374952,
+      "original_sha256": "1f48c2fbcbebf0b8fa5c0d610ba2815b7e044fbf0a7382abd54a4ad72e232354",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 171352,
+            "tick": 0
+          },
+          "changed": 3264,
+          "checked": 3264,
+          "confirmed": 3264,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3264,
+          "revision": 174616,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3264,
+            "canonical_json_sha256": "f4f04852c2334ea3982364e181ecae1c28f8e930ade4cffecf107948a1cc7a8d"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 174616,
+            "tick": 0
+          },
+          "changed": 3456,
+          "checked": 3456,
+          "confirmed": 3456,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3456,
+          "revision": 178072,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3456,
+            "canonical_json_sha256": "664d94d8f13632cc675eaf06b4da6e5048f7fe0a96ddabc72de181869833710d"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 178072,
+            "tick": 0
+          },
+          "changed": 3712,
+          "checked": 3712,
+          "confirmed": 3712,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3712,
+          "revision": 181784,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3712,
+            "canonical_json_sha256": "0fed19455e3cbc227181218104a80accf3e639b106dd443904d7490b93a45a00"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 181784,
+            "tick": 0
+          },
+          "changed": 2112,
+          "checked": 2112,
+          "confirmed": 2112,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2112,
+          "revision": 183896,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2112,
+            "canonical_json_sha256": "9c6547444788cd1ed5a06920a20f62000f87cd22626f74d4939d05ff0b1a671a"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 183896,
+            "tick": 0
+          },
+          "changed": 3520,
+          "checked": 3520,
+          "confirmed": 3520,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3520,
+          "revision": 187416,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3520,
+            "canonical_json_sha256": "e8ef35e80b365083a45171ebdc3dc992a6ec6f5e935a024c7854ba0ea440a9f2"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 187416,
+            "tick": 0
+          },
+          "changed": 3200,
+          "checked": 3200,
+          "confirmed": 3200,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3200,
+          "revision": 190616,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3200,
+            "canonical_json_sha256": "95cac80f5e86cff43859e24ac925a1956d5b1ffc38d455d160a84340b5fb1bb1"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 190616,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 194712,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "f73b9b740e79e0bf94f6145b5b99493e052c3c1e5b9aec8c5f362611b670f80c"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 194712,
+            "tick": 0
+          },
+          "changed": 3136,
+          "checked": 3136,
+          "confirmed": 3136,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3136,
+          "revision": 197848,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3136,
+            "canonical_json_sha256": "f50e8d49cd89666379f6434e0534c1b7cfdcf597215c0b39abc22325f5fa5d02"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 197848,
+            "tick": 0
+          },
+          "changed": 2880,
+          "checked": 2880,
+          "confirmed": 2880,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2880,
+          "revision": 200728,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2880,
+            "canonical_json_sha256": "17fa29d53b8116ce363ef08e1d32172324842336a9889bafdad4f31a3dfd85c5"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 200728,
+            "tick": 0
+          },
+          "changed": 79,
+          "checked": 79,
+          "confirmed": 79,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 79,
+          "revision": 200807,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 79,
+            "canonical_json_sha256": "a3c1a86647c52358c1e479b20f573d89740416555af58776e493259c8f406079"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 200807,
+            "tick": 0
+          },
+          "changed": 1829,
+          "checked": 1829,
+          "confirmed": 1829,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1829,
+          "revision": 202636,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1829,
+            "canonical_json_sha256": "ea4691ee4eaa6d6eabb7cfdc6ee596b6b21396afc7d56da042015b501232979f"
+          }
+        }
+      ]
+    },
+    {
+      "name": "06-stopped_workshop-original-native-receipts.json",
+      "original_bytes": 1343676,
+      "original_sha256": "68389f18e9fc4776c750b7906af78256a3bc6f58d8cb1f5aed4de8a05a1ee3cc",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 136238,
+            "tick": 0
+          },
+          "changed": 1856,
+          "checked": 1856,
+          "confirmed": 1856,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1856,
+          "revision": 138094,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1856,
+            "canonical_json_sha256": "ffa3c88dfa9bd701c308710c57807d054ff933de2708151b4c606b9bf47912fd"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 138094,
+            "tick": 0
+          },
+          "changed": 2048,
+          "checked": 2048,
+          "confirmed": 2048,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2048,
+          "revision": 140142,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2048,
+            "canonical_json_sha256": "73e98d68d7d653b2892e3969cf7d5dd6b143d4f9b1aa51707628510682a8ddff"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 140142,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 144238,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "85276fbd6e091063ab43764f2ba374a000e176c9be7d2aa8a8e8bf710c82757d"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 144238,
+            "tick": 0
+          },
+          "changed": 2624,
+          "checked": 2624,
+          "confirmed": 2624,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2624,
+          "revision": 146862,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2624,
+            "canonical_json_sha256": "b2081b1914359c5b764ad8830cb468e2d32e5a36224cf7439c247117e7f98138"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 146862,
+            "tick": 0
+          },
+          "changed": 3776,
+          "checked": 3776,
+          "confirmed": 3776,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3776,
+          "revision": 150638,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3776,
+            "canonical_json_sha256": "3849d858fc517f479ecbaa17b67f7539b9fabb9252508f1c122d1f7ff29e3fc2"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 150638,
+            "tick": 0
+          },
+          "changed": 3008,
+          "checked": 3008,
+          "confirmed": 3008,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3008,
+          "revision": 153646,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3008,
+            "canonical_json_sha256": "89033943c498b0690825563572b2df6ba2845d1659279452549db194e267e22d"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 153646,
+            "tick": 0
+          },
+          "changed": 3200,
+          "checked": 3200,
+          "confirmed": 3200,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3200,
+          "revision": 156846,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3200,
+            "canonical_json_sha256": "90f3a5b4ba38da6b470ddd380f6826d39f5195396babc3e62f8d50c8a261fc91"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 156846,
+            "tick": 0
+          },
+          "changed": 3840,
+          "checked": 3840,
+          "confirmed": 3840,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3840,
+          "revision": 160686,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3840,
+            "canonical_json_sha256": "cfb8df7eb1f17ac0665ff1cadeeccba26a7108ba2660c4e28aedecd2a9c9f57a"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 160686,
+            "tick": 0
+          },
+          "changed": 2937,
+          "checked": 2937,
+          "confirmed": 2937,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2937,
+          "revision": 163623,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2937,
+            "canonical_json_sha256": "3b32a260975b8f81f66df9ef3925f5e98a1651ed8d581c49ef2584fe94b1d830"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 163623,
+            "tick": 0
+          },
+          "changed": 2070,
+          "checked": 2070,
+          "confirmed": 2070,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2070,
+          "revision": 165693,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2070,
+            "canonical_json_sha256": "07a016fc0a5763f8c61e35192f16fa1647d127dbab7e0c254e208cd1961bf80f"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 165693,
+            "tick": 0
+          },
+          "changed": 1829,
+          "checked": 1829,
+          "confirmed": 1829,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1829,
+          "revision": 167522,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1829,
+            "canonical_json_sha256": "19d4b7870ed235374544e2630c11eb2368fc16b1f4a1b65884af3fe4747638e7"
+          }
+        }
+      ]
+    },
+    {
+      "name": "07-staged_megaframe-direct-original-native-receipts.json",
+      "original_bytes": 4524032,
+      "original_sha256": "cb22cba9f04c8b2252f5a67cc312e343c598d99560f1dd3d4db49883d39c6f8d",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 319813,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 323909,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "ae08d98161112adbb40c1d46eab1c8f36d2c3958d1246b7794cf75e3705f3614"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 323909,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 328005,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "139c7fca22450cc40265122345d7b9b3b9c0ab63b29eccd7c880da60e6ef11c8"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 328005,
+            "tick": 0
+          },
+          "changed": 3520,
+          "checked": 3520,
+          "confirmed": 3520,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3520,
+          "revision": 331525,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3520,
+            "canonical_json_sha256": "9c58cf78468049e3a24f51625e647a4b89656cce50fff0307fc00c8e1351b4b6"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 331525,
+            "tick": 0
+          },
+          "changed": 4032,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 335557,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "d2d91e38cb663dc0deae0e8375cf1fd2f594c7fd9a3e3d46918b2c4838f34978"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 335557,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 339653,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "112873ba9f41535c99a498470cdf03b4495dd1b441fdd23d72bd7b8063e80aa5"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 339653,
+            "tick": 0
+          },
+          "changed": 2944,
+          "checked": 2944,
+          "confirmed": 2944,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2944,
+          "revision": 342597,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2944,
+            "canonical_json_sha256": "78749b5916571aade42c7d276c1c89c51a43721a4414e5c3270a4f92a35cddb7"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 342597,
+            "tick": 0
+          },
+          "changed": 4032,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 346629,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "562da34da1f27d72864853cf94964b47c6ae0b49c94e89af2a4d66f46c38ef92"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 346629,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 350725,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "d9b866f04ceb584f0189192801ae67e5ce2d6537b86a4f6195c227a269bd8e1a"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 350725,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 354821,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "8d147c213daa60f9fb73dad4c3e54ed194d8c3ebc892996a27f4d8aee9461f9c"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 354821,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 358917,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "650594538ed36194795dfc89cfb985524b66c3c8c859509c3b067844ff3103aa"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 358917,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 363013,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "b440cf85451ddd35645c5a5c4f0f548b6cd217b426966431d88f70879c90278d"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 363013,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 367109,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "9f272cb5278d171744d7b5a860e84ad6a16ed0cec7ab42d1a14b7ed18be86834"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 367109,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 371205,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "7195d8759c9b4aa0c05c87df7bdf20d6e41c21064651a62db3b12a581fea369c"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 371205,
+            "tick": 0
+          },
+          "changed": 3796,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 375001,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 300,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "7b31f322bf341f30017a93b87056b4ce28d0f822fb7999f2ebd62914da1adee0"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 375001,
+            "tick": 0
+          },
+          "changed": 3531,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 378532,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 565,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "a3f782c22fc52b9a43ce7840895b07c831e5522d002f6022b613aa3cf87450a6"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 378532,
+            "tick": 0
+          },
+          "changed": 3521,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 382053,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 575,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "8d658ea628db8103be508dfd2cc36d5870217f021240ff648b2410de46673e80"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 382053,
+            "tick": 0
+          },
+          "changed": 3528,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 385581,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 568,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "37d599526f158f1b9964e6815178affdc15c56f69b67fd6c1bd70d401170a4b5"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 385581,
+            "tick": 0
+          },
+          "changed": 3524,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 389105,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 572,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "7fb7ce2487646da8bcb4653d72672189d439ceb8b7f2bc288cc764d2daa6a443"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 389105,
+            "tick": 0
+          },
+          "changed": 3526,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 392631,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 570,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "51a169438a445b54e630197d44d448f64ddf553435491fc42bf3eba9bdecf370"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 392631,
+            "tick": 0
+          },
+          "changed": 3400,
+          "checked": 3910,
+          "confirmed": 3910,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3910,
+          "revision": 396031,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 510,
+          "readback_review": {
+            "count": 3910,
+            "canonical_json_sha256": "a581753f82302c7f53dfd5ccb487994a4e01428c0d6b4fe32f13e63940f55d78"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 396031,
+            "tick": 0
+          },
+          "changed": 2249,
+          "checked": 2249,
+          "confirmed": 2249,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2249,
+          "revision": 398280,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2249,
+            "canonical_json_sha256": "8ca467276c6207fd14d75ec9d39141fca3d2b6caa5c7d2ff24b01e68387844c3"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 398280,
+            "tick": 0
+          },
+          "changed": 3867,
+          "checked": 3867,
+          "confirmed": 3867,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3867,
+          "revision": 402147,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3867,
+            "canonical_json_sha256": "0f1e2b6205bfd582fdcf62ebe4a756e2d6a3e8caa6487cf2dbc98cde18cc38ca"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 402147,
+            "tick": 0
+          },
+          "changed": 3840,
+          "checked": 3840,
+          "confirmed": 3840,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3840,
+          "revision": 405987,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3840,
+            "canonical_json_sha256": "fc25a3fea719fcfdcf820406b7f8d0baa517c1dad3cbf5417ebfe47bc225bc6c"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 405987,
+            "tick": 0
+          },
+          "changed": 1087,
+          "checked": 1087,
+          "confirmed": 1087,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1087,
+          "revision": 407074,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1087,
+            "canonical_json_sha256": "d0a9bfae5763ae5674a51b529beea63749ebe591de7afd844c474ab7d3d4b482"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 407074,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 411170,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "a0a4aa8d068c7abaf114df7f43a442d8b28c4eccab65b42de5b580a3695a5b35"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 411170,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 415266,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "2a914ace9480032964916828adcdce02d9897ca18e73244ed1ab9318bfb00bb2"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 415266,
+            "tick": 0
+          },
+          "changed": 1284,
+          "checked": 1284,
+          "confirmed": 1284,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1284,
+          "revision": 416550,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1284,
+            "canonical_json_sha256": "9c0b49c9f29a26219d480becb7cb51b9a91c05bada2256276673ca807410a826"
+          }
+        }
+      ]
+    },
+    {
+      "name": "07-staged_megaframe-original-native-receipts.json",
+      "original_bytes": 4412065,
+      "original_sha256": "ee77ba90355ed687de943b05d6118421b786120a43afc8fa275a68b5773a1419",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 212856,
+            "tick": 0
+          },
+          "changed": 3136,
+          "checked": 3136,
+          "confirmed": 3136,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3136,
+          "revision": 215992,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3136,
+            "canonical_json_sha256": "9518977a35a1f15f04f9e29903a3a19abfaee90792d63c6146d8c9ba878e93c6"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 215992,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 220088,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "5b0fec503b4caafb4b431521ec7303c7486379457eebcdd6c100525c2a6f35fe"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 220088,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 224184,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "d63214891c1abdf400eeda09e8ea54c0273f1afb2e0774860d6d3ef96a1a6f70"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 224184,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 228280,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "18cc651815da1f11605faf9fe368e8138c6011a860a45a95ebf6df6886b0ddb1"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 228280,
+            "tick": 0
+          },
+          "changed": 3904,
+          "checked": 3904,
+          "confirmed": 3904,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3904,
+          "revision": 232184,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3904,
+            "canonical_json_sha256": "9f20dace33ec31915db6041c0c7953874f01585617001b7b28443724fe8b9728"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 232184,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 236280,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "2cd4cf96809e4c6e9d966f59a15696883f2027fc43255e346b8f661517210b04"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 236280,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 240376,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "110d4bcd2c98978500567c59eba3b648a76680594a4ed74317c28d37b46380b6"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 240376,
+            "tick": 0
+          },
+          "changed": 1926,
+          "checked": 1926,
+          "confirmed": 1926,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1926,
+          "revision": 242302,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1926,
+            "canonical_json_sha256": "dd50aa516e8cbb3466d7d746062ee7d3f5f6015c4328df28c47cce66623166a2"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 242302,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 246398,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "f325513305f5c0658487651f4de899ebd477bc659ee8721717db0f97754ec56c"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 246398,
+            "tick": 0
+          },
+          "changed": 3840,
+          "checked": 3840,
+          "confirmed": 3840,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3840,
+          "revision": 250238,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3840,
+            "canonical_json_sha256": "d74168ce7b194f5a4af4cc9e6aa61b0cde97ab02cd9e917d1cca5e470b6cadb6"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 250238,
+            "tick": 0
+          },
+          "changed": 3776,
+          "checked": 3776,
+          "confirmed": 3776,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3776,
+          "revision": 254014,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3776,
+            "canonical_json_sha256": "d9c340edc34b84a90b5e0596d544ffc009a9abe7f555e7a4829f86c74bbc45a8"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 254014,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 258110,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "9cae2f39b48c40c051f79898e841f33c2a1bfcdc61509da3b6e0face4a65f3fe"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 258110,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 262206,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "f5ba8f7f25e7e5fed49176d92eb12c26606669937f8ba337b445bd1b45500f18"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 262206,
+            "tick": 0
+          },
+          "changed": 4036,
+          "checked": 4036,
+          "confirmed": 4036,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4036,
+          "revision": 266242,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4036,
+            "canonical_json_sha256": "09db916abebabe05015895ad55b814470712e2eba88ffee885fc09395da627fe"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 266242,
+            "tick": 0
+          },
+          "changed": 3526,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 269768,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 570,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "e2a632cdb74ceaa42713f28f50b9cfae975fd4f10b0646749ca1236ef38419e5"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 269768,
+            "tick": 0
+          },
+          "changed": 3526,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 273294,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 570,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "1a05c3d1c2d788046351b6cc7353d64f00aa9f88bd731d5a99ba29964c3e3df8"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 273294,
+            "tick": 0
+          },
+          "changed": 3475,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 276769,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 557,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "03343a4021fcf9827538081e9943b06ec589f6150972092765b868baf2f48a6c"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 276769,
+            "tick": 0
+          },
+          "changed": 3351,
+          "checked": 3904,
+          "confirmed": 3904,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3904,
+          "revision": 280120,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 553,
+          "readback_review": {
+            "count": 3904,
+            "canonical_json_sha256": "2a77ab60a4d63fba1807b32a30c4812e39e5d5fbc793e00de49f94aa5494e2f4"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 280120,
+            "tick": 0
+          },
+          "changed": 3089,
+          "checked": 3584,
+          "confirmed": 3584,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3584,
+          "revision": 283209,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 495,
+          "readback_review": {
+            "count": 3584,
+            "canonical_json_sha256": "80337251edf0ef3fcd584faa052df92ba72f0bb46214fe7f09e64cd2908d6782"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 283209,
+            "tick": 0
+          },
+          "changed": 3477,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 286686,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 555,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "ed94403a1f59ebcd09b07fbf82e2ad4d8cc97cf91f3bf9af42d2230121d3fcc8"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 286686,
+            "tick": 0
+          },
+          "changed": 2187,
+          "checked": 2547,
+          "confirmed": 2547,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2547,
+          "revision": 288873,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 360,
+          "readback_review": {
+            "count": 2547,
+            "canonical_json_sha256": "a4faeb58d7b0ea4c5bd3ef2c8b65805dbcbcf6c75b954f01c0156fb0d66c5774"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 288873,
+            "tick": 0
+          },
+          "changed": 2359,
+          "checked": 2359,
+          "confirmed": 2359,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2359,
+          "revision": 291232,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 2359,
+            "canonical_json_sha256": "e86b1859c1b3b57c875fb728d9ba4c4d926526313ccc92f23aaf53283f7072ae"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 291232,
+            "tick": 0
+          },
+          "changed": 905,
+          "checked": 905,
+          "confirmed": 905,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 905,
+          "revision": 292137,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 905,
+            "canonical_json_sha256": "35074152bb7daff0909daadc3384fc1fa61696aed1df2208b7300511763e7851"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 292137,
+            "tick": 0
+          },
+          "changed": 3712,
+          "checked": 3712,
+          "confirmed": 3712,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3712,
+          "revision": 295849,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3712,
+            "canonical_json_sha256": "71d34b71bd16228444b742340e0e81499bc78f5d05e1bce773ee60efe76d6f7b"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 295849,
+            "tick": 0
+          },
+          "changed": 4096,
+          "checked": 4096,
+          "confirmed": 4096,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4096,
+          "revision": 299945,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4096,
+            "canonical_json_sha256": "f17c5993335300263dfa1865dcc1e8108b9f5d7dc28802af8c7c210a993f5058"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 299945,
+            "tick": 0
+          },
+          "changed": 172,
+          "checked": 172,
+          "confirmed": 172,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 172,
+          "revision": 300117,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 172,
+            "canonical_json_sha256": "fdd8bfa677ecdd43d7511289c9396ebf2b46178d46da915f09a12506d7ed3083"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 300117,
+            "tick": 0
+          },
+          "changed": 4032,
+          "checked": 4032,
+          "confirmed": 4032,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 4032,
+          "revision": 304149,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 4032,
+            "canonical_json_sha256": "b3056640044913bde91e0426a5015c23370772b68ceafab1c3e10f32dfabe4d0"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 304149,
+            "tick": 0
+          },
+          "changed": 3840,
+          "checked": 3840,
+          "confirmed": 3840,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 3840,
+          "revision": 307989,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 3840,
+            "canonical_json_sha256": "633acbda9a5e097aad71c99eabe7cb236e697808eabfe5f6f62a35f77c93f744"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 307989,
+            "tick": 0
+          },
+          "changed": 1604,
+          "checked": 1604,
+          "confirmed": 1604,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1604,
+          "revision": 309593,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1604,
+            "canonical_json_sha256": "bdedf991d4e3a73f54a9bcc755da1bbd290be023cbb2bac4c57596145026c95f"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08-xeno_vault-direct-original-native-receipts.json",
+      "original_bytes": 382922,
+      "original_sha256": "78eb06351196dc0ac688caa1958a1400b70fec7a7f53d365966d0e35362ac14a",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 432714,
+            "tick": 0
+          },
+          "changed": 2317,
+          "checked": 2429,
+          "confirmed": 2429,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2429,
+          "revision": 435031,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 112,
+          "readback_review": {
+            "count": 2429,
+            "canonical_json_sha256": "26add4ed38a469b518e552c761d2c1ca8a8d165feaf307a272576a9311803306"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 435031,
+            "tick": 0
+          },
+          "changed": 2764,
+          "checked": 2808,
+          "confirmed": 2808,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2808,
+          "revision": 437795,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 44,
+          "readback_review": {
+            "count": 2808,
+            "canonical_json_sha256": "3c094fa3d3f0114bf3cfedc714b7af295a1ff4b02c5b2b70f281c46c5be53632"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 437795,
+            "tick": 0
+          },
+          "changed": 1457,
+          "checked": 1457,
+          "confirmed": 1457,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1457,
+          "revision": 439252,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1457,
+            "canonical_json_sha256": "c0d83eb2e99777c76c0707bba10457838d355813b7b7f526e9c56bf7aab544fb"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 439252,
+            "tick": 0
+          },
+          "changed": 1966,
+          "checked": 1966,
+          "confirmed": 1966,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1966,
+          "revision": 441218,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1966,
+            "canonical_json_sha256": "111c96e6eb0f927dfc9e260c0892775a3ee33e490dabfe2aba0851c0290d11e1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "08-xeno_vault-original-native-receipts.json",
+      "original_bytes": 374262,
+      "original_sha256": "3b9d4376a87c9ec7d0b3b47342ad3eeedda076e4cb6192abf60c74a6747cb789",
+      "receipts": [
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 420380,
+            "tick": 0
+          },
+          "changed": 2597,
+          "checked": 2709,
+          "confirmed": 2709,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2709,
+          "revision": 422977,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 112,
+          "readback_review": {
+            "count": 2709,
+            "canonical_json_sha256": "7650d99e72f32f7e08013dbfb006f1619e8e40620e2d4cc6b7708888e33bf208"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 422977,
+            "tick": 0
+          },
+          "changed": 2676,
+          "checked": 2720,
+          "confirmed": 2720,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 2720,
+          "revision": 425653,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 44,
+          "readback_review": {
+            "count": 2720,
+            "canonical_json_sha256": "7c137d8eab29db83107946236674bd50e261860a54c823dd3cca30a15d7a2493"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 425653,
+            "tick": 0
+          },
+          "changed": 1265,
+          "checked": 1265,
+          "confirmed": 1265,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1265,
+          "revision": 426918,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1265,
+            "canonical_json_sha256": "c6dc39edc497f540084dd7600f77fd21926aaa68beb055af6187df54a7901d42"
+          }
+        },
+        {
+          "authoring_generation": 1,
+          "backend": "CyberNativeCellWorld",
+          "before_source": {
+            "authoring_generation": 1,
+            "generation": 2,
+            "revision": 426918,
+            "tick": 0
+          },
+          "changed": 1966,
+          "checked": 1966,
+          "confirmed": 1966,
+          "excluded": 0,
+          "generation": 2,
+          "reason": "",
+          "refused": 0,
+          "requested": 1966,
+          "revision": 428884,
+          "status": "completed",
+          "tick": 0,
+          "unchanged": 0,
+          "readback_review": {
+            "count": 1966,
+            "canonical_json_sha256": "eae2b75d647fbda8ff27df3a247c4776ee042d9edfe252932d80d18d74e4caba"
+          }
+        }
+      ]
+    }
+  ]
+}

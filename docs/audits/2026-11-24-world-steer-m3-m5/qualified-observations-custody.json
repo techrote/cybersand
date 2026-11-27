@@ -1,0 +1,33 @@
+{
+  "schema": "cybersand.qualified-observations-custody.v1",
+  "path": "qualified-observations.zip",
+  "sha256": "75ffd31507ff1fe6b5bea6ee0a08feb9cab9e0026f8a57725176f32f388e94b6",
+  "bytes": 7094094,
+  "payload_files": 675,
+  "uncompressed_payload_bytes": 106394424,
+  "archive_manifest_sha256": "6f9e96b4cab5188fcbdc304be376b1ec135896ccdbf4c8cefb2ca9daf2352cf6",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_run": 45454711939,
+  "original_artifacts": [
+    {
+      "id": 14951941657,
+      "sha256": "4e0dae64563f765c0d18fd0025d12e94a94722ee074be0e62416b024e19121b1"
+    },
+    {
+      "id": 14951367035,
+      "sha256": "6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4"
+    },
+    {
+      "id": 14730981459,
+      "sha256": "28218bf88508389423cb2740c21d25d5063ec08961e65167c50a9c648698cdff"
+    },
+    {
+      "id": 14948353086,
+      "sha256": "6d1e25ef1d717f435f04ea639be64e370726fc72b810e7d7029989ce02fc9e1f"
+    },
+    {
+      "id": 14949310056,
+      "sha256": "5541b0269b0e530cbed15a58abd913eb7d38c5c520ed4ebde810686ed359e532"
+    }
+  ]
+}

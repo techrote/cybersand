@@ -1,0 +1,18 @@
+{
+  "schema": "cybersand.owner-evaluator-independent-lead-review.v1",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+  "zip_file": "CyberSand-Architecture-Workbench-Windows-fe2395c7060d.zip",
+  "zip_sha256": "d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da",
+  "zip_bytes": 97970858,
+  "manifest_sha256": "d7030eaddfcd8aad118ad2d3928bc12516f155ea19a75b1def2208e83073bd51",
+  "manifest_files_verified": 1330,
+  "regular_files": 1331,
+  "native_sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+  "native_bytes": 5820416,
+  "qualified_application_identities_verified": 59,
+  "embedded_source_qualification_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+  "embedded_source_processes": 47,
+  "passed": true,
+  "scope": "Independent ZIP path/member/hash and qualified source/native/embedded report checks. Extracted native/UI execution separately passed; physical owner acceptance pending."
+}

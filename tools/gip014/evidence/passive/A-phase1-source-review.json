@@ -1,0 +1,57 @@
+{
+  "schema": "cybersand-goblin-A-passive-phase1-source-review-v1",
+  "review_kind": "read-only source/schema review; no game, parser execution or artifact-analysis result",
+  "status": "no_concrete_blocker_in_reviewed_A_scope",
+  "source_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+  "source_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+  "reviewed_git_blobs": {
+    "driver": "6b9c3e327437f5426776da78abef02ef62636212",
+    "manifest": "6a297640912b5c34ff2e3d48750534dd6e24a1db",
+    "workflow": "8665ea02ff707e1c0165714d9f9a74e3385d3c6a",
+    "A_execution_contract": "d7b2165b8921fe58cf4a7df4d55156bb4986338e",
+    "frozen_primary_reader": "fe0b8a5c522f3495dfdf7d9f43690c07d73a60d2",
+    "frozen_memory_reader": "66db913688e86661e38ff9df7774def5792a9ea4"
+  },
+  "activation_input": {
+    "source": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+    "run_id": 45565621408,
+    "job_id": 139039653373,
+    "artifact_id": 15003384515,
+    "artifact_bytes": 50241858,
+    "artifact_sha256": "c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e",
+    "full_job_log_blob": "cef4222bcb86fc3ebad0e502559645a60d1126bf",
+    "contract_blob": "d7b2165b8921fe58cf4a7df4d55156bb4986338e",
+    "archive_tracking_source": "cc99be1f37f0be7ca626e91eb7dada2cb53f9f06",
+    "archive_tracking_path": "tools/gip014/evidence/archives/specialist-A-analysis-v1.zip.xz",
+    "raw_consumed_by_A": false
+  },
+  "verified_source_properties": [
+    "Manifest embeds the exact d7 contract bytes. All27 A restore mappings and all3 A argv arrays are unchanged.",
+    "Compressed A v1 Gitblob/size/SHA, decompressed ZIP size/SHA and manifest hash are explicitly cross-bound to the frozen contract.",
+    "Restored files use fixed members, SHA256/optional size/Gitblob checks, exclusive outputs and an output root outside the qualified6f checkout.",
+    "Primary source pinning remains the frozen23-helper check; memory recorded maps use the exact11 basename keys, checked independently by the frozen reader.",
+    "Source checkout is the exact6f commit/tree and distinct from driver HEAD; workflow pins CPython3.12 and records Python/platform/psutil7.2.2/module SHA.",
+    "LONG8 attempt_details and timing preserve dict or null shapes; no nonexistent late window or missing attempt becomes zero.",
+    "MEMORY provenance preserves dict or null; existing coverage/prefix/native proof/choice-difference fields are copied without recalculation.",
+    "Missing owner, ledger, provenance or reader map is explicit wrapper missing_source_evidence. Non-null malformed or mismatched identities fail closed.",
+    "Wrapper reviews_pass requires complete memory preflight separately from the unchanged analyzer result; missing owner cannot become an overall custody pass.",
+    "A children remain the existing pure self-check, exact long8 reader and memory --analyze only. No Godot, editor, native game or new analyzer route is added.",
+    "Each A child is bounded60s/3072MiB; three-child240s aggregate and64MiB output checks are explicit, with outer resource/final fences.",
+    "Report file path/byte count/SHA256 are emitted separately from bounded direct-field projections. Full original report and log bytes remain retained.",
+    "Reader status pass remains a data-validation result; original campaign failure, missingness and actual completion counts are unchanged.",
+    "The exact artifact activation is15003384515/50241858B/c5ab54aa... from the declared6f run/job; raw outcomes have not been consumed by this source review."
+  ],
+  "resolved_prelaunch_findings": [
+    "Initial projection iterated primary attempt_details as a list instead of its actual dict-or-null schema.",
+    "Initial projections and preflight did not preserve missing/null provenance/timing distinctly.",
+    "Missing source-owner metadata can coexist with a frozen memory-reader pass; wrapper completeness now gates it independently."
+  ],
+  "limitations": [
+    "This review does not assert source syntax execution, successful remote analysis, campaign completion, memory advantage or a production defect.",
+    "Full Linux11 source-specific adjudication requires the fixed readers' actual retained reports and byte-bound log projections.",
+    "State-v2 long8/memory7 outputs remain separate from historical d849/5ee State-v1 matrices; metrics and admission acceptance are unchanged."
+  ],
+  "native_gameplay_actions": 0,
+  "local_host_commands": 0
+}

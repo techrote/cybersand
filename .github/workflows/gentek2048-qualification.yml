@@ -1,8 +1,32 @@
 name: GENTEK-2048-001 exact-source 2048-square Workbench
 on:
   push:
-    branches: [feature/gentek-2048-square-001]
+    branches: [main]
+    paths:
+      - '.github/workflows/gentek2048-qualification.yml'
+      - 'godot/scripts/architectural_generator*'
+      - 'godot/scripts/workbench_generator_dialog.gd'
+      - 'godot/scripts/workbench_generated_map.gd'
+      - 'godot/tests/test_architectural*'
+      - 'godot/tests/fixtures/gentek2048_workbench.gd'
+      - 'godot/addons/cybersand_native/**'
+      - 'tools/architecture/*gentek2048*.py'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/gentek2048-qualification.yml'
+      - 'godot/scripts/architectural_generator*'
+      - 'godot/scripts/workbench_generator_dialog.gd'
+      - 'godot/scripts/workbench_generated_map.gd'
+      - 'godot/tests/test_architectural*'
+      - 'godot/tests/fixtures/gentek2048_workbench.gd'
+      - 'godot/addons/cybersand_native/**'
+      - 'tools/architecture/*gentek2048*.py'
   workflow_dispatch:
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
 permissions:
   contents: read
 concurrency:
@@ -10,10 +34,11 @@ concurrency:
   cancel-in-progress: false
 jobs:
   linux:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     env:
-      GODOT_URL: 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+      GODOT_URL: 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
       GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
       LIBGL_ALWAYS_SOFTWARE: '1'
       LP_NUM_THREADS: '2'
@@ -26,10 +51,8 @@ jobs:
       - name: Fetch pinned native runtime and validate exact source
         run: |
           set -euo pipefail
-          git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
-          echo '5195149bb4ee0b826d258f46627397d4a3e79d0d22cd3072ca0518aa75ebd878  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so' | sha256sum --check --strict
-          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+          python3 tools/ci/materialize_lfs.py --expected-source "$(git rev-parse HEAD)" --output "$RUNNER_TEMP/gentek-lfs" --include godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+          python3 tools/ci/check_repository.py
           python3 -m py_compile tools/architecture/qualify_gentek2048.py
           test -z "$(git status --porcelain --untracked-files=no)"
       - name: Download pinned Godot 4.7 and setup display
@@ -62,6 +85,7 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
   windows:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
     runs-on: windows-2022
     timeout-minutes: 150
     steps:
@@ -73,13 +97,10 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference='Stop'
-          git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
-          if ($LASTEXITCODE -ne 0) { throw 'Pinned Windows LFS runtime download failed' }
-          $native='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll'
-          if ((Get-FileHash $native -Algorithm SHA256).Hash.ToLowerInvariant() -ne '2b7a1fbb8410270498e5c0ce8f9384a598c4467397e4ca1bda0111d6c5985447') { throw 'Native DLL source mismatch' }
-          $rapier='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
-          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier source mismatch' }
+          python tools/ci/materialize_lfs.py --expected-source (git rev-parse HEAD) --output (Join-Path $env:RUNNER_TEMP 'gentek-lfs') --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+          if ($LASTEXITCODE -ne 0) { throw 'Exact-source LFS runtime admission failed' }
+          python tools/ci/check_repository.py
+          if ($LASTEXITCODE -ne 0) { throw 'Source/runtime provenance mismatch' }
           python -m py_compile tools/architecture/qualify_gentek2048.py
           if (git status --porcelain --untracked-files=no) { throw 'Source changed during LFS admission' }
       - name: Retrieve pinned Godot 4.7 Windows console executable

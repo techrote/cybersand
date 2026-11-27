@@ -1,0 +1,84 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "four-line-ending-rewrites",
+      "passed": true,
+      "allowed": true,
+      "observed_error": null
+    },
+    {
+      "case": "unchanged-development-delta",
+      "passed": true,
+      "allowed": true,
+      "observed_error": null
+    },
+    {
+      "case": "descriptor-content-0",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed descriptor content beyond permitted line endings"
+    },
+    {
+      "case": "descriptor-content-1",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed descriptor content beyond permitted line endings"
+    },
+    {
+      "case": "descriptor-content-2",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed descriptor content beyond permitted line endings"
+    },
+    {
+      "case": "descriptor-content-3",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed descriptor content beyond permitted line endings"
+    },
+    {
+      "case": "unknown-import-drift",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed another tracked input"
+    },
+    {
+      "case": "source-image-drift",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed another tracked input"
+    },
+    {
+      "case": "script-drift",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed another tracked input"
+    },
+    {
+      "case": "native-drift",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed another tracked input"
+    },
+    {
+      "case": "runner-drift",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed another tracked input"
+    },
+    {
+      "case": "changed-development-delta",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "Editor import changed another tracked input"
+    },
+    {
+      "case": "descriptor-alias",
+      "passed": true,
+      "allowed": false,
+      "observed_error": "An import descriptor is unexpectedly a symbolic link: godot/addons/godot-rapier2d/Radial2D.svg.import"
+    }
+  ],
+  "runner_sha256": "248e7399f042a668a4d44b1afc063c708b73d13b47377ef8834312745d156e68"
+}

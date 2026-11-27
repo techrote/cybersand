@@ -1,0 +1,94 @@
+name: Goblin001 accepted storage repair Windows qualification
+
+on:
+  push:
+    branches: [fix/goblin001-verified-storage-closure]
+    paths: ['tools/fixtures/goblin001-storage-windows-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: goblin001-storage-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_LFS_SKIP_SMUDGE: '1'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  windows:
+    name: Exact Goblin001 storage, native replacement and default-OFF
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/fix/goblin001-verified-storage-closure'
+    runs-on: windows-2022
+    timeout-minutes: 300
+    steps:
+      - name: Preserve exact committed text before both checkouts
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          if ($LASTEXITCODE -ne 0) { throw 'Exact checkout configuration failed' }
+          git config --global --get core.autocrlf
+
+      - name: Check out immutable request harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: harness
+          persist-credentials: false
+
+      - name: Refuse incomplete source requests
+        id: request
+        shell: pwsh
+        run: |
+          python harness/tools/ci/test_goblin001_storage_adapter.py
+          if ($LASTEXITCODE -ne 0) { throw 'Storage adapter refusal controls failed' }
+          python harness/tools/ci/qualify_goblin001_storage.py read-request --request harness/tools/fixtures/goblin001-storage-windows-request.json --github-output $env:GITHUB_OUTPUT
+          if ($LASTEXITCODE -ne 0) { throw 'Storage source request is not admitted' }
+          python harness/tools/ci/check_ci_provider_policy.py --root harness
+          if ($LASTEXITCODE -ne 0) { throw 'Harness provider policy failed' }
+
+      - name: Check out exact repaired product
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.request.outputs.source_commit }}
+          path: product
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Acquire only committed runtime identities and pinned engine
+        shell: pwsh
+        working-directory: product
+        run: |
+          git config --local core.autocrlf false
+          if ($LASTEXITCODE -ne 0) { throw 'Product checkout configuration failed' }
+          git config --show-origin --get-all core.autocrlf
+          $evidence = Join-Path $env:RUNNER_TEMP 'goblin001-storage-evidence'
+          New-Item -ItemType Directory $evidence | Out-Null
+          'GOBLIN001_STORAGE_EVIDENCE=' + $evidence | Out-File -Append -FilePath $env:GITHUB_ENV
+          python tools/ci/materialize_lfs.py --root . --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $evidence 'lfs-acquisition') --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound runtime acquisition refused' }
+          curl.exe --fail --location --connect-timeout 20 --max-time 1200 --output (Join-Path $evidence 'godot-windows.zip') 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot acquisition failed' }
+
+      - name: Execute complete finite storage and application contract
+        shell: pwsh
+        working-directory: product
+        run: |
+          python ../harness/tools/ci/qualify_goblin001_storage.py qualify --request ../harness/tools/fixtures/goblin001-storage-windows-request.json --product . --godot-archive (Join-Path $env:GOBLIN001_STORAGE_EVIDENCE 'godot-windows.zip') --output (Join-Path $env:GOBLIN001_STORAGE_EVIDENCE 'qualification')
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows storage qualification failed; retain original evidence' }
+
+      - name: Retain every original outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: goblin001-storage-windows-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/goblin001-storage-evidence/lfs-acquisition/**
+            ${{ runner.temp }}/goblin001-storage-evidence/qualification/**
+          if-no-files-found: error
+          retention-days: 90

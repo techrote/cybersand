@@ -1,0 +1,88 @@
+{
+  "schema": "art-creative-cohort-independent-review-v1",
+  "status": "passed",
+  "checks": 166,
+  "failures": [],
+  "evidence_commit": "53bba66ddeb5d5a549f14a39c6dccbb416297d61",
+  "source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "original_sha256": "bb1893157dbc520cb936b76d7d87872a18ef83ba74002d55d2cf2697eb083a99",
+  "briefs": 24,
+  "totals": {
+    "ready": 17,
+    "refused": 6,
+    "stale_refused": 1
+  },
+  "splits": {
+    "development": 12,
+    "owner_model_held_out": 4,
+    "adversarial": 4,
+    "revision": 4
+  },
+  "refusals": [
+    {
+      "id": "B10",
+      "actual": "refused",
+      "error": "Resolve the proposal's outstanding questions before native approval."
+    },
+    {
+      "id": "C01",
+      "actual": "refused",
+      "error": "Proposal has 3927 requested cells conflicting with owner/native policy. Revise it before approval."
+    },
+    {
+      "id": "C02",
+      "actual": "refused",
+      "error": "Proposal requests material 29 outside the owner palette."
+    },
+    {
+      "id": "C03",
+      "actual": "refused",
+      "error": "Erase requires the owner's explicit destructive permission."
+    },
+    {
+      "id": "C04",
+      "actual": "refused",
+      "error": "Unsupported operation 'place_module'. Native part placement requires its Architecture owner."
+    },
+    {
+      "id": "R02",
+      "actual": "refused",
+      "error": "Proposal has 1 requested cells conflicting with owner/native policy. Revise it before approval."
+    },
+    {
+      "id": "R04",
+      "actual": "stale_refused",
+      "error": "Preview requires the exact captured source and owner constraints."
+    }
+  ],
+  "repaired_precursors": [
+    {
+      "id": "R03",
+      "intermediate": "refused",
+      "conflicts": 3927,
+      "final": "ready"
+    }
+  ],
+  "matched_ready_arms": 17,
+  "context_bytes": {
+    "with_knowledge": [
+      7006,
+      8374
+    ],
+    "without_knowledge": [
+      6109,
+      6224
+    ],
+    "without_native_summary": [
+      3317,
+      4689
+    ]
+  },
+  "limits": [
+    "Known deterministic fixture mapping; no LLM decisions or native writes.",
+    "Four held-out labels reserve a future genuine-model cohort; fixture mapping already knows them.",
+    "B04/R01 changes are a title and first rectangle height by2, exercising lineage rather than proving semantic understanding of a taller crown.",
+    "R03 replaces the conflicting packet with a safe bounded rectangle; artistic usefulness is not measured.",
+    "Fixed identical proposals cannot establish a causal effect of retrieval/native context."
+  ]
+}

@@ -1,0 +1,558 @@
+{
+  "audit_tool_sha256": "34e3c69d6556eb5bcada4b374ccce08f2d28c3e5492541c7f6ea3a395a5521f6",
+  "examples": [
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": true,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0,
+          1
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 12,
+          "five_cell_square_fits": true,
+          "local_center": [
+            240,
+            276
+          ],
+          "world_rectangle": [
+            64,
+            280,
+            384,
+            24
+          ]
+        },
+        {
+          "component_id": 12,
+          "five_cell_square_fits": true,
+          "local_center": [
+            240,
+            179
+          ],
+          "world_rectangle": [
+            108,
+            120,
+            296,
+            150
+          ]
+        }
+      ],
+      "extent": [
+        480,
+        320
+      ],
+      "family": "Assembly hangar",
+      "id": "assembly-hangar",
+      "native_material_sha256": "9706fc47ec4379923ae061c255e455d7783a5715c79144de62794b05229830a9"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": false,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 14,
+          "five_cell_square_fits": true,
+          "local_center": [
+            240,
+            278
+          ],
+          "world_rectangle": [
+            32,
+            282,
+            448,
+            24
+          ]
+        },
+        {
+          "component_id": 15,
+          "five_cell_square_fits": true,
+          "local_center": [
+            156,
+            132
+          ],
+          "world_rectangle": [
+            160,
+            112,
+            24,
+            72
+          ]
+        },
+        {
+          "component_id": 16,
+          "five_cell_square_fits": true,
+          "local_center": [
+            340,
+            146
+          ],
+          "world_rectangle": [
+            344,
+            122,
+            24,
+            80
+          ]
+        }
+      ],
+      "extent": [
+        480,
+        320
+      ],
+      "family": "Interconnected arcology",
+      "id": "interconnected-arcology",
+      "native_material_sha256": "73a46d909f3e3a42ca7c1132e93e19236cb9072159eb8a6c5828c3889c75bafe"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": false,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0
+        ],
+        [
+          1
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 1,
+          "five_cell_square_fits": true,
+          "local_center": [
+            192,
+            142
+          ],
+          "world_rectangle": [
+            32,
+            138,
+            352,
+            40
+          ]
+        },
+        {
+          "component_id": 2,
+          "five_cell_square_fits": true,
+          "local_center": [
+            168,
+            218
+          ],
+          "world_rectangle": [
+            108,
+            227,
+            152,
+            15
+          ]
+        }
+      ],
+      "extent": [
+        384,
+        256
+      ],
+      "family": "Biomechanical arboretum",
+      "id": "biomechanical-arboretum",
+      "native_material_sha256": "98beef6ce9b9818604f4872721a4a74aee66027de507d95599bcec74fdae7fce"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": false,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0
+        ],
+        [
+          1
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 23,
+          "five_cell_square_fits": true,
+          "local_center": [
+            232,
+            278
+          ],
+          "world_rectangle": [
+            68,
+            282,
+            360,
+            24
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            244,
+            134
+          ],
+          "world_rectangle": [
+            224,
+            72,
+            72,
+            156
+          ]
+        }
+      ],
+      "extent": [
+        480,
+        320
+      ],
+      "family": "Irregular megastructure",
+      "id": "irregular-megastructure",
+      "native_material_sha256": "c99010351ab1bf5fc2f0f6ce5841f4d522b68971ba96d108e0ab10fdf75f5e80"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": true,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            112,
+            80
+          ],
+          "world_rectangle": [
+            48,
+            84,
+            160,
+            24
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            146,
+            168
+          ],
+          "world_rectangle": [
+            48,
+            172,
+            228,
+            24
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            289,
+            258
+          ],
+          "world_rectangle": [
+            178,
+            262,
+            254,
+            24
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            208,
+            107
+          ],
+          "world_rectangle": [
+            212,
+            88,
+            24,
+            70
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            333,
+            80
+          ],
+          "world_rectangle": [
+            240,
+            84,
+            218,
+            24
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            304,
+            196
+          ],
+          "world_rectangle": [
+            308,
+            176,
+            24,
+            72
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            405,
+            168
+          ],
+          "world_rectangle": [
+            384,
+            172,
+            74,
+            24
+          ]
+        }
+      ],
+      "extent": [
+        480,
+        320
+      ],
+      "family": "Service and pipework network",
+      "id": "service-network",
+      "native_material_sha256": "a3153d751fa8b5412269ac31c45784debb276e2540c1292f979982c5cbc79265"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": true,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            182,
+            223
+          ],
+          "world_rectangle": [
+            60,
+            230,
+            276,
+            18
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            120,
+            134
+          ],
+          "world_rectangle": [
+            112,
+            140,
+            48,
+            20
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            192,
+            125
+          ],
+          "world_rectangle": [
+            168,
+            66,
+            80,
+            150
+          ]
+        },
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            257,
+            134
+          ],
+          "world_rectangle": [
+            254,
+            140,
+            38,
+            20
+          ]
+        }
+      ],
+      "extent": [
+        384,
+        256
+      ],
+      "family": "Constructed cavern",
+      "id": "constructed-cavern",
+      "native_material_sha256": "b214f6378a3f6f873d1690fc1b020e1500ff2a5a11d0cea3a723e26ffad01ff2"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": true,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 28,
+          "five_cell_square_fits": true,
+          "local_center": [
+            240,
+            178
+          ],
+          "world_rectangle": [
+            64,
+            144,
+            384,
+            100
+          ]
+        }
+      ],
+      "extent": [
+        480,
+        320
+      ],
+      "family": "Modular assembly hangar",
+      "id": "modular-assembly-hangar",
+      "native_material_sha256": "628fd9620f650ef744edb98f747d269442e4e23bc8d0e27597ca75309be5ef47"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": false,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 26,
+          "five_cell_square_fits": true,
+          "local_center": [
+            168,
+            50
+          ],
+          "world_rectangle": [
+            48,
+            56,
+            272,
+            20
+          ]
+        },
+        {
+          "component_id": 32,
+          "five_cell_square_fits": true,
+          "local_center": [
+            168,
+            130
+          ],
+          "world_rectangle": [
+            48,
+            136,
+            272,
+            20
+          ]
+        },
+        {
+          "component_id": 43,
+          "five_cell_square_fits": true,
+          "local_center": [
+            168,
+            210
+          ],
+          "world_rectangle": [
+            48,
+            216,
+            272,
+            20
+          ]
+        }
+      ],
+      "extent": [
+        384,
+        256
+      ],
+      "family": "Modular service stack",
+      "id": "modular-service-stack",
+      "native_material_sha256": "450b9bb7bfa52fa33ef041943bd09191a32364d3ef63bfc7d41e4b3f191db939"
+    },
+    {
+      "all_clearance_centers_fit": true,
+      "all_clearance_centers_share_square_component": true,
+      "center_groups_connected_under_square_proxy": [
+        [
+          0
+        ]
+      ],
+      "declared_clearance_centers": [
+        {
+          "component_id": 0,
+          "five_cell_square_fits": true,
+          "local_center": [
+            240,
+            140
+          ],
+          "world_rectangle": [
+            96,
+            144,
+            320,
+            24
+          ]
+        }
+      ],
+      "extent": [
+        480,
+        320
+      ],
+      "family": "Modular transfer viaduct",
+      "id": "modular-transfer-viaduct",
+      "native_material_sha256": "d5d287d3e38dc4400d72ed04af0ae7133624e8efe8a5c031e2ab1f47b10cadf5"
+    }
+  ],
+  "input_manifest_sha256": {
+    "module-compositions.json": "6a6029bfc0b831be3a77f505841a3b635c7354847bcc6c812440f8b357236b92",
+    "representatives.json": "89cdb6e75f11c4a2c027d22a87633b384b72609ce982110fdaed24c70e7601b5"
+  },
+  "motion": "Four-neighbor unit translations; all five-by-five cells must be Empty and inside the retained native crop. No gravity, jumping, speed, materials dynamics, or actor assumptions.",
+  "schema_version": "cybersand.exploratory-negative-space-review.v1",
+  "scope": "Exploratory geometric review of explicit stage-level clearance relationships for owner handoff. Mutual connection of every declared clearance is not an acceptance requirement. Enclosed equipment and planting-container cavities are not route failures and are not scored. Not part of the frozen thirty-attempt comparison, not a new gate, and not a gameplay or physical actor acceptance certificate. A shared component is necessary only under these artificial movement assumptions, not sufficient for real gameplay.",
+  "source_revision": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+  "square_size_cells": [
+    5,
+    5
+  ],
+  "start_goal_rule": "Integer centers of every unique explicit stage-level clearance rectangle, converted from World to local coordinates. Module-local clearances and cavities are outside this probe set. All center pairs are compared by component membership; no authored spawn/goal is invented."
+}

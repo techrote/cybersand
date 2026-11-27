@@ -1,0 +1,352 @@
+{
+  "schema": "cybersand.windows-outcomes-independent-review.v2",
+  "reviewer": "specialist-C",
+  "method": "Standard-library artifact, source, PNG, material-plane and native receipt checks. Batch attempts paired by unique planned sequence prefix and full semantic inputs, never asynchronous completion array order. replay_of/history_of full references must target an actual same-run attempt before normalization to their planned sequence; execution-specific suffixes are not semantic plan identities.",
+  "run_id": 45454711939,
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "artifact_id": 14951367035,
+  "artifact_sha256": "6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4",
+  "audit_script_sha256": "af348f7b2ea3a2a0cafe5c5863d1bab18b3aedea6f953bd835943fdd93958c14",
+  "passed": true,
+  "errors": [],
+  "native_dll_sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+  "source_file_identities_equal": true,
+  "source_file_count": 59,
+  "reports": {
+    "application": {
+      "qualification_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+      "cases": 47,
+      "all_passed": true,
+      "graphical": true,
+      "packaged": false,
+      "model_calls": 0,
+      "physical_owner_acceptance": "pending",
+      "batch": {
+        "total_attempts": 75,
+        "states": {
+          "completed": 68,
+          "partial": 4,
+          "stopped": 1,
+          "refused": 2
+        },
+        "evaluable_attempts": 72
+      },
+      "architecture_cases": [
+        {
+          "label": "native-module-author",
+          "checks": 101,
+          "status": "passed"
+        },
+        {
+          "label": "native-module-fresh-reopen",
+          "checks": 14,
+          "status": "passed"
+        },
+        {
+          "label": "native-module-starter-parts",
+          "checks": 78,
+          "status": "passed"
+        },
+        {
+          "label": "native-module-observation-custody",
+          "checks": 14,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-retrieval",
+          "checks": 145,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-independent-metrics",
+          "checks": null,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-context-detail",
+          "checks": 59,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-plan",
+          "checks": 57,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-module-contracts",
+          "checks": 98,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-native",
+          "checks": 178,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-fresh-reopen",
+          "checks": 16,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-module-compositions",
+          "checks": 170,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-native-comparison",
+          "checks": 83,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-native-independent-reduction",
+          "checks": null,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-render",
+          "checks": 72,
+          "status": "passed"
+        }
+      ],
+      "rendered_examples": 9,
+      "completed_example_stages": 27,
+      "retained_native_example_receipt_chunks": 76,
+      "native_example_planes": {
+        "assembly-hangar": "9706fc47ec4379923ae061c255e455d7783a5715c79144de62794b05229830a9",
+        "interconnected-arcology": "73a46d909f3e3a42ca7c1132e93e19236cb9072159eb8a6c5828c3889c75bafe",
+        "biomechanical-arboretum": "98beef6ce9b9818604f4872721a4a74aee66027de507d95599bcec74fdae7fce",
+        "irregular-megastructure": "c99010351ab1bf5fc2f0f6ce5841f4d522b68971ba96d108e0ab10fdf75f5e80",
+        "service-network": "a3153d751fa8b5412269ac31c45784debb276e2540c1292f979982c5cbc79265",
+        "constructed-cavern": "b214f6378a3f6f873d1690fc1b020e1500ff2a5a11d0cea3a723e26ffad01ff2",
+        "modular-assembly-hangar": "628fd9620f650ef744edb98f747d269442e4e23bc8d0e27597ca75309be5ef47",
+        "modular-service-stack": "450b9bb7bfa52fa33ef041943bd09191a32364d3ef63bfc7d41e4b3f191db939",
+        "modular-transfer-viaduct": "d5d287d3e38dc4400d72ed04af0ae7133624e8efe8a5c031e2ab1f47b10cadf5"
+      },
+      "native_render_pngs": {
+        "assembly-hangar-godot.png": "3475cb2a9010f04015acf94270850b2521f11934a354e8d7d9e862c32ebe24a4",
+        "interconnected-arcology-godot.png": "f58987011f96ff9560f5dc484979a46c5a52c09676b5f0abcf843d4603fa869c",
+        "biomechanical-arboretum-godot.png": "fdee821ed2b80b44565db1666d29fa1a4fa8649c7824b3378bc8651c7e987708",
+        "irregular-megastructure-godot.png": "f26b8830bec02a9d756ce58334a4ecd04bcce94ff08cadbf14617f1154cc0ffc",
+        "service-network-godot.png": "c6157e581eb294acdd9efa5b1b04ba73a6d43edc454b161abc4acdb44248c39c",
+        "constructed-cavern-godot.png": "1a99c75b05dfa82e22b92f28ae224f363ffee928a6554df2937a1ae2149f4524",
+        "modular-assembly-hangar-godot.png": "272030d513e198d22acfa280fab315bfe871d1ed7b276a18ae924e3586b7b069",
+        "modular-service-stack-godot.png": "ebf27ad92e66dd82abbc0555a8ffa843c55421b5ed9b7109e64f3663a92fd1fb",
+        "modular-transfer-viaduct-godot.png": "6036ace0a7e3e23602a745bfdf1026dcff6910940da3e1dd68488cc362a393ba"
+      },
+      "ui_captures": {
+        "architecture-module-library-ui.png": {
+          "sha256": "d2ca8f4c1c51059fafacdec0326f4690fc84fd107750dcf5e355f9a84f0f7023",
+          "width": 683,
+          "height": 486
+        },
+        "architecture-zero-write-preview-ui.png": {
+          "sha256": "808e8dd8ba4546bd443ec47d0cd1311d516fce5c548b705e6386ebc41968b226",
+          "width": 683,
+          "height": 486
+        },
+        "architecture-native-placement-ui.png": {
+          "sha256": "d84b70dfa813084c754a736edbc7b024485db1981e1c08ed1462bb0b7357db6a",
+          "width": 683,
+          "height": 486
+        }
+      },
+      "renderer_identity": {
+        "display": "Windows",
+        "godot": "4.7-stable (official)",
+        "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "os": "Windows",
+        "rendering_driver": "opengl3_angle",
+        "rendering_method": "gl_compatibility"
+      },
+      "independent_comparison_audit_sha256": "06d1d3846f40f4006ea19a92278f5382fd5d68e5de316346b88f92b5db699e97"
+    },
+    "extracted-evaluator": {
+      "qualification_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c",
+      "cases": 29,
+      "all_passed": true,
+      "graphical": true,
+      "packaged": true,
+      "model_calls": 0,
+      "physical_owner_acceptance": "pending",
+      "batch": {
+        "total_attempts": 75,
+        "states": {
+          "completed": 68,
+          "partial": 4,
+          "stopped": 1,
+          "refused": 2
+        },
+        "evaluable_attempts": 72
+      },
+      "architecture_cases": [
+        {
+          "label": "native-module-author",
+          "checks": 101,
+          "status": "passed"
+        },
+        {
+          "label": "native-module-fresh-reopen",
+          "checks": 14,
+          "status": "passed"
+        },
+        {
+          "label": "native-module-starter-parts",
+          "checks": 78,
+          "status": "passed"
+        },
+        {
+          "label": "native-module-observation-custody",
+          "checks": 14,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-retrieval",
+          "checks": 145,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-independent-metrics",
+          "checks": null,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-context-detail",
+          "checks": 59,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-plan",
+          "checks": 57,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-module-contracts",
+          "checks": 98,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-native",
+          "checks": 178,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-fresh-reopen",
+          "checks": 16,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-module-compositions",
+          "checks": 170,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-native-comparison",
+          "checks": 83,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-native-independent-reduction",
+          "checks": null,
+          "status": "passed"
+        },
+        {
+          "label": "architecture-stage-render",
+          "checks": 72,
+          "status": "passed"
+        }
+      ],
+      "rendered_examples": 9,
+      "completed_example_stages": 27,
+      "retained_native_example_receipt_chunks": 76,
+      "native_example_planes": {
+        "assembly-hangar": "9706fc47ec4379923ae061c255e455d7783a5715c79144de62794b05229830a9",
+        "interconnected-arcology": "73a46d909f3e3a42ca7c1132e93e19236cb9072159eb8a6c5828c3889c75bafe",
+        "biomechanical-arboretum": "98beef6ce9b9818604f4872721a4a74aee66027de507d95599bcec74fdae7fce",
+        "irregular-megastructure": "c99010351ab1bf5fc2f0f6ce5841f4d522b68971ba96d108e0ab10fdf75f5e80",
+        "service-network": "a3153d751fa8b5412269ac31c45784debb276e2540c1292f979982c5cbc79265",
+        "constructed-cavern": "b214f6378a3f6f873d1690fc1b020e1500ff2a5a11d0cea3a723e26ffad01ff2",
+        "modular-assembly-hangar": "628fd9620f650ef744edb98f747d269442e4e23bc8d0e27597ca75309be5ef47",
+        "modular-service-stack": "450b9bb7bfa52fa33ef041943bd09191a32364d3ef63bfc7d41e4b3f191db939",
+        "modular-transfer-viaduct": "d5d287d3e38dc4400d72ed04af0ae7133624e8efe8a5c031e2ab1f47b10cadf5"
+      },
+      "native_render_pngs": {
+        "assembly-hangar-godot.png": "3475cb2a9010f04015acf94270850b2521f11934a354e8d7d9e862c32ebe24a4",
+        "interconnected-arcology-godot.png": "f58987011f96ff9560f5dc484979a46c5a52c09676b5f0abcf843d4603fa869c",
+        "biomechanical-arboretum-godot.png": "fdee821ed2b80b44565db1666d29fa1a4fa8649c7824b3378bc8651c7e987708",
+        "irregular-megastructure-godot.png": "f26b8830bec02a9d756ce58334a4ecd04bcce94ff08cadbf14617f1154cc0ffc",
+        "service-network-godot.png": "c6157e581eb294acdd9efa5b1b04ba73a6d43edc454b161abc4acdb44248c39c",
+        "constructed-cavern-godot.png": "1a99c75b05dfa82e22b92f28ae224f363ffee928a6554df2937a1ae2149f4524",
+        "modular-assembly-hangar-godot.png": "272030d513e198d22acfa280fab315bfe871d1ed7b276a18ae924e3586b7b069",
+        "modular-service-stack-godot.png": "ebf27ad92e66dd82abbc0555a8ffa843c55421b5ed9b7109e64f3663a92fd1fb",
+        "modular-transfer-viaduct-godot.png": "6036ace0a7e3e23602a745bfdf1026dcff6910940da3e1dd68488cc362a393ba"
+      },
+      "ui_captures": {
+        "architecture-module-library-ui.png": {
+          "sha256": "d2ca8f4c1c51059fafacdec0326f4690fc84fd107750dcf5e355f9a84f0f7023",
+          "width": 683,
+          "height": 486
+        },
+        "architecture-zero-write-preview-ui.png": {
+          "sha256": "808e8dd8ba4546bd443ec47d0cd1311d516fce5c548b705e6386ebc41968b226",
+          "width": 683,
+          "height": 486
+        },
+        "architecture-native-placement-ui.png": {
+          "sha256": "d84b70dfa813084c754a736edbc7b024485db1981e1c08ed1462bb0b7357db6a",
+          "width": 683,
+          "height": 486
+        }
+      },
+      "renderer_identity": {
+        "display": "Windows",
+        "godot": "4.7-stable (official)",
+        "graphics_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "os": "Windows",
+        "rendering_driver": "opengl3_angle",
+        "rendering_method": "gl_compatibility"
+      },
+      "independent_comparison_audit_sha256": "65b8b8bde651298f8b61982098700d51ac172f91233b447dadb682ab3be04717"
+    }
+  },
+  "first_campaign_comparison": {
+    "application": {
+      "preserved_report_sha256": "96563b8d459d0b39d9b6db8027def8faa9114a894244d2e9bd92e3e0d570ff18",
+      "nine_native_planes_unchanged": true,
+      "nine_native_rendered_pngs_unchanged": true,
+      "thirty_control_plane_pairs_unchanged": true,
+      "changed_qualified_source_identity_entries": [
+        "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "scripts/batch_lab/architecture_stage_panel.gd",
+        "tests/test_architecture_stage_render.gd"
+      ]
+    },
+    "extracted-evaluator": {
+      "preserved_report_sha256": "5ee62e7f6be168a6cc0d0a475d693969af1a251c0effef445cdf78402b96ae06",
+      "nine_native_planes_unchanged": true,
+      "nine_native_rendered_pngs_unchanged": true,
+      "thirty_control_plane_pairs_unchanged": true,
+      "changed_qualified_source_identity_entries": [
+        "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "scripts/batch_lab/architecture_stage_panel.gd",
+        "tests/test_architecture_stage_render.gd"
+      ]
+    }
+  },
+  "visual_review": {
+    "method": "Specialist C directly viewed all three actual source PNGs and all three extracted PNGs after custody verification.",
+    "observations": [
+      "The entire 48 by 32 return-pipe geometry is visible in the module pane.",
+      "All six proposed return-pipe placements fit inside the zero-write preview pane; the surrounding empty region is retained.",
+      "The separate completed placement capture names the stage completed and states there is no current approval preview.",
+      "Fit, 1:1 and wheel/pan controls are visible, and the new controls do not obscure native geometry.",
+      "Source and freshly extracted versions of each of the three interface captures are byte-identical."
+    ],
+    "limits": "Hosted Windows rendering and bounded automated interaction; physical owner hardware, operating-system shortcut usability, gameplay traversal and subjective design acceptance remain pending."
+  },
+  "limitations": [
+    "First campaign UI framing defect remains preserved; only this corrected-source campaign establishes its closure.",
+    "Native source inputs are unchanged, but the separately built corrected Windows DLL has a different binary identity.",
+    "Full module manifests retain execution provenance and may differ despite identical native geometry.",
+    "No paid or genuine model-assisted inference, physical owner acceptance, actor-playability or blinded aesthetic claim follows from these controls."
+  ]
+}

@@ -1268,6 +1268,82 @@ void state_hash_binds_retained_momentum() {
     require(first.state_hash() == second.state_hash(), "plain Worlds lost their state hash");
 }
 
+void slosh_short_ripples_and_shallow_front() {
+    const auto sample = [](int smooth, int deep, bool film) {
+        auto cfg = config(1);
+        cfg.wave_flow.deep_gain = deep;
+        cfg.wave_flow.flux_smoothing = smooth;
+        World world(cfg);
+        box(world, 64, 32);
+        if (film) {
+            rect(world, 24, 30, 16, 1, Material::Water);
+        } else {
+            rect(world, 1, 21, 62, 10, Material::Water);
+            for (int x = 2; x < 62; x += 2) world.set(x, 20, Material::Water);
+        }
+        double ripple_energy = 0;
+        for (int t = 0; t < 50; ++t) {
+            (void)world.tick();
+            if (film || t < 5) continue;
+            // Nyquist component in the tank interior; alternate sign each
+            // column, so a broad surface tilt contributes very little.
+            double amplitude = 0;
+            for (int x = 8; x < 56; ++x) amplitude += level(world, x, 32) * (x % 2 ? -1 : 1);
+            ripple_energy += amplitude * amplitude;
+        }
+        return std::pair{ripple_energy, world.content_hash()};
+    };
+    const auto unfiltered = sample(0, 16, false), filtered = sample(48, 16, false);
+    require(unfiltered.first > 0 && filtered.first < unfiltered.first / 2,
+            "flux smoothing did not damp short-wavelength surface energy");
+    require(sample(0, 512, false).second != unfiltered.second, "deep gain did not affect a pool");
+    require(sample(0, 16, true).second == sample(0, 512, true).second, "deep gain changed a shallow front");
+}
+
+void slosh_admission_identity_and_worker_parity() {
+    expect_refusal([](WorldConfig& c) { c.wave_flow.deep_gain = -1; }, "negative deep gain");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.deep_gain = 513; }, "excessive deep gain");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.flux_smoothing = -1; }, "negative smoothing");
+    expect_refusal([](WorldConfig& c) { c.wave_flow.flux_smoothing = 65; }, "unstable smoothing");
+    World original(config(1));
+    for (const auto pair : std::array<std::array<int, 2>, 3>{{{512, 0}, {0, 64}, {512, 64}}}) {
+        const auto run = [&](std::uint32_t workers) {
+            auto cfg = config(workers, 1);
+            cfg.wave_flow.deep_gain = pair[0];
+            cfg.wave_flow.flux_smoothing = pair[1];
+            World world(cfg);
+            require(world.state_hash() != original.state_hash() &&
+                    world.physical_state_hash() != original.physical_state_hash(), "slosh identity omitted a control");
+            box(world, 194, 48);
+            rect(world, 1, 36, 170, 11, Material::Water);
+            rect(world, 48, 30, 16, 6, Material::Water);
+            // Alternating top cells straddle both the half-strip and chunk seams.
+            for (int x = 62; x < 150; x += 2) world.set(x, 35, Material::Water);
+            rect(world, 172, 1, 1, 46, Material::Wall);
+            for (int k = 0; k < 16; ++k) world.set(17 + k, 31 + k, Material::Wall);
+            require(world.set_cell_state(170, 46, Material::Water, 65535, 0), "slosh overfill seed refused");
+            const auto initial = world.water_quantity({0, 0, 194, 48});
+            for (int tick = 0; tick < 34; ++tick) {
+                if (tick == 5) world.set_simulation_region(RectI64{0, 0, 128, 128});
+                if (tick == 20) world.set_simulation_region(std::nullopt);
+                const auto paused_flux = world.wave_flow_flux(127, 42);
+                const auto paused_quantity = world.water_quantity({128, 0, 66, 48});
+                (void)world.tick();
+                require(world.water_quantity({0, 0, 194, 48}) == initial, "slosh changed total mass");
+                const auto ledger = world.quantity_ledger();
+                require(ledger.water_visible + ledger.water_overfill == initial, "slosh ledger mismatch");
+                require(world.water_quantity({173, 0, 20, 48}) == 0, "slosh crossed one-cell wall");
+                if (tick >= 5 && tick < 20) {
+                    require(world.wave_flow_flux(127, 42) == paused_flux &&
+                            world.water_quantity({128, 0, 66, 48}) == paused_quantity, "slosh crossed paused face");
+                }
+            }
+            return std::array<std::uint64_t, 2>{world.content_hash(), world.physical_state_hash()};
+        };
+        require(run(1) == run(6), "slosh cell content or complete identity depends on workers");
+    }
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
@@ -1313,6 +1389,8 @@ int main(int argc, char** argv) {
         {"supported film uses an adhesion threshold", supported_film_uses_an_adhesion_threshold},
         {"state hash binds retained momentum", state_hash_binds_retained_momentum},
         {"prepared uint16 payload and quantity are lossless", prepared_uint16_payload_and_quantity_are_lossless},
+        {"slosh short ripples and shallow front", slosh_short_ripples_and_shallow_front},
+        {"slosh admission identity and worker parity", slosh_admission_identity_and_worker_parity},
     };
     int failures = 0, executed = 0;
     for (const auto& test : tests) {

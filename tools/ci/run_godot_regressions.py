@@ -3,6 +3,7 @@
 
 import argparse
 from collections import Counter
+from contextlib import ExitStack
 from dataclasses import dataclass
 import hashlib
 import json
@@ -22,12 +23,15 @@ import godot_process_monitor as process_monitor
 import execution_policy
 import execution_telemetry
 import godot_scheduling as scheduling
+import run_art_local_close
+import _architecture_campaign_context as architecture_context
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_UNKNOWN_WEIGHT_SECONDS = scheduling.UNKNOWN_SECONDS
-# The Lab invokes this source-level compiler outside the Godot process. Retain
-# its exact working-tree inputs in addition to the existing Git/runtime identity.
-INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue")
+# The Lab compiler and Art's local HTTP fixture run outside the Godot process.
+# Retain their exact inputs in addition to the existing Git/runtime identity.
+INPUT_SCOPES = ("tools/material_catalogue", "materials/catalogue", "tools/ci/run_art_local_close.py",
+                "tools/ci/_architecture_campaign_context.py")
 
 
 def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]:
@@ -42,6 +46,17 @@ def tested_inputs(root: Path, *, timeout: float | None = None) -> dict[str, str]
 # not pass/fail thresholds. Unknown tests deliberately receive a conservative
 # weight so new fixtures are never omitted and are unlikely to overload one shard.
 CASE_WEIGHTS_SECONDS = {
+    # First Linux production-mount probe: 8.043s. This 30s provisional
+    # cross-platform hint is not a Windows measurement or a watchdog change.
+    "test_art_architecture_workbench": 30.0,
+    # MERGEDOWN-RENAISSANCE-001: one Linux Godot4.7 run took 6.331s.
+    # 30s is a conservative provisional cross-platform scheduling hint, not
+    # a measured Windows result or a new timeout; the usual margin applies.
+    "test_ambient_default_off_integration": 30.0,
+    # One Linux Godot4.7 group/ordinary-owner integration run took 6.943s.
+    # This is a provisional scheduling hint, not a Windows measurement or a
+    # change to either the existing operation or complex-fixture watchdog.
+    "test_ambient_living_group_integration": 30.0,
     # Provisional upper-platform hints from run 41250780110 (one sample per
     # fixture, 2026-10-31). These correct severe underestimates; they are not a
     # qualified rolling baseline. A separate 1.5x scheduling margin is applied.
@@ -116,10 +131,113 @@ class Case:
     requires_display: bool = False
 
 
+class ShardCapacityError(ValueError):
+    """The registered indivisible cases need another shard bin."""
+
+
+def case_diagnostic_error(name: str, output: str, returncode: int | None) -> bool:
+    """Keep strict engine-error rejection, with one complete negative-case contract.
+
+    The Art fixture deliberately asks ConfigFile and JSON to parse invalid bytes.
+    Admit those original diagnostics only with their producer stacks, subsequent
+    refusal/recovery assertions and complete 345-check successful suite footer.
+    Raw logs remain untouched. Every other case keeps its original error policy.
+    """
+    # The owner retired cross-session Art restoration in ART-SESSION-LOG-001.
+    # The replacement suite deliberately has no corrupt-profile parser errors;
+    # preserve the historical 345-check admission for archived synthetic probes.
+    if name == "test_art_history_durability" and "ART_HISTORY_SESSION_RESULT " in output:
+        if returncode != 0 or "SCRIPT ERROR:" in output or "ERROR:" in output:
+            return True
+        marker = "ART_HISTORY_SESSION_RESULT "
+        records = [line[len(marker):] for line in output.splitlines() if line.startswith(marker)]
+        if len(records) != 1:
+            return True
+        try:
+            receipt = json.loads(records[0])
+        except (TypeError, ValueError):
+            return True
+        return not (isinstance(receipt, dict) and receipt.get("scope") == "session-only"
+                    and type(receipt.get("checks")) is int and receipt["checks"] >= 10
+                    and receipt.get("failures") == [])
+
+    if name != "test_art_history_durability":
+        return "SCRIPT ERROR:" in output or "ERROR:" in output
+    if type(returncode) is not int or returncode != 0 or "SCRIPT ERROR:" in output:
+        return True
+    lines = output.splitlines()
+    marker = "ART_HISTORY_DURABILITY_RESULT "
+    terminal = [index for index, line in enumerate(lines) if line.startswith(marker)]
+    nonempty = [index for index, line in enumerate(lines) if line.strip()]
+    if len(terminal) != 1 or not nonempty or terminal[0] != nonempty[-1]:
+        return True
+    try:
+        result = json.loads(lines[terminal[0]][len(marker):])
+    except (TypeError, ValueError):
+        return True
+    if (not isinstance(result, dict)
+            or set(result) != {"case", "checks", "failures", "godot", "native_sha256", "os", "test_sha256"}
+            or result.get("case") != "suite"
+            or type(result.get("checks")) is not int or result["checks"] != 345
+            or type(result.get("failures")) is not list or result["failures"]
+            or result.get("godot") != "4.7-stable (official)" or result.get("os") not in ("Linux", "Windows")
+            or re.fullmatch(r"[0-9a-f]{64}", str(result.get("native_sha256", ""))) is None
+            or result.get("test_sha256") != "6659b017334d87f3f63c001caa402e08c6be24bdbb27579875a7d1a3aeb75a7a"):
+        return True
+    prefix = "ART_HISTORY_DURABILITY_CHECK "
+    assertions = [line for line in lines if line.startswith(prefix)]
+    if len(assertions) != 345 or any(not line.endswith(" true") for line in assertions):
+        return True
+    if re.search(r"\bskipped\b|^\s*SKIP\b", output, re.I | re.M):
+        return True
+    expected = (
+        ("ERROR: ConfigFile parse error at user://art-provider.cfg:0: Unexpected EOF while parsing simple tag.",
+         (r"at: _parse \(core/io/config_file\.cpp:\d+\)",
+          r"\[\d+\] read_history_session \(res://scripts/art_batch_panel\.gd:\d+\)",
+          r"\[\d+\] unknown_profile_outage \(res://tests/test_art_history_durability\.gd:\d+\)"),
+         ("unknown corrupt profile cannot fabricate a source association",
+          "unknown corrupt profile reports actionable persistence failure")),
+        ("ERROR: Parse JSON failed. Error at line 0: Expected 'true', 'false', or 'null', got 'not'",
+         (r"at: parse_string \(core/io/json\.cpp:\d+\)",
+          r"\[\d+\] _read_pending_history_receipts \(res://scripts/art_batch_panel\.gd:\d+\)",
+          r"\[\d+\] invalid_journal \(res://tests/test_art_history_durability\.gd:\d+\)"),
+         ("invalid malformed journal fails closed before writing valid receipts",
+          "invalid malformed preserves exact original archive bytes",
+          "valid journal recovers after malformed obstruction removed")),
+    )
+    admitted = set()
+    for headline, producers, witnesses in expected:
+        positions = [index for index, line in enumerate(lines) if line == headline]
+        if len(positions) != 1:
+            return True
+        position = positions[0]
+        end = position + 1
+        while end < len(lines) and (not lines[end].strip() or lines[end].startswith((" ", "\t"))):
+            end += 1
+        stack = "\n".join(lines[position + 1:end])
+        frames = [re.search(r"^\s*" + producer + r"$", stack, re.M) for producer in producers]
+        if any(frame is None for frame in frames) or [frame.start() for frame in frames] != sorted(frame.start() for frame in frames):
+            return True
+        for witness in witnesses:
+            matches = [index for index, line in enumerate(lines) if line == prefix + witness + " true"]
+            if len(matches) != 1 or matches[0] < end:
+                return True
+        admitted.add(position)
+    if lines.count(prefix + "all thirteen adversarial scenario families executed true") != 1:
+        return True
+    # Remove only the two independently verified headline lines from the error
+    # decision; every unexpected diagnostic (including later shutdown) remains fatal.
+    return any("ERROR:" in line for index, line in enumerate(lines) if index not in admitted)
+
+
 def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> float:
     fallback = (CASE_WEIGHTS_SECONDS[name] * scheduling.ESTIMATE_MARGIN
                 if name in CASE_WEIGHTS_SECONDS else DEFAULT_UNKNOWN_WEIGHT_SECONDS)
     return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
+
+
+def _case_requires_display(name: str) -> bool:
+    return name.endswith("_render") or name in architecture_context.GRAPHICAL_CASES
 
 
 def discover_cases(root: Path = ROOT) -> list[Case]:
@@ -128,12 +246,12 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
         Case(
             p.stem,
             ("--script", "res://tests/" + p.name),
-            execution_policy.case_seconds(p.stem, p.stem.endswith("_render"),
+            execution_policy.case_seconds(p.stem, _case_requires_display(p.stem),
                 complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
             _weight(p.stem, profile=profile, root=root),
             # Actual-pixel fixtures use this suffix so newly added render tests
             # cannot silently inherit the headless server's no-frame shortcut.
-            requires_display=p.stem.endswith("_render"),
+            requires_display=_case_requires_display(p.stem),
         )
         for p in sorted((root / "godot/tests").glob("test_*.gd"))
     ]
@@ -160,6 +278,8 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
     if not cases:
         return [[] for _ in range(shard_count)], [0.0] * shard_count
 
+    validate_shard_plan(cases, [cases])
+    units = architecture_context.scheduling_units(cases)
     canonical_order = {case.name: index for index, case in enumerate(cases)}
     shards: list[list[Case]] = [[] for _ in range(shard_count)]
     totals = [0.0] * shard_count
@@ -170,14 +290,22 @@ def build_shard_plan(cases: list[Case], shard_count: int) -> tuple[list[list[Cas
         raise ValueError("Scheduling weights must be finite and positive")
     # Longest-processing-time first balances expected cost. Watchdog admission
     # happens at execution time; summing every rare ceiling caused 150+ jobs.
-    for case in sorted(cases, key=lambda item: (-item.weight, item.name)):
-        index = min((i for i in range(shard_count) if len(shards[i]) < capacity),
+    assigned_units = [[] for _ in range(shard_count)]
+    for unit in sorted(units, key=lambda items: (-sum(case.weight for case in items), items[0].name)):
+        fitting = [i for i in range(shard_count) if len(shards[i]) + len(unit) <= capacity]
+        if not fitting:
+            raise ShardCapacityError("Indivisible Architecture component cannot fit shard case capacity")
+        index = min(fitting,
                     key=lambda i: (totals[i], len(shards[i]), i))
-        shards[index].append(case)
-        totals[index] += case.weight
+        shards[index].extend(unit)
+        assigned_units[index].append(unit)
+        totals[index] += sum(case.weight for case in unit)
 
-    for shard in shards:
-        shard.sort(key=lambda case: canonical_order[case.name])
+    # Sort units, never their members: alphabetical discovery must not put a
+    # consumer before its producer or undo the fresh-process reopen sequence.
+    for index, units_in_shard in enumerate(assigned_units):
+        units_in_shard.sort(key=lambda unit: min(canonical_order[case.name] for case in unit))
+        shards[index] = [case for unit in units_in_shard for case in unit]
     validate_shard_plan(cases, shards)
     return shards, totals
 
@@ -243,6 +371,11 @@ def case_command(godot: str, case: Case, platform: str = sys.platform) -> list[s
         command += ["--rendering-method", "gl_compatibility", "--audio-driver", "Dummy"]
         if platform.startswith("linux"):
             command += ["--display-driver", "x11"]
+        elif platform == "win32" and case.name in architecture_context.GRAPHICAL_CASES:
+            # Existing qualification callers carry their own exact driver in
+            # Case.flags. Only these registered Architecture/Batch cases
+            # need the shared builder to supply ANGLE.
+            command += ["--rendering-driver", "opengl3_angle"]
     else:
         command.append("--headless")
     return [*command, "--path", str(ROOT / "godot"), *case.flags]
@@ -601,8 +734,18 @@ def verify_life010_case(case: Case, record: dict, output_dir: Path, source: str)
                                 verifier_identity=life010_verifier_identity)
 
 
+def context_case_kwargs(case: Case, contexts: dict, results: list[dict]) -> dict:
+    if case.name not in contexts:
+        return {}
+    # run_case's env is complete, so preserve PATH and the source/runtime
+    # identity before applying the component's isolated evidence/profile paths.
+    return {"env": {**os.environ, **contexts[case.name]},
+            "failed_context_producers": tuple(architecture_context.failed_dependencies(case.name, results))}
+
+
 def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
-             env: dict[str, str] | None = None) -> tuple[dict, bool]:
+             env: dict[str, str] | None = None,
+             failed_context_producers: tuple[str, ...] = ()) -> tuple[dict, bool]:
     log_path = output_dir / (case.name + ".log")
     snapshot_path = output_dir / (case.name + ".timeout-diagnostics.txt")
     command = case_command(godot, case)
@@ -628,8 +771,15 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     process_env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(
         (output_dir / (case.name + "-artifacts")).resolve()
     )
-    with log_path.open("w", encoding="utf-8") as log:
+    with log_path.open("w", encoding="utf-8") as log, ExitStack() as fixtures:
         try:
+            # This registered regression requires a real local HTTP service.
+            # Keep its original Godot command, watchdog and strict diagnostics;
+            # use the same fixture as the dedicated Art qualification runner.
+            if case.name == "test_art_local_close":
+                process_env["WB_ART_CLOSE_ENDPOINT"] = fixtures.enter_context(
+                    run_art_local_close.loopback_fixture()
+                )
             options = (
                 {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP}
                 if sys.platform == "win32" else {"start_new_session": True}
@@ -677,7 +827,7 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     elapsed = time.perf_counter() - started
     output = log_path.read_text(encoding="utf-8", errors="replace")
     print(output, end="", flush=True)
-    diagnostic_error = "SCRIPT ERROR:" in output or "ERROR:" in output
+    diagnostic_error = case_diagnostic_error(case.name, output, returncode)
     skip_messages = [
         line for line in output.splitlines()
         if re.search(r"\bskipped\b|^\s*SKIP\b", line, flags=re.IGNORECASE)
@@ -691,6 +841,14 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         status = "skipped"
     else:
         status = "passed"
+    process_status = status
+    if failed_context_producers:
+        # Still execute and retain the original consumer command/log. An
+        # unsuccessful upstream run cannot qualify its consumer's context,
+        # even if that process happens to accept a partial producer artifact.
+        failed = True
+        if status == "passed":
+            status = "failed"
     record = {
         "name": case.name,
         "execution_policy": execution_policy.identity(),
@@ -721,6 +879,8 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
         "last_heartbeat": diagnostics.last_progress(output),
         "diagnostics": case.name + "-diagnostics" if (output_dir / (case.name + "-diagnostics")).exists() else None,
     }
+    if failed_context_producers:
+        record.update(process_status=process_status, failed_context_producers=list(failed_context_producers))
     contract = case_readback_contract(case)
     if not failed and contract is not None:
         # The engine footer is necessary but insufficient for this adversarial
@@ -854,6 +1014,7 @@ def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
         )
 
     results = timing["results"]
+    contexts = architecture_context.prepare_contexts(assigned, args.output)
     timing["identity"] = identity
     write_json(args.output / "timings.json", timing)
 
@@ -874,7 +1035,8 @@ def execute(args, timing: dict, budget: scheduling.ExecutionBudget) -> int:
     for index, case in enumerate(assigned):
         if not admit_case(budget, case, timing, assigned[index:], args.output / "timings.json"):
             return 1
-        record, failed = run_case(args.godot, case, args.output, "case")
+        record, failed = run_case(args.godot, case, args.output, "case",
+                                  **context_case_kwargs(case, contexts, results))
         results.append(record)
         write_json(args.output / "timings.json", timing)
         if failed:

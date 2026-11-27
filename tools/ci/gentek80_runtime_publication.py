@@ -18,6 +18,11 @@ import re
 import shutil
 import sys
 
+sys.path.insert(0,str(Path(__file__).resolve().parents[1] / "architecture"))
+from gentek80_reference_inputs import assess as attest_reference_inputs
+# Original Gentek-80 maintains the strict exact-input contract.
+REFERENCE_DELTA_POLICY: str | None = None
+
 _spec = spec_from_file_location("_gentek80_architecture_publisher",
                               Path(__file__).with_name("gen007_architectural_runtime_publication.py"))
 base = module_from_spec(_spec)
@@ -394,9 +399,25 @@ def validate_reference_gallery(verified: dict[str, dict], source: str, native_ha
                    and re.fullmatch(r"[0-9a-f]{40}", str(reference.get("source_tree", ""))) is not None
                    and isinstance(boundary.get("inputs"), dict) and bool(boundary["inputs"])
                    and all(isinstance(path, str) and hash_value(value)
-                           for path, value in boundary["inputs"].items())
-                   and reference.get("rendering_inputs_sha256") == boundary["inputs"],
-                   "Public gallery is missing its exact source identity or rendering inputs differ")
+                           for path, value in boundary["inputs"].items()),
+                   "Public gallery is missing its source identity or input ledger")
+    policy = None
+    if REFERENCE_DELTA_POLICY is not None:
+        engine.require(engine.BRANCH == "integration/gentek80-water-conflict-reconcile"
+                       and engine.REQUEST_VALUE.get("schema") == "gentek80-water-main-runtime-qualification-v1",
+                       "Only the dedicated Water-main publisher can admit enumerated source drift")
+        policy_file = engine.ROOT / REFERENCE_DELTA_POLICY
+        engine.require(policy_file.is_file() and not policy_file.is_symlink()
+                       and engine.git("show",source+":"+REFERENCE_DELTA_POLICY) == policy_file.read_bytes().replace(b"\r\n",b"\n"),
+                       "Source drift policy is not identical to its immutable source Git blob")
+        policy = json.loads(policy_file.read_text(encoding="utf-8"))
+    attestation = attest_reference_inputs(reference,boundary,policy)
+    engine.require(attestation["status"] == "pass"
+                   and comparison.get("rendering_inputs_equal") is (reference.get("rendering_inputs_sha256") == boundary["inputs"]),
+                   "Public source inputs changed outside the reviewed policy")
+    if policy is not None:
+        engine.require(comparison.get("source_input_attestation") == attestation,
+                       "Source input delta evidence differs from independent publisher recomputation")
     engine.require(comparison.get("schema") == "gentek80-reference-comparison-v1"
                    and comparison.get("status") == "pass" and comparison.get("failures") == []
                    and comparison.get("reference_source_commit") == reference["source_commit"]
@@ -406,7 +427,6 @@ def validate_reference_gallery(verified: dict[str, dict], source: str, native_ha
                    and comparison.get("candidate_runtime_sha256") == native_hash
                    and hash_value(reference_hash)
                    and comparison.get("reference_manifest_sha256") == reference_hash
-                   and comparison.get("rendering_inputs_equal") is True
                    and all(exact_int(comparison.get(key), 80)
                            for key in ("reference_defaults", "fresh_defaults", "matched_defaults")),
                    "Public gallery comparison is partial, failed or source/runtime/manifest mismatched")

@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "programme": "MERGEDOWN-RENAISSANCE-001",
+  "workstream": "AMBIENT002 foundation reconciliation",
+  "classification": "OWNER ACCEPTANCE REQUIRED",
+  "disposition": "TARGETED COMBINED-SOURCE PASS; DRAFT/HOLD RETAINED",
+  "authoritative_pr": 779,
+  "original_head": "957190050ea6b32b47523234e508c7690a2abba9",
+  "original_qualified_application": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "foundation_precursor": "9baa59c9630582958a3b38f2931012775c50e46e",
+  "foundation_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+  "published_foundation_candidate": "0c1152c21427125066df931cf06a53b7dda0075d",
+  "foundation_actual_merge_pending_at_record": true,
+  "ancestry_preserving_union": "4e3c981b546f121a2e2d9f0eaa1564147f66317c",
+  "qualified_source": "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+  "qualified_tree": "5cad334ccbf53278cd67f77e0173e242ba059e5f",
+  "native_inputs_changed": false,
+  "native_input_count": 105,
+  "runtime_publication_performed": false,
+  "production_source_repairs": [],
+  "new_regression": "godot/tests/test_ambient_living_group_integration.gd",
+  "qualification": {
+    "cases": 11,
+    "checks": 4505,
+    "completed_utc": "2026-11-25T22:51:40.764093+00:00",
+    "passed": 11,
+    "scope": "Actual Linux Godot4.7 native/Rapier; eight-actor admission unchanged; no Actor Capacity or physical owner acceptance",
+    "seconds": 139.167,
+    "source": "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+    "source_runtime_project_engine_unchanged": true,
+    "status": "PASS",
+    "tree": "5cad334ccbf53278cd67f77e0173e242ba059e5f"
+  },
+  "independent_review": {
+    "reviewer": "Specialist C \u2014 adversarial QA",
+    "disposition": "APPROVE FOR PREPARED SUCCESSOR SCOPE",
+    "source": "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+    "case": "test_ambient_living_group_integration",
+    "checks": 31,
+    "failures": 0,
+    "seconds": 7.255,
+    "strict_diagnostics_clean": true,
+    "tracked_inputs_and_runtime_unchanged": true,
+    "existing_untracked_uid_companions_recorded": true
+  },
+  "actor_capacity": 8,
+  "actor_compose_imported": false,
+  "ordinary_default_activation": false,
+  "owner_acceptance": false,
+  "new_windows_package": false,
+  "original_windows_evaluator": {
+    "url": "https://github.com/techrote/cybersand/actions/runs/45552786466/artifacts/14995966187",
+    "source": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+    "inner_name": "CyberSand-AMBIENT-002-Windows-50c6df89528d.zip",
+    "bytes": 259734965,
+    "sha256": "54a4dc71c10a6ca77dcc8ba48a1fb5be39cc0e63ae33099b3dd0d452e9c71a5a"
+  },
+  "next_actions": [
+    "After actual #775 main merge, reconcile source preserving original #779 and foundation ancestry",
+    "Verify resulting execution-input identity and qualify any changed source",
+    "Coordinate authoritative #779 retarget with lead; retain Draft/HOLD",
+    "Complete required resulting-source platform, graphical and extracted-package qualification",
+    "Obtain explicit physical owner acceptance; preserve all scientific limitations"
+  ],
+  "evidence": {
+    "archive": "ambient002-evidence.zip",
+    "sha256": "7834d9344fc7cda078a7e80d9e0d9ba63c5ed9afa65458a0812f01a1672c0ffc",
+    "manifest": "ambient002-evidence-manifest.json",
+    "human_record": "ambient002-integration.md"
+  }
+}

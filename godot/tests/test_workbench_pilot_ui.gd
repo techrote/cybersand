@@ -125,10 +125,18 @@ func test_roster() -> void:
 	if not await until(func()->bool: return changed(epoch),"second flyer placement"): return
 	var needle_id: int = ui.selected_id()
 	check(ui.body_state(needle_id).model=="needle" and Rect2(main.camera_origin,main.current_view_size).has_point(Vector2(1450,1400)),"distant placement revealed")
+	check(ui.pilot_id()==scoop_id and ui.selected_id()==needle_id,
+		"placing and inspecting a second flyer preserves the current human pilot")
 	check_tuning(needle_id,ui.Setup.DEFAULT_OPTIONS,"independent new Needle")
 	epoch=main._physical_epoch
+	# Placement selects the new body for inspection, independently of pilot.
+	# Choose a genuinely different pilot before exercising a live hand-back;
+	# an OptionButton does not emit item_selected for its unchanged item.
+	await pick(ui._roster,Fleet.index_for_id("needle")+1)
+	check(main._physical_epoch==epoch and ui.pilot_id()==needle_id and ui.selected_id()==needle_id,
+		"explicit Needle pilot choice takes over without reconstructing either flyer")
 	await pick(ui._roster,Fleet.index_for_id("scooper")+1)
-	check(main._physical_epoch==epoch and ui.selected_id()==scoop_id and ui.pilot_slot==0,"existing flyer handover uses same physical session")
+	check(main._physical_epoch==epoch and ui.selected_id()==scoop_id and ui.pilot_id()==scoop_id and ui.pilot_slot==0,"existing flyer handover uses same physical session")
 	check_tuning(scoop_id,tuned,"reselected existing Scooper")
 	check(Rect2(main.camera_origin,main.current_view_size).has_point(saved),"selected pilot visible after handover")
 	await mouse_click(button_named("Reset selected [R]"))
@@ -165,7 +173,7 @@ func test_roster() -> void:
 	check_tuning(kestrel_id,tuned,"reselected tuned Kestrel")
 	var capture := OS.get_environment("CYBERSAND_WORKBENCH_PILOT_CAPTURE")
 	if not capture.is_empty() and DisplayServer.get_name()!="headless":
-		await until(func()->bool: return "Switched to Kestrel" in ui._status.text,"visible acknowledged pilot label")
+		await until(func()->bool: return "pilot "+ui.pilot_description() in ui._status.text,"visible acknowledged pilot label")
 		await RenderingServer.frame_post_draw
 		check(root.get_texture().get_image().save_png(capture)==OK,"graphical roster and acknowledgement")
 	epoch=main._physical_epoch

@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "source_commit": "2e9bba9c2d1c3f5b0b8cb644c860d4ce0c463fa3",
+  "workflow_run": 44663989761,
+  "native_sha256": "8d1d12dd63bb18466594df05589622a87b148a696cf418075d5c4d8fc11f518e",
+  "evaluation_zip_sha256": "c177d09d88134280b7831a869575fe141f4759dd112855df7ff8683987b889f2",
+  "display": "Windows",
+  "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+  "scope": "Original application framebuffer PNGs from the exact ZIP extracted outside Git. Gameplay and paint input were automated in the real graphical host; this is not manual owner playfeel acceptance. The final reopen follows deliberate replacement, so its policy actor has authored ID 8.",
+  "graphical_author_checks": 206,
+  "graphical_reopen_checks": 17,
+  "images": [
+    {
+      "file": "windows-installed-01-mixed-cast.png",
+      "original_relative_path": "frames/01-mixed-cast.png",
+      "sha256": "b55e4fb8a0f9ac01625f08684a62715c87d6e25617de5f6d1b0b1d582b600fd5",
+      "size": 107341,
+      "png_dimensions": [
+        1440,
+        810
+      ],
+      "original_caption": "Actual Shared Workbench: human flyer, three scripted mechanisms, external-policy fixture and passive barrel; labels show producer roles.",
+      "native_tick": 104,
+      "rapier_tick": 104
+    },
+    {
+      "file": "windows-installed-02-npc-inspector.png",
+      "original_relative_path": "frames/02-npc-inspector.png",
+      "sha256": "2a8353161ffc98ef2cec4d3dc03185d75f4e1c74f9a27b996b91d90526c1f93d",
+      "size": 163087,
+      "png_dimensions": [
+        1440,
+        810
+      ],
+      "original_caption": "Crawler selected for inspection while the flyer retains the human pilot and all enabled NPCs keep running.",
+      "native_tick": 133,
+      "rapier_tick": 132
+    },
+    {
+      "file": "windows-installed-03-human-ground-pilot.png",
+      "original_relative_path": "authored-frames/03-human-ground-pilot.png",
+      "sha256": "4b98247a9f94198d812d2ca6aedfb03759a2275cdaebab2d722f1686621f312e",
+      "size": 146869,
+      "png_dimensions": [
+        1920,
+        1080
+      ],
+      "original_caption": "Runner #2 is now human controlled; Skimmer #4 and policy Buggy #5 remain independent.",
+      "native_tick": 361,
+      "rapier_tick": 357
+    },
+    {
+      "file": "windows-installed-04-painted-obstacle.png",
+      "original_relative_path": "authored-frames/04-painted-obstacle.png",
+      "sha256": "c7279e06f6b507005ad0e303fd830c1f4b9c457f730e4e52c382927a8bb76a9e",
+      "size": 156298,
+      "png_dimensions": [
+        1920,
+        1080
+      ],
+      "original_caption": "A manually painted hard obstacle remains in the material world while scripted NPCs and the policy actor continue.",
+      "native_tick": 711,
+      "rapier_tick": 706
+    },
+    {
+      "file": "windows-installed-05-reopened-authored-start.png",
+      "original_relative_path": "reopen-frames/05-reopened-authored-start.png",
+      "sha256": "fee02d2ec65e6b78166e3fc014fdcda2ad1ab2edce79221e7fb53b6bf9ea4d25",
+      "size": 149007,
+      "png_dimensions": [
+        1920,
+        1080
+      ],
+      "original_caption": "Fresh-process Load reconstructs the saved composition at authored spawns, including controllers and equipment; live momentum and policy memory are not serialized.",
+      "native_tick": 0,
+      "rapier_tick": 0
+    }
+  ]
+}

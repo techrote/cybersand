@@ -820,6 +820,13 @@ invalid production quanta. Prepared Water count/quantity bounds also constrain
 the declared initial state. Current species snapshots and rule aggregates do
 not authenticate every possible external history or provide an ordered replay.
 
+A pair reaction can consume all the Water in a compressed Wave cell, up to
+65,535 units. The Lava-Water quench converts that cell to Steam and the Lava
+to Stone. The ledger charges the actual stored Water to the reaction. The
+validation limit follows the active Water carrier. The spray readback compares
+grid plus in-flight Water with the quantity remaining after reactions and
+edits. [Windows reproduction and validation](../audits/2026-11-19-wave-oil-lava.md)
+
 Worker deltas are fixed per scheduling slot and merged after the phase barrier.
 There is no new tick-time allocation, per-cell lock or per-material thread.
 Serial writes instead check only the affected Water quantities, at most two

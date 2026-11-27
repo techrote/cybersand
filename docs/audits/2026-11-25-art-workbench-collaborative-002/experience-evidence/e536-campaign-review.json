@@ -1,0 +1,228 @@
+{
+  "source": "e536d128f85e948223b25e13931a7a801faf956d",
+  "tree": "61d38ec119665270a9fb4eea9ae78836348d7092",
+  "run": 45541065622,
+  "job": 138959609515,
+  "status": "success",
+  "full_required": true,
+  "reuse": false,
+  "original_log_characters": 469440,
+  "original_log_review": "Complete decoded original Windows job log retrieved through GitHub API; actual archive extraction is separately attributed.",
+  "core_script_count": 23,
+  "panel": [
+    {
+      "checks": 307,
+      "display": "headless",
+      "failures": []
+    },
+    {
+      "checks": 312,
+      "display": "Windows",
+      "failures": []
+    }
+  ],
+  "retained_groups": [
+    {
+      "checks": 569,
+      "cases": 31,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 96,
+      "cases": 3,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 125,
+      "cases": 4,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 92,
+      "cases": 2,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 22,
+      "cases": 1,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 11,
+      "cases": 0,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 13,
+      "cases": 0,
+      "failures": 0,
+      "display": "headless"
+    },
+    {
+      "checks": 568,
+      "cases": 31,
+      "failures": 0,
+      "display": "Windows"
+    },
+    {
+      "checks": 96,
+      "cases": 3,
+      "failures": 0,
+      "display": "Windows"
+    },
+    {
+      "checks": 125,
+      "cases": 4,
+      "failures": 0,
+      "display": "Windows"
+    },
+    {
+      "checks": 92,
+      "cases": 2,
+      "failures": 0,
+      "display": "Windows"
+    },
+    {
+      "checks": 23,
+      "cases": 1,
+      "failures": 0,
+      "display": "Windows"
+    }
+  ],
+  "new_headless": [
+    {
+      "case": "test_art_owned_transport",
+      "status": "passed",
+      "elapsed_seconds": 6.5,
+      "checks": 155,
+      "error": ""
+    },
+    {
+      "case": "test_art_authoring_proposal",
+      "status": "passed",
+      "elapsed_seconds": 0.672,
+      "checks": 80,
+      "error": ""
+    },
+    {
+      "case": "test_art_creative_cohort",
+      "status": "passed",
+      "elapsed_seconds": 4.375,
+      "checks": 251,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaborative_native",
+      "status": "passed",
+      "elapsed_seconds": 38.734,
+      "checks": 739,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaboration_authority",
+      "status": "passed",
+      "elapsed_seconds": 5.531,
+      "checks": 39,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaboration_session",
+      "status": "passed",
+      "elapsed_seconds": 12.672,
+      "checks": 182,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaboration_workspace",
+      "status": "passed",
+      "elapsed_seconds": 0.75,
+      "checks": 93,
+      "error": ""
+    }
+  ],
+  "new_displayed": [
+    {
+      "case": "test_art_owned_transport",
+      "status": "passed",
+      "elapsed_seconds": 10.734,
+      "checks": 155,
+      "error": ""
+    },
+    {
+      "case": "test_art_authoring_proposal",
+      "status": "passed",
+      "elapsed_seconds": 3.781,
+      "checks": 80,
+      "error": ""
+    },
+    {
+      "case": "test_art_creative_cohort",
+      "status": "passed",
+      "elapsed_seconds": 12.547,
+      "checks": 251,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaborative_native",
+      "status": "passed",
+      "elapsed_seconds": 366.688,
+      "checks": 779,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaboration_authority",
+      "status": "passed",
+      "elapsed_seconds": 65.281,
+      "checks": 39,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaboration_session",
+      "status": "passed",
+      "elapsed_seconds": 108.672,
+      "checks": 202,
+      "error": ""
+    },
+    {
+      "case": "test_art_collaboration_workspace",
+      "status": "passed",
+      "elapsed_seconds": 4.516,
+      "checks": 94,
+      "error": ""
+    }
+  ],
+  "windows_native_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+  "artifacts": [
+    {
+      "id": 14991526130,
+      "name": "art-workbench-collaborative-002-windows-e536d128f85e948223b25e13931a7a801faf956d",
+      "bytes": 94375955,
+      "sha256": "afd23c48162d0af1fb560741c6a9f1d77b1e7ebcc6ea5f6f9abd5e8c55036d12"
+    },
+    {
+      "id": 14991291608,
+      "name": "art-workbench-windows-evidence-e536d128f85e948223b25e13931a7a801faf956d",
+      "bytes": 11942803,
+      "sha256": "1d6e44d8d39317a440a8308d931f05326b3760b0d064d29fbb44a72abb9cc080"
+    },
+    {
+      "id": 14989927110,
+      "name": "art-workbench-linux-e536d128f85e948223b25e13931a7a801faf956d",
+      "bytes": 16404328,
+      "sha256": "cd02b755bc9416cda460044a1fd3b7ff1ec4966be5ecec98d686b3bbaa6264ae"
+    },
+    {
+      "id": 14989396204,
+      "name": "art-workbench-qualification-scope-e536d128f85e948223b25e13931a7a801faf956d",
+      "bytes": 2448,
+      "sha256": "35a0f528c920358943f2e4f8fabae774541c8764d68140ced44ca93879c4ec28"
+    }
+  ],
+  "physical_owner_acceptance": "pending"
+}

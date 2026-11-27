@@ -1,0 +1,197 @@
+{
+  "schema": 1,
+  "reviewer": "/root/schema_catalog",
+  "created_utc": "2026-11-20T03:17:16.604030+00:00",
+  "reviewed_source_commit": "2e9bba9c2d1c3f5b0b8cb644c860d4ce0c463fa3",
+  "reviewed_source_tree": "296fcff5e3564e40ff9856dda1160e943feb9a68",
+  "linux_native_sha256": "7b20455aad35559ea638d7db1b09f6c85657823302e742ef04254730008454f2",
+  "verdict": "Visual roles and owner procedure are consistent; hosted Linux functional/capture evidence is complete. Hardware/default-launcher playfeel and performance acceptance are not granted by this addendum.",
+  "scope": "Read-only review of retained exact-source Linux evidence and canonical owner instructions. No tests, application interactions, source edits or audit edits were performed by the reviewer.",
+  "reviewed_source_files": [
+    {
+      "path": "docs/operations/workbench-actor-composition.md",
+      "reviewed_blob": "3b3b253730e7fee3abf9d55b500574cdf261d83a",
+      "sha256": "c4457b5aff6a400f16b0050ab440853aefbabe78b15bfb00edf1a771a8bd043f"
+    },
+    {
+      "path": "docs/systems/workbench-actor-composition.md",
+      "reviewed_blob": "0e395629771baa07a7c5d373fb7e8409b949967b",
+      "sha256": "b6c24131a38f2ede5a2b6426db193c1976ea5ce770a0b96195079279b75b5428"
+    },
+    {
+      "path": "godot/tests/capture_workbench_actor_workshop.gd",
+      "reviewed_blob": "bcbcab40d4c33ad86aa0fb1d31d5f60de76ecbbd",
+      "sha256": "70fceaca3b480aa0a5820cea4418ec735f15ec58bcf54063a210147a29f658ac"
+    },
+    {
+      "path": "godot/tests/measure_workbench_actor_composition.gd",
+      "reviewed_blob": "1d1948ff1d5570951c35b1f01a8e72150bee667e",
+      "sha256": "21ffda6bdec4a5f1ae8a6236d678bb34065cdff7f018be3fbac04fba8c86e1b9"
+    }
+  ],
+  "qualification_receipt": {
+    "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/qualification.json",
+    "sha256": "8d72ee66d578dd559e51f6c5e067099407b2009dfb0873acccbf6d7b5a5a4444",
+    "status": "passed",
+    "completed": true,
+    "executed_cases": 28,
+    "all_case_log_hashes_verified": true,
+    "all_cases_natural_exit0_without_errors_or_skips": true
+  },
+  "gallery": {
+    "receipt_path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/frames/workshop.json",
+    "receipt_sha256": "e572e87fcd497a1dfafd6d063f0111397361bba116b0e21af9ccef5489764616",
+    "display": "X11",
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "reported_window": [
+      1440,
+      960
+    ],
+    "images": [
+      {
+        "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/frames/01-mixed-cast.png",
+        "sha256": "d1d11acb5839950eb2c886f799c2840e8d7875544e8acfd20c3110be990358d8",
+        "pixel_dimensions": [
+          1440,
+          810
+        ],
+        "caption": "Actual Shared Workbench: human flyer, three scripted mechanisms, external-policy fixture and passive barrel; labels show producer roles.",
+        "file": "01-mixed-cast.png",
+        "inspected": 1,
+        "native_tick": 102,
+        "pilot": 1,
+        "rapier_tick": 102,
+        "review_method": "Raw PNG viewed individually through view_image; no composite or edited substitute.",
+        "visual_observation": "All six actors and their role labels are visible in the ordinary material-cell canvas: Midge PILOT, Runner/Crawler/Skimmer scripted, Stuntbuggy policy and barrel passive. Water emission is visibly present; exact tool accounting is established by the separate native receipts."
+      },
+      {
+        "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/frames/02-npc-inspector.png",
+        "sha256": "9ee58f8a6557748c010be1c2b94243373a4275cc5716d580cf122cf1fc4f0a36",
+        "pixel_dimensions": [
+          1440,
+          810
+        ],
+        "caption": "Crawler selected for inspection while the flyer retains the human pilot and all enabled NPCs keep running.",
+        "file": "02-npc-inspector.png",
+        "inspected": 3,
+        "native_tick": 129,
+        "pilot": 1,
+        "rapier_tick": 129,
+        "review_method": "Raw PNG viewed individually through view_image; no composite or edited substitute.",
+        "visual_observation": "Actor Composition is open and usable. It clearly distinguishes Pilot #1 Midge from Inspecting #3 Crawler, with Scripted NPC, enabled decisions, Powder Vacuum and accepted 22 / refused 0 status. The popup covers the selected Crawler but leaves other actors visible. The upper Midge family/model picker is a separate placement/replacement choice, not the inspected model."
+      },
+      {
+        "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/frames/03-ground-takeover.png",
+        "sha256": "1338f2c43c5cd4526b6b403dd76cb8eef2b78ec731b491464675426aa4541712",
+        "pixel_dimensions": [
+          1440,
+          810
+        ],
+        "caption": "Existing Stuntbuggy body taken over from the external-policy fixture; the same authored actor remains in the material canvas.",
+        "file": "03-ground-takeover.png",
+        "inspected": 5,
+        "native_tick": 138,
+        "pilot": 5,
+        "rapier_tick": 138,
+        "review_method": "Raw PNG viewed individually through view_image; no composite or edited substitute.",
+        "visual_observation": "The same authored #5 Stuntbuggy now has a yellow PILOT label and toolbar pilot Loose Cannon. Midge remains source human but is no longer the pilot; the three scripted actors and passive barrel retain their roles."
+      },
+      {
+        "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/frames/04-policy-handback.png",
+        "sha256": "2c8c335809fcba11c32ad15dda87d789fb8d1c402febf2e5951d2f94812c8c78",
+        "pixel_dimensions": [
+          1440,
+          810
+        ],
+        "caption": "Ground actor handed back to its external-policy test producer; heterogeneous autonomous cast continues in the same World.",
+        "file": "04-policy-handback.png",
+        "inspected": 5,
+        "native_tick": 159,
+        "pilot": 0,
+        "rapier_tick": 159,
+        "review_method": "Raw PNG viewed individually through view_image; no composite or edited substitute.",
+        "visual_observation": "Stuntbuggy #5 is again policy, and the toolbar explicitly reports Observer/no human pilot. Hand back does not automatically return control to Midge. The owner guide correctly tells the owner to pilot Midge explicitly afterward."
+      }
+    ],
+    "selection_recommendation": "Include all four in order. If space allows only three inline, use overview, inspector and takeover, and retain handback as a linked fourth frame. Caption fourth as policy restored with Observer/no pilot, not as Midge retaken automatically."
+  },
+  "owner_usability": {
+    "visual_result": "The main toolbar and all actor-panel controls fit the captured viewport and are readable. Selection and human piloting are visibly independent. No concrete visual role/ownership defect was observed.",
+    "minor_clarification": "The upper Family/Model picker chooses a model to place or replace; the Inspect picker selects an existing actor whose controller/equipment/status appears below. In the inspector PNG these are Midge and Crawler respectively.",
+    "procedure_verified": "Actor Composition -> Mixed Actor Workshop -> Play; Inspect without takeover; Pilot inspected -> Hand back -> explicitly pilot Midge; per-actor Controller/Decisions enabled; mounted item restart separate from live handoff; running Brush/Eraser versus paused precise editing/history; External submissions and fresh local test action; named authored Save/Load; disabled flyer mount selector and capacity refusal.",
+    "not_proved_by_still_images": [
+      "Held keyboard/gamepad playfeel",
+      "Pause and single-step behavior",
+      "Actual live paint gesture/Undo/Redo execution",
+      "Save/reopen persistence",
+      "Per-command freshness or exact RID preservation"
+    ],
+    "functional_support": {
+      "authored_path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/authored.json",
+      "authored_sha256": "11c0f1ad0335daa90ea234ca284e2d04c909cb54a5c43e00101ec031ec36acfd",
+      "checks": 198,
+      "failures": 0,
+      "coupled_phases": 24,
+      "canvas_pointer_events": 8,
+      "canvas_motion_events": 1,
+      "reopen_path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/reopen.json",
+      "reopen_sha256": "9075f1003d551bfdb9a92fc732f16524f3bb5fb2ee3275847e71787593487348",
+      "reopen_checks": 15,
+      "reopen_failures": 0,
+      "display_scope": "Both functional receipts are explicitly headless; graphical screenshots are a separate actual X11 application execution."
+    }
+  },
+  "performance": {
+    "path": "/workspace/scratch/fd84be755318/qualification/hosted-2e9bba9c/linux/evidence/linux/performance.json",
+    "sha256": "d87acfeec7d7c1f0201fcd754d9c02b81a1e70467d71762b19c8e5f73e6ba9ea",
+    "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "display": "X11",
+    "graphical_baseline_present": false,
+    "completed_cases": 12,
+    "failures": [],
+    "mean_frame_ms_range": [
+      176.610235294118,
+      191.580375
+    ],
+    "empty_mean_frame_ms": [
+      179.377823529412,
+      179.394117647059
+    ],
+    "all_sampled_frames_at_least_100ms": true,
+    "actor_coupled_native_hz_range": [
+      5.27295101362596,
+      11.9932176733352
+    ],
+    "actor_coupled_rapier_hz_range": [
+      5.27295101362596,
+      11.9932176733352
+    ],
+    "sample_frames_range": [
+      16,
+      17
+    ],
+    "observation_samples_every_case": 0,
+    "instrumentation_gap": "The harness samples copied-observation cost only every 30 process frames (measure_workbench_actor_composition.gd:105\u2013108). Each three-second graphical row produced 16\u201317 frames, so no observation timing was captured. count 0 means unmeasured, not zero cost.",
+    "interpretation": "The hosted software-rendered run demonstrates progression and functional completion, not smooth gameplay. No accepted-main graphical control is included, so it does not establish regression or equivalence against main. Prior headless timings must remain separately identified. Reported native publication duration is not an end-to-end render scheduling/stall measurement; short 16\u201317-frame quantiles and process-cumulative Godot static memory are not broad hardware acceptance.",
+    "paused_equipment_edit_resume_recorded": true
+  },
+  "remaining_issues_and_boundaries": [
+    "Hosted graphical copied-observation timing is absent because the sampler never reached its frame interval.",
+    "This llvmpipe run is visibly too slow to serve as smooth owner-playfeel acceptance; genuine GPU/default-launcher evaluation remains required.",
+    "The screenshots do not themselves demonstrate pause, painting or persistence; cite the independently retained functional receipts for those assertions.",
+    "No Windows execution or portable-default-renderer claim is established by this Linux-only review.",
+    "No global route planning, learned model service, sampled representation or unrestricted Thunderbowl semantics are implied by these role labels."
+  ],
+  "prior_reviews_preserved": [
+    {
+      "path": "/workspace/scratch/fd84be755318/qualification/independent-panel-owner-infrastructure-review-17bf-working-tree.json",
+      "sha256": "8612c1db77c2e0960adb41444b7b5a2ae125aab1e1e71d04ae1161c1dfa789d6",
+      "verified_unchanged": true
+    },
+    {
+      "path": "/workspace/scratch/fd84be755318/qualification/independent-generator-panel-compatibility-review-7ac-working-tree.json",
+      "sha256": "7a6ff6d85390000ffec42b68728de2bf914d411dc71b289e93dda76e5d5274af",
+      "verified_unchanged": true
+    }
+  ]
+}

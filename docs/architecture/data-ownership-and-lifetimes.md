@@ -6,10 +6,37 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-10-25
+last-reviewed: 2026-11-20
 ---
 
 # Data ownership and lifetimes
+
+The opt-in [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md)
+adds bounded per-actor ephemeral memory and copied peer caches to the same owner.
+World generation is observed independently of material-sensor activation; missing
+identity cannot grant remembered knowledge. Group controls prepare every adapter
+before cancellation and publish all configurations before notifying observers.
+Authored profiles and places persist; private memories, drives and goals do not.
+
+The opt-in [AMBIENT-001 actor controller](../systems/ambient-actors.md) adds no
+World or physics owner. One main-thread session cache copies existing native
+material-ID publications while preserving their epoch, generation, revision,
+serial and native tick. Pure modules receive copied values; only the existing
+session issues policy observations and submits bounded normalized commands.
+Optional ledge rays remain in the physical rig owner and return copied geometry.
+Retiring the session clears the cache and every actor's private intention state.
+Pause revokes command authority while preserving gameplay timers; handback
+reconfigures ephemeral state. Debug inspection does not issue observations.
+
+The [Workbench actor-composition candidate](../systems/workbench-actor-composition.md#ownership-and-lifecycle)
+keeps the existing native worker and main-thread Rapier owner. Each multipart
+actor has stable authored identity and distinct per-part native response owners;
+compound proxies share only their actual body owner. The copied body/equipment
+frame and queued actions are admitted together. Controllers consume copied
+observations and submit bounded, independently revocable leases. They own no
+World, body RID, material-edit pointer or inference-blocking worker. The prepared
+replacement graph remains frozen until the existing native adoption transaction
+accepts it. Source changes and authoring replacements retire stale authority.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private

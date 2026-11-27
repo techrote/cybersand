@@ -24,6 +24,10 @@ var pending_chunk: Dictionary = {}
 var manual_inflight: Dictionary = {}
 var manual_sequence := 0
 var batch_sequence := 0
+# Only explicit reviewed construction supplies this copied native admission
+# fence. Ordinary direct painting retains its established behavior.
+var approval: Dictionary = {}
+var approved_requested := 0
 
 func _human_state() -> Dictionary:
 	return wb.art_authoring_state() if wb.has_method("art_authoring_state") else {"busy":false,"reason":""}
@@ -40,6 +44,8 @@ func submit(operations: Variant, scope: Rect2i, protection: Array, allowed: Arra
 	for op: Dictionary in candidate.operations:
 		if op.material not in allowed: return {"status":"refused","reason":"Enable the requested material first."}
 	materials = allowed.duplicate()
+	approval = {}
+	approved_requested = 0
 	batch_sequence += 1
 	plan = candidate
 	area = scope
@@ -53,6 +59,19 @@ func submit(operations: Variant, scope: Rect2i, protection: Array, allowed: Arra
 	native_refused = false
 	pending_chunk.clear()
 	return result.duplicate()
+
+func submit_guarded(operations: Variant, scope: Rect2i, protection: Array, allowed: Array,
+		source: Dictionary, allow_destructive: bool, maximum_cells: int) -> Dictionary:
+	if maximum_cells < 1 or maximum_cells > 262144:
+		return {"status":"refused","reason":"Approved stage cell budget must be between 1 and 262144."}
+	for key: String in ["generation","revision","tick","authoring_generation"]:
+		if not source.get(key) is int or int(source[key]) < 0:
+			return {"status":"refused","reason":"Approved construction needs a complete current native source."}
+	var admitted := submit(operations,scope,protection,allowed)
+	if admitted.get("status","") == "queued":
+		approval = {"source":source.duplicate(true),"allow_destructive":allow_destructive,
+			"maximum_cells":maximum_cells}
+	return admitted
 
 func stop(reason: String = "Human Stop") -> void:
 	if wb == null: return
@@ -203,6 +222,10 @@ func poll() -> void:
 			if int(receipt.get("changed",0)) > 0 and not record.is_empty() and wb.has_method("art_changed_source"):
 				wb.art_changed_source()
 		for key: String in ["checked","changed","unchanged","excluded","refused"]: result[key] = int(result.get(key,0)) + int(receipt.get(key,0))
+		if not approval.is_empty() and receipt.get("status","") == "completed":
+			approval.source = {}
+			for key: String in ["generation","revision","tick","authoring_generation"]:
+				approval.source[key] = int(receipt.get(key,-1))
 		native_receipt.emit(receipt)
 		if receipt.get("status") in ["partial","refused"]:
 			native_refused = receipt.get("status") == "refused"
@@ -246,8 +269,16 @@ func poll() -> void:
 		active = false
 		_finish_history()
 		return
-	var admitted: Dictionary = worker.art_queue(chunk.points,chunk.material,area,guards,epoch,materials)
+	if not approval.is_empty() and approved_requested + chunk.points.size()/2 > int(approval.maximum_cells):
+		stop("Approved stage resource budget exceeded; remaining geometry refused.")
+		return
+	var admitted: Dictionary
+	if approval.is_empty():
+		admitted = worker.art_queue(chunk.points,chunk.material,area,guards,epoch,materials)
+	else:
+		admitted = worker.art_queue(chunk.points,chunk.material,area,guards,epoch,materials,approval)
 	if admitted.status == "queued":
+		approved_requested += chunk.points.size()/2
 		pending_chunk = {}
 		waiting = true
 		result.status = "queued"

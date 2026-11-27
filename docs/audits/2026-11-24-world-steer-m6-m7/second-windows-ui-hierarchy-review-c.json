@@ -1,0 +1,162 @@
+{
+  "application_qualification_sha256": "489a8e843b9f7cedb8a0d616e166dd027f150cec22a0174c4670d9a4e8f7e853",
+  "artifact": {
+    "bytes": 24721624,
+    "id": 14979431856,
+    "sha256": "41d3c5882a363a93a77f4d120482d6f43231486dcb786d4cdfc84e1b4b07da64"
+  },
+  "capture_limits": [
+    "The native-snap frame is captured at the top Modules scroll position. The lower target/candidate rows are off-screen; this PNG does not visually prove those rows. Actual native UI execution and receipt checks are separate evidence.",
+    "The semantics frame shows Anchor and transforms. Other connector/region/material-role tabs are available but their contents are not visible in that frame.",
+    "All ten Windows PNG hashes differ from their Linux counterparts. No pixel equivalence, platform-cause attribution, blind preference or physical acceptance is claimed.",
+    "This is informed specialist inspection, not a blinded owner preference experiment."
+  ],
+  "enclosing_campaign_status": "failed at subsequent pristine delivered-CMD witness; no extracted native or owner-evaluator qualification inferred",
+  "format": "cybersand-m67-second-windows-ui-hierarchy-review-c-v1",
+  "images": [
+    {
+      "dimensions": [
+        683,
+        486
+      ],
+      "linux_sha256": "566b5ad66d098788e778cf7d114ca855a6db0aba0dbbae7ae46333bf9f245e4b",
+      "original_viewed": true,
+      "path": "ui/collaborative-module-browser.png",
+      "same_bytes_as_linux": false,
+      "sha256": "d651b05b7b53904911c8dc3f8ca0869ea253a8e1827704a12d5193ad4870a925"
+    },
+    {
+      "dimensions": [
+        640,
+        440
+      ],
+      "linux_sha256": "db0cc74e92d40eae875e93b0166c42e05e46765079ca673e7f7e74333b121e4b",
+      "original_viewed": true,
+      "path": "ui/collaborative-module-semantics.png",
+      "same_bytes_as_linux": false,
+      "sha256": "a507e1a8f21834bffa8205cd12a2420365e6679ea206f5a77ac3caa3c071bc4f"
+    },
+    {
+      "dimensions": [
+        683,
+        486
+      ],
+      "linux_sha256": "ea3efa5dc281edc643d3d38a1852e3ca3633eabefb62fc69984b7bdb2a13bab3",
+      "original_viewed": true,
+      "path": "ui/collaborative-native-snap.png",
+      "same_bytes_as_linux": false,
+      "sha256": "d3af4008cf0c2261fbf85d594641f76d120c5ff4fa8e2388e1316bfde659e683"
+    },
+    {
+      "dimensions": [
+        683,
+        486
+      ],
+      "linux_sha256": "82b0fda950f16ffb31e6c7d294dd3cc0b56fc594203ded98b904f05cac2b6c48",
+      "original_viewed": true,
+      "path": "ui/collaborative-zero-write-snap.png",
+      "same_bytes_as_linux": false,
+      "sha256": "37aa37c44d43875d773dc8f20f5d2224373c2f90693a802d36ed791e34dbdf71"
+    },
+    {
+      "dimensions": [
+        683,
+        486
+      ],
+      "linux_sha256": "b5b238958fa62d5637a96a12357d33bd4e6ac974623e6698bb950040e4cc01c0",
+      "original_viewed": true,
+      "path": "ui/collaborative-native-result.png",
+      "same_bytes_as_linux": false,
+      "sha256": "dd19611f86197ae32477a94707d1aeef9aeb98dd6344635b291c27900bb1533b"
+    },
+    {
+      "dimensions": [
+        683,
+        486
+      ],
+      "linux_sha256": "8b6bd411faaf78cd5bbc0b64339b9a70ddcb9a3dd6109370a39fbc53e236a70d",
+      "original_viewed": true,
+      "path": "ui/collaborative-detail-controls.png",
+      "same_bytes_as_linux": false,
+      "sha256": "c7f0b39a3d9acd152b96d2642823d0829c40fa60cad907b9531cb91e34a9e519"
+    },
+    {
+      "dimensions": [
+        683,
+        486
+      ],
+      "linux_sha256": "99867c596af5ac969e90102d83c64cf206e801bb4d6869332a763c4d719dc6c3",
+      "original_viewed": true,
+      "path": "ui/collaborative-intent-tasks.png",
+      "same_bytes_as_linux": false,
+      "sha256": "b2ae6c44b98f1df6a7381d2600a077fe1de0700ba6786c5010c428f40fefeab2"
+    },
+    {
+      "dimensions": [
+        512,
+        512
+      ],
+      "linux_sha256": "d579536f7d275c54d8f0e8815c7ae5252b9825eca1830ec9015091ef7a7eba51",
+      "original_viewed": true,
+      "path": "hierarchy/recovered-workshop-godot.png",
+      "same_bytes_as_linux": false,
+      "sha256": "5b04450f77c62137532ba62e53e20f2d5c8c335a1e58212f8f9f1e5fa895229c"
+    },
+    {
+      "dimensions": [
+        512,
+        192
+      ],
+      "linux_sha256": "34e6b326b28cbad030a7afc0ac6ed3cc23f2ee3ed091c66eafec7b39e39d8e6b",
+      "original_viewed": true,
+      "path": "hierarchy/delegated-detail-godot.png",
+      "same_bytes_as_linux": false,
+      "sha256": "da56f7fa460fee813c4f88e19b0381f6216a0d48ecee2d1d817f987b60df1dd9"
+    },
+    {
+      "dimensions": [
+        512,
+        512
+      ],
+      "linux_sha256": "d834a6fc75200e8f92fc9ba2e58c1d63128ec2befefc849be4dab7c1f9ee0307",
+      "original_viewed": true,
+      "path": "hierarchy/stopped-prefix-godot.png",
+      "same_bytes_as_linux": false,
+      "sha256": "073bfdbbb0fdecb6cf33c2a6b675173efefce2640562687d8f3af34734c7577c"
+    }
+  ],
+  "independently_hashed_native_planes": {
+    "stopped-workshop.u16le": "961f17b139d37135ec87f9d53e20612e6286f7aaeb5ecf398d04b13596f92386",
+    "workshop.u16le": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe"
+  },
+  "observations": [
+    "All seven actual Windows UI originals and three original Godot material-shader images were visually inspected at their retained resolutions.",
+    "The browser shows complete framed native material geometry, bounded thumbnails, explicit current-observation status and Fit/1:1/wheel/pan controls.",
+    "Intent options remain explicitly deterministic/offline; planned task rows and no completed native evidence are distinguishable.",
+    "Zero-write projection and retained completed result use separate tabs and explicit authority/status labels. Neither is described as a live World view.",
+    "Typed detail controls fit their capture and report actual source, finite budget, zero-write status and separate review/approval.",
+    "Workshop final, delegated-detail crop and stopped prefix are distinct orthographic native shader outputs with declared native hashes; no clipping or geometry regression observed."
+  ],
+  "physical_owner_acceptance": false,
+  "producer_counts": {
+    "hierarchy_frames": 3,
+    "hierarchy_render_checks": 15,
+    "native_ui_stage_changes": [
+      624,
+      928,
+      130
+    ],
+    "source_processes": 89,
+    "ui_checks": 57,
+    "ui_frames": 7
+  },
+  "report_sha256": {
+    "hierarchy/hierarchy-native.json": "ab2e6a63be690c488de12b79e818464e8b30df604eaca43a154716f3a290a387",
+    "hierarchy/hierarchy-render.json": "986ac3f54505ea7bff73bcc147fe976b7abf0b60caea734d4b948357f748178f",
+    "ui/collaborative-ui.json": "3c85a7667f489875c59d98b154abdc9ec8c53ae56aceab2895df1fb25966ce63"
+  },
+  "review_status": "PASS_WITH_CAPTURE_SCOPE_LIMITS",
+  "source_only": true,
+  "source_revision": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+  "workflow_run": 45512988153
+}

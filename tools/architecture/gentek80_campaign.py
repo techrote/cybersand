@@ -24,6 +24,7 @@ import sys
 import time
 
 from PIL import Image, ImageDraw, ImageFont, __version__ as pillow_version
+from gentek80_reference_inputs import assess
 
 ROOT = Path(__file__).resolve().parents[2]
 SCRIPT = "godot/tools/capture_gentek80.gd"
@@ -102,18 +103,19 @@ def verify_build_ledger(record: dict, source: dict, runtime_hash: str) -> None:
         raise RuntimeError("Native build/source input mismatch: " + ", ".join(sorted(missing | set(mismatch))))
 
 
-def reference_gallery_comparison(reference: dict, source: dict, report: dict, verified: list[dict]) -> dict:
+def reference_gallery_comparison(reference: dict, source: dict, report: dict, verified: list[dict],
+                                 policy: dict | None = None) -> dict:
     """Compare fresh native/pixel evidence with a differently committed public gallery."""
     failures = []
     if reference.get("schema") != "gentek80-public-gallery-v1":
         failures.append("unsupported public gallery schema")
     if not re.fullmatch(r"[0-9a-f]{40}", str(reference.get("source_commit", ""))):
         failures.append("reference gallery omits its exact source commit")
-    # These are canonical LF source hashes, so Linux and Windows compare the
-    # same inputs. Commit/tree changes for gallery/docs/CI publication are fine.
+    # Differing Water/Art source is never called identical. A recorded bounded
+    # delta can proceed ONLY to full source-matched 80-default native/pixel replay.
+    input_attestation = assess(reference,source,policy)
+    failures.extend(input_attestation["failures"])
     expected_inputs = reference.get("rendering_inputs_sha256")
-    if not source.get("inputs") or expected_inputs != source["inputs"]:
-        failures.append("rendering source inputs differ from the public gallery")
     old = reference.get("defaults", [])
     current = [case for case in report.get("cases", [])
                if case.get("profile") == "default" and case.get("status") == "pass"]
@@ -152,6 +154,7 @@ def reference_gallery_comparison(reference: dict, source: dict, report: dict, ve
             "reference_source_commit": reference.get("source_commit"), "candidate_source_commit": source["commit"],
             "reference_source_tree": reference.get("source_tree"), "candidate_source_tree": source["tree"],
             "rendering_inputs_equal": expected_inputs == source.get("inputs"),
+            "source_input_attestation": input_attestation,
             "reference_defaults": len(old), "fresh_defaults": len(current),
             "matched_defaults": sum(case["matches"] for case in comparisons), "cases": comparisons, "failures": failures,
             "scope": "Fresh native material bytes and decoded RGBA pixels for all 80 defaults; exact rendering inputs with independently named source commits. PNG compression bytes may differ across platforms."}
@@ -525,6 +528,7 @@ def main() -> int:
     parser.add_argument("--runtime", type=Path)
     parser.add_argument("--runtime-build-ledger", type=Path, help="retain independently produced build provenance with the execution receipt")
     parser.add_argument("--reference-gallery", type=Path, help="require fresh all-80 default native/pixel identity with an explicitly sourced public-gallery manifest")
+    parser.add_argument("--reference-input-policy", type=Path, help="explicit source-drift policy; still requires fresh 80/80 native/recipe/pixel parity")
     parser.add_argument("--require-clean-source", action="store_true")
     parser.add_argument("--modules", help="comma-separated subset for iteration; never a complete-catalogue qualification")
     parser.add_argument("--timeout", type=int, default=5400)
@@ -532,6 +536,8 @@ def main() -> int:
     args = parser.parse_args()
     if args.reference_gallery and (args.modules or args.verify_only):
         raise RuntimeError("Reference gallery qualification requires a fresh complete-catalogue capture")
+    if args.reference_input_policy and not args.reference_gallery:
+        raise RuntimeError("Source-drift policy requires a complete public-reference gallery")
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     colours = palette()
@@ -548,6 +554,7 @@ def main() -> int:
     save(output / "source-inputs.json", before)
     reference = None
     reference_hash = None
+    policy = json.loads(args.reference_input_policy.read_text(encoding="utf-8")) if args.reference_input_policy else None
     if args.reference_gallery:
         reference_bytes = args.reference_gallery.read_bytes()
         reference_hash = sha(reference_bytes)
@@ -556,8 +563,10 @@ def main() -> int:
         try:
             if reference.get("schema") != "gentek80-public-gallery-v1" or not re.fullmatch(r"[0-9a-f]{40}", str(reference.get("source_commit", ""))):
                 raise RuntimeError("Public gallery needs its schema and exact source commit")
-            if reference.get("rendering_inputs_sha256") != before["inputs"]:
-                raise RuntimeError("Rendering source inputs differ from the public gallery")
+            attestation = assess(reference,before,policy)
+            save(output / "reference-source-input-attestation.json",attestation)
+            if attestation["status"] != "pass":
+                raise RuntimeError("Public source-input admission failed: "+", ".join(attestation["failures"]))
             verify_reference_gallery_images(args.reference_gallery, reference)
         except (RuntimeError, OSError, ValueError) as error:
             save(output / "reference-gallery-comparison.json", {
@@ -603,14 +612,14 @@ def main() -> int:
     replay = json.loads((output / "process-reload.json").read_text(encoding="utf-8")) if (output / "process-reload.json").is_file() else {}
     successful = successful and not replay.get("failures", ["missing replay"]) and len(replay.get("cases", [])) == len(defaults)
     if reference is not None:
-        comparison = reference_gallery_comparison(reference, before, report, verified)
+        comparison = reference_gallery_comparison(reference, before, report, verified,policy)
         comparison["reference_manifest_sha256"] = reference_hash
         comparison["candidate_runtime_sha256"] = runtime_hash
         save(output / "reference-gallery-comparison.json", comparison)
         successful = successful and comparison["status"] == "pass"
         with (output / "README.md").open("a", encoding="utf-8") as readme:
             readme.write("\n## Public gallery source equivalence\n\n"
-                         "[Exact source/native/pixel comparison](reference-gallery-comparison.json) names both source commits and checks all 80 fresh default renders against the checked-in gallery.\n")
+                         "[Source-bounded native/pixel comparison](reference-gallery-comparison.json) records source drift and verifies all 80 fresh native, recipe and RGBA defaults against the original checked-in gallery.\n")
     identity = {"schema": 1, "recorded_at": datetime.now(timezone.utc).isoformat(),
                 "source": before, "source_and_runtime_unchanged": unchanged,
                 "runtime": {"path": str(runtime), "sha256": runtime_hash, "configured_path": str(loaded_runtime)},

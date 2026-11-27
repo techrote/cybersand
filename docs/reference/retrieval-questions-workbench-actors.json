@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-20",
+  "scope": "Additive WB-ACTOR-COMPOSE-001 candidate retrieval questions; frozen baseline untouched.",
+  "questions": [
+    {
+      "id": "WB-ACTOR-01",
+      "query": "Can I place physical NPCs and a human flyer together in ordinary Shared Workbench?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "The candidate catalogue exposes59 existing physical identities: eight flyers,46 physical rigs,four4LY profiles and a passive barrel.",
+        "Each admitted actor independently selects human,scripted,policy or passive authority; passive barrel accepts only passive.",
+        "One existing native worker and Rapier session own gameplay; there is no imported Thunderbowl arena or second running World."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-02",
+      "query": "Does inspecting a scripted NPC or painting terrain take over its control?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "Inspection and human pilot are independent; only an explicit pilot or controller action changes producer.",
+        "Live takeover cancels old commands and issued observations while preserving body graph,pose,momentum,resources and compatible equipment.",
+        "NPC schedules continue while inspecting or painting; pause stops gameplay and focus loss cancels affected human input."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-03",
+      "query": "How can an external controller safely drive a Workbench actor and what happens to late replies?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "The adapter issues copied physical observations and submits through the existing version2 physical_wire_action leased envelope.",
+        "Wrong actor,producer,run,epoch,sequence or stale/unissued observation refuses; replacement retires the old actor authority.",
+        "The deterministic policy fixture proves actual observation/action consumption; it is not a neural model or network service."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-04",
+      "query": "How are actor capacity and equipment accounted for in mixed Workbench casts?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "Separate limits admit at most eight logical actors,eight prepared parts per actor and64 actual response bodies/native occupancy proxies.",
+        "Compound masks map to their real body owner; equipment chassis and released items keep reserved capacity.",
+        "Tool requests use the existing ACT005 physical authority,mask/hit validation and native material accounting."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-05",
+      "query": "Does saving a mixed actor start restore live NPC physics or policy memory?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "Optional strict control-v1 fields extend existing Setup-v2 and its generated-start/material-baseline containers.",
+        "Save retains authored models,spawns,compatible options,controller configuration and starting equipment.",
+        "Load reconstructs authored starts; live momentum,resource consumption,policy memory and outstanding commands are not persisted."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-06",
+      "query": "Which sampled or Thunderbowl research controllers run in Shared Workbench?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "The full sampled session and arena remain outside the physical Workbench owner.",
+        "A narrow copied-view policy adapter reuses the pure local steering helper for compatible ordinary ground/jump physical rigs.",
+        "Virtual tag,oracle privilege,sampled metal actuation,NCA training and operational model services are not claimed."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

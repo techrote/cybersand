@@ -10,6 +10,33 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## AMBIENT-001 scoped gameplay qualification
+
+The opt-in [ambient implementation](../systems/ambient-actors.md) reuses the
+retained native and Rapier binaries only when all covered native source inputs
+and binary hashes match their published provenance. Commit the gameplay inputs,
+then run the focused sequential campaign with the repository-pinned Godot 4.7:
+
+```sh
+python3 tools/qualify_ambient.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-ambient-evidence
+```
+
+The runner checks source before and after execution and retains every process
+receipt, log, save/reopen pair and available gameplay report. `--allow-source-delta`
+is an explicitly labelled development run and cannot authorize packaging.
+`--case` supports narrow debugging or extracted-package checks; the package
+builder requires the complete committed-source campaign. Headless native/Rapier
+motion is distinct from rendered or physical Windows/NVIDIA playfeel acceptance.
+
+The [dedicated workflow](../../.github/workflows/ambient-001-qualification.yml)
+uses `windows-2022` and exact retained-runtime verification. It runs only on an
+explicit qualification-request marker change on the mission branch, or manual
+dispatch. It performs no native rebuild, runtime publication or Ready transition.
+The [package tool](../../tools/package_ambient_evaluator.py) records host source
+and original DLL build identity separately, includes ordinary authored examples
+and checksums, and verifies pristine extraction before delivery. Actual results
+and blockers belong to the [mission ledger](../research/ambient-001/mission-ledger.md).
+
 ## Large authored Workbench landscape admission
 
 **Draft/HOLD candidate, 2026-11-20:** WORKBENCH-HOST-CLAIMS-001 keeps the
@@ -62,10 +89,48 @@ tree; the Windows runner's explicit `--native-candidate` mode and independent
 coverage reducer verify those bytes. The default retained-runtime mode keeps
 its original committed provenance checks. Candidate manifests do not rewrite
 published provenance or waive `check_repository.py`.
-Candidate download and verification each have a five-minute allowance; only
-Rapier is fetched through LFS in the shard. The complete setup remains within
+Candidate download and verification each have a five-minute allowance. Rapier
+comes from its separate same-attempt producer artifact, with five minutes for
+download and five for committed-pointer and byte verification. The complete setup remains within
 the existing 70-minute reserve. Use **rerun all jobs** when retrying this
 same-run/attempt artifact chain, so producer and consumers share an attempt.
+
+GDExtension and Palette producers use
+[`materialize_lfs.py`](../../tools/ci/materialize_lfs.py) for exact committed LFS
+objects. A single monotonic allowance covers source/pointer admission, setup,
+all download attempts, backoff, byte verification and bounded owned-process
+cleanup. Linux uses its existing 1,200-second dependency allowance. The Windows
+native producer acquires Rapier once within 600 seconds; the Palette plan
+acquires its four exact retained objects once within 1,200 seconds. Ten seconds
+are reserved for owned-process cleanup inside the acquisition allowance.
+No test or native execution timeout changes.
+
+Only the observed Git LFS batch service-timeout response may be retried, at most
+three total attempts (two retries), with two- and four-second backoff.
+Authentication, permanent and unknown errors, exhausted allowance, source movement and wrong materialized
+bytes remain failures. Each original attempt retains its full output, exit,
+elapsed time and log hash beside a source/pointer/actual-byte receipt. Existing
+native, Rapier and downstream qualification checks remain mandatory; successful
+acquisition alone is not runtime qualification.
+
+[`lfs_runtime_artifact.py`](../../tools/ci/lfs_runtime_artifact.py) stages that
+producer's exact bytes and original acquisition logs in a source/run/attempt-bound
+artifact. Each consumer verifies the complete expected object inventory against
+its own committed LFS pointers, the actual bytes, original command receipts and
+sealed logs before installing its explicitly selected platform files. Palette
+requires all four objects even when installing only its platform pair. Consumers
+never fall back to the LFS service, a different attempt, or another runtime.
+Final seal and receipt writes are part of the shared deadline; a late seal is
+retained as failed evidence and cannot authorize execution.
+
+The Windows shard retains its original ten-minute dependency slot as five
+minutes for artifact download and five for verified installation. Palette
+retains its independent dependency clocks and adds the separately budgeted
+artifact-download step. Producer parents explicitly include moved acquisition
+and upload costs; case watchdogs, native inputs and concurrency are unchanged.
+Retry a complete source/attempt chain: GDE's common `ready_scope` ancestor or
+Palette's `plan`, including producers, all consumers and reducers. A failed-only
+consumer retry cannot satisfy same-attempt runtime custody.
 
 The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
 `tools/package_explore001_candidate.py` from committed project/profile bytes,
@@ -1089,20 +1154,25 @@ The native targets reuse generation objects within each existing compiler flag
 set under `$(BUILD_DIR)/worldgen-objects`: normal/sanitized and
 threaded/non-threaded variants stay separate. Source, shared-header and Makefile
 changes invalidate those objects. This avoids recompiling the same generation
-sources for each test. The current aggregates contain nine executables each,
-including GEN-005 semantic planes, with five-minute normal and ten-minute
-sanitizer CI bounds. The
+sources for each test. The current aggregates contain sixteen executables each:
+seven showcases and nine principal tests, including GEN-005 semantic planes.
+The [shared execution policy](ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
+owns current command and family watchdogs. The earlier five/ten-minute bounds
+below describe historical qualification. The
 [dated audit](../audits/2026-10-21-gen004-hierarchical-generation.md)
 retains the cold-build timeout that motivated this change and subsequent results.
 
 The [bounded build investigation](../audits/2026-10-31-worldgen-bounded-build.md)
 retains the later post-merge sanitizer timeout: eight tests passed, and the ninth
 was interrupted after prerequisite compilation consumed most of its ten-minute
-budget. The candidate Native workflow uses exactly `make -j2` for these two
-aggregates only. Their nine test recipe lines remain sequential after all
-prerequisites complete; no compilation moves outside the original deadlines.
-The inventory helper checks forced serial/two-job dry runs without executing a
-compiler, and rejects omitted/reordered tests or altered source/flag families.
+budget. The current Native workflow uses `make -j2 --output-sync=target` for these
+two aggregates. Seven independent showcases use the same two-job Make budget as
+compilation, followed by the nine principal recipes in their original order.
+See [parallel showcase execution](ci-execution-and-performance.md#parallel-worldgen-showcase-execution)
+for the complete test and failure contract. No compilation moves outside the
+original command watchdog. The inventory helper checks forced serial/two-job
+dry runs without executing a compiler and rejects omitted/duplicated showcases,
+omitted/reordered principal tests or altered source/flag families.
 Its passing checks do not replace actual cold compilation/execution. The first
 local two-job normal build failed at linking with an unexplained empty object;
 the separate sanitizer attempt stopped at its second test with a nonexecutable
@@ -1704,10 +1774,15 @@ and discovery suites. They change no installed native runtime artifact. See the
 benchmark compilation; builds/tests must stop during registered local timing.
 
 Native CI prebuilds the eight soliding sanitizer executables under a separate
-twenty-minute compilation bound, then runs the unchanged `make soliding-sanitize`
-group under its ten-minute execution bound with ASan/UBSan failure handling.
-The same Makefile prerequisites, compiler flags, tests and hosted runner apply;
-the ninety-minute overall job bound remains. The
+compilation watchdog, then runs the unchanged `make soliding-sanitize` group
+with ASan/UBSan failure handling. Current watchdog values come from the
+[shared execution policy](ci-execution-and-performance.md#owner-policy-and-acceptance-boundary)
+and Native planner; the earlier twenty/ten-minute command and ninety-minute job
+bounds below are historical. The original compiler flags, eight executables,
+test order and hosted runner remain. Six executables now share exact-input
+core objects within each build configuration; see
+[soliding compilation reuse](ci-execution-and-performance.md#soliding-compilation-reuse)
+for invalidation, interruption and full-coverage requirements. The
 [residual shared-contract audit](../audits/2026-10-24-lcb001-residual-shared-contract.md#native-aggregate-compilation-timeout-and-separate-build-budget)
 preserves the preceding aggregate timeout while compiling the final executable
 and distinguishes partial earlier passes from complete final-head acceptance.

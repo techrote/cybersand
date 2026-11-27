@@ -16,6 +16,8 @@ WASD moves, mouse aims, Q/E trims, Z/X reels and Space/Shift/C invoke the select
 rig's abilities. M uses its tool, N releases a held item and U reattaches a nearby
 item. Sampled rigs and the original physical hull trials remain reference choices.
 
+New sandbox and Shared Workbench sessions start with Wave Flow, waterfall spill and ballistic release. Open **Water Lab** to tune the flat-ground surge or select an earlier Water law. [Water controls](docs/operations/workbench-water-lab.md)
+
 ## Player playground
 
 Choose **Player playground** in the launcher or pass **`--player-playground`**
@@ -98,6 +100,17 @@ See the [four-tile scene guide](docs/operations/neon-reliquary-demo.md) for cont
 construction details and reproducible captures.
 
 ![Neon Reliquary rendered in CyberSand](docs/images/neon-reliquary/overview.png)
+
+## World Art viewer and capture
+
+The [unified World Art pipeline](docs/tools/art-pipeline-unification.md) provides
+one standalone Godot 4.7 viewer and unattended capture path for fifteen original
+collections and 120 reusable features. Open the
+[portable Windows evaluator](docs/tools/world-art-evaluation.md) for its bundled
+runtime, interactive viewer and offline gallery, or use the
+[one-checkout launch instructions](docs/tools/world-art-preview.md).
+Large/asymmetric art dimensions are independent of native playable World limits.
+This integration remains Draft/HOLD pending explicit owner acceptance.
 
 ## Development
 

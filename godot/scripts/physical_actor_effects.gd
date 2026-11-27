@@ -24,6 +24,7 @@ var _effect := CyberActorRigEffects.new()
 
 class EffectWorld extends RefCounted:
 	var target: Object
+	var extent := Vector2i(WORLD_LIMIT, WORLD_LIMIT)
 	var reads: int = 0
 	var attempted_writes: int = 0
 	var changed_cells: int = 0
@@ -51,7 +52,7 @@ class EffectWorld extends RefCounted:
 		if radius != 0 or attempted_writes >= MAX_WRITES or reads + 2 > MAX_READS:
 			exhausted = true
 			return
-		if x < 0 or y < 0 or x >= WORLD_LIMIT or y >= WORLD_LIMIT or has_failed():
+		if x < 0 or y < 0 or x >= extent.x or y >= extent.y or has_failed():
 			return
 		var before: int = material_at(x, y)
 		if before == material:
@@ -74,8 +75,11 @@ func reset(epoch: int = -1) -> void:
 	_effect.clear()
 
 
-func apply(world: Object, requests: Array, epoch: int) -> Array:
+func apply(world: Object, requests: Array, epoch: int,
+		extent: Vector2i = Vector2i(WORLD_LIMIT, WORLD_LIMIT)) -> Array:
 	var receipts: Array = []
+	if extent.x < 1 or extent.y < 1 or extent.x > 2048 or extent.y > 2048:
+		return [_receipt({}, epoch, false, "world_extent", 0)]
 	if epoch < 0 or epoch < _epoch:
 		return [_receipt({}, epoch, false, "epoch", 0)]
 	if epoch != _epoch:
@@ -93,7 +97,7 @@ func apply(world: Object, requests: Array, epoch: int) -> Array:
 			receipts.append(_receipt({}, epoch, false, "request_type", 0))
 			continue
 		var request: Dictionary = value
-		var error: String = _request_error(request, epoch)
+		var error: String = _request_error(request, epoch, extent)
 		if not error.is_empty():
 			receipts.append(_receipt(request, epoch, false, error, 0))
 			continue
@@ -111,6 +115,7 @@ func apply(world: Object, requests: Array, epoch: int) -> Array:
 		admitted_actors |= 1 << actor
 		var proxy := EffectWorld.new()
 		proxy.target = world
+		proxy.extent = extent
 		var source: Vector2 = request["source"]
 		var origin: Vector2 = request["origin"]
 		var source_id: int = request["source_body_id"]
@@ -133,7 +138,7 @@ func apply(world: Object, requests: Array, epoch: int) -> Array:
 		else:
 			_effect.clear()
 			_effect.apply(proxy, CyberActorRigEffects.DIG if kind == "dig" \
-				else CyberActorRigEffects.BLAST, origin, radius, power)
+				else CyberActorRigEffects.BLAST, origin, radius, power, extent)
 			if kind == "blast" and str(request.get("pattern", "disc")) == "rocket_charge":
 				# Existing blast first supplies its protected Fire centre; a sparse
 				# radius-at-most-two Gunpowder ring may occupy only empty cells.
@@ -148,7 +153,8 @@ func apply(world: Object, requests: Array, epoch: int) -> Array:
 	return receipts
 
 
-func _request_error(request: Dictionary, epoch: int) -> String:
+func _request_error(request: Dictionary, epoch: int,
+		extent: Vector2i = Vector2i(WORLD_LIMIT, WORLD_LIMIT)) -> String:
 	if request.size() > REQUEST_KEYS.size():
 		return "request_fields"
 	for key: Variant in request:
@@ -176,7 +182,7 @@ func _request_error(request: Dictionary, epoch: int) -> String:
 			return "position_type"
 		var point: Vector2 = request[key]
 		if not point.is_finite() or point.x < 0.0 or point.y < 0.0 \
-			or point.x >= WORLD_LIMIT or point.y >= WORLD_LIMIT:
+			or point.x >= extent.x or point.y >= extent.y:
 			return "position"
 	var source: Vector2 = request["source"]
 	var origin: Vector2 = request["origin"]
@@ -219,7 +225,7 @@ func _receipt(request: Dictionary, epoch: int, consumed: bool, reason: String, c
 
 
 func _cell_clear(proxy: EffectWorld, cell: Vector2i, source_id: int, own_prefix: bool) -> bool:
-	if cell.x < 0 or cell.y < 0 or cell.x >= WORLD_LIMIT or cell.y >= WORLD_LIMIT:
+	if cell.x < 0 or cell.y < 0 or cell.x >= proxy.extent.x or cell.y >= proxy.extent.y:
 		return false
 	var mask: int = proxy.rigid_body_id_at(cell.x, cell.y)
 	if mask != 0:
@@ -276,7 +282,7 @@ func _deposit(proxy: EffectWorld, target: Vector2, radius: int, material: int, r
 			if proxy.exhausted:
 				return
 			var cell: Vector2i = centre + Vector2i(x, y)
-			if cell.x < 0 or cell.y < 0 or cell.x >= WORLD_LIMIT or cell.y >= WORLD_LIMIT:
+			if cell.x < 0 or cell.y < 0 or cell.x >= proxy.extent.x or cell.y >= proxy.extent.y:
 				continue
 			if proxy.material_at(cell.x, cell.y) != 0 or proxy.rigid_body_id_at(cell.x, cell.y) != 0:
 				continue

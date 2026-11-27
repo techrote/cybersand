@@ -1,0 +1,64 @@
+{
+  "schema": "cybersand-goblin-predecessor-preservation-interrupted-custody-v1",
+  "observed_at": "2026-11-25 08:05:01 UTC",
+  "classification": "infrastructure observation; download completion unknown",
+  "source_commit": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8",
+  "independently_resolved_source_tree": "3ee2a02e13cde1a1a4ff67321cb7c3d6f9bd1e37",
+  "workflow_run_id": 45474099351,
+  "remote_artifacts": [
+    {
+      "id": 14959436637,
+      "name": "gip014-windows-evidence-3e3aa217b49036ac4a87dd57073ad2cbb5a314c8-1",
+      "size_in_bytes": 53552174,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14959436637",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14959436637/zip",
+      "expired": false,
+      "created_at": "2026-11-24T19:56:58Z",
+      "expires_at": "2026-12-24T19:56:55Z",
+      "updated_at": "2026-11-24T19:56:58Z",
+      "digest": "sha256:c7ff1cda1e08750cd884d5b33dc324b7329594394a8d1569d4527479ace51952",
+      "workflow_run": {
+        "id": 45474099351,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/gip014-goblin-gameplay-20261124",
+        "head_sha": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8"
+      }
+    },
+    {
+      "id": 14958249728,
+      "name": "gip014-qualified-windows-evaluator-3e3aa217b49036ac4a87dd57073ad2cbb5a314c8",
+      "size_in_bytes": 92570931,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14958249728",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14958249728/zip",
+      "expired": false,
+      "created_at": "2026-11-24T19:57:02Z",
+      "expires_at": "2026-12-24T19:56:58Z",
+      "updated_at": "2026-11-24T19:57:02Z",
+      "digest": "sha256:3d75ea0add4bb5a690c6c46c021f09f35b8e88e007c87df3107ac6b4a49a5fe3",
+      "workflow_run": {
+        "id": 45474099351,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/gip014-goblin-gameplay-20261124",
+        "head_sha": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8"
+      }
+    }
+  ],
+  "launched_once": true,
+  "declared_owned_process_bounds": {
+    "wall_seconds": 300,
+    "memory_mib": 512,
+    "log_bytes": 16777216
+  },
+  "declared_per_artifact_transfer_bound_seconds": 240,
+  "fixed_downloader_sha256": "3493f684d37acd4f700936c15ecd1708decb9983c594d151eb0aca6816a01423",
+  "raw_error": "write_stdin failed: Unified exec process failed: exec-server transport disconnected; failed to resume exec-server session: recovery timed out after 45s",
+  "final_process_receipt_observed": false,
+  "surviving_processes_observed": null,
+  "downloaded_artifact_success_observed": null,
+  "inspection": "No payload execution or full extraction was authorized or attempted. The launched downloader was configured to retain both originals without extracting members, verify remote size/SHA and all ZIP member CRC/path/finite bounds.",
+  "next_action": "Lead owns one host recovery; inspect completed and partial files/receipts before any retry. No success entries have been added to the archive plan.",
+  "supersedes_transport_note_blob": "3e0e3aa487df5b26ae69761519a4fb44ab67dd45",
+  "correction": "Restore the exact space in the tool error string; no artifact/process outcome changed."
+}

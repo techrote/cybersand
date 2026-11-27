@@ -21,6 +21,7 @@ var cursor := Vector2i(-1,-1)
 var anchor := Vector2i(-1,-1)
 var dragging := false
 var drag_erase := false
+var _live_stroke := false
 var stroke: Array[Vector2i] = []
 var clipboard: Dictionary = {}
 var material_id := 2
@@ -59,7 +60,7 @@ func mount(workbench: Control) -> void:
 	host = bench.host
 	add_theme_constant_override("h_separation",5)
 	for text: String in TOOLS: _tools.add_item(text)
-	_tools.tooltip_text = "B Brush · E Eraser · L Line · R Rectangle · O Outline · S Select · G Fill · V Paste"
+	_tools.tooltip_text = "Brush / Eraser also work while running. Pause for shapes, selection, Fill and Undo/Redo. B Brush · E Eraser · L Line · R Rectangle · O Outline · S Select · G Fill · V Paste"
 	_tools.item_selected.connect(func(index: int) -> void: select_tool(TOOLS[index]))
 	add_child(_tools)
 	for entry: Array in [[_copy,"Copy",copy_selection],[_paste,"Paste",func() -> void: select_tool("Paste")],
@@ -256,6 +257,7 @@ func finish_agent_history() -> void:
 
 func installed() -> void:
 	cancel_preview()
+	var retired_context := _operation.duplicate(false) if str(_operation.get("kind","")) == "art_context" else {}
 	if not _operation.is_empty():
 		_finish_deferred(_operation.get("job",{}), {"status":"invalidated","reason":"World replaced before human edit completion."})
 		_retired_operation = int(_operation.operation_id)
@@ -268,6 +270,8 @@ func installed() -> void:
 	_save_hold = false
 	invalidate_history("World replaced")
 	if _overlay != null: _overlay.invalidate()
+	if not retired_context.is_empty():
+		_finish_art_context(retired_context,{"status":"invalidated","reason":"World replaced before context capture completed.","materials":PackedInt32Array()})
 
 func flattened() -> void:
 	# Admission guarantees no planner/edit/receipt remains. Retire only the old
@@ -280,6 +284,7 @@ func flattened() -> void:
 func cancel_preview() -> void:
 	dragging = false
 	drag_erase = false
+	_live_stroke = false
 	stroke.clear()
 	if _overlay != null: _overlay.queue_redraw()
 
@@ -302,7 +307,40 @@ func _source(state: Dictionary) -> Dictionary:
 func _current() -> Dictionary:
 	return host.simulation_worker.paint_state() if host != null else {}
 
-func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false) -> bool:
+# Art borrows this owner's read-only capture slot. It never consumes PAINT's
+# receipt mailbox, and it never obtains a live World reference.
+func art_context_state() -> Dictionary:
+	var state := _current()
+	return {"source":_source(state),"extent":extent(),"paused":host != null and host.paused,
+		"busy":busy() or bool(state.get("busy",true)) or bool(state.get("art_busy",false))
+			or bool(state.get("legacy_busy",false)) or bool(state.get("transition_busy",false))
+			or bool(state.get("flatten_busy",false)),
+		"tool":tool_name(),"material":material_id,"selection":selection,
+		"backend":"CyberNativeCellWorld","max_capture_cells":MAX_CELLS}
+
+func art_context_capture(region: Rect2i, completion: Callable) -> Dictionary:
+	if not completion.is_valid(): return {"ok":false,"error":"A context capture needs its response owner."}
+	if not _queue_capture("art_context",region): return {"ok":false,"error":_message}
+	_operation.completion = completion
+	return {"ok":true,"operation_id":int(_operation.operation_id)}
+
+func art_context_cancel(operation_id: int) -> bool:
+	if str(_operation.get("kind","")) != "art_context" or int(_operation.get("operation_id",-1)) != operation_id:
+		return false
+	_operation.cancel_requested = true
+	host.simulation_worker.paint_stop()
+	return true
+
+func _finish_art_context(operation: Dictionary, receipt: Dictionary) -> void:
+	if str(operation.get("kind","")) != "art_context": return
+	var completion: Callable = operation.get("completion",Callable())
+	if not completion.is_valid(): return
+	var copied := receipt.duplicate(true)
+	copied.source = _source(receipt)
+	copied.extent = extent()
+	completion.call(copied)
+
+func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false, live_brush: bool = false) -> bool:
 	if host == null or bench.applied.is_empty(): return false
 	if bench.is_flatten_pending() or bool(_current().get("flatten_busy",false)):
 		_say("Wait for Flatten material capture and baseline adoption.")
@@ -310,7 +348,7 @@ func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false
 	if _planner != null or not _operation.is_empty() or (not continuing_history and not _history_replay.is_empty()) \
 			or not host.pending_microscenario_apply.is_empty() or bench.step_pending \
 			or host.simulation_worker.has_failed() or bool(_current().get("busy",true)) \
-			or bool(_current().get("art_busy",false)) or bool(_current().get("legacy_busy",false)):
+			or bool(_current().get("art_busy",false)) or (not live_brush and bool(_current().get("legacy_busy",false))):
 		_say("Wait for the current native operation.")
 		return false
 	if host.water_controlled_run_active() or host._microscenario_execution_locked():
@@ -319,7 +357,7 @@ func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false
 	if bench._stream.button_pressed or bool(host.tower_context.get("workbench_source",{}).get("stream_enabled",false)):
 		_say("Stop the active powder stream before authoring.")
 		return false
-	if not host.paused:
+	if not host.paused and not live_brush:
 		_say("Pause the simulation before drawing, copying or filling.")
 		return false
 	if _save_hold and not allow_hold:
@@ -340,6 +378,12 @@ func world_input(event: InputEvent) -> bool:
 	if event is InputEventMouseMotion and bench._pan: return false
 	var position := _pixel(event)
 	if position.x >= 0: cursor = position
+	if not host.paused:
+		if dragging and not _live_stroke: cancel_preview()
+		return _live_brush_input(event,position)
+	if _live_stroke:
+		cancel_preview()
+		return true
 	if event is InputEventMouseMotion:
 		if dragging and position.x >= 0 and (tool_name() in ["Brush","Eraser"] or drag_erase):
 			if stroke.is_empty() or stroke.back() != cursor:
@@ -375,6 +419,41 @@ func world_input(event: InputEvent) -> bool:
 	elif job.tool == "Paste": paste_at(cursor)
 	else: _begin_plan(job,str(job.tool))
 	return true
+
+# Running brush gestures reuse the original bounded Workbench disc queue and
+# authored-stamp recorder. Simulation already invalidates paused edit history;
+# live strokes do not pretend to capture an atomic before/after cell snapshot.
+# All other PAINT tools retain their acknowledged paused transaction path.
+func _live_brush_input(event: InputEventMouse, position: Vector2i) -> bool:
+	if event is InputEventMouseButton:
+		if not event.pressed:
+			if _live_stroke: _live_brush_stamp(position)
+			cancel_preview()
+			return true
+		if event.button_index != MOUSE_BUTTON_RIGHT and tool_name() not in ["Brush","Eraser"]:
+			_say("Use Brush / Eraser while running; pause for shapes, selection and Fill.")
+			return true
+		if position.x < 0 or not _ready_to_author(false,false,true): return true
+		dragging = true
+		_live_stroke = true
+		drag_erase = event.button_index == MOUSE_BUTTON_RIGHT or tool_name() == "Eraser"
+		stroke.clear()
+	_live_brush_stamp(position)
+	return true
+
+func _live_brush_stamp(position: Vector2i) -> void:
+	if not dragging or position.x < 0: return
+	if not stroke.is_empty() and stroke.back() == position: return
+	if stroke.size() >= 4096:
+		cancel_preview()
+		_say("Live stroke sample budget reached; release and draw a shorter gesture.")
+		return
+	if not _ready_to_author(false,false,true): return
+	if bench.paint(position,0 if drag_erase else material_id):
+		stroke.append(position)
+		_say("Live brush · actors keep running · pause for precise shapes and Undo/Redo.")
+	else:
+		_say(str(bench.message))
 
 func key_input(event: InputEvent) -> bool:
 	if not paint_mode_active() or not event is InputEventKey or not event.pressed or event.echo: return false
@@ -679,6 +758,18 @@ func _receive(receipt: Dictionary) -> void:
 	var operation := _operation
 	_operation = {}
 	var current := _current()
+	if str(operation.get("kind","")) == "art_context":
+		var observed := receipt.duplicate(false)
+		if bool(operation.get("cancel_requested",false)):
+			observed.status = "cancelled"
+			observed.reason = "Context capture cancelled."
+			observed.materials = PackedInt32Array()
+		elif _source(receipt) != _source(current) or int(receipt.get("observed_generation",-1)) != int(current.get("generation",-2)):
+			observed.status = "invalidated"
+			observed.reason = "Native World changed before context capture publication."
+			observed.materials = PackedInt32Array()
+		_finish_art_context(operation,observed)
+		return
 	if int(receipt.generation) != int(current.get("generation",-1)) \
 			or int(receipt.get("observed_generation",-1)) != int(receipt.generation):
 		invalidate_history("Old World result retired")
