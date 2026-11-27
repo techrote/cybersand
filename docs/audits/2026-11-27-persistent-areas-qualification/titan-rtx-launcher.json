@@ -1,0 +1,25 @@
+{
+  "source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+  "tree": "790b071e118de953f7a063418951e7c7596e6337",
+  "archive_sha256": "d21822c04a1b233291db34f5699d5fb25793513dc39d807c62822bf7cd9060eb",
+  "artifact": 15179331362,
+  "args": "--audio-driver Dummy --max-fps 20 --quit-after 2400",
+  "launcher": "Open Persistent Areas.cmd",
+  "exit": 0,
+  "seconds": 136.5,
+  "log_sha256": "e88157a194d22793f5d94530908aef1c2e5d203133c91c17e7014e8aec6160d0",
+  "ready": {
+    "area": "a",
+    "revision": 3,
+    "session": "ae20d94ba58d0a50de1553a3e613d3ca"
+  },
+  "revision": 3,
+  "area_hashes": {
+    "a": "736552241d5b7dab30cba6871fe2683a5f86143d1c24fa6d7d7da66f9501ba2e",
+    "b": "52220a963bf39ae14603646352733e5dad3a659e7c0554cb5ac6841dd204987c",
+    "c": "876005a4bd56fc8db2d92338a6708b30c3039b2490b44d65a4369d9fb2527ede"
+  },
+  "renderer": [
+    "OpenGL API 3.3.0 NVIDIA 581.80 - Compatibility - Using Device: NVIDIA - NVIDIA TITAN RTX"
+  ]
+}

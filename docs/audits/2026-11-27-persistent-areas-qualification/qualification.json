@@ -1,0 +1,414 @@
+{
+  "schema": "cybersand-persistent-areas-independent-qualification-v1",
+  "candidate": "af45bfb332f9822780db9304779ff0cdf55661df",
+  "candidate_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
+  "scoped_workflow": {
+    "run_id": "45943912926",
+    "attempt": 1,
+    "conclusion": "success",
+    "jobs_passed": 8
+  },
+  "runtime_publication": {
+    "source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+    "child": "fa0c7aa65c1b8a27426da69ae0d62c9227f56479",
+    "tree": "0f2be67df9e3f9f547ab88b1559f79d43790174e",
+    "published_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "runtimes": {
+      "linux": {
+        "sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+        "size": 5617072,
+        "source_inputs": 114,
+        "status": "validated-development-runtime",
+        "provenance_sha256": "48ad516871a9d29ff0892ec760e1fcff3525044164d7f349fae0bc586c42a787",
+        "check_count": 114
+      },
+      "windows": {
+        "sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+        "size": 6884864,
+        "source_inputs": 114,
+        "status": "validated-development-runtime",
+        "provenance_sha256": "323a3dea6c40953d574e7bbbb262962e9746dd07d169d4f518dcfbeb2d917437",
+        "check_count": 114
+      }
+    }
+  },
+  "installed_candidate_equivalence": {
+    "package_sha256": "d21822c04a1b233291db34f5699d5fb25793513dc39d807c62822bf7cd9060eb",
+    "package_source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+    "published": "fa0c7aa65c1b8a27426da69ae0d62c9227f56479",
+    "candidate": "af45bfb332f9822780db9304779ff0cdf55661df",
+    "changed_git_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "tools/ci/test_verify_linux_godot_shards.py",
+      "tools/ci/verify_godot_shard_command.py",
+      "tools/ci/verify_linux_godot_shards.py",
+      "tools/ci/verify_windows_godot_shards.py"
+    ],
+    "intersect_package_paths": {
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+        "installed_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+        "published_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+        "equal": true
+      },
+      "godot/addons/cybersand_native/runtime-provenance.json": {
+        "installed_sha256": "323a3dea6c40953d574e7bbbb262962e9746dd07d169d4f518dcfbeb2d917437",
+        "published_sha256": "323a3dea6c40953d574e7bbbb262962e9746dd07d169d4f518dcfbeb2d917437",
+        "equal": true,
+        "format_independent_equal": true
+      }
+    }
+  },
+  "windows_owner_evaluator": {
+    "artifact": 15179331362,
+    "source_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+    "source_tree": "790b071e118de953f7a063418951e7c7596e6337",
+    "native_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+    "zip_sha256": "d21822c04a1b233291db34f5699d5fb25793513dc39d807c62822bf7cd9060eb",
+    "artifact_sha256": "f006d185da644875c0405857bc587810f3cabad58b0e5ea9c3633f8423384974",
+    "verified_files": 1861,
+    "manifest_sha256": "aa7881044f076bca229ce7e4f2ae6709125aaa8a168aab1c396b58c5980832fe"
+  },
+  "scoped_platforms": {
+    "linux": {
+      "source_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+      "source_tree": "790b071e118de953f7a063418951e7c7596e6337",
+      "platform": "linux",
+      "runtime_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+      "input_count": 114,
+      "build_inputs": 1289,
+      "distinct_git_blobs": 1403,
+      "provenance_sha256": "48ad516871a9d29ff0892ec760e1fcff3525044164d7f349fae0bc586c42a787",
+      "status": "validated-development-runtime",
+      "ordinary_water_hosts": {
+        "regression-desktop-default-water": {
+          "pid": 7930,
+          "exit_code": 0,
+          "completion": {
+            "checks": 86,
+            "failures": 0,
+            "original": "86 assertions; 0 failures"
+          },
+          "log_sha256": "ede9a02bba48a393839d672bd0fc4ece71f2bebdc9b11d9869688a955d350034"
+        },
+        "regression-f5-water-trial-body": {
+          "pid": 8229,
+          "exit_code": 0,
+          "completion": {
+            "checks": 117,
+            "failures": 0,
+            "original": "117 assertions, 0 failures"
+          },
+          "log_sha256": "7cfe2c75a897c8acae3cb49f0f5491a72f1793c89659b0963ff018058e84eee3"
+        }
+      },
+      "cross_authoring": {
+        "write": {
+          "architecture_receipts": 1,
+          "art_changed": 180,
+          "art_receipt_count": 1,
+          "durable_revision": 9,
+          "marker": 58,
+          "process_id": 10897,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "session_id": "ab77087c1470fa6ce98d69fc3d4ff21a"
+        },
+        "reopen": {
+          "area": "a",
+          "durable_revision": 11,
+          "marker": 58,
+          "process_id": 11038,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "session_id": "ab77087c1470fa6ce98d69fc3d4ff21a"
+        }
+      },
+      "artifact": 15177115041,
+      "archive_sha256": "495c4e861cd7501304b88de142694feec883b8a3fad6ce073b9fb82f1edf9ecd",
+      "qualification_sha256": "08fb88407a449f14ac2e2474f8dd981fa0e07732d3eb58cfc4b927f755f978fa",
+      "cases": 114,
+      "statistics": [
+        {
+          "workers": 1,
+          "mode": "HOT",
+          "samples": 30,
+          "p50_ms": 301.0,
+          "p95_ms": 318,
+          "worst_ms": 331,
+          "original_file": "ramcache-w1/ramcache-write.json"
+        },
+        {
+          "workers": 1,
+          "mode": "WARM",
+          "samples": 30,
+          "p50_ms": 2381.5,
+          "p95_ms": 2742,
+          "worst_ms": 2759,
+          "original_file": "ramcache-w1/ramcache-write.json"
+        },
+        {
+          "workers": 4,
+          "mode": "HOT",
+          "samples": 30,
+          "p50_ms": 297.0,
+          "p95_ms": 315,
+          "worst_ms": 332,
+          "original_file": "ramcache-w4/ramcache-write.json"
+        },
+        {
+          "workers": 4,
+          "mode": "WARM",
+          "samples": 30,
+          "p50_ms": 2516.5,
+          "p95_ms": 2718,
+          "worst_ms": 2738,
+          "original_file": "ramcache-w4/ramcache-write.json"
+        }
+      ]
+    },
+    "windows": {
+      "source_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+      "source_tree": "790b071e118de953f7a063418951e7c7596e6337",
+      "platform": "windows",
+      "runtime_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+      "input_count": 114,
+      "build_inputs": 1289,
+      "distinct_git_blobs": 1403,
+      "provenance_sha256": "323a3dea6c40953d574e7bbbb262962e9746dd07d169d4f518dcfbeb2d917437",
+      "status": "validated-development-runtime",
+      "ordinary_water_hosts": {
+        "regression-desktop-default-water": {
+          "pid": 2308,
+          "exit_code": 0,
+          "completion": {
+            "checks": 86,
+            "failures": 0,
+            "original": "86 assertions; 0 failures"
+          },
+          "log_sha256": "9d3693a5a9cb06525212d00d14f89f89fa09c642b9277e93172a2363c40f2e78"
+        },
+        "regression-f5-water-trial-body": {
+          "pid": 5588,
+          "exit_code": 0,
+          "completion": {
+            "checks": 117,
+            "failures": 0,
+            "original": "117 assertions, 0 failures"
+          },
+          "log_sha256": "92293c9a76934de96e4136da6ea014d60a70d18b136094f1cb35fdda9535ec84"
+        }
+      },
+      "cross_authoring": {
+        "write": {
+          "architecture_receipts": 1,
+          "art_changed": 180,
+          "art_receipt_count": 1,
+          "durable_revision": 9,
+          "marker": 58,
+          "process_id": 624,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "session_id": "527c9b5bde6eb11fcf395e7251ef707f"
+        },
+        "reopen": {
+          "area": "a",
+          "durable_revision": 11,
+          "marker": 58,
+          "process_id": 1900,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "session_id": "527c9b5bde6eb11fcf395e7251ef707f"
+        }
+      },
+      "artifact": 15178658337,
+      "archive_sha256": "378d1807c04d609fe7f6611915a830fdb55867e7135d12606d21baacbc2601d0",
+      "qualification_sha256": "6570f7e8a26223c3b3757705f8bcf8154ff5c9a1b3face4826bc0d1ec1634230",
+      "cases": 114,
+      "statistics": [
+        {
+          "workers": 1,
+          "mode": "HOT",
+          "samples": 30,
+          "p50_ms": 665.5,
+          "p95_ms": 706,
+          "worst_ms": 713,
+          "original_file": "ramcache-w1/ramcache-write.json"
+        },
+        {
+          "workers": 1,
+          "mode": "WARM",
+          "samples": 30,
+          "p50_ms": 5152.0,
+          "p95_ms": 5408,
+          "worst_ms": 5479,
+          "original_file": "ramcache-w1/ramcache-write.json"
+        },
+        {
+          "workers": 4,
+          "mode": "HOT",
+          "samples": 30,
+          "p50_ms": 632.0,
+          "p95_ms": 698,
+          "worst_ms": 699,
+          "original_file": "ramcache-w4/ramcache-write.json"
+        },
+        {
+          "workers": 4,
+          "mode": "WARM",
+          "samples": 30,
+          "p50_ms": 5170.5,
+          "p95_ms": 5406,
+          "worst_ms": 5469,
+          "original_file": "ramcache-w4/ramcache-write.json"
+        }
+      ],
+      "packaged_smoke": {
+        "package_manifest_sha256": "aa7881044f076bca229ce7e4f2ae6709125aaa8a168aab1c396b58c5980832fe",
+        "write": {
+          "pid": 4572,
+          "checks": 633,
+          "native_assertions": 636,
+          "hot": 3,
+          "warm": 3
+        },
+        "reopen": {
+          "pid": 7124,
+          "checks": 162,
+          "native_assertions": 165,
+          "hot": 0,
+          "warm": 0
+        },
+        "ordinary": {
+          "checks": 102,
+          "completed_native_ticks": 18,
+          "failures": 0,
+          "graphical": true,
+          "native_generation": 2,
+          "process_id": 7144
+        }
+      }
+    }
+  },
+  "titan_launcher": {
+    "receipt": "titan-rtx-launcher.json",
+    "original_windows_crlf_sha256": "814b8f32c3de9b028757a0c8f4af6c1a24b89608335d7fc19918e8fba46088ab",
+    "canonical_lf_sha256": "1d6449cba2b408c1af7e0017b06895826c7c3dd829a5e1dc09ca750c524c9fba",
+    "scope": "Executed the delivered launcher, validated its three durable blobs and recorded normal process exit."
+  },
+  "original_general": {
+    "source_sha": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+    "run_id": "45943919388",
+    "attempt": "1",
+    "hosted_conclusion": "failure",
+    "failed_reducers": {
+      "linux": 140332576632,
+      "windows": 140334231111
+    },
+    "original_shards": 62,
+    "immutable_members_verified": 4578,
+    "original_zip_bytes": 164267755,
+    "offline_corrected_verifiers": {
+      "linux": {
+        "sha256": "1b2ae0e3fa6573cac43160389f1e477f1b7b5dca7286b90674a9ce8b9ca5502a",
+        "schema": "linux-godot-coverage-v1",
+        "status": "passed",
+        "case_count": 480,
+        "shard_count": 32,
+        "source_inputs_verified": 43,
+        "retained_play_groups": 15
+      },
+      "windows": {
+        "sha256": "3f7dba753d020c18695ab61e05bf8f74d1ec5ebe9566b58ebab60a6901829dec",
+        "schema": "windows-godot-sharded-coverage-v2",
+        "status": "passed",
+        "unique_case_count": 457,
+        "shard_count": 30,
+        "source_inputs_verified": 1423,
+        "raw_logs_verified": 487,
+        "retained_play_groups": 15
+      }
+    }
+  },
+  "postpublication_generic_builds": {
+    "linux": {
+      "artifact": 15184775994,
+      "archive_sha256": "af8979cd82ab72e63f722b3f3b24bab533c78cf54a8bd703b0c516546228b638",
+      "built": {
+        "libcybersand_native.linux.x86_64.so": {
+          "sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+          "size": 5617072
+        },
+        "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+          "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "size": 117275416
+        }
+      },
+      "published_native_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+      "byte_identical_to_publication": true
+    },
+    "windows": {
+      "artifact": 15183099852,
+      "archive_sha256": "f4ad4820fe679dffa03cd60069f5656ba82538c4de516afa4bf3c77fdeb0b8bf",
+      "candidate_provenance_sha256": "ac416251bbd248f469de992a9ded0a7865e20f37defc153f71697399e84eebf1",
+      "matching_input_hashes": 114,
+      "built": {
+        "cybersand_native.windows.x86_64.dll": {
+          "sha256": "77284878664caf9bad5273ab11679c219b39eada0f7358dc21f9ac1d45abb00f",
+          "size": 6884864
+        }
+      },
+      "published_native_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+      "byte_identical_to_publication": false,
+      "pe_comparison": {
+        "byte_count_different": 14,
+        "by_section": {
+          ".rdata": 6,
+          ".buildid": 8
+        },
+        "text_sha256": "2c98924182858d6354eb156c65b002cafa5830aca02f2a37550224bbf6eaa819",
+        "text_is_identical": true
+      }
+    }
+  },
+  "postpublication_general": {
+    "source_commit": "af45bfb332f9822780db9304779ff0cdf55661df",
+    "source_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
+    "run_id": "45968901250",
+    "attempt": "1",
+    "conclusion": "success",
+    "started": "2026-11-27T08:51:15Z",
+    "completed": "2026-11-27T09:24:43Z",
+    "job_count": 71,
+    "job_conclusions": {
+      "success": 69,
+      "skipped": 2
+    },
+    "unrequested_jobs": [
+      "physical-actor-stress",
+      "ready validation scope"
+    ],
+    "receipts": {
+      "linux": {
+        "artifact": 15185512638,
+        "zip_sha256": "34039596272da03af7a3f11e290c909a6d7f73db041b425a9c28254b0ae6d793",
+        "coverage_sha256": "7a7bdbdcd92ba49c2298dabae70f9a380af5bb879ee3dcf856bda4a454f74c63",
+        "case_count": 480,
+        "shard_count": 32,
+        "source_inputs_verified": 43,
+        "retained_play_receipts": 15
+      },
+      "windows": {
+        "artifact": 15185278645,
+        "zip_sha256": "ad7e7b9db7fb84290a97b227120fad6a8eba3194b46d54ffe6d91a067fb78c8f",
+        "coverage_sha256": "cdec314e6a3ae431eb9626217adcd002bb0ac08827d6660a1d7a776036b6f807",
+        "case_count": 457,
+        "shard_count": 30,
+        "source_inputs_verified": 1423,
+        "retained_play_receipts": 15,
+        "raw_logs_verified": 487
+      }
+    }
+  }
+}
