@@ -1,7 +1,9 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)][string]$Package,
-    [Parameter(Mandatory = $true)][string]$Output
+    [Parameter(Mandatory = $true)][string]$Output,
+    [switch]$PersistentOnly,
+    [string]$Archive
 )
 
 # Execute the delivered top-level CMD files from a path containing spaces.
@@ -93,6 +95,12 @@ function Invoke-DeliveredCmd([string]$Name, [string]$Filename, [string]$Argument
         $renderer = @($text -split '\r?\n' | Where-Object { $_ -match 'OpenGL.*ANGLE|ANGLE.*OpenGL' })
         if ($renderer.Count -lt 1) { throw 'Delivered ordinary Workbench did not prove actual Windows ANGLE initialization.' }
         $row.renderer_initialization = $renderer
+    } elseif ($Name -eq 'persistent') {
+        $markers = @($text -split '\r?\n' | Where-Object { $_.StartsWith('PERSISTENT_AREAS_READY ') })
+        if ($markers.Count -ne 1 -or $text -notmatch 'OpenGL.*ANGLE|ANGLE.*OpenGL') {
+            throw 'The delivered Persistent Areas launcher did not acknowledge native initialization and the ANGLE renderer.'
+        }
+        $row.ready = $markers[0].Substring('PERSISTENT_AREAS_READY '.Length) | ConvertFrom-Json
     } else {
         $markers = @($text -split '\r?\n' | Where-Object { $_.StartsWith('GOBLIN_PACKAGE_SELFTEST_PASS ') })
         if ($markers.Count -ne 1) { throw 'Delivered Goblin self-test did not complete exactly once.' }
@@ -113,6 +121,51 @@ function Invoke-DeliveredCmd([string]$Name, [string]$Filename, [string]$Argument
 try {
     if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'Actual Windows launcher proof is required.' }
     Write-Report
+    if ($PersistentOnly) {
+        $profile = Join-Path $packageRoot 'workbench/userdata/persistent-profile'
+        if ('persistent_areas' -notin $manifest.integrated_features -or (Test-Path -LiteralPath $profile)) {
+            throw 'The optional Persistent Areas launcher requires its shipped feature and a fresh profile.'
+        }
+        Invoke-DeliveredCmd 'persistent' 'Open Persistent Areas.cmd' '--audio-driver Dummy --max-fps 20 --quit-after 2400' ([int]$manifest.execution_budget.launcher_watchdogs.workbench)
+        $row = $report.cases['persistent']
+        $current = Join-Path $profile 'current.cypm'
+        if ((Get-Item -LiteralPath $current).Length -gt 262144) { throw 'Persistent manifest exceeds the source capacity.' }
+        $bytes = [IO.File]::ReadAllBytes($current)
+        if ($bytes.Length -lt 52 -or [Text.Encoding]::ASCII.GetString($bytes, 0, 7) -cne 'CYSPROF' -or
+            $bytes[7] -ne 0 -or [BitConverter]::ToUInt32($bytes, 8) -ne 1 -or
+            [BitConverter]::ToUInt32($bytes, 12) -ne ($bytes.Length - 52) -or [BitConverter]::ToUInt32($bytes, 16) -ne 0) {
+            throw 'The delivered launcher wrote an invalid persistence envelope.'
+        }
+        $hash = [Security.Cryptography.SHA256]::Create()
+        try { $digest = $hash.ComputeHash($bytes, 52, $bytes.Length - 52) } finally { $hash.Dispose() }
+        if ([BitConverter]::ToString($digest) -ne [BitConverter]::ToString($bytes, 20, 32)) { throw 'Persistent manifest digest mismatch.' }
+        $state = [Text.Encoding]::UTF8.GetString($bytes, 52, $bytes.Length - 52) | ConvertFrom-Json
+        if ($row.ready.session -cnotmatch '^[0-9a-f]{32}$' -or $row.ready.revision -lt 1 -or
+            $row.ready.session -cne $state.session_id -or $row.ready.revision -gt $state.revision -or
+            ($state.areas.PSObject.Properties.Name | Sort-Object) -join ',' -cne 'a,b,c') {
+            throw 'Persistent launch acknowledgement or durable area roster differs from disk.'
+        }
+        $areaHashes = @{}
+        foreach ($id in @('a','b','c')) {
+            $record = $state.areas.$id
+            if ($record.blob -cnotmatch ('^area-' + $id + '-[0-9a-f]{32}\.cypa$') -or $record.area_id -cne $id) {
+                throw 'Unsafe or mismatched persistent area record.'
+            }
+            $areaHashes[$id] = (Get-FileHash -LiteralPath (Join-Path $profile $record.blob) -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($record.sha256 -cne $areaHashes[$id]) { throw 'Persisted area content differs from the acknowledged manifest.' }
+        }
+        $receipt = @{
+            schema = 'cybersand-mainline-persistent-launcher-v1'; status = 'passed'; source_commit = $manifest.source_commit
+            archive_sha256 = (Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvariant(); manifest_sha256 = $report.manifest_sha256
+            run_id = $env:GITHUB_RUN_ID; run_attempt = $env:GITHUB_RUN_ATTEMPT; launcher = $row.launcher; exit_code = $row.exit_code
+            durable_areas = $areaHashes.Count; durable_blobs_sha256 = $areaHashes; session_id = $state.session_id; revision = $state.revision
+            active_area = $row.ready.area; renderer = 'ANGLE'; stdout_sha256 = $row.stdout_sha256; stderr_sha256 = $row.stderr_sha256
+        }
+        [IO.File]::WriteAllText((Join-Path $outputRoot 'persistent-launcher.json'), (($receipt | ConvertTo-Json -Depth 8) + [Environment]::NewLine), $utf8)
+        $report.status = 'passed'
+        Write-Report
+        exit 0
+    }
     if ($manifest.execution_budget.schema -ne 'cybersand-mainline-evaluator-budget-v1' -or
         $manifest.execution_budget.parent_minutes -ne 360 -or $manifest.execution_budget.total_seconds -gt 21600) {
         throw 'Source-derived complete package execution budget is missing or exceeds the parent.'

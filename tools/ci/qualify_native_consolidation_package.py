@@ -37,11 +37,14 @@ def execute(base: list[str], flags: list[str], env: dict, log: Path, timeout: in
     """The graphical binary is the engine PID observed by Godot, including on Windows."""
     command = base + flags
     started = time.monotonic()
+    timed_out = False
     with log.open("xb") as stream:
         process = subprocess.Popen(command, cwd=Path(base[0]).parent, env=env, stdout=stream,
                                    stderr=subprocess.STDOUT, start_new_session=os.name != "nt")
         try:
-            code = process.wait(timeout=timeout)
+            process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            timed_out = True
         finally:
             if process.poll() is None:
                 try:
@@ -55,10 +58,12 @@ def execute(base: list[str], flags: list[str], env: dict, log: Path, timeout: in
                         process.kill()
                     process.wait(timeout=20)
     content = log.read_text(encoding="utf-8", errors="replace")
-    receipt = {"command": command, "pid": process.pid, "returncode": code, "timeout_seconds": timeout,
+    receipt = {"command": command, "pid": process.pid, "returncode": process.returncode,
+               "timed_out": timed_out, "timeout_seconds": timeout,
                "wall_seconds": round(time.monotonic() - started, 3), "log_sha256": delivery.sha(log)}
     delivery.write(log.with_suffix(".process.json"), receipt)
-    delivery.require(code == 0 and not ENGINE_ERRORS.search(content), f"Extracted process failed. See {log}")
+    delivery.require(not timed_out, f"Extracted process exceeded its {timeout}s watchdog. See {log}")
+    delivery.require(process.returncode == 0 and not ENGINE_ERRORS.search(content), f"Extracted process failed. See {log}")
     return receipt, content
 
 
@@ -271,7 +276,25 @@ def objectshard(extraction: Extraction) -> dict:
     second = assertions(content, schema="objectshard-m4-fresh-authored-reopen-v1")
     require_distinct(author, reopen)
     delivery.require(second["process_id"] == reopen["pid"], "ObjectShard reopen receipt has the wrong process owner")
-    return {"author_checks": first["checks"], "reopen_checks": second["checks"], "authored_reopen": witness}
+    launcher = "Open Structural Workbench.cmd"
+    launch_receipt = output / "launcher.json"
+    delivery.require(launcher in extraction.manifest["files_sha256"], "Structural launcher missing from the package")
+    process, _ = execute([os.environ["COMSPEC"], "/d", "/c", "call"],
+                         [str(extraction.package / launcher), "--audio-driver", "Dummy", "--script",
+                          "res://tests/probe_object_shard_workbench_package.gd"],
+                         dict(env, OBJECTSHARD_LAUNCH_RECEIPT=str(launch_receipt)), output / "launcher.log",
+                         extraction.manifest["execution_budget"]["launcher_watchdogs"]["workbench"])
+    extraction.processes[output.name + "/launcher"] = process
+    launched = delivery.read(launch_receipt)
+    delivery.require(launched.get("schema") == "objectshard-m4-workbench-package-launch-v1"
+                     and launched.get("source_commit") == extraction.manifest["source_commit"]
+                     and launched.get("failures") == 0 and launched.get("checks", 0) >= 8
+                     and launched.get("rendering_driver") == "opengl3_angle" and launched.get("scene_id") == "tower"
+                     and launched.get("host") == "ordinary-workbench" and launched.get("startup_scene") == "res://feature_launcher.tscn"
+                     and {"--shared-workbench", "--objectshard-m4-workbench", "--object-shard-scene=tower"}
+                     <= set(launched.get("launch_arguments", [])), "Shipped structural launcher failed native tower admission")
+    return {"author_checks": first["checks"], "reopen_checks": second["checks"], "authored_reopen": witness,
+            "launcher_checks": launched["checks"], "launch_receipt_sha256": delivery.sha(launch_receipt)}
 
 
 FEATURES = {"gentek_2048": gentek, "material_audition": material, "actor_compose": actors,
@@ -280,7 +303,7 @@ LANES = {"authoring": ("gentek_2048", "material_audition", "swarm"),
          "worlds": ("actor_compose", "objectshard_m4", "persistent_areas")}
 PHASES = {"gentek_2048": ("author", "reopen"), "material_audition": ("mixed-actors",),
           "actor_compose": ("capacity", "manipulation"), "swarm": ("create", "reopen"),
-          "persistent_areas": ("write", "reopen"), "objectshard_m4": ("author", "reopen")}
+          "persistent_areas": ("write", "reopen"), "objectshard_m4": ("author", "reopen", "launcher")}
 
 
 def bind_features(manifest: dict, request: dict) -> list[str]:
@@ -365,7 +388,8 @@ def join(lanes: dict, receipt: dict, request: dict, persistent_launcher: dict | 
                          "Extracted lane has missing, duplicated or unexpected programmes or processes: " + name)
         for process in processes.values():
             delivery.require(type(process.get("pid")) is int and process["pid"] > 0 and type(process.get("returncode")) is int
-                             and process["returncode"] == 0 and delivery.exact_hash(process.get("log_sha256"), 64),
+                             and process["returncode"] == 0 and process.get("timed_out") is False
+                             and delivery.exact_hash(process.get("log_sha256"), 64),
                              "Extracted qualification has an incomplete process receipt")
         results.update(gate["feature_results"])
     delivery.require(set(results) == set(expected), "Extracted programmes do not cover the admitted feature inventory")

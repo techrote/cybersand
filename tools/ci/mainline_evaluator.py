@@ -35,6 +35,7 @@ RAPIER = "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-wind
 SOURCE_FILES = (
     "tools/ci/mainline_evaluator.py", "tools/ci/test_mainline_evaluator.py",
     "tools/ci/verify_mainline_launchers.ps1", "tools/ci/qualify_native_consolidation_package.py",
+    "tools/ci/test_qualify_native_consolidation_package.py",
     ".github/workflows/mergedown-mainline-windows.yml",
     "tools/fixtures/mergedown-mainline-windows-request.json",
 )
@@ -62,7 +63,7 @@ FEATURE_INPUTS = {
 FEATURE_CONTROLS = {
     "actor_compose": "Open **Configuration… → Actors**, choose **Living Mixed Workshop**, then **Load playground**. Save your current start first. The example starts paused. Select a body to grab, place or rotate it, or pilot an actor and hand control back.",
     "material_audition": "Open **Materials Lab → Current scene**, select a material, change a supported value and click **Apply draft**. **Revert** and **Reset** change the live configuration. Save a named profile to keep the settings.",
-    "objectshard_m4": "Use the ObjectShard controls in the Workbench and its included playtest guide to select a supported structural body and inspect a Cut.",
+    "objectshard_m4": "Launch **Open Structural Workbench.cmd**. The tower opens in **Structures…**. Release a supported structure. Choose **Cut moving** or **Ignite moving** in the mode selector and click its moving material. Choose **Paint** to resume ordinary painting. The playtest guide lists the supported fixtures and domain.",
     "persistent_areas": "Launch **Open Persistent Areas.cmd** for the three-area Current/FreeMass profile. Use **RAM cache…** to inspect resident worlds and choose strict or deferred saving. **Save all areas** waits for durable acknowledgement. The profile uses workbench/userdata/persistent-profile.",
     "swarm": "Pause the World and open **Reciprocal assembly…**. Draw an activation dab, generate a proposal, inspect it and use **Apply** or **Undo**. Save the authored start to preserve the acknowledged result.",
 }
@@ -362,6 +363,30 @@ def verify_archive(archive: Path, manifest_path: Path) -> None:
                     "Delivered archive bytes differ from its tested manifest: " + item.filename)
 
 
+def workbench_launchers(source: str, features: list[str]) -> dict[str, str]:
+    routes = {"Open Workbench.cmd": "--workbench"}
+    if "persistent_areas" in features:
+        routes["Open Persistent Areas.cmd"] = '--persistent-areas --persistent-profile="%~dp0workbench\\userdata\\persistent-profile"'
+    if "objectshard_m4" in features:
+        routes["Open Structural Workbench.cmd"] = "--shared-workbench --objectshard-m4-workbench --object-shard-scene=tower"
+    overrides = ""
+    if "swarm" in features:
+        overrides = "".join(f'set "CYBERSAND_SWARM004_{key}="\n' for key in ("CLI", "SOURCE", "SHA256"))
+    return {name: (
+        f'@echo off\nsetlocal\n{overrides}cd /d "%~dp0workbench"\n'
+        'set "APPDATA=%~dp0workbench\\userdata\\roaming"\nset "LOCALAPPDATA=%~dp0workbench\\userdata\\local"\n'
+        'set "XDG_DATA_HOME=%~dp0workbench\\userdata\\roaming"\n'
+        f'set "CYBERSAND_SOURCE_REVISION={source}"\n'
+        'set "CYBERSAND_PACKAGE_MANIFEST=%~dp0mainline-evaluation-manifest.json"\n'
+        '"%~dp0workbench\\Godot_v4.7-stable_win64_console.exe" --headless --path "%~dp0workbench\\godot" --editor --quit\n'
+        'if errorlevel 1 (\n  if not "%CYBERSAND_EVALUATOR_AUTOMATION%"=="1" if not "%~1"=="--headless" pause\n  exit /b 1\n)\n'
+        f'"%~dp0workbench\\Godot_v4.7-stable_win64_console.exe" --path "%~dp0workbench\\godot" --rendering-method gl_compatibility --rendering-driver opengl3_angle %* -- {arguments}\n'
+        'set "mainline_exit=%errorlevel%"\n'
+        'if not "%mainline_exit%"=="0" if not "%CYBERSAND_EVALUATOR_AUTOMATION%"=="1" if not "%~1"=="--headless" pause\n'
+        'exit /b %mainline_exit%\n'
+    ) for name, arguments in routes.items()}
+
+
 def goblin_launcher() -> str:
     # A cmd.exe intermediate inherits PowerShell7's module paths unchanged.
     # Let stock WindowsPowerShell reconstruct its own standard module search
@@ -437,27 +462,8 @@ def assemble(args) -> None:
                            ("Godot_v4.7-stable_win64_console.exe", goblin["provenance"]["godot_console_sha256"])):
         require(sha(args.output / "workbench" / name) == expected,
                 "Actual accepted-source runtime/engine bytes differ: " + name)
-    launchers = {
-        "Open Workbench.cmd": (
-            '@echo off\nsetlocal\ncd /d "%~dp0workbench"\n'
-            'set "APPDATA=%~dp0workbench\\userdata\\roaming"\nset "LOCALAPPDATA=%~dp0workbench\\userdata\\local"\n'
-            'set "XDG_DATA_HOME=%~dp0workbench\\userdata\\roaming"\n'
-            f'set "CYBERSAND_SOURCE_REVISION={admission["source_commit"]}"\n'
-            '"%~dp0workbench\\Godot_v4.7-stable_win64_console.exe" --headless --path "%~dp0workbench\\godot" --editor --quit\n'
-            'if errorlevel 1 (\n  if not "%CYBERSAND_EVALUATOR_AUTOMATION%"=="1" if not "%~1"=="--headless" pause\n  exit /b 1\n)\n'
-            '"%~dp0workbench\\Godot_v4.7-stable_win64_console.exe" --path "%~dp0workbench\\godot" --rendering-method gl_compatibility --rendering-driver opengl3_angle %* -- --workbench\n'
-            'set "mainline_exit=%errorlevel%"\n'
-            'if not "%mainline_exit%"=="0" if not "%CYBERSAND_EVALUATOR_AUTOMATION%"=="1" if not "%~1"=="--headless" pause\n'
-            'exit /b %mainline_exit%\n'),
-        "Open Goblin.cmd": goblin_launcher(),
-    }
-    if "swarm" in admission["integrated_features"]:
-        for name in ("CYBERSAND_SWARM004_CLI", "CYBERSAND_SWARM004_SOURCE", "CYBERSAND_SWARM004_SHA256"):
-            launchers["Open Workbench.cmd"] = launchers["Open Workbench.cmd"].replace(
-                "setlocal\n", f'setlocal\nset "{name}="\n', 1)
-    if "persistent_areas" in admission["integrated_features"]:
-        launchers["Open Persistent Areas.cmd"] = launchers["Open Workbench.cmd"].replace(
-            " -- --workbench\n", ' -- --persistent-areas --persistent-profile="%~dp0workbench\\userdata\\persistent-profile"\n')
+    launchers = workbench_launchers(admission["source_commit"], admission["integrated_features"])
+    launchers["Open Goblin.cmd"] = goblin_launcher()
     for name, value in launchers.items():
         (args.output / name).write_text(value, encoding="utf-8", newline="\r\n")
     guide = (
@@ -496,20 +502,16 @@ def assemble(args) -> None:
         "## Saves, evidence and acceptance\n\n"
         "Ordinary authored saves stay under `workbench/userdata`. To reopen one, launch Workbench and use its saved-start loading controls "
         "to select the authored layout and settings. "
-        "Keep this whole extracted folder together. Both launchers use one source-matched application, "
-        "Godot, native DLL and Rapier DLL. The existing Goblin source package and verifier remain intact; "
-        "the outer manifest records the added ordinary launcher, source-authored guides and canonical generator profiles.\n\n"
-        "Physical Windows/NVIDIA playfeel acceptance of AMBIENT and Goblin remains outstanding. "
-        "Historical Draft/HOLD language inside the feature guides records that feature gate, not the accepted-main status above. "
-        "Full application correctness is supplied by the accepted source's Ready Native/GDE qualification. "
-        "This package has separate explicit default-OFF, five-example graphics, Goblin gameplay/save-reopen and launcher proof; "
-        "it does not claim a new complete AMBIENT feature campaign. "
-        "This is a review artifact, not a public release.\n\n"
-        f"Native build source: `{runtime['runtime_source_commit']}`. Its original provenance is retained; "
+        "Keep this whole extracted folder together. The launchers share one Workbench, Godot executable, "
+        "native DLL and Rapier DLL. The outer manifest covers the launchers, guides, generator profiles and original Goblin payload.\n\n"
+        "This Windows evaluator is for engineering and owner review. The feature guides retain their original evaluation scopes. "
+        "Physical playfeel and artistic acceptance remain owner decisions.\n\n"
+        f"The native runtime was built from `{runtime['runtime_source_commit']}`. "
         f"The package verifies {admission['native_source_input_count']} native inputs and four Rapier inputs against their published manifests. "
         f"Packaging harness: `{admission['harness_commit']}`. "
-        "`mainline-evaluation-manifest.json` identifies every immutable file. The accompanying delivery receipt "
-        "binds this ZIP to the final extracted Windows and top-level launcher checks.\n"
+        "`mainline-evaluation-manifest.json` identifies every immutable file. The download includes "
+        "`delivery-receipt.json` for the extracted Workbench and Goblin checks and `integrated-feature-receipt.json` "
+        "for the accepted feature tests against this exact ZIP.\n"
     )
     (args.output / "READ-ME.md").write_text(guide, encoding="utf-8")
     write(args.output / "accepted-source-admission.json", admission)
@@ -520,7 +522,9 @@ def assemble(args) -> None:
         "harness_tree": admission["harness_tree"], "accepted_main_observed": admission["accepted_main_observed"],
         "native_runtime": runtime, "goblin_provenance": goblin["provenance"],
         "integrated_features": admission["integrated_features"],
-        "native_rebuilt": False, "owner_playfeel_accepted": False, "public_release": False,
+        "entry": {"rendering_method": "gl_compatibility", "rendering_driver": "opengl3_angle",
+                  "launchers": sorted(launchers)},
+        "native_rebuilt_during_packaging": False, "owner_playfeel_accepted": False, "public_release": False,
         "execution_budget": admission["execution_budget"],
         "experimental_default_enabled": False,
         "qualification": "Explicit extracted-package proof is required; full application qualification remains the accepted-source Ready campaign",
@@ -694,7 +698,7 @@ def finalize(args) -> None:
         "extracted_graphics_sha256": sha(args.graphical / "qualification.json"),
         "goblin_report_sha256": sha(report_path), "owner_playfeel_accepted": False, "public_release": False,
         "goblin_auxiliary_log_readback": auxiliary,
-        "native_rebuilt": False, "native_runtime": manifest["native_runtime"],
+        "native_rebuilt_during_packaging": False, "native_runtime": manifest["native_runtime"],
         "execution_budget": manifest["execution_budget"], "full_ambient_feature_campaign": False,
         "run_id": os.environ.get("GITHUB_RUN_ID"), "run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
     })

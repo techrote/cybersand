@@ -143,6 +143,8 @@ jobs:
         shell: pwsh
         run: |
           python harness/tools/ci/test_mainline_evaluator.py
+          if ($LASTEXITCODE -ne 0) { throw 'Mainline package custody regression failed' }
+          python harness/tools/ci/test_qualify_native_consolidation_package.py
           if ($LASTEXITCODE -ne 0) { throw 'Delivery refusal tests failed' }
           python harness/tools/ci/mainline_evaluator.py read-request --request harness/tools/fixtures/mergedown-mainline-windows-request.json --github-output $env:GITHUB_OUTPUT
           if ($LASTEXITCODE -ne 0) { throw 'Accepted-main source request is not admitted' }
@@ -307,11 +309,14 @@ jobs:
           retention-days: 90
 
   integrated_features:
-    name: Extracted accepted-main native features and final download
+    name: Extracted accepted-main ${{ matrix.lane }} features
     needs: [source_tape, windows]
     runs-on: windows-2022
-    # Setup 4200s, accepted feature processes up to 15580s, archive verification
-    # 900s and evidence retention 600s fit the separate 360-minute job.
+    strategy:
+      fail-fast: false
+      matrix:
+        lane: [authoring, worlds]
+    # Preserve full case watchdogs and independently extract the same archive.
     timeout-minutes: 360
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
@@ -328,31 +333,72 @@ jobs:
         with:
           name: staged-mainline-archive-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/feature-delivery
-      - name: Exercise authored 2048 maps in the extracted application
+      - name: Exercise the integrated features in the extracted application
         shell: pwsh
         run: |
           $delivery = Join-Path $env:RUNNER_TEMP 'feature-delivery'
           $archives = @(Get-ChildItem -LiteralPath $delivery -Filter '*.zip' -File)
           if ($archives.Count -ne 1) { throw 'Expected one exact source archive' }
           $proof = Join-Path $env:RUNNER_TEMP 'feature-proof'
-          python tools/ci/qualify_native_consolidation_package.py --product-root product --archive $archives[0].FullName --delivery-receipt (Join-Path $delivery 'delivery-receipt.json') --request tools/fixtures/mergedown-mainline-windows-request.json --extracted (Join-Path $env:RUNNER_TEMP 'CyberSand extracted native Workbench') --output $proof
+          $extracted = Join-Path $env:RUNNER_TEMP 'CyberSand extracted native Workbench'
+          python tools/ci/qualify_native_consolidation_package.py --lane '${{ matrix.lane }}' --product-root product --archive $archives[0].FullName --delivery-receipt (Join-Path $delivery 'delivery-receipt.json') --request tools/fixtures/mergedown-mainline-windows-request.json --extracted $extracted --output $proof
           if ($LASTEXITCODE -ne 0) { throw 'Extracted feature qualification failed' }
-          Copy-Item -LiteralPath (Join-Path $proof 'qualification.json') -Destination (Join-Path $delivery 'integrated-feature-receipt.json')
+          $features = (Get-Content -Raw tools/fixtures/mergedown-mainline-windows-request.json | ConvertFrom-Json).integrated_features
+          if ('${{ matrix.lane }}' -eq 'worlds' -and 'persistent_areas' -in $features) {
+            & ./tools/ci/verify_mainline_launchers.ps1 -Package $extracted -Output (Join-Path $proof 'persistent-launcher') -PersistentOnly -Archive $archives[0].FullName
+            if ($LASTEXITCODE -ne 0) { throw 'Delivered Persistent Areas launcher failed' }
+          }
       - name: Retain actual graphical and fresh-process evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: extracted-native-feature-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          name: extracted-native-${{ matrix.lane }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             ${{ runner.temp }}/feature-proof/**/*.json
             ${{ runner.temp }}/feature-proof/**/*.png
             ${{ runner.temp }}/feature-proof/**/*.log
+            ${{ runner.temp }}/feature-proof/swarm/*.le16
           if-no-files-found: warn
           retention-days: 90
+  publish:
+    name: Verify both feature receipts and publish the integrated Windows evaluator
+    needs: [source_tape, integrated_features]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: staged-mainline-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: extracted-native-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: lanes
+      - name: Join qualifying receipts to the one tested archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          archive=(delivery/*.zip)
+          test "${#archive[@]}" -eq 1
+          worlds="lanes/extracted-native-worlds-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          authoring="lanes/extracted-native-authoring-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          optional=()
+          if test -f "$worlds/persistent-launcher/persistent-launcher.json"; then
+            optional=(--persistent-launcher "$worlds/persistent-launcher/persistent-launcher.json")
+          fi
+          python tools/ci/qualify_native_consolidation_package.py join \
+            --request tools/fixtures/mergedown-mainline-windows-request.json \
+            --authoring "$authoring/qualification.json" --worlds "$worlds/qualification.json" \
+            --archive "${archive[0]}" --delivery-receipt delivery/delivery-receipt.json \
+            "${optional[@]}" --output delivery/integrated-feature-receipt.json
       - name: Publish qualified integrated Windows evaluator
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: cybersand-accepted-main-windows-${{ needs.source_tape.outputs.source_commit }}
-          path: ${{ runner.temp }}/feature-delivery
+          path: delivery
           if-no-files-found: error
           retention-days: 90
