@@ -174,7 +174,7 @@ class SandboxPublication(unittest.TestCase):
                 elif contract["kind"] == "literal":
                     log += "\n".join(contract["required_lines"]) + "\n"
             log_name = name + ".log"
-            (path.parent / log_name).write_text(log)
+            (path.parent / log_name).write_bytes(log.encode("utf-8"))
             command = [ntpath.join(self.package_root, "Godot_v4.7-stable_win64_console.exe"),
                        "--path", ntpath.join(self.package_root, "godot")] if installed else [
                            "/engine/Godot_v4.7-stable_linux.x86_64" if platform == "linux" else r"D:\engine\Godot_v4.7-stable_win64_console.exe",
