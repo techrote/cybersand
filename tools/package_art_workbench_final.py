@@ -8,14 +8,12 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import json
 import os
 from pathlib import Path
 import shutil
 import subprocess
 import sys
-import tarfile
 import zipfile
 
 import package_explore001_candidate as retained
@@ -103,21 +101,7 @@ def build(args: argparse.Namespace) -> dict:
             raise ValueError("Godot notice mismatch: " + name)
     archive = archive_source(inputs)
     output.mkdir(parents=True)
-    with tarfile.open(fileobj=io.BytesIO(archive)) as source_archive:
-        for entry in source_archive:
-            if not entry.isfile() or entry.name.startswith("godot/.godot/"):
-                continue
-            if "/bin/" in entry.name and entry.name not in (NATIVE, retained.RAPIER):
-                continue
-            data = source_archive.extractfile(entry).read()
-            if data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
-                expected = dict(line.split(" ", 1) for line in data.decode().splitlines())
-                data = (ROOT / entry.name).read_bytes()
-                if len(data) != int(expected["size"]) or hashlib.sha256(data).hexdigest() != expected["oid"].split(":")[1]:
-                    raise ValueError("Changed or unmaterialized LFS input: " + entry.name)
-            target = output / entry.name
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
+    retained.stage_project_archive(archive, None, output, ROOT)
     profiles = retained.stage_generator_profiles(output)
     for engine in (args.engine, console):
         shutil.copyfile(engine, output / engine.name)

@@ -92,7 +92,7 @@ def stage_project_archive(payload, native_candidate, destination, root=ROOT, *, 
                 continue
             stream = archive.extractfile(entry)
             data = stream.read()
-            if entry.name == native.NATIVE:
+            if entry.name == native.NATIVE and native_candidate is not None:
                 data = (native_candidate / Path(native.NATIVE).name).read_bytes()
             elif data.startswith(b"version https://git-lfs.github.com/spec/v1\n"):
                 match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", data)
@@ -102,6 +102,15 @@ def stage_project_archive(payload, native_candidate, destination, root=ROOT, *, 
             target = destination / entry.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
+    binding = destination / "godot/tools/swarm004-runtime.windows.json"
+    cli = destination / "godot/tools/gentek_reciprocal.exe"
+    if (destination / "godot/scripts/workbench_reciprocal_protocol.gd").exists() or binding.exists() or cli.exists():
+        if not binding.is_file() or not cli.is_file():
+            raise ValueError("Missing Windows reciprocal generator or source binding")
+        record = json.loads(binding.read_bytes())
+        if (record.get("platform") != "windows" or record.get("artifact") != cli.relative_to(destination).as_posix()
+                or cli.stat().st_size != record.get("bytes") or native.sha(cli) != record.get("sha256")):
+            raise ValueError("Packaged reciprocal generator differs from its Windows source binding")
 
 
 def main():

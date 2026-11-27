@@ -22,6 +22,8 @@ PROVENANCE = {
     "windows": "godot/addons/cybersand_native/runtime-provenance.json",
 }
 ALLOWED = frozenset(BINARIES.values()) | frozenset(PROVENANCE.values())
+ACTOR_BRANCH = "integration/actor-compose-final-001-20261123"
+SWARM_BRANCH = "integration/swarm004-005-006-unified-20261122"
 POINTER = re.compile(rb"version https://git-lfs.github.com/spec/v1\n"
                      rb"oid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n")
 
@@ -37,6 +39,10 @@ def verify(changed: set[str], staged: dict[str, bytes],
     mandatory = set(PROVENANCE.values())
     if not mandatory <= changed or changed - ALLOWED:
         raise PublicationRejected("Expected both changed provenance paths and no unrelated staged paths")
+    return verify_pair(changed, staged, runtimes, source, source_tree, branch, run_id, attempt)
+
+
+def verify_pair(changed, staged, runtimes, source, source_tree, branch, run_id, attempt):
     if not re.fullmatch(r"[0-9a-f]{40}", source) or not re.fullmatch(r"[0-9a-f]{40}", source_tree):
         raise PublicationRejected("Missing exact qualified source identity")
     results = {}
@@ -85,6 +91,73 @@ def verify(changed: set[str], staged: dict[str, bytes],
 
 def git(*args: str) -> bytes:
     return subprocess.check_output(("git", *args))
+
+
+def reusable_pair() -> bool:
+    """Retain this producer's qualified runtime pair across application-only changes."""
+    from native_candidate_identity import source as native_source
+
+    branch = git("branch", "--show-current").decode().strip()
+    if branch not in (ACTOR_BRANCH, SWARM_BRANCH):
+        return False
+    root = Path.cwd()
+    head, _, inputs = native_source(root)
+    indexed = {name: git("show", "HEAD:" + name) for name in ALLOWED}
+    records = [json.loads(indexed[name]) for name in PROVENANCE.values()]
+    if any(record.get("source_inputs") != inputs for record in records):
+        return False
+    if branch == SWARM_BRANCH and any(not re.fullmatch(r"[0-9a-f]{64}",
+            str(record.get("qualification", {}).get("reciprocal_execution_sha256", ""))) for record in records):
+        return False
+    previous = records[0]["build_commit"]
+    if not re.fullmatch(r"[0-9a-f]{40}", previous):
+        return False
+    publishers = {".github/workflows/workbench-actor-sandbox.yml": b"\n  publish:\n",
+                  "tools/ci/run_workbench_actor_qualification.py": b"\ndef publish_sandbox(args) -> None:\n"}
+    changed = git("diff", "--name-only", previous, head).decode().splitlines()
+    for path in changed:
+        if path in ALLOWED or (path.startswith("docs/") and path.endswith(".md")):
+            continue
+        if path.startswith("godot/") and path.endswith(".gd"):
+            continue
+        if path in ("tools/package_ambient_evaluator.py", "tools/package_ambient_living_evaluator.py",
+                    "tools/package_art_workbench_final.py", "tools/ci/test_swarm_package.py",
+                    ".github/workflows/art-session-logging.yml",
+                    "docs/reference/retrieval-questions-ambient-001.json",
+                    "tools/ci/check_actor_publication_stage.py", "tools/ci/test_actor_publication_stage.py",
+                    "tools/ci/test_workbench_actor_publication.py"):
+            continue
+        if path in publishers:
+            # Protect the native producers and source transport. The current
+            # platform/extraction jobs and same-run evidence reducer still run.
+            old = git("show", previous + ":" + path).partition(publishers[path])
+            now = git("show", head + ":" + path).partition(publishers[path])
+            if old[1] and old[:2] == now[:2]:
+                continue
+        if path == "tools/package_explore001_candidate.py":
+            old = git("show", previous + ":" + path)
+            now = git("show", head + ":" + path)
+            # The evaluator's archive staging does not participate in compilation.
+            start, end = b"\ndef stage_project_archive(", b"\ndef main():"
+            if (start in old and end in old and start in now and end in now
+                    and old.partition(start)[0] == now.partition(start)[0]
+                    and old.partition(end)[2] == now.partition(end)[2]):
+                continue
+        if path == ".github/workflows/gdextension.yml":
+            old = git("show", previous + ":" + path)
+            with_draft_push = f"    branches: [main, codex/wb-art-paint-integrated-20261111, {SWARM_BRANCH}]\n".encode()
+            main_push = b"    branches: [main, codex/wb-art-paint-integrated-20261111]\n"
+            if old.count(with_draft_push) == 1 and old.replace(with_draft_push, main_push) == git("show", head + ":" + path):
+                continue
+        return False
+    runtimes = {name: (root / name).read_bytes() for name in BINARIES.values()}
+    try:
+        verify_pair(set(), indexed, runtimes, previous, git("rev-parse", previous + "^{tree}").decode().strip(),
+                    branch, str(records[0]["workflow_run"]),
+                    str(records[0]["workflow_attempt"]))
+    except (PublicationRejected, KeyError):
+        return False
+    return True
 
 
 def main() -> int:

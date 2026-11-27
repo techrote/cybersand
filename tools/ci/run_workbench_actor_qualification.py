@@ -685,6 +685,10 @@ def publish_sandbox(args) -> None:
     installed, installed_evidence = sandbox_report(args.windows_installed_report, candidates["windows"], installed=True)
     package = sandbox_package(args, candidates["windows"], installed)
     package["qualification"] = installed_evidence
+    if getattr(args, "verify_only", False):
+        print(json.dumps({"verified_source": candidates["windows"]["source_commit"],
+                          "windows_package_sha256": package["sha256"], "retained_pair": True}))
+        return
     prepared = {}
     for platform, manifest in candidates.items():
         previous = json.loads((ROOT / PROVENANCE[platform]).read_text(encoding="utf-8"))
@@ -966,6 +970,8 @@ def main() -> int:
     publication.add_argument("--windows-modules-report", type=Path)
     sandbox_publication = commands.add_parser("publish-sandbox",
         help="Stage only fully qualified WB-ACTOR-COMPOSE-002R runtimes on its dedicated Draft/HOLD branch")
+    sandbox_publication.add_argument("--verify-only", action="store_true",
+                                     help="Verify all same-run evidence without replacing the retained runtime pair")
     for name in ("linux", "windows", "linux-report", "windows-report", "windows-installed-report",
                  "windows-modules-report", "windows-extraction-report", "windows-package"):
         sandbox_publication.add_argument("--" + name, type=Path, required=True)

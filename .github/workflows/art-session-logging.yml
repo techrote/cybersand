@@ -284,7 +284,7 @@ jobs:
         shell: pwsh
         run: |
           git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           if ($LASTEXITCODE -ne 0) { throw 'LFS materialization failed' }
       - name: Authenticate official Godot 4.7
         shell: pwsh
@@ -431,7 +431,7 @@ jobs:
         working-directory: packaging-source
         run: |
           git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           if ($LASTEXITCODE -ne 0) { throw 'Fresh packaging LFS materialization failed' }
           $evidenceRoot = Join-Path $env:GITHUB_WORKSPACE 'evidence'
           New-Item -ItemType Directory -Force $evidenceRoot | Out-Null

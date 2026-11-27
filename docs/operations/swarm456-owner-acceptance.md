@@ -2,21 +2,31 @@
 title: Unified Swarm Windows owner acceptance
 status: Current
 document-kind: guide
-scope: Launch and physical Windows NVIDIA acceptance of the exact consolidated SWARM-004/005/006 evaluator
+scope: Ordinary Workbench access, historical standalone launch and physical Windows NVIDIA evaluation of SWARM-004/005/006
 canonical-for: [swarm456-windows-launch, swarm456-physical-acceptance]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 related-documents: [swarm456-unified-mainline.md, swarm006-workbench-playtest.md]
 ---
 
 # Unified Swarm Windows owner acceptance
 
-**Draft / HOLD.** This is the combined SWARM-004/005/006 evaluator from
-[PR #729](https://github.com/techrote/cybersand/pull/729). Use the exact archive and
-SHA-256 published with that candidate. Hosted Linux/Windows qualification is
-separate from your physical Windows 11 / NVIDIA acceptance. No automatic merge
-or change of the three experimental defaults is authorized.
+## Integrated Windows Workbench
 
-## Launch
+Extract the complete integrated evaluator ZIP and use its ordinary Workbench
+launcher. Pause the World and open **Reciprocal assembly…**. The three
+experimental controls start OFF. To evaluate an existing map, follow
+[Saved maps](#saved-maps) before drawing an activation dab. For repeatable
+comparisons, use the settings below. The integrated source includes native
+admission checks, shared authoring interlocks and a fresh-process Save/Reopen
+exercise. Physical Windows 11 / NVIDIA evaluation remains owner-scoped.
+[Integrated source](https://github.com/techrote/cybersand/commit/466d34506feb62132d5b1badd4a0f9ab4fbb6886)
+and [source-matched qualification](https://github.com/techrote/cybersand/actions/runs/45923903582).
+
+## Historical standalone evaluator
+
+The original feature-specific evaluator from [PR #729](https://github.com/techrote/cybersand/pull/729)
+was delivered as Draft/HOLD for physical owner review. To reproduce that
+historical delivery, use its exact archive and published SHA-256.
 
 Keep the inner `CyberSand-SWARM456-Draft-HOLD-Windows-<source>.zip`, its `.sha256`
 sidecar and `CyberSand-SWARM456-Windows-Owner-Acceptance.ps1` together. The source
@@ -31,6 +41,8 @@ archive, extracts into a fresh folder, validates its file/runtime manifest and
 opens ordinary Shared Workbench. `-VerifyOnly` performs the same checks without
 launching. After verification, use **Open Workbench.cmd** inside that folder.
 The bundled engine is Godot 4.7. Developer environment overrides are unnecessary.
+
+## Saved maps
 
 The normal Windows saved-map folder is
 `%APPDATA%\Godot\app_userdata\Cyber Sand Reference Sandbox\workbench`.
@@ -107,8 +119,9 @@ Undo/history checks first, then use **Flatten / Bake History…** and save under
 another name. Flatten adopts a new baseline and clears earlier Undo/Redo history.
 
 First report whether the result is **useful, visually convincing and responsive**,
-with **PASS** or **FAIL**, the full source SHA from `candidate-manifest.json` and
-the archive SHA-256. On failure, reproduction steps, expression/seed/crop/options,
+with **PASS** or **FAIL**, the full source SHA from the package manifest and the
+archive SHA-256. The historical standalone uses `candidate-manifest.json`.
+On failure, reproduction steps, expression/seed/crop/options,
 Windows/GPU/driver details and whether recovery OFF also fails help diagnosis.
 Screenshots and locally collected logs are optional; inspect them before sharing.
 Private authored maps are not required and must remain local unless you explicitly
