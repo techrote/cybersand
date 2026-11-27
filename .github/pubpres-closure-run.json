@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "full",
-  "purpose": "Qualify resulting Linux and Windows native/application, stock and bounded atomic Water paths, then actual pristine extracted playable evaluator; experimental HOLD",
+  "phase": "runtimes",
+  "purpose": "Build and verify consolidated N and integrated C native input and dependency hashes on Linux and Windows before application qualification",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
-  "current_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "4d1b96f9ac0094b3a02bda20965ba5ce6c37159b3c854229064541280cf7bb71",
+  "payload_sha256": "427a1fb11fd987292190c648d7252e20a4d1deb38e4bac2d76a7e2532299caa7",
   "physical_acceptance": "HOLD"
 }
