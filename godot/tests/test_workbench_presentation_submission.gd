@@ -20,6 +20,8 @@ var post_draw_count: int = 0
 var refusal_framebuffers: Array[Dictionary] = []
 var fallback_ui: Array[Dictionary] = []
 var unsubmitted_material_picking: Dictionary = {}
+var held_limb_placement: Dictionary = {}
+var stock_limb_only := false
 
 
 func _initialize() -> void:
@@ -37,6 +39,8 @@ func _initialize() -> void:
 	OS.set_environment("CYBERSAND_DIAG_FLYER_POSE","")
 	for arg: String in OS.get_cmdline_user_args():
 		if arg.begins_with("--submission-evidence="): output = arg.trim_prefix("--submission-evidence=")
+		if arg == "--stock-held-limb-placement": stock_limb_only = true
+	if stock_limb_only: OS.set_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION","0")
 	RenderingServer.frame_pre_draw.connect(func() -> void: pre_draw_count += 1)
 	RenderingServer.frame_post_draw.connect(func() -> void: post_draw_count += 1)
 	_run.call_deferred()
@@ -677,6 +681,112 @@ func _retired_physical_owner_ui() -> void:
 	_record("physical_owner_restart")
 
 
+# The displayed right foot is deliberately older than the live paused assembly.
+# This moves real Rapier RIDs as an isolated fixture stimulus. It never inserts a
+# synthetic accepted pose or grants the move native or physical completion credit.
+func _held_limb_placement() -> void:
+	var recipe: Dictionary = Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
+	recipe.actors = [Setup.instance("runner",12,Vector2(240,160))]
+	recipe.next_id = 13
+	recipe.selected = 12
+	var old_epoch: int = host._physical_epoch
+	if not check(ui.apply(recipe),"ordinary paused six-member Runner requested for Place"): return
+	if not check(await until(func() -> bool: return host._physical_epoch > old_epoch and host._physical_terrain_ready \
+			and host.pending_microscenario_apply.is_empty() and host.workbench_presentation_frame.get("poses",{}).size() == 6),
+			"six genuine Runner members mounted before pointer placement"): return
+	ui._camera.select(0)
+	ui._set_view(Vector2(120,92),Vector2i(240,135))
+	await process_frame
+	_freeze_normal_processing()
+	await process_frame
+	await _settle_render_notifications()
+	var receipt: Dictionary = host.workbench_presentation_frame
+	var session = host.physical_actor_session
+	var bridge: Variant = session.bridge
+	var source_epoch: int = host._physical_epoch
+	var limb := 4 # Catalogue right foot is a real 4x2 part.
+	var contact := Vector2(1.125,0.25)
+	var accepted: Transform2D = receipt.poses[limb]
+	var start: Vector2 = accepted * contact
+	var finish := start+Vector2(17.25,-6.75)
+	var pivot: Vector2 = receipt.poses[0].origin
+	var turn := Transform2D(0.47,pivot+Vector2(12,-8)) * Transform2D(0.0,-pivot)
+	var before_step: int = session.tick
+	var pixels := _pixels_sha256(root.get_texture().get_image())
+	for rid: RID in bridge._body_rids:
+		var old: Transform2D = PhysicsServer2D.body_get_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM)
+		PhysicsServer2D.body_set_state(rid,PhysicsServer2D.BODY_STATE_TRANSFORM,turn*old)
+	var newer: Transform2D = PhysicsServer2D.body_get_state(bridge._body_rids[limb],PhysicsServer2D.BODY_STATE_TRANSFORM)
+	if not check((newer*contact).distance_to(start)>5.0 and absf(wrapf(newer.get_rotation()-accepted.get_rotation(),-PI,PI))>0.4 \
+			and host.workbench_presentation_frame==receipt and session.tick==before_step \
+			and pixels==_pixels_sha256(root.get_texture().get_image()),"live rotated right foot diverges from the actual unchanged displayed contact"): return
+
+	var to_local: Transform2D = host._world_view_screen_transform().affine_inverse()*receipt.camera_mapping
+	var global_finish: Vector2 = host.world_view.get_global_transform_with_canvas()*(to_local*finish)
+	var down := InputEventMouseButton.new()
+	down.button_index = MOUSE_BUTTON_LEFT
+	down.pressed = true
+	down.position = to_local*start
+	var up := InputEventMouseButton.new()
+	up.button_index = MOUSE_BUTTON_LEFT
+	up.position = global_finish
+	ui.actor_interaction.set_mode("place")
+	if not check(not ui.actor_interaction.settings.snap_enabled and ui.presented_part_at(start).get("part_index",-1)==limb,
+			"unsnapped pointer inside the shown right foot resolves the exact member"): return
+	ui._world_input(down)
+	var placed: Dictionary = ui.actor_interaction.placement
+	var initial_contact := _part_contact(placed,limb,contact)
+	if not check(placed.get("valid",false) and initial_contact.distance_to(start)<0.001,
+			"initial preview puts the acquired foot-local contact under the displayed pointer"): return
+	# Inject exactly one member-generation mismatch between press and release.
+	# No source, pose or owner replacement may be staged by that release.
+	var identity: Dictionary = bridge._members[limb]
+	var changed: Dictionary = identity.duplicate()
+	changed.generation = int(changed.generation)+1
+	bridge._members[limb] = changed
+	ui._input(up)
+	bridge._members[limb] = identity
+	if not check(ui.actor_interaction.placement.is_empty() and host.pending_microscenario_apply.is_empty() \
+			and host.physical_actor_session==session and int(ui.applied.selected)==12,
+			"release after member generation changes refuses the staged mutation"): return
+
+	ui._world_input(down)
+	var drag := InputEventMouseMotion.new()
+	drag.position = global_finish
+	ui._input(drag)
+	placed = ui.actor_interaction.placement
+	var dragged_contact := _part_contact(placed,limb,contact)
+	if not check(placed.get("valid",false) and dragged_contact.distance_to(finish)<0.001,
+			"ordinary drag preserves the rotated live limb's acquired contact at the unsnapped destination"): return
+	ui._input(up)
+	if not check(not host.pending_microscenario_apply.is_empty() and session.tick==before_step,
+			"ordinary release stages one owner transaction without manufacturing a physical step"): return
+	host.set_process(true)
+	host.set_physics_process(true)
+	if not check(await until(func() -> bool: return host.physical_actor_session!=null and host._physical_epoch>source_epoch \
+			and host.pending_microscenario_apply.is_empty() and host._physical_terrain_ready),
+			"placement release installs a new ready paused owner"): return
+	var actual: Dictionary = host.physical_actor_session.capture_workbench_assembly(12)
+	var live_contact := _part_contact(actual,limb,contact)
+	check(live_contact.distance_to(finish)<0.002 and absf(wrapf(float(actual.parts[limb].rotation)-newer.get_rotation(),-PI,PI))<0.001,
+		"installed rotated Runner foot retains its articulation and exact unsnapped release anchor")
+	var newer_contact: Vector2 = newer*contact
+	held_limb_placement = {"part_index":limb,"local_contact":[contact.x,contact.y],
+		"accepted_contact":[start.x,start.y],"live_contact_before_press":[newer_contact.x,newer_contact.y],
+		"preview_contact":[initial_contact.x,initial_contact.y],"dragged_contact":[dragged_contact.x,dragged_contact.y],
+		"release_target":[finish.x,finish.y],"installed_contact":[live_contact.x,live_contact.y],
+		"limb_rotations":[accepted.get_rotation(),newer.get_rotation(),actual.parts[limb].rotation],
+		"epochs":[source_epoch,host._physical_epoch],"submitted_serial":receipt.get("submission_serial",-1),
+		"unchanged_framebuffer_sha256":pixels,"generation_refusal":true,
+		"stimulus":"rigid real RID pose change while paused, no process/physics advancement"}
+
+
+func _part_contact(assembly: Dictionary, limb: int, contact: Vector2) -> Vector2:
+	var parts: Array = assembly.get("parts",[])
+	if parts.size()<=limb: return Vector2.INF
+	return Transform2D(float(parts[limb].rotation),parts[limb].position)*contact
+
+
 func _ordinary_lifecycle() -> void:
 	host.set_process(true)
 	host.set_physics_process(true)
@@ -706,10 +816,21 @@ func _ordinary_lifecycle() -> void:
 
 func _run() -> void:
 	if not output.is_empty(): DirAccess.make_dir_recursive_absolute(output.get_base_dir())
-	if not check(Transaction.atomic_admission_supported(),"actual engine-owned atomic admission required"):
+	if not stock_limb_only and not check(Transaction.atomic_admission_supported(),"actual engine-owned atomic admission required"):
 		_finish()
 		return
 	if not check(DisplayServer.get_name() != "headless","graphical execution required for actual-submission qualification"):
+		_finish()
+		return
+	if stock_limb_only:
+		set_meta("cybersand_feature","shared_workbench")
+		host = load("res://main.tscn").instantiate()
+		root.add_child(host)
+		root.size = Vector2i(1280,800)
+		ui = host.shared_workbench
+		if check(await until(func() -> bool: return ui != null and not ui.applied.is_empty()),
+				"ordinary Workbench initializes without atomic submission"):
+			await _held_limb_placement()
 		_finish()
 		return
 	await _source_identity_fallback()
@@ -725,6 +846,7 @@ func _run() -> void:
 		await _uploaded_material_pointer_case()
 		await _ordinary_lifecycle()
 		await _retired_physical_owner_ui()
+		await _held_limb_placement()
 		var owner: int = host.get_instance_id()
 		host._workbench_submission.close()
 		check(not RenderingServer.frame_pre_draw.is_connected(host._commit_workbench_presentation_submission),
@@ -736,7 +858,7 @@ func _run() -> void:
 
 
 func _finish() -> void:
-	var result: Dictionary = {"schema":"workbench-actual-submission-graphical-v1","checks":checks,
+	var result: Dictionary = {"schema":"workbench-stock-held-limb-placement-v1" if stock_limb_only else "workbench-actual-submission-graphical-v1","checks":checks,
 		"failures":failures,"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"engine":Engine.get_version_info(),"display":DisplayServer.get_name(),"platform":OS.get_name(),
 		"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),"process_id":OS.get_process_id(),
@@ -746,9 +868,11 @@ func _finish() -> void:
 		"engine_atomic_admission":Transaction.atomic_admission_supported(),
 		"refusal_framebuffers":refusal_framebuffers,
 		"fallback_ui":fallback_ui,
-		"unsubmitted_material_picking":unsubmitted_material_picking,
-		"input_hashes":{},"scope":"native mounted graphical draw admission; first framebuffer read; no GPU completion or physical NVIDIA acceptance"}
+		"unsubmitted_material_picking":unsubmitted_material_picking,"held_limb_placement":held_limb_placement,
+		"input_hashes":{},"scope":"stock graphical paused multipart placement" if stock_limb_only else "native mounted graphical draw admission; first framebuffer read; no GPU completion or physical NVIDIA acceptance"}
 	for path: String in ["res://scripts/main.gd","res://scripts/shared_workbench.gd","res://scripts/workbench_presentation_submission.gd",
+			"res://scripts/physical_actor_session.gd","res://scripts/physical_actor_rig.gd",
+			"res://scripts/workbench_actor_interaction.gd","res://scripts/workbench_actor_manipulator.gd",
 			"res://tests/test_workbench_presentation_submission.gd"]:
 		result.input_hashes[path] = FileAccess.get_sha256(path)
 	if not output.is_empty():
