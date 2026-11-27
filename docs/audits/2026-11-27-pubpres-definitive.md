@@ -58,3 +58,48 @@ Linux software-display runs used restricted CPU affinity and establish
 functional controls. The [Water receipt](2026-11-27-pubpres-water-visibility.json)
 separately records moving limbs, exact framebuffer comparisons, deadline refusals
 and the rejected row-classification experiment.
+
+
+Goblin's mounted runner passed 447 mixed actor and human-handback checks, 149
+native Sand/Wood construction checks and 67 verified-storage checks. The
+original capacity assertion counted Actor Compose's eight-actor default as its
+maximum. Correcting that fixture preserved the installed actors, eight Rapier
+bodies and native World through pilot, drive, handback and Save. Fresh reopen
+restored the authored digest in a new owner at tick zero. [Exact mounted
+commands and source delta](2026-11-27-pubpres-goblin-mounted.json)
+
+## Matched execution before the final input repair
+
+The table compares completed physical steps on integrated application
+`2ac2c020` and main `7a15691a`. Each range spans the two matching arms in
+N/C/C/N order. The first 144 completed trajectories and admitted inputs match
+in each comparison. Final input, save and resulting-package gates are separate.
+
+| Hosted adapter and treatment | World | Main steps/s | PUBPRES steps/s | PUBPRES p95 gap (ms) | PUBPRES maximum gap (ms) |
+| --- | --- | ---: | ---: | ---: | ---: |
+| Linux llvmpipe, Stock Water off | Wave512 | 12.04–12.10 | 12.62–12.69 | 82.35–82.46 | 84.42–84.72 |
+| Linux llvmpipe, Stock Water off | Wave2048 | 5.17–5.31 | 6.86–7.05 | 221.72–221.89 | 226.19–227.01 |
+| Linux llvmpipe, Stock Water on | Wave512 | 11.64–11.91 | 12.22–12.26 | 84.25–84.68 | 87.39–87.69 |
+| Linux llvmpipe, Stock Water on | Wave2048 | 4.85–4.89 | 6.23 | 233.03–233.26 | 238.63–239.04 |
+| Windows ANGLE Basic, Stock Water off | Wave512 | 10.81–10.86 | 11.70–11.92 | 256.50–263.74 | 263.52–279.83 |
+| Windows ANGLE Basic, Stock Water off | Wave2048 | 2.36–2.38 | 3.42–3.58 | 404.52–495.11 | 600.68–871.84 |
+
+All six rows pass the pre-registered relative direction.
+The Windows cases miss the absolute p95 and maximum targets. Different hosts
+ran the two Linux treatments. [Linux Water off](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15212292477)
+· [Linux Water on](https://github.com/techrote/cybersand/actions/runs/46025029508/artifacts/15213265135)
+· [Windows Water off](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15212507592)
+
+Four separate Windows Stock Water-on sessions each ran five minutes with 79
+accepted actions. Wave512, Wave1024, Wave2048 and Mixed2048 completed 5,087,
+4,635, 4,508 and 3,584 physical steps. Final-minute observed consecutive-step
+p95 gaps were 115, 128, 129 and 130 ms, with maxima 124, 196, 146 and 198 ms.
+The enclosing multi-step intervals exclude gaps above 500 ms across covered
+late intervals, and above 250 ms for Wave512. For the other worlds, 14, 30
+and 35 late intervals respectively could conceal a gap above 250 ms. The
+longest mixed late gap overlapped a 220 ms SceneTree interval. The next paint
+and camera actions followed the gap. The medium case's 196 ms gap overlapped
+a 204 ms SceneTree interval without an action within one second. Each case
+retained two sampled texture RIDs, had zero pending hard-terrain chunks at
+sampling, and exited cleanly. Peak process RSS ranged from 772 to 961 MiB.
+[Session receipts, clocks and process data](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15213445404)
