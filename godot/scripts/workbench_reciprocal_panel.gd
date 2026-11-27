@@ -414,6 +414,8 @@ func generate() -> bool:
 
 func _request_capture(action: String) -> bool:
 	if bench.applied.is_empty() or not bench.host.paused: return _say("Pause the native World before generating or undoing construction.")
+	var reason: String = bench.authored_world_change_block_reason()
+	if not reason.is_empty(): return _say(reason)
 	var state: Dictionary=bench.host.simulation_worker.paint_state()
 	for key: String in ["busy","art_busy","legacy_busy","transition_busy","flatten_busy"]:
 		if state.get(key,false): return _say("Wait for all native edits and acknowledgements.")
@@ -611,6 +613,8 @@ func _patch(operation: String, cells: PackedInt32Array, before: PackedInt32Array
 
 func _submit(candidate: Dictionary, patch: Dictionary, action: String) -> bool:
 	if _read_only_evidence(): return _say("Saved evidence cannot submit a native transaction; Generate first.")
+	var reason: String = bench.authored_world_change_block_reason()
+	if not reason.is_empty(): return _say(reason)
 	# Controller cleanup must not clear a caller-owned staged history/patch.
 	_pending_setup=candidate.duplicate(true);_pending_patch=patch.duplicate(true);_pending_action=action;phase="submitting"
 	if not bench.apply(candidate,true,0,false,false,{},{},false,{},patch):
