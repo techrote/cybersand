@@ -5,7 +5,7 @@ extends "res://tests/pubpres_playability_owner_start.gd"
 class FocusHost extends "res://scripts/main.gd":
 	func _actor_window_has_focus() -> bool: return true
 
-const MEASURE_USEC := 20000000
+const COMPARISON_SECONDS := 20
 var underway := false
 var samples: Array[Dictionary] = []
 
@@ -152,9 +152,23 @@ func _exercise() -> void:
 	var moved_draws := 0
 	var source_counts := {}
 	var reasons := {}
-	while Time.get_ticks_usec()-began < MEASURE_USEC:
+	var seconds := COMPARISON_SECONDS
+	if OS.get_environment("CYBERSAND_FLIGHT_SECONDS").is_valid_int():
+		seconds = clampi(int(OS.get_environment("CYBERSAND_FLIGHT_SECONDS")),20,300)
+	var patrol := seconds > COMPARISON_SECONDS
+	var held := {}
+	while Time.get_ticks_usec()-began < seconds * 1000000:
 		var next_phase := int((Time.get_ticks_usec()-began)/2500000)%4
-		if next_phase != phase:
+		if patrol:
+			# Fly a repeating course above the authored platform. Use only
+			# ordinary keyboard edges; never set a pose or velocity.
+			var goal := start.origin + Vector2(32.0 if next_phase < 2 else -32.0, -24.0 if next_phase % 2 == 0 else -44.0)
+			var lead: Vector2 = prior.origin + session.bridge.body_linear_velocity(slot) * 0.20
+			var keys := {KEY_D:lead.x < goal.x-2, KEY_A:lead.x > goal.x+2,KEY_W:lead.y > goal.y,KEY_S:lead.y < goal.y-6}
+			for code: Key in keys:
+				if held.get(code,false) != keys[code]: _key(code,keys[code])
+			held = keys
+		elif next_phase != phase:
 			phase = next_phase
 			_key(KEY_D,phase == 0)
 			_key(KEY_W,phase == 1 or phase == 3)
@@ -188,13 +202,16 @@ func _exercise() -> void:
 		prior = pose
 	var elapsed := Time.get_ticks_usec()-began
 	var steps: int = session.tick-tick0
-	for code: Key in [KEY_A,KEY_D,KEY_W]: _key(code,false)
+	for code: Key in [KEY_A,KEY_D,KEY_W,KEY_S]: _key(code,false)
 	ui.toggle_pause()
 	var report := {"scene":scene_name,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"elapsed_usec":elapsed,"physical_steps":steps,"flight_seconds_per_wall_second":steps/60.0/(elapsed/1000000.0),
 		"travel_cells":travel,"moved_draws":moved_draws,"sampled_draws":samples.size(),"hidden_draws":hidden,
 		"conservatively_dry_hidden":dry_hidden,"invalid_frames":invalid_frames,"sources":source_counts,"reasons":reasons,
-		"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
+		"native_tick":app.latest_snapshot.tick_index,"timed_start_usec":began,
+		"held_callbacks_serviced":app.get("_serviced_flight_callbacks"),
+		"coupling_only_completions":app.simulation_worker.take_latest_physics_snapshot().lab_context.get("coupling_only_completions",0),
+		"patrol":patrol,"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
 	print("WORKBENCH_FLIGHT_VISIBILITY ",JSON.stringify(report))
 	report["samples"] = samples
 	var out := FileAccess.open(receipt_path.get_base_dir().path_join("flight.json"),FileAccess.WRITE)
