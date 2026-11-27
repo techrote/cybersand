@@ -47,6 +47,7 @@ var _sample_serial: int = 0
 var deterministic_rotation_packing: bool = false
 var _last_result_snapshot_serial: int = -1
 var _manual_step_count: int = 0
+var _manual_step_seconds: float = 0.0
 var _last_active_body_count: int = 0
 var _last_step_time_ms: float = 0.0
 var _last_flush_time_ms: float = 0.0
@@ -711,6 +712,7 @@ func step_interval(interval: float) -> void:
 	ClassDB.class_call_static(EXPECTED_SERVER_CLASS, &"space_step", _space, interval)
 	_last_step_time_ms = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
 	_manual_step_count += 1
+	_manual_step_seconds += interval
 
 	# Rapier exposes an active-body batch path, avoiding stale scene-node caches
 	# and preparing the bridge for a larger dynamic-body count.
@@ -890,6 +892,10 @@ func body_transform(body_index: int) -> Transform2D:
 
 func manual_step_count() -> int:
 	return _manual_step_count
+
+
+func manual_step_seconds() -> float:
+	return _manual_step_seconds
 
 
 func last_active_body_count() -> int:

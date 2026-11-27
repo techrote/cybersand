@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Opt-in ObjectShard M4 candidate controls, authored-save scope and physical Windows evaluation
 canonical-for: [objectshard-m4-workbench-playtest]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-27
 related-documents: [objectshard-m3-preflight-playtest.md, ../research/objectshard-001.md, ../audits/2026-11-24-objectshard-m4-source-recovery.md]
 ---
 
@@ -64,6 +64,17 @@ to 512 or 1,024, create the **New blank** canvas, then choose **Enable on curren
 canvas**. The ordinary 2,048-cell default exceeds this candidate's supported
 extent and is visibly refused. Loading any of the five demonstration starts
 sets up a supported canvas directly.
+
+In the consolidated candidate, ground actors and their equipment can share
+the structural Rapier space. A 4LY flight actor requires one fixed Rapier
+step per actor tick. Structures subdivides that interval for material
+collisions, so **Enable on current canvas** refuses a roster containing a
+4LY aircraft. Placing or replacing a ground actor with a 4LY aircraft also
+refuses while Structures is enabled. The current scene remains usable in
+both cases. Load a complete authored flight start to leave Structures, or
+choose a demonstration in **Structures…** to replace the flight scene.
+Ground AMBIENT actors measure the actual completed Rapier duration across
+substeps. Paused intervals do not advance their policy clock.
 
 From a qualified source checkout, the equivalent explicit entry is:
 

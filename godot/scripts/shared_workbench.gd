@@ -1017,6 +1017,8 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if preserve and object_shard_m4_port.enabled and uses_fixed_step_flight(candidate):
+		return refuse("4LY flight requires its single-step Rapier space. Load a complete flight start to leave Structures.")
 	if candidate.has("ambient_authoring"):
 		candidate = candidate.duplicate()
 		candidate["ambient_authoring"] = AmbientAuthoring.canonicalize(candidate.ambient_authoring)
@@ -1183,6 +1185,14 @@ func installed(candidate: Dictionary) -> void:
 	_pending_material_baseline.clear()
 	_pending_retain_generated = false
 	applied = candidate.duplicate(true)
+	if object_shard_m4_port.enabled and uses_fixed_step_flight(applied):
+		# Main already retired the old structural journal on this accepted
+		# replacement. Keep the new flight owner on its ordinary clock.
+		object_shard_m4_port.enabled = false
+		host.object_shard_m4_runtime.shutdown()
+		if _tool.selected in MOVING_TOOLS: _tool.select(0)
+		while _tool.item_count > TOOL_NAMES.size(): _tool.remove_item(_tool.item_count-1)
+		_update_object_shard_tool_controls()
 	var desired_pilot := _pending_pilot_id if _pending_pilot_id >= 0 else _pilot_instance_id
 	_pending_pilot_id = -1
 	_pilot_instance_id = 0
@@ -1285,6 +1295,7 @@ func installed(candidate: Dictionary) -> void:
 	if not _pending_object_shard_scene.is_empty():
 		_object_shard_scene = _pending_object_shard_scene
 		_pending_object_shard_scene = ""
+		enable_object_shard()
 		_name.text = "structures-"+_object_shard_scene
 		_set_view(Vector2(16,208),Vector2i(480,304))
 		message = str(ObjectShardScenes.manifest(_object_shard_scene).instructions)
@@ -1893,9 +1904,16 @@ func _input(event: InputEvent) -> void:
 	else: return
 	get_viewport().set_input_as_handled()
 
+func uses_fixed_step_flight(setup_document: Dictionary) -> bool:
+	for definition: Dictionary in setup_document.get("actors",[]):
+		if StringName(str(definition.model)) in ActorCatalog.Flight.IDS: return true
+	return false
+
 func enable_object_shard() -> bool:
 	if host == null or not host.has_method("object_shard_m4_latency_report"): return false
 	if host.has_method(&"persistent_operation_allowed"): return refuse("Persistent Areas cannot retain a structural body owner.")
+	if uses_fixed_step_flight(applied):
+		return refuse("Structures cannot subdivide a 4LY flight actor's Rapier interval. Load a structures scene or remove the flight actor first.")
 	if not busy() and not applied.is_empty():
 		var extent: Vector2i = Setup.extent_of(applied)
 		if extent.x > 1024 or extent.y > 1024:
@@ -1919,7 +1937,6 @@ func load_object_shard_scene(scene_id: String) -> bool:
 	if candidate.is_empty(): return refuse("Unknown structures scene.")
 	if not apply(candidate): return false
 	_pending_object_shard_scene = scene_id
-	enable_object_shard()
 	message = "Preparing ordinary Workbench structures scene…"
 	return true
 
@@ -2260,6 +2277,7 @@ func _process(_delta: float) -> void:
 		_pending_retain_generated = false
 		_pending_water_comparison = ""
 		_pending_staged_liquid_selection.clear()
+		_pending_object_shard_scene = ""
 		_pending_material_demo = ""
 		_pending_pilot_id = -1
 		_pending_actor_workshop = false

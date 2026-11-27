@@ -300,6 +300,15 @@ continues to produce its compact operational report.
 
 ## Ordinary authoring and lifecycle
 
+The consolidated structural owner supports ground actor assemblies, equipped
+mounts and active AMBIENT ground policies. Each captured material interval
+contributes its actual shared Rapier duration to the ground-actor clock.
+Completing a pending interval after Pause refreshes the equipped mounts'
+committed transforms without advancing the suspended actors. The 4LY flight
+controller requires exactly one Rapier step per tick and refuses a retained
+composition with structural substeps. A complete flight start replaces the
+structural owner and restores the ordinary flight step.
+
 The ordinary Workbench exposes an explicit **Structures…** panel. Its five
 starts are native material recipes: a multi-storey tower, three-span viaduct,
 timber workshop, mixed structure with Sand/Water/Fire and eight-body collapse.
