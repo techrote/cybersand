@@ -87,7 +87,7 @@ func _render(current: Image, previous: Image, time: float, blend: float = 1.0,
 
 
 func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
-		camera: Vector2i = Vector2i.ZERO) -> Image:
+		camera: Vector2i = Vector2i.ZERO, simple_materials: bool = false) -> Image:
 	var viewport: SubViewport = SubViewport.new()
 	viewport.size = output
 	viewport.use_hdr_2d = true
@@ -96,6 +96,7 @@ func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
 	root.add_child(viewport)
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = emission_shader
+	material.set_shader_parameter("ambient_sources_absent",simple_materials)
 	material.set_shader_parameter("world_texture", ImageTexture.create_from_image(world))
 	material.set_shader_parameter("material_program_lut", program_lut)
 	material.set_shader_parameter("world_size_px", Vector2(world.get_size()))
@@ -113,6 +114,34 @@ func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
 	viewport.queue_free()
 	await process_frame
 	return result
+
+
+# The emission pass must retain authored light even if the entire actual
+# material image belongs to the four IDs whose other ambient effects are absent.
+func _check_simple_material_emission() -> void:
+	var world := _blank()
+	var ids: Array[int] = [0,2,3,58]
+	for i in ids.size():
+		_block(world,Rect2i(i*12,0,12,SIDE.y),ids[i],180)
+	var ordinary := await _render_emission(world,3.0)
+	var certified := await _render_emission(world,3.0,SIDE,Vector2i.ZERO,true)
+	_expect(ordinary.get_data() == certified.get_data(),
+		"certified normal four-material emission differs in the raw render target")
+	var original_program := program_lut
+	for i in ids.size():
+		var program := original_program.get_image()
+		var id := ids[i]
+		program.set_pixel(1,id,Color(0,1,0,0))
+		program.set_pixel(2,id,Color(1,1,0.75 if i % 2 == 0 else 0.0,0.0 if i % 2 == 0 else 0.75))
+		program.set_pixel(3,id,Color(1.0,0.7,0.2,0.0))
+		program_lut = ImageTexture.create_from_image(program)
+		ordinary = await _render_emission(world,3.0)
+		certified = await _render_emission(world,3.0,SIDE,Vector2i.ZERO,true)
+		_expect(_mean_luma(ordinary,Rect2i(i*12+4,4,4,4)) > 0.005,
+			"custom material %d actually emits in the ordinary source" % id)
+		_expect(ordinary.get_data() == certified.get_data(),
+			"certified draw changed the custom material %d emission" % id)
+	program_lut = original_program
 
 
 func _difference(a: Image, b: Image, rect: Rect2i, offset: Vector2i = Vector2i.ZERO) -> float:
@@ -387,6 +416,7 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 
 	await _check_vapour_trail_feedback()
 	await _check_single_cell_emission()
+	await _check_simple_material_emission()
 	await _check_catalogue_rendering()
 
 	# Colour intent: Toxic Sludge is darker than Acid; Steam is near-white.
