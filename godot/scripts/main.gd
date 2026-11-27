@@ -1717,7 +1717,7 @@ func toggle_gameplay_recording() -> void:
 
 
 func _refresh_recording_button() -> void:
-	if recording_button == null:
+	if recording_button == null or (shared_workbench != null and not recording_button.is_visible_in_tree()):
 		return
 	var recorder_status: Dictionary = gameplay_recorder.status()
 	recording_button.disabled = bool(recorder_status.get("finalizing", false))
@@ -2188,6 +2188,10 @@ func _ready() -> void:
 	if feature == "shared_workbench":
 		shared_workbench = load("res://scripts/shared_workbench.gd").new()
 		shared_workbench.setup(self,recovery.get("workbench",{}))
+		# These legacy launchers are normally hidden behind the Workbench. If a
+		# caller reveals either, refresh its text and enabled state immediately.
+		actor_prototype_button.visibility_changed.connect(refresh_actor_prototypes)
+		recording_button.visibility_changed.connect(_refresh_recording_button)
 	elif PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
 	elif feature == "blacksite":
@@ -6725,6 +6729,7 @@ func publish_actor_keyboard_input() -> void:
 
 
 func refresh_actor_prototypes() -> void:
+	if shared_workbench != null and not actor_prototype_button.is_visible_in_tree(): return
 	actor_prototype_button.disabled = not actor_prototypes_allowed()
 	if physical_actor_session != null:
 		var state: Dictionary = physical_actor_session.snapshot()
