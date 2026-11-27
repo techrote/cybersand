@@ -7532,10 +7532,17 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	var next_content_id: int = 0
 	# Exact equality is the proof. Revisions can change without material edits,
 	# and slots swap on every upload; neither invalidates an unchanged footprint.
-	if next_shape == _presentation_current_content_shape and next_bytes == _presentation_current_bytes:
-		next_content_id = _presentation_current_content_id
-	elif next_shape == _presentation_previous_content_shape and next_bytes == _presentation_previous_bytes:
-		next_content_id = _presentation_previous_content_id
+	# During active owner play, comparing two entire large textures to discover
+	# an optional cache hit can exhaust the guard before the pilot is examined.
+	# A new identity is conservative even for identical bytes. Bounds proven
+	# unchanged by the actual patches still carry their own local certificate.
+	var compare_full_contents := not _flight_pacing or paused or shared_workbench == null \
+		or physical_actor_session == null or next_shape.x * next_shape.y <= PRESENTATION_FRAME_SCAN_BUDGET
+	if compare_full_contents:
+		if next_shape == _presentation_current_content_shape and next_bytes == _presentation_current_bytes:
+			next_content_id = _presentation_current_content_id
+		elif next_shape == _presentation_previous_content_shape and next_bytes == _presentation_previous_bytes:
+			next_content_id = _presentation_previous_content_id
 	if next_content_id <= 0:
 		_presentation_content_serial += 1
 		next_content_id = _presentation_content_serial
