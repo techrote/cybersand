@@ -76,6 +76,7 @@ var _held_flight_callbacks: int = 0
 var _held_flight_times := PackedInt64Array()
 var _held_flight_ticket: Dictionary = {}
 var _serviced_flight_callbacks: int = 0
+var _last_flight_sample_hold_usec: int = -1000000
 var _workbench_wait_sample: int = -1
 var _workbench_frame_error: String = ""
 var _workbench_collider_frame: int = -1
@@ -2550,6 +2551,7 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 		if physical_actor_session != null: physical_actor_session.set_suspended(true)
 
 func _hold_flight_callback(snapshot: CyberSimulationSnapshot) -> void:
+	_last_flight_sample_hold_usec = Time.get_ticks_usec()
 	var identity := _same_frame_identity()
 	if identity.is_empty():
 		_clear_held_flight()
@@ -6031,6 +6033,8 @@ func _publish_physical_body_state() -> void:
 		if physical_actor_session != null:
 			var sample: Dictionary = physical_actor_session.pack_workbench_sample()
 			if not sample.is_empty() and not sample.states.is_empty():
+				if _flight_pacing and not paused and Time.get_ticks_usec() - _last_flight_sample_hold_usec <= 100000:
+					sample["held_physics_callback"] = true
 				var admission: Dictionary = simulation_worker.set_workbench_sample(sample)
 				if admission.get("accepted",false):
 					_workbench_wait_sample = int(sample.states[10])

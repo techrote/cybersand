@@ -3178,6 +3178,8 @@ func _worker_loop() -> void:
 								and pre_coupling_revision == int(_world.revision) \
 								and _last_native_tick_world_generation == _world_generation \
 								and not _combined_physics_publication and _dry_rounds_remaining > 0 \
+								and sample.get("held_physics_callback",false) \
+								and Time.get_ticks_usec() - _last_native_tick_completed_usec < 2 * local_pixel_interval_usec \
 								and _snapshot_hard_surface_revision == int(_world.hard_surface_revision):
 							# Before the next material tick is due, an additional physical
 							# sample can have an exact native response of its own. Preparing
@@ -3241,9 +3243,9 @@ func _worker_loop() -> void:
 				var native_tick_completed_usec: int = Time.get_ticks_usec()
 				if not _simulation_failed:
 					if _independent_coupling:
-						# Pay for at most three additional fresh occupancy samples if
-						# this native owner turn has taken more than a physical interval.
-						_dry_rounds_remaining = clampi(ceili(float(native_tick_completed_usec - step_start_usec) / TICK_INTERVAL_USEC) - 1, 0, 3)
+						# A real recent sample hold can request up to three fresh dry
+						# responses. Two pixel intervals bound delay to the next material turn.
+						_dry_rounds_remaining = 3 if local_workbench_sample.get("held_physics_callback",false) else 0
 					_last_native_tick_started_usec = native_tick_started_usec
 					_last_native_tick_completed_usec = native_tick_completed_usec
 					_last_native_tick_world_generation = _world_generation
