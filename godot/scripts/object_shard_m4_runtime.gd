@@ -49,6 +49,10 @@ var physical_intervals: int = 0
 var native_pose_acknowledgements: int = 0
 var native_pose_echo_checks: int = 0
 var total_pump_usec: int = 0
+var diagnostic_sleep_calls: int = 0
+var diagnostic_sleep_usec: int = 0
+var diagnostic_poll_calls: int = 0
+var diagnostic_poll_usec: int = 0
 var max_pump_usec: int = 0
 var controls_completed: int = 0
 var redundant_readiness_receipts_suppressed: int = 0
@@ -107,13 +111,19 @@ func poll(host: Control) -> void:
 	var started: int = Time.get_ticks_usec()
 	for operation: int in range(MAX_PUMP_OPERATIONS):
 		if Time.get_ticks_usec()-started >= RECEIPT_BUDGET_USEC: break
+		var poll_started: int = Time.get_ticks_usec()
 		var progressed: bool = _poll_once()
+		diagnostic_poll_calls += 1
+		diagnostic_poll_usec += Time.get_ticks_usec() - poll_started
 		if not held_reason.is_empty(): break
 		if not progressed:
 			if _pending_serial == 0 and phase != "AwaitingCompletedNativeTick": break
 			# Bounded rendezvous only for work already admitted. This creates no
 			# semantic ticks and never invokes native or Rapier on the worker.
+			var sleep_started: int = Time.get_ticks_usec()
 			OS.delay_usec(100)
+			diagnostic_sleep_calls += 1
+			diagnostic_sleep_usec += Time.get_ticks_usec() - sleep_started
 	var elapsed: int = Time.get_ticks_usec()-started
 	total_pump_usec += elapsed
 	max_pump_usec = maxi(max_pump_usec,elapsed)

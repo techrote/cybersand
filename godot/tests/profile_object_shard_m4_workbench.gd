@@ -143,6 +143,9 @@ func _run() -> void:
 		if shard.get("owns_inventory",false): result.shard_dimensions.append({"width":shard.width,"height":shard.height})
 	f.expect(result.shard_dimensions.size()>=expected,"timed workload has actual native inventory dimensions for every promoted body")
 	var initial_tick: int = f.tick()
+	var before_delays := Vector4i(f.runtime().diagnostic_sleep_calls, f.runtime().diagnostic_sleep_usec,
+		f.runtime().diagnostic_poll_calls, f.runtime().diagnostic_poll_usec)
+	print("M4_WINDOW_START ", OS.get_process_id())
 	var started: int = Time.get_ticks_usec()
 	var next_heartbeat_usec: int = started+5000000
 	var previous_usec: int = started
@@ -181,6 +184,11 @@ func _run() -> void:
 				"process_callbacks":callbacks.size(),"material_body_count":f.body_count()}))
 			next_heartbeat_usec = now+5000000
 	var elapsed: int = maxi(1,Time.get_ticks_usec()-started)
+	print("M4_WINDOW_END ", OS.get_process_id())
+	result.receipt_poll_breakdown = {"sleep_calls":f.runtime().diagnostic_sleep_calls-before_delays.x,
+		"sleep_usec":f.runtime().diagnostic_sleep_usec-before_delays.y,
+		"poll_calls":f.runtime().diagnostic_poll_calls-before_delays.z,
+		"poll_usec":f.runtime().diagnostic_poll_usec-before_delays.w}
 	if DisplayServer.get_name() != "headless": RenderingServer.frame_post_draw.disconnect(_post_draw)
 	f.expect(f.tick() >= target,"profile completes 180 actual native semantic ticks")
 	f.expect(str(f.diagnostics().get("held_reason","")) == "","no native or physical hold during profile")

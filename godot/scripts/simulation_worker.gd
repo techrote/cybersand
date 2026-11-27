@@ -513,6 +513,12 @@ var _m4_reused_prepared_samples: int = 0
 var _m4_emissions_inflight: int = 0 # mutex-owned; included in bounded brush admission
 var _m4_cells_inflight: int = 0
 var _m4_snapshot_calls: int = 0
+var _m4_receipt_lock_usec := 0
+var _m4_receipt_copy_usec := 0
+var _m4_receipt_polls := 0
+var _m4_republished_shards := 0
+var _m4_stable_carriers := 0
+var _m4_stable_geometry := 0
 var _m4_snapshot_usec: int = 0
 var _m4_snapshot_max_usec: int = 0
 var _m4_frame_copy_calls: int = 0
@@ -1586,7 +1592,10 @@ func object_shard_owner_profile() -> Dictionary:
 	_mutex.lock()
 	var current_states: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
 	var due_states: PackedFloat64Array = _m4_interval_sample.get("states",PackedFloat64Array())
-	var result := {"snapshot_calls":_m4_snapshot_calls,"snapshot_usec":_m4_snapshot_usec,
+	var result := {"receipt_polls_calls":_m4_receipt_polls, "receipt_lock_usec":_m4_receipt_lock_usec,
+		"receipt_copy_usec":_m4_receipt_copy_usec,"published_shard_rows_calls":_m4_republished_shards,
+		"unchanged_geometry_rows_calls":_m4_stable_geometry,"unchanged_carrier_rows_calls":_m4_stable_carriers,
+		"snapshot_calls":_m4_snapshot_calls,"snapshot_usec":_m4_snapshot_usec,
 		"snapshot_max_usec":_m4_snapshot_max_usec,"frame_copy_calls":_m4_frame_copy_calls,
 		"frame_copy_usec":_m4_frame_copy_usec,"frame_copy_max_usec":_m4_frame_copy_max_usec,
 		"snapshot_scope":"native coordinator snapshot plus Godot dictionary and packed-array marshalling",
@@ -1788,10 +1797,15 @@ func object_shard_submit_owner_control(command: String, values: Dictionary) -> D
 func object_shard_take_owner_results(maximum: int = 8) -> Array:
 	if maximum < 1 or maximum > M4_OWNER_QUEUE_LIMIT:
 		return []
+	var requested := Time.get_ticks_usec()
 	_mutex.lock()
+	var acquired := Time.get_ticks_usec()
+	_m4_receipt_polls += 1
+	_m4_receipt_lock_usec += acquired-requested
 	var n: int = mini(maximum,_m4_control_results.size())
 	var value: Array = _m4_control_results.slice(0,n).duplicate(true)
 	_m4_control_results = _m4_control_results.slice(n)
+	_m4_receipt_copy_usec += Time.get_ticks_usec()-acquired
 	_mutex.unlock()
 	return value
 
@@ -1890,7 +1904,17 @@ func _m4_publish_owner() -> void:
 		return
 	var identity: Array = [int(_world.revision),frame.get("tick",0),frame.get("next_transaction",0),
 		frame.get("paused",true),frame.get("promotion",{}).duplicate(true),frame.get("reabsorption",{}).duplicate(true)]
+	var stable_carriers := 0
+	var stable_geometry := 0
+	var observed_shards := 0
 	for shard: Dictionary in frame.get("shards",[]):
+		var index := identity.size()
+		if _m4_frame_identity.size() > index:
+			var old: Array = _m4_frame_identity[index]
+			if old[0] == shard.id and old[1] == shard.generation and old[2] == shard.body_generation:
+				if old[3] == shard.material_revision: stable_carriers += 1
+				if old[4] == shard.geometry_revision: stable_geometry += 1
+		observed_shards += 1
 		identity.append([shard.id,shard.generation,shard.body_generation,shard.material_revision,
 			shard.geometry_revision,shard.applied_physics_revision,shard.pose_serial,
 			shard.get("lifecycle",""),shard.get("owns_inventory",false)])
@@ -1902,6 +1926,9 @@ func _m4_publish_owner() -> void:
 	frame["world_generation"] = _world_generation
 	frame["world_revision"] = int(_world.revision)
 	_mutex.lock()
+	_m4_republished_shards += observed_shards
+	_m4_stable_carriers += stable_carriers
+	_m4_stable_geometry += stable_geometry
 	_m4_snapshot_calls += 1
 	_m4_snapshot_usec += snapshot_elapsed
 	_m4_snapshot_max_usec = maxi(_m4_snapshot_max_usec,snapshot_elapsed)
