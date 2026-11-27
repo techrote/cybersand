@@ -1,0 +1,91 @@
+{
+  "schema": "objectshard-final-cross-feature-qualification-v1",
+  "source_commit": "5f31c40b2885f706b6756f9754c51d6dce29d859",
+  "tree": "f4dcfaca6ceda2cd196e43ea129c8a05f2adb461",
+  "native_sources": 126,
+  "evidence_fixture_revision": "5563fca81ae39c06383b624b00b3b9d0716d096e",
+  "extra_cases": {
+    "mixed-capacity.gd": "7c4ed6b227e434232eb4f85929f0bd1fae2061d379995f7fa13e181ef97fedcd",
+    "material-structure.gd": "e5e0878008dd4b8d3ccd1591fb725e19077c1c85e0ef57e8e1374aa4dde394e6"
+  },
+  "platforms": {
+    "linux": {
+      "runtime_sha256": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20",
+      "runtime_artifact": 15169809587,
+      "runtime_build_source": "f7921ffa3d10da528f61c4a0d72189942a829528",
+      "checks": {
+        "mixed-capacity": {
+          "checks": 270,
+          "log_sha256": "c169b1c408fcffcdff8d59c2fe1c40e5b7ca94ccf5713f161f9a744d686bc4b0",
+          "structures": 8,
+          "observed_native_tick": 48
+        },
+        "material-structure": {
+          "checks": 72,
+          "log_sha256": "1806bc8342557ac876e7be347f5f55f5b279a7b59a14f6f690ce7e5c61c9a81e",
+          "native_and_rapier_steps": 120
+        },
+        "resident": {
+          "checks": 1590,
+          "log_sha256": "99eb815a1cfb48b459d88bd02bf18352a45dc5a4dfaef2f5008bf4860ce617b0"
+        }
+      },
+      "fresh_area_processes": [
+        {
+          "mode": "write",
+          "pid": 379,
+          "checks": 74,
+          "log_sha256": "e46c2b4f913c42c9e8297f6fcdfc8c0192e8d2dc4781f54b30d8ea5dadb46885"
+        },
+        {
+          "mode": "reopen",
+          "pid": 444,
+          "checks": 24,
+          "log_sha256": "dade48ac8c125992667cf19e476e35978a1fef83ff08c26e2c90ec9ab968d79f"
+        }
+      ]
+    },
+    "windows": {
+      "runtime_sha256": "bc00edd7b547e381c65172bc6f09e00c9872437db889c0ed3a902c50286b570b",
+      "runtime_artifact": 15171607781,
+      "runtime_build_source": "5f31c40b2885f706b6756f9754c51d6dce29d859",
+      "checks": {
+        "mixed-capacity": {
+          "checks": 270,
+          "log_sha256": "df06fa4e845de21299bbffce948b78d5477d70bb86b146b38adea55dc3c85570",
+          "structures": 8,
+          "observed_native_tick": 48,
+          "direct_godot_process_id": 42224
+        },
+        "material-structure": {
+          "checks": 72,
+          "log_sha256": "78e3fcb3385b6b31334efa6591b1df28632615e47162a0d75344ba2fe34ac8ee",
+          "native_and_rapier_steps": 120,
+          "direct_godot_process_id": 29844
+        },
+        "resident": {
+          "checks": 1590,
+          "log_sha256": "327fd0de0b21f4309df7510b1a1f72c8e7529ff145863948e58c2223e523faae",
+          "direct_godot_process_id": 7648
+        }
+      },
+      "fresh_area_processes": [
+        {
+          "mode": "write",
+          "pid": 15404,
+          "checks": 74,
+          "log_sha256": "5e3c45e1a5adc5b7d34052e8ce46169282deb0f01314896211dff92d1d836984"
+        },
+        {
+          "mode": "reopen",
+          "pid": 45260,
+          "checks": 24,
+          "log_sha256": "f112fb6f6b52539ef82e4454fbb48f1e216db8b500bb8ef23d2def31813597fe"
+        }
+      ]
+    }
+  },
+  "retained_scope": "Headless native and application validation. Physical displayed performance remains owner-pending.",
+  "material_receipts_equal_across_platforms": true,
+  "checks_per_platform": 2030
+}
