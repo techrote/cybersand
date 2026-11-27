@@ -45,6 +45,11 @@ FOCUSED = (
     ("test_object_shard_m4_long_burn", "objectshard-m4-long-burn-v1"),
     ("test_object_shard_m4_lifecycle_fuzz", "objectshard-m4-lifecycle-fuzz-v1"),
 )
+OWNER_REGRESSIONS = {
+    "test_liquid_desktop_default_host": r"^LIQUID_DESKTOP_DEFAULT_HOST: ([1-9][0-9]*) assertions; 0 failures$",
+    "test_liquid_trial_body": r"^LIQUID_TRIAL_BODY: ([1-9][0-9]*) assertions, 0 failures$",
+    "test_persistent_area_owner_adversarial": r"^GEN006_OWNER_ADVERSARIAL assertions=([1-9][0-9]*) failures=0$",
+}
 REGRESSIONS = (
     "test_workbench_canvas", "test_workbench_wave", "test_workbench_wave_spill",
     "test_workbench_failure_containment", "test_workbench_failure_recovery",
@@ -246,6 +251,9 @@ def qualify(args: argparse.Namespace) -> dict:
             environment["CYBERSAND_PACKAGE_MANIFEST"] = str(executed_root / "objectshard-workbench-manifest.json")
         cases = [(runner.Case("m4_workbench_import", ("--editor", "--quit"),
                               int(execution_policy.watchdog_seconds("godot_import_seconds")), 0), None)]
+        if args.regressions:
+            discovered = {case.name: case for case in runner.discover_cases()}
+            cases.extend((discovered[name], None) for name in OWNER_REGRESSIONS)
         for name, schema in FOCUSED:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
@@ -340,6 +348,14 @@ def qualify(args: argparse.Namespace) -> dict:
             case_env = dict(environment, XDG_DATA_HOME=str(user_root), APPDATA=str(user_root),
                             LOCALAPPDATA=str(user_root), **reopen_env)
             record, failed = run_observed_case(runner, str(engine), case, output, "ordinary-workbench-m4", env=case_env)
+            if case.name in OWNER_REGRESSIONS and not failed:
+                log = (output / record["log"]).read_text(encoding="utf-8")
+                assertions = re.findall(OWNER_REGRESSIONS[case.name], log, flags=re.MULTILINE)
+                if len(assertions) == 1:
+                    record["owner_assertions"] = int(assertions[0])
+                else:
+                    record["receipt_error"] = "Expected one successful owner completion: " + case.name
+                    failed = True
             if schema and not failed:
                 try:
                     record["receipt"] = completion(output / record["log"], schema)
