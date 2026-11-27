@@ -193,13 +193,29 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
                          row["stage"] + " rotated transport lacks its original coverage and current publication")
             restored = next(row["shown_identity"] for row in data["framebuffer"]
                             if row["label"] == "restored_authoring_framebuffer")
-            first = next((row for row in data["transition_observations"]
-                          if row["frame_valid"] and row["frame_world"] == restored["world"]
-                          and row["session"] == restored["session"] and row["epoch"] == restored["epoch"]), {})
+            first = data["first_restored_accepted"]
+            need(first["origin"] == ("atomic_submission" if expected_atomic else "stock_inline_draw")
+                 and first["frame_valid"] and first["frame_world"] == restored["world"]
+                 and first["session"] == first["frame_session"] == restored["session"]
+                 and first["epoch"] == first["frame_epoch"] == restored["epoch"]
+                 and first["frame_material_revision"] == first["uploaded_revision"]
+                 and first["frame_upload_serial"] == first["upload_serial"]
+                 and first["previous_valid_world"] < first["frame_world"]
+                 and first["previous_valid_session"] < first["session"]
+                 and first["previous_valid_epoch"] < first["epoch"]
+                 and 0 < first["previous_valid_draw_event"] < first["draw_event"],
+                 "Restored Water record does not identify the accepted draw across the original owner boundary")
+            if expected_atomic:
+                need(first["atomic_serials_contiguous"] and first["submission_serial"] == first["previous_submission_serial"] + 1
+                     and 0 < first["previous_valid_submission_serial"] <= first["previous_submission_serial"],
+                     "Atomic Water acceptance record missed a submission serial on owner replacement")
+            else:
+                need(first["submission_serial"] == first["previous_submission_serial"] == -1,
+                     "Stock inline Water record unexpectedly claims an atomic submission serial")
             work = first.get("initial_water_coverage", {})
             members = {int(slot) for slot in restored["labels"]}
             need(work and first["bridge"] == restored["bridge"] and first["uploaded_world"] == restored["world"]
-                 and first["physical_step"] == first["manual_steps"] == first["completed_usec"] == 0
+                 and first["frame_physical_step"] == first["physical_step"] == first["manual_steps"] == first["completed_usec"] == 0
                  and first["terrain_ready"] and not first["pending_apply"] and not first["pending_owner"]
                  and work["members"] == len(members) and set(first["visible_slots"]) == members and work["refusals"] == 0
                  and 0 < work["cells"] <= first["guard"]["cells_examined"] <= 24000
