@@ -104,7 +104,8 @@ static func apply(world: Object, emitters: Array, extent: Vector2i) -> Array:
 			world.emit_disc(cell.x, cell.y, 0, int(intent.material))
 			changed = int(int(world.material_at(cell.x,cell.y)) == int(intent.material))
 			if changed == 0: reason = "write_refused"
-		receipts.append({"instance_id":id,"epoch":intent.epoch,"sequence":intent.sequence,"tick":intent.tick,
+		receipts.append({"instance_id":id,"session":intent.get("session",-1),"sample":intent.get("sample",-1),
+			"epoch":intent.epoch,"sequence":intent.sequence,"tick":intent.tick,
 			"nozzle":intent.nozzle,"material":intent.material,"point":cell,"changed_cells":changed,"reason":reason})
 	return receipts
 

@@ -12,7 +12,9 @@ const QUEUE_BATCHES := 4
 const BATCH_USEC := 250000
 const SCHEMA := "pubpres-owner-gameplay-v1"
 const FIELDS := {
-	"step":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","manual_steps","gap_usec","fixed_delta_sec","native_tick","worker_handoff_usec","native_completed_usec","completed_body_sample","solver_usec","flush_usec","single_step","selected_actor_instance","selected_root_body_slot","physical_xy","velocity_cells_per_sec","native_started_usec","native_tick_body_sample","native_tick_world","native_start_lateness_usec","first_physics_handoff_usec","coupling_response_usec","coupling_only_completions"],
+	"step":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","manual_steps","gap_usec","fixed_delta_sec","native_tick","worker_handoff_usec","native_completed_usec","completed_body_sample","solver_usec","flush_usec","single_step","selected_actor_instance","selected_root_body_slot","physical_xy","velocity_cells_per_sec","native_started_usec","native_tick_body_sample","native_tick_world","native_start_lateness_usec","first_physics_handoff_usec","coupling_response_usec","coupling_only_completions","thruster_fire_enabled","native_root_response"],
+	"native_root_response":["body_instance","body_generation","body_sample","contacts","displaced","unresolved","arrival_count","correction_xy"],
+	"nozzle":["type","observed_usec","session","epoch","world","material_tick_at_observation","body_sample","actor_instance","sequence","intent_tick","nozzle","material","cell_xy","changed_cells","refusal"],
 	"hold":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","reason","paused","wanted_sample","completed_sample","native_tick","worker_handoff_usec","required_hard_revision","packet_hard_revision","queued_hard_revision","pending_chunks"],
 	"upload":["type","completed_usec","start_usec","process_frame","world","revision","render_serial","material_tick","generated_usec","native_completed_usec","patch_bytes"],
 	"presentation":["type","usec","process_frame","boundary","local_presentation_serial","submission_serial","session","epoch","material_world","revision","render_serial","material_tick","mask_sample_tick","physical_step","paused","camera_mode","camera_xy","view_wh","extent_wh","pilot_slot","whole_frame_valid","whole_frame_reason","resolve_usec","upload_cache_usec","total_bodies","total_parts","scanned_parts","bodies"],
@@ -41,6 +43,7 @@ var _previous_world := -1
 var _previous_completion := -1
 var _selected_instance := -1
 var _selected_root := -1
+var _last_nozzle_sample := -1
 
 
 func start(owner_id: int) -> bool:
@@ -75,11 +78,35 @@ func physics_step(host: Node, completed_usec: int, snapshot: CyberSimulationSnap
 	_previous_completion = completed_usec
 	var xy: Variant = null
 	var velocity: Variant = null
+	var response: Variant = null
 	if _selected_root >= 0:
 		var physical: Transform2D = bridge.body_transform(_selected_root)
 		var linear: Vector2 = bridge.body_linear_velocity(_selected_root)
 		xy = [physical.origin.x,physical.origin.y]
 		velocity = [linear.x,linear.y]
+		var gcr: Dictionary = snapshot.lab_context.get("workbench_gcr",{})
+		var rows: Array = gcr.get("rows",[])
+		if gcr.get("valid",false) and gcr.get("session") == bridge._session and gcr.get("epoch") == bridge._epoch \
+				and _selected_root < rows.size() and _selected_root < bridge._members.size():
+			var row: Dictionary = rows[_selected_root]
+			var member: Dictionary = bridge._members[_selected_root]
+			if row.id == _selected_root + 1 and row.instance_id == member.instance_id and row.generation == member.generation:
+				response = [row.instance_id,row.generation,row.sample,row.contacts,row.displaced,row.unresolved,
+					row.arrival_count,[row.correction.x,row.correction.y]]
+	if not same_owner: _last_nozzle_sample = -1
+	# A worker can republish an immutable receipt. Emit it once per observed
+	# batch under its original mask sample; the observation clock is separate.
+	var observed_sample := -1
+	for receipt: Dictionary in snapshot.lab_context.get("workbench_emitters",[]):
+		var sample: int = receipt.get("sample",-1)
+		if sample < 0 or sample == _last_nozzle_sample or receipt.get("epoch") != bridge._epoch \
+				or receipt.get("session") != bridge._session or not receipt.has("nozzle"): continue
+		var cell: Vector2i = receipt.point
+		_append(["nozzle",completed_usec,bridge._session,bridge._epoch,world,snapshot.tick_index,sample,
+			receipt.instance_id,receipt.sequence,receipt.tick,receipt.nozzle,receipt.material,
+			[cell.x,cell.y],receipt.changed_cells,receipt.reason])
+		observed_sample = sample
+	if observed_sample >= 0: _last_nozzle_sample = observed_sample
 	_append(["step",completed_usec,Engine.get_process_frames(),Engine.get_physics_frames(),bridge._session,
 		bridge._epoch,world,host.physical_actor_session.tick,bridge.manual_step_count(),gap,bridge.fixed_delta(),
 		snapshot.tick_index,snapshot.physics_handoff_usec,snapshot.last_native_tick_completed_usec,
@@ -87,7 +114,8 @@ func physics_step(host: Node, completed_usec: int, snapshot: CyberSimulationSnap
 		roundi(bridge.last_flush_time_ms()*1000.0),single_step,selected_id,_selected_root,xy,velocity,
 		snapshot.last_native_tick_started_usec,snapshot.last_native_tick_body_sample,snapshot.last_native_tick_world_generation,
 		snapshot.last_native_tick_lateness_usec,snapshot.first_physics_handoff_usec,
-		snapshot.lab_context.get("coupling_response_usec",-1),snapshot.lab_context.get("coupling_only_completions",0)])
+		snapshot.lab_context.get("coupling_response_usec",-1),snapshot.lab_context.get("coupling_only_completions",0),
+		host.shared_workbench.fire_enabled,response])
 
 
 func physics_hold(host: Node, reason: String, snapshot: CyberSimulationSnapshot) -> void:
