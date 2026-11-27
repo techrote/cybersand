@@ -90,6 +90,15 @@ ran the two Linux treatments. [Linux Water off](https://github.com/techrote/cybe
 · [Linux Water on](https://github.com/techrote/cybersand/actions/runs/46025029508/artifacts/15213265135)
 · [Windows Water off](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15212507592)
 
+The Windows Water-off candidate's small world took 4.1–4.7 ms p95 per native
+tick, while the interval from the worker's first physics handoff to execution
+start was 248–257 ms p95. The large world had 285–315 ms p95 native ticks,
+289–315 ms p95 from handoff to execution start, and 6–24 ms p95 from Rapier
+execution start to completion. These clocks can overlap. The Linux small-world
+handoff interval was 77 ms p95 against 5 ms native and under 1 ms Rapier.
+Accepted main lacks the separate handoff stamps. The measurements identify a
+main-thread scheduling delay at 512 and an additional native cost at 2048.
+
 Four separate Windows Stock Water-on sessions each ran five minutes with 79
 accepted actions. Wave512, Wave1024, Wave2048 and Mixed2048 completed 5,087,
 4,635, 4,508 and 3,584 physical steps. Final-minute observed consecutive-step
