@@ -559,6 +559,15 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 762},)
 
 
+# PUBPRES joins the retained worker-pool implementation to the admitted World.
+REVIEWED_TRANSITIONS += ({"path": "native/src/world.cpp",
+    "from_lf_sha256": "98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c",
+    "to_lf_sha256": "fd7079d6cf4798275280eeb99ed996258482327c4bfeae64a2efb02655daac3e",
+    "source_commit": "13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b",
+    "record": "docs/audits/2026-11-27-pubpres-definitive.md",
+    "issue": 717, "pr": 767},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

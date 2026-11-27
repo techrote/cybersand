@@ -19,6 +19,8 @@ Frozen predecessors, their negative
 results and unrelated programmes retain their ownership. **Draft/HOLD: no merge,
 Ready, automatic default promotion or release.**
 
+The [consolidated Workbench checkpoint](../audits/2026-11-27-pubpres-definitive.md) records the accepted-main join, World input transition and ordinary interaction changes.
+
 ## Objective and established constraints
 
 Actual completed Rapier steps, responsive ordinary Workbench interaction, and
