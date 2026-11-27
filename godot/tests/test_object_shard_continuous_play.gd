@@ -77,12 +77,18 @@ func _run() -> void:
 	root.add_child(scene)
 	_expect(await _idle(), "Continuous play screen starts a real native worker")
 	_expect(scene.selector.item_count == 11 and scene.brush_select.item_count == 7, "All eleven preserved presets and seven tools are present")
-	_expect(scene.receipt_pump_usec == 4000 and scene.pump_selector.item_count == 2 and not scene.host.event_driven_receipts,
-		"Opt-in scene defaults to the measured four-millisecond soft loop budget with notifications off")
-	scene._select_receipt_pump(0)
-	var selected_control: bool = scene.receipt_pump_usec == 0
-	scene._select_receipt_pump(1)
-	_expect(selected_control and scene.receipt_pump_usec == 4000, "Configuration exposes only the matched control and measured receipt budget")
+	var budgets := PackedInt32Array([0, 4000, 8000, 12000])
+	_expect(scene.receipt_pump_usec == 8000 and scene.pump_selector.get_selected_id() == 8000
+		and scene.pump_selector.item_count == budgets.size() and not scene.host.event_driven_receipts,
+		"Experimental rehearsal starts with the eight-millisecond soft budget and notifications off")
+	for index in budgets.size():
+		scene.pump_selector.select(index)
+		scene.pump_selector.item_selected.emit(index)
+		_expect(scene.pump_selector.get_selected_id() == budgets[index] and scene.receipt_pump_usec == budgets[index]
+			and not scene.host.event_driven_receipts, "Receipt work control applies the selected budget: %d us" % budgets[index])
+	# Preserve the four-millisecond control used for the original live edit and progression checks.
+	scene.pump_selector.select(1)
+	scene.pump_selector.item_selected.emit(1)
 	if scene.host.failed or scene.loading:
 		await _finish()
 		return

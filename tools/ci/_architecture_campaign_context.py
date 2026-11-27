@@ -79,6 +79,8 @@ GRAPHICAL_CASES = frozenset({
     "test_architecture_gameplay_reopen", "test_architecture_collaborative_ui",
     "test_architecture_hierarchy_render",
     "test_batch_lab_ui",
+    # The overlay compares ImageTexture pixels on both supported desktop renderers.
+    "test_object_shard_m4_overlay_identity",
 })
 
 

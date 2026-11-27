@@ -31,6 +31,11 @@ class ObjectShardPublicationTests(unittest.TestCase):
         for name in aimed:
             self.assertEqual(cases[name].flags[-2:], ("--", "--objectshard-m4-workbench"))
         self.assertNotIn("--objectshard-m4-workbench", cases["test_object_shard_m4_workbench_port"].flags)
+        overlay = cases["test_object_shard_m4_overlay_identity"]
+        self.assertTrue(overlay.requires_display)
+        self.assertTrue(profile.engine.runner.architecture_context.windows_applicable(overlay))
+        for platform in ("linux", "win32"):
+            self.assertNotIn("--headless", profile.engine.runner.case_command("godot", overlay, platform))
 
     def test_partial_retry_requires_actual_build_and_validation_attempts(self):
         bundle = Path("unused")
