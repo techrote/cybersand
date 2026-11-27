@@ -22,9 +22,11 @@ var fallback_ui: Array[Dictionary] = []
 var unsubmitted_material_picking: Dictionary = {}
 var held_limb_placement: Dictionary = {}
 var stock_limb_only := false
+var mount_samples: Array[Dictionary] = []
 
 
 func _initialize() -> void:
+	set_meta("cybersand_feature","shared_workbench")
 	print("ACTUAL_SUBMISSION_STARTED ",JSON.stringify({
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"script_sha256":FileAccess.get_sha256("res://tests/test_workbench_presentation_submission.gd"),
@@ -59,6 +61,40 @@ func until(predicate: Callable, timeout_ms: int = 60000) -> bool:
 	while Time.get_ticks_msec() < deadline:
 		if predicate.call(): return true
 		if is_instance_valid(host) and host.simulation_worker.has_failed(): return false
+		await process_frame
+	return false
+
+
+# Main can attach its Workbench after this fixture receives its first scene-tree
+# callback. Poll the live owner each turn. The host's first prepared World must
+# still be accepted before the fixture can request its own recipe.
+func _await_workbench_mount(label: String) -> bool:
+	var started := Time.get_ticks_msec()
+	var deadline := started+90000
+	var next_sample := started
+	while true:
+		ui = host.shared_workbench
+		var snapshot = host.simulation_worker.take_latest_snapshot(0)
+		var ready: bool = ui != null and not ui.applied.is_empty()
+		var now := Time.get_ticks_msec()
+		var failed: bool = snapshot != null and snapshot.simulation_failed
+		if now>=next_sample or ready or failed or now>=deadline:
+			var sample := {"case":label,"elapsed_ms":now-started,"process_frame":Engine.get_process_frames(),
+				"native_class":ClassDB.class_exists(&"CyberNativeCellWorld"),"feature":get_meta("cybersand_feature",""),
+				"host_ready":host.is_node_ready(),"ui_attached":ui!=null,"ready":ready,"failed":failed,
+				"worker_error":snapshot.last_tick_error if snapshot!=null else "", "has_snapshot":snapshot!=null,
+				"native_tick":snapshot.tick_index if snapshot!=null else -1,"world":host.last_uploaded_world_generation,
+				"snapshot_serial":snapshot.serial if snapshot!=null else -1,"upload_serial":host.last_uploaded_render_snapshot_serial,
+				"ui_request":ui._pending_request_serial if ui!=null else 0,"pending_request":int(host.pending_microscenario_apply.get("serial",0)),
+				"pending_owner":host._pending_physical_candidate.get_instance_id() if host._pending_physical_candidate!=null else 0,
+				"installed_owner":host.physical_actor_session.get_instance_id() if host.physical_actor_session!=null else 0,
+				"ready_sent":host._prepared_physical_ready_sent,"terrain_ready":host._physical_terrain_ready,
+				"microscenario_error":host.microscenario_error,"native_refusal":host.tower_context.get("workbench_refusal",""),
+				"frame_error":host._workbench_frame_error,"message":ui.message if ui!=null else "","draws":post_draw_count}
+			mount_samples.append(sample)
+			print("ACTUAL_SUBMISSION_MOUNT ",JSON.stringify(sample))
+			next_sample = now+15000
+		if ready or failed or now>=deadline: return check(ready,label)
 		await process_frame
 	return false
 
@@ -100,10 +136,8 @@ func _mounted() -> bool:
 	host = load("res://main.tscn").instantiate()
 	root.add_child(host)
 	root.size = Vector2i(1280,800)
-	ui = host.shared_workbench
 	host.workbench_presentation_submitted.connect(func(_frame: Dictionary) -> void: submission_events += 1)
-	if not check(await until(func() -> bool: return ui != null and not ui.applied.is_empty()),
-			"ordinary mounted native Workbench initializes"): return false
+	if not await _await_workbench_mount("ordinary mounted native Workbench initializes"): return false
 	var setup: Dictionary = Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
 	setup.actors = [Setup.instance("needle",1,Vector2(240,160)),Setup.instance("needle",2,Vector2(280,160))]
 	setup.next_id = 3
@@ -141,8 +175,7 @@ func _source_identity_fallback() -> void:
 	check(not status.enabled and status.refusal == "source_identity_invalid" \
 		and not RenderingServer.has_meta(Transaction.META),
 		"missing initial source identity refuses opt-in without arming a draw-blocking handshake")
-	check(await until(func() -> bool: return ui != null and not ui.applied.is_empty()),
-		"ordinary native Workbench still initializes after opt-in refusal")
+	await _await_workbench_mount("ordinary native Workbench still initializes after opt-in refusal")
 	await process_frame
 	await process_frame
 	await _settle_render_notifications()
@@ -829,9 +862,7 @@ func _run() -> void:
 		host = load("res://main.tscn").instantiate()
 		root.add_child(host)
 		root.size = Vector2i(1280,800)
-		ui = host.shared_workbench
-		if check(await until(func() -> bool: return ui != null and not ui.applied.is_empty()),
-				"ordinary Workbench initializes without atomic submission"):
+		if await _await_workbench_mount("ordinary Workbench initializes without atomic submission"):
 			await _held_limb_placement()
 		_finish()
 		return
@@ -875,7 +906,7 @@ func _finish() -> void:
 		"submission_events":submission_events,"observations":rows,
 		"engine_atomic_admission":Transaction.atomic_admission_supported(),
 		"refusal_framebuffers":refusal_framebuffers,
-		"fallback_ui":fallback_ui,
+		"fallback_ui":fallback_ui,"mount_samples":mount_samples,
 		"unsubmitted_material_picking":unsubmitted_material_picking,"held_limb_placement":held_limb_placement,
 		"input_hashes":{},"scope":"stock graphical paused multipart placement" if stock_limb_only else "native mounted graphical draw admission; first framebuffer read; no GPU completion or physical NVIDIA acceptance"}
 	for path: String in ["res://scripts/main.gd","res://scripts/shared_workbench.gd","res://scripts/workbench_presentation_submission.gd",
