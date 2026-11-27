@@ -14,6 +14,8 @@ var failures: Array[String] = []
 var observations: Array[Dictionary] = []
 var picking: Array[Dictionary] = []
 var framebuffer: Dictionary = {}
+var mount_samples: Array[Dictionary] = []
+var workshop_extent: Array = []
 var finished: bool = false
 
 func _initialize() -> void:
@@ -40,6 +42,47 @@ func until(predicate: Callable, label: String) -> bool:
 func settled() -> bool:
 	return ui != null and not ui.applied.is_empty() and not ui.busy() \
 		and host.pending_microscenario_apply.is_empty() and host._pending_physical_candidate == null
+
+func configure_initial_canvas() -> void:
+	ui = host.shared_workbench
+	if ui == null: return
+	# Main has installed the ordinary New controls and deferred its first blank.
+	# Prepare that blank at the actual six-actor workshop extent.
+	workshop_extent = Setup.mixed_actor_workshop(PackedInt32Array()).extent
+	for axis: int in range(2):
+		ui._extent[axis].value = workshop_extent[axis]
+
+func await_initial_canvas() -> bool:
+	var started := Time.get_ticks_msec()
+	var next_sample := started
+	while true:
+		ui = host.shared_workbench
+		var failed: bool = host.simulation_worker.has_failed()
+		var ready: bool = settled()
+		var elapsed := Time.get_ticks_msec() - started
+		if Time.get_ticks_msec() >= next_sample or ready or failed or elapsed >= 90000:
+			var snapshot = host.simulation_worker.take_latest_snapshot(0)
+			var sample := {"phase":"initial_blank","elapsed_ms":elapsed,"ready":ready,"failed":failed,
+				"requested_extent":workshop_extent,"applied_extent":ui.applied.get("extent",[]) if ui!=null else [],
+				"process_frame":Engine.get_process_frames(),"ui_attached":ui!=null,
+				"ui_request":ui._pending_request_serial if ui!=null else 0,
+				"pending_request":int(host.pending_microscenario_apply.get("serial",0)),
+				"pending_owner":host._pending_physical_candidate.get_instance_id() if host._pending_physical_candidate!=null else 0,
+				"installed_owner":host.physical_actor_session.get_instance_id() if host.physical_actor_session!=null else 0,
+				"world":host.last_uploaded_world_generation,"upload_serial":host.last_uploaded_render_snapshot_serial,
+				"snapshot_serial":snapshot.serial if snapshot!=null else -1,"native_tick":snapshot.tick_index if snapshot!=null else -1,
+				"worker_error":snapshot.last_tick_error if snapshot!=null else "","message":ui.message if ui!=null else "",
+				"microscenario_error":host.microscenario_error,"native_refusal":host.tower_context.get("workbench_refusal","")}
+			mount_samples.append(sample)
+			print("MEMBER_PRESENTATION_MOUNT ",JSON.stringify(sample))
+			next_sample = Time.get_ticks_msec()+15000
+		if failed: return check(false,"initial native Workbench failed")
+		if ready:
+			if workshop_extent.size()==2 and ui.applied.get("extent")==workshop_extent: return true
+			return check(false,"initial Workbench adopted the requested workshop extent")
+		if elapsed >= 90000: return check(false,"initial Workbench ready")
+		await process_frame
+	return false
 
 func draw() -> void:
 	if DisplayServer.get_name()=="headless":
@@ -272,11 +315,9 @@ func _run() -> void:
 	root.size = Vector2i(1280,900)
 	host = load("res://main.tscn").instantiate()
 	host.set_script(FocusHost)
+	host.ready.connect(configure_initial_canvas,CONNECT_ONE_SHOT)
 	root.add_child(host)
-	if not await until(func() -> bool: return host.shared_workbench != null,"ordinary Workbench starts"):
-		finish();return
-	ui = host.shared_workbench
-	if not await until(settled,"initial Workbench ready") or not await install(recipe()):
+	if not await await_initial_canvas() or not await install(recipe()):
 		finish();return
 	for ignored: int in range(30): await draw()
 	inspect_members("initialized")
@@ -337,7 +378,7 @@ func finish() -> void:
 		"render_thread_inline":RenderingServer.is_on_render_thread(),
 		"requested_render_lookahead":OS.get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD"),
 		"actual_submission_enabled":host.workbench_presentation_submission_enabled() if is_instance_valid(host) else false,
-		"observations":observations,"framebuffer":framebuffer,"picking":picking}
+		"mount_samples":mount_samples,"observations":observations,"framebuffer":framebuffer,"picking":picking}
 	var output: String = OS.get_environment("CYBERSAND_MEMBER_PRESENTATION_OUTPUT")
 	if not output.is_empty():
 		var file := FileAccess.open(output,FileAccess.WRITE)
