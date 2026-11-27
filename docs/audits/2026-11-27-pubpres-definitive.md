@@ -6,6 +6,13 @@
 `13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b`. The accepted main commit is the
 fixed comparison source for this campaign. Physical owner acceptance is on hold.
 
+The independently verified pre-refresh [Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46040083640/artifacts/15222321415)
+contains application `be9195c9c81df63cf5b8322405a5518218a663ae`. Its inner
+ZIP SHA-256 is `4f63110b2efda9c4020dc63ec2f09099311e66620a50527d3a80a6a14544cb09`.
+All 2,849 payload files matched their manifest. All 14 launcher runs exited
+normally. The selected and fallback installations each passed 215 graphical
+authoring and 71 fresh-process reopen checks. [Launcher, collector, Save and reopen receipts](https://github.com/techrote/cybersand/actions/runs/46040083640/artifacts/15222521328)
+
 ## Resulting application
 
 The pre-refresh comparison source is `e17ce40722a3fabdd6130990eecfca384bf5b6dd`.
@@ -147,6 +154,17 @@ per-member native proofs on the first valid paused tick-zero frame. The shared
 2 ms and 24,000-cell limits, independent native checks and Sand veto still
 apply. [Original Separate0 restored draw](https://github.com/techrote/cybersand/actions/runs/46042058637/artifacts/15221193719)
 · [Separate4 pixels and completion records](https://github.com/techrote/cybersand/actions/runs/46042058637/artifacts/15220024134)
+
+In a private Linux Xvfb replay of the first-frame change (`862b8659a`), the
+restored draw showed all four members. The shared allowance had 1,818 µs
+remaining when the resolver began checking their 666 cells. The work took
+200 µs and the full guard took 790 µs. All 207 assertions and five restored
+framebuffer controls passed over 4,920 observed draws. Six member withholds
+across two dry-to-wet draws remain in that run. Each draw retained a visible
+member. The two long pauses, restoration and multipart motion had zero
+withholds. The raw receipt SHA-256 is
+`54aabadab8f5d443936f6ed397175a93c479e9300a629032800365ed6a96d454`.
+[Focused Windows evaluation of this repair](https://github.com/techrote/cybersand/actions/runs/46046512132)
 
 ## Integrated Workbench checks
 
