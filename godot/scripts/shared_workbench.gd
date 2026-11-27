@@ -959,8 +959,15 @@ func load_water_comparison(scene_id: String) -> bool:
 	message = "Preparing Water comparison scene with requested solver / tuning…"
 	return true
 
+func authored_world_change_block_reason() -> String:
+	if is_instance_valid(architecture_lab) and architecture_lab.authoring_busy():
+		return "Wait for the current Architecture action before changing the authored World."
+	return art_batches.history_block_reason() if is_instance_valid(art_batches) else ""
+
 func load_material_audition_demo(scene_id: String) -> Dictionary:
 	if not _editable(): return {"ok":false,"error":message}
+	var reason := authored_world_change_block_reason()
+	if not reason.is_empty(): return {"ok":false,"error":reason}
 	if _liquids == null or _liquids.bridge == null:
 		return {"ok":false,"error":"Native policy interface unavailable."}
 	var policy: PackedInt32Array = PackedInt32Array(applied.get("liquid_policy",[]))
