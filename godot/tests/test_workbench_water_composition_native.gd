@@ -61,6 +61,16 @@ var transition_observations: Array[Dictionary] = []
 var transition_observations_dropped := 0
 var restoring_epoch := -1
 var restoring_world := -1
+var restoring_session := -1
+var first_restored_accepted: Dictionary = {}
+var draw_events := 0
+var last_draw_serial := -1
+var previous_valid_world := -1
+var previous_valid_epoch := -1
+var previous_valid_session := -1
+var previous_valid_draw_event := -1
+var previous_valid_serial := -1
+var restore_serials_contiguous := true
 var staged_water_material_vetoes := 0
 
 func transition_identity(frame: Dictionary, bridge: Variant) -> Dictionary:
@@ -82,6 +92,47 @@ func transition_identity(frame: Dictionary, bridge: Variant) -> Dictionary:
 		"guard":host.workbench_presentation_last.duplicate(),
 		"initial_water_coverage":frame.get("initial_water_coverage",{}).duplicate(),
 		"selection_usec":frame.get("selection_usec",-1),"upload_cache_usec":frame.get("upload_cache_usec",-1)}
+
+# Separate's notification carries the frozen receipt after the engine admits
+# its draw. Stock submits inline and exposes its selected frame at pre-draw.
+# A post-draw callback can observe a newer selection, even twice within one
+# process frame, so it cannot identify the first presented replacement.
+func record_restored_draw(frame: Dictionary, origin: String) -> void:
+	if not first_restored_accepted.is_empty(): return
+	draw_events += 1
+	var serial: int = int(frame.get("submission_serial",-1))
+	if restoring_world >= 0 and origin == "atomic_submission" and serial != last_draw_serial+1:
+		restore_serials_contiguous = false
+	var previous_serial := last_draw_serial
+	last_draw_serial = serial
+	if not frame.get("valid",false): return
+	var world: int = int(frame.get("world_generation",-1))
+	var epoch: int = int(frame.get("epoch",-1))
+	var session: int = int(frame.get("session",-1))
+	if restoring_world >= 0 and world > restoring_world:
+		var bridge: Variant = host.physical_actor_session.bridge
+		first_restored_accepted = transition_identity(frame,bridge)
+		first_restored_accepted.merge({"origin":origin,"submission_serial":serial,
+			"previous_submission_serial":previous_serial,"draw_event":draw_events,
+			"previous_valid_draw_event":previous_valid_draw_event,
+			"previous_valid_submission_serial":previous_valid_serial,
+			"previous_valid_world":previous_valid_world,"previous_valid_session":previous_valid_session,
+			"previous_valid_epoch":previous_valid_epoch,"atomic_serials_contiguous":restore_serials_contiguous,
+			"frame_session":session,"frame_epoch":epoch,
+			"frame_material_revision":frame.get("material_revision",-1),
+			"frame_upload_serial":frame.get("upload_serial",-1),"frame_physical_step":frame.get("rapier_step",-1)})
+	previous_valid_world = world
+	previous_valid_epoch = epoch
+	previous_valid_session = session
+	previous_valid_draw_event = draw_events
+	previous_valid_serial = serial
+
+func record_stock_draw() -> void:
+	if not host.workbench_presentation_submission_enabled():
+		record_restored_draw(host.workbench_presentation_frame,"stock_inline_draw")
+
+func record_atomic_draw(frame: Dictionary) -> void:
+	record_restored_draw(frame,"atomic_submission")
 
 func _initialize() -> void:
 	Engine.max_fps = 60
@@ -614,6 +665,7 @@ func edits_and_lifecycle() -> void:
 	if not await paint_patch(position,2,3,"water_small_repair") or not await ordinary_step("repair_step"): return
 	var before_epoch: int = host._physical_epoch
 	var before_world: int = host.last_uploaded_world_generation
+	restoring_session = host.physical_actor_session.bridge._session
 	restoring_epoch = before_epoch
 	restoring_world = before_world
 	stage = "restore"
@@ -638,17 +690,34 @@ func edits_and_lifecycle() -> void:
 		"restored initialized presentation has no fabricated physical completion")
 	for ignored: int in range(32): await process_frame
 	if graphical:
-		var first_work: Dictionary = {}
-		for observation: Dictionary in transition_observations:
-			if observation.frame_valid and observation.frame_world==host.last_uploaded_world_generation \
-					and observation.session==host.physical_actor_session.bridge._session \
-					and not observation.initial_water_coverage.is_empty():
-				first_work = observation.initial_water_coverage
-				break
+		var first_draw: Dictionary = first_restored_accepted
+		var first_work: Dictionary = first_draw.get("initial_water_coverage",{})
+		var atomic: bool = host.workbench_presentation_submission_enabled()
+		var serial: int = int(first_draw.get("submission_serial",-1))
+		var preceding: int = int(first_draw.get("previous_submission_serial",-1))
+		var previous_valid: int = int(first_draw.get("previous_valid_submission_serial",-1))
+		check(first_draw.get("origin","") == ("atomic_submission" if atomic else "stock_inline_draw")
+			and first_draw.get("previous_valid_world",-1)==before_world
+			and first_draw.get("previous_valid_session",-1)==restoring_session
+			and first_draw.get("previous_valid_epoch",-1)==before_epoch
+			and first_draw.get("previous_valid_draw_event",-1)>0
+			and int(first_draw.get("draw_event",-1))>int(first_draw.get("previous_valid_draw_event",-1))
+			and first_draw.get("frame_world",-1)==host.last_uploaded_world_generation
+			and first_draw.get("frame_session",-1)==host.physical_actor_session.bridge._session
+			and first_draw.get("frame_epoch",-1)==host._physical_epoch
+			and first_draw.get("frame_physical_step",-1)==0
+			and first_draw.get("frame_material_revision",-1)==first_draw.get("uploaded_revision",-2)
+			and first_draw.get("frame_upload_serial",-1)==first_draw.get("upload_serial",-2)
+			and ((previous_valid>0 and preceding>=previous_valid and serial==preceding+1
+				and first_draw.get("atomic_serials_contiguous",false)) if atomic
+				else (serial==-1 and preceding==-1 and previous_valid==-1)),
+			"first replacement draw is observed at admission across the real owner boundary")
 		var cells: int = first_work.get("cells",-1)
 		var time_left: int = first_work.get("budget_at_entry_usec",-1)
 		check(first_work.get("members",0)==host.physical_actor_session.bridge._members.size() \
-			and cells >= 0 and cells <= host.PRESENTATION_FRAME_SCAN_BUDGET \
+			and first_work.get("refusals",-1)==0
+			and first_draw.get("visible_slots",[]).size()==host.physical_actor_session.bridge._members.size()
+			and cells > 0 and cells <= host.PRESENTATION_FRAME_SCAN_BUDGET \
 			and time_left >= 0 and time_left <= host.PRESENTATION_FRAME_TIME_BUDGET_USEC,
 			"first accepted restored owner records its bounded initial footprint work")
 	for slot: int in range(host.physical_actor_session.bridge._members.size()):
@@ -720,7 +789,10 @@ func _run() -> void:
 	host = loaded
 	root.add_child(host)
 	root.size = Vector2i(1280,800)
-	if graphical: RenderingServer.frame_post_draw.connect(observe_frame)
+	if graphical:
+		RenderingServer.frame_post_draw.connect(observe_frame)
+		RenderingServer.frame_pre_draw.connect(record_stock_draw)
+		host.workbench_presentation_submitted.connect(record_atomic_draw)
 	if check(await until(func() -> bool: return host.shared_workbench != null and not host.shared_workbench.applied.is_empty(),90000),
 			"ordinary Workbench startup with real native runtime"):
 		ui = host.shared_workbench
@@ -750,7 +822,10 @@ func _run() -> void:
 	if graphical: check(framebuffer.size() == 5,"initialized, completed, rewet, restored and multipart limb framebuffer controls all execute")
 	key(KEY_D,false)
 	key(KEY_W,false)
-	if graphical: RenderingServer.frame_post_draw.disconnect(observe_frame)
+	if graphical:
+		RenderingServer.frame_post_draw.disconnect(observe_frame)
+		RenderingServer.frame_pre_draw.disconnect(record_stock_draw)
+		host.workbench_presentation_submitted.disconnect(record_atomic_draw)
 	var inputs: Dictionary = {}
 	for path: String in [get_script().resource_path,"res://scripts/main.gd","res://scripts/simulation_worker.gd",
 			"res://scripts/workbench_water_composition.gd","res://scripts/workbench_presentation_coherence.gd",
@@ -772,6 +847,7 @@ func _run() -> void:
 		"observed_frames_by_stage":observed_frames_by_stage,
 		"staged_water_material_vetoes":staged_water_material_vetoes,
 		"omitted_observations":omitted_observations,"omitted_observations_dropped":omitted_observations_dropped,
+		"first_restored_accepted":first_restored_accepted,
 		"transition_observations":transition_observations,"transition_observations_dropped":transition_observations_dropped,
 		"proof_kinds":kinds,"moving_wet_distinct_poses":moving_wet_poses.size(),"compound_model":selected_compound,
 		"observations":observations,"lifecycle":lifecycle,"framebuffer":framebuffer,
