@@ -4120,6 +4120,42 @@ func _workbench_material_certificate_covers(certified: Array, required: Array) -
 	return true
 
 
+# On the first valid paused owner frame, check stationary material footprints
+# together, before per-member native proof construction can exhaust the shared
+# clearance deadline. These results authorize geometry only in this resolver
+# call. Ordinary native, pose and submission checks still decide every draw.
+func _initial_workbench_water_coverage(frame: Dictionary, context: Dictionary, summary: Dictionary,
+		bridge: WorkbenchBridge, order: Array[int]) -> Dictionary:
+	var results: Dictionary = {}
+	if not paused or not _workbench_presentation_state.is_empty() or not _workbench_water_composition_enabled() \
+			or not _valid_workbench_mask_frame(frame) or bridge != rapier_bridge or not bridge.is_initialized() \
+			or not _physical_terrain_ready or _actor_reset_receipt != 0 or not _workbench_frame_error.is_empty() \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty() \
+			or physical_actor_session.tick != 0 or bridge.manual_step_count() != 0 or _workbench_completed_step > 0 \
+			or _workbench_completed_step_usec != 0 or _workbench_sample_identity != [bridge._session,bridge._epoch] \
+			or order.is_empty() or order.size() > WorkbenchBridge.Capacity.DEFAULT_BODIES \
+			or order.size() != bridge._rects.size() or order.size() != bridge._body_rids.size() \
+			or _workbench_visible_material_contents(context.previous_blend_active).is_empty() or simulation_worker.has_failed():
+		return results
+	var start := Time.get_ticks_usec()
+	var cells_before: int = summary.cells_examined
+	var refused := 0
+	for slot: int in order:
+		var member: Dictionary = bridge._members[slot]
+		var entry: Variant = frame.instances.get(member.instance_id)
+		if not entry is Dictionary or entry.get("generation",-1) != member.generation \
+				or not entry.get("pose") is Transform2D or not Transform2D(entry.pose).is_finite() \
+				or entry.pose != bridge.body_transform(slot) or _workbench_bound_step(entry) != 0:
+			continue
+		var result := _assess_workbench_water_sweep(slot,entry.pose,entry.pose,bridge._rects[slot],context,summary)
+		results[slot] = {"pose":entry.pose,"coverage":result}
+		if not result.safe: refused += 1
+	context["initial_water_coverage"] = {"members":results.size(),"refusals":refused,
+		"cells":int(summary.cells_examined)-cells_before,"elapsed_usec":Time.get_ticks_usec()-start,
+		"budget_at_entry_usec":maxi(0,int(context.deadline_usec)-start)}
+	return results
+
+
 func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 	var started_usec: int = Time.get_ticks_usec()
 	# Charge immutable byte capture once to the presentation frame consuming
@@ -4183,6 +4219,9 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			var slot: int = (offset+_workbench_presentation_turn) % bridge._members.size()
 			admission_order.append(slot)
 		_workbench_presentation_turn = (_workbench_presentation_turn+1) % maxi(bridge._members.size(),1)
+		var initial_water: Dictionary = _initial_workbench_water_coverage(frame,resolved,summary,bridge,admission_order) \
+			if paused and _workbench_presentation_state.is_empty() else {}
+		var no_coverage: Dictionary = {}
 		for slot: int in admission_order:
 			var member: Dictionary = bridge._members[slot]
 			var entry: Dictionary = frame.instances.get(int(member.instance_id),{})
@@ -4216,6 +4255,9 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					or previous.get("generation",member.generation) != member.generation:
 				previous = {}
 			var initial: bool = previous.is_empty()
+			var first_coverage: Dictionary = no_coverage
+			if initial and initial_water.has(slot) and initial_water[slot].pose == desired and bound == desired:
+				first_coverage = initial_water[slot].coverage
 			resolved.timeline_resets[slot] = initial
 			var anchor: Transform2D = bound if initial else previous.pose
 			var recovering: bool = not initial and int(previous.get("withheld_frames",0)) == 0 \
@@ -4269,7 +4311,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 						# its endpoint; consecutive visible poses require the sweep.
 						var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
 						var water_start: Transform2D = desired if initial or water_reentry else anchor
-						var water_check: Dictionary = _assess_workbench_water_sweep(slot,water_start,
+						var water_check: Dictionary = first_coverage if not first_coverage.is_empty() else _assess_workbench_water_sweep(slot,water_start,
 							desired,bridge._rects[slot],resolved,summary)
 						decision = water_check
 						if bool(water_check.safe):
@@ -4288,7 +4330,9 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 				# material behind that state cannot invalidate elapsed motion.
 				if decision.is_empty():
 					if recovering: resolved.recovery_attempts[slot] += 1
-					decision = _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
+					# A rejected Water-compatible check on the same endpoint cannot
+					# justify an empty-only fallback. Never repeat that refusal.
+					decision = first_coverage if not first_coverage.get("safe",true) else _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
 			if bool(decision.safe):
 				selected = target
 				selected_step = target_step
@@ -4338,7 +4382,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 				if selected == null and bound_can_advance and reason != "rapier_step_regressed":
 					var reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
 					var bound_start: Transform2D = bound if initial or reentry else anchor
-					var bound_check: Dictionary = _assess_workbench_presented_sweep(bound_start,bound,bridge._rects[slot],resolved,summary)
+					var bound_check: Dictionary = first_coverage if not first_coverage.get("safe",true) else _assess_workbench_presented_sweep(bound_start,bound,bridge._rects[slot],resolved,summary)
 					if bool(bound_check.safe):
 						selected = bound
 						selected_step = bound_step

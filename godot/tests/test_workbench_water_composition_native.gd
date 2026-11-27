@@ -80,6 +80,7 @@ func transition_identity(frame: Dictionary, bridge: Variant) -> Dictionary:
 		"reset_receipt":host._actor_reset_receipt,"frame_error":host._workbench_frame_error,
 		"visible_slots":frame.get("poses",{}).keys(),"reasons":frame.get("reasons",{}).duplicate(),
 		"guard":host.workbench_presentation_last.duplicate(),
+		"initial_water_coverage":frame.get("initial_water_coverage",{}).duplicate(),
 		"selection_usec":frame.get("selection_usec",-1),"upload_cache_usec":frame.get("upload_cache_usec",-1)}
 
 func _initialize() -> void:
@@ -636,6 +637,20 @@ func edits_and_lifecycle() -> void:
 	check(restored_step == 0 and restored_manual == 0 and host._workbench_completed_step_usec == 0,
 		"restored initialized presentation has no fabricated physical completion")
 	for ignored: int in range(32): await process_frame
+	if graphical:
+		var first_work: Dictionary = {}
+		for observation: Dictionary in transition_observations:
+			if observation.frame_valid and observation.frame_world==host.last_uploaded_world_generation \
+					and observation.session==host.physical_actor_session.bridge._session \
+					and not observation.initial_water_coverage.is_empty():
+				first_work = observation.initial_water_coverage
+				break
+		var cells: int = first_work.get("cells",-1)
+		var time_left: int = first_work.get("budget_at_entry_usec",-1)
+		check(first_work.get("members",0)==host.physical_actor_session.bridge._members.size() \
+			and cells >= 0 and cells <= host.PRESENTATION_FRAME_SCAN_BUDGET \
+			and time_left >= 0 and time_left <= host.PRESENTATION_FRAME_TIME_BUDGET_USEC,
+			"first accepted restored owner records its bounded initial footprint work")
 	for slot: int in range(host.physical_actor_session.bridge._members.size()):
 		check(int(omitted_by_stage.get(stage+":"+str(slot),0)) == 0,
 			"restored paused owner keeps actual member "+str(slot)+" visible")

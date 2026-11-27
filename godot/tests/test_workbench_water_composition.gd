@@ -372,6 +372,47 @@ func coverage_cache_checks() -> void:
 	context.deadline_usec = Time.get_ticks_usec()+100000
 	check(not app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary).safe,
 		"live current Sand over previous Water still fails the actual sweep")
+	# Mount just the first-owner geometry seam. This synthetic CPU case does
+	# not authorize any native dependency, pose, draw or new physical step.
+	var shell := Control.new()
+	app.shared_workbench = shell
+	bridge._initialized = true
+	bridge._transforms.append(pose)
+	app._workbench_sample_identity = [bridge._session,bridge._epoch]
+	app._workbench_sample_steps[1] = {"serial":1,"step":0}
+	var first_frame := {"session":bridge._session,"epoch":bridge._epoch,"world_generation":app.last_uploaded_world_generation,
+		"revision":app.last_uploaded_revision,"instances":{11:{"generation":7,"pose":pose,"sample":1}}}
+	var order: Array[int] = [0]
+	var early: Dictionary = app._initial_workbench_water_coverage(first_frame,context,summary,bridge,order)
+	check(early.has(0) and not early[0].coverage.safe and context.initial_water_coverage.refusals==1,
+		"the first-owner geometry queue retains an actual Sand refusal")
+	context.deadline_usec = 1
+	var charged: int = summary.cells_examined
+	early = app._initial_workbench_water_coverage(first_frame,context,summary,bridge,order)
+	check(early.has(0) and early[0].coverage.reason=="shared_budget" and summary.cells_examined==charged,
+		"the first-owner check cannot restart an expired clock or spend a second cell budget")
+	for field: String in ["session","world_generation","revision","epoch"]:
+		var foreign: Dictionary = first_frame.duplicate(true)
+		foreign[field] += 1
+		check(app._initial_workbench_water_coverage(foreign,context,summary,bridge,order).is_empty(),
+			"no early footprint check for a foreign "+field)
+	for bad_entry: Variant in [null,{},{"generation":8,"pose":pose,"sample":1},
+			{"generation":7,"pose":"invalid","sample":1},{"generation":7,"pose":moved,"sample":1},
+			{"generation":7,"pose":pose,"sample":2}]:
+		var missing: Dictionary = first_frame.duplicate(true)
+		missing.instances[11] = bad_entry
+		check(app._initial_workbench_water_coverage(missing,context,summary,bridge,order).is_empty(),
+			"unknown, foreign or moved member has no early geometry result")
+	app.pending_microscenario_apply = {"serial":2}
+	check(app._initial_workbench_water_coverage(first_frame,context,summary,bridge,order).is_empty(),
+		"a staging old owner cannot precompute replacement clearance")
+	app.pending_microscenario_apply = {}
+	bridge._manual_step_count = 1
+	check(app._initial_workbench_water_coverage(first_frame,context,summary,bridge,order).is_empty(),
+		"a physically progressed owner cannot enter initial coverage")
+	bridge._initialized = false
+	app.shared_workbench = null
+	shell.free()
 	bridge._body_rids.clear()
 	PhysicsServer2D.free_rid(body)
 	app.physical_actor_session = null
