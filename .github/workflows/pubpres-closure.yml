@@ -410,6 +410,9 @@ jobs:
       - name: Registered observer calibrations and six-arm architecture comparison
         if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') != ''
         run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded
+      - name: Registered Water-off comparison after an isolated Water-on failure
+        if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') == '' && hashFiles('build/closure-windows/application/WATER-OFF-ADMITTED.json') != ''
+        run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --water-off-fallback --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded-water-off
       - name: Assemble source-exact qualified selected and fallback Workbench
         id: package
         if: always() && matrix.lane != 'comparison' && steps.prepare.outcome == 'success' && steps.placement.outcome == 'success' && steps.application.outcome == 'success'
