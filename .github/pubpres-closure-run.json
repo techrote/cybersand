@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "full",
-  "purpose": "Build exact final runtimes after fixing paused multipart placement and authored save precision. Exercise accepted-frame input, Water and native authority on both platforms, matched physical progression and sustained owner sessions, then run the actually shipped CMDs and fresh-process authoring from the extracted Windows archive.",
+  "phase": "windows-focus",
+  "purpose": "Resolve the Windows blank startup timeout using the explicitly 512-square held-pointer fixture, actual pending-owner diagnostics, three independent Build02 submission gates and the verified source-equivalent original 88bb Windows runtime.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "5b967542703a133b2d7665000f3653e049f0664c5389e844d9cf169f3d3d9ea5",
+  "payload_sha256": "de5579dbf7d82ad5c5507c80083801d226a3d0c1356f4673d66f01efe6afe3eb",
   "physical_acceptance": "HOLD"
 }
