@@ -1,0 +1,304 @@
+{
+  "schema": 1,
+  "product": "8c4a0ea6f8d3a1969282c583a4b811973afb7834",
+  "tree": "d0d9dfb0dc0b823f8e0b2dce70c8073a66c1e13a",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "fixture_sha256": "87eb75e0b621ce351240c05245ec1b95c4c9eabb1893c6744ad2f706501145e0",
+  "scope": "Paused actor-free Current/FreeMass resident Worlds. Native reciprocal preview from a programmatic caller behind the disabled Areas entry, explicit Apply and Undo refusal, default material-law and demo refusal on active A and B, dirty accepted paint, retained return, durable Save, separate-process restore. Each cell digest is SHA256 of Godot var_to_bytes for the full 512x512 native PackedInt32Array. Each history digest is SHA256 of the actual JSON-encoded Workbench edits.",
+  "reproduction": {
+    "script": "resident_review.gd",
+    "engine_arguments": [
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "<product>/godot",
+      "--rendering-method",
+      "gl_compatibility",
+      "--max-fps",
+      "60",
+      "--script",
+      "<fixture>",
+      "--",
+      "--persistent-test-mode=<write then reopen>",
+      "--persistent-evidence=<existing empty evidence directory>",
+      "--persistent-profile=<same initially empty directory in both processes>",
+      "--persistent-start-paused"
+    ],
+    "windows_extra": [
+      "--rendering-driver",
+      "opengl3_angle"
+    ],
+    "windows_extra_position": "before --script",
+    "linux_display": "xvfb-run -a",
+    "profile": "separate clean APPDATA/LOCALAPPDATA or XDG_DATA_HOME/XDG_CONFIG_HOME/XDG_CACHE_HOME per target"
+  },
+  "platforms": {
+    "windows": {
+      "display": "Windows",
+      "driver": "TITAN RTX ANGLE",
+      "runtime_source": "3f03eb3c49a4cbe2e7a5a99b7ddaf4c666a86e48",
+      "native_inputs": 114,
+      "native_sha256": "98a12da827dce45fba42ea235cc32bdd7994d1bc8225ec367fb77559fa9dd003",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "generator": {
+        "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+        "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+      },
+      "phases": {
+        "write": {
+          "checks": 94,
+          "pid": 38700,
+          "stdout_sha256": "5776912e51ccea8e0c7a34443a9c3eb6f4e6c22d4b00105cfce3dc10ed6abc28",
+          "raw_receipt_sha256": "eb45dcf14d8b20bd02ff3b6e321c01d722c651be298dee165eaf5c2813e18c05"
+        },
+        "reopen": {
+          "checks": 27,
+          "pid": 37636,
+          "stdout_sha256": "bf06c83928a3f304c68508085889a912998294ed2a19b7474ac75b789a49ea59",
+          "raw_receipt_sha256": "0df51216871e78e3cdda29d693704fe82bc4f76d4b4f3c91238bd539c336151b"
+        }
+      },
+      "observed_states": {
+        "after_refused": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 5,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 6
+        },
+        "b": {
+          "area": "b",
+          "authoring_generation": 1,
+          "digest": "1a9fdfc19a0340f7cecb797741bdb48376caed7b6fb17cb622ffbcc5b05c13ec",
+          "generation": 6,
+          "history": "723418083ee231f1c16c6bffd22bbc25421e0b6ba20534d6eda384556844551b",
+          "occupied": 70924,
+          "revision": 7
+        },
+        "b_refused": {
+          "area": "b",
+          "authoring_generation": 1,
+          "digest": "1a9fdfc19a0340f7cecb797741bdb48376caed7b6fb17cb622ffbcc5b05c13ec",
+          "generation": 6,
+          "history": "723418083ee231f1c16c6bffd22bbc25421e0b6ba20534d6eda384556844551b",
+          "occupied": 70924,
+          "revision": 7
+        },
+        "dirty": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 5,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 6
+        },
+        "pristine": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "60255214733ef9e9aa329935a802aae09e325c33b0da3eab8e2ec54d161e29d0",
+          "generation": 5,
+          "history": "8c4a7d22833f7e36bff284a6258d5cc63dd7006a25cc93f9dba2919460735220",
+          "occupied": 74624,
+          "revision": 5
+        },
+        "returned_a": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 7,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 8
+        },
+        "saved": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 7,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 8
+        },
+        "reopened_a": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 3,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 3
+        },
+        "reopened_b": {
+          "area": "b",
+          "authoring_generation": 1,
+          "digest": "1a9fdfc19a0340f7cecb797741bdb48376caed7b6fb17cb622ffbcc5b05c13ec",
+          "generation": 4,
+          "history": "723418083ee231f1c16c6bffd22bbc25421e0b6ba20534d6eda384556844551b",
+          "occupied": 70924,
+          "revision": 4
+        }
+      },
+      "hot_handoffs": 1,
+      "preview_cells": 4001,
+      "preview_status": "Native proposal accepted for Apply \u00b7 4001 material cells \u00b7 8 joint witnesses \u00b7 round_cap",
+      "button": {
+        "disabled": true,
+        "tooltip": "Outside this persistent-area profile. Open the ordinary Workbench for actors, host sources, solver changes and replacement starts."
+      },
+      "material": {
+        "demo": {
+          "error": "Refused \u00b7 This fixed persistent-area profile admits material edits, Art, Flatten and editor/camera travel. Native replacement, solver changes, actors and host emitters require the ordinary Workbench.",
+          "ok": false
+        },
+        "request": {
+          "accepted": false,
+          "code": "owner_unavailable",
+          "error": "Persistent areas retain the default material laws. Open the ordinary Workbench to audition a profile.",
+          "ok": false,
+          "status": "refused"
+        }
+      },
+      "reciprocal_apply": "Refused \u00b7 This fixed persistent-area profile admits material edits, Art, Flatten and editor/camera travel. Native replacement, solver changes, actors and host emitters require the ordinary Workbench."
+    },
+    "linux": {
+      "display": "X11",
+      "driver": "Xvfb Mesa llvmpipe",
+      "runtime_source": "3f03eb3c49a4cbe2e7a5a99b7ddaf4c666a86e48",
+      "native_inputs": 114,
+      "native_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "generator": {
+        "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+        "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+      },
+      "phases": {
+        "write": {
+          "checks": 94,
+          "pid": 3493,
+          "stdout_sha256": "c8cafd6864669e71ead43526417e63bf5b82929d7efbc0297bd9e13568f9b598",
+          "raw_receipt_sha256": "89eff38f6d957dfffbd889cfe27b5c028fe6d3586d5151b0567f6f202dc9f6f8"
+        },
+        "reopen": {
+          "checks": 27,
+          "pid": 4201,
+          "stdout_sha256": "7ece65186b2cf2eea765572abaf329d78d78cb7134c26229ec6612be28357d20",
+          "raw_receipt_sha256": "4dc28c7270fedf79ed938d3b2d34c230ef95d3e0d15686dc4ab9ed47dbe399d1"
+        }
+      },
+      "observed_states": {
+        "after_refused": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 5,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 6
+        },
+        "b": {
+          "area": "b",
+          "authoring_generation": 1,
+          "digest": "1a9fdfc19a0340f7cecb797741bdb48376caed7b6fb17cb622ffbcc5b05c13ec",
+          "generation": 6,
+          "history": "723418083ee231f1c16c6bffd22bbc25421e0b6ba20534d6eda384556844551b",
+          "occupied": 70924,
+          "revision": 7
+        },
+        "b_refused": {
+          "area": "b",
+          "authoring_generation": 1,
+          "digest": "1a9fdfc19a0340f7cecb797741bdb48376caed7b6fb17cb622ffbcc5b05c13ec",
+          "generation": 6,
+          "history": "723418083ee231f1c16c6bffd22bbc25421e0b6ba20534d6eda384556844551b",
+          "occupied": 70924,
+          "revision": 7
+        },
+        "dirty": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 5,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 6
+        },
+        "pristine": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "60255214733ef9e9aa329935a802aae09e325c33b0da3eab8e2ec54d161e29d0",
+          "generation": 5,
+          "history": "8c4a7d22833f7e36bff284a6258d5cc63dd7006a25cc93f9dba2919460735220",
+          "occupied": 74624,
+          "revision": 5
+        },
+        "returned_a": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 7,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 8
+        },
+        "saved": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 7,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 8
+        },
+        "reopened_a": {
+          "area": "a",
+          "authoring_generation": 1,
+          "digest": "0879da009e4c311845d09d2351089c0cd8caed210b07213c7d3c2fe9b72456ff",
+          "generation": 3,
+          "history": "526d75795f5dd384002b37b2f906e2125a4458cf6a9837bd142bb23d60f158d5",
+          "occupied": 74737,
+          "revision": 3
+        },
+        "reopened_b": {
+          "area": "b",
+          "authoring_generation": 1,
+          "digest": "1a9fdfc19a0340f7cecb797741bdb48376caed7b6fb17cb622ffbcc5b05c13ec",
+          "generation": 4,
+          "history": "723418083ee231f1c16c6bffd22bbc25421e0b6ba20534d6eda384556844551b",
+          "occupied": 70924,
+          "revision": 4
+        }
+      },
+      "hot_handoffs": 1,
+      "preview_cells": 4001,
+      "preview_status": "Native proposal accepted for Apply \u00b7 4001 material cells \u00b7 8 joint witnesses \u00b7 round_cap",
+      "button": {
+        "disabled": true,
+        "tooltip": "Outside this persistent-area profile. Open the ordinary Workbench for actors, host sources, solver changes and replacement starts."
+      },
+      "material": {
+        "demo": {
+          "error": "Refused \u00b7 This fixed persistent-area profile admits material edits, Art, Flatten and editor/camera travel. Native replacement, solver changes, actors and host emitters require the ordinary Workbench.",
+          "ok": false
+        },
+        "request": {
+          "accepted": false,
+          "code": "owner_unavailable",
+          "error": "Persistent areas retain the default material laws. Open the ordinary Workbench to audition a profile.",
+          "ok": false,
+          "status": "refused"
+        }
+      },
+      "reciprocal_apply": "Refused \u00b7 This fixed persistent-area profile admits material edits, Art, Flatten and editor/camera travel. Native replacement, solver changes, actors and host emitters require the ordinary Workbench."
+    }
+  },
+  "earlier_probe_observations": [
+    "An earlier Windows diagnostic addressed a HOT I/O counter via status() instead of evidence() after the A to B to A return. The probe correction does not change product source.",
+    "A first WSL mounted-NTFS X11 run reached durable native preparation but exceeded the diagnostic's initial 90-second opening window. The final local runs use the original registered Areas 180-second startup allowance. No HOT or cold timing acceptance is claimed.",
+    "An intermediate diagnostic edit misencoded the ellipsis in the button label. The final fixture matches the exact Unicode label and checks both live disabled state and tooltip."
+  ],
+  "result": "passed",
+  "executed_fixture_file_sha256": "2065922b363639b56da5d697bc4b466cb4a6f80df48994c794ee780a51ab3b52"
+}
