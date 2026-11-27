@@ -142,4 +142,3 @@ the whole resulting architecture improves real physical progression against
 current accepted main. Presentation freshness remains governed by the separate
 calibrated same-source architecture cohort. It cannot infer unavailable N pose
 ages or physical input-to-visible latency.
-
