@@ -158,12 +158,18 @@ func _exercise() -> void:
 	var patrol := seconds > COMPARISON_SECONDS
 	var held := {}
 	var airborne_draws := 0
+	var last_camera := Vector2.INF
+	var camera_travel := 0.0
+	var camera_moved_draws := 0
 	while Time.get_ticks_usec()-began < seconds * 1000000:
 		var next_phase := int((Time.get_ticks_usec()-began)/2500000)%4
 		if patrol:
 			# Fly a repeating course above the authored platform. Use only
 			# ordinary keyboard edges; never set a pose or velocity.
-			var goal := start.origin + Vector2(32.0 if next_phase < 2 else -32.0, -24.0 if next_phase % 2 == 0 else -44.0)
+			# Cross the camera's left clamp on each lap at the launcher's
+			# ordinary zoom. A centred course near spawn can fly while the
+			# entire 480-cell viewport stays pinned to the World boundary.
+			var goal := start.origin + Vector2(110.0 if next_phase < 2 else -12.0, -8.0 if next_phase % 2 == 0 else -36.0)
 			var lead: Vector2 = prior.origin + session.bridge.body_linear_velocity(slot) * 0.65
 			# A/D turn the Needle; Q/E translate with its side jets and
 			# C holds its authored upright assist. W counters gravity.
@@ -183,6 +189,12 @@ func _exercise() -> void:
 		if pose.origin.y > 40 and pose.origin.y < start.origin.y + 20:
 			airborne_draws += 1
 		var frame: Dictionary = app.workbench_presentation_frame
+		var camera: Vector2 = frame.camera_origin
+		if last_camera.is_finite():
+			var pan := camera.distance_to(last_camera)
+			camera_travel += pan
+			if pan > 0.05: camera_moved_draws += 1
+		last_camera = camera
 		var presented: Variant = frame.get("poses",{}).get(slot)
 		var source: String = str(frame.get("sources",{}).get(slot,"missing"))
 		var reason: String = str(frame.get("reasons",{}).get(slot,frame.get("reason","missing")))
@@ -200,7 +212,7 @@ func _exercise() -> void:
 			dry = _entirely_dry(last_visible,pose,session.bridge._rects[slot],frame)
 			if dry: dry_hidden += 1
 		var guard: Dictionary = app.workbench_presentation_last
-		samples.append({"time_usec":now,"tick":session.tick,"position":[pose.origin.x,pose.origin.y],
+		samples.append({"time_usec":now,"tick":session.tick,"position":[pose.origin.x,pose.origin.y],"camera_xy":[camera.x,camera.y],
 			"visible":presented is Transform2D,"dry_if_hidden":dry,"reason":reason,"source":source,
 			"upload":frame.get("upload_serial",-1),"cache_usec":frame.get("upload_cache_usec",-1),
 			"dry_region_status":frame.get("dry_region_status","unavailable"),"patch_count":frame.get("patch_count",-1),
@@ -224,7 +236,8 @@ func _exercise() -> void:
 		step_ok = step_ok and not ui.step_pending and session.tick == paused_step+1
 	var report := {"scene":scene_name,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"elapsed_usec":elapsed,"physical_steps":steps,"flight_seconds_per_wall_second":steps/60.0/(elapsed/1000000.0),
-		"travel_cells":travel,"moved_draws":moved_draws,"sampled_draws":samples.size(),"hidden_draws":hidden,
+		"travel_cells":travel,"moved_draws":moved_draws,"camera_travel_cells":camera_travel,"camera_moved_draws":camera_moved_draws,
+		"sampled_draws":samples.size(),"hidden_draws":hidden,
 		"conservatively_dry_hidden":dry_hidden,"invalid_frames":invalid_frames,"sources":source_counts,"reasons":reasons,
 		"native_tick":app.latest_snapshot.tick_index,"timed_start_usec":began,
 		"held_callbacks_serviced":app.get("_serviced_flight_callbacks"),
@@ -236,5 +249,6 @@ func _exercise() -> void:
 	out.store_string(JSON.stringify(report))
 	out.close()
 	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0
-		and (not patrol or (hidden == 0 and moved_draws > samples.size()*0.75 and airborne_draws > samples.size()*0.9))
+		and (not patrol or (hidden == 0 and camera_travel > 32.0 and camera_moved_draws > samples.size()*0.1
+			and moved_draws > samples.size()*0.75 and airborne_draws > samples.size()*0.9))
 		and pause_ok and step_ok and (not pixels_requested or not pixels.is_empty()) else 1)
