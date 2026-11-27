@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "full",
-  "purpose": "Qualify native and graphical owner transitions, compare completed physics on matched N/C and Safe/Separate arms, exercise four five-minute owner sessions using the shipped launcher settings, and run the extracted Windows evaluator",
+  "phase": "linux-replay",
+  "purpose": "Resume the original hosted Linux application, frozen inventory, Water, multipart and matched physical progression with exact 46022262388 attempt 1 assets after preserving the committed helper executable mode.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "36c12b889203f3cbc27014cafb426825ff99ca308507d22bb54b10cb0f5178ad",
+  "payload_sha256": "a8cfd5e7a9d5cd5b4f05a61f9df13da695eb6c1308f5cb541f7df2ad39f0cf47",
   "physical_acceptance": "HOLD"
 }
