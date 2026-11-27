@@ -4656,8 +4656,8 @@ func _submit_workbench_presentation_frame() -> void:
 	var resolved: Dictionary = workbench_presentation_frame
 	if shared_workbench.actor_interaction != null:
 		shared_workbench.actor_interaction.present_mapping(resolved.screen_transform.affine_inverse() * resolved.camera_mapping)
-	physical_actor_overlay.set_water_composition(resolved.get("water_composition",{}))
-	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect)
+	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect,
+		resolved.get("water_composition",{}))
 	if _owner_gameplay != null and not _workbench_submission_preparing:
 		_owner_gameplay.presentation(self,resolved,"stock_overlay_applied")
 	if not _workbench_submission_preparing and workbench_pose_trace.active and physical_actor_session != null:

@@ -21,17 +21,22 @@ func _ready() -> void:
 	clip_contents = true
 
 
-func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2) -> void:
+func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2, water_state: Variant = null) -> void:
 	_parts = parts.duplicate(true)
 	_origin = origin
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
-	if not _is_water_layer and _water_layer != null and not _water_state.is_empty():
-		var water_parts: Array = []
+	var water_parts: Array = []
+	if not _is_water_layer and (not _water_state.is_empty() or (water_state is Dictionary and not water_state.is_empty())):
 		for part: Dictionary in _parts:
-			if part.get("water_composed", false): water_parts.append(part)
+			if part.get("water_composed", false) and _may_draw_part(part): water_parts.append(part)
+	if water_state is Dictionary:
+		# Bind only for this submission's drawable Water parts. A camera change
+		# re-evaluates them against its own mapping before any polygon is drawn.
+		set_water_composition(water_state if not water_parts.is_empty() else {})
+	if not _is_water_layer and _water_layer != null and not _water_state.is_empty():
 		_water_layer.outlines = outlines
 		var shader: ShaderMaterial = _water_layer.material
 		shader.set_shader_parameter("world_origin", _origin)
@@ -147,6 +152,27 @@ func _point(world: Vector2) -> Vector2:
 	return (world - _origin) * size / _view_size
 
 
+# Conservative overlay-local raster bounds. Labels, source and equipment
+# markers have their own draw paths and keep using the full accepted part list.
+func _may_draw_part(part: Dictionary) -> bool:
+	if not clip_contents: return true
+	if _view_size.x <= 0 or _view_size.y <= 0 or size.x <= 0 or size.y <= 0: return false
+	var pose: Transform2D = part.transform
+	var half: Vector2 = Vector2(part.size).abs() * 0.5
+	if str(part.get("shape","rectangle")) == "circle": half = Vector2.ONE * half.x
+	var scale_px := size / _view_size
+	var centre := _point(pose.origin)
+	var radius := (pose.x.abs() * half.x + pose.y.abs() * half.y) * scale_px
+	if part.get("markings","") == "science":
+		# This particular arc uses horizontal pixel scale on both axes.
+		radius = radius.max(Vector2.ONE * (minf(half.x,half.y) * 0.65 * scale_px.x))
+	# The longest live flight cue extends 10 pixels from the centre. Wide
+	# markings and antialiasing may reach beyond the geometric footprint.
+	if bool(part.get("flight_live",false)): radius = radius.max(Vector2(10,10))
+	radius += Vector2(3,3)
+	return Rect2(centre - radius, 2.0 * radius).intersects(Rect2(Vector2.ZERO, size), true)
+
+
 func _draw_markings(part: Dictionary) -> void:
 	var pose: Transform2D = part.transform
 	var half: Vector2 = Vector2(part.size)*0.5
@@ -178,7 +204,7 @@ func _draw() -> void:
 		draw_polyline(outline,Color("80e9d1"),1.0)
 	if not equipment_markers.is_empty(): _draw_equipment()
 	for part: Dictionary in _parts:
-		if not _is_water_layer and part.get("water_composed", false): continue
+		if not _is_water_layer and (part.get("water_composed", false) or not _may_draw_part(part)): continue
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color
 		draw_colored_polygon(vertices, color.darkened(0.18))
