@@ -26,6 +26,16 @@ $script:PFSchema='pubpres-playability-recovery-windows-v1'
 $script:PFPatchedSha='d6a1e5795205eb7968131df55f39916af112f716ec419fce5f97ccb48990fd45'
 $script:PFSelectionPath=Join-Path $PSScriptRoot 'selection.json'
 
+function Test-PFFlatRecord($Actual,$Expected) {
+    if($null -eq $Actual -or $null -eq $Expected -or @($Actual.PSObject.Properties).Count -ne @($Expected.PSObject.Properties).Count) { return $false }
+    foreach($Entry in $Expected.PSObject.Properties) {
+        $Observed=$Actual.PSObject.Properties[$Entry.Name]
+        if($null -eq $Observed -or $Observed.Name -cne $Entry.Name -or
+            (ConvertTo-Json -InputObject $Observed.Value -Compress) -cne (ConvertTo-Json -InputObject $Entry.Value -Compress)) { return $false }
+    }
+    return $true
+}
+
 function Get-PFRecoverySelection {
     $Selection=Read-PPJson $script:PFSelectionPath
     $Architectures=@('stock_safe','atomic_safe0','atomic_separate0','atomic_separate4')
@@ -91,7 +101,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Defaults.render_thread -ceq $SelectedConfiguration.render_thread -and $Defaults.material -ceq 'full' -and $Defaults.full_image_slots -eq 2 -and
         $Defaults.same_frame_continuation -ceq 'off' -and $Defaults.scene -ceq 'ordinary') 'Ordinary default selectors differ'
     $Selection=Get-PFRecoverySelection
-    Assert-PP (($Manifest.recovery_selection|ConvertTo-Json -Depth 8 -Compress) -ceq ($Selection|ConvertTo-Json -Depth 8 -Compress) -and
+    Assert-PP ((Test-PFFlatRecord $Manifest.recovery_selection $Selection) -and
         $Manifest.recovery_selection_sha256 -ceq (Get-PPHash $script:PFSelectionPath) -and
         (Get-PPHash (Join-PPSafe $Root 'tools/pubpres_recovery_windows/selection.json')) -ceq $Manifest.recovery_selection_sha256) 'Source-pinned recovery selection differs'
     $ComparisonNames=@{'Wave 512'='wave512';'Wave 1024'='wave1024';'Wave 2048'='wave2048';'Mixed 2048'='mixed2048'}
@@ -263,7 +273,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         Assert-PP ($Atomic -and $Atomic.root -ceq 'engines/atomic' -and $Atomic.gui.path -ceq 'Godot-PUBPRES-Atomic-4.7.exe' -and
             $Atomic.gui.sha256 -ceq $Pin.gui_sha256 -and $Atomic.provenance_sha256 -ceq $Pin.proof_sha256 -and
             $Atomic.default -eq ($Selection.architecture -cne 'stock_safe') -and
-            ($Atomic.artifact|ConvertTo-Json -Depth 8 -Compress) -ceq ($Pin|ConvertTo-Json -Depth 8 -Compress)) 'Atomic engine role or exact original build02 pin differs'
+            (Test-PFFlatRecord $Atomic.artifact $Pin)) 'Atomic engine role or exact original build02 pin differs'
         $AtomicRoot=Join-PPSafe $Root $Atomic.root
         $ProofPath=Join-PPSafe $AtomicRoot 'build-provenance.json'
         Assert-PP ((Get-PPHash $ProofPath) -ceq $Pin.proof_sha256) 'Atomic original provenance differs'
@@ -297,7 +307,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     Assert-PP ($Gate.schema -ceq 'pubpres-recovery-owner-correctness-v1' -and $Gate.source_commit -ceq $Candidate -and
         $Gate.source_tree -ceq $Manifest.sources.C.source_tree -and $Gate.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and
         $Gate.native_sha256 -ceq $Manifest.sources.C.native.sha256 -and $Gate.physical_acceptance -ceq 'HOLD' -and
-        ($Gate.selection|ConvertTo-Json -Depth 8 -Compress) -ceq ($Selection|ConvertTo-Json -Depth 8 -Compress) -and
+        (Test-PFFlatRecord $Gate.selection $Selection) -and
         $Gate.stock.outcomes -eq 19 -and $Gate.stock.raw_inputs_and_supplemental_replayed -eq $true -and
         $Gate.members.outcomes -eq 4 -and $Gate.members.raw_inputs_and_supplemental_replayed -eq $true -and
         $Gate.native_owner.checks -eq 150 -and $Gate.native_owner.raw_inputs_and_native_receipt_replayed -eq $true) 'Actual Windows correctness, multipart or mounted native ownership custody differs'

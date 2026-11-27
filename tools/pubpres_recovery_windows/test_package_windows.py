@@ -8,6 +8,7 @@ import importlib.util
 import json
 from pathlib import Path
 import shutil
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -17,6 +18,23 @@ import package_windows as package
 spec = importlib.util.spec_from_file_location("frozen_package_tests", package.ROOT / package.LEGACY / "test_package_windows.py")
 fixtures = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(fixtures)
+
+
+class PowerShellManifestTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('powershell') or shutil.which('pwsh'), 'PowerShell is required')
+    def test_flat_policy_equality_checks_typed_fields_in_any_order(self):
+        command = r'''
+            $ErrorActionPreference = 'Stop'
+            . ./Start-PUBPRES-Final.ps1 -Library
+            $policy = [pscustomobject][ordered]@{ architecture='stock_safe'; water=1 }
+            Assert-PP (Test-PFFlatRecord ([pscustomobject][ordered]@{ water=1; architecture='stock_safe' }) $policy) 'Reordering changed policy'
+            foreach($other in @(@{ architecture='stock_safe'; water='1' }, @{ architecture='stock_safe'; water=0 },
+                                  @{ architecture='stock_safe' }, @{ architecture='stock_safe'; water=1; extra=0 })) {
+                Assert-PP (-not (Test-PFFlatRecord ([pscustomobject]$other) $policy)) 'Changed policy accepted'
+            }
+        '''
+        subprocess.run([shutil.which('powershell') or shutil.which('pwsh'), '-NoProfile', '-ExecutionPolicy', 'Bypass',
+                        '-Command', command], cwd=package.ROOT / package.TOOLS, check=True, timeout=30)
 
 
 class FinalPackageTests(unittest.TestCase):
