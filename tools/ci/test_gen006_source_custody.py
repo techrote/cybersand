@@ -94,7 +94,7 @@ class PortableCustodyPaths(unittest.TestCase):
         "tools/ci/run_workbench_qualification.py": 1,
         "tools/package_gen006_persistent_areas.py": 2,
         "tools/package_gen006_ramcache.py": 1,
-        "tools/package_explore001_candidate.py": 1,
+        "tools/package_explore001_candidate.py": 2,
         "tools/package_wave_flow_candidate.py": 1,
     }
     ROOTS = (
@@ -119,6 +119,9 @@ class PortableCustodyPaths(unittest.TestCase):
             calls = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
                      and isinstance(node.func, ast.Attribute) and node.func.attr == "relative_to"]
             self.assertEqual(len(calls), count, relative)
+            if relative == "tools/package_explore001_candidate.py":
+                self.assertEqual({ast.unparse(call) for call in calls},
+                                 {"cli.relative_to(destination)", "p.relative_to(args.output)"})
             for call in calls:
                 attribute = parents.get(call)
                 expression = parents.get(attribute)
@@ -126,13 +129,19 @@ class PortableCustodyPaths(unittest.TestCase):
                 self.assertEqual(attribute.attr, "as_posix", (relative, call.lineno))
                 self.assertIsInstance(expression, ast.Call, (relative, call.lineno))
                 for root in self.ROOTS:
-                    for expected in ("godot/scripts/persistent_area_store.gd", "Folder With Spaces/MixedCase-é.txt"):
+                    for expected in ("godot/scripts/persistent_area_store.gd", "godot/tools/gentek_reciprocal.exe",
+                                     "Folder With Spaces/MixedCase-é.txt"):
                         path = root / expected
-                        namespace = dict(path=path, p=path, ROOT=root, root=root, source_root=root,
+                        namespace = dict(path=path, p=path, cli=path, ROOT=root, root=root, source_root=root,
                             folder=root, output=root, destination=root, project=root/"godot",
                             args=SimpleNamespace(repo=root, output=root), self=SimpleNamespace(output=root))
                         with self.subTest(producer=relative, line=call.lineno, root=str(root), path=expected):
                             self.assertEqual(self.evaluate(expression, namespace), expected)
+                            if isinstance(root, pathlib.PureWindowsPath):
+                                # str(relative_to(...)) would emit a foreign key in the CLI binding and inventory.
+                                native_key = str(self.evaluate(call, namespace))
+                                self.assertEqual(native_key, expected.replace("/", "\\"))
+                                self.assertNotEqual(native_key, expected)
 
     def recovery_identities(self, root):
         tree = self.tree("tools/ci/run_persistent_area_recovery.py")
