@@ -61,6 +61,25 @@ class WaterOffComparisonTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     gate.verify_bounded_inventory(marker, *args, 0)
 
+    def test_relative_timing_requests_replay_the_original_absolute_launch_paths(self):
+        with tempfile.TemporaryDirectory(dir=Path.cwd()) as tmp:
+            directory = Path(tmp).resolve()
+            raw = directory / 'INVENTORY.json'
+            relative = raw.relative_to(Path.cwd().resolve())
+            (directory / (self.failed + '.log')).write_text('original Water failure')
+            raw.write_text(json.dumps(self.report))
+            args = ({'source_commit': self.report['source']}, self.report['driver'], 'stock', 'custom')
+            with patch.object(gate, '_replay_inventory', return_value={'raw': 'verified'}) as replay:
+                marker = directory / gate.WATER_OFF_ADMISSION
+                proof = gate.admit_water_off_comparison(raw, *args)
+                marker.write_text(json.dumps(proof))
+                self.assertEqual(gate.verify_bounded_inventory(relative.with_name(marker.name), *args, 0), proof)
+                replay.assert_called_with(raw, self.report, *args, False)
+                complete = dict(self.report, complete=True)
+                raw.write_text(json.dumps(complete))
+                gate.verify_bounded_inventory(relative, *args, 1)
+                replay.assert_called_with(raw, complete, *args, 1)
+
     def test_source_substitution_and_missing_raw_gate_cannot_create_fallback(self):
         with tempfile.TemporaryDirectory() as tmp:
             raw = Path(tmp) / 'INVENTORY.json'

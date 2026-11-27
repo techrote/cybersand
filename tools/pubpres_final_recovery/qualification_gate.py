@@ -39,7 +39,7 @@ def water_only_failures(report):
 
 
 def admit_water_off_comparison(path, source, driver, stock, custom):
-    path = Path(path)
+    path = Path(path).resolve()
     data = json.loads(path.read_bytes())
     failed = water_only_failures(data)
     need(path.name == 'INVENTORY.json' and failed, 'Water-off timing requires an original Water-only failure')
@@ -164,7 +164,7 @@ def verify_summary(path,source,driver,engine,focus,thread='safe',budget=0):
 
 
 def verify_inventory(path,source,driver,stock,custom,water):
-    path=Path(path); data=json.loads(path.read_bytes())
+    path=Path(path).resolve(); data=json.loads(path.read_bytes())
     need(data.get('complete') is True,'Timed atomic Windows integration requires complete exact hosted correctness')
     return _replay_inventory(path,data,source,driver,stock,custom,water)
 
