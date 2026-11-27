@@ -18,11 +18,17 @@ def main():
     parser.add_argument("--atomic-root", type=Path)
     parser.add_argument("--current-main-source", type=Path)
     parser.add_argument("--display-wrapper", type=Path)
+    parser.add_argument("--conservative", action="store_true",
+                        help="Measure the shipped Stock Safe, Water-composition-off fallback")
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     register = json.loads((HERE / "registration.json").read_bytes())
     selection = json.loads((ROOT / "tools/pubpres_recovery_windows/selection.json").read_bytes())
+    if args.conservative:
+        if args.mode != "current":
+            parser.error("--conservative only measures the fallback against current main")
+        selection = {"architecture": "stock_safe", "water_composition": 0}
     shared = ["--runtime", args.runtime_root / "C", "--stock-engine", args.stock_engine,
               "--water-composition", str(selection["water_composition"])]
     if args.display_wrapper:

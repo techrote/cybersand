@@ -300,6 +300,9 @@ jobs:
       - name: Actual resulting-source stock and atomic Windows application qualification
         id: application
         run: python tools/pubpres_recovery_windows/run_closure_hosted.py --runtime build/runtime/C --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/closure-windows/application
+      - name: Registered observer calibrations and six-arm architecture comparison
+        if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') != ''
+        run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded
       - name: Assemble source-exact qualified selected and fallback Workbench
         id: package
         if: always() && steps.prepare.outcome == 'success'
@@ -371,9 +374,6 @@ jobs:
           git fetch --no-tags origin "$PUBPRES_CURRENT_MAIN"
           git worktree add --detach "$RUNNER_TEMP/pubpres-current-main" "$PUBPRES_CURRENT_MAIN"
           python tools/pubpres_final_recovery/run_closure_comparison.py current --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --current-main-source "$RUNNER_TEMP/pubpres-current-main" --output build/performance/current
-      - name: Registered observer calibrations and six-arm architecture comparison
-        if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') != ''
-        run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -410,3 +410,74 @@ jobs:
           path: build/closure-native/
           retention-days: 90
           if-no-files-found: warn
+
+  comparison-fallback-linux:
+    needs: [plan, runtimes, dependencies]
+    if: needs.plan.outputs.phase == 'full'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PLATFORM: linux
+      PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+      STOCK_EXE: Godot_v4.7-stable_linux.x86_64
+      FROZEN: stock-frozen
+    steps: &fallback-comparison-steps
+      - name: Keep exact committed source bytes
+        shell: bash
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-shared-runtime-${{ env.PLATFORM }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-rapier-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/transport-C
+      - name: Admit exact current-main checkout, Rapier and stock engine
+        shell: bash
+        run: |
+          git fetch --no-tags origin "$PUBPRES_CURRENT_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-current-main" "$PUBPRES_CURRENT_MAIN"
+          rapier="$RAPIER_WINDOWS"
+          if [[ "$PLATFORM" == linux ]]; then
+            rapier="$RAPIER_LINUX"
+            sudo apt-get update -qq
+            sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          fi
+          python tools/ci/lfs_runtime_artifact.py install --root . --include "$rapier" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --artifact build/transport-C --output build/rapier-install
+          python tools/pubpres_playability_build/download_engine.py --platform "$PLATFORM" --output "$RUNNER_TEMP/godot"
+      - name: Original nineteen Stock outcomes and independent Stock Safe fallback N/C/C/N
+        shell: bash
+        run: |
+          display=()
+          if [[ "$PLATFORM" == linux ]]; then display=(--display-wrapper tools/pubpres_playability_build/owned_xvfb.py); fi
+          python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "$RUNNER_TEMP/godot/$STOCK_EXE" --output "build/prerequisite/$FROZEN" --focus frozen "${display[@]}"
+          python tools/pubpres_final_recovery/run_closure_comparison.py current --conservative --runtime-root build/runtime --stock-engine "$RUNNER_TEMP/godot/$STOCK_EXE" --current-main-source "$RUNNER_TEMP/pubpres-current-main" --correctness build/prerequisite --output build/performance "${display[@]}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-fallback-abba-${{ env.PLATFORM }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/prerequisite/
+            build/performance/
+            !build/**/project/**
+            !build/**/projects/**
+            !build/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  comparison-fallback-windows:
+    needs: [plan, runtimes, dependencies]
+    if: needs.plan.outputs.phase == 'full'
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      PLATFORM: windows
+      PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+      STOCK_EXE: Godot_v4.7-stable_win64.exe
+      FROZEN: stock-frozen-correctness
+    steps: *fallback-comparison-steps
