@@ -488,6 +488,7 @@ func _send(command: String, values: Dictionary, kind: String) -> bool:
 	var result: Dictionary = _host.simulation_worker.object_shard_submit_owner_control(command,request)
 	_record_cost("owner_control_admission","queue_admission",admission_started,{"command":command,"scope":"bounded main-to-worker command copy and admission including mutex wait"})
 	if not result.get("ok",false):
+		result["actor_frame_error"] = _host._workbench_frame_error
 		_hold("WorkerControlAdmissionRefused",result)
 		return false
 	_pending_serial = int(result.serial)

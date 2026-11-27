@@ -1782,6 +1782,16 @@ func object_shard_submit_owner_control(command: String, values: Dictionary) -> D
 			"completion_effects":completion_effects})
 	var ticket: Dictionary = {"ok":valid,"outcome":"M4ControlQueued" if valid else "M4OwnerOrCapacityRefused",
 		"serial":_m4_serial if valid else 0}
+	if not valid:
+		var state: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
+		ticket["command"] = command
+		ticket["requested_lease"] = values.get("motion_lease",-1)
+		ticket["owner_lease"] = _m4_motion_lease
+		ticket["requested_sample"] = values.get("workbench_sample_serial",-1)
+		ticket["installed_sample"] = int(state[10]) if state.size()>10 else -1
+		ticket["tick_due"] = _m4_interval_tick_due
+		ticket["owner_hold"] = _m4_held
+		ticket["queued_or_unread"] = [_m4_control_queue.size(),_m4_control_results.size()]
 	_mutex.unlock()
 	return ticket
 
