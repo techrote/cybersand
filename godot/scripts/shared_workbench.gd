@@ -67,6 +67,7 @@ var _pilot_returns: Dictionary = {}
 var _roster_models: Array[String] = []
 var _model_ids: Array[String] = []
 var _actor_panel: Window
+var _actor_configuration_button: Button
 var _ambient_profile_editor: Window
 var _ambient_overlay: Control
 var _ambient_overlay_id := 0
@@ -271,7 +272,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
-	_button(row,"Configuration…",open_actor_composition)
+	_actor_configuration_button = _button(row,"Configuration…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
 	if not host.has_method(&"persistent_operation_allowed"): _button(row,"Structures…",open_object_shard_controls)
 	_button(row,"Batch Lab…",open_batch_lab)
@@ -458,6 +459,9 @@ func open_architecture_lab() -> void:
 
 
 func open_actor_composition() -> void:
+	if is_instance_valid(_actor_configuration_button) and _actor_configuration_button.disabled:
+		refuse(_actor_configuration_button.tooltip_text)
+		return
 	_cancel()
 	if not is_instance_valid(_actor_panel):
 		_actor_panel = preload("res://scripts/workbench_actor_panel.gd").new()

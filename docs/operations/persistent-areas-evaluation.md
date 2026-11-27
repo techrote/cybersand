@@ -4,13 +4,13 @@ status: Current
 document-kind: runbook
 scope: Opt-in GEN-006 three-area controls, Windows evaluation, isolated profiles, expected observations and failure capture
 canonical-for: [persistent-areas-owner-evaluation]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-27
 related-documents: [../systems/persistent-authored-areas.md, ../audits/2026-11-21-gen006-persistent-areas.md, ../reference/level-saves-and-replay.md]
 ---
 
 # Persistent areas desktop evaluation
 
-This is an experimental Draft/HOLD implementation of [#591](https://github.com/techrote/cybersand/issues/591).
+This guide covers the original experimental three-area implementation of [#591](https://github.com/techrote/cybersand/issues/591).
 It keeps three authored native areas and their completed game time. General
 streaming, arbitrary chunk eviction, cross-area fluids and universal actor
 persistence in [#194](https://github.com/techrote/cybersand/issues/194) remain
@@ -18,11 +18,9 @@ outside this milestone. The [qualification ledger](../audits/2026-11-21-gen006-p
 records actual tested source, platform and package identities; this procedure
 does not itself establish a platform PASS.
 
-For the stacked RAM-cache evaluator in [Draft PR #734](https://github.com/techrote/cybersand/pull/734),
-use the [RAM cache owner guide](persistent-area-ramcache-evaluation.md) for cache budgets,
-strict/deferred durability, predictive preparation and failed-area recovery. The
-November 21 ledger retains the original #725 measurements; it is not current cache
-performance evidence.
+For the integrated Workbench launcher or the standalone RAMCACHE evaluator from [#745](https://github.com/techrote/cybersand/pull/745),
+use the [RAM cache owner guide](persistent-area-ramcache-evaluation.md). It covers profile locations, cache budgets,
+strict and deferred durability, predictive preparation and failed-area recovery. The November 21 ledger records the original #725 measurements.
 
 ## Launch and profile isolation
 

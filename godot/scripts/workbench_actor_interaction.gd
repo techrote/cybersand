@@ -31,8 +31,12 @@ func mode() -> String:
 
 func set_mode(value: String) -> void:
 	if value not in ["paint","grab","place"]: return
+	var tool: int = {"paint":0,"grab":GRAB_TOOL,"place":PLACE_TOOL}[value]
+	if bench._tool.is_item_disabled(tool):
+		bench.refuse(bench._tool.get_item_tooltip(tool))
+		return
 	bench._cancel()
-	bench._tool.select({"paint":0,"grab":GRAB_TOOL,"place":PLACE_TOOL}[value])
+	bench._tool.select(tool)
 	bench.message = {"paint":"Paint · Brush and Eraser work during Play; precise tools require Pause.",
 		"grab":"Live grab · Play, then drag a physical part. Release anywhere or Escape to let go.",
 		"place":"Place / rotate · Pause, drag an actor, Q/E rotate, arrows nudge, Shift for fine adjustment, Escape cancels."}[value]
