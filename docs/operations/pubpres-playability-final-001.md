@@ -20,7 +20,12 @@ Frozen predecessors, their negative
 results and unrelated programmes retain their ownership. **Draft/HOLD: no merge,
 Ready, automatic default promotion or release.**
 
-The [consolidated Workbench checkpoint](../audits/2026-11-27-pubpres-definitive.md) records the accepted-main join, World input transition and ordinary interaction changes.
+The standalone Windows evaluator at `00478f29b` uses official Godot Stock Safe,
+Full two-slot material publication, Water composition and all-worker native
+completion. The fallback launcher runs the same engine with Water composition off.
+The [qualification and owner instructions](../audits/2026-11-27-pubpres-definitive.md)
+include the download, exact runtime hashes, matched physical-step comparisons,
+moving-body framebuffer results and outstanding latency and physical-display gates.
 
 ## Objective and established constraints
 

@@ -26,6 +26,13 @@ all 2,259 dependency entries by content. Five native files changed and the
 candidate adds the persistent worker pool header. [Windows runtime receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223540829)
 · [Linux runtime receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223746130)
 
+The principal branch subsequently published the guarded runtime and
+provenance, improved the test-only Water submission witness, and repaired
+the comparison evidence path. The delivered ZIP retains the qualified
+application, engines, native inputs and launch policy at `00478f29b`.
+Normal and ASan/UBSan native runs reproduced all 1,416 one/four-worker
+checkpoints. [Native, Wave, material and sanitizer evidence](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225760841)
+
 The selected Windows Water replay passed 207 checks, with 16,972 composed
 member observations and zero withheld members across 4,854 draws. All
 four bodies appeared in the first restored frame and all six Runner members
@@ -65,6 +72,44 @@ host. All eleven non-Water groups passed and the original evidence reader
 issued a separate Water-off admission. A relative evidence directory then
 failed to match the recorded absolute Windows process path before any timing
 arm began. [Original failed Water group, non-Water admission and process records](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15227742439)
+
+### Renderer selection
+
+**Select official Stock Safe with Water composition.** A fresh Windows host
+reproduced the original Water-off admission, completed all 16 observer
+calibration captures and then ran the six registered arms at both sizes.
+The same Water-off setting applied to every arm. The original reducer refused
+both cross-engine comparisons at the exact serialized body-trajectory hash.
+The first difference at step 18 was the x coordinate `200.002075195313`
+versus `200.002075195312`. Independent replay found the same binary32
+position and velocity words and identical other body fields and inputs at
+all 144 steps in all six arms per world. The two Windows engines both use
+single-precision vectors. The original refused result remains in the artifact.
+[Registered timing, calibration and immutable raw receipts](https://github.com/techrote/cybersand/actions/runs/46060454634/artifacts/15229833054)
+· [Build02 provenance and precision](https://github.com/techrote/cybersand/actions/runs/45716469250/artifacts/15072815424)
+
+Rates are completed physical steps/s over the first 144 steps, including
+the interval from capture start to the first completion.
+
+| Windows, Water off | Stock Safe | Separate0 | Separate4 | Separate4 | Separate0 | Stock Safe |
+|---|---:|---:|---:|---:|---:|---:|
+| Wave512 | 16.98 | 9.41 | 9.46 | 9.59 | 9.54 | 16.51 |
+| Wave2048 | 5.11 | 5.90 | 5.99 | 5.96 | 5.71 | 4.76 |
+
+Separate4 executed 5/2 deferred opportunities on Wave512 and 7/11 on
+Wave2048 in its two repetitions. It failed the registered improvement
+criteria against both controls at both sizes on independent numerical
+readback. At 2048 its physical gap p95 was 309/352 ms versus Separate0's
+228/343 ms. At 512 its submitted material age p95 rose to 307/302 ms
+versus 159/159 ms on Stock. All 12 framebuffer pairs changed, with
+114,281–123,530 changed pixels on Wave512 and 712,033–720,164 on Wave2048.
+These are hosted CPU-completion, submission and framebuffer measurements.
+The unqualified Water-on custom path and the measured Water-off results
+both support keeping the experimental engine out of the owner evaluator.
+The [independent reduction](2026-11-27-pubpres-six-arm.json) retains the
+observer ratios, all 12 timing arms, submitted material and pose ages,
+physical gaps, memory peaks and both original refusals. Reproduce it with
+`python tools/pubpres_final_recovery/replay_architecture_selection.py <original-artifact.zip> --output replay.json`.
 
 On hosted Linux, Stock Safe with Water composition passed the registered
 relative tests on both workloads. Wave512 rose from 9.26 to 9.60 completed
@@ -107,10 +152,44 @@ The selected Windows sessions at Wave512, Wave1024, Wave2048 and mixed 2048
 completed 5,158, 4,205, 3,796 and 2,941 physical steps in five minutes.
 Each accepted all 79 actions, retained two sampled texture RIDs, had no
 sampled terrain backlog and exited normally. Peak RSS was 769–953 MiB.
+Average process CPU use was 3.29–3.33 cores. The software-rendered host
+provided no physical NVIDIA GPU utilization or scanout measurement.
 Final-minute observed consecutive-step p95 gaps were 146, 149, 176 and
 171 ms. The longest verified Wave2048 late gap reached 254 ms at 277 s
 without an action within one second. Multi-step sample spans bound any
 unobserved gap in the covered late intervals below 395 ms. [Windows session clocks, framebuffers and process resources](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223904133)
+
+The short selected Windows comparison used a four-worker Water/Steel basin
+and a 2048² reacting reference with Water, granular material, Lava and Acid.
+Both followed the same human-controlled Needle with a fixed input tape.
+At 512, 96 of 143 consecutive-step gaps per candidate run were under 50 ms,
+with 42 and 36 more between 150 and 165 ms. At 2048, 103 and 107 gaps were
+between 165 and 250 ms. In each world 14 of the 16 gaps above their own
+run's p95 overlapped a main-thread upload for at least half the gap duration.
+The 1600×900 before/after PNGs were taken outside the timed interval.
+[Receipts, per-step clocks and screenshots](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15226565285)
+
+In the four five-minute authoring sessions, 49 of the 80 observed gaps
+above their own session's physical p95 fell in the first 100 s, 16 in the
+middle 100 s and 15 in the last 100 s. Relative to the eligible consecutive
+playing-step observations, those counts are 49/610, 16/444 and 15/505.
+Each scene had its largest share early. The 20 s scripted pause reduced
+the middle sample, and some intervals span multiple unobserved steps.
+The single worst gap arrived at 46 s (Wave512), 43 s (Wave1024), 277 s
+(Wave2048) and 195 s (mixed). None had a logged action within one second.
+[Session actions, native progression and presentation clocks](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223904133)
+
+The 32 main/candidate captures summed to 12 min 51 s. The 16 calibrations
+and 12 engine comparisons summed to 9 min 6 s of capture inside a 39 min
+29 s Windows execution step. The four ordinary sessions added 20 min.
+Across the four short selected Windows candidate runs, 11, 6 and 15 above-p95
+physical gaps fell in successive thirds of the first 144-step interval,
+using gap midpoints. Two runs peaked early and two late. Across all 12
+engine comparisons the three counts were 29, 34 and 33. In the ordinary
+sessions the bundled Free-camera reposition, zoom-in and paint phase had
+higher active *frame callback* p95 than the Follow/zoom-out phase at
+1024, 2048 and mixed 2048. Wave512 showed the reverse. The sessions do
+not retain a world coordinate and framebuffer from every stall.
 
 ## Owner evaluation
 
@@ -123,6 +202,12 @@ unobserved gap in the covered late intervals below 395 ms. [Windows session cloc
 3. Close normally and run **Collect Results.cmd**. The report identifies the
    launcher, engine, native runtime and policy. Compare stalls, input response
    and actor visibility on the owner's physical Windows 11/NVIDIA display.
+
+Draft #767 remains held for the physical evaluation and owner disposition of
+the latency and visibility results. Before merge, reconcile the selected
+source with then-current accepted main and rerun affected qualification.
+Record exact-head Documentation/provenance and applicable Native,
+GDExtension/Godot and scoped apparatus results once the owner authorizes Ready.
 
 ## Earlier playable comparison
 
