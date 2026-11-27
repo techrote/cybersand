@@ -25,11 +25,18 @@ func _run() -> void:
     var identity: int = world.get_instance_id()
     var sample: Dictionary = {
         "session": 501, "epoch": 501,
-        "states": PackedFloat64Array([1, 50, 50, 0, 8, 8, 0, 0, 0, 1, 1, 20, 50, 50, 0.4, 1.0/60.0, 501]),
-        "geometry": PackedFloat64Array([0, 0, 8, 8]),
-        "bodies": [{"id": 1, "instance_id": 42, "generation": 501, "first_proxy": 1,
-            "count": 1, "budget": 20.0, "gravity": 92.0, "external_drive": false}]
+        "states": PackedFloat64Array(), "geometry": PackedFloat64Array(), "bodies": []
     }
+    var physical := PackedFloat32Array()
+    for index: int in range(64):
+        var id: int = index + 1
+        var x: int = 50 + (index % 8) * 16
+        var y: int = 50 + floori(index / 8.0) * 16
+        sample.states.append_array(PackedFloat64Array([id, x, y, 0, 8, 8, 0, 0, 0, 1, 1, 20, x, y, 0.4, 1.0/60.0, 501]))
+        sample.geometry.append_array(PackedFloat64Array([0, 0, 8, 8]))
+        sample.bodies.append({"id": id, "instance_id": 41 + id, "generation": 501, "first_proxy": id,
+            "count": 1, "budget": 20.0, "gravity": 92.0, "external_drive": false})
+        physical.append_array(PackedFloat32Array([id, x, y, 0, 8, 8, 0, 0, 0, 1, 1]))
     var profile: Dictionary = Profiles.resolve(Profiles.preset(0))
     expect(profile.get("ok", false), "production liquid transport profile resolved")
     var options: Dictionary = {
@@ -39,7 +46,7 @@ func _run() -> void:
         "region": PackedInt32Array([0, 0, 256, 256]),
         "intent": "exploratory",
         "definition_hash": "objectshard-m4-sameworld-extension-test".sha256_text(),
-        "initial_bodies": PackedFloat32Array([1, 50, 50, 0, 8, 8, 0, 0, 0, 1, 1]),
+        "initial_bodies": physical,
         "workbench_worker_threads": 1
     }
     var token: int = adapter.prepare_liquid_world(world, PackedInt32Array([0, 200, 256, 8, 1]),
@@ -73,12 +80,14 @@ func _run() -> void:
         "copied same-World native materials and shard snapshot")
     expect(int(frame.get("tick", -1)) == before, "snapshot uses authoritative World semantic tick")
     var sample2: Dictionary = sample.duplicate(true)
-    sample2.states[10] = 2
+    for index: int in range(64): sample2.states[index * 17 + 10] = 2
     sample2.states[1] = 50.125
     sample2.states[12] = 50.125
     expect(world.prepare_workbench_coupling(sample2.states, sample2.geometry,
         sample2.bodies, sample2.session, sample2.epoch, false),
         "original immutable GCR continues composing in same World")
+    expect(int(state.get("first_mutable_body_id", 0)) > 64 and world.rigid_body_id_at(162, 162) == 64,
+        "64th immutable actor proxy retains its native identity beside reserved moving material")
     expect(world.simulation_tick(), "native owner ticks attached World once")
     expect(world.get_tick_index() == before + 1, "one and only one native World tick advanced")
     expect(not world.has_failed(), "attached World not quarantined by GCR composition")
