@@ -74,7 +74,7 @@ class PackageInputTests(unittest.TestCase):
                 inventory[name] = hashlib.sha256(raw).hexdigest()
             manifest = {"schema": "objectshard-m4-workbench-package-v1", "source_commit": "1" * 40,
                         "source_tree": "2" * 40, "entry": ENTRY, "ordinary_production_defaults_changed": False,
-                        "files_sha256": inventory}
+                        "native": {"source_inputs": {}}, "files_sha256": inventory}
 
             def refusal(expected):
                 (root / MANIFEST).write_text(json.dumps(manifest), encoding="utf-8")
@@ -94,6 +94,16 @@ class PackageInputTests(unittest.TestCase):
             inventory[foreign.relative_to(root).as_posix()] = hashlib.sha256(b"{}").hexdigest()
             refusal("Foreign reciprocal generator input")
             del inventory[reopen]
+            refusal("Missing inventory")
+            for name in (generator, binding, reopen, foreign.relative_to(root).as_posix()):
+                inventory.pop(name, None)
+                (root / name).unlink()
+            # A pre-SWARM evaluator reaches its own ordinary native checks.
+            refusal("Unexpected runtime paths")
+            manifest["native"]["source_inputs"]["native/include/cybersand/workbench_authoring_patch.hpp"] = "a" * 64
+            refusal("Missing inventory")
+            manifest["native"]["source_inputs"].clear()
+            inventory["godot/scripts/workbench_reciprocal_panel.gd"] = "a" * 64
             refusal("Missing inventory")
 
 

@@ -32,8 +32,7 @@ $retainedReference = 'godot/addons/cybersand_native/retained-runtime-provenance.
 if (Test-Path -LiteralPath (Join-Path $root 'godot/addons/cybersand_native/runtime-provenance.json')) {
     throw 'Active retained runtime provenance is forbidden in an evaluator'
 }
-$required = @($nativeRelative, $rapierRelative, $generatorRelative, $bindingRelative,
-    'godot/tests/fixtures/object_shard_m4_authored_reopen.gd', 'Godot_v4.7-stable_win64.exe', 'Godot_v4.7-stable_win64_console.exe',
+$required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', 'Godot_v4.7-stable_win64_console.exe',
     'Godot-LICENSE.txt', 'Godot-COPYRIGHT.txt', 'vcruntime140.dll',
     'Microsoft-Visual-C-Runtime-LICENSE.docx', 'Microsoft-Visual-Studio-2022-LICENSE.docx',
     'source-built-candidate-provenance.json', $retainedReference, 'godot/project.godot', 'godot/main.tscn',
@@ -52,6 +51,13 @@ $required = @($nativeRelative, $rapierRelative, $generatorRelative, $bindingRela
     'godot/tests/probe_object_shard_workbench_package.gd', 'godot/tests/profile_object_shard_m4_workbench.gd',
     'godot/addons/godot-rapier2d/runtime-provenance.windows.json', 'READ-ME.md',
     'Open Workbench.cmd', 'Verify Workbench.cmd', 'tools/objectshard/verify_workbench_package.ps1')
+$hasGenerator = ($null -ne $manifest.files_sha256.PSObject.Properties['godot/scripts/workbench_reciprocal_panel.gd'] -or
+    $null -ne $manifest.native.source_inputs.PSObject.Properties['native/include/cybersand/workbench_authoring_patch.hpp'] -or
+    $null -ne $manifest.files_sha256.PSObject.Properties[$generatorRelative] -or
+    $null -ne $manifest.files_sha256.PSObject.Properties[$bindingRelative])
+if ($hasGenerator) {
+    $required += @($generatorRelative, $bindingRelative, 'godot/tests/fixtures/object_shard_m4_authored_reopen.gd')
+}
 foreach ($relative in $required) {
     if ($null -eq $manifest.files_sha256.PSObject.Properties[$relative]) { throw "Missing inventory: $relative" }
 }
@@ -82,12 +88,14 @@ foreach ($entry in $manifest.files_sha256.PSObject.Properties) {
     if ((Get-PackageSha256 $path) -ne $entry.Value) { throw "Package file changed: $relative" }
     $count += 1
 }
-$binding = Get-Content -LiteralPath (Join-Path $root $bindingRelative) -Raw | ConvertFrom-Json
-$generator = Get-Item -LiteralPath (Join-Path $root $generatorRelative)
-if ($binding.platform -cne 'windows' -or $binding.artifact -cne $generatorRelative -or
-    ($binding.bytes -isnot [int] -and $binding.bytes -isnot [long]) -or $binding.bytes -ne $generator.Length -or
-    $binding.sha256 -cne $manifest.files_sha256.PSObject.Properties[$generatorRelative].Value) {
-    throw 'Windows reciprocal generator differs from its delivered binding'
+if ($hasGenerator) {
+    $binding = Get-Content -LiteralPath (Join-Path $root $bindingRelative) -Raw | ConvertFrom-Json
+    $generator = Get-Item -LiteralPath (Join-Path $root $generatorRelative)
+    if ($binding.platform -cne 'windows' -or $binding.artifact -cne $generatorRelative -or
+        ($binding.bytes -isnot [int] -and $binding.bytes -isnot [long]) -or $binding.bytes -ne $generator.Length -or
+        $binding.sha256 -cne $manifest.files_sha256.PSObject.Properties[$generatorRelative].Value) {
+        throw 'Windows reciprocal generator differs from its delivered binding'
+    }
 }
 if ($manifest.native.path -ne $nativeRelative -or $manifest.rapier.path -ne $rapierRelative) { throw 'Unexpected runtime paths' }
 if ((Get-PackageSha256 (Join-Path $root $nativeRelative)) -ne $manifest.native.sha256) { throw 'Native identity mismatch' }
