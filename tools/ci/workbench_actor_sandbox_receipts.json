@@ -41,6 +41,33 @@
       "ACT004_BODY_CAPACITY fallback parts=64 admission/receipts/retirement checked"
     ]
   },
+  "test_ambient_group_transaction": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "AMBIENT_GROUP "
+  },
+  "test_ambient_living_group_integration": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "AMBIENT_LIVING_GROUP_INTEGRATION "
+  },
+  "test_material_audition_ambient_integration": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "MATERIAL_AMBIENT_INTEGRATION "
+  },
   "test_material_lab_workbench_integration": {
     "equal": {
       "complete": true,

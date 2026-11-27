@@ -1,0 +1,7 @@
+clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)
+Target: x86_64-w64-windows-gnu
+Thread model: posix
+InstalledDir: /home/runner/work/_temp/llvm-mingw/bin
+Configuration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg
+LLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)
+d140ef68049fd66ffad4403e861bafba4e2fa35afa3651f6f6e4024cf1627400  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.windows.template_debug.x86_64.a

@@ -11,6 +11,7 @@
 #include <array>
 #include <bit>
 #include <chrono>
+#include <charconv>
 #include <cstdio>
 #include <cmath>
 #include <numbers>
@@ -108,6 +109,8 @@ Dictionary CyberNativeCellWorld::native_failure_status() const {
 }
 
 void CyberNativeCellWorld::_bind_methods() {
+    ClassDB::bind_method(D_METHOD("get_material_audition_state"), &CyberNativeCellWorld::get_material_audition_state);
+    ClassDB::bind_method(D_METHOD("apply_material_audition", "request"), &CyberNativeCellWorld::apply_material_audition);
     ClassDB::bind_method(D_METHOD("diagnostic_reset", "options"), &CyberNativeCellWorld::diagnostic_reset);
     ClassDB::bind_method(D_METHOD("diagnostic_fill_rect", "origin", "size", "material", "state_b"), &CyberNativeCellWorld::diagnostic_fill_rect, DEFVAL(0));
     ClassDB::bind_method(D_METHOD("diagnostic_relocate_cell", "from", "to"),
@@ -2977,5 +2980,6 @@ std::int64_t CyberNativeCellWorld::get_tick_failure_count() const {
 
 #include "workbench_granular_coupling.inc"
 #include "water_spray_coupling.inc"
+#include "material_audition_adapter.inc"
 
 }  // namespace godot

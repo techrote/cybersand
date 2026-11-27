@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--path",
+    "/workspace/scratch/1f637294a480/mat-solver-source2/godot",
+    "--script",
+    "res://tests/test_workbench_physics_play.gd"
+  ],
+  "elapsed_seconds": 30.466805686000953,
+  "exit_code": 0,
+  "log_sha256": "5d3ccc464992816668574918f8fae73204fc01f025fc0b6e5af51aad72bb4d5e",
+  "process_id": 2198,
+  "status": "passed",
+  "timeout_seconds": 900
+}

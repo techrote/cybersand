@@ -1,0 +1,39 @@
+{
+  "all_payload_sha256_match": true,
+  "archive": {
+    "bytes": 754138787,
+    "file": "CyberSand-Material-Audition-Windows.zip",
+    "sha256": "cb4c67025fb1de64b3f647d70873421cf9be601372fccd2a915791222d94bb96"
+  },
+  "archive_entries": 23358,
+  "both_shipped_launchers_match_qualified_source": true,
+  "candidate_manifest_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+  "disposition": "Draft/HOLD",
+  "elapsed_seconds": 13.939,
+  "engine_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "execution_inputs_checked": 1508,
+  "first_review_attempt": {
+    "correction": "Normalize whitespace only for the semantic phrase assertion. Original README bytes/SHA, archive bytes/SHA, all payload hashes and production execution validators remain unchanged.",
+    "reason": "The immutable README wraps Revert and configuration across CRLF; no exact-byte single-line phrase exists.",
+    "result": "stopped at an additional README literal phrase assertion after all payload and source hashes passed"
+  },
+  "manifested_payload_files_checked": 22384,
+  "native_inputs_checked": 108,
+  "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+  "native_windows_execution_previously_verified": true,
+  "no_full_extraction_or_execution_repeated": true,
+  "original_extracted_execution_validator_passed": true,
+  "package_execution_sha256": "38f60c1f3072966b035fc46c67dc1f1974fa144cda53cb8c1872ddcba3568359",
+  "package_manifest_sha256": "93a3cd71302d7c7202ca8f93d13bb7fae609b461794773c641b6d5b958f09e7c",
+  "physical_owner_acceptance": "OWNER-PENDING",
+  "readme_bytes": 1811,
+  "readme_sha256": "c9ca0ab02c121a6b3b9b0fd218a867e21135ec4a8dccb6531bddf6d096f37216",
+  "reviewer_script_sha256": "a57816310539bf136716b1ac8aec8366ee3b0b05083c5144d38e0c2250bd0ba8",
+  "schema": "cybersand.material-audition.independent-complete-archive-review",
+  "schema_version": 1,
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_run_id": 45465121123,
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "passed",
+  "uncompressed_bytes": 1616146588
+}

@@ -69,6 +69,9 @@ CASES = (
     "test_physical_usables_admission",
 )
 SANDBOX_CASES = (
+    "test_ambient_group_transaction",
+    "test_ambient_living_group_integration",
+    "test_material_audition_ambient_integration",
     "test_workbench_actor_sandbox",
     "test_workbench_actor_configuration",
     "test_workbench_actor_configuration_native",
@@ -83,6 +86,9 @@ SANDBOX_CASES = (
     "test_physical_usable_equipment",
 )
 SANDBOX_RECEIPTS = {
+    "test_ambient_group_transaction": "AMBIENT_GROUP ",
+    "test_ambient_living_group_integration": "AMBIENT_LIVING_GROUP_INTEGRATION ",
+    "test_material_audition_ambient_integration": "MATERIAL_AMBIENT_INTEGRATION ",
     "test_workbench_actor_sandbox": "WB_ACTOR_SANDBOX ",
     "test_workbench_actor_configuration": "WB_ACTOR_CONFIGURATION ",
     "test_workbench_actor_configuration_native": "WB_ACTOR_CONFIGURATION_NATIVE ",
