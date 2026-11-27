@@ -1,0 +1,698 @@
+{
+	"actors": [
+		{
+			"control": {
+				"ambient": {
+					"description": "For supported two-axis 4LY flight rigs. Seeded drifting, home-relative altitude and boundary retreat use the rig's existing velocity controller; no ground ledge reflex is assigned.",
+					"id": "drifting_flyer",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.18,
+								"idle_seconds": 1.8,
+								"jitter": 0.5,
+								"pace": 0.28,
+								"turn_rate": 0.6,
+								"turn_seconds": 3.8
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.75
+						},
+						{
+							"enabled": true,
+							"id": "maintain_altitude",
+							"params": {
+								"effort": 0.7,
+								"offset": 0.0,
+								"pace": 0.3,
+								"tolerance": 12.0
+							},
+							"priority": 25,
+							"type": "maintain_altitude",
+							"weight": 1.2
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.35,
+								"radius": 150.0,
+								"release_radius": 85.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 0.7
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 26.0,
+								"exit_distance": 42.0,
+								"material_id": 3,
+								"pace": 0.45,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 2.0,
+								"effort": 0.8,
+								"margin": 28.0,
+								"pace": 0.45,
+								"release_margin": 45.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.3,
+								"radius": 32.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 0.6
+						}
+					],
+					"name": "Drifting Flyer",
+					"seed": 5732,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:dffa50697ad7a09f9a257a6463e354b1c302f0744901096ff9f883b093090657",
+			"id": 1,
+			"model": "4ly_trainer",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				260.0,
+				234.0
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"description": "For supported two-axis 4LY flight rigs. Seeded drifting, home-relative altitude and boundary retreat use the rig's existing velocity controller; no ground ledge reflex is assigned.",
+					"id": "drifting_flyer",
+					"modules": [
+						{
+							"enabled": true,
+							"id": "wander",
+							"params": {
+								"effort": 0.65,
+								"idle_probability": 0.18,
+								"idle_seconds": 1.8,
+								"jitter": 0.5,
+								"pace": 0.28,
+								"turn_rate": 0.6,
+								"turn_seconds": 3.8
+							},
+							"priority": 10,
+							"type": "wander",
+							"weight": 0.75
+						},
+						{
+							"enabled": true,
+							"id": "maintain_altitude",
+							"params": {
+								"effort": 0.7,
+								"offset": 0.0,
+								"pace": 0.3,
+								"tolerance": 12.0
+							},
+							"priority": 25,
+							"type": "maintain_altitude",
+							"weight": 1.2
+						},
+						{
+							"enabled": true,
+							"id": "return_home",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.35,
+								"radius": 150.0,
+								"release_radius": 85.0
+							},
+							"priority": 40,
+							"type": "return_home",
+							"weight": 0.7
+						},
+						{
+							"enabled": true,
+							"id": "avoid_material",
+							"params": {
+								"effort": 0.85,
+								"enter_distance": 26.0,
+								"exit_distance": 42.0,
+								"material_id": 3,
+								"pace": 0.45,
+								"radius": 50
+							},
+							"priority": 80,
+							"type": "avoid_material",
+							"weight": 1.4
+						},
+						{
+							"enabled": true,
+							"id": "avoid_boundary",
+							"params": {
+								"duration": 2.0,
+								"effort": 0.8,
+								"margin": 28.0,
+								"pace": 0.45,
+								"release_margin": 45.0
+							},
+							"priority": 90,
+							"type": "avoid_boundary",
+							"weight": 1.0
+						},
+						{
+							"enabled": true,
+							"id": "avoid_crowding",
+							"params": {
+								"effort": 0.7,
+								"pace": 0.3,
+								"radius": 32.0
+							},
+							"priority": 35,
+							"type": "avoid_crowding",
+							"weight": 0.6
+						}
+					],
+					"name": "Drifting Flyer",
+					"seed": 5733,
+					"shared_seed": false,
+					"version": 1
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:9e9a6cbcf6c30c656a9971f6ef63e2723f129038dd371d28ea42fda25714020e",
+			"id": 2,
+			"model": "4ly_drifter",
+			"options": {
+				"boost_multiplier": 2.0,
+				"budget": 20.0,
+				"inertia_multiplier": 1.0,
+				"mass_multiplier": 1.0,
+				"thrust_multiplier": 1.0,
+				"torque_multiplier": 1.0
+			},
+			"spawn": [
+				760.0,
+				222.0
+			]
+		}
+	],
+	"brush": 8,
+	"edits": [
+		[
+			0,
+			456,
+			1024,
+			12,
+			58
+		],
+		[
+			0,
+			456,
+			1024,
+			3,
+			62
+		],
+		[
+			0,
+			50,
+			8,
+			406,
+			58
+		],
+		[
+			1016,
+			50,
+			8,
+			406,
+			58
+		],
+		[
+			24,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			36,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			88,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			100,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			152,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			164,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			216,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			228,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			280,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			292,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			344,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			356,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			408,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			420,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			472,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			484,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			536,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			548,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			600,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			612,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			664,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			676,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			728,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			740,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			792,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			804,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			856,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			868,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			920,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			932,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			984,
+			468,
+			8,
+			28,
+			62
+		],
+		[
+			996,
+			472,
+			22,
+			3,
+			79
+		],
+		[
+			8,
+			48,
+			1008,
+			10,
+			62
+		],
+		[
+			42,
+			65,
+			120,
+			4,
+			77
+		],
+		[
+			52,
+			72,
+			100,
+			12,
+			71
+		],
+		[
+			238,
+			65,
+			120,
+			4,
+			77
+		],
+		[
+			248,
+			72,
+			100,
+			12,
+			71
+		],
+		[
+			434,
+			65,
+			120,
+			4,
+			77
+		],
+		[
+			444,
+			72,
+			100,
+			12,
+			71
+		],
+		[
+			630,
+			65,
+			120,
+			4,
+			77
+		],
+		[
+			640,
+			72,
+			100,
+			12,
+			71
+		],
+		[
+			826,
+			65,
+			120,
+			4,
+			77
+		],
+		[
+			836,
+			72,
+			100,
+			12,
+			71
+		],
+		[
+			68,
+			368,
+			180,
+			8,
+			62
+		],
+		[
+			776,
+			368,
+			180,
+			8,
+			62
+		],
+		[
+			68,
+			376,
+			10,
+			80,
+			58
+		],
+		[
+			946,
+			376,
+			10,
+			80,
+			58
+		],
+		[
+			410,
+			402,
+			204,
+			10,
+			62
+		],
+		[
+			422,
+			394,
+			180,
+			8,
+			3
+		],
+		[
+			410,
+			384,
+			6,
+			18,
+			62
+		],
+		[
+			608,
+			384,
+			6,
+			18,
+			62
+		]
+	],
+	"extent": [
+		1024,
+		512
+	],
+	"fire": false,
+	"liquid_policy": [
+		1279479895,
+		1,
+		1,
+		-2102023270,
+		1854385793,
+		1886533889,
+		84225930,
+		1522979054,
+		582168604,
+		-646713377,
+		-939672877,
+		868616440,
+		1977866421,
+		1930370363,
+		-2119873090,
+		-6981196,
+		870342995,
+		1443932351,
+		-1569267145,
+		11,
+		3,
+		1,
+		0,
+		8,
+		2,
+		0,
+		12,
+		2,
+		0,
+		16,
+		2,
+		0,
+		20,
+		2,
+		0,
+		21,
+		2,
+		0,
+		24,
+		2,
+		0,
+		30,
+		2,
+		0,
+		32,
+		2,
+		0,
+		33,
+		2,
+		0,
+		36,
+		2,
+		0,
+		0,
+		0
+	],
+	"material": 3,
+	"next_id": 3,
+	"normalize": false,
+	"response": "LA-SELECTIVE",
+	"rule_radius": 2,
+	"selected": 1,
+	"source": [],
+	"version": 2
+}

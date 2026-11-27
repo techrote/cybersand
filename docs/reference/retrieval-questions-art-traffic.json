@@ -1,17 +1,17 @@
 {
-  "version": 2,
-  "frozen_date": "2026-11-21",
-  "purpose": "Original four Art lifetime questions retained, plus additive native-history durability checks; separate from the frozen historical development set.",
+  "version": 3,
+  "frozen_date": "2026-11-24",
+  "purpose": "Current accepted session-only Art contract and final UI/provider candidate. Original v2 retained byte-exact in the 24 November audit.",
   "questions": [
     {
       "id": "ART-TRAFFIC-001",
-      "query": "Does opening Workbench copy previous Art conversation logs when the Art panel is hidden?",
+      "query": "Does opening or hiding Art restore old conversations or copy previous traffic?",
       "canonical": [
         "systems/workbench-art-providers.md"
       ],
       "facts": [
-        "Hidden startup reads only the small profile and performs no conversation archive reads or writes.",
-        "Explicit Art opening restores incrementally; the first new event creates an immutable-parent linked segment."
+        "New Workbench game sessions begin with an empty conversation and do not restore historical logs.",
+        "The first actual event creates one new root JSONL; Hide/reopen keeps that current session and audit."
       ],
       "sources": [
         "../godot/scripts/art_batch_panel.gd",
@@ -21,13 +21,13 @@
     },
     {
       "id": "ART-TRAFFIC-002",
-      "query": "What happens if a saved Art conversation parent segment is missing or a process crashes while appending?",
+      "query": "Can missing or corrupt old Art archives prevent a new session from sending?",
       "canonical": [
         "systems/workbench-art-providers.md"
       ],
       "facts": [
-        "Missing or inconsistent chains refuse continuation and preserve the saved pointer; restoring a missing file permits retry.",
-        "Only the newest modern unterminated tail can recover its complete committed prefix; original bytes remain unchanged."
+        "Normal Art lifecycle does not read historical archives, so missing old logs do not prevent Send.",
+        "The retained linked-archive reader has explicit integrity checks for diagnostics only."
       ],
       "sources": [
         "../godot/scripts/art_traffic_archive.gd",
@@ -36,13 +36,13 @@
     },
     {
       "id": "ART-TRAFFIC-003",
-      "query": "Can I cancel full Art JSONL export, and will it preserve an existing destination on Windows?",
+      "query": "Can I cancel full Art JSONL export without overwriting an existing destination?",
       "canonical": [
         "systems/workbench-art-providers.md"
       ],
       "facts": [
-        "Stop or Cancel export interrupts bounded work; output is staged privately until native atomic replacement succeeds.",
-        "The byte-exact audit includes all segments and original image offsets; it is not a single-file conversation import format."
+        "Stop or Cancel export interrupts bounded work; output is staged until native atomic replacement succeeds.",
+        "The normal session export contains the current session audit; logs and image bytes are separate from model context."
       ],
       "sources": [
         "../godot/scripts/art_provider.gd",
@@ -52,29 +52,28 @@
     },
     {
       "id": "ART-TRAFFIC-004",
-      "query": "What bounds memory when restoring and exporting large Art conversation archives?",
+      "query": "What keeps the long Art conversation editor responsive and preserves Apply/Cancel?",
       "canonical": [
         "systems/workbench-art-providers.md"
       ],
       "facts": [
-        "The reader limits records to 32 MiB, chains to 4096 segments and individual interactive polling input to 1 MiB.",
-        "The editable transcript has matching read/write limits of 16384 turns and 16 MiB of UTF-8 text; full audit export streams without collecting that transcript."
+        "The dialog scrolls its body while retaining the standard Apply/Cancel footer within parent bounds.",
+        "The message list fills in bounded slices, live guard polling uses a revision, and Apply checks the full baseline for stale edits."
       ],
       "sources": [
-        "../godot/scripts/art_traffic_archive.gd",
-        "../godot/scripts/art_provider.gd"
+        "../godot/scripts/art_conversation_editor.gd",
+        "../godot/scripts/art_batch_panel.gd"
       ]
     },
     {
       "id": "ART-TRAFFIC-005",
-      "query": "Can confirmed native Undo or Redo results survive an unreadable Art profile or a failed conversation append without duplicate model context?",
+      "query": "Do native Undo/Redo and manual drawing depend on restoring a previous Art session?",
       "canonical": [
         "systems/workbench-art-providers.md"
       ],
       "facts": [
-        "The Workbench captures the small saved-session association without constructing Art or scanning transcript; a later profile outage retains that association, while an unknown source fails explicitly instead of attaching to another session.",
-        "Every associated native completion is atomically journalled before archive append with stable identity and epoch. Raw history and visible conversation commits are tracked separately; the journal is removed only after the visible turn and profile checkpoint commit.",
-        "Validated incremental replay deduplicates exact pending results, including interrupted cleanup, and cleanup does not rewind the latest compacted-context result. Resource refusal is explicit; no unbounded volatile fallback is used."
+        "Native PAINT history remains authoritative independently of Art and no old pending-history journal is imported.",
+        "Confirmed native results are appended to the current session when Art is mounted; failure logging does not invent completion."
       ],
       "sources": [
         "../godot/scripts/art_batch_panel.gd",

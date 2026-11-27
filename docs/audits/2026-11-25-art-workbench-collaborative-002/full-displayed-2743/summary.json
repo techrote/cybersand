@@ -1,0 +1,470 @@
+{
+  "cases": [
+    {
+      "artifacts_sha256": {},
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_owned_transport.gd"
+      ],
+      "elapsed_seconds": 2.324943,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "12273dfd14a2ff2b59341bdbdba780b0ec0433729e4956afcf057229886b180a",
+      "marker": "ART_OWNED_TRANSPORT_RESULT",
+      "name": "test_art_owned_transport",
+      "result": {
+        "adapter_sha256": "aa0186660b0bf09471359dab879fd4dbc0801d5e012494bb252613880208e001",
+        "audit_sha256": "51dc0e32a4f3a2e9b5524bcecaa0ba862fe153dae8eaeacf6b32ad7a2cac9317",
+        "checks": 155,
+        "failures": [],
+        "format": "cybersand-art-owned-transport-evidence-v1",
+        "godot": "4.7-stable (official)",
+        "model_calls": 0,
+        "observations": [
+          {
+            "mode": "discuss",
+            "ordinary_completions": 0,
+            "owned_completions": 1,
+            "provider_id": 1,
+            "received": true,
+            "request_bytes": 224,
+            "response_text_sha256": "dd58ddbecc8146a5a719165bf34e7dfac5ceda542cf6459247cf456fdf8f8f57"
+          },
+          {
+            "mode": "propose",
+            "ordinary_completions": 0,
+            "owned_completions": 1,
+            "provider_id": 2,
+            "received": true,
+            "request_bytes": 224,
+            "response_text_sha256": "dd58ddbecc8146a5a719165bf34e7dfac5ceda542cf6459247cf456fdf8f8f57"
+          },
+          {
+            "mode": "develop",
+            "ordinary_completions": 0,
+            "owned_completions": 1,
+            "provider_id": 3,
+            "received": true,
+            "request_bytes": 224,
+            "response_text_sha256": "dd58ddbecc8146a5a719165bf34e7dfac5ceda542cf6459247cf456fdf8f8f57"
+          },
+          {
+            "mode": "review",
+            "ordinary_completions": 0,
+            "owned_completions": 1,
+            "provider_id": 4,
+            "received": true,
+            "request_bytes": 224,
+            "response_text_sha256": "dd58ddbecc8146a5a719165bf34e7dfac5ceda542cf6459247cf456fdf8f8f57"
+          },
+          {
+            "mode": "architecture-proposal",
+            "ordinary_completions": 0,
+            "owned_completions": 1,
+            "provider_id": 5,
+            "received": true,
+            "request_bytes": 224,
+            "response_text_sha256": "dd58ddbecc8146a5a719165bf34e7dfac5ceda542cf6459247cf456fdf8f8f57"
+          }
+        ],
+        "ordinary_completions": 1,
+        "owned_completions": 19,
+        "platform": "Linux",
+        "provider_sha256": "9d32d4ad89f5dd9bc330bfa3dc91a689ffc1720bf4fc31d933d4614d49638438",
+        "transport": "actual deterministic loopback HTTP"
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 600
+    },
+    {
+      "artifacts_sha256": {},
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_authoring_proposal.gd"
+      ],
+      "elapsed_seconds": 1.219084,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "9245d739a250a35c56c1b6c69ad46638343e3f32e49437830c4dbd599cee6f32",
+      "marker": "ART_PROPOSAL_RESULT",
+      "name": "test_art_authoring_proposal",
+      "result": {
+        "checks": 75,
+        "evidence_kind": "synthetic copied-value contracts; no model or native writes",
+        "failures": 0
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 600
+    },
+    {
+      "artifacts_sha256": {
+        "creative-fixture-cohort.json": "bb1893157dbc520cb936b76d7d87872a18ef83ba74002d55d2cf2697eb083a99"
+      },
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_creative_cohort.gd"
+      ],
+      "elapsed_seconds": 6.896183,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "14bb560f551605f2a53fe69c9c6657249059c39c6754857ac5ba025ea851a5b0",
+      "marker": "ART_CREATIVE_COHORT_RESULT",
+      "name": "test_art_creative_cohort",
+      "result": {
+        "briefs": 24,
+        "checks": 251,
+        "evidence_kind": "deterministic copied-value fixture cohort; no real-model creativity claim",
+        "failures": 0,
+        "model_calls": 0,
+        "native_calls": 0,
+        "retained_refusals": 7
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 600
+    },
+    {
+      "artifacts_sha256": {
+        "00-industrial_repair-after-native.png": "d7451a85c8bfac71da794394a51ed6f014673b5664844235ee60355092604bf1",
+        "00-industrial_repair-after-workbench.png": "0b30f3a9bd2ab252eaa0f49e71912fb28687a15c39db101d00bd0a1496ce2150",
+        "00-industrial_repair-before-native.png": "af0c100c2bb62b9084c1de033630c639f99f6004ba6e4917d204978f00d57424",
+        "00-industrial_repair-before-workbench.png": "93f351695cb122443a7181a47f65ac5c1140b32d1326559951937799ec96a85f",
+        "00-industrial_repair-direct-original-native-receipts.json": "27229a2bc9962a997d8f401526e584750507be73bb426252506d6840a93d6452",
+        "00-industrial_repair-editable-setup.json": "bc52c90347ea218bee1241a9d302b3e4ffd85e78d609608dba27fba68fac35a3",
+        "00-industrial_repair-original-native-receipts.json": "44ab807779decc9b43cc1994fc9a7224721a55c64a5faeff389332f1955513cf",
+        "00-industrial_repair-result.json": "1b7c57e8405688ca5f798fff9fe935791fb3daa96745a82861e5f4b30784aace",
+        "01-structural_facade-after-native.png": "4083b1f50f3afe25fcb036b72365f67190cb0828694036a54b0a90ce789bbee7",
+        "01-structural_facade-after-workbench.png": "677d20cec6afa65671076656328429885ac344e215f1a4367a678169b4d37764",
+        "01-structural_facade-before-native.png": "8da61c9d5d217ea3cd1c2660110761f6d05a22a7953ee58e633019a40a534412",
+        "01-structural_facade-before-workbench.png": "997b69f11d9d10de0e3aa90795fc1b0f486b92868c89a83a6e7fcd8aafe5760f",
+        "01-structural_facade-direct-original-native-receipts.json": "90c75223d7c5388fb4343e534a09aed9b6ad79207fec61ad5f6d9275f122776e",
+        "01-structural_facade-editable-setup.json": "82017027972db18d4f87fabffecc23779571b3c2c4d2aede2c2fbf414ef9fab1",
+        "01-structural_facade-original-native-receipts.json": "4852b797d393a398df065fd6fa1e440cdf89eea1c1ecf4fb92b49acbd486da07",
+        "01-structural_facade-result.json": "2e235a70866ac651ee8b71849861290fe0a77597922059dd1a7a49ad9dad29fd",
+        "02-scifi_interior-after-native.png": "aa73db0531ad159967077fe837ceffee3587ca2db6f77f74d9817a94b278d36a",
+        "02-scifi_interior-after-workbench.png": "c222726f02896a5a865d6fa26b40a9c0ef55415678e389eec08a3bc1e80efb5c",
+        "02-scifi_interior-before-native.png": "670bd87c4cb45d80d19490580e9a387dbfba5a02c5d3eaf8c7d448f607e28b5b",
+        "02-scifi_interior-before-workbench.png": "d8f6b532ce2a2b44e37cfe586091271fe44e93afb1bcd470020b1b575a40298d",
+        "02-scifi_interior-direct-original-native-receipts.json": "b23cd3da38a6c7d45385c47d60c980689b234aaad9fce8de9d2e1c46e4ae1ef3",
+        "02-scifi_interior-editable-setup.json": "9c7e6b2deb7de64998f816b1699a347fe999d9cca4083f6c787a21354ce4b4e1",
+        "02-scifi_interior-original-native-receipts.json": "461d11a8326d8cd7435e0d4e20ba426d8a114c6d737d900f62df2efb2a1853ff",
+        "02-scifi_interior-result.json": "3b75cba625aaf1e971a9d7c9fd914394fed440369adcd659f4dc59399074cfdc",
+        "03-revised_arcology-after-native.png": "22eb21d9a4ff4680519cc7590a206fcd53649bb34192aa85e2ff4f9fa69860fb",
+        "03-revised_arcology-after-workbench.png": "3926210866387c686ad5d48fe0e873b901ab4e2711de374aa7c79305e9f4f5b5",
+        "03-revised_arcology-before-native.png": "8da61c9d5d217ea3cd1c2660110761f6d05a22a7953ee58e633019a40a534412",
+        "03-revised_arcology-before-workbench.png": "b48ddf3d4e201a23966f359fc0cfd375eccb1ea68fb2b0282214f44ab7ba0437",
+        "03-revised_arcology-direct-original-native-receipts.json": "8de94751a923921158db5a458fa10e872798d5bc23e48fff6a4ef2d2e8fb17e7",
+        "03-revised_arcology-editable-setup.json": "3305a064979955c07d042df9e9f1549ebd67110fa05e6a13b966832bf6fb52e2",
+        "03-revised_arcology-original-native-receipts.json": "0dbdb979496828607d0c58d2c4e888ab58a38e8917866a8c4461262fa28c48fd",
+        "03-revised_arcology-result.json": "971fb7c9e2085318c106230acf466f06ceba674c487555ef36df0512e3488b93",
+        "04-protected_courtyard-after-native.png": "8f3cbc227776f461cb2b456de9e3025e4bd8b56e3327938b29128e8f73b34264",
+        "04-protected_courtyard-after-workbench.png": "d639b48afce1bbe31837c60047a3255c7afdf7cb57ede6384b11e54f2d9025b6",
+        "04-protected_courtyard-before-native.png": "ece66113105ce5b53c918be00977887b41f7d92bc9891adb4948c672df02f115",
+        "04-protected_courtyard-before-workbench.png": "d558d69bf8cb5ccb95b5a6adef3b31c74d7143ddf14dbe05ae0cbf74ab9ff1d7",
+        "04-protected_courtyard-direct-original-native-receipts.json": "38ff5b56ebf09564acc55dee730fa528f877a998289c18a0ba1ec958c28c51eb",
+        "04-protected_courtyard-editable-setup.json": "b5c8a0e130bf49ceaa2ab6a09ba728e43857919562b1814f8bd20242396d8d10",
+        "04-protected_courtyard-original-native-receipts.json": "8b7c12b5e779df3f1bacfcd4b829fffd39f5b67f9e428fdda493617e47c919a1",
+        "04-protected_courtyard-result.json": "fe8475901a2cc0fd67248080813870163e8bafddf8671688c57e67922bc9602d",
+        "05-palette_foundry-after-native.png": "5e8d7c126cbfc33f1c07ff27b94f4d2f84e6ee168ccd1f230d5a54d8ddefb62f",
+        "05-palette_foundry-after-workbench.png": "de0fe11dd6b741c2a28c97938f99ca51e22b67e42b616eef7de946d5bb62e194",
+        "05-palette_foundry-before-native.png": "8da61c9d5d217ea3cd1c2660110761f6d05a22a7953ee58e633019a40a534412",
+        "05-palette_foundry-before-workbench.png": "6bbc925090a8817f65bb4a0ce98586fc472751dab104b13242063f853fe5acce",
+        "05-palette_foundry-direct-original-native-receipts.json": "2901be13568464851a30861a18543bc4fb8571dc6218e3634ab25815a9ebc93a",
+        "05-palette_foundry-editable-setup.json": "98be5c2d0bbbc5ee0560f61a3767fffe5750803662e651ce9611ff708001b6a2",
+        "05-palette_foundry-original-native-receipts.json": "fbd91c64836a0ef71a83a661fa5ed6af1152d939fef3984929c66553c68fdc0b",
+        "05-palette_foundry-result.json": "ff88c00319f952edfcef5d46768f8595fba96e80e15b380646593c21ecfbe2ba",
+        "06-stopped_workshop-after-native.png": "0fd0e6ba64fae1c678bb8045bcc91ac5e02571040064e7c71f7ce0ef960262e9",
+        "06-stopped_workshop-after-workbench.png": "cb09ae43a17a0915b3066f958c312fa44cbb23e1be3d15e6c2c7f9fd4c7e9811",
+        "06-stopped_workshop-before-native.png": "0d32a0b4f82f088e561eddaa4994bf12db2309b786102cb7f5bded60727ef107",
+        "06-stopped_workshop-before-workbench.png": "4c20951e87c8a838f7b75a1f8416683336f4d22011e44c621b9958bdb720637b",
+        "06-stopped_workshop-direct-original-native-receipts.json": "1f48c2fbcbebf0b8fa5c0d610ba2815b7e044fbf0a7382abd54a4ad72e232354",
+        "06-stopped_workshop-editable-setup.json": "92fd7f9421162631644487c93ac67c0c5fbe2934265101861ca454db8ef6a7ef",
+        "06-stopped_workshop-original-native-receipts.json": "68389f18e9fc4776c750b7906af78256a3bc6f58d8cb1f5aed4de8a05a1ee3cc",
+        "06-stopped_workshop-result.json": "c69c74d16182ee10104071fc58d616bea13043fa5ec16148c235522e5e43bd0a",
+        "07-staged_megaframe-after-native.png": "e9d0e86860a3cd6a519803446dafe68ac3a085ff66708f54e591974b1584c22f",
+        "07-staged_megaframe-after-workbench.png": "537fdfc8ffd5f6b637993fcba91816270e5c2db6c84e557d59ed95e13157d884",
+        "07-staged_megaframe-before-native.png": "8810ceaf96aba5a443a51a4082d4e0ecc6974b908d408ff7a3fd1f585668fd85",
+        "07-staged_megaframe-before-workbench.png": "9eacf4eb00a4ff4cc6504974b21b8957aedd117d1e5446cd215c69c497233db8",
+        "07-staged_megaframe-direct-original-native-receipts.json": "cb22cba9f04c8b2252f5a67cc312e343c598d99560f1dd3d4db49883d39c6f8d",
+        "07-staged_megaframe-editable-setup.json": "1322f36b30e994cf9e532df14f7d55ed2091a84b710fe2de22283900d097a50c",
+        "07-staged_megaframe-original-native-receipts.json": "ee77ba90355ed687de943b05d6118421b786120a43afc8fa275a68b5773a1419",
+        "07-staged_megaframe-result.json": "987ed22a7125ca1e32e646307b1254e6b538608432f1a1d3a939ef49236e5fc4",
+        "08-xeno_vault-after-native.png": "645b31e5e8c0259622d134a94330225de29efec644509a0c53943b4caf6230fe",
+        "08-xeno_vault-after-workbench.png": "c54c709cd4407e018ef2869c18a668bf80a2413d846ffcb6a341353ee35e6407",
+        "08-xeno_vault-before-native.png": "0d32a0b4f82f088e561eddaa4994bf12db2309b786102cb7f5bded60727ef107",
+        "08-xeno_vault-before-workbench.png": "8a9c0ef6671652f6243b4cd3e546c4a5717db4a08f2b5be1c4446cad8f2502d6",
+        "08-xeno_vault-direct-original-native-receipts.json": "78eb06351196dc0ac688caa1958a1400b70fec7a7f53d365966d0e35362ac14a",
+        "08-xeno_vault-editable-setup.json": "6a5fe39574e1fd60e3c8e487a7c6e696c3be2725effeaf7bcf5dbbc1dcb3447d",
+        "08-xeno_vault-original-native-receipts.json": "3b9d4376a87c9ec7d0b3b47342ad3eeedda076e4cb6192abf60c74a6747cb789",
+        "08-xeno_vault-result.json": "ad010bb2caff1f9c089afb071c1ed193c77df5f542ef033c656f5e6d19233d72",
+        "creative-native-summary.json": "ac9690be4e2fe52889dab30d495fb5798b9ba0c9de28af4c0a754f77b5ded33b"
+      },
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_collaborative_native.gd"
+      ],
+      "elapsed_seconds": 97.817519,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "b4cbe20062ee3cb141007a1c72dff055af7bfe7e876670562dbbbc3309ca1319",
+      "marker": "ART_COLLABORATIVE_NATIVE_RESULT",
+      "name": "test_art_collaborative_native",
+      "result": {
+        "checks": 771,
+        "evidence_kind": "Deterministic host-authored proposals, real ordinary Workbench native operations.",
+        "failures": 0,
+        "model_requests": 0,
+        "scenarios": 9
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 1800
+    },
+    {
+      "artifacts_sha256": {},
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_collaboration_authority.gd"
+      ],
+      "elapsed_seconds": 7.19714,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "3852b73dbe2bb2b9b97c604ec70fa37d7c4df7b4f3035d77357835a7485fda7f",
+      "marker": "ART_COLLABORATION_AUTHORITY_RESULT",
+      "name": "test_art_collaboration_authority",
+      "result": {
+        "checks": 39,
+        "evidence_kind": "ordinary Workbench and real native operations",
+        "failures": [],
+        "model_requests": 0,
+        "observations": [
+          {
+            "changed": 128,
+            "checked": 128,
+            "excluded": 0,
+            "human_admitted": 0,
+            "human_pending": 0,
+            "human_refused": 0,
+            "reason": "",
+            "refused": 0,
+            "status": "completed",
+            "unchanged": 0
+          },
+          {
+            "changed": 4032,
+            "checked": 4032,
+            "excluded": 0,
+            "human_admitted": 0,
+            "human_pending": 0,
+            "human_refused": 0,
+            "reason": "Approved native source changed; inspect and approve a fresh preview.",
+            "refused": 4096,
+            "status": "partial",
+            "unchanged": 0
+          }
+        ]
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 600
+    },
+    {
+      "artifacts_sha256": {},
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_collaboration_session.gd"
+      ],
+      "elapsed_seconds": 19.982635,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "74b59b01915b45f0cc90014b974c1ab14f82d484c260b47f488f30b3d5dcf029",
+      "marker": "ART_COLLABORATION_SESSION_RESULT",
+      "name": "test_art_collaboration_session",
+      "result": {
+        "checks": 184,
+        "evidence_kind": "ordinary Workbench, deterministic real loopback HTTP and actual native material operations",
+        "failures": [],
+        "http_requests": 7,
+        "model_calls": 0,
+        "ordinary_completions": 0,
+        "outcomes": [
+          {
+            "kind": "two-stage construction",
+            "receipts": [
+              {
+                "batch_sequence": 1,
+                "changed": 48,
+                "checked": 48,
+                "excluded": 0,
+                "human_admitted": 0,
+                "human_pending": 0,
+                "human_refused": 0,
+                "materials_sha256": "fd156ad7166ac04276f0af196898ae48abbbcd1f2bb99f4b49301b87bc3bc1fd",
+                "observed_source": {
+                  "authoring_generation": 1,
+                  "generation": 2,
+                  "revision": 50,
+                  "tick": 0
+                },
+                "proposal_digest": "dad73e0d9c3b4c1de50264bcbabbd01d87d9ab400890c5979ca99f1520e4665f",
+                "reason": "",
+                "refused": 0,
+                "stage": "structure",
+                "status": "completed",
+                "unchanged": 0,
+                "verified": true
+              },
+              {
+                "batch_sequence": 2,
+                "changed": 24,
+                "checked": 24,
+                "excluded": 0,
+                "human_admitted": 0,
+                "human_pending": 0,
+                "human_refused": 0,
+                "materials_sha256": "79308aecc555ef78643d0c83f8cf6ae017fd94cc9163d5994dcf1a69e752e8c8",
+                "observed_source": {
+                  "authoring_generation": 1,
+                  "generation": 2,
+                  "revision": 74,
+                  "tick": 0
+                },
+                "proposal_digest": "dad73e0d9c3b4c1de50264bcbabbd01d87d9ab400890c5979ca99f1520e4665f",
+                "reason": "",
+                "refused": 0,
+                "stage": "detail",
+                "status": "completed",
+                "unchanged": 0,
+                "verified": true
+              }
+            ]
+          },
+          {
+            "kind": "stopped prefix",
+            "receipt": {
+              "batch_sequence": 4,
+              "changed": 4096,
+              "checked": 4096,
+              "excluded": 0,
+              "human_admitted": 0,
+              "human_pending": 0,
+              "human_refused": 0,
+              "proposal_digest": "7986a649dcc63d0fa9bb1ba09a4c3a2a38820e0c46865402efca2a9b070c460d",
+              "reason": "Owner Stop after acknowledged native prefix",
+              "refused": 0,
+              "stage": "structure",
+              "status": "partial",
+              "unchanged": 0,
+              "verified": false
+            }
+          }
+        ]
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 600
+    },
+    {
+      "artifacts_sha256": {
+        "art-collaborative-ui.png": "211faec24ac95b83a8f1b0515335b664abdb23c343cf0fcc1b9f33a3433d2758"
+      },
+      "command": [
+        "/workspace/scratch/fbda1aa0fe89/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--path",
+        "/tmp/art-collaborative-002-source/godot",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--script",
+        "res://tests/test_art_collaboration_workspace.gd"
+      ],
+      "elapsed_seconds": 1.670247,
+      "error": "",
+      "exit_code": 0,
+      "log_sha256": "8f5e32a5bab919af4a1de1a8d757d5314a2eb4261bf55955955f4b4904ff2a9f",
+      "marker": "ART_COLLABORATION_UI_RESULT",
+      "name": "test_art_collaboration_workspace",
+      "result": {
+        "approvals": 1,
+        "checks": 94,
+        "display": "X11",
+        "failures": [],
+        "requests": 1
+      },
+      "status": "passed",
+      "timed_out": false,
+      "timeout_seconds": 600
+    }
+  ],
+  "evidence_kind": "deterministic loopback and native fixtures; not genuine model creativity",
+  "graphical": true,
+  "host": {
+    "logical_cpus": 9,
+    "machine": "x86_64",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "processor": ""
+  },
+  "model_calls": 0,
+  "platform": "linux",
+  "runtime": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "payloads": {
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+  },
+  "schema": "art-collaborative-gates-v1",
+  "source": {
+    "commit": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+    "tracked_source_clean": true,
+    "tree": "56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634"
+  },
+  "status": "passed"
+}

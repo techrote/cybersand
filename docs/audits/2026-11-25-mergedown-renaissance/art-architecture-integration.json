@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "programme": "MERGEDOWN-RENAISSANCE-001",
+  "workstream": "Art/Architecture production integration",
+  "status": "QUALIFIED LOCAL CANDIDATE; HOLD FOR MAINLINE RECONCILIATION, FULL PLATFORM QUALIFICATION AND OWNER GATES",
+  "authoritative_successor_pr": 780,
+  "parent_prs": {
+    "777": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+    "780": "d503d824aac4128968f7dfba5dccd540c3c07b59"
+  },
+  "ancestry_preserving_merge": "9da07e5029c87467b2fda9ece2c6a05cd7e5e2d4",
+  "qualified_source": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a",
+  "qualified_tree": "f33d9121bb02261c7664a97141f2144e92dc3128",
+  "current_main_foundations_included": false,
+  "native_inputs_changed": false,
+  "native_input_count": 105,
+  "runtime_published": false,
+  "ordinary_default_activation": false,
+  "genuine_model_calls": 0,
+  "owner_acceptance": false,
+  "platform_scope": [
+    "Linux headless actual native/Rapier",
+    "Deterministic numeric-loopback HTTP"
+  ],
+  "qualification": {
+    "cases": 14,
+    "checks": 1036,
+    "failed": 0,
+    "seconds": 77.55,
+    "strict_engine_diagnostics": false,
+    "before_after_custody_equal": true,
+    "original_failed_source": "c25a4884d3f2c4cb24e10f0289746100c5e17927",
+    "original_failed_case": "test_architecture_proposal_bridge",
+    "original_failure_class": "Stale fixture override signature at parse time",
+    "repair_source": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a"
+  },
+  "independent_review": {
+    "reviewer": "Specialist C \u2014 independent adversarial QA",
+    "source_disposition": "APPROVE",
+    "executed_source": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a",
+    "cases": [
+      "test_art_architecture_workbench",
+      "test_art_request_preparation",
+      "test_architecture_proposal_bridge",
+      "test_batch_lab_security"
+    ],
+    "strict_result": "PASS",
+    "review_of_C_changes": {
+      "reviewer": "Specialist A \u2014 product integration",
+      "disposition": "APPROVE",
+      "sources": [
+        "23fd85d9d9d8af14b81822ca942b3274079e8595",
+        "83fbf6de58db8a3a09f15029625a0502b8be7017",
+        "77277e50beb6f82be6dd7dff73343e6a74782d49"
+      ]
+    }
+  },
+  "evidence": {
+    "archive": "art-architecture-evidence.zip",
+    "sha256": "e815e8048956a7f31de3d38a9ef017051a71ef163a35c1f177689101ee779140",
+    "manifest": "art-architecture-evidence-manifest.json",
+    "human_record": "art-architecture-integration.md"
+  },
+  "required_next_actions": [
+    "Preserve candidate on authoritative #780 under lead control without rewriting original evidence branches",
+    "Reconcile with actual accepted main after #772/#775 foundations land",
+    "Qualify exact resulting source on required full Linux/Windows/graphical paths and coherent owner package",
+    "Retain physical, creative and genuine-model owner gates; no automatic Ready or merge"
+  ]
+}

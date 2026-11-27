@@ -1,0 +1,155 @@
+{
+  "schema": "cybersand-goblin-specialist-B-passive-phase1-source-review-v1",
+  "status": "source_review_clear",
+  "review_kind": "Independent read-only source and fixed input contract review; no local or hosted code was executed by this review.",
+  "reviewed": {
+    "driver": {
+      "blob": "6b9c3e327437f5426776da78abef02ef62636212",
+      "bytes": 41032
+    },
+    "manifest": {
+      "blob": "6a297640912b5c34ff2e3d48750534dd6e24a1db",
+      "bytes": 107533,
+      "activation_enabled": false
+    },
+    "workflow": {
+      "blob": "8665ea02ff707e1c0165714d9f9a74e3385d3c6a",
+      "bytes": 3813
+    },
+    "archive_builder": {
+      "blob": "5a7ea99a79632f2edd6444ceb452f829d377f568",
+      "sha256": "fe0d2a6fcee1fe0d94d0385c4293d9e5b0cbebd748a225125915e22d49756456",
+      "execution_in_phase1": false
+    },
+    "A_contract": "d7b2165b8921fe58cf4a7df4d55156bb4986338e",
+    "B_contract": "6f47f3de8b8ee57b1e665fa17eb515fa77282e46"
+  },
+  "actual_game_source": {
+    "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+    "source_dirty": false,
+    "driver_checkout_distinct": true
+  },
+  "actual_linux_input": {
+    "artifact_id": 15003384515,
+    "run_id": 45565621408,
+    "job_id": 139039653373,
+    "bytes": 50241858,
+    "sha256": "c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e",
+    "original_job_conclusion": "failure",
+    "raw_outcomes_adjudicated": false
+  },
+  "checks": [
+    {
+      "id": "minimal_permissions",
+      "pass": true,
+      "scope": "contents:read and actions:read; no arbitrary workflow inputs or Library credentials"
+    },
+    {
+      "id": "api_credentials_closed",
+      "pass": true,
+      "scope": "Only api.github.com fixed repository artifact metadata/ZIP endpoints receive Bearer authentication; automatic redirects disabled"
+    },
+    {
+      "id": "storage_no_auth",
+      "pass": true,
+      "scope": "Fresh Request/opener has UA/Accept only; HTTPS productionresultssa[0-9]+.blob.core.windows.net and same-host later redirects; no signed URL or secret in failure output"
+    },
+    {
+      "id": "reader_environment",
+      "pass": true,
+      "scope": "Allowlisted ordinary interpreter/temp/locale inputs; credentials/proxies/Python module injection inputs excluded; -B and user-site disabled"
+    },
+    {
+      "id": "source_and_reader_pins",
+      "pass": true,
+      "scope": "Separate clean6f checkout; full history without LFS/runtime acquisition; fixed monitor Gitblob/SHA and A23/11 plus B exact d50/helper closure"
+    },
+    {
+      "id": "canonical_owned_paths",
+      "pass": true,
+      "scope": "Reject .., symlink aliases and resolved paths outside fixed OWNED roots; preserve deliberate qualified-repository symlink as read-only outside uploaded roots"
+    },
+    {
+      "id": "bounded_zip_restore",
+      "pass": true,
+      "scope": "Validate whole member catalogue before extraction; reject traversal, case/prefix collisions, special/encrypted entries, unsupported compression and declared/streamed size excess"
+    },
+    {
+      "id": "exclusive_outputs",
+      "pass": true,
+      "scope": "Fresh owned roots, exclusive writes, report/log/receipt preflight and atomic no-replace ZIP publication"
+    },
+    {
+      "id": "fixed_original_custody",
+      "pass": true,
+      "scope": "Thirteen fixed originals totaling661216192 bytes, each exact ID/run/workflow head/size/SHA; current Linux first; workflow head separate from executed historical game source"
+    },
+    {
+      "id": "failed_inputs_retained",
+      "pass": true,
+      "scope": "Partial and failed downloads retain independent failure receipts; only verified originals count toward13; original failed gameplay statuses are not rewritten"
+    },
+    {
+      "id": "bounded_analysis",
+      "pass": true,
+      "scope": "Fixed Python-only entrypoints and existing frozen acceptance; no Godot/import/compiler/native game or optional CONTROL run"
+    },
+    {
+      "id": "resource_scan",
+      "pass": true,
+      "scope": "Outer1800s/4096MiB owned worker and2100s parent alarm; fixed child caps;4GiB output/2GiB free reserve; live scan ignores only vanished entries and retains fatal links/nonregular/bounds"
+    },
+    {
+      "id": "missing_memory",
+      "pass": true,
+      "scope": "Missing owner/ledger/provenance/reader map stays visible; outer reviews_pass requires complete present preflight; unchanged analyzer report retained verbatim"
+    },
+    {
+      "id": "summary_transport",
+      "pass": true,
+      "scope": "Bounded existing-field reports/log markers forwarded from worker log; original full outputs retained with SHA/size; projection failure prevents complete summary claim"
+    },
+    {
+      "id": "upload_closure",
+      "pass": true,
+      "scope": "Exactly evidence, passive-supervision and four B review roots; excludes ROOT/qualified checkout/.git symlink"
+    },
+    {
+      "id": "final_index",
+      "pass": true,
+      "scope": "Only the exact output index path excludes itself; separate stable file inventory closes the retained stage"
+    },
+    {
+      "id": "historical_missing_bytes",
+      "pass": true,
+      "scope": "Metadata-only predecessor3a2dab4d does not fabricate six lost local Linux tape bodies; new hosted receipts do not imply any whole-environment cleanup after localhost loss"
+    }
+  ],
+  "root_planned_metadata_edits_cleared": [
+    "Set reviewed manifest activation_enabled=true after root approval",
+    "Add github.run_id to the passive workflow concurrency group",
+    "For artifact14994110507, identify actual executed d849 game/source_tree while retaining702 workflow_head and driver_source_commit in catalogue and seed plan"
+  ],
+  "required_B_lineage_execution": {
+    "auditor_blob": "d50a77d52969008b8a0c090070c9e7665f013c7e",
+    "auditor_sha256": "f6fc92374aa6b7c3a14ab10d713897144844fb9de4e6b51995b9f3f117617aba",
+    "pins_blob": "8d5165fdc63c73862985c9dc13ddef4b9d2e512f",
+    "pins_sha256": "da7a0928d89a655c4ea93ff2a5bce4c877ecb261b353800c9905cab66df217db",
+    "invocation_contract": "6f47f3de8b8ee57b1e665fa17eb515fa77282e46",
+    "seconds": 60,
+    "memory_mib": 512
+  },
+  "deferred": {
+    "optional_B_terminal_supplement": "80c5350877e54ee53546921de8fb80cb2deba902 remains separately source-reviewed but is not included in this phase1 execution",
+    "old_5ee_deadline_auditor": "Historical outcome-specific source remains unchanged and is not repointed",
+    "conditional_CONTROL1024": "Deferred; no activation or gameplay authorized by this review",
+    "phase2_archive": "Requires root's actual-result adjudication and separate exact RESULTS documentation commit"
+  },
+  "limitations": [
+    "Source review does not establish successful network transport, successful passive runtime execution or any new native gameplay result.",
+    "The workflow does not establish global survivor absence after the unavailable local host; receipts cover only explicitly owned hosted processes.",
+    "Actual Linux11 source/material and campaign outcomes remain pending frozen raw-data analysis.",
+    "Final archive availability and Library delivery are outside this source review."
+  ]
+}

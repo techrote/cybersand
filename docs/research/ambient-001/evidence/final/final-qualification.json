@@ -1,0 +1,678 @@
+{
+  "accepted_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "delivery_unit_tests": {
+    "methods": 41,
+    "receipt_sha256": "f9da167a197bc36c087b0250353eae08d5efd8d1b3ea1d9b7a30abf579407a93",
+    "status": "passed"
+  },
+  "disposition": "Draft/HOLD; opt-in implementation and portable Windows evaluator qualified; owner acceptance pending",
+  "functionality": {
+    "accepted_actor_capacity": 8,
+    "additional_behaviours": [
+      "return_home",
+      "rest",
+      "follow_actor",
+      "avoid_crowding",
+      "maintain_altitude"
+    ],
+    "authored_profile_assignment_save_reopen": true,
+    "core_behaviours": [
+      "wander",
+      "seek_material",
+      "avoid_material",
+      "avoid_ledge",
+      "avoid_boundary",
+      "escape_obstruction"
+    ],
+    "measured_locomotion_families": [
+      "Runner ground",
+      "Monowheel rolling",
+      "4LY Trainer flight"
+    ],
+    "ordinary_examples": 5,
+    "per_actor_editor": true,
+    "personalities": 6
+  },
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "independent_reviews": {
+    "archive-review.json": {
+      "bytes": 10104,
+      "sha256": "4c078fec7b1e276404910b48a4a47c379f6b2805849ba56da8ada2e3a48ff817"
+    },
+    "linux-source-bridge.json": {
+      "bytes": 4828,
+      "sha256": "fe6ec5a2f52aebe4b859022e746c0165931750d9495ebcd4c3e9e9e59fe153ab"
+    },
+    "protected-integration-review.json": {
+      "bytes": 24406,
+      "sha256": "38e3ba5f34252353fbc81c6261235bb961df1b6fe2e9d6f5314ad51658821496"
+    },
+    "requirements-review.json": {
+      "bytes": 19690,
+      "sha256": "705eedb0477c4a8e67032e7dabac89091eb101c10caae9ec3d212ec557eedac1"
+    },
+    "windows-extraction-review.json": {
+      "bytes": 4288,
+      "sha256": "df65f7c9325dfe41427ef76b152b5bafba09fa5846f15a5b9a717cbce6a7858f"
+    },
+    "windows-gameplay-review.json": {
+      "bytes": 31137,
+      "sha256": "e7fde19e51b03703019debea2531e6eb720ddd4d12043ffee471fa863e75e8be"
+    },
+    "windows-graphics-review.json": {
+      "bytes": 19883,
+      "sha256": "8debe1161c38f423b79f113b31355b267c75dfe4060a63d8e3dde11c0d87829e"
+    }
+  },
+  "linux_campaign": {
+    "assertions": 5959,
+    "cases": 16,
+    "elapsed_seconds": 194.996,
+    "final_source_relation": "Exact unchanged Godot/project/native inputs proven by linux-source-bridge.json; no claim that Linux was rerun at the final package-only commit",
+    "qualification_sha256": "a2fa30cc2ac14dfc8a6848573551a1fd4bbb7ee5d40c300e71ef720cb8920393",
+    "source_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+    "source_tree": "f00fa44682bb46318b4505700e04fee1484a0b17",
+    "status": "passed"
+  },
+  "native_runtime_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+  "negative_findings": [
+    "Oil Moth retains 64/299 stalled intervals and 83 recovery decisions against an inaccessible cup.",
+    "Idle Mechanic retains 37.23 cells of physical drift during neutral selected rest; neutral intent does not freeze physics.",
+    "Scripted ground movement approaches the fixed initial Oil coordinate more closely in the four-second comparison.",
+    "No in-range flyer Water avoidance success is claimed in the three-family fixture.",
+    "Material distance means nearest observed sample; dynamic material can move independently of an actor.",
+    "Physical path sums center movement and can include gait and vertical motion.",
+    "Native material edit fixture uses an explicitly fixed copied pose; separate cases supply actual physical movement."
+  ],
+  "original_windows_evidence_artifact": {
+    "bytes": 18450760,
+    "id": 14958974304,
+    "sha256": "338996cd784898f63dfcdba59d057baf6a2509297bb052b419200e1349cdb22b"
+  },
+  "owner_walkthrough": [
+    "Extract the evaluator and run Open Workbench.cmd.",
+    "Open Actor Composition; load Oil / Water preference garden; inspect Runner and press Play.",
+    "Open Behaviour profile; duplicate Oil Moth; edit name, seed and module parameters; Apply and read the acknowledgement.",
+    "Paint a several-cell-wide Oil or Water patch within 50 world cells and inspect chosen intent, material observations and override.",
+    "Save the customized garden; load the retreat walkway, inspect its crawler and edit Avoid ledge duration; Apply, play and pause to observe simulation-time timing.",
+    "Use existing human pilot and ambient handback; save a named authored start and reopen it to verify the profile and assignment, with fresh ephemeral state."
+  ],
+  "package": {
+    "bytes": 95212785,
+    "extracted_gameplay_and_reopen": "passed",
+    "extracted_graphical_execution": "passed",
+    "filename": "CyberSand-AMBIENT-001-Windows-f4f94631d61d.zip",
+    "github_artifact_id": 14959278583,
+    "github_outer_sha256": "97675f795d6e42ecd15226ef4c9f0eec1df2f7d46add4063a7f9d92d1bd368a3",
+    "manifest_sha256": "526842cab674cdc572aa99b23f0ff05594ada48377d4998de098180e73fda856",
+    "ordinary_launcher": "passed; SHARED_WORKBENCH_LAUNCH_READY; no errors",
+    "original_payload_files": 1172,
+    "owner_playfeel_accepted": false,
+    "postlaunch_original_input_verification": "passed",
+    "pristine_verification": "passed",
+    "sha256": "8324c9390565b8c1f5106f0d8ee40e5286f0bd718403b1626ac09f31b7a396ec",
+    "windows_execution_qualified": true,
+    "zip_members": 1173
+  },
+  "performance_observations": {
+    "perception": {
+      "actual_native_edits": [
+        "Oil right",
+        "Oil relocated left",
+        "Water x=524",
+        "Water x=544",
+        "Water x=548",
+        "Water x=544",
+        "Water x=536",
+        "Water x=-1"
+      ],
+      "benchmarks": [
+        {
+          "actors": 1,
+          "decisions_each": 100,
+          "elapsed_usec": 58778,
+          "maximum_actor_capacity": 8,
+          "radius_cells": 50
+        },
+        {
+          "actors": 4,
+          "decisions_each": 100,
+          "elapsed_usec": 238767,
+          "maximum_actor_capacity": 8,
+          "radius_cells": 50
+        },
+        {
+          "actors": 8,
+          "decisions_each": 100,
+          "elapsed_usec": 467437,
+          "maximum_actor_capacity": 8,
+          "radius_cells": 50
+        }
+      ],
+      "checks": 130,
+      "scope": "actual native material and progression; fixed copied actor pose, no Rapier motion in this phase"
+    },
+    "scope": "Hosted measurements; fixed copied-pose sampler is separate from actual physical and ordinary Workbench campaigns. No FPS or hardware-independent guarantee.",
+    "three_family_sensor": {
+      "available": true,
+      "backend": "native-phased",
+      "cache_bytes": 262144,
+      "current_tick": 234,
+      "extent": [
+        512,
+        256
+      ],
+      "ignored_older_publications": 0,
+      "ingest_usec_max": 411,
+      "ingest_usec_total": 1049,
+      "ingestions": 40,
+      "maximum_materials": 8,
+      "maximum_radius_cells": 96,
+      "maximum_samples_per_query": 2401,
+      "owner_epoch": 11,
+      "owner_snapshot_serial": 235,
+      "patches": 118,
+      "publication_serial": 235,
+      "queries": 120,
+      "query_samples": 58952,
+      "query_usec_max": 605,
+      "query_usec_total": 54723,
+      "reason": "",
+      "revision": 286,
+      "sample_spacing_cells": 4,
+      "sample_tick": 234,
+      "source_bytes": 423058,
+      "version": "ambient-perception/v1",
+      "world_generation": 1
+    }
+  },
+  "personality_results": [
+    {
+      "action_x_sign_changes": 11,
+      "active_intervals": 299,
+      "id": "oil_moth",
+      "intentional_idle_decisions": 0,
+      "materials": {
+        "16": {
+          "absent_observed": 0,
+          "last_distance": 26.097037358419,
+          "maximum_distance": 47.8173608640209,
+          "minimum_distance": 11.2977920940851,
+          "present": 300,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 242,
+          "last_distance": 48.8177238922056,
+          "maximum_distance": 49.7450899547822,
+          "minimum_distance": 41.430025603231,
+          "present": 58,
+          "unavailable": 0
+        }
+      },
+      "overrides": {
+        "escape_obstruction": 83
+      },
+      "physical_path_cells": 443.928673828021,
+      "physical_path_during_selected_rest": 0.0,
+      "rest_episodes": [],
+      "rest_to_active_resumptions": 0,
+      "selected_rest_decisions": 0,
+      "stalled_active_intervals": 64
+    },
+    {
+      "action_x_sign_changes": 18,
+      "active_intervals": 277,
+      "id": "shy_crawler",
+      "intentional_idle_decisions": 22,
+      "materials": {
+        "16": {
+          "absent_observed": 0,
+          "last_distance": 31.4194002319825,
+          "maximum_distance": 47.8173608640209,
+          "minimum_distance": 11.192264842174,
+          "present": 300,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 150,
+          "last_distance": 48.6912055313252,
+          "maximum_distance": 49.9416920760788,
+          "minimum_distance": 42.5636099111891,
+          "present": 150,
+          "unavailable": 0
+        }
+      },
+      "overrides": {
+        "avoid_material": 32,
+        "escape_obstruction": 20
+      },
+      "physical_path_cells": 271.049198832305,
+      "physical_path_during_selected_rest": 0.0,
+      "rest_episodes": [],
+      "rest_to_active_resumptions": 0,
+      "selected_rest_decisions": 0,
+      "stalled_active_intervals": 21
+    },
+    {
+      "action_x_sign_changes": 7,
+      "active_intervals": 169,
+      "id": "idle_mechanic",
+      "intentional_idle_decisions": 130,
+      "materials": {
+        "16": {
+          "absent_observed": 93,
+          "last_distance": 48.0737653410101,
+          "maximum_distance": 49.9353659392256,
+          "minimum_distance": 11.1339551908079,
+          "present": 207,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 135,
+          "last_distance": 39.9508548191556,
+          "maximum_distance": 49.8212478595353,
+          "minimum_distance": 27.7125144920604,
+          "present": 165,
+          "unavailable": 0
+        }
+      },
+      "overrides": {
+        "avoid_material": 15,
+        "escape_obstruction": 13,
+        "rest": 129
+      },
+      "physical_path_cells": 201.152959549334,
+      "physical_path_during_selected_rest": 37.2286194011103,
+      "rest_episodes": [
+        {
+          "completed": true,
+          "duration_seconds": 5.00000000000023,
+          "end_reason": "timer_expired",
+          "end_seconds": 12.6000000000002,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 7.59999999999998
+        },
+        {
+          "completed": true,
+          "duration_seconds": 4.99999999999972,
+          "end_reason": "timer_expired",
+          "end_seconds": 22.2,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 17.2000000000003
+        },
+        {
+          "completed": false,
+          "duration_seconds": 2.89999999999984,
+          "end_reason": "observation_window_ended",
+          "end_seconds": 29.9999999999996,
+          "selected_decisions": 29,
+          "start_seconds": 27.0999999999997
+        }
+      ],
+      "rest_to_active_resumptions": 2,
+      "selected_rest_decisions": 129,
+      "stalled_active_intervals": 12
+    }
+  ],
+  "prior_failed_attempts": [
+    {
+      "artifact_id": 14956927074,
+      "disposition": "Full Windows headless pass; graphical process rejected for WASAPI errors despite exit0 and completed images; package not credited",
+      "repair": "Explicit Dummy audio for graphical qualification only; strict error gate retained",
+      "run_id": 45470109757,
+      "source_commit": "f80aab91d31ce5e753eb6056d679100d83c7b7e7"
+    },
+    {
+      "artifact_id": 14957578782,
+      "disposition": "All gameplay, captures, build and launcher completed; final postlaunch inventory rejected generated shader UID metadata; overall delivery failed",
+      "repair": "Admit shader UID sidecar only for an original hash-verified shader; exact pristine inventory and injected-input refusal retained",
+      "run_id": 45472012444,
+      "source_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6"
+    }
+  ],
+  "pull_request": "https://github.com/techrote/cybersand/pull/775",
+  "qualified_source": {
+    "all_qualification_inputs": 1115,
+    "commit": "f4f94631d61d492554627949497e727b26043ccb",
+    "digest_encoding": "UTF-8 sorted compact JSON of the Godot-prefix source_inputs_sha256 map",
+    "game_input_map_digest_sha256": "8a05de1e98f02082df3c2ea58055ead42f69787726189ac4877b7ee1e495af9c",
+    "godot_source_data_inputs": 835,
+    "tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10"
+  },
+  "recorded_utc": "2026-11-24T20:22:51.903314+00:00",
+  "remaining_limits": [
+    "Owner ambient believability and physical Windows/NVIDIA playfeel are not accepted by hosted software-rendered execution.",
+    "Material sensing uses a four-cell lattice and nearest observed samples, not exhaustive nearest-cell or route finding.",
+    "Ordinary host capacity remains eight; no draft population expansion is imported.",
+    "Ground/wheel and supported 4LY adapters only; unsupported combinations are refused.",
+    "Profile assignment is individual; optional group assignment and region-painting UI are not implemented.",
+    "No resource-sensitive module or local exploration-history sensor; resources are observed and existing physical restrictions remain.",
+    "Rest means neutral intent and permits physical drift; inaccessible material can cause prolonged obstruction.",
+    "Authored reopen preserves profiles/assignments and resets ephemeral timers/RNG; no exact physical continuation or cross-platform trajectory bit-determinism claim."
+  ],
+  "schema": "ambient-001-final-disposition/v1",
+  "windows_campaigns": {
+    "ambient": {
+      "assertions": 5959,
+      "cases": [
+        {
+          "assertions": 877,
+          "log_sha256": "23633830a074a943ae3a4a2b2cefeb7afb179466de24eac86d7fda96c5bce03f",
+          "name": "engine",
+          "process_sha256": "20980859795acded34bc613f793c7f1e9b2bb0ffff10cd9627b7cf32d9f1ea28",
+          "report_sha256": null,
+          "seconds": 0.937
+        },
+        {
+          "assertions": 214,
+          "log_sha256": "a4fdfe8de44f6fd66826a615d11e9ed1575f7364b0918f94ae1271487d60996b",
+          "name": "independent",
+          "process_sha256": "09fc7e7ca25f9296e9caf2676f4a03bb2c0022bd06786e04043e9110a477c80c",
+          "report_sha256": null,
+          "seconds": 0.468
+        },
+        {
+          "assertions": 130,
+          "log_sha256": "623da3f680f7f18334e87afb8b494039e4484c85e0adee71819e7f43fceaaf1d",
+          "name": "perception",
+          "process_sha256": "d99aa4aed68c586234918d6791d14f1a6e2f715e64340a9aa877eb9fdcb92107",
+          "report_sha256": "6c07873fac3c7ae7ab3d36f4d571c45fc3c7b573c61a9625854014c26ce69f86",
+          "seconds": 1.859
+        },
+        {
+          "assertions": 15,
+          "log_sha256": "bba3bcc8d60528a0b8e6a5e8a2a7f9170b7f4af3bb4710d6a30f467816d5963a",
+          "name": "ledge_geometry",
+          "process_sha256": "851147a5464a1c6ec7fd3ef640663c38d4a94ab1941763db9a96d9d1f40b325a",
+          "report_sha256": null,
+          "seconds": 0.656
+        },
+        {
+          "assertions": 21,
+          "log_sha256": "e129543631ad42885dfd266878ef11b732b120c77ed55411307fbd88918ad2c6",
+          "name": "clock",
+          "process_sha256": "76820ab01936f483cc555d60483217ecd66d5aaf05776fd126799a0cb782cfa1",
+          "report_sha256": null,
+          "seconds": 1.031
+        },
+        {
+          "assertions": 242,
+          "log_sha256": "8b95cb7c518f60734a980820a83aadcb9e98842ac2100c3ed05ee07dfb353301",
+          "name": "authoring_save",
+          "process_sha256": "0948f3543fb6fec77a91c5b9280ff8418d3db47bec458fb5ceeaac0085ae0c61",
+          "report_sha256": null,
+          "seconds": 1.406
+        },
+        {
+          "assertions": 256,
+          "log_sha256": "d8cefd07cd3cf5433557abea1ab58a50128d839f5402b31bd19ce37047e0e7bd",
+          "name": "authoring_reopen",
+          "process_sha256": "b3a3f8383f7fb10074a5dd4a6b34c10f1d4045ea92530a29485143797704145a",
+          "report_sha256": null,
+          "seconds": 1.39
+        },
+        {
+          "assertions": 46,
+          "log_sha256": "097f819b983b582110e12cb2d29ea5072506658ad83342635344bccc103f1eb0",
+          "name": "editor",
+          "process_sha256": "8016aa2dcf6a332a33cf7a341934723e929a376f63419ca06508ef6f4b615abe",
+          "report_sha256": "e4ea963973a611ffa8767575fce0a55f000780205a9dd778411a7c785e7f945a",
+          "seconds": 8.297
+        },
+        {
+          "assertions": 306,
+          "log_sha256": "38644484bcac3b9f7b9a218a4420d43a87c44a1d7d70d5d48b7760d7014c0654",
+          "name": "native_motion",
+          "process_sha256": "157f4b48378f8eb9c822ea5708e02028c0a0a4970444ffe60fcc6c518ae0dd72",
+          "report_sha256": "094bf646cac92aa77cdc39942e8e14d13009764ffba3d8046161d4a1ab238f64",
+          "seconds": 6.344
+        },
+        {
+          "assertions": 2877,
+          "log_sha256": "f1d0615186b31c50c1a718f26d676a689fa2ed1c30780ef7afab837f63744e68",
+          "name": "personalities",
+          "process_sha256": "a92072b5cdc88af2a833207a17a4c7fb4da7c000b033be4093f957b932b5801a",
+          "report_sha256": "a80b7b9d3bbe49a2ceeca59baa3cfd657c1a320f40cd5aaf17d4e26c76ef6e2f",
+          "seconds": 14.875
+        },
+        {
+          "assertions": 43,
+          "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0",
+          "name": "workbench",
+          "process_sha256": "6cd275d37153b697869a88fa08e3a21aa9c4d3033a2f3937cb38be8c76af636d",
+          "report_sha256": "f1852defae6c676ae9cb1fa0f0027fe9572f3d111fb4ec672d59c1bcfa953e8a",
+          "seconds": 31.313
+        },
+        {
+          "assertions": 121,
+          "log_sha256": "a588c1ffbea48963ef5e44e174116a8eccfa04106bb1171254970c954af587aa",
+          "name": "examples",
+          "process_sha256": "f4f1c9ae4d27ee08af63c1debfdbcd597cd229262d77cd80e4bf874fe5b5018b",
+          "report_sha256": "b108f85fa61c2b20a986a9142c85c340ef6f20bf8b79bb0b619af7bdea3af308",
+          "seconds": 62.062
+        },
+        {
+          "assertions": 415,
+          "log_sha256": "60c439e4288679f1d01c6e6837149481a65f180a839ef686a2e4676e866251ea",
+          "name": "legacy_catalog",
+          "process_sha256": "311cc9bc232a953ea942ccc0f5f44271a6bc39da4da51a26a18fb30aa11f5bf8",
+          "report_sha256": null,
+          "seconds": 1.047
+        },
+        {
+          "assertions": 199,
+          "log_sha256": "d27c3bbae921852889661b61a431f1ab4c33f794317ea891feb4e0dfcf7d2045",
+          "name": "legacy_composition",
+          "process_sha256": "66fa6a1eacde18b0cebff78a115efa073bbb2e9417b32c2b972359f9d137b5a6",
+          "report_sha256": null,
+          "seconds": 44.61
+        },
+        {
+          "assertions": 84,
+          "log_sha256": "d384e20fac6d6090022a4f39e214d960231d1237c1c9a74aa9583b7b967da8f9",
+          "name": "legacy_session",
+          "process_sha256": "186c6e78e3fbbe00cda33756a299596762bd9eb3483c33287ee246123b946f09",
+          "report_sha256": null,
+          "seconds": 1.125
+        },
+        {
+          "assertions": 113,
+          "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+          "name": "legacy_physical",
+          "process_sha256": "166d64102156a0d35fb3714d4aa24f40359eeea4438e57c635f93d3d90ddfc48",
+          "report_sha256": null,
+          "seconds": 1.031
+        }
+      ],
+      "elapsed_seconds": 192.203,
+      "headless": true,
+      "project_inputs": 837,
+      "qualification_sha256": "b2ae02cf0eab5160aedf4abec7903c1fb2580d47bcd0d003d0676c0764f12960",
+      "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+      "source_inputs": 1115,
+      "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+      "status": "passed"
+    },
+    "ambient-graphical": {
+      "assertions": 0,
+      "cases": [],
+      "elapsed_seconds": 195.422,
+      "graphics": {
+        "actual_image_pixels": [
+          1028,
+          578
+        ],
+        "captures": 12,
+        "display": "Windows",
+        "owner_playfeel_accepted": false,
+        "phases": [
+          {
+            "example": "ambient-oil-water",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-ledge-walkway",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-industrial-yard",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-settlement",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-flight",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          }
+        ],
+        "process_seconds": 187.766,
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "renderer_vendor": "Google Inc. (Microsoft)",
+        "rendering_driver": "opengl3_angle",
+        "rendering_method": "gl_compatibility",
+        "report_sha256": "51af15d8adba0ad1c4c55c899e9af516e3ea41557dfbdf912609a51a3a789930"
+      },
+      "headless": false,
+      "project_inputs": 837,
+      "qualification_sha256": "a9e3ea284db7cd925b9e9e89bc38071bf8e16d41e4afaf5367cd29f07fdfb9d7",
+      "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+      "source_inputs": 1115,
+      "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+      "status": "passed"
+    },
+    "extracted-graphical": {
+      "assertions": 0,
+      "cases": [],
+      "elapsed_seconds": 189.844,
+      "graphics": {
+        "actual_image_pixels": [
+          1028,
+          578
+        ],
+        "captures": 12,
+        "display": "Windows",
+        "owner_playfeel_accepted": false,
+        "phases": [
+          {
+            "example": "ambient-oil-water",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-ledge-walkway",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-industrial-yard",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-settlement",
+            "native_ticks": 120,
+            "passed": true,
+            "physical_ticks": 120
+          },
+          {
+            "example": "ambient-flight",
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120
+          }
+        ],
+        "process_seconds": 182.297,
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "renderer_vendor": "Google Inc. (Microsoft)",
+        "rendering_driver": "opengl3_angle",
+        "rendering_method": "gl_compatibility",
+        "report_sha256": "61d1ea5d0908b101194046e3e91f361758ab37c8fa647aad52f2dac027da4d7e"
+      },
+      "headless": false,
+      "project_inputs": 837,
+      "qualification_sha256": "dae42fe4a81cffbfa54ca836f6cbbf519cdf1501c563a88e7e4a9b0f6d1235e2",
+      "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+      "source_inputs": 1115,
+      "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+      "status": "passed"
+    },
+    "extracted-package": {
+      "assertions": 1548,
+      "cases": [
+        {
+          "assertions": 877,
+          "log_sha256": "782c8ca24a72830193cf7becdf7bfa00529b501f5d327de7fae682b9ae9a7666",
+          "name": "engine",
+          "process_sha256": "bf04b82c0ccda96fd75b1345cc7da2de7ef040542f552f507f810365ac8f0d79",
+          "report_sha256": null,
+          "seconds": 0.937
+        },
+        {
+          "assertions": 130,
+          "log_sha256": "87506a03768ac37f95b04a5231c7af368dbd1dd7d2b33d84e92ddcc7e8f8df72",
+          "name": "perception",
+          "process_sha256": "3750c624228225191082dcdf2b3ad689fedb3125f9cabed9fa969af5d127b84c",
+          "report_sha256": "eeadd8bea5dd107d89a7c4a53213ba51c7ed28b80cf482517a828b59ab8107fc",
+          "seconds": 1.969
+        },
+        {
+          "assertions": 242,
+          "log_sha256": "8b95cb7c518f60734a980820a83aadcb9e98842ac2100c3ed05ee07dfb353301",
+          "name": "authoring_save",
+          "process_sha256": "d9b39359f446b3639dd9d5ee18bb628b75f3bb220b479b8ca2202813ccc3ead2",
+          "report_sha256": null,
+          "seconds": 1.406
+        },
+        {
+          "assertions": 256,
+          "log_sha256": "d8cefd07cd3cf5433557abea1ab58a50128d839f5402b31bd19ce37047e0e7bd",
+          "name": "authoring_reopen",
+          "process_sha256": "3a9fba2151270a6bdf5425188951aea2fa11d99dd7a69710ccda19f7eb7c511f",
+          "report_sha256": null,
+          "seconds": 1.61
+        },
+        {
+          "assertions": 43,
+          "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0",
+          "name": "workbench",
+          "process_sha256": "dda57d0ecdf63734a4381d0c0f6fe6f5600dd3c5991da430bc0f6e79eb053ffc",
+          "report_sha256": "2833a365bd675eb63e5cc09bfa1a3df8fa031cf54cb6e3cb7cf81248975d8892",
+          "seconds": 31.234
+        }
+      ],
+      "elapsed_seconds": 48.078,
+      "headless": true,
+      "project_inputs": 837,
+      "qualification_sha256": "fc928bd7e813fde5ea83ca7b12815fe4f22c0a7d48656f1d273956bbc77521e2",
+      "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+      "source_inputs": 1115,
+      "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+      "status": "passed"
+    }
+  },
+  "workflow": {
+    "conclusion": "success",
+    "job_id": 138734297896,
+    "run_id": 45475439737,
+    "status": "completed",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45475439737"
+  }
+}

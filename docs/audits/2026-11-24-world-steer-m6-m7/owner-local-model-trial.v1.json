@@ -1,0 +1,239 @@
+{
+  "format": "cybersand-owner-model-trial-protocol-v1",
+  "id": "WORLD-STEER-OWNER-LOCAL-TRIAL-001",
+  "version": 1,
+  "state": "registered_not_executed",
+  "scope": "Three exploratory local-model planning requests under the mission's standing conditional authorization for an approved, actually available local model, once the exclusive proposal-only owner route exists. This inert document creates no automatic dispatch, training cohort, paid/cloud authority or quality comparison.",
+  "implementation_baseline": {
+    "source": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+    "tree": "d632b6b77f7829c1e61d035844b52060c972e908",
+    "qualified_art_interface": "fa22d386b802b686c371bb6e12996c7a93c18588",
+    "future_integrated_trial_source": null,
+    "future_qualified_hook_evidence": null
+  },
+  "execution": {
+    "currently_callable": false,
+    "block": "No identified approved local endpoint/model is available in the observed executor, and no exclusive proposal-only owner transport entrypoint or ownership handoff is supplied; current Intent UI explicitly uses the offline deterministic planner.",
+    "requests_sent": 0,
+    "real_model_calls": 0,
+    "native_writes": 0,
+    "credentials": null,
+    "standing_conditional_local_authorization": true,
+    "execution_conditions_satisfied": false
+  },
+  "request_policy": {
+    "provider_profile": "LM Studio",
+    "endpoint": null,
+    "model_id": null,
+    "endpoint_locality": "owner-supplied literal loopback only; no default/probed endpoint or cloud/LAN fallback",
+    "maximum_requests_total": 3,
+    "maximum_requests_per_brief": 1,
+    "automatic_retries": 0,
+    "automatic_followups": 0,
+    "maximum_output_tokens_per_request": 4096,
+    "request_timeout_seconds": 120,
+    "maximum_request_utf8_bytes": 65536,
+    "maximum_proposal_text_utf8_bytes": 65536,
+    "max_alternatives": 1,
+    "images_allowed": false,
+    "external_tools_allowed": false,
+    "sampling_seed": "No model sampling seed or temperature is set by the current Provider payload. Retain actual server defaults/configuration when available; host seeds below are not model determinism."
+  },
+  "context_policy": {
+    "maximum_design_cards": 3,
+    "maximum_context_characters": 12000,
+    "frozen_design_cards_sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+    "retain_actual_context_and_hash": true,
+    "raw_artwork_or_entire_corpus": false,
+    "module_or_delegated_worker_generation_in_this_first_trial": false,
+    "scope": "This first trial exercises correlated typed planning, owner review and native admission. It does not evaluate module retrieval or hierarchical-worker model quality.",
+    "module_context": "Retain the exact current module-summary/catalogue identity and any compact part context emitted by the existing Workflow. No library reset or deletion is required. This protocol admits no module placements, and cannot attribute an outcome to module retrieval."
+  },
+  "native_policy": {
+    "world_extent": [
+      512,
+      512
+    ],
+    "paused": true,
+    "initial_material": "Actual captured Empty material0 everywhere; no synthetic inspection flags.",
+    "region": [
+      32,
+      32,
+      256,
+      192
+    ],
+    "materials": [
+      58,
+      28
+    ],
+    "material_roles": {
+      "58": "structural",
+      "28": "attached service/detail"
+    },
+    "maximum_leaf_stages": 3,
+    "maximum_nodes": 4,
+    "maximum_depth": 2,
+    "maximum_checked_cells_per_stage": 8192,
+    "maximum_checked_cells_per_brief": 24576,
+    "maximum_raster_candidates_per_stage": 131072,
+    "maximum_raster_candidates_per_brief": 393216,
+    "maximum_operations_per_stage": 32,
+    "maximum_pixels_per_operation": 512,
+    "allowed_operation_shapes": [
+      "rectangle",
+      "line",
+      "pixels"
+    ],
+    "module_placements": 0,
+    "delegated_workers": 0,
+    "max_retries_per_job": 0,
+    "maximum_owner_revisions_in_scored_first_pass": 0,
+    "aggregate_maximum_native_checks_all_briefs": 73728,
+    "approval": "Explicit owner preview and approval for each native stage; no automatic approval or execution.",
+    "budget_authority": "Host compiler computes actual footprints and native/raster costs; model estimates and serialized claims are not authority. Protocol-specific tighter limits must be checked before adopting/approving a response; they do not change production global limits.",
+    "protection": "Every stage must include all brief clearances, retain actual host protection and remain within the selected region. A missing, intersected or inconsistent clearance refuses the proposal before approval."
+  },
+  "briefs": [
+    {
+      "id": "local-industrial-workshop",
+      "family": "industrial_hangar",
+      "host_seed": 74101,
+      "region": [
+        32,
+        32,
+        256,
+        192
+      ],
+      "clearances": [
+        [
+          56,
+          168,
+          208,
+          24
+        ]
+      ],
+      "intent": "Design a compact orthographic industrial workshop with unequal left and right working bays, a continuous supported outer frame and one overhead service gallery. Keep the declared lower clearance band completely Empty. Use Hardwall58 for the main frame and Metal28 for visibly attached service details. Retain a broad working void and an identifiable side equipment bay; use at most three finite stages.",
+      "review_focus": [
+        "Macro distinction between large working void and smaller equipment bay.",
+        "Visible structural contact for gallery and details.",
+        "Exact Empty clearance preservation; no claim of actor access from static geometry."
+      ]
+    },
+    {
+      "id": "local-service-shaft",
+      "family": "service_network",
+      "host_seed": 74117,
+      "region": [
+        32,
+        32,
+        256,
+        192
+      ],
+      "clearances": [
+        [
+          136,
+          64,
+          32,
+          144
+        ]
+      ],
+      "intent": "Design an orthographic service gallery around a clear central vertical shaft. Put two service risers on opposite sides and connect them above the shaft; give one side a larger maintenance alcove. Keep every cell in the declared shaft Empty. Use Hardwall58 for supports and Metal28 for attached service assemblies, with finite structure then service/detail stages.",
+      "review_focus": [
+        "Shaft remains a dominant negative space.",
+        "Opposing risers and overhead connection are attached rather than isolated marks.",
+        "Asymmetric maintenance alcove has a visible purpose; static form is not fluid or gameplay qualification."
+      ]
+    },
+    {
+      "id": "local-unequal-viaduct",
+      "family": "viaduct",
+      "host_seed": 74129,
+      "region": [
+        32,
+        32,
+        256,
+        192
+      ],
+      "clearances": [
+        [
+          64,
+          104,
+          64,
+          88
+        ],
+        [
+          160,
+          120,
+          80,
+          72
+        ]
+      ],
+      "intent": "Design a compact orthographic viaduct with a continuous deck above two unequal open spans, grounded outer piers and a central pier between the declared openings. Keep both declared opening rectangles completely Empty. Add a small attached service alcove near one end. Use Hardwall58 for the main frame and Metal28 for sparse rail or service details; do not add perspective surfaces.",
+      "review_focus": [
+        "Unequal spans and unlike ends remain legible.",
+        "Deck, central pier and exterior piers form an intentional supporting structure.",
+        "Both measured openings are preserved; visual support is not stress or traversal certification."
+      ]
+    }
+  ],
+  "required_per_brief_evidence": [
+    "Protocol bytes/SHA and exact source/tree, Godot/native/Rapier identities and platform.",
+    "Actual initial World/region material bytes and SHA, generation, captured revision and paused state.",
+    "Exact host request ID, canonical request/context bytes and SHA, actual selected reference identities, provider request ID and live guard observations.",
+    "Requested and returned model IDs, actual local serving process/model build or weight digest when available, sampling configuration, response status/finish reason, observed token usage or explicit unknown.",
+    "Complete sanitized owner request/response audit and its SHA; bridge event prefixes alone are not complete response evidence. No credentials, authorization headers or private configuration exports.",
+    "Original response text/hash and parser/admission outcome; no silent repair, omitted failure or substituted fixture.",
+    "Each host preview/ticket and actual footprint/budget, owner approve/revise/skip/cancel decision, native terminal receipt/readback and before/after hash.",
+    "Source-bound Godot frame when rendered; diagnostic plots, static render, measured native geometry and actual gameplay remain separate."
+  ],
+  "outcomes": {
+    "retained_denominator": 3,
+    "stages_of_evidence": [
+      "not_dispatched_precondition",
+      "transport_failed_or_cancelled",
+      "ordinary_or_invalid_response",
+      "typed_proposal_refused",
+      "typed_proposal_admitted",
+      "host_preview_refused",
+      "owner_skipped_or_cancelled",
+      "native_partial_or_refused",
+      "native_completed"
+    ],
+    "owner_repair": "Retain the original first-pass outcome. A later manual edit is a separately labelled owner-revised plan, not a second model success and not an additional request under this protocol.",
+    "stop_policy": "Stop on a stale context, unexpected endpoint/model, native refusal/partial execution or protection discrepancy; preserve acknowledged partial results and mark remaining planned briefs not dispatched after stop. Do not compensate with extra calls.",
+    "analysis": "Report descriptive counts out of three, exact geometric/permission outcomes, latency and actual reported usage. No p-values, blind preference, prompt optimization, causal retrieval advantage, general architectural quality or owner acceptance follows from this small exploratory trial."
+  },
+  "current_executor_availability": {
+    "observation": {
+      "observed_utc": "2026-11-24T23:13:26.732773+00:00",
+      "scope": "Read-only current executor availability; no prompt or inference request",
+      "ollama_executable_available": false,
+      "approved_local_inference_observed": false,
+      "ollama_tags": {
+        "available": false,
+        "reason": "<urlopen error [Errno 111] Connection refused>"
+      }
+    },
+    "evidence_path": "m67-evidence/local-model-availability.json",
+    "sha256": "a31070d67eaf8d10f3e9f5f0b2a4bf02124c3b4ecab73adc6d691413e23f2178",
+    "request": "GET http://127.0.0.1:11434/api/tags",
+    "scope": "Read-only current executor observation only, not the owner machine, all providers or an inference attempt."
+  },
+  "independent_review": {
+    "reviewer": "specialist C, staged execution / Workbench UI",
+    "outcome": "Source/document review PASS before any model execution.",
+    "scope": "Verified exact UI labels and five offline fixture paths, pinned executable/project command shape, admitted family IDs, in-bounds Empty-source clearances, missing exclusive owner route and optional11th guard requirement. This is not a native/model trial result."
+  },
+  "execution_prerequisites": [
+    "Identify the already-approved existing local model and concrete server; verify actual availability under the mission's standing conditional local-trial authorization. No renewed permission is required for this already-authorized bounded scope.",
+    "Supply a qualified owner-controlled proposal-only entrypoint that cannot also enter ordinary Art automatic painting.",
+    "Retain the exact future integrated source/runtime and handoff identity before any request.",
+    "Verify that the selected literal-loopback service runs the named local model and does not forward to a paid/cloud service. Paid/cloud requests remain unauthorized."
+  ],
+  "authority_clarification": {
+    "recorded_utc": "2026-11-24T23:59:58.663738+00:00",
+    "earlier_protocol_sha256": "c73c8873f826961a7a1d18a74237006b7434e63602e41e9c6bb02fa70c4f9d81",
+    "earlier_source": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+    "reason": "Correct the authorization record to reflect the user's existing conditional permission; do not create a redundant permission gate. No execution, brief, policy, budget, outcome or source-availability observation changed."
+  }
+}

@@ -1,0 +1,410 @@
+{
+  "accepted_main": {
+    "sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "tree": "06b62d73138028d1f7615b83edc9810491bf6287"
+  },
+  "accepted_predecessors": [
+    {
+      "merge_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "pr": 714,
+      "scope": "earlier unchanged documentation/provenance negative admission"
+    },
+    {
+      "merge_sha": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "pr": 722,
+      "scope": "source/configuration-bound soliding object reuse"
+    },
+    {
+      "merge_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "pr": 723,
+      "scope": "mandatory worldgen showcases through existing two-job Make budget"
+    }
+  ],
+  "capacity": {
+    "account_wide_observation": false,
+    "authenticated_account_ceiling": null,
+    "coordination_ledger": {
+      "comments_at_intake": 53,
+      "issue": 305,
+      "latest_record_date": "2026-11-09",
+      "sufficient_for_current_programme_ownership": false
+    },
+    "owner_reported_standard_hosted_slots": 40,
+    "repository_snapshot": {
+      "assigned_jobs_by_platform": {
+        "linux": 1,
+        "windows": 1
+      },
+      "assigned_runner_ids_observed": 2,
+      "collection_finished_at": "2026-11-24T17:00:53Z",
+      "collection_started_at": "2026-11-24T17:00:19Z",
+      "in_progress_jobs": 2,
+      "interpretation": "Two assigned runner IDs sampled across the 34-second collection interval, not a simultaneous count, account-wide capacity or saturation evidence.",
+      "queued_or_waiting_jobs": 0,
+      "representation": "Selected public fields from original GET records; full raw acquisition remained scratch evidence.",
+      "snapshot_file": "campaign-observation-20261124.json",
+      "snapshot_sha256": "53ce06d658036bc2ebd4c483934351c64f4350c1eb08ac2da7e1d155262428e1"
+    },
+    "scheduswarm_automatic_dispatch": false,
+    "scheduswarm_state": "paused",
+    "session_slots_are_runner_slots": false
+  },
+  "disposition": "DRAFT_HOLD",
+  "implementation_candidate": {
+    "allowed_scope": [
+      "standalone CI status/custody helpers and tests",
+      "nullable telemetry report identity fix",
+      "additive Documentation unit-suite invocation",
+      "Windows Palette max-parallel 2 to 3",
+      "operations and immutable evidence documentation"
+    ],
+    "hosted_final_source_qualified": false,
+    "merge_authorized": false,
+    "product_source_changed": false,
+    "production_publish_authorized": false,
+    "ready_promotion_authorized": false,
+    "runtime_binary_changed": false,
+    "source_binding": "Final Draft PR head/tree and its exact workflow request must be recorded at admission; this file does not self-claim its containing commit.",
+    "state": "local implementation independently reviewed; final exact-source hosted qualification and owner decisions pending"
+  },
+  "independent_packet_reviews": [
+    {
+      "disposition": "GO; #718 wording corrected to Native-workflow-only comparison",
+      "reviewer": "specialist A, performance author",
+      "scope": "performance decisions/numerics, exact run/source IDs and JSON scopes"
+    },
+    {
+      "disposition": "GO; final status/archive file-read findings repaired and independently delta-tested",
+      "reviewer": "specialist B, custody author",
+      "scope": "publication lineage, actual immutable replay, migration and custody boundaries"
+    }
+  ],
+  "independent_review": "../../audits/2026-11-24-ci-engineering-closure/independent-review.json",
+  "local_validation": {
+    "actual_immutable_custody_replay": "independently reproduced byte-identical receipt for original #762 source/run/attempt",
+    "docs": "passed with legitimate pinned companion source 6a58311982941b75f46e22109a0829e5acb83c7e before final integration",
+    "final_integration": {
+      "actionlint_version": "1.7.12",
+      "custody_elapsed_seconds": 81.031,
+      "custody_tests": 39,
+      "documentation_documents": 148,
+      "documentation_questions": 33,
+      "hosted_source_qualification": false,
+      "metrics_tests": 8,
+      "provider_and_all_93_workflows": "passed",
+      "report": "local-validation.json",
+      "repository_admission": "pointer-only; full materialized admission pending",
+      "scheduling_tests": 10,
+      "status_tests": 28
+    },
+    "gdextension_original_attempt_timing_recalculations": 6,
+    "independent_custody_tests": {
+      "author_final_focused_archive_tests": 5,
+      "author_prior_complete_suite": 38,
+      "final_focused_regressions": 4,
+      "final_inventory": 39,
+      "focused_overlap_with_prior_suite": 1,
+      "full_prior_suite": 36
+    },
+    "independent_metrics_tests": 8,
+    "independent_status_tests": {
+      "final_complete_suite": 28,
+      "seconds": 0.049
+    },
+    "integrated_provider_policy": "passed",
+    "integrated_scheduling_policy": "passed:93 workflows",
+    "new_closure_question_rank": 1,
+    "palette_original_case_process_context_log_checks": 19,
+    "physical_windows_nvidia": "NOT_RUN",
+    "provider_policy": "passed",
+    "ramfirst_original_trial_medians_recomputed": 24,
+    "retrieval_canonical_hit_at_1": "20/33",
+    "retrieval_canonical_hit_at_5": "31/33",
+    "runtime_materialization": "pointers in isolated source-inspection worktree",
+    "scheduling_policy": "passed",
+    "scheduling_tests": 10,
+    "source_plans_generated": true
+  },
+  "observed_date": "2026-11-24",
+  "pending_gates": [
+    {
+      "id": "FINAL_SOURCE_HOSTED",
+      "reason": "The final Draft checkpoint requires its own complete applicable exact-source suites. The owner prohibited Ready promotion; local gh is unauthenticated, approved connector has no workflow_dispatch operation and browser fallback did not establish a usable authenticated route. No new heavy execution is requested. Historical sources do not qualify the integrated source.",
+      "requires": [
+        "Documentation full materialized provenance",
+        "Native six families plus strict aggregate",
+        "GDExtension platform builds, every actual shard, graphical smoke and both coverage reducers",
+        "Palette complete GL/ANGLE cohort and reducer",
+        "Any additionally applicable scoped workflow"
+      ],
+      "state": "PENDING"
+    },
+    {
+      "id": "CAPACITY",
+      "requires": [
+        "Current applicable account and platform capacity decision",
+        "Campaign owners and queue pressure refreshed before any execution"
+      ],
+      "state": "OWNER_PENDING"
+    },
+    {
+      "id": "PUBLISHER_MIGRATION",
+      "reason": "No active publisher is changed.",
+      "requires": [
+        "Owner-specific integration review",
+        "Same-source native/graphical/extracted-package qualification",
+        "Authentic artifact custody and LFS/lease checks"
+      ],
+      "state": "OWNER_HANDOFF"
+    },
+    {
+      "id": "READY_MERGE",
+      "requires": [
+        "Explicit owner Ready decision after review",
+        "Explicit owner merge decision after mandatory exact-source evidence"
+      ],
+      "state": "OWNER_PENDING"
+    }
+  ],
+  "performance_recovery": {
+    "archive_digests_independently_downloaded_verified": 44,
+    "capacity_limitations": {
+      "account_entitlement_independently_verified": false,
+      "limitation": "Runner pool/rate limits and other repositories are not observable from this bounded source-cohort inventory. Session count is not runner capacity.",
+      "owner_stated_ceiling": 40,
+      "scope": "Observed per-workflow and per-source-cohort interval overlap, not account-wide measurement."
+    },
+    "historical_gdextension_successful_attempts": 6,
+    "original_job_rows": 479,
+    "original_negative_records": [
+      {
+        "attempt": 1,
+        "cause": "Two GitHub TCP443 connection failures, planning checkout watchdog; both coverage reducers refused missing evidence.",
+        "job_id": 137039883118,
+        "run_id": 44967549040,
+        "runner_minutes": 19.716667,
+        "status": "failure"
+      },
+      {
+        "attempt": 1,
+        "cause": "Mandatory scheduler policy still limited both matrices to1..8.",
+        "job_id": 137062184664,
+        "run_id": 44974802604,
+        "status": "failure"
+      },
+      {
+        "attempt": 1,
+        "cause": "Same genuine policy inconsistency before16/16 repair.",
+        "job_id": 137071626745,
+        "run_id": 44977850017,
+        "status": "failure"
+      },
+      {
+        "attempt": 1,
+        "cause": "Linux visual1 Git LFS authorization error; final Palette reducer refused missing cohort.",
+        "job_id": 137094185991,
+        "run_id": 44985182460,
+        "status": "failure"
+      }
+    ],
+    "palette_candidate_cases": 19,
+    "ram_complete_trials": 48,
+    "raw_digest_metadata_is_not_download_verification": true,
+    "workflow_attempts": 36
+  },
+  "programme": "CI-ENGINEERING-CLOSURE-001",
+  "publication": {
+    "active_programme_publishers_modified": false,
+    "actor_fix_in_accepted_main": false,
+    "actor_owner_records": [
+      748,
+      761,
+      762
+    ],
+    "evidence_record": "publication-evidence.json",
+    "generic_tools_are_execution_qualification": false,
+    "immutable_replay_contract": "actor-custody-replay-contract.json",
+    "immutable_replay_pin": "actor-custody-replay-pin.json",
+    "immutable_replay_result": "actor-custody-replay-result.json",
+    "immutable_replay_scope": "Only the original trusted source/run/attempt; modified product source requires new execution.",
+    "independently_reproduced_custody_receipt": true,
+    "new_product_execution": false,
+    "original_attempt": "1",
+    "original_report_counts": {
+      "installed-windows": 18,
+      "linux": 42,
+      "windows": 42
+    },
+    "original_run": "45112739808",
+    "original_source": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+    "owner_evaluator_redownloaded": false,
+    "publication_authorized": false,
+    "remote_lfs_storage_verified": false,
+    "replay_contract_sha256": "172f77d2f56c6cece5c7ddebdd10abf3c4a2e800d76e859ee7b918e34958583c",
+    "replay_result_sha256": "c59f4f99ea29a72f2a05db4f5a344aa3ac1b61f940708441161781f5694bbc6a",
+    "swarm729_modified": false
+  },
+  "rollback": "Accepted production main remains unchanged. If later adopted, restore only Windows Palette max-parallel3 to2. Standalone tools and their additive Documentation unit step can be removed independently; retain all existing product tests, strict owner validators and original evidence. GDE stays8/8; no RAM workflow is selected.",
+  "scheduling_decision": {
+    "accepted_main": {
+      "gdextension_linux": 8,
+      "gdextension_windows": 8,
+      "palette_linux": 2,
+      "palette_windows": 2
+    },
+    "experiments": [
+      {
+        "decision": "REJECT",
+        "pr": 731,
+        "reason": "GDE coverage passes but mandatory scheduling policy rejects its two limits. No waiver or implicit adoption.",
+        "rollback": "No production change; retain 8/8.",
+        "scope": "This exact 12/12 candidate"
+      },
+      {
+        "decision": "HOLD",
+        "pr": 735,
+        "reason": "Corrected exact-source gates pass, but realized Linux peak9/16 and variable queues preclude a defensible shared-capacity wall-time benefit. Simpler candidate if later owner capacity admission warrants.",
+        "rollback": "If separately adopted later, revert both caps to8 plus its named-job policy exception and test guards; requalify applicable source.",
+        "scope": "Higher GDE fan-out adoption"
+      },
+      {
+        "decision": "HOLD",
+        "pr": 739,
+        "reason": "No demonstrated whole-campaign advantage over corrected16/16; initial same-tree cohort also retains genuine Palette LFS failure. Lower Linux cap does not allocate cores to Windows.",
+        "rollback": "No production change; any future adoption can revert both caps/policy/tests to8/8.",
+        "scope": "Asymmetric14/18 adoption"
+      },
+      {
+        "decision": "GO",
+        "pr": 736,
+        "reason": "All six cohorts/19 process cases and same plans verified; Windows span351\u2192208s and workflow450\u2192358s observed with16.866667\u219216.8 runner-min. Bounded extra slot removes a scheduling dependency, not tests.",
+        "rollback": "Single Windows max-parallel3\u21922; original matrix, providers, cases, timeouts and reducers preserved.",
+        "scope": "Select one-line Windows Palette2\u21923 for isolated Draft candidate; owner merge and new candidate qualification remain pending"
+      },
+      {
+        "decision": "REJECT",
+        "pr": 732,
+        "reason": "Staged-copy medians only -0.014% to+2.139% on four selected shards; experiment excludes source/dependency/build on RAM.",
+        "rollback": "No production change; do not merge research-only workflow.",
+        "scope": "Production RAM-disk adoption"
+      },
+      {
+        "decision": "REJECT",
+        "pr": 733,
+        "reason": "All24 complete direct-checkout/build trials recovered; RAM median execution regresses0.042%\u20130.508% in every selected shard; preparation varies both directions.",
+        "rollback": "No production change; do not merge research-only workflow.",
+        "scope": "Production RAM-first adoption"
+      },
+      {
+        "decision": "HOLD",
+        "pr": 718,
+        "reason": "Published independent Native-workflow comparison saves25s(1.11%), uses5.09% more runner time and gives209s later first functional feedback on differing CPUs. Control reran Native only; no matched full-five-workflow speedup is claimed. No new native campaign or merge.",
+        "rollback": "Unmerged; main keeps six families.",
+        "scope": "Previously qualified seven-family split"
+      },
+      {
+        "decision": "HOLD",
+        "pr": 721,
+        "reason": "Published predeclared same-worker pair saves14.975657s(1.0576%) for the two commands; not material enough to reopen.",
+        "rollback": "Unmerged; retain accepted subsequent #722/#723.",
+        "scope": "Previously qualified compiler prerequisite reordering"
+      }
+    ],
+    "historical_source_identities": [
+      {
+        "actual_peak_all_workflow_jobs": 17,
+        "api_head_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "attempt": 2,
+        "attempt_start_to_last_job_seconds": 1273.0,
+        "label": "8/8 accepted baseline retry",
+        "original_event_to_last_job_seconds": 2222.0,
+        "run_id": 44967549040,
+        "runner_minutes": 175.85,
+        "tested_source_commit": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "tested_source_tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed"
+      },
+      {
+        "actual_peak_all_workflow_jobs": 25,
+        "api_head_sha": "9fe3f0963b67facd9b6139e9272b296968f20b6e",
+        "attempt": 1,
+        "attempt_start_to_last_job_seconds": 1010.0,
+        "label": "12/12 policy-red candidate",
+        "original_event_to_last_job_seconds": 1010.0,
+        "run_id": 44974802645,
+        "runner_minutes": 169.533333,
+        "tested_source_commit": "bfe9d03e6d7b216725919b106fb44ded9e7d29f0",
+        "tested_source_tree": "8711f522c6e5ee9b91ae16381eeb21daa1e10ac6"
+      },
+      {
+        "actual_peak_all_workflow_jobs": 26,
+        "api_head_sha": "fea11a6061a4ca3ce0c9217bc2e124e2cfb08c24",
+        "attempt": 1,
+        "attempt_start_to_last_job_seconds": 903.0,
+        "label": "16/16 before policy repair",
+        "original_event_to_last_job_seconds": 903.0,
+        "run_id": 44977849960,
+        "runner_minutes": 169.55,
+        "tested_source_commit": "4cd6382ed6acca9f4d6df4b3439611910b71230b",
+        "tested_source_tree": "01b92a45462eb65492ff244e09e46dfe6851b775"
+      },
+      {
+        "actual_peak_all_workflow_jobs": 18,
+        "api_head_sha": "d170da41fb66cc4a6e23f73343c1f059592ecb63",
+        "attempt": 1,
+        "attempt_start_to_last_job_seconds": 1221.0,
+        "label": "16/16 corrected exact head",
+        "original_event_to_last_job_seconds": 1221.0,
+        "run_id": 44984940287,
+        "runner_minutes": 166.75,
+        "tested_source_commit": "8c606a1e440367f2e60fabfe48f137b2831c4c00",
+        "tested_source_tree": "8f5171f04f013a3621cf6068e679428b22732339"
+      },
+      {
+        "actual_peak_all_workflow_jobs": 20,
+        "api_head_sha": "97418f385450dd12d3e450bba79b7cf0cae3076f",
+        "attempt": 1,
+        "attempt_start_to_last_job_seconds": 1165.0,
+        "label": "14/18 initial same-tree request; Palette red",
+        "original_event_to_last_job_seconds": 1165.0,
+        "run_id": 44985182561,
+        "runner_minutes": 170.783333,
+        "tested_source_commit": "e4d721574530e08c9d990f36c53e73adb1def180",
+        "tested_source_tree": "75dac7110e09e44c2d34b458f56564e0c914ec9b"
+      },
+      {
+        "actual_peak_all_workflow_jobs": 19,
+        "api_head_sha": "bfbbb86877746e5ed0c2f609274b1ce7b03b0990",
+        "attempt": 1,
+        "attempt_start_to_last_job_seconds": 1400.0,
+        "label": "14/18 final exact head",
+        "original_event_to_last_job_seconds": 1400.0,
+        "run_id": 44989006830,
+        "runner_minutes": 178.066667,
+        "tested_source_commit": "b1179c12b5cef3a55495b22713738eaad4e2b414",
+        "tested_source_tree": "75dac7110e09e44c2d34b458f56564e0c914ec9b"
+      }
+    ],
+    "new_timing_campaign_requested": false,
+    "performance_record": "../../audits/2026-11-24-ci-engineering-closure/performance.json",
+    "production_main_unchanged": true,
+    "selected_draft_candidate": {
+      "gdextension_linux": 8,
+      "gdextension_windows": 8,
+      "palette_linux": 2,
+      "palette_windows": 3
+    }
+  },
+  "schema": "cybersand-ci-engineering-closure-v1",
+  "source_inventory": {
+    "accepted_main_godot_cases": {
+      "linux": 340,
+      "windows": 317
+    },
+    "historical_evidence_qualifies_integrated_candidate": false,
+    "historical_godot_cases": {
+      "linux": 338,
+      "windows": 315
+    },
+    "path": "current-contract-inventory.json"
+  }
+}

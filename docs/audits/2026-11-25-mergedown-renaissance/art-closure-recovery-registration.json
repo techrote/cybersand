@@ -1,0 +1,75 @@
+{
+  "schema": "cybersand-mergedown-art-recovery-intake-v1",
+  "date": "2026-11-26",
+  "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
+  "principal_ledger": 784,
+  "authoritative_art_pr": 780,
+  "architecture_pr": 777,
+  "status": "PREPARED / ACTUAL WINDOWS QUALIFICATION REQUIRED",
+  "accepted_main_baseline": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "recovered_original_source": "368292fe99485e6ea928325f9e8d000d829a4407",
+  "local_qualified_source": "29a19e5d2bf5676bc4e65d6bf5b0cfe2c63f5b6a",
+  "local_qualified_tree": "1fb81991c7ceda67f58103f92f4cf1782ae293f8",
+  "published_exact_union": "7f7d97a6dda8d0ed2ed6231f1cf7549b342fa221",
+  "frozen_product_source": "b4316693759643539aad92f883d240308499a21f",
+  "frozen_product_tree": "b9a1d587b5e7df978ffeb750c61e1bd6b509aad9",
+  "source_changes": "368\u219229a: accepted-main CI and tooling union only, no application/native edits;29a and7f7d exact tree equality;7f7d\u2192frozen product: principal owner guide only. Original source identities remain distinct.",
+  "local_qualification": {
+    "platform": "linux",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "actual_os_storage_cases": 13,
+    "canonical_targeted_cases": 22,
+    "status": "passed",
+    "inputs_unchanged": true,
+    "graphical_execution": false,
+    "windows_execution": false,
+    "native_inputs": 105,
+    "rapier_inputs": 4,
+    "companion_fixture": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "original_missing_companion_guard_failures_retained": true,
+    "guards_after_exact_companion_recovery": "docs,repository,M11 passed",
+    "scheduler_controls": {
+      "run": 94,
+      "skipped": 1
+    },
+    "windows_runner_unit_controls": 22
+  },
+  "independent_review": {
+    "reviewer": "Specialist C",
+    "source_union": "approved for Draft publication and Windows qualification, no merge",
+    "independent_linux_os_faults": 13,
+    "independent_native_boundary_checks": 84,
+    "independent_mounted_art_architecture_checks": 85,
+    "final_guide": "approved against actual executable controls, separate source identity and inherited Goblin limitation",
+    "adapter": "25 controls and CI provider guard independently passed; complete original mode plans and readback reviewed",
+    "lead": "runtime/source/run/attempt workflow reviewed; pre-import all-untracked refusal required and implemented"
+  },
+  "harness_files_sha256": {
+    "tools/ci/mergedown_art_qualification.py": "04de9d82c5c034a99828b76d17a560faacf32b5826428537c8f4eca0cd4c70d5",
+    "tools/ci/test_mergedown_art_qualification.py": "2f06c71dee63693248b7707409f0ca26452bb2a76b47c4008decd38b35db475a",
+    "tools/fixtures/mergedown-art-windows-request.json": "6c6913abd5f272b40da82e077e783378f431da804bdda9428d83f2c0b69ec820",
+    ".github/workflows/mergedown-art-windows.yml": "b73c52c4308635eb33f485c66efee43d693184384c4b0281ca3831270ace710f",
+    ".github/workflows/art-session-logging.yml": "905211b34cf77df5cb800bf5bcc75c7105349ce6ba3c43ef53cf438492a5fed9"
+  },
+  "artifacts": {
+    "art29a-linux-original-evidence.zip": {
+      "bytes": 425911,
+      "sha256": "47559d578aa18530d32af0f8fd1e0a1ce4f0c8486a27ab573dbbeb8208ed513f"
+    },
+    "art29a-current-main-source.bundle": {
+      "bytes": 1606,
+      "sha256": "e71bb7f4b96a5c9fecd59d645af7669da76a7b729bcc4a698f93311c06849823"
+    }
+  },
+  "remaining_gates": [
+    "Actual registered Windows nine-mode campaign and package CMD/module/immutable readback",
+    "Applicable complete resulting-source Ready/native regression before any merge",
+    "Physical owner acceptance including predecessor NVIDIA no-listener observation",
+    "Genuine-model creative acceptance without paid inference authorization"
+  ],
+  "known_limit": "This frozen Art/Architecture candidate retains original optional Goblin001 audit writer at67c; use separately corrected accepted-main evaluator for Goblin storage acceptance. No Goblin002 imported.",
+  "model_calls": 0,
+  "default_activation_changed": false,
+  "merged": false
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "cybersand-goblin-qualification-request-v1",
+  "implementation_source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+  "mission": "GIP-014-goblin-GAMEPLAY-QA-001",
+  "request": 5,
+  "prior_failed_run": 45469647752,
+  "change": "Canonicalize only the four established Rapier import descriptors before freezing raw package hashes; retain exact normalization receipts and truthful graphical failure subrecords",
+  "scope": "One focused GitHub-hosted Windows developer evaluator; source tests and extracted package qualification",
+  "draft_hold": true,
+  "native_rebuild": false,
+  "production_enablement": false,
+  "physical_owner_acceptance": false
+}

@@ -1,0 +1,16 @@
+{
+  "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "join_commit": "4de5667ebd3a1788f3a4cde0b892e28e0459ea95",
+  "join_tree": "e06e3ee24d17a9650dc60504236a61e7b53fe6dc",
+  "parents": [
+    "2d614f617bcc7b4536c93938e13a1624c7528db3",
+    "67c1413a2a84077b47fa542cf91d2bd6ba5520ee"
+  ],
+  "prepared_tree_identical": true,
+  "measured_source": "dea2cd5f520771990202e73c016c9ba294f25a2d",
+  "measured_product_inputs_identical": true,
+  "disposition": "Actual accepted-main ancestry joined; no resulting-tree or executable input change, so existing exact-source targeted qualification retained by full tree equivalence",
+  "owner_gate": "Draft/HOLD and physical owner acceptance remain; full resulting-source platform qualification remains separate",
+  "authoritative_pr": 779,
+  "remote_actions": "Lead only: publish source with original779 and accepted-main ancestry; retarget to main while preserving Draft/HOLD"
+}

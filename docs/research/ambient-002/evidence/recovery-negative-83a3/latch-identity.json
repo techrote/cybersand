@@ -1,0 +1,9 @@
+{
+  "godot/scripts/ambient/ambient_stateful_modules.gd": "18956efada8100b484e6248505b396c61de2bf93dd7e6850a6f336c6eb8ad401",
+  "godot/scripts/ambient/ambient_modules.gd": "fb085974637fbd51628ad0e17b981c87f26250867453f2576a0d469e44ca59da",
+  "godot/scripts/ambient/ambient_profile.gd": "149979a6cf3d4ae0437c9eecaf5807f9598a9e6d135d9f0d7cfcf1e54c5cd689",
+  "godot/scripts/ambient/ambient_memory.gd": "36d61c69440850a295c85bfb1b855c6ca3e455a34ba3c18f049c26ca98cc4f32",
+  "probe_sha256": "4b06df62d8a59f6dd0a3f4e80354542aa8bd8af6fd87f407b621a74d5b362df9",
+  "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "console_sha256": "95ec62d1449cc3fec78504124641cfe63d8f9077de0aa3c6026366d4063107eb"
+}

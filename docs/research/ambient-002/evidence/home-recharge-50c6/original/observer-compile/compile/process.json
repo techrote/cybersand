@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/home/runner/work/_temp/ambient-observation-engine/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/home/runner/work/cybersand/cybersand/application/godot",
+    "--script",
+    "/home/runner/work/cybersand/cybersand/observer/tools/ambient/watch_ambient_living.gd",
+    "--check-only"
+  ],
+  "exit_code": 0,
+  "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+  "pid": 4035,
+  "seconds": 0.465,
+  "status": "passed",
+  "timeout_seconds": 120
+}
