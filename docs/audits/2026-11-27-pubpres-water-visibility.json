@@ -1,0 +1,198 @@
+{
+  "source_revision": "be01cc37f0833455ae3390ad41440da4c9de2df7",
+  "native_build_commit": "13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b",
+  "raw_receipt_sha256": "95d3a4fffc2799597a697831d2477acac6ad4e821909f95a2c7c58860d4c9171",
+  "display": "X11",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "checks": 203,
+  "failures": [],
+  "observed_frames": 4906,
+  "hidden_body_frames": 22,
+  "composed_body_frames": 17111,
+  "moving_wet_distinct_poses": 41,
+  "observed_frames_by_stage": {
+    "completed_paused_history": 2338,
+    "dry_large_erase": 1,
+    "dry_step": 1,
+    "dry_to_wet_entry": 81,
+    "initial_authoring_framebuffer": 4,
+    "initialized_paused_history": 2338,
+    "install": 1,
+    "mixed_sand_small_edit": 1,
+    "mixed_step": 1,
+    "moving_submerged": 44,
+    "multipart_install": 15,
+    "multipart_limb_framebuffer": 2,
+    "multipart_motion": 10,
+    "repair_step": 1,
+    "restore": 13,
+    "restored_authoring_framebuffer": 4,
+    "restored_paused": 32,
+    "restored_step": 7,
+    "single_step": 2,
+    "submerged_framebuffer": 4,
+    "water_refill_framebuffer": 3,
+    "water_small_repair": 1,
+    "wet_large_fill": 1,
+    "wet_step": 1
+  },
+  "omission_reasons": {
+    "dry_to_wet_entry:0:shared_budget": 4,
+    "dry_to_wet_entry:0:time_budget": 1,
+    "dry_to_wet_entry:1:shared_budget": 2,
+    "dry_to_wet_entry:2:shared_budget": 4,
+    "dry_to_wet_entry:3:shared_budget": 3,
+    "dry_to_wet_entry:3:time_budget": 3,
+    "moving_submerged:0:shared_budget": 1,
+    "moving_submerged:0:time_budget": 1,
+    "moving_submerged:1:shared_budget": 1,
+    "moving_submerged:3:time_budget": 1,
+    "multipart_motion:0:time_budget": 1
+  },
+  "frames": [
+    {
+      "label": "initial_authoring_framebuffer",
+      "slot": 3,
+      "pixel_point": [
+        640,
+        418
+      ],
+      "maximum_visible_difference": 0.441650390625,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "submerged_framebuffer",
+      "slot": 2,
+      "pixel_point": [
+        639,
+        418
+      ],
+      "maximum_visible_difference": 0.839202880859375,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "water_refill_framebuffer",
+      "slot": 1,
+      "pixel_point": [
+        639,
+        575
+      ],
+      "maximum_visible_difference": 0.62841796875,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "restored_authoring_framebuffer",
+      "slot": 0,
+      "pixel_point": [
+        640,
+        418
+      ],
+      "maximum_visible_difference": 0.5906982421875,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "multipart_limb_framebuffer",
+      "slot": 4,
+      "pixel_point": [
+        639,
+        417
+      ],
+      "maximum_visible_difference": 0.34228515625,
+      "maximum_restored_error": 0.0
+    }
+  ],
+  "schema": "pubpres-mounted-water-visibility-20261127-v1",
+  "source_tree": "f393540616a6670eaaf3761fe10ec08b37cba007",
+  "native_so_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+  "rapier_so_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "runner": "Ubuntu 24.04 on WSL2, private Xvfb, Mesa llvmpipe OpenGL, Godot 4.7 stock Safe. Other independent local work ran concurrently. No matched timing claim.",
+  "process": {
+    "timeout_seconds": 1150,
+    "returncode": 0,
+    "command": [
+      "xvfb-run",
+      "-a",
+      "-s",
+      "-screen 0 1280x800x24 +extension GLX",
+      "Godot_v4.7-stable_linux.x86_64",
+      "--path",
+      "<staged source>/godot",
+      "--audio-driver",
+      "Dummy",
+      "--rendering-method",
+      "gl_compatibility",
+      "--rendering-driver",
+      "opengl3",
+      "--render-thread",
+      "safe",
+      "--script",
+      "res://tests/test_workbench_water_composition_native.gd"
+    ],
+    "selectors": {
+      "actual_submission": "0",
+      "actual_submission_status": {
+        "candidate_ready": false,
+        "committed_count": 0,
+        "connected": false,
+        "enabled": false,
+        "engine_atomic_admission": false,
+        "refusal": "",
+        "requested": false,
+        "schema": "pubpres-actual-submission-v1"
+      },
+      "water_composition": "1"
+    },
+    "full_image_slots": 2,
+    "physics_publication": "early",
+    "full_image_publication": true
+  },
+  "source_verification": "125 native, build and focused script inputs matched Git after CRLF normalization. The staged bytes matched every independently re-read input hash in the native receipt.",
+  "partial_coverage": "The shader clips incompatible current/active-previous material fragments and attenuates Water. hidden_body_frames counts entirely missing selected member poses, independently of fragment clipping and explicitly tagged held poses.",
+  "held_total": null,
+  "held_total_scope": "The original fixture at this source retained sampled selected steps and poses without an aggregate held-pose counter.",
+  "withheld_evidence": {
+    "recorded": 22,
+    "dropped": 0,
+    "all_current_footprints_empty_or_water": true,
+    "all_latest_native_responses_accepted": true,
+    "counts_by_refusal": {
+      "shared_budget": 15,
+      "time_budget": 7
+    }
+  },
+  "input_hashes": {
+    "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+    "res://scripts/main.gd": "6a7252171712c7a20fa6b2ff0cf576ba5d414bba585a7e563e53a428aed409e9",
+    "res://scripts/physical_actor_overlay.gd": "e27096267383a4c0ef437852667770047c2b7e57c8f43be96aeea71dfffe7a36",
+    "res://scripts/physical_actor_session.gd": "8ac01eca5ad696dcddc02af85a8483d0fd00c9ff4e39dfd462bdf5923c5141cd",
+    "res://scripts/shared_workbench.gd": "f32faf02db09cc0a89b56721be9d340baf0ea3c2875d4d425c6cb55b9d96f090",
+    "res://scripts/simulation_worker.gd": "a1483dd2a0b60842ea9c4be36bf9d63e4927bd69c4c46db201d10fe1ef6eb76e",
+    "res://scripts/workbench_physics_bridge.gd": "005cb66e6cea4337420e22453984c78ff32d75aa74ccf7722ae84e2fb0da04d8",
+    "res://scripts/workbench_presentation_coherence.gd": "4d6bfe581b666bb2121989a163a5d12ce87760c4dfe37c080d1bb920ebe4fced",
+    "res://scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+    "res://scripts/workbench_water_composition.gd": "f50cb53285e7317e6a182609c66f042683b3b79f87cd0b333513255a85e1abbd",
+    "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+    "res://tests/test_workbench_water_composition_native.gd": "3c2f84e8bac475593987e65ee6daa5a46adef0eeb6adb67f667fd1dd2c284043"
+  },
+  "evidence_sha256": {
+    "moving-runner.png": "0566d1998d3eca896ff9ac679fb2109e89b27e0db9e673ffd0c70bff0b411026",
+    "submerged_framebuffer-shown.png": "f3492bead2519117d9e555c7ff951a35c522f9414140e960380807ca0dfafa7f",
+    "multipart_limb_framebuffer-hidden-control.png": "b4ff5ca7e8718c23f320e355edd5c295c9b17ddba6d4862a3b26a63555b40b87",
+    "submerged_framebuffer-restored.png": "f3492bead2519117d9e555c7ff951a35c522f9414140e960380807ca0dfafa7f",
+    "restored_authoring_framebuffer-restored.png": "cd1b06b0b151923a9d982a22660b8600144308f72da3562d320fd50e519846dd",
+    "water_refill_framebuffer-shown.png": "a6c44628940701baec8ad80eb539dfec4a27f81c506d2c1ab4415e9a624fc135",
+    "receipt.json": "95d3a4fffc2799597a697831d2477acac6ad4e821909f95a2c7c58860d4c9171",
+    "restored_authoring_framebuffer-hidden-control.png": "71007d3db920041b940b31e5fc0e7a64fba09c4e7cea056c390b9791288ff5f2",
+    "initial_authoring_framebuffer-shown.png": "5e414af3a68aea8c9c1310d4d3e25d0edd75c23ee5cb7e6b0ff9c257df63dfa6",
+    "water_refill_framebuffer-restored.png": "a6c44628940701baec8ad80eb539dfec4a27f81c506d2c1ab4415e9a624fc135",
+    "initial_authoring_framebuffer-hidden-control.png": "fe044eac6c325d7a5294f7c537da00bd6d524f9cdb643b6e92013aae62e33a63",
+    "initial_authoring_framebuffer-restored.png": "5e414af3a68aea8c9c1310d4d3e25d0edd75c23ee5cb7e6b0ff9c257df63dfa6",
+    "water_refill_framebuffer-hidden-control.png": "31e6cf4b321e060e33f0c519699e50e4455db66d594babeadcf7a536245604f7",
+    "multipart_limb_framebuffer-restored.png": "d696a4d277f931862868c82a7743e56dbb850d3d7276f5ec25dbeb31e3cb6eb7",
+    "submerged_framebuffer-hidden-control.png": "9d72a762ba629869b17d9c0c87bac4d331bf868801f6647055110ee223b80b1a",
+    "multipart_limb_framebuffer-shown.png": "d696a4d277f931862868c82a7743e56dbb850d3d7276f5ec25dbeb31e3cb6eb7",
+    "stdout.log": "d8afffa30ef2907fc0507aeb95e74f4fd6f12634555bfc57dd94fcc004322282",
+    "restored_authoring_framebuffer-shown.png": "cd1b06b0b151923a9d982a22660b8600144308f72da3562d320fd50e519846dd"
+  },
+  "raw_custody": "Mission workspace C:/cs-pubdef/evidence/water-be01. The following SHA-256 values identify the original receipt, stdout and 16 first-read PNGs."
+}

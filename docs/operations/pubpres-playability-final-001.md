@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Isolated continuation of frozen 757; candidate architecture, exact evidence custody and unfulfilled physical acceptance
 canonical-for: [pubpres-playability-final-001]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 related-documents: [pubpres-completion-001.md, ../architecture/rendering-and-gameplay-bridges.md, ../architecture/simulation-tick-and-threading.md]
 ---
 
@@ -103,6 +103,14 @@ count0 controls and same-source0/2/2/0 comparisons. Actual deferred replacement
 and independently joined two-completion eligibility must be observed. Count-only,
 simultaneous count/deadline and deadline-only cases remain distinct; hidden and
 censored presentation episodes accompany visible-pose freshness.
+
+## Water and physical actor visibility
+
+With explicit Water composition enabled, the Workbench uses the exact transform carried by the consumed body sample. The worker checks that transform against the submitted collider centre, angle and returned force centre of mass. The current physical observation and the visible material publication have separate identities. Clearance checks the actual current and active previous textures under the shared 24,000-cell and 2 ms limits. The draw shader clips individual fragments that overlap other materials and attenuates those under Water.
+
+During Restore, the paused installed owner can continue drawing from its proved native closure while a separate replacement prepares. An ordinary active frame that briefly cannot certify a successor can hold the last submitted Water endpoint for up to 100 ms when its owner, geometry, material content, sample and revision still match. Picking and Follow use the selected physical sample. The held receipt keeps that sample's original step.
+
+On 27 November 2026, source `be01cc37f` passed 203 mounted assertions across 4,906 observed stock Safe Linux software-rendered draws. The five shown/hidden/restored controls each recovered the same pixels, including the restored authoring view and a moving six-member Runner's foot after pause. Both 2,338-draw paused intervals, manual Step, material edits and Restore kept every member visible. Active movement still withheld 22 individual member-draws when the shared clearance deadline expired. Every recorded withheld footprint contained only Empty or Water. These refusals are a remaining responsiveness defect. The receipt records the original executable and input hashes, per-stage counts and framebuffer digests. [Mounted Water evidence](../audits/2026-11-27-pubpres-water-visibility.json)
 
 ## Comparison and evidence contract
 
