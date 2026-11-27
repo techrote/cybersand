@@ -10,6 +10,7 @@ import re
 import subprocess
 
 import execution_policy
+import verify_godot_shard_command
 import run_godot_regressions as runner
 import verify_retained_play_readback
 
@@ -81,7 +82,8 @@ def verify(root: Path, *, cases: list, source: str, tree: str, runtime: dict,
                     and not re.search(r"\bskipped\b|^\s*SKIP\b", text, re.I | re.M),
                     "Original Linux log contains an error or skipped check")
             require(isinstance(row.get("command"), list)
-                    and row["command"][1:] == runner.case_command("GODOT", case, "linux")[1:],
+                    and row["command"][1:] == verify_godot_shard_command.shard_case_command(
+                        "GODOT", case, "linux", str(runner.ROOT / "godot"), index, path.parent)[1:],
                     "Linux original command differs from source")
             if offset:
                 if runner.case_readback_contract(case) is not None:
