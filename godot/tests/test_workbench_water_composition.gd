@@ -10,6 +10,9 @@ var checks: int = 0
 var failures: Array[String] = []
 var coverage_checks_completed: bool = false
 
+class PilotChoice extends Control:
+	func pilot_id() -> int: return 11
+
 func check(value: bool, message: String) -> void:
 	checks += 1
 	if not value:
@@ -374,7 +377,7 @@ func coverage_cache_checks() -> void:
 		"live current Sand over previous Water still fails the actual sweep")
 	# Mount just the first-owner geometry seam. This synthetic CPU case does
 	# not authorize any native dependency, pose, draw or new physical step.
-	var shell := Control.new()
+	var shell := PilotChoice.new()
 	app.shared_workbench = shell
 	bridge._initialized = true
 	bridge._transforms.append(pose)
@@ -410,6 +413,39 @@ func coverage_cache_checks() -> void:
 	bridge._manual_step_count = 1
 	check(app._initial_workbench_water_coverage(first_frame,context,summary,bridge,order).is_empty(),
 		"a physically progressed owner cannot enter initial coverage")
+	# Real CPU material patches and rotating textures with an explicitly expired
+	# deadline. This geometry seam cannot create an accepted frame or a pose.
+	app.paused = false
+	session._active = true
+	session._definitions.append({"instance_id":11})
+	bridge._actor_body_offsets.append(0)
+	bridge._transforms[0] = Transform2D(0,Vector2(40,40))
+	app.world_extent = Vector2i(96,96)
+	app.render_channels = 2
+	app.render_image_format = Image.FORMAT_RG8
+	app.image = Image.create_empty(96,96,false,Image.FORMAT_RG8)
+	app.create_render_textures()
+	app._presentation_previous_image = app.image.duplicate()
+	app._presentation_previous_unknown = false
+	app._presentation_pending_cache_usec = 0
+	app._workbench_dry_region = app._prepare_workbench_dry_region(Time.get_ticks_usec()+100000)
+	check(not app._workbench_dry_region.is_empty(),"initial real dry material planes seed the pilot's spatial proof")
+	app._workbench_dry_region.merge({"current":app._presentation_current_content_id,"previous":app._presentation_previous_content_id})
+	app._presentation_pending_cache_usec = app.PRESENTATION_FRAME_TIME_BUDGET_USEC+1
+	var scanned_before: int = app._presentation_pending_clearance_cells
+	var far_patch := PackedInt32Array([80,80,1,1,0,2])
+	check(app.upload_texture_patches(far_patch,PackedByteArray([2,0]),1,2)
+		and app._workbench_dry_region_status == "unchanged_patches"
+		and app._workbench_dry_region.current == app._presentation_current_content_id
+		and app._presentation_pending_clearance_cells == scanned_before,
+		"real distant Sand upload rebinds certified cells through an expired shared clock without scanning")
+	app.upload_texture(app.image.get_data(),2)
+	check(app._workbench_dry_region_status == "same_contents" and not app._workbench_dry_region.is_empty(),
+		"a byte-identical full refresh rebinds the exact two certified planes")
+	check(app.upload_texture_patches(PackedInt32Array([40,40,1,1,0,2]),PackedByteArray([2,0]),3,2)
+		and app._workbench_dry_region.is_empty() and app.image.get_pixel(40,40).r8 == 2,
+		"one real intersecting Sand pixel immediately retires clearance even when its replacement scan cannot run")
+	session._active = false
 	bridge._initialized = false
 	app.shared_workbench = null
 	shell.free()
