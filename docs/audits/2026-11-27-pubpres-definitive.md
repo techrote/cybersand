@@ -54,6 +54,15 @@ Stock Safe, two slots and Water composition, with a Stock Safe Water-off
 fallback. Both use all-worker native completion.
 [Original Windows renders and logs](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15215285088)
 
+Separate's deferred post-draw callback could describe a previously queued
+image. During Separate4 restored authoring, 217,390 pixels differed between
+the first shown image and the restoration, while hiding the actor changed
+4,936. The original isolated fixture reproduced all four failures on Linux.
+Ordering the first read after a single explicit Separate draw passed 137 checks
+on each render thread. The mounted control now requires a later accepted draw
+for each policy transition and drains the submitted work before reading.
+All five RGB oracles retain their original thresholds and identity checks.
+
 ## Integrated Workbench checks
 
 On 27 November, the source at `cc0a8475` passed actor manipulation (78 checks),

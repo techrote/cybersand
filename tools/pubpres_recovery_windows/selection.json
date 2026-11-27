@@ -6,7 +6,7 @@
   "render_lookahead": 0,
   "engineering_disposition": "EXPERIMENTAL / HOLD",
   "physical_acceptance": "HOLD",
-  "rationale": "Use official Stock Safe with Full two-slot publication, Water composition and all-worker native completion. The Stock Safe fallback disables Water composition. Separate0 and Separate4 failed Windows Water framebuffer qualification in run 46022262388. The registered promotion criteria require those checks to pass. Owner evaluation on physical hardware remains open.",
+  "rationale": "Use official Stock Safe with Full two-slot publication, Water composition and all-worker native completion. The Stock Safe fallback disables Water composition. Stock Safe passed the frozen Windows Water checks and improved completed physical progression against consolidated main. Promotion of a separate renderer requires independently qualified first-read correctness and the registered physical, freshness and resource targets. Owner evaluation on physical hardware remains open.",
   "experimental_architecture": "none",
   "task_completion": 0
 }

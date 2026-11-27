@@ -155,6 +155,9 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
     if "exact_checks" in expected:
         need(terminal["checks"] == expected["exact_checks"], "Supplemental assertion inventory differs: " + test)
     result = {"terminal": terminal, "test_sha256": digest(project / "tests" / (test + ".gd"))}
+    if test == "test_workbench_water_composition" and terminal.get("graphical") is True:
+        need(terminal.get("separate_first_draws") == (30 if expected_inline is False else 0),
+             "Isolated Water readback did not capture the requested render thread's first draws")
     if expected.get("output_environment") or expected.get("output_argument"):
         path = receipt_path or folder / "receipt.json"
         need(path.is_file(), "Supplemental graphical receipt was not retained: " + test)
@@ -166,8 +169,14 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
         if test == "test_workbench_water_composition_native":
             need(data["graphical"] is True and data["checks"] == terminal["checks"]
                  and data["selectors"]["water_composition"] == "1"
+                 and data["selectors"]["actual_submission"] == ("1" if expected_atomic else "0")
                  and (engine_sha is None or data["engine_sha256"] == engine_sha),
                  "Native Water execution, terminal or engine differs")
+            for row in data["framebuffer"]:
+                serials = row["control_submission_serials"]
+                need(len(serials) == 4 and all(type(serial) is int for serial in serials)
+                     and (all(a < b for a, b in zip(serials, serials[1:])) if expected_atomic else serials == [-1]*4),
+                     row["label"] + " did not preserve the first read of three successive control states")
             result["water_framebuffer_sha256"] = water_framebuffers(data, folder)
         if test == "test_workbench_member_presentation":
             need(data == terminal and data.get("graphical") is True
