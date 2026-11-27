@@ -91,10 +91,26 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     $Path=Join-Path $Root $script:PPManifestName
     Assert-PP ((Get-PPHash $Path) -ceq (Read-PPChecksum ($Path+'.sha256') $script:PPManifestName)) 'Manifest checksum differs'
     $Manifest=Read-PPJson $Path
-    Assert-PP ($Manifest.schema -ceq $script:PFSchema -and $Manifest.mission -ceq $script:PFMission -and
+    $LocalRetest=$Manifest.schema -ceq 'pubpres-local-owner-retest-v1'
+    Assert-PP (($Manifest.schema -ceq $script:PFSchema -or $LocalRetest) -and $Manifest.mission -ceq $script:PFMission -and
         $Manifest.candidate_commit -ceq $Candidate -and $Manifest.physical_acceptance -ceq 'HOLD' -and
         $Manifest.production_defaults_changed -eq $false) 'Final package identity or HOLD differs'
-    Assert-PP ($Manifest.package_filename -ceq ('CyberSand-'+$script:PFMission+'-'+$Candidate.Substring(0,12)+'-Windows.zip')) 'Evaluator filename differs'
+    $Label=if($LocalRetest){'LOCAL-OWNER-RETEST'}else{$script:PFMission}
+    Assert-PP ($Manifest.package_filename -ceq ('CyberSand-'+$Label+'-'+$Candidate.Substring(0,12)+'-Windows.zip')) 'Evaluator filename differs'
+    $QualificationCommit=$Candidate
+    $QualificationTree=$Manifest.sources.C.source_tree
+    if($LocalRetest) {
+        $QualificationCommit='00478f29b9abaccb1e358137e8a9a48894c1690b'
+        $QualificationTree='ad0d4c364f144f8a279f38bceb8e29a182361b1f'
+        $Binding=Read-PPJson (Join-PPSafe $Root 'qualification/PUBPRES-NATIVE-INPUT-REUSE.json')
+        Assert-PP ($Binding.schema -ceq 'pubpres-native-identical-input-reuse-v1' -and $Binding.platform -ceq 'windows' -and
+            $Binding.application.source_commit -ceq $Candidate -and $Binding.application.source_tree -ceq $Manifest.sources.C.source_tree -and
+            $Binding.original_build.source_commit -ceq $QualificationCommit -and $Binding.original_build.source_tree -ceq $QualificationTree -and
+            $Binding.original_manifest_sha256 -ceq $Manifest.sources.C.native.receipt_sha256 -and
+            $Binding.binary_sha256 -ceq $Manifest.sources.C.native.sha256 -and $Binding.dependency_builder_commit -ceq $QualificationCommit -and
+            $Binding.production_runtime_promotion -eq $false -and $Manifest.recovery_selection.architecture -ceq 'stock_safe' -and
+            (Get-PPHash (Join-PPSafe $Root 'qualification/recovery-correctness.json')) -ceq '02efc30a8e0dd351aba06ed00f2299e40ad3fa1ee7f4eb1e84bafddc927281ca') 'Local retest lacks its original Windows build and historical qualification'
+    }
     $Defaults=$Manifest.defaults
     $SelectedConfiguration=Get-PFConfiguration 'C' 'Selected'
     Assert-PP (@($Defaults.PSObject.Properties).Count -eq 7 -and $Defaults.source -ceq 'C' -and $Defaults.engine -ceq $SelectedConfiguration.engine -and
@@ -151,8 +167,10 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $NativeReceipt = Join-PPSafe $Root $Item.native.receipt
         Assert-PP ((Get-PPHash $NativeReceipt) -ceq $Item.native.receipt_sha256) 'Native build receipt changed'
         $Build = Read-PPJson $NativeReceipt
+        $BuildCommit=if($LocalRetest -and $Key -ceq 'C'){$QualificationCommit}else{$Item.source_commit}
+        $BuildTree=if($LocalRetest -and $Key -ceq 'C'){$QualificationTree}else{$Item.source_tree}
         Assert-PP ($Build.schema -ceq 'pubpres-playability-native-build-v1' -and $Build.platform -ceq 'windows' -and
-            $Build.returncode -eq 0 -and $Build.source_commit -ceq $Item.source_commit -and $Build.source_tree -ceq $Item.source_tree -and
+            $Build.returncode -eq 0 -and $Build.source_commit -ceq $BuildCommit -and $Build.source_tree -ceq $BuildTree -and
             $Build.runtime_file -ceq 'cybersand_native.windows.x86_64.dll' -and $Build.runtime_sha256 -ceq $Item.native.sha256 -and
             $Build.runtime_bytes -eq $Item.native.bytes -and $Build.production_runtime_promotion -eq $false -and
             $Build.toolchain_drift_allowed -eq $false) 'Native build/source substitution or invalid promotion'
@@ -188,7 +206,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
         $Dependency = Read-PPJson $DependencyPath
         Assert-PP ($Dependency.schema -ceq 'pubpres-godot-cpp-dependency-v1' -and $Dependency.platform -ceq 'windows' -and
             $Dependency.source_commit -ceq $Build.godot_cpp_commit -and $Dependency.source_commit -ceq '101ae38034304346a46ea9ea84ae156d3e860496' -and
-            $Dependency.source_tree -cmatch '^[0-9a-f]{40}$' -and $Dependency.builder_commit -ceq $Manifest.candidate_commit -and
+            $Dependency.source_tree -cmatch '^[0-9a-f]{40}$' -and $Dependency.builder_commit -ceq $QualificationCommit -and
             $Dependency.library_sha256 -ceq $Build.godot_cpp_library_sha256 -and
             (Get-PPHash (Join-PPSafe $DependencyRoot 'GODOT-CPP-BUILD.log')) -ceq $Dependency.build_log_sha256 -and
             (Get-PPHash (Join-PPSafe $DependencyRoot 'GODOT-CPP-BUILD.sh')) -ceq $Dependency.build_script_sha256) 'Dependency build inputs/log/source differ'
@@ -220,7 +238,7 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
             Assert-PP ((Get-PPCanonicalHash (Join-PPSafe (Join-PPSafe $Root $Item.root) $Entry.Name)) -ceq $Entry.Value) 'Retained Rapier input differs'
         }
         $Derived = Read-PPJson (Join-PPSafe (Join-PPSafe $Root $Item.root) 'godot/addons/cybersand_native/runtime-provenance.json')
-        Assert-PP ($Derived.source_commit -ceq $Item.source_commit -and $Derived.sha256 -ceq $Build.runtime_sha256 -and
+        Assert-PP ($Derived.source_commit -ceq $BuildCommit -and $Derived.sha256 -ceq $Build.runtime_sha256 -and
             $Derived.build_receipt -ceq $Item.native.receipt -and $Derived.build_receipt_sha256 -ceq $Item.native.receipt_sha256 -and
             $Derived.production_runtime_promotion -eq $false) 'Runtime observation would read stale or misleading provenance'
         Assert-PP (@($Derived.source_inputs.PSObject.Properties).Count -eq $InputEntries.Count) 'Derived source closure differs'
@@ -304,8 +322,8 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
     Assert-PP ((Get-PPHash (Join-PPSafe $Root 'ACCEPTANCE.md')) -ceq
         (Get-PPHash (Join-PPSafe $Root 'tools/pubpres_recovery_windows/ACCEPTANCE.md'))) 'Acceptance instructions differ'
     $Gate=Read-PPJson (Join-PPSafe $Root 'qualification/recovery-correctness.json')
-    Assert-PP ($Gate.schema -ceq 'pubpres-recovery-owner-correctness-v1' -and $Gate.source_commit -ceq $Candidate -and
-        $Gate.source_tree -ceq $Manifest.sources.C.source_tree -and $Gate.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and
+    Assert-PP ($Gate.schema -ceq 'pubpres-recovery-owner-correctness-v1' -and $Gate.source_commit -ceq $QualificationCommit -and
+        $Gate.source_tree -ceq $QualificationTree -and $Gate.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and
         $Gate.native_sha256 -ceq $Manifest.sources.C.native.sha256 -and $Gate.physical_acceptance -ceq 'HOLD' -and
         (Test-PFFlatRecord $Gate.selection $Selection) -and
         $Gate.stock.outcomes -eq 19 -and $Gate.stock.raw_inputs_and_supplemental_replayed -eq $true -and
@@ -427,6 +445,7 @@ $PackageRoot=[IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]'\/')
 $Manifest=Test-PPPackage $PackageRoot $ExpectedCandidate
 $script:PPProcessOwnerPath=Join-PPSafe $PackageRoot 'tools/pubpres_playability_windows/process_owner.cs'
 Write-Host ('Verified '+$Manifest.file_count+' source/runtime files. Draft/HOLD; physical NVIDIA acceptance is pending.')
+if($Manifest.schema -ceq 'pubpres-local-owner-retest-v1') { Write-Host 'Local owner retest. The retained Windows qualification applies to build 00478f29.' }
 if($Action -ceq 'Verify') { return }
 $Key=if($Source -ceq 'Candidate') {'C'} else {'D'}
 $EngineName=$Engine.ToLowerInvariant(); $Thread=$RenderThread.ToLowerInvariant()

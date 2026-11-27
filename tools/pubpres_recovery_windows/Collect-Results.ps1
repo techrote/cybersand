@@ -10,7 +10,7 @@ $PackageRoot = [IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]'\/')
 $Verifier = Join-Path $PackageRoot 'tools/pubpres_recovery_windows/Start-PUBPRES-Final.ps1'
 . $Verifier -Library -PackageRoot $PackageRoot -ExpectedCandidate $ExpectedCandidate
 $Manifest = Test-PPPackage $PackageRoot $ExpectedCandidate
-Assert-PP ($Manifest.schema -ceq 'pubpres-playability-recovery-windows-v1') 'Collection requires the final evaluator package'
+Assert-PP ($Manifest.schema -cin @('pubpres-playability-recovery-windows-v1','pubpres-local-owner-retest-v1')) 'Collection requires a verified evaluator package'
 $ManifestHash = Get-PPHash (Join-Path $PackageRoot $script:PPManifestName)
 $Runs = Join-Path ([IO.Path]::GetDirectoryName($PackageRoot)) 'Runs'
 Assert-PP (Test-Path -LiteralPath $Runs -PathType Container) 'Open Workbench first; no Runs directory exists'
