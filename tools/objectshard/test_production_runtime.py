@@ -1,0 +1,48 @@
+"""Source/attempt transport regression for the ObjectShard production profile."""
+
+import json
+import os
+from pathlib import Path
+import re
+import unittest
+from unittest.mock import patch
+
+import production_runtime as profile
+
+
+class ObjectShardPublicationTests(unittest.TestCase):
+    def test_named_physical_oracles_require_clean_nonempty_original_receipts(self):
+        for name, pattern in profile.engine.CASE_MARKERS.items():
+            path = profile.engine.ROOT / "godot/tests" / (name + ".gd")
+            schema, = re.findall(r'"schema":\s*"([^"]+)"', path.read_text(encoding="utf-8"))
+            for checks, failures, success in ((1, [], True), (0, [], False), (1, ["failure"], False)):
+                result = json.dumps({"schema": schema, "checks": checks, "failures": failures},
+                                    separators=(",", ":"))
+                self.assertEqual(bool(re.fullmatch(pattern, result)), success, (name, result))
+
+    def test_partial_retry_requires_actual_build_and_validation_attempts(self):
+        bundle = Path("unused")
+        manifest = {"build_attempt": "1", "workflow_attempt": "2"}
+        with patch.object(profile, "verify_original", return_value=manifest), patch.dict(
+                os.environ, {"GITHUB_RUN_ATTEMPT": "3", "OBJECTSHARD_BUILT_WINDOWS_ATTEMPT": "1",
+                             "OBJECTSHARD_VALIDATED_WINDOWS_ATTEMPT": "2"}):
+            self.assertIs(profile.verify_bundle(bundle, "windows", "source", False), manifest)
+            self.assertIs(profile.verify_bundle(bundle, "windows", "source", True), manifest)
+            with self.assertRaisesRegex(RuntimeError, "producer attempt mismatch"):
+                profile.verify_bundle(bundle, "linux", "source", True)
+            with patch.dict(os.environ, {"OBJECTSHARD_BUILT_WINDOWS_ATTEMPT": "2"}), \
+                    self.assertRaisesRegex(RuntimeError, "producer attempt mismatch"):
+                profile.verify_bundle(bundle, "windows", "source", False)
+
+    def test_shared_publisher_forbids_main_and_unregistered_requests(self):
+        self.assertEqual(profile.engine.BRANCH, "integration/objectshard-m4-mainline-20261122")
+        request = json.loads((profile.engine.ROOT / profile.engine.REQUEST).read_bytes())
+        self.assertGreater(request.pop("request_sequence"), 0)
+        self.assertEqual(request, profile.engine.REQUEST_VALUE)
+        self.assertTrue({profile.engine.WORKFLOW, profile.engine.REQUEST,
+                         "tools/objectshard/production_runtime.py"}.issubset(profile.engine.BUILD_EXACT))
+        self.assertEqual(len(set(profile.engine.RUNTIMES.values()) | set(profile.engine.MANIFESTS.values())), 4)
+
+
+if __name__ == "__main__":
+    unittest.main()

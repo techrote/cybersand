@@ -11,11 +11,13 @@ concurrency:
   cancel-in-progress: false
 env:
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  PRODUCTION_REQUEST: ${{ github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]') }}
+  PYTHONUTF8: "1"
   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 jobs:
   native-sanitizers:
-    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') }}
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') || (github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     defaults:
@@ -52,11 +54,14 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: objectshard-m4-native-${{ github.sha }}-${{ github.run_id }}
+          name: objectshard-m4-native-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: workspace/source/evidence/
           retention-days: 60
   linux-workbench:
-    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') }}
+    outputs:
+      runtime-id: ${{ steps.runtime.outputs.artifact-id }}
+      attempt: ${{ steps.producer.outputs.attempt }}
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') || (github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     steps:
@@ -71,7 +76,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           git rev-parse HEAD > evidence/source-commit.txt
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python3 tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --output evidence/rapier-acquisition.json
           echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
       - name: Build source-bound Linux native extension
         shell: bash
@@ -96,6 +101,14 @@ jobs:
           cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
           python3 tools/objectshard/native_receipt.py seal --receipt evidence/native-source.json --runtime "$CYBERSAND_NATIVE_OUTPUT" --expected-source-sha "$GITHUB_SHA"
           tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
+      - name: Record Linux production build from the sealed native source
+        if: env.PRODUCTION_REQUEST == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/objectshard/production_runtime.py check-source --source-sha "$GITHUB_SHA"
+          { g++-13 --version; ld --version; git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD; } > evidence/production-toolchain.txt
+          python3 tools/objectshard/production_runtime.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$RUNNER_TEMP/libcybersand_native.linux.x86_64.so" --toolchain evidence/production-toolchain.txt --bundle build/production-linux
       - name: Pinned graphical engine
         shell: bash
         run: |
@@ -126,14 +139,36 @@ jobs:
         run: |
           set -euo pipefail
           xvfb-run --auto-servernum --server-args='-screen 0 1440x1000x24 -nolisten tcp' python3 tools/objectshard/qualify_workbench.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --expected-source-sha "$GITHUB_SHA" --native-receipt evidence/native-source.json --profile --render --output evidence/graphical
+      - name: Verify production Linux object and native owner checks
+        if: env.PRODUCTION_REQUEST == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/objectshard/production_runtime.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot.zip" --bundle build/production-linux
+      - name: Record actual producer attempt
+        id: producer
+        shell: bash
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain verified linux production runtime
+        id: runtime
+        if: env.PRODUCTION_REQUEST == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-m4-production-attempt-${{ github.run_attempt }}-linux-${{ github.run_id }}
+          path: build/production-linux/
+          if-no-files-found: error
+          retention-days: 60
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: objectshard-m4-linux-${{ github.sha }}-${{ github.run_id }}
+          name: objectshard-m4-linux-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/
           retention-days: 60
   windows-native:
-    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') }}
+    outputs:
+      runtime-id: ${{ steps.runtime.outputs.artifact-id }}
+      attempt: ${{ steps.producer.outputs.attempt }}
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') || (github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -178,19 +213,35 @@ jobs:
           cp "$CYBERSAND_NATIVE_OUTPUT" build/objectshard-windows/
           python3 tools/ci/native_candidate_identity.py build/objectshard-windows --create
           python3 tools/ci/native_candidate_identity.py build/objectshard-windows
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      - name: Record Windows production build before target execution
+        if: env.PRODUCTION_REQUEST == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/objectshard/production_runtime.py check-source --source-sha "$GITHUB_SHA"
+          { "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++" --version; git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD; } > evidence/production-toolchain.txt
+          python3 tools/objectshard/production_runtime.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$RUNNER_TEMP/cybersand_native.windows.x86_64.dll" --toolchain evidence/production-toolchain.txt --bundle build/objectshard-windows
+      - name: Record actual producer attempt
+        id: producer
+        shell: bash
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - id: runtime
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: objectshard-m4-dll-${{ github.sha }}-${{ github.run_id }}
+          name: objectshard-m4-dll-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/objectshard-windows/
           if-no-files-found: error
           retention-days: 60
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: objectshard-m4-crossbuild-${{ github.sha }}-${{ github.run_id }}
+          name: objectshard-m4-crossbuild-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/
           retention-days: 60
   windows-workbench:
+    outputs:
+      runtime-id: ${{ steps.runtime.outputs.artifact-id }}
+      attempt: ${{ steps.producer.outputs.attempt }}
     needs: windows-native
     runs-on: windows-2022
     timeout-minutes: 120
@@ -208,7 +259,8 @@ jobs:
           python-version: '3.12'
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: objectshard-m4-dll-${{ github.sha }}-${{ github.run_id }}
+          artifact-ids: ${{ needs.windows-native.outputs.runtime-id }}
+          merge-multiple: true
           path: build/objectshard-windows/
       - name: Pinned native, Rapier and Godot 4.7
         shell: pwsh
@@ -219,7 +271,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Source-bound candidate refused' }
           Copy-Item build/objectshard-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output evidence/rapier-acquisition.json
           if ($LASTEXITCODE -ne 0) { throw 'Rapier download failed' }
           if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier SHA mismatch' }
           $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
@@ -263,18 +315,85 @@ jobs:
           $copy = Join-Path $extractions 'Workbench (1)'
           python tools/objectshard/qualify_workbench.py --godot (Join-Path $copy 'Godot_v4.7-stable_win64_console.exe') --expected-source-sha $env:GITHUB_SHA --package $copy --output evidence/package-replay
           if ($LASTEXITCODE -ne 0) { throw 'Delivered ordinary Workbench replay failed' }
+      - name: Verify production Windows DLL after extracted Workbench replay
+        if: env.PRODUCTION_REQUEST == 'true'
+        shell: pwsh
+        env:
+          OBJECTSHARD_BUILT_WINDOWS_ATTEMPT: ${{ needs.windows-native.outputs.attempt }}
+        run: |
+          python tools/objectshard/production_runtime.py test --platform windows --source-sha $env:GITHUB_SHA --godot-archive $env:GODOT_ARCHIVE --bundle build/objectshard-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Windows production runtime qualification failed' }
+      - name: Record actual producer attempt
+        id: producer
+        shell: bash
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain verified windows production runtime
+        id: runtime
+        if: env.PRODUCTION_REQUEST == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-m4-production-attempt-${{ github.run_attempt }}-windows-${{ github.run_id }}
+          path: build/objectshard-windows/
+          if-no-files-found: error
+          retention-days: 60
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: objectshard-m4-workbench-evaluator-${{ github.sha }}-${{ github.run_id }}
+          name: objectshard-m4-workbench-evaluator-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/objectshard-workbench-evaluator.zip
           if-no-files-found: error
           retention-days: 60
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: objectshard-m4-windows-${{ github.sha }}-${{ github.run_id }}
+          name: objectshard-m4-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/
           retention-days: 60
+
+
+  publish-runtime:
+    name: Publish source-leased ObjectShard production runtimes
+    if: github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')
+    needs: [native-sanitizers, linux-workbench, windows-workbench]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: write
+    env:
+      OBJECTSHARD_VALIDATED_LINUX_ATTEMPT: ${{ needs.linux-workbench.outputs.attempt }}
+      OBJECTSHARD_VALIDATED_WINDOWS_ATTEMPT: ${{ needs.windows-workbench.outputs.attempt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.linux-workbench.outputs.runtime-id }}
+          merge-multiple: true
+          path: build/production-linux
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.windows-workbench.outputs.runtime-id }}
+          merge-multiple: true
+          path: build/production-windows
+      - name: Revalidate both build and target execution receipts and publish four paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/objectshard/production_runtime.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+          python3 tools/objectshard/production_runtime.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/production-linux --windows-bundle build/production-windows
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/objectshard/production_runtime.py check-index --source-sha "$GITHUB_SHA"
+          git diff --cached --check
+          git diff --exit-code
+          python3 tools/objectshard/production_runtime.py check-source --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Publish source-matched ObjectShard Workbench runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          git push --force-with-lease="$GITHUB_REF:$GITHUB_SHA" origin "HEAD:$GITHUB_REF"
 
   recovery-independent-audit:
     if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, '[objectshard-m4-evidence-review-45530425519]') }}
