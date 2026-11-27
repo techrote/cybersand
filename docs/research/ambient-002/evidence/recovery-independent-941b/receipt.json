@@ -1,0 +1,1079 @@
+{
+  "baseline_source": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "candidate_source": "941b79154c890098350725f274b85f26b44f77b0",
+  "comparison_table_checks": 72,
+  "independent_heading_checks": 216,
+  "independent_movement_comparisons": 270,
+  "limits": [
+    "No elapsed performance inference under concurrent local work.",
+    "Blocked-route memory records predate the 15-second new-wall intervention; the result does not prove learning that new wall.",
+    "Heading reversals are changes of active final steering, not goal-instance transitions.",
+    "The full baseline programme and subsequent complete candidate qualification remain separately identified."
+  ],
+  "matched_world_pairs": 9,
+  "movement_reader_sha256": "c2e0608aff1eebd6a656ace312b6ff41f2fba4d1f0940c2a5219dddb9d55801f",
+  "original_sha256": {
+    "baseline-original.json": "0876b80149947222866e10f8e8fefd1946ae2d53b5a7fbd8a23732416552d805",
+    "comparison.json": "a19ef5548f428cea6a1d3814b8472931112023030f03ec5f001e86fb1126ce42",
+    "episodes.json": "526a6e571cb287fbe32db918c4bc66939bce5bc74eb04c66cf8351be86da6fe5"
+  },
+  "pairs": [
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 15,
+          "net_x_cells": 18.112289428710994,
+          "samples": 300,
+          "x_range_cells": 44.82157897949199
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 233,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 19.10707092285199,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 17,
+          "intentional_idle_seconds": 6.1000000000000005,
+          "net_displacement_cells": 19.10707092285199,
+          "neutral_command_seconds": 6.6000000000000005,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.09012875536480687,
+          "stalled_active_intervals": 21,
+          "territory_reentries": 17,
+          "x_range_cells": 44.82157897949199,
+          "y_range_cells": 21.404205322265994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 2,
+          "net_x_cells": 7.4226531982419885,
+          "samples": 21,
+          "x_range_cells": 23.480560302735
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 100,
+          "net_x_cells": 13.189239501953011,
+          "samples": 300,
+          "x_range_cells": 32.2578125
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 246,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 12.469253540039006,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 25,
+          "intentional_idle_seconds": 5.1000000000000005,
+          "net_displacement_cells": 12.469253540039006,
+          "neutral_command_seconds": 5.300000000000001,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.45121951219512196,
+          "stalled_active_intervals": 111,
+          "territory_reentries": 9,
+          "x_range_cells": 32.2578125,
+          "y_range_cells": 20.22146606445301
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 20,
+          "net_x_cells": -0.07572937011698855,
+          "samples": 21,
+          "x_range_cells": 0.08787536621099434
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "case_id": "main-pockets-runner-s605-t30-n1-stateful",
+      "group": "main",
+      "layout": "pockets",
+      "seed": 605
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 10,
+          "net_x_cells": 10.953842163085994,
+          "samples": 300,
+          "x_range_cells": 49.51300048828102
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 236,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 10.42268371582,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 13,
+          "intentional_idle_seconds": 6.1000000000000005,
+          "net_displacement_cells": 10.42268371582,
+          "neutral_command_seconds": 6.300000000000001,
+          "observed_territory_cells": 4,
+          "stable_territory_cells": 4,
+          "stalled_active_fraction": 0.08050847457627118,
+          "stalled_active_intervals": 19,
+          "territory_reentries": 12,
+          "x_range_cells": 49.51300048828102,
+          "y_range_cells": 10.044982910155994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 2,
+          "net_x_cells": -5.09912109375,
+          "samples": 21,
+          "x_range_cells": 15.018829345702983
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 91,
+          "net_x_cells": -3.5434112548830115,
+          "samples": 300,
+          "x_range_cells": 37.56953430175801
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 227,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 4.1321716308590055,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 10,
+          "intentional_idle_seconds": 7.1000000000000005,
+          "net_displacement_cells": 4.1321716308590055,
+          "neutral_command_seconds": 7.2,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.4008810572687225,
+          "stalled_active_intervals": 91,
+          "territory_reentries": 6,
+          "x_range_cells": 38.158294677734006,
+          "y_range_cells": 10.044982910155994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 20,
+          "net_x_cells": -0.025085449219005795,
+          "samples": 21,
+          "x_range_cells": 0.08979797363301145
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "case_id": "main-pockets-monowheel-s605-t30-n1-stateful",
+      "group": "main",
+      "layout": "pockets",
+      "seed": 605
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 15,
+          "net_x_cells": 18.112289428710994,
+          "samples": 300,
+          "x_range_cells": 44.82157897949199
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 233,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 19.10707092285199,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 17,
+          "intentional_idle_seconds": 6.1000000000000005,
+          "net_displacement_cells": 19.10707092285199,
+          "neutral_command_seconds": 6.6000000000000005,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.09012875536480687,
+          "stalled_active_intervals": 21,
+          "territory_reentries": 17,
+          "x_range_cells": 44.82157897949199,
+          "y_range_cells": 21.404205322265994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 2,
+          "net_x_cells": 7.4226531982419885,
+          "samples": 21,
+          "x_range_cells": 23.480560302735
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 100,
+          "net_x_cells": 13.189239501953011,
+          "samples": 300,
+          "x_range_cells": 32.2578125
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 246,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 12.469253540039006,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 25,
+          "intentional_idle_seconds": 5.1000000000000005,
+          "net_displacement_cells": 12.469253540039006,
+          "neutral_command_seconds": 5.300000000000001,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.45121951219512196,
+          "stalled_active_intervals": 111,
+          "territory_reentries": 9,
+          "x_range_cells": 32.2578125,
+          "y_range_cells": 20.22146606445301
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 20,
+          "net_x_cells": -0.07572937011698855,
+          "samples": 21,
+          "x_range_cells": 0.08787536621099434
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "case_id": "main-pockets-runner-s1701-t30-n1-stateful",
+      "group": "main",
+      "layout": "pockets",
+      "seed": 1701
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 12,
+          "net_x_cells": 7.9917449951169885,
+          "samples": 300,
+          "x_range_cells": 45.033859252929005
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 236,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 7.585235595703011,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 14,
+          "intentional_idle_seconds": 6.1000000000000005,
+          "net_displacement_cells": 7.585235595703011,
+          "neutral_command_seconds": 6.300000000000001,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.0847457627118644,
+          "stalled_active_intervals": 20,
+          "territory_reentries": 11,
+          "x_range_cells": 45.033859252929005,
+          "y_range_cells": 10.044982910155994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 2,
+          "net_x_cells": -5.09912109375,
+          "samples": 21,
+          "x_range_cells": 15.018829345702983
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 92,
+          "net_x_cells": 5.645782470703011,
+          "samples": 300,
+          "x_range_cells": 34.37388610839801
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 227,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 7.990112304688012,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 11,
+          "intentional_idle_seconds": 7.1000000000000005,
+          "net_displacement_cells": 7.990112304688012,
+          "neutral_command_seconds": 7.2,
+          "observed_territory_cells": 3,
+          "stable_territory_cells": 3,
+          "stalled_active_fraction": 0.4052863436123348,
+          "stalled_active_intervals": 92,
+          "territory_reentries": 7,
+          "x_range_cells": 34.37388610839801,
+          "y_range_cells": 10.044982910155994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 20,
+          "net_x_cells": -0.025085449219005795,
+          "samples": 21,
+          "x_range_cells": 0.08979797363301145
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "case_id": "main-pockets-monowheel-s1701-t30-n1-stateful",
+      "group": "main",
+      "layout": "pockets",
+      "seed": 1701
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 4,
+          "net_x_cells": -108.054977416992,
+          "samples": 300,
+          "x_range_cells": 134.148193359375
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 270,
+          "home_departures_40_cells": 1,
+          "home_distance_final": 110.64426611671726,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 17,
+          "intentional_idle_seconds": 2.9000000000000004,
+          "net_displacement_cells": 110.64426611671726,
+          "neutral_command_seconds": 2.9000000000000004,
+          "observed_territory_cells": 22,
+          "stable_territory_cells": 18,
+          "stalled_active_fraction": 0.007407407407407408,
+          "stalled_active_intervals": 2,
+          "territory_reentries": 7,
+          "x_range_cells": 135.187568664551,
+          "y_range_cells": 46.766464233398096
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": -20.240310668945,
+          "samples": 21,
+          "x_range_cells": 20.240310668945
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 4,
+          "net_x_cells": -108.054977416992,
+          "samples": 300,
+          "x_range_cells": 134.148193359375
+        },
+        "events": [],
+        "memory_failure_events": 0,
+        "metrics": {
+          "active_intervals": 270,
+          "home_departures_40_cells": 1,
+          "home_distance_final": 110.64426611671726,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 17,
+          "intentional_idle_seconds": 2.9000000000000004,
+          "net_displacement_cells": 110.64426611671726,
+          "neutral_command_seconds": 2.9000000000000004,
+          "observed_territory_cells": 22,
+          "stable_territory_cells": 18,
+          "stalled_active_fraction": 0.007407407407407408,
+          "stalled_active_intervals": 2,
+          "territory_reentries": 7,
+          "x_range_cells": 135.187568664551,
+          "y_range_cells": 46.766464233398096
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": -20.240310668945,
+          "samples": 21,
+          "x_range_cells": 20.240310668945
+        },
+        "retained_obstructions": [],
+        "withdrawal_motion": [],
+        "withdrawal_selected_seconds": 0.0
+      },
+      "case_id": "main-pockets-4ly_trainer-s1701-t30-n1-stateful",
+      "group": "main",
+      "layout": "pockets",
+      "seed": 1701
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 7,
+          "net_x_cells": 24.05061340332,
+          "samples": 300,
+          "x_range_cells": 50.71025085449199
+        },
+        "events": [],
+        "memory_failure_events": 8,
+        "metrics": {
+          "active_intervals": 278,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 24.331634521484006,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 7,
+          "intentional_idle_seconds": 2.0,
+          "net_displacement_cells": 24.331634521484006,
+          "neutral_command_seconds": 2.1,
+          "observed_territory_cells": 4,
+          "stable_territory_cells": 4,
+          "stalled_active_fraction": 0.3920863309352518,
+          "stalled_active_intervals": 109,
+          "territory_reentries": 15,
+          "x_range_cells": 50.71025085449199,
+          "y_range_cells": 21.42366027832
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": 0.038925170899005934,
+          "samples": 21,
+          "x_range_cells": 0.1041870117190058
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 8,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 23.9999999999999,
+            "position": [
+              249.251525878906,
+              194.728866577148
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 15.9000000000004,
+            "end_seconds": 19.0000000000002,
+            "net_x_cells": -46.893051147460994,
+            "retreat_and_quiet_seconds": 3.1
+          },
+          {
+            "begin_seconds": 23.9999999999999,
+            "end_seconds": 27.0999999999997,
+            "net_x_cells": -46.814880371094006,
+            "retreat_and_quiet_seconds": 3.1
+          }
+        ],
+        "withdrawal_selected_seconds": 6.2
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 18,
+          "net_x_cells": 13.836303710938012,
+          "samples": 300,
+          "x_range_cells": 49.84214782714801
+        },
+        "events": [],
+        "memory_failure_events": 8,
+        "metrics": {
+          "active_intervals": 276,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 11.450988769530994,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 8,
+          "intentional_idle_seconds": 2.0,
+          "net_displacement_cells": 11.450988769530994,
+          "neutral_command_seconds": 2.3000000000000003,
+          "observed_territory_cells": 4,
+          "stable_territory_cells": 4,
+          "stalled_active_fraction": 0.4492753623188406,
+          "stalled_active_intervals": 124,
+          "territory_reentries": 12,
+          "x_range_cells": 49.84214782714801,
+          "y_range_cells": 21.389877319335994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": 0.038925170899005934,
+          "samples": 21,
+          "x_range_cells": 0.1041870117190058
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 8,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 21.1000000000001,
+            "position": [
+              249.278167724609,
+              194.813171386719
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 13.0000000000002,
+            "end_seconds": 16.0000000000004,
+            "net_x_cells": -43.52949523925801,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 21.1000000000001,
+            "end_seconds": 24.1999999999999,
+            "net_x_cells": -46.559967041015,
+            "retreat_and_quiet_seconds": 3.1
+          },
+          {
+            "begin_seconds": 29.1999999999996,
+            "end_seconds": 30,
+            "net_x_cells": -17.641159057617017,
+            "retreat_and_quiet_seconds": 0.8
+          }
+        ],
+        "withdrawal_selected_seconds": 6.9
+      },
+      "case_id": "adverse-sealed_goal-runner-s605-t30-n1-stateful",
+      "group": "adverse",
+      "layout": "sealed_goal",
+      "seed": 605
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 11,
+          "net_x_cells": 4.524047851561988,
+          "samples": 300,
+          "x_range_cells": 65.75207519531199
+        },
+        "events": [
+          {
+            "after_revision": 290,
+            "before_revision": 2,
+            "kind": "block_familiar_route_with_native_stone",
+            "tick": 900
+          }
+        ],
+        "memory_failure_events": 5,
+        "metrics": {
+          "active_intervals": 270,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 1.8347625732419885,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 14,
+          "intentional_idle_seconds": 2.9000000000000004,
+          "net_displacement_cells": 1.8347625732419885,
+          "neutral_command_seconds": 2.9000000000000004,
+          "observed_territory_cells": 5,
+          "stable_territory_cells": 5,
+          "stalled_active_fraction": 0.26296296296296295,
+          "stalled_active_intervals": 71,
+          "territory_reentries": 29,
+          "x_range_cells": 65.75207519531199,
+          "y_range_cells": 21.58851623535199
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": -38.46488952636699,
+          "samples": 21,
+          "x_range_cells": 39.00613403320298
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 5,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 13.1000000000002,
+            "position": [
+              253.699676513672,
+              195.392440795898
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 5.99999999999998,
+            "end_seconds": 9.00000000000003,
+            "net_x_cells": -44.95315551757801,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 14.0000000000003,
+            "end_seconds": 17.0000000000003,
+            "net_x_cells": -43.16455078125,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 22.8,
+            "end_seconds": 25.8999999999998,
+            "net_x_cells": -35.90507507324202,
+            "retreat_and_quiet_seconds": 3.1
+          }
+        ],
+        "withdrawal_selected_seconds": 9.1
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 11,
+          "net_x_cells": 4.524047851561988,
+          "samples": 300,
+          "x_range_cells": 65.75207519531199
+        },
+        "events": [
+          {
+            "after_revision": 290,
+            "before_revision": 2,
+            "kind": "block_familiar_route_with_native_stone",
+            "tick": 900
+          }
+        ],
+        "memory_failure_events": 5,
+        "metrics": {
+          "active_intervals": 270,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 1.8347625732419885,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 14,
+          "intentional_idle_seconds": 2.9000000000000004,
+          "net_displacement_cells": 1.8347625732419885,
+          "neutral_command_seconds": 2.9000000000000004,
+          "observed_territory_cells": 5,
+          "stable_territory_cells": 5,
+          "stalled_active_fraction": 0.26296296296296295,
+          "stalled_active_intervals": 71,
+          "territory_reentries": 29,
+          "x_range_cells": 65.75207519531199,
+          "y_range_cells": 21.58851623535199
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": -38.46488952636699,
+          "samples": 21,
+          "x_range_cells": 39.00613403320298
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 5,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 13.1000000000002,
+            "position": [
+              253.699676513672,
+              195.392440795898
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 5.99999999999998,
+            "end_seconds": 9.00000000000003,
+            "net_x_cells": -44.95315551757801,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 14.0000000000003,
+            "end_seconds": 17.0000000000003,
+            "net_x_cells": -43.16455078125,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 22.8,
+            "end_seconds": 25.8999999999998,
+            "net_x_cells": -35.90507507324202,
+            "retreat_and_quiet_seconds": 3.1
+          }
+        ],
+        "withdrawal_selected_seconds": 9.1
+      },
+      "case_id": "adverse-blocked_route-runner-s605-t30-n1-stateful",
+      "group": "adverse",
+      "layout": "blocked_route",
+      "seed": 605
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 7,
+          "net_x_cells": 24.05061340332,
+          "samples": 300,
+          "x_range_cells": 50.71025085449199
+        },
+        "events": [],
+        "memory_failure_events": 8,
+        "metrics": {
+          "active_intervals": 278,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 24.331634521484006,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 7,
+          "intentional_idle_seconds": 2.0,
+          "net_displacement_cells": 24.331634521484006,
+          "neutral_command_seconds": 2.1,
+          "observed_territory_cells": 4,
+          "stable_territory_cells": 4,
+          "stalled_active_fraction": 0.3920863309352518,
+          "stalled_active_intervals": 109,
+          "territory_reentries": 15,
+          "x_range_cells": 50.71025085449199,
+          "y_range_cells": 21.42366027832
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": 0.038925170899005934,
+          "samples": 21,
+          "x_range_cells": 0.1041870117190058
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 8,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 23.9999999999999,
+            "position": [
+              249.251525878906,
+              194.728866577148
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 15.9000000000004,
+            "end_seconds": 19.0000000000002,
+            "net_x_cells": -46.893051147460994,
+            "retreat_and_quiet_seconds": 3.1
+          },
+          {
+            "begin_seconds": 23.9999999999999,
+            "end_seconds": 27.0999999999997,
+            "net_x_cells": -46.814880371094006,
+            "retreat_and_quiet_seconds": 3.1
+          }
+        ],
+        "withdrawal_selected_seconds": 6.2
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 18,
+          "net_x_cells": 13.836303710938012,
+          "samples": 300,
+          "x_range_cells": 49.84214782714801
+        },
+        "events": [],
+        "memory_failure_events": 8,
+        "metrics": {
+          "active_intervals": 276,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 11.450988769530994,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 8,
+          "intentional_idle_seconds": 2.0,
+          "net_displacement_cells": 11.450988769530994,
+          "neutral_command_seconds": 2.3000000000000003,
+          "observed_territory_cells": 4,
+          "stable_territory_cells": 4,
+          "stalled_active_fraction": 0.4492753623188406,
+          "stalled_active_intervals": 124,
+          "territory_reentries": 12,
+          "x_range_cells": 49.84214782714801,
+          "y_range_cells": 21.389877319335994
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": 0.038925170899005934,
+          "samples": 21,
+          "x_range_cells": 0.1041870117190058
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 8,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 21.1000000000001,
+            "position": [
+              249.278167724609,
+              194.813171386719
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 13.0000000000002,
+            "end_seconds": 16.0000000000004,
+            "net_x_cells": -43.52949523925801,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 21.1000000000001,
+            "end_seconds": 24.1999999999999,
+            "net_x_cells": -46.559967041015,
+            "retreat_and_quiet_seconds": 3.1
+          },
+          {
+            "begin_seconds": 29.1999999999996,
+            "end_seconds": 30,
+            "net_x_cells": -17.641159057617017,
+            "retreat_and_quiet_seconds": 0.8
+          }
+        ],
+        "withdrawal_selected_seconds": 6.9
+      },
+      "case_id": "adverse-sealed_goal-runner-s1701-t30-n1-stateful",
+      "group": "adverse",
+      "layout": "sealed_goal",
+      "seed": 1701
+    },
+    {
+      "after": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 11,
+          "net_x_cells": -4.176239013671989,
+          "samples": 300,
+          "x_range_cells": 65.36489868164
+        },
+        "events": [
+          {
+            "after_revision": 290,
+            "before_revision": 2,
+            "kind": "block_familiar_route_with_native_stone",
+            "tick": 900
+          }
+        ],
+        "memory_failure_events": 5,
+        "metrics": {
+          "active_intervals": 270,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 6.839920043945,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 14,
+          "intentional_idle_seconds": 2.9000000000000004,
+          "net_displacement_cells": 6.839920043945,
+          "neutral_command_seconds": 2.9000000000000004,
+          "observed_territory_cells": 5,
+          "stable_territory_cells": 5,
+          "stalled_active_fraction": 0.24814814814814815,
+          "stalled_active_intervals": 67,
+          "territory_reentries": 30,
+          "x_range_cells": 65.36489868164,
+          "y_range_cells": 21.441253662109006
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": -32.534881591795994,
+          "samples": 21,
+          "x_range_cells": 34.196182250975994
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 5,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 13.1000000000002,
+            "position": [
+              253.378570556641,
+              194.906463623047
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 5.79999999999998,
+            "end_seconds": 8.80000000000002,
+            "net_x_cells": -44.73149108886699,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 13.8000000000003,
+            "end_seconds": 16.8000000000003,
+            "net_x_cells": -43.57437133789,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 22.7,
+            "end_seconds": 25.7999999999998,
+            "net_x_cells": -34.945373535155994,
+            "retreat_and_quiet_seconds": 3.1
+          }
+        ],
+        "withdrawal_selected_seconds": 9.1
+      },
+      "before": {
+        "active_headings": {
+          "begin_seconds": 0.0,
+          "end_seconds": 29.8999999999996,
+          "horizontal_heading_reversals": 11,
+          "net_x_cells": -4.176239013671989,
+          "samples": 300,
+          "x_range_cells": 65.36489868164
+        },
+        "events": [
+          {
+            "after_revision": 290,
+            "before_revision": 2,
+            "kind": "block_familiar_route_with_native_stone",
+            "tick": 900
+          }
+        ],
+        "memory_failure_events": 5,
+        "metrics": {
+          "active_intervals": 270,
+          "home_departures_40_cells": 0,
+          "home_distance_final": 6.839920043945,
+          "home_returns_16_cells": 0,
+          "intention_transitions": 14,
+          "intentional_idle_seconds": 2.9000000000000004,
+          "net_displacement_cells": 6.839920043945,
+          "neutral_command_seconds": 2.9000000000000004,
+          "observed_territory_cells": 5,
+          "stable_territory_cells": 5,
+          "stalled_active_fraction": 0.24814814814814815,
+          "stalled_active_intervals": 67,
+          "territory_reentries": 30,
+          "x_range_cells": 65.36489868164,
+          "y_range_cells": 21.441253662109006
+        },
+        "original_negative_window": {
+          "begin_seconds": 6.49999999999998,
+          "end_seconds": 8.5,
+          "horizontal_heading_reversals": 0,
+          "net_x_cells": -32.534881591795994,
+          "samples": 21,
+          "x_range_cells": 34.196182250975994
+        },
+        "retained_obstructions": [
+          {
+            "attempts": 5,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "key": "10:8:0",
+            "last_seen": 13.1000000000002,
+            "position": [
+              253.378570556641,
+              194.906463623047
+            ]
+          }
+        ],
+        "withdrawal_motion": [
+          {
+            "begin_seconds": 5.79999999999998,
+            "end_seconds": 8.80000000000002,
+            "net_x_cells": -44.73149108886699,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 13.8000000000003,
+            "end_seconds": 16.8000000000003,
+            "net_x_cells": -43.57437133789,
+            "retreat_and_quiet_seconds": 3.0
+          },
+          {
+            "begin_seconds": 22.7,
+            "end_seconds": 25.7999999999998,
+            "net_x_cells": -34.945373535155994,
+            "retreat_and_quiet_seconds": 3.1
+          }
+        ],
+        "withdrawal_selected_seconds": 9.1
+      },
+      "case_id": "adverse-blocked_route-runner-s1701-t30-n1-stateful",
+      "group": "adverse",
+      "layout": "blocked_route",
+      "seed": 1701
+    }
+  ],
+  "reducer_sha256": "27f8c1a7b34aae847bc2da14c17c2fb37f6edafc360ca35aa9ab0260449be954",
+  "reviewer_sha256": "cf5673556f118ef7f51b6aafdf98e264154c70a886042b5988928cbc9b6e126c",
+  "scope": "Independent review of nine matched existing cases, not a complete 194-case candidate programme. Zero new episodes are executed by this reader."
+}

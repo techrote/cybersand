@@ -1,0 +1,232 @@
+{
+  "status": "focused Linux pure qualification passed; full published-source physical/platform qualification remains separate",
+  "source": {
+    "base_commit": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+    "scope": "uncommitted two-file candidate against exact a725; not yet a qualified published application",
+    "files": {
+      "godot/scripts/ambient/ambient_engine.gd": {
+        "baseline_sha256": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2",
+        "candidate_sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7",
+        "candidate_bytes": 21342
+      },
+      "godot/tests/test_ambient_living_engine.gd": {
+        "baseline_sha256": "446eaa7ab6dde31223e05210a4a09c4f3f90ac0dd928201ad864a03f3839648b",
+        "candidate_sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2",
+        "candidate_bytes": 35608
+      }
+    },
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "runtime_sha256": {
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "cases": {
+    "import": {
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/tmp/ambient-002/recharge-source/godot",
+        "--editor",
+        "--quit"
+      ],
+      "timeout_seconds": 120,
+      "started_utc": "2026-11-25T05:07:30.965919+00:00",
+      "returncode": 0,
+      "elapsed_seconds": 8.393920299000456,
+      "console_sha256": "889d60e2057a2c846e5bbbaf65bdf7a05cfeddd23b318609068d7afe1b313434"
+    },
+    "living-candidate": {
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/tmp/ambient-002/recharge-source/godot",
+        "--script",
+        "res://tests/test_ambient_living_engine.gd"
+      ],
+      "timeout_seconds": 120,
+      "started_utc": "2026-11-25T05:08:02.953906+00:00",
+      "source_scope": "exact a725 plus candidate engine/test hashes in candidate-inputs.json",
+      "returncode": 0,
+      "elapsed_seconds": 2.02023946299596,
+      "console_sha256": "55acfca30679ba6cef26db29d30db9cae796c1c79fe922f2059f9bf2ac3b0ac3",
+      "terminal": {
+        "benchmark": {
+          "actors": 8,
+          "decisions": 960,
+          "elapsed_usec": 325115,
+          "mean_usec": 338.661458333333,
+          "modules": 11,
+          "profile": "persistent_scavenger",
+          "scope": "pure copied-value decisions, not native or physical progression"
+        },
+        "checks": 648,
+        "engine": "ambient-engine/v2",
+        "failure_labels": [],
+        "failures": 0,
+        "scope": "reconstructed pure copied-value living decisions; zero physical actor episodes"
+      },
+      "report_sha256": "b79e566216aed394e9455703b9185d236f91b3ef8d3590c649551d4c92b93a6c"
+    },
+    "legacy-candidate": {
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/tmp/ambient-002/recharge-source/godot",
+        "--script",
+        "res://tests/test_ambient_engine.gd"
+      ],
+      "timeout_seconds": 120,
+      "started_utc": "2026-11-25T05:08:04.976801+00:00",
+      "source_scope": "exact a725 plus candidate engine/test hashes in candidate-inputs.json",
+      "returncode": 0,
+      "elapsed_seconds": 1.4175948580013937,
+      "console_sha256": "dc6fc3f1a04543129d1efb48a9ed534a8fac6f148a34c44e2b889dc8e34e0103",
+      "terminal": {
+        "checks": 895,
+        "failures": 0,
+        "scope": "pure-data modules and arbitration"
+      },
+      "report_sha256": "fed0196e1cd2dca0ca95d746b2ab47fc0f0d8be7a7a31ced9977c2a749f2c80f"
+    },
+    "baseline-new-tests": {
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "/tmp/ambient-002/recharge-source/godot",
+        "--script",
+        "res://tests/test_ambient_living_engine.gd"
+      ],
+      "timeout_seconds": 120,
+      "started_utc": "2026-11-25T05:08:47.701127+00:00",
+      "scope": "controlled original a725 engine plus new focused living tests; expected negative regression, zero physical episodes",
+      "engine_sha256": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2",
+      "test_sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2",
+      "returncode": 1,
+      "elapsed_seconds": 2.0201365390021238,
+      "candidate_restored_sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7",
+      "console_sha256": "07637eeaf53abac0c88142d34d66838f95e61dcddce4f464a53f2bdb39bb5079",
+      "terminal": {
+        "benchmark": {
+          "actors": 8,
+          "decisions": 960,
+          "elapsed_usec": 332433,
+          "mean_usec": 346.284375,
+          "modules": 11,
+          "profile": "persistent_scavenger",
+          "scope": "pure copied-value decisions, not native or physical progression"
+        },
+        "checks": 648,
+        "engine": "ambient-engine/v2",
+        "failure_labels": [
+          "selected home rest recharges inside its authored radius beyond ordinary sixteen-cell rest",
+          "selected home recharge includes its exact authored boundary",
+          "selected fourteen-cell radius is not widened by ordinary sixteen-cell rest or a sixty-cell candidate",
+          "recharge uses the same capability-appropriate geometry as home arrival",
+          "authored home recharge remains bounded to one"
+        ],
+        "failures": 5,
+        "scope": "reconstructed pure copied-value living decisions; zero physical actor episodes"
+      },
+      "report_sha256": "4b58d4519b7151ec7322648852d3f851ee2fe644253de9b6a6b732a05f31c9e1"
+    }
+  },
+  "new_living_checks": 30,
+  "copied_value_tests_only": true,
+  "physical_actor_episodes_added": 0,
+  "baseline_negative": "The exact original a725 engine run with the new tests failed five assertions directly exposing radius mismatch. Original negative outputs are retained; the candidate was restored in finally.",
+  "legacy_report_provenance": "legacy-candidate/report.json is the parsed original completion terminal; its original console is retained. Living reports are original files written by Godot and checked against their completion terminals.",
+  "import_warning_error_markers": [],
+  "generated_untracked_uid_sidecars": 605,
+  "application_changes": [
+    "godot/scripts/ambient/ambient_engine.gd",
+    "godot/tests/test_ambient_living_engine.gd"
+  ],
+  "timing_limit": "The built-in pure-engine timing is informational on a shared host; it is not a native/physical/presentation benchmark or an acceptance comparison.",
+  "files": {
+    "baseline-ambient_engine.gd": {
+      "bytes": 20492,
+      "sha256": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2"
+    },
+    "baseline-new-tests/console.log": {
+      "bytes": 3052,
+      "sha256": "07637eeaf53abac0c88142d34d66838f95e61dcddce4f464a53f2bdb39bb5079"
+    },
+    "baseline-new-tests/process.json": {
+      "bytes": 1882,
+      "sha256": "ed9889918e23fa5b096d27ff85c28dc9a765630b063474393c3938b73fc39e1d"
+    },
+    "baseline-new-tests/report.json": {
+      "bytes": 814,
+      "sha256": "4b58d4519b7151ec7322648852d3f851ee2fe644253de9b6a6b732a05f31c9e1"
+    },
+    "baseline-test_ambient_living_engine.gd": {
+      "bytes": 29197,
+      "sha256": "446eaa7ab6dde31223e05210a4a09c4f3f90ac0dd928201ad864a03f3839648b"
+    },
+    "candidate-inputs.json": {
+      "bytes": 1152,
+      "sha256": "7dceb7842e72d82cabcdd2c31b872d73a61fe8de8fac122a1fa0f375c2383bcc"
+    },
+    "candidate-source/godot/scripts/ambient/ambient_engine.gd": {
+      "bytes": 21342,
+      "sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7"
+    },
+    "candidate-source/godot/tests/test_ambient_living_engine.gd": {
+      "bytes": 35608,
+      "sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2"
+    },
+    "candidate.patch": {
+      "bytes": 9217,
+      "sha256": "22fc7b57cfcac26687387d532908f22481b2aaa051043afd7c1b9e388225af7d"
+    },
+    "import/console.log": {
+      "bytes": 45799,
+      "sha256": "889d60e2057a2c846e5bbbaf65bdf7a05cfeddd23b318609068d7afe1b313434"
+    },
+    "import/process.json": {
+      "bytes": 454,
+      "sha256": "6a6c9f5b0ff6747b814e08a5b92d27ffe672d99f700c4ab690884f9472e76a18"
+    },
+    "legacy-candidate/console.log": {
+      "bytes": 595,
+      "sha256": "dc6fc3f1a04543129d1efb48a9ed534a8fac6f148a34c44e2b889dc8e34e0103"
+    },
+    "legacy-candidate/process.json": {
+      "bytes": 769,
+      "sha256": "ead3d535ab59a5d7c8e21e150fa928034d8e9a9448a6e06b86454c1438d5c511"
+    },
+    "legacy-candidate/report.json": {
+      "bytes": 85,
+      "sha256": "fed0196e1cd2dca0ca95d746b2ab47fc0f0d8be7a7a31ced9977c2a749f2c80f"
+    },
+    "living-candidate/console.log": {
+      "bytes": 628,
+      "sha256": "55acfca30679ba6cef26db29d30db9cae796c1c79fe922f2059f9bf2ac3b0ac3"
+    },
+    "living-candidate/process.json": {
+      "bytes": 1159,
+      "sha256": "e9b5f8534a9d10c2b0d1c7be6b2d89d76d477db00e4b562eeda6934087a75df2"
+    },
+    "living-candidate/report.json": {
+      "bytes": 426,
+      "sha256": "b79e566216aed394e9455703b9185d236f91b3ef8d3590c649551d4c92b93a6c"
+    },
+    "post-execution-local-state.json": {
+      "bytes": 33424,
+      "sha256": "e8f7a60e191be5693bc46e950512e85d1e8896769b784ffbbe267fb3bc688b69"
+    }
+  }
+}

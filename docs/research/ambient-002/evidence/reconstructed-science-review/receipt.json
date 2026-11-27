@@ -1,0 +1,268 @@
+{
+  "schema": "ambient-002-reconstructed-independent-science-review/v1",
+  "utc": "2026-11-25T02:52:26.102416+00:00",
+  "apparatus_source": "9278de5757b29b9df40a089e11a4daef744990f7",
+  "reviewer_source": "4dc10266053cac98d6a9bb445f05ca1ef2431f41",
+  "source_inputs_count": 1139,
+  "loaded_project_inputs_count": 855,
+  "local_delta": [],
+  "full_custody_manifest_sha256": "45c733e85af4ed7418339c44cfd4e689a6a3436b97a971b59aa8c60481cae91c",
+  "engine": {
+    "binary": "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "runtime": {
+    "cybersand_runtime": {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "size": 5253776
+    },
+    "rapier_runtime": {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "size": 117275416
+    }
+  },
+  "reviewed_apparatus_files": {
+    "godot/tests/test_ambient2_episodes.gd": "1664063cb8016e18823852e5af15a0ed4579ea4b7aa267136d04a48111933923",
+    "tools/ambient/run_episodes.py": "5fe1e7cd6e2c7ac03d4e03ddc3175f82436e2f1dc36817754f6db8f21572b62c",
+    "tools/ambient/analyze_episodes.py": "8661fd22c35f86d0032b15773b961edf28e20e6ce9c4e9b65295ccc2a2604d9e",
+    "tools/ambient/test_episode_tools.py": "f65e95e3c6c3b669b340b1b4c3bb6d225d2185a8826c4b8ee980a5d1a0ddf431"
+  },
+  "reviewer_files": {
+    "tools/ambient/review_episodes.py": "c2e0608aff1eebd6a656ace312b6ff41f2fba4d1f0940c2a5219dddb9d55801f",
+    "tools/ambient/test_independent_review.py": "e08ff2cfdca4c1533a03ed769c3e8d5c788a0e8757d22d7ff0798e7189924362"
+  },
+  "synthetic_tests": [
+    {
+      "name": "apparatus",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ambient",
+        "-p",
+        "test_episode_tools.py",
+        "-v"
+      ],
+      "cwd": "/tmp/ambient-002/perception",
+      "exit_code": 0,
+      "log": "apparatus-tests.txt",
+      "log_sha256": "1f531984d89e8479fc4ed6caaa995751eddb10a8f19eecc550c19d2264fff428",
+      "tests": 10
+    },
+    {
+      "name": "independent",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/ambient",
+        "-p",
+        "test_independent_review.py",
+        "-v"
+      ],
+      "cwd": "/tmp/ambient-002/behaviour-recovered",
+      "exit_code": 0,
+      "log": "independent-tests.txt",
+      "log_sha256": "4e4994dc1262e6329a5e35e7c954ef1b4eb52fa4a344a37f9fa97e9c1f2a6755",
+      "tests": 9
+    }
+  ],
+  "retained_preflight": {
+    "original_source": "c60737e93efc151e1765b09a1bf2e91deb2b58cc",
+    "original_report_sha256": "b6cf602a36aa78a19c7dc7e359e24bf4c869fedd686b29afef962ae9e46533c9",
+    "retained_gzip_sha256": "3faa2282361720b6219fe3b8010f18c7ff750a04ab0743086bde576aa94ab949",
+    "committed_source_inputs_checked": 22,
+    "comparisons": [
+      {
+        "episode_id": "main-pockets-runner-s1701-t30-n1-random_hold-a100",
+        "independent_metrics": {
+          "x_range_cells": 64.999816894531,
+          "y_range_cells": 21.443344116210994,
+          "net_displacement_cells": 14.801162719726989,
+          "stable_territory_cells": 5,
+          "observed_territory_cells": 5,
+          "territory_reentries": 13,
+          "intention_transitions": 0,
+          "intentional_idle_seconds": 0.0,
+          "neutral_command_seconds": 12.0,
+          "active_intervals": 179,
+          "stalled_active_intervals": 29,
+          "stalled_active_fraction": 0.16201117318435754,
+          "home_departures_40_cells": 0,
+          "home_returns_16_cells": 0,
+          "home_distance_final": 14.801162719726989
+        },
+        "metric_values_checked": 15,
+        "copied_peer_samples_checked": 300
+      }
+    ],
+    "scope": "Reanalysis of one already counted development preflight; no new actor execution and excluded from final194."
+  },
+  "retained_refusal": "An earlier full-custody attempt correctly refused changed aerial-scene bytes while the B worktree was checking out canonical9278; no pass or receipt was generated for that racing attempt.",
+  "scope": "Fresh independent review of reconstructed apparatus and post-run analysis. Full194-actor programme remains pending and no earlier lost local evidence is relabelled.",
+  "canonical_preflight_readback": [
+    {
+      "source_revision": "9278de5757b29b9df40a089e11a4daef744990f7",
+      "original_report_sha256": "4bbf864458ba03a0da7a5bdf428bccb7c2fe26a6189a5e830c080d1b5ab80860",
+      "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-stateful-a100",
+      "checks": 7513,
+      "independently_checked_metrics": {
+        "x_range_cells": 135.187568664551,
+        "y_range_cells": 46.766464233398096,
+        "net_displacement_cells": 110.64426611671726,
+        "stable_territory_cells": 18,
+        "observed_territory_cells": 22,
+        "territory_reentries": 7,
+        "intention_transitions": 17,
+        "intentional_idle_seconds": 2.9000000000000004,
+        "neutral_command_seconds": 2.9000000000000004,
+        "active_intervals": 270,
+        "stalled_active_intervals": 2,
+        "stalled_active_fraction": 0.007407407407407408,
+        "home_departures_40_cells": 1,
+        "home_returns_16_cells": 0,
+        "home_distance_final": 110.64426611671726
+      },
+      "copied_peer_samples_checked": 300,
+      "selection_activity": {
+        "selection_label_changes": 17,
+        "blend_to_blend_label_changes": 0,
+        "direct_goal_module_label_changes": 1,
+        "same_module_phase_changes": 1,
+        "goal_bearing_module_selected_seconds": 23.200000000000003,
+        "home_module_authored": true,
+        "home_module_selected_seconds": 0.0,
+        "selection_phase_seconds": [
+          {
+            "selection": "investigate_material",
+            "phase": "approach",
+            "seconds": 2.2
+          },
+          {
+            "selection": "investigate_material",
+            "phase": "inspect",
+            "seconds": 2.6
+          },
+          {
+            "selection": "explore_unfamiliar",
+            "phase": "approach",
+            "seconds": 18.400000000000002
+          },
+          {
+            "selection": "avoid_material",
+            "phase": "",
+            "seconds": 5.5
+          },
+          {
+            "selection": "maintain_altitude",
+            "phase": "",
+            "seconds": 1.0
+          },
+          {
+            "selection": "blend:",
+            "phase": "",
+            "seconds": 0.30000000000000004
+          }
+        ],
+        "goal_instance_count": null,
+        "goal_instance_count_reason": "Trace records selection and phase, not goal_key; same-module new destinations cannot be counted."
+      },
+      "physical_path_including_gait_cells": 314.512438575039,
+      "sampled_intentional_idle_drift_cells": 6.584870628321527,
+      "neutral_command_drift_cells": 6.58487300551496,
+      "final_drives": {
+        "exploration": 0.524701000000006,
+        "social": 0.689199999999991
+      },
+      "final_visited_regions": 12,
+      "final_interests": 3,
+      "mean_decision_core_adapter_usec": 525.1533333333333,
+      "mean_sensor_usec": 2113.44
+    },
+    {
+      "source_revision": "9278de5757b29b9df40a089e11a4daef744990f7",
+      "original_report_sha256": "a799d9db8b3a51d444976669da29fef1bd4754435ca795b3f422f27877d71c70",
+      "episode_id": "main-pockets-runner-s1701-t30-n1-stateful-a100",
+      "checks": 7513,
+      "independently_checked_metrics": {
+        "x_range_cells": 32.2578125,
+        "y_range_cells": 20.22146606445301,
+        "net_displacement_cells": 12.469253540039006,
+        "stable_territory_cells": 3,
+        "observed_territory_cells": 3,
+        "territory_reentries": 9,
+        "intention_transitions": 25,
+        "intentional_idle_seconds": 5.1000000000000005,
+        "neutral_command_seconds": 5.300000000000001,
+        "active_intervals": 246,
+        "stalled_active_intervals": 111,
+        "stalled_active_fraction": 0.45121951219512196,
+        "home_departures_40_cells": 0,
+        "home_returns_16_cells": 0,
+        "home_distance_final": 12.469253540039006
+      },
+      "copied_peer_samples_checked": 300,
+      "selection_activity": {
+        "selection_label_changes": 25,
+        "blend_to_blend_label_changes": 0,
+        "direct_goal_module_label_changes": 13,
+        "same_module_phase_changes": 1,
+        "goal_bearing_module_selected_seconds": 28.900000000000002,
+        "home_module_authored": false,
+        "home_module_selected_seconds": 0.0,
+        "selection_phase_seconds": [
+          {
+            "selection": "investigate_material",
+            "phase": "approach",
+            "seconds": 3.2
+          },
+          {
+            "selection": "investigate_material",
+            "phase": "inspect",
+            "seconds": 5.1000000000000005
+          },
+          {
+            "selection": "explore_unfamiliar",
+            "phase": "approach",
+            "seconds": 18.3
+          },
+          {
+            "selection": "steer_obstacles",
+            "phase": "",
+            "seconds": 0.6000000000000001
+          },
+          {
+            "selection": "seek_material",
+            "phase": "",
+            "seconds": 0.5
+          },
+          {
+            "selection": "revisit_interest",
+            "phase": "approach",
+            "seconds": 2.3000000000000003
+          }
+        ],
+        "goal_instance_count": null,
+        "goal_instance_count_reason": "Trace records selection and phase, not goal_key; same-module new destinations cannot be counted."
+      },
+      "physical_path_including_gait_cells": 197.605965151422,
+      "sampled_intentional_idle_drift_cells": 10.40102166390928,
+      "neutral_command_drift_cells": 13.544281243725,
+      "final_drives": {
+        "exploration": 0.420805000000012,
+        "social": 0.644349999999992
+      },
+      "final_visited_regions": 4,
+      "final_interests": 4,
+      "mean_decision_core_adapter_usec": 1005.9066666666666,
+      "mean_sensor_usec": 4910.48
+    }
+  ],
+  "canonical_preflight_scope": "Independent reduction of two existing30s9278 integration shards. These two actors remain excluded from primary hosted194; registry report explicitly excluded as zero episodes."
+}

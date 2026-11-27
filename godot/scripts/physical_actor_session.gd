@@ -16,6 +16,8 @@ const Scripted = preload("res://scripts/physical_actor_script.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const Flight = preload("res://scripts/physical_flight_profile.gd")
+const AmbientPerception = preload("res://scripts/ambient/ambient_perception.gd")
+const AmbientActuator = preload("res://scripts/ambient/ambient_actuator.gd")
 const MAX_ACTORS: int = 8
 const MAX_PARTS: int = 8
 const MAX_LEASE: int = 18
@@ -68,6 +70,17 @@ var _active: bool = false
 var _suspended: bool = false
 var accepted_commands: int = 0
 var rejected_commands: int = 0
+var _ambient_perception = AmbientPerception.new()
+var _ambient_sensor_active := false
+var _ambient_refresh_requested := false
+var _completed_time_seconds := 0.0
+var _ambient_completed_physics_step := 0
+var _ambient_sensor_cost_usec := PackedInt64Array()
+var _ambient_world_generation := -1
+var _ambient_world_serial := -1
+var _ambient_peer_tick := -1
+var _ambient_peer_observations: Array[Dictionary] = []
+var _workbench_group_applying := false
 
 
 static func _valid_retained_motion(value: Variant) -> bool:
@@ -179,6 +192,16 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		return false
 	epoch = new_epoch
 	tick = 0
+	_completed_time_seconds = 0.0
+	_ambient_completed_physics_step = 0
+	_ambient_world_generation = -1
+	_ambient_world_serial = -1
+	_ambient_peer_tick = -1
+	_ambient_peer_observations.clear()
+	_workbench_group_applying = false
+	_ambient_perception.reset()
+	_ambient_sensor_active = false
+	_ambient_refresh_requested = false
 	_suspended = false
 	_has_flight = false
 	_flight_prepared = false
@@ -234,6 +257,11 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		sizes.append_array(rig.body_sizes())
 		var pilot = WorkbenchControl.new() if definition.has("workbench_options") else Scripted.new()
 		pilot.configure(str(definition.model), definition.position, index)
+		if definition.has("workbench_options") and definition.get("workbench_control", {}).has("ambient"):
+			if not pilot.configure_ambient(definition.workbench_control.ambient, int(definition.instance_id)):
+				last_error = "Procedural actor profile refused: " + str(definition.model)
+				close()
+				return false
 		_scripts.append(pilot)
 		_workbench_decision_ticks.append(-1)
 		_decision_cost_usec.append(0)
@@ -241,6 +269,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		_actor_accepted.append(0)
 		_actor_rejected.append(0)
 		_actor_errors.append("")
+		_ambient_sensor_cost_usec.append(0)
 		_commands.append({})
 		_flight_commands.append({})
 		_flight_applied.append({})
@@ -271,6 +300,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_generations.resize(_rigs.size())
 	_generations.fill(0)
 	_flight_completed_step = bridge.manual_step_count()
+	_ambient_completed_physics_step = bridge.manual_step_count()
 	_flight_pause_step = _flight_completed_step
 	_active = true
 	return true
@@ -340,11 +370,13 @@ func workbench_control(instance_id: int) -> Dictionary:
 		"status":status, "last_sequence":_sequences[slot], "lease_remaining":view.lease_remaining,
 		"accepted":_actor_accepted[slot], "rejected":_actor_rejected[slot], "error":_actor_errors[slot],
 		"decision_usec":_decision_cost_usec[slot], "total_decision_usec":_decision_total_usec[slot],
+		"sensor_usec":_ambient_sensor_cost_usec[slot], "simulation_time_seconds":_completed_time_seconds,
 		"diagnostics":_scripts[slot].diagnostics(), "observation":view}, true)
 	return result.duplicate(true)
 
 
 func set_workbench_control(instance_id: int, configuration: Dictionary) -> bool:
+	if _workbench_group_applying: return _reject("A group control transaction is completing.")
 	var slot := slot_for_instance(instance_id)
 	if slot < 0: return _reject("unknown_workbench_instance")
 	var error: String = WorkbenchCatalog.control_error(str(_definitions[slot].model), configuration)
@@ -353,11 +385,184 @@ func set_workbench_control(instance_id: int, configuration: Dictionary) -> bool:
 	# starting loadout is an authored prepare operation, never a covert retool.
 	if int(configuration.usable_index) != int(_workbench_configuration(slot).usable_index):
 		return _reject("Starting equipment changes require authored Apply; takeover preserves the live item.", slot)
+	# Prepare the pure adapter before revoking the currently usable producer.
+	var replacement: Variant = null
+	if configuration.has("ambient"):
+		replacement = WorkbenchControl.new()
+		replacement.configure(str(_definitions[slot].model), _definitions[slot].position, slot)
+		if not replacement.configure_ambient(configuration.ambient, instance_id):
+			return _reject("Procedural behaviour configuration refused before handoff.", slot)
 	var producer := StringName(WorkbenchCatalog.producer_for(str(configuration.source)))
 	if not takeover(slot, epoch, producer): return _reject("takeover_refused", slot)
+	if replacement != null: _scripts[slot] = replacement
 	_definitions[slot]["workbench_control"] = configuration.duplicate(true)
+	_ambient_peer_tick = -1
 	_actor_errors[slot] = ""
 	return true
+
+
+
+# Two-phase, main-thread-only control admission. No producer is revoked until
+# every member and replacement adapter is prepared against one owner identity.
+func set_workbench_controls(configurations: Array, expected_run: String, expected_epoch: int) -> bool:
+	if _workbench_group_applying or not _active or not bridge is WorkbenchBridge \
+		or expected_run != run_id or expected_epoch != epoch \
+		or configurations.is_empty() or configurations.size() > MAX_ACTORS:
+		return _reject("Invalid or stale Workbench group transaction.")
+	var prepared: Array[Dictionary] = []
+	var seen: Dictionary = {}
+	for item: Variant in configurations:
+		if not item is Dictionary or not item.has_all(["instance_id", "configuration", "expected_configuration"]) \
+			or item.size() != 3 or not item.instance_id is int \
+			or not item.configuration is Dictionary or not item.expected_configuration is Dictionary:
+			return _reject("Malformed Workbench group member.")
+		var instance_id: int = item.instance_id
+		var slot: int = slot_for_instance(instance_id)
+		if slot < 0 or seen.has(instance_id): return _reject("Unknown or repeated Workbench group member.")
+		seen[instance_id] = true
+		var previous: Dictionary = _workbench_configuration(slot)
+		if previous != item.expected_configuration:
+			return _reject("A group member changed controller; refresh the staged selection.")
+		var configuration: Dictionary = item.configuration.duplicate(true)
+		var model: String = str(_definitions[slot].model)
+		var error: String = WorkbenchCatalog.control_error(model, configuration)
+		if not error.is_empty(): return _reject(error)
+		if int(configuration.usable_index) != int(previous.usable_index):
+			return _reject("Group assignment cannot change live equipment.")
+		var producer: StringName = StringName(WorkbenchCatalog.producer_for(str(configuration.source)))
+		if not WorkbenchCatalog.supports_producer(model, str(producer)):
+			return _reject("Unsupported group producer.")
+		var replacement: Variant = null
+		if configuration.has("ambient"):
+			replacement = WorkbenchControl.new()
+			if not replacement.configure(model, _definitions[slot].position, slot) \
+				or not replacement.configure_ambient(configuration.ambient, instance_id):
+				return _reject("Group profile refused before any producer changed.")
+		prepared.append({"slot":slot, "control":configuration, "producer":producer,
+			"previous_producer":StringName(str(_definitions[slot].producer)), "replacement":replacement})
+	# No await, external callback, or new fallible preparation occurs below.
+	# Cancellation notices are delivered only after all configurations are visible.
+	_workbench_group_applying = true
+	for item: Dictionary in prepared:
+		var slot: int = item.slot
+		cancel_input(slot, epoch, item.previous_producer, false, false)
+		_definitions[slot].producer = item.producer
+		if item.replacement != null: _scripts[slot] = item.replacement
+		_definitions[slot]["workbench_control"] = item.control
+		_actor_errors[slot] = ""
+		_fallback_reasons[slot] = "takeover"
+	_ambient_peer_tick = -1
+	for item: Dictionary in prepared: input_cancelled.emit(int(item.slot), epoch)
+	_workbench_group_applying = false
+	last_error = ""
+	return true
+
+
+# Bounded owner snapshot, shared across ambient decisions at one physical tick.
+# Only public poses, velocities, capabilities and authored affinity tags cross
+# the boundary. Private policies, drives, goals and memories are never shared.
+func _ambient_peer_values() -> Array:
+	if _ambient_peer_tick == tick: return _ambient_peer_observations
+	_ambient_peer_observations.clear()
+	_ambient_peer_tick = tick
+	for slot: int in range(mini(_rigs.size(), MAX_ACTORS)):
+		if not str(_rigs[slot].fault).is_empty(): continue
+		var copied: Dictionary = _rigs[slot].observation()
+		if not copied.get("position") is Vector2 or not copied.position.is_finite() \
+			or not copied.get("velocity") is Vector2 or not copied.velocity.is_finite(): continue
+		var model: String = str(_definitions[slot].model)
+		var capabilities: Dictionary = AmbientActuator.capabilities(model)
+		var control: Dictionary = _definitions[slot].get("workbench_control", {})
+		var tags: Array = control.get("ambient", {}).get("relations", {}).get("tags", []).duplicate()
+		_ambient_peer_observations.append({"instance_id":int(_definitions[slot].instance_id),
+			"model":model, "run_id":run_id, "epoch":epoch, "tick":tick, "available":true,
+			"position":copied.position, "velocity":copied.velocity, "tags":tags,
+			"supported":bool(capabilities.get("supported", false)),
+			"vertical":bool(capabilities.get("vertical", false))})
+	return _ambient_peer_observations
+
+
+# The host supplies immutable native publications; the decision core never sees
+# this owner or the publication object. No buffer is allocated for ordinary
+# human/scripted/external/passive scenes.
+func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	if not _active or not bridge is WorkbenchBridge: return
+	# World identity is required even when a profile requests no material IDs.
+	# Read only the accepted owner's immutable envelope; do not invent a World
+	# generation from a render frame counter, missing cache or wall-clock time.
+	if snapshot != null and snapshot.rigid_body_epoch == epoch \
+		and snapshot.serial >= 0 and snapshot.tick_index >= 0 \
+		and snapshot.render_world_generation >= 0 and snapshot.serial >= _ambient_world_serial \
+		and snapshot.render_world_generation >= _ambient_world_generation:
+		_ambient_world_generation = int(snapshot.render_world_generation)
+		_ambient_world_serial = int(snapshot.serial)
+	var needed := false
+	for definition: Dictionary in _definitions:
+		var control: Dictionary = definition.get("workbench_control", {})
+		if str(definition.producer) == "policy" and str(control.get("policy", "")) == "ambient" \
+			and bool(control.get("enabled", false)) and not AmbientPerception.requests(control.get("ambient", {})).is_empty():
+			needed = true
+			break
+	if not needed:
+		if _ambient_sensor_active: _ambient_perception.reset()
+		_ambient_sensor_active = false
+		_ambient_refresh_requested = false
+		return
+	var extent: Vector2i = _definitions[0].canvas_extent
+	if not _ambient_sensor_active:
+		_ambient_sensor_active = _ambient_perception.configure(extent, epoch)
+	if _ambient_sensor_active and snapshot != null:
+		_ambient_perception.ingest_snapshot(snapshot, extent, epoch)
+		if not _ambient_perception.wants_full_refresh(): _ambient_refresh_requested = false
+
+
+func take_ambient_refresh_request() -> bool:
+	if not _ambient_sensor_active or _ambient_refresh_requested or not _ambient_perception.wants_full_refresh(): return false
+	_ambient_refresh_requested = true
+	return true
+
+
+func _ambient_environment(slot: int, view: Dictionary, profile: Dictionary) -> Dictionary:
+	var begun := Time.get_ticks_usec()
+	_ambient_perception.configure(_definitions[slot].canvas_extent, epoch)
+	var spatial: Dictionary = {"available":false, "modules":{}}
+	var probes: Dictionary = {}
+	for module: Dictionary in profile.get("modules", []):
+		if bool(module.enabled) and float(module.weight) > 0.0 and str(module.type) == "avoid_ledge":
+			var lookahead := float(module.params.lookahead)
+			var max_drop := minf(64.0, float(module.params.allowed_drop) + 8.0)
+			var key := "%0.9f:%0.9f" % [lookahead, max_drop]
+			if not probes.has(key): probes[key] = _rigs[slot].ambient_ledge_observation(lookahead, max_drop, _definitions[slot].canvas_extent)
+			var sample: Dictionary = probes[key]
+			spatial.modules[str(module.id)] = sample.duplicate(true)
+			if not spatial.has("left"):
+				spatial["left"] = sample.left.duplicate(true)
+				spatial["right"] = sample.right.duplicate(true)
+			spatial.available = bool(spatial.available) or bool(sample.available)
+	var neighbors: Array = []
+	var capabilities: Dictionary = AmbientActuator.capabilities(str(_definitions[slot].model))
+	for copied: Dictionary in _ambient_peer_values():
+		if int(copied.instance_id) == int(_definitions[slot].instance_id): continue
+		var peer: Dictionary = copied.duplicate(true)
+		peer["compatible"] = bool(peer.supported) and bool(peer.vertical) == bool(capabilities.get("vertical", false))
+		peer.erase("supported")
+		peer.erase("vertical")
+		neighbors.append(peer)
+	var navigation: Dictionary = {"available":false, "reason":"No enabled module requests terrain steering.", "directions":[]}
+	for module: Dictionary in profile.get("modules", []):
+		if bool(module.enabled) and float(module.weight) > 0.0 and str(module.type) in ["steer_obstacles", "withdraw_obstruction"]:
+			navigation = _rigs[slot].ambient_navigation_observation(32.0, _definitions[slot].canvas_extent, bool(capabilities.get("vertical", false)))
+			break
+	var environment: Dictionary = _ambient_perception.observe(view, _ambient_perception.requests(profile),
+		{"capabilities":capabilities,
+		"bounds":Rect2(Vector2.ZERO, Vector2(_definitions[slot].canvas_extent)),
+		"home":_definitions[slot].position, "spatial":spatial, "neighbors":neighbors,
+		"perception":AmbientPerception.settings(profile), "relations":profile.get("relations", {}),
+		"regions":profile.get("regions", []),
+		"navigation":navigation, "world_generation":_ambient_world_generation,
+		"simulation_time_seconds":_completed_time_seconds})
+	_ambient_sensor_cost_usec[slot] = Time.get_ticks_usec() - begun
+	return environment
 
 
 func workbench_policy_observation(instance_id: int) -> Dictionary:
@@ -492,6 +697,8 @@ func _view(actor_id: int, issue: bool) -> Dictionary:
 	if bridge is WorkbenchBridge:
 		result["instance_id"] = int(_definitions[actor_id].instance_id)
 		result["controller_enabled"] = bool(_workbench_configuration(actor_id).enabled)
+		result["policy_adapter"] = str(_definitions[actor_id].get("workbench_control", {}).get("policy", "fixture"))
+		result["simulation_time_seconds"] = _completed_time_seconds
 		if not result.controller_enabled: result.suspended = true
 	result["equipment"] = _equipment[actor_id].observation()
 	result["cell_patch"] = result.equipment.get("cell_patch", {}).duplicate(true)
@@ -689,7 +896,7 @@ func submit_local(actor_id: int, action: Dictionary, producer: StringName, lease
 	return submit(make_command(view, _sequences[actor_id] + 1, action, lease), producer)
 
 
-func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> bool:
+func cancel_input(actor_id: int, expected_epoch: int, producer: StringName, preserve_ambient: bool = false, notify_owner: bool = true) -> bool:
 	if not _active or actor_id < 0 or actor_id >= _rigs.size() or expected_epoch != epoch \
 		or producer != StringName(str(_definitions[actor_id].producer)):
 		return false
@@ -708,12 +915,13 @@ func cancel_input(actor_id: int, expected_epoch: int, producer: StringName) -> b
 	_effects = _effects.filter(func(effect: Dictionary) -> bool: return int(effect.actor_slot) != actor_id)
 	_workbench_ports.erase(actor_id)
 	_rigs[actor_id].cancel()
-	_scripts[actor_id].cancel()
+	if bridge is WorkbenchBridge: _scripts[actor_id].cancel(preserve_ambient)
+	else: _scripts[actor_id].cancel()
 	_workbench_decision_ticks[actor_id] = -1
 	# A desktop cellular owner may already hold a copied effect packet. Revoking
 	# only this session's queue would leave that packet live after focus loss,
 	# pause or lease expiry. The main-thread host fences its worker queue too.
-	input_cancelled.emit(actor_id, epoch)
+	if notify_owner: input_cancelled.emit(actor_id, epoch)
 	return true
 
 
@@ -732,14 +940,15 @@ func set_suspended(value: bool) -> void:
 		# Workbench producer before issuing a fresh post-resume observation.
 		for index: int in range(_rigs.size()):
 			if is_flight_actor(index) or bridge is WorkbenchBridge:
-				cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+				cancel_input(index, epoch, StringName(str(_definitions[index].producer)), true)
 				_fallback_reasons[index] = "resumed"
 	_suspended = value
+	_ambient_completed_physics_step = bridge.manual_step_count()
 	if value:
 		_flight_pause_step = bridge.manual_step_count()
 		_effects.clear()
 		for index: int in range(_rigs.size()):
-			cancel_input(index, epoch, StringName(str(_definitions[index].producer)))
+			cancel_input(index, epoch, StringName(str(_definitions[index].producer)), true)
 			_fallback_reasons[index] = "suspended"
 		if _flight_pause_step == _flight_completed_step:
 			_flight_prepared = false
@@ -772,15 +981,18 @@ func advance(delta: float) -> void:
 		if not str(_rigs[index].fault).is_empty(): continue
 		var producer: String = str(_definitions[index].producer)
 		var period: int = DECISION_TICKS
+		var ambient_profile: Dictionary = {}
 		if bridge is WorkbenchBridge:
 			var control: Dictionary = _workbench_configuration(index)
 			if not bool(control.enabled): continue
-			if producer != "demo" and not (producer == "policy" and control.policy == "fixture"): continue
+			if producer != "demo" and not (producer == "policy" and control.policy in ["fixture", "ambient"]): continue
+			if producer == "policy" and control.policy == "ambient": ambient_profile = control.ambient
 			period = int(control.decision_ticks)
 			if _workbench_decision_ticks[index] >= 0 and tick - _workbench_decision_ticks[index] < period: continue
 		else:
 			if producer != "demo" or tick % period != 0: continue
 		var view: Dictionary = workbench_policy_observation(int(_definitions[index].instance_id)) if bridge is WorkbenchBridge and producer == "policy" else observation(index)
+		if not ambient_profile.is_empty(): view["ambient_environment"] = _ambient_environment(index, view, ambient_profile)
 		var begin_usec := Time.get_ticks_usec()
 		var action: Dictionary = _scripts[index].next_action(view, delta * period)
 		_decision_cost_usec[index] = Time.get_ticks_usec() - begin_usec
@@ -880,6 +1092,10 @@ func complete_step() -> void:
 		return
 	if _active:
 		tick += 1
+		var completed_physics_step: int = bridge.manual_step_count()
+		# Actual completed fixed Rapier steps, never requested delta or wall time.
+		_completed_time_seconds += maxi(0, completed_physics_step - _ambient_completed_physics_step) * bridge.fixed_delta()
+		_ambient_completed_physics_step = completed_physics_step
 		for index: int in range(_rigs.size()):
 			_capture_flight_step(index)
 			_rigs[index].complete_step()
@@ -1006,6 +1222,17 @@ func snapshot() -> Dictionary:
 
 func close() -> void:
 	_active = false
+	_ambient_perception.reset()
+	_ambient_sensor_active = false
+	_ambient_refresh_requested = false
+	_ambient_sensor_cost_usec.clear()
+	_completed_time_seconds = 0.0
+	_ambient_completed_physics_step = 0
+	_ambient_world_generation = -1
+	_ambient_world_serial = -1
+	_ambient_peer_tick = -1
+	_ambient_peer_observations.clear()
+	_workbench_group_applying = false
 	bridge.shutdown()
 	for rig in _rigs:
 		if is_instance_valid(rig):

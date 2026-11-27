@@ -1,0 +1,1128 @@
+{
+  "status": "PASS",
+  "applications": {
+    "old": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+    "current": "50c6df89528dc9ecdc5316d8c67abf203e192254"
+  },
+  "original_archive_sha256": {
+    "old": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+    "current": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac"
+  },
+  "summary_sha256": "298cc3977a5c318ab8530e983a05ce9c298f17a105a5690fd4bb3018b1938a91",
+  "reader_sha256": "1a0ae8d2586748c42ff837dc34eea33c7a308873090d617d106c3348a60cfaee",
+  "scope": "Selected original shards: eighteen main memory-pair episodes, four old/new sustained flyer episodes and two final blocked-route episodes. Read-only analysis adds no physical episode credit and does not replace the full122-chain custody audit.",
+  "reader_development_correction": "The first reader wrongly compared the entire outcome_observer diagnostic dictionary, including measured query counts/timing. The retained initial failure and source distinguish that audit mistake from unchanged initial inputs and correctly matched observer configuration. No raw report or runtime was modified.",
+  "main_memory_pairs": [
+    {
+      "model": "runner",
+      "paired_seed_results": [
+        {
+          "seed": 605,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "b96d9656136918a07c97dcc70ce11d72bb857953b56dc7bfbbd718e06dbb740c"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "d405ae1bc20e3c530d23d1d1f13325039b59d7711acf9dde10d7ddbd67cf5539"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 47.60209655761798,
+              "active_intervals": 239,
+              "stalled_active_intervals": 20,
+              "stalled_active_fraction": 0.08368200836820083
+            },
+            "no_memory": {
+              "x_range_cells": 47.28871154785202,
+              "active_intervals": 214,
+              "stalled_active_intervals": 20,
+              "stalled_active_fraction": 0.09345794392523364
+            }
+          },
+          "x_range_delta": 0.31338500976596606,
+          "active_stall_delta": -0.009775935557032808
+        },
+        {
+          "seed": 1701,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "c2629a596355345ff7d934061500f78b5f301c702e2fd4014bb9281ed24a2ea5"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "17972f2c18e2ddabac3240ca73fd074a790cc79e7de7da4de2f901caf7387b0e"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 43.728012084960994,
+              "active_intervals": 239,
+              "stalled_active_intervals": 17,
+              "stalled_active_fraction": 0.07112970711297072
+            },
+            "no_memory": {
+              "x_range_cells": 40.796310424805,
+              "active_intervals": 214,
+              "stalled_active_intervals": 20,
+              "stalled_active_fraction": 0.09345794392523364
+            }
+          },
+          "x_range_delta": 2.931701660155994,
+          "active_stall_delta": -0.022328236812262925
+        },
+        {
+          "seed": 2909,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "5929a499c3907a67a1fd50cf85c93e3604b340966f3b658750f9957843be062f"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "6516c0347fe22a4888136a02d72a0c72aa7b4e6d3acfc90eca31977978fffbe6"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 47.60209655761798,
+              "active_intervals": 239,
+              "stalled_active_intervals": 20,
+              "stalled_active_fraction": 0.08368200836820083
+            },
+            "no_memory": {
+              "x_range_cells": 47.28871154785202,
+              "active_intervals": 214,
+              "stalled_active_intervals": 20,
+              "stalled_active_fraction": 0.09345794392523364
+            }
+          },
+          "x_range_delta": 0.31338500976596606,
+          "active_stall_delta": -0.009775935557032808
+        }
+      ],
+      "median_paired_x_range_delta": 0.31338500976596606,
+      "median_paired_active_stall_delta": -0.009775935557032808
+    },
+    {
+      "model": "monowheel",
+      "paired_seed_results": [
+        {
+          "seed": 605,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "c6822800d0a212a10dfe67948d7326c8b0c1d734e2432cb67df9b09b05b45eaa"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "06cd6ba46d213f4809a461118eb7a17dd5fc323a54b95e42347a2377a417f446"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 49.51300048828102,
+              "active_intervals": 236,
+              "stalled_active_intervals": 19,
+              "stalled_active_fraction": 0.08050847457627118
+            },
+            "no_memory": {
+              "x_range_cells": 49.43933105468798,
+              "active_intervals": 211,
+              "stalled_active_intervals": 31,
+              "stalled_active_fraction": 0.14691943127962084
+            }
+          },
+          "x_range_delta": 0.07366943359303946,
+          "active_stall_delta": -0.06641095670334966
+        },
+        {
+          "seed": 1701,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "eb85d719ed2fac74b89c80c9e56b4c43d061bade5701bc268177b229c384f420"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "0f09c6c7632cc2e223a437d5a2c85fd90a62eea67792ad0b59c49fc5c6715e4e"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 45.033859252929005,
+              "active_intervals": 236,
+              "stalled_active_intervals": 20,
+              "stalled_active_fraction": 0.0847457627118644
+            },
+            "no_memory": {
+              "x_range_cells": 48.83558654785199,
+              "active_intervals": 211,
+              "stalled_active_intervals": 31,
+              "stalled_active_fraction": 0.14691943127962084
+            }
+          },
+          "x_range_delta": -3.8017272949229834,
+          "active_stall_delta": -0.06217366856775644
+        },
+        {
+          "seed": 2909,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "b0199132fc1917982251ff794155891b2005b4aaca54384ed65628a4e08ea6d1"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "6518c3afc8cc8ce2020fbfdb6851d7781758e4085e358e645ebb048f6b95d819"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 49.51300048828102,
+              "active_intervals": 236,
+              "stalled_active_intervals": 19,
+              "stalled_active_fraction": 0.08050847457627118
+            },
+            "no_memory": {
+              "x_range_cells": 49.43933105468798,
+              "active_intervals": 211,
+              "stalled_active_intervals": 31,
+              "stalled_active_fraction": 0.14691943127962084
+            }
+          },
+          "x_range_delta": 0.07366943359303946,
+          "active_stall_delta": -0.06641095670334966
+        }
+      ],
+      "median_paired_x_range_delta": 0.07366943359303946,
+      "median_paired_active_stall_delta": -0.06641095670334966
+    },
+    {
+      "model": "4ly_trainer",
+      "paired_seed_results": [
+        {
+          "seed": 605,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "ddf6bc08a52b30e956e1eed874f2f8cdf2a2e9cb3304c8d9dbc9694fcd057a06"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "0ac81a3b71bb7b1ace704b9d44ce117287ff19d47c0c624982ccbf8b837f5b2c"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 70.273788452149,
+              "active_intervals": 273,
+              "stalled_active_intervals": 3,
+              "stalled_active_fraction": 0.01098901098901099
+            },
+            "no_memory": {
+              "x_range_cells": 75.02877807617199,
+              "active_intervals": 236,
+              "stalled_active_intervals": 3,
+              "stalled_active_fraction": 0.012711864406779662
+            }
+          },
+          "x_range_delta": -4.754989624022983,
+          "active_stall_delta": -0.001722853417768672
+        },
+        {
+          "seed": 1701,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "36838a869c3a8a95fdf8a8bc95ffba5bc288c372425d7ea442d956a8105c4d75"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "ce404827f79c8daa6bd048591544d1dee463da6ba96ba283e3f110d62218767c"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 135.187568664551,
+              "active_intervals": 270,
+              "stalled_active_intervals": 2,
+              "stalled_active_fraction": 0.007407407407407408
+            },
+            "no_memory": {
+              "x_range_cells": 135.187568664551,
+              "active_intervals": 270,
+              "stalled_active_intervals": 2,
+              "stalled_active_fraction": 0.007407407407407408
+            }
+          },
+          "x_range_delta": 0.0,
+          "active_stall_delta": 0.0
+        },
+        {
+          "seed": 2909,
+          "originals": {
+            "stateful": {
+              "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/report.json",
+              "sha256": "3bb5fe69cdffffbb42fdc4e7a13d04dcd1a92f9e0b854f1b76d84e7f5d0cd4f6"
+            },
+            "no_memory": {
+              "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/report.json",
+              "sha256": "e620812cdd561231a0a900b4cfae3a9f32d8acc39fffd2b845876741703c99a3"
+            }
+          },
+          "metrics": {
+            "stateful": {
+              "x_range_cells": 114.92855834960898,
+              "active_intervals": 247,
+              "stalled_active_intervals": 34,
+              "stalled_active_fraction": 0.13765182186234817
+            },
+            "no_memory": {
+              "x_range_cells": 85.51321411132801,
+              "active_intervals": 207,
+              "stalled_active_intervals": 53,
+              "stalled_active_fraction": 0.2560386473429952
+            }
+          },
+          "x_range_delta": 29.415344238280966,
+          "active_stall_delta": -0.11838682548064702
+        }
+      ],
+      "median_paired_x_range_delta": 0.0,
+      "median_paired_active_stall_delta": -0.001722853417768672
+    }
+  ],
+  "sustained_flyer_home": [
+    {
+      "source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+      "arm": "stateful",
+      "original": {
+        "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/report.json",
+        "sha256": "2d4d4251fb894e8b8ada90baf5310a41bbcf62fb1dfef4b3b44d6128efe2676b"
+      },
+      "independent_motion_metrics": {
+        "x_range_cells": 184.37017822265648,
+        "active_intervals": 1014,
+        "stalled_active_intervals": 51,
+        "stalled_active_fraction": 0.05029585798816568
+      },
+      "arrival_radius": 20.0,
+      "rest_seconds": 4.0,
+      "geometric_events": [
+        {
+          "kind": "departure",
+          "seconds": 11.1000000000001,
+          "distance": 40.530822348434995,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "return",
+          "seconds": 64.8999999999976,
+          "distance": 15.9546833483845,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "departure",
+          "seconds": 91.9999999999961,
+          "distance": 40.76209239050483,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "return",
+          "seconds": 106.299999999995,
+          "distance": 15.937293843622214,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "departure",
+          "seconds": 116.599999999995,
+          "distance": 40.17591131600607,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        }
+      ],
+      "geometric_returns": 2,
+      "geometric_returns_while_home_module_selected": 0,
+      "selected_home_windows": [
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 44.2999999999988,
+          "until_exclusive_seconds": 51.1,
+          "samples": 68,
+          "sampled_phase_occupancy_seconds": 6.800000000000001,
+          "first_to_last_sample_elapsed_seconds": 6.699999999999598,
+          "home_distance_first": 152.343063354492,
+          "home_distance_last": 75.1010513305664,
+          "home_distance_minimum": 75.1010513305664,
+          "home_distance_maximum": 152.917434692383,
+          "exploration_drive_first": 0.364987000000018,
+          "exploration_drive_last": 0.288607000000023,
+          "first_to_last_drive_change": -0.07637999999999501,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 67
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 52.0999999999983,
+          "until_exclusive_seconds": 55.7,
+          "samples": 36,
+          "sampled_phase_occupancy_seconds": 3.6,
+          "first_to_last_sample_elapsed_seconds": 3.499999999999794,
+          "home_distance_first": 79.5362396240234,
+          "home_distance_last": 44.718318939209,
+          "home_distance_minimum": 44.718318939209,
+          "home_distance_maximum": 80.890495300293,
+          "exploration_drive_first": 0.276067000000024,
+          "exploration_drive_last": 0.236167000000026,
+          "first_to_last_drive_change": -0.03989999999999799,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 35
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 56.6999999999981,
+          "until_exclusive_seconds": 60.2,
+          "samples": 35,
+          "sampled_phase_occupancy_seconds": 3.5,
+          "first_to_last_sample_elapsed_seconds": 3.3999999999997996,
+          "home_distance_first": 49.9372711181641,
+          "home_distance_last": 20.6011810302734,
+          "home_distance_minimum": 20.6011810302734,
+          "home_distance_maximum": 51.535228729248,
+          "exploration_drive_first": 0.223627000000027,
+          "exploration_drive_last": 0.184867000000029,
+          "first_to_last_drive_change": -0.03875999999999799,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 34
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 60.1999999999979,
+          "until_exclusive_seconds": 64.3,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.9999999999997016,
+          "home_distance_first": 19.5850601196289,
+          "home_distance_last": 17.1797294616699,
+          "home_distance_minimum": 17.1797294616699,
+          "home_distance_maximum": 19.5850601196289,
+          "exploration_drive_first": 0.183727000000029,
+          "exploration_drive_last": 0.16406200000003,
+          "first_to_last_drive_change": -0.019664999999999017,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 40
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 72.3999999999972,
+          "until_exclusive_seconds": 76.5,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999787,
+          "home_distance_first": 1.17598760128021,
+          "home_distance_last": 1.89463925361633,
+          "home_distance_minimum": 0.309584826231003,
+          "home_distance_maximum": 1.89463925361633,
+          "exploration_drive_first": 0.0713230000000347,
+          "exploration_drive_last": 0.431323000000014,
+          "first_to_last_drive_change": 0.3599999999999793,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 84.5999999999965,
+          "until_exclusive_seconds": 88.7,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999801,
+          "home_distance_first": 12.1940889358521,
+          "home_distance_last": 12.3700523376465,
+          "home_distance_minimum": 12.1750755310059,
+          "home_distance_maximum": 12.3700523376465,
+          "exploration_drive_first": 0.347983000000021,
+          "exploration_drive_last": 0.707983,
+          "first_to_last_drive_change": 0.359999999999979,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        }
+      ],
+      "selected_home_seconds": 26.200000000000003,
+      "selected_rest_seconds": 12.3,
+      "final_drives": {
+        "exploration": 0.500260000000017,
+        "social": 1.0
+      },
+      "final_failure_events": 1
+    },
+    {
+      "source": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+      "arm": "stateful",
+      "original": {
+        "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/report.json",
+        "sha256": "efb489bee3c463fa4683e7965a00422336e99fce7e5454db92308540b71756db"
+      },
+      "independent_motion_metrics": {
+        "x_range_cells": 193.0089416503905,
+        "active_intervals": 1040,
+        "stalled_active_intervals": 14,
+        "stalled_active_fraction": 0.013461538461538462
+      },
+      "arrival_radius": 20.0,
+      "rest_seconds": 4.0,
+      "geometric_events": [
+        {
+          "kind": "departure",
+          "seconds": 11.1000000000001,
+          "distance": 40.530822348434995,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "return",
+          "seconds": 64.8999999999976,
+          "distance": 15.9546833483845,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "departure",
+          "seconds": 89.7999999999962,
+          "distance": 40.564275938914435,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        }
+      ],
+      "geometric_returns": 1,
+      "geometric_returns_while_home_module_selected": 0,
+      "selected_home_windows": [
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 44.2999999999988,
+          "until_exclusive_seconds": 51.1,
+          "samples": 68,
+          "sampled_phase_occupancy_seconds": 6.800000000000001,
+          "first_to_last_sample_elapsed_seconds": 6.699999999999598,
+          "home_distance_first": 152.343063354492,
+          "home_distance_last": 75.1010513305664,
+          "home_distance_minimum": 75.1010513305664,
+          "home_distance_maximum": 152.917434692383,
+          "exploration_drive_first": 0.364987000000018,
+          "exploration_drive_last": 0.288607000000023,
+          "first_to_last_drive_change": -0.07637999999999501,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 67
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 52.0999999999983,
+          "until_exclusive_seconds": 55.7,
+          "samples": 36,
+          "sampled_phase_occupancy_seconds": 3.6,
+          "first_to_last_sample_elapsed_seconds": 3.499999999999794,
+          "home_distance_first": 79.5362396240234,
+          "home_distance_last": 44.718318939209,
+          "home_distance_minimum": 44.718318939209,
+          "home_distance_maximum": 80.890495300293,
+          "exploration_drive_first": 0.276067000000024,
+          "exploration_drive_last": 0.236167000000026,
+          "first_to_last_drive_change": -0.03989999999999799,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 35
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 56.6999999999981,
+          "until_exclusive_seconds": 60.2,
+          "samples": 35,
+          "sampled_phase_occupancy_seconds": 3.5,
+          "first_to_last_sample_elapsed_seconds": 3.3999999999997996,
+          "home_distance_first": 49.9372711181641,
+          "home_distance_last": 20.6011810302734,
+          "home_distance_minimum": 20.6011810302734,
+          "home_distance_maximum": 51.535228729248,
+          "exploration_drive_first": 0.223627000000027,
+          "exploration_drive_last": 0.184867000000029,
+          "first_to_last_drive_change": -0.03875999999999799,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 34
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 60.1999999999979,
+          "until_exclusive_seconds": 64.3,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.9999999999997016,
+          "home_distance_first": 19.5850601196289,
+          "home_distance_last": 17.1797294616699,
+          "home_distance_minimum": 17.1797294616699,
+          "home_distance_maximum": 19.5850601196289,
+          "exploration_drive_first": 0.183727000000029,
+          "exploration_drive_last": 0.543727000000009,
+          "first_to_last_drive_change": 0.35999999999997995,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 80.7999999999967,
+          "until_exclusive_seconds": 84.9,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999801,
+          "home_distance_first": 12.8297882080078,
+          "home_distance_last": 13.8665618896484,
+          "home_distance_minimum": 12.8297882080078,
+          "home_distance_maximum": 13.8665618896484,
+          "exploration_drive_first": 0.364627000000022,
+          "exploration_drive_last": 0.724627000000001,
+          "first_to_last_drive_change": 0.359999999999979,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 119.499999999995,
+          "until_exclusive_seconds": 120.0,
+          "samples": 5,
+          "sampled_phase_occupancy_seconds": 0.5,
+          "first_to_last_sample_elapsed_seconds": 0.3999999999989967,
+          "home_distance_first": 93.7935333251953,
+          "home_distance_last": 92.4781188964844,
+          "home_distance_minimum": 92.4781188964844,
+          "home_distance_maximum": 93.9057312011719,
+          "exploration_drive_first": 0.364381000000028,
+          "exploration_drive_last": 0.359821000000029,
+          "first_to_last_drive_change": -0.004559999999999009,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 4
+        }
+      ],
+      "selected_home_seconds": 22.6,
+      "selected_rest_seconds": 8.200000000000001,
+      "final_drives": {
+        "exploration": 0.359821000000029,
+        "social": 1.0
+      },
+      "final_failure_events": 0
+    },
+    {
+      "source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+      "arm": "no_memory",
+      "original": {
+        "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/report.json",
+        "sha256": "8b95e1e80895985b960c4d23b26fea812b3f1a99bfc0cf1fc511bdaa5d8d1662"
+      },
+      "independent_motion_metrics": {
+        "x_range_cells": 169.5537414550784,
+        "active_intervals": 830,
+        "stalled_active_intervals": 14,
+        "stalled_active_fraction": 0.016867469879518072
+      },
+      "arrival_radius": 20.0,
+      "rest_seconds": 4.0,
+      "geometric_events": [
+        {
+          "kind": "departure",
+          "seconds": 11.1000000000001,
+          "distance": 40.530822348434995,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "return",
+          "seconds": 60.9999999999978,
+          "distance": 15.834945646291494,
+          "selection": "investigate_material",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        }
+      ],
+      "geometric_returns": 1,
+      "geometric_returns_while_home_module_selected": 0,
+      "selected_home_windows": [
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 44.2999999999988,
+          "until_exclusive_seconds": 44.6,
+          "samples": 3,
+          "sampled_phase_occupancy_seconds": 0.30000000000000004,
+          "first_to_last_sample_elapsed_seconds": 0.19999999999999574,
+          "home_distance_first": 87.3765106201172,
+          "home_distance_last": 84.8871002197266,
+          "home_distance_minimum": 84.8871002197266,
+          "home_distance_maximum": 87.3765106201172,
+          "exploration_drive_first": 0.364987000000018,
+          "exploration_drive_last": 0.362707000000018,
+          "first_to_last_drive_change": -0.0022800000000000042,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 2
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 45.5999999999987,
+          "until_exclusive_seconds": 48.8,
+          "samples": 32,
+          "sampled_phase_occupancy_seconds": 3.2,
+          "first_to_last_sample_elapsed_seconds": 3.0999999999997954,
+          "home_distance_first": 94.1034393310547,
+          "home_distance_last": 63.6661643981934,
+          "home_distance_minimum": 63.6661643981934,
+          "home_distance_maximum": 96.3494873046875,
+          "exploration_drive_first": 0.350167000000019,
+          "exploration_drive_last": 0.314827000000021,
+          "first_to_last_drive_change": -0.035339999999997984,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 31
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 49.7999999999985,
+          "until_exclusive_seconds": 53.5,
+          "samples": 37,
+          "sampled_phase_occupancy_seconds": 3.7,
+          "first_to_last_sample_elapsed_seconds": 3.5999999999998025,
+          "home_distance_first": 67.3266906738281,
+          "home_distance_last": 32.5811500549316,
+          "home_distance_minimum": 32.5811500549316,
+          "home_distance_maximum": 68.6459426879883,
+          "exploration_drive_first": 0.302287000000022,
+          "exploration_drive_last": 0.261247000000025,
+          "first_to_last_drive_change": -0.04103999999999702,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 36
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 54.3999999999982,
+          "until_exclusive_seconds": 56.5,
+          "samples": 21,
+          "sampled_phase_occupancy_seconds": 2.1,
+          "first_to_last_sample_elapsed_seconds": 1.9999999999999005,
+          "home_distance_first": 34.1646041870117,
+          "home_distance_last": 20.0211849212646,
+          "home_distance_minimum": 20.0211849212646,
+          "home_distance_maximum": 35.5174331665039,
+          "exploration_drive_first": 0.249847000000026,
+          "exploration_drive_last": 0.227047000000027,
+          "first_to_last_drive_change": -0.022799999999998988,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 20
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 56.4999999999981,
+          "until_exclusive_seconds": 60.6,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.9999999999996945,
+          "home_distance_first": 19.0572643280029,
+          "home_distance_last": 16.7705955505371,
+          "home_distance_minimum": 16.7705955505371,
+          "home_distance_maximum": 19.0572643280029,
+          "exploration_drive_first": 0.225907000000027,
+          "exploration_drive_last": 0.206242000000028,
+          "first_to_last_drive_change": -0.019664999999999017,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 40
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 68.6999999999974,
+          "until_exclusive_seconds": 72.8,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999801,
+          "home_distance_first": 8.71691131591797,
+          "home_distance_last": 9.94679260253906,
+          "home_distance_minimum": 8.71691131591797,
+          "home_distance_maximum": 9.94679260253906,
+          "exploration_drive_first": 0.129064000000031,
+          "exploration_drive_last": 0.489064000000011,
+          "first_to_last_drive_change": 0.35999999999998,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 85.8999999999964,
+          "until_exclusive_seconds": 90.0,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999801,
+          "home_distance_first": 18.9840049743652,
+          "home_distance_last": 22.475284576416,
+          "home_distance_minimum": 18.9840049743652,
+          "home_distance_maximum": 22.475284576416,
+          "exploration_drive_first": 0.36428500000002,
+          "exploration_drive_last": 0.343879000000021,
+          "first_to_last_drive_change": -0.020405999999999036,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 40
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 98.0999999999957,
+          "until_exclusive_seconds": 100.0,
+          "samples": 19,
+          "sampled_phase_occupancy_seconds": 1.9000000000000001,
+          "first_to_last_sample_elapsed_seconds": 1.7999999999998977,
+          "home_distance_first": 35.2480621337891,
+          "home_distance_last": 20.3348407745361,
+          "home_distance_minimum": 20.3348407745361,
+          "home_distance_maximum": 35.6671142578125,
+          "exploration_drive_first": 0.267442000000026,
+          "exploration_drive_last": 0.246922000000028,
+          "first_to_last_drive_change": -0.020519999999997984,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 18
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 99.9999999999956,
+          "until_exclusive_seconds": 104.1,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999403,
+          "home_distance_first": 19.3058929443359,
+          "home_distance_last": 16.8710823059082,
+          "home_distance_minimum": 16.8710823059082,
+          "home_distance_maximum": 19.3058929443359,
+          "exploration_drive_first": 0.245782000000028,
+          "exploration_drive_last": 0.226117000000029,
+          "first_to_last_drive_change": -0.019664999999999017,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 40
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 112.799999999995,
+          "until_exclusive_seconds": 116.9,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 4.0,
+          "home_distance_first": 14.0697498321533,
+          "home_distance_last": 18.8602542877197,
+          "home_distance_minimum": 14.0697498321533,
+          "home_distance_maximum": 18.8602542877197,
+          "exploration_drive_first": 0.142099000000032,
+          "exploration_drive_last": 0.131833000000033,
+          "first_to_last_drive_change": -0.010265999999998998,
+          "positive_drive_intervals": 1,
+          "negative_drive_intervals": 39
+        }
+      ],
+      "selected_home_seconds": 31.700000000000003,
+      "selected_rest_seconds": 20.500000000000004,
+      "final_drives": {
+        "exploration": 0.108349000000034,
+        "social": 1.0
+      },
+      "final_failure_events": 0
+    },
+    {
+      "source": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+      "arm": "no_memory",
+      "original": {
+        "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/report.json",
+        "sha256": "707427fdbfd1b5ea56e6919822be9395f281a25526c974615b20cdfba0de6d46"
+      },
+      "independent_motion_metrics": {
+        "x_range_cells": 168.66047668457037,
+        "active_intervals": 988,
+        "stalled_active_intervals": 10,
+        "stalled_active_fraction": 0.010121457489878543
+      },
+      "arrival_radius": 20.0,
+      "rest_seconds": 4.0,
+      "geometric_events": [
+        {
+          "kind": "departure",
+          "seconds": 11.1000000000001,
+          "distance": 40.530822348434995,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "return",
+          "seconds": 60.9999999999978,
+          "distance": 15.834945646291494,
+          "selection": "investigate_material",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "departure",
+          "seconds": 75.199999999997,
+          "distance": 40.00197152022802,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "return",
+          "seconds": 93.599999999996,
+          "distance": 15.793196306320805,
+          "selection": "investigate_material",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        },
+        {
+          "kind": "departure",
+          "seconds": 115.399999999995,
+          "distance": 40.34052710438257,
+          "selection": "explore_unfamiliar",
+          "phase": "approach",
+          "home_module_selected_at_crossing": false
+        }
+      ],
+      "geometric_returns": 2,
+      "geometric_returns_while_home_module_selected": 0,
+      "selected_home_windows": [
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 44.2999999999988,
+          "until_exclusive_seconds": 44.6,
+          "samples": 3,
+          "sampled_phase_occupancy_seconds": 0.30000000000000004,
+          "first_to_last_sample_elapsed_seconds": 0.19999999999999574,
+          "home_distance_first": 87.3765106201172,
+          "home_distance_last": 84.8871002197266,
+          "home_distance_minimum": 84.8871002197266,
+          "home_distance_maximum": 87.3765106201172,
+          "exploration_drive_first": 0.364987000000018,
+          "exploration_drive_last": 0.362707000000018,
+          "first_to_last_drive_change": -0.0022800000000000042,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 2
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 45.5999999999987,
+          "until_exclusive_seconds": 48.8,
+          "samples": 32,
+          "sampled_phase_occupancy_seconds": 3.2,
+          "first_to_last_sample_elapsed_seconds": 3.0999999999997954,
+          "home_distance_first": 94.1034393310547,
+          "home_distance_last": 63.6661643981934,
+          "home_distance_minimum": 63.6661643981934,
+          "home_distance_maximum": 96.3494873046875,
+          "exploration_drive_first": 0.350167000000019,
+          "exploration_drive_last": 0.314827000000021,
+          "first_to_last_drive_change": -0.035339999999997984,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 31
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 49.7999999999985,
+          "until_exclusive_seconds": 53.5,
+          "samples": 37,
+          "sampled_phase_occupancy_seconds": 3.7,
+          "first_to_last_sample_elapsed_seconds": 3.5999999999998025,
+          "home_distance_first": 67.3266906738281,
+          "home_distance_last": 32.5811500549316,
+          "home_distance_minimum": 32.5811500549316,
+          "home_distance_maximum": 68.6459426879883,
+          "exploration_drive_first": 0.302287000000022,
+          "exploration_drive_last": 0.261247000000025,
+          "first_to_last_drive_change": -0.04103999999999702,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 36
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 54.3999999999982,
+          "until_exclusive_seconds": 56.5,
+          "samples": 21,
+          "sampled_phase_occupancy_seconds": 2.1,
+          "first_to_last_sample_elapsed_seconds": 1.9999999999999005,
+          "home_distance_first": 34.1646041870117,
+          "home_distance_last": 20.0211849212646,
+          "home_distance_minimum": 20.0211849212646,
+          "home_distance_maximum": 35.5174331665039,
+          "exploration_drive_first": 0.249847000000026,
+          "exploration_drive_last": 0.227047000000027,
+          "first_to_last_drive_change": -0.022799999999998988,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 20
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 56.4999999999981,
+          "until_exclusive_seconds": 60.6,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.9999999999996945,
+          "home_distance_first": 19.0572643280029,
+          "home_distance_last": 16.7705955505371,
+          "home_distance_minimum": 16.7705955505371,
+          "home_distance_maximum": 19.0572643280029,
+          "exploration_drive_first": 0.225907000000027,
+          "exploration_drive_last": 0.585907000000007,
+          "first_to_last_drive_change": 0.35999999999997995,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "approach",
+          "from_seconds": 82.5999999999966,
+          "until_exclusive_seconds": 89.1,
+          "samples": 65,
+          "sampled_phase_occupancy_seconds": 6.5,
+          "first_to_last_sample_elapsed_seconds": 6.399999999999608,
+          "home_distance_first": 83.5016098022461,
+          "home_distance_last": 20.6379261016846,
+          "home_distance_minimum": 20.6379261016846,
+          "home_distance_maximum": 83.8933029174805,
+          "exploration_drive_first": 0.364114000000023,
+          "exploration_drive_last": 0.291154000000028,
+          "first_to_last_drive_change": -0.07295999999999497,
+          "positive_drive_intervals": 0,
+          "negative_drive_intervals": 64
+        },
+        {
+          "selected_module": "seek_home_drive",
+          "phase": "home_rest",
+          "from_seconds": 89.0999999999962,
+          "until_exclusive_seconds": 93.2,
+          "samples": 41,
+          "sampled_phase_occupancy_seconds": 4.1000000000000005,
+          "first_to_last_sample_elapsed_seconds": 3.999999999999801,
+          "home_distance_first": 19.6165161132812,
+          "home_distance_last": 17.1989822387695,
+          "home_distance_minimum": 17.1989822387695,
+          "home_distance_maximum": 19.6165161132812,
+          "exploration_drive_first": 0.290014000000029,
+          "exploration_drive_last": 0.650014000000008,
+          "first_to_last_drive_change": 0.35999999999997895,
+          "positive_drive_intervals": 40,
+          "negative_drive_intervals": 0
+        }
+      ],
+      "selected_home_seconds": 24.0,
+      "selected_rest_seconds": 8.200000000000001,
+      "final_drives": {
+        "exploration": 0.385756000000028,
+        "social": 1.0
+      },
+      "final_failure_events": 0
+    }
+  ],
+  "blocked_route_timing": [
+    {
+      "seed": 605,
+      "original": {
+        "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/report.json",
+        "sha256": "07f5c79175b912c332fb5828403fc1efc1745614abd0bd6c6be7bfdb8553e578"
+      },
+      "intervention": {
+        "after_revision": 290,
+        "before_revision": 2,
+        "kind": "block_familiar_route_with_native_stone",
+        "tick": 900
+      },
+      "intervention_seconds": 15.0,
+      "failure_events": 5,
+      "retained_obstruction": {
+        "attempts": 5,
+        "direction": [
+          1.0,
+          0.0
+        ],
+        "key": "10:8:0",
+        "last_seen": 12.6000000000002,
+        "position": [
+          253.511535644531,
+          195.150939941406
+        ]
+      },
+      "selected_withdrawal_seconds": 9.1,
+      "interpretation": "All five retained failure events precede the introduced wall; later withdrawal reuses earlier evidence."
+    },
+    {
+      "seed": 1701,
+      "original": {
+        "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+        "sha256": "c08b84519f360d496ab5aef9f63910cf07bdf93c951d651a45894d5e2aeffccf"
+      },
+      "intervention": {
+        "after_revision": 290,
+        "before_revision": 2,
+        "kind": "block_familiar_route_with_native_stone",
+        "tick": 900
+      },
+      "intervention_seconds": 15.0,
+      "failure_events": 5,
+      "retained_obstruction": {
+        "attempts": 5,
+        "direction": [
+          1.0,
+          0.0
+        ],
+        "key": "10:8:0",
+        "last_seen": 12.6000000000002,
+        "position": [
+          253.710388183594,
+          195.364654541016
+        ]
+      },
+      "selected_withdrawal_seconds": 9.1,
+      "interpretation": "All five retained failure events precede the introduced wall; later withdrawal reuses earlier evidence."
+    }
+  ],
+  "limits": [
+    "Primary traces carry selected module labels and phases, not unique goal keys; separated rest windows are not declared distinct goal instances.",
+    "Configured20-cell home-rest acceptance is separate from40-cell departure/16-cell geometric return counting. At-crossing selected intention is reported explicitly.",
+    "Forty intervening drive intervals span4.0seconds even when41 phase samples imply4.1seconds of sampled phase occupancy.",
+    "One sustained World per arm does not estimate a population home-return rate or a general memory advantage.",
+    "Ground stalls use horizontal progress and flight stalls Euclidean progress. Center path and neutral commands do not establish exploration or stillness."
+  ]
+}

@@ -1,0 +1,2885 @@
+{
+  "artifact_id": 14990266435,
+  "workflow_run": 45540569052,
+  "expected_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "archive_bytes": 42774281,
+  "archive_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "entries": [
+    {
+      "path": "ambient/authoring_reopen/process.json",
+      "bytes": 498
+    },
+    {
+      "path": "ambient/authoring_reopen/process.log",
+      "bytes": 306
+    },
+    {
+      "path": "ambient/authoring_save/process.json",
+      "bytes": 496
+    },
+    {
+      "path": "ambient/authoring_save/process.log",
+      "bytes": 306
+    },
+    {
+      "path": "ambient/clock/process.json",
+      "bytes": 453
+    },
+    {
+      "path": "ambient/clock/process.log",
+      "bytes": 429
+    },
+    {
+      "path": "ambient/editor/process.json",
+      "bytes": 462
+    },
+    {
+      "path": "ambient/editor/process.log",
+      "bytes": 885
+    },
+    {
+      "path": "ambient/editor/report.json",
+      "bytes": 733
+    },
+    {
+      "path": "ambient/engine/process.json",
+      "bytes": 454
+    },
+    {
+      "path": "ambient/engine/process.log",
+      "bytes": 595
+    },
+    {
+      "path": "ambient/examples/process.json",
+      "bytes": 464
+    },
+    {
+      "path": "ambient/examples/process.log",
+      "bytes": 656
+    },
+    {
+      "path": "ambient/examples/report.json",
+      "bytes": 895300
+    },
+    {
+      "path": "ambient/import/process.json",
+      "bytes": 404
+    },
+    {
+      "path": "ambient/independent/process.json",
+      "bytes": 459
+    },
+    {
+      "path": "ambient/import/process.log",
+      "bytes": 45799
+    },
+    {
+      "path": "ambient/independent/process.log",
+      "bytes": 359
+    },
+    {
+      "path": "ambient/ledge_geometry/process.json",
+      "bytes": 462
+    },
+    {
+      "path": "ambient/ledge_geometry/process.log",
+      "bytes": 355
+    },
+    {
+      "path": "ambient/legacy_catalog/process.json",
+      "bytes": 463
+    },
+    {
+      "path": "ambient/legacy_catalog/process.log",
+      "bytes": 298
+    },
+    {
+      "path": "ambient/legacy_composition/process.json",
+      "bytes": 468
+    },
+    {
+      "path": "ambient/legacy_composition/process.log",
+      "bytes": 22670
+    },
+    {
+      "path": "ambient/legacy_physical/process.json",
+      "bytes": 462
+    },
+    {
+      "path": "ambient/legacy_physical/process.log",
+      "bytes": 272
+    },
+    {
+      "path": "ambient/legacy_session/process.json",
+      "bytes": 475
+    },
+    {
+      "path": "ambient/legacy_session/process.log",
+      "bytes": 280
+    },
+    {
+      "path": "ambient/living_authoring_reopen/process.json",
+      "bytes": 512
+    },
+    {
+      "path": "ambient/living_authoring_reopen/process.log",
+      "bytes": 312
+    },
+    {
+      "path": "ambient/living_authoring_save/process.json",
+      "bytes": 510
+    },
+    {
+      "path": "ambient/living_authoring_save/process.log",
+      "bytes": 312
+    },
+    {
+      "path": "ambient/living_editor/process.json",
+      "bytes": 461
+    },
+    {
+      "path": "ambient/living_editor/process.log",
+      "bytes": 2756
+    },
+    {
+      "path": "ambient/living_editor/report.json",
+      "bytes": 3163
+    },
+    {
+      "path": "ambient/living_engine/process.json",
+      "bytes": 461
+    },
+    {
+      "path": "ambient/living_engine/process.log",
+      "bytes": 628
+    },
+    {
+      "path": "ambient/living_engine/report.json",
+      "bytes": 426
+    },
+    {
+      "path": "ambient/living_episodes/process.json",
+      "bytes": 457
+    },
+    {
+      "path": "ambient/living_episodes/process.log",
+      "bytes": 1650
+    },
+    {
+      "path": "ambient/living_episodes/report.json",
+      "bytes": 505027
+    },
+    {
+      "path": "ambient/living_examples/process.json",
+      "bytes": 471
+    },
+    {
+      "path": "ambient/living_examples/process.log",
+      "bytes": 890
+    },
+    {
+      "path": "ambient/living_examples/report.json",
+      "bytes": 3167648
+    },
+    {
+      "path": "ambient/living_group/process.json",
+      "bytes": 465
+    },
+    {
+      "path": "ambient/living_group/process.log",
+      "bytes": 451
+    },
+    {
+      "path": "ambient/living_spatial/process.json",
+      "bytes": 456
+    },
+    {
+      "path": "ambient/living_spatial/process.log",
+      "bytes": 2095
+    },
+    {
+      "path": "ambient/living_spatial/report.json",
+      "bytes": 2190
+    },
+    {
+      "path": "ambient/native_motion/process.json",
+      "bytes": 461
+    },
+    {
+      "path": "ambient/native_motion/report.json",
+      "bytes": 496909
+    },
+    {
+      "path": "ambient/native_motion/process.log",
+      "bytes": 24229
+    },
+    {
+      "path": "ambient/perception/process.json",
+      "bytes": 458
+    },
+    {
+      "path": "ambient/perception/process.log",
+      "bytes": 7839
+    },
+    {
+      "path": "ambient/perception/report.json",
+      "bytes": 10435
+    },
+    {
+      "path": "ambient/personalities/process.json",
+      "bytes": 468
+    },
+    {
+      "path": "ambient/personalities/process.log",
+      "bytes": 26401
+    },
+    {
+      "path": "ambient/personalities/report.json",
+      "bytes": 1961149
+    },
+    {
+      "path": "ambient/qualification.json",
+      "bytes": 270100
+    },
+    {
+      "path": "ambient/userdata/authoring/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 192
+    },
+    {
+      "path": "ambient/userdata/authoring/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-25T03.32.20.log",
+      "bytes": 192
+    },
+    {
+      "path": "ambient/userdata/clock/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 315
+    },
+    {
+      "path": "ambient/userdata/editor/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 771
+    },
+    {
+      "path": "ambient/userdata/engine/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 481
+    },
+    {
+      "path": "ambient/userdata/examples/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 542
+    },
+    {
+      "path": "ambient/userdata/import/xdg_cache_home/godot/editor_doc_cache-4.7.res",
+      "bytes": 3268748
+    },
+    {
+      "path": "ambient/userdata/import/xdg_config_home/godot/editor_settings-4.7.tres",
+      "bytes": 17763
+    },
+    {
+      "path": "ambient/userdata/import/xdg_data_home/godot/keystores/debug.keystore",
+      "bytes": 2714
+    },
+    {
+      "path": "ambient/userdata/independent/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 245
+    },
+    {
+      "path": "ambient/userdata/ledge_geometry/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 241
+    },
+    {
+      "path": "ambient/userdata/legacy_catalog/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 184
+    },
+    {
+      "path": "ambient/userdata/legacy_composition/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 22556
+    },
+    {
+      "path": "ambient/userdata/legacy_composition/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-actor-compose-589-evaluation.json",
+      "bytes": 3086
+    },
+    {
+      "path": "ambient/userdata/legacy_physical/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 158
+    },
+    {
+      "path": "ambient/userdata/legacy_session/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 166
+    },
+    {
+      "path": "ambient/userdata/living_authoring/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 198
+    },
+    {
+      "path": "ambient/userdata/living_authoring/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-25T03.33.41.log",
+      "bytes": 198
+    },
+    {
+      "path": "ambient/userdata/living_editor/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 2642
+    },
+    {
+      "path": "ambient/userdata/living_engine/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 514
+    },
+    {
+      "path": "ambient/userdata/living_episodes/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1536
+    },
+    {
+      "path": "ambient/userdata/living_examples/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 776
+    },
+    {
+      "path": "ambient/userdata/living_group/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 337
+    },
+    {
+      "path": "ambient/userdata/living_spatial/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1981
+    },
+    {
+      "path": "ambient/userdata/native_motion/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 24115
+    },
+    {
+      "path": "ambient/userdata/perception/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 7725
+    },
+    {
+      "path": "ambient/userdata/personalities/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 26287
+    },
+    {
+      "path": "ambient/userdata/workbench/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 155
+    },
+    {
+      "path": "ambient/workbench/process.json",
+      "bytes": 458
+    },
+    {
+      "path": "ambient/workbench/process.log",
+      "bytes": 269
+    },
+    {
+      "path": "ambient/workbench/report.json",
+      "bytes": 66736
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-behaviour-profile-editor.png",
+      "bytes": 279467
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-flight-authored.png",
+      "bytes": 259215
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-industrial-yard-authored.png",
+      "bytes": 252776
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-flight-playing.png",
+      "bytes": 256917
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-industrial-yard-playing.png",
+      "bytes": 258390
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-ledge-walkway-authored.png",
+      "bytes": 249986
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-ledge-walkway-playing.png",
+      "bytes": 245943
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-oil-water-authored.png",
+      "bytes": 207831
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-oil-water-overlay.png",
+      "bytes": 216310
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-oil-water-playing.png",
+      "bytes": 208303
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-settlement-authored.png",
+      "bytes": 308351
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-aerial-habitat-authored.png",
+      "bytes": 627786
+    },
+    {
+      "path": "ambient-graphical/captures/ambient-settlement-playing.png",
+      "bytes": 305276
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-aerial-habitat-playing.png",
+      "bytes": 628348
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-behaviour-profile-editor.png",
+      "bytes": 537873
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-cavern-authored.png",
+      "bytes": 672763
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-courtyard-authored.png",
+      "bytes": 506032
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-cavern-playing.png",
+      "bytes": 712729
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-courtyard-playing.png",
+      "bytes": 507442
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-floodyard-authored.png",
+      "bytes": 601712
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-floodyard-playing.png",
+      "bytes": 604485
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-library-and-group.png",
+      "bytes": 524010
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-places-and-peers.png",
+      "bytes": 514299
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-personality-settings.png",
+      "bytes": 527276
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-refinery-authored.png",
+      "bytes": 606368
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-refinery-playing.png",
+      "bytes": 599171
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-settlement-authored.png",
+      "bytes": 603125
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-settlement-overlay.png",
+      "bytes": 620567
+    },
+    {
+      "path": "ambient-graphical/captures/ambient2-settlement-playing.png",
+      "bytes": 605734
+    },
+    {
+      "path": "ambient-graphical/captures/capture-report.json",
+      "bytes": 628819
+    },
+    {
+      "path": "ambient-graphical/graphical/process.json",
+      "bytes": 548
+    },
+    {
+      "path": "ambient-graphical/graphical/process.log",
+      "bytes": 10208
+    },
+    {
+      "path": "ambient-graphical/import/process.json",
+      "bytes": 404
+    },
+    {
+      "path": "ambient-graphical/import/process.log",
+      "bytes": 1165
+    },
+    {
+      "path": "ambient-graphical/qualification.json",
+      "bytes": 254207
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/03/de529605602e245830f8295b867e4334cb3bce",
+      "bytes": 3854
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/04/f5cb03e11d6182da75db4b7ebc3c95189db95e",
+      "bytes": 2659
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/17/1d25e0af8a7f43ba1b8b79861c9c2607e9b805",
+      "bytes": 2521
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/1a/20f660697d1f3e6dd9c1cb2ec337fbf2949ab4",
+      "bytes": 51444
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/21/78970a117c2e35d81b307fcebb3aa8987b1c4c",
+      "bytes": 3291
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/21/f36f59c20e345085c1e19d4867de4bbadcdcff",
+      "bytes": 720
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/24/445236b86d866dfa54658d87947e548c8340aa",
+      "bytes": 5420
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/35/940ec43beb6fdaed894f9b4ddffedb5c29c0fa",
+      "bytes": 3752
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/3d/3f73e9ddb386fb4d450712338aa1190f06476e",
+      "bytes": 931
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/3c/92baec61f329c70f5c88600e8f5bbc60357b5e",
+      "bytes": 716
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/3d/86d336feb4bc2871203f4df3a14e7a3161f0a8",
+      "bytes": 6321
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/43/a31125c187ae05af788cef64c91fe3d81f9631",
+      "bytes": 588
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/45/671f5aad7d52d9057e554cd289ba81f068679f",
+      "bytes": 1007
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/49/ff9cbc0f0f903470eef8b83c8c1108461a208e",
+      "bytes": 831
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/4a/74a13b9fe6c89d0584b8872f920fb45922b5bd",
+      "bytes": 2896
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/4a/b8f100ea52ce2a624d4880eb57ff0a6a5b6251",
+      "bytes": 3127
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/50/1395b0ceb703b4bfaf1181f57b152538f394ce",
+      "bytes": 2803
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/53/b49c0f5570e4c3998d8770d97bfe93d26b137c",
+      "bytes": 262686
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/60/363cca0364037b89da0215990c9c3b0c50e9d7",
+      "bytes": 588
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/66/bcb5d64190a0df4fd1603a7fefcccd559d79e5",
+      "bytes": 1415
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/68/4a677fb2901581cfa01fb1d317a018f71468f7",
+      "bytes": 589
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/68/dfa95e571a29a8bd49afce4bcfcceb7bbb18b4",
+      "bytes": 3088
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/69/4852a12efe9264ae4580b211c7c83a8e8a553f",
+      "bytes": 5422
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/6c/96500c2a4afeb3ccc97aba696be437cdb57f7b",
+      "bytes": 16747
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/71/b6e0be6396f22e99435d4013d13f6135567720",
+      "bytes": 3112
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/73/93c83fad7b3c465d4d1bbee9a8db97251f1ae4",
+      "bytes": 2989
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/74/8eb035365d3046d34db6c872001591919dc134",
+      "bytes": 3053
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/78/7141c2c0953200cb619ed1a73b7beb10c2f23b",
+      "bytes": 2989
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/78/7c04d702bf12fbe10e7d40339cd75d93e2c978",
+      "bytes": 4897
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/7a/8a37b867e6e3fa3f58fb8d22e25ae6789693fb",
+      "bytes": 579
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/81/c0304a8912c331de8745a6471e6122031a1ef1",
+      "bytes": 813
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/7d/973d0b150b1029df42c962fbef78287551ed03",
+      "bytes": 589
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/85/88908a2b2125ee0dd19e1440fbb660d7223ad6",
+      "bytes": 262686
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/88/c1ddc5c815f27f25d1c9e02670d9c5771b2430",
+      "bytes": 2964
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/89/b8a986a0b13f3fcf0e07ae6db04f0fcb85d267",
+      "bytes": 3036
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/8d/8a2f8c1f68917e85d77eb2fbe3f05d7185ee5b",
+      "bytes": 5423
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/8d/c2ecc242474de4533dc12dc61d464e78c84dfa",
+      "bytes": 3859
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/8f/25bcb22d95ef47779e7de35f2d96811fcd7256",
+      "bytes": 3751
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/99/d8c9a0f436a36595daccc917eeb0f4e4527825",
+      "bytes": 25012
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/9a/210e41285def57385f5da98fcb3a694dd105f6",
+      "bytes": 1714
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/9a/93bf2644063ee25b8408b74375f4208c51760b",
+      "bytes": 3887
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/9e/49fabcf017c544d1968d7384dc24452b14da0a",
+      "bytes": 746
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/a2/de92167377fecfb05602add40b6b6886c8d04e",
+      "bytes": 3346
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/a6/317b38e044b715c46de6861a280748b86d7444",
+      "bytes": 6237
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/a6/9beb7aa71f3bf9b4db6bae40a550dddc8922c1",
+      "bytes": 16746
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/a8/8e7bf996be3e2d912ad8cf62b655da9aa3d9b2",
+      "bytes": 6314
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/a9/a40d1c3b5e554875a945cca197c44d4163aefb",
+      "bytes": 5424
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/aa/865830b4920f308ab5b124d591c20cf021ad17",
+      "bytes": 3812
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/af/8d735fb3dac96dab0863088b1aec40ba56fe80",
+      "bytes": 881
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/b2/59b3019ebfd01335d714a74674b92c61e0a579",
+      "bytes": 16744
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/b6/c23257987e6c062529ae3aa4bf1d62bfeba49b",
+      "bytes": 3041
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/b7/2edf5e17e20c7bb4cf67f14c105c854ab7a2f9",
+      "bytes": 962
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/b7/c852d0ae3876158683e6dc07f579723d8e48c9",
+      "bytes": 497
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/c4/65174a0e4ddfb1e2362d76413d4845869a04fa",
+      "bytes": 3481
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/c4/efaf57dc7b9274f3c978529a1877687ffb2de3",
+      "bytes": 2989
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/c4/f3ed014582eb1e87373429288e5cd7ec09b46f",
+      "bytes": 3707
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/c5/6dc0714f04d90ab47657fe71d58cddf4384208",
+      "bytes": 413
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/c9/569011bf8322be69aa6998773b5188faa138f4",
+      "bytes": 3751
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/ca/5db154233996de07f6f0d24e4d76dfc124eed2",
+      "bytes": 2840
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/d3/b05b5087e4c8afe726b7d70fc231d44fc432c3",
+      "bytes": 51668
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/db/2550164e169eb8dc54b0edf111230177aaa8d4",
+      "bytes": 927
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/dd/f4fc542fe467fb731b6f5e8010c220041b774b",
+      "bytes": 311534
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/e1/6831e60284d039cca9eb48f52394b07f3ed97f",
+      "bytes": 1510
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/e8/8b0b7d98134396a7f9517edff23e9c3a720055",
+      "bytes": 1390
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/ea/061998551ba75c304109bf7b9b749c2413fc1b",
+      "bytes": 939
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/f3/652e673c90de285aa3fc288cec5c041635ef02",
+      "bytes": 436
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/f8/443969036a4bc61057e43424c6cc536a824eb3",
+      "bytes": 262686
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/f8/66104ec9284fa66bf4943e11329ce25f4f48b2",
+      "bytes": 262312
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/fb/410a7fb981a730e7a8e734f6d5e7c6db92e8c4",
+      "bytes": 3857
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/fc/8b3ac041cd1d04fbd14a584de84b02953fb5a8",
+      "bytes": 6325
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/index",
+      "bytes": 1310728
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_cache_home/mesa_shader_cache/marker",
+      "bytes": 0
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 10092
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/f1684ecccaf155c3c5f9ec5803a88b53b2e3da6cfe467e7b26340536e7cac7bc/07a9f5543e30ab3dcccf8a98403460964db22601.cache",
+      "bytes": 109625
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/f1684ecccaf155c3c5f9ec5803a88b53b2e3da6cfe467e7b26340536e7cac7bc/1c76e00da5e08038c27839c3d66206cc0f56b362.cache",
+      "bytes": 18437
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/f1684ecccaf155c3c5f9ec5803a88b53b2e3da6cfe467e7b26340536e7cac7bc/5047ad6d28b628311cbab8a308e7b6fa1c82f03e.cache",
+      "bytes": 22853
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/f1684ecccaf155c3c5f9ec5803a88b53b2e3da6cfe467e7b26340536e7cac7bc/5869ba84e8c8a1a3fea15decc761e2aeb96a8803.cache",
+      "bytes": 1009369
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CanvasShaderGLES3/f1684ecccaf155c3c5f9ec5803a88b53b2e3da6cfe467e7b26340536e7cac7bc/6bb7c9a2fd1c4a8fa77cb96555b9b4a720209981.cache",
+      "bytes": 53563
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/CopyShaderGLES3/c61c1e2b7909db02c4b7b25ff3294684e43f73ff4374af4bff555b18693dbd58/6bb7c9a2fd1c4a8fa77cb96555b9b4a720209981.cache",
+      "bytes": 71439
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/FeedShaderGLES3/09534a64d7fe1e979a2a280542077431701b9a581fdd63c46a80b36ece9a9fc4/6bb7c9a2fd1c4a8fa77cb96555b9b4a720209981.cache",
+      "bytes": 4613
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/PostShaderGLES3/c81652a848d16d963cd6f9cadfcc331f0e46d67cd3504f3578e3239c4c1ed69d/6bb7c9a2fd1c4a8fa77cb96555b9b4a720209981.cache",
+      "bytes": 10125
+    },
+    {
+      "path": "ambient-graphical/userdata/import/xdg_cache_home/godot/editor_doc_cache-4.7.res",
+      "bytes": 3268746
+    },
+    {
+      "path": "ambient-graphical/userdata/capture/xdg_data_home/godot/app_userdata/Cyber Sand Reference Sandbox/shader_cache/SceneShaderGLES3/520d1ef7291d07a857caf242274b396cc54d9e5b292af3175de4c7e873aeec00/6bb7c9a2fd1c4a8fa77cb96555b9b4a720209981.cache",
+      "bytes": 864032
+    },
+    {
+      "path": "ambient-graphical/userdata/import/xdg_config_home/godot/editor_settings-4.7.tres",
+      "bytes": 17773
+    },
+    {
+      "path": "ambient-graphical/userdata/import/xdg_data_home/godot/keystores/debug.keystore",
+      "bytes": 2714
+    },
+    {
+      "path": "analysis/catalogue-timelines.png",
+      "bytes": 136116
+    },
+    {
+      "path": "analysis/behaviour-timelines.png",
+      "bytes": 165309
+    },
+    {
+      "path": "analysis/catalogue-trajectories.png",
+      "bytes": 252808
+    },
+    {
+      "path": "analysis/decision-note.md",
+      "bytes": 5395
+    },
+    {
+      "path": "analysis/episodes.csv",
+      "bytes": 114692
+    },
+    {
+      "path": "analysis/matched-trajectories.png",
+      "bytes": 208392
+    },
+    {
+      "path": "analysis/social-trajectories.png",
+      "bytes": 559126
+    },
+    {
+      "path": "analysis/summary.json",
+      "bytes": 2350599
+    },
+    {
+      "path": "analysis/trajectories.csv",
+      "bytes": 16051718
+    },
+    {
+      "path": "analysis-dependencies.log",
+      "bytes": 4643
+    },
+    {
+      "path": "analysis-environment.txt",
+      "bytes": 186
+    },
+    {
+      "path": "episodes-full/custody.json",
+      "bytes": 250441
+    },
+    {
+      "path": "episodes-full/episodes.json",
+      "bytes": 119644773
+    },
+    {
+      "path": "episodes-full/registration/attempt-001/execution.json",
+      "bytes": 777
+    },
+    {
+      "path": "episodes-full/registration/attempt-001/console.log",
+      "bytes": 347
+    },
+    {
+      "path": "episodes-full/registration/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 233
+    },
+    {
+      "path": "episodes-full/runner-receipt.json",
+      "bytes": 1728
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 862
+    },
+    {
+      "path": "episodes-full/registration/attempt-001/report.json",
+      "bytes": 37558
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 475524
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 748
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 858
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 479827
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 858
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 475615
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 744
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 744
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 479941
+    },
+    {
+      "path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 865
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 824
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 479018
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 751
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 862
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 482308
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 862
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 748
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 479008
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 748
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 858
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 482300
+    },
+    {
+      "path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 744
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 477470
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 850
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 481360
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 736
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 849
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 477520
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 735
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 481353
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/console.log",
+      "bytes": 840
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/report.json",
+      "bytes": 3192594
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 726
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/console.log",
+      "bytes": 848
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/report.json",
+      "bytes": 3316760
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/console.log",
+      "bytes": 835
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 734
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/report.json",
+      "bytes": 3196949
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 721
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/console.log",
+      "bytes": 844
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/report.json",
+      "bytes": 3312218
+    },
+    {
+      "path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 730
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/console.log",
+      "bytes": 890
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/execution.json",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/report.json",
+      "bytes": 875893
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 776
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/console.log",
+      "bytes": 886
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/execution.json",
+      "bytes": 829
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/report.json",
+      "bytes": 876596
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 772
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/execution.json",
+      "bytes": 829
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/console.log",
+      "bytes": 886
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/report.json",
+      "bytes": 862905
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 772
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/console.log",
+      "bytes": 874
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/execution.json",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/report.json",
+      "bytes": 851450
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 760
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/console.log",
+      "bytes": 870
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/execution.json",
+      "bytes": 825
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/report.json",
+      "bytes": 867813
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 756
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/console.log",
+      "bytes": 862
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/report.json",
+      "bytes": 846199
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 748
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/console.log",
+      "bytes": 890
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/report.json",
+      "bytes": 871179
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/execution.json",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 776
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/report.json",
+      "bytes": 851286
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/console.log",
+      "bytes": 890
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/execution.json",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/report.json",
+      "bytes": 870576
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/console.log",
+      "bytes": 878
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 776
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/execution.json",
+      "bytes": 827
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/report.json",
+      "bytes": 871237
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 764
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/console.log",
+      "bytes": 866
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/report.json",
+      "bytes": 872461
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 752
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/report.json",
+      "bytes": 856053
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/console.log",
+      "bytes": 866
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/execution.json",
+      "bytes": 824
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/report.json",
+      "bytes": 860952
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 752
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/console.log",
+      "bytes": 862
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/report.json",
+      "bytes": 848538
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/console.log",
+      "bytes": 886
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 748
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/execution.json",
+      "bytes": 828
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/report.json",
+      "bytes": 860012
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 772
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/console.log",
+      "bytes": 865
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/execution.json",
+      "bytes": 825
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/report.json",
+      "bytes": 858322
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/console.log",
+      "bytes": 874
+    },
+    {
+      "path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 751
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/execution.json",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/report.json",
+      "bytes": 800273
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 760
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/console.log",
+      "bytes": 870
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/execution.json",
+      "bytes": 825
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/report.json",
+      "bytes": 799079
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 756
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/console.log",
+      "bytes": 870
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/report.json",
+      "bytes": 798101
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 756
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/console.log",
+      "bytes": 866
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/execution.json",
+      "bytes": 824
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/report.json",
+      "bytes": 797399
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 752
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 484306
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 466637
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 480179
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 475248
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/report.json",
+      "bytes": 425627
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 418774
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 430768
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 484246
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 483669
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 468115
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 478958
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 474146
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/console.log",
+      "bytes": 833
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/report.json",
+      "bytes": 423254
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 719
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 854
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 426469
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 740
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 430768
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 481616
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 850
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 477449
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 736
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 467461
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 716
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 841
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 476804
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 727
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 471936
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/console.log",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/report.json",
+      "bytes": 431540
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 850
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 716
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 412526
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 838
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 736
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 430761
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 724
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 838
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 477070
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 724
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 476476
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 456702
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 838
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 472225
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 724
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 838
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 469985
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 724
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/report.json",
+      "bytes": 433788
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 418600
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 833
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 420633
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 719
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 476002
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 475672
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 456640
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 838
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 472193
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 838
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 724
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 470025
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 724
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/console.log",
+      "bytes": 825
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/report.json",
+      "bytes": 426826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 711
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 846
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 424103
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 732
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 420634
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 476225
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 476372
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 456565
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 472185
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 469978
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/report.json",
+      "bytes": 433041
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 422522
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 728
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 420626
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 716
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 476217
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 716
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 479324
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 812
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 458316
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 700
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 474976
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 472890
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/execution.json",
+      "bytes": 812
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/console.log",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/report.json",
+      "bytes": 423261
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 700
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 422236
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 424424
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 813
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 479406
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 833
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 478316
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 810
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 458410
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 719
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 475516
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 700
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 471981
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 826
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 712
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/console.log",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/execution.json",
+      "bytes": 812
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/report.json",
+      "bytes": 427537
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 700
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 834
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 425617
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 720
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 424426
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 479848
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 813
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/console.log",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/report.json",
+      "bytes": 479823
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 716
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/console.log",
+      "bytes": 810
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/execution.json",
+      "bytes": 811
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/report.json",
+      "bytes": 458506
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 696
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/execution.json",
+      "bytes": 812
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "bytes": 475509
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/console.log",
+      "bytes": 822
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/execution.json",
+      "bytes": 813
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/report.json",
+      "bytes": 472502
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 708
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random/attempt-001/console.log",
+      "bytes": 810
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random/attempt-001/execution.json",
+      "bytes": 811
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random/attempt-001/report.json",
+      "bytes": 425730
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 696
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/console.log",
+      "bytes": 830
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/report.json",
+      "bytes": 423618
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 716
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/console.log",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/report.json",
+      "bytes": 424421
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/execution.json",
+      "bytes": 813
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 704
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/console.log",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "bytes": 479842
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/execution.json",
+      "bytes": 812
+    },
+    {
+      "path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 704
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/console.log",
+      "bytes": 831
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/execution.json",
+      "bytes": 816
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/console.log",
+      "bytes": 844
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 717
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/execution.json",
+      "bytes": 819
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/report.json",
+      "bytes": 1617146
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/report.json",
+      "bytes": 1655539
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 730
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/console.log",
+      "bytes": 831
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/report.json",
+      "bytes": 1480558
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/console.log",
+      "bytes": 840
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 717
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/report.json",
+      "bytes": 1668466
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 726
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/console.log",
+      "bytes": 827
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/execution.json",
+      "bytes": 815
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/report.json",
+      "bytes": 1615497
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 713
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/console.log",
+      "bytes": 840
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/execution.json",
+      "bytes": 818
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/report.json",
+      "bytes": 1645246
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 726
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/console.log",
+      "bytes": 827
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/execution.json",
+      "bytes": 814
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/report.json",
+      "bytes": 1479282
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 713
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/console.log",
+      "bytes": 836
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/execution.json",
+      "bytes": 817
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/report.json",
+      "bytes": 1677052
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/console.log",
+      "bytes": 1192
+    },
+    {
+      "path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 722
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/execution.json",
+      "bytes": 825
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/report.json",
+      "bytes": 1750419
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1078
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/console.log",
+      "bytes": 1185
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/execution.json",
+      "bytes": 824
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/report.json",
+      "bytes": 1756927
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1071
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/console.log",
+      "bytes": 1820
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/execution.json",
+      "bytes": 824
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/report.json",
+      "bytes": 4205069
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1706
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/console.log",
+      "bytes": 1807
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/execution.json",
+      "bytes": 823
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/report.json",
+      "bytes": 4244601
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1693
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/console.log",
+      "bytes": 1158
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/execution.json",
+      "bytes": 821
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/report.json",
+      "bytes": 1730102
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1044
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/console.log",
+      "bytes": 1151
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/execution.json",
+      "bytes": 820
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/report.json",
+      "bytes": 1742956
+    },
+    {
+      "path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/userdata/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1037
+    },
+    {
+      "path": "independent-review/independent-review.json",
+      "bytes": 275624
+    },
+    {
+      "path": "independent-review/independent-review.md",
+      "bytes": 4922
+    },
+    {
+      "path": "source-commit.txt",
+      "bytes": 41
+    }
+  ]
+}

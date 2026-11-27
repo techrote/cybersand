@@ -1,0 +1,4130 @@
+{
+  "authority": {
+    "archival_commit": "b9535405853a5cd16e4bba968ec7167222861c42",
+    "counts": {
+      "comparative_families": 12,
+      "current_features": 27,
+      "final_map_count": 70,
+      "frozen_gold_nominees": 25,
+      "immutable_feature_states": 76,
+      "negative_interventions": 5,
+      "owner_accepted": 0,
+      "primary_policy_scan_population": 67,
+      "supplementary_portrait_donors": [
+        {
+          "head": "e2b53fb95ea93576afdc15c114e29b853c4b2c05",
+          "portrait_pr": 197,
+          "pr": 37
+        },
+        {
+          "head": "99616a8c8d2475ad4145a8489c0cc8850b1bd783",
+          "portrait_pr": 196,
+          "pr": 124
+        },
+        {
+          "head": "a3f9962a0107d07bca1116940fde1c825ac76a4f",
+          "portrait_pr": 192,
+          "pr": 135
+        }
+      ]
+    },
+    "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+    "execution_authority": false,
+    "geometry_copied": false,
+    "kind": "reference_knowledge_only",
+    "owner_acceptance": false,
+    "packet_url": "https://github.com/techrote/sandmapsreference/blob/b9535405853a5cd16e4bba968ec7167222861c42/docs/corpus/goldmaps-finalisation-001/FINAL-DECISION-PACKET.md",
+    "provider_authority": false,
+    "repository": "techrote/sandmapsreference",
+    "source_artwork_copied": false,
+    "source_inputs": [
+      {
+        "path": "docs/corpus/goldmaps-finalisation-001/FINAL-DECISION-PACKET.json",
+        "sha256": "4844b0569cd6e8346e453218d12df3f32fd8924cf26beaf1284bb13dc709f29b"
+      },
+      {
+        "path": "docs/corpus/goldmaps-finalisation-001/corpus.v1.json",
+        "sha256": "8e939617314b95e8a6cdc9db04a90584f988ba43776528e52a360c31ef56c12e"
+      },
+      {
+        "path": "docs/corpus/goldmaps-finalisation-001/corpus.v1.lock.json",
+        "sha256": "7b083d8f583a7a4169d9daf49e9550b3c632fe2757d6fc0ffb4443582631f984"
+      },
+      {
+        "path": "docs/corpus/goldmaps-recovery-001/snapshot/gold-candidates.v1.json",
+        "sha256": "ed767c269917617bed075e8e4e6bc6501a5fc0d2d77440cecf99c5864ba6496c"
+      },
+      {
+        "path": "docs/corpus/goldmaps-finalisation-001/native/receipts/windows-final/summary.json",
+        "sha256": "142bb483a5c97f7c1f4ef898cb5199e51084988cac3057301989f451566328c4"
+      },
+      {
+        "path": "docs/corpus/goldmaps-finalisation-001/native/receipts/policy-schema-all67/summary.json",
+        "sha256": "f322d2a347a1aff3638b0120542d99a1f6818d9452ce3b5411a000fec2944750"
+      }
+    ]
+  },
+  "cards": [
+    {
+      "ancestry_group": "original-pr106",
+      "architectural_family": "suspended_industry",
+      "construction_strategy": [
+        "Declare roof anchors and a protected lower transit corridor.",
+        "Build the primary overhead beam and separated hanging process stations.",
+        "Place detail only at supported receivers, housings and access points."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "science_fiction"
+        ],
+        "connection_intents": [
+          "roof_anchor",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          63,
+          64,
+          68,
+          69,
+          72,
+          74,
+          76,
+          77,
+          78,
+          79,
+          80,
+          98,
+          100,
+          119
+        ],
+        "parts": [
+          "beam_truss",
+          "column_support",
+          "viaduct_segment",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "suspended",
+          "distributed",
+          "open_span"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr106",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Large open roof-catenary islands expose load paths rather than fill the span.",
+        "negative_space_and_protection": "Protect open spans, module sockets and source catenary geometry.",
+        "repetition_and_asymmetry": "four unequal concentrated inhabited roof-suspended clusters; long vertical gaps and open low salvage field; sparse rooted apron modules",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/106#issuecomment-7053936387",
+        "reviewed_commit": "7e7b15619f18c13c3b6437f3d62aa2b056ab34c5",
+        "source_authored_family": "original/megastructure-wide",
+        "source_authored_route_grammar": {
+          "alternate": "continuous low-altitude open salvage return outside the inhabited pods",
+          "obstruction": "central crossing closure at XYWH 914,625,156,154 preserves all 18 other literal sites",
+          "primary": "zigzag west-to-east visits between four roof-tethered industrial pods",
+          "rejoin": "broad inter-pod open shafts and two outer grounded arrival stages"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/7e7b15619f18c13c3b6437f3d62aa2b056ab34c5/cybersand-canvases/2048x1024/original-megastructure-wide-ferric-pendulum-roof-catenary-261120/exemplar.json",
+        "source_motifs": [
+          "staggered suspended machine islands",
+          "a roof-rooted irregular zigzag cableway",
+          "opened traction gimbal",
+          "five disconnected lower salvage aprons anchored to bedrock",
+          "two-ended descending flight bypass"
+        ],
+        "support_relationships": "Intact roof tension assemblies and separate low founded service fragments.",
+        "traversal_and_hierarchy": "Suspended islands and ground workfaces have unlike access relationships."
+      },
+      "name": "Ferric Pendulum Catenary Islands",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.766292,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1607031,
+          "100": 244653,
+          "119": 4848,
+          "58": 61948,
+          "62": 116126,
+          "63": 14571,
+          "64": 4464,
+          "68": 1596,
+          "69": 869,
+          "72": 10083,
+          "74": 11044,
+          "76": 2435,
+          "77": 7192,
+          "78": 2860,
+          "79": 4161,
+          "80": 1292,
+          "98": 1979
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 490121,
+        "rectangle_count": 3308,
+        "reference_image": {
+          "sha256": "44603fc01387e818dd65f9f6f760ac814460b61ff3e084aa00f23225d00efb24",
+          "url": "https://github.com/techrote/sandmapsreference/blob/7e7b15619f18c13c3b6437f3d62aa2b056ab34c5/cybersand-canvases/2048x1024/original-megastructure-wide-ferric-pendulum-roof-catenary-261120/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-106",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "7e7b15619f18c13c3b6437f3d62aa2b056ab34c5",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "21c33c991967e7a27e235ba0c3296999825a072f2293116288949ffe95d37165",
+        "path": "cybersand-canvases/2048x1024/original-megastructure-wide-ferric-pendulum-roof-catenary-261120/setup.json",
+        "pr": 106,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "c8f605c9904502d634dbb5a0d0ca1ea42c9e9500",
+        "setup_sha256": "5938892f744c91a32e0152e51a877a96379105c143a1d172768db20bff11670d",
+        "url": "https://github.com/techrote/sandmapsreference/blob/7e7b15619f18c13c3b6437f3d62aa2b056ab34c5/cybersand-canvases/2048x1024/original-megastructure-wide-ferric-pendulum-roof-catenary-261120/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr109",
+      "architectural_family": "racing_damage",
+      "construction_strategy": [
+        "Reserve the fast open route, the broken aperture and an independent recovery route.",
+        "Build different high and low support systems without healing intentional damage.",
+        "Place cues or repair pockets only outside the declared swept clearance."
+      ],
+      "facets": {
+        "character": [
+          "geological",
+          "damaged",
+          "racing"
+        ],
+        "connection_intents": [
+          "route_join",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          72,
+          100,
+          101,
+          113,
+          117,
+          122
+        ],
+        "parts": [
+          "beam_truss",
+          "viaduct_segment",
+          "irregular_transition",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "open_span",
+          "opposed_banks",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop.",
+        "Repairing a deliberately broken span destroys the original route/damage distinction."
+      ],
+      "id": "goldmaps-pr109",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Open caldera with separated high bridge ends supports a clear damaged crossing.",
+        "negative_space_and_protection": "Protect empty caldera, broken ends, low return and later event sockets.",
+        "repetition_and_asymmetry": "Two industrial rim clusters and fragmented span supports bound a broad navigable negative-space caldera, with distinct compact underfloor workrooms",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/109#issuecomment-7053935795",
+        "reviewed_commit": "747cde4970f67f5b2b73b0a785d2f4ffdc9a10c7",
+        "source_authored_family": "original/racing-wide",
+        "source_authored_route_grammar": {
+          "alternative": "West rim start → cableway holdout → sloping west entry → underbridge caldera basin → east catcher",
+          "blockage": "A genuine 70×86-cell wall across the central fracture eliminates its literal checkpoint while retaining the lower bypass and finish",
+          "primary": "West rim start → upper west sky → broken-girder fracture aperture → crater drop → east capture → west floor return → finish"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/747cde4970f67f5b2b73b0a785d2f4ffdc9a10c7/cybersand-canvases/2048x1024/original-racing-wide-rookfall-caldera-rift-dispatch-261120/exemplar.json",
+        "source_motifs": [
+          "broken high suspension bridge",
+          "deep dry excavated caldera",
+          "asymmetric shipping claws",
+          "remote west rim settlement",
+          "long sloping cableway",
+          "nested foundation service vaults"
+        ],
+        "support_relationships": "High tension tie contrasts with a low excavated basin return.",
+        "traversal_and_hierarchy": "Racing/recovery polarity is above fracture versus below basin."
+      },
+      "name": "Rookfall Caldera",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.773063,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1621231,
+          "100": 318199,
+          "101": 14111,
+          "113": 5670,
+          "117": 32938,
+          "122": 464,
+          "58": 66959,
+          "62": 35462,
+          "72": 2118
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 475921,
+        "rectangle_count": 1655,
+        "reference_image": {
+          "sha256": "e78209f824aedd58ca8924b2144fd3a85de8a70b68f0dec643933116834da922",
+          "url": "https://github.com/techrote/sandmapsreference/blob/747cde4970f67f5b2b73b0a785d2f4ffdc9a10c7/cybersand-canvases/2048x1024/original-racing-wide-rookfall-caldera-rift-dispatch-261120/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-109",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "747cde4970f67f5b2b73b0a785d2f4ffdc9a10c7",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "a7e40902695167dfafd35bceaa3333d1c3e402c12fac85ac15577d22f94eee92",
+        "path": "cybersand-canvases/2048x1024/original-racing-wide-rookfall-caldera-rift-dispatch-261120/setup-rookfall-caldera.json",
+        "pr": 109,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "c47361bc5f61856b85eabd0a15fa2965b38d317f",
+        "setup_sha256": "4a43f7e5bd8c1c70fef65661f6b312181d5b68524ee59f945e47919be8188499",
+        "url": "https://github.com/techrote/sandmapsreference/blob/747cde4970f67f5b2b73b0a785d2f4ffdc9a10c7/cybersand-canvases/2048x1024/original-racing-wide-rookfall-caldera-rift-dispatch-261120/setup-rookfall-caldera.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr125",
+      "architectural_family": "nested_geology",
+      "construction_strategy": [
+        "Define the large cavity and independent bypasses as protected empty regions.",
+        "Place smaller entered rooms at more than one scale with explicit rock or frame anchors.",
+        "Add sparse cross-connections and keep their junctions readable."
+      ],
+      "facets": {
+        "character": [
+          "geological",
+          "scientific",
+          "damaged"
+        ],
+        "connection_intents": [
+          "rock_anchor",
+          "bank_handoff",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          62,
+          66,
+          68,
+          77,
+          79,
+          100,
+          101,
+          120,
+          129,
+          131
+        ],
+        "parts": [
+          "column_support",
+          "irregular_transition",
+          "service_gallery",
+          "mechanical_housing",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "opposed_banks",
+          "vertical_chain",
+          "multi_level",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop.",
+        "Repairing a deliberately broken span destroys the original route/damage distinction."
+      ],
+      "id": "goldmaps-pr125",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Unequal coupled wells with three transverse strata remain a rare scientific/geological thesis.",
+        "negative_space_and_protection": "Protect unequal wells, transverse relations, sparse rock margins and damaged instrument head.",
+        "repetition_and_asymmetry": "Two unequal deeply excavated rock faults, clustered entered scientific workfaces at three transverse levels, intentionally vacant excavation margins",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/125#issuecomment-7056349471",
+        "reviewed_commit": "e17996dd8a2e1044550a60e75f45780cb6ae868d",
+        "source_authored_family": "Quoin Veil Survey Network",
+        "source_authored_route_grammar": {
+          "alternate": "Middle and deep horizontal linkages, independently descended well shafts, west and east lower recovery spurs",
+          "primary": "West isotope settlement -> west survey well -> upper transverse seismographic gallery -> east custody station",
+          "recovery": "Physical upper interlock block leaves all other literal destinations accessible by middle and low-level routes"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/e17996dd8a2e1044550a60e75f45780cb6ae868d/cybersand-canvases/2048x1024/worldgroup-xenobiome-quoin-veil-split-faultwell-vertical-census-261121/exemplar.json",
+        "source_motifs": [
+          "twin geological vertical wells",
+          "rock-embedded cantilevered survey stations",
+          "three materially distinct cross-bore instrument galleries",
+          "west inhabited rim observatory",
+          "abandoned east high instrument head",
+          "dry deep recovery recorder"
+        ],
+        "support_relationships": "Rock-rooted unequal survey shafts and cross-bank laboratory levels.",
+        "traversal_and_hierarchy": "Three-stratum survey/custody coupling rather than a single open shaft."
+      },
+      "name": "Quoin Split Faultwell",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.627886,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1316773,
+          "100": 618531,
+          "101": 75214,
+          "120": 7124,
+          "129": 477,
+          "131": 3966,
+          "49": 12801,
+          "62": 38008,
+          "66": 6607,
+          "68": 11868,
+          "77": 4179,
+          "79": 1604
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 780379,
+        "rectangle_count": 1695,
+        "reference_image": {
+          "sha256": "0b873404be26378198423afec8b817305fc37eccc6010e5aa376b9c9c36a9442",
+          "url": "https://github.com/techrote/sandmapsreference/blob/e17996dd8a2e1044550a60e75f45780cb6ae868d/cybersand-canvases/2048x1024/worldgroup-xenobiome-quoin-veil-split-faultwell-vertical-census-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-125",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "e17996dd8a2e1044550a60e75f45780cb6ae868d",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "de56ecc67744576902ff681768932747cf291608b89adc5078730fc2bfc3f9a3",
+        "path": "cybersand-canvases/2048x1024/worldgroup-xenobiome-quoin-veil-split-faultwell-vertical-census-261121/setup.json",
+        "pr": 125,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "0d073a5713d8550efd4345979b21740e8b28890e",
+        "setup_sha256": "e87c376aa71e6f232d887646d2a5b8172a65f6566f63c72b16c4f95c1661191e",
+        "url": "https://github.com/techrote/sandmapsreference/blob/e17996dd8a2e1044550a60e75f45780cb6ae868d/cybersand-canvases/2048x1024/worldgroup-xenobiome-quoin-veil-split-faultwell-vertical-census-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr130",
+      "architectural_family": "nested_geology",
+      "construction_strategy": [
+        "Define the large cavity and independent bypasses as protected empty regions.",
+        "Place smaller entered rooms at more than one scale with explicit rock or frame anchors.",
+        "Add sparse cross-connections and keep their junctions readable."
+      ],
+      "facets": {
+        "character": [
+          "geological",
+          "science_fiction",
+          "inhabited"
+        ],
+        "connection_intents": [
+          "district_link",
+          "rock_anchor"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          64,
+          65,
+          68,
+          69,
+          72,
+          74,
+          76,
+          77,
+          79,
+          80,
+          100,
+          101,
+          114,
+          119,
+          120,
+          130,
+          131
+        ],
+        "parts": [
+          "wall_facade",
+          "floor_ceiling",
+          "irregular_transition",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "nested_cavities",
+          "multi_level",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr130",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Large geological bore and smaller inhabited cavities interpenetrate.",
+        "negative_space_and_protection": "Keep deep open cavity, unfinished margins and distinct small-room thresholds.",
+        "repetition_and_asymmetry": "two roof-rooted civic-industrial banks around a deliberately open fault-shaft void; five entered workfaces, rock teeth, and three below-bore expansion pockets",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/130#issuecomment-7056528033",
+        "reviewed_commit": "29f58a4ecd2405305094638b8647164f51092866",
+        "source_authored_family": "original/megastructure-wide",
+        "source_authored_route_grammar": {
+          "alternate": "staggered overroof upper transfers and continuous low salvage/recovery bore with six cross-level shafts",
+          "obstruction": "134 by 111 actual material closure at XY 966,530 excludes only the centre-lift datum; the other 17 literal sites remain reached",
+          "primary": "west customs to torsion mill to central fault lift, then archive cooling and eastern departure, descending through chambered rock"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/29f58a4ecd2405305094638b8647164f51092866/cybersand-canvases/2048x1024/original-megastructure-wide-sundered-escarpment-fault-bore-261121/exemplar.json",
+        "source_motifs": [
+          "diagonal opposed fault strata",
+          "split daylight mouth through rock roof",
+          "three distinct deep excavated sub-bore niches",
+          "unequal ceiling-bolted workface pods",
+          "three large asymmetric rock teeth",
+          "lower emergency gallery"
+        ],
+        "support_relationships": "Two independently boundary-rooted assemblies; cliff-embedded and roof-supported fabric.",
+        "traversal_and_hierarchy": "Nested district routes operate at more than one enclosure scale."
+      },
+      "name": "Sundered Escarpment Nested City",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.676248,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1418195,
+          "100": 484253,
+          "101": 84897,
+          "114": 8675,
+          "119": 3604,
+          "120": 468,
+          "130": 1810,
+          "131": 2018,
+          "58": 18976,
+          "62": 44258,
+          "64": 3913,
+          "65": 7978,
+          "68": 1571,
+          "69": 2558,
+          "72": 524,
+          "74": 7321,
+          "76": 3713,
+          "77": 624,
+          "79": 1573,
+          "80": 223
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 678957,
+        "rectangle_count": 4905,
+        "reference_image": {
+          "sha256": "f480181ffedd837b4f580f520c1f1fdb2e284fc29aff0b4c8a390b910a71f7ed",
+          "url": "https://github.com/techrote/sandmapsreference/blob/29f58a4ecd2405305094638b8647164f51092866/cybersand-canvases/2048x1024/original-megastructure-wide-sundered-escarpment-fault-bore-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-130",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "29f58a4ecd2405305094638b8647164f51092866",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "2374343475cc9e55775d3b2d8104510a657ccc53d031993f362c611f807292f4",
+        "path": "cybersand-canvases/2048x1024/original-megastructure-wide-sundered-escarpment-fault-bore-261121/setup.json",
+        "pr": 130,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "0e77d9c6ce6ca44e33a25556a6cd58061111cef6",
+        "setup_sha256": "1006eebf59e78a87bc94d1429969ec6102ef048762c756412c4112d124c8990b",
+        "url": "https://github.com/techrote/sandmapsreference/blob/29f58a4ecd2405305094638b8647164f51092866/cybersand-canvases/2048x1024/original-megastructure-wide-sundered-escarpment-fault-bore-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr131",
+      "architectural_family": "settlement",
+      "construction_strategy": [
+        "Place two or three differently sized districts around a shared void.",
+        "Give each district a supported floor, an entered threshold and a distinct workface.",
+        "Connect districts using explicit passages while preserving expansion sockets."
+      ],
+      "facets": {
+        "character": [
+          "organic",
+          "inhabited",
+          "science_fiction"
+        ],
+        "connection_intents": [
+          "roof_anchor",
+          "district_link"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          63,
+          77,
+          79,
+          100,
+          101,
+          117,
+          128
+        ],
+        "parts": [
+          "column_support",
+          "wall_facade",
+          "floor_ceiling",
+          "window_door",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "distributed",
+          "suspended",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr131",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Asymmetric roof and ground settlements produce an open distributed triport.",
+        "negative_space_and_protection": "Protect open vertical tension, abandoned append zones and distinct small entries.",
+        "repetition_and_asymmetry": "alternating dense customs, bare sky-well, roof-horn cluster, multi-port crossing, satellite test halls and outbound dock",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/131#issuecomment-7056528544",
+        "reviewed_commit": "d76343e20737b569a66410e93374e0cc61d2814f",
+        "source_authored_family": "original/scifi-biomech-wide",
+        "source_authored_route_grammar": {
+          "direct": "spawn_quarantine -> cross_west -> cross_east -> dispatch_east",
+          "lower": "beneath the cable fork via workface and unsealed open sky",
+          "recovery": "three accessed lower archive pockets and four-cardinal clearance at all 18 literal checkpoints",
+          "upper": "above the central three-port roof-fork under a strict altitude band"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/d76343e20737b569a66410e93374e0cc61d2814f/cybersand-canvases/2048x1024/original-scifi-biomech-wide-kordex-mycelial-triport-261121-0301/exemplar.json",
+        "source_motifs": [
+          "three different ground-rooted customhouses",
+          "ceiling-hung six-horn mycelial membrane choir",
+          "branched high registration cables and inspectable floor workface",
+          "satellite desiccator cubicles",
+          "unequal outward crane hooks",
+          "excavated archive access fissures"
+        ],
+        "support_relationships": "Several independently boundary-rooted assemblies, mixed roof and floor loads.",
+        "traversal_and_hierarchy": "Market, colony, workface and dispatch districts form unlike social/process relations."
+      },
+      "name": "Kordex Mycelial Triport",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.78487,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1645992,
+          "100": 80676,
+          "101": 184031,
+          "117": 43146,
+          "128": 2665,
+          "58": 30720,
+          "62": 101097,
+          "63": 7445,
+          "77": 1164,
+          "79": 216
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 451160,
+        "rectangle_count": 1332,
+        "reference_image": {
+          "sha256": "0e5bb769546188f18940f0c23428fb639ef2e5ff7560b2bbfef95255be58cebc",
+          "url": "https://github.com/techrote/sandmapsreference/blob/d76343e20737b569a66410e93374e0cc61d2814f/cybersand-canvases/2048x1024/original-scifi-biomech-wide-kordex-mycelial-triport-261121-0301/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-131",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "d76343e20737b569a66410e93374e0cc61d2814f",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "ca0a64ce437e30bfe75e50f6848ef2c71851a57514dcc2cf1a7b4886cfde48f8",
+        "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-kordex-mycelial-triport-261121-0301/setup-kordex-mycelial-triport.json",
+        "pr": 131,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "fda89c14315b0715ecb5fd76baebd5f68ed0ca02",
+        "setup_sha256": "3ce3551da2b27d8551cbeec70178ba32f4a551cef7740490407c46e1dd912a6d",
+        "url": "https://github.com/techrote/sandmapsreference/blob/d76343e20737b569a66410e93374e0cc61d2814f/cybersand-canvases/2048x1024/original-scifi-biomech-wide-kordex-mycelial-triport-261121-0301/setup-kordex-mycelial-triport.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr136",
+      "architectural_family": "civic",
+      "construction_strategy": [
+        "Choose continuous boulevard or separate piers before placing buildings.",
+        "Repeat supported floor and facade modules with unequal landmarks and entered service spaces.",
+        "Leave open gaps, entrances and spare extensions protected from generic filler."
+      ],
+      "facets": {
+        "character": [
+          "civic",
+          "inhabited"
+        ],
+        "connection_intents": [
+          "district_link",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          58,
+          62,
+          100,
+          101,
+          113,
+          117,
+          122
+        ],
+        "parts": [
+          "column_support",
+          "floor_ceiling",
+          "wall_facade",
+          "window_door",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "linear_chain",
+          "multi_level",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr136",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "A continuous street with roof signals and segmented basement forms a civic scale counterexample.",
+        "negative_space_and_protection": "Protect central opening, entered service sectors and recovery space.",
+        "repetition_and_asymmetry": "Clustered low-rise staffed civic districts beneath deliberately open sky; strong roofs/roads/catenary, individual furnished workfaces and reserved passenger/workshop gaps",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/136#issuecomment-7057184494",
+        "reviewed_commit": "59e03f3ee32596dfc4d56ae89be2f8ecb88255f0",
+        "source_authored_family": "Switchglass Civic Transit",
+        "source_authored_route_grammar": {
+          "lower_recovery": "Four physically entered vertical shafts into separated basement service/repair rooms. Recovery sectors reconnect through accessible surface halls; they are not falsely presented as one uninterrupted buried tunnel",
+          "obstruction": "83×103 solid closure at XY (916,631) covers only Severable tram threshold (950,682). All remaining 22 exact sites including East city exit remain connected at 31×27.",
+          "primary": "West arrival (68,685) → ticket concourse (254,683) → market arcade (807,682) → central transit threshold (950,682) → municipal dispatch (1250,684) → eastern depot (1821,685) → east exit (1963,687)",
+          "upper_bypass": "Market roof aperture at x788..866 rises through first catenary opening at x783..874; fly across upper sky and descend through second catenary and municipal-roof opening x1034..1128; route remains when central street gate is closed"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/4e04630c0b3fe5b2e0f2aa11fe1fb0b85a01987b/cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-interlocking-passenger-borough-261121/exemplar.json",
+        "source_motifs": [
+          "asymmetric passenger-hall canopy, market arcade, municipal signal office and elongated depot roof",
+          "overhead signal catenary with two *real* through-openings",
+          "separated entered freight, cable, archive and recovery cellar chambers",
+          "real surface hall door openings and independent inhabited interior workshops"
+        ],
+        "support_relationships": "Founded boulevard and distinct overhead and below-street sectors.",
+        "traversal_and_hierarchy": "Localized civic workface clusters and gate/bypass relations share one street."
+      },
+      "name": "Switchglass Civic Passenger Borough",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.82955,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1739692,
+          "100": 192763,
+          "101": 12698,
+          "113": 3556,
+          "117": 15976,
+          "122": 1870,
+          "49": 78145,
+          "58": 10213,
+          "62": 42239
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 357460,
+        "rectangle_count": 380,
+        "reference_image": {
+          "sha256": "4874a1d810e9d7ae085818fc03f7bd6514a794263e40648b7afdbe5b045c7024",
+          "url": "https://github.com/techrote/sandmapsreference/blob/4e04630c0b3fe5b2e0f2aa11fe1fb0b85a01987b/cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-interlocking-passenger-borough-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-136",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "4e04630c0b3fe5b2e0f2aa11fe1fb0b85a01987b",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "496d98966fc8cab666df56b7cf5fed6e3b2db520edb688b054f542f2b992faf1",
+        "path": "cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-interlocking-passenger-borough-261121/setup.json",
+        "pr": 136,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "6a37553c9a6dea5e648240071f23b60c0dc80503",
+        "setup_sha256": "99dc9608bdd4c271050b2b8f5126a52f82e1b6e36ca3d3af0e62301cccc397a9",
+        "url": "https://github.com/techrote/sandmapsreference/blob/4e04630c0b3fe5b2e0f2aa11fe1fb0b85a01987b/cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-interlocking-passenger-borough-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr143",
+      "architectural_family": "bioindustrial",
+      "construction_strategy": [
+        "Reserve a large uninterrupted living or flight void before adding detail.",
+        "Place unequal rooted or suspended structural clusters with explicit attachment vertices.",
+        "Connect a sparse pipe or service network; keep the organic silhouette separate from human access."
+      ],
+      "facets": {
+        "character": [
+          "organic",
+          "industrial"
+        ],
+        "connection_intents": [
+          "roof_anchor",
+          "service_access",
+          "process_handoff"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          62,
+          66,
+          68,
+          77,
+          79,
+          100,
+          101,
+          120,
+          129,
+          131
+        ],
+        "parts": [
+          "column_support",
+          "beam_truss",
+          "irregular_transition",
+          "pipework",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "suspended",
+          "distributed",
+          "parallel_lanes"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr143",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "A roof-rooted hanging culture economy spans a broad flight lumen.",
+        "negative_space_and_protection": "Protect hanging identities, open lumen and unused sockets; avoid repeated filler.",
+        "repetition_and_asymmetry": "Dense unequal hanging galleries at both ends, nonuniform canopy culture sleeves and a large central flight lumen over sparse dry salvage",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/143#issuecomment-7058500353",
+        "reviewed_commit": "cfbeddaccdc81a8e1dcfa924b4c089dbbe65cf41",
+        "source_authored_family": "Mireward Levee Communes",
+        "source_authored_route_grammar": {
+          "alternate": "Three separated upper cableway spans, midair cross-cavern recovery and bottom dry service",
+          "primary": "West lantern, suspended orchard, central lumen, eastern quarantine and freight",
+          "recovery": "Opaque customs obstruction denies only its named chamber; independent upper and lower routes remain"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/cfbeddaccdc81a8e1dcfa924b4c089dbbe65cf41/cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-vesper-inverted-root-orchard-261121/exemplar.json",
+        "source_motifs": [
+          "inverted roof-rooted biological production",
+          "discontinuous twin cableways",
+          "unequal suspended lantern wharves",
+          "nonuniform hanging culture sleeves",
+          "dry lower recovery tunnels"
+        ],
+        "support_relationships": "Multiple hanging root-culture assemblies contrast with grounded relief works.",
+        "traversal_and_hierarchy": "Biological production and sterile exchange connect unequal culture districts."
+      },
+      "name": "Mireward Inverted Root Orchard",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.652821,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1369065,
+          "100": 346157,
+          "101": 120832,
+          "120": 16481,
+          "129": 10973,
+          "131": 66234,
+          "49": 8581,
+          "62": 42307,
+          "66": 60901,
+          "68": 45041,
+          "77": 2567,
+          "79": 8013
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 728087,
+        "rectangle_count": 5901,
+        "reference_image": {
+          "sha256": "084ad92ae166f825a385b9f233f64203bc494641c7e34f042a7eeee2b084e2d2",
+          "url": "https://github.com/techrote/sandmapsreference/blob/cfbeddaccdc81a8e1dcfa924b4c089dbbe65cf41/cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-vesper-inverted-root-orchard-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-143",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "cfbeddaccdc81a8e1dcfa924b4c089dbbe65cf41",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "5d42c98d9af8d7c9b1874b7660087d8f4c270941bf7ea623ec4e6167a6e6d082",
+        "path": "cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-vesper-inverted-root-orchard-261121/setup.json",
+        "pr": 143,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "40b871220f4fd112bf89958f9990e80a9af3cded",
+        "setup_sha256": "a6b1659809dc25f432aad39326a948852d740f0be7dc7d0734358528b17b2166",
+        "url": "https://github.com/techrote/sandmapsreference/blob/cfbeddaccdc81a8e1dcfa924b4c089dbbe65cf41/cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-vesper-inverted-root-orchard-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr146",
+      "architectural_family": "suspended_industry",
+      "construction_strategy": [
+        "Declare roof anchors and a protected lower transit corridor.",
+        "Build the primary overhead beam and separated hanging process stations.",
+        "Place detail only at supported receivers, housings and access points."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "thermal"
+        ],
+        "connection_intents": [
+          "roof_anchor",
+          "process_handoff",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          62,
+          65,
+          68,
+          69,
+          76,
+          79,
+          100,
+          104,
+          117,
+          131
+        ],
+        "parts": [
+          "beam_truss",
+          "column_support",
+          "mechanical_housing",
+          "service_gallery",
+          "pipework"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "suspended",
+          "linear_chain",
+          "parallel_lanes"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr146",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "A continuous overhead foundry forms a rare coherent roof-supported process line.",
+        "negative_space_and_protection": "Protect lower void, roof pickups, distinct machinery and unused work bays.",
+        "repetition_and_asymmetry": "Dense roof-hung furnace, ladle, extrusion die and quench modules; open flight return and unfinished lower bays",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/146#issuecomment-7067965321",
+        "reviewed_commit": "c6a83f6fa0545fc3a29058341d14d7cf2f412c29",
+        "source_authored_family": "original/industrial-foundry-wide",
+        "source_authored_route_grammar": {
+          "alternate": [
+            "Aerial junction west",
+            "Die crown",
+            "Aerial junction east"
+          ],
+          "main": [
+            "West arrival",
+            "Ore sling",
+            "Furnace face",
+            "Ladle watch",
+            "Caster below",
+            "Quench lookout",
+            "Freight station",
+            "East rim goal"
+          ],
+          "recovery": [
+            "West undercroft",
+            "Caster repair pit",
+            "Quench underpass",
+            "East footbridge"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/c6a83f6fa0545fc3a29058341d14d7cf2f412c29/cybersand-canvases/2048x1024/original-industrial-foundry-wide-nadirspan-ceiling-anchored-extrusion-261121/exemplar.json",
+        "source_motifs": [
+          "Continuous roof-rooted suspension",
+          "Two sealed hot vessels",
+          "Triple unequal extrusion rotors",
+          "Local bypass over physical blocked corridor",
+          "Editable dry repair rooms",
+          "Overhead freight davit"
+        ],
+        "support_relationships": "Roof-founded hangers carry separate furnace, ladle, extrusion and quench stages.",
+        "traversal_and_hierarchy": "Horizontal manufacture sits above an open lower traverse."
+      },
+      "name": "Nadirspan Ceiling Foundry",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.62403,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1308685,
+          "100": 389441,
+          "104": 19714,
+          "117": 63729,
+          "131": 16302,
+          "3": 11830,
+          "58": 72943,
+          "62": 83845,
+          "65": 23868,
+          "68": 84473,
+          "69": 6815,
+          "76": 1969,
+          "79": 1270,
+          "8": 12268
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 788467,
+        "rectangle_count": 3324,
+        "reference_image": {
+          "sha256": "7e31d61af94833e8a5b477697ca905325f9f6f73f50ff2e34ec2441c31f11db2",
+          "url": "https://github.com/techrote/sandmapsreference/blob/c6a83f6fa0545fc3a29058341d14d7cf2f412c29/cybersand-canvases/2048x1024/original-industrial-foundry-wide-nadirspan-ceiling-anchored-extrusion-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-146",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "c6a83f6fa0545fc3a29058341d14d7cf2f412c29",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "d8e82b74ce9d19bf3df0a86d30bb510e20c28f767b3001b5e49a5a304e562849",
+        "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-nadirspan-ceiling-anchored-extrusion-261121/setup.json",
+        "pr": 146,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "9dcd5e72c710311eb2417b18d603234af3da7a25",
+        "setup_sha256": "f6cebcd073147f315f17e1266f03aa53c133c1d4e500ffca063653133b5a2853",
+        "url": "https://github.com/techrote/sandmapsreference/blob/c6a83f6fa0545fc3a29058341d14d7cf2f412c29/cybersand-canvases/2048x1024/original-industrial-foundry-wide-nadirspan-ceiling-anchored-extrusion-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr147",
+      "architectural_family": "bioindustrial",
+      "construction_strategy": [
+        "Reserve a large uninterrupted living or flight void before adding detail.",
+        "Place unequal rooted or suspended structural clusters with explicit attachment vertices.",
+        "Connect a sparse pipe or service network; keep the organic silhouette separate from human access."
+      ],
+      "facets": {
+        "character": [
+          "organic",
+          "scientific"
+        ],
+        "connection_intents": [
+          "roof_anchor",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          77,
+          79,
+          100,
+          101,
+          117,
+          128
+        ],
+        "parts": [
+          "irregular_transition",
+          "wall_facade",
+          "window_door",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "suspended",
+          "nested_cavities",
+          "parallel_lanes"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr147",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Roof-hung entered assay warrens present nested biological work cavities.",
+        "negative_space_and_protection": "Protect empty intervals, real diagnostic entrances and incomplete quay.",
+        "repetition_and_asymmetry": "Alternating dense entered machine-organic cavities and open routed floor galleries; sparse external sky and vacant machine seams",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/147#issuecomment-7066350258",
+        "reviewed_commit": "d312211b55618a8ab9438287bc59e41e0e4d760e",
+        "source_authored_family": "original/scifi-biomech-wide",
+        "source_authored_route_grammar": {
+          "direct": "spawn_quarantine > west_gate > west_vault > rib_lab > septum_hub > fractionator > east_gate_inner > departure",
+          "lower": "Physical-obstruction detour at central x=954..1109 constrained to y>=856",
+          "recovery": "Every exact site retains full-hull 4-neighbour reach and four-cardinal local recovery",
+          "upper": "Physical-obstruction detour at central x=954..1109 constrained to y<=600"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/d312211b55618a8ab9438287bc59e41e0e4d760e/cybersand-canvases/2048x1024/original-scifi-biomech-wide-euryale-septum-warrens-261121-0529/exemplar.json",
+        "source_motifs": [
+          "Five cliff-rooted load-bearing septa with Midge-sized transverse passage gates",
+          "Four unequally sized entered assay capsules hanging under a continuous roof",
+          "A roof-rooted oversized mnemonic dish receiver",
+          "Accessible two-stand examination workface in the lower machine tier",
+          "Asymmetric western quarantine hoist and eastern dry fractionator tiers"
+        ],
+        "support_relationships": "Hanging septa and separate grounded receiver/diagnostic work.",
+        "traversal_and_hierarchy": "Entered mnemonic/assay rooms distinguish interior biological function."
+      },
+      "name": "Euryale Septum Warrens",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.836339,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1753931,
+          "100": 96040,
+          "101": 92160,
+          "117": 89225,
+          "128": 4129,
+          "58": 31328,
+          "62": 23404,
+          "77": 5947,
+          "79": 988
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 343221,
+        "rectangle_count": 215,
+        "reference_image": {
+          "sha256": "878e9270bda62fa6eac012eda73a922f00c44557300c0e7329302565e7528313",
+          "url": "https://github.com/techrote/sandmapsreference/blob/d312211b55618a8ab9438287bc59e41e0e4d760e/cybersand-canvases/2048x1024/original-scifi-biomech-wide-euryale-septum-warrens-261121-0529/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-147",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "d312211b55618a8ab9438287bc59e41e0e4d760e",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "9eaa9db235c8758d17346d8fab44e49026f53117e7c057475245c7f0964d2045",
+        "path": "cybersand-canvases/2048x1024/original-scifi-biomech-wide-euryale-septum-warrens-261121-0529/setup-euryale-septum-warrens.json",
+        "pr": 147,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "c5d5275908f2412cf8b6bb5d2206ea48c02bc708",
+        "setup_sha256": "f82e4715d60851d0aff0c3b76b951f7f308a0a71c95337da7675bcb1262ec307",
+        "url": "https://github.com/techrote/sandmapsreference/blob/d312211b55618a8ab9438287bc59e41e0e4d760e/cybersand-canvases/2048x1024/original-scifi-biomech-wide-euryale-septum-warrens-261121-0529/setup-euryale-septum-warrens.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr148",
+      "architectural_family": "civic",
+      "construction_strategy": [
+        "Choose continuous boulevard or separate piers before placing buildings.",
+        "Repeat supported floor and facade modules with unequal landmarks and entered service spaces.",
+        "Leave open gaps, entrances and spare extensions protected from generic filler."
+      ],
+      "facets": {
+        "character": [
+          "civic",
+          "inhabited"
+        ],
+        "connection_intents": [
+          "district_link",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          58,
+          62,
+          100,
+          101,
+          113,
+          117,
+          122
+        ],
+        "parts": [
+          "column_support",
+          "floor_ceiling",
+          "wall_facade",
+          "window_door",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "distributed",
+          "open_span",
+          "linear_chain"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr148",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Five discontinuous civic piers carry unequal passenger, power, cargo, signal and rescue landmarks.",
+        "negative_space_and_protection": "Protect entered under-pier rooms, broken spur and generous air.",
+        "repetition_and_asymmetry": "Widely separated civic, power, cargo, semaphore and rescue workfaces are bracketed by unoccupied open-air voids, cableway sightlines and large under-pier editing slots.",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/148#issuecomment-7058500722",
+        "reviewed_commit": "4463eb576bcb14ba84a7857cc797a011da94d4f4",
+        "source_authored_family": "Switchglass Civic Transit",
+        "source_authored_route_grammar": {
+          "alternative": "An actual 86-pixel opening in the west aerial span joins upper flight and lower intermodal space; full-envelope open-air approaches and four entered vertical maintenance shafts provide alternate recovery. No sea water is simulated.",
+          "obstruction": "A physical [1343,507,96,124] inert-solid closure covers only the Central severable cable span site; 23 other named literal centres remain connected at 31x27. Freight scale to Signal islet approach conservative path lengthens from 377 to 437 four-neighbour steps (+60).",
+          "primary": "West embarkation (119,535) to west strait (398,525), battery exchange (720,555), freight crane dispatch (1118,631), remote semaphore (1695,346), eastern rescue exit (1924,671)"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/0da7bf2c98942b5ed9ae20f59fa90edac59b6e52/cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-estuary-pier-intermodal-chain-261121/exemplar.json",
+        "source_motifs": [
+          "Independent islet cargo piers and contrasting remotely operated terminal elevations",
+          "Opposed tension-legged catenary freight exchange with underhung stiffening links",
+          "Roof-free open dispatch gantry and split emergency semaphore arch",
+          "Rock-excavated under-pier workshops with full-hull descent shafts",
+          "Severed low passenger/freight bridge as editable reassembly socket"
+        ],
+        "support_relationships": "Separate grounded piers and stepped catenary links.",
+        "traversal_and_hierarchy": "Distributed civic destinations and open inter-pier air contrast with a common boulevard."
+      },
+      "name": "Switchglass Estuary Pier Chain",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.855621,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1794367,
+          "100": 179117,
+          "101": 14085,
+          "113": 6233,
+          "117": 14080,
+          "122": 623,
+          "49": 46157,
+          "58": 20101,
+          "62": 22389
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 302785,
+        "rectangle_count": 2032,
+        "reference_image": {
+          "sha256": "6427906aeaafa9d714fe6337381fe5336aa31733ac410088143ce7e4f704e1df",
+          "url": "https://github.com/techrote/sandmapsreference/blob/0da7bf2c98942b5ed9ae20f59fa90edac59b6e52/cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-estuary-pier-intermodal-chain-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-148",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "0da7bf2c98942b5ed9ae20f59fa90edac59b6e52",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "3804dd4973f1ad84ecc4daa14cd63201ac31c0987dedc4cefbd94fa6780a64d9",
+        "path": "cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-estuary-pier-intermodal-chain-261121/setup.json",
+        "pr": 148,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "22ebe50f12a3e9a3a235e6e0bdb7f152983828d4",
+        "setup_sha256": "977919a1bba6b16ab4c0908010baeca8f7b167c3f4078ec1619d2c18179582f2",
+        "url": "https://github.com/techrote/sandmapsreference/blob/0da7bf2c98942b5ed9ae20f59fa90edac59b6e52/cybersand-canvases/2048x1024/worldgroup-transit-switchglass-civic-estuary-pier-intermodal-chain-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr150",
+      "architectural_family": "bioindustrial",
+      "construction_strategy": [
+        "Reserve a large uninterrupted living or flight void before adding detail.",
+        "Place unequal rooted or suspended structural clusters with explicit attachment vertices.",
+        "Connect a sparse pipe or service network; keep the organic silhouette separate from human access."
+      ],
+      "facets": {
+        "character": [
+          "organic",
+          "industrial"
+        ],
+        "connection_intents": [
+          "rim_attachment",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          62,
+          66,
+          68,
+          77,
+          79,
+          100,
+          101,
+          120,
+          129,
+          131
+        ],
+        "parts": [
+          "column_support",
+          "irregular_transition",
+          "passage_clearance",
+          "pipework"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "open_ring",
+          "radial",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr150",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Interrupted biological annulus gives the slate an open radial silhouette.",
+        "negative_space_and_protection": "Protect empty living court and broken ring joints; classify as bioindustrial rather than room-led civic.",
+        "repetition_and_asymmetry": "Grounded asymmetric workyards framing a partly open and broken stationary annular cultural filter, broad centre, dry lower service",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/150#issuecomment-7066354026",
+        "reviewed_commit": "c797722c9788263cb157d48d30eefd613a832efd",
+        "source_authored_family": "Mireward Levee Communes",
+        "source_authored_route_grammar": {
+          "alternate": "Upper free-flight and three descent shafts feeding an unobstructed dry return",
+          "primary": "West registry, radial field approaches, open annular interior and east purge",
+          "recovery": "Local physical eastern purge obstruction avoids routing through the disabled threshold"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/c797722c9788263cb157d48d30eefd613a832efd/cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-censer-loop-radial-biofilter-261121/exemplar.json",
+        "source_motifs": [
+          "Interrupted broad annular fixed assay frame",
+          "four asymmetric founded radial piers",
+          "inhabited west reed registry",
+          "east xenocustody dispatch",
+          "three dry lower entrances"
+        ],
+        "support_relationships": "Unequal rooted piers and independent rim attachments.",
+        "traversal_and_hierarchy": "Three dry descent mouths connect high ring choices to an underfloor recovery."
+      },
+      "name": "Mireward Censer Loop",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.804808,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1687804,
+          "100": 202491,
+          "101": 67584,
+          "120": 20264,
+          "129": 6065,
+          "131": 12381,
+          "49": 8167,
+          "62": 53398,
+          "66": 16854,
+          "68": 15607,
+          "77": 3807,
+          "79": 2730
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 409348,
+        "rectangle_count": 3881,
+        "reference_image": {
+          "sha256": "f16b2326744563242e9f8635a975c531292b5ec3f15d54d025c56d2d780336c2",
+          "url": "https://github.com/techrote/sandmapsreference/blob/c797722c9788263cb157d48d30eefd613a832efd/cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-censer-loop-radial-biofilter-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-150",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "c797722c9788263cb157d48d30eefd613a832efd",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "0d958f92a1f578702056d72363622e2de204c6267f204485585b59096574cff4",
+        "path": "cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-censer-loop-radial-biofilter-261121/setup.json",
+        "pr": 150,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "a11796c9e052bbf0fa18226a5279c8841ac0effd",
+        "setup_sha256": "93157e701976742f1d249bae47b729d4204784e0b380dfb295b0dc053b863ed4",
+        "url": "https://github.com/techrote/sandmapsreference/blob/c797722c9788263cb157d48d30eefd613a832efd/cybersand-canvases/2048x1024/worldgroup-xenobiome-mireward-levee-censer-loop-radial-biofilter-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr153",
+      "architectural_family": "vessel_dock",
+      "construction_strategy": [
+        "Reserve the whole dock void and a full-size hull-entry route.",
+        "Build unequal cradles or roof supports, then place the entered hull or housing.",
+        "Add service galleries and bounded repair details without filling damage or access openings."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "damaged"
+        ],
+        "connection_intents": [
+          "roof_anchor",
+          "service_access",
+          "containment"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          100,
+          101,
+          117,
+          120
+        ],
+        "parts": [
+          "beam_truss",
+          "mechanical_housing",
+          "irregular_transition",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "suspended",
+          "open_span",
+          "opposed_banks"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop.",
+        "Repairing a deliberately broken span destroys the original route/damage distinction."
+      ],
+      "id": "goldmaps-pr153",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "A ceiling-held damaged vessel sits in a broad editable drydock.",
+        "negative_space_and_protection": "Protect damaged hull, open dock, entrances and initial containment boundaries.",
+        "repetition_and_asymmetry": "Dense, uneven receiving/solvent/quench/dispatch shoulders frame a broad, deliberately underworked central dry pit and suspended salvage hull.",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/153#issuecomment-7067174012",
+        "reviewed_commit": "70257dc0baa4da91b31fd13fd50fab234060484f",
+        "source_authored_family": "original/industrial-hazard-wide",
+        "source_authored_route_grammar": {
+          "alternative": "Low drydock recovery lane parallels the mid-level trunk, allowing a reroute around a real [845,607,65,92] obstruction; all 18 exact sites remain reachable.",
+          "clearance_envelopes": [
+            [
+              19,
+              15
+            ],
+            [
+              23,
+              19
+            ],
+            [
+              31,
+              27
+            ]
+          ],
+          "main": "Public overhead sky airway descends through six wide service wells into the dry, continuous mid-level transfer lane and returns to the eastern outbound berth.",
+          "site_count": 18
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/70257dc0baa4da91b31fd13fd50fab234060484f/cybersand-canvases/2048x1024/original-industrial-hazard-wide-moraine-fourteen-suspended-solvent-drydock-261121/exemplar.json",
+        "source_motifs": [
+          "Continuous boundary-rooted overhead gantry and asymmetric hanger lengths",
+          "Large inverted U-shaped suspended salvage hull above empty drydock pit",
+          "Ground-rooted workfaces opposing roof-hung industrial equipment",
+          "Two uneven solvent columns and three separate sealed quench sample containers",
+          "Unfurnished expansion platforms along the lower drydock and dispatch approaches"
+        ],
+        "support_relationships": "Roof pickups support the entered broken hull; opposing chemical industry is grounded.",
+        "traversal_and_hierarchy": "Suspended salvage and containment work form separate functional districts."
+      },
+      "name": "Moraine-14 Suspended Solvent Drydock",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.531981,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1115644,
+          "100": 450279,
+          "101": 211391,
+          "117": 103312,
+          "120": 1517,
+          "3": 7933,
+          "58": 202671,
+          "8": 4405
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 981508,
+        "rectangle_count": 2051,
+        "reference_image": {
+          "sha256": "03c59b32134b9ec5e3777ef88fb2e4812c0032b68e461f15de0e12368ae09b1f",
+          "url": "https://github.com/techrote/sandmapsreference/blob/70257dc0baa4da91b31fd13fd50fab234060484f/cybersand-canvases/2048x1024/original-industrial-hazard-wide-moraine-fourteen-suspended-solvent-drydock-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-153",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "70257dc0baa4da91b31fd13fd50fab234060484f",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "d381b254ee9f5c16ee704d8dc8c6b514df4267989d0bd940481e4884b624c7a5",
+        "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-moraine-fourteen-suspended-solvent-drydock-261121/setup.json",
+        "pr": 153,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "4ffe34d40b34f1cafd3d72810e2ed59e85b659e3",
+        "setup_sha256": "144774127919808eb028d8cf8b81ce7387c612ce5d02457757fe583ca140f05f",
+        "url": "https://github.com/techrote/sandmapsreference/blob/70257dc0baa4da91b31fd13fd50fab234060484f/cybersand-canvases/2048x1024/original-industrial-hazard-wide-moraine-fourteen-suspended-solvent-drydock-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr155",
+      "architectural_family": "machine_city",
+      "construction_strategy": [
+        "Separate the central machine void from the entered settlement or service district.",
+        "Place founded housings and connect a bounded process chain.",
+        "Protect initial containment boundaries and keep machine appearance distinct from simulated function."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "science_fiction"
+        ],
+        "connection_intents": [
+          "process_handoff",
+          "district_link"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          63,
+          64,
+          65,
+          66,
+          68,
+          69,
+          72,
+          76,
+          77,
+          79,
+          80,
+          98,
+          100,
+          101,
+          111,
+          119
+        ],
+        "parts": [
+          "column_support",
+          "mechanical_housing",
+          "pipework",
+          "wall_facade",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "split_barrage",
+          "multi_level",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr155",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "A split barrage and adjoining city create a strong machine-versus-settlement silhouette.",
+        "negative_space_and_protection": "Protect open central machine volume and entered service districts.",
+        "repetition_and_asymmetry": "west and east active settlement density around a deliberately open dry central decompression basin",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/155#issuecomment-7059184553",
+        "reviewed_commit": "7ff90c11a3839e42371f0fef5ac3c783ab2a8d05",
+        "source_authored_family": "original/megastructure-wide",
+        "source_authored_route_grammar": {
+          "lower": "Western cargo descent / lower dry service / eastern freight sorting",
+          "main": "West inlet / pulse inspection / central valve datum / east governor / daylight egress",
+          "obstruction": "blocking the central pressure datum leaves an upper or lower local bypass and return",
+          "upper": "West gate overlook / release jib / opposite upper deck"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/7ff90c11a3839e42371f0fef5ac3c783ab2a8d05/cybersand-canvases/2048x1024/original-megastructure-wide-cobalt-ventricle-split-barrage-261121/exemplar.json",
+        "source_motifs": [
+          "two opposite leaning ground-rooted floodgate blades",
+          "open central dry pressure ventricle",
+          "irregular articulated gatework rather than repeated trays",
+          "separate operator houses and off-axis relief galleries"
+        ],
+        "support_relationships": "Floor-founded angled barrage loads and city structures.",
+        "traversal_and_hierarchy": "Distinct inlet, pulse gate, dry ventricle, governor and egress relationships."
+      },
+      "name": "Cobalt Ventricle Valve City",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.762916,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1599950,
+          "100": 237590,
+          "101": 578,
+          "111": 450,
+          "119": 1814,
+          "58": 107100,
+          "62": 79302,
+          "63": 22972,
+          "64": 3842,
+          "65": 9,
+          "66": 29902,
+          "68": 840,
+          "69": 5500,
+          "72": 3296,
+          "76": 1165,
+          "77": 580,
+          "79": 204,
+          "80": 1270,
+          "98": 788
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 497202,
+        "rectangle_count": 3229,
+        "reference_image": {
+          "sha256": "7aa890632197067d33058ee98ad70917ab9b03d4e65cd176457cc57c0467e03c",
+          "url": "https://github.com/techrote/sandmapsreference/blob/7ff90c11a3839e42371f0fef5ac3c783ab2a8d05/cybersand-canvases/2048x1024/original-megastructure-wide-cobalt-ventricle-split-barrage-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "REFUSED_INVALID_SOURCE",
+        "native_policy": "REFUSED",
+        "native_policy_refusal": {
+          "code": "malformed_policy",
+          "detail": "bad magic",
+          "material": null
+        },
+        "native_receipt_id": "gold-155",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": "Separate pr155-policy-repair descendant; original remains refused",
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "7ff90c11a3839e42371f0fef5ac3c783ab2a8d05",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "e76f280ee631d604c037f307bfafedbd2dad23d198133f4a7084c9848a2ee803",
+        "path": "cybersand-canvases/2048x1024/original-megastructure-wide-cobalt-ventricle-split-barrage-261121/setup.json",
+        "pr": 155,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "4d982dcf76875787624a34b8aba6467f305aba1f",
+        "setup_sha256": "e374e46204efa1bef3d6f0c87cfad87a538aaff0c313c2ed30abf8283d8a3c12",
+        "url": "https://github.com/techrote/sandmapsreference/blob/7ff90c11a3839e42371f0fef5ac3c783ab2a8d05/cybersand-canvases/2048x1024/original-megastructure-wide-cobalt-ventricle-split-barrage-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr159",
+      "architectural_family": "linear_industry",
+      "construction_strategy": [
+        "Declare a primary process spine and a separate low or high recovery route.",
+        "Repeat structural bays with unequal functional stations and finite handoff interfaces.",
+        "Keep station entries and unused bays empty; add detail only after route verification."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "reclamation"
+        ],
+        "connection_intents": [
+          "process_handoff",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          100
+        ],
+        "parts": [
+          "column_support",
+          "beam_truss",
+          "floor_ceiling",
+          "service_gallery",
+          "mechanical_housing"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "linear_chain",
+          "parallel_lanes",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr159",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "One long founded roof joins five distinguishable reclamation workfaces.",
+        "negative_space_and_protection": "Protect vacant eastern annex, high air and existing route branches.",
+        "repetition_and_asymmetry": "Five dense and variably sized workfaces separated by deliberately editable high-air bays; roof equipment is continuous, lower workshops punctuated.",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/159#issuecomment-7067963494",
+        "reviewed_commit": "1266ca2265db3dc574566a8047ac8170c58ae95c",
+        "source_authored_family": "Keelbone Reclamation Vaults",
+        "source_authored_route_grammar": {
+          "lower": "Independent free flight around equipment foundations and under-support gaps, reconnecting into the same middle cargo aisle",
+          "main": "Western intake → Sorting rail → Torque drive control → Ledger registry → Eastern export",
+          "obstruction": "Physical rectangle at [778,460,75,83] intersects the 31×27 sorting-to-export primary path; flight over equipment/inspection space yields an actual longer traversable route",
+          "upper": "Rooftop sky return through far-east breach and six staggered supported mezzanines over the factory quarter"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/1266ca2265db3dc574566a8047ac8170c58ae95c/cybersand-canvases/2048x1024/worldgroup-freight-keelbone-reclamation-continuous-press-spine-261121/exemplar.json",
+        "source_motifs": [
+          "A single long rock-backed roof carrying five unequal signal/truss housings",
+          "Staggered roof hangers and deep founded workshop columns, rather than two opposed high cliffs",
+          "Dry catch trough and infeed at western strip workface",
+          "Opposed magnetic sorter fork, grounded billet stands and relay bin",
+          "Physical torque press arms with infeed, die and receiving platform",
+          "Bonded duty window, cargo-counter ledges and low worktown service interfaces",
+          "Inhabited repair/worker shelf assembly with broken eastern annex"
+        ],
+        "support_relationships": "Continuous roof and grounded process stations; high inspection and low recovery.",
+        "traversal_and_hierarchy": "Material-connected reclamation handoff and entered custody differentiate machine and worker zones."
+      },
+      "name": "Keelbone Covered Spine",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.666014,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1396733,
+          "100": 453827,
+          "58": 130229,
+          "62": 116363
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 700419,
+        "rectangle_count": 1974,
+        "reference_image": {
+          "sha256": "4dc78b7e7dd3246469488027e09587b13e8175c3be39a0413982c67f85880a74",
+          "url": "https://github.com/techrote/sandmapsreference/blob/1266ca2265db3dc574566a8047ac8170c58ae95c/cybersand-canvases/2048x1024/worldgroup-freight-keelbone-reclamation-continuous-press-spine-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-159",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "1266ca2265db3dc574566a8047ac8170c58ae95c",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "76b668760422189ef79051576fc60e0b55bc3c9d348a1f739b3ba2142e7a488c",
+        "path": "cybersand-canvases/2048x1024/worldgroup-freight-keelbone-reclamation-continuous-press-spine-261121/setup.json",
+        "pr": 159,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "f78bcc811174a9c580df47f77349f4b6346c880d",
+        "setup_sha256": "ad9e041f0eb35bbfd2a97a74ba55cd65925fbeeef79b9ef39b2dfd55a3494789",
+        "url": "https://github.com/techrote/sandmapsreference/blob/1266ca2265db3dc574566a8047ac8170c58ae95c/cybersand-canvases/2048x1024/worldgroup-freight-keelbone-reclamation-continuous-press-spine-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr163",
+      "architectural_family": "vessel_dock",
+      "construction_strategy": [
+        "Reserve the whole dock void and a full-size hull-entry route.",
+        "Build unequal cradles or roof supports, then place the entered hull or housing.",
+        "Add service galleries and bounded repair details without filling damage or access openings."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "scientific"
+        ],
+        "connection_intents": [
+          "service_access",
+          "containment"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          62,
+          63,
+          68,
+          77,
+          79,
+          100,
+          101,
+          121,
+          129,
+          130,
+          131
+        ],
+        "parts": [
+          "column_support",
+          "floor_ceiling",
+          "mechanical_housing",
+          "window_door",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "open_span",
+          "nested_cavities",
+          "linear_chain"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr163",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "An entered tapered research hull and enormous event dock have clear figure/void separation.",
+        "negative_space_and_protection": "Keep huge dock void, entered hatch and source recovery access.",
+        "repetition_and_asymmetry": "edge-dense medical and sterile stations surrounding broad editable drydock basin; compact hull chamber machinery",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/163#issuecomment-7064009466",
+        "reviewed_commit": "c2e930f92104a8b6f49fc62dbe76b726da14d439",
+        "source_authored_family": "original/scifi-frontier-wide",
+        "source_authored_route_grammar": {
+          "alternatives": [
+            "open high overflight bypass of complete ship",
+            "two fully entered service shafts and open drydock basin"
+          ],
+          "named_literal_sites": 34,
+          "obstruction": "Keel drive control",
+          "primary": "west medical via aft vessel entered decks to east sterile freight/evacuation"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/c2e930f92104a8b6f49fc62dbe76b726da14d439/cybersand-canvases/2048x1024/original-scifi-frontier-wide-arid-helm-vessel-drydock-261121/exemplar.json",
+        "source_motifs": [
+          "tapered survey vessel with usable upper and lower interiors",
+          "physically rooted twin unequal bearing cradles",
+          "distinct left heavy winch and right freight derrick",
+          "two entered underground recovery shafts",
+          "vast open central basin framed by dense edge settlements"
+        ],
+        "support_relationships": "Unequal founded cradles and a continuous supported keel.",
+        "traversal_and_hierarchy": "Entered hold, research deck and cargo hatch remain distinct from surrounding terrain."
+      },
+      "name": "Arid Helm Survey Vessel",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.851303,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1785312,
+          "100": 83874,
+          "101": 33938,
+          "121": 5408,
+          "129": 10025,
+          "130": 3604,
+          "131": 9390,
+          "49": 70917,
+          "62": 56752,
+          "63": 1112,
+          "68": 35329,
+          "77": 561,
+          "79": 930
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 311840,
+        "rectangle_count": 1811,
+        "reference_image": {
+          "sha256": "238e489b992e262efef2d42c3bd557d9d6af0a00c615e7c6141e632abb11ad73",
+          "url": "https://github.com/techrote/sandmapsreference/blob/c2e930f92104a8b6f49fc62dbe76b726da14d439/cybersand-canvases/2048x1024/original-scifi-frontier-wide-arid-helm-vessel-drydock-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-163",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "c2e930f92104a8b6f49fc62dbe76b726da14d439",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "31e02a77fc2118f52d4e0aaeff72383e2c764d40137abca1f8f3b156ab906479",
+        "path": "cybersand-canvases/2048x1024/original-scifi-frontier-wide-arid-helm-vessel-drydock-261121/setup.json",
+        "pr": 163,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "9adb750c6000dabf1070ff41430852c0103da72f",
+        "setup_sha256": "6a7d5851a297d3e1036ad70ac62f0e3fc00728c118b5190202cd37f0beb6e950",
+        "url": "https://github.com/techrote/sandmapsreference/blob/c2e930f92104a8b6f49fc62dbe76b726da14d439/cybersand-canvases/2048x1024/original-scifi-frontier-wide-arid-helm-vessel-drydock-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr168",
+      "architectural_family": "machine_city",
+      "construction_strategy": [
+        "Separate the central machine void from the entered settlement or service district.",
+        "Place founded housings and connect a bounded process chain.",
+        "Protect initial containment boundaries and keep machine appearance distinct from simulated function."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "chemical"
+        ],
+        "connection_intents": [
+          "process_handoff",
+          "containment",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          100,
+          101,
+          117,
+          120
+        ],
+        "parts": [
+          "column_support",
+          "mechanical_housing",
+          "pipework",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "open_ring",
+          "linear_chain",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr168",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Three unlike interrupted classifier hoops sit within a legible lateral process yard.",
+        "negative_space_and_protection": "Keep interrupted hoops, lower work entry, upper sky and initially separated fluids.",
+        "repetition_and_asymmetry": "Distinct dense processing bays beneath a broad sparse public sky, medium-density cross-connection lane and underfloor editing recesses",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/168#issuecomment-7064827320",
+        "reviewed_commit": "a55f6d1658c8a6c0c732aa98de8088fb4938d5b4",
+        "source_authored_family": "original/industrial-hazard-wide",
+        "source_authored_route_grammar": {
+          "alternative": "Reagent workface -> exchanger undercroft -> rotor underside -> quench overlook -> scrubber gallery -> east platform",
+          "interior": "Sorter chamber entered from open mid-level service throat and connected to upper access",
+          "main": "West ingress -> reagent canopy -> rotary crown -> quench airlock -> east dispatch",
+          "obstruction": "An actual sky obstruction forces four upper-path detours but retains all exact destinations"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/a55f6d1658c8a6c0c732aa98de8088fb4938d5b4/cybersand-canvases/2048x1024/original-industrial-hazard-wide-galen-two-triple-loop-catalytic-yard-261121/exemplar.json",
+        "source_motifs": [
+          "three concentric but physically interrupted stationary classifier hoops",
+          "dry double-helix heat-exchange bay",
+          "two separately contained water and lava reference vessels",
+          "asymmetric reagent gatehouse",
+          "split-height exhaust scrubber",
+          "floor-rooted load legs and entered maintenance band"
+        ],
+        "support_relationships": "Floor-rooted machine and separate enclosed vessels.",
+        "traversal_and_hierarchy": "Entered workstation connects classifier apparatus to reagent, heat-exchange and dispatch stages."
+      },
+      "name": "Galen-2 Triple-Loop Catalytic Yard",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.688351,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1443577,
+          "100": 245304,
+          "101": 236653,
+          "117": 56621,
+          "120": 3205,
+          "3": 5684,
+          "58": 101338,
+          "8": 4770
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 653575,
+        "rectangle_count": 2166,
+        "reference_image": {
+          "sha256": "426c1be09cdf3e7a78dc617356fdf4d97874531ff39b75223fbeef0417c0d9d5",
+          "url": "https://github.com/techrote/sandmapsreference/blob/a55f6d1658c8a6c0c732aa98de8088fb4938d5b4/cybersand-canvases/2048x1024/original-industrial-hazard-wide-galen-two-triple-loop-catalytic-yard-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-168",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "a55f6d1658c8a6c0c732aa98de8088fb4938d5b4",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "cf3a9ae3b87bccaa56e28bf2d66bc75f1c06275048a67d662f5da201bc443372",
+        "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-galen-two-triple-loop-catalytic-yard-261121/setup.json",
+        "pr": 168,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "289c3b2143e25304207a321727412a619502f0ab",
+        "setup_sha256": "e3d5c86f59bb510374152b41fb12950929f08adb276441ffa3aa10147c04dd7b",
+        "url": "https://github.com/techrote/sandmapsreference/blob/a55f6d1658c8a6c0c732aa98de8088fb4938d5b4/cybersand-canvases/2048x1024/original-industrial-hazard-wide-galen-two-triple-loop-catalytic-yard-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr174",
+      "architectural_family": "settlement",
+      "construction_strategy": [
+        "Place two or three differently sized districts around a shared void.",
+        "Give each district a supported floor, an entered threshold and a distinct workface.",
+        "Connect districts using explicit passages while preserving expansion sockets."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "inhabited"
+        ],
+        "connection_intents": [
+          "district_link",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          62,
+          65,
+          68,
+          69,
+          76,
+          79,
+          100,
+          104,
+          117,
+          131
+        ],
+        "parts": [
+          "column_support",
+          "wall_facade",
+          "floor_ceiling",
+          "window_door",
+          "mechanical_housing"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "distributed",
+          "multi_level",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr174",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Three unlike inhabited settlements share a rotor-linked industrial world.",
+        "negative_space_and_protection": "Preserve unused settlement sockets, workfront entries and rotor visibility.",
+        "repetition_and_asymmetry": "Three asymmetric dense civic-industrial groups linked through a large editable transfer avenue; upper airworks concentrated between clusters",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/174#issuecomment-7061146251",
+        "reviewed_commit": "b28196503b51b88b129076f2808ec4920c2d7c40",
+        "source_authored_family": "original/industrial-foundry-wide",
+        "source_authored_route_grammar": {
+          "main": [
+            "West arrival",
+            "Ore hamlet",
+            "Smelter face",
+            "Guild inlet",
+            "Ladle handoff",
+            "Rotor lookout",
+            "Guild outfeed",
+            "Quench laboratory",
+            "Freight terminal",
+            "East export goal"
+          ],
+          "recovery": [
+            "West junction",
+            "East maintenance",
+            "Quench controls"
+          ],
+          "upper": [
+            "Aerial west",
+            "Aerial caster",
+            "Aerial east"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/b28196503b51b88b129076f2808ec4920c2d7c40/cybersand-canvases/2048x1024/original-industrial-foundry-wide-cinderward-three-village-rotorfoundry-261121/exemplar.json",
+        "source_motifs": [
+          "Three unlike worker settlements",
+          "Giant radial eight-spoke grounded rotor",
+          "Elevated contained furnace and ladle",
+          "Four staggered caster rams",
+          "East sealed quench and rail freight"
+        ],
+        "support_relationships": "Roof and floor foundations support different worktown levels.",
+        "traversal_and_hierarchy": "Town-to-process adjacency makes habitation and industry jointly legible."
+      },
+      "name": "Cinderward Three-Village Rotoryard",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.657168,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1378181,
+          "100": 378330,
+          "104": 12349,
+          "117": 64850,
+          "131": 24595,
+          "3": 4250,
+          "58": 79684,
+          "62": 58294,
+          "65": 17836,
+          "68": 58812,
+          "69": 10400,
+          "76": 889,
+          "79": 3922,
+          "8": 4760
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 718971,
+        "rectangle_count": 3100,
+        "reference_image": {
+          "sha256": "785b8cdb91b1608da428e479b8fde27b9f1f1148df1e58fadaef81fa207d9a8c",
+          "url": "https://github.com/techrote/sandmapsreference/blob/b28196503b51b88b129076f2808ec4920c2d7c40/cybersand-canvases/2048x1024/original-industrial-foundry-wide-cinderward-three-village-rotorfoundry-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-174",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "b28196503b51b88b129076f2808ec4920c2d7c40",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "7f1d331d828baf91967e42f5c3cdcc382840ef7c642dee9835f99b13b01f758e",
+        "path": "cybersand-canvases/2048x1024/original-industrial-foundry-wide-cinderward-three-village-rotorfoundry-261121/setup.json",
+        "pr": 174,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "389d651df5842cdf1258c568bd1db9681d207fd2",
+        "setup_sha256": "fecf590815dd7495cf4e624a1ef5ad70e3109b3403bc99f9333171fd21d0fe3a",
+        "url": "https://github.com/techrote/sandmapsreference/blob/b28196503b51b88b129076f2808ec4920c2d7c40/cybersand-canvases/2048x1024/original-industrial-foundry-wide-cinderward-three-village-rotorfoundry-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr175",
+      "architectural_family": "nested_geology",
+      "construction_strategy": [
+        "Define the large cavity and independent bypasses as protected empty regions.",
+        "Place smaller entered rooms at more than one scale with explicit rock or frame anchors.",
+        "Add sparse cross-connections and keep their junctions readable."
+      ],
+      "facets": {
+        "character": [
+          "geological",
+          "industrial"
+        ],
+        "connection_intents": [
+          "rock_anchor",
+          "process_handoff",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          62,
+          66,
+          68,
+          77,
+          79,
+          100,
+          101,
+          120,
+          129,
+          131
+        ],
+        "parts": [
+          "irregular_transition",
+          "window_door",
+          "wall_facade",
+          "passage_clearance",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "nested_cavities",
+          "linear_chain",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr175",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Unlike entered assay and quarantine rooms occupy a buried geological sequence.",
+        "negative_space_and_protection": "Keep room entrances, sterile relationships and spare lower spaces.",
+        "repetition_and_asymmetry": "Dense irregular roof-enclosed intake, laboratory, quarantine and refuge inside a thick geological mass. Vast sparse exterior and two largely vacant underground relief pockets.",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/175#issuecomment-7064009019",
+        "reviewed_commit": "5d97133f3b33bf5b29f92eb65ccf7c884d9e5804",
+        "source_authored_family": "Cinderfold Seed Courier Districts",
+        "source_authored_route_grammar": {
+          "alternate": "Two independent short branch-rejoin dry service routes, one under receiving and diagnosis, another under quarantine and refuge",
+          "primary": "An entered four-cell intake, diagnosis, isolation, refuge network over a continuous rock-enclosed service spine",
+          "recovery": "Separate lower loops admit 31x27 full hulls; a physical diagnostic wicket obstruction leaves all other literal stations reachable"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/5d97133f3b33bf5b29f92eb65ccf7c884d9e5804/cybersand-canvases/2048x1024/worldgroup-xenobiome-cinderfold-seed-courier-buried-assay-interchange-261121/exemplar.json",
+        "source_motifs": [
+          "nested unequal rock-cut workfaces",
+          "real unlike receiving, diagnostic and isolation equipment at human scale",
+          "buried xenoseed medical refuge",
+          "asymmetric folded-brace geological ridge",
+          "two short independently usable below-grade return corridors",
+          "unfinished acoustic excavation"
+        ],
+        "support_relationships": "Rock-cut cavities and founded thresholds distinguish interior functions.",
+        "traversal_and_hierarchy": "Receiving, diagnostic, sterile isolation, refuge and lower returns form an entered process chain."
+      },
+      "name": "Cinderfold Buried Assay",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.694435,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1456335,
+          "100": 498319,
+          "101": 90314,
+          "120": 6884,
+          "129": 3357,
+          "131": 10844,
+          "49": 1700,
+          "62": 10858,
+          "66": 11565,
+          "68": 3876,
+          "77": 1860,
+          "79": 1240
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 640817,
+        "rectangle_count": 2493,
+        "reference_image": {
+          "sha256": "38ac83372ffded885fa9327aee158ac96ee348d78178e21d481cfe92c470701a",
+          "url": "https://github.com/techrote/sandmapsreference/blob/5d97133f3b33bf5b29f92eb65ccf7c884d9e5804/cybersand-canvases/2048x1024/worldgroup-xenobiome-cinderfold-seed-courier-buried-assay-interchange-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-175",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "5d97133f3b33bf5b29f92eb65ccf7c884d9e5804",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "e1ec9c47af672a72812e2ff7b153e5650d20055091faf6aa6a7615ed3d414633",
+        "path": "cybersand-canvases/2048x1024/worldgroup-xenobiome-cinderfold-seed-courier-buried-assay-interchange-261121/setup.json",
+        "pr": 175,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "9d64d2cfb47902ebc8245f6c41327e42583b4a09",
+        "setup_sha256": "60d561e6619b0bcc781c755d5726eb56e496bdccd62ffa2d0affc4b5cc23f62a",
+        "url": "https://github.com/techrote/sandmapsreference/blob/5d97133f3b33bf5b29f92eb65ccf7c884d9e5804/cybersand-canvases/2048x1024/worldgroup-xenobiome-cinderfold-seed-courier-buried-assay-interchange-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr176",
+      "architectural_family": "freight_handoff",
+      "construction_strategy": [
+        "Reserve the central transfer void and at least one independent service route.",
+        "Place unequal founded or bank-attached receivers at distinct heights.",
+        "Connect only declared transfer interfaces; give each receiver an entered maintenance pocket."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "logistics"
+        ],
+        "connection_intents": [
+          "bank_handoff",
+          "process_handoff",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          58,
+          62,
+          100
+        ],
+        "parts": [
+          "column_support",
+          "beam_truss",
+          "mechanical_housing",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "opposed_banks",
+          "linear_chain",
+          "open_span"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr176",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "A large central hoist/canopy and reverse basin form a stronger independent macro assembly than its tall transfer.",
+        "negative_space_and_protection": "Protect basin void, central hoist, entered ship/crane and service recovery.",
+        "repetition_and_asymmetry": "Dense west dispatch and east drydock flank a spacious excavated basin and heavily articulated central hoist",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/176#issuecomment-7062459959",
+        "reviewed_commit": "debc4a61c067f5759860d7f2b16004eeb6e0a59e",
+        "source_authored_family": "industrial-transit-wide",
+        "source_authored_route_grammar": {
+          "hub": [
+            "Hub Crown",
+            "Hub Transfer",
+            "Hub Service",
+            "Hub Lower",
+            "Western Maintenance"
+          ],
+          "lower": [
+            "Ship Cargo Hold",
+            "Eastern Cargo Airlock",
+            "East Rock Access",
+            "Eastern Maintenance",
+            "Western Maintenance",
+            "West Rock Access",
+            "West Basin Approach",
+            "Western Departure"
+          ],
+          "primary": [
+            "East Spawn",
+            "Ship Dock Crane",
+            "Roof Exchange",
+            "Hub Crown",
+            "Upper Relay West",
+            "Signal Loft",
+            "West Rail Concourse"
+          ],
+          "recovery": [
+            "Ship Dock Crane",
+            "East Rock Access",
+            "Eastern Maintenance",
+            "Western Maintenance",
+            "West Rock Access",
+            "West Basin Approach"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/debc4a61c067f5759860d7f2b16004eeb6e0a59e/cybersand-canvases/2048x1024/original-industrial-transit-wide-axlewell-reverse-basin-261121/exemplar.json",
+        "source_motifs": [
+          "east-end entered freighter",
+          "central portal hoist with two door elevations",
+          "roof-rooted cargo span",
+          "west triple-grade freight sorting",
+          "two vertical rock access shafts",
+          "central emergency ladder-sized clearance through basin bottom into maintenance return"
+        ],
+        "support_relationships": "Opposed founded canopy/hoist structures and low basin works.",
+        "traversal_and_hierarchy": "East arrival reverses conventional freight polarity toward western classification and dispatch."
+      },
+      "name": "Axlewell Reverse-Flow Basin",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.836999,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1755314,
+          "100": 179176,
+          "58": 19399,
+          "62": 143263
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 341838,
+        "rectangle_count": 3040,
+        "reference_image": {
+          "sha256": "4f72fe58e01e27ceaea929b5b81e2ffe3de7f57f66b60e3f0c1b3b4ca54cb709",
+          "url": "https://github.com/techrote/sandmapsreference/blob/debc4a61c067f5759860d7f2b16004eeb6e0a59e/cybersand-canvases/2048x1024/original-industrial-transit-wide-axlewell-reverse-basin-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-176",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "debc4a61c067f5759860d7f2b16004eeb6e0a59e",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "b18b3f2f0bb6b16bae85f0a48bce62179cb244417089c048db5a8b06faa8e442",
+        "path": "cybersand-canvases/2048x1024/original-industrial-transit-wide-axlewell-reverse-basin-261121/setup-axlewell-reverse-basin.json",
+        "pr": 176,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "88fb454662e945121b4939a42bb87de7fe1af152",
+        "setup_sha256": "7287a270ceb52c1017ac1a0452859f7cddfadba1d610dc09d62bccdac8a9669c",
+        "url": "https://github.com/techrote/sandmapsreference/blob/debc4a61c067f5759860d7f2b16004eeb6e0a59e/cybersand-canvases/2048x1024/original-industrial-transit-wide-axlewell-reverse-basin-261121/setup-axlewell-reverse-basin.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr179",
+      "architectural_family": "linear_industry",
+      "construction_strategy": [
+        "Declare a primary process spine and a separate low or high recovery route.",
+        "Repeat structural bays with unequal functional stations and finite handoff interfaces.",
+        "Keep station entries and unused bays empty; add detail only after route verification."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "thermal"
+        ],
+        "connection_intents": [
+          "process_handoff",
+          "containment",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          100,
+          101,
+          117,
+          120
+        ],
+        "parts": [
+          "column_support",
+          "mechanical_housing",
+          "pipework",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "linear_chain",
+          "multi_level",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr179",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Stepped thermal retorts create a descending open/closed cadence.",
+        "negative_space_and_protection": "Preserve initial fluid separation, process voids and distinct stage thresholds.",
+        "repetition_and_asymmetry": "five clustered machinery sets with ascending free space and deliberately sparse lower works",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/179#issuecomment-7062460684",
+        "reviewed_commit": "525054ee0485a51ed9fd804e2d350249172d0d2b",
+        "source_authored_family": "original-industrial-hazard-wide",
+        "source_authored_route_grammar": {
+          "alternative": "high open-air and low maintenance return via shafts",
+          "main": "five descending process workfaces",
+          "obstruction": "a genuine upper-air barrier forces longer alternate path"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/525054ee0485a51ed9fd804e2d350249172d0d2b/cybersand-canvases/2048x1024/original-industrial-hazard-wide-larkspur-seventeen-cascade-retorts-261121/exemplar.json",
+        "source_motifs": [
+          "five descending terraces",
+          "paired unequal retorts",
+          "sealed quench housings",
+          "eccentric ash cyclone",
+          "unequal export bottlers"
+        ],
+        "support_relationships": "Grounded process vessels and transfers occupy unequal levels.",
+        "traversal_and_hierarchy": "Retort, sealed quench, ash cyclone and export form differentiated thermal stations."
+      },
+      "name": "Larkspur-17 Thermal Cascade Retorts",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.709591,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1488121,
+          "100": 157719,
+          "101": 245270,
+          "117": 53327,
+          "120": 2666,
+          "3": 7268,
+          "58": 140957,
+          "8": 1824
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 609031,
+        "rectangle_count": 1183,
+        "reference_image": {
+          "sha256": "e616aceb57558564a381cc97d1b28b8212804a2402c3fd54fc0eaa3eeb58ec78",
+          "url": "https://github.com/techrote/sandmapsreference/blob/525054ee0485a51ed9fd804e2d350249172d0d2b/cybersand-canvases/2048x1024/original-industrial-hazard-wide-larkspur-seventeen-cascade-retorts-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-179",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "525054ee0485a51ed9fd804e2d350249172d0d2b",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "a5e8ca1394af46f71eabc313b07bd99e6f5f087e1240b4147bbd3b8c87178608",
+        "path": "cybersand-canvases/2048x1024/original-industrial-hazard-wide-larkspur-seventeen-cascade-retorts-261121/setup.json",
+        "pr": 179,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "77af016dd59c93ffbdb20d1aecde6b43306825a1",
+        "setup_sha256": "53640683c247e6fa560e94e2ee4854872d6110ea566cd8217700c11f4dffbbe4",
+        "url": "https://github.com/techrote/sandmapsreference/blob/525054ee0485a51ed9fd804e2d350249172d0d2b/cybersand-canvases/2048x1024/original-industrial-hazard-wide-larkspur-seventeen-cascade-retorts-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "original-pr182",
+      "architectural_family": "racing_damage",
+      "construction_strategy": [
+        "Reserve the fast open route, the broken aperture and an independent recovery route.",
+        "Build different high and low support systems without healing intentional damage.",
+        "Place cues or repair pockets only outside the declared swept clearance."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "racing"
+        ],
+        "connection_intents": [
+          "route_join",
+          "service_access"
+        ],
+        "orientation": "landscape",
+        "palette_material_ids": [
+          49,
+          58,
+          62,
+          100,
+          101,
+          113,
+          117,
+          122
+        ],
+        "parts": [
+          "irregular_transition",
+          "viaduct_segment",
+          "passage_clearance",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "branch_rejoin",
+          "opposed_banks",
+          "open_span"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr182",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Two opposed racing knuckles create recognizable unequal decisions.",
+        "negative_space_and_protection": "Preserve unequal choices, race void and repair/event pockets.",
+        "repetition_and_asymmetry": "dense west timing and heavy two-knuckle bends alternating with open central sightline, smaller equipped undertrack workfaces and spare racing expansion voids",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/182#issuecomment-7061828584",
+        "reviewed_commit": "db7b0fe72c8f75451fd483d7297c0f3d30d5174a",
+        "source_authored_family": "Shearline Split-Lane Trials",
+        "source_authored_route_grammar": {
+          "interchanges": "bounded full-hull cut-throughs at west pit, A transfer, centre inspection, B infield and eastern rescue, plus alternate undertrack apertures",
+          "obstruction": "temporary inert [511,178,98,196] upper approach closure; all 30 sites still reachable at 31x27, shortest A approach→A crest 360→494 (+134) centre steps",
+          "risky_fast": "upper asymmetric crest around Knuckle A and reverse-camber Knuckle B with straight launch/rejoin approaches",
+          "sheltered": "two substantially lower, physically traversable bypasses through actual excavated slalom and service slots"
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/db7b0fe72c8f75451fd483d7297c0f3d30d5174a/cybersand-canvases/2048x1024/worldgroup-transit-shearline-split-lane-knuckle-bend-rally-261121/exemplar.json",
+        "source_motifs": [
+          "opposed asymmetrical S-shaped grounded racing knuckles",
+          "short amber-flagged risky upper crests",
+          "sheltered under-ridge rally bends",
+          "roof-rooted A right knuckle tendon",
+          "static eastern three-leg brake harp",
+          "four entered differently sized undertrack workfaces",
+          "recoverable broken eastern spur"
+        ],
+        "support_relationships": "Grounded contour and sheltered return infrastructure.",
+        "traversal_and_hierarchy": "Fast exposed turns and slower recovery branch and rejoin at distinct sites."
+      },
+      "name": "Shearline Knuckle-Bend",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.68078,
+        "extent": [
+          2048,
+          1024
+        ],
+        "material_cells": {
+          "0": 1427699,
+          "100": 387101,
+          "101": 23550,
+          "113": 1324,
+          "117": 83453,
+          "122": 944,
+          "49": 101564,
+          "58": 30046,
+          "62": 41471
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 669453,
+        "rectangle_count": 5488,
+        "reference_image": {
+          "sha256": "c0bd05e276a706b7199d329d64afb82877e561a0ba4069f9b5013df981826395",
+          "url": "https://github.com/techrote/sandmapsreference/blob/db7b0fe72c8f75451fd483d7297c0f3d30d5174a/cybersand-canvases/2048x1024/worldgroup-transit-shearline-split-lane-knuckle-bend-rally-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-182",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "db7b0fe72c8f75451fd483d7297c0f3d30d5174a",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "f095b06ddfeb05f537427e5857a99c2ed7cf92477f2156979e0567b9e7132769",
+        "path": "cybersand-canvases/2048x1024/worldgroup-transit-shearline-split-lane-knuckle-bend-rally-261121/setup.json",
+        "pr": 182,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "14f0d10665b6f1549271b156b7c6b33ed87c359e",
+        "setup_sha256": "c4d1a0032bba6dec4e6410cf2e95a05a8a755ea4da79a63f0611a759b316d3bf",
+        "url": "https://github.com/techrote/sandmapsreference/blob/db7b0fe72c8f75451fd483d7297c0f3d30d5174a/cybersand-canvases/2048x1024/worldgroup-transit-shearline-split-lane-knuckle-bend-rally-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr160",
+      "architectural_family": "vessel_dock",
+      "construction_strategy": [
+        "Reserve the whole dock void and a full-size hull-entry route.",
+        "Build unequal cradles or roof supports, then place the entered hull or housing.",
+        "Add service galleries and bounded repair details without filling damage or access openings."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "logistics"
+        ],
+        "connection_intents": [
+          "bank_handoff",
+          "service_access"
+        ],
+        "orientation": "portrait",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          62,
+          65,
+          68,
+          69,
+          76,
+          79,
+          100,
+          104,
+          117,
+          131
+        ],
+        "parts": [
+          "column_support",
+          "beam_truss",
+          "mechanical_housing",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "vertical_chain",
+          "opposed_banks",
+          "open_span"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr184",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Two unequal entered drydock cradles occupy opposing heights.",
+        "negative_space_and_protection": "Preserve both cradles, hoist/maintenance pockets and open shaft; no forced gallery claim.",
+        "repetition_and_asymmetry": "Dense upper ore and kilns, open central lift, dense dock A and caster, open offset bypass, concentrated lower drydock/quench and freight exit",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/184#issuecomment-7062923366",
+        "reviewed_commit": "e45f9794f318761db02fbe82ad623c2b1da96196",
+        "source_authored_family": "portrait/difficult",
+        "source_authored_route_grammar": {
+          "alternate": [
+            "Bypass high mouth",
+            "Right maintenance return",
+            "Bypass low mouth"
+          ],
+          "main": [
+            "West entry spawn",
+            "Ore window",
+            "Upper kiln inspection",
+            "Arc furnace face",
+            "Ladle platform",
+            "Dock A upper lip",
+            "Caster watch",
+            "Dock B upper lip",
+            "Quench watch",
+            "Freight inspection",
+            "East rim goal"
+          ],
+          "recovery": [
+            "Ore return gallery",
+            "Keel A inspection",
+            "Keel B inspection",
+            "Quench service",
+            "Lower shaft return"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/e45f9794f318761db02fbe82ad623c2b1da96196/cybersand-canvases/1024x2048/portrait-difficult-keelglass-vertical-twin-keels-261121/exemplar.json",
+        "source_motifs": [
+          "Two vertically separated and unequal excavated hull cradles",
+          "Continuous wide flyable rock-cut spine",
+          "Independent right-side branch-and-rejoin corridor",
+          "Twin sealed refractory furnace cores and suspended ladle",
+          "Dry return gantries and sealed quench tank",
+          "Material-cell hall thresholds sized for conservative Midge envelopes"
+        ],
+        "support_relationships": "Bank-founded cradle geometry supports an altitude-ordered foundry.",
+        "traversal_and_hierarchy": "Parallel source production becomes vertical alternating-bank process."
+      },
+      "name": "Keelglass Vertical Twin-Keel Works",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.477075,
+        "extent": [
+          1024,
+          2048
+        ],
+        "material_cells": {
+          "0": 1000498,
+          "100": 823332,
+          "104": 12608,
+          "117": 19045,
+          "131": 10960,
+          "3": 12768,
+          "58": 125762,
+          "62": 47666,
+          "65": 10007,
+          "68": 21003,
+          "69": 2502,
+          "76": 2890,
+          "79": 580,
+          "8": 7531
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 1096654,
+        "rectangle_count": 750,
+        "reference_image": {
+          "sha256": "7199e4acaa65a99a786f9df8a3daafd64bf0d08c6df8eeec2dfb24dc2ac759d1",
+          "url": "https://github.com/techrote/sandmapsreference/blob/e45f9794f318761db02fbe82ad623c2b1da96196/cybersand-canvases/1024x2048/portrait-difficult-keelglass-vertical-twin-keels-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "Central hoist void"
+            ],
+            "must_preserve_relations": [
+              "Dual cradles at unlike elevations and process chain"
+            ],
+            "safe_to_change": [
+              "Optional written bypass-claim correction, not geometry"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P184-DUAL-ALTITUDE-KEEL-CRADLES",
+          "observed_source_static": "Reviewer found real upper/lower cradles on opposite banks and correct furnace/caster/quench sequence.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/184#issuecomment-7062923366",
+          "state_id": "P184-DUAL-ALTITUDE-KEEL-CRADLES@e45f9794f318761db02fbe82ad623c2b1da96196"
+        },
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "Service pockets and hoist flight channel"
+            ],
+            "must_preserve_relations": [
+              "Quench to downstream freight and upper/lower cradle access"
+            ],
+            "safe_to_change": [
+              "None required"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P184-QUENCH-SERVICE-POCKETS",
+          "observed_source_static": "Reviewer explicitly calls upper/lower service pockets and central hoist void valuable set-piece sockets.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/184#issuecomment-7062923366",
+          "state_id": "P184-QUENCH-SERVICE-POCKETS@e45f9794f318761db02fbe82ad623c2b1da96196"
+        },
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "Side workshop and central hoist void"
+            ],
+            "must_preserve_relations": [
+              "18 exact 31×27 sites and existing connected paths"
+            ],
+            "safe_to_change": [
+              "Metadata/route evidence only"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P184-FORCED-SIDE-WORKSHOP-CLAIM",
+          "observed_source_static": "Reviewer measured 1906→1976, yet blocked shortest route stayed ~300 cells from named west bypass mouths; optional entry unproved.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/184#issuecomment-7062923366",
+          "state_id": "P184-FORCED-SIDE-WORKSHOP-CLAIM@e45f9794f318761db02fbe82ad623c2b1da96196"
+        }
+      ],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-184",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "e45f9794f318761db02fbe82ad623c2b1da96196",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "7d8775ba992138e8cfe3075a4d54a1607037e110da4a4a4bf6e53b7b1aa99345",
+        "path": "cybersand-canvases/1024x2048/portrait-difficult-keelglass-vertical-twin-keels-261121/setup.json",
+        "pr": 184,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "2dd367fdb8c930a2c9524ce8ae2cf5534a6332a0",
+        "setup_sha256": "1b8a3bf5f06082589c6321285b5971a8996a76970352d5cb2892cc7773aa7f86",
+        "url": "https://github.com/techrote/sandmapsreference/blob/e45f9794f318761db02fbe82ad623c2b1da96196/cybersand-canvases/1024x2048/portrait-difficult-keelglass-vertical-twin-keels-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr165",
+      "architectural_family": "freight_handoff",
+      "construction_strategy": [
+        "Reserve the central transfer void and at least one independent service route.",
+        "Place unequal founded or bank-attached receivers at distinct heights.",
+        "Connect only declared transfer interfaces; give each receiver an entered maintenance pocket."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "logistics"
+        ],
+        "connection_intents": [
+          "bank_handoff",
+          "process_handoff",
+          "service_access"
+        ],
+        "orientation": "portrait",
+        "palette_material_ids": [
+          58,
+          62,
+          100
+        ],
+        "parts": [
+          "column_support",
+          "beam_truss",
+          "mechanical_housing",
+          "service_gallery"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "vertical_chain",
+          "distributed",
+          "opposed_banks"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr193",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Unequal vertically staggered freight piers retain meaningful central material presence.",
+        "negative_space_and_protection": "Protect sparse edit bays, entered vessel, classifier mouths and lower dispatch.",
+        "repetition_and_asymmetry": "Unequal elevated ship, crane, utility, relay, sorter and low dispatch machines interspersed with longitudinal flight voids and unfurnished editing bays",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/193#issuecomment-7066007172",
+        "reviewed_commit": "54e2e2b4e9d6bd7113396cf6a2bc61409367cd44",
+        "source_authored_family": "portrait-001-industrial-transit",
+        "source_authored_route_grammar": {
+          "main": [
+            "Top approach",
+            "Freighter weather deck",
+            "Entered freighter hold",
+            "Cargo crane head",
+            "Handoff landing",
+            "Pier one control",
+            "Relay intake",
+            "Sorter crown",
+            "Twin-throat access",
+            "Dispatch arrival",
+            "Rail grade one",
+            "Rail grade two",
+            "Customs exit"
+          ],
+          "obstruction": "A real 55×70 cell barrier at [775,1120] lengthens Lower relay return to Twin-throat access 31×27 free-centre shortest path 511→649; every literal centre remains reachable",
+          "recovery": [
+            "Lower relay return",
+            "Cross-valley recovery",
+            "Deep recovery",
+            "Rail grade two",
+            "Customs exit"
+          ],
+          "upper": [
+            "Top approach",
+            "Cargo crane head",
+            "Sky utility entrance",
+            "Sky girder return",
+            "Relay upper balcony"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/54e2e2b4e9d6bd7113396cf6a2bc61409367cd44/cybersand-canvases/1024x2048/portrait-moderate-rookstrand-stacklock-261121/exemplar.json",
+        "source_motifs": [
+          "Entered upper-left freighter separated from independently placed crane",
+          "Four staggered grounded basalt freight teeth forming vertical stacklock",
+          "Long independent utility girder",
+          "Paired nonidentical sorter throats",
+          "Lower three-grade dispatch terminal"
+        ],
+        "support_relationships": "Different pier foundations, utility girder and relay supports.",
+        "traversal_and_hierarchy": "Upper vessel/crane, relay, twin sorter and lower customs retain a distributed chain."
+      },
+      "name": "Rookstrand Stacklock",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.648873,
+        "extent": [
+          1024,
+          2048
+        ],
+        "material_cells": {
+          "0": 1360786,
+          "100": 613649,
+          "58": 33118,
+          "62": 89599
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 736366,
+        "rectangle_count": 1847,
+        "reference_image": {
+          "sha256": "9ace7f34c78a0d32468b7036910c8a8fc344018693309f2be3a68c4e684c0798",
+          "url": "https://github.com/techrote/sandmapsreference/blob/54e2e2b4e9d6bd7113396cf6a2bc61409367cd44/cybersand-canvases/1024x2048/portrait-moderate-rookstrand-stacklock-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "Adjacent lower access/returns"
+            ],
+            "must_preserve_relations": [
+              "Upper vessel/crane → relay → twin classifier → customs"
+            ],
+            "safe_to_change": [
+              "Optional handoff cues, non-blocking"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P193-TWIN-SORTER-THROATS",
+          "observed_source_static": "Reviewer saw two distinct lower sorter throats, freight handoffs and credible separated support.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/193#issuecomment-7066007172",
+          "state_id": "P193-TWIN-SORTER-THROATS@54e2e2b4e9d6bd7113396cf6a2bc61409367cd44"
+        },
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "Side edit pockets and under-sorted recovery route"
+            ],
+            "must_preserve_relations": [
+              "Low maintenance/recovery separated from sorters"
+            ],
+            "safe_to_change": [
+              "None required"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P193-RECOVERY-EDIT-BAYS",
+          "observed_source_static": "Reviewer explicitly identified spare service bays and low voids as useful SWARM/GENTEK staging.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/193#issuecomment-7066007172",
+          "state_id": "P193-RECOVERY-EDIT-BAYS@54e2e2b4e9d6bd7113396cf6a2bc61409367cd44"
+        }
+      ],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-193",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "54e2e2b4e9d6bd7113396cf6a2bc61409367cd44",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "208167fa701d61328e0be8c3b67d2719690c4b702676b6fa91dfdbd0ac01f55c",
+        "path": "cybersand-canvases/1024x2048/portrait-moderate-rookstrand-stacklock-261121/setup.json",
+        "pr": 193,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "90be418980f24238f5fd8764b812fba9a089030a",
+        "setup_sha256": "6ba97d5ab0efad111e9f7e63d7f6162e7eca6513bd0091ca358ff093d4a94d0f",
+        "url": "https://github.com/techrote/sandmapsreference/blob/54e2e2b4e9d6bd7113396cf6a2bc61409367cd44/cybersand-canvases/1024x2048/portrait-moderate-rookstrand-stacklock-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr37",
+      "architectural_family": "freight_handoff",
+      "construction_strategy": [
+        "Reserve the central transfer void and at least one independent service route.",
+        "Place unequal founded or bank-attached receivers at distinct heights.",
+        "Connect only declared transfer interfaces; give each receiver an entered maintenance pocket."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "science_fiction"
+        ],
+        "connection_intents": [
+          "bank_handoff",
+          "service_access"
+        ],
+        "orientation": "portrait",
+        "palette_material_ids": [
+          58,
+          62,
+          100
+        ],
+        "parts": [
+          "beam_truss",
+          "mechanical_housing",
+          "service_gallery",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "vertical_chain",
+          "opposed_banks",
+          "branch_rejoin"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop."
+      ],
+      "id": "goldmaps-pr197",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "Opposed raised bascule leaves and an entered indexed rotor make a distinctive vertical freight mechanism.",
+        "negative_space_and_protection": "Preserve open bascule throat, under-invert space and unlike mechanisms.",
+        "repetition_and_asymmetry": "Three landmark-density islands separated by flight channel, with dense lower maintenance and deliberate open shaft",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/197#issuecomment-7067659564",
+        "reviewed_commit": "3b0253d387578bda3af00a6edc97833219df64a9",
+        "source_authored_family": "portrait-transfer-industrial-transit",
+        "source_authored_route_grammar": {
+          "main": [
+            "Western Approach",
+            "Mooring Customs Beacon",
+            "Entered Freight Hold",
+            "Quay Manifest",
+            "Cargo Cage",
+            "Channel Throat",
+            "Entered Rotor",
+            "Freight Frog",
+            "Customs Examination"
+          ],
+          "recovery": [
+            "West Lower Winch",
+            "West Mid Service",
+            "West Under-Invert",
+            "Central Recovery",
+            "Dispatch Repair"
+          ],
+          "sky": [
+            "Ferry Bridge",
+            "Crane Sky Hook",
+            "West Leaf Reveal",
+            "East Leaf Reveal"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/3b0253d387578bda3af00a6edc97833219df64a9/cybersand-canvases/1024x2048/portrait-difficult-silt-meridian-hingevault-261121/exemplar.json",
+        "source_motifs": [
+          "opposing unequal bascule leaves and rooted hinge brakes",
+          "entered rail-ferry and independent hoist cage",
+          "ten-spoke wagon indexer facing a tall shaft",
+          "undercut machinery return"
+        ],
+        "support_relationships": "Wall-rooted raised leaves; hinge housings; separate ship and crane.",
+        "traversal_and_hierarchy": "Vertical reciprocal freight handoffs with entered customs and service recovery."
+      },
+      "name": "Silt Meridian Hingevault",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.719325,
+        "extent": [
+          1024,
+          2048
+        ],
+        "material_cells": {
+          "0": 1508534,
+          "100": 290443,
+          "58": 104191,
+          "62": 193984
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 588618,
+        "rectangle_count": 3528,
+        "reference_image": {
+          "sha256": "2b134e390a0d6cf5ae2c725e4cef0aad378b80873ccf966eecce2b96153557b7",
+          "url": "https://github.com/techrote/sandmapsreference/blob/3b0253d387578bda3af00a6edc97833219df64a9/cybersand-canvases/1024x2048/portrait-difficult-silt-meridian-hingevault-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "Central V-throat flight space"
+            ],
+            "must_preserve_relations": [
+              "Ferry/crane → paired bascule → ten-spoke rotor → rail"
+            ],
+            "safe_to_change": [
+              "Optional future static custody signage"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P197-OPPOSED-BASCULE-LEAVES",
+          "observed_source_static": "Reviewer directly inspected 1:1 crop and found distinctly braced opposing leaf frames and hinge houses, unlike generic ramps.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/197#issuecomment-7067659564",
+          "state_id": "P197-OPPOSED-BASCULE-LEAVES@3b0253d387578bda3af00a6edc97833219df64a9"
+        },
+        {
+          "bounds": null,
+          "constraints": {
+            "do_not_fill": [
+              "West service recesses and open shaft"
+            ],
+            "must_preserve_relations": [
+              "Lower under-invert ↔ customs/departure relationship"
+            ],
+            "safe_to_change": [
+              "None required"
+            ]
+          },
+          "evidence_window_is_edit_mask": false,
+          "feature_id": "P197-UNDERINVERT-RESERVE",
+          "observed_source_static": "Reviewer identified service recesses and central air as useful and independently accessible.",
+          "review_url": "https://github.com/techrote/sandmapsreference/pull/197#issuecomment-7067659564",
+          "state_id": "P197-UNDERINVERT-RESERVE@3b0253d387578bda3af00a6edc97833219df64a9"
+        }
+      ],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-197",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "3b0253d387578bda3af00a6edc97833219df64a9",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "1beba906b4087df0ba337d8efeda561b32bfcddc6b6b65bec6c36ac8f8edc58a",
+        "path": "cybersand-canvases/1024x2048/portrait-difficult-silt-meridian-hingevault-261121/setup.json",
+        "pr": 197,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "280b63cf36c58df9f2c22e2c25142204cc48f004",
+        "setup_sha256": "7ec7f34816e66bb1f384e198bce6ec41c5ef8b89e601b1daadcf219ff393a67e",
+        "url": "https://github.com/techrote/sandmapsreference/blob/3b0253d387578bda3af00a6edc97833219df64a9/cybersand-canvases/1024x2048/portrait-difficult-silt-meridian-hingevault-261121/setup.json"
+      }
+    },
+    {
+      "ancestry_group": "ancestry-pr135",
+      "architectural_family": "racing_damage",
+      "construction_strategy": [
+        "Reserve the fast open route, the broken aperture and an independent recovery route.",
+        "Build different high and low support systems without healing intentional damage.",
+        "Place cues or repair pockets only outside the declared swept clearance."
+      ],
+      "facets": {
+        "character": [
+          "industrial",
+          "damaged"
+        ],
+        "connection_intents": [
+          "bank_handoff",
+          "route_join"
+        ],
+        "orientation": "portrait",
+        "palette_material_ids": [
+          3,
+          8,
+          58,
+          62,
+          65,
+          68,
+          69,
+          76,
+          79,
+          100,
+          104,
+          117,
+          131
+        ],
+        "parts": [
+          "beam_truss",
+          "viaduct_segment",
+          "irregular_transition",
+          "passage_clearance"
+        ],
+        "scale": "district",
+        "suggested_material_roles": [
+          "structure",
+          "detail"
+        ],
+        "topologies": [
+          "opposed_banks",
+          "open_span",
+          "parallel_lanes"
+        ]
+      },
+      "failure_modes": [
+        "Replacing intentional empty space with undirected detail.",
+        "Treating a decorative mechanism as demonstrated native machinery.",
+        "Inferring an editable mask from a reference crop.",
+        "Repairing a deliberately broken span destroys the original route/damage distinction."
+      ],
+      "id": "goldmaps-pr207",
+      "interpreted": {
+        "authority": "Curated architectural interpretation of cited source review and source-authored metadata; not native attachment, strength or actor-motion proof",
+        "macro_composition": "An intentionally broken upper haul and a separate founded lower truss remain visibly different.",
+        "negative_space_and_protection": "Protect the broken aperture and whole-hull portals; do not assert continuous upper cargo service.",
+        "repetition_and_asymmetry": "Alternating dense left-hand ore/furnace/roller clusters and right-hand suspended ladle/quench groups, separated by two airy distinct fault crossings",
+        "review_url": "https://github.com/techrote/sandmapsreference/pull/207#issuecomment-7071146006",
+        "reviewed_commit": "e30fc44f5be60ab208b1fe0ed69c7139da0bfd79",
+        "source_authored_family": "portrait/moderate",
+        "source_authored_route_grammar": {
+          "lower": [
+            "Lower switchback landing",
+            "Trestle western footing",
+            "Trestle eastern footing"
+          ],
+          "main": [
+            "West rim arrival",
+            "Ore intake watch",
+            "Enclosed furnace face",
+            "Suspended ladle watch",
+            "Cableway high crossing",
+            "Switchback crown",
+            "Lower switchback landing",
+            "Trestle eastern footing",
+            "Caster upper roller",
+            "Caster lower roller",
+            "Quench valve house",
+            "Exit freight goal"
+          ],
+          "recovery": [
+            "Furnace relief return",
+            "Caster maintenance",
+            "Quench recovery balcony",
+            "Dispatch freight loft"
+          ],
+          "upper": [
+            "Cableway upper launch",
+            "Cableway east arrival",
+            "Switchback crown"
+          ]
+        },
+        "source_metadata_url": "https://github.com/techrote/sandmapsreference/blob/e30fc44f5be60ab208b1fe0ed69c7139da0bfd79/cybersand-canvases/1024x2048/portrait-moderate-spindlebreak-switchback-trestleworks-261121/exemplar.json",
+        "source_motifs": [
+          "Unequal basalt fault shoulders and alternating rooted working terraces",
+          "Opposed upper rooted sheaves, paired tension ropes, torn facing cable couplings and separated light transfer-deck halves with an explicitly NONOPERATIONAL high through-haul",
+          "Separate lower triangular compression-truss bays, grounded pier load paths, unlike upper tension cables, and two entered Midge bearing gates",
+          "Two unlike enclosed static thermal/fluid process vessels",
+          "Three unequal casting rams and a departure cable crane",
+          "Different-sized entered ore, inspection and freight cabins",
+          "Matched amber coupling sockets terminate just outside the 61-cell open high cable exchange seam, making a cable FAILURE site visibly deliberate instead of claiming intact bank-to-bank haul continuity"
+        ],
+        "support_relationships": "Upper tension fragments contrast with deep lower compression braces.",
+        "traversal_and_hierarchy": "Two bank-crossing systems carry distinct damage, route and recovery meanings."
+      },
+      "name": "Spindlebreak repaired portrait",
+      "native_module_ids": [],
+      "observed": {
+        "empty_fraction": 0.590179,
+        "extent": [
+          1024,
+          2048
+        ],
+        "material_cells": {
+          "0": 1237695,
+          "100": 549280,
+          "104": 26237,
+          "117": 32312,
+          "131": 17467,
+          "3": 2542,
+          "58": 132939,
+          "62": 34990,
+          "65": 15509,
+          "68": 38826,
+          "69": 4388,
+          "76": 672,
+          "79": 1650,
+          "8": 2645
+        },
+        "method": "Frozen exact-source material replay; imported measurements, not a new runtime execution",
+        "occupied_cells": 859457,
+        "rectangle_count": 1908,
+        "reference_image": {
+          "sha256": "6442b1def63123aa187bd3952297bed03df57f4c8c665e51fa17da522a361d21",
+          "url": "https://github.com/techrote/sandmapsreference/blob/e30fc44f5be60ab208b1fe0ed69c7139da0bfd79/cybersand-canvases/1024x2048/portrait-moderate-spindlebreak-switchback-trestleworks-261121/overview.png"
+        },
+        "source_static_status": "PASS"
+      },
+      "protected_features": [],
+      "qualification": {
+        "direct_module_import": "NOT_ADMITTED_BY_RETRIEVAL",
+        "gold": "RECOMMENDED_NOT_ACCEPTED",
+        "graphical": "NOT_ESTABLISHED_BY_HEADLESS",
+        "native_engine": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "native_headless": "QUALIFIED_HEADLESS",
+        "native_policy": "ADMITTED",
+        "native_policy_refusal": null,
+        "native_receipt_id": "gold-207",
+        "native_windows_run": "45217389899",
+        "owner_acceptance": "PENDING",
+        "policy_descendant_identity": null,
+        "schema": "ADMITTED"
+      },
+      "source": {
+        "commit": "e30fc44f5be60ab208b1fe0ed69c7139da0bfd79",
+        "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+        "material_plane_sha256": "5110336538bb8be20fe2c6b70d689b658faaf2c531f2f73acc7cb8d161ebccb0",
+        "path": "cybersand-canvases/1024x2048/portrait-moderate-spindlebreak-switchback-trestleworks-261121/setup.json",
+        "pr": 207,
+        "repository": "techrote/sandmapsreference",
+        "setup_git_blob": "afc69cc6d0b26761c6e722c5b79a46aac5d79d58",
+        "setup_sha256": "40393e8d36cad166cebf11987ef6d06b1c2a7f567588a60534491fbae5195e7f",
+        "url": "https://github.com/techrote/sandmapsreference/blob/e30fc44f5be60ab208b1fe0ed69c7139da0bfd79/cybersand-canvases/1024x2048/portrait-moderate-spindlebreak-switchback-trestleworks-261121/setup.json"
+      }
+    }
+  ],
+  "comparative_family_links": [
+    {
+      "donor_head": "e17996dd8a2e1044550a60e75f45780cb6ae868d",
+      "donor_pr": 125,
+      "id": "ancestry-pr125",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "9e3e80d5f6dbe1e307e0d4afc1460402328e9cd3",
+      "portrait_pr": 185,
+      "repair_head": "d139f2a2868daa4b09d5e39c71d3638190dda705",
+      "repair_pr": 202
+    },
+    {
+      "donor_head": "ed15c1b7d8be98548d087b247ed54b4a70498b01",
+      "donor_pr": 177,
+      "id": "ancestry-pr177",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "598e8792b32a4922008b6d3dcb9208d21f03e477",
+      "portrait_pr": 186,
+      "repair_head": "922a27926ea7338e9a1ce09fc64222b1094a9737",
+      "repair_pr": 203
+    },
+    {
+      "donor_head": "cfbeddaccdc81a8e1dcfa924b4c089dbbe65cf41",
+      "donor_pr": 143,
+      "id": "ancestry-pr143",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "e0742d30dec30cf48d002abdbc1973928dcc9388",
+      "portrait_pr": 188,
+      "repair_head": "d5c37d371e004e84d5c8cd77b2ae29b25a3cc0c9",
+      "repair_pr": 204
+    },
+    {
+      "donor_head": "5d97133f3b33bf5b29f92eb65ccf7c884d9e5804",
+      "donor_pr": 175,
+      "id": "ancestry-pr175",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "089d2cdb6b06b40d53ce9c4c83ef34192567454d",
+      "portrait_pr": 190,
+      "repair_head": "6b58eec39cabcc2b65f868c46265c454615d9ab7",
+      "repair_pr": 205
+    },
+    {
+      "donor_head": "b28196503b51b88b129076f2808ec4920c2d7c40",
+      "donor_pr": 174,
+      "id": "ancestry-pr174",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "52820f48fb1f5dca10342aa47d89abaf5c281595",
+      "portrait_pr": 191,
+      "repair_head": "88e6364bd50d1cb1ee017d2c74b5b1e3eef9a8b5",
+      "repair_pr": 206
+    },
+    {
+      "donor_head": "a3f9962a0107d07bca1116940fde1c825ac76a4f",
+      "donor_pr": 135,
+      "id": "ancestry-pr135",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "101203a124f0ee3ac5613d38956e72f0faae8685",
+      "portrait_pr": 192,
+      "repair_head": "e30fc44f5be60ab208b1fe0ed69c7139da0bfd79",
+      "repair_pr": 207
+    },
+    {
+      "donor_head": "99616a8c8d2475ad4145a8489c0cc8850b1bd783",
+      "donor_pr": 124,
+      "id": "ancestry-pr124",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "64fd7061385fd96e5673484e1a12a70e11333386",
+      "portrait_pr": 196,
+      "repair_head": "94eccd23024254fbbfb02cd6cdfef8753dd89c3c",
+      "repair_pr": 208
+    },
+    {
+      "donor_head": "cf47967470e402693957ab04ebfb3fe6d787d943",
+      "donor_pr": 160,
+      "id": "ancestry-pr160",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "e45f9794f318761db02fbe82ad623c2b1da96196",
+      "portrait_pr": 184,
+      "repair_head": null,
+      "repair_pr": null
+    },
+    {
+      "donor_head": "debc4a61c067f5759860d7f2b16004eeb6e0a59e",
+      "donor_pr": 176,
+      "id": "ancestry-pr176",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "fdda5cc98885bbe1ef101a7fa7ef42466962a141",
+      "portrait_pr": 187,
+      "repair_head": null,
+      "repair_pr": null
+    },
+    {
+      "donor_head": "c6a83f6fa0545fc3a29058341d14d7cf2f412c29",
+      "donor_pr": 146,
+      "id": "ancestry-pr146",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "54be92a43375f1089508dd610bbfdce0f6af74d2",
+      "portrait_pr": 189,
+      "repair_head": null,
+      "repair_pr": null
+    },
+    {
+      "donor_head": "eb3535db571ac64cca8b1d71c804199bfca1b2a8",
+      "donor_pr": 165,
+      "id": "ancestry-pr165",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "54e2e2b4e9d6bd7113396cf6a2bc61409367cd44",
+      "portrait_pr": 193,
+      "repair_head": null,
+      "repair_pr": null
+    },
+    {
+      "donor_head": "e2b53fb95ea93576afdc15c114e29b853c4b2c05",
+      "donor_pr": 37,
+      "id": "ancestry-pr37",
+      "interpretation": "Ancestry does not imply redundant teaching value; preserve aspect-transfer distinctions.",
+      "portrait_head": "3b0253d387578bda3af00a6edc97833219df64a9",
+      "portrait_pr": 197,
+      "repair_head": null,
+      "repair_pr": null
+    }
+  ],
+  "corpus_id": "world-steer-goldmaps-knowledge.v1",
+  "held_out_evaluation": {
+    "development_families": [
+      "freight_handoff",
+      "linear_industry",
+      "machine_city",
+      "nested_geology",
+      "racing_damage",
+      "settlement",
+      "suspended_industry"
+    ],
+    "held_out_families": [
+      "bioindustrial",
+      "civic",
+      "vessel_dock"
+    ],
+    "kind": "family_excluded_retrieval_transfer",
+    "limitation": "All cards were available to the curator. Held-out means excluded from retrieval candidates and ranking development fixtures, not unfamiliar to the annotator or a blind model-quality study."
+  },
+  "intervention_decisions": [
+    {
+      "arm": "B1",
+      "candidate": {
+        "head": "c242f3c267c6bd8d3a0d9d23642409ac0584a484",
+        "pr": 212
+      },
+      "changed_cells": 3283,
+      "decision": "POSITIVE_UPLIFT",
+      "name": "Keelbone Switchback Recovery Tenements",
+      "original": {
+        "head": "eb00a9a55864dfb6d3e076e60ba4684b397228fc",
+        "pr": 152
+      }
+    },
+    {
+      "arm": "B2",
+      "candidate": {
+        "head": "65d461c9b1d7444813ca8362d7e3425314e8f277",
+        "pr": 210
+      },
+      "changed_cells": 5195,
+      "decision": "POSITIVE_UPLIFT",
+      "name": "Umbra Rotor Islet Works",
+      "original": {
+        "head": "49cdac502d861a8c70e95a1773f5053c321a04c2",
+        "pr": 167
+      }
+    },
+    {
+      "arm": "B3",
+      "candidate": {
+        "head": "7c13fbde3664047311b483463ece0e36f3d42e17",
+        "pr": 213
+      },
+      "changed_cells": 2376,
+      "decision": "INCONCLUSIVE_GAMEPLAY_RACING",
+      "name": "Brackenfold Tri-Vault Boreworks",
+      "original": {
+        "head": "3a2057dd56804f87d2fec701007ecc277601894f",
+        "pr": 170
+      }
+    },
+    {
+      "arm": "C1",
+      "candidate": {
+        "head": "1266ca2265db3dc574566a8047ac8170c58ae95c",
+        "pr": 159
+      },
+      "changed_cells": 0,
+      "decision": "CORRECT_ABSTENTION",
+      "name": "Keelbone Covered Spine",
+      "original": {
+        "head": "1266ca2265db3dc574566a8047ac8170c58ae95c",
+        "pr": 159
+      }
+    },
+    {
+      "arm": "C2",
+      "candidate": {
+        "head": "c797722c9788263cb157d48d30eefd613a832efd",
+        "pr": 150
+      },
+      "changed_cells": 0,
+      "decision": "CORRECT_ABSTENTION",
+      "name": "Mireward Censer Loop",
+      "original": {
+        "head": "c797722c9788263cb157d48d30eefd613a832efd",
+        "pr": 150
+      }
+    },
+    {
+      "arm": "C3",
+      "candidate": {
+        "head": "3b0253d387578bda3af00a6edc97833219df64a9",
+        "pr": 197
+      },
+      "changed_cells": 0,
+      "decision": "CORRECT_ABSTENTION",
+      "name": "Silt Meridian Hingevault",
+      "original": {
+        "head": "3b0253d387578bda3af00a6edc97833219df64a9",
+        "pr": 197
+      }
+    },
+    {
+      "arm": "D1",
+      "candidate": {
+        "head": "693574b7afce437a4cb008bd2fa200f6256dcc87",
+        "pr": 214
+      },
+      "changed_cells": 15807,
+      "decision": "ASSESSOR_DISAGREEMENT",
+      "name": "Orthant Rift Needle",
+      "original": {
+        "head": "598e8792b32a4922008b6d3dcb9208d21f03e477",
+        "pr": 186
+      },
+      "reference": {
+        "head": "922a27926ea7338e9a1ce09fc64222b1094a9737",
+        "pr": 203
+      }
+    },
+    {
+      "arm": "D2",
+      "candidate": {
+        "head": "cd1e0192a709e54dc63681e00b0802716398ec1f",
+        "pr": 211
+      },
+      "changed_cells": 7692,
+      "decision": "REFERENCE_PREFERRED_OVERALL",
+      "name": "Warden Gashlift",
+      "original": {
+        "head": "64fd7061385fd96e5673484e1a12a70e11333386",
+        "pr": 196
+      },
+      "reference": {
+        "head": "94eccd23024254fbbfb02cd6cdfef8753dd89c3c",
+        "pr": 208
+      }
+    }
+  ],
+  "negative_interventions": [
+    {
+      "accepted_positive_example": false,
+      "failure_reasons": [
+        "19x15 normal sites unreachable.",
+        "19x15 obstruction exception set changed: ['Machine transit', 'Press receiver', 'Repair ward']",
+        "19x15 frozen route unreachable: original-unblocked-shortest",
+        "19x15 frozen route unreachable: original-blocked-shortest",
+        "23x19 normal sites unreachable.",
+        "23x19 obstruction exception set changed: ['Machine transit', 'Press receiver', 'Repair ward']",
+        "23x19 frozen route unreachable: original-unblocked-shortest",
+        "23x19 frozen route unreachable: original-blocked-shortest",
+        "31x27 normal sites unreachable.",
+        "31x27 obstruction exception set changed: ['Machine transit', 'Press receiver', 'Repair ward']",
+        "31x27 frozen route unreachable: original-unblocked-shortest",
+        "31x27 frozen route unreachable: original-blocked-shortest"
+      ],
+      "id": "B1-attempt-001",
+      "source_head": "eb00a9a55864dfb6d3e076e60ba4684b397228fc",
+      "source_pr": 152
+    },
+    {
+      "accepted_positive_example": false,
+      "failure_reasons": [
+        "19x15 obstruction exception set changed: ['Machine transit', 'Press receiver', 'Repair ward']",
+        "19x15 frozen route unreachable: original-blocked-shortest",
+        "23x19 obstruction exception set changed: ['Machine transit', 'Press receiver', 'Repair ward']",
+        "23x19 frozen route unreachable: original-blocked-shortest",
+        "31x27 obstruction exception set changed: ['Machine transit', 'Press receiver', 'Repair ward']",
+        "31x27 frozen route unreachable: original-blocked-shortest"
+      ],
+      "id": "B1-attempt-002",
+      "source_head": "eb00a9a55864dfb6d3e076e60ba4684b397228fc",
+      "source_pr": 152
+    },
+    {
+      "accepted_positive_example": false,
+      "failure_reasons": [
+        "31x27 normal sites unreachable.",
+        "31x27 obstruction exception set changed: ['Central basal workshop', 'Central bypass wicket', 'Central low relay', 'Central roof control', 'Central saltfold beacon', 'Central sub-bore', 'East basal workshop', 'East bypass wicket', 'East ceiling laboratory', 'East collector', 'East condenser arm', 'East foundry return', 'East low catch', 'East lower approach', 'East return elbow', 'East upper throat', 'Mid seam low', 'North tri-vault throat', 'South tri-vault bypass', 'Third vault low', 'Third vault overflight', 'Triple vault skylane']",
+        "31x27 frozen route unreachable: original-blocked-alternate-sequence"
+      ],
+      "id": "B3-attempt-001",
+      "source_head": "3a2057dd56804f87d2fec701007ecc277601894f",
+      "source_pr": 170
+    },
+    {
+      "accepted_positive_example": false,
+      "failure_reasons": [
+        "31x27 normal sites unreachable.",
+        "31x27 obstruction exception set changed: ['Central basal workshop', 'Central bypass wicket', 'Central low relay', 'Central roof control', 'Central saltfold beacon', 'Central sub-bore', 'East basal workshop', 'East bypass wicket', 'East ceiling laboratory', 'East collector', 'East condenser arm', 'East foundry return', 'East low catch', 'East lower approach', 'East return elbow', 'East upper throat', 'Mid seam low', 'North tri-vault throat', 'Third vault low', 'Third vault overflight', 'Triple vault skylane']",
+        "31x27 frozen route unreachable: original-blocked-alternate-sequence"
+      ],
+      "id": "B3-attempt-002",
+      "source_head": "3a2057dd56804f87d2fec701007ecc277601894f",
+      "source_pr": 170
+    },
+    {
+      "accepted_positive_example": false,
+      "failure_reasons": [
+        "Changed-cell cap exceeded."
+      ],
+      "id": "D1-attempt-001",
+      "source_head": "598e8792b32a4922008b6d3dcb9208d21f03e477",
+      "source_pr": 186
+    }
+  ],
+  "refused_originals": [
+    {
+      "code": "malformed_policy",
+      "detail": "bad magic",
+      "head": "7ff90c11a3839e42371f0fef5ac3c783ab2a8d05",
+      "pr": 155
+    },
+    {
+      "code": "malformed_policy",
+      "detail": "bad magic",
+      "head": "c1bd6fcf2cb4c002aa7906a13543a0a5e4af8f2b",
+      "pr": 183
+    }
+  ],
+  "schema_version": "cybersand.architectural-design-cards.v1",
+  "status": "DRAFT_HOLD",
+  "usage_limits": [
+    "Knowledge is context, never permission to write World cells.",
+    "Original source, policy descendants, native qualification and owner preference are separate identities.",
+    "A compatible local module must be separately harvested and validated by the native module host.",
+    "Source metadata and curator roles are interpretations; unknown measured features remain unknown.",
+    "No image, full Setup, frozen training split or provider credential is included."
+  ]
+}

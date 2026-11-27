@@ -9,6 +9,8 @@ import io
 import json
 import os
 from pathlib import Path
+import re
+import subprocess
 import tempfile
 import tarfile
 import unittest
@@ -169,6 +171,55 @@ class InventoryAndIdentity(unittest.TestCase):
         reducer = c.reducer_budget()
         self.assertGreaterEqual(reducer['job_minutes'], reducer['total_stage_minutes'])
         self.assertGreaterEqual(reducer['readback_minutes'] * 60, 6 * c.policy.watchdog_seconds('godot_metadata_seconds'))
+
+    def test_actual_workflow_runtime_download_is_in_each_parent_budget(self):
+        workflow = (c.ROOT / '.github/workflows/palette-shader-qualification.yml').read_text()
+        for platform, job, following in (('linux', 'linux', 'windows'), ('win32', 'windows', 'readback')):
+            block = workflow.split('\n  ' + job + ':\n', 1)[1].split('\n  ' + following + ':\n', 1)[0]
+            actual_metadata = len(re.findall(r'timeout-minutes: \$\{\{ matrix.metadata_step_minutes \}\}', block))
+            self.assertIn('name: palette-lfs-runtime-${{ github.run_id }}-${{ github.run_attempt }}', block)
+            for row in c.hosted_plan()['include']:
+                if row['platform'] == platform:
+                    self.assertEqual(row['metadata_steps'], actual_metadata + 1,
+                                     'Retain every real metadata step and the existing scheduling reserve')
+        plan = workflow.split('\n  plan:\n', 1)[1].split('\n  linux:\n', 1)[0]
+        parent = int(re.search(r'^    timeout-minutes: (\d+)$', plan, re.M).group(1))
+        steps = sum(int(value) for value in re.findall(r'^        timeout-minutes: (\d+)$', plan, re.M))
+        self.assertGreaterEqual(parent * 60, steps * 60 + c.policy.watchdog_seconds('aggregate_headroom_seconds'))
+
+    def test_dependency_preparation_refuses_missing_attempt_before_any_download(self):
+        with tempfile.TemporaryDirectory() as directory, mock.patch.object(runner, 'git', return_value=b'a' * 40), \
+                mock.patch.object(runner.subprocess, 'run') as child:
+            output = Path(directory) / 'evidence'
+            status = runner.prepare_dependencies(output, 'a' * 40, Path(directory) / 'godot.zip')
+            self.assertEqual(status, 1)
+            child.assert_not_called()
+            self.assertIn('same-attempt', json.loads((output / 'preparation.json').read_text())['error'])
+
+    def test_invalid_runtime_artifact_never_falls_back_to_service_or_engine(self):
+        commands = []
+        def refused(command, **kwargs):
+            commands.append(command)
+            self.assertEqual(command[2], 'install')
+            self.assertTrue(command[1].endswith('lfs_runtime_artifact.py'))
+            self.assertEqual(command[command.index('--run-id') + 1], '12345')
+            self.assertEqual(command[command.index('--attempt') + 1], '2')
+            self.assertEqual(command.count('--available'), 4)
+            self.assertEqual(command.count('--include'), 2)
+            selected = {command[index + 1] for index, value in enumerate(command) if value == '--include'}
+            self.assertEqual(selected, runner.runtime_paths('win32'))
+            self.assertEqual(kwargs['timeout'], c.policy.watchdog_seconds('dependency_prepare_seconds'))
+            raise subprocess.CalledProcessError(1, command)
+        with tempfile.TemporaryDirectory() as directory, mock.patch.object(runner, 'git', return_value=b'a' * 40), \
+                mock.patch.object(runner.sys, 'platform', 'win32'), mock.patch.object(runner.subprocess, 'run', side_effect=refused):
+            output = Path(directory) / 'evidence'
+            status = runner.prepare_dependencies(output, 'a' * 40, Path(directory) / 'godot.zip',
+                                                 lfs_artifact=Path(directory) / 'wrong-artifact', run_id='12345', attempt=2)
+            self.assertEqual(status, 1)
+            self.assertEqual(len(commands), 1)
+            report = json.loads((output / 'preparation.json').read_text())
+            self.assertEqual(report['commands'][0]['status'], 'failed')
+            self.assertEqual(report['commands'][0]['receipt'], 'lfs-install.json')
 
     def test_scale_cannot_silently_shrink_or_overbook_hosted_parent(self):
         with mock.patch.dict(os.environ, {'CYBERSAND_CI_WATCHDOG_SCALE': '.5'}):

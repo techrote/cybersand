@@ -1,0 +1,217 @@
+{
+  "artifacts": {
+    "console_sha256": "408aa5cbdd953269c13a0fb11ecd891d050259823eeb21dfa3e9615f01f84a79",
+    "execution_receipt_sha256": "6ce8b2298f561597c22c794dfa5a836f80280ded86e6232b64560090523ed5bd",
+    "original_evidence_directory": "/workspace/scratch/befe4151f3cf/ambient-evidence/personalities/run-01",
+    "report_sha256": "951b457382b15f622c05f4f57ccd2f056082f72e800e291915823361c8280b99"
+  },
+  "disposition": "passed-development-evidence-review",
+  "execution_source": {
+    "clean_commit_qualification": false,
+    "fixture_path": "godot/tests/test_ambient_personalities_native.gd",
+    "fixture_sha256": "ff3095cd90955ccc87b0cd398e086c9ca63eeabf8b7c4176860ec56a1ce82f2e",
+    "head": "c63cea9ef10d21f264c9a235437f7fd40acb1072",
+    "listed_project_input_sha256": {
+      "addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+      "data/ambient/profiles.json": "f6b36b8af1b183a8368a8fe2466e1d53797314aca8e7f0c6bf1a197e57163c6f",
+      "scripts/ambient/ambient_actuator.gd": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef",
+      "scripts/ambient/ambient_engine.gd": "4c05449d0390782ab4f2427e3f1d03ca1f8c9fbee8ac54cf132894c7638b6834",
+      "scripts/ambient/ambient_modules.gd": "6077e1aff117747c2217a20cd698cda587f9dc47434d8f63e0ee616cac33c2f1",
+      "scripts/ambient/ambient_perception.gd": "8b76fd57be2eb79efeb316b32e544a42663c80b9aa3dae7f9fc697c03089f624",
+      "scripts/ambient/ambient_profile.gd": "cd0233dc4863a6acad9ff74feeb871e4766714e68bbac22b11712353a2141157",
+      "scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+      "scripts/physical_actor_rig.gd": "183fab96f2fd8a33694ff8bad6c2ae074548ce24b6d4a0a908f1b8e38b376ed2",
+      "scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+      "scripts/physical_actor_session.gd": "edb16c4fa1c7915baa24f1a7e0f5012584dfdea5272e15b877a1fa9631df48c7",
+      "scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+      "scripts/workbench_actor_catalog.gd": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7",
+      "scripts/workbench_actor_control.gd": "342a925a2ba0df06599768879fbb04e9f687dac21c0d72147cb1253b51c0cbff",
+      "scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+      "tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json": "7c7c13125fcbf4e6f07317efa2190656840417c8ce328820adb7dfea7ba9f78e",
+      "tests/test_ambient_personalities_native.gd": "ff3095cd90955ccc87b0cd398e086c9ca63eeabf8b7c4176860ec56a1ce82f2e"
+    },
+    "working_tree_delta_at_execution": " M docs/research/ambient-001/evidence/native-motion-trajectories.csv\n M docs/research/ambient-001/evidence/qualification-custody.json\n M docs/research/ambient-001/evidence/reduce_evidence.py\n M tools/package_ambient_evaluator.py\n?? godot/tests/test_ambient_personalities_native.gd\n"
+  },
+  "independently_checked": {
+    "all_listed_source_hashes_match_reviewed_files": true,
+    "all_present_targets_on_four_cell_center_lattice_and_within_inclusive_fifty_cell_radius": true,
+    "available_nonempty_equal_radius_material_queries_checked": 1800,
+    "initial_native_full_publication_and_copied_part_pose_velocity_resource_states_identical": true,
+    "material_distance_extrema_and_presence_counts_recomputed": true,
+    "mechanic_active_command_resumptions_at_completed_rest_deadlines": 2,
+    "mechanic_completed_five_second_rest_episodes": 2,
+    "original_presets_preserved_except_common_seed_1701": true,
+    "per_arm_accepted_decisions": 300,
+    "per_arm_completed_native_and_rapier_ticks": 1800,
+    "per_arm_completed_simulation_seconds": 30.0,
+    "per_arm_final_decision_seconds": 29.9,
+    "per_arm_rejected_commands": 0,
+    "report_console_and_engine_hashes_match_execution_receipt": true,
+    "selected_rest_samples_with_neutral_intent_and_action": 129,
+    "third_rest_honestly_marked_observation_window_ended": true,
+    "three_fresh_native_worlds_and_distinct_rapier_spaces_from_source": true,
+    "trace_tick_and_clock_rows_recomputed": 900
+  },
+  "measured_arms": [
+    {
+      "active_intervals": 299,
+      "canvas_center_incidents": 0,
+      "ground_support_loss_events": 0,
+      "id": "oil_moth",
+      "intentional_idle_decisions": 0,
+      "overrides": {
+        "escape_obstruction": 83
+      },
+      "physical_path_cells": 443.928673828021,
+      "physical_path_during_selected_rest": 0.0,
+      "rest_completed_episodes": 0,
+      "rest_episodes": [],
+      "rest_to_active_resumptions": 0,
+      "resume_events": [],
+      "selected_rest_decisions": 0,
+      "stalled_active_intervals": 64
+    },
+    {
+      "active_intervals": 277,
+      "canvas_center_incidents": 0,
+      "ground_support_loss_events": 0,
+      "id": "shy_crawler",
+      "intentional_idle_decisions": 22,
+      "overrides": {
+        "avoid_material": 32,
+        "escape_obstruction": 20
+      },
+      "physical_path_cells": 271.049198832305,
+      "physical_path_during_selected_rest": 0.0,
+      "rest_completed_episodes": 0,
+      "rest_episodes": [],
+      "rest_to_active_resumptions": 0,
+      "resume_events": [],
+      "selected_rest_decisions": 0,
+      "stalled_active_intervals": 21
+    },
+    {
+      "active_intervals": 169,
+      "canvas_center_incidents": 0,
+      "ground_support_loss_events": 0,
+      "id": "idle_mechanic",
+      "intentional_idle_decisions": 130,
+      "overrides": {
+        "avoid_material": 15,
+        "escape_obstruction": 13,
+        "rest": 129
+      },
+      "physical_path_cells": 201.152959549334,
+      "physical_path_during_selected_rest": 37.2286194011103,
+      "rest_completed_episodes": 2,
+      "rest_episodes": [
+        {
+          "completed": true,
+          "duration_seconds": 5.00000000000023,
+          "end_reason": "timer_expired",
+          "end_seconds": 12.6000000000002,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 7.59999999999998
+        },
+        {
+          "completed": true,
+          "duration_seconds": 4.99999999999972,
+          "end_reason": "timer_expired",
+          "end_seconds": 22.2,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 17.2000000000003
+        },
+        {
+          "completed": false,
+          "duration_seconds": 2.89999999999984,
+          "end_reason": "observation_window_ended",
+          "end_seconds": 29.9999999999996,
+          "selected_decisions": 29,
+          "start_seconds": 27.0999999999997
+        }
+      ],
+      "rest_to_active_resumptions": 2,
+      "resume_events": [
+        {
+          "action_move": [
+            0.268307775259018,
+            0.0
+          ],
+          "direction": [
+            1.0,
+            0.0
+          ],
+          "pace": 0.200000002980232,
+          "position": [
+            228.86164855957,
+            194.771820068359
+          ],
+          "seconds": 12.6000000000002
+        },
+        {
+          "action_move": [
+            -0.270326286554337,
+            0.0
+          ],
+          "direction": [
+            -1.0,
+            0.0
+          ],
+          "pace": 0.200000002980232,
+          "position": [
+            212.447998046875,
+            194.945327758789
+          ],
+          "seconds": 22.2
+        }
+      ],
+      "selected_rest_decisions": 129,
+      "stalled_active_intervals": 12
+    }
+  ],
+  "method": "Read the final fixture and accepted preparation/session/module source, then independently parse and recompute invariants from the retained report and verify its execution receipt. This review did not rerun Godot.",
+  "negative_findings_and_limits": [
+    "Oil Moth spent 64 of 299 active intervals below 0.25 cells of progress, with 83 obstruction-escape decisions around the cups. Longer path does not establish better navigation.",
+    "Idle Mechanic travelled 37.2286194011103 cells during neutral selected rest. Physical inertia and interaction continue; neutral intention does not freeze a rig.",
+    "Nearest observed material distance can change because native liquid moves. Distance reduction alone does not establish directed approach.",
+    "The third Mechanic rest began at about 27.1 seconds and was truncated by the 30-second observation window; it is not counted as completed.",
+    "All three arms use the same Runner rig. Preset names do not confer different locomotion or physical immunity.",
+    "This is Linux headless native/Rapier development evidence from a recorded commit plus working-tree delta, including the then-untracked fixture. It is not a clean final-tree CI gate, Windows graphics acceptance, cross-platform physics determinism, or a human judgement of ambient believability."
+  ],
+  "resolved_pre_run_findings": [
+    "Independent material requests used radius instead of the required radius_cells; corrected and explicit coverage assertions added.",
+    "Selected rest interruption was marked completed unconditionally; corrected to distinguish arbitration interruption from candidate timer expiry.",
+    "Per-target sampling metric now reads coverage_sample_count, preserving distinction from matching material count."
+  ],
+  "reviewed_utc": "2026-11-24T19:21:04.681994+00:00",
+  "reviewer": "AMBIENT-001 specialist A; independent of the perception/native-fixture implementer",
+  "run_result": {
+    "error_diagnostics_found": false,
+    "exit_code": 0,
+    "peak_rss_kib": 254012,
+    "reported_checks": 2877,
+    "reported_failures": [],
+    "unique_positive_terminal": true,
+    "wall_seconds": 15.448726790000364
+  },
+  "runtime_identity": {
+    "display_server": "headless",
+    "godot": "4.7-stable (official)",
+    "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "platform": "Linux",
+    "runtime_artifacts": {
+      "native": {
+        "path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+      },
+      "rapier": {
+        "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    }
+  },
+  "schema": "ambient-personality-independent-review/v1"
+}

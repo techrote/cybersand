@@ -1,0 +1,48 @@
+{
+  "schema": "cybersand.owner-evaluator-custody.v1",
+  "status": "passed",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+  "run_id": 45454711939,
+  "run_attempt": 1,
+  "artifact_id": 14951042272,
+  "outer_file": "batch-lab-owner-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52.zip",
+  "outer_bytes": 96459342,
+  "outer_sha256": "4c72abc1b15b760373af0715738b3db8f96d0433483755b65eb37e083427fe90",
+  "inner_file": "CyberSand-Architecture-Workbench-Windows-fe2395c7060d.zip",
+  "inner_bytes": 97970858,
+  "inner_sha256": "d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da",
+  "zip_entries": 1337,
+  "zip_regular_files": 1331,
+  "zip_uncompressed_bytes": 276465051,
+  "manifest_files_verified": 1330,
+  "manifest_sha256": "d7030eaddfcd8aad118ad2d3928bc12516f155ea19a75b1def2208e83073bd51",
+  "unlisted_files": [
+    "candidate-manifest.json"
+  ],
+  "path_safety": {
+    "safe_relative_paths": true,
+    "no_duplicates": true,
+    "no_casefold_collisions": true,
+    "no_symlinks": true
+  },
+  "native_sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+  "native_bytes": 5820416,
+  "native_inputs_verified": 105,
+  "native_inputs_match_commits": [
+    "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "76fcf209e0cda5820aa64e104bfae732075ae7c3"
+  ],
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "source_qualification_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+  "source_qualification_processes": 47,
+  "qualified_source_file_hashes_verified": 59,
+  "architecture_evidence_files": 204,
+  "ui_capture_files": [
+    "architecture-module-library-ui.png",
+    "architecture-zero-write-preview-ui.png",
+    "architecture-native-placement-ui.png"
+  ],
+  "scope": "Read-only original artifact and complete package verification. Embedded source Windows qualification and all 59 actual app/runtime file hashes match the package. Fresh extracted application execution is reviewed separately. No physical owner acceptance."
+}

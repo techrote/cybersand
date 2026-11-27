@@ -1,0 +1,90 @@
+{
+  "pass": true,
+  "review_scope": "Independent readback of original retained native bytes, original process/report chain, unchanged recorded custody, complete-cell hull separation, and sensor sample counts. No application execution and no behavioral episodes added.",
+  "reviewer_source_sha256": "b299a6030bd60d9a187317228fffd9f59b866b00e5886bd1ff3699acb6804cb1",
+  "frozen_application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "original_zip_sha256": "c565b2e50ad1749decb94b7873167b6608d4bb2789c8d3e541d33391a567d949",
+  "original_report_sha256": "14d1311b1658e4843a9c8ab8f389092670b4994ec6e30d91741e676c2068f9e7",
+  "original_execution_sha256": "e1f7f76946a302da3308dc1115815dea4448da81dad82110d4a0e61551818eda",
+  "checks": 37,
+  "check_descriptions": [
+    "original ZIP digest",
+    "frozen application identity",
+    "original process and report completed successfully",
+    "original assertion count",
+    "original report.json hash",
+    "original publication.cells.bin hash",
+    "original console.log hash",
+    "original custody-before.json hash",
+    "original custody-after.json hash",
+    "original external diagnostic hash: run_native_thin.py",
+    "original external diagnostic hash: native_thin_probe.gd",
+    "original recorded custody unchanged",
+    "exactly one original terminal result",
+    "terminal/report agreement",
+    "one native/physical tick, one real actor, zero behavioral episodes",
+    "complete publication length and channel interpretation",
+    "publication report digest",
+    "one complete non-overlapping publication rectangle",
+    "independent exhaustive native-ID payload scan",
+    "copied shape and native-mask assumptions",
+    "near cell is the sole actual material location",
+    "near independent center distance",
+    "near whole material cell lies outside complete copied hull",
+    "far cell is the sole actual material location",
+    "far independent center distance",
+    "far whole material cell lies outside complete copied hull",
+    "independent admitted-site union and refinement counts",
+    "near thin feature gained; far thin feature remains unsampled",
+    "only declared sensing settings differ",
+    "coarse fresh bounded incomplete sensor result",
+    "coarse actual near Oil observation",
+    "coarse far Water miss remains explicitly unknown",
+    "coarse repeated admitted read counts",
+    "adaptive fresh bounded incomplete sensor result",
+    "adaptive actual near Oil observation",
+    "adaptive far Water miss remains explicitly unknown",
+    "adaptive repeated admitted read counts"
+  ],
+  "actual_material_positions": {
+    "3": [
+      [
+        169,
+        94
+      ]
+    ],
+    "16": [
+      [
+        129,
+        94
+      ]
+    ]
+  },
+  "whole_cell_separation_margin_cells": {
+    "near": [
+      2.521293640137003
+    ],
+    "far": [
+      35.5
+    ]
+  },
+  "recomputed_sample_counts": {
+    "coarse": 489,
+    "near_disk": 194,
+    "adaptive_union": 677,
+    "refinement_new_reads": 4
+  },
+  "warm_owner_sensor_median_usec": {
+    "adaptive": 1213.0,
+    "coarse": 882.0
+  },
+  "warm_outer_call_median_usec": {
+    "adaptive": 1216.0,
+    "coarse": 884.0
+  },
+  "limits": [
+    "Recorded custody is verified internally and against the frozen source identity; this readback does not recreate the original process or native World.",
+    "One near and one far thin cell establish these particular observations, not general complete coverage.",
+    "Warm repeated call timings are elapsed local measurements and do not establish production cadence, isolated CPU cost or real-device playfeel."
+  ]
+}

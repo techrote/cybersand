@@ -1,0 +1,24 @@
+{
+  "schema": "world-steer-batch-request-v1",
+  "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
+  "scope": "Preserved M0-M5 regression gates;40 native parts/v2 contacts; bounded detail, hierarchy, full-size native Worlds and actual extracted Windows evaluator",
+  "request_id": "2026-11-25-collaborative-qualification-3",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "review_checkpoint_parent": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+  "platforms": [
+    "linux",
+    "windows"
+  ],
+  "source_identity": "Executing workflow commit, tree, clean source guard and platform build ledger identify the exact candidate. No earlier-source PASS inherited.",
+  "disposition": "Draft/HOLD; no merge, Ready, release, auto-merge or production-default promotion",
+  "paid_model_dispatch": false,
+  "actual_model_calls_authorized": false,
+  "physical_windows_11_nvidia_acceptance": "pending owner device",
+  "original_qualification_run": 44962406023,
+  "foundation_qualification_run": 45454711939,
+  "original_evidence_preserved": true,
+  "native_inputs_changed": false,
+  "source_specific_reason": "Correct the pristine Windows CMD launch witness: Windows PowerShell 5.1 ConvertFrom-Json array output was nested by the query, excluding all expected executable paths. Preserve exact parent/image/creation identity, visible-window, Workbench route, CMD exit, timeout and payload-integrity gates; add real Windows process-query self-test before expensive application execution and bounded predicate diagnostics. Second run45512988153 passed Linux89/89 and source Windows89/89 but failed this launcher witness before extracted cases; original failure retained. No product, CMD, geometry, physics, native input, material or acceptance-bound change. Existing four-job source-matched campaign requalifies the narrow successor.",
+  "art_boundary": "Qualified fa22 Art successor identified; no proposal-only owner route/handoff exists. This campaign qualifies the independent Architecture workflow against accepted provider contracts without importing the separate branch.",
+  "inference_scope": "This hosted campaign dispatches no model calls. Standing conditional owner authorization for an available approved local model is separate; no paid/cloud inference or training is authorized."
+}

@@ -1,0 +1,14 @@
+test_adjacent_active_heading_reversal_and_neutral_break (test_recovery_probe.RecoveryProbeTests.test_adjacent_active_heading_reversal_and_neutral_break) ... ok
+test_complete_project_guard_rejects_hidden_autoload_and_new_helper (test_recovery_probe.RecoveryProbeTests.test_complete_project_guard_rejects_hidden_autoload_and_new_helper) ... ok
+test_label_changes_and_vertical_gait_are_not_heading_reversals (test_recovery_probe.RecoveryProbeTests.test_label_changes_and_vertical_gait_are_not_heading_reversals) ... ok
+test_matching_source_change_is_scoped (test_recovery_probe.RecoveryProbeTests.test_matching_source_change_is_scoped) ... ok
+test_reject_additional_physics_or_harness_change (test_recovery_probe.RecoveryProbeTests.test_reject_additional_physics_or_harness_change) ... ok
+test_reject_mismatched_material_pose_or_profile (test_recovery_probe.RecoveryProbeTests.test_reject_mismatched_material_pose_or_profile) ... ok
+test_reject_runtime_change (test_recovery_probe.RecoveryProbeTests.test_reject_runtime_change) ... ok
+test_selected_report_cannot_claim_full_programme (test_recovery_probe.RecoveryProbeTests.test_selected_report_cannot_claim_full_programme) ... ok
+test_unknown_or_duplicate_requested_case_is_refused (test_recovery_probe.RecoveryProbeTests.test_unknown_or_duplicate_requested_case_is_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.095s
+
+OK

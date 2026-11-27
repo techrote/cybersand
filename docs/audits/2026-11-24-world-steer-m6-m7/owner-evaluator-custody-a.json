@@ -1,0 +1,842 @@
+{
+  "schema": "cybersand.owner-evaluator-custody.v1",
+  "status": "passed",
+  "source_commit": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "source_tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "run_id": 45520561849,
+  "run_attempt": 1,
+  "artifact_id": 14983516321,
+  "outer_file": "owner-17c6b5b35049.zip",
+  "outer_bytes": 108606093,
+  "outer_sha256": "0280a9f596fad0f1e0b17b3cb567d6cef1649d56c7053e09ed3b13b4a22349c7",
+  "inner_file": "CyberSand-Architecture-Workbench-Windows-17c6b5b35049.zip",
+  "inner_bytes": 112390612,
+  "inner_sha256": "202b5852d31a54f30b9fd0e825d8e9123edddad05f3d09469ceaec671249eea4",
+  "zip_entries": 2146,
+  "zip_regular_files": 2140,
+  "zip_uncompressed_bytes": 391292779,
+  "manifest_files_verified": 2139,
+  "manifest_sha256": "728150baaa29662bad1393278fa655835828b5af2196a0393231170ab297de90",
+  "unlisted_files": [
+    "candidate-manifest.json"
+  ],
+  "path_safety": {
+    "safe_relative_paths": true,
+    "no_duplicates": true,
+    "no_casefold_collisions": true,
+    "no_symlinks": true
+  },
+  "native_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+  "native_bytes": 5820416,
+  "native_inputs_verified": 105,
+  "native_inputs_match_commits": [
+    "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+    "f5f6e9f35727d81868bcced4da8b913b470ea635",
+    "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "76fcf209e0cda5820aa64e104bfae732075ae7c3"
+  ],
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "source_qualification_sha256": "acc1abfa05f6c0a5f6808c1a76a90ebd0f44645f3987354d988f63f57cd7abf1",
+  "source_qualification_processes": 89,
+  "collaborative_custody_sha256": "b111d7c991c6b6f1aa3c2b7ad217d9619c3d7f454ffc08b1ed97953b979a10de",
+  "collaborative_counts": {
+    "catalogue_native_observations": 100,
+    "catalogue_part_frames": 40,
+    "collaborative_ui_frames": 7,
+    "comparison_native_completed": 23,
+    "comparison_pre_native_refusals": 37,
+    "comparison_proposals": 60,
+    "delegated_local_workers": 3,
+    "detail_cases": 24,
+    "flagship_frames": 12,
+    "fresh_actor_reopens": 4,
+    "full_native_flagships": 4,
+    "full_world_actor_trials": 4,
+    "hierarchy_frames": 3,
+    "modules": 40
+  },
+  "collaborative_raw_file_hashes_verified": 499,
+  "qualified_source_file_hashes_verified": 299,
+  "committed_source_and_asset_files_verified": 1174,
+  "platform_converted_source_files": [
+    {
+      "path": "godot/addons/cybersand_native/cybersand_native.gdextension.uid",
+      "git_path": "godot/addons/cybersand_native/cybersand_native.gdextension.uid",
+      "git_sha256": "544a97cab99ac9680c9d698ff821a96f64762d63e7fc61038197d1d1cae4a131",
+      "packaged_sha256": "bb5fd687189937706bb32023329ad45e8c2f9483414fd00e939721b1ed4ee5a4",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/LICENSE",
+      "git_path": "godot/addons/godot-rapier2d/LICENSE",
+      "git_sha256": "b876a61b43cc648b56428d56a484784a88d4231809e4d7f4fd8dbdb6772400e8",
+      "packaged_sha256": "e4ef4fcabb96d2ec7908d3ce798f847a0bbfe65d5ed2fcf489a0d9dedcce54f5",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg",
+      "git_path": "godot/addons/godot-rapier2d/Radial2D.svg",
+      "git_sha256": "12a17b6dccb88c9521d62261c26b8abeb9dbb3ae7d798d40b7c7dc8a156d1e44",
+      "packaged_sha256": "711d58ac177fd8c097405a2e8ae4132ac5f7ca1113d05ac5fbc12d2d3e79910a",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/Radial2D.svg.import",
+      "git_path": "godot/addons/godot-rapier2d/Radial2D.svg.import",
+      "git_sha256": "144414e0a3068759478e69d7af908620b3a396fb075944cf258cb5051d313d82",
+      "packaged_sha256": "9b560fca94b9c53c16fe619e31cf80b4425dc0b7657bcd6f38af90843725543d",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/THIRDPARTY.txt",
+      "git_path": "godot/addons/godot-rapier2d/THIRDPARTY.txt",
+      "git_sha256": "63405a03af6a0a85dace7cc08001b34f28e8792dd2b7fb4de09137a6b58392df",
+      "packaged_sha256": "238d1caad628310bb5956a9abdbcfed61d34a2260b8dd7addd702745fab93098",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_animatable_body_2d.gd.uid",
+      "git_sha256": "5466e0863e90b8934d093dc265b8d2848f713083c3bc99e7bebf475dd2526dd4",
+      "packaged_sha256": "f2aa4518dc6b3f31a0b14f554db348701903d7fc51939d28900b894fdb2078e6",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_area_2d.gd.uid",
+      "git_sha256": "c76fff9cc16f8e5b3019f9bb2b47ef21339a9331e8d232d36ac0e6c088c1d088",
+      "packaged_sha256": "84a39186546eeaedc3b664810deb00c21c80b4b298148952f1a7751886adbd43",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_character_body_2d.gd.uid",
+      "git_sha256": "4ff139b36e1e159a359bc2ed97a6f11254f92844f66f64db3f46eb39a697ce4f",
+      "packaged_sha256": "5917428dbce56669b872799097d254b10925d7bb7c2c2d8715883c259a48e128",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_damped_spring_joint_2d.gd.uid",
+      "git_sha256": "302d004271f86d6893342037a85b02f0d6f9c64f60e2e34416db299a17373a31",
+      "packaged_sha256": "be0511542271047b2ba464dc67c2965871b5cf306a318e2f5364d9626feef113",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_fixed_joint_2d.gd.uid",
+      "git_sha256": "57bc76134facdb154f6549f1c00f9bb1b40250a8049bf5a5fd013b8e59cfa04d",
+      "packaged_sha256": "bbcd60035ec8b9b3e348a87e86ce84a89dda24584475c38f38d87b1b42cf7bda",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_groove_joint_2d.gd.uid",
+      "git_sha256": "b3c0c6cfdde2f6360a5ee4b0152cfd724b8c3a1beb7ab0ea5f7543e6ff26e4f5",
+      "packaged_sha256": "73e3e36e976a5aaf6232c4fd3729cb9f613e15c2648f9eb5bc3ef51b5823c1f2",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_physical_bone_2d.gd.uid",
+      "git_sha256": "19c1f3f67cd3f5ba5bd380bf781b413e4f3ff604f03d48c87e37a7b689934d97",
+      "packaged_sha256": "1afbc09345826e9aab9c6b5469233373212ef8ce14ebd202960c6cc9b62ea894",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_pin_joint_2d.gd.uid",
+      "git_sha256": "1e905419af7cb7e35d3d4ce3a2e6ab82ec9bdc93e942f721e69455ab61717601",
+      "packaged_sha256": "00b18ea2e8cc7965a1051f73006d9a0710e61cc7e2b75b32044a52f5e6fd607b",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rigid_body_2d.gd.uid",
+      "git_sha256": "9cd91a4b665b2b38844311349f675a3be21da47918286c8376bd71ade4f49e82",
+      "packaged_sha256": "e7f89f338526bb8e6cd9783e7e2282a5169136c95e859d122f03291c93c66c23",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_rope_joint_2d.gd.uid",
+      "git_sha256": "fc9f81c40271ed65146b7cdf491efc15626d8ded411dfff22c65083e1d5d1205",
+      "packaged_sha256": "34f51816e357d4a92ee873c0aad79f247d949639c4ba69e0365de4835f5d872e",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/custom_nodes/rapier_static_body_2d.gd.uid",
+      "git_sha256": "034d00c2ef24bec4cf355290a4f3b8f0f25367d2a3b1515ff78cf1a5b4c69400",
+      "packaged_sha256": "1bfe6bddbf322218badb1ebf942f4b3f31073b3dec2a679251218df9362e071c",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/faucet_2d.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/faucet_2d.gd.uid",
+      "git_sha256": "87867e90c85298bae03b41a3b8d90f55136bfcb602183c54c46b03c31e9af99c",
+      "packaged_sha256": "95a96b750d3482f356bc5fda700d8d0f72d1dc1719d6257214caa2b18df71bc9",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_circle.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/fluid_2d_circle.gd.uid",
+      "git_sha256": "cc3b5bc443e9e23d46ae678a1c6869f04e000533b354110e0be2926fedf7fd03",
+      "packaged_sha256": "8c700c72b993cec1801e1e6a52531aa54d9ec6bf866a67e1bcd6c9694a77f0e5",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_rectangle.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/fluid_2d_rectangle.gd.uid",
+      "git_sha256": "471f01cbe5d05892d9044ea570878d310f2a02f920275e46386eba3cb1d301ac",
+      "packaged_sha256": "cb2b0442b9494ac26d06ce00561013571f30d6a3e58d4fa56034b4a04d5d5423",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_renderer.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/fluid_2d_renderer.gd.uid",
+      "git_sha256": "d8e00c503838cee859017af2d5a0b4b517ad3c684d015d1643c62f05897ea5c7",
+      "packaged_sha256": "6ea851cf5a6b599017545856d272d0b585ff4342553fcefa594617da2fc9c4ed",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid",
+      "git_path": "godot/addons/godot-rapier2d/fluid_2d_shader_renderer.gd.uid",
+      "git_sha256": "a962c2d69893f274c791bede48f72e38ac17acb9a92fa1d4b88362773987c5f0",
+      "packaged_sha256": "67fb67e5444db61e4556df7a4544c740c309f23b8abc144709225f622dcaa56b",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+      "git_path": "godot/addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+      "git_sha256": "83a0d4f06d78f6dfa55192684f49409bb5ebb2dc39f9f5b38f33540a86320877",
+      "packaged_sha256": "0089ba95a19f87c64524e8ce80ed7014587caf5f8b8365b4bfe90f35965e42b3",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg",
+      "git_path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg",
+      "git_sha256": "1eafee1284c6a2f1c50ec8d5b4c181c64da1b07cf3a5edf48d3c6cd23ec30bc5",
+      "packaged_sha256": "b5c214f850f42f2ae7a5b074cbc2f0f0d09218984b0f8b51797d18fa05e373af",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "git_path": "godot/addons/godot-rapier2d/icons/Fluid2D.svg.import",
+      "git_sha256": "f4624fa6418203f7d3f58a65703d450cd80f6900750736b72cd2b1215bdf5e2e",
+      "packaged_sha256": "e2c800a9eac87c0989efe5aa646d16e2c75e665005250420b97ce1525e68d390",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg",
+      "git_path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg",
+      "git_sha256": "48cbde17a3b8d7b99c564ef01db483320d5ffe7fd736c1dcd8ac5daef3c8f091",
+      "packaged_sha256": "9919026525d1b53edf904a74031e3b33e722b33b14e86ff32f3f323881c36ef1",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "git_path": "godot/addons/godot-rapier2d/icons/StateManager2D.svg.import",
+      "git_sha256": "3b4d1ae5b01aad5f1b62aef26fe06c09d6766d579e9d43bae3859b6686e644a0",
+      "packaged_sha256": "7fe48849837bd7a399b92db5ca780e163bc00e1f7d8ead074b6a2c7a1bf26d90",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+      "git_path": "godot/addons/godot-rapier2d/logo_square_2d.png.import",
+      "git_sha256": "2f5527b8bea78ee1ca403de3de46844b375a8f1fff140994171a75ebd79dfd07",
+      "packaged_sha256": "e19e505076e4d2a7cce0af093d27f1e2d99c281ca21d5a584c38bd63b484bf48",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/water_shader.gdshader.uid",
+      "git_path": "godot/addons/godot-rapier2d/water_shader.gdshader.uid",
+      "git_sha256": "f5486a2df2e18beb3f7a74a4c06e4ff9f200dc6a738149e4aa16f130943fa270",
+      "packaged_sha256": "c03a83954f380f3dd0639bea411dd955167f0051d03a5d15b69e16a5f1052f2f",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/batch_lab/.gitattributes",
+      "git_path": "godot/batch_lab/.gitattributes",
+      "git_sha256": "82fa7289b764eca2d2e998c1460e09afb0a46b82c079ad393ca16f53d7d306dc",
+      "packaged_sha256": "1f287db928956962748913ad1c29911e13883f3f93721763d07da82e633fe3bf",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/cell_world.gd.uid",
+      "git_path": "godot/scripts/cell_world.gd.uid",
+      "git_sha256": "8eca83bb71d069bc9bc077b5acb683af0afba0bcbe8f86ca0d6b436456c36640",
+      "packaged_sha256": "2d4635a09c306cc165f02449d7b8db18cc0d4d81b179d613161f8209710beae1",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/demo_save_codec.gd.uid",
+      "git_path": "godot/scripts/demo_save_codec.gd.uid",
+      "git_sha256": "841e88186bf6f5c5c1dce31c31a1150f0f5366dcaafa59af6511728067a527ba",
+      "packaged_sha256": "0bd882092c8496572ba7028eaffe1f0736a396036eb4ec6ba2f7441d12003b11",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/demo_worlds.gd.uid",
+      "git_path": "godot/scripts/demo_worlds.gd.uid",
+      "git_sha256": "4ab2cf716f9774af430fdab71d60fd68f79c6c2fb492a7cd816fa2ee1fceb5b0",
+      "packaged_sha256": "79d7e4e9955681d8ff6e243f1df7598a7e1bfe782eddf33dff86f7bde41a9d84",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/experiment_tower.gd.uid",
+      "git_path": "godot/scripts/experiment_tower.gd.uid",
+      "git_sha256": "50540e63a60255f27c48180a16e033df83868d4a013429bcb2a2a9699459f1e2",
+      "packaged_sha256": "65a667a2d3d862f4381c9b26c017a921aca6a3ecf04711234461aba4bb7cb54b",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/industrial_underswamp.gd.uid",
+      "git_path": "godot/scripts/industrial_underswamp.gd.uid",
+      "git_sha256": "7cb975dbcf1976cb3219b89f461960ea48e9bdb336d04378de8bdecfcd144d79",
+      "packaged_sha256": "88457c4cc5a04be523d9290cb76aa3c75be07323ac2901a38063c1f998838243",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy.gd.uid",
+      "git_path": "godot/scripts/interaction_policy.gd.uid",
+      "git_sha256": "52ef33688cd05053e3dfc7a209487ee952b9f2198a36b961f2ae99c185793fd3",
+      "packaged_sha256": "e0e3834831f823d140b360270b6f31b01c8144e210613ddd89bcbfe0976f0f06",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/interaction_policy_probe.gd.uid",
+      "git_path": "godot/scripts/interaction_policy_probe.gd.uid",
+      "git_sha256": "e78b37aa18c2f233da59c3e926181af421d6af64a2afef1fe85af7a046837c70",
+      "packaged_sha256": "479a1c15962e6fce5db0794baa61490251a90fb458441b39eeb719f4b86f4908",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/main.gd.uid",
+      "git_path": "godot/scripts/main.gd.uid",
+      "git_sha256": "974ad3b909ef021d10f07762598458b98194b5edefc568c560f9af8e9d7f5570",
+      "packaged_sha256": "15b0785b674c58e8af641e51e30f4cf478e8bfcd5b785f4dc49f2d6ec408d116",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/material_appearance_lut.gd.uid",
+      "git_path": "godot/scripts/material_appearance_lut.gd.uid",
+      "git_sha256": "8100acbcfda3150907ee6c023a5748530913af2c6f5faa85fe350e913557e723",
+      "packaged_sha256": "0f5bd16727e69db81757762ea9ea3db31e4bd7a2f99601c8bc6048ccef284f3a",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_catalogue.gd.uid",
+      "git_path": "godot/scripts/microscenario_catalogue.gd.uid",
+      "git_sha256": "f6346500b26ba260f962aa9ca05cc4d9db1774ccbec830d7b7412e1c6ec4fa70",
+      "packaged_sha256": "70d7d8a0fef3a92464f2d0123f25a5e9a79d83590db2c55e3822ed7f6f315595",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_comparison.gd.uid",
+      "git_path": "godot/scripts/microscenario_comparison.gd.uid",
+      "git_sha256": "584ebaed137d733951c618ecac33322ddbe022a9c8da07fa94d5d71a8e6eb058",
+      "packaged_sha256": "80b4a55be1ea5c13b2e5e41e5bce7e69f4893da8878cc380a84c2b9548f792e8",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_contract.gd.uid",
+      "git_path": "godot/scripts/microscenario_contract.gd.uid",
+      "git_sha256": "c5a1620f42c5e4701468df2d406abb5a4d1157a6f84f80b605321ca7b37b49de",
+      "packaged_sha256": "e2e952c9566e892b152d3cbfcd1e54c10e9a9066706b3981b5fef9c8fc79df4e",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_host.gd.uid",
+      "git_path": "godot/scripts/microscenario_host.gd.uid",
+      "git_sha256": "f9cc9d0a6d0e87824be344c0c6d75848b28aa16c0b217e33dbe148fe452c37e6",
+      "packaged_sha256": "5a5206f903d51fd10387f3c6c0f652adbc059b382415eb78f4a300d1fef24f01",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_identity.gd.uid",
+      "git_path": "godot/scripts/microscenario_identity.gd.uid",
+      "git_sha256": "f857db376ea6170a0694d7342c4aa8b4f214956e4b443932352d4a1e9ca64334",
+      "packaged_sha256": "051828f03c3ac7363311c119f99805516f499a752fdfb0b18cee3c9bcc2d4d29",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_panel.gd.uid",
+      "git_path": "godot/scripts/microscenario_panel.gd.uid",
+      "git_sha256": "e55665c763ad0a18ac0551c6128fb913a6829b129f344f46b8c8d221947df464",
+      "packaged_sha256": "b181cdce2d0bf3bf9642edc64863653f3e352390efa5722104627bdd47b7c7da",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_reference_pack.gd.uid",
+      "git_path": "godot/scripts/microscenario_reference_pack.gd.uid",
+      "git_sha256": "a0c1fe847f4baa2be9c212d804ae24fcbb51dd4594543e782ce72cfdf17c32cb",
+      "packaged_sha256": "1fa6bde05b71f531f9d504c44ecde5f9fdb46fbb1944bcc73c94c183453ac9a1",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_telemetry.gd.uid",
+      "git_path": "godot/scripts/microscenario_telemetry.gd.uid",
+      "git_sha256": "9455edc02f2f2f2ef6cfde52d58282bdf896d64305c25aee31d004e41dd65934",
+      "packaged_sha256": "b41e61035185f7c79cdfa6d05a290b9dbfba0f4fd3662ef21eadd8e50b8051d9",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/microscenario_workbench.gd.uid",
+      "git_path": "godot/scripts/microscenario_workbench.gd.uid",
+      "git_sha256": "8fdfde6f309d3cffcb28212cf047a88420207cb62f9be2fd6d38805166d605ce",
+      "packaged_sha256": "22a1ad4a4559f3c916276356f9c70e9dee91bdcfc9b2825f4ed65497ce810d51",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/middle_cyberberbia.gd.uid",
+      "git_path": "godot/scripts/middle_cyberberbia.gd.uid",
+      "git_sha256": "ff041b155e2a3772ba7a883b8efd2d59a06438530a130e04bc97ff2d0cd5a1c0",
+      "packaged_sha256": "a8ecabfb76ef8f263023d17316152e9cac16c419c62e65f4e96018291f387a5c",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/neon_reliquary.gd.uid",
+      "git_path": "godot/scripts/neon_reliquary.gd.uid",
+      "git_sha256": "a801193de3033544ff1616e91bf696c4bdaad9f32dfb04b679e217a99e6e452b",
+      "packaged_sha256": "8fbbc0dd7063efd862a43c0900d1a155a6e4fdfb427cd8951293bcad338186d6",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/physics_characterisation.gd.uid",
+      "git_path": "godot/scripts/physics_characterisation.gd.uid",
+      "git_sha256": "673769ec96c56b0003621da526ba6484a454fe37296faa5b56fbbefbcbd05a84",
+      "packaged_sha256": "06ef38c37999ae6d004f07e557d125bca1c29617e9af043ddc2405ef02f4008b",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/rapier_physics_bridge.gd.uid",
+      "git_path": "godot/scripts/rapier_physics_bridge.gd.uid",
+      "git_sha256": "60767f4a0e6af0f1dded283c00da0b43dd77862aca103ab1b3c7e7d3c1720e92",
+      "packaged_sha256": "19001b17eacc6a298eff495f8a34ee8fcd57b9b60174a96e95a821a2e46725a6",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/rigid_body_coupling.gd.uid",
+      "git_path": "godot/scripts/rigid_body_coupling.gd.uid",
+      "git_sha256": "32409ddb456ba48a664c158f79ac8dfd65a1f431a9ce9101bc593ca01ca9261f",
+      "packaged_sha256": "5ffd418c7242b70612ff49b6b013ed9df5c95abf3aabd39639c33c257d7b3e15",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/sampled_character.gd.uid",
+      "git_path": "godot/scripts/sampled_character.gd.uid",
+      "git_sha256": "299c39b243c2b3548e56e7269c02e83bb683a88757e30b9af03af06afb8aa56a",
+      "packaged_sha256": "fc3e26489b52f12c64434b6d89463994d51d407076e3c99ee23b3815896ffa45",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/sewertech_alley.gd.uid",
+      "git_path": "godot/scripts/sewertech_alley.gd.uid",
+      "git_sha256": "8292b8d085f49b73b5169c633cdb6f90bfa97b4ae32a2b60768308824ce253e1",
+      "packaged_sha256": "f45a9c55560151da64a5e1fe26284d803d8b4d8a31f8c8612afe1b65c04fa82e",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/showcase_presentation.gd.uid",
+      "git_path": "godot/scripts/showcase_presentation.gd.uid",
+      "git_sha256": "399663ca3632b186c38fe2b81820431712d11dc4611c6d35ed2252d7c823ca99",
+      "packaged_sha256": "e4c5fd34a8932824ea888a786eb970470db612072b143d6fbfb40ff07ad70235",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/showcase_tiles.gd.uid",
+      "git_path": "godot/scripts/showcase_tiles.gd.uid",
+      "git_sha256": "a8305b8297f1473bbdc0c2f118e2d9225b38a8110f611eebedddd1d067608ed8",
+      "packaged_sha256": "c94557c7fbb74fce31ec9ea62c7e466ff39028d118402e71361b8177096b764a",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/simulation_snapshot.gd.uid",
+      "git_path": "godot/scripts/simulation_snapshot.gd.uid",
+      "git_sha256": "558f1c1285e050ef68e3eb9d088ed7a9e1dd1852646e51eb0d7ed36346226c44",
+      "packaged_sha256": "2fd298468c7a9ab9e96bbcb6595313fbbba5c1e626e0eff53e8e19013c7a666f",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd.uid",
+      "git_path": "godot/scripts/simulation_worker.gd.uid",
+      "git_sha256": "0d964b1727005d022c0a469f229341ce143b56c188c67b704d05f47f59d229bf",
+      "packaged_sha256": "de2bf36c8321cee4c325ced60e135bb06a4bff1e4d6b3db554cff62d34b28e4f",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/tick_failure_probe.gd.uid",
+      "git_path": "godot/scripts/tick_failure_probe.gd.uid",
+      "git_sha256": "f59fa0e4704a0b5b95ab3dca9d9d423b6f01d18c0bf1e4296617bb527c3679b4",
+      "packaged_sha256": "068b11068077bc3d23c1fbc266e5244f8dad5adf16885e297e429908cb950f31",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/tower_panel.gd.uid",
+      "git_path": "godot/scripts/tower_panel.gd.uid",
+      "git_sha256": "2dc28f60bb8451f86ba65804abb1152311972c142e3f3a300cd5e09bf7915516",
+      "packaged_sha256": "99c0cac05cae00b9466da37b46bc92157b6f60717379eb155b88f7fb0f6387b0",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/transport_probe.gd.uid",
+      "git_path": "godot/scripts/transport_probe.gd.uid",
+      "git_sha256": "0beb8c737a163430b76bc461e2a88e86b60033cd4790152050c1f485f20650e8",
+      "packaged_sha256": "eac1a3e65dff6df29d3c4f92e3892d4bb80deff477757cd1af467e592874de45",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/transport_profile_panel.gd.uid",
+      "git_path": "godot/scripts/transport_profile_panel.gd.uid",
+      "git_sha256": "3650ec64c210c4268ec1e316fe79b6bd00c9b3c0cf31f8ecea8c35667935392f",
+      "packaged_sha256": "3013a8f2b4fd8807f2abfb9a0c136a905c04d223385aef430cb7c1128be346cb",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/transport_profiles.gd.uid",
+      "git_path": "godot/scripts/transport_profiles.gd.uid",
+      "git_sha256": "1c2c508ea427d0f383d5f65fe90f9ae96ede0b4ec963723caa756a00a35a2bb5",
+      "packaged_sha256": "7a63dcc975921dea8950ca11e73b4be5c30c9ed6969f4d174242398b35e33d42",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/web_capabilities.gd.uid",
+      "git_path": "godot/scripts/web_capabilities.gd.uid",
+      "git_sha256": "74cb63a1144dcea1953a7ad73efc3896fd298effc17ebfd9600fa8b47421bb1b",
+      "packaged_sha256": "3b6e9c976aa3f032f8500456084a178f4ce5c05cbd9922647e8afefb20dfb861",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/web_demo_controller.gd.uid",
+      "git_path": "godot/scripts/web_demo_controller.gd.uid",
+      "git_sha256": "7f1362fec04f62f464c806451b0639f86caaed8f13cbb6bf44a359096b7c277c",
+      "packaged_sha256": "e40f5aab1be70f17f8244ce0397bb0a2969625cd4e4d3048a7fae7f3dac2eeea",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/web_demo_menu.gd.uid",
+      "git_path": "godot/scripts/web_demo_menu.gd.uid",
+      "git_sha256": "0d5574cc73022cfef9f6e54ff7be0d5d0007438ddce0767bbfe62c086da29456",
+      "packaged_sha256": "757c3334da7cb7cd31f14d535f79f7c697c9b114d63d33bbbe3e2ca896fd1aa7",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/web_rapier_probe.gd.uid",
+      "git_path": "godot/scripts/web_rapier_probe.gd.uid",
+      "git_sha256": "e85e0501d951292fb80feddc33e57ac013238c75676b85205da41d51b10f1d8c",
+      "packaged_sha256": "b1740f65e59135beb335fde3e65a2421e4e6bf9677b706c11efc5c4c96cbb26f",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/web_worker_probe.gd.uid",
+      "git_path": "godot/scripts/web_worker_probe.gd.uid",
+      "git_sha256": "fc82557b95e88817e7946c68df730ede6045cd325b4e3c701cc300642c6dc36d",
+      "packaged_sha256": "54ac1756ee6660240fcccb33843590dd76c55c7ffa1aef421db047ec2bce4879",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/scripts/worker_benchmark.gd.uid",
+      "git_path": "godot/scripts/worker_benchmark.gd.uid",
+      "git_sha256": "764b18118c3f556fece83743ca1e8eb4e6ffaffdd4a84609e4929328a402418d",
+      "packaged_sha256": "ca683f10594ca09e2235c67a89aa3e0807a4ac67a0f01e6ce707e648231ebd67",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/shaders/glow_composite.gdshader.uid",
+      "git_path": "godot/shaders/glow_composite.gdshader.uid",
+      "git_sha256": "2b52bfe41e7214f2fca3b034300916a43210e1bf6e8f052f63fbce799d063f60",
+      "packaged_sha256": "4b785258079b04cb06a1526d3395e5f769ccd3f77aee95d8d7e988aca304e86f",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/shaders/material_emission.gdshader.uid",
+      "git_path": "godot/shaders/material_emission.gdshader.uid",
+      "git_sha256": "aa0df8191381e60b8613eb62ee449974d48a525aa7cff63b2c1c705f7b0409aa",
+      "packaged_sha256": "9074aad463dbf1d86131c56243df7624720e5021731dfe9c9a6ebae5093004b1",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/shaders/material_palette.gdshader.uid",
+      "git_path": "godot/shaders/material_palette.gdshader.uid",
+      "git_sha256": "f5912b6e6d57f8f50d6d68fae91565110f54f1ff1f0340b39cb1be3c516bf952",
+      "packaged_sha256": "177d57e035fc701bc00b94721f1dbd0b04420546d8d4ed7a84c61931f27b57f4",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/shaders/neon_reliquary_backdrop.gdshader.uid",
+      "git_path": "godot/shaders/neon_reliquary_backdrop.gdshader.uid",
+      "git_sha256": "059b3e9920d5c70193c167851c03e1703c215db9c02a74add6745f92644cbdf4",
+      "packaged_sha256": "f017bf377039766e7400bdffb47251bd2b617442cd491c0c39a579ff4a033280",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/export_transport_profiles.gd.uid",
+      "git_path": "godot/tests/export_transport_profiles.gd.uid",
+      "git_sha256": "f7e8b3fc1a0900feb07ab3c8ea0de861d64475390dc1e65b8ace50ef8a89805c",
+      "packaged_sha256": "b6f1abd5bb67bb5bed6a153b868d141d0771b40f54672000a1a980c974650a06",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/interaction_async_worker.gd.uid",
+      "git_path": "godot/tests/interaction_async_worker.gd.uid",
+      "git_sha256": "0630a509a69afb294c850f33a82b13cc75853c51210fa7d4cf24b5b5d57dad2b",
+      "packaged_sha256": "3ef6c51a21f3ab893605397edccb809a890fc9747beabfcf87cf7194e2f37592",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/physics_async_worker.gd.uid",
+      "git_path": "godot/tests/physics_async_worker.gd.uid",
+      "git_sha256": "f78ed2cf89d91dca15b6b013d81f2c7db87ab891e4bbe4d1635220bcc35a3cd4",
+      "packaged_sha256": "12dff109d654eb6650d8bb8b0697d4321f280a811562343fde66d44d374ce490",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/profile_native_world.gd.uid",
+      "git_path": "godot/tests/profile_native_world.gd.uid",
+      "git_sha256": "930d1c5ebff679c2dff49cbdf5732711fcfce8d82693a18c6c950032d28d7f6c",
+      "packaged_sha256": "0ddef2db4d7eb43fc70f6da51c299a7acd9c59f4c091e4039649b02aee44612c",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/profile_scheduler.gd.uid",
+      "git_path": "godot/tests/profile_scheduler.gd.uid",
+      "git_sha256": "90083048bc541abf21b11da2ff14cf83bcc9ba45572bf2edc39314974720e80e",
+      "packaged_sha256": "f9ef8ae467dc0edd0d5980bb51a63e3b02de54337b414f597429d79c36001a99",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/run_microscenario.gd.uid",
+      "git_path": "godot/tests/run_microscenario.gd.uid",
+      "git_sha256": "c024aaa0e813bfcf06e7a8b8942bfc57f61451f0806fd47c64ad700ba6f7f41e",
+      "packaged_sha256": "c293183d7572f329d8cd68497972903bc5b3aa90d46037924ac752bee54b0ec9",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/run_worker_benchmark.gd.uid",
+      "git_path": "godot/tests/run_worker_benchmark.gd.uid",
+      "git_sha256": "bea37dcc6457d7b43c32395ad13ba1096bfdf1ea5fbd3630ca7eff140912ae8e",
+      "packaged_sha256": "3205ac6244d90c345a0eed6ae07c1c204dc6503fb1c095b10ce09a2b5180ebfa",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_auto_worker_policy.gd.uid",
+      "git_path": "godot/tests/test_auto_worker_policy.gd.uid",
+      "git_sha256": "cdb2caf99fdeb4bef54a13ef97950b28ebc7d0b7fd995bb0d3b6b9467f3ab6ea",
+      "packaged_sha256": "5472a84b8f70c1c67dda37bb2c55aed2629e867a23a372553973da542bbe4ee6",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_cell_world.gd.uid",
+      "git_path": "godot/tests/test_cell_world.gd.uid",
+      "git_sha256": "972fda8d3a86315865f11d3eb830b6aa62087b13a3c6dcd257a2514b0fab3649",
+      "packaged_sha256": "849b315f1be8bda94d075a266772ef3f9e0d867246641b8d08b7acd75bdac557",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_experiment_tower.gd.uid",
+      "git_path": "godot/tests/test_experiment_tower.gd.uid",
+      "git_sha256": "590b693f377f614e50742ec600b3fcc510659f8a0b882a145864db2f8face0a3",
+      "packaged_sha256": "977207e287d4c8d67bc988a3e4c0b8a36d20cf327eab272c0e18f56118d294e1",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_interaction_async.gd.uid",
+      "git_path": "godot/tests/test_interaction_async.gd.uid",
+      "git_sha256": "b64fc52a70eafbef114fb0ef03835e7ca78fe624f484b909d7929145ad71e7be",
+      "packaged_sha256": "3eaa91313e5d6992f01b875acb3d26486b6d9cbf0b9aa135a9730bffaa556d2d",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_interaction_policy.gd.uid",
+      "git_path": "godot/tests/test_interaction_policy.gd.uid",
+      "git_sha256": "24654257e2f998ef480157b49273111db40b590e529b86445216f30900b87301",
+      "packaged_sha256": "eaa620d8e0c2e9a500da11c81a475d5e88fb385a372337c755b27e3fe7e49ff4",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_material_appearance_lut.gd.uid",
+      "git_path": "godot/tests/test_material_appearance_lut.gd.uid",
+      "git_sha256": "972ddfc6e891f404bee77b49cbbd98a8e5cf8edfb28df2b5993a359efc6701e0",
+      "packaged_sha256": "76c459d7cb4c5225a53104fa82218ee0e2d0201bf4d787cd133c2dfe90684a90",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_microscenario_controllers.gd.uid",
+      "git_path": "godot/tests/test_microscenario_controllers.gd.uid",
+      "git_sha256": "fbaf36720ebfe134126e0124b2a5d3dffbe2b5b38eb01c8887f961b66a02c3ff",
+      "packaged_sha256": "cc87177b6136abb9eb2a20b53b1434ca3094c929bb2577abf2546f2f80b2c0ed",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_microscenarios.gd.uid",
+      "git_path": "godot/tests/test_microscenarios.gd.uid",
+      "git_sha256": "cc86bc1b3373687e8c9ccd223f8db3d5d5aede0dab4f3646e392324a13f15eaa",
+      "packaged_sha256": "b2778598e5128599d9cc8b7e8c1106eb6e32f677e456952142eb1929d60448ef",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_native_edge_contact_regression.gd.uid",
+      "git_path": "godot/tests/test_native_edge_contact_regression.gd.uid",
+      "git_sha256": "d8fc134dfb819d521d7525920503ab8f1163a3559333af2e33324aa933f32eb5",
+      "packaged_sha256": "0e59430a08c5ec697974fa60c1e1250fca337084e6955b924489313666e5bded",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_native_fire_presentation_regression.gd.uid",
+      "git_path": "godot/tests/test_native_fire_presentation_regression.gd.uid",
+      "git_sha256": "70d784c7c11435e075be634e29eef540f1a570f7bd7062cf59e6087750d4c90b",
+      "packaged_sha256": "21075beb65a08c1447167296643b4e3f3201b90e352091d130157c52fb794895",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_native_render_bridge_regression.gd.uid",
+      "git_path": "godot/tests/test_native_render_bridge_regression.gd.uid",
+      "git_sha256": "6fe77d7e159893d278bb2b2ac5101ba46f75efc66118325b57a0c07db986cebc",
+      "packaged_sha256": "c28521bc016773c5a60697557005f3999d87b27aa430c94f8cc15032a9c5efee",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_neon_reliquary.gd.uid",
+      "git_path": "godot/tests/test_neon_reliquary.gd.uid",
+      "git_sha256": "71537b6cb3689bc7ad82c0345fa030602d82e937190f5b3051e630869e61741e",
+      "packaged_sha256": "c7023ca71ae3ee6935c06c904b5090fac61117746b1c69a0ea7f2d52109a5ac5",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_physics_async.gd.uid",
+      "git_path": "godot/tests/test_physics_async.gd.uid",
+      "git_sha256": "621b85bc74f2610d5461d7e1de105b1a70a0a84cdeb467b01c384f51632a2413",
+      "packaged_sha256": "818d5291d0fc9c94eac9039cb998f4bbb796e0cfb59d541a6dd699faf5cc95b2",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_physics_characterisation.gd.uid",
+      "git_path": "godot/tests/test_physics_characterisation.gd.uid",
+      "git_sha256": "567d6577ff6bc705d2dc31ecb1017ced6e22fd951a7d5a3b12279d4069e6e1f8",
+      "packaged_sha256": "2b5f645917fa500384ed7e7eb867963f3705d99cdab2f6d467bcbc8c65ef7d7f",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_physics_instrumentation.gd.uid",
+      "git_path": "godot/tests/test_physics_instrumentation.gd.uid",
+      "git_sha256": "06862a5428a88e5610eace8edc0b2fb7b728916459c2900e1ddc9ded0b64ed71",
+      "packaged_sha256": "10964acb798d23d83ea615a36278e86b7320a86ba007f92cb867c655f6f23d0b",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_presentation_controls.gd.uid",
+      "git_path": "godot/tests/test_presentation_controls.gd.uid",
+      "git_sha256": "e5a4234e87455478be33c8a49428178ac9fc7e39cb91c1549f4dab89f5b750fe",
+      "packaged_sha256": "45c0e819b782d15791d0b3896115490b1dc315b601d9cbd084bac8d0bbe4554d",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_rapier_backend_preflight.gd.uid",
+      "git_path": "godot/tests/test_rapier_backend_preflight.gd.uid",
+      "git_sha256": "f56ebba974badefee30e80b8525370a35fa6b9a0b051ef3037c6c65a83da865b",
+      "packaged_sha256": "9fcedd33eb1de09ef0af6a80d40c9549f3d765a41488a6f99f7c8eff07c7377c",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_rapier_drop_in.gd.uid",
+      "git_path": "godot/tests/test_rapier_drop_in.gd.uid",
+      "git_sha256": "bbc176414c3ddb2b0ae0827bb71f036d142b825ecf158600c5a23f4ad1a0f401",
+      "packaged_sha256": "6c3c72ed44c29dfb29e8c9a3dc83138b52398b757b4458078543ea4f039d4e99",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_rapier_manual_step.gd.uid",
+      "git_path": "godot/tests/test_rapier_manual_step.gd.uid",
+      "git_sha256": "b7283dab032031874f1a733e513d2f045cfee5da5eb791a79d9e47e255e0cf84",
+      "packaged_sha256": "65a97e40501398ca18ac903e2bcb84c99c762b7d489961a00f0cd767a1841795",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_render_patch_handoff_regression.gd.uid",
+      "git_path": "godot/tests/test_render_patch_handoff_regression.gd.uid",
+      "git_sha256": "2300016404e1669cd2f0093df34169f221c22d36ad39b6bc1313566e6cecc38e",
+      "packaged_sha256": "2e69548e67d3afa4f47066d2bab65561557f24f0802c1d893c9c979abe163677",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_showcase_backdrop_render.gd.uid",
+      "git_path": "godot/tests/test_showcase_backdrop_render.gd.uid",
+      "git_sha256": "cc0f69ee770a8226b714be2a6dec5377686aef0445d7c9ac759cf2020fc2439b",
+      "packaged_sha256": "5b9ad137771d5048976eb68c00ce75d3da2c9304c720a4b3a549992ff90c55ca",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_tick_failure_regression.gd.uid",
+      "git_path": "godot/tests/test_tick_failure_regression.gd.uid",
+      "git_sha256": "b98ca7f33fbc1a1dbdf8f8ece5cf6e2b93cfde28a29fb74c9fbd8c97c5396088",
+      "packaged_sha256": "da0d8025e5591929f0bc10346439afa209d885a7b24971427dc63faa96bc4e58",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_transport_probe.gd.uid",
+      "git_path": "godot/tests/test_transport_probe.gd.uid",
+      "git_sha256": "92d6deeeae67dfa3413306cd26eef33b86d88f357f43369c0fb8bad5a83759f7",
+      "packaged_sha256": "4ce21671509ff3a0f7b7932d5cd70b642f79d8d44ffcddb13f329f3ec309a807",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_transport_profiles.gd.uid",
+      "git_path": "godot/tests/test_transport_profiles.gd.uid",
+      "git_sha256": "ba6a808bf02d1cc3f3c3b69e9f64d1a08f041e435e739074088182da60f139ed",
+      "packaged_sha256": "a2bc73f911bdaf67085941956fe4744eeb55ce33d7e8c42a5901291f87d45dc7",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_web_demo_setup.gd.uid",
+      "git_path": "godot/tests/test_web_demo_setup.gd.uid",
+      "git_sha256": "36f931d2c4ab19ca0f1381f0ba59a1b314bd8adfdd9685e42bf1e50d9548a22f",
+      "packaged_sha256": "09faefca3a07d6ade6ff2931af15d9b67a2ed1e02e1b4c1f594527a6eb34f0c4",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_web_rapier.gd.uid",
+      "git_path": "godot/tests/test_web_rapier.gd.uid",
+      "git_sha256": "205365b0819dfe6fe8d6749d6897a8274121b95aac94e0fda60b1c914f4275e7",
+      "packaged_sha256": "f3dcb95ddcb4719942b82326de8e7bc3ea2100c59912747e87b9029a2245cedd",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_web_worker_parity.gd.uid",
+      "git_path": "godot/tests/test_web_worker_parity.gd.uid",
+      "git_sha256": "7dd0c1400e5af6be3f950f24dab9e4eebbf70e03504328241f578afe92d9b549",
+      "packaged_sha256": "81c7216ea9f24deed989df323f7f4979ac78935a5fd760e37b17558cefb9b81b",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tests/test_worker_benchmark.gd.uid",
+      "git_path": "godot/tests/test_worker_benchmark.gd.uid",
+      "git_sha256": "100b86e35cd59751168316e11bab013a4b1fb46b0067ac0db5653599ddda8f80",
+      "packaged_sha256": "8f5c58a28739396973b1e1646f2abc3f928a5f1a76c4a5e91797e66334c33465",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tools/activate_rapier_2d.gd.uid",
+      "git_path": "godot/tools/activate_rapier_2d.gd.uid",
+      "git_sha256": "0da2e876c74d31a090f357125f14a7d47ec6bc14087652dce11c3fa503f26fc3",
+      "packaged_sha256": "e47ded432d0f4c6bc45301c71495c57422253d79b461ea842c13620c8d7e9126",
+      "exact_windows_git_archive_match": true
+    },
+    {
+      "path": "godot/tools/capture_neon_reliquary.gd.uid",
+      "git_path": "godot/tools/capture_neon_reliquary.gd.uid",
+      "git_sha256": "2219bc56bf7fb121246be18dd23b744eb2d3cfbc2f09d8f45caf5c8c48acf989",
+      "packaged_sha256": "63a7709bbb0084d3c039a9e35f43c7958b4bae69b6e0f44fe32f2221b6babacb",
+      "exact_windows_git_archive_match": true
+    }
+  ],
+  "source_export_scope": "Raw package hashes are exact; CRLF-only committed assets also independently match git -c core.autocrlf=true archive of the exact tree.",
+  "derived_generator_profiles_verified": 17,
+  "architecture_evidence_files": 954,
+  "ui_capture_files": [
+    "architecture-module-library-ui.png",
+    "architecture-zero-write-preview-ui.png",
+    "architecture-native-placement-ui.png"
+  ],
+  "scope": "Read-only original artifact and complete package verification. Embedded source Windows qualification and every actual app/runtime file hash match the package. Fresh extracted application execution is reviewed separately. No physical owner acceptance."
+}

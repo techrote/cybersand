@@ -1,0 +1,35 @@
+{
+  "schema": "cybersand.source-extracted-owner-pairing-review.v1",
+  "status": "passed",
+  "source_revision": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "native_binary_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+  "outcomes_file": "windows-outcomes-17c6b5b3.zip",
+  "outcomes_sha256": "6117b1cce68461c267b0df1f11c98d9efa4e557abac2acafa505fab1dd043ea0",
+  "owner_package_file": "CyberSand-Architecture-Workbench-Windows-17c6b5b35049.zip",
+  "owner_package_sha256": "202b5852d31a54f30b9fd0e825d8e9123edddad05f3d09469ceaec671249eea4",
+  "source_qualification_sha256": "acc1abfa05f6c0a5f6808c1a76a90ebd0f44645f3987354d988f63f57cd7abf1",
+  "source_process_groups": 89,
+  "extracted_qualification_sha256": "5b86b258ac78532a603809dd56268507582ec8c8e0b68a50759263e4ced7212d",
+  "extracted_process_groups": 72,
+  "identical_executed_source_runtime_files": 299,
+  "launcher_report_sha256": "48922d7ebdb52818b0aef968844f404b5eea6689699cb5c3066ef4dc965f9232",
+  "launcher_checks": 10,
+  "early_query_log_sha256": "80699504f86698b7d5ce272b78a1c593c0cab27b36c4be7820c6dea3583bb745",
+  "early_powershell_version": "5.1.20348.5773",
+  "observed_process": {
+    "ProcessId": 3972,
+    "ParentProcessId": 6032,
+    "ExecutablePath": "D:\\a\\_temp\\batch-lab-extracted-evaluator\\Godot_v4.7-stable_win64.exe",
+    "CreationDate": "2026-11-25T01:19:40.8540830Z",
+    "CommandLine": "\"D:\\a\\_temp\\batch-lab-extracted-evaluator\\Godot_v4.7-stable_win64.exe\"  --path \"D:\\a\\_temp\\batch-lab-extracted-evaluator\\godot\" -- --workbench",
+    "MainWindowHandle": 852438
+  },
+  "launcher_pid": 6032,
+  "route_log_binding": {
+    "kind": "exact-final-file",
+    "observed_bytes": 925,
+    "final_sha256": "a98167365468a0e10a4b9a52238ae13fc644fe87205bc258c028544d6106b6d4"
+  },
+  "monitor_samples": 11,
+  "scope": "Read-only original artifact pairing. The exact owner ZIP embeds the completed source report; its pristine extraction separately passed all72groups and the unchanged CMD produced its exact owned visible Workbench child. Original manifest/runtime hashes are retained. Physical owner acceptance remains pending."
+}

@@ -1,0 +1,114 @@
+{
+  "schema": "cybersand-ci-engineering-request-ledger-v1",
+  "mission": "CI-ENGINEERING-CLOSURE-001",
+  "repository": "techrote/cybersand",
+  "owner": "mission technical lead",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "branch": "codex/ci-engineering-closure-001",
+  "hosted_campaigns_dispatched": 0,
+  "runs_rerun_or_cancelled": 0,
+  "ready_transitions": 0,
+  "publication_attempts": 0,
+  "active_owner_boundaries": [
+    "PUBPRES",
+    "ObjectShard",
+    "Equipment",
+    "Art",
+    "Batch Lab",
+    "SWARM",
+    "Actor"
+  ],
+  "requests": [
+    {
+      "id": "RECOVER-EXISTING",
+      "kind": "read-only evidence recovery",
+      "status": "completed",
+      "new_hosted_jobs": 0,
+      "scope": "Original API attempts, jobs, logs and artifact byte identities; no timing reruns."
+    },
+    {
+      "id": "LOCAL-CONTRACTS",
+      "kind": "local focused validation",
+      "status": "completed",
+      "new_hosted_jobs": 0,
+      "scope": "Actual temporary Git/LFS/ZIP custody controls, status adversaries, preserved inventory and documentation checks.",
+      "result": "local-validation.json;39 custody / 28 status / 8 metrics / 10 scheduling tests pass, policy/docs/actionlint pass; materialized hosted gates remain pending"
+    },
+    {
+      "id": "DRAFT-CHECKPOINT",
+      "kind": "ordinary Draft pull request checks",
+      "status": "planned",
+      "scope": "Existing automatic Documentation and advisory checks after a coherent reviewed checkpoint. Heavy Draft jobs remain conditional skips, not qualification. No Ready promotion or new trigger.",
+      "new_heavy_product_campaigns": 0,
+      "qualification_claim": false
+    },
+    {
+      "id": "FINAL-SOURCE-COHORT",
+      "kind": "mandatory resulting-source qualification",
+      "status": "deferred",
+      "source_commit": null,
+      "source_tree": null,
+      "required": [
+        "full materialized Documentation/provenance",
+        "all six Native families and strict aggregate",
+        "all current Linux and Windows GDExtension shards, builds, graphical smoke and both reducers",
+        "all Palette GL/ANGLE cohorts and strict reducer",
+        "any additional scoped gate required by final diff"
+      ],
+      "admission_requirements": [
+        "freeze final candidate source/tree",
+        "refresh campaign owners, account capacity and queue observations",
+        "record prior measured runner-cost range",
+        "use existing authenticated explicit workflow requests without Ready promotion, or obtain the owner's separate Ready decision"
+      ],
+      "reasons": [
+        "No Ready promotion is authorized.",
+        "The approved connector has reads and reruns but no new workflow_dispatch action; local gh is unauthenticated.",
+        "The permitted connected-browser/cloud-browser fallback could not open a usable GitHub Actions page. No authenticated dispatch was available.",
+        "Repository observations do not verify account-wide capacity. No saturation claim is made."
+      ],
+      "qualifying_execution_performed": false,
+      "source_binding": "Final full commit/tree and branch lease must be externally pinned in the Draft PR handoff after this packet is committed; a PR merge checkout must also be recovered from its original receipts.",
+      "planning_reference": {
+        "kind": "historical observed reference; not a forecast or capacity reservation",
+        "cohorts": [
+          {
+            "head": "d170da41fb66cc4a6e23f73343c1f059592ecb63",
+            "gde_caps": [
+              16,
+              16
+            ],
+            "all_applicable_runner_minutes": 280.2,
+            "event_to_last_job_seconds": 2002
+          },
+          {
+            "head": "bfbbb86877746e5ed0c2f609274b1ce7b03b0990",
+            "gde_caps": [
+              14,
+              18
+            ],
+            "all_applicable_runner_minutes": 294.35,
+            "event_to_last_job_seconds": 2007
+          }
+        ],
+        "limitations": "Historical cohorts had 653 cases. Final candidate keeps 8/8 and has 657 cases plus new helper tests and all final scoped gates. Values are neither promised cost nor upper/lower bounds. See performance.json for individual attempts and original failures."
+      }
+    }
+  ],
+  "invariants": [
+    "No production source/runtime changes",
+    "No new runner provider",
+    "No cancellation or mutation of active programme evidence",
+    "All mandatory real tests remain required",
+    "Original failures remain failures",
+    "No merge, automatic merge or production publication"
+  ],
+  "last_read_only_refresh_utc": "2026-11-24T17:23:30Z",
+  "latest_refresh": {
+    "accepted_main_unchanged": true,
+    "in_progress_workflows": 6,
+    "queued_workflows": 0,
+    "assigned_runner_inventory_collected": false,
+    "scope": "Repository workflow metadata only; no capacity or simultaneous runner-count inference."
+  }
+}

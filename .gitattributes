@@ -22,6 +22,8 @@
 *.tscn text eol=lf
 *.tres text eol=lf
 *.gdextension text eol=lf
+# Godot rewrites these tracked import descriptors with LF on every host.
+*.import text eol=lf
 *.cfg text eol=lf
 *.json text eol=lf
 # Retained raw campaign reports preserve their original target-host bytes.

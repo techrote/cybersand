@@ -1,0 +1,14 @@
+test_blended_contributors_are_not_counted_as_new_goals (test_independent_review.IndependentReadbackTests.test_blended_contributors_are_not_counted_as_new_goals) ... ok
+test_exact_memory_ablation_is_admitted_without_mutating_base (test_independent_review.IndependentReadbackTests.test_exact_memory_ablation_is_admitted_without_mutating_base) ... ok
+test_grid_boundary_occupancy_keeps_small_actual_range_visible (test_independent_review.IndependentReadbackTests.test_grid_boundary_occupancy_keeps_small_actual_range_visible) ... ok
+test_material_distance_must_agree_with_observed_position (test_independent_review.IndependentReadbackTests.test_material_distance_must_agree_with_observed_position) ... ok
+test_partial_or_preflight_report_cannot_claim_full_programme (test_independent_review.IndependentReadbackTests.test_partial_or_preflight_report_cannot_claim_full_programme) ... ok
+test_raw_stall_disagreement_is_refused (test_independent_review.IndependentReadbackTests.test_raw_stall_disagreement_is_refused) ... ok
+test_same_vertical_motion_is_real_flight_progress (test_independent_review.IndependentReadbackTests.test_same_vertical_motion_is_real_flight_progress) ... ok
+test_seed_change_disqualifies_an_otherwise_valid_ablation (test_independent_review.IndependentReadbackTests.test_seed_change_disqualifies_an_otherwise_valid_ablation) ... ok
+test_vertical_ground_gait_does_not_become_exploration (test_independent_review.IndependentReadbackTests.test_vertical_ground_gait_does_not_become_exploration) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.001s
+
+OK

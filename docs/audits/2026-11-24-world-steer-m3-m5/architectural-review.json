@@ -1,0 +1,148 @@
+{
+  "after_scope": "Eighteen zero-write compiler stage projections. A different specialist independently checked actual projected plane hashes, four-neighbor components and empty corridors. These projections are not completed native construction.",
+  "before_native_scope": "Six native developmental material planes and eighteen native stages; exact source binding absent. Diagnostic material-ID PNGs were visually reviewed.",
+  "before_native_source_revision": "",
+  "blind_preference_assessed": false,
+  "examples": [
+    {
+      "after_projected_clearance_occupied": 0,
+      "after_projected_detail_cells": 138,
+      "after_projected_plane_sha256": "9706fc47ec4379923ae061c255e455d7783a5715c79144de62794b05229830a9",
+      "after_projected_structural_cells": 26267,
+      "after_projected_structural_components": 1,
+      "before_every_detail_cell_touches_prior_support": true,
+      "before_native_detail_cells": 138,
+      "before_native_plane_sha256": "7104b731960de0c8ffa10127cb05e02adc6d2d9eba5e15a368af818af2dac795",
+      "before_native_structural_components": 6,
+      "correction": "Roof hangers join all three housings to the lower truss chord; side galleries meet the support columns.",
+      "extent": [
+        480,
+        320
+      ],
+      "id": "assembly-hangar"
+    },
+    {
+      "after_projected_clearance_occupied": 0,
+      "after_projected_detail_cells": 198,
+      "after_projected_plane_sha256": "73a46d909f3e3a42ca7c1132e93e19236cb9072159eb8a6c5828c3889c75bafe",
+      "after_projected_structural_cells": 25257,
+      "after_projected_structural_components": 1,
+      "before_every_detail_cell_touches_prior_support": true,
+      "before_native_detail_cells": 200,
+      "before_native_plane_sha256": "81c5e5aeeeacda4fbc6c5a56228241ca0caf36b9fa2ec5bface38758649d5d9f",
+      "before_native_structural_components": 11,
+      "correction": "Exterior piers and a roof truss suspend all three pods while preserving the complete lower corridor; interior grilles and landings meet their room frames.",
+      "extent": [
+        480,
+        320
+      ],
+      "id": "interconnected-arcology"
+    },
+    {
+      "after_projected_clearance_occupied": 0,
+      "after_projected_detail_cells": 92,
+      "after_projected_plane_sha256": "98beef6ce9b9818604f4872721a4a74aee66027de507d95599bcec74fdae7fce",
+      "after_projected_structural_cells": 17558,
+      "after_projected_structural_components": 1,
+      "before_every_detail_cell_touches_prior_support": true,
+      "before_native_detail_cells": 92,
+      "before_native_plane_sha256": "58feb45ff5421693f5954465ffc65157ca17833cc1fea0dec55cba51eb649bf2",
+      "before_native_structural_components": 7,
+      "correction": "Outer rock shoulders join ceiling and floor; small cuffs connect the service tubes to the authored stems; the middle gallery meets both side walls.",
+      "extent": [
+        384,
+        256
+      ],
+      "id": "biomechanical-arboretum"
+    },
+    {
+      "after_projected_clearance_occupied": 0,
+      "after_projected_detail_cells": 136,
+      "after_projected_plane_sha256": "c99010351ab1bf5fc2f0f6ce5841f4d522b68971ba96d108e0ab10fdf75f5e80",
+      "after_projected_structural_cells": 24651,
+      "after_projected_structural_components": 1,
+      "before_every_detail_cell_touches_prior_support": true,
+      "before_native_detail_cells": 136,
+      "before_native_plane_sha256": "c99010351ab1bf5fc2f0f6ce5841f4d522b68971ba96d108e0ab10fdf75f5e80",
+      "before_native_structural_components": 1,
+      "correction": "No geometry change was needed: the prior composition already had one four-neighbor material component.",
+      "extent": [
+        480,
+        320
+      ],
+      "id": "irregular-megastructure"
+    },
+    {
+      "after_projected_clearance_occupied": 0,
+      "after_projected_detail_cells": 358,
+      "after_projected_plane_sha256": "a3153d751fa8b5412269ac31c45784debb276e2540c1292f979982c5cbc79265",
+      "after_projected_structural_cells": 23345,
+      "after_projected_structural_components": 1,
+      "before_every_detail_cell_touches_prior_support": true,
+      "before_native_detail_cells": 354,
+      "before_native_plane_sha256": "5ab1f763cedc763eb5729a2a2118d2ef734b042d4a307fef47ef69bde9881fcc",
+      "before_native_structural_components": 5,
+      "correction": "Wall/pipe hangers connect three housings, and feet join the lower service rail to the base.",
+      "extent": [
+        480,
+        320
+      ],
+      "id": "service-network"
+    },
+    {
+      "after_projected_clearance_occupied": 0,
+      "after_projected_detail_cells": 134,
+      "after_projected_plane_sha256": "b214f6378a3f6f873d1690fc1b020e1500ff2a5a11d0cea3a723e26ffad01ff2",
+      "after_projected_structural_cells": 37533,
+      "after_projected_structural_components": 1,
+      "before_every_detail_cell_touches_prior_support": true,
+      "before_native_detail_cells": 132,
+      "before_native_plane_sha256": "daabe9a0e2d767a012e7a5036c5b4aaf4e1e53b755376a1e6451741565668404",
+      "before_native_structural_components": 5,
+      "correction": "A short rock connector supports the left room, brackets join the ledges, and the diagonal member terminates at rock and room boundaries.",
+      "extent": [
+        384,
+        256
+      ],
+      "id": "constructed-cavern"
+    }
+  ],
+  "identities": {
+    "before_evidence_manifest_sha256": "e496c668fb6d7f4bc4ce666de85d73082ef8b8e21c4cebcd35e08e183cf3662c",
+    "before_independent_material_review_sha256": "fa9ed67796f6d45f00112d622e8b7179fc8acf45beba420b72fc4d984447e1b5",
+    "before_native_manifest_sha256": "de4d5dec89478401c9a18dff461b489e2b2b373aaa013c4e938df867e2f5d447",
+    "independent_projected_review_sha256": "bbf986d9adb1bd1a167775b28c56d9a3061c9af0724a6d537010c76f93d95a7b",
+    "recipe_correction_commit": "fada326e7338c8b25bddb4710a7ca4b53497c1b0"
+  },
+  "limitations": [
+    "Material connectivity is not stress, stability, flow or actor-traversal proof.",
+    "Metal is both primary structure/service and detail in these six demonstrations; detail is isolated by the services-to-detail native stage delta.",
+    "Stepped rock and orthogonal biological containers remain simplified visual constructions; functional service behavior is unqualified.",
+    "The six demonstrations are not additional arms or trials in the thirty-attempt matched comparison."
+  ],
+  "model_calls": 0,
+  "physical_owner_acceptance": false,
+  "remaining_gates": [
+    "Exact-source native execution and material readback after recipe correction.",
+    "Actual Godot rendered frames for all nine native compositions, tied to source and material identities.",
+    "Hosted Windows and extracted Windows evaluator qualification on the frozen integrated source.",
+    "Physical owner review of interactive editing, architectural preference and gameplay.",
+    "Authorized genuine model execution before any model-dependent claim."
+  ],
+  "review_roles": {
+    "architectural_retrieval": "Found deficits, independently reduced original native evidence, authored recipe corrections.",
+    "native_modules": "Independently reviewed connector geometry and performed scalar flood fill on all six projected planes.",
+    "staged_execution": "Owns native execution, persistence and graphical qualification; corrected campaign results remain separate."
+  },
+  "schema_version": "cybersand.architectural-example-review.v1",
+  "status": "Draft/HOLD; corrected native and actual graphical qualification pending hosted campaign",
+  "structural_material_ids": [
+    58,
+    28,
+    13,
+    7
+  ],
+  "unchanged_controls": [
+    "irregular-megastructure"
+  ]
+}
