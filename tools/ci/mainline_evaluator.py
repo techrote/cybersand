@@ -24,7 +24,7 @@ import sys
 import tarfile
 import zipfile
 
-SCHEMA = "cybersand-accepted-main-evaluator-request-v1"
+SCHEMA = "cybersand-accepted-main-evaluator-request-v2"
 MANIFEST = "mainline-evaluation-manifest.json"
 FOUNDATIONS = {
     "goblin_001": "d4484bd5b488cb419bfaa94f1e69be8128734405",
@@ -34,7 +34,7 @@ NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 RAPIER = "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
 SOURCE_FILES = (
     "tools/ci/mainline_evaluator.py", "tools/ci/test_mainline_evaluator.py",
-    "tools/ci/verify_mainline_launchers.ps1",
+    "tools/ci/verify_mainline_launchers.ps1", "tools/ci/qualify_native_consolidation_package.py",
     ".github/workflows/mergedown-mainline-windows.yml",
     "tools/fixtures/mergedown-mainline-windows-request.json",
 )
@@ -51,6 +51,22 @@ SOURCE_CONTRACTS = {
     "godot/tests/test_ambient_default_off_integration.gd": "f02ac9d36519168b3caefe77c46cb9fbb1f52b232db343559da0aeb149ed2eaf",
 }
 DEFAULT_OFF_CASE = "test_ambient_default_off_integration"
+FEATURE_INPUTS = {
+    "actor_compose": ("godot/tests/test_workbench_actor_configuration_native.gd", "docs/operations/workbench-actor-composition.md"),
+    "gentek_2048": ("godot/tests/fixtures/gentek2048_workbench.gd", "docs/operations/gentek80-evaluation.md"),
+    "material_audition": ("godot/tests/test_material_audition_ambient_integration.gd", "docs/systems/material-audition.md"),
+    "objectshard_m4": ("godot/scripts/object_shard_m4_runtime.gd", "docs/operations/objectshard-workbench-playtest.md"),
+    "persistent_areas": ("godot/persistent_areas.tscn", "docs/operations/persistent-area-ramcache-evaluation.md"),
+    "swarm": ("godot/tests/swarm456_reciprocal_ui.gd", "docs/operations/swarm456-owner-acceptance.md"),
+}
+FEATURE_CONTROLS = {
+    "actor_compose": "Open **Configuration… → Actors**, choose **Living Mixed Workshop**, then **Load playground**. Save your current start first. The example starts paused. Select a body to grab, place or rotate it, or pilot an actor and hand control back.",
+    "material_audition": "Open **Materials Lab → Current scene**, select a material, change a supported value and click **Apply draft**. **Revert** and **Reset** change the live configuration. Save a named profile to keep the settings.",
+    "objectshard_m4": "Use the ObjectShard controls in the Workbench and its included playtest guide to select a supported structural body and inspect a Cut.",
+    "persistent_areas": "Launch **Open Persistent Areas.cmd** for the three-area Current/FreeMass profile. Use **RAM cache…** to inspect resident worlds and choose strict or deferred saving. **Save all areas** waits for durable acknowledgement. The profile uses workbench/userdata/persistent-profile.",
+    "swarm": "Pause the World and open **Reciprocal assembly…**. Draw an activation dab, generate a proposal, inspect it and use **Apply** or **Undo**. Save the authored start to preserve the acknowledged result.",
+}
+
 
 
 def require(condition: bool, message: str) -> None:
@@ -109,9 +125,17 @@ def request(path: Path) -> dict:
             "Request must identify an actual accepted-main checkpoint")
     require(value.get("required_foundations") == FOUNDATIONS,
             "Both original qualified foundation ancestries are required")
-    require(type(value.get("native_source_input_count")) is int and value["native_source_input_count"] == 105
+    require(type(value.get("native_source_input_count")) is int and value["native_source_input_count"] > 0
             and type(value.get("rapier_source_input_count")) is int and value["rapier_source_input_count"] == 4,
-            "This narrow retained-runtime adapter requires the unchanged 105/4 input contract")
+            "Delivery requires a positive native input count and the selected four-input Rapier runtime")
+    features = value.get("integrated_features")
+    require(isinstance(features, list) and all(isinstance(name, str) and name in FEATURE_INPUTS for name in features)
+            and features == sorted(set(features)) and "gentek_2048" in features,
+            "Delivery must name its exact integrated features in sorted order")
+    pins = value.get("runtime_manifests_sha256")
+    require(isinstance(pins, dict) and set(pins) == {"native", "rapier"}
+            and all(exact_hash(digest, 64) for digest in pins.values()),
+            "Delivery must pin the exact native and Rapier provenance manifests")
     require(value.get("owner_playfeel_accepted") is False and value.get("public_release") is False,
             "A delivery request cannot grant physical acceptance or a public release")
     return value
@@ -175,10 +199,13 @@ def execution_budget(policy: dict, default_case) -> dict:
             "full_ambient_feature_campaign_claimed": False}
 
 
-def expected_runtime(product: Path) -> dict:
+def expected_runtime(product: Path, request_value: dict) -> dict:
     result = {}
-    for name, relative, count in (("native", "godot/addons/cybersand_native/runtime-provenance.json", 105),
-                                   ("rapier", "godot/addons/godot-rapier2d/runtime-provenance.windows.json", 4)):
+    for name, relative in (("native", "godot/addons/cybersand_native/runtime-provenance.json"),
+                           ("rapier", "godot/addons/godot-rapier2d/runtime-provenance.windows.json")):
+        count = request_value[name + "_source_input_count"]
+        require(sha(product / relative) == request_value["runtime_manifests_sha256"][name],
+                "Accepted runtime manifest differs from delivery request: " + name)
         manifest = read(product / relative)
         require(len(manifest.get("source_inputs", {})) == count and exact_hash(manifest.get("sha256"), 64),
                 "Unexpected retained provenance/input contract: " + name)
@@ -201,7 +228,16 @@ def admit(request_path: Path, product: Path, harness: Path) -> dict:
             git(product, "merge-base", "--is-ancestor", commit, value["source_commit"])
         except subprocess.CalledProcessError as error:
             raise ValueError("Accepted source lacks qualified " + name + " ancestry") from error
-    for name, digest in SOURCE_CONTRACTS.items():
+    features = sorted(name for name, (signature, _) in FEATURE_INPUTS.items() if (product / signature).is_file())
+    require(features == value["integrated_features"], "Declared integrations differ from the accepted product")
+    contracts = SOURCE_CONTRACTS.copy()
+    if "actor_compose" in features:
+        contracts["godot/tests/test_ambient_default_off_integration.gd"] = "112cbf6031384cad5987e4679a1618e2fb10388518aa84ceee021c4c5507f74c"
+    if "persistent_areas" in features:
+        contracts["tools/ci/run_godot_regressions.py"] = "855f324f13d47221e742a44a4f9649c6f395ff113e9b714852480f1199c3d496"
+    if "swarm" in features:
+        contracts["tools/qualify_workbench_landscapes.py"] = "8a5360070fc8e90c191d875dac906234ab88dcb882201bb38e64e2088a8c6170"
+    for name, digest in contracts.items():
         require(source_contract_sha(product / name) == digest, "Changed proof/watchdog contract requires review: " + name)
     budget = execution_budget(product_module(product, "execution_policy").identity(), registered_default_case(product))
     harness_commit = git(harness, "rev-parse", "HEAD")
@@ -217,11 +253,12 @@ def admit(request_path: Path, product: Path, harness: Path) -> dict:
         "required_foundations": FOUNDATIONS, "request_sha256": sha(request_path),
         "harness_commit": harness_commit, "harness_tree": git(harness, "rev-parse", "HEAD^{tree}"),
         "harness_inputs_sha256": {name: sha(harness / name) for name in SOURCE_FILES},
-        "proof_source_contracts_sha256": SOURCE_CONTRACTS,
+        "proof_source_contracts_sha256": contracts,
+        "integrated_features": features,
         "proof_source_hash_mode": "SHA256 of repository LF-canonical text; all package/runtime/log hashes remain raw bytes",
         "execution_budget": budget,
-        "runtime_expected": expected_runtime(product),
-        "native_source_input_count": 105, "rapier_source_input_count": 4,
+        "runtime_expected": expected_runtime(product, value),
+        "native_source_input_count": value["native_source_input_count"], "rapier_source_input_count": value["rapier_source_input_count"],
         "owner_playfeel_accepted": False, "public_release": False,
     }
 
@@ -271,7 +308,7 @@ def verify_constituent_identities(admission: dict, goblin: dict) -> None:
     require(all(goblin.get(key) == admission[key] for key in ("source_commit", "source_tree")),
             "Constituent package source does not match accepted-main admission")
     provenance = goblin["provenance"]
-    require(provenance.get("native_source_input_count") == 105
+    require(provenance.get("native_source_input_count") == admission["native_source_input_count"]
             and provenance.get("rapier_source_input_count") == 4,
             "Retained native/Rapier input contract changed; a newly reconciled adapter is required")
     require(provenance.get("source_commit") == admission["source_commit"] and provenance.get("source_tree") == admission["source_tree"]
@@ -361,7 +398,7 @@ def assemble(args) -> None:
     ambient_runner = product_module(args.product, "qualify_ambient")
     runtime = product_module(args.product, "run_windows_godot_regressions").verify_retained_runtime(args.product.resolve())
     verify_successor_replay(args.output / "workbench", goblin)
-    require(len(runtime["native_source_inputs"]) == 105, "Changed native input contract")
+    require(len(runtime["native_source_inputs"]) == admission["native_source_input_count"], "Changed native input contract")
     require(runtime["cybersand_runtime"]["sha256"] == goblin["provenance"]["native_sha256"]
             and runtime["rapier_runtime"]["sha256"] == goblin["provenance"]["rapier_sha256"]
             and runtime["runtime_source_commit"] == goblin["provenance"]["native_build_commit"],
@@ -376,6 +413,7 @@ def assemble(args) -> None:
               "docs/operations/ambient-living-workbench.md", "docs/systems/ambient-living-inhabitants.md",
               "docs/operations/art-workbench-collaborative-evaluation.md",
               "docs/operations/world-steer-collaborative-architecture.md"]
+    guides.extend(FEATURE_INPUTS[name][1] for name in admission["integrated_features"])
     guide_archive = subprocess.check_output(["git", "archive", "HEAD", "--", *guides], cwd=args.product, timeout=60)
     with tarfile.open(fileobj=io.BytesIO(guide_archive)) as source:
         for entry in source:
@@ -413,6 +451,13 @@ def assemble(args) -> None:
             'exit /b %mainline_exit%\n'),
         "Open Goblin.cmd": goblin_launcher(),
     }
+    if "swarm" in admission["integrated_features"]:
+        for name in ("CYBERSAND_SWARM004_CLI", "CYBERSAND_SWARM004_SOURCE", "CYBERSAND_SWARM004_SHA256"):
+            launchers["Open Workbench.cmd"] = launchers["Open Workbench.cmd"].replace(
+                "setlocal\n", f'setlocal\nset "{name}="\n', 1)
+    if "persistent_areas" in admission["integrated_features"]:
+        launchers["Open Persistent Areas.cmd"] = launchers["Open Workbench.cmd"].replace(
+            " -- --workbench\n", ' -- --persistent-areas --persistent-profile="%~dp0workbench\\userdata\\persistent-profile"\n')
     for name, value in launchers.items():
         (args.output / name).write_text(value, encoding="utf-8", newline="\r\n")
     guide = (
@@ -437,7 +482,14 @@ def assemble(args) -> None:
         "does not include their diagnostic/start installers, nine evaluated starts or "
         "`architecture-evidence` flagship and curated-library files. Use their control references "
         "with the ordinary tools and committed examples available here.\n\n"
-        "## Try the optional Goblin gameplay explorer\n\n"
+        "## Generate a 2048-square architectural map\n\n"
+        "In the Workbench generator, open the Architectural Generator, choose **2048²** and select the styles. "
+        "At this size the form selects zones of at least 128 cells. Preview the map, install it, paint or erase, "
+        "and use **Save start** to preserve the native recipe and your edits. "
+        "See `workbench/docs/operations/gentek80-evaluation.md` for the style controls.\n\n"
+        + "".join(f"{FEATURE_CONTROLS[name]} See `workbench/{FEATURE_INPUTS[name][1]}`.\n\n"
+                  for name in admission["integrated_features"] if name in FEATURE_CONTROLS)
+        + "## Try the optional Goblin gameplay explorer\n\n"
         "Double-click **Open Goblin.cmd** for its separate opt-in developer scene. "
         "It creates a fresh disposable profile under `workbench/test-output`; it does not run during ordinary Workbench startup. "
         f"Read `{goblin_guide}` for controls, finite campaigns and limitations.\n\n"
@@ -454,7 +506,7 @@ def assemble(args) -> None:
         "it does not claim a new complete AMBIENT feature campaign. "
         "This is a review artifact, not a public release.\n\n"
         f"Native build source: `{runtime['runtime_source_commit']}`. Its original provenance is retained; "
-        "the unchanged 105 native and four Rapier source inputs are checked before reuse. No new DLL build is claimed. "
+        f"The package verifies {admission['native_source_input_count']} native inputs and four Rapier inputs against their published manifests. "
         f"Packaging harness: `{admission['harness_commit']}`. "
         "`mainline-evaluation-manifest.json` identifies every immutable file. The accompanying delivery receipt "
         "binds this ZIP to the final extracted Windows and top-level launcher checks.\n"
@@ -467,6 +519,7 @@ def assemble(args) -> None:
         "source_tree": admission["source_tree"], "harness_commit": admission["harness_commit"],
         "harness_tree": admission["harness_tree"], "accepted_main_observed": admission["accepted_main_observed"],
         "native_runtime": runtime, "goblin_provenance": goblin["provenance"],
+        "integrated_features": admission["integrated_features"],
         "native_rebuilt": False, "owner_playfeel_accepted": False, "public_release": False,
         "execution_budget": admission["execution_budget"],
         "experimental_default_enabled": False,

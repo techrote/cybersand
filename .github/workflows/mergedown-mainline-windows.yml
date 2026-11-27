@@ -4,7 +4,7 @@ name: Mergedown accepted-main Windows evaluator
 # Full source correctness remains the separate Ready Native/GDE campaign.
 on:
   push:
-    branches: [integration/mergedown-renaissance-001]
+    branches: [codex/native-consolidation-delivery]
     paths: ['tools/fixtures/mergedown-mainline-windows-request.json']
 
 permissions:
@@ -25,7 +25,7 @@ env:
 jobs:
   source_tape:
     name: Exact accepted-source Goblin002 replay tape
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/mergedown-renaissance-001'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-consolidation-delivery'
     runs-on: windows-2022
     # Separate complete envelope: setup4200 + metadata900 + import240 +
     # campaign180 + source/owned-cleanup120 + retention600 =6240seconds.
@@ -63,7 +63,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Actual accepted source admission failed' }
           python -m pip install --requirement tools/gip014/requirements.txt --disable-pip-version-check
           if ($LASTEXITCODE -ne 0) { throw 'Pinned Goblin process-ownership dependency installation failed' }
-          python tools/ci/materialize_lfs.py --root . --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $proof 'lfs-acquisition') --allowance-seconds 600
+          $optional = @()
+          if (Test-Path -LiteralPath 'godot/tools/swarm004-runtime.windows.json') {
+            $optional += '--include', 'godot/tools/gentek_reciprocal.exe'
+          }
+          python tools/ci/materialize_lfs.py --root . @optional --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $proof 'lfs-acquisition') --allowance-seconds 600
           if ($LASTEXITCODE -ne 0) { throw 'Source tape runtime acquisition refused' }
           $archive = Join-Path $env:RUNNER_TEMP 'source-tape-godot.zip'
           curl.exe --fail --location --connect-timeout 20 --max-time 1200 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
@@ -120,7 +124,7 @@ jobs:
   windows:
     name: Accepted source and explicit extracted Windows package proof
     needs: source_tape
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/mergedown-renaissance-001'
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/native-consolidation-delivery'
     runs-on: windows-2022
     # Canonical source discovery and policy derive21290seconds, covering every
     # complete registered watchdog including the3940-second default-OFF case,
@@ -164,7 +168,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Product provider policy failed' }
           python ../harness/tools/ci/check_ci_provider_policy.py
           if ($LASTEXITCODE -ne 0) { throw 'Harness provider policy failed' }
-          python tools/ci/materialize_lfs.py --root . --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $evidence 'lfs-acquisition') --allowance-seconds 600
+          $optional = @()
+          if (Test-Path -LiteralPath 'godot/tools/swarm004-runtime.windows.json') {
+            $optional += '--include', 'godot/tools/gentek_reciprocal.exe'
+          }
+          python tools/ci/materialize_lfs.py --root . @optional --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $evidence 'lfs-acquisition') --allowance-seconds 600
           if ($LASTEXITCODE -ne 0) { throw 'Source-pinned retained runtime acquisition failed; inspect original attempt logs' }
           $env:DELIVERY_RUNTIME_RECEIPT = Join-Path $evidence 'retained-runtime.json'
           @'
@@ -172,7 +180,9 @@ jobs:
           sys.path.insert(0, 'tools/ci')
           from run_windows_godot_regressions import verify_retained_runtime
           result = verify_retained_runtime(pathlib.Path.cwd())
-          if len(result['native_source_inputs']) != 105:
+          admission = json.loads(pathlib.Path(os.environ['DELIVERY_RUNTIME_RECEIPT']).with_name('admission.json').read_text())
+          if (len(result['native_source_inputs']) != admission['native_source_input_count'] or
+                  result['runtime_provenance']['sha256'] != admission['runtime_expected']['native_provenance_sha256']):
               raise RuntimeError('Changed native input contract requires a separately reconciled build')
           pathlib.Path(os.environ['DELIVERY_RUNTIME_RECEIPT']).write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
           '@ | python -
@@ -260,10 +270,10 @@ jobs:
           python ../harness/tools/ci/mainline_evaluator.py finalize --product . --extracted $env:MAINLINE_EXTRACTED --archive $env:MAINLINE_ARCHIVE --launchers (Join-Path $env:MAINLINE_EVIDENCE 'launchers/launcher-proof.json') --default-off (Join-Path $env:MAINLINE_EVIDENCE 'extracted-default-off') --graphical (Join-Path $env:MAINLINE_EVIDENCE 'extracted-graphics') --output (Join-Path $env:MAINLINE_DELIVERY 'delivery-receipt.json')
           if ($LASTEXITCODE -ne 0) { throw 'Final package/source/attempt/receipt custody failed' }
 
-      - name: Retain qualified accepted-main interactive download
+      - name: Stage the archive for independent extracted feature tests
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cybersand-accepted-main-windows-${{ steps.request.outputs.source_commit }}
+          name: staged-mainline-archive-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ env.MAINLINE_DELIVERY }}
           if-no-files-found: error
           retention-days: 90
@@ -294,4 +304,55 @@ jobs:
           name: unqualified-mainline-candidate-${{ github.sha }}-attempt-${{ github.run_attempt }}
           path: ${{ env.MAINLINE_DELIVERY }}
           if-no-files-found: warn
+          retention-days: 90
+
+  integrated_features:
+    name: Extracted accepted-main native features and final download
+    needs: [source_tape, windows]
+    runs-on: windows-2022
+    # Setup 4200s, accepted feature processes up to 15580s, archive verification
+    # 900s and evidence retention 600s fit the separate 360-minute job.
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Check out accepted feature validators
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: product
+          ref: ${{ needs.source_tape.outputs.source_commit }}
+          lfs: false
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: staged-mainline-archive-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/feature-delivery
+      - name: Exercise authored 2048 maps in the extracted application
+        shell: pwsh
+        run: |
+          $delivery = Join-Path $env:RUNNER_TEMP 'feature-delivery'
+          $archives = @(Get-ChildItem -LiteralPath $delivery -Filter '*.zip' -File)
+          if ($archives.Count -ne 1) { throw 'Expected one exact source archive' }
+          $proof = Join-Path $env:RUNNER_TEMP 'feature-proof'
+          python tools/ci/qualify_native_consolidation_package.py --product-root product --archive $archives[0].FullName --delivery-receipt (Join-Path $delivery 'delivery-receipt.json') --request tools/fixtures/mergedown-mainline-windows-request.json --extracted (Join-Path $env:RUNNER_TEMP 'CyberSand extracted native Workbench') --output $proof
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted feature qualification failed' }
+          Copy-Item -LiteralPath (Join-Path $proof 'qualification.json') -Destination (Join-Path $delivery 'integrated-feature-receipt.json')
+      - name: Retain actual graphical and fresh-process evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: extracted-native-feature-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/feature-proof/**/*.json
+            ${{ runner.temp }}/feature-proof/**/*.png
+            ${{ runner.temp }}/feature-proof/**/*.log
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Publish qualified integrated Windows evaluator
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cybersand-accepted-main-windows-${{ needs.source_tape.outputs.source_commit }}
+          path: ${{ runner.temp }}/feature-delivery
+          if-no-files-found: error
           retention-days: 90

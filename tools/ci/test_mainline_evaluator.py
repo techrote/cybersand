@@ -34,6 +34,8 @@ class DeliveryCustody(unittest.TestCase):
                 "source_commit": "1" * 40, "source_tree": "2" * 40, "accepted_main_at_request": "1" * 40,
                 "required_foundations": copy.deepcopy(delivery.FOUNDATIONS),
                 "native_source_input_count": 105, "rapier_source_input_count": 4,
+                "runtime_manifests_sha256": {"native": "a" * 64, "rapier": "b" * 64},
+                "integrated_features": ["gentek_2048"],
                 "owner_playfeel_accepted": False, "public_release": False}
 
     def requested(self, value=None):
@@ -47,7 +49,7 @@ class DeliveryCustody(unittest.TestCase):
     def test_prepared_incomplete_or_moved_request_is_refused(self):
         for key, value in (("status", "prepared"), ("source_commit", "main"), ("source_tree", "0" * 40),
                            ("accepted_main_at_request", "3" * 40), ("required_foundations", {}),
-                           ("native_source_input_count", 105.0), ("native_source_input_count", 106),
+                           ("native_source_input_count", 105.0), ("native_source_input_count", 0), ("runtime_manifests_sha256", {}), ("integrated_features", ["unknown"]),
                            ("rapier_source_input_count", 5), ("owner_playfeel_accepted", True), ("public_release", True)):
             with self.subTest(key=key, value=value), self.assertRaises(ValueError):
                 changed = self.request_fixture()
@@ -76,7 +78,7 @@ class DeliveryCustody(unittest.TestCase):
         return root
 
     def admission_fixture(self):
-        product = self.create_git("product", ["fixture.txt"])
+        product = self.create_git("product", ["fixture.txt", delivery.FEATURE_INPUTS["gentek_2048"][0]])
         base = delivery.git(product, "rev-parse", "HEAD")
         (product / "fixture.txt").write_text("A second fixture commit.\n")
         for relative, count, digest in (("godot/addons/cybersand_native/runtime-provenance.json", 105, "a" * 64),
@@ -93,6 +95,10 @@ class DeliveryCustody(unittest.TestCase):
         value = self.request_fixture()
         value.update(source_commit=source, source_tree=delivery.git(product, "rev-parse", "HEAD^{tree}"), accepted_main_at_request=source,
                      required_foundations={"fixture_foundation": base})
+        value["runtime_manifests_sha256"] = {
+            "native": delivery.sha(product / "godot/addons/cybersand_native/runtime-provenance.json"),
+            "rapier": delivery.sha(product / "godot/addons/godot-rapier2d/runtime-provenance.windows.json"),
+        }
         return product, harness, value
 
     @staticmethod
@@ -117,6 +123,24 @@ class DeliveryCustody(unittest.TestCase):
         self.assertNotEqual(result["source_commit"], result["harness_commit"])
         self.assertTrue(result["source_is_accepted_main_ancestor"])
 
+    def test_unshipped_feature_cannot_be_claimed(self):
+        product, harness, value = self.admission_fixture()
+        value["integrated_features"].append("swarm")
+        with self.admission_context(product, harness, value), self.assertRaisesRegex(ValueError, "integrations differ"):
+            delivery.admit(self.requested(value), product, harness)
+
+    def test_wrong_manifest_with_matching_input_count_is_refused(self):
+        product, harness, value = self.admission_fixture()
+        value["runtime_manifests_sha256"]["native"] = "f" * 64
+        with self.admission_context(product, harness, value), self.assertRaisesRegex(ValueError, "manifest differs"):
+            delivery.admit(self.requested(value), product, harness)
+
+    def test_wrong_count_with_matching_manifest_is_refused(self):
+        product, harness, value = self.admission_fixture()
+        value["native_source_input_count"] += 1
+        with self.admission_context(product, harness, value), self.assertRaisesRegex(ValueError, "input contract"):
+            delivery.admit(self.requested(value), product, harness)
+
     def test_unmerged_source_is_refused_even_when_self_declared_accepted(self):
         product, harness, value = self.admission_fixture()
         delivery.git(product, "update-ref", "refs/remotes/origin/main", value["required_foundations"]["fixture_foundation"])
@@ -134,6 +158,7 @@ class DeliveryCustody(unittest.TestCase):
     def identities(self):
         admission = {"schema": "cybersand-accepted-main-evaluator-admission-v1", "status": "passed",
                      "source_is_accepted_main_ancestor": True, "source_commit": "1" * 40, "source_tree": "2" * 40,
+                     "native_source_input_count": 105, "rapier_source_input_count": 4,
                      "runtime_expected": {"native_sha256": "a" * 64, "rapier_sha256": "b" * 64,
                                           "native_provenance_sha256": "c" * 64, "rapier_provenance_sha256": "d" * 64}}
         goblin = {"schema": "cybersand-goblin-evaluator-v1", "source_commit": "1" * 40, "source_tree": "2" * 40,
