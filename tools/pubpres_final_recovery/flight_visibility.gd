@@ -157,14 +157,18 @@ func _exercise() -> void:
 		seconds = clampi(int(OS.get_environment("CYBERSAND_FLIGHT_SECONDS")),20,300)
 	var patrol := seconds > COMPARISON_SECONDS
 	var held := {}
+	var airborne_draws := 0
 	while Time.get_ticks_usec()-began < seconds * 1000000:
 		var next_phase := int((Time.get_ticks_usec()-began)/2500000)%4
 		if patrol:
 			# Fly a repeating course above the authored platform. Use only
 			# ordinary keyboard edges; never set a pose or velocity.
 			var goal := start.origin + Vector2(32.0 if next_phase < 2 else -32.0, -24.0 if next_phase % 2 == 0 else -44.0)
-			var lead: Vector2 = prior.origin + session.bridge.body_linear_velocity(slot) * 0.20
-			var keys := {KEY_D:lead.x < goal.x-2, KEY_A:lead.x > goal.x+2,KEY_W:lead.y > goal.y,KEY_S:lead.y < goal.y-6}
+			var lead: Vector2 = prior.origin + session.bridge.body_linear_velocity(slot) * 0.65
+			# A/D turn the Needle; Q/E translate with its side jets and
+			# C holds its authored upright assist. W counters gravity.
+			var keys := {KEY_E:lead.x < goal.x-2, KEY_Q:lead.x > goal.x+2,
+				KEY_W:lead.y > goal.y,KEY_C:true}
 			for code: Key in keys:
 				if held.get(code,false) != keys[code]: _key(code,keys[code])
 			held = keys
@@ -176,6 +180,8 @@ func _exercise() -> void:
 		await RenderingServer.frame_post_draw
 		var now := Time.get_ticks_usec()
 		var pose: Transform2D = session.bridge.body_transform(slot)
+		if pose.origin.y > 40 and pose.origin.y < start.origin.y + 20:
+			airborne_draws += 1
 		var frame: Dictionary = app.workbench_presentation_frame
 		var presented: Variant = frame.get("poses",{}).get(slot)
 		var source: String = str(frame.get("sources",{}).get(slot,"missing"))
@@ -203,7 +209,7 @@ func _exercise() -> void:
 		prior = pose
 	var elapsed := Time.get_ticks_usec()-began
 	var steps: int = session.tick-tick0
-	for code: Key in [KEY_A,KEY_D,KEY_W,KEY_S]: _key(code,false)
+	for code: Key in [KEY_A,KEY_D,KEY_W,KEY_S,KEY_Q,KEY_E,KEY_C]: _key(code,false)
 	var paused_step: int = session.tick
 	var pause_ok: bool = ui.toggle_pause()
 	var step_ok := true
@@ -223,11 +229,12 @@ func _exercise() -> void:
 		"native_tick":app.latest_snapshot.tick_index,"timed_start_usec":began,
 		"held_callbacks_serviced":app.get("_serviced_flight_callbacks"),
 		"coupling_only_completions":app.simulation_worker.take_latest_physics_snapshot().lab_context.get("coupling_only_completions",0),
-		"paused_ok":pause_ok,"manual_step_ok":step_ok,"patrol":patrol,"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
+		"airborne_draws":airborne_draws,"paused_ok":pause_ok,"manual_step_ok":step_ok,"patrol":patrol,"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
 	print("WORKBENCH_FLIGHT_VISIBILITY ",JSON.stringify(report))
 	report["samples"] = samples
 	var out := FileAccess.open(receipt_path.get_base_dir().path_join("flight.json"),FileAccess.WRITE)
 	out.store_string(JSON.stringify(report))
 	out.close()
 	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0
+		and (not patrol or (moved_draws > samples.size()*0.75 and airborne_draws > samples.size()*0.9))
 		and pause_ok and step_ok and (not pixels_requested or not pixels.is_empty()) else 1)
