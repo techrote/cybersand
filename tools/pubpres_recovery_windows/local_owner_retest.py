@@ -83,10 +83,13 @@ def main():
     need(base.file_hashes(payload) == record["files_sha256"], "Original package inventory differs")
     need(record["recovery_selection"] == package.recovery_policy.selection(), "Retest changed the selected policy")
     need(record["sources"]["C"]["native"]["sha256"] == binding["binary_sha256"], "Retained DLL bytes differ")
+    native = record["sources"]["C"]["native"]
+    declared = ("version https://git-lfs.github.com/spec/v1\n"
+                f"oid sha256:{native['sha256']}\nsize {native['bytes']}\n").encode("ascii")
+    need(base.committed(ROOT,commit,base.NATIVE) == declared, "Committed Windows DLL differs from the retained build")
     # Keep original derived native receipts, paired DLL and package-only resource copies.
     # Compile inputs and build policy are checked by make_binding. Refuse other binary changes.
-    preserved = {base.NATIVE, "godot/addons/cybersand_native/runtime-provenance.json",
-                 "godot/addons/cybersand_native/runtime-provenance.linux.json"}
+    preserved = {base.NATIVE, "godot/addons/cybersand_native/runtime-provenance.json"}
     roots = ["godot", package.TOOLS, package.LEGACY, "tools/pubpres_playability_build"]
     unchanged = ["examples/worldgen", "materials", "third_party", "tools/pubpres_final/registration.json",
                  "tools/ci/restore_workbench_godot.py", "tools/ci/build_workbench_godot.py"]
