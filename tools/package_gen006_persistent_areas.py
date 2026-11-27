@@ -15,6 +15,7 @@ import zipfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parent / "ci"))
 import gen006_persistent_runtime_publication as publication
+import reciprocal_windows_package as reciprocal
 from package_explore001_candidate import verify_vc_runtime, stage_generator_profiles
 from package_wave_flow_candidate import omit_regenerated_imports
 
@@ -42,6 +43,7 @@ def verify_package(folder: Path) -> dict:
             and manifest.get("disposition") == "Draft/HOLD", "Wrong owner evaluator manifest")
     publication.verify_files(folder, manifest.get("files_sha256"))
     files = manifest["files_sha256"]
+    reciprocal.verify_package(folder, ROOT)
     require(all(files.get(name) == digest for name, digest in DEPENDENCIES.items()),
             "Evaluator dependency pins differ")
     native_path = engine.RUNTIMES["windows"]
@@ -169,6 +171,7 @@ def build(args: argparse.Namespace) -> None:
     archive = subprocess.check_output(["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "archive", source, "--", *paths],
         cwd=ROOT, env=dict(os.environ, GIT_LFS_SKIP_SMUDGE="1"), timeout=60)
     replacements = {
+        **reciprocal.windows_cli_replacement(ROOT),
         engine.RUNTIMES["windows"]: bundle / Path(engine.RUNTIMES["windows"]).name,
         engine.MANIFESTS["windows"]: engine.manifest_path(bundle, "windows"),
         engine.RAPIER["windows"][0]: ROOT / engine.RAPIER["windows"][0],
@@ -179,7 +182,7 @@ def build(args: argparse.Namespace) -> None:
                 continue
             if "/bin/" in entry.name and entry.name not in replacements:
                 continue
-            if entry.name == engine.MANIFESTS["linux"]:
+            if entry.name == engine.MANIFESTS["linux"] or entry.name in reciprocal.FOREIGN_PATHS:
                 continue
             publication.safe_relative(entry.name)
             data = replacements[entry.name].read_bytes() if entry.name in replacements else contents.extractfile(entry).read()

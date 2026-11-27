@@ -132,7 +132,10 @@ func exercise_live_retention() -> void:
 			if not check(bench.paint(Vector2i(fixture.empty_edit[0],fixture.empty_edit[1]),0),"paused Empty edit admitted before autosave dirtiness observation"): return
 			if not await until(func() -> bool:return bool(controller.status().areas.a.dirty),
 				"paused edit visibly becomes unsaved without waiting for a native tick"): return
+			controller.panel._open_cache()
+			check(controller.panel._cache_dialog.visible,"open current RAM cache settings to inspect the paused edit")
 			cache_text_checks("paused-empty-edit")
+			controller.panel._cache_dialog.hide()
 		if not await edit_area(id): return
 		if id=="c":
 			var native_before := str(controller.manifest.areas.c.native_sha256)

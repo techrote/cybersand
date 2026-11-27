@@ -474,6 +474,34 @@ class QualificationGuards(unittest.TestCase):
 
 
 class PublicationGuards(unittest.TestCase):
+    def test_reciprocal_package_requires_host_bytes_binding_and_clean_platform_roster(self):
+        guard = package.donor.reciprocal
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / guard.WINDOWS_CLI).parent.mkdir(parents=True)
+            content = b"Windows reciprocal test payload"
+            binding = json.dumps({"platform": "windows", "artifact": guard.WINDOWS_CLI,
+                                  "bytes": len(content), "sha256": hashlib.sha256(content).hexdigest(),
+                                  "native_definition_inputs_sha256": {"example.cpp": "a" * 64}}).encode()
+            (root / guard.WINDOWS_BINDING).write_bytes(binding)
+            (root / guard.WINDOWS_CLI).write_bytes(content)
+            with patch.object(guard, "committed_binding", return_value=binding):
+                guard.verify_package(root, root)
+                with patch.object(guard, "definition_inputs", return_value={}):
+                    with self.assertRaisesRegex(ValueError, "definition"):
+                        guard.windows_cli_replacement(root)
+                for foreign in guard.FOREIGN_PATHS:
+                    (root / foreign).touch()
+                    with self.assertRaisesRegex(ValueError, "Linux"):
+                        guard.verify_package(root, root)
+                    (root / foreign).unlink()
+                (root / guard.WINDOWS_CLI).write_bytes(b"x" * len(content))
+                with self.assertRaisesRegex(ValueError, "executable"):
+                    guard.verify_package(root, root)
+                (root / guard.WINDOWS_BINDING).write_text("{}")
+                with self.assertRaisesRegex(ValueError, "binding"):
+                    guard.verify_package(root, root)
+
     def _execute_campaign_probe(self, selected, outcome):
         # Orchestration-only probe: native/runtime/custody checks are mocked here,
         # never reported as application qualification. Exercise the actual execute
