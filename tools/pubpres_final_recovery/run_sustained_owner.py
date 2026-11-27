@@ -3,14 +3,14 @@ import argparse
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
-import uuid
 
 from identity import ROOT, HERE, driver_identity, digest
 from retained_runtime import validate_runtime
 from run_comparison import prepare
 from run_campaign import source_identity
-from run_focus import selectors, ENGINE_SHA256, write_json
+from run_focus import ENGINE_SHA256, write_json
 from results import distribution, need
 from observer_support import execute_with_resources
 from run_renderer_comparison import strict_logs
@@ -21,6 +21,19 @@ sys.path.insert(0, str(WINDOWS))
 import recovery_policy
 
 CASES = {"wave512": (512, 1), "wave1024": (1024, 4), "wave2048": (2048, 1), "mixed2048": (2048, 4)}
+
+
+def launcher_settings(case, selected):
+    command = """
+$ErrorActionPreference='Stop'
+. ./tools/pubpres_recovery_windows/Start-PUBPRES-Final.ps1 -Library
+$settings=Get-PFSettings 'C' $env:PUBPRES_OWNER_ENGINE $env:PUBPRES_OWNER_THREAD 2 'opengl3_angle' $env:PUBPRES_OWNER_SCENE 'Selected'
+@{settings=$settings; config=(Get-PPOverride)} | ConvertTo-Json -Compress
+"""
+    return json.loads(subprocess.check_output(
+        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command", command], cwd=ROOT, timeout=30,
+        env={**os.environ, "PUBPRES_OWNER_ENGINE": selected["engine"], "PUBPRES_OWNER_THREAD": selected["render_thread"],
+             "PUBPRES_OWNER_SCENE": case}))
 
 
 def reduce_session(folder, case, source, project, engine, selected, process):
@@ -94,8 +107,10 @@ def main():
     need(digest(engine) == ENGINE_SHA256["windows"], "Stock engine bytes differ")
     if selected["engine"] != "stock":
         engine, _ = admit(args)
+    cases = args.case or list(CASES)
+    launchers = {case: launcher_settings(case, selected) for case in cases}
     override = output / "override.cfg"
-    override.write_bytes(b"[cybersand]\nexperimental_wave_column_tiles=false\npubpres_wave_column_probe=false\n")
+    override.write_bytes(launchers[cases[0]]["config"].encode("utf-8"))
     program = "tests/pubpres_sustained_owner.gd"
     overlays = {"tests/pubpres_playability_owner_start.gd": WINDOWS / "owner_start.gd",
                 program: HERE / "sustained_owner.gd", "override.cfg": override}
@@ -104,11 +119,11 @@ def main():
     strict_logs(output / "template/import")
     result = {"platform": "Windows hosted ANGLE", "source": source, "driver": driver_identity(), "policy": choice,
               "rows": [], "failures": [], "physical_acceptance": "HOLD"}
-    for case in args.case or CASES:
+    for case in cases:
         folder = output / case
-        settings = selectors({"material": "full", "same_frame_continuation": False, "wave_column_probe": False, "causal": False}, uuid.uuid4().hex)
-        settings.update(recovery_policy.selectors(choice), CYBERSAND_FINAL_SCENE=case, CYBERSAND_DIAG_FULL_IMAGE_SLOTS="2",
-                        CYBERSAND_MATERIAL_QUEUE_THREAD=selected["render_thread"], CYBERSAND_PLAYABILITY_OWNER_RECEIPT=str(folder/"startup.json"))
+        settings = launchers[case]["settings"]
+        need(launchers[case]["config"].encode("utf-8") == override.read_bytes(), "Owner override differs between scenes")
+        settings["CYBERSAND_PLAYABILITY_OWNER_RECEIPT"] = str(folder / "startup.json")
         command = ["--path", str(project), "--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle",
                    "--render-thread", selected["render_thread"], "--audio-driver", "Dummy", "--script", "res://" + program]
         try:
