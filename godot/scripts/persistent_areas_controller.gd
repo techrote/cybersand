@@ -2767,7 +2767,7 @@ func _configure_profile_controls() -> void:
 	var workbench: Control = host.shared_workbench
 	if workbench == null: return
 	var unsupported := ["Reset selected [R]","Restore start","New blank","New from generator…","Water Lab…",
-		"Actor Composition…","Place at X/Y","Focus","Replace with model","Remove","Source at X/Y",
+		"Actor Composition…","Reciprocal assembly…","Place at X/Y","Focus","Replace with model","Remove","Source at X/Y",
 		"Burst [B]","Save reset spawn","Use body position","Move to X/Y","Apply settings","Defaults"]
 	var explanation := "Outside this persistent-area profile. Open the ordinary Workbench for actors, host sources, solver changes and replacement starts."
 	for button: Node in workbench.find_children("*","Button",true,false):

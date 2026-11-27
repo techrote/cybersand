@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "artifact_id": 14943898251,
+  "artifact_name": "swarm456-request-45437617377-2",
+  "run_id": 45437617377,
+  "run_attempt": 2,
+  "source": "b126523158e22d8993b4899710799f88dd0b98d0",
+  "archive_sha256": "bf69259259c1743c890cb34e384fb675987de4199594a5dd266b7c17f4c3e235",
+  "archive_bytes": 9517,
+  "archive_crc_verified": true,
+  "members": [
+    {
+      "path": "helper-tests.log",
+      "size": 15914,
+      "sha256": "fe4092605fe2b278536401089340e4228de675a869643b7ae7aaf587c49f79dc"
+    },
+    {
+      "path": "provider.json",
+      "size": 280,
+      "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f"
+    },
+    {
+      "path": "request.json",
+      "size": 1161,
+      "sha256": "3b09b760efd68a856c99c86c3ff8142727dfeb30b919c3e3c2ad56d8f597be87"
+    },
+    {
+      "path": "runtime-binding-tests.log",
+      "size": 1180,
+      "sha256": "46cde63bc3e2e5ad2d75fd906caf2e205ec7224bec1673e22b66efdfc706d84b"
+    },
+    {
+      "path": "runtime-package-tests.log",
+      "size": 432,
+      "sha256": "9d1f6e8fbae3dd913af69a4f7c0a634ae77857f1cd0f2654a627cd87b13174f3"
+    },
+    {
+      "path": "swarm004-helper-tests.log",
+      "size": 2049,
+      "sha256": "3bd25fb9e11d212836b8da805e9de38a079b14a5369987de0e6c5d80ea107e39"
+    },
+    {
+      "path": "swarm005-helper-tests.log",
+      "size": 2227,
+      "sha256": "ecb20d97aa0561e8c0fde68efe8e8e5867b6f966eb0cd3e32a735ccb8f0a2e61"
+    },
+    {
+      "path": "swarm006-helper-tests.log",
+      "size": 12510,
+      "sha256": "1d1a09267438e61271d626b55c87111242ce7a00acd956c70699407bb5f55d22"
+    },
+    {
+      "path": "swarm006-runner-tests.log",
+      "size": 3189,
+      "sha256": "d4c0ddc1aebc571f86626e231c957fd10259fcfac3fe05b0fe5842962e5e70a2"
+    }
+  ],
+  "request_identity_verified": true,
+  "request_byte_identical_to_attempt1": true,
+  "ancestry_verified": {
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "frozen_source": "45101dc409002e6fc6fefbf80e7fb5dca409da77",
+    "692": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+    "693": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+    "696": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+    "697": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+    "700": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+    "715": "919134a39d31461947c410c233d59d1965c48414",
+    "716": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+  },
+  "helper_tests": [
+    {
+      "path": "helper-tests.log",
+      "sha256": "fe4092605fe2b278536401089340e4228de675a869643b7ae7aaf587c49f79dc",
+      "tests": 94,
+      "elapsed": "15.473s",
+      "result": "OK"
+    },
+    {
+      "path": "runtime-binding-tests.log",
+      "sha256": "46cde63bc3e2e5ad2d75fd906caf2e205ec7224bec1673e22b66efdfc706d84b",
+      "tests": 7,
+      "elapsed": "0.013s",
+      "result": "OK"
+    },
+    {
+      "path": "runtime-package-tests.log",
+      "sha256": "9d1f6e8fbae3dd913af69a4f7c0a634ae77857f1cd0f2654a627cd87b13174f3",
+      "tests": 2,
+      "elapsed": "0.019s",
+      "result": "OK"
+    },
+    {
+      "path": "swarm004-helper-tests.log",
+      "sha256": "3bd25fb9e11d212836b8da805e9de38a079b14a5369987de0e6c5d80ea107e39",
+      "tests": 13,
+      "elapsed": "0.044s",
+      "result": "OK"
+    },
+    {
+      "path": "swarm005-helper-tests.log",
+      "sha256": "ecb20d97aa0561e8c0fde68efe8e8e5867b6f966eb0cd3e32a735ccb8f0a2e61",
+      "tests": 14,
+      "elapsed": "0.047s",
+      "result": "OK"
+    },
+    {
+      "path": "swarm006-helper-tests.log",
+      "sha256": "1d1a09267438e61271d626b55c87111242ce7a00acd956c70699407bb5f55d22",
+      "tests": 72,
+      "elapsed": "1.200s",
+      "result": "OK"
+    },
+    {
+      "path": "swarm006-runner-tests.log",
+      "sha256": "d4c0ddc1aebc571f86626e231c957fd10259fcfac3fe05b0fe5842962e5e70a2",
+      "tests": 21,
+      "elapsed": "0.012s",
+      "result": "OK"
+    }
+  ],
+  "total_tests": 223,
+  "all_unit_summaries_OK_no_skips": true,
+  "disposition": "Request/helper gate passed; this does not classify overall qualification."
+}

@@ -1,0 +1,183 @@
+{
+  "all_55_required_jobs_passed": true,
+  "all_original_and_extracted_bytes_match": true,
+  "archive_index_sha256": "6186289710de950aecbe6416465bf7c444088f0344ff4bb8571ee60387594f2f",
+  "archive_members": 1778,
+  "archives": 59,
+  "attempt": 1,
+  "consumer_mutations": [],
+  "consumer_source_bytes": {
+    "execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "godot_job_plan.py": "c6023abfd8694ae36188e44e038315089ab402e1b7ca476851dee55a64e92b58",
+    "native_candidate_identity.py": "51fdf546b8217935628e41b44e514fe757f48d62d4a15985334bf6f99c4e8720",
+    "run_godot_regressions.py": "f7a9b2c825fe4ef9d42d3846e39fb13d197889f36114600f74d540f7cff27969",
+    "verify_linux_godot_shards.py": "58b9897ffd1fa2ba0e456d17467342bd6e7a60a6d8296933b093438fd0ea08df",
+    "verify_retained_play_readback.py": "1a0eec6c91c63a4b2beddb9a2f1d18559f8b3d1177e453897b09e791071f67d7",
+    "verify_windows_godot_shards.py": "27c1b25205335c50fdd1c8daae0de7b231c95d366686839ec30151e570660ba6"
+  },
+  "event": "push",
+  "exact_original_absolute_checkout": "/home/runner/work/cybersand/cybersand",
+  "expanded_original_bytes": 969089022,
+  "findings": [],
+  "hosted_job_inventory": {
+    "API_total_equals_recovered_length": true,
+    "failed": 0,
+    "inapplicable_skipped": [
+      "physical-actor-stress",
+      "ready validation scope"
+    ],
+    "required_success": 55,
+    "running": 0,
+    "total": 57
+  },
+  "hosted_original_linux_coverage_sha256": "726e694fa73b3e9f5cce6ea1df538bfb7e0e723f66d5a7c016adae0440affb77",
+  "hosted_original_windows_coverage_sha256": "4c02ad0f79899201fb2ec554e20451fe68d8ff038c2ea8b9b2031d01815c3ceb",
+  "inapplicable_skip_scope": {
+    "physical-actor-stress": "Optional dispatch input is not enabled for this push. No physical-owner acceptance claim.",
+    "ready validation scope": "Ready pull-request event check; this is an explicitly authorized Draft branch push."
+  },
+  "linux_cases": 344,
+  "linux_coverage_exact_JSON_equal_to_hosted_original": true,
+  "linux_coverage_sha256": "726e694fa73b3e9f5cce6ea1df538bfb7e0e723f66d5a7c016adae0440affb77",
+  "linux_shards": 25,
+  "linux_source_inputs_verified": 41,
+  "native_or_Godot_execution_during_replay": false,
+  "ordinary_Art_separate_review": {
+    "path": "/workspace/scratch/28827b1ce0c8/native-audit/ordinary-art-45467878171-independent-review.json",
+    "sha256": "071de70cf5876c6ea3a5ba881b4c6eef0329281dda8b0146c101f5dabf440d88"
+  },
+  "original_API_sha256": "f5674c6ab1cfcd8791bde60034e8f4b9d7ee5cc47f1192bac90a523874684b35",
+  "original_evidence_mutations": [],
+  "original_plan_sha256": "612949005a5142487301d502e2f0370576d6fc98615890fa7126dd9591183ea0",
+  "owner_physical_acceptance": "pending",
+  "plan_comparison_only_omitted_field": "Local source execution-context metadata; original commit/tree/run/attempt were verified separately.",
+  "plan_recomputed_from_unchanged_machine_discovered_inventory": true,
+  "resolved_local_replay_failures": [
+    {
+      "kind": "Linux absolute checkout path mismatch",
+      "original_fail_retained": {
+        "log_sha256": "e92df855bb2947b03c7dd67662a01d607e70426cc85e74bae80610c39133ec7a",
+        "path": "/workspace/scratch/e18127ed82c6/native-audit/postpublication-ordinary/gde-45467878171/linux-independent-wrong-context-original.json",
+        "result": {
+          "error": "ValueError: Linux original command differs from source",
+          "status": "failed"
+        },
+        "sha256": "e92df855bb2947b03c7dd67662a01d607e70426cc85e74bae80610c39133ec7a"
+      },
+      "receipt": "/workspace/scratch/28827b1ce0c8/native-audit/gde-linux-replay-path-diagnosis.json",
+      "receipt_sha256": "809cfbbd637e4393566e3fb29f683ee9f3956ca14175979f3d17ad3f5218e1aa",
+      "resolution": "Verified all 369 original commands differ only at checkout path; used clean exact source at original absolute path and unchanged consumer passed."
+    },
+    {
+      "kind": "Windows derived-output collision with earlier independent readback",
+      "original_failed_invocation": {
+        "command": [
+          "python3",
+          "tools/ci/verify_windows_godot_shards.py",
+          "--root",
+          "/dev/shm/swarm456-ordinary/gde-45467878171/windows",
+          "--native-candidate",
+          "/dev/shm/swarm456-ordinary/gde-45467878171/candidate/native-candidate-windows-45467878171-1",
+          "--source-sha",
+          "5fd9985eb27919eeefdad959a9970a0eef57d832",
+          "--run-id",
+          "45467878171",
+          "--attempt",
+          "1",
+          "--shard-count",
+          "23",
+          "--output",
+          "/workspace/scratch/28827b1ce0c8/native-audit/final-gde-reader-audit/windows-independent-coverage.json"
+        ],
+        "cwd": "/home/runner/work/cybersand/cybersand",
+        "elapsed_seconds": 0.924,
+        "log_sha256": "c4dbcbd34b74fa83fa89c1d47116ff3b85cc70285b2982c7a9085011c6ea686d",
+        "platform": "windows",
+        "returncode": 1
+      },
+      "receipt": "/workspace/scratch/28827b1ce0c8/native-audit/final-gde-reader-audit/windows-replay-context-isolation.json",
+      "receipt_sha256": "a6cd2503e8077ac7e5931931a8c7a35b5d432b357091a8c4213182c633ad8924",
+      "resolution": "Copied only independently verified original input bytes into a fresh owned parent; unchanged consumer then passed without overwriting other reviewer output."
+    }
+  ],
+  "result": "PASS",
+  "reviewer": "Closure Specialist A independent final full GDE original-data replay",
+  "run_id": 45467878171,
+  "schema": 1,
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "source_clean_and_exact": true,
+  "source_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "successful_linux_invocation": {
+    "command": [
+      "python3",
+      "tools/ci/verify_linux_godot_shards.py",
+      "--root",
+      "/dev/shm/swarm456-ordinary/gde-45467878171/linux",
+      "--runtime",
+      "/dev/shm/swarm456-ordinary/gde-45467878171/runtime/linux-runtime-45467878171-1",
+      "--source-sha",
+      "5fd9985eb27919eeefdad959a9970a0eef57d832",
+      "--run-id",
+      "45467878171",
+      "--attempt",
+      "1",
+      "--shard-count",
+      "25",
+      "--godot-version",
+      "4.7.stable.official.5b4e0cb0f",
+      "--output",
+      "/workspace/scratch/28827b1ce0c8/native-audit/final-gde-reader-audit/linux-independent-coverage.json"
+    ],
+    "cwd": "/home/runner/work/cybersand/cybersand",
+    "elapsed_seconds": 18.859,
+    "log_sha256": "726e694fa73b3e9f5cce6ea1df538bfb7e0e723f66d5a7c016adae0440affb77",
+    "platform": "linux",
+    "returncode": 0
+  },
+  "successful_windows_invocation": {
+    "attempt": 1,
+    "completed_original_consumer_pass": true,
+    "cwd": "/home/runner/work/cybersand/cybersand",
+    "input_root": "/dev/shm/swarm456-closure-final-gde-readback/windows",
+    "log_sha256": "b82b557ad496fb7bc655ebae6eb0c89a1384181142af6e3670af6bc7ddee7225",
+    "original_native_candidate": "/dev/shm/swarm456-ordinary/gde-45467878171/candidate/native-candidate-windows-45467878171-1",
+    "output": "/workspace/scratch/28827b1ce0c8/native-audit/final-gde-reader-audit/windows-independent-coverage.json",
+    "reader": "tools/ci/verify_windows_godot_shards.py",
+    "run_id": 45467878171,
+    "shard_count": 23,
+    "source_sha": "5fd9985eb27919eeefdad959a9970a0eef57d832"
+  },
+  "total_required_platform_case_executions": 665,
+  "utc": "2026-11-24T19:51:54.265212+00:00",
+  "windows_cases": 321,
+  "windows_comparison_only_omitted_field": "Descriptive per-shard local report_path; all report SHA, cases, source/runtime and execution identities remain exact.",
+  "windows_coverage_claims_equal_to_hosted_original": true,
+  "windows_coverage_sha256": "52caee4741ce46820e0b42acbf7bd3feaa8647da1bda2926030f1b3419ef45b6",
+  "windows_explicit_graphical_exclusions": [
+    "test_art_batch_native_render",
+    "test_blacksite_nine_render",
+    "test_deepworks_render",
+    "test_depth_dimensions_render",
+    "test_depth_surface_render",
+    "test_explore001_dialog_native_render",
+    "test_explore001_dialog_native_saved_render",
+    "test_explore001_dialog_native_small_render",
+    "test_explore001_dialog_render",
+    "test_explore001_dialog_saved_render",
+    "test_explore001_dialog_small_render",
+    "test_gen007_qualification_render",
+    "test_gen007_workbench_render",
+    "test_material_presentation_render",
+    "test_material_vapour_pipeline_render",
+    "test_palette_crossfade_render",
+    "test_physical_flight_gameplay_render",
+    "test_play_ui007_overlay_render",
+    "test_semantic_depth_render",
+    "test_showcase_backdrop_render",
+    "test_water_presentation_render",
+    "test_wave_flow_render",
+    "test_workbench_wave_render"
+  ],
+  "windows_shards": 23,
+  "windows_source_inputs_verified": 1109
+}

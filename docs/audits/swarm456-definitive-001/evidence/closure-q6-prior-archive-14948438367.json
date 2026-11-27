@@ -1,0 +1,45 @@
+{
+  "schema": "swarm456-independent-owner-archive-audit/v1",
+  "result": "PASS",
+  "scope": "Independently read the downloaded owner artifact and every nested payload.\n\nThis is archive/source custody, not Windows execution or owner acceptance.\nActual hosted graphical, Apply and persistence evidence must be audited separately.\n",
+  "source": "b126523158e22d8993b4899710799f88dd0b98d0",
+  "tree": "6cb4dc90437668748d4ec899f52b6a4ce371937e",
+  "run_id": "45437617377",
+  "run_attempt": "2",
+  "artifact_id": 14948438367,
+  "wrapper_sha256": "7030e9bb84bb66ebb5c4c9582701a7a73bd9e9e1c8e41fbe9ba17eb523b090cb",
+  "wrapper_bytes": 93562201,
+  "inner_archive": "CyberSand-SWARM456-Draft-HOLD-Windows-b126523158e2.zip",
+  "inner_sha256": "34cd6fc60146c6a01fe61d7467f095b2fa56f0d70c56d0d170db34eefdcb32cd",
+  "inner_bytes": 93901389,
+  "members": 1094,
+  "inventoried_payload_files": 1093,
+  "uncompressed_payload_bytes": 208972018,
+  "manifest_sha256": "31e9a8723a1482ddfc4f3b1eb30f0244f95627987c004f776e4132ea4cd5b2a2",
+  "launcher_sha256": "2c598891fa08c63a1336a1bf16be37b62c2bdb48792b674310e8ca4ff2a47d85",
+  "all_archive_crc_payload_sha256_size_and_safe_unique_paths": true,
+  "sealed_launcher_exact_source_template": true,
+  "guide_exact_source": true,
+  "source_payloads_byte_exact_git_blobs": 1057,
+  "materialized_lfs_paths": [
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+  ],
+  "qualified_runtime_substitution_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/tools/gentek_reciprocal.exe",
+    "godot/tools/swarm004-runtime.windows.json"
+  ],
+  "engine_hashes": {
+    "Godot_v4.7-stable_win64.exe": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "Godot_v4.7-stable_win64_console.exe": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+  },
+  "native_sha256": "bc4da2f1caa33f579030a10f169261bf7a661af996499ce7e466a7d43d3c8204",
+  "runtime_manifest_sha256": "fe4b589cc4f7d6014be60034bde9a11bf62186f0be3e13215396b23aaa49d877",
+  "independently_recovered_runtime_receipt_byte_join": true,
+  "reciprocal_cli_sha256": "230c3fb3034a321d72b4061e1e8cf1c40782ad86d0f28c574ca021b2fb0dff8d",
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "vc_runtime_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+  "profile_copies_exact_source": 17,
+  "readme_privacy": "Private maps remain local; optional screenshots/logs reviewed by owner before sharing; launcher/comparison helper upload nothing.",
+  "execution_and_acceptance": "Separate original hosted evidence required. This audit alone does not qualify Windows execution or physical Windows11/NVIDIA."
+}

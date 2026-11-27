@@ -1,0 +1,364 @@
+{
+  "bound_reviews": {
+    "independent-assurance/CANONICAL-SCIENCE-REVIEW.json": {
+      "audit_relative_path": "independent-assurance/CANONICAL-SCIENCE-REVIEW.json",
+      "bytes": 31128,
+      "sha256": "a555fee9e9a58720dc71c3676f38f7995c1e9e2fcfa4e32cd69222be4ec43e74"
+    },
+    "independent-assurance/corrected-full-docs-remote-lfs-independent-review.json": {
+      "audit_relative_path": "independent-assurance/corrected-full-docs-remote-lfs-independent-review.json",
+      "bytes": 6391,
+      "sha256": "6cfe510cb79400de22417402eec829e67f6dfb15c7d6e693f7a3ee3699e7e036"
+    },
+    "independent-assurance/final-ordinary-linux-runtime-independent-review.json": {
+      "audit_relative_path": "independent-assurance/final-ordinary-linux-runtime-independent-review.json",
+      "bytes": 3963,
+      "sha256": "04458a92b63dbc52fc5076482a2427966011db1a7f91e3b27af9784b209bd017"
+    },
+    "independent-assurance/final-ordinary-retained-play-independent-review.json": {
+      "audit_relative_path": "independent-assurance/final-ordinary-retained-play-independent-review.json",
+      "bytes": 108621,
+      "sha256": "23eddec9a534c2ab0d7bce7d0d76ce8e80ef43e9850099bdf3d61c96870bb008"
+    },
+    "independent-assurance/final-ordinary-windows-candidate-independent-review.json": {
+      "audit_relative_path": "independent-assurance/final-ordinary-windows-candidate-independent-review.json",
+      "bytes": 2941,
+      "sha256": "1bb29f59b8dbf6a220bae05117e7bfcbd0b339f551d368469e945b6990f1bf61"
+    },
+    "independent-assurance/ordinary-transport-and-route-independent-review.json": {
+      "audit_relative_path": "independent-assurance/ordinary-transport-and-route-independent-review.json",
+      "bytes": 11880,
+      "sha256": "5bbaf86ff405329f520e53738a25fe7310d5b03134ac5a813f09c7b7432028b9"
+    },
+    "independent-assurance/owner-dispatch-diagnostics-review.json": {
+      "audit_relative_path": "independent-assurance/owner-dispatch-diagnostics-review.json",
+      "bytes": 1553,
+      "sha256": "eb61f9db9b008621ce127bb64689a7718e78d82880c96e70dcb2962663f9c3c8"
+    },
+    "independent-assurance/q7-final-owner-execution-review.json": {
+      "audit_relative_path": "independent-assurance/q7-final-owner-execution-review.json",
+      "bytes": 12881,
+      "sha256": "8af38332b84e53ea811dc2b52dbf7de1cb0c12e8255dc7a5f10d5846c7537dbf"
+    },
+    "independent-assurance/q7-final-owner-payload-review.json": {
+      "audit_relative_path": "independent-assurance/q7-final-owner-payload-review.json",
+      "bytes": 294403,
+      "sha256": "27c49adec3e2da136bbf3a2e33d578370467ad1b64528347dbc28f7ddb56561b"
+    },
+    "independent-assurance/q7-published-remote-lfs-materialization-review.json": {
+      "audit_relative_path": "independent-assurance/q7-published-remote-lfs-materialization-review.json",
+      "bytes": 7036,
+      "sha256": "d0feafeec0d9a38e0a775d014d26fc4dc3e1366938c9551db917e16f079a2a20"
+    },
+    "independent-assurance/saved-owner-delivery-independent-review.json": {
+      "audit_relative_path": "independent-assurance/saved-owner-delivery-independent-review.json",
+      "bytes": 1911,
+      "sha256": "41d0e8c784d60d20106e3bfbcac7a5975fa909943dbed9f7ae5b0c3958d19278"
+    },
+    "native-audit/owner-dispatch-diagnostic-review.json": {
+      "audit_relative_path": "native-audit/owner-dispatch-diagnostic-review.json",
+      "bytes": 1863,
+      "sha256": "6d89e54137e46245f6cc80b8fc692d6a263ae75d4c0a26dae6e08d26d8d72266"
+    },
+    "native-audit/postpublication-ordinary/gde-45467878171/final-independent-review.json": {
+      "audit_relative_path": "native-audit/postpublication-ordinary/gde-45467878171/final-independent-review.json",
+      "bytes": 7163,
+      "sha256": "cf2dacaae057cb814e797c021c2c4d3a5a667fc3b8f1b82161166fb14df65a95"
+    },
+    "native-audit/postpublication-ordinary/gde-45467878171/original-recovery-complete.json": {
+      "audit_relative_path": "native-audit/postpublication-ordinary/gde-45467878171/original-recovery-complete.json",
+      "bytes": 412366,
+      "sha256": "b62df133fa9c82062b222c1db86adf2a64defc57b4aa344e32e3c83a24804a92"
+    },
+    "native-audit/postpublication-ordinary/native-45464490633/final-independent-review.json": {
+      "audit_relative_path": "native-audit/postpublication-ordinary/native-45464490633/final-independent-review.json",
+      "bytes": 5269,
+      "sha256": "8bd62549c671cc1398dc352e62f4b02383bd01a32ab3d09643606875ab2f5439"
+    },
+    "qualification-audit/native-receipt-adversarial-review-final.json": {
+      "audit_relative_path": "qualification-audit/native-receipt-adversarial-review-final.json",
+      "bytes": 2742,
+      "sha256": "b97b7bde20df2a761ceeb45ecbaf0097b729ecca2684cf88283c295de642971c"
+    },
+    "qualification-audit/post-publication-budget-test-independent-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication-budget-test-independent-review.json",
+      "bytes": 3130,
+      "sha256": "09017840cfd97b74ce990c1e87e8a73f518405f8edf34c38ee419372b045b3fa"
+    },
+    "qualification-audit/post-publication/final-play-docs-publication-original-index.json": {
+      "audit_relative_path": "qualification-audit/post-publication/final-play-docs-publication-original-index.json",
+      "bytes": 11706,
+      "sha256": "644631dfe89bcb4e67437f0b6c2943093c48fbff9b2e0e70014e7a6ac764f258"
+    },
+    "qualification-audit/post-publication/full-docs-45459015485-independent-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication/full-docs-45459015485-independent-review.json",
+      "bytes": 3827,
+      "sha256": "1fb672fa27b9aed0319ff393b04795f6c5bcd9d789ec5e2959a0ea2749c9ee71"
+    },
+    "qualification-audit/post-publication/full-docs-45464485647-independent-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication/full-docs-45464485647-independent-review.json",
+      "bytes": 3948,
+      "sha256": "3174479dabb1a5ae9171cd0491cb4e3dcf47576b76ff6f984ee9aedf3f35698b"
+    },
+    "qualification-audit/post-publication/gde-45464495877-independent-transport-failures.json": {
+      "audit_relative_path": "qualification-audit/post-publication/gde-45464495877-independent-transport-failures.json",
+      "bytes": 19553,
+      "sha256": "1d17f1e53c6fa0286286d96aefa7b21b8a17fd991bbafee406947c19ece950f1"
+    },
+    "qualification-audit/post-publication/play-45464427423-attempts1-2-independent-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication/play-45464427423-attempts1-2-independent-review.json",
+      "bytes": 2120,
+      "sha256": "c0eb10ae08b5f7839b6b47e9be1e1758ab176f5f00ed05c1c50747c544ed3f17"
+    },
+    "qualification-audit/post-publication/play-45467888942-independent-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication/play-45467888942-independent-review.json",
+      "bytes": 5560,
+      "sha256": "b11ec21a90ffb7ec77a58ccab6e664a275fcb1f5ef217bed189561af5118954e"
+    },
+    "qualification-audit/post-publication/pr-docs-45467889468-independent-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication/pr-docs-45467889468-independent-review.json",
+      "bytes": 1760,
+      "sha256": "fe32afb6adf5823c5a3f55762ae3a19ef6793bafd77434b7f12b590de055a305"
+    },
+    "qualification-audit/post-publication/transport-repair/final-source-impact-review.json": {
+      "audit_relative_path": "qualification-audit/post-publication/transport-repair/final-source-impact-review.json",
+      "bytes": 3717,
+      "sha256": "4ffc86c2dd50b5dc92bb85787878b2f251dc1e13ef5d842b3b807e45a440de5c"
+    },
+    "qualification-audit/q7-evidence/independent-publication-bundle-review.json": {
+      "audit_relative_path": "qualification-audit/q7-evidence/independent-publication-bundle-review.json",
+      "bytes": 11451,
+      "sha256": "b5948566797e62fb24b636195a7b5fe594e1ec70fff36cea48edd8e53418f23d"
+    },
+    "qualification-audit/q7-evidence/q7-linux-runtime-independent-verification.json": {
+      "audit_relative_path": "qualification-audit/q7-evidence/q7-linux-runtime-independent-verification.json",
+      "bytes": 13399,
+      "sha256": "63fd82d47231350a54e6d492e84af2bc79ce4b266edbf097cb3fbf7f3e232ee0"
+    },
+    "qualification-audit/q7-evidence/q7-owner-payload-independent-verification.json": {
+      "audit_relative_path": "qualification-audit/q7-evidence/q7-owner-payload-independent-verification.json",
+      "bytes": 311810,
+      "sha256": "a10d5aad21e36f93dba47f3dc616bb3ea134e743f25ab313193e216520425de7"
+    },
+    "qualification-audit/q7-evidence/q7-package-original-evidence-independent-verification.json": {
+      "audit_relative_path": "qualification-audit/q7-evidence/q7-package-original-evidence-independent-verification.json",
+      "bytes": 58163,
+      "sha256": "af7d23bfb62850644a91249fbe6f12b792f42968b2c2086c0e26ca41ce1736ca"
+    },
+    "qualification-audit/q7-evidence/q7-windows-runtime-independent-verification.json": {
+      "audit_relative_path": "qualification-audit/q7-evidence/q7-windows-runtime-independent-verification.json",
+      "bytes": 12386,
+      "sha256": "4d5502f0c5340ba68379aaec490bd1930e4e2f909e427e715b230ba84af2f22d"
+    }
+  },
+  "derivation_receipt": {
+    "audit_relative_path": "qualification-audit/public-recovery-derivation-receipt.json",
+    "bytes": 352,
+    "sha256": "5eb279ff4708e41f22bc7a4edf5647b7fe2949b5805f38fb7f84e85f78f657b1"
+  },
+  "disposition": "APPROVE_COMPLETED_ENGINEERING_DELIVERY_IN_DRAFT_HOLD",
+  "evaluator": {
+    "Godot": "4.7.stable.official.5b4e0cb0f",
+    "accepted_main_smokes": 17,
+    "archive_files_including_manifest": 1094,
+    "artifact_id": 14949325922,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "bytes": 93903365,
+    "delivered_archive_byte_identical_to_original_qualified_inner_ZIP": true,
+    "file_name": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "launcher_admission_cases": 7,
+    "manifest_listed_payloads": 1093,
+    "ordinary_Workbench_launcher": "Open Workbench.cmd",
+    "original_package_graphical_processes": 24,
+    "original_pristine_extraction_and_installed_package_execution_pass": true,
+    "owner_private_map_upload_required": false,
+    "preservation_processes": 14,
+    "recompression_or_payload_change": false,
+    "saved_delivered_archive_independently_materialized_and_fully_rehashed": true,
+    "sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "source_archive_entries": 1059
+  },
+  "frozen_public_recovery_manifest": {
+    "audit_relative_path": "qualification-audit/authoritative-recovery-manifest.public.json",
+    "bytes": 741001,
+    "sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1"
+  },
+  "frozen_recovery_manifest": {
+    "audit_relative_path": "qualification-audit/authoritative-recovery-manifest.json",
+    "bytes": 699656,
+    "sha256": "f4b539d2b42d087cf97f7ca5f85b1fb06fe454e6c5bbb4a0ee2b234a309c97db"
+  },
+  "historical_outcomes_preserved": {
+    "PLAY_45464427423_attempt1": "FAILURE: original Linux engine HTTP403 before packet.",
+    "PLAY_45464427423_attempt2": "FAILURE: same-source isolated retry HTTP403; carried forward Windows/plan constituents are not fresh executions.",
+    "Q1_Q5": "FAILURE, each retained as its original outcome; Q4 capacity-reason and Q5 process identity failures remain distinct.",
+    "Q6_attempt1": "FAILURE: original engine HTTP500 and owner observer WinError5; original failure lacks API traceback, so exact access-denied API is not invented.",
+    "Q6_attempt2": "SUCCESS only under its original source and old witness contract; not Q7 qualification or publication authority.",
+    "first_ordinary_GDE_45459025464": "FAILURE: obsolete24-shard assertion before mandatory regression matrices.",
+    "local_reader_path_diagnostic": "Retained separately; exact original hosted path reconstruction let the unchanged consumer pass without evidence/source/verifier edits. It is not a hosted campaign outcome.",
+    "second_ordinary_GDE_45464495877": "FAILURE:26 Linux/Art preparations,103 HTTP403 plus1connection reset; hosted Windows constituent separately passed."
+  },
+  "identities": {
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "donor_715": "919134a39d31461947c410c233d59d1965c48414",
+    "donor_716": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "final_affected_ordinary_execution_source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+    "final_affected_ordinary_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+    "full_native_and_full_documentation_execution_source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "later_documentation_checkpoint_is_not_a_new_runtime_producer": true,
+    "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+    "published_runtime_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+    "published_runtime_parent": "856e25fd58c375482a5b6d58cb79e6e7eca2784d",
+    "published_runtime_tree": "9c0dcf061051e32194f5845cf024a3d5435d9122",
+    "qualified_application_runtime_evaluator_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "qualified_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+    "reviewed_implementation_source": "4c00aaf1232484275ee0ee6891d31315a465345a"
+  },
+  "limitations": [
+    "Hosted Windows and exact saved-byte identity do not establish physical owner hardware or private-map preference.",
+    "Scientific source inputs, commands, raw results and recorded hashes are retained; historical compiler/scientific-driver binary bytes that were not retained are not invented.",
+    "Whole-archive proof, selected-member proof, metadata-only discovery, original cached availability and prior verified observations remain separate.",
+    "The frozen recovery manifest is an observation at its timestamp. Later cache retention or artifact expiry does not retroactively invalidate original hash events.",
+    "No Ready promotion, merge, production-default activation, Gentek catalogue expansion, algorithm redesign or SWARM007 is approved."
+  ],
+  "mission": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "programme_conclusion_owner": "Canonical final decision packet; this is a scoped engineering, evidence, publication and evaluator approval.",
+  "public_safety": {
+    "audit_relative_paths_are_observation_references_not_download_links": true,
+    "private_storage_identifiers_or_transfer_tokens_included": false
+  },
+  "publication": {
+    "changed_paths": 7,
+    "conclusion": "PASS",
+    "current_both_platform_materialization_run": 45467888942,
+    "exact_qualified_payload_and_compiler_binding_identity_verified": true,
+    "expected_parent_and_branch_lease_verified": true,
+    "fresh_authenticated_origin_LFS_fetch_verified": true,
+    "full_docs_remote_materialization_runs": [
+      45459015485,
+      45464485647
+    ],
+    "git_LFS_fsck": "PASS",
+    "linux_cli_sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+    "linux_compiler": "GCC 13.3.0",
+    "linux_native_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+    "materialized_runtime_paths_per_platform": 20,
+    "new_LFS_objects_uploaded": 3,
+    "permitted_paths": 8,
+    "run_id": 45458124077,
+    "runtime_source_retagged": false,
+    "unchanged_byte_identical_linux_adapter_retained": true,
+    "unmaterialized_pointer_count": 0,
+    "windows_cli_sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d",
+    "windows_compiler": "Clang 23.1.0",
+    "windows_native_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+  },
+  "qualification": {
+    "Q7": {
+      "conclusion": "PASS",
+      "fresh_native_receipt_witnesses": true,
+      "mandatory_skips": 0,
+      "required_jobs_passed": 7,
+      "run_id": 45445188802
+    },
+    "current_Draft_PR_documentation": {
+      "conclusion": "PASS_WITH_EXPLICIT_DRAFT_SCOPE",
+      "intentional_Draft_provenance_skip": 1,
+      "run_id": 45467889468,
+      "skipped_step_not_claimed_executed": true,
+      "successful_steps": 27
+    },
+    "current_PLAY": {
+      "actual_materialized_runtime_paths_per_host": 20,
+      "conclusion": "PASS_IDENTITY_PREFLIGHT",
+      "engine_or_physical_execution_claimed": false,
+      "generic_manual_packet_rows_per_host": 51,
+      "generic_manual_rows_remain_untested": true,
+      "helper_controls": 68,
+      "run_id": 45467888942,
+      "successful_jobs": 3
+    },
+    "final_full_GDE": {
+      "Art_checks": 38,
+      "case_and_import_logs": 713,
+      "conclusion": "PASS",
+      "inapplicable_control_only_skips": 2,
+      "jobs": 57,
+      "linux_cases": 344,
+      "mandatory_skips": 0,
+      "rendered_linux_pixel_cases": 23,
+      "retained_PLAY_packets": 30,
+      "retained_control_assertions": 860,
+      "run_id": 45467878171,
+      "successful_jobs": 55,
+      "windows_cases": 321
+    },
+    "full_documentation": {
+      "conclusion": "PASS",
+      "run_id": 45464485647,
+      "skipped_steps": 0,
+      "successful_steps": 28
+    },
+    "full_native": {
+      "commands": 20,
+      "conclusion": "PASS",
+      "independent_aggregate_byte_identical": true,
+      "mandatory_skips": 0,
+      "native_registry_cases": 192,
+      "normal_ASAN_UBSAN_TSan_each_all_192_pass": true,
+      "required_families": 6,
+      "run_id": 45464490633
+    },
+    "science": {
+      "donor_controls": 360,
+      "negative_controls_FAIL138_holdouts_and_denominators_preserved": true,
+      "revealed_cases": 1920,
+      "two_round_blocked": 2,
+      "two_round_complete_apply_valid_zero_unresolved": 82,
+      "two_round_exhausted": 12,
+      "two_round_population": 96,
+      "two_round_qualified_foreign_joint": 81
+    }
+  },
+  "recovery_observations": {
+    "currently_available_original_archives": 116,
+    "expired": 0,
+    "metadata_only_without_selected_member_recovery": 49,
+    "original_archive_bytes_independently_hashed": 2905404032,
+    "original_archive_independent_hash_events": 180,
+    "original_q5_fixtures": 12,
+    "partial_archive_transfer_bytes": 11248774,
+    "prior_verified_then_discarded": 64,
+    "remote_artifacts": 236,
+    "remote_only_or_prior_receipt": 56,
+    "selected_member_recovery_archives": 7,
+    "selected_members_crc_and_sha256_verified": 25
+  },
+  "remaining_owner_dependent_gates": [
+    "Physical Windows11/NVIDIA appearance, responsiveness, usability and preference.",
+    "Acceptance using a local copy of an original populated authored owner map, including ordinary editing/simulation, supported history, authored Save and fresh-process Reopen."
+  ],
+  "review_independence": {
+    "A_independent_native_and_full_ordinary_GDE_review_consumed_with_exact_hashes": true,
+    "B_authored_changes_independently_reviewed_by": [
+      "native_integration",
+      "independent_assurance"
+    ],
+    "B_independent_work": "Original artifact custody, reducer adversarial review, exact producer and package hashes, immutable aggregate payload, publisher and current Documentation/PLAY originals, and A test-only repair policy/scope.",
+    "C_independent_science_native_receipts_remote_LFS_saved_owner_and_retained_PLAY_reviews_consumed_with_exact_hashes": true,
+    "final_synthesis_hash_intentionally_excluded_to_avoid_cycle": true
+  },
+  "reviewed_at_utc": "2026-11-24T19:53:20.518198+00:00",
+  "reviewed_corrections_and_scope": [
+    "Q5 wrapper/engine PID mismatch reproduced from original evidence. Strict original process/report/log identity remained enforced. New execution launches the actual GUI executable directly.",
+    "Typed native receipt, captured source/installed material-plane, canonical patch, native generation, save-file and fresh-reopen witnesses were strengthened and adversarially reviewed. Missing historical witnesses required fresh Q7 execution; no Q5/Q6 replay exception was invented.",
+    "Owner dispatch diagnostics add phase/API/PID/HWND context without swallowing or reclassifying original exceptions, increasing permissions, or changing cleanup. Specialist A and C independently approved B-authored diagnostics.",
+    "The published-runtime CI assertion correction replaces only an obsolete historical shard-count band with existing 16-case/256-matrix policy and positive coverage regression. B independently reviewed the repair and explicit existing postpublication identity-test policy.",
+    "Three Linux download URL substitutions select the exact official asset already bound by the unchanged hash/size/member checks; one exact mission push branch was appended. Specialist A and C independently reviewed B-authored workflow changes. All mandatory filters, permissions, retries and watchdogs remain.",
+    "Later CI overlays change exactly three of 1856 historical general build-input entries; native156, extension106, definition52, scientific100 and owner1059 source entries remain exact. Historical source identities and manifests are preserved; fresh affected ordinary gates passed."
+  ],
+  "reviewer": "qualification_publication (specialist B)",
+  "schema": "swarm456-specialist-B-final-approval-v1",
+  "unresolved_engineering_findings": []
+}

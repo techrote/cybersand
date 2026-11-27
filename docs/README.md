@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-27
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -15,6 +15,29 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 The stacked [Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cybersand/pull/734) extends #725 with [actual native HOT residency, WARM/COLD tiers, bounded write-behind and predictive preparation](systems/persistent-area-residency.md). Use the [RAM-cache owner guide](operations/persistent-area-ramcache-evaluation.md) and [source/performance ledger](audits/2026-11-22-gen006-ramcache.md). The broader #194 actor, streaming and recipe programme remains unfinished.
 
 The opt-in Draft/HOLD [three-area native continuation contract](systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
+
+**Current SWARM-004/005/006 consolidated delivery:** [canonical decision packet](audits/swarm456-definitive-001/final-decision-packet.md), [machine-readable decision](audits/swarm456-definitive-001/final-decision-packet.json), [unified runbook](operations/swarm456-unified-mainline.md) and [physical owner procedure](operations/swarm456-owner-acceptance.md). The same principal #729 preserves both donor histories and accepted Art session logging. Q7 qualifies application/runtime/evaluator source `5e34e0dd`; guarded publication `5323b837` and fresh remote LFS materialization passed. Complete Native, full Documentation and current PLAY identity passed their reviewed scopes; final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. **Draft/HOLD; physical Windows 11/NVIDIA acceptance remains owner-pending.**
+
+The [definitive evidence review](operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review) preserves Q1–Q5 failures and independently binds actual native transactions, material readback and Save/fresh-Reopen files. Q7 supplied the required new original witnesses. The [ordinary budget-test correction](audits/swarm456-definitive-001/ordinary-budget-test-correction.md) and [same-byte Linux download correction](audits/swarm456-definitive-001/ordinary-linux-download-correction.md) preserve qualified product/scientific/runtime identities and all mandatory gates; their affected ordinary executions are recorded separately.
+
+**SWARM-004/005 mainline candidate:** [integration, exact donor custody, experimental controls and owner evaluation](operations/swarm45-mainline-integration.md). The registered negative holdout results remain intact; new-source platform/publication and physical-owner acceptance remain separate gates.
+
+SWARM-006 Draft/HOLD: [integration successor, qualification boundaries and owner
+acceptance](operations/swarm006-integration-finisher.md). The original frozen
+holdout remains historical evidence; corrected-source replay is explicitly
+revealed-corpus regression, and the separate SWARM-004/005 merge owns its baseline.
+
+SWARM-006 [source feasibility and bounded reciprocal recovery](systems/gentek-negotiated-recovery.md)
+continues verified SWARM-005 under [#704](https://github.com/techrote/cybersand/issues/704).
+Native and Workbench stages remain separate Draft/HOLD candidates; original
+controls, budgets and owner acceptance boundaries are preserved.
+
+SWARM-004 [experimental reciprocal Gentek assembly](systems/gentek-reciprocal-assembly.md)
+covers the bounded native grammar, independent architectural revisions, honest
+closure and separately qualified experimental Workbench bridge. The full
+programme remains Draft/HOLD under #687. The [native recovery and policy freeze](audits/2026-11-20-swarm004-native-recovery.md)
+records the recovered known corpus, matched causal controls, fixed-territory
+selection and the distinction between unevaluated closure and zero obligations.
 
 Current-scene material audition: [Draft/HOLD contract](systems/material-audition.md),
 [consumer capability map](systems/material-audition-consumers.md), and
@@ -117,6 +140,13 @@ GEN-007 Architectural Generator [merge hold, owner-reviewed](systems/architectur
 five simultaneous style columns, thirteen built-in presets, versioned native
 Terraces/Hive/Viaduct algorithms, deterministic zone allocation and source-bound
 preview/install. See the [Windows owner walkthrough](operations/architectural-generator-playtest.md).
+
+SWARM-004 adds a separate Draft/HOLD [reciprocal composition controller and
+atomic native patch](architecture/experimental-workbench-authoring-patch.md).
+Its [owner guide](operations/swarm004-workbench-playtest.md) covers the bounded
+brush, native proposal rounds, Apply/Undo and ordinary Save/reopen. Windows
+graphical acceptance remains a source-qualified evidence gate; the interface
+does not alter the existing generator catalogue or accepted Water authority.
 The [15 November runtime completion record](audits/2026-11-15-gen007-runtime-completion.md)
 binds source `6d6e2cd6` to the qualified Linux/Windows and packaged replay,
 four-file publication `99d7bd2b`, and verified Git LFS/runtime provenance.
@@ -715,3 +745,13 @@ For final Gate Aâ€“E PASS, the landed stack, the bounded #200 policy founda
 the [current roadmap checkpoint](reference/status-and-roadmap.md#liquid-comparison-build-design-checkpoint--2026-10-23),
 the [pressure reference entry](reference/status-and-roadmap.md#lcb-001-pressure-reference--2026-10-24)
 and the [dated reconciliation](audits/2026-10-24-lcb000-landed-status-reconciliation.md).
+
+## SWARM-006 experimental owner evaluator
+
+The [SWARM-006 Workbench owner guide](operations/swarm006-workbench-playtest.md)
+covers the default-OFF bounded recovery control, native V4 semantics, declared
+finite synthetic controls, full Apply/Undo/Save/reopen exercises, and the
+source-bound Windows ZIP, sidecar and PowerShell launcher. Native feasibility,
+a qualified foreign joint, Windows graphical qualification and physical owner
+NVIDIA acceptance are separate results. Programme #704 remains Draft/HOLD;
+SWARM-004/005 historical receipts and controls retain their original scope.

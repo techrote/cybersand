@@ -1,0 +1,92 @@
+{
+  "all_five_payloads_byte_identical_between_containers": true,
+  "attempt": 1,
+  "both_native_binaries_are_elf64_little_endian_x86_64_shared_libraries": true,
+  "identity_boundary": {
+    "actual_native_library_byte_identical_to_published": true,
+    "ordinary_build_source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+    "ordinary_fresh_build_receipt_remains_distinct": true,
+    "q7_metadata_retagged": false,
+    "qualified_evaluator_and_published_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "rapier_actual_bytes_match_committed_lfs_identity": true
+  },
+  "native_source_inputs_match_published_extension_inventory": 106,
+  "original_archives": [
+    {
+      "bytes": 22262439,
+      "expires_at_original_api": "2026-11-25T19:20:17Z",
+      "id": 14956796404,
+      "name": "linux-runtime-45467878171-1",
+      "original_independent_api_sha256": "bfa5ab568f60bdac27c9cd63b08acf700b1484780a949d45d34dcdd5c0a48643",
+      "sha256": "31ade9053118e774bf8581042f119f2d476d5adb5b7d968e27bca5c5a12b837d"
+    },
+    {
+      "bytes": 22262439,
+      "expires_at_original_api": "2027-02-22T19:13:13Z",
+      "id": 14956072160,
+      "name": "native-candidate-linux-45467878171-1",
+      "original_independent_api_sha256": "ef97bd878a7b86d63b87df4feeae45044d68d8db0a1820bda20665e2ae575bdd",
+      "sha256": "aaaceec589dacdf77c1c304a0d2e9cf3ba5def8e03be2f61e89b6a2491e09fcc"
+    }
+  ],
+  "original_artifacts_or_tracked_source_modified": false,
+  "original_five_member_inventory": {
+    "libcybersand_native.linux.x86_64.so": {
+      "bytes": 5278840,
+      "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+    },
+    "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "bytes": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "runtime.sha256": {
+      "bytes": 218,
+      "sha256": "3db5ab5860b48bbd2892de0094dbb24e4cee20825c2548986b044f0e1880c928"
+    },
+    "source-sha.txt": {
+      "bytes": 41,
+      "sha256": "cc01163981896e204bfcc40bcf91d4843f62b618b2e59038843b918bb59a5d50"
+    },
+    "toolchain.txt": {
+      "bytes": 203,
+      "sha256": "a857b6a8e0a6385e1aeb82531e445eb6f50868c5538d831302ef1d6a4c2b713d"
+    }
+  },
+  "pending": [
+    "Complete source-bound Linux execution and full original coverage",
+    "Actual Art graphical scope",
+    "Remaining final ordinary decision"
+  ],
+  "preferred_retained_artifact_id": 14956072160,
+  "result": "PASS original final Linux runtime source/build/binary custody",
+  "reviewer": "independent_assurance",
+  "run_id": 45467878171,
+  "runtime_checksum_inventory_exact": true,
+  "same_run_original_build_timing": {
+    "archive_sha256": "9a6fc3a5887dda148055b2468ffeaf717ce7da4bd5447fdf32f2f5af5cd826ad",
+    "artifact_id": 14955837681,
+    "receipts": [
+      {
+        "label": "godot-cpp-linux",
+        "log_sha256": "d865e5a2f2df344fa53b8429600c2743bfdb10648a29e6274ea0badc4b480fe9",
+        "natural_success": true,
+        "pid": 2568,
+        "receipt_sha256": "055935bbab1e47d8b18d041bd1cfc44a5a7a881b821437a09cda297bbad7b7f7",
+        "seconds": 297.988332119
+      },
+      {
+        "label": "extension-linux",
+        "log_sha256": "ef6f3722bf5af17e4f30fae0da55c174d278ac12fc0072014935f5c5bf70e84e",
+        "natural_success": true,
+        "pid": 7040,
+        "receipt_sha256": "4057db080755fb120879488c862b44de0f9346210e42ef4f4202949d36e4e836",
+        "seconds": 81.95384780300003
+      }
+    ]
+  },
+  "schema": 1,
+  "scope": "Producer artifact review; actual complete Linux cases, graphical Art and final coverage remain separate gates",
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "source_toolchain_text": "godot_cpp_commit=101ae38034304346a46ea9ea84ae156d3e860496\nscons=4.10.1\ngcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\ng++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nGNU ld (GNU Binutils for Ubuntu) 2.42\n",
+  "source_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81"
+}

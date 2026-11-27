@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "qualification_programme": "GENTEK-SWARM-004-005-006-UNIFIED",
+  "action": "qualify-full-regressions",
+  "request_id": "swarm456-definitive-20261124-broad-q7-ci2",
+  "expected_parent_sha": "5fd5ab8b34c46d3c275d284559498e65d80be466",
+  "workflows": [
+    "documentation.yml",
+    "native.yml",
+    "gdextension.yml"
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "all_seven_jobs": "success",
+  "attempt": 1,
+  "catalogue_expansion": false,
+  "decision": "APPROVE_SOURCE_NATIVE_AND_SCOPED_WORKBENCH_QUALIFICATION",
+  "default_activation": false,
+  "donors_preserved": [
+    "919134a39d31461947c410c233d59d1965c48414",
+    "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+  ],
+  "implementation_freeze": "4c00aaf1232484275ee0ee6891d31315a465345a",
+  "limitations": [
+    "Coarse bounded native diagnostic reason strings remain a known product limitation; no algorithm redesign undertaken.",
+    "Full ordinary postpublication Native/GDExtension results and actual published LFS materialization remain separate gates.",
+    "Physical Windows11/NVIDIA usability and private-map acceptance remain owner-dependent.",
+    "Scientific executable/compiler bytes are absent from original scientific archive; exact source/compiler/log/custody receipts verified, with no substituted product executable claim."
+  ],
+  "material_findings_open": [],
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "no_original_evidence_modified": true,
+  "no_remote_source_writes_by_this_reviewer_after_freeze": true,
+  "production_algorithm_changes": false,
+  "qualified_execution_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "qualified_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "qualifying_run": 45445188802,
+  "reports": {
+    "lineage": {
+      "bytes": 13503,
+      "path": "native-audit/lineage-manifest.json",
+      "sha256": "903d794535b152cff585b1cd5fcb65ac686e945c4c6aaac6a6375a42f2bb1e42"
+    },
+    "linux_original_execution": {
+      "bytes": 12763,
+      "path": "native-audit/q7-source-evidence/linux-review/review.json",
+      "sha256": "a0784e42a1efd7e316d714f704fe5ad977937b26cb6a5223c64678790a488171"
+    },
+    "linux_original_visuals": {
+      "bytes": 2276,
+      "path": "native-audit/q7-source-evidence/linux-review/visual-observations.md",
+      "sha256": "5cdd3cc608a3d47d0aafda36e08db51cd361666c3814a358df727c0b5cb9b607"
+    },
+    "native_product_source": {
+      "bytes": 11925,
+      "path": "native-audit/native-source-review.md",
+      "sha256": "3ad975e7869e7fab2befb61bc3bb250e7feef85a1994f1fa6120b1f8fe39e4cf"
+    },
+    "native_receipt_2048": {
+      "bytes": 3301,
+      "path": "native-audit/receipt-delta-review-final-2048.json",
+      "sha256": "4b36d3c4627b8295e76bc9bed63a51f909f7aa13b8998e3ece5bb2f148ab8fa3"
+    },
+    "native_receipt_semantics": {
+      "bytes": 3114,
+      "path": "native-audit/receipt-delta-review-final.json",
+      "sha256": "7e8c93b21e511eb59c01b370cf0a94841de49381b82be7befd51bb62c9aea9b0"
+    },
+    "ordinary_prior_scope": {
+      "bytes": 37095,
+      "path": "native-audit/accepted-main-regression-coverage-review.json",
+      "sha256": "3efd7cb6b05b089a9cca07b39d00ec0a1faeff8587efe06c53145e17adde8cc6"
+    },
+    "ordinary_required_contract": {
+      "bytes": 161630,
+      "path": "native-audit/postpublication-ordinary-review-expectations.json",
+      "sha256": "629db41c7f83492ffeb9cbaaec2a7cb7c816a32895e333cccd22e717656ff554"
+    },
+    "owner_guide": {
+      "bytes": 1267,
+      "path": "native-audit/owner-guide-ergonomics-review.json",
+      "sha256": "43d3c4e3e26c792bb445ae241b3b94eef12aced2d5360fa8947f1f71834db846"
+    },
+    "owner_observer": {
+      "bytes": 1863,
+      "path": "native-audit/owner-dispatch-diagnostic-review.json",
+      "sha256": "6d89e54137e46245f6cc80b8fc692d6a263ae75d4c0a26dae6e08d26d8d72266"
+    },
+    "request_source": {
+      "bytes": 712,
+      "path": "native-audit/q7-request-source-independent-review.json",
+      "sha256": "cf7f1db09ae980d2abaddda12165ce5f77fed195bb67ebf09917a713cad926de"
+    },
+    "scientific_binary_custody": {
+      "bytes": 12500,
+      "path": "native-audit/q7-scientific-executable-custody-review.json",
+      "sha256": "0b17474a016583069e3089c89a4c3aaa7f072c5d100e95d7a4f42107ef22ea5b"
+    },
+    "source_freeze": {
+      "bytes": 5741,
+      "path": "native-audit/frozen-source-4c00aaf1-independent-review.json",
+      "sha256": "0385d853faf59d406ba0fbf43c3fe4fe1e878214b2daf7c4fca7b48acae756a5"
+    },
+    "source_lineage": {
+      "bytes": 94249,
+      "path": "native-audit/source-lineage-invariants.json",
+      "sha256": "e97a273215564009fc4aafc396d39b35c9eaf6fa817a99ca1747969dbd96cde4"
+    },
+    "windows_original_execution": {
+      "bytes": 11242,
+      "path": "native-audit/q7-source-evidence/windows-review/review.json",
+      "sha256": "2221a5df993d24f75a625c2137f163296da18df90235136a96abe1f71b48c9e2"
+    },
+    "windows_original_visuals": {
+      "bytes": 3110,
+      "path": "native-audit/q7-source-evidence/windows-review/visual-observations.md",
+      "sha256": "b2c423db397a32518ebd016b452eef598e69f5aa0b43744d94f302d1b12b083b"
+    }
+  },
+  "reviewed_utc": "2026-11-24T18:18:24.440661+00:00",
+  "reviewer": "specialist-A",
+  "schema": "swarm456-final-native-source-review-v1",
+  "scope": {
+    "lineage": "All eighteen enumerated records recovered; genuine donor integrations and accepted-main #727 session logging preserved. No unrelated Draft branch imported.",
+    "linux_execution": {
+      "accepted_main_smokes": 17,
+      "graphical_input_lifecycle_processes": 24,
+      "native_strict_sanitizer_transport_processes": 21,
+      "positive_examples": 7,
+      "preservation_processes_including_import": 14,
+      "refused_negative_examples": 2
+    },
+    "native_product": "Bounded source review found no material defect in native material patch acknowledgement, resource constraints, reciprocal controls, history busy precedence, cancellation retirement, world replacement and historical read-only refusal.",
+    "owner_ergonomics": "Existing guide corrections reviewed and frozen: local copied map/sidecars, valid new save name, territory routing, authored Save and optional later Flatten. Canonical procedure separately checkpoints composition history before subsequent ordinary edits.",
+    "process_and_material_custody": "Full original frozen consumers passed exact source/tree/runtime/engine/PID/log/native receipt/capture fence/material plane/save map+sidecar+evidence/fresh-Reopen and terminal custody joins.",
+    "repair": "Independent native patch semantic derivation and review of the final strict receipt consumer; authoritative three-stage captures and exact persisted artifacts added only to qualification producer. Production source/native definition unchanged.",
+    "windows_source_execution": {
+      "accepted_main_smokes": 17,
+      "graphical_input_lifecycle_processes": 24,
+      "native_strict_transport_processes": 12,
+      "positive_examples": 7,
+      "preservation_processes_including_import": 14,
+      "refused_negative_examples": 2
+    }
+  }
+}

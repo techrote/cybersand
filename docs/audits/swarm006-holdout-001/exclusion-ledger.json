@@ -1,0 +1,241 @@
+{
+  "schema": 1,
+  "scope": "Known revealed evidence plus conservative source-literal exclusion; seed namespace below2^30 excluded in its entirety",
+  "known_revealed_seeds": [
+    605,
+    607,
+    1701,
+    4099,
+    19457,
+    414855,
+    681376,
+    707861,
+    959922
+  ],
+  "conservative_in_namespace_source_literals": [
+    1073741824,
+    1393668081
+  ],
+  "source_commit": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+  "evidence": [
+    {
+      "path": "evidence-sw004-development/manifest.json",
+      "sha256": "d2e803dc0ed43fb1ecf6f63552ddcdaecf5b88cf4e78455d1bad72477c73dc4d",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw005-development/manifest.json",
+      "sha256": "42454f0cbb149d661f9a5c61904bb84c3cdc06ad0e9c675f15c7228c6be3c651",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw005-revealed360/manifest.json",
+      "sha256": "ae368bcdd4395c77116f03dec4ef21df63dc87499047a172cf21e5ccc05d7a82",
+      "seeds": [
+        414855,
+        681376,
+        707861,
+        959922
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer1/manifest.json",
+      "sha256": "533fba87ddee7a1a0f691ca459ab34a676e927b900fcf0c921bc3fd38115c8a1",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer1-r1/manifest.json",
+      "sha256": "47acc5640d46814de3e95175f0aa8bfaed939c16c48f8543b2c421a3b88a1c8f",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer1-r1-reverse/manifest.json",
+      "sha256": "666b80b97b4b396accf2293f68c4eba4dfbb99e0d3c433e180c226ed374104e3",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer2/manifest.json",
+      "sha256": "da84f7e3fd97130c62ce807460376a675c699287149132353c6e1d401e26af8a",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer2-off/manifest.json",
+      "sha256": "f75e898a8a014dfa0e189ee9681bacba0e64bf5d9b695bfb5da6d5060e059e5b",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer3/manifest.json",
+      "sha256": "b297f8bbaa788a636e4e40572dd187e5d7599fc087cfdea7996915774ba8b024",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer3-off/manifest.json",
+      "sha256": "aa5ff90ebf8019acc11d4123de5288a7672d8f08a36906d6cca77ab77a9874a4",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer4/manifest.json",
+      "sha256": "ff1e5813c27bb618aa974a164244a0a705b285cfa2882cef326511c3f44a411c",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer4-off/manifest.json",
+      "sha256": "a59367264c4c49518a152945b59a5456ea64af37d73a2ad25d5573b177f2ba2d",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer4-r1/manifest.json",
+      "sha256": "4f12bea2de743c0a9ef9757bbc16e2391161a2d37bc2e067d20642b3e78e07dd",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer4-reverse/manifest.json",
+      "sha256": "1171b989d1e001ae81a663be23df3113ec2b2f5a088a7903c0f7e0852da97535",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer5/manifest.json",
+      "sha256": "12a8699560b1cbe1cf0024c0b7838461e762f82c649574b009612c214ed7e3dc",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer5-off/manifest.json",
+      "sha256": "13e0995fad3d19830d0e2818c5f57c2d8bfdaf76157d73f356e1416a918d5e00",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-developer5-reverse/manifest.json",
+      "sha256": "bdce4eff2c9a16cfa5fb6d911c41d94f13018397c763effc924b842f8f3f7041",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-005-controls/manifest.json",
+      "sha256": "905b67150ce03cb1d71949bcecc8481061a128eb88b69b118327668cb43c2aaf",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-diagnostics/manifest.json",
+      "sha256": "39271c4b1086e16c944bf06cbadc0844b77b306a5f6acf2c1142f719b5a1adf2",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-max-r0-stress-tool083/manifest.json",
+      "sha256": "d79d5339f182eba705eeff684cc0b73f03814b6cd1a58ca4c0b41fe999e0d1dd",
+      "seeds": [
+        605
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-max-stress/manifest.json",
+      "sha256": "dfc341ede5d849fcf32534a6b195c3658efdcca53855323bd9fd304ab460bbfb",
+      "seeds": [
+        605
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-max-stress-tool083/manifest.json",
+      "sha256": "75ffe8f2ca587453c6e02f3a6989a3dcc97b294e8453b41181b16a108a6d6522",
+      "seeds": [
+        605
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-owner-budget-stress-tool083/manifest.json",
+      "sha256": "d3e4548bac62afacdf4c56bf437e19aeb436cf9dd5cf792a5995b757468daea3",
+      "seeds": [
+        605,
+        4099
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-r1/manifest.json",
+      "sha256": "8acfcda906d33789ccadfff5400af3ff0b01e63f4cc45b28db42f0dd94dd0e2c",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    },
+    {
+      "path": "evidence-sw006-qualified-af80-r2/manifest.json",
+      "sha256": "d4891531fe00b3bf95ef9f034931824456c443ddedb59ed9765fc32f90f47578",
+      "seeds": [
+        605,
+        4099,
+        19457
+      ]
+    }
+  ]
+}

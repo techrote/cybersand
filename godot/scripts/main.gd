@@ -788,13 +788,17 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
 		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true, persistent_options: Dictionary = {}) -> bool:
+		apply_staged_water: bool = true, authoring_patch: Dictionary = {}, persistent_options: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
 	if persistent_options.is_empty() and has_method(&"persistent_operation_allowed"):
 		var refused: String = call(&"persistent_operation_allowed","replace_world",candidate)
 		if not refused.is_empty():
 			microscenario_error = refused
 			return false
+	if not authoring_patch.is_empty() and (not persistent_options.is_empty() or not paused or not preserve_cells or convert_liquid_inventory \
+			or not generated_packet.is_empty() or not material_baseline.is_empty() or apply_staged_water):
+		microscenario_error = "Construction patch requires a paused retained World and unchanged settings."
+		return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
 		return false
@@ -846,6 +850,8 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		settings["workbench_generated"] = generated_packet
 	if not material_baseline.is_empty():
 		settings["workbench_material_baseline"] = material_baseline
+	if not authoring_patch.is_empty():
+		settings["workbench_authoring_patch"] = authoring_patch.duplicate(true)
 	# Editing a body or restoring the current authored start must not apply
 	# unfinished Water controls. Only explicit Apply/Load promotes that proposal;
 	# the accepted setup is recorded after native preparation and commit succeed.
@@ -960,7 +966,7 @@ func persistent_install_area(authoring: Dictionary, capsule: Dictionary, identit
 	update_worker_frame_state()
 	if not workbench_apply(candidate,[],runs,extent,PackedInt32Array(candidate.liquid_policy),
 		false,int(candidate.rule_radius),str(candidate.response),false,false,false,generated,baseline,
-		false,options): return false
+		false,{},options): return false
 	shared_workbench.persistent_stage_authoring(authoring)
 	pending_microscenario_apply["persistent_authoring"] = authoring.duplicate(true)
 	return true

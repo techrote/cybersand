@@ -1,0 +1,29 @@
+{
+  "case": "reopen",
+  "command": [
+    "D:\\a\\_temp\\swarm45-godot\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "D:\\a\\_temp\\swarm45-source\\godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--max-fps",
+    "60",
+    "--rendering-driver",
+    "opengl3_angle",
+    "--script",
+    "res://tests/swarm456_reciprocal_ui.gd"
+  ],
+  "process_id": 8116,
+  "returncode": 0,
+  "timed_out": false,
+  "child_reaped": true,
+  "timeout_seconds": 420,
+  "wall_seconds": 23.577999999999975,
+  "log_sha256": "5cabad7eaa8e5247e2ebd491d6ec77697a23399af22870a849879c000a163589",
+  "passed": true,
+  "example": "transaction",
+  "report_sha256": "4adedc63110efb1d78ba42d75d50ba3feca0dc0b95af8c7e07e3b259ff7349bd",
+  "validation_errors": []
+}

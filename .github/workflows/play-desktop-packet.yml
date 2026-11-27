@@ -131,7 +131,7 @@ jobs:
           if [[ "$RUNNER_OS" == 'Windows' ]]; then
             url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           else
-            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
           fi
           download_seconds="$(python -c 'import sys; sys.path.insert(0, "tools/ci"); from execution_policy import watchdog_seconds; print(watchdog_seconds("dependency_prepare_seconds"))')"
           curl --fail --location --connect-timeout 60 --max-time "$download_seconds" --output "$RUNNER_TEMP/manual-godot.zip" "$url"
@@ -258,7 +258,7 @@ jobs:
           if [[ "$RUNNER_OS" == 'Windows' ]]; then
             url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
           else
-            url='https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+            url='https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
           fi
           download_seconds="$(python -c 'import sys; sys.path.insert(0, "tools/ci"); from execution_policy import watchdog_seconds; print(watchdog_seconds("dependency_prepare_seconds"))')"
           curl --fail --location --connect-timeout 60 --max-time "$download_seconds" --output "$RUNNER_TEMP/manual-godot.zip" "$url"

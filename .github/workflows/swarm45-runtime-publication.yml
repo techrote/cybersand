@@ -1,0 +1,73 @@
+name: SWARM-004/005 explicitly requested runtime publication
+
+on:
+  push:
+    branches: [integration/swarm004-005-mainline-20261121]
+    paths: ['.github/swarm45-runtime-publication-request.json']
+
+permissions:
+  contents: read
+concurrency:
+  group: swarm45-runtime-publication-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    name: Verify original qualified bytes and publish eight leased paths
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/swarm004-005-mainline-20261121' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Require exact request lease and completed immutable qualification
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/swarm45 -p 'test_*.py' -v
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/swarm45/publish_runtime.py gate --output build/swarm45-publication-gate.json
+      - name: Verify artifact archive SHA-256 before extracting its nine files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/swarm45/publish_runtime.py download --gate build/swarm45-publication-gate.json --output build/swarm45-publication
+      - name: Prove source equivalence and stage original runtime bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          python3 tools/swarm45/publish_runtime.py stage --bundle build/swarm45-publication --gate build/swarm45-publication-gate.json
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          git add -- godot/tools/gentek_reciprocal godot/tools/gentek_reciprocal.exe godot/tools/swarm004-runtime.linux.json godot/tools/swarm004-runtime.windows.json
+          python3 tools/swarm45/publish_runtime.py check-index
+      - name: Commit exactly eight paths and push with the request-head lease
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin refs/heads/integration/swarm004-005-mainline-20261121)" = "$GITHUB_SHA"$'\trefs/heads/integration/swarm004-005-mainline-20261121'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(swarm45): publish qualified mainline evaluation runtimes'
+          test "$(git rev-parse HEAD^)" = "$GITHUB_SHA"
+          git push --force-with-lease="refs/heads/integration/swarm004-005-mainline-20261121:$GITHUB_SHA" origin HEAD:refs/heads/integration/swarm004-005-mainline-20261121
+          {
+            echo "Published runtime commit: $(git rev-parse HEAD)"
+            echo 'The original qualified source/build identity remains in both manifests.'
+            echo 'Draft/HOLD remains; full admission and physical owner acceptance are still mandatory.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm45-runtime-publication-receipt-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm45-publication-gate.json
+          if-no-files-found: error
+          retention-days: 90

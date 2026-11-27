@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-21",
+  "purpose": "Additive SWARM004/005 mainline integration, source custody and owner acceptance; original frozen retrieval set unchanged.",
+  "questions": [
+    {
+      "id": "SWARM45-001",
+      "query": "How are SWARM004 and SWARM005 integrated into ordinary Shared Workbench with experimental controls default OFF and V1 V2 V3 compatibility?",
+      "canonical": [
+        "operations/swarm45-mainline-integration.md"
+      ],
+      "facts": [
+        "The lazy Experimental reciprocal dock generates only on explicit request. Both SWARM005 controls remain OFF by default.",
+        "Both OFF preserves V1/V2; either ON uses the existing V3 transport and native composition schema5.",
+        "Pending numeric edits, gestures, native-source changes and failed runtime readmission retire stale Apply authority."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_reciprocal_panel.gd",
+        "../godot/scripts/workbench_reciprocal_protocol.gd"
+      ]
+    },
+    {
+      "id": "SWARM45-002",
+      "query": "What is the SWARM005 historical native definition discrepancy, negative holdout result and owner physical NVIDIA gate for the reconstructed mainline evaluator?",
+      "canonical": [
+        "operations/swarm45-mainline-integration.md"
+      ],
+      "facts": [
+        "Native-only c178 computes4ef94e7b; archived12a4816d matches the Workbench native source set. Original receipts are not rewritten.",
+        "OFF/OFF and BOTH each had1Complete14Blocked21Exhausted and no newApply successes; unknown closure is not zero.",
+        "Known360case replay is regression, not unseen qualification. Physical owner acceptance of the exact reconstructed package is separate from hostedWindows and earlier donor evaluation."
+      ],
+      "sources": [
+        "../tools/swarm45/replay_known_controls.py",
+        "../tools/swarm45/runtime_custody.py"
+      ]
+    }
+  ]
+}

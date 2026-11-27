@@ -1,0 +1,237 @@
+{
+	"applied": true,
+	"apply_disabled": true,
+	"checks": 283,
+	"completed": true,
+	"controller_phase": "historical",
+	"display": "Windows",
+	"engine": "4.7-stable (official)",
+	"example": "swarm006_industrial_on",
+	"failures": [],
+	"historical_only": true,
+	"inspector_evidence": {
+		"initial": {
+			"default_final": true,
+			"final_only_layers": true,
+			"letterbox_refusal": true,
+			"native_cell_picks": true,
+			"native_pixels": true,
+			"restored_final": true,
+			"round_count": 3,
+			"round_indices": [
+				-1,
+				0,
+				1,
+				2,
+				-1
+			],
+			"schema": 1,
+			"source": "e8784e835635cce16bce8b480e0238b64f815f84"
+		},
+		"regenerated": {
+			"default_final": true,
+			"final_only_layers": true,
+			"letterbox_refusal": true,
+			"native_cell_picks": true,
+			"native_pixels": true,
+			"restored_final": true,
+			"round_count": 3,
+			"round_indices": [
+				-1,
+				0,
+				1,
+				2,
+				-1
+			],
+			"schema": 1,
+			"source": "e8784e835635cce16bce8b480e0238b64f815f84"
+		}
+	},
+	"integration_refusals": {},
+	"joint_count": 5,
+	"material_count": 5832,
+	"mode": "evaluate",
+	"native_can_apply": true,
+	"native_evidence_sha256": {
+		"initial": {
+			"initial-material.le16": "2655e811d9cd61dfc8329b39dc5c9aea104cfaf79e6f1ea7b7baeb069970cd96",
+			"initial-native-pixels.png": "e9a9f809af95c6194d494bfc1f655295e3a5f121976a9075e8e7d77913fb76e5",
+			"initial-request.txt": "e6b4c568c097c7fa8d61a529cc474dd0a1017a96964d109285194f0a63722cf8",
+			"initial-result.json": "d68389fb053a3c62ca66b2d6eb22084fc721f4825293b33f8075ecfec3b699b9"
+		},
+		"regenerated": {
+			"regenerated-material.le16": "2655e811d9cd61dfc8329b39dc5c9aea104cfaf79e6f1ea7b7baeb069970cd96",
+			"regenerated-native-pixels.png": "e9a9f809af95c6194d494bfc1f655295e3a5f121976a9075e8e7d77913fb76e5",
+			"regenerated-request.txt": "e6b4c568c097c7fa8d61a529cc474dd0a1017a96964d109285194f0a63722cf8",
+			"regenerated-result.json": "d68389fb053a3c62ca66b2d6eb22084fc721f4825293b33f8075ecfec3b699b9"
+		}
+	},
+	"native_planes_sha256": {
+		"applied": "e7f60d94d899ca9d35bb73def6cf6279360c750527197914fa6dabe2f4127890",
+		"baseline": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+		"expected": "e7f60d94d899ca9d35bb73def6cf6279360c750527197914fa6dabe2f4127890",
+		"preview": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+		"regenerated": "e7f60d94d899ca9d35bb73def6cf6279360c750527197914fa6dabe2f4127890",
+		"saved": "e7f60d94d899ca9d35bb73def6cf6279360c750527197914fa6dabe2f4127890",
+		"undone": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74"
+	},
+	"native_reason": "complete native composition with qualified obligations",
+	"native_receipt": {
+		"changed_cells": 5832.0,
+		"operation": "build",
+		"patch_sha256": "09ea889dd51e609f5b84a3a443ff9a5adccc69fe156d66cc6314558c14479680",
+		"proposal_sha256": "d68389fb053a3c62ca66b2d6eb22084fc721f4825293b33f8075ecfec3b699b9",
+		"protected_cells": 0.0,
+		"schema": 1.0,
+		"semantics": "retained-native-transaction-v1",
+		"source_native_generation": 6.0,
+		"source_revision": 7.0,
+		"source_tick": 0.0
+	},
+	"native_recipe": {
+		"activation": [
+			[
+				64.0,
+				48.0
+			]
+		],
+		"border": 4,
+		"compact_native_termination": true,
+		"gentek_parameters": {
+			"frame": {
+				"branching": 0.75,
+				"clutter": 0.0,
+				"cohesion": 0.15,
+				"destruction": 0.0,
+				"environment_affinity": 1.0,
+				"irregularity": 0.15,
+				"variation": 0.65
+			},
+			"mosaic": {
+				"branching": 0.75,
+				"clutter": 0.0,
+				"cohesion": 0.15,
+				"destruction": 0.0,
+				"environment_affinity": 1.0,
+				"irregularity": 0.15,
+				"variation": 0.65
+			}
+		},
+		"layout": "left_right",
+		"negotiated_recovery": true,
+		"optional": true,
+		"orientation": -1.0,
+		"origin": [
+			0.0,
+			0.0
+		],
+		"profile": "industrial",
+		"rounds": 2.0,
+		"seed": 605.0,
+		"shared_extent": 13.0,
+		"shared_ownership": true,
+		"size": [
+			192.0,
+			112.0
+		],
+		"supported_native_receptors": true,
+		"world_extent": [
+			2048,
+			2048
+		]
+	},
+	"native_source": {
+		"sha256": "a0d4cedf1341b73d9cb77d866413253e768ea9836d31eaf1991583fc59dee199",
+		"source": "e8784e835635cce16bce8b480e0238b64f815f84"
+	},
+	"native_status": "complete",
+	"native_stop_reason": "successful_full_closure",
+	"native_work": {
+		"assembly_validation_work": 5664.0,
+		"best_proven_closure_round": 2.0,
+		"best_proven_qualified_joints": 5.0,
+		"best_proven_remaining_requirements": 0.0,
+		"both_genteks_revised": 1.0,
+		"candidate_native_contacts": 5.0,
+		"closure_proof_rounds": 1.0,
+		"conservative_memory_bound_bytes": 13762560.0,
+		"coordinator_created_cells": 0.0,
+		"custody_admission_work": 188416.0,
+		"custody_memory_bound_bytes": 5782573.0,
+		"custody_mint_work": 191588.0,
+		"custody_policy_version": 1.0,
+		"custody_verification_work": 191588.0,
+		"damage_lost_required": 0.0,
+		"foreign_joined_required": 0.0,
+		"frame_candidates": 830.0,
+		"frame_changed_rounds": 1.0,
+		"frame_footprint_changed_rounds": 1.0,
+		"frame_work": 984358.0,
+		"input_header_only": 0.0,
+		"invalid_proposal_rounds": 0.0,
+		"local_terminations": 10.0,
+		"mosaic_changed_rounds": 2.0,
+		"mosaic_footprint_changed_rounds": 2.0,
+		"mosaic_work": 1685923.0,
+		"new_assembly_required": 1.0,
+		"original_required": 0.0,
+		"original_still_required": 0.0,
+		"proposal_frame_work": 984358.0,
+		"proposal_mosaic_work": 1685923.0,
+		"proposal_solver_work": 1708960.0,
+		"qualified_joints": 5.0,
+		"recovery_attempts": 178.0,
+		"recovery_rejected": 172.0,
+		"recovery_reserved": 6.0,
+		"recovery_validation_work": 20480.0,
+		"recovery_work": 1155116.0,
+		"rejected_joint_source_bindings": 0.0,
+		"shared_work": 1977426.0,
+		"solver_work": 1708960.0,
+		"source_feasibility_opportunities": 20.0,
+		"source_time_compact_terminations": 0.0,
+		"still_required": 0.0,
+		"total_charged_work": 6356667.0,
+		"unchecked_candidate_contacts": 0.0
+	},
+	"obligation_count": 1,
+	"owner_visual_acceptance": "pending",
+	"platform": "Windows",
+	"process_id": 5272,
+	"proposal_sha256": "d68389fb053a3c62ca66b2d6eb22084fc721f4825293b33f8075ecfec3b699b9",
+	"reciprocal_programme_acceptance": false,
+	"reciprocal_witness": {
+		"all_foreign_closed": true,
+		"both_footprints_changed": true,
+		"foreign_joined": 1,
+		"frame_occupied_changes": 22,
+		"joint_count": 5,
+		"mosaic_occupied_changes": 12,
+		"obligation_count": 1,
+		"scope": "array-derived native reciprocal revision and joint/closure witness; synthetic World only, offer causality independently controlled",
+		"unresolved": 0
+	},
+	"reciprocal_witness_passed": false,
+	"schema": 2,
+	"scope": "actual native authoring transaction and persistence; reciprocal research acceptance remains separate",
+	"startup": {
+		"applied": true,
+		"busy": false,
+		"message": "Choose a flyer to pilot, or use Place model to add an independent body.",
+		"milliseconds": 54215,
+		"native_error": "",
+		"pending": {},
+		"watchdog_msec": 120000,
+		"worker_failed": false
+	},
+	"test_sha256": "9717f91b8fdc57d06398a568a9fce08bae29b7bf7eb4e718172a7d967fc94d13",
+	"timeout_diagnostics": [],
+	"transport_refusals": {
+		"changed_world_source": true,
+		"corrupted_saved_evidence": true,
+		"failed_child_positive": true,
+		"preexisting_job_directory": true,
+		"runtime_manifest_changed": true
+	},
+	"undo_disabled": true
+}

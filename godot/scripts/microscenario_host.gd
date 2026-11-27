@@ -126,12 +126,17 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_sample = controlled_setup.workbench_sample
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
 			if controlled_setup.has("workbench_continuation"):
+				if controlled_setup.has("workbench_authoring_patch"):
+					last_error = "Area continuation and reciprocal authoring require separate World transactions"
+					return false
 				if not candidate.events.is_empty() or not candidate.observations.is_empty() or not candidate.conditions.is_empty() \
 						or candidate.player_enabled or candidate.body_enabled or instrumentation:
 					last_error = "Persistent continuation requires an actor-free Workbench without host event cursors"
 					return false
 				options.workbench_continuation = controlled_setup.workbench_continuation
 				options.workbench_continuation_identity = controlled_setup.get("workbench_continuation_identity",{})
+			if controlled_setup.has("workbench_authoring_patch"):
+				options.workbench_authoring_patch = controlled_setup.workbench_authoring_patch
 			if controlled_setup.has("workbench_generated"):
 				options.workbench_generated = controlled_setup.workbench_generated
 			if controlled_setup.has("workbench_material_baseline"):
