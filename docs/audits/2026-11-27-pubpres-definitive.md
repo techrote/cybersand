@@ -54,6 +54,18 @@ draw. The first-frame witness changes the test and its reader only.
 · [Separate0 accepted draws and PNGs](https://github.com/techrote/cybersand/actions/runs/46049916515/artifacts/15224592946)
 · [Separate4 accepted draws and PNGs](https://github.com/techrote/cybersand/actions/runs/46049916515/artifacts/15223719219)
 
+The full comparison host retained two Water-on failures across its 15
+qualification groups. Separate0 missed the initial Restore observation in
+the older recorder. Custom Safe0 actually withheld the selected submerged
+body after a Water refill and a switch to Free camera. Its native sample was
+current at physical step 133. The guard reached 3,089 µs after charging
+884 cells and its previous pose hold had expired. Three bodies remained
+visible. Separate4 and official Stock Safe passed their Water groups on this
+host. All eleven non-Water groups passed and the original evidence reader
+issued a separate Water-off admission. A relative evidence directory then
+failed to match the recorded absolute Windows process path before any timing
+arm began. [Original failed Water group, non-Water admission and process records](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15227742439)
+
 On hosted Linux, Stock Safe with Water composition passed the registered
 relative tests on both workloads. Wave512 rose from 9.26 to 9.60 completed
 physical steps/s, with a candidate p95 gap of 107–109 ms. Wave2048 rose from
@@ -63,6 +75,24 @@ own VM rose from 11.61–11.85 to 12.11–12.34 at 512 and from 4.91–4.93 to
 zero on both candidate arms. All matched arms reproduced the first 144
 physical trajectories and input hashes. [Selected Linux N/C/C/N](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15224871286)
 · [Fallback Linux N/C/C/N and medium, pressure and FreeMass controls](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223946933)
+
+**The selected Windows Water-on application passed the pre-registered
+relative criteria on both worlds.** Wave512 increased from 14.06–15.42 to
+18.53–18.61 completed physical steps/s, a 26.0% gain comparing the two-arm
+means. Candidate p95 was 158 ms and maximum 162 ms. Wave2048 increased
+from 3.82–4.03 to 4.86–5.23 steps/s, a 28.7% gain. Candidate p95 fell to
+325–406 ms from 522–540 ms, and its maximum was 570 ms. Gaps above 500 ms
+fell from 8/15 on main to 1/7 on the candidate. One candidate’s 579 ms
+initial interval without a completed step is included in its progression
+rate. The 100 ms p95 and 250 ms maximum objectives remain open.
+
+The two Wave2048 candidate arms completed 144 physical steps in 984 and 980
+physics callbacks. Solver completion p95 was 3.56 and 4.26 ms. A matching
+native packet was ready 209 ms into the 570 ms gap, then a full-image upload
+occupied 212–562 ms. Equal-step trajectories and admitted inputs matched main.
+Independent decoding found actual original framebuffer changes in every
+arm. These clocks measure a Microsoft Basic Render Driver ANGLE session.
+[Windows selected N/C/C/N, original framebuffers and execution clocks](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15226565285)
 
 The Windows Stock Safe Water-off fallback passed both relative comparisons.
 Wave512 rose from 10.40–10.84 to 11.18–11.91 physical steps/s and Wave2048
