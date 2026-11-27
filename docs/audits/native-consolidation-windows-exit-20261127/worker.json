@@ -1,0 +1,222 @@
+{
+  "source": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "rows": [
+    {
+      "case": "no-worker",
+      "attempt": 0,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "preload",
+      "attempt": 0,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "new",
+      "attempt": 0,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "new",
+      "attempt": 1,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "preload",
+      "attempt": 1,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 1,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 2,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "preload",
+      "attempt": 2,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "new",
+      "attempt": 2,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "new",
+      "attempt": 3,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "preload",
+      "attempt": 3,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 3,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 4,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "preload",
+      "attempt": 4,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "new",
+      "attempt": 4,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "new",
+      "attempt": 5,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "preload",
+      "attempt": 5,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 5,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 6,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    },
+    {
+      "case": "preload",
+      "attempt": 6,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "new",
+      "attempt": 6,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "new",
+      "attempt": 7,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-new.gd",
+      "fixture_sha256": "d121947d6ea149aa4483a2c4ca74a1ac8d93b0f7381537a6316428a9d344720c",
+      "repository_lf_fixture_sha256": "b4f50a45f1ee65f5f593d4d7b3f341a1aa340f401fe8379bfaf9c46a0dc5fdeb"
+    },
+    {
+      "case": "preload",
+      "attempt": 7,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-preload.gd",
+      "fixture_sha256": "b2bb46782ab9324cab485c1dbb0a8105e3b4415efa40334b68635a3093848d60",
+      "repository_lf_fixture_sha256": "05503c705558c4116d0f83c318b012b10dfcc734ab945bdabcb8131b03e7aae6"
+    },
+    {
+      "case": "no-worker",
+      "attempt": 7,
+      "code": 0,
+      "log_sha256": "46764054154af34a3d5ee3546d26e3c32615dfedaaae02b13418c4a1ff462696",
+      "fixture": "worker-no-worker.gd",
+      "fixture_sha256": "45ed61d7fe6bff98dc2c997bb364d9323eb726519322aba75a05a49176f2cd75",
+      "repository_lf_fixture_sha256": "b442bff81bf4e584e0d4322a58d92611d662da0d3b9e0a85de71b467632ad069"
+    }
+  ]
+}

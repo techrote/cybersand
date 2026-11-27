@@ -1,0 +1,437 @@
+{
+  "source": "b1d33a18549adf03db7ae3b49a0c4180aa4e5382",
+  "rows": [
+    {
+      "case": "owned",
+      "repetition": 0,
+      "exit": 3221225477,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 0,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 0,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 1,
+      "exit": 3221225477,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 1,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 1,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 2,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 2,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 2,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 3,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 3,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 3,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 4,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 4,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 4,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 5,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 5,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 5,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 6,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 6,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 6,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 7,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 7,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 7,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 8,
+      "exit": 3221225477,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 8,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 8,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 9,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 9,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 9,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 10,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 10,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 10,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 11,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 11,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 11,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 12,
+      "exit": 3221225477,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 12,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 12,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 13,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 13,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 13,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "owned",
+      "repetition": 14,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    },
+    {
+      "case": "native",
+      "repetition": 14,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "script",
+      "repetition": 14,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "script",
+      "repetition": 15,
+      "exit": 0,
+      "fixture_sha256": "3ab2cf2947de5c62d76b086be87a8b65e352ad9c4abe86a3585455d7a513945b",
+      "log_sha256": "0f2e5cf484fdc07840e0fc9bef401f0d2a95aed7f6850d1b87776299e2adce1c",
+      "fixture": "lifetime-script.gd",
+      "repository_lf_fixture_sha256": "4e1316371f7a41fe3e75aecb64d816b65dd14c92a0927b6ce3c7a6402c7fbb10"
+    },
+    {
+      "case": "native",
+      "repetition": 15,
+      "exit": 0,
+      "fixture_sha256": "33ab62dce25d1f3a82b484589c9e96c517374bca3eaa5225f4638dd6e7aa2c5e",
+      "log_sha256": "9c6fce166c2d3b34c50d70af0c714b45d9fc5d555649ae805215444507e27672",
+      "fixture": "lifetime-native.gd",
+      "repository_lf_fixture_sha256": "de09a06af6fd3e38da13f8fa52af585d71414d488f75142e19130d12af42c01b"
+    },
+    {
+      "case": "owned",
+      "repetition": 15,
+      "exit": 0,
+      "fixture_sha256": "37dfc8d86d75ae6f8d28d46d06d73951588495a328fb8dee0d4e9a1fe16131f3",
+      "log_sha256": "5a28a924103dbcbaf902c169a875462faa8b5decf7de8551b719e7a1394f2b5c",
+      "fixture": "lifetime-owned.gd",
+      "repository_lf_fixture_sha256": "d516ccfd1698cfe88fa5ee0546a15032b94e48417905736165312201c48b9602"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "source": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "zip": "228d070df89b119444a0198c1456cfb396cb1ee72c3c8651b5cf82ba1003c088",
+  "rows": [
+    {
+      "attempt": 1,
+      "pid": 49088,
+      "code": 0,
+      "ordinary_launcher_ready": true,
+      "titan": true,
+      "seconds": 11.32,
+      "log_sha256": "b184b89800e574f29dc88e619027bd9facbdfd1d25cf648210635e6de98fc2ef"
+    },
+    {
+      "attempt": 2,
+      "pid": 12640,
+      "code": 0,
+      "ordinary_launcher_ready": true,
+      "titan": true,
+      "seconds": 11.329,
+      "log_sha256": "b184b89800e574f29dc88e619027bd9facbdfd1d25cf648210635e6de98fc2ef"
+    },
+    {
+      "attempt": 3,
+      "pid": 24972,
+      "code": 0,
+      "ordinary_launcher_ready": true,
+      "titan": true,
+      "seconds": 11.237,
+      "log_sha256": "b184b89800e574f29dc88e619027bd9facbdfd1d25cf648210635e6de98fc2ef"
+    }
+  ]
+}

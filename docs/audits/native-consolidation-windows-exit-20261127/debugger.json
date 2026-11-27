@@ -1,0 +1,54 @@
+{
+  "source": "7f8f731d475535200d67f332551d4dbf6162f7b1",
+  "fixture": "godot/tests/test_workbench_actor_equipment_extent.gd",
+  "thread": 1,
+  "exit": "0xc0000005",
+  "after": "29 checks, 0 failures",
+  "transcript_sha256": "87bd0bf212d9887e3dbc2862aade4165315774c23757b65ae3cb78cad77d0efb",
+  "frames": [
+    {
+      "index": 0,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 65125265"
+    },
+    {
+      "index": 1,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 65125549"
+    },
+    {
+      "index": 2,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 5523163"
+    },
+    {
+      "index": 3,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 65184984"
+    },
+    {
+      "index": 4,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 381601"
+    },
+    {
+      "index": 5,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 325743"
+    },
+    {
+      "index": 6,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`NoHotPatch + 325902"
+    },
+    {
+      "index": 7,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`"
+    },
+    {
+      "index": 8,
+      "module_and_nearest_export": "Godot_v4.7-stable_win64.exe`"
+    },
+    {
+      "index": 9,
+      "module_and_nearest_export": "kernel32.dll`BaseThreadInitThunk + 23"
+    },
+    {
+      "index": 10,
+      "module_and_nearest_export": "ntdll.dll`RtlUserThreadStart + 44"
+    }
+  ]
+}
