@@ -442,7 +442,7 @@ func actor_placement_pose(id: int) -> Dictionary:
 
 
 func set_sandbox_capacity(value: Dictionary) -> bool:
-	if not _editable(): return false
+	if not _editable_authored_world(): return false
 	var error := Setup.SandboxCapacity.error(value)
 	if not error.is_empty(): return refuse(error)
 	var next := applied.duplicate(true)
@@ -457,7 +457,7 @@ func set_sandbox_capacity(value: Dictionary) -> bool:
 
 
 func set_actor_tuning(id: int, options: Dictionary) -> bool:
-	if not _editable(): return false
+	if not _editable_authored_world(): return false
 	var next := applied.duplicate(true)
 	var selected := actor(next,id)
 	if selected.is_empty(): return refuse("Select an existing actor before applying physical tuning.")
@@ -470,7 +470,7 @@ func set_actor_tuning(id: int, options: Dictionary) -> bool:
 
 
 func load_actor_sandbox(kind: String, count: int = 64) -> bool:
-	if not _editable(): return false
+	if not _editable_authored_world(): return false
 	var candidate: Dictionary = preload("res://scripts/workbench_actor_sandbox.gd").build(kind,PackedInt32Array(applied.liquid_policy),count)
 	if candidate.is_empty(): return refuse("Sandbox example could not be built within the physical resource limits.")
 	if not apply(candidate,false,0,false,false,{},{},false): return false
@@ -480,7 +480,8 @@ func load_actor_sandbox(kind: String, count: int = 64) -> bool:
 
 
 func commit_actor_placement(source: Dictionary, proposed: Dictionary) -> bool:
-	if not _editable() or not host.paused: return refuse("Pause an installed session before committing placement.")
+	if not _editable_authored_world(): return false
+	if not host.paused: return refuse("Pause an installed session before committing placement.")
 	var session = host.physical_actor_session
 	if session == null or session.run_id != str(source.get("run_id","")) or session.epoch != int(source.get("epoch",-1)):
 		return refuse("The physical owner changed during placement; no authored data was modified.")
@@ -1059,6 +1060,11 @@ func load_water_comparison(scene_id: String) -> bool:
 	_pending_water_comparison = scene_id
 	message = "Preparing Water comparison scene with requested solver / tuning…"
 	return true
+
+func _editable_authored_world() -> bool:
+	if not _editable(): return false
+	var reason := authored_world_change_block_reason()
+	return true if reason.is_empty() else refuse(reason)
 
 func authored_world_change_block_reason() -> String:
 	if is_instance_valid(architecture_lab) and architecture_lab.authoring_busy():

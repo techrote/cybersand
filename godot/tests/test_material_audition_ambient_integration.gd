@@ -77,6 +77,11 @@ func verify_demo_admission(demo_id: String) -> bool:
 	if not check(not refused.get("ok",true) and not str(refused.get("error","")).is_empty()
 			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
 			"the Material demo preserves the pending Art writer and queues no replacement"): return false
+	if not check(not bench.load_actor_sandbox("barrels",16)
+			and not bench.set_sandbox_capacity(Catalog.Capacity.defaults())
+			and not bench.set_actor_tuning(303,bench.actor(bench.applied,303).options)
+			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
+			"Actor scene, capacity and tuning preserve the Art writer before acknowledgement"): return false
 	if not await until(func() -> bool: return not art.active,"Art owner settles after refused demo"): return false
 	if not check(art.result.status == "completed" and int(art.result.changed) == 1,
 			"the Art owner receives the original native write acknowledgement"): return false
@@ -86,6 +91,8 @@ func verify_demo_admission(demo_id: String) -> bool:
 	refused = bench.load_material_audition_demo(demo_id)
 	if not check(not refused.get("ok",true) and not str(refused.get("error","")).is_empty()
 			and host.pending_microscenario_apply.is_empty(),"the Material demo preserves Architecture's active source read"): return false
+	if not check(not bench.load_actor_sandbox("barrels",16) and host.pending_microscenario_apply.is_empty(),
+			"Actor sandbox leaves the in-flight Architecture source read intact"): return false
 	if not await until(func() -> bool: return not inspection.is_empty(),"Architecture source inspection settles"): return false
 	return check(inspection.get("ok",false) and inspection.cells.decode_u16(0) == material
 			and int(inspection.generation) == worker_generation and not bench.architecture_lab.authoring_busy(),
