@@ -8,7 +8,7 @@ fixed comparison source for this campaign. Physical owner acceptance is on hold.
 
 ## Resulting application
 
-The delivery source is `e17ce40722a3fabdd6130990eecfca384bf5b6dd`.
+The pre-refresh comparison source is `e17ce40722a3fabdd6130990eecfca384bf5b6dd`.
 The campaign built both platform libraries from that revision. The Windows
 DLL SHA-256 is `ca5a9c751ef5c9cc4305333544c7740798202446bb4d3e6525161e8eb942e2e7`.
 The Linux SO SHA-256 is `56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1`.
@@ -46,6 +46,25 @@ product target. The first 144 physical trajectories and input hashes matched
 in all eight arms. This host used four AMD EPYC 9V45 vCPUs. The earlier
 Linux comparisons used four Intel Xeon 6975P-C vCPUs. Both used llvmpipe
 LLVM 20.1.2. [Resulting-source Linux comparison](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15217755913)
+
+Windows on `e17ce407` also missed the registered Wave512 direction. The
+candidate reached 11.40 and 11.06 steps/s against main's 11.34 and 11.33.
+One candidate gap reached 530 ms, versus 294 ms worst on main. Wave2048
+passed the relative criteria at 3.29–3.61 versus 2.33–2.36 steps/s. Its
+candidate p95 was 418–577 ms and its maximum was 952 ms. Main reached
+1,039 ms and both main arms had gaps exceeding one second.
+[Resulting-source Windows comparison](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15218924656)
+
+The 530 ms Wave512 gap occurred between steps 2 and 3. A matching native
+packet was ready 7.05 ms after step 2. Main started its upload at 7.58 ms,
+spent 514.44 ms there, and the next scheduled physics callback began at
+528.73 ms. Wave2048's 952 ms gap occurred between steps 81 and 82. A
+matching packet was available at 149.65 ms, but it required a newer hard
+terrain revision. The previous physics callback had already ended. The next
+callback ran at 948.03 ms. These traces explain why publication timing alone
+cannot guarantee an earlier correct physical step. The short CPU solver
+intervals and upload calls establish neither GPU completion nor scanout.
+[Raw callback, publication, upload and completion clocks](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15218924656)
 
 ## Protected World source transition
 
@@ -103,6 +122,18 @@ Ordering the first read after a single explicit Separate draw passed 137 checks
 on each render thread. The mounted control now requires a later accepted draw
 for each policy transition and drains the submitted work before reading.
 All five RGB oracles retain their original thresholds and identity checks.
+
+The focused Separate4 Windows run then passed. Separate0 exposed a different
+failure. A full transport refresh rotated two byte-identical textures during
+a pause. Slot 0 had 21 Water cells and slot 3 had 192, but the shared deadline
+expired at 2,492 µs after 968 cells. A stationary, already-certified Water
+sweep can now survive that specific rotation. Reuse requires the same World,
+revision, physical member, geometry, image content and shape on the active
+layers, and the exact front/back resource pair. Native authority and the new
+submission identity are checked again. Changed Sand, an unknown previous
+image or a different member still requires a fresh proof.
+[Separate0 failure](https://github.com/techrote/cybersand/actions/runs/46039009759/artifacts/15220170938)
+· [Separate4 control](https://github.com/techrote/cybersand/actions/runs/46039009759/artifacts/15219178238)
 
 ## Integrated Workbench checks
 
