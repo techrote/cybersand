@@ -32,7 +32,9 @@ engine.EXECUTION_SCOPE = (
 )
 engine.BUILD_EXACT = (engine.BUILD_EXACT - inherited_paths) | {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE,
-    "tools/ci/materialize_lfs.py", "tools/ci/native_candidate_identity.py", "tools/ci/reciprocal_windows_package.py",
+    "tools/ci/materialize_lfs.py", "tools/ci/native_candidate_identity.py",
+    "tools/ci/reciprocal_windows_package.py", "tools/swarm45/runtime_custody.py",
+    "godot/tools/swarm004-runtime.windows.json",
     "tools/ci/stage_windows_vc_runtime.ps1", "tools/ci/execution_policy.py",
     *(p.relative_to(engine.ROOT).as_posix() for p in (engine.ROOT / "tools/objectshard").iterdir()
       if p.is_file() and p.suffix in {".py", ".ps1", ".json"}),

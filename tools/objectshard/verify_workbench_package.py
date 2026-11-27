@@ -15,10 +15,14 @@ RENDERING_DRIVER = "opengl3_angle"
 RETAINED_PROVENANCE = "godot/addons/cybersand_native/runtime-provenance.json"
 RETAINED_REFERENCE = "godot/addons/cybersand_native/retained-runtime-provenance.reference.json"
 CANDIDATE_PROVENANCE = "source-built-candidate-provenance.json"
+WINDOWS_RECIPROCAL = "godot/tools/gentek_reciprocal.exe"
+WINDOWS_RECIPROCAL_BINDING = "godot/tools/swarm004-runtime.windows.json"
+
 ENTRY = {"scene": "godot/main.tscn", "startup_scene": "godot/feature_launcher.tscn", "host": "ordinary-workbench",
          "launcher": "Open Workbench.cmd", "opt_in": True, "rendering_driver": RENDERING_DRIVER,
          "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}
 REQUIRED = {
+    WINDOWS_RECIPROCAL, WINDOWS_RECIPROCAL_BINDING, "godot/tests/fixtures/object_shard_m4_authored_reopen.gd",
     NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe",
     "Godot-LICENSE.txt", "Godot-COPYRIGHT.txt", "vcruntime140.dll",
     "Microsoft-Visual-C-Runtime-LICENSE.docx", "Microsoft-Visual-Studio-2022-LICENSE.docx",
@@ -129,6 +133,13 @@ def verify(root: Path) -> dict:
     inventory = manifest.get("files_sha256", {})
     if not isinstance(inventory, dict) or not REQUIRED.issubset(inventory):
         raise ValueError("Incomplete Workbench package inventory: " + str(sorted(REQUIRED - inventory.keys())))
+    if {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}.intersection(inventory):
+        raise ValueError("Windows package contains a Linux reciprocal generator or binding")
+    binding = json.loads(safe_path(root, WINDOWS_RECIPROCAL_BINDING).read_bytes())
+    if (binding.get("artifact") != WINDOWS_RECIPROCAL or binding.get("platform") != "windows"
+            or binding.get("bytes") != safe_path(root, WINDOWS_RECIPROCAL).stat().st_size
+            or binding.get("sha256") != inventory[WINDOWS_RECIPROCAL]):
+        raise ValueError("Windows reciprocal generator differs from its packaged source binding")
     verify_inventory(root, inventory)
     for relative, expected in inventory.items():
         if not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected):
