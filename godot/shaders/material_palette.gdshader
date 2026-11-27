@@ -2808,9 +2808,10 @@ void fragment() {
 	if (material_id == 0 && inside_view) {
 		// Growth, sparks, embers and fumes sample the current publication at
 		// most nine cells away. Vapour can outlive the originating material.
+		vec2 sample_origin = clamp(world_pixel, vec2(0.0), world_size_px - vec2(1.0));
 		bool outside_sources = ambient_bounds_valid && (
-			any(lessThan(world_pixel, ambient_source_bounds.xy - vec2(9.0))) ||
-			any(greaterThanEqual(world_pixel, ambient_source_bounds.zw + vec2(9.0))));
+			any(lessThan(sample_origin, ambient_source_bounds.xy - vec2(9.0))) ||
+			any(greaterThanEqual(sample_origin, ambient_source_bounds.zw + vec2(9.0))));
 		if (ambient_sources_absent || outside_sources) {
 			colour = apply_vapour_trail(colour, world_pixel);
 		} else {
