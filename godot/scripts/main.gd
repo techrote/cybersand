@@ -2392,6 +2392,8 @@ func _object_shard_m4_complete_interval(single_step: bool) -> void:
 	if physical_actor_session != null:
 		var before: int = physical_actor_session.tick
 		physical_actor_session.complete_step()
+		if paused and not single_step:
+			physical_actor_session.refresh_paused_material_poses()
 		if physical_actor_session.tick > before: _record_completed_playable_course_step()
 	_publish_physical_body_state()
 	if single_step and shared_workbench != null and pending_microscenario_apply.is_empty():

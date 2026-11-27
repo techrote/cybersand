@@ -1231,6 +1231,14 @@ func complete_step() -> void:
 			_flight_prepared = false
 
 
+func refresh_paused_material_poses() -> void:
+	# An already admitted segmented Rapier interval can finish after Pause.
+	# Refresh physical observations while commands, leases and actor time stay suspended.
+	if _active and _suspended and bridge is WorkbenchBridge:
+		for rig in _rigs:
+			rig.refresh_observation()
+
+
 func drain_effects() -> Array:
 	var result: Array = _effects.duplicate(true)
 	_effects.clear()
