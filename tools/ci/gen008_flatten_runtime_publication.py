@@ -320,7 +320,8 @@ def verify_owner_failure_cases(directory: Path, records: list[dict], platform: s
             engine.require(re.fullmatch(r"[0-9a-f]{64}",str(receipt.get(field,""))) is not None,
                            "Native owner recovery omitted a complete saved-plane identity: "+field)
         engine.require(type(receipt.get("failure_count")) in (int,float) and receipt["failure_count"] == 1 and
-                       receipt.get("failure_reason") == "active scheduling-core capacity exhausted",
+                       receipt.get("failure_reason") in ("active scheduling-core capacity exhausted",
+                                                       "simulation_tick failed: active scheduling-core capacity exhausted"),
                        "Native owner recovery did not retain the genuine native capacity failure")
         engine.require(receipt["saved_plane_sha256"] == receipt["expected_plane_sha256"] and
                        receipt.get("side") == 512 and receipt.get("canonical_bytes") == 524288,

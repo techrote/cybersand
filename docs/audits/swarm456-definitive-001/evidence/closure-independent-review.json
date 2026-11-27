@@ -1,0 +1,93 @@
+{
+  "schema": "swarm456-q7-final-independent-review-c/v1",
+  "reviewer": "closure-independent-assurance-C",
+  "completed_utc": "2026-11-24T18:50:25.541066+00:00",
+  "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "result": "APPROVE_REVIEWED_SOURCE_SCIENCE_AND_EVALUATOR_SCOPES",
+  "scope": [
+    "Q5 strict process identity repair and immutable historical failure",
+    "Q7 additive native transaction/Save-Reopen witnesses and observer diagnostics",
+    "Scientific registrations, source/executable custody, full original corpus and identity-chain cross-review",
+    "Distinct historical negatives and complete archive recovery supplement",
+    "Actual final Windows download, every payload, ordinary graphical owner launch and exact executed-layout join",
+    "Owner ergonomics, privacy and physical acceptance boundary"
+  ],
+  "material_engineering_findings_open": [],
+  "primary_revealed_endpoint": {
+    "denominator": 96,
+    "A": 82,
+    "R": 81,
+    "complete": 82,
+    "exhausted": 12,
+    "blocked": 2
+  },
+  "owner_download": {
+    "artifact_id": 14949325922,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "outer_sha256": "9db077d7be6ba1173a63f0f869fea88c4c0c844471b504da6cbe972b9b1a47c4",
+    "inner_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "manifest_sha256": "d431d254b354bd0f3e07b1a7e8c700ac03202432fdbf6ba18cac09652b62d9da",
+    "all_payload_files": 1093,
+    "source_derived_path_count_explanation": {
+      "unchanged_same_path_git_blobs": 1057,
+      "materialized_rapier_lfs_paths": 1,
+      "renamed_retained_git_provenance_files": 1,
+      "source_derived_paths_total": 1059,
+      "renamed_file": "godot/addons/cybersand_native/retained-runtime-provenance.reference.json",
+      "original_source_file": "godot/addons/cybersand_native/runtime-provenance.json",
+      "renamed_file_sha256": "bd05d2280e5f4692888d47da2ddc3539f7e0da65a0e22ab76c7bdaa85331e513",
+      "renamed_original_bytes_independently_equal": true,
+      "separate_source_checks": [
+        "READ-ME.md equals docs/operations/swarm456-owner-acceptance.md",
+        "17 bundled generator profile copies equal their original source recipes"
+      ]
+    },
+    "actual_graphical_pid": 616,
+    "actual_engine_and_native_bytes_joined": true
+  },
+  "owner_instruction_refinement": {
+    "severity": "nonblocking instruction precision",
+    "instruction": "For a generated saved map, Load start automatically begins saved-preview verification. Once ready, click Install into workbench before renaming and Save start. Ordinary and flattened starts load directly.",
+    "source_functions": [
+      "godot/scripts/shared_workbench.gd::load_setup",
+      "godot/scripts/workbench_generator_dialog.gd::open_saved"
+    ],
+    "requested_resolution": "Include explicitly in the canonical packet and owner launch instructions; no application change or replacement source qualification."
+  },
+  "qualified_application_source_changed_by_this_review": false,
+  "original_evidence_modified": false,
+  "native_solver_or_policy_research_performed": false,
+  "independent_native_execution_claim": "None in this supplemental Q7 review; actual original hosted evidence is read and independently bound.",
+  "remaining_review_boundary": [
+    "Actual remote publication/materialized checkout and complete ordinary postpublication workflows are owned by A/B and the sole definitive writer and require their exact final evidence.",
+    "The canonical final decision packet and PR description require a subsequent final-state review.",
+    "Physical Windows11/NVIDIA owner acceptance remains pending; Draft/HOLD, no Ready, merge or default activation."
+  ],
+  "historical_packet_attribution_note": "Keep 73 historically corrected internal histories, four a757 provisional defects, FAIL138 changes and the one primary paired-policy loss as distinct attributed records; an exact original receipt is required for the 73 claim.",
+  "evidence": [
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-owner-archive-audit-c.json",
+      "sha256": "1977c4a9083384d662fa05373bbd6608440ff4e9f7100f4a69c8e99c1b17b33b"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-owner-dispatch-audit-c.json",
+      "sha256": "2b46e083e689359d97694fdbf9d018d47393b4584b332e1eac50796084308ab6"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-source-witness-review-c.json",
+      "sha256": "e4c1debd2999ba0dea85a254f9004920e0df74be023d5bf9de33d38dda28d1f1"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-scientific-final-cross-review-c.json",
+      "sha256": "81a00a9dc18666e8111a0a0622869fe014fac371c02e3210dd8f0084c3d52ef7"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/historical-science-supplement-c.json",
+      "sha256": "47f58c1e063dcf569676f6c2054e09b749c1d52df1963def4a75c360f0728d5a"
+    }
+  ],
+  "merge_authorized": false,
+  "ready_authorized": false,
+  "default_activation_authorized": false
+}

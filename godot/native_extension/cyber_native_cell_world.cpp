@@ -425,6 +425,10 @@ Dictionary CyberNativeCellWorld::gameplay_water_options() {
 }
 
 bool CyberNativeCellWorld::reset_demo_world(bool gameplay_water) {
+    if (active_resident_handle_!=0) {
+        last_tick_error_="Resident active World requires an admitted handoff before reset";
+        return false;
+    }
     if (world_ == nullptr) return false;
     bool committed = false;
     try {
@@ -529,6 +533,10 @@ Dictionary CyberNativeCellWorld::object_shard_attach(Rect2i bounds) {
     Dictionary refused;
     refused["ok"] = false;
     refused["outcome"] = "SameWorldAttachmentRefused";
+    if (active_resident_handle_ != 0) {
+        refused["detail"] = "Persistent Areas requires a structural-body-free World";
+        return refused;
+    }
     if (world_ == nullptr || world_->has_failed() || world_->is_tick_in_progress() ||
         !workbench_ || shard_lab_.is_valid() ||
         bounds.size.x < 64 || bounds.size.y < 64 ||
@@ -541,7 +549,9 @@ Dictionary CyberNativeCellWorld::object_shard_attach(Rect2i bounds) {
     try {
         for (const auto& body:current_bodies_)
             if (body.valid && body.id>=cybersand::object_shard::Coordinator::kFirstMutableBodyId) {
-                refused["detail"]="ObjectShard reserves proxy IDs 49..64; immutable GCR roster exceeds 48";
+                refused["detail"]="An existing actor occupies an ID reserved for a mutable structural body";
+                refused["first_mutable_body_id"]=cybersand::object_shard::Coordinator::kFirstMutableBodyId;
+                refused["conflicting_body_id"]=body.id;
                 return refused;
             }
         cybersand::object_shard::Config config;
@@ -2188,6 +2198,10 @@ double CyberNativeCellWorld::density_scale(cybersand::Material material, double 
 }
 
 bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
+    if (active_resident_handle_!=0) {
+        last_tick_error_="Resident active World requires an admitted handoff before diagnostic reset";
+        return false;
+    }
     // Explicit API, fresh construction, no live descriptor edits. A demo reset
     // restores production defaults. Validate before replacing existing authority.
     bool committed = false;

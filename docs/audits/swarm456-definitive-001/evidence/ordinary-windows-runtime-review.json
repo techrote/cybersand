@@ -1,0 +1,65 @@
+{
+  "artifact": {
+    "all_five_original_members_read_crc_and_hash_checked": true,
+    "bytes": 2115720,
+    "id": 14955483735,
+    "name": "native-candidate-windows-45467878171-1",
+    "original_independent_api_sha256": "930cf4c9f0477b18a840fce2e56b284d38a63a4a77903aa14324121d0326c8d8",
+    "sha256": "9e3faf73917f71b48033daa9d50aaf6235924423c6751d3dc14a3b0630bff6a0"
+  },
+  "attempt": 1,
+  "identity_boundary": {
+    "byte_difference_cause_inferred": false,
+    "candidate_republished_or_q7_retagged": false,
+    "ordinary_candidate_is_separate_fresh_build": true,
+    "published_windows_runtime_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+    "qualified_evaluator_and_published_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+  },
+  "native": {
+    "all_source_inputs_match_exact_git_and_original_published_extension_inventory": true,
+    "bytes": 5844992,
+    "candidate_manifest_sha256": "a5a3128aa845b45b27409a3359cb293c9f6f9b5e1838f606ec5d6f840299f47f",
+    "format": "PE32+ x86-64 DLL",
+    "machine": 34404,
+    "optional_header_magic": 523,
+    "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "sha256": "60c49a8fc3936a756cbd77ce1cc5a8e9aa7a8f6748893c19f5ec53843766b32f",
+    "source_inputs": 106
+  },
+  "original_artifacts_or_tracked_source_modified": false,
+  "pending": [
+    "Source-bound execution of every original Windows case and final complete coverage",
+    "Remaining Linux/Art and ordinary final decision scope"
+  ],
+  "result": "PASS original Windows ordinary candidate source/build/binary custody",
+  "reviewer": "independent_assurance",
+  "run_id": 45467878171,
+  "same_run_original_build_timing": {
+    "archive_sha256": "342c278f3b9a1ebcb8dd843ff9bfdae4893af16b2c41d1fe48f4dcd34c91e40d",
+    "artifact_id": 14957180445,
+    "receipts": [
+      {
+        "label": "godot-cpp-windows",
+        "log_sha256": "7f678b71ef5f29c317f25db498322dc7a876cf7a090774ed4278381e7e8c3e4a",
+        "natural_success": true,
+        "pid": 2284,
+        "receipt_sha256": "40ae7293d8d2da6e92712e308ed56c51d2e1495aee4ebaf46f99dfab6c36ce0a",
+        "seconds": 184.830369636
+      },
+      {
+        "label": "extension-windows",
+        "log_sha256": "fb39061a762d83cbbb86cdd7a057fa564341f0277eb6c5b2470545d10b2174b9",
+        "natural_success": true,
+        "pid": 12191,
+        "receipt_sha256": "860fa07920d4da362bd9602d6f3b96cb5eabf417a76798afa0fa2ed98e19534f",
+        "seconds": 49.70997563800003
+      }
+    ]
+  },
+  "schema": 1,
+  "scope": "Artifact producer review; actual complete Windows cases and final coverage remain separate gates",
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "source_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "source_workflow_sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110",
+  "toolchain_file_sha256": "f98fdba363587b356edff2f39e9ed1ec133eea37829be352d5737c0a3b869b16"
+}

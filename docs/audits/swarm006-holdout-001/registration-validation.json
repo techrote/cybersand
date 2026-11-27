@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "result": "PASS",
+  "source_frozen_before_entropy": true,
+  "complete_strata": 32,
+  "replicates_per_stratum": 3,
+  "unique_seeds": 96,
+  "candidate_policy_count": 20,
+  "candidate_executions": 1920,
+  "reference_executions": 480,
+  "total_executions": 2400,
+  "entropy_counter_values_consumed": 96,
+  "registered_controls": false,
+  "registered_timeout_seconds": 90,
+  "candidate_registration_sha256": "e2110f7fdbcc1ab5f507597f347c15ae68f7902ce29f1adbe21577571e49fc96",
+  "master_sha256": "2007a3b2fc22a76c050dcba55fd3f0520738170a46966abb74f843f5fa6fc1e8",
+  "analysis_plan_sha256": "35a654559f28e96fed4ba60da0567d042cdb47050a82165c7100072acda71850",
+  "no_native_executions_started": true
+}

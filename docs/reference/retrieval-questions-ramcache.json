@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-22",
+  "purpose": "Additive RAM-cache successor questions; historical and unchanged frozen general retrieval sets remain separate.",
+  "questions": [
+    {
+      "id": "GEN006-HOT-NATIVE-OWNER",
+      "query": "How does the RAM-cache successor retain and activate an actual hot native World without reconstructing its source?",
+      "canonical": [
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "HOT retains a unique-owned native World, Workbench coupling bundle and render exchange inside the existing adapter. It is not a CYPS byte buffer.",
+        "The exclusive SimulationWorker retains the matching MicroScenarioHost and Workbench sample epoch. Native receipt fences and a one-use Main ticket control the no-copy ownership swap.",
+        "A zero-debt deferred HOT return performs no target checkpoint filesystem read, full source construction, native CYPS deserialization or forced synchronous checkpoint publication."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_persistent_area_residency.hpp",
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/scripts/persistent_area_cache.gd"
+      ]
+    },
+    {
+      "id": "GEN006-RAM-DURABILITY",
+      "query": "Does a hot cache hit or completed travel mean changes are durably saved?",
+      "canonical": [
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "Residency, readiness, game-time debt and durability are independent. HOT plus dirty is legitimate in explicitly selected deferred mode.",
+        "One immutable bounded snapshot publishes on a serialized I/O thread; its ACK cannot overwrite newer resident mutations or clocks. Explicit Save all waits for the matching area and global-clock durable boundary.",
+        "Crash recovery restores the last valid published manifest. Unacknowledged RAM-only work is not promised to survive. Strict mode and cache-disabled fallback remain available.",
+        "Validated and budgeted WARM admission retains its verified accounted native interval even if publication fails. Strict activation still awaits durability; Retry reconciles the exact retained publication without rebuilding the active World or replaying ticks."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_persistent_area_residency.hpp",
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/scripts/persistent_area_cache.gd"
+      ]
+    },
+    {
+      "id": "GEN006-CACHE-BUDGET",
+      "query": "How are hot warm cold memory and eviction bounded, and is the configured cache budget a strict RSS limit?",
+      "canonical": [
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "Native owned bytes and conservative growth reservation are accounted separately from warm bytes, host envelopes and pending preparation. Active and in-flight state is pinned; dirty-only copies cannot be evicted.",
+        "Private cold preparation reserves three native growth bounds plus 64 MiB; ordinary cold preparation reserves two growth bounds plus 64 MiB. Essential publication has one separate bounded 360 MiB working reservation.",
+        "The cache admission policy is not a process RSS bound. Allocator retention, OS thread stacks, Godot scene/UI and GPU resources remain separately measured. Only three 512 by 512 fixtures are qualified."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_persistent_area_residency.hpp",
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/scripts/persistent_area_cache.gd"
+      ]
+    },
+    {
+      "id": "GEN006-PREFETCH-TIME",
+      "query": "Can predictive preparation advance a destination while global time changes, without double-counting its simulation?",
+      "canonical": [
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "Declared adjacency, explicit travel intent and editor/camera boundary signals schedule one bounded private preparation. Native candidates are joined and imported before activation admission; they never share the active adapter during construction.",
+        "Background catch-up pays only legitimate G minus A debt using actual native ticks. Area-local incarnation, native and accounted fences reject replay while allowing unrelated active global ticks to continue.",
+        "Partial completed work is retained and credited once; remaining debt stays visible. A ready HOT entry is not necessarily fully caught up or durably saved."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_persistent_area_residency.hpp",
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/scripts/persistent_area_cache.gd"
+      ]
+    },
+    {
+      "id": "GEN006-FAILED-ACTIVE-RECOVERY",
+      "query": "What happens after a late handoff acknowledgement or a failed active World with healthy dirty inactive areas?",
+      "canonical": [
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "Late native, Main and release acknowledgements reconcile the exact pending transaction and retained receipts; retry cannot silently restore an older durable World over newer RAM state.",
+        "Resident advancement retains its original clock, debt/future plan, accounted prefix and exact pending request through timeout and release. Retry admits only the proven contiguous native interval once, without turning debt into new global time.",
+        "A failed active owner stays quarantined. Save recoverable areas preserves healthy inactive captures with a bounded honest recovery clock; it never claims an ordinary Save all.",
+        "A known terminal active failure retires its request only after exact receipt reconciliation and native release. The failing tick receives no credit; ambiguous or failed inactive results remain pinned.",
+        "Lost publication ACK recovery reopens storage and validates the exact published rescue manifest. Explicit recovery close warns about the failed area’s unsaved RAM loss; ordinary exit cannot silently discard it."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_persistent_area_residency.hpp",
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/scripts/persistent_area_cache.gd"
+      ]
+    },
+    {
+      "id": "GEN006-RAMCACHE-ACCEPTANCE",
+      "query": "What remains outside the three-stage RAM-cache milestone and how is physical Windows NVIDIA acceptance distinguished?",
+      "canonical": [
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "The opt-in Draft/HOLD successor supports the existing actor-free Current/FreeMass native continuation domain on three authored 512 by 512 areas.",
+        "General chunk streaming, arbitrary actor/Rapier/controller persistence, Wave/PressureFlow/inertial continuations, cross-area material flux and recipe reconciliation remain outside scope.",
+        "Source-bound Linux/Windows graphical/native and sanitizer evidence is recorded in the dated ledger. Hosted software-renderer results do not establish physical Windows 11/NVIDIA performance or owner acceptance."
+      ],
+      "sources": [
+        "../godot/native_extension/cyber_persistent_area_residency.hpp",
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/scripts/persistent_area_cache.gd"
+      ]
+    }
+  ]
+}

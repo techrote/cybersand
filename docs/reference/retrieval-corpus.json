@@ -1,8 +1,18 @@
 {
   "version": 1,
-  "reviewed": "2026-11-25",
+  "reviewed": "2026-11-27",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
+    "architecture/experimental-workbench-authoring-patch.md",
+    "operations/swarm004-workbench-playtest.md",
+    "operations/swarm005-workbench-playtest.md",
+    "operations/swarm456-unified-mainline.md",
+    "operations/swarm456-owner-acceptance.md",
+    "operations/swarm45-mainline-integration.md",
+    "systems/gentek-reciprocal-assembly.md",
+    "operations/swarm006-workbench-playtest.md",
+    "operations/swarm006-integration-finisher.md",
+    "systems/gentek-negotiated-recovery.md",
     "operations/art-workbench-collaborative-evaluation.md",
     "systems/art-owned-proposal-transport.md",
     "systems/art-native-context-proposals.md",
@@ -175,6 +185,12 @@
     "operations/objectshard-m3-preflight-playtest.md",
     "research/objectshard-m4-workbench.md",
     "operations/objectshard-workbench-playtest.md",
+    "systems/persistent-authored-areas.md",
+    "decisions/ADR-015-persistent-authored-areas.md",
+    "operations/persistent-areas-evaluation.md",
+    "systems/persistent-area-residency.md",
+    "operations/persistent-area-ramcache-evaluation.md",
+    "decisions/ADR-016-persistent-area-native-residency.md",
     "systems/ambient-actors.md",
     "operations/ambient-workbench.md",
     "systems/ambient-living-inhabitants.md",
@@ -191,6 +207,22 @@
     "../.github/pull_request_template.md"
   ],
   "excluded": [
+    {
+      "path": "audits/swarm006-finisher-native-review.md",
+      "reason": "Dated Draft/HOLD SWARM-006 successor review; explicitly linked from its integration runbook, with development, frozen science, exact-source Windows and owner acceptance scopes kept separate."
+    },
+    {
+      "path": "audits/swarm006-finisher-science-review.md",
+      "reason": "Dated Draft/HOLD SWARM-006 successor review; explicitly linked from its integration runbook, with development, frozen science, exact-source Windows and owner acceptance scopes kept separate."
+    },
+    {
+      "path": "audits/swarm006-finisher-workbench-review.md",
+      "reason": "Dated Draft/HOLD SWARM-006 successor review; explicitly linked from its integration runbook, with development, frozen science, exact-source Windows and owner acceptance scopes kept separate."
+    },
+    {
+      "path": "audits/swarm006-finisher-platform-review.md",
+      "reason": "Dated Draft/HOLD SWARM-006 successor review; explicitly linked from its integration runbook, with development, frozen science, exact-source Windows and owner acceptance scopes kept separate."
+    },
     {
       "path": "research/gip014-goblin-002-decision.md",
       "reason": "Branch-scoped GIP-014-goblin-002 Draft/HOLD owner decision packet, exact experimental source and qualification results; read explicitly, not accepted production authority."

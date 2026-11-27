@@ -1,0 +1,153 @@
+{
+  "schema": "swarm006-finisher-historical-custody/v1",
+  "reviewed_utc": "2026-11-21T20:24:51.400097+00:00",
+  "classification": "Recovered historical corpus, now revealed; no native rerun by reviewer",
+  "archive": {
+    "bytes": 466815531,
+    "sha256": "b46925296a2cdcd9a3a61c41cd9364623b7c30ae9c557f9b53ca98006d843085",
+    "library_file_id": "libfile_2f271082943c81918267caa36cca2fb7",
+    "index_sha256": "a8aef1877fb674c91d4bcd1a21c2a719ad532ed5742a3fb9d0e2f48818b6f4aa",
+    "indexed_files": 12089,
+    "archive_members": 12090,
+    "historical_raw_artifacts": 12000,
+    "custody_failures": []
+  },
+  "historical_source": {
+    "git_sha": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+    "definition_sha256": "afbae85af2c44f1e539a154fbee622a3ee7533a6caab9ad1f9c5190a8e5803e4",
+    "harness_sha256": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+    "runner_sha256": "ea4c2161dc80a46a3a3faee6d158b5f23096090a40eac51b184f4b0aabb98868"
+  },
+  "registration_sha256": "e2110f7fdbcc1ab5f507597f347c15ae68f7902ce29f1adbe21577571e49fc96",
+  "verified_source_input_files_against_frozen_git": 97,
+  "retained_binary_sha256": "ce99239ff188101bd9271893ad4759ab190a0be59f8f7fd746fd62d72816f9af",
+  "executions": {
+    "candidate": 1920,
+    "actual_swarm004": 96,
+    "actual_swarm005": 384,
+    "total": 2400
+  },
+  "independently_checked": {
+    "indexed_archive_files": 12089,
+    "raw_artifacts": 12000,
+    "compressed_and_decompressed_native_artifact_pairs": 7200,
+    "serialized_native_material_digests": 26204,
+    "full_native_composed_LE16_planes": 2400
+  },
+  "primary_transitions": {
+    "A": {
+      "0->1": 69,
+      "0->0": 13,
+      "1->1": 13,
+      "1->0": 1
+    },
+    "R": {
+      "0->1": 79,
+      "0->0": 14,
+      "1->0": 1,
+      "1->1": 2
+    }
+  },
+  "primary_candidate_distribution": {
+    "n": 96,
+    "A": 82,
+    "R": 81,
+    "statuses": {
+      "complete": 82,
+      "exhausted": 12,
+      "blocked": 2
+    },
+    "raw_joints": 442,
+    "proof_joints": 373,
+    "apply_joints": 363,
+    "closure_unknown": 12,
+    "charged_work": 566677700
+  },
+  "primary_reference_distribution": {
+    "n": 96,
+    "A": 14,
+    "R": 3,
+    "statuses": {
+      "complete": 14,
+      "blocked": 62,
+      "exhausted": 20
+    },
+    "raw_joints": 37,
+    "proof_joints": 37,
+    "apply_joints": 6,
+    "closure_unknown": 20,
+    "charged_work": 595548714
+  },
+  "strict_history_failures": [
+    {
+      "variant": "swarm006",
+      "id": "foreign_solid--industrial_gui--s1997581108--recovery--r3",
+      "check": "serialized native material digest",
+      "detail": {
+        "location": "rounds[3].proposed_mosaic",
+        "nested_status": "complete",
+        "declared": "f5bd81d62686f53e",
+        "actual": "1a17166b98c6915e",
+        "outer_status": "exhausted",
+        "outer_can_apply": false
+      }
+    },
+    {
+      "variant": "swarm006",
+      "id": "foreign_solid--industrial_gui--s1997581108--recovery--r4",
+      "check": "serialized native material digest",
+      "detail": {
+        "location": "rounds[3].proposed_mosaic",
+        "nested_status": "complete",
+        "declared": "f5bd81d62686f53e",
+        "actual": "1a17166b98c6915e",
+        "outer_status": "exhausted",
+        "outer_can_apply": false
+      }
+    },
+    {
+      "variant": "swarm006",
+      "id": "foreign_solid--industrial_gui--s1376230570--recovery--r3",
+      "check": "serialized native material digest",
+      "detail": {
+        "location": "rounds[3].proposed_mosaic",
+        "nested_status": "complete",
+        "declared": "9673f8e2bcfd407e",
+        "actual": "94696be794caaf9e",
+        "outer_status": "exhausted",
+        "outer_can_apply": false
+      }
+    },
+    {
+      "variant": "swarm006",
+      "id": "foreign_solid--industrial_gui--s1376230570--recovery--r4",
+      "check": "serialized native material digest",
+      "detail": {
+        "location": "rounds[3].proposed_mosaic",
+        "nested_status": "complete",
+        "declared": "9673f8e2bcfd407e",
+        "actual": "94696be794caaf9e",
+        "outer_status": "exhausted",
+        "outer_can_apply": false
+      }
+    }
+  ],
+  "bilateral_R": 18,
+  "original_foreign_requirements_across_source_versions": {
+    "swarm005": 223,
+    "swarm006": 63,
+    "same_connector_identity_claimed": false
+  },
+  "matched_candidate_rescues": {
+    "no_offers_A_rescues": 22,
+    "mosaic_frozen_A_rescues": 22,
+    "same_22_cases": true,
+    "unchanged_original_foreign_obligations_closed": 34,
+    "frame_frozen_A_rescues": 2,
+    "frame_frozen_A_regressions": 2
+  },
+  "full_reaudit_file": "retained-holdout-independent-reaudit-final.json",
+  "full_reaudit_sha256": "53091ab4fa303b240eee334f1dab647a594de4a5df73c62cd8a68ed4cdadde84",
+  "reviewer_assumption_correction": "712 zero-dimensional/source-empty uninitialized Result placeholders were reread and identified as defaults, not generated Complete plans. Preliminary reviewer output is preserved; the four real mutated-plane inconsistencies remain failures. Unavailable closure and original plans are null, never inferred zero.",
+  "disposition": "Frozen native HOLD and diagnostic granularity PARTIAL; no retroactive acceptance"
+}

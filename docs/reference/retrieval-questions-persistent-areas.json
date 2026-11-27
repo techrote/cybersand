@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-21",
+  "purpose": "Additive GEN-006 persistent-area milestone questions, separate from the unchanged frozen retrieval evaluation.",
+  "questions": [
+    {
+      "id": "GEN006-PERSISTENT-DOMAIN",
+      "query": "What does the three-area persistent authored-world prototype actually retain, and can it transfer Rapier actors or stream arbitrary chunks?",
+      "canonical": [
+        "systems/persistent-authored-areas.md",
+        "systems/persistent-area-residency.md"
+      ],
+      "facts": [
+        "The opt-in Draft/HOLD prototype retains full admitted native CYPS2 continuation and separate authored starting-map metadata for three 512 by 512 Current/FreeMass areas.",
+        "It retains explicit Empty edits, dynamic material and solver state, clocks, activity and supported native events; it does not restore only material IDs or a generator seed.",
+        "One active gameplay World remains authoritative. The conservative cache-disabled path uses one private candidate and inactive checkpoints; the stacked RAM-cache extension additionally retains unique-owned inactive HOT Worlds with fenced worker host companions. Unsupported host actors, Rapier, controllers, sources and external queues pin or refuse travel.",
+        "The editor/camera is the traveller. General streaming, arbitrary selective eviction and recipe reconciliation in GEN-006 #194 remain outside the #591 milestone."
+      ],
+      "sources": [
+        "../godot/scripts/persistent_areas_controller.gd",
+        "../godot/native_extension/cyber_persistent_area_continuation.hpp"
+      ]
+    },
+    {
+      "id": "GEN006-ACCOUNTED-GAME-TIME",
+      "query": "How do persistent area catch-up and Simulate Ahead avoid double-running game time, and what happens when the budget or cancellation interrupts them?",
+      "canonical": [
+        "systems/persistent-authored-areas.md"
+      ],
+      "facts": [
+        "Only actual completed native ticks advance time. Active progression increments global and area time; catch-up pays existing area debt without advancing global time again.",
+        "Simulate Ahead pays debt first and then adds only completed future ticks. Unperformed requested future duration is not elapsed time.",
+        "Operations admit at most 600 ticks and a three-second native-work budget, with slices of at most 32 ticks and 100 ms checked between indivisible ticks. Additional capture/storage/restore latency is reported separately.",
+        "Coarse idle skipping is refused and grants zero credit because native scheduled deadlines and epoch changes defeat the proposed quiescence shortcut. Cancellation preserves proven completed work and exposes remaining debt."
+      ],
+      "sources": [
+        "../godot/scripts/persistent_area_clock.gd",
+        "../godot/scripts/persistent_areas_controller.gd"
+      ]
+    },
+    {
+      "id": "GEN006-RESTART-RECOVERY",
+      "query": "How do I evaluate persistent areas on Windows, recover after a failed save, and distinguish native persistence from ordinary Save start or Flatten?",
+      "canonical": [
+        "operations/persistent-areas-evaluation.md",
+        "systems/persistent-authored-areas.md"
+      ],
+      "facts": [
+        "The portable evaluator has separate Persistent Areas and ordinary Workbench launchers, pinned Godot and native runtime, and an isolated writable profile.",
+        "Save all areas retains evolved native continuation; ordinary Save start and Flatten retain their existing authored material-start meanings.",
+        "Immutable generation blobs and a manifest-last transaction preserve the prior state; uncertain publication is quarantined and must be reopened, while corruption never silently resets a seed.",
+        "Automated graphical smoke uses a separate profile and a genuinely new process. Target-OS software-rendered evidence does not establish physical Windows 11/NVIDIA owner acceptance."
+      ],
+      "sources": [
+        "../tools/package_gen006_persistent_areas.py",
+        "../godot/scripts/persistent_area_store.gd"
+      ]
+    }
+  ]
+}

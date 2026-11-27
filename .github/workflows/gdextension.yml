@@ -3,7 +3,7 @@ name: GDExtension build and current Godot regression
 on:
   push:
     # Owner-authorized complete qualification while the integration stays Draft.
-    branches: [main, codex/wb-art-paint-integrated-20261111]
+    branches: [main, codex/wb-art-paint-integrated-20261111, integration/swarm004-005-006-unified-20261122]
     paths-ignore:
       - '.github/workflows/**'
       - 'docs/**'

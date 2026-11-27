@@ -32,6 +32,7 @@ docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 # Preserve exact target-host receipt/log bytes and their audited SHA-256 values.
 docs/audits/objectshard-m3-20261122/baseline-68235b12/** -text whitespace=cr-at-eol
 docs/audits/objectshard-m3-20261122/final-qualification/** -text whitespace=cr-at-eol
+tools/swarm45/fixtures/ui_process_q5/* -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
@@ -44,3 +45,5 @@ docs/audits/objectshard-m3-20261122/final-qualification/** -text whitespace=cr-a
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lfs merge=lfs -text
+godot/tools/gentek_reciprocal filter=lfs diff=lfs merge=lfs -text
+godot/tools/gentek_reciprocal.exe filter=lfs diff=lfs merge=lfs -text

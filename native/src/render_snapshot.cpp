@@ -7,6 +7,15 @@
 
 namespace cybersand {
 
+std::size_t RenderSnapshotExchange::resident_storage_bytes() const noexcept {
+    std::size_t result = sizeof(*this) + sizeof(detail::RenderSnapshotState);
+    result += state_->slots.capacity() * sizeof(detail::RenderSnapshotSlot);
+    result += state_->dirty_coordinate_scratch.capacity() * sizeof(ChunkCoord);
+    for (const auto& slot : state_->slots)
+        result += slot.patches.capacity() * sizeof(RenderSnapshotPatch) + slot.cells.capacity();
+    return result;
+}
+
 RenderSnapshotLease::RenderSnapshotLease(
     std::shared_ptr<detail::RenderSnapshotState> state, std::size_t slot_index,
     std::uint64_t serial) noexcept

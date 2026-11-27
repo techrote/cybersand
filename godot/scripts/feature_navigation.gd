@@ -15,6 +15,12 @@ func return_to_launcher() -> void:
 	if OS.has_feature("web") or bool(ProjectSettings.get_setting("cybersand/web_demo", false)): return
 	var tree: SceneTree = get_tree()
 	var scene: Node = tree.current_scene
+	# The opt-in persistent-area host must publish its last authoritative state
+	# before leaving. Its controller owns retry/cancel and performs the eventual
+	# navigation itself. Ordinary scenes retain the existing immediate route.
+	if scene != null and scene.has_method("request_persistent_exit"):
+		scene.request_persistent_exit("launcher")
+		return
 	# A failed-session reload may have removed old Main but not yet entered
 	# its replacement. Navigation must cancel that pending recovery as well.
 	if (scene != null and scene.scene_file_path != "res://feature_launcher.tscn") \

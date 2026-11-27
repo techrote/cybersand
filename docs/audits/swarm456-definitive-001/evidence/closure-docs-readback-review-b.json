@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "passed": true,
+  "run_id": 45464485647,
+  "job_id": 138695615359,
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "source_tree": "b971f25fa8532705c414fc1bf0ee8c9e1064e087",
+  "scope": "Complete ordinary Documentation/provenance gate at exact postpublication CI-test overlay request e4a; source/native/evaluator remain distinguished",
+  "all_job_steps_passed": 28,
+  "skipped_steps": [],
+  "original_job_log_sha256": "f79fe4596d64f8442578220130b940c3f5e8b3f2fa52eb59805facd48083dde4",
+  "original_api_sha256": "3f9247c6148911a13c769120f56698c794e6332e5927f79b7f78fad07b2f6d91",
+  "source_checkout_observed_exact": true,
+  "materialized_repository_gate": {
+    "status": "passed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 155,
+      "navigation_link_documents": 8,
+      "canonical_claims": 289,
+      "local_links": 4212,
+      "heading_anchors": 813,
+      "questions": 32,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "historical_m11_gate": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "python_unittest_suites": 11,
+  "python_unittest_tests": 468,
+  "individual_suite_counts": [
+    6,
+    10,
+    7,
+    12,
+    15,
+    231,
+    81,
+    24,
+    42,
+    16,
+    24
+  ],
+  "git_lfs_fsck": "PASS original host",
+  "workflow_inventory": {
+    "count": 104,
+    "status": "passed",
+    "errors": []
+  },
+  "native_metadata_parity": {
+    "status": "PASS",
+    "native_authored_compiled_shadow_facts_equal": true,
+    "world_executed": false,
+    "godot_executed": false,
+    "physics_qualification": false,
+    "recorded_source_commit": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "source_label_explanation": "check_native_parity.py source_commit is explicitly compatibility.BASELINE, not the current executed checkout. Original checkout independently observed e4a. This retained reference metadata is not retagged."
+  },
+  "soliding_inventory_scope": "Cold dry-run build contract only; no compilation or tests executed",
+  "retrieval": {
+    "frozen": {
+      "summary": {
+        "questions": 32,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 30,
+        "mrr_at_k": 0.7292,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "document_count": 155,
+      "chunk_count": 2034,
+      "retrieval_policy": "historical-isolation-v1",
+      "historical_opt_in": false
+    },
+    "challenges": {
+      "summary": {
+        "questions": 164,
+        "canonical_hit_at_1": 128,
+        "canonical_hit_at_k": 162,
+        "mrr_at_k": 0.8683,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "document_count": 155,
+      "chunk_count": 2034,
+      "retrieval_policy": "historical-isolation-v1",
+      "historical_opt_in": false
+    }
+  },
+  "artifacts": [
+    {
+      "artifact_id": 14954847875,
+      "name": "retrieval-45464485647",
+      "archive_bytes": 1484540,
+      "archive_sha256": "a8e6938598ad5fea0fdc04eb44b46779aa003be7fd169136019e0190c9c5306e",
+      "zip_crc_passed": true,
+      "member_sha256": {
+        "challenges.contexts.md": "4a82a4c8e33f93571babafab5911f63fb9b500716536188a12aa0756b424a671",
+        "frozen.json": "fdeab3db68710da3aad77c4cff635437441cbbc6c9e1767aeb0bb3314c15b9a2",
+        "challenges.json": "5b501ded50c08cb5744fe902b24a09aa355415f29306e325009ae7d936a67157",
+        "frozen.contexts.md": "416c7b2ffcce42f13e89159c211e20a7d3a8f772136196de9315f2e0ddad4cb0"
+      }
+    },
+    {
+      "artifact_id": 14954802982,
+      "name": "material-catalogue-parity-45464485647-1",
+      "archive_bytes": 8461,
+      "archive_sha256": "d3e49ad001c6abfe1d7848a2b90a5a95b1d3dd3e9fdd1ed5b84f13bad1e5a440",
+      "zip_crc_passed": true,
+      "member_sha256": {
+        "native-parity.json": "bf7494ff3eae24d3b0bade9b8806c073bb45e00088d072f4aaba59fafed766f4"
+      }
+    },
+    {
+      "artifact_id": 14953367709,
+      "name": "soliding-build-inventory-45464485647-1",
+      "archive_bytes": 1413,
+      "archive_sha256": "b9a5410c2b0cf4fb7ac73b2e9945be750e9e5cb33e25933932aa21a1271490a8",
+      "zip_crc_passed": true,
+      "member_sha256": {
+        "soliding-build-inventory.json": "b68a7fcabe6046af76233a89fe4891f546da7037193933af595b956c4b9bb78d"
+      }
+    },
+    {
+      "artifact_id": 14953202650,
+      "name": "ci-workflow-inventory-45464485647-1",
+      "archive_bytes": 21503,
+      "archive_sha256": "0d4c657d41797c9eae4dd5db4ae01c9e17a9e37c38353df90c752f7102293788",
+      "zip_crc_passed": true,
+      "member_sha256": {
+        "ci-workflow-inventory.json": "b38aeedbaae5d0b7af009cf47d726e2c5544744619437ec370d136a82af0901b"
+      }
+    }
+  ],
+  "limitations": [
+    "Documentation/provenance validates its stated identity, metadata and integrity scopes; it does not itself execute the Workbench, certify physical NVIDIA behavior or close all ordinary GDE/Native/PLAY gates.",
+    "Canonical retrieval hits are lexical metrics, not answer correctness.",
+    "All Q7 runtime producer/evaluator labels remain exact5e34; current CI overlay is not the original1856-entry Q7 build snapshot.",
+    "Both fresh PLAY Linux HTTP403 failures remain failed original attempts."
+  ],
+  "material_findings": []
+}

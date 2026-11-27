@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "passed": true,
+  "reviewer": "closure-specialist-B",
+  "commit": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "parent": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "exact_changed_paths": [
+    ".github/workflows/gdextension.yml",
+    ".github/workflows/play-desktop-packet.yml",
+    "README.md",
+    "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.json",
+    "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.md"
+  ],
+  "source_blob_proofs": [
+    {
+      "path": ".github/workflows/gdextension.yml",
+      "git_blob": "7d457805a3dbcab51a5d0280c379074cf1736f35",
+      "old_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+      "new_sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110",
+      "bytes": 39475
+    },
+    {
+      "path": ".github/workflows/play-desktop-packet.yml",
+      "git_blob": "d792c079cfd16a9a9952e6b0b2b78323d56a7ad6",
+      "old_sha256": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc",
+      "new_sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3",
+      "bytes": 15958
+    },
+    {
+      "path": "README.md",
+      "git_blob": "ebcbf4d6b034d9f59bb32e8825182ddde7b71ac7",
+      "old_sha256": "8f9e4ae34375a970fe2473e1fb1bb27af308a688f1e7e1f70dd3d5de1453f971",
+      "new_sha256": "207038e860323499c025db1046a54c27fe856510c88713dd9893686f12500908",
+      "bytes": 15659
+    }
+  ],
+  "actual_scope": "Three same-pinned-archive URL substitutions, one exact branch-specific full GDE push activation, one meaningful repository owner-entry README section, and two dated audit records. This commit is not described as URL-only.",
+  "execution_route_review": {
+    "exact_added_branch": "integration/swarm004-005-006-unified-20261122",
+    "existing_draft_status_unchanged": true,
+    "permissions_runners_case_selection_budgets_retry_hash_and_version_gates_unchanged": true,
+    "owner_authorized_complete_draft_validation": true,
+    "full_push_run": 45467878171,
+    "full_push_run_pass_claimed": false
+  },
+  "owner_payload_comparison": {
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "inner_archive_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "surviving_full_original_inventory": "/workspace/scratch/e18127ed82c6/qualification-audit/q7-evidence/q7-owner-payload-independent-verification.json",
+    "inventory_sha256": "a10d5aad21e36f93dba47f3dc616bb3ea134e743f25ab313193e216520425de7",
+    "members": 1094,
+    "changed_paths_packaged": [],
+    "repository_README_md_present": false,
+    "packaged_READ_ME_md_source": "docs/operations/swarm456-owner-acceptance.md",
+    "packaged_READ_ME_md_sha256": "742e7ec82cdf67f49e400e97fdb88e4f96b130e22a8b48e49a9787eb798f9efb",
+    "native_extension_readme_is_separate_unchanged_path": "godot/native_extension/README.md",
+    "source_app_runtime_evaluator_bytes_remain_intact": true,
+    "final_HEAD_equals_full_qualified_source_claimed": false,
+    "metadata_not_retagged": true
+  },
+  "historical_broad_inventory": "Three changed members remain explicit: prior CI test plus two workflow files. README and dated audit documentation are outside the broad build-input inventory. All native156/extension106/definition52 inputs remain unchanged.",
+  "original_transport_failure_dispositions": "Both PLAY HTTP403 attempts and failed ordinary GDE remain failed. New PLAY45467888942 is a distinct successful source5fd998 execution; full GDE remains pending.",
+  "material_findings": []
+}

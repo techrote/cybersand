@@ -1,0 +1,78 @@
+{
+  "actual_owner_execution_review_sha256": "8af38332b84e53ea811dc2b52dbf7de1cb0c12e8255dc7a5f10d5846c7537dbf",
+  "checks": [
+    {
+      "finding": "Shipped source-bound PowerShell verifies exact archive, separate checksum and all file/runtime hashes, extracts to a fresh destination, then ordinary CMD imports editor metadata and opens graphical --workbench. Original seven Windows launcher cases and actual owner process independently passed.",
+      "topic": "Launch"
+    },
+    {
+      "finding": "project.godot application name and Setup user://workbench directory produce the documented Windows AppData path. Setup._path accepts only1\u201348 ASCII letters/digits/_/-. Load/Save names omit setup- and .json.",
+      "topic": "Private map location and name"
+    },
+    {
+      "finding": "Original setup file and optional native history sidecars are explicitly backed up locally, then Load\u2192new name\u2192Save occurs before edits. Generated and flattened formats are self-contained in the same named file; Flatten embeds binary material plane and manifest there, so a separate external material file is not omitted by the backup instruction.",
+      "topic": "Backup and copy"
+    },
+    {
+      "finding": "Details exists; name/Save/Load are reparented into the always-visible Paint toolbar in this source, and remain visible when Details is opened. The shipped guide identifies actual buttons; this presentation difference does not block its sequence.",
+      "topic": "Control location"
+    },
+    {
+      "finding": "All three expression labels and the native control labels match the guide. Both SWARM005 switches and SWARM006 recovery initialize false; the comparison turns on the first two and changes only recovery, regenerating after control invalidation.",
+      "topic": "Gentek and controls"
+    },
+    {
+      "finding": "The table structural parameters match the frozen expression defaults; Decoration/destruction are independent controls, and the explicitly listed Decoration values match original Q7 fixture settings. Reach13,border4,rounds2,seed605,sharing,ownership,orientation and independent override instructions map to actual controls. Merely selecting an expression does not set Decoration. The guide supplies its value and does not promise synthetic outcomes on populated private maps.",
+      "topic": "Representative synthetic settings"
+    },
+    {
+      "finding": "Final/provisional, joints, unresolved, clearance and revision labels exist. Apply requires complete native can_apply, current source/history fences and acknowledged material patch. Historical loaded evidence is read-only and cannot Apply or construction-Undo until new authority is earned.",
+      "topic": "Inspection and authority"
+    },
+    {
+      "finding": "Construction Undo is a native inverse valid only while original post-Apply source/history fences remain unchanged; the guide exercises it before simulation/other edits, then regenerates/reapplies. Ordinary Paint Undo/Redo requires pause, an available history stack and retired native/Art/reciprocal work. Closing the dock or switching Paint territory off restores ordinary strokes; cancellation waits for retirement.",
+      "topic": "Construction versus ordinary history"
+    },
+    {
+      "finding": "save_setup writes applied authored edits plus retained recipe or material baseline, never reads current live World. load_setup reconstructs that start. Save refuses unfinished native/paint/Art/Flatten operations. The guide correctly separates Save from live simulation and prescribes Flatten only after history checks and under another name.",
+      "topic": "Authored Save and fresh Reopen"
+    },
+    {
+      "finding": "save_evidence attaches the accepted composition only while accepted_history_sha256 still equals current authored history; later ordinary authoring may preserve the map while omitting the now-stale optional receipt. The guide requests historical inspection immediately after composition Save, before its subsequent ordinary editing exploration.",
+      "topic": "Historical evidence after later authoring"
+    },
+    {
+      "finding": "The shipped collector is exactly source/CLI bound and read-only with respect to the selected map. It writes a new local output directory containing exact cropped material, requests/results/logs/CSV/manifest; no network/upload operation exists. It refuses non-v2, non2048x2048, normalized, actor/source-containing, nonrectangular-stamp or invalid-material inputs. It is a narrowly frozen rectangle-crop comparator, not a general private-map import or GUI acceptance substitute.",
+      "topic": "Optional local collector"
+    },
+    {
+      "finding": "Guide requires exact source/archive identity and observable usefulness/rendering/responsiveness, leaves private maps local, makes screenshots/logs optional and separates physical Windows11/NVIDIA preference from hosted qualification.",
+      "topic": "Owner-dependent disposition"
+    }
+  ],
+  "guide_sha256": "742e7ec82cdf67f49e400e97fdb88e4f96b130e22a8b48e49a9787eb798f9efb",
+  "handoff_scope_note": "Keep Compare saved setup.ps1 optional; it supports only its explicit frozen authored rectangle format and exports a private crop locally. Ordinary interactive Load/Save supports the wider supported authored/generated/flattened formats. No map upload is required.",
+  "material_contradictions": [],
+  "physical_acceptance": "PENDING",
+  "private_owner_map_opened_or_read": false,
+  "result": "APPROVE_NO_MATERIAL_CONTRADICTION",
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "shipped_guide_and_collector_payload_review_sha256": "27c49adec3e2da136bbf3a2e33d578370467ad1b64528347dbc28f7ddb56561b",
+  "shipped_guide_matches_git": true,
+  "source_changes": false,
+  "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "source_inputs_sha256": {
+    "docs/operations/swarm456-owner-acceptance.md": "742e7ec82cdf67f49e400e97fdb88e4f96b130e22a8b48e49a9787eb798f9efb",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    "godot/scripts/shared_workbench.gd": "66f877329ab82a2001813927617b98237230fcc2de9534d7e7dd63d4083a82b8",
+    "godot/scripts/workbench_generated_map.gd": "b3561ad426f6efa1ae0b4d148d561536824adaac06f0a9c427d0e4b67cd618c6",
+    "godot/scripts/workbench_material_baseline.gd": "33ad72104cb233214526248fcb629e77c825dcb705c5ed32d1e45bc1551aab63",
+    "godot/scripts/workbench_paint_editor_controller.gd": "49e17300fdc2fec27ea2bf20e70a33f91953661544419e2411d74faa6618d74e",
+    "godot/scripts/workbench_reciprocal_panel.gd": "83dd83d3e6261eab613f92961d39c4edb85682151ed041d0ec0ba7f0abb1bf8b",
+    "godot/scripts/workbench_reciprocal_protocol.gd": "631ed2b7d13792e7f8763c7464bea98780c9b8ce8dd169f32f398ae540ddc428",
+    "godot/scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+    "tools/swarm006/compare_saved_setup.ps1": "e36c37e04c11fc6fbc1f3d84c1ca41d06c58e0e4c1b1abcc528ea3e4fee38fc0",
+    "tools/swarm006/owner_launcher.ps1.in": "d1c52fd796da499994326c4d09c0dd32e30ace2880ab3ef75d8a8c8ba47d98e3"
+  }
+}

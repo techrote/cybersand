@@ -15,6 +15,9 @@ func _ready() -> void:
 	if first_launch and "--materials-lab" in OS.get_cmdline_user_args():
 		launch.call_deferred("materials_lab")
 		return
+	if first_launch and "--persistent-areas" in OS.get_cmdline_user_args():
+		launch.call_deferred("persistent_areas")
+		return
 	if first_launch and ("--workbench" in OS.get_cmdline_user_args() or "--shared-workbench" in OS.get_cmdline_user_args()):
 		print("SHARED_WORKBENCH_LAUNCH_READY")
 		launch.call_deferred("shared_workbench")
@@ -57,6 +60,7 @@ func _ready() -> void:
 	_label(column, "Choose a feature. F2 returns here; returning closes the current session. Showcase maps start paused. F5 selects 46 articulated Rapier actors or sampled references in the sandbox and showcase maps.", 18)
 	_button(column, "Development workbench — blank canvas, flyer fleet, materials and solver controls", "shared_workbench")
 	_button(column, "ObjectShard M3 — experimental continuous-play rehearsal, separate World", "objectshard_m3")
+	_button(column, "Persistent areas — experimental three-area Workbench, saved dynamics and bounded catch-up", "persistent_areas")
 	_button(column, "Materials Lab — native inspector, candidate authoring and reproducible tests", "materials_lab")
 	_button(column, "Play session — shared desktop course, five mechanical players and solver choices", "play_session")
 	_button(column, "Player playground — stunt buggy, trials bike, acrobat, spacecraft, material swarms and jet barrel", "player_playground")
@@ -97,6 +101,7 @@ func launch(destination: String) -> void:
 	var scene: String = "res://main.tscn"
 	if destination == "objectshard_m3": scene = "res://object_shard_worker_rehearsal.tscn"
 	elif destination == "materials_lab": scene = "res://materials_lab.tscn"
+	elif destination == "persistent_areas": scene = "res://persistent_areas.tscn"
 	elif destination == "wave_flow": scene = "res://wave_flow_evaluation.tscn"
 	elif destination == "flight_lab": scene = "res://flight_lab.tscn"
 	elif destination == "thunderbowl": scene = "res://examples/thunderbowl/thunderbowl.tscn"

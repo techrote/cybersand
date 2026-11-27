@@ -4,11 +4,15 @@ document-kind: runbook
 canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
 status: Current
 scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
-last-reviewed: 2026-09-10
+last-reviewed: 2026-11-21
 related-documents: [../reference/configuration-reference.md, ../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, profiling-observability-and-performance.md]
 ---
 
 # Configuration and capacity budgets
+
+## Experimental persistent-area budgets
+
+The opt-in [GEN-006 contract](../systems/persistent-authored-areas.md#game-time-catch-up-and-simulate-ahead) owns its fixed canvas, native slice/operation budgets, explicit debt and profile storage bounds. These are separate prototype refusal limits; ordinary World, material, response, liquid and body capacities are unchanged. Capture/storage/restore latency is additional to the native stepping budget and is measured in the [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md).
 
 The bounded [synchronous Water body constructor](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 reuses one native pending World/token, one permanent three-body private graph,

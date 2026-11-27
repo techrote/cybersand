@@ -119,8 +119,18 @@ var _processor_label := ""
 var water_lab := preload("res://scripts/workbench_water_lab.gd").new()
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 var paint_editor: Control
+var reciprocal_panel: Control
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
 var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
+
+func open_reciprocal() -> void:
+	_cancel()
+	if reciprocal_panel == null:
+		reciprocal_panel = load("res://scripts/workbench_reciprocal_panel.gd").new()
+		add_child(reciprocal_panel)
+		move_child(reciprocal_panel,mini(4,get_child_count()-1))
+		reciprocal_panel.mount(self)
+	reciprocal_panel.open_panel()
 
 func open_materials_lab() -> void:
 	_cancel()
@@ -229,7 +239,7 @@ func _spin(row: Control, caption: String, field: SpinBox, low: float, high: floa
 
 func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host = controller
-	object_shard_m4_port.enabled = "--objectshard-m4-workbench" in OS.get_cmdline_user_args()
+	object_shard_m4_port.enabled = not host.has_method(&"persistent_operation_allowed") and "--objectshard-m4-workbench" in OS.get_cmdline_user_args()
 	# No previous Art conversation or profile session is read at game startup.
 	_art_history_session = {"state":"no_session","source":"","error":""}
 	host.tower_panel.refresh(false,0,{})
@@ -257,6 +267,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Reciprocal assembly…",open_reciprocal)
 	_button(row,"Materials Lab…",open_materials_lab)
 	_button(row,"Water Lab…",water_lab.open)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
@@ -264,11 +275,13 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"+",func() -> void: zoom_by(-1))
 	_button(row,"Configuration…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
-	_button(row,"Structures…",open_object_shard_controls)
+	if not host.has_method(&"persistent_operation_allowed"): _button(row,"Structures…",open_object_shard_controls)
 	_button(row,"Batch Lab…",open_batch_lab)
 	_button(row,"Architecture…",open_architecture_lab)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
-	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
+	_button(row,"Menu [F2]",func() -> void:
+		if host.has_method(&"request_persistent_exit"): host.call(&"request_persistent_exit","launcher")
+		else: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
 	_picker(row,_tool,TOOL_NAMES,func(_index: int) -> void:
 		_cancel()
@@ -396,6 +409,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
 	var binary_hash := FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary)
 	_runtime_label = "%s · Godot %s · native %s · definitions %s" % [OS.get_name(),Engine.get_version_info().string,binary_hash.left(12),Fleet.registry_hash().left(12)]
+	if host.has_method(&"persistent_bootstrap_pending") and host.call(&"persistent_bootstrap_pending"): return
 	if recovery.is_empty(): new_canvas.call_deferred()
 	else: apply.call_deferred(recovery)
 
@@ -835,8 +849,27 @@ func refuse(reason: String) -> bool:
 	return false
 
 func busy() -> bool:
-	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
-		or is_flatten_pending() or (paint_editor != null and paint_editor.busy())
+	return (host.has_method(&"persistent_operation_allowed") and not str(host.call(&"persistent_operation_allowed","authoring",{})).is_empty()) \
+		or not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
+		or is_flatten_pending() or (paint_editor != null and paint_editor.busy()) \
+		or (reciprocal_panel != null and reciprocal_panel.busy())
+
+func persistent_stage_authoring(authoring: Dictionary) -> void:
+	_pending_generated = authoring.get("generated_packet",{}).duplicate(true)
+	_pending_material_baseline = authoring.get("material_baseline",{}).duplicate(true)
+	_pending_retain_generated = false
+	_pending_request_serial = int(host.pending_microscenario_apply.get("serial",0))
+
+func persistent_restore_camera(camera: Dictionary) -> void:
+	if camera.is_empty(): return
+	var origin: Variant = camera.get("origin")
+	var size: Variant = camera.get("size")
+	if not origin is Array or origin.size() != 2 or not size is Array or size.size() != 2: return
+	if not is_finite(float(origin[0])) or not is_finite(float(origin[1])): return
+	_zoom = clampi(int(camera.get("zoom",1)),0,ZOOMS.size()-1)
+	_camera.select(clampi(int(camera.get("mode",0)),0,2))
+	host.current_view_size = Vector2i(clampi(int(size[0]),1,2048),clampi(int(size[1]),1,2048))
+	host.camera_origin = Vector2(origin[0],origin[1])
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
@@ -958,22 +991,27 @@ func _exit_tree() -> void:
 	object_shard_m4_port.retire("WorkbenchExit")
 	if actor_interaction != null: actor_interaction.cancel("closed")
 	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
+	if reciprocal_panel != null: reciprocal_panel.cancel("Workbench exited; experimental generation cancelled.")
 
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true, pose_overrides: Dictionary = {}) -> bool:
+		apply_staged_water: bool = true, pose_overrides: Dictionary = {}, authoring_patch: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
+	if not authoring_patch.is_empty() and (not preserve or reciprocal_panel == null \
+			or not reciprocal_panel.attests(candidate,authoring_patch)):
+		return refuse("Construction history must match the current validated experimental proposal.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
 		# A retained request can change ownership/settings, never substitute a
 		# different starting paint history for the native cells being copied.
-		candidate = candidate.duplicate()
-		candidate.edits = applied.edits
+		if authoring_patch.is_empty():
+			candidate = candidate.duplicate()
+			candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
 	if candidate.has("ambient_authoring"):
@@ -1048,7 +1086,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			"dirty":_liquids._dirty}
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
-		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water)
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water,authoring_patch)
 	if not ok: return refuse(host.microscenario_error)
 	object_shard_m4_port.retire("WorldReplacement")
 	if host.has_method("object_shard_m4_latency_report") and host.object_shard_m4_probe.enabled:
@@ -1263,6 +1301,7 @@ func installed(candidate: Dictionary) -> void:
 		set_camera(2)
 		message = "Ambient scene ready. Play, paint Oil or Water nearby, inspect decisions, and edit Behaviour profile. Save stores the authored profile; runtime timers restart on reopen."
 	if is_instance_valid(_actor_panel): _actor_panel.refresh(true)
+	if reciprocal_panel != null: reciprocal_panel.native_installed(candidate)
 	if not OS.get_environment("MAT_AUDITION_LAUNCHER_RECEIPT").is_empty():
 		preload("res://tests/support/material_audition_launcher_witness.gd").attach(self)
 
@@ -1568,6 +1607,9 @@ func save_setup() -> bool:
 		GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
+	if reciprocal_panel != null:
+		var evidence_error: String = reciprocal_panel.save_evidence(_name.text)
+		if not evidence_error.is_empty(): message=evidence_error;return true
 	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
 		else "Saved starting setup · ") + _name.text
 	if object_shard_m4_port.enabled:
@@ -1629,6 +1671,8 @@ func finish_art_history() -> void:
 	if paint_editor != null: paint_editor.finish_agent_history()
 
 func art_history_guard() -> String:
+	if reciprocal_panel != null and reciprocal_panel.busy():
+		return "Wait for reciprocal generation before changing World history."
 	return art_batches.history_block_reason() if art_batches != null else ""
 
 # Built-in #361 equipment starts. Each asks the native validator for one of
@@ -1836,6 +1880,7 @@ func _input(event: InputEvent) -> void:
 
 func enable_object_shard() -> bool:
 	if host == null or not host.has_method("object_shard_m4_latency_report"): return false
+	if host.has_method(&"persistent_operation_allowed"): return refuse("Persistent Areas cannot retain a structural body owner.")
 	if not busy() and not applied.is_empty():
 		var extent: Vector2i = Setup.extent_of(applied)
 		if extent.x > 1024 or extent.y > 1024:
@@ -1850,6 +1895,7 @@ func enable_object_shard() -> bool:
 	return true
 
 func load_object_shard_scene(scene_id: String) -> bool:
+	if host.has_method(&"persistent_operation_allowed"): return refuse("Open Structures in the ordinary Workbench. Persistent Areas stores actor-free terrain.")
 	if not _editable(): return false
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 	var policy: PackedInt32Array = _liquids.requested_policy
@@ -2083,6 +2129,11 @@ func _pump_object_shard_pointer(pressed: bool = false) -> void:
 	object_shard_m4_action(pos,action,runtime.visible_observation(),target)
 
 func _world_input(event: InputEvent) -> void:
+	# An external reciprocal job owns this source until it settles, including
+	# when its dock is hidden or territory painting is switched off. PAINT's
+	# own gesture routing remains unchanged when that separate job is idle.
+	if reciprocal_panel != null and reciprocal_panel.busy(): return
+	if reciprocal_panel != null and reciprocal_panel.world_input(event): return
 	# An M4 moving-body operation can never route through the ordinary terrain
 	# painter, including right drag or an active paint-editor interception.
 	_update_object_shard_tool_controls()

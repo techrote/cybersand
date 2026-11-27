@@ -236,6 +236,16 @@ def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> flo
     return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
 
 
+# These scripts share the explicit-profile Main fixture. Bare invocation has
+# no durable root; the general suite supplies one per execution.
+PERSISTENT_PROFILE_CASES = frozenset({
+    "test_persistent_areas_workbench", "test_persistent_area_owner_timeout",
+    "test_persistent_area_ramcache", "test_persistent_area_responsiveness",
+    "test_persistent_area_recoverable_workbench", "test_persistent_area_hot_recovery",
+    "test_persistent_area_resident_storage_recovery", "test_persistent_area_advance_recovery",
+})
+
+
 def _case_requires_display(name: str) -> bool:
     return name.endswith("_render") or name in architecture_context.GRAPHICAL_CASES
 
@@ -749,6 +759,21 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     log_path = output_dir / (case.name + ".log")
     snapshot_path = output_dir / (case.name + ".timeout-diagnostics.txt")
     command = case_command(godot, case)
+    if case.name == "test_persistent_areas_ordinary_launcher":
+        command.extend(("--", "--workbench"))
+    elif case.name in PERSISTENT_PROFILE_CASES:
+        # Each child starts with a new isolated profile. The dedicated GEN-006
+        # campaign also runs the paired fresh-process reopens and crash matrix.
+        evidence = (output_dir / (case.name + "-artifacts")).resolve()
+        evidence.mkdir(parents=True, exist_ok=True)
+        profile = tempfile.mkdtemp(prefix="profile-", dir=evidence)
+        command.extend(("--", "--persistent-start-paused", "--persistent-test-mode=write",
+                        "--persistent-test-workers=1", "--persistent-profile=" + profile,
+                        "--persistent-evidence=" + str(evidence)))
+        if case.name in {"test_persistent_areas_workbench", "test_persistent_area_owner_timeout"}:
+            command.append("--persistent-cache-off")
+        if case.name == "test_persistent_area_ramcache":
+            command.extend(("--ramcache-hot-samples=2", "--ramcache-warm-samples=2"))
     print(f"Running {case.name}, timeout {case.timeout}s: {command}", flush=True)
     started = time.perf_counter()
     timed_out = False

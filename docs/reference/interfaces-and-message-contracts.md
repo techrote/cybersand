@@ -6,10 +6,12 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-27
 ---
 
 # Interfaces and message contracts
+
+The opt-in [GEN-006 persistent-area interface](../systems/persistent-authored-areas.md) adds `capture_workbench_continuation`, private prepared continuation capture and bounded advance to `CyberDemoBridge`, plus `CyberPersistentAreaStorage` for locked immutable-file/manifest transactions. `simulation_worker.persistent_request/persistent_poll` admits one operation lease and copied result at a time. A nonzero-tick `workbench_continuation` receipt binds the source checkpoint, current full state, original construction definition and session/area/generation/operation identity. Ordinary `applied_run` and strict host evidence admission remain distinct. No C ABI, World capacity or native save-format version changes.
 
 The [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md) adds strict
 profile version 2 alongside version 1 and an optional scene-local

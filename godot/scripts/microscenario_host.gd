@@ -50,6 +50,7 @@ var _timings: Array[float] = []
 var _timing_total_ms: float = 0.0
 var _timing_count: int = 0
 var _last_completed_tick: int = 0
+var _resident_observation: Dictionary = {}
 
 func install(world: Variant, value: Variant, mode: String = "Inspect", instrumentation: bool = true,
 		liquid_policy: Variant = null, controlled_setup: Dictionary = {}, commit_guard: Callable = Callable(),
@@ -124,6 +125,18 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_extent = Vector2i(candidate.extent[0],candidate.extent[1])
 			options.workbench_sample = controlled_setup.workbench_sample
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
+			if controlled_setup.has("workbench_continuation"):
+				if controlled_setup.has("workbench_authoring_patch"):
+					last_error = "Area continuation and reciprocal authoring require separate World transactions"
+					return false
+				if not candidate.events.is_empty() or not candidate.observations.is_empty() or not candidate.conditions.is_empty() \
+						or candidate.player_enabled or candidate.body_enabled or instrumentation:
+					last_error = "Persistent continuation requires an actor-free Workbench without host event cursors"
+					return false
+				options.workbench_continuation = controlled_setup.workbench_continuation
+				options.workbench_continuation_identity = controlled_setup.get("workbench_continuation_identity",{})
+			if controlled_setup.has("workbench_authoring_patch"):
+				options.workbench_authoring_patch = controlled_setup.workbench_authoring_patch
 			if controlled_setup.has("workbench_generated"):
 				options.workbench_generated = controlled_setup.workbench_generated
 			if controlled_setup.has("workbench_material_baseline"):
@@ -194,6 +207,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	_world = world
 	_host_observation = staged_observation
 	_host_observation_identity = staged_identity
+	_resident_observation = {}
 	_inspection_bridge = bridge if int(candidate.schema_version) == 2 else null
 	_telemetry = Telemetry.new()
 	_before_elapsed_us = 0
@@ -253,7 +267,7 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 	_timings.clear()
 	_timing_total_ms = 0.0
 	_timing_count = 0
-	_last_completed_tick = 0
+	_last_completed_tick = int(_world.get_tick_index()) if controlled_setup.has("workbench_continuation") else 0
 	# Controlled preparation already installed these exact final selections
 	# before native receipt capture. Ordinary constructors retain their old tail.
 	if controlled_setup.is_empty(): apply_interest()
@@ -266,6 +280,36 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 
 func active() -> bool:
 	return not _definition.is_empty()
+
+func persistent_continuation_refusal() -> String:
+	if _definition.get("id","") != Contract.WORKBENCH_ID:
+		return "Persistent areas require an installed Workbench definition."
+	if _instrumentation or not _definition.events.is_empty() or not _definition.observations.is_empty() \
+			or not _definition.conditions.is_empty():
+		return "Host event, observation and condition cursors pin this area; their continuation is unsupported."
+	return ""
+
+# Only the existing exclusive worker calls these methods. A retained host is
+# kept beside the native residency handle; it is never reconstructed from an
+# untrusted claim or shared with the main thread. This narrow domain has no
+# host events/cursors to replay after private native catch-up.
+func persistent_resident_refusal(source_sha256: String) -> String:
+	var reason := persistent_continuation_refusal()
+	if not reason.is_empty(): return reason
+	if _failed or _definition_hash != source_sha256:
+		return "Retained host source identity changed or its host is quarantined."
+	return ""
+
+func persistent_resume_resident(world: Variant, receipt: Dictionary) -> void:
+	_world = world
+	_last_completed_tick = int(receipt.completed_tick)
+	# Construction/continuation observations keep their original immutable
+	# provenance. They are not relabelled as a fresh checkpoint or applied run.
+	# The separate current observation identifies the actual retained owner.
+	_resident_observation = _frozen({"schema_version":1,
+		"kind":"workbench_resident_owner_observation", "receipt":receipt.duplicate(true),
+		"definition_hash":_definition_hash,"checkpoint_durability":"not_asserted",
+		"full_native_state_revalidated":false,"exclusive_owner":"simulation_worker"})
 
 # The live World's applied liquid solver policy receipt, read from native.
 func liquid_solver_policy() -> Dictionary:
@@ -301,6 +345,12 @@ func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: in
 	if captured.get("lifecycle","") != "prepared" or captured.get("token",0) != token:
 		return {"ok":false,"error":"Prepared host observation token was retired"}
 	var receipt: Dictionary = captured.native_run_encoding
+	var continuing := options.has("workbench_continuation")
+	if continuing and (str(receipt.get("authored_source_sha256","")) != str(checked.hash) \
+			or receipt.get("continuation_identity",{}) != options.get("workbench_continuation_identity",{}) \
+			or receipt.get("source_checkpoint_sha256","") != options.workbench_continuation.get("sha256","") \
+			or receipt.get("source_completed_tick",-1) != options.workbench_continuation.get("completed_tick",-2)):
+		return {"ok":false,"error":"Prepared continuation source, area identity or completed-tick binding disagrees"}
 	var claim: Dictionary = host_definition_claim(checked)
 	var owner_inputs: Dictionary = {"scope":"prepared_recipe_and_owner_inputs_v1",
 		"input_owner":"exclusive_scenario_owner","definition":claim.definition,
@@ -314,7 +364,15 @@ func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: in
 			"sha256":receipt.initial_body_state_sha256,"body_count":receipt.initial_body_count}}
 	if claim.has("projection"):
 		owner_inputs["definition_projection"] = claim.projection
-	var result: Dictionary = HostEvidence.collect(bridge,receipt,owner_inputs)
+	if continuing:
+		owner_inputs["continuation_projection"] = {"schema_version":1,
+			"status":"unverified_host_claim_projection","omitted_field":"checkpoint_bytes",
+			"checkpoint_sha256":receipt.checkpoint_sha256,"source_checkpoint_sha256":receipt.source_checkpoint_sha256,
+			"source_byte_count":options.workbench_continuation.bytes.size(),
+			"completed_tick":receipt.completed_tick,"identity":receipt.continuation_identity,
+			"authority":"native_validated_private_world","reason":"authoritative_checkpoint_is_not_a_host_claim"}
+	var result: Dictionary = HostEvidence.collect_continuation(bridge,receipt,owner_inputs) if continuing \
+		else HostEvidence.collect(bridge,receipt,owner_inputs)
 	if not result.ok: return result
 	var values: Dictionary = result.evidence.snapshot()
 	var identity: Dictionary = {"schema_version":1,"kind":"qualified_liquid_host_observation_identity",
@@ -323,6 +381,11 @@ func _prepare_liquid_host_observation(bridge: Variant, world: Variant, token: in
 		"run_intent":receipt.run_intent,"host_eligible_for_full_matched_evidence":false,
 		"publication_matches_current_path_file":values.runtime.publication_manifest.artifact_matches_current_path_file,
 		"mapped_module_binding":"unverified","complete_host_binding":"unverified"}
+	if continuing:
+		identity.kind = "qualified_workbench_continuation_host_observation_identity"
+		identity["continuation_identity"] = receipt.continuation_identity.duplicate(true)
+		identity["checkpoint_sha256"] = receipt.checkpoint_sha256
+		identity["completed_tick"] = receipt.completed_tick
 	identity.make_read_only()
 	return {"ok":true,"evidence":result.evidence,"identity":identity}
 
@@ -339,6 +402,7 @@ func liquid_host_observation_record() -> Dictionary:
 
 func clear() -> void:
 	_world = null
+	_resident_observation = {}
 	_host_observation = null
 	_host_observation_identity = {}
 	_inspection_bridge = null
@@ -546,6 +610,7 @@ static func _frozen(value: Variant) -> Variant:
 func summary() -> Dictionary:
 	if not active(): return {}
 	return {"id":_definition.id, "schema_version":_definition.schema_version,
+		"resident_owner_observation":_resident_observation,
 		"liquid_host_observation":liquid_host_observation(),
 		"completed_tick":int(_world.get_tick_index()),
 		"presentation":_definition.get("presentation", {}).duplicate(true),

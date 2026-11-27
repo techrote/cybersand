@@ -139,6 +139,25 @@ native timing failure. Physical owner acceptance remains outstanding.
 The historical M0–M2 Lab does not claim fracture, general liquid transfer or
 durable shard saves. Use the M4 contract for the current Workbench candidate.
 
+## Reciprocal Workbench evaluation
+
+The consolidated **SWARM-004/005/006** evaluator provides existing Gentek
+compositions, reciprocal negotiation, final/provisional inspection and native
+Apply in the ordinary Shared Workbench. Both independent controls and recovery
+remain default OFF. The single [qualified portable Windows artifact](https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922)
+contains the complete evaluator: extract its sealed Windows ZIP and open
+**Open Workbench.cmd**. No compilation or assembly of predecessor packages is
+required.
+
+Use the [owner acceptance guide](docs/operations/swarm456-owner-acceptance.md)
+with a copy of a populated authored map. Check a saved composition in a fresh
+process before ordinary edits, then separately verify the edited authored map
+survives Save/Reopen. Private maps remain local. The
+[consolidated qualification record](docs/operations/swarm456-unified-mainline.md)
+owns exact source/runtime identities and the remaining ordinary and physical
+acceptance gates. The candidate remains **Draft/HOLD**; hosted qualification does
+not establish physical Windows 11/NVIDIA appearance, sound or owner preference.
+
 ## Development
 
 **Current source, reviewed 2026-09-08:** this checkout preserves the acquired
