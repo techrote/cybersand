@@ -126,5 +126,35 @@
     },
     "unique_hashed_git_blobs": 1490
   },
-  "current_general_run": 45968845174
+  "current_general_run": 45968845174,
+  "current_general_qualification": {
+    "source": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+    "tree": "d59a3b2759ad98bce006b39855e4e00caf46fe0f",
+    "run": 45968845174,
+    "attempt": 1,
+    "status": "success",
+    "completed_utc": "2026-11-27T09:20:13Z",
+    "successful_jobs": 73,
+    "intentionally_skipped_jobs": 2,
+    "prior_originals_replayed": 45944204055,
+    "windows": {
+      "aggregate_artifact": 15185283781,
+      "coverage_json_sha256": "e6e144c1298293e65b1f2bd63f1866af1f81901cc2cf176d1040b1b3860bbf80",
+      "cases": 498,
+      "shards": 32,
+      "source_inputs_verified": 1510
+    },
+    "linux": {
+      "aggregate_artifact": 15184594545,
+      "coverage_json_sha256": "74f0147ca9c01b204011af106a03a91724aa3d2d1d87e8a7fbac38780392bd2d",
+      "cases": 521,
+      "shards": 34,
+      "source_inputs_verified": 43
+    }
+  },
+  "current_docs_provenance": {
+    "run": 45968856025,
+    "source": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+    "status": "success"
+  }
 }
