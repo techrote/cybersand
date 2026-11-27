@@ -650,11 +650,25 @@ func manipulator() -> RefCounted:
 	return _manipulator
 
 
-func pick_workbench_part(point: Vector2) -> Dictionary:
+func pick_workbench_part(point: Vector2, presentation: Variant = null, padding: float = 0.0) -> Dictionary:
 	if not _active or not bridge is WorkbenchBridge or not point.is_finite(): return {}
 	# Match the draw order: the last actor/part is visually above earlier ones.
 	for slot: int in range(_rigs.size() - 1, -1, -1):
-		var hit: Dictionary = _rigs[slot].pick_part(point)
+		var accepted: Variant = null
+		if presentation is Dictionary:
+			accepted = {}
+			var first: int = bridge.actor_body_index(slot)
+			for part: int in range(bridge.actor_body_count(slot)):
+				var body_slot := first + part
+				if body_slot < 0 or body_slot >= bridge._members.size(): continue
+				var member: Dictionary = bridge._members[body_slot]
+				if member.actor_slot != slot or member.actor_instance_id != _definitions[slot].instance_id or member.part_index != part: continue
+				var receipt: Dictionary = presentation.mask_frame.instances.get(int(member.instance_id), {})
+				var pose: Variant = presentation.poses.get(body_slot)
+				if receipt.get("generation",-1) == member.generation and receipt.get("pose") is Transform2D \
+						and receipt.pose.is_finite() and pose is Transform2D and pose.is_finite():
+					accepted[part] = pose
+		var hit: Dictionary = _rigs[slot].pick_part(point, accepted, padding)
 		if hit.is_empty(): continue
 		hit.merge({"instance_id":int(_definitions[slot].instance_id), "actor_slot":slot,
 			"run_id":run_id, "epoch":epoch, "extent":_definitions[slot].canvas_extent})

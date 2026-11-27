@@ -56,9 +56,12 @@ func capture_actor(instance_id: int) -> Dictionary:
 
 
 func begin_grab(point: Vector2) -> Dictionary:
+	return begin_grab_hit(point, hit_test(point))
+
+
+func begin_grab_hit(point: Vector2, hit: Dictionary) -> Dictionary:
 	end_grab("replaced_grab")
 	var session := _session()
-	var hit := hit_test(point)
 	if session == null or hit.is_empty() or not session.claim_workbench_grab(hit):
 		_reason = "no_available_physical_part"
 		return {}

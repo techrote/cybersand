@@ -4,7 +4,7 @@ extends RefCounted
 # applies a force, changes a sample, or extends the bridge's wrench fence.
 # Completed physical steps, not native ticks or render callbacks, index it.
 const CAPACITY: int = 128
-const MAX_ACTORS: int = 8 # PhysicalActorSession admission limit; do not grow on invalid slots.
+const MAX_ACTORS: int = 8 # Legacy unbound history. A prepared roster supplies the actual member limit.
 const MAX_MEMBERS: int = preload("res://scripts/rigid_body_coupling.gd").MAX_BODIES
 const RECOVERY_ATTEMPTS: int = 3
 const MAX_HOLD_USEC: int = 100000

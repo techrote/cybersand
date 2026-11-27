@@ -310,6 +310,29 @@ func _uploaded_material_pointer_case() -> void:
 	var selected_after: int = ui.selected_id()
 	check(selected_after==actor_id,"actual mouse still selects the submitted actor while newer material remains unsubmitted")
 	check(host.physical_actor_session.tick==before_step,"material authoring and submitted-actor picking invent no Rapier completion")
+	var prior_camera: Vector2 = host.camera_origin
+	var prior_size: Vector2i = host.current_view_size
+	ui._set_view(Vector2.ZERO,Vector2i(160,90))
+	ui.actor_interaction.set_mode("place")
+	ui._world_input(click)
+	var placed: Dictionary = ui.actor_interaction.placement
+	check(not placed.is_empty() and placed.get("instance_id")==actor_id
+		and ui.actor_interaction._point(local).distance_to(pose.origin)<0.001,
+		"actual Place click uses the submitted camera and body through an unsubmitted camera and Sand upload")
+	ui.actor_interaction.cancel()
+	ui.actor_interaction.set_mode("grab")
+	host.paused = false
+	host.physical_actor_session.set_suspended(false)
+	ui._world_input(click)
+	var grabbed: Dictionary = ui.actor_interaction.grab_state()
+	check(grabbed.active and grabbed.instance_id==actor_id and grabbed.part_index==0
+		and grabbed.target.distance_to(pose.origin)<0.001 and host.physical_actor_session.tick==before_step,
+		"actual Grab claims exactly the submitted member and anchor without stepping")
+	ui.actor_interaction.cancel()
+	host.paused = true
+	host.physical_actor_session.set_suspended(true)
+	ui._set_view(prior_camera,prior_size)
+	ui._tool.select(2)
 	var refused: Array[Dictionary] = []
 	for kind: String in ["future_submission","foreign_world","material_join"]:
 		# Frozen copies isolate one refusal fence. They are never submitted or
@@ -323,6 +346,7 @@ func _uploaded_material_pointer_case() -> void:
 		ui.select_instance(0)
 		ui._pick(cell)
 		check(ui.selected_id()==0,"submitted actor picking refuses copied "+kind+" identity")
+		check(ui.presented_part_at(pose.origin).is_empty(),"manipulation refuses copied "+kind+" identity")
 		refused.append({"kind":kind,"selected_id":ui.selected_id(),"fixture_injected_refusal":true})
 		host.workbench_presentation_frame = submitted
 	unsubmitted_material_picking = {"actor_id":actor_id,"body_slot":body_slot,"selected_id":selected_after,

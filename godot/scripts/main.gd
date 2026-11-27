@@ -1233,7 +1233,7 @@ func _refresh_microscenario_controls() -> void:
 	var help: Label = $Layout/Help
 	if tower_context.get("micro_active",false):
 		if _microscenario_saved_help.is_empty(): _microscenario_saved_help = help.text
-		help.text = "F3 compact/details · Shift+F3 stats · F8 clean view · H publication Hz · J shape · -/+ size · ,/. rectangle ratio · O rotate · LMB paint primary · MMB paint secondary · RMB erase"
+		help.text = "F3 compact/details Â· Shift+F3 stats Â· F8 clean view Â· H publication Hz Â· J shape Â· -/+ size Â· ,/. rectangle ratio Â· O rotate Â· LMB paint primary Â· MMB paint secondary Â· RMB erase"
 	elif not _microscenario_saved_help.is_empty():
 		help.text = _microscenario_saved_help
 		_microscenario_saved_help = ""
@@ -2993,11 +2993,11 @@ func brush_summary() -> String:
 	var dimensions: Vector2i = brush_dimensions()
 	match brush_shape:
 		"circle":
-			return "circle Ø%dpx" % brush_size_px
+			return "circle Ã˜%dpx" % brush_size_px
 		"square":
-			return "square %d×%dpx" % [dimensions.x, dimensions.y]
+			return "square %dÃ—%dpx" % [dimensions.x, dimensions.y]
 		"rectangle":
-			return "rect %d×%dpx %s r%d" % [
+			return "rect %dÃ—%dpx %s r%d" % [
 				dimensions.x,
 				dimensions.y,
 				"V" if brush_rectangle_vertical else "H",
@@ -4417,6 +4417,8 @@ func _resolve_workbench_camera_mapping() -> void:
 
 func _submit_workbench_presentation_frame() -> void:
 	var resolved: Dictionary = workbench_presentation_frame
+	if shared_workbench.actor_interaction != null:
+		shared_workbench.actor_interaction.present_mapping(resolved.screen_transform.affine_inverse() * resolved.camera_mapping)
 	physical_actor_overlay.set_water_composition(resolved.get("water_composition",{}))
 	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect)
 	if not _workbench_submission_preparing and workbench_pose_trace.active and physical_actor_session != null:
@@ -6412,10 +6414,13 @@ func _publish_workbench_keyboard() -> void:
 		"s":_workbench_key(KEY_S) or _workbench_key(KEY_DOWN),"boost":_workbench_key(KEY_SHIFT)}
 	if is_fleet: action.secondary = _workbench_key(KEY_CTRL)
 	var aim: Vector2 = Vector2(observed.get("aim",Vector2.RIGHT))
-	var pixel := view_pixel_from_local_point(world_view.get_local_mouse_position())
-	if pixel.x >= 0:
-		var body: Dictionary = shared_workbench.body_state(shared_workbench.pilot_id())
-		if not body.is_empty(): aim = (camera_origin.floor()+Vector2(pixel)-Vector2(body.position)).normalized()
+	var pointer := world_view.get_local_mouse_position()
+	var frame := workbench_presentation_frame
+	if world_cell_from_local_point(pointer,true).x >= 0 and shared_workbench._submitted_pick_frame_valid(frame):
+		var root_body: int = physical_actor_session.bridge.actor_body_index(slot)
+		var pose: Variant = frame.poses.get(root_body)
+		if pose is Transform2D:
+			aim = (world_position_from_local_point(pointer,true)-pose.origin).normalized()
 	if aim.length_squared() < 0.0001: aim = Vector2.RIGHT
 	action.aim = aim
 	action.reel = float(_workbench_key(KEY_X))-float(_workbench_key(KEY_Z))
@@ -6505,7 +6510,7 @@ func refresh_actor_prototypes() -> void:
 				str(flight.get("fallback_reason", "")), str(flight.get("capabilities", {}).get("profile_hash", ""))]
 		else:
 			actor_prototype_button.text += " | %s: %s" % [UsableCatalog.name_for(actor_usable_index), str(equipment.get("last_result", "ready"))]
-			actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use · right alternate · N release · U nearby pickup. Equipment uses the physical mount."
+			actor_prototype_button.tooltip_text = PhysicalCatalog.controls_text(physical_rig_id) + "\nLeft/M use Â· right alternate Â· N release Â· U nearby pickup. Equipment uses the physical mount."
 		return
 	if not physical_trial_arm.is_empty():
 		actor_prototype_button.text = "Rapier %s / impulses + torque / F5" % physical_trial_arm
@@ -6523,7 +6528,7 @@ func refresh_actor_prototypes() -> void:
 		if context.producers[0] != &"human":
 			power = applied[4] if applied.size() >= CyberActorPrototypeSession.ACTION_STRIDE else 0.0
 		power_text = " | power %d%%" % roundi(power * 100.0)
-	actor_prototype_button.text = "Sampled %s · %s / F5 | %s | energy %d%%%s | %d rigs" % [
+	actor_prototype_button.text = "Sampled %s Â· %s / F5 | %s | energy %d%%%s | %d rigs" % [
 		ActorRigCatalog.name_for(rig_id), str(ActorRigCatalog.set_for(rig_id)), str(context.producers[0]),
 		roundi(states[6] * 100.0), power_text, int(context.count)]
 	actor_prototype_button.tooltip_text = ActorRigCatalog.controls_text(rig_id) + "\nRelease control keys after UI/focus changes."
@@ -6629,9 +6634,9 @@ func configure_pixel_camera(material: ShaderMaterial) -> void:
 	material.set_shader_parameter("world_units_per_screen_pixel", PixelCamera.world_units_per_screen_pixel(mapping))
 
 
-func world_position_from_local_point(local: Vector2) -> Vector2:
+func world_position_from_local_point(local: Vector2, use_submitted_mapping: bool = false) -> Vector2:
 	if not local.is_finite(): return Vector2.INF
-	if workbench_presentation_submission_enabled():
+	if use_submitted_mapping or workbench_presentation_submission_enabled():
 		if not workbench_presentation_frame.has("camera_mapping"): return Vector2.INF
 		# Input localization already used the CURRENT Control/viewport transform.
 		# Recover its physical screen point with that same transform, then address
@@ -7480,7 +7485,7 @@ func update_status() -> void:
 		simulation_worker.set_worker_participation_sampling(sampling_requested)
 	if latest_snapshot != null and latest_snapshot.simulation_failed:
 		status_label.visible = not microscenario_hud_hidden
-		status_label.text = "STOPPED — R reset | fault %d | %s" % [
+		status_label.text = "STOPPED â€” R reset | fault %d | %s" % [
 			latest_snapshot.tick_failure_count,
 			latest_snapshot.last_tick_error,
 		]
@@ -7513,11 +7518,11 @@ func update_status() -> void:
 	player_text += " / " + str(active_player_environment_profile.get("id", "current-baseline"))
 	var secondary_id: int = effective_secondary_material_id()
 	var brush_hint: String = (
-		"[J shape · -/+ size · ,/. ratio · O rotate]"
+		"[J shape Â· -/+ size Â· ,/. ratio Â· O rotate]"
 		if brush_shape == "rectangle"
-		else "[J shape · -/+ size]"
+		else "[J shape Â· -/+ size]"
 	)
-	var tool_text: String = "P %d:%s · M %d:%s · %s %s" % [
+	var tool_text: String = "P %d:%s Â· M %d:%s Â· %s %s" % [
 		selected_material_id,
 		material_name(selected_material_id),
 		secondary_id,
@@ -7553,8 +7558,8 @@ func update_status() -> void:
 			recording_text = "rec off"
 	var run_text: String = "PAUSED" if paused else "RUN"
 	status_label.text = (
-		"FPS %d · frame %.2f/%.2fms · sim %.2fms · pub %s [H] age %.1fms · tick %d · cells %d + %d dormant · moved %d · overruns %d\n"
-		+ "player %s · %s · profile %s · %s · %s · F3 details"
+		"FPS %d Â· frame %.2f/%.2fms Â· sim %.2fms Â· pub %s [H] age %.1fms Â· tick %d Â· cells %d + %d dormant Â· moved %d Â· overruns %d\n"
+		+ "player %s Â· %s Â· profile %s Â· %s Â· %s Â· F3 details"
 	) % [
 		int(Engine.get_frames_per_second()),
 		frame_time_ms,
@@ -7593,7 +7598,7 @@ func update_status() -> void:
 				rapier_bridge.pending_hard_surface_chunks(),
 			]
 		status_label.text += (
-			"\nDETAIL %s · bridge %d/%.1fKiB%s · blocks %d/%d+%d frozen · sched %d jobs/%d phases cap~%d · ballistic %d"
+			"\nDETAIL %s Â· bridge %d/%.1fKiB%s Â· blocks %d/%d+%d frozen Â· sched %d jobs/%d phases cap~%d Â· ballistic %d"
 			% [
 				thread_text,
 				last_render_patch_count,
@@ -7609,7 +7614,7 @@ func update_status() -> void:
 			]
 		)
 		status_label.text += (
-			"\nPHYS %s · bodies %d/%d/%d · view %dx%d +%dx%d · camera %.0f,%.0f %s · %s · %s · %s"
+			"\nPHYS %s Â· bodies %d/%d/%d Â· view %dx%d +%dx%d Â· camera %.0f,%.0f %s Â· %s Â· %s Â· %s"
 			% [
 				physics_text,
 				latest_snapshot.rigid_body_contacts_last_tick,
@@ -7631,15 +7636,15 @@ func update_status() -> void:
 		var participation_text: String = "task participants unavailable (sampling requires a running Play course)"
 		if not participation.is_empty() and not latest_snapshot.simulation_failed \
 			and int(participation.get("world_generation", -1)) == latest_snapshot.render_world_generation:
-			participation_text = "%d task participants at native tick %d · sample age %.0fms" % [
+			participation_text = "%d task participants at native tick %d Â· sample age %.0fms" % [
 				int(participation.workers_observed), int(participation.completed_tick),
 				maxf(0.0, float(Time.get_ticks_usec()-int(participation.sampled_usec))/1000.0)]
-		status_label.text += "\nWORK %s · owner publications %d consumed / %d coalesced / %d refused · render payloads %d refused" % [
+		status_label.text += "\nWORK %s Â· owner publications %d consumed / %d coalesced / %d refused Â· render payloads %d refused" % [
 			participation_text, worker_publication_counter.consumed, worker_publication_counter.coalesced,
 			worker_publication_counter.rejected, rejected_render_snapshot_count]
 
 	if latest_snapshot.tick_failure_count > 0:
-		status_label.text += " // STOPPED — R reset. Fault %d: %s" % [
+		status_label.text += " // STOPPED â€” R reset. Fault %d: %s" % [
 			latest_snapshot.tick_failure_count,
 			latest_snapshot.last_tick_error,
 		]

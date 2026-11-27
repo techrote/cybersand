@@ -33,9 +33,9 @@ func set_mode(value: String) -> void:
 	if value not in ["paint","grab","place"]: return
 	bench._cancel()
 	bench._tool.select({"paint":0,"grab":GRAB_TOOL,"place":PLACE_TOOL}[value])
-	bench.message = {"paint":"Paint · Brush and Eraser work during Play; precise tools require Pause.",
-		"grab":"Live grab · Play, then drag a physical part. Release anywhere or Escape to let go.",
-		"place":"Place / rotate · Pause, drag an actor, Q/E rotate, arrows nudge, Shift for fine adjustment, Escape cancels."}[value]
+	bench.message = {"paint":"Paint Â· Brush and Eraser work during Play; precise tools require Pause.",
+		"grab":"Live grab Â· Play, then drag a physical part. Release anywhere or Escape to let go.",
+		"place":"Place / rotate Â· Pause, drag an actor, Q/E rotate, arrows nudge, Shift for fine adjustment, Escape cancels."}[value]
 
 func configure(value: Dictionary) -> bool:
 	if value.size() != DEFAULT_SETTINGS.size() or not value.has_all(DEFAULT_SETTINGS.keys()):
@@ -101,12 +101,14 @@ func poll() -> void:
 			cancel("placement_source_changed")
 	if is_instance_valid(_overlay): _overlay.queue_redraw()
 
+func present_mapping(world_to_local: Transform2D) -> void:
+	if is_instance_valid(_overlay): _overlay.world_to_local = world_to_local
+
 func _point(local: Vector2, allow_outside: bool = false) -> Vector2:
 	var host: Control = bench.host
-	var content: Rect2 = host.view_content_rect()
-	if not content.has_area() or (not allow_outside and not content.has_point(local)):
-		return Vector2(INF,INF)
-	return Vector2(host.camera_origin).floor() + (local-content.position)/content.size*Vector2(host.current_view_size)
+	if not allow_outside and host.world_cell_from_local_point(local,true).x < 0:
+		return Vector2.INF
+	return host.world_position_from_local_point(local,true)
 
 func _global_local(event: InputEventMouse) -> Vector2:
 	return bench.host.world_view.get_global_transform_with_canvas().affine_inverse() * event.position
@@ -185,7 +187,7 @@ func world_input(event: InputEvent) -> bool:
 	if current == null:
 		bench.refuse("Place an actor in this canvas first.")
 		return true
-	var picked: Dictionary = current.hit_test(point)
+	var picked: Dictionary = bench.presented_part_at(point)
 	if picked.is_empty():
 		bench.refuse("No physical actor part under the pointer.")
 		return true
@@ -194,9 +196,9 @@ func world_input(event: InputEvent) -> bool:
 			bench.refuse("Press Play to physically grab a part; use Place / rotate for paused arrangement.")
 			return true
 		bench.select_instance(int(picked.instance_id))
-		var started: Dictionary = current.begin_grab(point)
+		var started: Dictionary = current.begin_grab_hit(point,picked)
 		if started.is_empty(): bench.refuse("The selected physical body is unavailable.")
-		else: bench.message = "Grabbing #%d · %s with physical forces; other actors continue." % [int(started.instance_id),str(started.part_id)]
+		else: bench.message = "Grabbing #%d Â· %s with physical forces; other actors continue." % [int(started.instance_id),str(started.part_id)]
 	else:
 		begin_placement(int(picked.instance_id),point)
 	return true
@@ -227,7 +229,7 @@ func _refresh_preview(position: Vector2, rotation: float) -> void:
 		return
 	placement["active"] = true
 	placement["rotation_degrees"] = rad_to_deg(float(placement.rotation))
-	bench.message = "Placement preview #%d · (%.2f, %.2f) · %.1f° · %s" % [int(_source.instance_id),position.x,position.y,
+	bench.message = "Placement preview #%d Â· (%.2f, %.2f) Â· %.1fÂ° Â· %s" % [int(_source.instance_id),position.x,position.y,
 		placement.rotation_degrees,"release to prepare / Esc cancels" if placement.valid else str(placement.reason)]
 
 func place_exact(instance_id: int, position: Vector2, rotation_degrees: float) -> bool:

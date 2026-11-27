@@ -631,23 +631,28 @@ func centre() -> Vector2:
 	return _transforms[0].origin if not _transforms.is_empty() else Vector2.ZERO
 
 
-func pick_part(world_point: Vector2) -> Dictionary:
-	# Read the actual manually stepped space, not scene properties or a stale
-	# render interpolation. Compound gaps and round wheels are genuine misses.
+func pick_part(world_point: Vector2, presented_poses: Variant = null, padding: float = 0.0) -> Dictionary:
 	if not configured or not fault.is_empty() or not world_point.is_finite(): return {}
 	for index: int in range(_parts.size() - 1, -1, -1):
 		var body: RigidBody2D = _parts[index]
 		if not is_instance_valid(body) or not body.get_rid().is_valid() or body.freeze: continue
-		var pose: Transform2D = PhysicsServer2D.body_get_state(body.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var pose: Transform2D
+		if presented_poses is Dictionary:
+			if not presented_poses.has(index): continue
+			pose = presented_poses[index]
+		else:
+			pose = PhysicsServer2D.body_get_state(body.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM)
 		var local: Vector2 = pose.affine_inverse() * world_point
 		var inside := false
 		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
-			inside = local.length_squared() <= pow(_sizes[index].x * 0.5, 2.0)
+			inside = local.length_squared() <= pow(_sizes[index].x * 0.5 + padding, 2.0)
 		else:
 			for rectangle: Dictionary in collision_rects(index):
-				var half: Vector2 = Vector2(rectangle.size) * 0.5
-				var distance: Vector2 = (local - Vector2(rectangle.center)).abs()
-				if distance.x <= half.x and distance.y <= half.y:
+				var half: Vector2 = Vector2(rectangle.size) * 0.5 + Vector2.ONE * padding
+				var bounds := Rect2(Vector2(rectangle.center) - half, 2.0 * half)
+				# Selection addresses half-open raster cells. Physical contact also
+				# accepts an anchor exactly on a part's outer edge.
+				if bounds.has_point(local) or (padding == 0.0 and local == local.clamp(bounds.position,bounds.end)):
 					inside = true
 					break
 		if inside:

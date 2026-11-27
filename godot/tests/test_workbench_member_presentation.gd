@@ -75,7 +75,8 @@ func inspect_members(label: String) -> void:
 	var session: Variant = host.physical_actor_session
 	var bridge: Variant = session.bridge
 	var count: int = bridge._members.size()
-	check(count==24 and count>session.MAX_ACTORS,"24 admitted physical members exceed the eight authored actor slots")
+	check(count==24 and ui.applied.actors.size()==6 and count>int(ui.applied.get("sandbox_capacity",Setup.SandboxCapacity.defaults()).logical_limit),
+		"24 physical members for six logical owners exceed this setup's actor slot budget")
 	for slot: int in range(count):
 		var member: Dictionary = bridge._members[slot]
 		var row: Dictionary = host._workbench_presentation_history.observation(slot,session.tick)
