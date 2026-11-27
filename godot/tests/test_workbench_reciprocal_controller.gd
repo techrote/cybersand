@@ -44,11 +44,35 @@ func capture()->Dictionary:
 	check(result.get("ok",false) and released.get("ok",false),"native capture completed and lease released")
 	return result
 
+func verify_art_admission()->bool:
+	var source:=await capture()
+	var cells:=PackedInt32Array([50,50,58])
+	var staged:=History.prepare(bench.applied,cells,bench._generated_active,bench._material_baseline)
+	if not check(staged.accepted,"a native patch can be staged before Art admission"): return false
+	panel._capture=source
+	panel.prepared={"guards":PackedInt32Array()}
+	panel.proposal={"proposal_sha256":"4".repeat(64)}
+	var patch:Dictionary=panel._patch("build",cells,PackedInt32Array([0]))
+	var art:RefCounted=bench._ensure_art_batches().executor
+	var submitted:Dictionary=art.submit([{"shape":"pixels","material":58,"points":[[84,84]]}],Rect2i(84,84,1,1),[],[58])
+	if not check(submitted.status=="queued" and art.active,"Art holds a real admitted writer before its first native chunk"): return false
+	if not check(not panel._request_capture("generate") and not panel._submit(staged.setup,patch,"build")
+			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
+			"reciprocal capture and submission preserve the pending Art operation"): return false
+	if not await until(func()->bool:return not art.active,"independent Art writer settles"): return false
+	var after:=await capture()
+	if not check(art.result.status=="completed" and int(art.result.changed)==1
+			and after.cells.decode_u16((84*512+84)*2)==58 and after.cells.decode_u16((50*512+50)*2)==0,
+			"original Art write is acknowledged and refused reciprocal patch makes no native change"): return false
+	panel.invalidate("Art edit completed.")
+	return true
+
 func exercise()->void:
 	if not check(bench.apply(Setup.fresh(PackedInt32Array(bench.applied.liquid_policy),Vector2i(512,512))),"finite fixture blank source admitted"):return
 	if not await until(settled,"fixture source installed"):return
-	var baseline:=await capture()
 	bench.open_reciprocal();panel=bench.reciprocal_panel
+	if not await verify_art_admission(): return
+	var baseline:=await capture()
 	check(not panel.gentek_controls.frame.enabled.button_pressed and not panel.gentek_controls.mosaic.enabled.button_pressed \
 		and not panel.controls.shared_ownership.button_pressed,"new owner controls use the selected fixed-territory default")
 	# Exercise retained V1 compatibility explicitly; it is no longer the dock default.

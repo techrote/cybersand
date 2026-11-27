@@ -41,6 +41,11 @@ def qualify(engine: Path, project: Path, candidate: Path, output: Path) -> None:
     adapter = legacy.read_report(output / "native-adapter.json")
     custody.require(patch["passed"] and not legacy.assertion_errors(adapter) and adapter.get("passed") is True,
                     "Native authoring patch and admission did not pass")
+    controller = legacy.execute("controller-mechanical", [*base, "--headless", "--script",
+                                "res://tests/test_workbench_reciprocal_controller.gd"], env, output, 90)
+    errors = legacy.marker_errors(output / "controller-mechanical.log", "SWARM004_CONTROLLER ", mechanical=True)
+    custody.require(legacy.validate_result(controller, errors, output)["passed"],
+                    "Shared Art and reciprocal authoring history did not pass")
     display = ["--rendering-method", "gl_compatibility", "--max-fps", "60"]
     display += ["--rendering-driver", "opengl3_angle"] if platform == "windows" else ["--display-driver", "x11"]
     reports = {}
@@ -62,7 +67,8 @@ def qualify(engine: Path, project: Path, candidate: Path, output: Path) -> None:
         "source": manifest["source_commit"], "tree": manifest["source_tree"], "platform": platform,
         "native_sha256": manifest["sha256"], "generator": proposed, "engine_sha256": custody.sha(engine),
         "godot_version": version, "checks": {k: v["checks"] for k, v in reports.items()},
-        "adapter_checks": adapter["checks"], "persistence": proof, "passed": True,
+        "adapter_checks": adapter["checks"], "controller_log_sha256": custody.sha(output / "controller-mechanical.log"),
+        "persistence": proof, "passed": True,
     })
 
 
