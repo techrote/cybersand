@@ -125,6 +125,7 @@ func _poll() -> void:
 		"same_frame_continuation":app.call("same_frame_continuation_status") if app.has_method("same_frame_continuation_status") else null,
 		"render_thread_inline":RenderingServer.is_on_render_thread(),
 		"render_driver":RenderingServer.get_current_rendering_driver_name(),
+		"display_server":DisplayServer.get_name(),
 		"adapter":RenderingServer.get_video_adapter_name(),"platform":OS.get_name(),"process_id":OS.get_process_id(),
 		"profile":OS.get_user_data_dir(),
 		"user_directory_policy":{"application_name":ProjectSettings.get_setting("application/config/name"),

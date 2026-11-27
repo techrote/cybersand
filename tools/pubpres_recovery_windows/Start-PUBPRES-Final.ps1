@@ -9,12 +9,12 @@ param(
     [ValidateSet('opengl3','opengl3_angle')][string]$RenderingDriver='opengl3',
     [ValidateSet('ordinary','wave512','wave1024','wave2048','mixed2048')][string]$Scene='ordinary',
     [ValidateSet('Selected','Fallback','Experimental')][string]$RecoveryMode='Selected',
-    [string]$ReopenRun='', [switch]$OwnerProfile, [switch]$QuitAfterReady, [switch]$Library
+    [string]$ReopenRun='', [switch]$OwnerProfile, [switch]$QuitAfterReady, [switch]$HeadlessSmoke, [switch]$Library
 )
 # The frozen library supplies bounded path checks and creation-time Windows Job
 # ownership. All final-package admission and selector logic lives in this file.
 $PFParameters=@{}
-foreach($Name in @('PackageRoot','ExpectedCandidate','Action','Source','Engine','RenderThread','FullImageSlots','RenderingDriver','Scene','RecoveryMode','ReopenRun','OwnerProfile','QuitAfterReady','Library')) {
+foreach($Name in @('PackageRoot','ExpectedCandidate','Action','Source','Engine','RenderThread','FullImageSlots','RenderingDriver','Scene','RecoveryMode','ReopenRun','OwnerProfile','QuitAfterReady','HeadlessSmoke','Library')) {
     $PFParameters[$Name]=Get-Variable -Name $Name -ValueOnly
 }
 $PFExplicit=@{}; foreach($Name in $PSBoundParameters.Keys) { $PFExplicit[$Name]=$true }
@@ -481,6 +481,9 @@ if($Library) { return }
 $PackageRoot=[IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]'\/')
 Write-Host 'Checking evaluator files...'
 $Manifest=Test-PPPackage $PackageRoot $ExpectedCandidate
+if($HeadlessSmoke) {
+    Assert-PP ($Manifest.schema -ceq 'pubpres-local-owner-retest-v1' -and $Action -ceq 'Open' -and $QuitAfterReady -and $Source -ceq 'Candidate') 'Headless startup check requires a local candidate retest'
+}
 $script:PPProcessOwnerPath=Join-PPSafe $PackageRoot 'tools/pubpres_playability_windows/process_owner.cs'
 Write-Host ('Verified '+$Manifest.file_count+' source/runtime files. Draft/HOLD; physical NVIDIA acceptance is pending.')
 if($Manifest.schema -ceq 'pubpres-local-owner-retest-v1') { Write-Host 'Local owner retest. The retained Windows qualification applies to build 00478f29.' }
@@ -501,6 +504,7 @@ try {
     if($OwnerProfile) {
         Assert-PP (-not $ReopenRun) 'Owner profile and explicit reopen are mutually exclusive'
         $Name='Workbench-'+$ExpectedCandidate.Substring(0,12)+'-'+(Get-PPHash (Join-Path $PackageRoot $script:PPManifestName)).Substring(0,12)+'-'+$Key+'-'+$EngineName+'-'+$Thread+'-slots'+$FullImageSlots+'-'+$RenderingDriver+'-'+$RecoveryMode+'-'+$Scene
+        if($HeadlessSmoke) { $Name+='-headless-check' }
         $Run=Join-PPSafe $Runs $Name
     } elseif($ReopenRun) { $Run=[IO.Path]::GetFullPath($ReopenRun) }
     else { $Run=Join-PPSafe $Runs ((Get-Date).ToUniversalTime().ToString('yyyyMMdd-HHmmss')+'-'+[Guid]::NewGuid().ToString('N').Substring(0,12)) }
@@ -548,13 +552,16 @@ try {
     Write-Host ('Recovery '+$Record.recovery_mode+'; Water composition '+$Record.settings.CYBERSAND_DIAG_WATER_COMPOSITION+'; atomic submission '+$Record.settings.CYBERSAND_DIAG_ACTUAL_SUBMISSION+'; bounded budget '+$Record.settings.CYBERSAND_ENGINE_RENDER_LOOKAHEAD)
     Write-Host ('Persistent saves and evidence: '+$Run)
     $Seconds=if($QuitAfterReady) {360} else {0}
-    $Process=Invoke-PPProcess $Executable @('--path',$Project,'--rendering-method','gl_compatibility','--rendering-driver',$Record.render_driver,
-        '--render-thread',$Record.render_thread,'--audio-driver','Dummy','--script','res://tests/pubpres_playability_owner_start.gd') $Launch $RunProfile $Settings $Item.source_commit $Seconds $ReadyPath 300
+    $GameArgs=@('--path',$Project,'--rendering-method','gl_compatibility','--rendering-driver',$Record.render_driver,
+        '--render-thread',$Record.render_thread,'--audio-driver','Dummy','--script','res://tests/pubpres_playability_owner_start.gd')
+    if($HeadlessSmoke) { $GameArgs=@('--headless')+$GameArgs }
+    $Process=Invoke-PPProcess $Executable $GameArgs $Launch $RunProfile $Settings $Item.source_commit $Seconds $ReadyPath 300
     $LaunchText=[IO.File]::ReadAllText((Join-Path $Launch 'stdout.log'))+[IO.File]::ReadAllText((Join-Path $Launch 'stderr.log'))
     Assert-PP ($LaunchText -notmatch 'ERROR:') 'Strict Workbench diagnostic failure; evidence retained'
     Assert-PP (Test-Path -LiteralPath $ReadyPath -PathType Leaf) 'Workbench exited without an installed native World receipt'
     $Ready=Read-PPJson $ReadyPath
     Test-PFReadyProfile $Ready $RunProfile
+    Assert-PP ($Ready.display_server -ceq $(if($HeadlessSmoke){'headless'}else{'Windows'})) 'Actual display server differs from the requested launch'
     if($Settings.Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) {
         Assert-PP ($Ready.flight_pacing_requested -ceq $Settings.CYBERSAND_WORKBENCH_FLIGHT_PACING -and
             $Ready.flight_pacing_enabled -is [bool] -and $Ready.flight_pacing_enabled -eq ($Ready.flight_pacing_requested -ceq '1')) 'Actual flight pacing differs from the requested policy'

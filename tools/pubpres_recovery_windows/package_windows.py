@@ -53,6 +53,7 @@ def command(candidate: str, scene: str = "ordinary", collector: bool = False, *,
     if not collector:
         lines.append('set "adapter="')
         lines.append('if /i "%~1"=="--hosted-smoke" set "adapter=-RenderingDriver opengl3_angle -QuitAfterReady"')
+        lines.append('if /i "%~1"=="--headless-smoke" set "adapter=-HeadlessSmoke -QuitAfterReady"')
     lines += ['"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -ExecutionPolicy Bypass '
               f'-File "%~dp0tools\\pubpres_recovery_windows\\{script}" -PackageRoot "%~dp0." '
               f'-ExpectedCandidate {candidate}{args}', 'set "result=%errorlevel%"']
@@ -62,7 +63,7 @@ def command(candidate: str, scene: str = "ordinary", collector: bool = False, *,
                   '  echo Press any key to close this window.',
                   '  pause >nul', ')']
     else:
-        lines.append('if not "%result%"=="0" if /i not "%~1"=="--hosted-smoke" pause')
+        lines.append('if not "%result%"=="0" if /i not "%~1"=="--hosted-smoke" if /i not "%~1"=="--headless-smoke" pause')
     lines += ['exit /b %result%', ""]
     return "\r\n".join(lines).encode("ascii")
 
