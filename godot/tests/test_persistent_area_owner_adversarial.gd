@@ -56,8 +56,19 @@ func start(source: Dictionary) -> bool:
 	worker.set_physical_actor_epoch(21)
 	worker.set_frame_state(0,false,true,Vector2i(256,256),Vector2i.ZERO,Vector2i(512,512),0,0,true,false,true)
 	if worker.start_worker(Vector2(24,222)) != OK: return false
+	var previous_body := PackedFloat32Array([1,100,100,0,3,3,0,0,0,1,1])
+	worker.set_rigid_body_states(previous_body,21)
+	worker._mutex.lock()
+	var prior_packet := worker._rigid_body_states.duplicate()
+	worker._mutex.unlock()
+	check(prior_packet == previous_body,"the original Main body packet reaches the worker before replacement")
 	worker.queue_lab(command(source,1,fixture.options))
-	return await wait_for(func() -> bool: return installed(1))
+	if not await wait_for(func() -> bool: return installed(1)): return false
+	worker._mutex.lock()
+	var retired := worker._rigid_body_states.is_empty()
+	worker._mutex.unlock()
+	check(retired,"the acknowledged actor-free Workbench retires the original Main body packet")
+	return true
 
 func freeze_and_cancel() -> void:
 	check(await start(fixture.checked.definition),"real actor-free Workbench owner installs")
