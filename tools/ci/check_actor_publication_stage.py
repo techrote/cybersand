@@ -37,6 +37,10 @@ def verify(changed: set[str], staged: dict[str, bytes],
     mandatory = set(PROVENANCE.values())
     if not mandatory <= changed or changed - ALLOWED:
         raise PublicationRejected("Expected both changed provenance paths and no unrelated staged paths")
+    return verify_pair(changed, staged, runtimes, source, source_tree, branch, run_id, attempt)
+
+
+def verify_pair(changed, staged, runtimes, source, source_tree, branch, run_id, attempt):
     if not re.fullmatch(r"[0-9a-f]{40}", source) or not re.fullmatch(r"[0-9a-f]{40}", source_tree):
         raise PublicationRejected("Missing exact qualified source identity")
     results = {}
@@ -85,6 +89,48 @@ def verify(changed: set[str], staged: dict[str, bytes],
 
 def git(*args: str) -> bytes:
     return subprocess.check_output(("git", *args))
+
+
+def reusable_pair() -> bool:
+    """Keep a previously qualified Actor pair across application-only changes."""
+    from native_candidate_identity import source as native_source
+
+    root = Path.cwd()
+    head, _, inputs = native_source(root)
+    indexed = {name: git("show", "HEAD:" + name) for name in ALLOWED}
+    records = [json.loads(indexed[name]) for name in PROVENANCE.values()]
+    if any(record.get("source_inputs") != inputs for record in records):
+        return False
+    previous = records[0]["build_commit"]
+    if not re.fullmatch(r"[0-9a-f]{40}", previous):
+        return False
+    workflow = ".github/workflows/workbench-actor-sandbox.yml"
+    changed = git("diff", "--name-only", previous, head).decode().splitlines()
+    for path in changed:
+        if path in ALLOWED or (path.startswith("docs/") and path.endswith(".md")):
+            continue
+        if path.startswith("godot/") and path.endswith(".gd"):
+            continue
+        if path in ("tools/package_ambient_evaluator.py", "tools/package_ambient_living_evaluator.py",
+                    "docs/reference/retrieval-questions-ambient-001.json",
+                    "tools/ci/check_actor_publication_stage.py", "tools/ci/test_actor_publication_stage.py"):
+            continue
+        if path == workflow:
+            # Native producers, dependency pins and platform/extraction jobs
+            # precede this final publisher. A change there requires publication.
+            old = git("show", previous + ":" + path).partition(b"\n  publish:\n")
+            now = git("show", head + ":" + path).partition(b"\n  publish:\n")
+            if old[1] and old[:2] == now[:2]:
+                continue
+        return False
+    runtimes = {name: (root / name).read_bytes() for name in BINARIES.values()}
+    try:
+        verify_pair(set(), indexed, runtimes, previous, git("rev-parse", previous + "^{tree}").decode().strip(),
+                    "integration/actor-compose-final-001-20261123", str(records[0]["workflow_run"]),
+                    str(records[0]["workflow_attempt"]))
+    except (PublicationRejected, KeyError):
+        return False
+    return True
 
 
 def main() -> int:
