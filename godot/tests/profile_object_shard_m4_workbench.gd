@@ -118,6 +118,10 @@ func _run() -> void:
 	result.material_population_scope = "displayed material pixels plus owned material; Water pixels may include ballistic projection; raw grid census and exact quantity are in inventory_witnesses"
 	f.expect(int(result.inventory_before.wood)>0,"complete independent baseline inventory available")
 	if camera == "zoom": f.bench._set_view(Vector2(96,256),Vector2i(256,256))
+	if not OS.get_environment("CYBERSAND_DXGI_REGION").is_empty():
+		if not await _static_visible_control(result):
+			await _finish(result)
+			return
 	await f.cut_supports(scene_id)
 	var expected: int = int(Fixture.Scenes.manifest(scene_id).expected_min_bodies)
 	f.play()
@@ -143,6 +147,7 @@ func _run() -> void:
 		if shard.get("owns_inventory",false): result.shard_dimensions.append({"width":shard.width,"height":shard.height})
 	f.expect(result.shard_dimensions.size()>=expected,"timed workload has actual native inventory dimensions for every promoted body")
 	var initial_tick: int = f.tick()
+	_visible_phase(2)
 	var started: int = Time.get_ticks_usec()
 	var next_heartbeat_usec: int = started+5000000
 	var previous_usec: int = started
@@ -181,6 +186,7 @@ func _run() -> void:
 				"process_callbacks":callbacks.size(),"material_body_count":f.body_count()}))
 			next_heartbeat_usec = now+5000000
 	var elapsed: int = maxi(1,Time.get_ticks_usec()-started)
+	_visible_phase(3)
 	if DisplayServer.get_name() != "headless": RenderingServer.frame_post_draw.disconnect(_post_draw)
 	f.expect(f.tick() >= target,"profile completes 180 actual native semantic ticks")
 	f.expect(str(f.diagnostics().get("held_reason","")) == "","no native or physical hold during profile")
@@ -299,6 +305,44 @@ func _run() -> void:
 			f.expect(not image.is_empty() and image.save_png(path.path_join(scene_id+"-"+camera+".png")) == OK,
 				"source-bound actual ordinary Workbench screenshot retained")
 	await _finish(result)
+
+func _visible_phase(phase_number: int) -> void:
+	var directory := OS.get_environment("CYBERSAND_DXGI_REGION")
+	if not directory.is_empty():
+		var file := FileAccess.open(directory.path_join("phase.txt"), FileAccess.WRITE)
+		file.store_string(str(phase_number))
+		file.close()
+
+func _static_visible_control(result: Dictionary) -> bool:
+	var directory := OS.get_environment("CYBERSAND_DXGI_REGION")
+	# Select only world material, using the same aspect fit and origin as the
+	# moving-material overlay. The ordinary controls occupy other layout rows.
+	var world_rect := Rect2(100,272,156,193) if scene_id=="mixed" else Rect2(3,282,505,183)
+	var content: Rect2 = f.host.view_content_rect()
+	var scale_to_view := content.size / Vector2(f.host.current_view_size)
+	var local_rect := Rect2(content.position+(world_rect.position-f.host.camera_origin.floor())*scale_to_view,
+		world_rect.size*scale_to_view)
+	var canvas_rect: Rect2 = f.host.world_view.get_global_transform_with_canvas() * local_rect
+	var px_scale := Vector2(root.size) / root.get_visible_rect().size
+	var p := Vector2i((canvas_rect.position*px_scale).ceil())
+	var q := Vector2i((canvas_rect.end*px_scale).floor())
+	print("M4_DXGI_START ",JSON.stringify({"pid":OS.get_process_id(),
+		"hwnd":DisplayServer.window_get_native_handle(DisplayServer.WINDOW_HANDLE),
+		"x1":p.x,"y1":p.y,"x2":q.x,"y2":q.y}))
+	var until_ms := Time.get_ticks_msec()+15000
+	while not FileAccess.file_exists(directory.path_join("ready.txt")) and Time.get_ticks_msec()<until_ms:
+		await process_frame
+	if not f.expect(FileAccess.file_exists(directory.path_join("ready.txt")),"DXGI opened the output containing the ordinary Workbench"):
+		return false
+	var initial := f.tick()
+	_visible_phase(1)
+	var started := Time.get_ticks_usec()
+	await create_timer(3.0).timeout
+	result.static_visible_control = {"elapsed_usec":Time.get_ticks_usec()-started,
+		"native_tick_start":initial,"native_tick_end":f.tick(),"scene":scene_id,
+		"client_rect":[p.x,p.y,q.x,q.y],"world_rect":[world_rect.position.x,world_rect.position.y,world_rect.size.x,world_rect.size.y]}
+	_visible_phase(0)
+	return f.expect(f.tick()==initial and f.host.paused,"fixed-camera visible control remained paused")
 
 func _finish(result: Dictionary) -> void:
 	f.validate_display()
