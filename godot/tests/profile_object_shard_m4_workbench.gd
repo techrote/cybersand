@@ -335,7 +335,7 @@ func _static_visible_control(result: Dictionary) -> bool:
 		await process_frame
 	if not f.expect(FileAccess.file_exists(directory.path_join("ready.txt")),"DXGI opened the output containing the ordinary Workbench"):
 		return false
-	var initial := f.tick()
+	var initial: int = f.tick()
 	_visible_phase(1)
 	var started := Time.get_ticks_usec()
 	await create_timer(3.0).timeout
