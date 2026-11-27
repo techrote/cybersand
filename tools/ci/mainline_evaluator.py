@@ -61,11 +61,26 @@ FEATURE_INPUTS = {
     "swarm": ("godot/tests/swarm456_reciprocal_ui.gd", "docs/operations/swarm456-owner-acceptance.md"),
 }
 FEATURE_CONTROLS = {
-    "actor_compose": "Open **Configuration… → Actors**, choose **Living Mixed Workshop**, then **Load playground**. Save your current start first. The example starts paused. Select a body to grab, place or rotate it, or pilot an actor and hand control back.",
-    "material_audition": "Open **Materials Lab → Current scene**, select a material, change a supported value and click **Apply draft**. **Revert** and **Reset** change the live configuration. Save a named profile to keep the settings with this native runtime. Reopening an authored scene restores its default material configuration. Use the saved profile to reapply your settings.",
-    "objectshard_m4": "Launch **Open Structural Workbench.cmd**. The tower opens in **Structures…**. Release a supported structure. Choose **Cut moving** or **Ignite moving** in the mode selector and click its moving material. Choose **Paint** to resume ordinary painting. The playtest guide lists the supported fixtures and domain.",
-    "persistent_areas": "Launch **Open Persistent Areas.cmd** for the three-area Current/FreeMass profile. Use **RAM cache…** to inspect resident worlds and choose strict or deferred saving. **Save all areas** waits for durable acknowledgement. The profile uses workbench/userdata/persistent-profile.",
-    "swarm": "Pause the World and open **Reciprocal assembly…**. Draw an activation dab, generate a proposal, inspect it and use **Apply** or **Undo**. Save the authored start to preserve the acknowledged result.",
+    "actor_compose": "## Compose and control actors\n\nOpen **Configuration… → Actors**, choose **Living Mixed Workshop**, then **Load playground**. Save your current start first. The example starts paused. Select a body to grab, place or rotate it, or pilot an actor and hand control back.",
+    "material_audition": (
+        "## Audition live material settings\n\nOpen **Materials Lab… → Current scene**. Use the current World or save your "
+        "start and try **Density sorter · 512² → Load demo…**. Select a material, edit a supported value and click "
+        "**Apply draft**. **Revert configuration** and **Reset to accepted defaults** change the live configuration. "
+        "Choose **Save named profile…** to keep your settings. Reopening an authored scene restores the defaults. "
+        "Use **Load named profile…** followed by **Apply draft** to restore your saved settings."
+    ),
+    "objectshard_m4": "## Manipulate structural bodies\n\nLaunch **Open Structural Workbench.cmd**. The tower opens in **Structures…**. Release a supported structure. Choose **Cut moving** or **Ignite moving** in the mode selector and click its moving material. Choose **Paint** to resume ordinary painting. The playtest guide lists the supported fixtures and domain.",
+    "persistent_areas": "## Travel between persistent areas\n\nLaunch **Open Persistent Areas.cmd** for the three-area Current/FreeMass profile. Use **RAM cache…** to inspect resident worlds and choose strict or deferred saving. **Save all areas** waits for durable acknowledgement. The profile uses `workbench/userdata/persistent-profile`.",
+    "swarm": (
+        "## Build a reciprocal assembly\n\nPause the World and open **Reciprocal assembly…**. Draw an activation dab in an "
+        "empty region, click **Generate**, inspect the proposal and choose **Apply construction**. "
+        "**Undo construction** reverses that application. Use **Save start** to keep the acknowledged result.\n\n"
+        "To try an existing map, copy its `setup-<name>.json` and any matching `.json.swarm004.json` and "
+        "`.json.swarm004-evidence.json` sidecars into "
+        "`workbench/userdata/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/workbench/` inside this extraction. "
+        "Keep the originals. In **Details**, enter the name without `setup-` or `.json`, choose **Load start**, "
+        "and use a new name for the edited start."
+    ),
 }
 
 
@@ -442,6 +457,8 @@ def assemble(args) -> None:
               "docs/operations/art-workbench-collaborative-evaluation.md",
               "docs/operations/world-steer-collaborative-architecture.md"]
     guides.extend(FEATURE_INPUTS[name][1] for name in admission["integrated_features"])
+    if "material_audition" in admission["integrated_features"]:
+        guides.append("docs/systems/material-audition-consumers.md")
     guide_archive = subprocess.check_output(["git", "archive", "HEAD", "--", *guides], cwd=args.product, timeout=60)
     with tarfile.open(fileobj=io.BytesIO(guide_archive)) as source:
         for entry in source:

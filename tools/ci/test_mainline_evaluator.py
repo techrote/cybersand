@@ -112,7 +112,9 @@ class DeliveryCustody(unittest.TestCase):
         def module(_root, name):
             return SimpleNamespace(identity=self.policy) if name == "execution_policy" else importlib.import_module(name)
         stack.enter_context(mock.patch.object(delivery, "product_module", side_effect=module))
-        stack.enter_context(mock.patch.dict(os.environ, {"GITHUB_SHA": delivery.git(harness, "rev-parse", "HEAD")}))
+        # Windows drops inherited empty Git config values if a mock clears and
+        # restores the entire process environment. Only Python reads this SHA.
+        stack.enter_context(mock.patch.object(os, "environ", {**os.environ, "GITHUB_SHA": delivery.git(harness, "rev-parse", "HEAD")}))
         return stack
 
     def test_actual_git_ancestry_and_separate_harness_are_admitted(self):
@@ -149,7 +151,7 @@ class DeliveryCustody(unittest.TestCase):
 
     def test_dirty_source_and_wrong_harness_run_are_refused(self):
         product, harness, value = self.admission_fixture()
-        with self.admission_context(product, harness, value), mock.patch.dict(os.environ, {"GITHUB_SHA": "9" * 40}), self.assertRaisesRegex(ValueError, "Harness"):
+        with self.admission_context(product, harness, value), mock.patch.object(os, "environ", {**os.environ, "GITHUB_SHA": "9" * 40}), self.assertRaisesRegex(ValueError, "Harness"):
             delivery.admit(self.requested(value), product, harness)
         (product / "untracked.txt").write_text("uncommitted product")
         with self.admission_context(product, harness, value), self.assertRaisesRegex(ValueError, "clean committed"):
