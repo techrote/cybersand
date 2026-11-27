@@ -1,0 +1,52 @@
+{
+  "schema": "objectshard-actor-compose-coexistence-v1",
+  "qualification": "72 live distinct RIDs sharing one main-thread Rapier space, accepted native sample and ten further semantic ticks. No display or playfeel measurement.",
+  "native_inputs": 126,
+  "actual_actor_count": 64,
+  "actual_structural_carriers": 8,
+  "engine": "Godot 4.7.stable.official.5b4e0cb0f",
+  "fixture_sha256": "7c4ed6b227e434232eb4f85929f0bd1fae2061d379995f7fa13e181ef97fedcd",
+  "arguments": [
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "godot",
+    "--script",
+    "<absolute path to mixed-capacity.gd>",
+    "--",
+    "--objectshard-m4-workbench"
+  ],
+  "results": {
+    "linux": {
+      "stdout_sha256": "d4964e764901c9cda5dba7e82273b5c20ca2933fb9abd01b729084264e8a1a3b",
+      "receipt": {
+        "checks": 270,
+        "errors": [],
+        "structures": 8,
+        "tick": 49
+      },
+      "source_commit": "f7921ffa3d10da528f61c4a0d72189942a829528",
+      "native_sha256": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20",
+      "compiler": "g++-13, Ubuntu 24.04 WSL",
+      "timeout_seconds": 220
+    },
+    "windows": {
+      "stdout_sha256": "df06fa4e845de21299bbffce948b78d5477d70bb86b146b38adea55dc3c85570",
+      "receipt": {
+        "checks": 270,
+        "errors": [],
+        "structures": 8,
+        "tick": 48
+      },
+      "source_commit": "0da971b2b3ac20ed734ce159503eb40b395e2c38",
+      "native_sha256": "53e891038e01cca9dd5b8ee9f523ced9e3d78c06bd2b81f1a38449c375ade0f7",
+      "binary_build_source": "24f92190d7933a4f22d03cb0d0ddf72ce3918e0c",
+      "run_id": 45926980128,
+      "attempt": 1,
+      "artifact_id": 15167545581,
+      "timeout_seconds": 300,
+      "wall_seconds": 12.878
+    }
+  }
+}
