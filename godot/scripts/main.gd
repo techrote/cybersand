@@ -874,8 +874,12 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		policy: PackedInt32Array, normalize_water: bool, radius: int, response: String,
 		preserve_cells: bool = false, convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true) -> bool:
+		apply_staged_water: bool = true, authoring_patch: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
+	if not authoring_patch.is_empty() and (not paused or not preserve_cells or convert_liquid_inventory \
+			or not generated_packet.is_empty() or not material_baseline.is_empty() or apply_staged_water):
+		microscenario_error = "Construction patch requires a paused retained World and unchanged settings."
+		return false
 	if not pending_microscenario_apply.is_empty():
 		microscenario_error = "Wait for the pending workbench installation."
 		return false
@@ -914,6 +918,8 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		settings["workbench_generated"] = generated_packet
 	if not material_baseline.is_empty():
 		settings["workbench_material_baseline"] = material_baseline
+	if not authoring_patch.is_empty():
+		settings["workbench_authoring_patch"] = authoring_patch.duplicate(true)
 	# Editing a body or restoring the current authored start must not apply
 	# unfinished Water controls. Only explicit Apply/Load promotes that proposal;
 	# the accepted setup is recorded after native preparation and commit succeed.
@@ -4935,7 +4941,7 @@ func engine_lab_begin_tape(segments: Array[Dictionary]) -> bool:
 	if engine_lab_replay_active or engine_lab_scripted_input \
 			or not OS.get_cmdline_user_args().has("--engine-lab-scripted") \
 			or physical_actor_session == null or shared_workbench == null \
-			or shared_workbench.selected_id() != 1 or shared_workbench.pilot_slot < 0 \
+			or shared_workbench.pilot_id() != 1 or shared_workbench.pilot_slot < 0 \
 			or latest_snapshot == null or simulation_worker.has_failed():
 		return false
 	var previous_tick: int = -1
@@ -4966,6 +4972,7 @@ func _engine_lab_replay_workbench_input() -> void:
 	if not engine_lab_replay_active: return
 	if paused or physical_actor_session==null or simulation_worker.has_failed() \
 			or latest_snapshot==null \
+			or shared_workbench.pilot_id()!=1 \
 			or physical_actor_session.epoch!=engine_lab_replay_source_epoch \
 			or int(latest_snapshot.render_world_generation)!=engine_lab_replay_source_generation:
 		engine_lab_replay_error="scripted_replay_actor_or_world_owner_changed"
@@ -5024,7 +5031,7 @@ func engine_lab_set_scripted_input(enabled: bool) -> bool:
 	if not enabled:
 		engine_lab_scripted_input = false
 		if physical_actor_session != null and shared_workbench != null:
-			var slot: int = physical_actor_session.slot_for_instance(shared_workbench.selected_id())
+			var slot: int = physical_actor_session.slot_for_instance(shared_workbench.pilot_id())
 			if slot >= 0:
 				physical_actor_session.cancel_input(slot,physical_actor_session.epoch,&"human")
 		return true
@@ -5560,7 +5567,7 @@ func physical_actor_definitions(model_id: StringName, producer: StringName, demo
 	var models: Array[StringName] = [model_id]
 	if demo_npcs:
 		for candidate: StringName in PhysicalCatalog.rigs_in_set(PhysicalCatalog.set_for(model_id)):
-			if candidate != model_id and models.size() < PhysicalSession.MAX_ACTORS:
+			if candidate != model_id and models.size() < PhysicalSession.Capacity.DEFAULT_ACTORS:
 				models.append(candidate)
 	var definitions: Array = []
 	var next_x: float = spawn.x + CyberSampledCharacter.BODY_SIZE.x * 0.5
@@ -6378,11 +6385,23 @@ func _publish_workbench_keyboard() -> void:
 			"secondary":false,"auxiliary":false}
 		var ports: Dictionary = {"q":false,"e":false,"s":false,"boost":false}
 		physical_actor_session.submit_workbench_action(
-			shared_workbench.selected_id(),action,ports,false)
+			shared_workbench.pilot_id(),action,ports,false)
 		return
+	var gesture: bool = shared_workbench.actor_interaction != null \
+		and shared_workbench.actor_interaction.actively_manipulating()
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
+		or (shared_workbench.actor_interaction != null and shared_workbench.actor_interaction.blocks_human_input()) \
 		or get_viewport().gui_get_focus_owner() is LineEdit or get_viewport().gui_get_focus_owner() is TextEdit:
-		if not _actor_input_rearm: cancel_playable_course_input()
+		if not _actor_input_rearm:
+			if gesture:
+				# The generic cancel path also ends live grabs. Neutralize the
+				# pilot once without revoking the grabbed body's ownership.
+				_actor_input_rearm = true
+				var slot: int = shared_workbench.pilot_slot
+				if physical_actor_session.workbench_control(shared_workbench.pilot_id()).get("status","") != "physically grabbed":
+					physical_actor_session.cancel_input(slot,_physical_epoch,&"human")
+			else:
+				cancel_playable_course_input()
 		return
 	var slot: int = shared_workbench.pilot_slot
 	var observed: Dictionary = physical_actor_session._view(slot,false)

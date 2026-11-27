@@ -18,6 +18,30 @@ source/engine/PID custody, first-read pixel oracle and acceptance limits, retrie
 The [focused questions](retrieval-questions-pubpres-render-probes.json) are additive;
 the general frozen evaluation set and earlier mission questions remain unchanged.
 
+## Unified SWARM-004/005/006 delivery
+
+For combined source, conflict decisions, V1–V4/schema-5/6 compatibility, final inspector, scientific distinctions, source-matched evaluator and owner admission, read the [unified runbook](../operations/swarm456-unified-mainline.md). [Focused questions](retrieval-questions-swarm456.json) supplement the unchanged frozen set. Predecessor runbooks retain their original evidence scope.
+
+The runbook's [closure qualification](../operations/swarm456-unified-mainline.md#closure-qualification--24-november-2026)
+explains the retained Q5 Windows wrapper/engine PID refusal, direct-engine repair,
+accepted-main Art reconciliation and exact eight-path publication accounting.
+
+## SWARM-004/005 mainline integration
+
+For the current donor map, source-identity correction, default-OFF Experimental controls, V1/V2/V3 compatibility, known-matrix replay and the reconstructed package's physical-owner gate, read the [integration runbook](../operations/swarm45-mainline-integration.md). [Focused questions](retrieval-questions-swarm45.json) are additive to the unchanged frozen set.
+
+For the repaired SWARM-006 successor, final-composition inspector, preserved
+negative holdout, new Windows evaluator and accepted-main dependency, see the
+[integration finisher](../operations/swarm006-integration-finisher.md).
+
+## Native architectural modules, GOLDMAPS retrieval and staged construction
+
+Use the [owner workflow](../operations/world-steer-architecture.md) for harvesting, starter parts, repeat placement, preview/approval, partial recovery and Windows inspection. The [module contract](../systems/native-architectural-modules.md) owns exact local geometry, typed roles, transformations and imported-evidence limits. The [knowledge contract](../systems/architectural-knowledge-and-evaluation.md) owns source-bound cards, family-excluded retrieval and contextual native evaluation. The [stage contract](../systems/architecture-staged-construction.md) owns host-computed permissions/budgets and the separate Art adapter. [Additive architecture questions](retrieval-questions-world-steer-architecture.json) preserve the frozen retrieval set. All remain Draft/HOLD.
+
+## Native Workbench Batch Lab
+
+For independent native tiles, 2×2/4×4 operation, Stop/replay, P0–P3 controls, source-grounded references, blinded review and Windows evaluator custody, use the [Batch Lab guide](../operations/world-steer-batch-lab.md). This is an M0–M2 Draft/HOLD candidate; model-quality and physical owner acceptance are separate. [Focused questions](retrieval-questions-batch-lab.json) are additive.
+
 ## World Art inspection, capture and Windows evaluation
 
 | Question | Canonical route |
@@ -45,7 +69,7 @@ takeover, copied policy observations and the research boundary, use the
 [actor composition contract](../systems/workbench-actor-composition.md). For
 Mixed Actor Workshop, controls, tools, painting and authored Save/reopen, use the
 [owner procedure](../operations/workbench-actor-composition.md). The
-[focused actor questions](retrieval-questions-workbench-actors.json) are additive;
+[focused actor questions](retrieval-questions-workbench-actors.json) include paused rotation, live part grabbing, unified configuration and configurable capacity; they are additive;
 the frozen retrieval set is unchanged. Exact platform evidence and remaining
 acceptance belong to the [dated record](../audits/2026-11-20-workbench-actor-composition.md).
 
@@ -57,12 +81,30 @@ native preview co-existence, read the
 This is an explicit research route, **not** a current-main architectural
 generator behaviour claim.
 
+
+For SWARM-006 feasibility, source-bound receiver negotiation, bounded recovery,
+native custody and distinct Windows acceptance gates, read the
+[experimental recovery contract](../systems/gentek-negotiated-recovery.md).
+
+## Reciprocal FRAMEWEAVER × MOSAIC construction
+
+For SWARM-004 component grammar, independent shared-zone revisions, retained hard
+obligations, Stone13 versus solid-bearing semantics, exact-source controls and
+separate Windows Workbench acceptance, read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md).
+It distinguishes nominal footprint revisions from matched offer causality,
+unknown closure from zero obligations, and the frozen fixed-territory selection
+from the original shared-territory hypothesis. The [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+retains the source identities, causal comparison and negative results.
+[Focused questions](retrieval-questions-swarm004.json) are an additive development
+set; the frozen retrieval questions are unchanged.
+
 For the combined #562 Materials Lab / #564 Workbench candidate, original source ancestry, shared history preservation, standalone evaluation and #563 merge-order boundaries, read the [combined qualification record](../audits/2026-11-12-mat-auth-workbench-integration.md).
 
 ## Materials Lab v1 review candidate — 2026-11-11
 
 | Question | Canonical route |
 |---|---|
+| How do I audition material properties in the current Workbench World, revert configuration and save a named profile? | [Scene-local contract](../systems/material-audition.md), [actual consumer map](../systems/material-audition-consumers.md) |
 | How do I open the real Materials Lab and inspect declared versus effective native physics? | [Desktop launch and native inspection](../operations/materials-lab-authoring.md#browse-and-inspect-actual-behaviour) |
 | Which properties and reaction effects can I edit, and does compiled mean runtime-active? | [Candidate boundaries and states](../operations/materials-lab-authoring.md#supported-candidate-edits-and-state-transitions) |
 | How do presets round-trip, synthetic powder132 compile, and threshold0 reactions behave? | [Preset compilation](../operations/materials-lab-authoring.md#save-import-compile-and-compare), [reaction diagnostics](../operations/materials-lab-authoring.md#reaction-authoring-and-deterministic-diagnostics) |
@@ -78,12 +120,13 @@ the frozen evaluation and existing historical fixtures retain their original sco
 
 ## Direct native art batches without inference
 
+For collaborative Discuss/Propose/Develop/Review, finite native construction and offline examples, retrieve the [collaborative owner guide](../operations/art-workbench-collaborative-evaluation.md). For one response consumer, eventual pre-dispatch guards and Architecture's `dispatch(request, completion_callback, pre_dispatch_guard)` seam, retrieve the [owned transport contract](../systems/art-owned-proposal-transport.md). For observed material context, protected regions, typed revisions, copied-value preview and actual native approval/readback, retrieve the [native context and proposal contract](../systems/art-native-context-proposals.md). These remain Draft/HOLD source contracts; fixtures do not prove real-model creativity or physical owner acceptance.
+
 For the current combined Draft, standalone generator repairs, native stored-material authority, PAINT/agent ordering, preserved feature sets and acceptance, retrieve the [integration runbook](../operations/wb-art-paint-integrated-candidate.md). For #559 geometry, protection, acknowledgements, Stop and Save limits, retrieve the [direct art contract](../systems/workbench-direct-art-batches.md). For OpenAI/NVIDIA/LM Studio, conversation/context, scanlines, image observations, traffic, caps and cancellation, retrieve the [provider contract](../systems/workbench-art-providers.md).
 
-For duplicate Art archives, hidden Workbench startup, linked session identity,
-missing-history refusal, crash recovery and cancellable full JSONL export,
-retrieve [conversation lifetime](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-and its [explicit capacities](../systems/workbench-art-providers.md#explicit-capacity-outcomes).
+For Art session-only logging, same-session collaboration, provider errors and complete redacted traffic, retrieve the [provider contract](../systems/workbench-art-providers.md#session-scoped-write-only-art-traffic--22-november-2026). For absent-LM-Studio Send/X, the consolidated dialog repair, exact presets and Windows diagnostic evaluator, retrieve the [Art finisher guide](../operations/art-workbench-final-evaluation.md). Old linked archive restoration is an explicit diagnostic path only.
+
+For the unmerged Art integration's verified export, event append, cached preference saves and retained private receipt writes, retrieve [closed storage verification](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate). Native editing and session-only conversation ownership remain separate; real Windows storage and physical owner acceptance require their own evidence.
 
 
 ## Architectural Generator catalogue
@@ -96,6 +139,16 @@ Donor manifests and source-specific historical galleries remain explicit researc
 references; only a current candidate's source-matched receipts qualify its runtime.
 
 ## Generated terrain in the playable workbench
+
+For SWARM-004 FRAMEWEAVER × MOSAIC reciprocal composition, finite territory and
+rounds, exact native-cell Apply, fresh inverse Undo and child cancellation, use
+the [experimental retained-patch contract](../architecture/experimental-workbench-authoring-patch.md).
+The [Windows owner guide](../operations/swarm004-workbench-playtest.md) separates
+Draft/HOLD implementation from required graphical and pristine-package
+qualification. Saved round/provenance sidecars are historical evidence; the
+ordinary starting map remains reconstruction authority. The
+[focused SWARM-004 questions](retrieval-questions-swarm004-workbench.json) are
+additive to the frozen retrieval evaluation.
 
 For shared baseline/edits/actors versus live session, Save versus Flatten,
 desktop/agent/remote convergence and the required combined regression, retrieve
@@ -552,3 +605,15 @@ coalesced publication counts, use the [player-control contract](../systems/playe
 How do I place multiple independently configured flyers with a passive barrel, select granular and liquid responses, paint a large canvas and save an authored start? Use the [desktop workbench controls and format](../systems/player-control-playground.md#development-workbench-on-desktop) and its [qualification record](../audits/2026-11-04-workbench-consolidation.md). Tuning retention and lifetime corrections are in the [cleanup evidence](../audits/2026-11-04-workbench394-cleanup.md); MAT source admission is [separate](../audits/2026-11-04-workbench394-material-source-transition.md).
 
 For #394 owner acceptance, accepted-main pressure reconciliation and final gate status, use the [resulting-source qualification record](../audits/2026-11-04-workbench394-ready-validation.md). Current workbench controls remain in the player playground guide.
+
+## SWARM-006 experimental Workbench recovery
+
+For the default-OFF recovery control, V4 native transport, unchanged V1/V2/V3
+controls, exact Windows package naming and SHA verification, use the
+[SWARM-006 owner guide](../operations/swarm006-workbench-playtest.md). It separates
+native attempts/reservations from qualified foreign joints, synthetic blank
+World comparisons from the owner's actual World, and source/pristine automated
+Windows qualification from owner NVIDIA acceptance. The
+[SWARM-005 owner guide](../operations/swarm005-workbench-playtest.md) preserves
+its historical two-switch scope. Neither guide authorizes Ready, merge or
+production-default promotion.

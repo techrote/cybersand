@@ -1,0 +1,16 @@
+{
+  "command": [
+    "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/tmp/ambient-002/authoring/godot",
+    "--editor",
+    "--quit"
+  ],
+  "exit_code": 0,
+  "log_sha256": "55bb0af91bc0985fbb5d46de946c93f47cc744ef1c87d14f8f3d60e51607f166",
+  "pid": 34,
+  "seconds": 7.841,
+  "status": "passed",
+  "timeout_seconds": 1200.0
+}

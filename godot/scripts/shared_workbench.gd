@@ -9,18 +9,26 @@ const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
+const ActorInteraction = preload("res://scripts/workbench_actor_interaction.gd")
+const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
-const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
+const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source","Grab physical part","Place / rotate (paused)"]
+var actor_interaction: RefCounted
+var _pending_sandbox_demo := ""
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
 var _materials_lab_window: Window
 var _materials_lab_panel: Control
+var material_audition: RefCounted
+var batch_lab: Window
+var architecture_lab: Window
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
 var _generated_active: Dictionary = {}
 var _pending_generated: Dictionary = {}
 var _pending_retain_generated := false
 var _pending_water_comparison := ""
+var _pending_material_demo := ""
 var _pending_staged_liquid_selection: Dictionary = {}
 var _material_baseline: Dictionary = {}
 var _pending_material_baseline: Dictionary = {}
@@ -33,9 +41,6 @@ var engine_lab: Window
 # A small session association is read once without constructing Art or opening
 # any traffic archive. It binds native completions through profile outages.
 var _art_history_session: Dictionary = {}
-var _unopened_history_pending: Array[Dictionary] = []
-var _unopened_history_error := ""
-var _unopened_history_retry_ms := 0
 var art_history_persistence: Dictionary = {}
 var host: Control
 var applied: Dictionary = {}
@@ -97,8 +102,18 @@ var _processor_label := ""
 var water_lab := preload("res://scripts/workbench_water_lab.gd").new()
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 var paint_editor: Control
+var reciprocal_panel: Control
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
 var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
+
+func open_reciprocal() -> void:
+	_cancel()
+	if reciprocal_panel == null:
+		reciprocal_panel = load("res://scripts/workbench_reciprocal_panel.gd").new()
+		add_child(reciprocal_panel)
+		move_child(reciprocal_panel,mini(4,get_child_count()-1))
+		reciprocal_panel.mount(self)
+	reciprocal_panel.open_panel()
 
 func open_materials_lab() -> void:
 	_cancel()
@@ -120,6 +135,10 @@ func open_materials_lab() -> void:
 			margin.add_theme_constant_override("margin_" + side,10)
 		_materials_lab_window.add_child(margin)
 		var panel := preload("res://scripts/material_lab_panel.gd").new()
+		if material_audition == null:
+			material_audition = preload("res://scripts/material_audition_controller.gd").new()
+			material_audition.bind(self)
+		panel.bind_current_scene(material_audition)
 		_materials_lab_panel = panel
 		panel.name = "MaterialsLabPanel"
 		margin.add_child(panel)
@@ -246,6 +265,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Reciprocal assembly…",open_reciprocal)
 	_button(row,"Materials Lab…",open_materials_lab)
 	_button(row,"Water Lab…",water_lab.open)
 	engine_lab = preload("res://scripts/workbench_engine_lab.gd").new()
@@ -259,12 +279,15 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
-	_button(row,"Actor Composition…",open_actor_composition)
+	_button(row,"Configuration…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
+	_button(row,"Batch Lab…",open_batch_lab)
+	_button(row,"Architecture…",open_architecture_lab)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
 	_picker(row,_tool,TOOL_NAMES)
+	_tool.item_selected.connect(func(_index: int) -> void: _cancel())
 	var names: Array = []
 	_model_ids = _compact_model_ids()
 	for id: String in _model_ids: names.append(ActorCatalog.entry(id).get("name",id))
@@ -341,6 +364,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	add_child(paint_editor)
 	move_child(paint_editor,2)
 	paint_editor.mount(self)
+	actor_interaction = ActorInteraction.new()
+	actor_interaction.mount(self)
 	paint_editor.deferred_brush_finished.connect(func(token: int, result: Dictionary) -> void:
 		if art_batches != null: art_batches.executor.manual_finished(token,result))
 	paint_editor.history_action_finished.connect(func(receipt: Dictionary) -> void:
@@ -403,6 +428,32 @@ func open_art_batches() -> void:
 	_ensure_art_batches().popup_centered()
 
 
+func open_batch_lab() -> void:
+	_cancel()
+	# Optional and lazy: ordinary Workbench startup creates no tile workers,
+	# provider sessions, experiment files or render targets.
+	if not is_instance_valid(batch_lab):
+		batch_lab = preload("res://scripts/batch_lab/batch_lab_panel.gd").new()
+		batch_lab.wb = self
+		batch_lab.hide()
+		add_child(batch_lab)
+	batch_lab.popup_centered_clamped(Vector2i(1180,780),0.92)
+
+
+func capture_batch_source(region: Rect2i) -> Dictionary:
+	return await preload("res://scripts/batch_lab/batch_lab_source.gd").capture(self,region)
+
+
+func open_architecture_lab() -> void:
+	_cancel()
+	if not is_instance_valid(architecture_lab):
+		architecture_lab = preload("res://scripts/batch_lab/architecture_stage_panel.gd").new()
+		architecture_lab.wb = self
+		architecture_lab.hide()
+		add_child(architecture_lab)
+	architecture_lab.popup_centered_clamped(Vector2i(1160,780),0.92)
+
+
 func open_actor_composition() -> void:
 	_cancel()
 	if not is_instance_valid(_actor_panel):
@@ -410,8 +461,95 @@ func open_actor_composition() -> void:
 		_actor_panel.hide()
 		add_child(_actor_panel)
 		_actor_panel.mount(self)
+		_actor_panel.interaction_mode_requested.connect(actor_interaction.set_mode)
+		_actor_panel.manipulation_settings_requested.connect(actor_interaction.configure)
+		_actor_panel.capacity_requested.connect(set_sandbox_capacity)
+		_actor_panel.demo_requested.connect(load_actor_sandbox)
+		_actor_panel.placement_requested.connect(actor_interaction.place_exact)
+		_actor_panel.tuning_requested.connect(set_actor_tuning)
 	_actor_panel.refresh(true)
-	_actor_panel.popup_centered_clamped(Vector2i(700,650),0.9)
+	_actor_panel.popup_centered_clamped(Vector2i(900,700),0.9)
+
+
+func actor_sandbox_state() -> Dictionary:
+	return actor_interaction.state() if actor_interaction != null else {}
+
+
+func actor_placement_pose(id: int) -> Dictionary:
+	if actor_interaction == null: return {}
+	var current = actor_interaction.manipulator()
+	return current.capture_actor(id) if current != null else {}
+
+
+func set_sandbox_capacity(value: Dictionary) -> bool:
+	if not _editable_authored_world(): return false
+	var error := Setup.SandboxCapacity.error(value)
+	if not error.is_empty(): return refuse(error)
+	var next := applied.duplicate(true)
+	next["sandbox_capacity"] = value.duplicate(true)
+	error = Setup.validate(next,false)
+	if not error.is_empty(): return refuse(error)
+	# Updating the admitted budget uses the existing prepared-owner protocol.
+	# No actors are deleted and no body count is silently clipped.
+	if not apply(next,true,0,false,not host.paused,{},{},false): return false
+	message = "Preparing capacity · %d actors / %d bodies / %d proxies. Existing poses and terrain retained; controllers restart." % [value.logical_limit,value.body_limit,value.proxy_limit]
+	return true
+
+
+func set_actor_tuning(id: int, options: Dictionary) -> bool:
+	if not _editable_authored_world(): return false
+	var next := applied.duplicate(true)
+	var selected := actor(next,id)
+	if selected.is_empty(): return refuse("Select an existing actor before applying physical tuning.")
+	selected.options = options.duplicate(true)
+	var error := Setup.validate(next,false)
+	if not error.is_empty(): return refuse(error)
+	if not apply(next,true,0,false,not host.paused,{},{},false): return false
+	message = "Preparing physical tuning for #%d · existing poses and terrain retained; controllers restart." % id
+	return true
+
+
+func load_actor_sandbox(kind: String, count: int = 64) -> bool:
+	if not _editable_authored_world(): return false
+	var candidate: Dictionary = preload("res://scripts/workbench_actor_sandbox.gd").build(kind,PackedInt32Array(applied.liquid_policy),count)
+	if candidate.is_empty(): return refuse("Sandbox example could not be built within the physical resource limits.")
+	if not apply(candidate,false,0,false,false,{},{},false): return false
+	_pending_sandbox_demo = kind
+	message = "Preparing %s playground with %d real actors…" % [kind,candidate.actors.size()]
+	return true
+
+
+func commit_actor_placement(source: Dictionary, proposed: Dictionary) -> bool:
+	if not _editable_authored_world(): return false
+	if not host.paused: return refuse("Pause an installed session before committing placement.")
+	var session = host.physical_actor_session
+	if session == null or session.run_id != str(source.get("run_id","")) or session.epoch != int(source.get("epoch",-1)):
+		return refuse("The physical owner changed during placement; no authored data was modified.")
+	var id := int(source.get("instance_id",0))
+	var next := applied.duplicate(true)
+	var selected := actor(next,id)
+	if selected.is_empty(): return refuse("The selected actor no longer exists.")
+	# Prepared adoption retains every other assembly too. Released, fixed or
+	# reattached equipment has a different live joint graph that an authored
+	# reconstruction cannot faithfully preserve. Refuse before staging anything.
+	for retained: Dictionary in applied.actors:
+		var pose: Dictionary = session.capture_workbench_assembly(int(retained.id))
+		if pose.is_empty(): return refuse("An assembly is unavailable; placement left the world unchanged.")
+		if not str(pose.get("pose_error","")).is_empty():
+			return refuse("Cannot preserve #%d: %s Reset that actor before authored placement." % [int(retained.id),str(pose.pose_error)])
+	var latest: Dictionary = session.capture_workbench_assembly(id)
+	if latest.is_empty() or latest.parts != source.get("parts",[]):
+		return refuse("The actor pose changed during placement; start a new preview.")
+	var confirmed: Dictionary = ActorInteraction.Manipulator.placement_preview(latest,proposed.position,float(proposed.rotation))
+	if confirmed.is_empty() or not confirmed.valid: return refuse("Place every physical part inside the canvas.")
+	selected.spawn = [confirmed.position.x,confirmed.position.y]
+	selected["spawn_rotation_degrees"] = rad_to_deg(float(confirmed.rotation))
+	next.selected = id
+	var overrides := {id:{"position":confirmed.position,"retained_parts":confirmed.parts}}
+	if not apply(next,true,0,false,false,{},{},false,overrides): return false
+	_actor_action = "Placed / rotated"
+	message = "Preparing #%d placement once · current articulation retained; momentum is cleared for this actor; controllers restart." % id
+	return true
 
 
 func _compact_model_ids() -> Array[String]:
@@ -437,6 +575,85 @@ func open_ambient_profile(id: int) -> void:
 		add_child(_ambient_profile_editor)
 		_ambient_profile_editor.mount(self)
 	_ambient_profile_editor.open_for(id)
+
+
+
+# Scene-local reusable profiles are authored data. Assignments are explicit
+# copies, so saving a library entry cannot silently change an existing actor.
+func ambient_library() -> Dictionary:
+	var current: Dictionary = applied.get("ambient_authoring", AmbientAuthoring.blank())
+	return AmbientAuthoring.canonicalize(current)
+
+
+func set_ambient_library(library: Dictionary, expected_library: Dictionary, expected_run: String, expected_epoch: int) -> bool:
+	if not _editable() or host.physical_actor_session == null: return false
+	var session: Variant = host.physical_actor_session
+	if str(session.run_id) != expected_run or int(session.epoch) != expected_epoch:
+		return refuse("World changed; refresh the staged profile library.")
+	if ambient_library() != expected_library:
+		return refuse("Profile library changed elsewhere; refresh before applying.")
+	var error: String = AmbientAuthoring.validate(library)
+	if not error.is_empty(): return refuse(error)
+	var next: Dictionary = applied.duplicate()
+	next["ambient_authoring"] = AmbientAuthoring.canonicalize(library)
+	if JSON.stringify(next).to_utf8_buffer().size() > Setup.BYTE_LIMIT:
+		return refuse("The authored scene and profile library exceed the save-file budget.")
+	applied["ambient_authoring"] = next.ambient_authoring
+	message = "Profile library saved in this authored scene. Existing actor copies are unchanged; use Save start to persist."
+	return true
+
+
+func apply_ambient_group(ids: Array, profile: Dictionary, expected: Dictionary) -> bool:
+	if not _editable() or host.physical_actor_session == null: return false
+	var session: Variant = host.physical_actor_session
+	if ids.is_empty() or ids.size() > ActorCatalog.MAX_AMBIENT_CONTROLLERS \
+		or not expected.has_all(["run_id", "epoch", "actors"]) or not expected.actors is Dictionary \
+		or str(expected.run_id) != str(session.run_id) or int(expected.epoch) != int(session.epoch):
+		return refuse("Invalid or stale group selection; refresh it before applying.")
+	var seen: Dictionary = {}
+	var transactions: Array[Dictionary] = []
+	var next: Dictionary = applied.duplicate(true)
+	for value: Variant in ids:
+		if not value is int or value <= 0 or seen.has(value):
+			return refuse("Group selection contains an invalid or repeated actor.")
+		var id: int = value
+		seen[id] = true
+		var current: Dictionary = actor(applied, id)
+		var staged: Variant = expected.actors.get(str(id))
+		if current.is_empty() or not staged is Dictionary \
+			or not staged.has_all(["model", "hash", "control"]) \
+			or str(staged.model) != str(current.model) or str(staged.hash) != str(current.hash) \
+			or not staged.control is Dictionary or staged.control != ActorCatalog.control_for(current):
+			return refuse("A selected actor disappeared or changed; refresh the group. No actor was changed.")
+		var control: Dictionary = ActorCatalog.control_for(current)
+		control.source = "policy"
+		control.policy = "ambient"
+		control.enabled = true
+		control["ambient"] = profile.duplicate(true)
+		var error: String = ActorCatalog.control_error(str(current.model), control)
+		if not error.is_empty(): return refuse("#%d: %s. No group member was changed." % [id, error])
+		control.ambient = ActorCatalog.AmbientProfile.canonicalize(control.ambient)
+		transactions.append({"instance_id":id, "configuration":control,
+			"expected_configuration":ActorCatalog.control_for(current)})
+		actor(next, id)["control"] = control.duplicate(true)
+	var error: String = Setup.validate(next, false)
+	if not error.is_empty(): return refuse(error)
+	if JSON.stringify(next).to_utf8_buffer().size() > Setup.BYTE_LIMIT:
+		return refuse("Group profiles exceed the authored save-file budget.")
+	if not session.set_workbench_controls(transactions, str(expected.run_id), int(expected.epoch)):
+		return refuse(str(session.last_error))
+	# The owner acknowledged every replacement before authored assignments change.
+	for item: Dictionary in transactions:
+		var id: int = item.instance_id
+		actor(applied, id)["control"] = item.configuration.duplicate(true)
+		_pilot_returns.erase(id)
+		if id == pilot_id():
+			_cancel()
+			_pilot_instance_id = 0
+			pilot_slot = -1
+	_sync_roster()
+	message = "Applied %s to %d inhabitants together; physical poses and resources retained." % [str(profile.get("name", "profile")), transactions.size()]
+	return true
 
 
 func set_ambient_overlay(id: int, enabled: bool) -> void:
@@ -516,6 +733,7 @@ func pilot_instance(id: int) -> bool:
 	select_instance(id)
 	_sync_roster()
 	message = "Piloting %s. Other actors keep their own controllers." % pilot_description()
+	if host.paused: message += " Press Play / Pause [P] to enable movement."
 	return true
 
 
@@ -628,7 +846,8 @@ func refuse(reason: String) -> bool:
 
 func busy() -> bool:
 	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
-		or is_flatten_pending() or (paint_editor != null and paint_editor.busy())
+		or is_flatten_pending() or (paint_editor != null and paint_editor.busy()) \
+		or (reciprocal_panel != null and reciprocal_panel.busy())
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
@@ -654,6 +873,7 @@ func _refuse_flatten(reason: String) -> Dictionary:
 	return {"ok":false,"reason":reason}
 
 func request_flatten(capacity_bytes: int = 2048*2048*2) -> Dictionary:
+	if actor_interaction != null: actor_interaction.cancel("flatten")
 	if host == null or applied.is_empty(): return _refuse_flatten("No native Workbench is installed.")
 	if is_flatten_pending(): return {"ok":false,"reason":"Flatten is already preparing."}
 	if host.simulation_worker.has_failed():
@@ -744,25 +964,34 @@ func _poll_flatten() -> void:
 		str(_material_baseline.extent),_material_baseline.cells.size()]
 
 func _exit_tree() -> void:
+	if actor_interaction != null: actor_interaction.cancel("closed")
 	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
+	if reciprocal_panel != null: reciprocal_panel.cancel("Workbench exited; experimental generation cancelled.")
 
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true) -> bool:
+		apply_staged_water: bool = true, pose_overrides: Dictionary = {}, authoring_patch: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
+	if not authoring_patch.is_empty() and (not preserve or reciprocal_panel == null \
+			or not reciprocal_panel.attests(candidate,authoring_patch)):
+		return refuse("Construction history must match the current validated experimental proposal.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
 		# A retained request can change ownership/settings, never substitute a
 		# different starting paint history for the native cells being copied.
-		candidate = candidate.duplicate()
-		candidate.edits = applied.edits
+		if authoring_patch.is_empty():
+			candidate = candidate.duplicate()
+			candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if candidate.has("ambient_authoring"):
+		candidate = candidate.duplicate()
+		candidate["ambient_authoring"] = AmbientAuthoring.canonicalize(candidate.ambient_authoring)
 	if not preserve and not generated_packet.is_empty() \
 			and candidate.edits.size() > Setup.native_rectangle_budget():
 		return refuse("This installed native runtime cannot reopen that detailed generated start; rebuild its GDExtension.")
@@ -800,6 +1029,15 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 	if preserve:
 		for a: Dictionary in definitions:
 			if int(a.instance_id) == reset_id: continue
+			if host.physical_actor_session != null:
+				var existing_pose: Dictionary = host.physical_actor_session.capture_workbench_assembly(int(a.instance_id))
+				if not str(existing_pose.get("pose_error","")).is_empty():
+					return refuse("Cannot retain #%d: %s Reset that actor before changing the composition." % [int(a.instance_id),str(existing_pose.pose_error)])
+			if pose_overrides.has(int(a.instance_id)):
+				var pose: Dictionary = pose_overrides[int(a.instance_id)]
+				a.position = pose.position
+				a.retained_parts = pose.retained_parts.duplicate(true)
+				continue
 			var state := body_state(int(a.instance_id))
 			if not state.is_empty():
 				a.position = state.position
@@ -823,7 +1061,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			"dirty":_liquids._dirty}
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
-		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water)
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water,authoring_patch)
 	if not ok: return refuse(host.microscenario_error)
 	_pending_staged_liquid_selection = retained_selection
 	_pending_generated = generated_packet.duplicate(true)
@@ -868,6 +1106,31 @@ func load_water_comparison(scene_id: String) -> bool:
 	_pending_water_comparison = scene_id
 	message = "Preparing Water comparison scene with requested solver / tuning…"
 	return true
+
+func _editable_authored_world() -> bool:
+	if not _editable(): return false
+	var reason := authored_world_change_block_reason()
+	return true if reason.is_empty() else refuse(reason)
+
+func authored_world_change_block_reason() -> String:
+	if is_instance_valid(architecture_lab) and architecture_lab.authoring_busy():
+		return "Wait for the current Architecture action before changing the authored World."
+	return art_batches.history_block_reason() if is_instance_valid(art_batches) else ""
+
+func load_material_audition_demo(scene_id: String) -> Dictionary:
+	if not _editable(): return {"ok":false,"error":message}
+	var reason := authored_world_change_block_reason()
+	if not reason.is_empty(): return {"ok":false,"error":reason}
+	if _liquids == null or _liquids.bridge == null:
+		return {"ok":false,"error":"Native policy interface unavailable."}
+	var policy: PackedInt32Array = PackedInt32Array(applied.get("liquid_policy",[]))
+	if policy.is_empty(): policy = _liquids.bridge.default_liquid_policy()
+	var candidate: Dictionary = preload("res://scripts/workbench_material_audition_scenes.gd").create(scene_id,policy)
+	if candidate.is_empty(): return {"ok":false,"error":"Unknown material audition scene."}
+	if not apply(candidate,false,0,false,false,{},{},false): return {"ok":false,"error":message}
+	_pending_material_demo = scene_id
+	message = "Installing material audition scene. Previous scene and its session profile are replaced."
+	return {"ok":true,"status":"pending","scene_id":scene_id}
 
 func installed(candidate: Dictionary) -> void:
 	if art_batches != null: art_batches.executor.canvas_changed()
@@ -996,6 +1259,19 @@ func installed(candidate: Dictionary) -> void:
 		_camera.select(2)
 		set_camera(2)
 		message = "Mixed Actor Workshop ready. Play, inspect an NPC, Pilot inspected, then Hand back. Paint remains available."
+	if not _pending_sandbox_demo.is_empty():
+		_name.text = "actor-sandbox-" + _pending_sandbox_demo
+		_camera.select(2)
+		set_camera(2)
+		message = "%s ready · %d physical actors. Play to grab a part or paint; Pause to place / rotate an assembly." % [_pending_sandbox_demo.capitalize(),applied.actors.size()]
+		_pending_sandbox_demo = ""
+	if not _pending_material_demo.is_empty():
+		var scene := preload("res://scripts/workbench_material_audition_scenes.gd").description(_pending_material_demo)
+		_name.text = "materials-" + _pending_material_demo
+		_camera.select(2)
+		set_camera(2)
+		message = "%s · %s" % [str(scene.get("label","Material audition")),str(scene.get("help",""))]
+		_pending_material_demo = ""
 	if not _pending_ambient_example.is_empty():
 		_name.text = _pending_ambient_example
 		_pending_ambient_example = ""
@@ -1003,6 +1279,9 @@ func installed(candidate: Dictionary) -> void:
 		set_camera(2)
 		message = "Ambient scene ready. Play, paint Oil or Water nearby, inspect decisions, and edit Behaviour profile. Save stores the authored profile; runtime timers restart on reopen."
 	if is_instance_valid(_actor_panel): _actor_panel.refresh(true)
+	if reciprocal_panel != null: reciprocal_panel.native_installed(candidate)
+	if not OS.get_environment("MAT_AUDITION_LAUNCHER_RECEIPT").is_empty():
+		preload("res://tests/support/material_audition_launcher_witness.gd").attach(self)
 
 
 func _material_counts(counts: Dictionary) -> String:
@@ -1287,6 +1566,7 @@ func _save_block_reason() -> String:
 	return ""
 
 func save_setup() -> bool:
+	if actor_interaction != null: actor_interaction.cancel("save_authored_start")
 	var blocked := _save_block_reason()
 	if not blocked.is_empty(): return refuse(blocked)
 	if paint_editor != null and not paint_editor.save_allowed(): return false
@@ -1305,10 +1585,17 @@ func save_setup() -> bool:
 		GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
+	if reciprocal_panel != null:
+		var evidence_error: String = reciprocal_panel.save_evidence(_name.text)
+		if not evidence_error.is_empty(): message=evidence_error;return true
 	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
 		else "Saved starting setup · ") + _name.text
 	if host.simulation_worker.has_failed():
 		message += ". Native owner remains failed; restart the application and Load this start. Failed runtime state was not captured."
+	if material_audition != null:
+		var material_state: Dictionary = material_audition.material_audition_state()
+		if material_state.get("changes_behavior",false):
+			message += ". Material audition profile is separate: save it in Materials Lab and reapply after loading."
 	return true
 
 func load_setup() -> bool:
@@ -1360,6 +1647,8 @@ func finish_art_history() -> void:
 	if paint_editor != null: paint_editor.finish_agent_history()
 
 func art_history_guard() -> String:
+	if reciprocal_panel != null and reciprocal_panel.busy():
+		return "Wait for reciprocal generation before changing World history."
 	return art_batches.history_block_reason() if art_batches != null else ""
 
 # Built-in #361 equipment starts. Each asks the native validator for one of
@@ -1400,6 +1689,7 @@ func _cancel() -> void:
 	if host != null: host.cancel_playable_course_input()
 
 func cancel_stroke() -> void:
+	if actor_interaction != null: actor_interaction.cancel("input_cancelled")
 	if paint_editor != null: paint_editor.cancel_preview()
 	_drag_button = 0
 	_pan = false
@@ -1409,7 +1699,7 @@ func cancel_stroke() -> void:
 func toggle_pause() -> bool:
 	if applied.is_empty() or busy(): return refuse("Wait for the session.")
 	if not host._workbench_frame_error.is_empty(): return refuse(host._workbench_frame_error)
-	if not host.paused: _cancel()
+	_cancel()
 	host.paused = not host.paused
 	# Worker cancellation is immediate. Mirror both edges in the session now,
 	# even when Pause and Play occur between two physics callbacks.
@@ -1542,6 +1832,9 @@ func zoom_by(direction: int, local_anchor: Vector2 = Vector2.INF) -> void:
 	_set_view(origin,host.current_view_size)
 
 func _input(event: InputEvent) -> void:
+	if actor_interaction != null and actor_interaction.global_input(event):
+		get_viewport().set_input_as_handled()
+		return
 	if paint_editor != null and paint_editor.key_input(event):
 		get_viewport().set_input_as_handled()
 		return
@@ -1638,6 +1931,12 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
+	# An external reciprocal job owns this source until it settles, including
+	# when its dock is hidden or territory painting is switched off. PAINT's
+	# own gesture routing remains unchanged when that separate job is idle.
+	if reciprocal_panel != null and reciprocal_panel.busy(): return
+	if reciprocal_panel != null and reciprocal_panel.world_input(event): return
+	if actor_interaction != null and actor_interaction.world_input(event): return
 	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return
 	if event is InputEventMouseButton:
@@ -1684,6 +1983,7 @@ func update_camera(presentation: Dictionary = {}) -> void:
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	if actor_interaction != null: actor_interaction.poll()
 	if _ambient_overlay_id > 0 and is_instance_valid(_ambient_overlay):
 		var control: Dictionary = host.physical_actor_session.workbench_control(_ambient_overlay_id) if host.physical_actor_session != null else {}
 		_ambient_overlay.present(control.get("diagnostics", {}), host.camera_origin.floor(), host.current_view_size, host.view_content_rect())
@@ -1703,8 +2003,10 @@ func _process(_delta: float) -> void:
 		_pending_retain_generated = false
 		_pending_water_comparison = ""
 		_pending_staged_liquid_selection.clear()
+		_pending_material_demo = ""
 		_pending_pilot_id = -1
 		_pending_actor_workshop = false
+		_pending_sandbox_demo = ""
 		_pending_ambient_example = ""
 		_actor_action = ""
 		_liquid_action = false

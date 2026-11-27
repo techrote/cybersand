@@ -417,7 +417,11 @@ func provider_completion_fixture() -> bool:
 	var decoded: Dictionary = adapter.decode("OpenAI",response)
 	if not check(decoded.error.is_empty(),"deterministic Responses completion decoded"): return false
 	panel.provider.usage = response.usage
-	panel.provider.finished.emit(1,decoded.text,response,decoded.error)
+	# This is a deterministic completion fixture, not an HTTP request. Bind the
+	# emitted response to its current provider generation just as transport does.
+	var provider_request_id: int = panel.provider.serial + 1
+	panel.provider.serial = provider_request_id
+	panel.provider.finished.emit(provider_request_id,decoded.text,response,decoded.error)
 	if not await until(func() -> bool: return settled() and not panel.log_draw,"fixture provider-to-native completion"): return false
 	check(art.result.status=="completed" and art.result.changed==12,"follow-up fixture confirms eleven wall cells and one erasure")
 	check(await capture(Rect2i(220,70,11,1))==PackedInt32Array([58,58,58,58,58,58,58,58,58,58,58]),
@@ -428,8 +432,9 @@ func provider_completion_fixture() -> bool:
 	# Keep the captured request epoch, then Stop before its delayed completion.
 	panel.request_epoch = worker.art_state().epoch
 	panel.stop_all("Combined fixture late-response fence")
+	check(panel.provider.serial != provider_request_id,"Stop retires the provider response generation")
 	var recorded: Array = bench.applied.edits.duplicate(true)
-	panel.provider.finished.emit(2,'[{"shape":"pixels","points":[[232,70]],"material":58}]',response,"")
+	panel.provider.finished.emit(provider_request_id,'[{"shape":"pixels","points":[[232,70]],"material":58}]',response,"")
 	for i: int in 4: await process_frame
 	check(not art.active and bench.applied.edits==recorded,"late provider completion after Stop cannot enter authored history")
 	check(await capture(Rect2i(232,70,1,1))==PackedInt32Array([0]),"late provider completion performs no native write")
@@ -733,6 +738,7 @@ func reopen() -> void:
 	# This donor fixture must not require the retired cross-session restore.
 	prior_art_audit = expected.get("closed_art_audit",{})
 	if not check(not prior_art_audit.is_empty()
+		and str(prior_art_audit.get("path","")).begins_with("user://art-traffic/")
 		and str(prior_art_audit.get("sha256","")).length()==64
 		and FileAccess.get_sha256(str(prior_art_audit.get("path","")))==str(prior_art_audit.get("sha256","")),
 		"prior process Art audit survives orderly shutdown byte-for-byte"): return

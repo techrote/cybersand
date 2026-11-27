@@ -1,0 +1,484 @@
+{
+  "candidate_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+  "cases": [
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--editor",
+        "--quit"
+      ],
+      "elapsed_seconds": 10.4849999999999,
+      "exit_code": 0,
+      "log_sha256": "832805207fc0f4e3e6df640ab6d0a2177b45a644fb0826b9c5c961210a3e37d1",
+      "name": "import",
+      "process_id": 3712,
+      "status": "passed",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-method",
+        "gl_compatibility",
+        "--max-fps",
+        "30",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_material_audition.gd"
+      ],
+      "completion": {
+        "checks": 4002,
+        "display": "Windows",
+        "failures": 0,
+        "frames": [
+          {
+            "file": "current-scene-density.png",
+            "height": 689,
+            "name": "current-scene-density",
+            "sha256": "c0c91ebca36d7514ab81fd6f08e06df889898b0b02fedd5c9be2b087a23c5e80",
+            "width": 1008
+          },
+          {
+            "file": "density-sorter.png",
+            "height": 900,
+            "name": "density-sorter",
+            "sha256": "14a7bed9d19d1cfaa479a690847d1ea25d575bf058baf7cb087d27afe9bfb20c",
+            "width": 1600
+          },
+          {
+            "file": "viscosity-channel.png",
+            "height": 900,
+            "name": "viscosity-channel",
+            "sha256": "191741554c166ab19ee0a98902d2a9ea02cf441edeae870a9f0e3fc37c9a39a1",
+            "width": 1600
+          },
+          {
+            "file": "reaction-contact.png",
+            "height": 900,
+            "name": "reaction-contact",
+            "sha256": "902ebccdda8fc762bd501d46a274d461f459c1f2ad7461c5281e4f23e719bb12",
+            "width": 1600
+          },
+          {
+            "file": "industrial-loop.png",
+            "height": 900,
+            "name": "industrial-loop",
+            "sha256": "619b270984bf06173cae83725ce0335eaac83a47a5ad8f9cf76dde55abf4c14e",
+            "width": 1600
+          },
+          {
+            "file": "current-scene-1000x650.png",
+            "height": 650,
+            "name": "current-scene-1000x650",
+            "sha256": "b91f9e9427c601f3389ab8e4ab78f02e1450022caa29dd225960fb890a3ed2e1",
+            "width": 1000
+          },
+          {
+            "file": "current-scene-1280x720.png",
+            "height": 720,
+            "name": "current-scene-1280x720",
+            "sha256": "996b92a3facdab93b1209a324936586cc1584284717f05d2ffec88e8a804b0ed",
+            "width": 1280
+          }
+        ],
+        "godot": "4.7-stable (official)",
+        "native_witnesses": [
+          {
+            "density_1600_sinks": true,
+            "density_3000_sinks": true,
+            "density_500_sinks": false,
+            "kind": "density",
+            "reverted_sinks": true,
+            "ticks": 16,
+            "workers": 1,
+            "world_id": "19"
+          },
+          {
+            "bays": 96,
+            "kind": "viscosity",
+            "material_id": 20,
+            "moved_bays": [
+              96,
+              46,
+              0
+            ],
+            "ticks": 1,
+            "values": [
+              0,
+              128,
+              255
+            ],
+            "workers": 1
+          },
+          {
+            "bays": 96,
+            "completed_brine_pairs": [
+              1,
+              41,
+              96
+            ],
+            "kind": "reaction",
+            "slot": 2,
+            "thresholds": [
+              0,
+              63,
+              255
+            ],
+            "ticks": 4,
+            "witness": "actual stored products; native standalone test independently checks pair event ledger",
+            "workers": 1
+          },
+          {
+            "density_1600_sinks": true,
+            "density_3000_sinks": true,
+            "density_500_sinks": false,
+            "kind": "density",
+            "reverted_sinks": true,
+            "ticks": 16,
+            "workers": 4,
+            "world_id": "49"
+          },
+          {
+            "bays": 96,
+            "kind": "viscosity",
+            "material_id": 20,
+            "moved_bays": [
+              96,
+              46,
+              0
+            ],
+            "ticks": 1,
+            "values": [
+              0,
+              128,
+              255
+            ],
+            "workers": 4
+          },
+          {
+            "bays": 96,
+            "completed_brine_pairs": [
+              1,
+              41,
+              96
+            ],
+            "kind": "reaction",
+            "slot": 2,
+            "thresholds": [
+              0,
+              63,
+              255
+            ],
+            "ticks": 4,
+            "witness": "actual stored products; native standalone test independently checks pair event ledger",
+            "workers": 4
+          },
+          {
+            "backend": "actual native World, synchronous existing worker mailbox; no worker thread in this fixture",
+            "cancelled_before_commit": true,
+            "kind": "owner-adversaries",
+            "replacement_retired_pending": true,
+            "stale_and_session_refused": true
+          },
+          {
+            "authored_rectangles": 43,
+            "extent": [
+              512,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 41,
+            "scene_id": "density-sorter"
+          },
+          {
+            "authored_rectangles": 54,
+            "extent": [
+              512,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 32,
+            "scene_id": "viscosity-channel"
+          },
+          {
+            "authored_rectangles": 27,
+            "extent": [
+              512,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 28,
+            "scene_id": "reaction-contact"
+          },
+          {
+            "authored_rectangles": 82,
+            "extent": [
+              1024,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 17,
+            "scene_id": "industrial-loop"
+          },
+          {
+            "configuration_revert_preserves_cells": true,
+            "graphical": true,
+            "kind": "ordinary-workbench",
+            "native_apply_while_running": true,
+            "ordinary_paint_save_reopen": true,
+            "original_world_id": "82",
+            "separate_profile_saved_and_reloaded": true
+          }
+        ],
+        "status": "passed"
+      },
+      "elapsed_seconds": 87.625,
+      "exit_code": 0,
+      "log_sha256": "0d4846765f1d3d4de3a9985084db8275b0517629de9de9f720a3ce0698a74524",
+      "name": "test_material_audition",
+      "process_id": 5752,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_authored_scenes.gd"
+      ],
+      "completion": {
+        "checks": 111,
+        "failures": 0,
+        "native_file_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+        "trials": 12
+      },
+      "elapsed_seconds": 54.09399999999994,
+      "exit_code": 0,
+      "log_sha256": "9637da9cb2cee53be1d45d05fad48c74606a6b16586b886fb825e80ca58e50e1",
+      "name": "test_material_audition_authored_scenes",
+      "process_id": 6064,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_profile.gd"
+      ],
+      "completion": {
+        "checks": 45,
+        "failures": 0
+      },
+      "elapsed_seconds": 0.7659999999999627,
+      "exit_code": 0,
+      "log_sha256": "c3ef97d216f31e154cbab8aa9dbceafc0b4769f76654399e0223a2251c865525",
+      "name": "test_material_audition_profile",
+      "process_id": 7396,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_ui_contract.gd"
+      ],
+      "completion": {
+        "checks": 127,
+        "failures": 0
+      },
+      "elapsed_seconds": 1.5,
+      "exit_code": 0,
+      "log_sha256": "bad71e9ac538b43e62967c90e48288cebfda2bb72126c18fac3a2151ecf7b4e0",
+      "name": "test_material_audition_ui_contract",
+      "process_id": 4604,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_layout.gd"
+      ],
+      "completion": {
+        "checks": 23,
+        "failures": 0
+      },
+      "elapsed_seconds": 1.3120000000000118,
+      "exit_code": 0,
+      "log_sha256": "5648d78f4d9e2f784826c77c7de76927cd933a5934e3bf05920600e7e016163f",
+      "name": "test_material_audition_layout",
+      "process_id": 6944,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_ui.gd",
+        "--",
+        "--workbench-mount-only"
+      ],
+      "completion": {
+        "checks": 24,
+        "failures": 0
+      },
+      "elapsed_seconds": 6.532000000000039,
+      "exit_code": 0,
+      "log_sha256": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+      "name": "test_material_lab_ui",
+      "process_id": 2376,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_catalogue.gd"
+      ],
+      "completion": {
+        "checks": 1348,
+        "failures": 0
+      },
+      "elapsed_seconds": 1.219000000000051,
+      "exit_code": 0,
+      "log_sha256": "95e40220dac8dae464e6da3ba5992be11ba18095e8896a7d8cbd8a34e9646186",
+      "name": "test_material_lab_catalogue",
+      "process_id": 6376,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_experiment.gd"
+      ],
+      "completion": {
+        "checks": 141,
+        "failures": 0
+      },
+      "elapsed_seconds": 20.640999999999963,
+      "exit_code": 0,
+      "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+      "name": "test_material_lab_experiment",
+      "process_id": 2848,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_diagnostics.gd"
+      ],
+      "completion": {
+        "checks": 193,
+        "failures": 0
+      },
+      "elapsed_seconds": 5.5,
+      "exit_code": 0,
+      "log_sha256": "1fe74736cba3226a0e4a2e2e5f54a82850937dddc33cb28f152f2005324e2bd2",
+      "name": "test_material_lab_diagnostics",
+      "process_id": 5480,
+      "status": "passed",
+      "timeout_seconds": 1200
+    }
+  ],
+  "files_sha256": {
+    "authored-scenes/authored-scene-readback.json": "3c9fd09d1a929788f6e8cbb3b507a695f29430441f69caaaa7f0326bf1eb91ba",
+    "frames/current-scene-1000x650.png": "b91f9e9427c601f3389ab8e4ab78f02e1450022caa29dd225960fb890a3ed2e1",
+    "frames/current-scene-1280x720.png": "996b92a3facdab93b1209a324936586cc1584284717f05d2ffec88e8a804b0ed",
+    "frames/current-scene-density.png": "c0c91ebca36d7514ab81fd6f08e06df889898b0b02fedd5c9be2b087a23c5e80",
+    "frames/density-sorter.png": "14a7bed9d19d1cfaa479a690847d1ea25d575bf058baf7cb087d27afe9bfb20c",
+    "frames/industrial-loop.png": "619b270984bf06173cae83725ce0335eaac83a47a5ad8f9cf76dde55abf4c14e",
+    "frames/native-readback.json": "cb2d32151c61e36618d4d23e89acd989d005bb9edd902c77086aeb8b62dd53ee",
+    "frames/reaction-contact.png": "902ebccdda8fc762bd501d46a274d461f459c1f2ad7461c5281e4f23e719bb12",
+    "frames/viscosity-channel.png": "191741554c166ab19ee0a98902d2a9ea02cf441edeae870a9f0e3fc37c9a39a1",
+    "import.log": "832805207fc0f4e3e6df640ab6d0a2177b45a644fb0826b9c5c961210a3e37d1",
+    "import.receipt.json": "53b7b0275b7035928b3f85a6d7fcb53b1c3ac43026185ab0a948298932e9cf3e",
+    "test_material_audition.log": "0d4846765f1d3d4de3a9985084db8275b0517629de9de9f720a3ce0698a74524",
+    "test_material_audition.receipt.json": "25055b0ee7ccd77106b66066e47b201cbd97391b06a6fdf98b69e80e915ed950",
+    "test_material_audition_authored_scenes.log": "9637da9cb2cee53be1d45d05fad48c74606a6b16586b886fb825e80ca58e50e1",
+    "test_material_audition_authored_scenes.receipt.json": "2cf4c09b448f1bdd5359c9c69a765a9408b323b91062c36099a371fa00e222c7",
+    "test_material_audition_layout.log": "5648d78f4d9e2f784826c77c7de76927cd933a5934e3bf05920600e7e016163f",
+    "test_material_audition_layout.receipt.json": "5c644ea4d56caa5e049ed91093c27af805383d137a2390438f07c5896afc62bd",
+    "test_material_audition_profile.log": "c3ef97d216f31e154cbab8aa9dbceafc0b4769f76654399e0223a2251c865525",
+    "test_material_audition_profile.receipt.json": "2c0c19f455a6cd887a96c39789b2b976b527db013343b3192cd8d6b7811913a1",
+    "test_material_audition_ui_contract.log": "bad71e9ac538b43e62967c90e48288cebfda2bb72126c18fac3a2151ecf7b4e0",
+    "test_material_audition_ui_contract.receipt.json": "3dad79ea9716f8f2275fa6661b726bb3409e63eaae9e6fed6f174f5aea21df8f",
+    "test_material_lab_catalogue.log": "95e40220dac8dae464e6da3ba5992be11ba18095e8896a7d8cbd8a34e9646186",
+    "test_material_lab_catalogue.receipt.json": "9c5d24b9618d7a4260d29995241ca3d1a4ecb6ebdf6f882de8473db36987e8f4",
+    "test_material_lab_diagnostics.log": "1fe74736cba3226a0e4a2e2e5f54a82850937dddc33cb28f152f2005324e2bd2",
+    "test_material_lab_diagnostics.receipt.json": "09ab0b06f8e23c007d2ce276cea2d55186f96f45f58ba001bbf5c66a143e7aa9",
+    "test_material_lab_experiment.log": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+    "test_material_lab_experiment.receipt.json": "78cc4a1e08e713248dc8d9f21da1e714807895f19f5921da81e1b53ddb1017ca",
+    "test_material_lab_ui.log": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+    "test_material_lab_ui.receipt.json": "8adb5c420ae21fefcedb7b798aebb070074bedd4bd99d3dcd9d4e6b77522937f"
+  },
+  "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "graphical": true,
+  "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+  "platform": "windows",
+  "platform_detail": "Windows-2022Server-10.0.20348-SP0",
+  "schema": "cybersand.material-audition.execution",
+  "schema_version": 1,
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "passed"
+}

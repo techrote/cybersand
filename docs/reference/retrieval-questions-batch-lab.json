@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-21",
+  "scope": "Additive WORLD-STEER-BATCH-001 Draft/HOLD questions; frozen evaluation unchanged.",
+  "questions": [
+    {
+      "id": "BATCH-LAB-01",
+      "query": "Are the sixteen Batch Lab tiles real isolated native construction attempts?",
+      "canonical": [
+        "operations/world-steer-batch-lab.md"
+      ],
+      "facts": [
+        "Each active attempt uses the existing worker and its own native World; padding is not the isolation boundary.",
+        "The static M0\u2013M2 material prototype preserves material identities and does not advance dynamic physics.",
+        "Queued operations require native completion receipts before being counted as applied."
+      ],
+      "sources": [
+        "operations/world-steer-batch-lab.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "BATCH-LAB-02",
+      "query": "Do Batch Lab P0 through P3 prove which model or prompt builds better architecture?",
+      "canonical": [
+        "operations/world-steer-batch-lab.md"
+      ],
+      "facts": [
+        "Matched deterministic controls demonstrate construction and measurement, not model or prompt quality.",
+        "P2/P3 deliver source-grounded text cards; all variants share the same supported tool capabilities.",
+        "Real model comparisons, held-out quality gains and human preferences require separately executed evidence."
+      ],
+      "sources": [
+        "operations/world-steer-batch-lab.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "BATCH-LAB-03",
+      "query": "How do I run the Windows Batch Lab evaluator, stop it and retain reproducible results?",
+      "canonical": [
+        "operations/world-steer-batch-lab.md"
+      ],
+      "facts": [
+        "Extract the complete source-matched evaluator, verify the checksum and launch Open Workbench.cmd.",
+        "Open optional Batch Lab, run 2x2 or4x4 examples, inspect and compare actual native results, Stop then wait for receipts.",
+        "Save/Open retains attempts; Replay uses source/program without inference; physical Windows11/NVIDIA acceptance is separate."
+      ],
+      "sources": [
+        "operations/world-steer-batch-lab.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

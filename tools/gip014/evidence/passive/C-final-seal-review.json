@@ -1,0 +1,200 @@
+{
+  "schema": "cybersand-goblin-C-final-seal-receipt-review-v1",
+  "status": "pass",
+  "checks": {
+    "one_seal_result": true,
+    "runtime_source": true,
+    "phase1_source": true,
+    "stage_binding": true,
+    "results_binding": true,
+    "driver_binding": true,
+    "source_clean": true,
+    "separate_inner_archive": true,
+    "member_count": true,
+    "member_custody": true,
+    "index_digest": true,
+    "bounded_inputs": true,
+    "builder_success": true,
+    "builder_bounds": true,
+    "builder_no_survivors": true,
+    "outer_success": true,
+    "outer_bounds": true,
+    "outer_no_survivors": true,
+    "resource_fence_clear": true,
+    "no_game_or_reader_reruns": true,
+    "no_false_Library_save": true,
+    "missing_linux_body_scope": true,
+    "large_wrapper_metadata": true,
+    "receipt_artifact_metadata": true,
+    "actual_job_log_exact": true,
+    "activated_snapshot_manifest": true
+  },
+  "total_checks": 26,
+  "review_scope": "Independent read-only review of exact source-bound seal and owned-process receipts plus official GitHub artifact metadata. No second large-archive download, no builder/readers/native execution. The full post-write member proof is the unchanged reviewed builder's retained execution receipt.",
+  "run_id": 45582958798,
+  "job_id": 139097304609,
+  "activated_manifest": {
+    "status": "pass",
+    "gitBlob": "d999352b245f42f8837677b121fe868e2f78bed6",
+    "bytes": 8772,
+    "sha256": "e288e93745a067b70e63309851c93023afce0ec2104185e84a0249814e4c1121",
+    "documents": 14,
+    "totalDocumentBytes": 1260508,
+    "source_ids_distinct": true
+  },
+  "actual_seal_result": {
+    "archive": {
+      "all_original_bytes_preserved": true,
+      "bytes": 666742658,
+      "elapsed_seconds": 2.296,
+      "input_bytes": 667245516,
+      "manifest_sha256": "e12b4f5625671020e81ae5b547b0f0874ab5034c856e2d314f848a198553df49",
+      "member_count": 29,
+      "original_artifact_count": 13,
+      "output": "/home/agent/goblin002/deliverables/CyberSand-goblin-campaign-evidence.zip",
+      "post_write_member_hashes_verified": true,
+      "review_count": 14,
+      "schema": "cybersand-goblin-durable-evidence-archive-receipt-v1",
+      "sha256": "0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f",
+      "status": "pass"
+    },
+    "builder_process": {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-B",
+        "/home/agent/goblin002/evidence/durable-data-archive/build_archive.py"
+      ],
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 591,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 2.357,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 591,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "734bfc892f30d10fb1f86b9d7f96f4fa83cf3aa7751bcee0285e0afd63824f26",
+      "memory_limit_mib": 512,
+      "observed_processes": 1,
+      "peak_tree_rss_bytes": 21237760,
+      "process_exit_status": "pass",
+      "resource_samples": 23,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 180
+    },
+    "driver": {
+      "driver_commit": "f3324f462091d1778b9472ebcafbab35372e6411",
+      "driver_tree": "23955d51fbe0f570fed1589c5f2a82ff5e36eb98",
+      "qualified_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+      "qualified_dirty": false,
+      "qualified_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+    },
+    "library_upload_performed": false,
+    "missing_historical_bytes": {
+      "local_predecessor_download_attempt": "Transport lost after dispatch. Completion and survivors are unknown. The separately retained interruption record remains unchanged; this hosted attempt has its own receipts.",
+      "predecessor_six_retained_linux_tape_bodies": "Unavailable after localhost outage. The six bodies were not included in a durable blob; exact metadata/digests survive, but no reconstruction or equivalent Windows substitution is claimed.",
+      "unavailable_passive_zip_bytes": 1343584,
+      "unavailable_passive_zip_sha256": "75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc"
+    },
+    "no_new_gameplay": true,
+    "original_artifact_redownloads": 0,
+    "phase1_artifact_id": 15005776720,
+    "phase1_sha256": "8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9",
+    "phase1_source": "2a627a3131be72fcb876acec0d0b848a7e42c3e3",
+    "qualified_source": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "qualified_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+    "reader_reruns": 0,
+    "results_commit": "e8df89b48757096428ee6a9d12e55c7e417c10d5",
+    "results_tree": "c5c6f89c377d78843c919101671aff1c2001f6c0",
+    "schema": "cybersand-goblin-passive-phase2-result-v1",
+    "status": "pass"
+  },
+  "actual_supervisor": {
+    "process": {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-B",
+        "/home/runner/work/cybersand/cybersand/driver/tools/gip014/passive_seal.py",
+        "--worker"
+      ],
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 2975,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 30.148,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 2975,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "415a20ab7fcb44ed623f715c96bb39cd9debf1e1bc043ea05a222a2ce5e95d29",
+      "memory_limit_mib": 1536,
+      "observed_processes": 2,
+      "peak_tree_rss_bytes": 58462208,
+      "process_exit_status": "pass",
+      "resource_samples": 294,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 1200
+    },
+    "resource_fence": {}
+  },
+  "official_artifact_metadata": [
+    {
+      "id": 15008615196,
+      "name": "gip014-goblin-002-passive-evidence-archive-f3324f462091d1778b9472ebcafbab35372e6411-1",
+      "size_in_bytes": 666742848,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15008615196",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15008615196/zip",
+      "expired": false,
+      "created_at": "2026-11-25T09:12:35Z",
+      "expires_at": "2026-12-25T09:12:25Z",
+      "updated_at": "2026-11-25T09:12:35Z",
+      "digest": "sha256:104e680cf4e85f445a549886a0b847efac288e9e30535e508c5ef2ac67e2bbce",
+      "workflow_run": {
+        "id": 45582958798,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/gip014-goblin-002-20261125",
+        "head_sha": "f3324f462091d1778b9472ebcafbab35372e6411"
+      }
+    },
+    {
+      "id": 15006703996,
+      "name": "gip014-goblin-002-passive-seal-receipts-f3324f462091d1778b9472ebcafbab35372e6411-1",
+      "size_in_bytes": 22862,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15006703996",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15006703996/zip",
+      "expired": false,
+      "created_at": "2026-11-25T09:12:37Z",
+      "expires_at": "2026-12-25T09:12:36Z",
+      "updated_at": "2026-11-25T09:12:37Z",
+      "digest": "sha256:4639a253a2af5192f185eb73b3845568fe813758708848fa4b694555b2402e1a",
+      "workflow_run": {
+        "id": 45582958798,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "experiment/gip014-goblin-002-20261125",
+        "head_sha": "f3324f462091d1778b9472ebcafbab35372e6411"
+      }
+    }
+  ],
+  "job_log": {
+    "git_blob": "4a1102beef673b8fbd6f6229f0ec2b80a712e132",
+    "bytes": 261147,
+    "sha256": "3bb4bb866e07209a1c5ec5831454db8a37e134ae07aa7f4cbe6a497d4ec53d7b"
+  },
+  "owner_archive": {
+    "filename": "CyberSand-goblin-campaign-evidence.zip",
+    "bytes": 666742658,
+    "sha256": "0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f",
+    "contents": "13 unchanged original ZIPs,14 review inputs, index and README. The qualified Windows evaluator remains a separate deliverable."
+  },
+  "delivery_limits": [
+    "This archive is available as the verified GitHub Actions artifact wrapper, whose identity differs from the inner owner ZIP.",
+    "No supported local executor was available to save this new evidence archive through the persistent file workflow; no Library upload is claimed.",
+    "The original predecessor Windows artifacts are included, but six previously local Linux tape bodies remain unavailable. Their original recovery metadata/digests are retained without reconstruction.",
+    "Exact RESULTS documentation is pre-seal e8df; any later DELIVERY record and outer-archive hash are intentionally outside that snapshot.",
+    "All game qualification remains exact6f and Draft/HOLD; passive packaging adds no production defect, native action, default activation or physical NVIDIA acceptance."
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "source_commit": "9278de5757b29b9df40a089e11a4daef744990f7",
+  "scope": "two real30s local integration shards, excluded from hosted194",
+  "files": {
+    "custody.json.gz": {
+      "sha256": "acc4b0ceaf199ba34390ff8c341d4d52d86311e2605c9abbeb516d944cbfaa9a",
+      "bytes": 102483,
+      "original_sha256": "45c733e85af4ed7418339c44cfd4e689a6a3436b97a971b59aa8c60481cae91c",
+      "original_bytes": 249972,
+      "gzip": true
+    },
+    "preflight-receipt.json": {
+      "sha256": "3773b3cd6d7e0c044bd49306692dda4ef560fcb9afe3b6e900a2707af74c5ec5",
+      "bytes": 7126,
+      "original_sha256": "3773b3cd6d7e0c044bd49306692dda4ef560fcb9afe3b6e900a2707af74c5ec5",
+      "original_bytes": 7126,
+      "gzip": false
+    },
+    "driver.py": {
+      "sha256": "c0e405dcf0ec1a7ddb89ce117bde01c0d2aca45d463e5df6afaa683c1797f337",
+      "bytes": 2269,
+      "original_sha256": "c0e405dcf0ec1a7ddb89ce117bde01c0d2aca45d463e5df6afaa683c1797f337",
+      "original_bytes": 2269,
+      "gzip": false
+    },
+    "driver.log": {
+      "sha256": "b81eac95c50f5b6ea7992f01795cfedd256935c34e284d53df762e874dad9d80",
+      "bytes": 5650,
+      "original_sha256": "b81eac95c50f5b6ea7992f01795cfedd256935c34e284d53df762e874dad9d80",
+      "original_bytes": 5650,
+      "gzip": false
+    },
+    "registry-report.json.gz": {
+      "sha256": "80c64a55cd050ebfee31495f23c43f6a623f39d50732b71a582642f99c47f1cc",
+      "bytes": 3456,
+      "original_sha256": "bc878d880fe38b2efdb6b46bb8c75315d2894cf951b1046845e04c85634729d3",
+      "original_bytes": 37558,
+      "gzip": true
+    },
+    "registry-console.log": {
+      "sha256": "cd595a7cc947525db28428b3ea5ee3e0ec1aa7f0bfa6bb9aac800709da67c770",
+      "bytes": 347,
+      "original_sha256": "cd595a7cc947525db28428b3ea5ee3e0ec1aa7f0bfa6bb9aac800709da67c770",
+      "original_bytes": 347,
+      "gzip": false
+    },
+    "registry-execution.json": {
+      "sha256": "0093811f86997c4410e2d0baa0399385d43644e0895a9ef587cf913f69640f4b",
+      "bytes": 749,
+      "original_sha256": "0093811f86997c4410e2d0baa0399385d43644e0895a9ef587cf913f69640f4b",
+      "original_bytes": 749,
+      "gzip": false
+    },
+    "runner-report.json.gz": {
+      "sha256": "57061c282bc910bcdf611f98a0c30ccbe303426328562f7b176ece1641cd2af2",
+      "bytes": 41280,
+      "original_sha256": "a799d9db8b3a51d444976669da29fef1bd4754435ca795b3f422f27877d71c70",
+      "original_bytes": 477668,
+      "gzip": true
+    },
+    "runner-console.log": {
+      "sha256": "8764069a8d19c0484eba5690e3b52ff0c7fb75b06647b0b18a40aa0cb2af84e2",
+      "bytes": 804,
+      "original_sha256": "8764069a8d19c0484eba5690e3b52ff0c7fb75b06647b0b18a40aa0cb2af84e2",
+      "original_bytes": 804,
+      "gzip": false
+    },
+    "runner-execution.json": {
+      "sha256": "3c258234b32e4a6000df86e30015a581bde7a320bb066f542c4839940a91eefd",
+      "bytes": 786,
+      "original_sha256": "3c258234b32e4a6000df86e30015a581bde7a320bb066f542c4839940a91eefd",
+      "original_bytes": 786,
+      "gzip": false
+    },
+    "runner-analysis.json": {
+      "sha256": "371f815dd32d46a8fd0416a4b48d258595d5621624efdd6a6b66faefb1711592",
+      "bytes": 9189,
+      "original_sha256": "371f815dd32d46a8fd0416a4b48d258595d5621624efdd6a6b66faefb1711592",
+      "original_bytes": 9189,
+      "gzip": false
+    },
+    "flyer-report.json.gz": {
+      "sha256": "256809f95649878ebfc90177bcfb06456086f1c8d5832457daec74f465508640",
+      "bytes": 46795,
+      "original_sha256": "4bbf864458ba03a0da7a5bdf428bccb7c2fe26a6189a5e830c080d1b5ab80860",
+      "original_bytes": 484254,
+      "gzip": true
+    },
+    "flyer-console.log": {
+      "sha256": "b657e46084e6380106c3599f00f8580969b975915b83b6d908d50c1637990940",
+      "bytes": 825,
+      "original_sha256": "b657e46084e6380106c3599f00f8580969b975915b83b6d908d50c1637990940",
+      "original_bytes": 825,
+      "gzip": false
+    },
+    "flyer-execution.json": {
+      "sha256": "66ab85c45af869d609718ca033d786df3f86f444af1b84daeb2ad810812b119c",
+      "bytes": 790,
+      "original_sha256": "66ab85c45af869d609718ca033d786df3f86f444af1b84daeb2ad810812b119c",
+      "original_bytes": 790,
+      "gzip": false
+    },
+    "flyer-analysis.json": {
+      "sha256": "917b3778ceec055250efc7dc03395b65503c0ab1755b65e0adced1bc81b9a3bd",
+      "bytes": 9256,
+      "original_sha256": "917b3778ceec055250efc7dc03395b65503c0ab1755b65e0adced1bc81b9a3bd",
+      "original_bytes": 9256,
+      "gzip": false
+    }
+  }
+}

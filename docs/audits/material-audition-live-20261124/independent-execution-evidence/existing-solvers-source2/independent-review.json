@@ -1,0 +1,1072 @@
+{
+  "assertions": 16023,
+  "candidate_manifest_sha256": "3b794749b3758e9d2dda3a0368a78d46a4c8ca05ed3130a6d74b81e9a6661150",
+  "cases": [
+    {
+      "completion": {
+        "checks": 102,
+        "failures": 0
+      },
+      "log_sha256": "78239aa530dc5985e35934915585ae7a6833aab402b7640a42c200e8524b3863",
+      "name": "test_workbench_material_baseline",
+      "process_receipt_sha256": "08c6a627a403b5a99d32deca7574ca09e4de1b413f6171ffb9547acd79a7d4fd",
+      "status": "passed",
+      "test_sha256": "ddef43e2ed6f49843c05e97b90ad230588e5225bd1cf7336de6c287ee87acb12"
+    },
+    {
+      "completion": {
+        "checks": 642,
+        "completed": {
+          "cysd1_defaults": true,
+          "default_readback": true,
+          "parity_checkpoints": 5,
+          "refusals": 11,
+          "validation": true,
+          "whole_cell_admission_parity": true,
+          "whole_cell_overlay_refusals": true
+        },
+        "failures": 0
+      },
+      "log_sha256": "8058faf919d2b9e9edfbc95bf67155da2b4754d3367c35797355eb919afc90c5",
+      "name": "test_liquid_solver_policy",
+      "process_receipt_sha256": "44cb5624e54f7db2b135e81cad6f4398a6861a63721babeebbf666c923bd602b",
+      "status": "passed",
+      "test_sha256": "5ae03dc5034df88c0018914ef7acd668fd9d05e55f0c3c6fce93ed07064f2df2"
+    },
+    {
+      "completion": {
+        "checks": 29,
+        "completed": {
+          "explicit": true,
+          "initial": true,
+          "isolation": true,
+          "no_request": true,
+          "normalized": true,
+          "refusals": 3
+        },
+        "failures": 0
+      },
+      "log_sha256": "c07e6833ca4fb6aa90a64060e8aeb69f6fd8eded9168fb70fdacd6b0c24981d5",
+      "name": "test_liquid_policy_worker",
+      "process_receipt_sha256": "e8fa9638df01a478bde07484f3099ced64b9d355f077013dc8ea21ed9dce2a43",
+      "status": "passed",
+      "test_sha256": "560809f6f91e56e6ea7e1ab1f002444c55592d894c58935ff392479c227288b7"
+    },
+    {
+      "completion": {
+        "checks": 10192,
+        "completed": {
+          "cyps_continuation": true,
+          "default_preservation": true,
+          "instance_readback": true,
+          "mixed_workers": true,
+          "oracle_parameters": true,
+          "radius_transaction": true
+        },
+        "failures": 0
+      },
+      "log_sha256": "965d5f5d860f0c03a827516fb008e8599666d0937fb691edc0d7c4100d7d2591",
+      "name": "test_lcb_inertial_adapter",
+      "process_receipt_sha256": "0df148992094f6edaf4788962934c26e186332b485d2a4a1bbdc423336270c50",
+      "status": "passed",
+      "test_sha256": "77d18392e6148e305ee81e0569887a99de8444e87615b6a372778d801126639a"
+    },
+    {
+      "completion": {
+        "checks": 4986,
+        "completed": {
+          "fixtures": true,
+          "mass_readback": true,
+          "native_configuration": true,
+          "needle_contact": true,
+          "rapier_contact": true,
+          "region_pause": true,
+          "save_refusal": true,
+          "solver_comparison": true,
+          "state_identity": true
+        },
+        "failures": 0
+      },
+      "log_sha256": "8ccf4aba07d658a174c4fc92259da71c427ba6aec25695a71c6d7fe07633d6e0",
+      "name": "test_wave_flow",
+      "process_receipt_sha256": "a35740ebee742cd2b737e0c33b620fba0221d5ab49342366b7715e5bced8db04",
+      "status": "passed",
+      "test_sha256": "dc9b968ae834e21f06306eaa3cd85b50fbc1dee991e0829be9ab0ddac26e8d16"
+    },
+    {
+      "completion": {
+        "assertions": 72,
+        "case": "WORKBENCH_001 shared physics",
+        "failures": [],
+        "results": [
+          {
+            "age_drops": 0,
+            "arrivals": 5,
+            "barrel_end": "(340.0932, 254.0002)",
+            "burial_grains": {
+              "left": 57,
+              "overhead": 68,
+              "right": 41,
+              "under": 89
+            },
+            "case": "Sand burial",
+            "delivered": 3.44956803321838,
+            "delivered_torque": 0.392736337606529,
+            "end": [
+              248.249084472656,
+              230.164947509766
+            ],
+            "force": 31.1201763153076,
+            "granular_torque": 0.360360027891203,
+            "landed_y": 235.916000366211,
+            "max_rotation": 0.180542424321175,
+            "max_y": 236.050247192383,
+            "min_y": 220.0,
+            "native_frame": true,
+            "native_ticks": 275,
+            "normal": 3.4485292048812,
+            "source": {
+              "armed": true,
+              "attempted": 408,
+              "blocked": 4,
+              "burst_queued": false,
+              "inserted": 404,
+              "material": 2,
+              "max_stream_ticks": 600,
+              "origin": "(241, 176)",
+              "stream_enabled": true,
+              "stream_ticks": 78
+            },
+            "torque": 10.6886671975311,
+            "wrench": 3.44956803321838
+          },
+          {
+            "age_drops": 0,
+            "arrivals": 6,
+            "barrel_end": "(340.0932, 254.0002)",
+            "burial_grains": {
+              "left": 57,
+              "overhead": 68,
+              "right": 41,
+              "under": 89
+            },
+            "case": "Dust burial",
+            "delivered": 3.44956803321838,
+            "delivered_torque": 0.443745920300918,
+            "end": [
+              248.173461914062,
+              230.004760742188
+            ],
+            "force": 31.1235580444336,
+            "granular_torque": 0.386048612455789,
+            "landed_y": 235.916000366211,
+            "max_rotation": 0.196578532457352,
+            "max_y": 236.050247192383,
+            "min_y": 220.0,
+            "native_frame": true,
+            "native_ticks": 276,
+            "normal": 0.53843678079581,
+            "source": {
+              "armed": true,
+              "attempted": 408,
+              "blocked": 4,
+              "burst_queued": false,
+              "inserted": 404,
+              "material": 14,
+              "max_stream_ticks": 600,
+              "origin": "(241, 176)",
+              "stream_enabled": true,
+              "stream_ticks": 78
+            },
+            "torque": 10.9756781245972,
+            "wrench": 0.543225407600403
+          },
+          {
+            "after_tip": 6,
+            "after_tip_application_history_retired": true,
+            "after_tip_identity": {
+              "completed_tick": 293,
+              "epoch": 3,
+              "frame_tick": 293,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 406,
+              "render_tick": 293,
+              "revision": 2664,
+              "sample": 294,
+              "sample_tick": 292,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 2664,
+              "uploaded_serial": 406,
+              "world_generation": 5
+            },
+            "after_tip_material": {
+              "above_rim": 0,
+              "below_floor": 3,
+              "cavity": 6,
+              "inside_solid": 4,
+              "mean_x": 359.961538461538,
+              "mean_y": 187.5,
+              "points": [
+                [
+                  379.5,
+                  166.5
+                ],
+                [
+                  379.5,
+                  167.5
+                ],
+                [
+                  379.5,
+                  168.5
+                ],
+                [
+                  380.5,
+                  168.5
+                ],
+                [
+                  381.5,
+                  168.5
+                ],
+                [
+                  380.5,
+                  169.5
+                ],
+                [
+                  381.5,
+                  169.5
+                ],
+                [
+                  382.5,
+                  169.5
+                ],
+                [
+                  380.5,
+                  170.5
+                ],
+                [
+                  381.5,
+                  170.5
+                ],
+                [
+                  294.5,
+                  245.5
+                ],
+                [
+                  293.5,
+                  246.5
+                ],
+                [
+                  284.5,
+                  256.5
+                ]
+              ],
+              "pose": [
+                376.960693359375,
+                160.834167480469,
+                1.21301472187042
+              ],
+              "total": 13
+            },
+            "after_tip_native_tick": 293,
+            "after_tip_sampled_material": {
+              "above_rim": 0,
+              "below_floor": 3,
+              "cavity": 10,
+              "inside_solid": 0,
+              "mean_x": 359.961538461538,
+              "mean_y": 187.5,
+              "points": [
+                [
+                  379.5,
+                  166.5
+                ],
+                [
+                  379.5,
+                  167.5
+                ],
+                [
+                  379.5,
+                  168.5
+                ],
+                [
+                  380.5,
+                  168.5
+                ],
+                [
+                  381.5,
+                  168.5
+                ],
+                [
+                  380.5,
+                  169.5
+                ],
+                [
+                  381.5,
+                  169.5
+                ],
+                [
+                  382.5,
+                  169.5
+                ],
+                [
+                  380.5,
+                  170.5
+                ],
+                [
+                  381.5,
+                  170.5
+                ],
+                [
+                  294.5,
+                  245.5
+                ],
+                [
+                  293.5,
+                  246.5
+                ],
+                [
+                  284.5,
+                  256.5
+                ]
+              ],
+              "pose": [
+                375.96923828125,
+                160.382293701172,
+                1.21268081665039
+              ],
+              "total": 13
+            },
+            "age_drops": 0,
+            "arrivals": 13,
+            "barrel_end": "(340.0, 254.0002)",
+            "carried": 2,
+            "carried_application_history_retired": true,
+            "carried_identity": {
+              "completed_tick": 202,
+              "epoch": 3,
+              "frame_tick": 202,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 341,
+              "render_tick": 202,
+              "revision": 2101,
+              "sample": 203,
+              "sample_tick": 201,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 2101,
+              "uploaded_serial": 341,
+              "world_generation": 5
+            },
+            "carried_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 2,
+              "inside_solid": 12,
+              "mean_x": 295.423076923077,
+              "mean_y": 164.423076923077,
+              "points": [
+                [
+                  292.5,
+                  163.5
+                ],
+                [
+                  293.5,
+                  163.5
+                ],
+                [
+                  292.5,
+                  164.5
+                ],
+                [
+                  293.5,
+                  164.5
+                ],
+                [
+                  294.5,
+                  164.5
+                ],
+                [
+                  295.5,
+                  164.5
+                ],
+                [
+                  296.5,
+                  164.5
+                ],
+                [
+                  297.5,
+                  164.5
+                ],
+                [
+                  298.5,
+                  164.5
+                ],
+                [
+                  299.5,
+                  164.5
+                ],
+                [
+                  300.5,
+                  164.5
+                ],
+                [
+                  301.5,
+                  164.5
+                ],
+                [
+                  284.5,
+                  165.5
+                ]
+              ],
+              "pose": [
+                305.62158203125,
+                164.634460449219,
+                -0.000816564017441124
+              ],
+              "total": 13
+            },
+            "carried_native_tick": 202,
+            "carried_sampled_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 12,
+              "inside_solid": 0,
+              "mean_x": 295.423076923077,
+              "mean_y": 164.423076923077,
+              "points": [
+                [
+                  292.5,
+                  163.5
+                ],
+                [
+                  293.5,
+                  163.5
+                ],
+                [
+                  292.5,
+                  164.5
+                ],
+                [
+                  293.5,
+                  164.5
+                ],
+                [
+                  294.5,
+                  164.5
+                ],
+                [
+                  295.5,
+                  164.5
+                ],
+                [
+                  296.5,
+                  164.5
+                ],
+                [
+                  297.5,
+                  164.5
+                ],
+                [
+                  298.5,
+                  164.5
+                ],
+                [
+                  299.5,
+                  164.5
+                ],
+                [
+                  300.5,
+                  164.5
+                ],
+                [
+                  301.5,
+                  164.5
+                ],
+                [
+                  284.5,
+                  165.5
+                ]
+              ],
+              "pose": [
+                303.282348632812,
+                165.284790039062,
+                -0.000796715496107936
+              ],
+              "total": 13
+            },
+            "carry_x": 60.62158203125,
+            "case": "Scooper native load and tilt",
+            "delivered": 0.519999980926514,
+            "delivered_torque": 1.3,
+            "drawn_pieces": 5,
+            "end": [
+              376.960693359375,
+              160.834167480469
+            ],
+            "force": 23.0,
+            "granular_torque": 1.3,
+            "lateral_start": 13,
+            "lateral_start_application_history_retired": false,
+            "lateral_start_identity": {
+              "completed_tick": 138,
+              "epoch": 3,
+              "frame_tick": 138,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 305,
+              "render_tick": 138,
+              "revision": 1724,
+              "sample": 139,
+              "sample_tick": 137,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 1724,
+              "uploaded_serial": 305,
+              "world_generation": 5
+            },
+            "lateral_start_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 13,
+              "inside_solid": 0,
+              "mean_x": 247.5,
+              "mean_y": 192.5,
+              "points": [
+                [
+                  241.5,
+                  192.5
+                ],
+                [
+                  242.5,
+                  192.5
+                ],
+                [
+                  243.5,
+                  192.5
+                ],
+                [
+                  244.5,
+                  192.5
+                ],
+                [
+                  245.5,
+                  192.5
+                ],
+                [
+                  246.5,
+                  192.5
+                ],
+                [
+                  247.5,
+                  192.5
+                ],
+                [
+                  248.5,
+                  192.5
+                ],
+                [
+                  249.5,
+                  192.5
+                ],
+                [
+                  250.5,
+                  192.5
+                ],
+                [
+                  251.5,
+                  192.5
+                ],
+                [
+                  252.5,
+                  192.5
+                ],
+                [
+                  253.5,
+                  192.5
+                ]
+              ],
+              "pose": [
+                250.7744140625,
+                193.484252929688,
+                0.00118825177196413
+              ],
+              "total": 13
+            },
+            "lateral_start_native_tick": 138,
+            "lateral_start_sampled_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 13,
+              "inside_solid": 0,
+              "mean_x": 247.5,
+              "mean_y": 192.5,
+              "points": [
+                [
+                  241.5,
+                  192.5
+                ],
+                [
+                  242.5,
+                  192.5
+                ],
+                [
+                  243.5,
+                  192.5
+                ],
+                [
+                  244.5,
+                  192.5
+                ],
+                [
+                  245.5,
+                  192.5
+                ],
+                [
+                  246.5,
+                  192.5
+                ],
+                [
+                  247.5,
+                  192.5
+                ],
+                [
+                  248.5,
+                  192.5
+                ],
+                [
+                  249.5,
+                  192.5
+                ],
+                [
+                  250.5,
+                  192.5
+                ],
+                [
+                  251.5,
+                  192.5
+                ],
+                [
+                  252.5,
+                  192.5
+                ],
+                [
+                  253.5,
+                  192.5
+                ]
+              ],
+              "pose": [
+                250.7744140625,
+                193.484252929688,
+                0.00118825177196413
+              ],
+              "total": 13
+            },
+            "lift_distance": 12.890869140625,
+            "lifted": 0,
+            "lifted_application_history_retired": true,
+            "lifted_identity": {
+              "completed_tick": 110,
+              "epoch": 3,
+              "frame_tick": 110,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 287,
+              "render_tick": 110,
+              "revision": 1486,
+              "sample": 111,
+              "sample_tick": 109,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 1486,
+              "uploaded_serial": 287,
+              "world_generation": 5
+            },
+            "lifted_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 0,
+              "inside_solid": 13,
+              "mean_x": 247.5,
+              "mean_y": 210.5,
+              "points": [
+                [
+                  241.5,
+                  210.5
+                ],
+                [
+                  242.5,
+                  210.5
+                ],
+                [
+                  243.5,
+                  210.5
+                ],
+                [
+                  244.5,
+                  210.5
+                ],
+                [
+                  245.5,
+                  210.5
+                ],
+                [
+                  246.5,
+                  210.5
+                ],
+                [
+                  247.5,
+                  210.5
+                ],
+                [
+                  248.5,
+                  210.5
+                ],
+                [
+                  249.5,
+                  210.5
+                ],
+                [
+                  250.5,
+                  210.5
+                ],
+                [
+                  251.5,
+                  210.5
+                ],
+                [
+                  252.5,
+                  210.5
+                ],
+                [
+                  253.5,
+                  210.5
+                ]
+              ],
+              "pose": [
+                245.0,
+                210.035568237305,
+                7.65250879339874e-05
+              ],
+              "total": 13
+            },
+            "lifted_native_tick": 110,
+            "lifted_sampled_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 13,
+              "inside_solid": 0,
+              "mean_x": 247.5,
+              "mean_y": 210.5,
+              "points": [
+                [
+                  241.5,
+                  210.5
+                ],
+                [
+                  242.5,
+                  210.5
+                ],
+                [
+                  243.5,
+                  210.5
+                ],
+                [
+                  244.5,
+                  210.5
+                ],
+                [
+                  245.5,
+                  210.5
+                ],
+                [
+                  246.5,
+                  210.5
+                ],
+                [
+                  247.5,
+                  210.5
+                ],
+                [
+                  248.5,
+                  210.5
+                ],
+                [
+                  249.5,
+                  210.5
+                ],
+                [
+                  250.5,
+                  210.5
+                ],
+                [
+                  251.5,
+                  210.5
+                ],
+                [
+                  252.5,
+                  210.5
+                ],
+                [
+                  253.5,
+                  210.5
+                ]
+              ],
+              "pose": [
+                245.0,
+                211.595153808594,
+                8.89169459696859e-05
+              ],
+              "total": 13
+            },
+            "loaded": 13,
+            "loaded_application_history_retired": false,
+            "loaded_identity": {
+              "completed_tick": 76,
+              "epoch": 3,
+              "frame_tick": 76,
+              "generation": 3,
+              "instance": 1,
+              "render_serial": 275,
+              "render_tick": 74,
+              "revision": 1337,
+              "sample": 77,
+              "sample_tick": 75,
+              "session": 3,
+              "uploaded_generation": 5,
+              "uploaded_revision": 1337,
+              "uploaded_serial": 275,
+              "world_generation": 5
+            },
+            "loaded_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 13,
+              "inside_solid": 0,
+              "mean_x": 245.730769230769,
+              "mean_y": 221.884615384615,
+              "points": [
+                [
+                  245.5,
+                  220.5
+                ],
+                [
+                  246.5,
+                  220.5
+                ],
+                [
+                  244.5,
+                  221.5
+                ],
+                [
+                  245.5,
+                  221.5
+                ],
+                [
+                  246.5,
+                  221.5
+                ],
+                [
+                  247.5,
+                  221.5
+                ],
+                [
+                  242.5,
+                  222.5
+                ],
+                [
+                  243.5,
+                  222.5
+                ],
+                [
+                  244.5,
+                  222.5
+                ],
+                [
+                  245.5,
+                  222.5
+                ],
+                [
+                  246.5,
+                  222.5
+                ],
+                [
+                  247.5,
+                  222.5
+                ],
+                [
+                  248.5,
+                  222.5
+                ]
+              ],
+              "pose": [
+                245.0,
+                222.92643737793,
+                0.000313051277771592
+              ],
+              "total": 13
+            },
+            "loaded_native_tick": 76,
+            "loaded_sampled_material": {
+              "above_rim": 0,
+              "below_floor": 0,
+              "cavity": 13,
+              "inside_solid": 0,
+              "mean_x": 245.730769230769,
+              "mean_y": 221.884615384615,
+              "points": [
+                [
+                  245.5,
+                  220.5
+                ],
+                [
+                  246.5,
+                  220.5
+                ],
+                [
+                  244.5,
+                  221.5
+                ],
+                [
+                  245.5,
+                  221.5
+                ],
+                [
+                  246.5,
+                  221.5
+                ],
+                [
+                  247.5,
+                  221.5
+                ],
+                [
+                  242.5,
+                  222.5
+                ],
+                [
+                  243.5,
+                  222.5
+                ],
+                [
+                  244.5,
+                  222.5
+                ],
+                [
+                  245.5,
+                  222.5
+                ],
+                [
+                  246.5,
+                  222.5
+                ],
+                [
+                  247.5,
+                  222.5
+                ],
+                [
+                  248.5,
+                  222.5
+                ]
+              ],
+              "pose": [
+                245.0,
+                222.92643737793,
+                0.000313051277771592
+              ],
+              "total": 13
+            },
+            "max_rotation": 1.21301472187042,
+            "max_y": 223.018539428711,
+            "min_y": 155.463760375977,
+            "native_frame": true,
+            "native_ticks": 293,
+            "normal": 0.0,
+            "shape_count": 5,
+            "tip_rotation": 1.21301472187042,
+            "torque": 1189.92654418945,
+            "wrench": 0.519999980926514
+          },
+          {
+            "age_drops": 0,
+            "arrivals": 0,
+            "barrel_contact_samples": 144,
+            "barrel_lift": 9.1414794921875,
+            "barrel_y": 249.001663208008,
+            "case": "mixed body impact",
+            "delivered": 0.0,
+            "delivered_torque": 0.0,
+            "end": [
+              245.000091552734,
+              245.977127075195
+            ],
+            "first_y": 256.281219482422,
+            "force": 184.0,
+            "granular_torque": 0.0,
+            "max_rotation": 0.000667366373818368,
+            "max_y": 256.282257080078,
+            "min_y": 235.0,
+            "native_frame": true,
+            "needle": {
+              "angular_velocity": 4.66139645141084e-05,
+              "budget": 5.0,
+              "control_generation": 2,
+              "controller": {
+                "applied_force": "(0.0, 0.0)",
+                "applied_torque": 0.0,
+                "boost_multiplier": 1.0,
+                "controller": "gcr-review-fleet/v1",
+                "force_cap": 0.0,
+                "movement_mode": "cancelled",
+                "side_thrust": 0.0,
+                "thrust": 0.0
+              },
+              "definition_hash": "9d52fc8f375d05a7660f14d1097000405c1cc5b1bf5d31d4fbd4d473fb847560",
+              "force_limit": 12.0,
+              "gravity": 38.0000008642673,
+              "inertia": 0.628333330154419,
+              "instance_id": 3,
+              "linear_velocity": "(0.0001, 0.000041)",
+              "mass": 0.259999990463257,
+              "model": "needle",
+              "position": "(344.9972, 259.5002)",
+              "retained_parts": [
+                {
+                  "angular_velocity": 4.66139645141084e-05,
+                  "linear_velocity": "(0.0001, 0.000041)",
+                  "position": "(344.9972, 259.5002)",
+                  "rotation": 7.26205398677848e-05
+                }
+              ],
+              "rotation": 7.26205398677848e-05,
+              "torque_limit": 10.0
+            },
+            "normal": 0.0,
+            "torque": 121.918055226894,
+            "wrench": 0.0
+          }
+        ]
+      },
+      "log_sha256": "5d3ccc464992816668574918f8fae73204fc01f025fc0b6e5af51aad72bb4d5e",
+      "name": "test_workbench_physics_play",
+      "process_receipt_sha256": "3b67332b4a87410f933347cdaad57496777652ea381f7fd23c346435a6bda7c5",
+      "status": "passed",
+      "test_sha256": "282c89a4210eb092d0caa58fa25b7e92fc17be440a350afb31cc88bcad0f0989"
+    }
+  ],
+  "correction": "The first external reducer wrongly required all completed fields to be booleans; retained policy fixtures intentionally count refusals and parity checkpoints. Original processes all exited0 with zero failures. This separate typed-schema review preserves that earlier reduction and every original receipt/log; no execution was repeated or reclassified from failure.",
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "native_build_run_id": "45458665170",
+  "native_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+  "original_processes_unchanged": true,
+  "original_wrapper_summary_sha256": "020f42070cbd550923bba81cdba151d38e284e6c6f2751ff75fb0884cdfaf807",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "reviewer_script_sha256": "e899d0329a2e58f9ea1b92a9b7ca0049c9c0a145d67a30c7f460767200619dd6",
+  "schema": "cybersand.material-audition.existing-solver-regression-review",
+  "schema_version": 1,
+  "source_commit": "3e91942d7d12b87ddae09ec0f0f087f1ba6748e9",
+  "source_tree": "623c1cf0d33d1add850ea7232811f2d48075b29f",
+  "status": "passed"
+}

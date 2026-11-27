@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--path",
+    "/workspace/scratch/1f637294a480/mat-solver-source2/godot",
+    "--script",
+    "res://tests/test_liquid_policy_worker.gd"
+  ],
+  "completion": {
+    "checks": 29,
+    "failures": 0
+  },
+  "elapsed_seconds": 4.047173729999486,
+  "exit_code": 0,
+  "log_sha256": "c07e6833ca4fb6aa90a64060e8aeb69f6fd8eded9168fb70fdacd6b0c24981d5",
+  "process_id": 1153,
+  "status": "passed",
+  "timeout_seconds": 900
+}

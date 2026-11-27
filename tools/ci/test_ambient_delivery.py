@@ -27,6 +27,34 @@ def digest(data: bytes) -> str:
 
 
 class AmbientDeliveryCustody(unittest.TestCase):
+    def test_only_opposite_reciprocal_binding_may_be_absent_in_windows_package(self) -> None:
+        import qualify_workbench_landscapes as landscapes
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory) / "godot"
+            (project / "tools").mkdir(parents=True)
+            cli = b"fixture executable"
+            relative = "tools/gentek_reciprocal.exe"
+            (project / relative).write_bytes(cli)
+            host = "tools/swarm004-runtime.windows.json"
+            other = "tools/swarm004-runtime.linux.json"
+            data = json.dumps({"platform":"windows", "artifact":"godot/" + relative, "bytes":len(cli), "sha256":digest(cli)}).encode()
+            (project / host).write_bytes(data)
+            identity = {"source_inputs_sha256":{"godot/" + host:digest(data), "godot/" + other:digest(b"linux")}}
+            (project / "world.dll").write_bytes(b"world")
+            (project / "rapier.dll").write_bytes(b"rapier")
+            runtime = {name + "_runtime":{"path":"godot/" + file + ".dll","sha256":digest(file.encode())}
+                       for name, file in (("cybersand","world"), ("rapier","rapier"))}
+            self.assertEqual(landscapes.project_identity(project, identity, runtime)[relative], digest(cli))
+            with mock.patch.object(landscapes, "ROOT", project.parent), self.assertRaisesRegex(RuntimeError, other):
+                landscapes.project_identity(project, identity, runtime)
+            (project / relative).write_bytes(b"x" * len(cli))
+            with self.assertRaisesRegex(RuntimeError, "generator differs"):
+                landscapes.project_identity(project, identity, runtime)
+            (project / host).unlink()
+            with self.assertRaisesRegex(RuntimeError, host):
+                landscapes.project_identity(project, identity, runtime)
+
+
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory(prefix="ambient-delivery-test-")
         self.folder = Path(self.temporary.name)

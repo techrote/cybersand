@@ -9,7 +9,7 @@
         "operations/ambient-workbench.md"
       ],
       "facts": [
-        "Actor Composition opens staged Behaviour profile editor with Apply acknowledgement and Revert.",
+        "Configuration → Controllers opens the staged Behaviour profile editor with Apply acknowledgement and Revert.",
         "Profiles and assignments save through ordinary Setup-v2; ephemeral timers, RNG and command leases restart.",
         "Ambient is opt-in; accepted population is eight actors."
       ],

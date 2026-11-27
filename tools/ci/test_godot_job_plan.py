@@ -18,7 +18,7 @@ class HostedBudgetTests(unittest.TestCase):
     def test_original_linux_and_windows_inventory_is_complete_and_fits(self):
         all_cases = runner.discover_cases()
         for platform in ("linux", "windows"):
-            cases = [case for case in all_cases if platform == "linux" or not case.requires_display]
+            cases = [case for case in all_cases if platform == "linux" or runner.architecture_context.windows_applicable(case)]
             result = subject.plan(cases, platform=platform)
             with self.subTest(platform=platform):
                 self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
@@ -56,6 +56,9 @@ class HostedBudgetTests(unittest.TestCase):
                             for shard in result["shards"]))
         self.assertTrue(all(shard["largest_case_allowance_seconds"] == subject.case_allowance(cases[0])
                             for shard in result["shards"]))
+        for shard in result["shards"]:
+            self.assertEqual(len(shard["cases"]), 16)
+            self.assertTrue(all(row["timeout_seconds"] == 1200 for row in shard["cases"]))
 
     def test_cannot_shorten_a_child_to_fit_a_small_parent(self):
         huge = runner.Case("large", (), 21600, 1)

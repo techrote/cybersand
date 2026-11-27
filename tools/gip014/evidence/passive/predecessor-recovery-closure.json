@@ -1,0 +1,333 @@
+{
+  "schema": "cybersand-goblin-predecessor-raw-recovery-addendum-v1",
+  "status": "pass",
+  "purpose": "Preserve six rediscovered exact original compact raw tapes in a new supplemental ZIP, without modifying the original evidence or the already sealed successor archive.",
+  "historical_metadata": {
+    "repository": "techrote/cybersand",
+    "git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+    "bytes": 67104,
+    "sha256": "77b75e8bfa01252233f00b775b48eb45ab4d76dbf2242bff1e68f52112f42a6f"
+  },
+  "new_supplement": {
+    "bytes": 960187,
+    "crc_check": "pass",
+    "member_count": 11,
+    "path": "/workspace/scratch/799ca57bee9e/goblin002-recovery/predecessor-six-tapes-recovery-v1.zip",
+    "reopened_exact_member_set_and_hashes": true,
+    "sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+    "uncompressed_bytes": 20602097
+  },
+  "custody_receipt": {
+    "path": "/workspace/scratch/799ca57bee9e/goblin002-recovery/predecessor-six-tapes-recovery-v1-custody.json",
+    "bytes": 5141,
+    "sha256": "d58508c050910f9e7d8c6a9830c34ca708daf550a32194faf525cdcb92962d66",
+    "content": {
+      "additional_compact_aliases": 5,
+      "compact_paths_verified_total": 11,
+      "created_at_utc": "2026-11-25T09:25:33.849882+00:00",
+      "delivery": "not_uploaded_by_specialist_A; specialist_C_owns_delivery",
+      "execution": {
+        "address_space_limit_bytes": 536870912,
+        "analyzer_executed": false,
+        "child_processes_launched": 0,
+        "elapsed_seconds": 0.28922,
+        "existing_evidence_modified": false,
+        "gameplay_executed": false,
+        "kind": "bounded_stdlib_hash_and_copy",
+        "native_engine_executed": false,
+        "own_process_max_rss_bytes": 17072128,
+        "process_scan_performed": false,
+        "raw_payload_limit_bytes": 33554432,
+        "replay_executed": false,
+        "wall_limit_seconds": 45,
+        "zip_limit_bytes": 8388608
+      },
+      "historical_counts": {
+        "completed_processes": 5,
+        "confirmed_production_defects": 0,
+        "episodes": 7,
+        "episodes_with_raw_tape": 6,
+        "incomplete_processes": 2,
+        "observed_completed_actions": 988,
+        "requested_actions": 1280
+      },
+      "historical_limits": {
+        "curiosity_a01_completed_rows": 220,
+        "curiosity_a01_pending_action": {
+          "accepted": true,
+          "action": "brush",
+          "index": 220
+        },
+        "curiosity_a02": "separate_completed_retry",
+        "interruption_cleanup": "not_inferred",
+        "random_a01_actual_gameplay_count": "unknown",
+        "random_a01_raw_tape_available": false,
+        "sigkill_cause": "unattributed"
+      },
+      "manifest": {
+        "bytes": 6622,
+        "kind": "current_custody_manifest",
+        "path": "recovery-manifest.json",
+        "sha256": "d6a594bcae4fa8c182e8b99927de64192be45f57387b18b247ce009187518ce4"
+      },
+      "metadata": {
+        "bytes": 67104,
+        "git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+        "sha256": "77b75e8bfa01252233f00b775b48eb45ab4d76dbf2242bff1e68f52112f42a6f"
+      },
+      "original_zip": {
+        "bytes": 1343584,
+        "candidate_files_statted": 11,
+        "filters": [
+          "*.zip",
+          "*.zip.xz",
+          "*predecessor*"
+        ],
+        "recovered": false,
+        "search_disposition": "not_found_in_two_scoped_roots",
+        "search_is_global": false,
+        "searched_roots": [
+          "/workspace/scratch/2e25d5a5c00f/evidence",
+          "/workspace/scratch/2e25d5a5c00f/final-delivery"
+        ],
+        "sha256": "75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc"
+      },
+      "recovered_tapes": [
+        {
+          "bytes": 2019365,
+          "episode_id": "long-final-1649f086-builder-liquid_channel-s605-b128-a01",
+          "member": "raw/long-final-1649f086-builder-liquid_channel-s605-b128-a01.json",
+          "recorded_completed_actions": 128,
+          "recorded_exit_code": 0,
+          "recorded_process_status": "pass",
+          "sha256": "7f2c86304eeeda19416e9147d284cf67a1f02e9b275e6df5c1bdd855a5f1215c"
+        },
+        {
+          "bytes": 2801098,
+          "episode_id": "long-final-1649f086-control-material_playground-s605-b128-a01",
+          "member": "raw/long-final-1649f086-control-material_playground-s605-b128-a01.json",
+          "recorded_completed_actions": 128,
+          "recorded_exit_code": 0,
+          "recorded_process_status": "pass",
+          "sha256": "895cc02bf7204c08fbe8ab31a88ccf9b7d6bc9bf37547e0adc2a3b9e00b2cf17"
+        },
+        {
+          "bytes": 4292958,
+          "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a01",
+          "member": "raw/long-final-1649f086-curiosity-construction-s605-b256-a01.json",
+          "recorded_completed_actions": 220,
+          "recorded_exit_code": -9,
+          "recorded_process_status": "crash",
+          "sha256": "efc3d14ffc17ddd878c086345482a019646ed0681acefc217dd6a022bbaab0db"
+        },
+        {
+          "bytes": 4939620,
+          "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a02",
+          "member": "raw/long-final-1649f086-curiosity-construction-s605-b256-a02.json",
+          "recorded_completed_actions": 256,
+          "recorded_exit_code": 0,
+          "recorded_process_status": "pass",
+          "sha256": "d17c95d08bdbf11271668117569ddf577fecd6fa6972cff08b0e77f79d51d5ac"
+        },
+        {
+          "bytes": 2285794,
+          "episode_id": "long-final-1649f086-tinkerer-save_reopen-s605-b128-a01",
+          "member": "raw/long-final-1649f086-tinkerer-save_reopen-s605-b128-a01.json",
+          "recorded_completed_actions": 128,
+          "recorded_exit_code": 0,
+          "recorded_process_status": "pass",
+          "sha256": "863582e08a969c85fb2ebf66e81e7a418bf5b1246a6d8fea9fc83a5d8f93c36a"
+        },
+        {
+          "bytes": 4177661,
+          "episode_id": "long-final-1649f086-wanderer-actor_workshop-s605-b128-a01",
+          "member": "raw/long-final-1649f086-wanderer-actor_workshop-s605-b128-a01.json",
+          "recorded_completed_actions": 128,
+          "recorded_exit_code": 0,
+          "recorded_process_status": "pass",
+          "sha256": "72bc21a8f688bff2a6464b27abae23c1169ab2e2be9067345c0c14f6996edbc4"
+        }
+      ],
+      "schema": "cybersand-goblin-predecessor-raw-supplement-custody-v1",
+      "status": "pass",
+      "zip": {
+        "bytes": 960187,
+        "crc_check": "pass",
+        "member_count": 11,
+        "path": "/workspace/scratch/799ca57bee9e/goblin002-recovery/predecessor-six-tapes-recovery-v1.zip",
+        "reopened_exact_member_set_and_hashes": true,
+        "sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+        "uncompressed_bytes": 20602097
+      }
+    }
+  },
+  "manifest": {
+    "analyzer_executed": false,
+    "artifact_kind": "new_passive_supplement_not_original_zip",
+    "existing_evidence_modified": false,
+    "historical_counts": {
+      "completed_processes": 5,
+      "confirmed_production_defects": 0,
+      "episodes": 7,
+      "episodes_with_raw_tape": 6,
+      "incomplete_processes": 2,
+      "observed_completed_actions": 988,
+      "requested_actions": 1280
+    },
+    "historical_qualifications": {
+      "curiosity_a01_completed_rows": 220,
+      "curiosity_a01_pending_action": {
+        "accepted": true,
+        "action": "brush",
+        "index": 220
+      },
+      "curiosity_a02": "separate_completed_retry",
+      "interruption_cleanup": "not_inferred",
+      "random_a01_actual_gameplay_count": "unknown",
+      "random_a01_raw_tape_available": false,
+      "sigkill_cause": "unattributed"
+    },
+    "manifest_self_hash": "external_custody_receipt",
+    "native_engine_executed": false,
+    "new_gameplay": false,
+    "original_metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+    "original_zip": {
+      "bytes": 1343584,
+      "candidate_files_statted": 11,
+      "filters": [
+        "*.zip",
+        "*.zip.xz",
+        "*predecessor*"
+      ],
+      "recovered": false,
+      "search_disposition": "not_found_in_two_scoped_roots",
+      "search_is_global": false,
+      "searched_roots": [
+        "/workspace/scratch/2e25d5a5c00f/evidence",
+        "/workspace/scratch/2e25d5a5c00f/final-delivery"
+      ],
+      "sha256": "75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc"
+    },
+    "recovery_scope": {
+      "additional_compact_aliases": 5,
+      "compact_paths_verified_total": 11,
+      "pretty_serializations_reverified": false,
+      "selected_compact_payload_bytes": 20516496,
+      "selected_raw_tapes": 6
+    },
+    "replay_executed": false,
+    "schema": "cybersand-goblin-predecessor-raw-supplement-v1",
+    "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+    "zip_payload_members": [
+      {
+        "bytes": 2000,
+        "kind": "current_recovery_document",
+        "path": "README.md",
+        "sha256": "efb09223d39f30d62b02dd31d23548ea8308ca1efdca43fb66e78c8e57928bb3"
+      },
+      {
+        "bytes": 67104,
+        "kind": "original_metadata",
+        "path": "predecessor-recovery.json",
+        "sha256": "77b75e8bfa01252233f00b775b48eb45ab4d76dbf2242bff1e68f52112f42a6f",
+        "source": {
+          "git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "repository": "techrote/cybersand"
+        }
+      },
+      {
+        "bytes": 8325,
+        "kind": "current_recovery_document",
+        "path": "current-source-availability.json",
+        "sha256": "615e087f82c599658381ac49f03c15d47330d72833b2abbfe659e8198f450d49"
+      },
+      {
+        "bytes": 1550,
+        "kind": "current_recovery_document",
+        "path": "original-zip-scoped-search.json",
+        "sha256": "3d1023adb4066ea3be629f16c5546d2c25f40c07f2c06620cd72966f35983772"
+      },
+      {
+        "bytes": 2019365,
+        "kind": "unchanged_original_compact_tape",
+        "path": "raw/long-final-1649f086-builder-liquid_channel-s605-b128-a01.json",
+        "sha256": "7f2c86304eeeda19416e9147d284cf67a1f02e9b275e6df5c1bdd855a5f1215c",
+        "source": {
+          "episode_id": "long-final-1649f086-builder-liquid_channel-s605-b128-a01",
+          "metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "path": "/workspace/scratch/2e25d5a5c00f/evidence/long-final-1649f086-builder-liquid_channel-s605-b128-a01/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json"
+        }
+      },
+      {
+        "bytes": 2801098,
+        "kind": "unchanged_original_compact_tape",
+        "path": "raw/long-final-1649f086-control-material_playground-s605-b128-a01.json",
+        "sha256": "895cc02bf7204c08fbe8ab31a88ccf9b7d6bc9bf37547e0adc2a3b9e00b2cf17",
+        "source": {
+          "episode_id": "long-final-1649f086-control-material_playground-s605-b128-a01",
+          "metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "path": "/workspace/scratch/2e25d5a5c00f/evidence/long-final-1649f086-control-material_playground-s605-b128-a01/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json"
+        }
+      },
+      {
+        "bytes": 4292958,
+        "kind": "unchanged_original_compact_tape",
+        "path": "raw/long-final-1649f086-curiosity-construction-s605-b256-a01.json",
+        "sha256": "efc3d14ffc17ddd878c086345482a019646ed0681acefc217dd6a022bbaab0db",
+        "source": {
+          "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a01",
+          "metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "path": "/workspace/scratch/2e25d5a5c00f/evidence/long-final-1649f086-curiosity-construction-s605-b256-a01/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json"
+        }
+      },
+      {
+        "bytes": 4939620,
+        "kind": "unchanged_original_compact_tape",
+        "path": "raw/long-final-1649f086-curiosity-construction-s605-b256-a02.json",
+        "sha256": "d17c95d08bdbf11271668117569ddf577fecd6fa6972cff08b0e77f79d51d5ac",
+        "source": {
+          "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a02",
+          "metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "path": "/workspace/scratch/2e25d5a5c00f/evidence/long-final-1649f086-curiosity-construction-s605-b256-a02/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json"
+        }
+      },
+      {
+        "bytes": 2285794,
+        "kind": "unchanged_original_compact_tape",
+        "path": "raw/long-final-1649f086-tinkerer-save_reopen-s605-b128-a01.json",
+        "sha256": "863582e08a969c85fb2ebf66e81e7a418bf5b1246a6d8fea9fc83a5d8f93c36a",
+        "source": {
+          "episode_id": "long-final-1649f086-tinkerer-save_reopen-s605-b128-a01",
+          "metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "path": "/workspace/scratch/2e25d5a5c00f/evidence/long-final-1649f086-tinkerer-save_reopen-s605-b128-a01/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json"
+        }
+      },
+      {
+        "bytes": 4177661,
+        "kind": "unchanged_original_compact_tape",
+        "path": "raw/long-final-1649f086-wanderer-actor_workshop-s605-b128-a01.json",
+        "sha256": "72bc21a8f688bff2a6464b27abae23c1169ab2e2be9067345c0c14f6996edbc4",
+        "source": {
+          "episode_id": "long-final-1649f086-wanderer-actor_workshop-s605-b128-a01",
+          "metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+          "path": "/workspace/scratch/2e25d5a5c00f/evidence/long-final-1649f086-wanderer-actor_workshop-s605-b128-a01/profile/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json"
+        }
+      }
+    ]
+  },
+  "scope_notes": [
+    "Six exact original compact tape bodies were recovered; eleven compact paths total were verified, consisting of those six bodies plus five byte-identical compact aliases.",
+    "The six differently serialized pretty runner transcripts in the historical metadata were not reverified by this recovery.",
+    "The original 1,343,584-byte archive with SHA256 75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc was not found in the two scoped roots. This new ZIP is not a recovery or reconstruction claim for that archive.",
+    "Historical counts remain seven processes, five completed, two unattributed exit -9 outcomes, six raw tapes and 988 observed completed actions out of 1,280 requested.",
+    "Curiosity a01 retains 220 completed rows plus an accepted pending Brush at index220; Curiosity a02 is a separate completed retry.",
+    "Random a01 has no raw tape or summary; its actual gameplay count remains unknown. No interruption cleanup, OOM, watchdog or game-engine cause is inferred.",
+    "No gameplay, replay, native-engine execution, transcript analysis, new experiment, general process scan, existing-evidence modification or upload was performed by this recovery."
+  ],
+  "local_tool_receipt": {
+    "exit_code": 0,
+    "chunk_id": "ed2707",
+    "wall_time_seconds": 0.285246862
+  },
+  "delivery_owner": "Specialist C; actual upload is outside this recovery record."
+}

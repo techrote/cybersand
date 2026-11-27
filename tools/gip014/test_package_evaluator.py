@@ -29,6 +29,16 @@ class PackageGuards(unittest.TestCase):
             self.assertTrue(result["payload_verified"])
             self.assertFalse(result["qualified"])
 
+    def test_unknown_or_malformed_version_cannot_fall_back_to_legacy_gates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root, manifest = self.make_payload(directory)
+            for value in (0, 4, 3.0, True, "3"):
+                with self.subTest(version=value):
+                    manifest["successor_contract_version"] = value
+                    (root / package.MANIFEST).write_text(json.dumps(manifest), encoding="utf-8")
+                    with self.assertRaisesRegex(ValueError, "Unsupported evaluator qualification"):
+                        package.verify_extracted(root)
+
     def test_changed_or_missing_payload_rejects(self):
         with tempfile.TemporaryDirectory() as directory:
             root, _ = self.make_payload(directory)

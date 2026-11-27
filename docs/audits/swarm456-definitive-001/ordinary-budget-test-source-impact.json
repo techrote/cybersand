@@ -1,0 +1,135 @@
+{
+  "added_test_methods": [
+    "test_inventory_growth_beyond_24_shards_keeps_cases_and_allowances"
+  ],
+  "baseline_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+  "changed_test_methods": [
+    "test_original_linux_and_windows_inventory_is_complete_and_fits"
+  ],
+  "corrected_test_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+  "fresh_complete_ordinary_gates": "REQUIRED; current review is local source/test evidence only",
+  "independent_original_failure_and_corrected_positive_checks": [
+    {
+      "errors": 0,
+      "expected_success": false,
+      "failures": 1,
+      "name": "original_false_cap_reproduction",
+      "observed_success": false,
+      "original_log": "test_original_linux_and_windows_inventory_is_complete_and_fits (independent_ci_bound_original_false_cap_reproduction.HostedBudgetTests.test_original_linux_and_windows_inventory_is_complete_and_fits) ... \n  test_original_linux_and_windows_inventory_is_complete_and_fits (independent_ci_bound_original_false_cap_reproduction.HostedBudgetTests.test_original_linux_and_windows_inventory_is_complete_and_fits) (platform='linux') ... FAIL\n\n======================================================================\nFAIL: test_original_linux_and_windows_inventory_is_complete_and_fits (independent_ci_bound_original_false_cap_reproduction.HostedBudgetTests.test_original_linux_and_windows_inventory_is_complete_and_fits) (platform='linux')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/e18127ed82c6/cybersand/tools/ci/test_godot_job_plan.py\", line 25, in test_original_linux_and_windows_inventory_is_complete_and_fits\n    self.assertGreaterEqual(result[\"shard_count\"], math.ceil(len(cases) / 16))\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 25 not less than or equal to 24\n\n----------------------------------------------------------------------\nRan 1 test in 0.381s\n\nFAILED (failures=1)\n",
+      "skips": 0,
+      "tests_run": 1
+    },
+    {
+      "errors": 0,
+      "expected_success": true,
+      "failures": 0,
+      "name": "corrected_current_complete_inventory",
+      "observed_success": true,
+      "original_log": "test_original_linux_and_windows_inventory_is_complete_and_fits (independent_ci_bound_corrected_current_complete_inventory.HostedBudgetTests.test_original_linux_and_windows_inventory_is_complete_and_fits) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.313s\n\nOK\n",
+      "skips": 0,
+      "tests_run": 1
+    },
+    {
+      "errors": 0,
+      "expected_success": true,
+      "failures": 0,
+      "name": "fixed_400_case_growth_positive",
+      "observed_success": true,
+      "original_log": "test_inventory_growth_beyond_24_shards_keeps_cases_and_allowances (independent_ci_bound_fixed_400_case_growth_positive.HostedBudgetTests.test_inventory_growth_beyond_24_shards_keeps_cases_and_allowances) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.155s\n\nOK\n",
+      "skips": 0,
+      "tests_run": 1
+    }
+  ],
+  "native_and_build_input_comparisons": {
+    "runtime-provenance.json": {
+      "added_or_removed_build_paths": [],
+      "build_inputs_changed": [
+        "tools/ci/test_godot_job_plan.py"
+      ],
+      "build_inputs_unchanged": 1855,
+      "historical_build_inputs": 1856,
+      "historical_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "native_inputs": 106,
+      "native_inputs_unchanged": true,
+      "sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a"
+    },
+    "runtime-provenance.linux.json": {
+      "added_or_removed_build_paths": [],
+      "build_inputs_changed": [
+        "tools/ci/test_godot_job_plan.py"
+      ],
+      "build_inputs_unchanged": 1855,
+      "historical_build_inputs": 1856,
+      "historical_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "native_inputs": 106,
+      "native_inputs_unchanged": true,
+      "sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24"
+    }
+  },
+  "old_gde_run": {
+    "budget_job": 138676199669,
+    "disposition": "FAIL remains original failure",
+    "run_id": 45459025464
+  },
+  "original_test_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7",
+  "package_source_changes_from_test_overlay": [],
+  "package_source_paths_unchanged_by_test_overlay": 1059,
+  "prior_approved_publication_metadata_changes_from_q7": [
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "publication_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "published_paths_unchanged": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/tools/gentek_reciprocal",
+      "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/tools/gentek_reciprocal.exe",
+      "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/tools/swarm004-runtime.linux.json",
+      "sha256": "0a55efae0b59eb40749eb9aa4d80d3a52ed73dd017b06e34283a32c4e9f2f470",
+      "unchanged_since_publication": true
+    },
+    {
+      "path": "godot/tools/swarm004-runtime.windows.json",
+      "sha256": "6d839d6ad535862f10b4dc94b344f0c188401c113d14e9113a3c7a1c15ec8d50",
+      "unchanged_since_publication": true
+    }
+  ],
+  "q7_fixture_producer_consumer_and_workflow_paths_unchanged": 82,
+  "q7_or_runtime_manifest_retagged": false,
+  "qualified_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "result": "APPROVE exact bounded test-only overlay",
+  "reviewer": "independent_assurance",
+  "scheduler_and_case_inventory_and_allowances_unchanged": true,
+  "schema": 1,
+  "scientific_definition_unchanged": true,
+  "scientific_inputs_unchanged": 100,
+  "source_or_original_evidence_modified_by_reviewer": false,
+  "unchanged_existing_test_methods": 10
+}

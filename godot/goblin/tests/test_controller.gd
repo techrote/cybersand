@@ -112,6 +112,50 @@ func retain(label: String, tape: Dictionary) -> void:
 	cases.append({"case":label, "transcript":tape.duplicate(true)})
 
 
+func storage_contract() -> void:
+	# Retain the accepted writer's shared-path and same-controller retry checks.
+	# The separate storage case covers the successor's ten paths and byte budgets.
+	var previous_archive: String = controller._run_archive
+	controller._run_archive = "user://goblin/run-storage-contract.json"
+	var value := {"seed":13, "nested":{"label":"preserve compact representation"}}
+	var expected := JSON.stringify(value, "", true) + "\n"
+	for path: String in [Controller.TRANSCRIPT_PATH, Controller.SUMMARY_PATH,
+			Controller.REPLAY_RESULT_PATH, controller._run_archive]:
+		check(controller._write_fixed(path, value), "fixed output succeeds: " + path)
+		check(FileAccess.get_file_as_string(path) == expected,
+			"fixed output retains exact accepted serialization: " + path)
+	var previous_digest := FileAccess.get_sha256(Controller.TRANSCRIPT_PATH)
+	for path: String in ["", "user://outside-goblin.json",
+			"user://goblin/../outside-goblin.json"]:
+		check(not controller._write_fixed(path, value), "non-allowlisted output refuses: " + path)
+	check(FileAccess.get_sha256(Controller.TRANSCRIPT_PATH) == previous_digest,
+		"path refusals preserve the existing complete audit")
+	var supplied := OS.get_environment("CYBERSAND_GOBLIN_PROFILE")
+	OS.set_environment("CYBERSAND_GOBLIN_PROFILE", supplied.path_join("not-selected"))
+	check(not controller._write_fixed(Controller.TRANSCRIPT_PATH, {"seed":99}),
+		"mismatched isolated profile refuses an otherwise allowed output")
+	OS.set_environment("CYBERSAND_GOBLIN_PROFILE", supplied)
+	check(FileAccess.get_sha256(Controller.TRANSCRIPT_PATH) == previous_digest,
+		"profile refusal preserves the existing complete audit")
+	# A genuine native destination refusal followed by recovery on the SAME
+	# controller must retire the prior error as well as returning true.
+	check(DirAccess.remove_absolute(Controller.REPLAY_RESULT_PATH) == OK,
+		"isolated replay fixture file removed")
+	check(DirAccess.make_dir_absolute(Controller.REPLAY_RESULT_PATH) == OK,
+		"isolated native directory-collision fixture created")
+	check(not controller._write_fixed(Controller.REPLAY_RESULT_PATH, value)
+		and not controller.last_error.is_empty(), "native collision truthfully refuses")
+	check(DirAccess.dir_exists_absolute(Controller.REPLAY_RESULT_PATH),
+		"native refusal preserves the colliding destination")
+	check(DirAccess.remove_absolute(Controller.REPLAY_RESULT_PATH) == OK,
+		"isolated collision removed before retry")
+	check(controller._write_fixed(Controller.REPLAY_RESULT_PATH, value)
+		and controller.last_error.is_empty(), "same-controller retry clears the prior failure")
+	check(FileAccess.get_file_as_string(Controller.REPLAY_RESULT_PATH) == expected,
+		"same-controller retry publishes complete accepted bytes")
+	controller._run_archive = previous_archive
+
+
 func run() -> void:
 	var launch: Dictionary = Controller.read_launch()
 	if not check(launch.get("ok", false), "dedicated launcher profile is available"):
@@ -132,6 +176,7 @@ func run() -> void:
 	check(export_directory.begins_with(profile_root + "/"), "fixed controller exports stay inside this disposable profile")
 	controller = Controller.new()
 	root.add_child(controller)
+	storage_contract()
 	controller.action_started.connect(_on_started)
 	controller.action_observed.connect(_on_observed)
 	controller.changed.connect(_on_changed)

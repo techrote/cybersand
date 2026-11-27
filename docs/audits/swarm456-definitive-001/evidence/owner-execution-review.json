@@ -1,0 +1,289 @@
+{
+  "artifact_id": 14948279431,
+  "artifact_path": "/tmp/swarm456-q7/q7-windows-package-evidence.zip",
+  "artifact_sha256": "0f4358387348798a6809f1204ddbe81e6f5850033a597529c645e372218367a6",
+  "checks": [
+    {
+      "check": "All seven original Windows owner launcher cases, exact logs, positive and negative admissions",
+      "passed": true
+    },
+    {
+      "check": "Actual PowerShell\u2192CMD\u2192separate graphical engine PID, visible responsive window, exact runtime, owned retirement",
+      "passed": true
+    },
+    {
+      "check": "Original engine/launcher logs contain exact source and ready marker; narrow WASAPI\u2192Dummy recovery fully preserved",
+      "passed": true
+    },
+    {
+      "check": "Original visible Workbench window screenshot hash and dimensions bind to observed engine window",
+      "passed": true
+    },
+    {
+      "check": "All24 original pristine-package processes passed; graphical reports bind exact report SHA, native engine PID and original log",
+      "passed": true
+    },
+    {
+      "check": "Original final identity recheck binds the completed14-case preservation report after package smokes",
+      "passed": true
+    }
+  ],
+  "graphical_engine_pid": 616,
+  "import_engine_and_console_pids_distinct": true,
+  "logs": [
+    {
+      "member": "windows-launcher/dispatch/owner-dispatch.log",
+      "sha256": "b4e5a896d7c735ed56f12012fa659c8d3dd0d21055a33c8544828550eef38da1"
+    },
+    {
+      "member": "windows-launcher/dispatch/isolated profile with spaces/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "sha256": "a98167365468a0e10a4b9a52238ae13fc644fe87205bc258c028544d6106b6d4"
+    }
+  ],
+  "original_evidence_modified": false,
+  "owner_dispatch_report_sha256": "759c8f52f7f4de1e2a6da819a402c6c2df85211db825c5e61bc86779c1c623cd",
+  "owner_launcher_cases": 7,
+  "owner_launcher_report_sha256": "1ec72857a80b2bb98cd043209c05765475f31f5de3b17181688b3c03ef00a809",
+  "payload_review_sha256": "27c49adec3e2da136bbf3a2e33d578370467ad1b64528347dbc28f7ddb56561b",
+  "physical_owner_acceptance": "PENDING",
+  "preserved_hosted_diagnostics": {
+    "audio": "Exactly two recorded WASAPI errors followed explicit Dummy audio recovery and successful Workbench-ready marker; not blanket suppression",
+    "opengl": "Original host automatically fell back to ANGLE/Microsoft Basic Render Driver"
+  },
+  "processes": [
+    {
+      "case": "import",
+      "example": null,
+      "log_sha256": "0613cc882284667f0aa18f1adfc9475201fd68653770921d92d14e556d207b50",
+      "original_process_sha256": "e696e5f8587d00fd59ccc3d655d57858eaad44e40708e104f77a646f1ea5bba2",
+      "pid": 4260,
+      "report_sha256": null
+    },
+    {
+      "case": "native-adapter",
+      "example": null,
+      "log_sha256": "7e767096627861946169cb2ca8e1b5aa15f394177319cdfe13bf06f24a63d762",
+      "original_process_sha256": "36fa0faf35dd9ca4ade022a2dabe55123813521fc7db692b5cb44d51dd7b9ea2",
+      "pid": 1184,
+      "report_sha256": null
+    },
+    {
+      "case": "runtime-selector",
+      "example": null,
+      "log_sha256": "59f42834fdb6a9b51d56adc4f129ba51d600709f06b8b4cd9c35b903f5f2208e",
+      "original_process_sha256": "d1841cd866d5b59ef44a125b2dcac8e1bbd8a24d3630e8156975b3690f14fb59",
+      "pid": 7396,
+      "report_sha256": null
+    },
+    {
+      "case": "protocol",
+      "example": null,
+      "log_sha256": "a4558df40c05723b0074399d846a6bd8f1adaa8eb3f452e7223e9acdf2dbee31",
+      "original_process_sha256": "5129e62aef5507e6cbdf9f209f51de0197549ab1069335537c572678f9dd31da",
+      "pid": 2408,
+      "report_sha256": null
+    },
+    {
+      "case": "controller-mechanical",
+      "example": null,
+      "log_sha256": "72be0b9ecf8c0432edace3aa456d7c01fb4ae9358d2ff6def8bdfc662bd94528",
+      "original_process_sha256": "63fecb083395f68a0c8d37fc4a3f5df6d7623861f0c707329a82e411efe3a47b",
+      "pid": 6160,
+      "report_sha256": null
+    },
+    {
+      "case": "controls-native",
+      "example": null,
+      "log_sha256": "459e21abacdaaa8ab62af47a8b259645c5b0fc94ec773ce0d75f3b5ac667d39a",
+      "original_process_sha256": "0a90ccb7deb4bb01f5c037c28d88be6e7f4c9e9a7851b8c83b85ec3b6a531322",
+      "pid": 5076,
+      "report_sha256": null
+    },
+    {
+      "case": "input-integrity",
+      "example": null,
+      "log_sha256": "c816b141f3473bd1a82b5a09e179d148cd9e5104fa810e01660dd41d0f32f5e4",
+      "original_process_sha256": "8c886161903f9f01a35bdfbe54b37bfcc923dc4efc33453841f3d865f9ab187a",
+      "pid": 6864,
+      "report_sha256": null
+    },
+    {
+      "case": "create",
+      "example": "transaction",
+      "log_sha256": "1fafa28215ccc54cb975d52b580d11581059f57391f16db63e268df79c8ef34b",
+      "original_process_sha256": "52b2407cfc885156f73dc6d774c31fe63134334698268da2658a46896115df45",
+      "pid": 7108,
+      "report_sha256": "63725c961b9aaa299f6e83b6bb876a8482d559654699b328878385f75db980be"
+    },
+    {
+      "case": "reopen",
+      "example": "transaction",
+      "log_sha256": "7c5b5b4b80b0a1db9fbaa54d71a0f705849befa6b46bdd31081be8f649054d56",
+      "original_process_sha256": "4842448cae0e38df594e748530d059ee5fb3a58686b89c528b1e01e26e3e5425",
+      "pid": 1716,
+      "report_sha256": "dcc8e2ade6788a12731313b5861926dae8f85271d7ca27bcd783560e0c1910f3"
+    },
+    {
+      "case": "create",
+      "example": "reciprocal",
+      "log_sha256": "14bba1643fa6aaa35e46363da4415f027d3985344c5add38855149b94b8488b4",
+      "original_process_sha256": "1b8c7a484a92c40152ed91141a1cd9816508bb312b902e442af533dbcc31c423",
+      "pid": 7904,
+      "report_sha256": "0bdbb02411776a861a12f11b48d2c0f2d52b2d52dee8b71680173ae2399f3d99"
+    },
+    {
+      "case": "reopen",
+      "example": "reciprocal",
+      "log_sha256": "cebf9c2ee1ea08b668fb318066bd4cbbf889df9439ef45521e439403778dd9ed",
+      "original_process_sha256": "9292b0e565eaf899743bc2a94dd544a87701f89bf3d6e5a93925a43e17eea8b8",
+      "pid": 7660,
+      "report_sha256": "38af8aaaae4da347a9c3307184685423dc3c851472c588cdb19e86d9b95550e3"
+    },
+    {
+      "case": "create",
+      "example": "swarm005_irregular",
+      "log_sha256": "f40d5cf1c7a911e9aa62318520cd714a4c81696e60a4cb461dcb909d596fefb5",
+      "original_process_sha256": "e779f4d8dfc0c044adc57d2d9451869ded73411fb0265b5abdb16750ef4cb235",
+      "pid": 4024,
+      "report_sha256": "f53c02214e21c4b58e5fc04f0173146e3dedbfda7fa51e6868871f084d99c8ea"
+    },
+    {
+      "case": "reopen",
+      "example": "swarm005_irregular",
+      "log_sha256": "4826a78c4645e98c5d85e4f54ca4e6892d2be2dce8734d31f9ad9b38f994c9db",
+      "original_process_sha256": "c21e38667c62e9454716c9f90a155905543eaf87405d483654ebbb8f1ee0a842",
+      "pid": 4508,
+      "report_sha256": "14458db802bcd8cd01f5faca73bbb3ef0b1ccf8f36daf2b7809b5dbe3e1f9f08"
+    },
+    {
+      "case": "blocked",
+      "example": "swarm005_viaduct",
+      "log_sha256": "43561fff87237cfb9c7cbe225a262b9e0c6c58a2f78f26525725c2f6dda03b6f",
+      "original_process_sha256": "e16dd4547a8e0fd3e85ac4aa732420c591b6643f4619dfa60b886d1e0e20aa94",
+      "pid": 6916,
+      "report_sha256": "897100c4297a3fa3653e6bdda9ba4ae2161e265d1dfb93afee6989231cc8a9dc"
+    },
+    {
+      "case": "evaluate",
+      "example": "swarm006_industrial_off",
+      "log_sha256": "55c178fd3d5778a07ee00c0e0314bf5bd59730c70aa6d4e0b629ad7ddba71e31",
+      "original_process_sha256": "536a66430120604af226990e6b13202e2d99c05886e174bb0cf4e88be36b3f2c",
+      "pid": 6152,
+      "report_sha256": "3ba2a9ac5e241406f6188bcf643c6281eed2fa0da547fdb39671c613c03971ec"
+    },
+    {
+      "case": "evaluate",
+      "example": "swarm006_industrial_on",
+      "log_sha256": "78c9ce7112541b0c842cf8291652c592328a0dd56d07b355fe1aa26f2639cb1e",
+      "original_process_sha256": "a8b875924ad5ef243a760732ef43fafca108a5b34d7db09b47458e1c1ce8b0da",
+      "pid": 2988,
+      "report_sha256": "044800bca8a459b2de34af89ec6d473a815f44eaebbffbfc2c8c3a4d4ae36e40"
+    },
+    {
+      "case": "reopen",
+      "example": "swarm006_industrial_on",
+      "log_sha256": "07204709d686d382c50fa7fcfe957ef7656b7f2ace254914e6a2cf8e52f5f807",
+      "original_process_sha256": "d3ad06af6b0e452ee221d3b71a75b4bafa08594bb015193df1eb518c36cd73c3",
+      "pid": 5648,
+      "report_sha256": "1775a8c99f49938f60a5a340d89e7832c2aa2f538cf92cf90d483647f30abbe0"
+    },
+    {
+      "case": "evaluate",
+      "example": "swarm006_viaduct_on",
+      "log_sha256": "02855a7edce00b2c8d1ab3a292845cb3d17a02acd4dec2ec125a72db593c5b4c",
+      "original_process_sha256": "d3bd08c919b404edacde6a09875454cd744c9c70dc5f6ee5fb967e7a931dfc5c",
+      "pid": 5348,
+      "report_sha256": "e451b2e21a648b18819659a070443c6c4c283791068be89e4d84eaedb74b11a5"
+    },
+    {
+      "case": "reopen",
+      "example": "swarm006_viaduct_on",
+      "log_sha256": "41ae6faa4d21fa8eead3133a6fa2d4d2057464bbf5d816aee49c1534893a4c33",
+      "original_process_sha256": "214bc793d68f34164afb93fd1edea7405cea198945dba1f96ab47673445d2f97",
+      "pid": 8144,
+      "report_sha256": "1e0b729714454d06594a42f59723eda3656a461d3313c15dfaf41bf124df3939"
+    },
+    {
+      "case": "evaluate",
+      "example": "swarm006_irregular_on",
+      "log_sha256": "93736131ce34a00f0399209a086208acfe10184648c3d29698d607a462e73418",
+      "original_process_sha256": "8d66ed5394dcbf0193308f7cba390644d48149a3909f1a91c7f65c18a118f6a2",
+      "pid": 5356,
+      "report_sha256": "9f50c50ae385555bc5a43bfadab602504ddfc4f94a574b7098466cb3295fef02"
+    },
+    {
+      "case": "reopen",
+      "example": "swarm006_irregular_on",
+      "log_sha256": "bcab57dda320e164f8d74523ed07a9b1210e23b3e0665fda4e748bcee0e60139",
+      "original_process_sha256": "8bdca47078114b39ff4f005a60fd6b4e9de44c8e16ebd7e2ac89a0e5e5716307",
+      "pid": 3640,
+      "report_sha256": "a842dcba267d7e57790d0c5fbb5e20bbbc5f772a53adfe860876a4587a90adfb"
+    },
+    {
+      "case": "evaluate",
+      "example": "swarm006_irregular_square_on",
+      "log_sha256": "d89c271dcafee1c5dbcc7c32d2ab0da83a4c0a51463801269cdc94c1ad22be28",
+      "original_process_sha256": "0284c28c76590249e571178efea7bce1e9b0daa58578cecac6e2dd01809b6b96",
+      "pid": 7032,
+      "report_sha256": "1f95c11487ab985aaa302f47086aebc90d03f923893cb157950cc77eb10ca688"
+    },
+    {
+      "case": "reopen",
+      "example": "swarm006_irregular_square_on",
+      "log_sha256": "d81b29d54f3c047df61761652a03506c432aca2735dba6393b503c636c056428",
+      "original_process_sha256": "4914cf054a5276a5b3177b186349bf28180afb6d1f4fe44053b8ea4594db4b61",
+      "pid": 1236,
+      "report_sha256": "6905f0e88b6005874a5b76e778192db6ee46aa29de4e13c33394f231a0812536"
+    },
+    {
+      "case": "lifecycle",
+      "example": null,
+      "log_sha256": "2df1dbbf974d33b71c5bddc8ac696643ae3baaf5c63147c6f5433c947155a212",
+      "original_process_sha256": "47fcfc9e4685be53f623d5bfb47ea67f974cf04447f573a7eb6f1fdbf04d6ec9",
+      "pid": 7056,
+      "report_sha256": null
+    }
+  ],
+  "result": "PASS",
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "scope_limits": [
+    "Full native material/persistence and accepted-main predicates are separately revalidated by frozen reducers and peer reviews.",
+    "This review reuses immutable hosted execution evidence; it does not execute Windows in the Linux workspace.",
+    "Physical Windows11/NVIDIA appearance, responsiveness, user preference and private-map acceptance remain owner-dependent.",
+    "Publication and ordinary materialized-runtime regression are separate gates."
+  ],
+  "screenshot": {
+    "distinct_sampled_colors": 334,
+    "file": "owner-workbench-window.png",
+    "height": 688,
+    "sha256": "3e2fb8250ba51e1fead332f9062e471cbfd753c3f0fbfb3197e36e3dd270abec",
+    "width": 984
+  },
+  "screenshot_visual_observation": "Original984\u00d7688 screenshot shows ordinary CyberSand Development workbench, authoring/reciprocal controls and paused empty World; no error dialog. It does not establish physical owner usability.",
+  "seal": {
+    "archive": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "archive_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "launcher_sha256": "a9eef83475b4ae836fbfb52fd7f09efc6bbef17a8d14ff1ed5b60c920caca684",
+    "manifest_sha256": "d431d254b354bd0f3e07b1a7e8c700ac03202432fdbf6ba18cac09652b62d9da",
+    "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+  },
+  "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "source_modified": false,
+  "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "stable_seconds": 10.062000000000012,
+  "window": {
+    "created_filetime": 134400141644499556,
+    "height": 688,
+    "hwnd": 262362,
+    "image": "D:\\a\\cybersand\\cybersand\\evidence\\windows-launcher\\actual owner package with spaces\\Godot_v4.7-stable_win64.exe",
+    "job_member": true,
+    "left": 20,
+    "pid": 616,
+    "responsive": true,
+    "title": "CyberSand \u00b7 Development workbench",
+    "top": 20,
+    "visible": true,
+    "width": 984
+  }
+}

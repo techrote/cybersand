@@ -1,0 +1,279 @@
+{
+  "schema": 1,
+  "mission": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "record_kind": "dated_pre_execution_correction",
+  "base_source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "recorded_utc": "2026-11-24T19:08:19.304503+00:00",
+  "cause": "Pinned official Linux download redirect returnedHTTP403/curl22 beforeengine/packet construction in two PLAY attempts and all25LinuxGDEshards plusArt.",
+  "original_outcomes": [
+    {
+      "run": 45464427423,
+      "attempt": 1,
+      "affected_job": 138695600359,
+      "status": "failure",
+      "windows": "pass",
+      "engine_started_in_failed_linux_job": false
+    },
+    {
+      "run": 45464427423,
+      "attempt": 2,
+      "affected_job": 138697409154,
+      "status": "failure",
+      "plan_and_windows": "originalattempt1results_carried_forward",
+      "engine_started_in_failed_linux_job": false
+    },
+    {
+      "run": 45464495877,
+      "attempt": 1,
+      "failed_linux_shards": 25,
+      "art_failure_job": 138699873153,
+      "sample_linux_job": 138699873932,
+      "linux_coverage_failure_job": 138702200984,
+      "linux_status": "failed_before_engine",
+      "windows_status_at_record": "execution_continues_separately"
+    }
+  ],
+  "official_asset": {
+    "id": 451175419,
+    "name": "Godot_v4.7-stable_linux.x86_64.zip",
+    "size": 75664355,
+    "digest": "sha256:0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "browser_download_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip"
+  },
+  "correction": {
+    "archive_bytes": 75664355,
+    "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "base_source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "exact_added_branch": "integration/swarm004-005-006-unified-20261122",
+    "files": [
+      {
+        "all_other_bytes_identical": true,
+        "baseline_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+        "final_sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110",
+        "only_other_change": "one exact push branch appended",
+        "path": ".github/workflows/gdextension.yml",
+        "url_substitutions": 1
+      },
+      {
+        "all_other_bytes_identical": true,
+        "baseline_sha256": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc",
+        "final_sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3",
+        "only_other_change": null,
+        "path": ".github/workflows/play-desktop-packet.yml",
+        "url_substitutions": 2
+      }
+    ],
+    "hosted_qualification": "fresh affected ordinary workflows required; no new success claimed",
+    "input_maps": {
+      "build_inputs_sha256": {
+        "added": [],
+        "changed": [
+          {
+            "current_sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110",
+            "path": ".github/workflows/gdextension.yml",
+            "qualified_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516"
+          },
+          {
+            "current_sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3",
+            "path": ".github/workflows/play-desktop-packet.yml",
+            "qualified_sha256": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc"
+          },
+          {
+            "current_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+            "path": "tools/ci/test_godot_job_plan.py",
+            "qualified_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7"
+          }
+        ],
+        "current_count": 1856,
+        "qualified_count": 1856,
+        "removed": []
+      },
+      "extension_inputs_sha256": {
+        "added": [],
+        "changed": [],
+        "current_count": 106,
+        "qualified_count": 106,
+        "removed": []
+      },
+      "native_definition_inputs_sha256": {
+        "added": [],
+        "changed": [],
+        "current_count": 52,
+        "qualified_count": 52,
+        "removed": []
+      },
+      "source_inputs_sha256": {
+        "added": [],
+        "changed": [],
+        "current_count": 156,
+        "qualified_count": 156,
+        "removed": []
+      }
+    },
+    "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+    "observed_at_utc": "2026-11-24T19:07:16.649842+00:00",
+    "official_asset_id": 451175419,
+    "patch_sha256": "a23622ffaa958faaa8c40a5b8ebccafb484384e78fb921c950aaf936f2f0d2f1",
+    "schema": 1,
+    "scope": "Authorized three same-byte official URL substitutions and one exact mission-branch push admission. README and dated audit changes belong to root.",
+    "source_or_evaluator_retagged": false,
+    "unchanged_contracts": [
+      "all SHA/size/member/CRC/extraction checks",
+      "all compiler/runtime/engine pins and bytes",
+      "all mandatory job conditions and scoped case filters",
+      "all timeout/retry/watchdog ceilings",
+      "all path filters",
+      "all permissions/provider/runner policy",
+      "Windows URLs and execution",
+      "original failed attempts and their artifacts",
+      "Q7 runtime, provenance and exact portable evaluator"
+    ],
+    "validation": {
+      "actionlint": "1.7.12 PASS on both workflows",
+      "git_diff_check": "PASS",
+      "prior_unchanged_PLAY_helper_controls": "34 PASS, zero skips",
+      "provider_policy": "PASS"
+    }
+  },
+  "independent_transport_review": {
+    "base": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "disposition": "APPROVE_EXACT_THREE_URL_REPLACEMENTS",
+    "files": [
+      {
+        "after_sha256": "7c37064b9087c4ee1232e601527b2daec6d6433b65d3476b9024a9d775c0d80a",
+        "before_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+        "only_exact_url_replacements": true,
+        "path": ".github/workflows/gdextension.yml",
+        "replacements": 1
+      },
+      {
+        "after_sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3",
+        "before_sha256": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc",
+        "only_exact_url_replacements": true,
+        "path": ".github/workflows/play-desktop-packet.yml",
+        "replacements": 2
+      }
+    ],
+    "official_api_sha256": "bdbc6c5e32ded370fabe78ce1439cf58f70cd334371465ea0547aedb9ba52b84",
+    "official_asset": {
+      "browser_download_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip",
+      "digest": "sha256:0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+      "id": 451175419,
+      "name": "Godot_v4.7-stable_linux.x86_64.zip",
+      "size": 75664355
+    },
+    "original_failures": [
+      {
+        "bounded_failed_attempts": 4,
+        "curl_exit_code": 22,
+        "execution_started": false,
+        "http_status": 403,
+        "job_id": 138699873153,
+        "log": "../gde-45464495877/art-download-138699873153-original.log",
+        "run_id": 45464495877,
+        "step": "Prepare pinned Godot runtime"
+      },
+      {
+        "bounded_failed_attempts": 4,
+        "curl_exit_code": 22,
+        "execution_started": false,
+        "http_status": 403,
+        "job_id": 138699873932,
+        "log": "../gde-45464495877/linux-shard0-download-138699873932-original.log",
+        "run_id": 45464495877,
+        "step": "Prepare exact Godot runtime"
+      }
+    ],
+    "patch_sha256": "4eb7cd1619f7a9bf28e16e7383f4d1a2de1deced35c03d49dc1c4f27fb598f5e",
+    "preserved_by_exact_comparison": [
+      "Pinned engine version and archive SHA256",
+      "PLAY exact archive size, CRC, required member count and selected member extraction",
+      "GDE digest verification, ZIP extraction and exact engine version verification",
+      "All download watchdogs, retries, timeout budgets and error behavior",
+      "Permissions, source SHA, native runtime manifests, matrix planning, cases and final coverage admission"
+    ],
+    "recorded_at": "2026-11-24T19:05:52.493957+00:00",
+    "reviewer": "native_integration",
+    "schema": "independent-ordinary-engine-transport-review-v1",
+    "scope": "Transport-only pre-admission patch snapshot; later exact branch admission is separately reviewed. No hosted qualification pass inferred.",
+    "unchanged_lock_sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe"
+  },
+  "source_records_sha256": {
+    "qualification_publication": "4ffc86c2dd50b5dc92bb85787878b2f251dc1e13ef5d842b3b807e45a440de5c",
+    "native_independent": "9d7550f22512316426e2c381600943d1f09be995aa777acba6aa50b31ec1a183",
+    "native_independent_final_admission": "141156e1e778ebd6bd944daf119fddc27514386c44d96dba5cbb69c3a001cfba"
+  },
+  "README": {
+    "path": "README.md",
+    "sha256": "207038e860323499c025db1046a54c27fe856510c88713dd9893686f12500908",
+    "scope": "Substantive qualified evaluator/ownerguide/currentqualification navigation; copy privacy, compositionbeforelaterauthoring persistence, DraftHOLD andphysicalscope."
+  },
+  "required_next": [
+    "Fresh complete GDE workflow at newexactsource withall25Linux/23Windows/Art/bothcoveragegates",
+    "Fresh ordinary PLAY identity at newexactsource",
+    "Applicable currentDocumentation/provenance andindependent finaldecision review"
+  ],
+  "no_new_native_or_science_campaign_required_by_unchanged_inputs": true,
+  "original_evidence_edited": false,
+  "qualified_source_retagged": false,
+  "ready_or_merge_authorized": false,
+  "independent_final_admission_review": {
+    "admitted_push_branch": "integration/swarm004-005-006-unified-20261122",
+    "authorization": "Owner requested complete full ordinary qualification while Draft/HOLD; root approved this exact branch-only existing workflow admission.",
+    "base": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "disposition": "APPROVE",
+    "files": [
+      {
+        "only_authorized_substitutions": true,
+        "path": ".github/workflows/gdextension.yml",
+        "sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110"
+      },
+      {
+        "only_authorized_substitutions": true,
+        "path": ".github/workflows/play-desktop-packet.yml",
+        "sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3"
+      }
+    ],
+    "no_additional_native_or_docs_admission": true,
+    "pending": "Fresh hosted full GDE and PLAY must prove this changed transport. Approval does not assert execution success.",
+    "preserved": [
+      "All read-only workflow permissions",
+      "Both platform source builds and original source SHA custody",
+      "Complete budget/helper job and unchanged matrix discovery",
+      "All25 Linux and23 Windows shards and original deadlines",
+      "Actual graphical Art smoke and both full source/runtime/log coverage reducers",
+      "Draft PR skip semantics, existing concurrency/cancel rules and optional physical stress opt-in",
+      "Every original engine integrity and dependency preparation deadline guard"
+    ],
+    "schema": "independent-exact-branch-ordinary-gde-admission-review-v1",
+    "source_runtime_roles": "Ordinary CI transport/admission overlay only. Published5323 runtimes and final evaluator remain compiled/qualified at5e. No retag, Q7 relabel or automatic merge."
+  },
+  "complete_linux_failure_crosswalk": {
+    "sha256": "8db9034be96a8f94bf9a3c48db0dc0f250cc4071d0b3d9c097e0b660fc76f220",
+    "logs": 26,
+    "attempts": 104,
+    "HTTP403": 103,
+    "connection_reset": 1,
+    "executed_linux_godot_cases": 0,
+    "aggregate_job": 138702200984,
+    "aggregate_refusal": "Original Linux shard count mismatch"
+  },
+  "local_checkpoint_validation": {
+    "documentation": {
+      "status": "pass"
+    },
+    "historical_M11": {
+      "status": "pass"
+    },
+    "repository": {
+      "status": "pass"
+    },
+    "retrieval": {
+      "original_questions": 32,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_5": 30,
+      "original_two_misses_retained": true
+    },
+    "workflow_provider_and_actionlint": "pass; recorded in implementation review"
+  }
+}

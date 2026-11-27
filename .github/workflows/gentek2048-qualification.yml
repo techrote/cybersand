@@ -1,0 +1,140 @@
+name: GENTEK-2048-001 exact-source 2048-square Workbench
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gentek2048-qualification.yml'
+      - 'godot/scripts/architectural_generator*'
+      - 'godot/scripts/workbench_generator_dialog.gd'
+      - 'godot/scripts/workbench_generated_map.gd'
+      - 'godot/tests/test_architectural*'
+      - 'godot/tests/fixtures/gentek2048_workbench.gd'
+      - 'godot/addons/cybersand_native/**'
+      - 'tools/architecture/*gentek2048*.py'
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - '.github/workflows/gentek2048-qualification.yml'
+      - 'godot/scripts/architectural_generator*'
+      - 'godot/scripts/workbench_generator_dialog.gd'
+      - 'godot/scripts/workbench_generated_map.gd'
+      - 'godot/tests/test_architectural*'
+      - 'godot/tests/fixtures/gentek2048_workbench.gd'
+      - 'godot/addons/cybersand_native/**'
+      - 'tools/architecture/*gentek2048*.py'
+  workflow_dispatch:
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+permissions:
+  contents: read
+concurrency:
+  group: gentek2048-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      GODOT_URL: 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+      GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+      GALLIVM_PERF: nopt
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch pinned native runtime and validate exact source
+        run: |
+          set -euo pipefail
+          python3 tools/ci/materialize_lfs.py --expected-source "$(git rev-parse HEAD)" --output "$RUNNER_TEMP/gentek-lfs" --include godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+          python3 -m py_compile tools/architecture/qualify_gentek2048.py
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Download pinned Godot 4.7 and setup display
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 --max-time 600 -o "$RUNNER_TEMP/godot.zip" "$GODOT_URL"
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh
+      - name: Project contract, existing UI and 2048-square graphical author and independent reopen
+        run: |
+          set -euo pipefail
+          GODOT_BIN="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          mkdir -p evidence
+          "$GODOT_BIN" --headless --path godot --editor --quit > evidence/import.log 2>&1
+          "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_project_contract.gd > evidence/contract.log 2>&1 || { tail -100 evidence/contract.log; exit 1; }
+          "$GODOT_BIN" --headless --path godot --script res://tests/test_architectural_generator_ui.gd > evidence/ui.log 2>&1 || { tail -100 evidence/ui.log; exit 1; }
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/architecture/qualify_gentek2048.py --godot "$GODOT_BIN" --out "$GITHUB_WORKSPACE/evidence/large" \
+            > evidence/large.log 2>&1 || { tail -160 evidence/large.log; exit 1; }
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Preserve retained qualification and negative logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek2048-linux-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: warn
+  windows:
+    if: github.event_name != 'pull_request' || !github.event.pull_request.draft
+    runs-on: windows-2022
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Materialize and attest unchanged source-qualified native DLL and Rapier
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          python tools/ci/materialize_lfs.py --expected-source (git rev-parse HEAD) --output (Join-Path $env:RUNNER_TEMP 'gentek-lfs') --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+          if ($LASTEXITCODE -ne 0) { throw 'Exact-source LFS runtime admission failed' }
+          python -m py_compile tools/architecture/qualify_gentek2048.py
+          if (git status --porcelain --untracked-files=no) { throw 'Source changed during LFS admission' }
+      - name: Retrieve pinned Godot 4.7 Windows console executable
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          $zip=Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected='41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Godot runtime pin mismatch' }
+          $engine=Join-Path $env:RUNNER_TEMP 'godot-win47'
+          Expand-Archive -LiteralPath $zip -DestinationPath $engine
+          'GODOT_EXE='+ (Join-Path $engine 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Contract, UI, 2048-square graphical author and fresh-process reopen
+        shell: pwsh
+        run: |
+          $ErrorActionPreference='Stop'
+          New-Item -ItemType Directory evidence -Force | Out-Null
+          & $env:GODOT_EXE --headless --path godot --editor --quit > evidence/import.log 2>&1
+          if ($LASTEXITCODE -ne 0) { throw 'Godot project import failed' }
+          python tools/architecture/check_gentek2048_importer_custody.py --out evidence/import-custody-initial.json
+          if ($LASTEXITCODE -ne 0) { throw 'Importer metadata custody verification failed' }
+          & $env:GODOT_EXE --headless --path godot --script res://tests/test_architectural_project_contract.gd > evidence/contract.log 2>&1
+          if ($LASTEXITCODE -ne 0) { throw 'Project contract tests failed' }
+          & $env:GODOT_EXE --headless --path godot --script res://tests/test_architectural_generator_ui.gd > evidence/ui.log 2>&1
+          if ($LASTEXITCODE -ne 0) { throw 'Architectural UI tests failed' }
+          python tools/architecture/qualify_gentek2048.py --godot $env:GODOT_EXE --out (Join-Path $PWD 'evidence/large') *> evidence/large.log
+          if ($LASTEXITCODE -ne 0) { Get-Content evidence/large.log -Tail 140; throw '2048 Workbench case or independent reopen failed' }
+          python tools/architecture/check_gentek2048_importer_custody.py --out evidence/import-custody-final.json
+          if ($LASTEXITCODE -ne 0) { throw 'Importer metadata final verification failed' }
+          if (git status --porcelain --untracked-files=no) { throw 'Source modified by acceptance test' }
+      - name: Retain exact-source Windows graphical and fresh-process evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek2048-windows-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: warn

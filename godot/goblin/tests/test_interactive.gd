@@ -44,6 +44,9 @@ func run() -> void:
 	await process_frame
 	check(ui.start_button != null and not ui.start_button.disabled, "opt-in Start is visible and usable")
 	check(ui.controller.adapter == null, "normal Workbench is not mounted until Start")
+	check(ui.tab_container.get_tab_count() == 4, "Play, Discovery, Memory and Guide tabs are present")
+	check(ui.personality.item_count == 16 and ui.fixture.item_count == 10, "actual personality and native scenario catalogues are available")
+	check(int(ui.action_budget.max_value) == 1024, "long-horizon action budget is selectable")
 	ui.fixture.select(2)
 	ui.personality.select(2)
 	ui.seed_value.value = -13
@@ -63,6 +66,10 @@ func run() -> void:
 	for _index: int in range(8): await process_frame
 	check(ui.controller.decisions_paused and ui.controller.attempted == paused_count, "Pause holds decisions after the current action")
 	check(ui.pause_button.text == "Resume", "Pause button reflects actual controller state")
+	ui.step_button.pressed.emit()
+	check(await until(func() -> bool: return ui.controller.attempted >= paused_count + 1 or not ui.controller.running), "Step dispatches one bounded game action")
+	for _index: int in range(8): await process_frame
+	check(ui.controller.decisions_paused and ui.controller.attempted == paused_count + 1, "Step returns to the decision pause after exactly one action")
 	ui.pause_button.pressed.emit()
 	check(await until(func() -> bool: return not ui.controller.running), "graphical campaign reaches a terminal result")
 	var tape: Dictionary = ui.controller.transcript
@@ -81,6 +88,17 @@ func run() -> void:
 	check(colors.size() >= 12, "framebuffer contains rendered game and developer controls")
 	DirAccess.make_dir_recursive_absolute("user://goblin")
 	check(picture.save_png("user://goblin/interactive.png") == OK, "actual graphical capture saved")
+	check(not ui.controller.discovery_summary().coverage.get("unique", {}).is_empty(), "Discovery displays actual admitted coverage")
+	check(ui.controller.corpus.summary().get("records", 0) > 0, "native campaign retains experimental memory")
+	for tab_index: int in [1, 2]:
+		ui.tab_container.current_tab = tab_index
+		await process_frame
+		await RenderingServer.frame_post_draw
+		var tab_picture: Image = root.get_texture().get_image()
+		var filename: String = "discovery" if tab_index == 1 else "memory"
+		check(tab_picture.save_png("user://goblin/interactive-" + filename + ".png") == OK, filename + " tab framebuffer retained")
+		check(root.get_visible_rect().encloses(ui.panel.get_global_rect()), filename + " panel stays inside the viewport")
+	ui.tab_container.current_tab = 0
 	ui.replay_button.pressed.emit()
 	check(ui.controller.running, "Replay accepts the in-memory transcript and current exact source identity")
 	check(await until(func() -> bool: return not ui.controller.running), "Replay button reaches a terminal result")

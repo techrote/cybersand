@@ -1,0 +1,160 @@
+{
+  "art_graphical": {
+    "checks": 38,
+    "job_id": 138712125238,
+    "source_runtime_log_native_material_and_original_framebuffer_review_sha256": "7c64155979905807c8c510343738252dee32b1c077ea7e4be4987efce6a5b2ae",
+    "status": "passed"
+  },
+  "control_only_skips": [
+    {
+      "job_id": 138707542383,
+      "name": "ready validation scope",
+      "reason": "Ready-for-review control is inapplicable to this push"
+    },
+    {
+      "job_id": 138707647295,
+      "name": "physical-actor-stress",
+      "reason": "Existing optional physical_actor_stress workflow was not requested; ordinary mandatory physical cases still execute"
+    }
+  ],
+  "disposition": "PASS_ALL_REQUIRED_ORDINARY_GDE_GATES",
+  "duplicates_or_missing_cases": 0,
+  "event": "push",
+  "failed_jobs": 0,
+  "job_count": 57,
+  "linux": {
+    "byte_identical_to_original_hosted_coverage": true,
+    "cases": 344,
+    "import_processes": 25,
+    "independent_report_sha256": "726e694fa73b3e9f5cce6ea1df538bfb7e0e723f66d5a7c016adae0440affb77",
+    "original_logs_verified": 369,
+    "rendered_case_names": [
+      "test_deepworks_render",
+      "test_gen007_qualification_render",
+      "test_material_vapour_pipeline_render",
+      "test_play_ui007_overlay_render",
+      "test_explore001_dialog_saved_render",
+      "test_physical_flight_gameplay_render",
+      "test_water_presentation_render",
+      "test_explore001_dialog_native_small_render",
+      "test_showcase_backdrop_render",
+      "test_art_batch_native_render",
+      "test_blacksite_nine_render",
+      "test_explore001_dialog_native_render",
+      "test_palette_crossfade_render",
+      "test_depth_surface_render",
+      "test_wave_flow_render",
+      "test_explore001_dialog_native_saved_render",
+      "test_explore001_dialog_render",
+      "test_material_presentation_render",
+      "test_semantic_depth_render",
+      "test_explore001_dialog_small_render",
+      "test_gen007_workbench_render",
+      "test_depth_dimensions_render",
+      "test_workbench_wave_render"
+    ],
+    "rendered_pixel_cases": 23,
+    "runtime_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+    "shards": 25,
+    "source_fingerprint_inventory_count": 41,
+    "status": "passed"
+  },
+  "local_reader_context": {
+    "first_failure_report_sha256": "e92df855bb2947b03c7dd67662a01d607e70426cc85e74bae80610c39133ec7a",
+    "first_linux_review": "Failed exact command comparison because detached review path differed from original absolute hosted project path. Preserved diagnostic is not a campaign outcome.",
+    "original_command_arguments_rewritten": false,
+    "original_evidence_changed": false,
+    "resolution": "Created pristine exact5fd detached checkout at previously absent original /home/runner/work/cybersand/cybersand path and reran unchanged consumer.",
+    "source_or_verifier_changed": false
+  },
+  "mandatory_gate_skips": 0,
+  "original_artifacts": {
+    "all_API_digests_and_sizes_verified": true,
+    "all_original_member_hashes_recorded": true,
+    "archive_bytes": 160624462,
+    "count": 59,
+    "original_recovery_report_sha256": "b62df133fa9c82062b222c1db86adf2a64defc57b4aa344e32e3c83a24804a92",
+    "short_lived_linux_runtime": {
+      "API_expires_at": "2026-11-25T19:20:17Z",
+      "bytes": 22262439,
+      "id": 14956796404,
+      "persistently_cached": true,
+      "sha256": "31ade9053118e774bf8581042f119f2d476d5adb5b7d968e27bca5c5a12b837d"
+    }
+  },
+  "original_terminal_status": "success",
+  "reader_sources": {
+    "linux": "58b9897ffd1fa2ba0e456d17467342bd6e7a60a6d8296933b093438fd0ea08df",
+    "windows": "27c1b25205335c50fdd1c8daae0de7b231c95d366686839ec30151e570660ba6"
+  },
+  "retained_play_original_packets": {
+    "C_control_assertions": 860,
+    "C_life010_native_commits": 20,
+    "C_life011_native_receipts": 160,
+    "C_non_neutral_physical_samples": 720,
+    "fresh_unchanged_source_readers_passed": true,
+    "independent_C_review_sha256": "23eddec9a534c2ab0d7bce7d0d76ce8e80ef43e9850099bdf3d61c96870bb008",
+    "linux": 15,
+    "windows": 15
+  },
+  "reviewed_at": "2026-11-24T19:43:04.429416+00:00",
+  "run_attempt": 1,
+  "run_id": 45467878171,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/45467878171",
+  "runtime_role_boundary": {
+    "ordinary_windows_candidate_is_distinct": true,
+    "published_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+    "published_windows_runtime_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+    "qualified_SWARM_runtime_and_evaluator_producer": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "retagging_or_republication": false
+  },
+  "schema": "independent-complete-final-ordinary-gde-review-v1",
+  "scope_limits": [
+    "This is independent reduction of original hosted execution; no additional Godot/native execution was performed by the reader.",
+    "All23 display cases execute in the Linux ordinary lane; Windows ordinary headless scope excludes them explicitly under unchanged policy. Q7 Windows graphical/evaluator qualification remains separately passed.",
+    "Physical Windows11/NVIDIA owner appearance/responsiveness/private-map preference remains owner-pending.",
+    "No source promotion, merge or default activation is authorized."
+  ],
+  "source_sha": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "source_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "successful_jobs": 55,
+  "total_case_and_import_logs_verified": 713,
+  "total_original_case_executions": 665,
+  "windows": {
+    "cases": 321,
+    "comparison_to_original_hosted_coverage": "All semantic fields and original report/log hashes exactly equal. Only derived report_path artifact-storage prefix differs in independent result.",
+    "existing_explicit_graphical_exclusions": [
+      "test_art_batch_native_render",
+      "test_blacksite_nine_render",
+      "test_deepworks_render",
+      "test_depth_dimensions_render",
+      "test_depth_surface_render",
+      "test_explore001_dialog_native_render",
+      "test_explore001_dialog_native_saved_render",
+      "test_explore001_dialog_native_small_render",
+      "test_explore001_dialog_render",
+      "test_explore001_dialog_saved_render",
+      "test_explore001_dialog_small_render",
+      "test_gen007_qualification_render",
+      "test_gen007_workbench_render",
+      "test_material_presentation_render",
+      "test_material_vapour_pipeline_render",
+      "test_palette_crossfade_render",
+      "test_physical_flight_gameplay_render",
+      "test_play_ui007_overlay_render",
+      "test_semantic_depth_render",
+      "test_showcase_backdrop_render",
+      "test_water_presentation_render",
+      "test_wave_flow_render",
+      "test_workbench_wave_render"
+    ],
+    "import_processes": 23,
+    "independent_report_sha256": "1791bf53b523327dc0ab84883661c696a52118c05afa9a060826447195175628",
+    "ordinary_source_built_candidate_sha256": "60c49a8fc3936a756cbd77ce1cc5a8e9aa7a8f6748893c19f5ec53843766b32f",
+    "original_hosted_report_sha256": "4c02ad0f79899201fb2ec554e20451fe68d8ff038c2ea8b9b2031d01815c3ceb",
+    "original_logs_verified": 344,
+    "shards": 23,
+    "source_fingerprint_inventory_count": 1109,
+    "status": "passed"
+  }
+}

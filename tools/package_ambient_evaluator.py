@@ -133,9 +133,12 @@ def build(args) -> None:
         ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "archive", "HEAD", "--", *names],
         cwd=ROOT, env=dict(os.environ, GIT_LFS_SKIP_SMUDGE="1"), timeout=60)
     materialized = {runtime["cybersand_runtime"]["path"], runtime["rapier_runtime"]["path"]}
+    materialized.add("godot/tools/gentek_reciprocal.exe")
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
         for entry in source:
             if not entry.isfile() or entry.name.startswith("godot/.godot/"):
+                continue
+            if entry.name in {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}:
                 continue
             if "/bin/" in entry.name and entry.name not in materialized:
                 continue
@@ -175,7 +178,7 @@ def build(args) -> None:
         "# CyberSand — AMBIENT-001 owner evaluation\n\n"
         "**Draft/HOLD. Experimental and opt-in; owner acceptance remains pending.**\n\n"
         "Extract the complete ZIP into a writable folder and double-click **Open Workbench.cmd**. "
-        "Allow the first local import to finish. Open **Actor Composition…**, select an ambient example "
+        "Allow the first local import to finish. Open **Configuration…**, select **Actors**, choose an **Ambient examples** entry "
         "and click **Load scene**, then **Play**. The ordinary blank start stays passive.\n\n"
         f"Host source: `{identity['source_commit']}`. Native build source: `{runtime['runtime_source_commit']}`. "
         f"The completed automated qualification platform is `{qualified_platform}`. "

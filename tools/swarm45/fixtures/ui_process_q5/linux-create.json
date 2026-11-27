@@ -1,0 +1,213 @@
+{
+	"applied": true,
+	"apply_disabled": true,
+	"checks": 265,
+	"completed": true,
+	"controller_phase": "installed",
+	"display": "X11",
+	"engine": "4.7-stable (official)",
+	"example": "transaction",
+	"failures": [],
+	"historical_only": false,
+	"inspector_evidence": {
+		"initial": {
+			"default_final": true,
+			"final_only_layers": true,
+			"letterbox_refusal": true,
+			"native_cell_picks": true,
+			"native_pixels": true,
+			"restored_final": true,
+			"round_count": 3,
+			"round_indices": [
+				-1,
+				0,
+				1,
+				2,
+				-1
+			],
+			"schema": 1,
+			"source": "d59a82241eaf7d7bf48551139e41c3da277a8eff"
+		},
+		"regenerated": {
+			"default_final": true,
+			"final_only_layers": true,
+			"letterbox_refusal": true,
+			"native_cell_picks": true,
+			"native_pixels": true,
+			"restored_final": true,
+			"round_count": 3,
+			"round_indices": [
+				-1,
+				0,
+				1,
+				2,
+				-1
+			],
+			"schema": 1,
+			"source": "d59a82241eaf7d7bf48551139e41c3da277a8eff"
+		}
+	},
+	"integration_refusals": {
+		"gesture_lifecycle": true,
+		"pending_shared_text": true
+	},
+	"joint_count": 0,
+	"material_count": 4834,
+	"mode": "create",
+	"native_can_apply": true,
+	"native_evidence_sha256": {
+		"initial": {
+			"initial-material.le16": "ad225cdeafc75c923534f2654c3d82d724a1c55917c87d0cbbfbffc679d23a4b",
+			"initial-native-pixels.png": "4a2647a04f062f0d51eca31e992c272e1dfe10616b7d51ec852fecc47decdec7",
+			"initial-request.txt": "f046771b5a2164e276be18f627bee5a2c18968ddbf5c1348928458b2157cda62",
+			"initial-result.json": "6c86bc908aa76508af2d82c10b5185041da793e2754e38c5ca79f621a3775eac"
+		},
+		"regenerated": {
+			"regenerated-material.le16": "ad225cdeafc75c923534f2654c3d82d724a1c55917c87d0cbbfbffc679d23a4b",
+			"regenerated-native-pixels.png": "4a2647a04f062f0d51eca31e992c272e1dfe10616b7d51ec852fecc47decdec7",
+			"regenerated-request.txt": "f046771b5a2164e276be18f627bee5a2c18968ddbf5c1348928458b2157cda62",
+			"regenerated-result.json": "6c86bc908aa76508af2d82c10b5185041da793e2754e38c5ca79f621a3775eac"
+		}
+	},
+	"native_planes_sha256": {
+		"applied": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+		"baseline": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541",
+		"expected": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+		"preview": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541",
+		"regenerated": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+		"saved": "2a7166559b1e23af4a2324ebe088db99727d045c1564da62d79f803939c02fc6",
+		"undone": "07854d2fef297a06ba81685e660c332de36d5d18d546927d30daad6d7fda1541"
+	},
+	"native_reason": "complete native composition with qualified obligations",
+	"native_receipt": {
+		"changed_cells": 4834,
+		"operation": "build",
+		"patch_sha256": "56565ab9f911754f10621b9de5431b6adc4f0b8a8aa91c2b8a2472ba220a81ae",
+		"proposal_sha256": "6c86bc908aa76508af2d82c10b5185041da793e2754e38c5ca79f621a3775eac",
+		"protected_cells": 0,
+		"schema": 1,
+		"semantics": "retained-native-transaction-v1",
+		"source_native_generation": 5,
+		"source_revision": 5,
+		"source_tick": 0
+	},
+	"native_recipe": {
+		"activation": [
+			[
+				64.0,
+				48.0
+			]
+		],
+		"border": 4,
+		"gentek_parameters": {
+			"frame": {
+				"branching": 0.55,
+				"clutter": 0.15,
+				"cohesion": 0.35,
+				"destruction": 0.0,
+				"environment_affinity": 0.25,
+				"irregularity": 0.05,
+				"variation": 0.65
+			},
+			"mosaic": {
+				"branching": 0.55,
+				"clutter": 0.15,
+				"cohesion": 0.35,
+				"destruction": 0.0,
+				"environment_affinity": 0.25,
+				"irregularity": 0.05,
+				"variation": 0.65
+			}
+		},
+		"layout": "centered_frame_rectangle",
+		"optional": true,
+		"orientation": -1.0,
+		"origin": [
+			0.0,
+			0.0
+		],
+		"profile": "viaduct_like",
+		"rounds": 2.0,
+		"seed": 605.0,
+		"shared_extent": 13.0,
+		"shared_ownership": true,
+		"size": [
+			128.0,
+			96.0
+		]
+	},
+	"native_source": {
+		"ok": true,
+		"path": "/home/runner/work/_temp/swarm45-source/godot/tools/gentek_reciprocal",
+		"sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+		"source": "d59a82241eaf7d7bf48551139e41c3da277a8eff"
+	},
+	"native_status": "complete",
+	"native_stop_reason": "fixed_point",
+	"native_work": {
+		"both_genteks_revised": 0.0,
+		"candidate_native_contacts": 0.0,
+		"conservative_memory_bound_bytes": 9437184.0,
+		"coordinator_created_cells": 0.0,
+		"damage_lost_required": 0.0,
+		"foreign_joined_required": 0.0,
+		"frame_candidates": 511.0,
+		"frame_changed_rounds": 0.0,
+		"frame_footprint_changed_rounds": 0.0,
+		"frame_work": 216277.0,
+		"input_header_only": 0.0,
+		"invalid_proposal_rounds": 0.0,
+		"local_terminations": 0.0,
+		"mosaic_changed_rounds": 1.0,
+		"mosaic_footprint_changed_rounds": 1.0,
+		"mosaic_work": 950764.0,
+		"new_assembly_required": 0.0,
+		"original_required": 0.0,
+		"original_still_required": 0.0,
+		"qualified_joints": 0.0,
+		"rejected_joint_source_bindings": 0.0,
+		"shared_work": 881240.0,
+		"solver_work": 1029824.0,
+		"still_required": 0.0,
+		"total_charged_work": 3078105.0,
+		"unchecked_candidate_contacts": 0.0
+	},
+	"obligation_count": 0,
+	"owner_visual_acceptance": "pending",
+	"platform": "Linux",
+	"process_id": 9041,
+	"proposal_sha256": "6c86bc908aa76508af2d82c10b5185041da793e2754e38c5ca79f621a3775eac",
+	"reciprocal_programme_acceptance": false,
+	"reciprocal_witness": {
+		"all_foreign_closed": true,
+		"both_footprints_changed": false,
+		"foreign_joined": 0,
+		"frame_occupied_changes": 0,
+		"joint_count": 0,
+		"mosaic_occupied_changes": 514,
+		"obligation_count": 0,
+		"scope": "array-derived native reciprocal revision and joint/closure witness; synthetic World only, offer causality independently controlled",
+		"unresolved": 0
+	},
+	"reciprocal_witness_passed": false,
+	"schema": 2,
+	"scope": "actual native authoring transaction and persistence; reciprocal research acceptance remains separate",
+	"startup": {
+		"applied": true,
+		"busy": false,
+		"message": "Choose a flyer to pilot, or use Place model to add an independent body.",
+		"milliseconds": 8124,
+		"native_error": "",
+		"pending": {},
+		"watchdog_msec": 120000,
+		"worker_failed": false
+	},
+	"test_sha256": "9717f91b8fdc57d06398a568a9fce08bae29b7bf7eb4e718172a7d967fc94d13",
+	"timeout_diagnostics": [],
+	"transport_refusals": {
+		"failed_child_positive": true,
+		"preexisting_job_directory": true,
+		"runtime_manifest_changed": true
+	},
+	"undo_disabled": false
+}

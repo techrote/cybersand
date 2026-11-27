@@ -16,6 +16,8 @@ const MAX_PUBLICATION_BYTES := 16 * 1024 * 1024
 const MAX_NATIVE_AGE_TICKS := 12
 const MAX_QUERY_SAMPLES := 2401
 const MAX_NEIGHBORS := 7
+const MAX_PEER_CANDIDATES := 32
+const MAX_ADAPTIVE_SAMPLES := 4096
 
 var _extent := Vector2i.ZERO
 var _epoch := -1
@@ -212,8 +214,7 @@ func _freshness_reason() -> String:
 static func requests(profile: Dictionary) -> Array:
 	var requested: Dictionary = {}
 	for module: Variant in profile.get("modules", []):
-		if not module is Dictionary or not bool(module.get("enabled", false)): continue
-		if str(module.get("type", "")) not in ["seek_material", "avoid_material", "investigate_material"]: continue
+		if not module is Dictionary or not bool(module.get("enabled", false)) or float(module.get("weight", 1.0)) <= 0.0: continue
 		var parameters: Dictionary = module.get("params", {})
 		if not parameters.has("material_id") or not parameters.has("radius"): continue
 		if not _valid_material_id(parameters.material_id) or not _finite_number(parameters.radius): continue
@@ -270,7 +271,21 @@ func observe(view: Dictionary, requested: Array, context: Dictionary) -> Diction
 		if spatial.get("modules") is Dictionary:
 			result.ledges["modules"] = spatial.modules.duplicate(true)
 	result.neighbors = _neighbors(view, context)
-	result.materials = _materials(position, requested)
+	var generation: Variant = context.get("world_generation", _generation)
+	result["world_generation"] = int(generation) if _finite_number(generation) and float(generation) >= 0.0 and float(generation) == floorf(float(generation)) else -1
+	var navigation: Variant = context.get("navigation", {})
+	result["navigation"] = navigation.duplicate(true) if navigation is Dictionary else {"available":false}
+	if result.navigation.has("directions"):
+		result.navigation["sample_tick"] = int(view.tick)
+	var regions: Variant = context.get("regions", [])
+	result["regions"] = regions.duplicate(true) if regions is Array and regions.size() <= 32 else []
+	var sampling: Variant = context.get("perception", {})
+	if not sampling is Dictionary:
+		result.materials = {"available":false, "status":"unavailable", "reason":"invalid sampling settings", "targets":{}}
+	elif sampling.is_empty():
+		result.materials = _materials(position, requested)
+	else:
+		result.materials = _materials_adaptive(position, requested, sampling)
 	return result
 
 
@@ -354,20 +369,50 @@ func _materials(position: Vector2, requested: Array) -> Dictionary:
 
 
 static func _neighbors(view: Dictionary, context: Dictionary) -> Dictionary:
-	var result := {"available":false, "actors":[], "radius_cells":MAX_RADIUS}
+	var result := {"available":false, "actors":[], "radius_cells":MAX_RADIUS,
+		"candidate_budget":MAX_PEER_CANDIDATES, "actor_budget":MAX_NEIGHBORS,
+		"coverage":"copied-owner-local-roster", "incomplete":false, "examined":0, "invalid":0}
 	if not context.get("neighbors") is Array: return result
 	result.available = true
-	for neighbor: Variant in context.neighbors:
-		if result.actors.size() >= MAX_NEIGHBORS: break
+	var candidates: Array = context.neighbors
+	var admitted: Array[Dictionary] = []
+	var identities: Dictionary = {}
+	var relations: Dictionary = context.get("relations", {}) if context.get("relations", {}) is Dictionary else {}
+	result.incomplete = bool(context.get("peer_roster_incomplete", false)) or candidates.size() > MAX_PEER_CANDIDATES
+	for index: int in range(mini(candidates.size(), MAX_PEER_CANDIDATES)):
+		var neighbor: Variant = candidates[index]
+		result.examined += 1
 		if not neighbor is Dictionary or not neighbor.get("position") is Vector2 \
 			or not Vector2(neighbor.position).is_finite() or neighbor.get("run_id") != view.get("run_id") \
 			or neighbor.get("epoch") != view.get("epoch") or neighbor.get("instance_id") == view.get("instance_id") \
-			or neighbor.get("tick") != view.get("tick"):
+			or neighbor.get("tick") != view.get("tick") or not bool(neighbor.get("available", true)) \
+			or not _finite_number(neighbor.get("instance_id")) or float(neighbor.instance_id) < 0.0 \
+			or float(neighbor.instance_id) != floorf(float(neighbor.instance_id)):
+			result.invalid += 1
 			continue
-		if Vector2(neighbor.position).distance_to(view.position) > MAX_RADIUS: continue
-		result.actors.append({"id":int(neighbor.get("instance_id", -1)),
-			"position":Vector2(neighbor.position), "compatible":bool(neighbor.get("compatible", true)),
-			"sample_tick":int(neighbor.get("tick", -1))})
+		var identity := int(neighbor.instance_id)
+		if identities.has(identity):
+			result.invalid += 1
+			continue
+		identities[identity] = true
+		var distance := Vector2(neighbor.position).distance_to(view.position)
+		if distance > MAX_RADIUS: continue
+		var tags := _social_tags(neighbor.get("tags", []))
+		var peer := {"id":identity, "position":Vector2(neighbor.position),
+			"compatible":bool(neighbor.get("compatible", true)), "distance":distance,
+			"sample_tick":int(neighbor.get("tick", -1)), "tags":tags,
+			"affinity":_affinity(tags, relations), "velocity_available":false}
+		var velocity: Variant = neighbor.get("velocity")
+		if velocity is Vector2 and velocity.is_finite():
+			peer["velocity"] = velocity
+			peer.velocity_available = true
+		admitted.append(peer)
+	admitted.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
+		if not is_equal_approx(float(a.distance), float(b.distance)): return float(a.distance) < float(b.distance)
+		return int(a.id) < int(b.id))
+	result.incomplete = bool(result.incomplete) or admitted.size() > MAX_NEIGHBORS or int(result.invalid) > 0
+	for index: int in range(mini(admitted.size(), MAX_NEIGHBORS)):
+		result.actors.append(admitted[index])
 	return result
 
 
@@ -383,7 +428,7 @@ static func _valid_material_id(value: Variant) -> bool:
 
 
 func diagnostics() -> Dictionary:
-	return {"version":"ambient-perception/v1", "available":_freshness_reason().is_empty(),
+	return {"version":"ambient-perception/v2", "available":_freshness_reason().is_empty(),
 		"reason":_freshness_reason(), "extent":_extent, "owner_epoch":_epoch,
 		"world_generation":_generation, "publication_serial":_serial, "revision":_revision,
 		"owner_snapshot_serial":_owner_serial,"ignored_older_publications":_ignored_older_publications,
@@ -393,5 +438,234 @@ func diagnostics() -> Dictionary:
 		"ingest_usec_total":_ingest_usec, "ingest_usec_max":_ingest_max_usec,
 		"queries":_queries, "query_samples":_query_samples,
 		"query_usec_total":_query_usec, "query_usec_max":_query_max_usec,
-		"maximum_samples_per_query":MAX_QUERY_SAMPLES, "sample_spacing_cells":SAMPLE_SPACING,
+		"maximum_samples_per_query":MAX_QUERY_SAMPLES, "maximum_adaptive_samples_per_query":MAX_ADAPTIVE_SAMPLES, "sample_spacing_cells":SAMPLE_SPACING,
 		"maximum_materials":MAX_MATERIALS, "maximum_radius_cells":MAX_RADIUS}
+
+# V1 profiles deliberately retain their qualified four-cell lattice. V2 opts in
+# to an exact near field and requested coarse spacing under a single read budget.
+static func settings(profile: Dictionary) -> Dictionary:
+	if int(profile.get("version", 1)) < 2: return {}
+	var configured: Variant = profile.get("perception", {})
+	return configured.duplicate(true) if configured is Dictionary else {"invalid":true}
+
+
+static func wants_navigation(profile: Dictionary) -> bool:
+	for module: Variant in profile.get("modules", []):
+		if module is Dictionary and bool(module.get("enabled", false)) \
+			and float(module.get("weight", 1.0)) > 0.0 \
+			and str(module.get("type", "")) in ["steer_obstacles", "withdraw_obstruction"]:
+			return true
+	return false
+
+
+func _materials_adaptive(position: Vector2, requested: Array, settings_value: Dictionary) -> Dictionary:
+	var reason := _freshness_reason()
+	var state := "fresh" if reason.is_empty() else "stale" if "stale" in reason else "unavailable"
+	var result := {"available":reason.is_empty(), "reason":reason, "status":state,
+		"source":"native material-ID publication (stored cells plus ballistic projection)",
+		"world_generation":_generation, "owner_epoch":_epoch, "sample_tick":_sample_tick,
+		"current_tick":_latest_tick, "revision":_revision, "current_revision":_current_revision,
+		"publication_serial":_serial, "age_ticks":maxi(0, _latest_tick - _sample_tick),
+		"coverage":"sampled-circle-clipped-to-canvas", "coverage_complete":false,
+		"distance":"inclusive Euclidean distance to cell centers from current actor center",
+		"nearest_semantics":"nearest observed sample; unsampled cells are unknown",
+		"targets":{}, "sample_count":0, "near_sample_count":0, "refinement_sample_count":0,
+		"maximum_samples":MAX_ADAPTIVE_SAMPLES, "budget_exhausted":false}
+	if settings_value.size() != 3 or not settings_value.has_all(["spacing_cells", "near_radius_cells", "refine_boundaries"]) \
+		or not _finite_number(settings_value.get("spacing_cells")) \
+		or not _finite_number(settings_value.get("near_radius_cells")) \
+		or float(settings_value.spacing_cells) != floorf(float(settings_value.spacing_cells)) \
+		or float(settings_value.near_radius_cells) != floorf(float(settings_value.near_radius_cells)) \
+		or float(settings_value.spacing_cells) < 1.0 or float(settings_value.spacing_cells) > 4.0 \
+		or float(settings_value.near_radius_cells) < 0.0 or float(settings_value.near_radius_cells) > 16.0 \
+		or not settings_value.get("refine_boundaries") is bool:
+		result.available = false
+		result.status = "unavailable"
+		result.reason = "invalid bounded adaptive sampling settings"
+		return result
+	if requested.size() > MAX_MATERIALS:
+		result.available = false
+		result.status = "unavailable"
+		result.reason = "material query capacity exceeded"
+		return result
+	var maximum := 0.0
+	var coverage: Dictionary = {}
+	for request: Variant in requested:
+		if not request is Dictionary or not _valid_material_id(request.get("material_id")) \
+			or not _finite_number(request.get("radius_cells")):
+			result.available = false
+			result.status = "unavailable"
+			result.reason = "invalid material query"
+			return result
+		var material_id := int(request.material_id)
+		var radius := float(request.radius_cells)
+		if radius < 1.0 or radius > MAX_RADIUS or radius != floorf(radius) \
+			or result.targets.has(str(material_id)):
+			result.available = false
+			result.status = "unavailable"
+			result.reason = "invalid material radius or duplicate query"
+			return result
+		maximum = maxf(maximum, radius)
+		coverage[radius] = 0
+		result.targets[str(material_id)] = {"available":reason.is_empty(), "status":state,
+			"present":false, "count":0, "radius_cells":radius, "sample_tick":_sample_tick,
+			"revision":_revision, "coverage":"sampled-circle", "coverage_sample_count":0,
+			"coverage_complete":false, "absence_scope":"admitted_samples_only",
+			"boundary":{"available":false, "reason":"no observed boundary"}}
+	var requested_spacing := int(settings_value.spacing_cells)
+	var spacing := requested_spacing
+	var near_radius := minf(float(settings_value.near_radius_cells), maximum)
+	var refine := bool(settings_value.refine_boundaries)
+	var near_bound := int(pow(ceili(near_radius * 2.0) + 2, 2)) if near_radius > 0.0 else 0
+	var refinement_bound := MAX_MATERIALS * 29 if refine else 0
+	# Coarsen explicitly instead of truncating a scan toward one corner. Even
+	# radius96, near16 and eight refinements fit at spacing4 (<=3,813 sites).
+	while spacing < SAMPLE_SPACING \
+		and int(pow(ceili(maximum * 2.0 / spacing) + 1, 2)) + near_bound + refinement_bound > MAX_ADAPTIVE_SAMPLES:
+		spacing += 1
+	result["requested_spacing_cells"] = requested_spacing
+	result["sample_spacing_cells"] = spacing
+	result["near_radius_cells"] = near_radius
+	result["resolution_limited"] = spacing != requested_spacing
+	result["coverage_state"] = "incomplete_requested_resolution" if spacing != requested_spacing else "sampled"
+	result.coverage_complete = spacing == 1 or near_radius >= maximum
+	if not result.available or requested.is_empty(): return result
+	var started := Time.get_ticks_usec()
+	var visited: Dictionary = {}
+	if near_radius > 0.0:
+		var near_squared := near_radius * near_radius
+		for y: int in range(maxi(0, ceili(position.y - near_radius - 0.5)), mini(_extent.y - 1, floori(position.y + near_radius - 0.5)) + 1):
+			for x: int in range(maxi(0, ceili(position.x - near_radius - 0.5)), mini(_extent.x - 1, floori(position.x + near_radius - 0.5)) + 1):
+				if position.distance_squared_to(Vector2(x + 0.5, y + 0.5)) <= near_squared:
+					_adaptive_sample(Vector2i(x,y), position, maximum, result, coverage, visited)
+		result.near_sample_count = result.sample_count
+	var first_x := maxi(0, ceili((position.x - maximum - 0.5) / spacing) * spacing)
+	var first_y := maxi(0, ceili((position.y - maximum - 0.5) / spacing) * spacing)
+	var last_x := mini(_extent.x - 1, floori((position.x + maximum - 0.5) / spacing) * spacing)
+	var last_y := mini(_extent.y - 1, floori((position.y + maximum - 0.5) / spacing) * spacing)
+	for y: int in range(first_y, last_y + 1, spacing):
+		for x: int in range(first_x, last_x + 1, spacing):
+			_adaptive_sample(Vector2i(x,y), position, maximum, result, coverage, visited)
+	var before_refinement := int(result.sample_count)
+	if refine:
+		for key: String in result.targets:
+			var target: Dictionary = result.targets[key]
+			if not target.present: continue
+			var point := Vector2i(Vector2(target.nearest).floor())
+			# A finite exact patch improves an already observed coarse location;
+			# it cannot discover every remote thin feature between lattice sites.
+			for dy: int in range(-2,3):
+				for dx: int in range(-2,3):
+					var candidate := point + Vector2i(dx,dy)
+					if position.distance_squared_to(Vector2(candidate) + Vector2(0.5,0.5)) <= float(target.radius_cells) * float(target.radius_cells):
+						_adaptive_sample(candidate, position, maximum, result, coverage, visited)
+			_observe_boundary(int(key), target, position, maximum, result, coverage, visited)
+	result.refinement_sample_count = int(result.sample_count) - before_refinement
+	for key: String in result.targets:
+		var target: Dictionary = result.targets[key]
+		target.coverage_sample_count = int(coverage[float(target.radius_cells)])
+		target["sample_spacing_cells"] = spacing
+		target["near_radius_cells"] = near_radius
+		target["resolution_limited"] = spacing != requested_spacing
+		target.coverage_complete = (spacing == 1 or near_radius >= float(target.radius_cells)) and not result.budget_exhausted
+		if target.coverage_complete: target.absence_scope = "all_cell_centers_in_circle_clipped_to_canvas"
+		if int(target.coverage_sample_count) == 0:
+			target.available = false
+			target.status = "unavailable"
+			target["reason"] = "no admitted sample lies inside this clipped circle"
+		else:
+			target.status = "observed" if target.present else "absent" if target.coverage_complete else "unobserved_in_incomplete_coverage"
+	if int(result.sample_count) == 0:
+		result.available = false
+		result.status = "unavailable"
+		result.reason = "no admitted sample lies inside this clipped circle"
+	if result.budget_exhausted:
+		result.coverage_complete = false
+		result.coverage_state = "incomplete_budget"
+	_queries += 1
+	_query_samples += int(result.sample_count)
+	var elapsed := Time.get_ticks_usec() - started
+	_query_usec += elapsed
+	_query_max_usec = maxi(_query_max_usec, elapsed)
+	return result
+
+
+func _adaptive_sample(cell: Vector2i, position: Vector2, maximum: float, result: Dictionary,
+		coverage: Dictionary, visited: Dictionary) -> int:
+	if cell.x < 0 or cell.y < 0 or cell.x >= _extent.x or cell.y >= _extent.y: return -1
+	var point := Vector2(cell) + Vector2(0.5,0.5)
+	var distance_squared := position.distance_squared_to(point)
+	if distance_squared > maximum * maximum: return -1
+	var offset := cell.y * _extent.x + cell.x
+	if visited.has(offset): return int(visited[offset])
+	if int(result.sample_count) >= MAX_ADAPTIVE_SAMPLES:
+		result.budget_exhausted = true
+		return -1
+	# Byte-valued CPU L8/RG8 storage; this is not a displayed colour.
+	var material_id := roundi(_cache.get_pixel(cell.x,cell.y).r * 255.0)
+	visited[offset] = material_id
+	result.sample_count += 1
+	for radius: float in coverage:
+		if distance_squared <= radius * radius: coverage[radius] += 1
+	var key := str(material_id)
+	if result.targets.has(key):
+		var target: Dictionary = result.targets[key]
+		if distance_squared <= float(target.radius_cells) * float(target.radius_cells):
+			target.count += 1
+			if not bool(target.present) or distance_squared < float(target.distance) * float(target.distance):
+				target.present = true
+				target["nearest"] = point
+				target["distance"] = sqrt(distance_squared)
+				target["direction"] = (point - position).normalized()
+	return material_id
+
+
+func _observe_boundary(material_id: int, target: Dictionary, position: Vector2, maximum: float,
+		result: Dictionary, coverage: Dictionary, visited: Dictionary) -> void:
+	var center := Vector2i(Vector2(target.nearest).floor())
+	var outside := Vector2.ZERO
+	var best_outside := Vector2.ZERO
+	var best_score := -INF
+	var checked := 0
+	var toward_actor := (position - Vector2(target.nearest)).normalized()
+	for offset: Vector2i in [Vector2i.LEFT,Vector2i.RIGHT,Vector2i.UP,Vector2i.DOWN]:
+		var candidate := center + offset
+		if position.distance_squared_to(Vector2(candidate) + Vector2(0.5,0.5)) > float(target.radius_cells) * float(target.radius_cells): continue
+		var found := _adaptive_sample(candidate, position, maximum, result, coverage, visited)
+		if found < 0: continue
+		checked += 1
+		if found == material_id: continue
+		outside += Vector2(offset)
+		var score := Vector2(offset).dot(toward_actor)
+		if score > best_score:
+			best_score = score
+			best_outside = Vector2(offset)
+	if best_outside == Vector2.ZERO:
+		target.boundary = {"available":false, "reason":"no different adjacent material observed", "checked_neighbors":checked}
+		return
+	var normal := outside.normalized() if outside.length_squared() > 0.000001 else best_outside
+	var tangent := Vector2(-normal.y, normal.x)
+	var boundary_position := Vector2(center) + Vector2(0.5,0.5) + best_outside * 0.5
+	target.boundary = {"available":true, "position":boundary_position, "normal":normal, "tangent":tangent,
+		"checked_neighbors":checked, "complete_cross":checked == 4,
+		"source":"exact adjacent native-ID transitions; local estimated outward normal"}
+	target["boundary_normal"] = normal
+	target["boundary_tangent"] = tangent
+
+
+static func _social_tags(value: Variant) -> Array:
+	var result: Array = []
+	if not value is Array or value.size() > 8: return result
+	for tag: Variant in value:
+		if not tag is String or tag.is_empty() or tag.length() > 64: continue
+		if tag not in result: result.append(tag)
+	result.sort()
+	return result
+
+
+static func _affinity(tags: Array, relations: Dictionary) -> int:
+	for tag: Variant in _social_tags(relations.get("avoid_tags", [])):
+		if tag in tags: return -1
+	for tag: Variant in _social_tags(relations.get("prefer_tags", [])):
+		if tag in tags: return 1
+	return 0

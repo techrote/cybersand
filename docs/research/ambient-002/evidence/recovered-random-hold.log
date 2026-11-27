@@ -1,0 +1,7 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+AMBIENT2_EPISODES_PROGRESS main-pockets-runner-s1701-t30-n1-random_hold native=1800 physical=1800
+AMBIENT2_EPISODES_CAMPAIGN main-pockets-runner-s1701-t30-n1-random_hold actors=1 complete_ticks=1800 elapsed_ms=4530.483
+AMBIENT2_EPISODES {"campaigns":1,"case_id":"main-pockets-runner-s1701-t30-n1-random_hold","checks":7812,"complete":true,"episodes":1,"expected_episodes":1,"failures":[],"mode":"shard","report":"/tmp/ambient-002/evidence/perception/recovered-random-hold.json","source_revision":"c60737e93efc151e1765b09a1bf2e91deb2b58cc"}

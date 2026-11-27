@@ -1,0 +1,96 @@
+{
+  "disposition": "APPROVE guarded runtime publication and actual remote objects; APPROVE bounded CI-test correction; corrected complete ordinary admission and physical owner gates remain pending",
+  "evidence": {
+    "CANONICAL-SCIENCE-REVIEW.json": {
+      "bytes": 31128,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/CANONICAL-SCIENCE-REVIEW.json",
+      "sha256": "a555fee9e9a58720dc71c3676f38f7995c1e9e2fcfa4e32cd69222be4ec43e74"
+    },
+    "postpublication-ci-test-policy-review.json": {
+      "bytes": 6358,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/postpublication-ci-test-policy-review.json",
+      "sha256": "a026fe13c10ef2c36f8f94a8588f4816f18cce9f4aea0159eb85721793b1ba02"
+    },
+    "postpublication-ci-test-source-impact-review.json": {
+      "bytes": 7567,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/postpublication-ci-test-source-impact-review.json",
+      "sha256": "a270d4ed983f394256e9d5f9ca4a97cf3aa8ae6c44a0e2766384efd38607c583"
+    },
+    "published-commit-and-broad-request-independent-join.json": {
+      "bytes": 1904,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/published-commit-and-broad-request-independent-join.json",
+      "sha256": "320e4acbb8891fc5bd82c923f44ca5eb01b0d194cb1230dc0b3088338c602857"
+    },
+    "q7-final-owner-execution-review.json": {
+      "bytes": 12881,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/q7-final-owner-execution-review.json",
+      "sha256": "8af38332b84e53ea811dc2b52dbf7de1cb0c12e8255dc7a5f10d5846c7537dbf"
+    },
+    "q7-final-owner-payload-review.json": {
+      "bytes": 294403,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/q7-final-owner-payload-review.json",
+      "sha256": "27c49adec3e2da136bbf3a2e33d578370467ad1b64528347dbc28f7ddb56561b"
+    },
+    "q7-owner-acceptance-ergonomics-review.json": {
+      "bytes": 7113,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/q7-owner-acceptance-ergonomics-review.json",
+      "sha256": "c7e47eb9c99a0dc26eecd1193532773f897dabada0ed4a66c402026e8b043a6c"
+    },
+    "q7-published-remote-lfs-materialization-review.json": {
+      "bytes": 7036,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/q7-published-remote-lfs-materialization-review.json",
+      "sha256": "d0feafeec0d9a38e0a775d014d26fc4dc3e1366938c9551db917e16f079a2a20"
+    },
+    "q7-published-tree-and-local-materialization-review.json": {
+      "bytes": 6035,
+      "path": "/workspace/scratch/e18127ed82c6/independent-assurance/q7-published-tree-and-local-materialization-review.json",
+      "sha256": "5f20170b2ac12b4ae2937151a8840a11717c2037b8f7fbf3bf059d641e9eac60"
+    }
+  },
+  "new_native_research": false,
+  "observed_at": "2026-11-24T18:51:42.676749+00:00",
+  "physical_windows11_nvidia_owner_acceptance": "PENDING",
+  "postpublication_correction": {
+    "changed_code_paths": [
+      "tools/ci/test_godot_job_plan.py"
+    ],
+    "changed_paths_including_audits": [
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-correction.json",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-correction.md",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-independent-review.json",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-policy-review.json",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-source-impact.json",
+      "tools/ci/test_godot_job_plan.py"
+    ],
+    "commit": "5fd5ab8b34c46d3c275d284559498e65d80be466",
+    "corrected_complete_ordinary_gates": "PENDING",
+    "original_budget_job_failed": 138676199669,
+    "original_gde_run_failed": 45459025464,
+    "original_q7_application_and_evaluator_unchanged": true,
+    "original_runtime_and_historical_build_identity_retained": true,
+    "parent": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+    "tree": "78eec23d8b12967be0d291039a8bbab27cd2c749"
+  },
+  "publication": {
+    "all_materialized_repository_runtime_paths": 20,
+    "byte_identical_existing_linux_adapter_preserved": true,
+    "changed_paths": 7,
+    "commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+    "fresh_remote_materialized_objects": 4,
+    "remote_materialization_run": 45459015485,
+    "reviewed_paths": 8,
+    "status": "PASS",
+    "tree": "9c0dcf061051e32194f5845cf024a3d5435d9122"
+  },
+  "qualification": {
+    "attempt": 1,
+    "historical_outcomes_relabelled": false,
+    "run_id": 45445188802,
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "status": "PASS"
+  },
+  "ready_or_merge_authorized": false,
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "tracked_source_changed_by_reviewer": false
+}

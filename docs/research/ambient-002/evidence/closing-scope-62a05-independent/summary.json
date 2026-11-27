@@ -1,0 +1,35 @@
+{
+  "scope": "Actual isolated Git reproduction of raw-CRLF evidence normalization; not a listing captured from the failed hosted checkout. No application, workflow, classifier or clean-tree guard was changed.",
+  "head": "62a05adf12dfddb744a1e043c2bb4581c7b334e7",
+  "hosted_failed_run": 45559264505,
+  "hosted_failed_job": 139018742701,
+  "hosted_log_limitation": "The classifier emitted a generic changed/untracked worktree error and did not list dirty paths. The earlier f066 run passed; this diagnostic does not establish why that run did not observe the problem.",
+  "source_scan": {
+    "final_publication_paths": 80,
+    "exact_local_bytes_matching_published_manifest": 79,
+    "one_superseded_path": "docs/research/ambient-002/mission-ledger.md",
+    "superseding_62a_ledger_blob": "a6112d5772d77ea442744132304e1abfbc6b56a8",
+    "superseding_ledger_remote_verified": true,
+    "superseding_ledger_crlf": 0,
+    "raw_text_crlf_files": 6,
+    "forced_text_json_culprits": 5,
+    "mixed_crlf_log_clean": true
+  },
+  "candidate_attribute_path": "docs/research/ambient-002/evidence/windows-50c6-complete/.gitattributes",
+  "candidate_attribute_blob": "ee9e91a8210e72d58495a81e5bba2c84adc09b5e",
+  "candidate_attribute_sha256": "c917a3b073599024392b1ad76883a48671b64225c46e8ecdd0248a1a280dcc53",
+  "result": "Both core.autocrlf=false and true: five exact original JSONs dirty after raw checkout plus timestamp-only stat invalidation and --really-refresh; adding only the nested candidate produces refresh exit0 and an empty diff/status. All six original evidence files retain their exact bytes and Git blob IDs. Parent attributes and ignore committed blobs, and their initial checkout bytes, remain unchanged by the candidate.",
+  "reader_failures_retained": [
+    {
+      "name": "initial-reader-failure.json",
+      "cause": "Initial inline reader used strip() and removed the first porcelain leading space; the final assertion then failed."
+    },
+    {
+      "name": "nested-parent-guard-execution.json",
+      "cause": "An overly strict reader guard expected canonical LF parent attribute bytes even under core.autocrlf=true. It was corrected to compare before/after checkout bytes plus unchanged committed blob identities."
+    }
+  ],
+  "initial_inline_reader_source": "Captured verbatim from the recorded inline command; it was not originally executed as a file.",
+  "commands_scope": "Linux Git 2.56.1 with two byte-preservation configurations; not a new Windows engine or native gameplay run.",
+  "reproduction_portability": "The original reader and inventory retain exact execution paths. To reproduce elsewhere, bind the six inventory input paths to the referenced committed blobs and use a fresh diagnostic output directory."
+}

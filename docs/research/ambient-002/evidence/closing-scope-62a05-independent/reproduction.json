@@ -1,0 +1,190 @@
+{
+  "scope": "isolated Git checkout diagnostic; no application, workflow or clean-tree-guard change",
+  "source_head": "62a05adf12dfddb744a1e043c2bb4581c7b334e7",
+  "gitattributes_blob": "cc8288dabac3402cc88e3e575f9e42e895deac90",
+  "gitignore_blob": "552232f6ab578614f3f93bf9be10602fbbdf17fd",
+  "candidate_paths": [
+    "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+    "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+    "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+    "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+    "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json"
+  ],
+  "candidate_attribute_path": "docs/research/ambient-002/evidence/windows-50c6-complete/.gitattributes",
+  "candidate_attribute_blob": "ee9e91a8210e72d58495a81e5bba2c84adc09b5e",
+  "candidate_attribute_sha256": "c917a3b073599024392b1ad76883a48671b64225c46e8ecdd0248a1a280dcc53",
+  "scenarios": [
+    {
+      "core_autocrlf": "false",
+      "git_version": "git version 2.56.1",
+      "initial_porcelain": " M docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+      "parent_blobs_unchanged": true,
+      "parent_checkout_bytes_unchanged_by_candidate": true,
+      "parent_checkout_crlf": {
+        "gitattributes": 0,
+        "gitignore": 0
+      },
+      "original_forced_refresh": {
+        "refresh_returncode": 1,
+        "refresh_stdout": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: needs update\n",
+        "diff_paths": [
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json"
+        ],
+        "porcelain": " M docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+        "dirty_paths": [
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json"
+        ]
+      },
+      "candidate_forced_refresh": {
+        "refresh_returncode": 0,
+        "refresh_stdout": "",
+        "diff_paths": [],
+        "porcelain": "",
+        "dirty_paths": []
+      },
+      "candidate_changed_paths": [
+        "docs/research/ambient-002/evidence/windows-50c6-complete/.gitattributes"
+      ],
+      "candidate_attributes": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: whitespace: cr-at-eol",
+      "original_evidence_preserved": [
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+          "blob": "035c7a40ecbfb415d269d861134ddd0c295ecfe4",
+          "sha256": "767e3350a3c3aa5f544a5044a3fc8bd7648546d8e30868ea4108bfe2c1129712",
+          "bytes": 348338,
+          "crlf": 2866
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+          "blob": "a5c2061c10f98123e0afddafab27413357bda7d7",
+          "sha256": "2d4fbdd0ab9b05162dd04303cb06616daaf583b682f0ec02bed1aa8430331fae",
+          "bytes": 272556,
+          "crlf": 2834
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+          "blob": "4f036866883394bfbe725252a0b2b5d5ff77903b",
+          "sha256": "12f76c73aae5845abea07664764ac7f3f57998d7846ca216c9b16a41477d4b1e",
+          "bytes": 259368,
+          "crlf": 2418
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+          "blob": "4fbe91cf77e73c873f24eddc6cfeab32e6853b21",
+          "sha256": "dd2485a591b6e5324eb80229890adf8fd7445342220fd946273424f5a8a149e9",
+          "bytes": 256665,
+          "crlf": 2265
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+          "blob": "aa1135e61713ee0693deefbcdef8560b12f60453",
+          "sha256": "81c5792588f1e9e900e71b7a0cd32b4d1fca57c5663188ee3ba9be633f9e4d09",
+          "bytes": 256625,
+          "crlf": 2265
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/windows-job.log",
+          "blob": "a2192bd970798cef5230135558e9428b4607538d",
+          "sha256": "79ceca7f532336a43fde00e1b2a639fdade809b94e24863b55ca7e628f6703f4",
+          "bytes": 52888,
+          "crlf": 575
+        }
+      ]
+    },
+    {
+      "core_autocrlf": "true",
+      "git_version": "git version 2.56.1",
+      "initial_porcelain": " M docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+      "parent_blobs_unchanged": true,
+      "parent_checkout_bytes_unchanged_by_candidate": true,
+      "parent_checkout_crlf": {
+        "gitattributes": 41,
+        "gitignore": 97
+      },
+      "original_forced_refresh": {
+        "refresh_returncode": 1,
+        "refresh_stdout": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: needs update\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: needs update\n",
+        "diff_paths": [
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json"
+        ],
+        "porcelain": " M docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json\n M docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+        "dirty_paths": [
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+          "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json"
+        ]
+      },
+      "candidate_forced_refresh": {
+        "refresh_returncode": 0,
+        "refresh_stdout": "",
+        "diff_paths": [],
+        "porcelain": "",
+        "dirty_paths": []
+      },
+      "candidate_changed_paths": [
+        "docs/research/ambient-002/evidence/windows-50c6-complete/.gitattributes"
+      ],
+      "candidate_attributes": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json: whitespace: cr-at-eol\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: text: unset\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: eol: lf\ndocs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json: whitespace: cr-at-eol",
+      "original_evidence_preserved": [
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original-evaluation-manifest.json",
+          "blob": "035c7a40ecbfb415d269d861134ddd0c295ecfe4",
+          "sha256": "767e3350a3c3aa5f544a5044a3fc8bd7648546d8e30868ea4108bfe2c1129712",
+          "bytes": 348338,
+          "crlf": 2866
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient/qualification.json",
+          "blob": "a5c2061c10f98123e0afddafab27413357bda7d7",
+          "sha256": "2d4fbdd0ab9b05162dd04303cb06616daaf583b682f0ec02bed1aa8430331fae",
+          "bytes": 272556,
+          "crlf": 2834
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-package/qualification.json",
+          "blob": "4f036866883394bfbe725252a0b2b5d5ff77903b",
+          "sha256": "12f76c73aae5845abea07664764ac7f3f57998d7846ca216c9b16a41477d4b1e",
+          "bytes": 259368,
+          "crlf": 2418
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/extracted-graphical/qualification.json",
+          "blob": "4fbe91cf77e73c873f24eddc6cfeab32e6853b21",
+          "sha256": "dd2485a591b6e5324eb80229890adf8fd7445342220fd946273424f5a8a149e9",
+          "bytes": 256665,
+          "crlf": 2265
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/original/ambient-graphical/qualification.json",
+          "blob": "aa1135e61713ee0693deefbcdef8560b12f60453",
+          "sha256": "81c5792588f1e9e900e71b7a0cd32b4d1fca57c5663188ee3ba9be633f9e4d09",
+          "bytes": 256625,
+          "crlf": 2265
+        },
+        {
+          "path": "docs/research/ambient-002/evidence/windows-50c6-complete/windows-job.log",
+          "blob": "a2192bd970798cef5230135558e9428b4607538d",
+          "sha256": "79ceca7f532336a43fde00e1b2a639fdade809b94e24863b55ca7e628f6703f4",
+          "bytes": 52888,
+          "crlf": 575
+        }
+      ]
+    }
+  ],
+  "passed": true,
+  "reader_sha256": "1618186c8ccc572b0c23c50cca67f6ef7dc117b70d4a719b449e4deea31b0f81"
+}

@@ -1,0 +1,14 @@
+{
+  "artifact_id": 14995966187,
+  "bytes": 259389255,
+  "sha256": "8be206e40ad48f467d16b8f618a415169f5c80f2456f56b9caca06cf3d472608",
+  "members": 2,
+  "zip_crc": "passed",
+  "safe_extraction": "passed",
+  "path": "/tmp/ambient-002/evidence/authoring/windows-50c6df89/ambient-002-windows-50c6df89528d-outer.zip",
+  "inner_path": "/tmp/ambient-002/evidence/authoring/windows-50c6df89/portable/CyberSand-AMBIENT-002-Windows-50c6df89528d.zip",
+  "inner_bytes": 259734965,
+  "inner_sha256": "54a4dc71c10a6ca77dcc8ba48a1fb5be39cc0e63ae33099b3dd0d452e9c71a5a",
+  "sha256_sidecar_verified": true,
+  "local_reader_correction": "Initial local extractor conservatively required one outer member and refused the legitimate portable ZIP plus SHA256 sidecar. It was corrected to that exact two-member inventory; no artifact bytes or runtime were changed."
+}

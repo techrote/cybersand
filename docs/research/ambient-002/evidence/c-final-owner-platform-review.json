@@ -1,0 +1,40 @@
+{
+  "schema": "ambient2-scoped-closing-packet-review/v1",
+  "reviewer": "Specialist C \u2014 authoring, owner workflow, Windows delivery and graphical evidence",
+  "reviewed_at_utc": "2026-11-25T05:59:42.406731+00:00",
+  "reviewed_packet_path": "docs/research/ambient-002/decision-packet.md",
+  "reviewed_packet_bytes": 57262,
+  "reviewed_packet_sha256": "7739cadd3c707349599fb7fb1a8b3192d3d52917e045bf05d9681498f8290a6f",
+  "reviewed_packet_git_blob_sha1": "3b680b468eb31bdc59f2edeffbe1a33e2f9e77a4",
+  "status": "scoped_signoff",
+  "material_issues": [],
+  "review_scope": [
+    "Owner delivery filename, portable inner/outer archive identities, source versus later closing-evidence identity",
+    "Owner UI workflow and labels checked against the qualified shipped source and owner guide",
+    "Windows original/extracted 24/8 case counts, 15349/9300 assertions, 648 core/96 editor coverage and lease sequence",
+    "Four-campaign 1143 committed/855 project input custody, 1473-file portable payload and launcher scope",
+    "All 58 actual Windows images: individual visual review, own-hash custody, 1028x578 dimensions, software renderer and source-specific timing scope",
+    "Preserved a725 graphical findings versus corrected 50c6 Foundry observation, configured 20-cell arrival versus 16-cell metric, drive/pose/phase evidence and sampled-movie limits",
+    "Explicit Draft/HOLD, no capacity increase, no owner hardware/NVIDIA/manual desktop acceptance"
+  ],
+  "not_reviewed_by_this_signoff": [
+    "The primary 194-episode scientific quantities, old-to-new statistics, performance comparisons and new Linux scientific readback remain Specialist B scope.",
+    "A later edited packet does not inherit this exact-file signoff without a stated scoped re-review."
+  ],
+  "evidence_used": {
+    "windows_review_path": "docs/research/ambient-002/evidence/windows-50c6df89-review.json",
+    "windows_review_sha256": "f4d0843d2569995631041d80efc3be6c03fdcc43f934525ae56df9ec9bbf366e",
+    "application_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+    "application_tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+    "portable_name": "CyberSand-AMBIENT-002-Windows-50c6df89528d.zip",
+    "portable_bytes": 259734965,
+    "portable_sha256": "54a4dc71c10a6ca77dcc8ba48a1fb5be39cc0e63ae33099b3dd0d452e9c71a5a",
+    "windows_run": 45552786466,
+    "windows_job": 138997623535,
+    "windows_original_artifact": 14995491989,
+    "foundry_run": 45552888360,
+    "foundry_artifact": 14994329664,
+    "foundry_original_report_sha256": "8099576e84f310ae99a0bc5e0390eed20c3606a7007bc27a8b60281692bf8c47"
+  },
+  "work_performed": "Read-only packet, already downloaded originals, qualified ZIP source/guide and existing independent receipts. No new application execution, artifact download or production change."
+}

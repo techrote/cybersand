@@ -1,0 +1,229 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--max-fps",
+    "30",
+    "--rendering-driver",
+    "opengl3_angle",
+    "--script",
+    "res://tests/test_material_audition.gd"
+  ],
+  "completion": {
+    "checks": 4002,
+    "display": "Windows",
+    "failures": 0,
+    "frames": [
+      {
+        "file": "current-scene-density.png",
+        "height": 689,
+        "name": "current-scene-density",
+        "sha256": "c0c91ebca36d7514ab81fd6f08e06df889898b0b02fedd5c9be2b087a23c5e80",
+        "width": 1008
+      },
+      {
+        "file": "density-sorter.png",
+        "height": 900,
+        "name": "density-sorter",
+        "sha256": "14a7bed9d19d1cfaa479a690847d1ea25d575bf058baf7cb087d27afe9bfb20c",
+        "width": 1600
+      },
+      {
+        "file": "viscosity-channel.png",
+        "height": 900,
+        "name": "viscosity-channel",
+        "sha256": "191741554c166ab19ee0a98902d2a9ea02cf441edeae870a9f0e3fc37c9a39a1",
+        "width": 1600
+      },
+      {
+        "file": "reaction-contact.png",
+        "height": 900,
+        "name": "reaction-contact",
+        "sha256": "902ebccdda8fc762bd501d46a274d461f459c1f2ad7461c5281e4f23e719bb12",
+        "width": 1600
+      },
+      {
+        "file": "industrial-loop.png",
+        "height": 900,
+        "name": "industrial-loop",
+        "sha256": "619b270984bf06173cae83725ce0335eaac83a47a5ad8f9cf76dde55abf4c14e",
+        "width": 1600
+      },
+      {
+        "file": "current-scene-1000x650.png",
+        "height": 650,
+        "name": "current-scene-1000x650",
+        "sha256": "b91f9e9427c601f3389ab8e4ab78f02e1450022caa29dd225960fb890a3ed2e1",
+        "width": 1000
+      },
+      {
+        "file": "current-scene-1280x720.png",
+        "height": 720,
+        "name": "current-scene-1280x720",
+        "sha256": "996b92a3facdab93b1209a324936586cc1584284717f05d2ffec88e8a804b0ed",
+        "width": 1280
+      }
+    ],
+    "godot": "4.7-stable (official)",
+    "native_witnesses": [
+      {
+        "density_1600_sinks": true,
+        "density_3000_sinks": true,
+        "density_500_sinks": false,
+        "kind": "density",
+        "reverted_sinks": true,
+        "ticks": 16,
+        "workers": 1,
+        "world_id": "19"
+      },
+      {
+        "bays": 96,
+        "kind": "viscosity",
+        "material_id": 20,
+        "moved_bays": [
+          96,
+          46,
+          0
+        ],
+        "ticks": 1,
+        "values": [
+          0,
+          128,
+          255
+        ],
+        "workers": 1
+      },
+      {
+        "bays": 96,
+        "completed_brine_pairs": [
+          1,
+          41,
+          96
+        ],
+        "kind": "reaction",
+        "slot": 2,
+        "thresholds": [
+          0,
+          63,
+          255
+        ],
+        "ticks": 4,
+        "witness": "actual stored products; native standalone test independently checks pair event ledger",
+        "workers": 1
+      },
+      {
+        "density_1600_sinks": true,
+        "density_3000_sinks": true,
+        "density_500_sinks": false,
+        "kind": "density",
+        "reverted_sinks": true,
+        "ticks": 16,
+        "workers": 4,
+        "world_id": "49"
+      },
+      {
+        "bays": 96,
+        "kind": "viscosity",
+        "material_id": 20,
+        "moved_bays": [
+          96,
+          46,
+          0
+        ],
+        "ticks": 1,
+        "values": [
+          0,
+          128,
+          255
+        ],
+        "workers": 4
+      },
+      {
+        "bays": 96,
+        "completed_brine_pairs": [
+          1,
+          41,
+          96
+        ],
+        "kind": "reaction",
+        "slot": 2,
+        "thresholds": [
+          0,
+          63,
+          255
+        ],
+        "ticks": 4,
+        "witness": "actual stored products; native standalone test independently checks pair event ledger",
+        "workers": 4
+      },
+      {
+        "backend": "actual native World, synchronous existing worker mailbox; no worker thread in this fixture",
+        "cancelled_before_commit": true,
+        "kind": "owner-adversaries",
+        "replacement_retired_pending": true,
+        "stale_and_session_refused": true
+      },
+      {
+        "authored_rectangles": 43,
+        "extent": [
+          512,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 41,
+        "scene_id": "density-sorter"
+      },
+      {
+        "authored_rectangles": 54,
+        "extent": [
+          512,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 32,
+        "scene_id": "viscosity-channel"
+      },
+      {
+        "authored_rectangles": 27,
+        "extent": [
+          512,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 28,
+        "scene_id": "reaction-contact"
+      },
+      {
+        "authored_rectangles": 82,
+        "extent": [
+          1024,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 17,
+        "scene_id": "industrial-loop"
+      },
+      {
+        "configuration_revert_preserves_cells": true,
+        "graphical": true,
+        "kind": "ordinary-workbench",
+        "native_apply_while_running": true,
+        "ordinary_paint_save_reopen": true,
+        "original_world_id": "82",
+        "separate_profile_saved_and_reloaded": true
+      }
+    ],
+    "status": "passed"
+  },
+  "elapsed_seconds": 87.625,
+  "exit_code": 0,
+  "log_sha256": "0d4846765f1d3d4de3a9985084db8275b0517629de9de9f720a3ce0698a74524",
+  "process_id": 5752,
+  "status": "passed",
+  "timeout_seconds": 1200
+}

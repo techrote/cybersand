@@ -1,0 +1,13 @@
+{
+  "path": "/tmp/ambient-002/evidence/perception/isolated-83a3-complete.zip",
+  "bytes": 20808554,
+  "sha256": "7cbe9d219568f911573a72b3e07a29bfd030e6de40cd07c889e88feb4ce9be7c",
+  "git_blob_sha": "700fe31f198376ceeb16e522788c5611e97998f6",
+  "manifest_path": "/tmp/ambient-002/evidence/perception/isolated-83a3-complete-manifest.json",
+  "manifest_sha256": "e004c550faf69e4e813fd54a9f8be59522b7a81c79c04bdddd66e0b8147332d1",
+  "files": 384,
+  "aggregate_sha256": "e9d31cfd40ba881753294a2e6ff546722312ec3c61fa16802c6d3c6d8b1a6d5b",
+  "runner_receipt_sha256": "b086d48e7d134bacd8288ab3bc70189b66281055497388bef5d6cb0705792333",
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "complete": true
+}
