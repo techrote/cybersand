@@ -26,7 +26,8 @@ class ObjectShardPublicationTests(unittest.TestCase):
         aimed = {name for name, case in cases.items() if "--objectshard-m4-workbench" in case.flags}
         mounted = {path.stem for path in (profile.engine.ROOT / "godot/tests").glob("test_object_shard_m4*.gd")
                    if "object_shard_m4_workbench_fixture.gd" in path.read_text(encoding="utf-8")}
-        self.assertEqual(aimed, mounted | {"test_object_shard_m4_workbench_scene_refusal"})
+        self.assertEqual(aimed, mounted | {"test_object_shard_m4_workbench_scene_refusal",
+                                          "test_object_shard_m4_material_only_workbench"})
         for name in aimed:
             self.assertEqual(cases[name].flags[-2:], ("--", "--objectshard-m4-workbench"))
         self.assertNotIn("--objectshard-m4-workbench", cases["test_object_shard_m4_workbench_port"].flags)
