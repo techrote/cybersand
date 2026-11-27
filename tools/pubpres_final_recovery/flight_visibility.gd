@@ -56,6 +56,57 @@ func _entirely_dry(start: Transform2D, finish: Transform2D, rects: Array, frame:
 	return true
 
 
+# This readback is outside the timed interval. Capture a genuine moving draw
+# while the ordinary joystick/keyboard path still owns the actor, then locate
+# its actual fill colour inside a submitted polygon in that same framebuffer.
+func _flight_pixels(slot: int) -> Dictionary:
+	var overlay: Control = app.physical_actor_overlay
+	var previous: Vector2 = app.physical_actor_session.bridge.body_transform(slot).origin
+	_key(KEY_D,true)
+	_key(KEY_W,true)
+	var deadline := Time.get_ticks_msec()+5000
+	while Time.get_ticks_msec() < deadline:
+		await RenderingServer.frame_post_draw
+		var frame: Dictionary = app.workbench_presentation_frame
+		var pose: Variant = frame.get("poses",{}).get(slot)
+		if not pose is Transform2D or frame.get("sources",{}).get(slot) != "live": continue
+		var moved := previous.distance_to(pose.origin)
+		previous = pose.origin
+		if moved <= 0.01 or not overlay.is_visible_in_tree(): continue
+		var image: Image = root.get_texture().get_image()
+		var scale := Vector2(image.get_size())/root.get_visible_rect().size
+		var hits: Array = []
+		for part: Dictionary in overlay._parts:
+			if int(part.get("physical_body_index",part.get("water_body_index",-1))) != slot \
+					or part.get("water_composed",false): continue
+			var polygon: PackedVector2Array = overlay.polygon(part)
+			for i: int in polygon.size(): polygon[i] = (overlay.get_global_transform_with_canvas()*polygon[i])*scale
+			var box := Rect2(polygon[0],Vector2.ZERO)
+			for point: Vector2 in polygon: box = box.expand(point)
+			var area := Rect2i(box.abs().grow(1)).intersection(Rect2i(Vector2i.ZERO,image.get_size()))
+			if area.get_area() > 10000: continue
+			var fill: Color = Color(part.color).darkened(0.18)
+			for y in range(area.position.y,area.end.y):
+				for x in range(area.position.x,area.end.x):
+					if not Geometry2D.is_point_in_polygon(Vector2(x+0.5,y+0.5),polygon): continue
+					var rgb := image.get_pixel(x,y)
+					if maxi(absi(rgb.r8-fill.r8),maxi(absi(rgb.g8-fill.g8),absi(rgb.b8-fill.b8))) <= 2:
+						hits.append({"pixel":[x,y],"rgb":[rgb.r8,rgb.g8,rgb.b8],"part":part.part_id,
+							"fill":[fill.r8,fill.g8,fill.b8]})
+						if hits.size() >= 8: break
+				if hits.size() >= 8: break
+			if hits.size() >= 8: break
+		if hits.size() < 2: continue
+		var file := receipt_path.get_base_dir().path_join("moving-flyer.png")
+		if image.save_png(file) != OK: return {}
+		return {"samples":hits,"file":file.get_file(),"sha256":FileAccess.get_sha256(file),
+			"pixels":[image.get_width(),image.get_height()],"world":frame.world_generation,
+			"session":frame.session,"epoch":frame.epoch,"step":frame.selected_steps[slot],
+			"upload":frame.upload_serial,"movement_cells":moved,"position":[pose.origin.x,pose.origin.y],
+			"camera_origin":[frame.camera_origin.x,frame.camera_origin.y],"reason":frame.reasons[slot]}
+	return {}
+
+
 func _exercise() -> void:
 	var ui: Control = app.shared_workbench
 	var session: Variant = app.physical_actor_session
@@ -115,17 +166,21 @@ func _exercise() -> void:
 			"resolve_usec":frame.get("resolve_usec",-1),"cells":guard.get("cells_examined",-1),
 			"world":frame.get("world_generation",-1),"epoch":frame.get("epoch",-1)})
 		prior = pose
-	for code: Key in [KEY_A,KEY_D,KEY_W]: _key(code,false)
 	var elapsed := Time.get_ticks_usec()-began
 	var steps: int = session.tick-tick0
+	var pixels_requested := OS.get_environment("CYBERSAND_FLIGHT_FRAMEBUFFER") == "1"
+	var pixels: Dictionary = await _flight_pixels(slot) if pixels_requested else {}
+	for code: Key in [KEY_A,KEY_D,KEY_W]: _key(code,false)
 	ui.toggle_pause()
 	var report := {"scene":scene_name,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"elapsed_usec":elapsed,"physical_steps":steps,"flight_seconds_per_wall_second":steps/60.0/(elapsed/1000000.0),
 		"travel_cells":travel,"moved_draws":moved_draws,"sampled_draws":samples.size(),"hidden_draws":hidden,
-		"conservatively_dry_hidden":dry_hidden,"invalid_frames":invalid_frames,"sources":source_counts,"reasons":reasons}
+		"conservatively_dry_hidden":dry_hidden,"invalid_frames":invalid_frames,"sources":source_counts,"reasons":reasons,
+		"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
 	print("WORKBENCH_FLIGHT_VISIBILITY ",JSON.stringify(report))
 	report["samples"] = samples
 	var out := FileAccess.open(receipt_path.get_base_dir().path_join("flight.json"),FileAccess.WRITE)
 	out.store_string(JSON.stringify(report))
 	out.close()
-	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0 else 1)
+	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0
+		and (not pixels_requested or not pixels.is_empty()) else 1)
