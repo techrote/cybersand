@@ -20,6 +20,19 @@ Guarded publication `5323b837` passed all eight paths (seven changed; Linux libr
 
 The [portable Windows owner procedure](../operations/swarm456-owner-acceptance.md) uses one qualified package and a copy of an original populated authored map. Save/fresh-Reopen composition history before later ordinary edits, then separately verify persistence of the edited authored map. Private maps stay local. Physical Windows 11/NVIDIA appearance, sound, responsiveness, usability and owner preference remain **owner-pending**. This mission leaves the candidate **Draft/HOLD** and grants no Ready promotion, merge or default activation.
 
+## Current-scene material audition — 2026-11-24
+
+**Draft/HOLD candidate, PR #768:** the [scene-local contract](../systems/material-audition.md)
+extends the accepted Materials Lab with native-owner profile transactions for
+directional cell density exchange, applicable generic viscosity and eligible
+existing reaction thresholds. The [consumer map](../systems/material-audition-consumers.md)
+separates active solver applicability from descriptor metadata. Named profiles
+remain separate from authored scene saves; Apply does not replace the World.
+The [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+records passed native, graphical, Linux/Windows and exact extracted-evaluator
+qualification at source `5f73b0ae`, with runtime publication `206f14da`.
+Physical owner acceptance and combined-engine reconciliation remain separate.
+
 ## Art storage integration candidate — 2026-11-26
 
 The mergedown's unmerged Art/Architecture source adopts the narrowly reviewed

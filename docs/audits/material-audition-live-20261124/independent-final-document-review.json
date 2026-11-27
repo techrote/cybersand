@@ -1,0 +1,30 @@
+{
+  "schema": "cybersand.material-audition.independent-final-document-review",
+  "schema_version": 1,
+  "status": "passed",
+  "reviewed_head": "8f72eb9ab53d15e938baea21e3f23f4923f5bbca",
+  "qualified_source": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "qualified_publication": "206f14dade78f42b5d8502627bcc19c7093c808e",
+  "modified_paths": [
+    "docs/README.md",
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/operations/materials-lab-authoring.md",
+    "docs/reference/status-and-roadmap.md",
+    "docs/systems/material-audition.md"
+  ],
+  "untracked_paths": [
+    "docs/audits/material-audition-live-20261124/decision-packet.md",
+    "docs/audits/material-audition-live-20261124/delivery-reassembly-verification.json",
+    "docs/audits/material-audition-live-20261124/final-integration-snapshot.json",
+    "docs/audits/material-audition-live-20261124/published-compatibility-gate.json",
+    "docs/audits/material-audition-live-20261124/published-repository-gate.json"
+  ],
+  "qualified_input_intersection": [],
+  "native108_and_build966_current_bytes_match_manifests": true,
+  "decision_packet_sha256": "91a7d6ce38355c75915c90a595ef5082c79ad20eaaaeaef5b00fec87efc07185",
+  "findings": [],
+  "limits": [
+    "Review captures the listed working-tree snapshot; later edits need their own scope check.",
+    "Archive payload execution and reconstruction are supported by the retained original Windows records and separate specialist C complete-archive review."
+  ]
+}

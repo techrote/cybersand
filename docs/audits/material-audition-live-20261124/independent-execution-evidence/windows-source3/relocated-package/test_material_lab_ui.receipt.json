@@ -1,0 +1,24 @@
+{
+  "command": [
+    "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+    "--headless",
+    "--script",
+    "res://tests/test_material_lab_ui.gd",
+    "--",
+    "--workbench-mount-only"
+  ],
+  "completion": {
+    "checks": 24,
+    "failures": 0
+  },
+  "elapsed_seconds": 6.0629999999998745,
+  "exit_code": 0,
+  "log_sha256": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+  "process_id": 4744,
+  "status": "passed",
+  "timeout_seconds": 1200
+}

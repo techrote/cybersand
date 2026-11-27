@@ -166,6 +166,8 @@
     "operations/publication-custody.md",
     "operations/material-catalogue-shadow.md",
     "operations/materials-lab-authoring.md",
+    "systems/material-audition.md",
+    "systems/material-audition-consumers.md",
     "operations/material-liveness-investigation.md",
     "systems/architectural-generator.md",
     "operations/architectural-generator-playtest.md",
