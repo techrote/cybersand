@@ -7712,6 +7712,7 @@ func update_shader_parameters() -> void:
 	world_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
 	if glow_source_shader != null:
 		glow_source_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
+		_bind_glow_composite_proof()
 	world_shader.set_shader_parameter(
 		"world_size_px",
 		Vector2(world_extent.x, world_extent.y)
@@ -8146,6 +8147,17 @@ func update_vapour_trail() -> void:
 	world_shader.set_shader_parameter("vapour_trail_origin_px", origin)
 	world_shader.set_shader_parameter("vapour_trail_size_px", Vector2(history_size))
 	world_shader.set_shader_parameter("vapour_trail_strength", 1.0)
+
+
+func _bind_glow_composite_proof() -> void:
+	if glow_composite_shader == null: return
+	# A live program can replace the emitter's LUT independently of the
+	# catalogue default. The composite must inspect the same texture.
+	var program: Variant = glow_source_shader.get_shader_parameter("material_program_lut")
+	glow_composite_shader.set_shader_parameter("material_program_lut", program)
+	glow_composite_shader.set_shader_parameter("ambient_sources_absent", _ambient_sources_absent
+		and program is Texture2D and program.get_size() == Vector2(
+			CyberMaterialAppearanceLut.PROGRAM_WIDTH, CyberMaterialAppearanceLut.PROGRAM_HEIGHT))
 
 
 func update_glow_parameters(content_rect: Rect2) -> void:
