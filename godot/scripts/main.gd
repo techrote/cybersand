@@ -7667,6 +7667,8 @@ func update_shader_parameters() -> void:
 	if world_shader == null:
 		return
 	world_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
+	if glow_source_shader != null:
+		glow_source_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
 	world_shader.set_shader_parameter(
 		"world_size_px",
 		Vector2(world_extent.x, world_extent.y)

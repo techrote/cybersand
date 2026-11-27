@@ -6,6 +6,7 @@ signal workbench_sample_completed
 var _notify_sample_completion := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
 var _independent_coupling := OS.get_environment("CYBERSAND_WORKBENCH_COUPLING_CLOCK") == "1"
 var _coupling_only_count: int = 0
+var _dry_rounds_remaining: int = 0
 var _last_notified_sample: int = -1
 var _last_notified_epoch: int = -1
 
@@ -3176,7 +3177,8 @@ func _worker_loop() -> void:
 								and local_lab.is_empty() and not _simulation_failed and not _actor_session.active() \
 								and pre_coupling_revision == int(_world.revision) \
 								and _last_native_tick_world_generation == _world_generation \
-								and Time.get_ticks_usec() - _last_native_tick_started_usec < local_pixel_interval_usec:
+								and not _combined_physics_publication and _dry_rounds_remaining > 0 \
+								and _snapshot_hard_surface_revision == int(_world.hard_surface_revision):
 							# Before the next material tick is due, an additional physical
 							# sample can have an exact native response of its own. Preparing
 							# its swept mask cleared all prior per-body contact accumulators.
@@ -3185,6 +3187,7 @@ func _worker_loop() -> void:
 							if coupling_only:
 								_workbench_completed_sample = workbench_serial
 								_coupling_only_count += 1
+								_dry_rounds_remaining -= 1
 								_workbench_display["coupling_only"] = true
 						elif _workbench_result.is_empty(): _capture_workbench_result()
 					if prepare_started_usec > 0:
@@ -3237,6 +3240,10 @@ func _worker_loop() -> void:
 					_world.simulation_tick()
 				var native_tick_completed_usec: int = Time.get_ticks_usec()
 				if not _simulation_failed:
+					if _independent_coupling:
+						# Pay for at most three additional fresh occupancy samples if
+						# this native owner turn has taken more than a physical interval.
+						_dry_rounds_remaining = clampi(ceili(float(native_tick_completed_usec - step_start_usec) / TICK_INTERVAL_USEC) - 1, 0, 3)
 					_last_native_tick_started_usec = native_tick_started_usec
 					_last_native_tick_completed_usec = native_tick_completed_usec
 					_last_native_tick_world_generation = _world_generation
@@ -3307,14 +3314,15 @@ func _worker_loop() -> void:
 		if pause_requested_at_entry and local_paused and not native_ticked_this_turn:
 			_workbench_pause_ack_serial = pause_request_serial_at_entry
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
-		_publish_snapshot(
-			worker_step_time_ms,
-			local_paused,
-			local_render_snapshot_interval_usec,
-			local_reset_requested,
-			local_rigid_body_states,
-			local_rigid_body_epoch
-		)
+		if not coupling_only or not _publish_contact_free_completion(local_rigid_body_epoch):
+			_publish_snapshot(
+				worker_step_time_ms,
+				local_paused,
+				local_render_snapshot_interval_usec,
+				local_reset_requested,
+				local_rigid_body_states,
+				local_rigid_body_epoch
+			)
 
 		if lockstep_ticked:
 			# Main's publications pace a fenced owner; no wall-clock deadline.
@@ -3401,6 +3409,34 @@ func _refresh_hard_surface_snapshot(force_refresh: bool, rigid_body_epoch: int, 
 		_last_hard_surface_snapshot_usec = now_usec
 		return float(Time.get_ticks_usec() - hard_surface_start_usec) / 1000.0
 	return 0.0
+
+
+# A contact-free response has its own native occupancy authority. If any
+# authoring or terrain revision moved on during this turn, take the normal
+# full publication path. This packet never claims a material step or upload.
+func _publish_contact_free_completion(epoch: int) -> bool:
+	if _simulation_failed or _world.has_failed() or not _snapshot_hard_surface_chunk_rectangles_valid:
+		return false
+	var source := CyberSimulationSnapshot.new()
+	source.rigid_body_epoch = epoch
+	source.physics_world_generation = _world_generation
+	source.simulation_world_revision = int(_world.revision)
+	source.tick_index = int(_world.tick_index)
+	var required := int(_world.hard_surface_revision)
+	if required != _snapshot_hard_surface_revision or _world.has_failed(): return false
+	_mutex.lock()
+	var previous := _published_snapshot
+	var eligible := previous != null and previous.rigid_body_epoch == epoch \
+		and previous.physics_world_generation == _world_generation \
+		and previous.simulation_world_revision == source.simulation_world_revision \
+		and not _render_full_refresh_requested and not _paused and _lab_request.is_empty()
+	_mutex.unlock()
+	if not eligible: return false
+	source.lab_context = {"workbench_hard_surface_revision":required}
+	_snapshot_serial += 1
+	if _publish_workbench_physics_snapshot(source,0) == null: return false
+	_notify_workbench_completion(epoch)
+	return true
 
 
 func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
@@ -3891,7 +3927,11 @@ func _publish_snapshot(
 	_published_snapshot = snapshot
 	_mutex.unlock()
 
-	if _notify_sample_completion and workbench_physics and _workbench_completed_sample >= 0 \
+	if workbench_physics: _notify_workbench_completion(rigid_body_epoch)
+
+
+func _notify_workbench_completion(rigid_body_epoch: int) -> void:
+	if _notify_sample_completion and _workbench_completed_sample >= 0 \
 			and (_last_notified_sample != _workbench_completed_sample or _last_notified_epoch != rigid_body_epoch):
 		_last_notified_sample = _workbench_completed_sample
 		_last_notified_epoch = rigid_body_epoch
