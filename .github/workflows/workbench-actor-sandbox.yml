@@ -385,7 +385,23 @@ jobs:
         with:
           name: actor-sandbox-windows-evaluation-${{ github.sha }}-${{ github.run_id }}-${{ needs.windows.outputs.artifact_attempt }}
           path: workspace/source/build/actor-publish/windows-package
+      - name: Check whether both installed Actor runtimes already match this application
+        id: retained
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/actor-publish
+          if git lfs pull --include='godot/addons/cybersand_native/bin/*' --exclude='' &&
+             PYTHONPATH=tools/ci python3 -c 'from check_actor_publication_stage import reusable_pair; raise SystemExit(0 if reusable_pair() else 1)'; then
+            python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
+            git rev-parse HEAD > build/actor-publish/publication-commit.txt
+            echo 'matched=true' >> "$GITHUB_OUTPUT"
+            echo 'Verified both retained runtime objects against their complete source maps and original publication.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'matched=false' >> "$GITHUB_OUTPUT"
+          fi
       - name: Verify complete same-run evidence and variable-count LFS publication
+        if: steps.retained.outputs.matched != 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -403,6 +419,7 @@ jobs:
           git diff --check --cached
           git diff --exit-code
       - name: Commit and upload only qualified runtimes with an exact source lease
+        if: steps.retained.outputs.matched != 'true'
         shell: bash
         run: |
           set -euo pipefail
