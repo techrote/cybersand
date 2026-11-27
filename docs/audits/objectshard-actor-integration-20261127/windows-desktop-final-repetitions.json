@@ -1,0 +1,63 @@
+{
+  "source_commit": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "source_tree": "817dfae5f30d00e1b2ee3a10c6e1fa53239eea8a",
+  "scope": "Direct native Windows headless desktop-host test; isolated user profile per process",
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "runtime_sha256": "78a5481193d6379ce8f36689aedc521f3b0d79fd17a2a88815f5c49e737bdce9",
+  "build_artifact_id": 15174142487,
+  "source_inputs": 126,
+  "project_blobs": 1049,
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "passed",
+      "pid": 43144,
+      "checks_and_failures": [
+        [
+          "86",
+          "0"
+        ]
+      ],
+      "exit": 0,
+      "windows_status": "0x0",
+      "natural": true,
+      "timed_out": null,
+      "seconds": 27.403,
+      "raw_log_sha256": "4c146e36ca5f08055a677fcb5e5b077b0fdd1f61cab378652964044d230416d0"
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "pid": 28308,
+      "checks_and_failures": [
+        [
+          "86",
+          "0"
+        ]
+      ],
+      "exit": 0,
+      "windows_status": "0x0",
+      "natural": true,
+      "timed_out": null,
+      "seconds": 28.528,
+      "raw_log_sha256": "aeacd3e89a755bb0c2a7c0272238dcca496ded77687d9334916271ecb0c32335"
+    },
+    {
+      "attempt": 3,
+      "status": "passed",
+      "pid": 15520,
+      "checks_and_failures": [
+        [
+          "86",
+          "0"
+        ]
+      ],
+      "exit": 0,
+      "windows_status": "0x0",
+      "natural": true,
+      "timed_out": null,
+      "seconds": 27.757,
+      "raw_log_sha256": "72a97e4feea998459932ef516b67737e8abe6cf5acff2ac81bd46aa7d7b18c9f"
+    }
+  ]
+}
