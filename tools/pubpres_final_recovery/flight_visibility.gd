@@ -236,5 +236,5 @@ func _exercise() -> void:
 	out.store_string(JSON.stringify(report))
 	out.close()
 	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0
-		and (not patrol or (moved_draws > samples.size()*0.75 and airborne_draws > samples.size()*0.9))
+		and (not patrol or (hidden == 0 and moved_draws > samples.size()*0.75 and airborne_draws > samples.size()*0.9))
 		and pause_ok and step_ok and (not pixels_requested or not pixels.is_empty()) else 1)

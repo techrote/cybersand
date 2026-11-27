@@ -12,7 +12,7 @@ const QUEUE_BATCHES := 4
 const BATCH_USEC := 250000
 const SCHEMA := "pubpres-owner-gameplay-v1"
 const FIELDS := {
-	"step":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","manual_steps","gap_usec","fixed_delta_sec","native_tick","worker_handoff_usec","native_completed_usec","completed_body_sample","solver_usec","flush_usec","single_step","selected_actor_instance","selected_root_body_slot","physical_xy","velocity_cells_per_sec","native_started_usec","native_tick_body_sample","native_tick_world","native_start_lateness_usec","first_physics_handoff_usec"],
+	"step":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","manual_steps","gap_usec","fixed_delta_sec","native_tick","worker_handoff_usec","native_completed_usec","completed_body_sample","solver_usec","flush_usec","single_step","selected_actor_instance","selected_root_body_slot","physical_xy","velocity_cells_per_sec","native_started_usec","native_tick_body_sample","native_tick_world","native_start_lateness_usec","first_physics_handoff_usec","coupling_response_usec","coupling_only_completions"],
 	"hold":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","reason","paused","wanted_sample","completed_sample","native_tick","worker_handoff_usec","required_hard_revision","packet_hard_revision","queued_hard_revision","pending_chunks"],
 	"upload":["type","completed_usec","start_usec","process_frame","world","revision","render_serial","material_tick","generated_usec","native_completed_usec","patch_bytes"],
 	"presentation":["type","usec","process_frame","boundary","local_presentation_serial","submission_serial","session","epoch","material_world","revision","render_serial","material_tick","mask_sample_tick","physical_step","paused","camera_mode","camera_xy","view_wh","extent_wh","pilot_slot","whole_frame_valid","whole_frame_reason","resolve_usec","upload_cache_usec","total_bodies","total_parts","scanned_parts","bodies"],
@@ -86,7 +86,8 @@ func physics_step(host: Node, completed_usec: int, snapshot: CyberSimulationSnap
 		snapshot.lab_context.get("workbench_completed_sample",-1),roundi(bridge.last_step_time_ms()*1000.0),
 		roundi(bridge.last_flush_time_ms()*1000.0),single_step,selected_id,_selected_root,xy,velocity,
 		snapshot.last_native_tick_started_usec,snapshot.last_native_tick_body_sample,snapshot.last_native_tick_world_generation,
-		snapshot.last_native_tick_lateness_usec,snapshot.first_physics_handoff_usec])
+		snapshot.last_native_tick_lateness_usec,snapshot.first_physics_handoff_usec,
+		snapshot.lab_context.get("coupling_response_usec",-1),snapshot.lab_context.get("coupling_only_completions",0)])
 
 
 func physics_hold(host: Node, reason: String, snapshot: CyberSimulationSnapshot) -> void:
