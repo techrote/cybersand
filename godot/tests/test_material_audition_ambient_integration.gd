@@ -73,6 +73,7 @@ func exercise() -> void:
 	ambient.ambient.modules = [Profile.make_module("seek_material")]
 	check(bench.set_actor_control(303,ambient), "explicit ambient admission uses the existing external actor slot")
 	admitted_controls = bench.applied.actors.map(func(a: Dictionary): return Catalog.control_for(a)).duplicate(true)
+	check(bench.art_batches == null and bench.architecture_lab == null, "ordinary actor scene keeps both authoring panels lazy")
 	bench.open_materials_lab()
 	var lab: Control = bench._materials_lab_panel
 	panel = lab.audition_panel
@@ -86,6 +87,16 @@ func exercise() -> void:
 		"generation":int(host.simulation_worker.paint_state().generation),
 		"session":host.physical_actor_session.get_instance_id(),"world":panel.active_state.world_id}
 	initial_bodies = body_ids()
+	check(bench.art_batches == null and bench.architecture_lab == null, "opening Materials Lab does not open Art or Architecture")
+	bench.open_architecture_lab()
+	var stage_session: Node = bench.architecture_lab.session
+	var art: Window = bench._ensure_art_batches()
+	var provider: Object = art.provider
+	var art_serial: int = provider.serial
+	var history_actions: int = bench.paint_editor.completed_actions
+	var region := Rect2i(39,39,5,6)
+	var before: Dictionary = await bench.capture_batch_source(region)
+	if not check(before.get("ok",false), "Architecture reads the actual paused Sand/Oil material region"): return
 	var default_revision: int = int(panel.active_state.revision)
 	panel._controls["material:2:density"].value = 500
 	check(bench.material_audition.material_audition_state().revision == default_revision,
@@ -95,6 +106,14 @@ func exercise() -> void:
 	check(active_density() == 500 and int(panel.active_state.revision) == default_revision + 1,
 		"Apply activates only the requested native configuration revision")
 	same_owners("paused Apply")
+	var after: Dictionary = await bench.capture_batch_source(region)
+	check(after.get("ok",false) and after.get("config",{}).get("source_cells") == before.config.source_cells,
+		"paused configuration Apply preserves the native material plane observed by Architecture")
+	check(bench.architecture_lab.session == stage_session and bench.art_batches.provider == provider
+		and not provider.active and provider.serial == art_serial, "Apply retains the stage session and idle provider without issuing a proposal")
+	check(bench.paint_editor.completed_actions == history_actions, "configuration Apply adds no authoring history operation")
+	bench.architecture_lab.hide()
+	art.hide()
 	check(bench.toggle_pause(), "ordinary Play starts with explicit ambient and manual actors")
 	if not await progress(24,"native and Rapier progression with active material configuration"): return
 	check(cell(41,41) == 2 and cell(41,42) == 16, "low-density Sand remains above Oil in the actual native pair")
@@ -161,8 +180,8 @@ func finish() -> void:
 	print("MATERIAL_AMBIENT_INTEGRATION ", JSON.stringify(Catalog._json_value({"checks":checks,"failures":failures,
 		"phases":phases,"elapsed_msec":Time.get_ticks_msec()-begun,"godot":Engine.get_version_info(),
 		"operation_watchdog_seconds":IntegrationWatchdogs.seconds("operation_seconds"),
-		"limits":["Actual Linux native/Rapier/Workbench integration; Windows combined source and physical owner acceptance remain separate",
-			"No PUBPRES, ObjectShard, SWARM or Actor Capacity implementation included"]})))
+		"platform":OS.get_name(),"display":DisplayServer.get_name(),
+		"scope":"Native Workbench, authored actor and material configuration integration"})))
 	if host != null:
 		host.queue_free()
 		await process_frame
