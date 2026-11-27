@@ -87,10 +87,14 @@ static func completed_dependency(context: Dictionary, member: Dictionary,
 			or int(native_completed) <= 0 or int(native_completed) > int(completed) \
 			or consumed.get("native_completed_usec") != native_completed:
 		return {}
-	var response: int = context.get("coupling_response_usec",-1)
-	if response != int(consumed.get("coupling_response_usec",-1)): return {}
-	if response > 0 and (response < int(native_completed) or response > int(completed) \
-			or context.get("material_tick_body_sample") != consumed.get("material_tick_body_sample")): return {}
+	var response: Variant = context.get("coupling_response_usec",-1)
+	if not response is int or not consumed.get("coupling_response_usec",-1) is int \
+			or response != consumed.get("coupling_response_usec",-1) or (response <= 0 and response != -1): return {}
+	if response > 0:
+		var material_sample: Variant = context.get("material_tick_body_sample")
+		if not material_sample is int or not consumed.get("material_tick_body_sample") is int \
+				or material_sample < 0 or material_sample >= context.sample or material_sample != consumed.material_tick_body_sample \
+				or response < native_completed or response > completed: return {}
 	return {"schema":VERSION,"kind":"current_completed_native_dependency","consumed_by_step":true,
 		"coupling_response_usec":response,"material_tick_body_sample":context.get("material_tick_body_sample",-1),
 		"physical_completion_claim":true,"step":context.step,"sample":context.sample,

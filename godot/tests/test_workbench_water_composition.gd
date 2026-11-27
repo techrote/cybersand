@@ -127,6 +127,39 @@ func independent_authority_checks() -> void:
 	var joined: Dictionary = Composition.completed_dependency(context,member,observation,consumed)
 	check(joined.get("kind")=="current_completed_native_dependency" and joined.get("physical_completion_claim",false),
 		"current consumed physical authority is independent of an image's older native identity")
+	var inter := context.duplicate()
+	inter.merge({"coupling_response_usec":140,"material_tick_body_sample":44})
+	var applied := consumed.duplicate()
+	applied.merge({"coupling_response_usec":140,"material_tick_body_sample":44})
+	check(Composition.completed_dependency(inter,member,observation,applied).get("sample",-1)==45,
+		"a distinct native response can advance Water pose after the proven preceding material sample")
+	for malformed: Variant in [null,44.0,-1,45,46]:
+		inter.material_tick_body_sample = malformed
+		applied.material_tick_body_sample = malformed
+		check(Composition.completed_dependency(inter,member,observation,applied).is_empty(),
+			"missing, untyped or nonpreceding material sample cannot grant interstitial authority")
+	var worker := preload("res://scripts/simulation_worker.gd").new()
+	var status := CyberSimulationSnapshot.new()
+	status.rigid_body_epoch = 7
+	status.physics_world_generation = 3
+	status.simulation_world_revision = 12
+	status.tick_index = 43
+	status.last_native_tick_world_generation = 3
+	status.last_native_tick_completed_usec = 100
+	status.last_native_tick_body_sample = 44
+	worker._workbench_completed_sample = 45
+	worker._workbench_result = {"valid":true,"session":1,"epoch":7,"sample_tick":43}
+	worker._workbench_display = {"coupling_only":true,"world_generation":3,"revision":12,"tick":43,
+		"epoch":7,"session":1,"sample_tick":43,"coupling_body_sample":45,"material_tick_body_sample":44,
+		"coupling_response_usec":140,"material_tick_completed_usec":100}
+	check(worker._coupling_response_time(status)==140,"same-state status preserves the original response clock")
+	for field: String in ["rigid_body_epoch","physics_world_generation","simulation_world_revision","tick_index",
+		"last_native_tick_world_generation","last_native_tick_completed_usec","last_native_tick_body_sample"]:
+		status.set(field,status.get(field)+1)
+		check(worker._coupling_response_time(status)==-1,"a newer status cannot relabel an interstitial response: "+field)
+		status.set(field,status.get(field)-1)
+	worker._workbench_completed_sample += 1
+	check(worker._coupling_response_time(status)==-1,"a later offered/consumed sample cannot borrow a response clock")
 	for key: String in ["bridge","session","epoch","world","step","native_tick","sample","revision","rid","native_completed_usec","completed_usec"]:
 		var changed: Dictionary = consumed.duplicate(true)
 		changed[key] = int(changed[key])+1

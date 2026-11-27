@@ -24,7 +24,9 @@ class FocusHost extends "res://scripts/main.gd":
 			dependency_witnesses[identity] = {"world":native_snapshot.physics_world_generation,
 				"session":bridge._session,"epoch":bridge._epoch,"step":physical_actor_session.tick,
 				"manual_steps":bridge.manual_step_count(),"native_tick":native_snapshot.tick_index,
-				"sample":native_snapshot.last_native_tick_body_sample,
+				"sample":action.get("sample",-1),"material_tick_body_sample":native_snapshot.last_native_tick_body_sample,
+				"published_sample":native_snapshot.lab_context.get("workbench_completed_sample",-1),
+				"coupling_response_usec":native_snapshot.lab_context.get("coupling_response_usec",-1),
 				"native_completed_usec":native_snapshot.last_native_tick_completed_usec,
 				"completed_usec":_workbench_completed_step_usec,"output_pose":bridge.body_transform(slot),
 				"accepted":bridge.last_application.get("accepted",false),
@@ -48,6 +50,8 @@ var framebuffer_control := false
 var observed_frames := 0
 var composed_frames := 0
 var hidden_body_frames := 0
+var interstitial_composed_body_frames := 0
+var first_interstitial_witness: Dictionary = {}
 var native_identity_valid := true
 var last_step_by_body: Dictionary = {}
 var selected_compound := ""
@@ -260,6 +264,16 @@ func observe_frame() -> void:
 					or witness.get("snapshot_serial",-1) != witness.get("applied_snapshot",-2) \
 					or witness.get("output_pose") != pose or witness.get("completed_usec",-1) != selected_observation.get("completed_usec",-2):
 				native_identity_valid = false
+			if witness.get("sample",-1) != witness.get("published_sample",-2): native_identity_valid = false
+			if int(witness.get("coupling_response_usec",-1)) > 0:
+				interstitial_composed_body_frames += 1
+				if first_interstitial_witness.is_empty(): first_interstitial_witness = witness.duplicate(true)
+				if witness.material_tick_body_sample < 0 or witness.material_tick_body_sample >= witness.sample \
+						or proof.get("coupling_response_usec",-1) != witness.coupling_response_usec \
+						or proof.get("material_tick_body_sample",-1) != witness.material_tick_body_sample \
+						or witness.coupling_response_usec < witness.native_completed_usec \
+						or witness.coupling_response_usec > witness.completed_usec: native_identity_valid = false
+			elif witness.get("sample",-1) != witness.get("material_tick_body_sample",-2): native_identity_valid = false
 			for key_name: String in ["sample","native_tick","native_completed_usec","completed_usec"]:
 				if proof.get(key_name,-1) != witness.get(key_name,-2): native_identity_valid = false
 		else:
@@ -842,6 +856,7 @@ func _run() -> void:
 			"actual_submission_status":host.workbench_presentation_submission_status() \
 				if host.has_method("workbench_presentation_submission_status") else {}},
 		"engine":Engine.get_version_info(),"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),
+		"interstitial_composed_body_frames":interstitial_composed_body_frames,"first_interstitial_witness":first_interstitial_witness,
 		"observed_frames":observed_frames,"composed_body_frames":composed_frames,"hidden_body_frames":hidden_body_frames,
 		"omitted_by_stage_and_slot":omitted_by_stage,"omission_reasons":omission_reasons,
 		"observed_frames_by_stage":observed_frames_by_stage,
