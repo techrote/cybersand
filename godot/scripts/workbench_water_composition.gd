@@ -87,7 +87,12 @@ static func completed_dependency(context: Dictionary, member: Dictionary,
 			or int(native_completed) <= 0 or int(native_completed) > int(completed) \
 			or consumed.get("native_completed_usec") != native_completed:
 		return {}
+	var response: int = context.get("coupling_response_usec",-1)
+	if response != int(consumed.get("coupling_response_usec",-1)): return {}
+	if response > 0 and (response < int(native_completed) or response > int(completed) \
+			or context.get("material_tick_body_sample") != consumed.get("material_tick_body_sample")): return {}
 	return {"schema":VERSION,"kind":"current_completed_native_dependency","consumed_by_step":true,
+		"coupling_response_usec":response,"material_tick_body_sample":context.get("material_tick_body_sample",-1),
 		"physical_completion_claim":true,"step":context.step,"sample":context.sample,
 		"native_tick":context.native_tick,"native_revision":context.revision,
 		"native_completed_usec":native_completed,"completed_usec":completed,

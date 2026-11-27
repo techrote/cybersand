@@ -3965,7 +3965,13 @@ func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) ->
 	if application.get("accepted",false) != true or not str(application.get("refusal","")).is_empty() \
 			or application.get("snapshot",-1) != snapshot.serial:
 		return
+	# A fresh native coupling result can precede another material tick.
+	# Keep the actual last material completion and the response clock distinct.
+	var response_usec: int = snapshot.lab_context.get("coupling_response_usec",-1)
 	var sample: int = snapshot.last_native_tick_body_sample
+	if response_usec > 0:
+		if response_usec < snapshot.last_native_tick_completed_usec or response_usec > _workbench_completed_step_usec: return
+		sample = int(snapshot.lab_context.get("workbench_completed_sample",-1))
 	var packet: Dictionary = snapshot.lab_context.get("workbench_gcr",{})
 	if sample < 0 or snapshot.last_native_tick_completed_usec <= 0 \
 			or snapshot.lab_context.get("workbench_completed_sample",-1) != sample \
@@ -3976,6 +3982,7 @@ func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) ->
 	_workbench_water_completion_context = {"bridge":bridge.get_instance_id(),"session":bridge._session,
 		"epoch":bridge._epoch,"world":snapshot.physics_world_generation,"step":physical_actor_session.tick,
 		"native_tick":snapshot.tick_index,"sample":sample,"revision":snapshot.simulation_world_revision,
+		"coupling_response_usec":response_usec,"material_tick_body_sample":snapshot.last_native_tick_body_sample,
 		"native_completed_usec":snapshot.last_native_tick_completed_usec,"completed_usec":_workbench_completed_step_usec}
 	_workbench_water_completion_context.make_read_only()
 	for action: Dictionary in bridge.last_application.get("bodies",[]):
@@ -3991,7 +3998,8 @@ func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) ->
 			"instance_id":member.instance_id,"generation":member.generation,
 			"native_response_applied":true,"input_pose":history.bodies[slot].pose,
 			"output_pose":bridge.body_transform(slot),"completed_usec":_workbench_completed_step_usec,
-			"native_completed_usec":snapshot.last_native_tick_completed_usec}
+			"coupling_response_usec":response_usec,"material_tick_body_sample":snapshot.last_native_tick_body_sample,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec}
 		WorkbenchWaterComposition.freeze(_workbench_water_dependencies[slot])
 
 

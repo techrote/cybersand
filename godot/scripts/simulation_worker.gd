@@ -6,7 +6,8 @@ signal workbench_sample_completed
 var _notify_sample_completion := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
 var _independent_coupling := OS.get_environment("CYBERSAND_WORKBENCH_COUPLING_CLOCK") == "1"
 var _coupling_only_count: int = 0
-var _dry_rounds_remaining: int = 0
+var _last_coupling_response_usec := -1
+var _coupling_rounds_remaining: int = 0
 var _last_notified_sample: int = -1
 var _last_notified_epoch: int = -1
 
@@ -1620,13 +1621,17 @@ func _capture_workbench_result() -> void:
 			if _last_native_tick_world_generation == _world_generation else -1}
 
 
-func _zero_workbench_response(sample: int) -> bool:
+func _interstitial_workbench_response(sample: int) -> bool:
 	if not _workbench_result.get("valid",false) or _workbench_display.is_empty(): return false
 	var rows: Array = _workbench_result.get("rows",[])
 	if rows.is_empty(): return false
 	for row: Dictionary in rows:
-		if row.sample != sample or row.contacts != 0 or row.displaced != 0 or row.unresolved != 0 \
-				or row.impulse != Vector2.ZERO or row.correction != Vector2.ZERO or row.torque != 0.0:
+		# The normal native prep freshly computes pressure and support for
+		# this pose. A movement/arrival event, overlap repair or unresolved
+		# penetration needs the full material turn before the step is issued.
+		if row.sample != sample or row.displaced != 0 or row.unresolved != 0 \
+				or row.correction != Vector2.ZERO or row.arrival_count != 0 \
+				or row.event_accepted != Vector2.ZERO or row.event_torque != 0.0:
 			return false
 	_mutex.lock()
 	var clear: bool = _workbench_emitters.is_empty() and _workbench_source_commands.is_empty() \
@@ -3178,7 +3183,7 @@ func _worker_loop() -> void:
 								and local_lab.is_empty() and not _simulation_failed and not _actor_session.active() \
 								and pre_coupling_revision == int(_world.revision) \
 								and _last_native_tick_world_generation == _world_generation \
-								and not _combined_physics_publication and _dry_rounds_remaining > 0 \
+								and not _combined_physics_publication and _coupling_rounds_remaining > 0 \
 								and sample.get("held_physics_callback",false) \
 								and Time.get_ticks_usec() - _last_native_tick_completed_usec < 2 * local_pixel_interval_usec \
 								and _snapshot_hard_surface_revision == int(_world.hard_surface_revision):
@@ -3186,12 +3191,17 @@ func _worker_loop() -> void:
 							# sample can have an exact native response of its own. Preparing
 							# its swept mask cleared all prior per-body contact accumulators.
 							_capture_workbench_result()
-							coupling_only = _zero_workbench_response(workbench_serial)
+							coupling_only = _interstitial_workbench_response(workbench_serial)
 							if coupling_only:
 								_workbench_completed_sample = workbench_serial
 								_coupling_only_count += 1
-								_dry_rounds_remaining -= 1
+								_coupling_rounds_remaining -= 1
+								_last_coupling_response_usec = Time.get_ticks_usec()
 								_workbench_display["coupling_only"] = true
+								# This native response prepared a new body mask without a
+								# material tick. Its sample cannot inherit the preceding
+								# tick's timestamp as Water composition authority.
+								_workbench_display["native_completed_usec"] = -1
 						elif _workbench_result.is_empty(): _capture_workbench_result()
 					if prepare_started_usec > 0:
 						_append_render_cadence_event(_workbench_phase_event("coupling_prepare",
@@ -3244,9 +3254,9 @@ func _worker_loop() -> void:
 				var native_tick_completed_usec: int = Time.get_ticks_usec()
 				if not _simulation_failed:
 					if _independent_coupling:
-						# A real recent sample hold can request up to three fresh dry
+						# A real recent sample hold can request up to three fresh native
 						# responses. Two pixel intervals bound delay to the next material turn.
-						_dry_rounds_remaining = 3 if local_workbench_sample.get("held_physics_callback",false) else 0
+						_coupling_rounds_remaining = 3 if local_workbench_sample.get("held_physics_callback",false) else 0
 					_last_native_tick_started_usec = native_tick_started_usec
 					_last_native_tick_completed_usec = native_tick_completed_usec
 					_last_native_tick_world_generation = _world_generation
@@ -3317,7 +3327,7 @@ func _worker_loop() -> void:
 		if pause_requested_at_entry and local_paused and not native_ticked_this_turn:
 			_workbench_pause_ack_serial = pause_request_serial_at_entry
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
-		if not coupling_only or not _publish_contact_free_completion(local_rigid_body_epoch):
+		if not coupling_only or not _publish_coupling_completion(local_rigid_body_epoch):
 			_publish_snapshot(
 				worker_step_time_ms,
 				local_paused,
@@ -3414,10 +3424,10 @@ func _refresh_hard_surface_snapshot(force_refresh: bool, rigid_body_epoch: int, 
 	return 0.0
 
 
-# A contact-free response has its own native occupancy authority. If any
+# An interstitial response has its own native occupancy authority. If any
 # authoring or terrain revision moved on during this turn, take the normal
 # full publication path. This packet never claims a material step or upload.
-func _publish_contact_free_completion(epoch: int) -> bool:
+func _publish_coupling_completion(epoch: int) -> bool:
 	if _simulation_failed or _world.has_failed() or not _snapshot_hard_surface_chunk_rectangles_valid:
 		return false
 	var source := CyberSimulationSnapshot.new()
@@ -3468,6 +3478,7 @@ func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
 	snapshot.lab_context = {
 		"workbench_gcr":_workbench_result.duplicate(true),
 		"coupling_only_completions":_coupling_only_count,
+		"coupling_response_usec":_last_coupling_response_usec if _workbench_display.get("coupling_only",false) else -1,
 		"workbench_hard_surface_revision":source.lab_context.workbench_hard_surface_revision,
 		"workbench_completed_sample":_workbench_completed_sample,
 		"workbench_refusal":_workbench_refusal,
