@@ -1907,7 +1907,7 @@ func enable_object_shard() -> bool:
 
 func load_object_shard_scene(scene_id: String) -> bool:
 	if host.has_method(&"persistent_operation_allowed"): return refuse("Open Structures in the ordinary Workbench. Persistent Areas stores actor-free terrain.")
-	if not _editable(): return false
+	if not _editable_authored_world(): return false
 	if _liquids == null or _liquids.bridge == null: return refuse("Native policy interface unavailable.")
 	var policy: PackedInt32Array = _liquids.requested_policy
 	if policy.is_empty(): policy = PackedInt32Array(applied.liquid_policy)
