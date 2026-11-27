@@ -210,3 +210,25 @@ preserve that failure and the exact retained engine. A separately registered
 reuses fixed c2 application/native/engine identities with a new committed driver;
 it cannot grant runtime credit until its actual processes execute. The campaign's
 `final` registration phase does not mean the candidate passed final acceptance.
+
+## Local Follow flight retest, 27 November
+
+The owner rejected the physical Windows playtest of `00478f29b`. Use the
+new local retest's **Open Wave 512.cmd** and **Open Mixed 2048.cmd** for this
+repair. Each opens the authored scene in Follow. Pilot the Needle, press Play
+and use W for thrust, Q/E for the side jets, and C for upright assist. Close
+the application normally after each scene. **Collect Results.cmd** writes the
+ZIP beside the extracted Workbench under `Runs/Reports` and prints its path.
+Each scene has a separate profile. It retains up to four 2 MiB segments of
+recent gameplay. To preserve a particular hitch, close and collect soon after
+it occurs. The files identify the launch, source, camera, selected body,
+completed fixed steps, actual material publications, holds and draw callbacks.
+
+The selected local launcher enables bounded fixed-step recovery, independent
+native body sampling between material ticks, and the certified effects
+shortcut. A matching native World, session, epoch, sample and terrain remain
+required before each Rapier step. Pending cell mutation or actor correction
+requires the ordinary material path. Stock Safe, two image slots, all-worker
+native completion and the preserved comparison package are still the
+reference. Keep the PR Draft/HOLD pending an owner playtest and integration
+qualification. See the [dated flight results](../audits/2026-11-27-pubpres-definitive.md#owner-follow-flight-repair).

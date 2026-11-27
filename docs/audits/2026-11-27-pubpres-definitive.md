@@ -486,3 +486,37 @@ gaps were 106, 115, 130 and 136 ms. Peak process RSS ranged from 764 to
 exclude a late gap above 500 ms. In the last three worlds, 13, 23 and
 38 multi-step intervals respectively could conceal a gap above 250 ms.
 [Ordinary session clocks, resource samples and framebuffer images](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15215066942)
+
+## Owner Follow flight repair
+
+The owner rejected the shipped `00478f29b` on TITAN RTX. The authored Wave512
+and Mixed2048 launchers reproduced the flyer loss on Linux. An independent
+check examined the full swept box on both active material planes whenever
+the accepted frame withheld the selected body. Shared sampling and time
+budgets could withhold a flyer over entirely Empty cells. The repair prepares
+a bounded local material proof and reuses it only while the native material
+identity or disjoint patch history still certifies the entire footprint.
+
+The table uses 90-second continuously piloted ordinary Needle flights, with
+W, Q/E and upright assist, Follow, pause and one manual step. Tests used stock
+Godot 4.7, native Rapier, private X11 and Mesa llvmpipe, 1280 × 720, two Mesa
+threads and six logical CPUs. Rates count completed 1/60 s Rapier steps.
+Draw and physical gaps are measured separately using monotonic timestamps.
+
+| Application / scene | Steps/s | Withheld / draws | Physical p95 / p99 / max (ms) | Draw p95 / p99 / max (ms) |
+|---|---:|---:|---:|---:|
+| Rejected 00478f29b / Wave512 | 11.54 | 5 / 711 | 143 / 160 / 208 | 155 / 175 / 208 |
+| Repair 339bee2d4 / Wave512 | 29.90 | 0 / 1,677 | 61 / 84 / 124 | 78 / 100 / 122 |
+| Rejected 00478f29b / Mixed2048 | 7.54 | 542 / 657 | 164 / 199 / 379 | 169 / 198 / 379 |
+| Repair 339bee2d4 / Mixed2048 | 24.97 | 0 / 1,197 | 66 / 86 / 160 | 102 / 136 / 212 |
+
+On the intermediate Mixed2048 build `61b8c1ff3`, physical steps 511 and
+592 had 333 ms and 282 ms gaps. The pilot remained airborne. Three other
+actors had just entered Water over 1,700 cells below the accepted viewport.
+The next candidate skipped offscreen polygon and Water texture submission
+and admitted fresh passive native responses between material turns. The same
+steps took 51 ms and 52 ms. Both changes contributed to the tested bundle;
+the comparison cannot separate their effects. Ten Mixed2048 physical gaps
+exceeded 100 ms, all isolated, while the longest draw hitch chain was seven
+consecutive gaps over 100 ms. The small patrol spends part of each lap at the
+camera clamp. Physical NVIDIA output and owner acceptance require a new test.
