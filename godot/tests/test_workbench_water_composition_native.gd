@@ -59,6 +59,9 @@ var omitted_observations: Array[Dictionary] = []
 var omitted_observations_dropped := 0
 var transition_observations: Array[Dictionary] = []
 var transition_observations_dropped := 0
+var restoring_epoch := -1
+var restoring_world := -1
+var staged_water_material_vetoes := 0
 
 func transition_identity(frame: Dictionary, bridge: Variant) -> Dictionary:
 	# Read actual owners and the already-selected frame. This observer does not
@@ -162,6 +165,11 @@ func observe_frame() -> void:
 			omitted_by_stage[omission_key] = int(omitted_by_stage.get(omission_key,0))+1
 			var reason_key := omission_key+":"+str(frame.get("reasons",{}).get(slot,"missing"))
 			omission_reasons[reason_key] = int(omission_reasons.get(reason_key,0))+1
+			if stage == "restore" and bridge._epoch == restoring_epoch and host.last_uploaded_world_generation == restoring_world \
+					and host._pending_physical_candidate != null and not host.pending_microscenario_apply.is_empty() \
+					and frame.get("reasons",{}).get(slot) == "material_in_swept_mask":
+				var cells := footprint(bridge.body_transform(slot),bridge._rects[slot],host.image)
+				if cells.other == 0 and cells.water > 0: staged_water_material_vetoes += 1
 			if omitted_observations.size() < 512:
 				var hidden: Dictionary = transition_identity(frame,bridge)
 				hidden["slot"] = slot
@@ -570,12 +578,19 @@ func edits_and_lifecycle() -> void:
 	if not await paint_patch(position,2,3,"water_small_repair") or not await ordinary_step("repair_step"): return
 	var before_epoch: int = host._physical_epoch
 	var before_world: int = host.last_uploaded_world_generation
+	restoring_epoch = before_epoch
+	restoring_world = before_world
 	stage = "restore"
 	if not check(ui.restore_start(),"ordinary Restore start admitted"): return
 	if not check(await until(func() -> bool: return host.pending_microscenario_apply.is_empty() \
 		and host._physical_epoch > before_epoch and host.last_uploaded_world_generation > before_world \
 		and host.physical_actor_session != null and host._physical_terrain_ready),"Restore replaces exact World and actor owner"): return
 	check(host._workbench_water_dependencies.is_empty(),"Restore retires consumed Water authority")
+	# This is the old session during preparation. The new owner is checked
+	# independently below. Legacy empty-only clearance rejected each such
+	# submerged footprint for every draw until the replacement was adopted.
+	check(staged_water_material_vetoes == 0,
+		"restoring a second owner never turns the installed owner's retained Water into a hard-material veto")
 	stage = "restored_paused"
 	check(await until(func() -> bool:
 		return host.workbench_presentation_frame.get("world_generation",-1) == host.last_uploaded_world_generation \
@@ -705,6 +720,7 @@ func _run() -> void:
 		"observed_frames":observed_frames,"composed_body_frames":composed_frames,"hidden_body_frames":hidden_body_frames,
 		"omitted_by_stage_and_slot":omitted_by_stage,"omission_reasons":omission_reasons,
 		"observed_frames_by_stage":observed_frames_by_stage,
+		"staged_water_material_vetoes":staged_water_material_vetoes,
 		"omitted_observations":omitted_observations,"omitted_observations_dropped":omitted_observations_dropped,
 		"transition_observations":transition_observations,"transition_observations_dropped":transition_observations_dropped,
 		"proof_kinds":kinds,"moving_wet_distinct_poses":moving_wet_poses.size(),"compound_model":selected_compound,

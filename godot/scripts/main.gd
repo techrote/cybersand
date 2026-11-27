@@ -4040,7 +4040,8 @@ func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transf
 # Never associate its historical physics proof with the successor's step.
 func _submitted_water_hold(slot: int, previous: Dictionary, context: Dictionary) -> Dictionary:
 	if not _workbench_water_composition_enabled() or not _workbench_frame_error.is_empty() \
-			or simulation_worker.has_failed() or not _physical_terrain_ready or _actor_reset_receipt != 0:
+			or simulation_worker.has_failed() or not _physical_terrain_ready or _actor_reset_receipt != 0 \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty():
 		return {}
 	var old: Dictionary = previous.get("water_coverage_identity",{})
 	var proof: Dictionary = workbench_presentation_frame.get("water_proofs",{}).get(slot,{})

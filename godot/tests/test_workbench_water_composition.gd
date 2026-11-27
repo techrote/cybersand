@@ -307,6 +307,9 @@ func coverage_cache_checks() -> void:
 	app.workbench_presentation_frame = {"water_proofs":{0:prior_proof},"poses":{0:pose}}
 	context.merge({"mask_frame":{"instances":{11:{"sample":9}}},"mask_native_tick":40})
 	check(app._submitted_water_hold(0,old,context)==prior_proof,"the held Water endpoint preserves its original selected physical step")
+	app.pending_microscenario_apply = {"serial":1}
+	check(app._submitted_water_hold(0,old,context).is_empty(),"a staging transition requires a current owner proof instead of a historical hold")
+	app.pending_microscenario_apply = {}
 	context.mask_native_tick = 41
 	check(app._submitted_water_hold(0,old,context).is_empty(),"a changed visible native receipt cannot reuse a Water hold")
 	context.mask_native_tick = 40
