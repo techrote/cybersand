@@ -410,5 +410,35 @@
         "raw_logs_verified": 487
       }
     }
+  },
+  "automatic_collaborative_art": {
+    "run_id": 45968908059,
+    "attempt": 1,
+    "source_commit": "af45bfb332f9822780db9304779ff0cdf55661df",
+    "conclusion": "success",
+    "completed": "2026-11-27T09:25:37Z",
+    "jobs": {
+      "Identify separately registered mergedown campaign": 140404217651,
+      "Verify application qualification source": 140404423967,
+      "Linux 4.7 native and displayed collaborative Art": 140404686984,
+      "Windows 4.7 collaborative Art and installed evaluator": 140404687047
+    },
+    "platform_evidence": {
+      "linux": {
+        "artifact": 15184179256,
+        "zip_sha256": "a48cf433aa927a3d58b799c7863f7553f0137d966823b8cd3b8daf82ca1dd132",
+        "archive_members": 928,
+        "headless": "passed",
+        "displayed": "passed"
+      },
+      "windows": {
+        "artifact": 15186640228,
+        "zip_sha256": "2ae3db920029cbb91af2f3fe4d624673542bd50fbb67e0be0a09ae84c6fa33eb",
+        "archive_members": 1011,
+        "headless": "passed",
+        "displayed": "passed",
+        "installed_evaluator": "passed"
+      }
+    }
   }
 }
