@@ -44,13 +44,26 @@ def command(candidate: str, scene: str = "ordinary", collector: bool = False, *,
     engine_args=f" -Engine {configured['engine'].title()} -RenderThread {configured['render_thread'].title()}"
     args = "" if collector else f" -Action Open -OwnerProfile -Scene {scene} -RecoveryMode {mode}" + (" -Source Donor" if donor else "") + " %adapter%"
     if not collector: args+=engine_args
-    lines = ["@echo off", "setlocal", 'set "adapter="']
+    # The CMD explicitly launches Windows PowerShell 5.1. PowerShell 7 can
+    # otherwise shadow the inbox Utility module (including Get-FileHash).
+    lines = ["@echo off", "setlocal", 'set "PSModulePath=%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\Modules"']
+    if collector:
+        lines += ['echo Collecting Workbench results. Verifying the evaluator and reading matching runs...',
+                  'for %%I in ("%~dp0..\\Runs\\Reports") do echo Report folder: "%%~fI"']
     if not collector:
+        lines.append('set "adapter="')
         lines.append('if /i "%~1"=="--hosted-smoke" set "adapter=-RenderingDriver opengl3_angle -QuitAfterReady"')
     lines += ['"%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe" -NoProfile -ExecutionPolicy Bypass '
               f'-File "%~dp0tools\\pubpres_recovery_windows\\{script}" -PackageRoot "%~dp0." '
-              f'-ExpectedCandidate {candidate}{args}', 'set "result=%errorlevel%"',
-              'if not "%result%"=="0" if /i not "%~1"=="--hosted-smoke" pause', 'exit /b %result%', ""]
+              f'-ExpectedCandidate {candidate}{args}', 'set "result=%errorlevel%"']
+    if collector:
+        lines += ['if not "%result%"=="0" echo Collection failed with exit code %result%. See the error above.',
+                  'if /i not "%~1"=="--hosted-smoke" (',
+                  '  echo Press any key to close this window.',
+                  '  pause >nul', ')']
+    else:
+        lines.append('if not "%result%"=="0" if /i not "%~1"=="--hosted-smoke" pause')
+    lines += ['exit /b %result%', ""]
     return "\r\n".join(lines).encode("ascii")
 
 

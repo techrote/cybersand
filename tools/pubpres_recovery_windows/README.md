@@ -16,6 +16,6 @@ Use the same scene with **Stock Safe Fallback** in the filename to compare the o
 
 **Save and reopen.** Use **Save start** to store the authored materials and actors. Close the window normally, reopen the same command, and choose **Load start**. The save represents the authored starting state. Each command keeps writable data in the sibling `Runs` folder.
 
-**Record the result.** The first launch creates `Runs/OWNER-ACCEPTANCE.md`. Record the scene, mode, duration and shortest reproduction for any problem. Close Workbench and run **Collect Results.cmd**. The ZIP and checksum appear in `Runs/Reports`. The report index identifies any omitted files.
+**Record the result.** The first launch creates `Runs/OWNER-ACCEPTANCE.md`. Record the scene, mode, duration and shortest reproduction for any problem. Close Workbench and double-click **Collect Results.cmd**. The window shows the report folder immediately, then the complete ZIP path and checksum or the collection error. Press a key when you have read the result. Each collection creates a new ZIP in `Runs/Reports` beside the extracted evaluator folder. The report index identifies any omitted files.
 
 The [physical acceptance checklist](ACCEPTANCE.md) covers the remaining Windows 11/NVIDIA evaluation. Hosted graphical checks exercise the software adapter. The package manifest binds the shipped files and runtimes, and [the correctness receipt](qualification/recovery-correctness.json) identifies the Windows application gates.

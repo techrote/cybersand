@@ -6,6 +6,7 @@ import copy
 import ast
 import importlib.util
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -21,6 +22,37 @@ spec.loader.exec_module(fixtures)
 
 
 class PowerShellManifestTests(unittest.TestCase):
+    @unittest.skipUnless(os.name == 'nt', 'Requires the shipped Windows CMD interpreter')
+    def test_collector_reports_destination_retains_interactive_result_and_propagates_failure(self):
+        candidate = 'a' * 40
+        with tempfile.TemporaryDirectory(prefix='PUBPRES collector test ') as temporary:
+            root = Path(temporary) / 'Package'
+            target = root / package.TOOLS / 'Collect-Results.ps1'
+            target.parent.mkdir(parents=True)
+            (root / 'Collect Results.cmd').write_bytes(package.command(candidate, collector=True))
+            # A v7 shell launching cmd can pass incompatible Utility modules to
+            # Windows PowerShell. Check the actual 5.1 cmdlet behind the shipped verifier.
+            target.write_text("param($PackageRoot,$ExpectedCandidate)\n"
+                              "$ErrorActionPreference='Stop'\n"
+                              "$null = Get-FileHash -LiteralPath $PSCommandPath\n"
+                              "Write-Output ('Result path: '+[IO.Path]::GetFullPath($PackageRoot))\n")
+            def invoke(*arguments):
+                return subprocess.run(['cmd.exe', '/d', '/c', 'call', 'Collect Results.cmd', *arguments], cwd=root,
+                                      env={**os.environ, 'PSModulePath':str(root / 'unrelated modules')},
+                                      input=b'\r\n', stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=30)
+            for arguments in ((), ('--hosted-smoke',)):
+                result = invoke(*arguments)
+                self.assertEqual(result.returncode, 0, result.stdout)
+                self.assertIn(os.fsencode(str(root.parent / 'Runs' / 'Reports')), result.stdout)
+                self.assertIn(b'Result path:', result.stdout)
+                self.assertEqual(b'Press any key' in result.stdout, not arguments)
+            target.write_text("throw 'Deliberate collector error'\n")
+            result = invoke()
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn(b'Deliberate collector error', result.stdout)
+            self.assertIn(b'Collection failed with exit code', result.stdout)
+            self.assertIn(b'Press any key', result.stdout)
+
     @unittest.skipUnless(shutil.which('powershell') or shutil.which('pwsh'), 'PowerShell is required')
     def test_flat_policy_equality_checks_typed_fields_in_any_order(self):
         command = r'''
