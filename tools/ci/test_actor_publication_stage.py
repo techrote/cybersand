@@ -44,7 +44,7 @@ class ActorStageGate(unittest.TestCase):
     def check_reject(self, method):
         with self.assertRaises(gate.PublicationRejected):
             method()
-    
+
     def test_both_one_or_neither_binary_changed(self):
         for flags in ((False, False), (True, False), (False, True), (True, True)):
             with self.subTest(flags=flags):
