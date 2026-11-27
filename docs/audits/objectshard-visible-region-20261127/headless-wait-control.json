@@ -1,0 +1,71 @@
+{
+  "schema": "objectshard-eight-body-receipt-wait-control-v1",
+  "application_source": "703652decff6562326ec314fec3d041ce169dffd",
+  "native_sha256": "c483f4625a2c82a82f7f8530744f483f6182f23b72848e62d04d903759ecef32",
+  "platform": "Windows, Godot 4.7.stable.official.5b4e0cb0f, headless, eight active structural bodies",
+  "registration": "Alternate the shipped OS.delay_usec(100) with OS.delay_usec(0) at the one bounded wait in object_shard_m4_runtime.gd::poll. All four runs retain the existing 48-operation and elapsed-time budget, source, actors, capture and acknowledgement semantics. --scene=stress --camera=overview --sampling=light --recording=off.",
+  "cpu_scope": "Earliest-created Windows engine thread and all process threads, sampled at elapsed-window boundaries, using GetThreadTimes and process CPU totals.",
+  "runs": [
+    {
+      "delay_usec": 100,
+      "source": "703652decff6562326ec314fec3d041ce169dffd",
+      "native_sha256": "c483f4625a2c82a82f7f8530744f483f6182f23b72848e62d04d903759ecef32",
+      "script_sha256": "79f0e572a6faf374a181d5079a0070a2c86f176fdd098296bf758c8a46baefa6",
+      "checks": 368,
+      "elapsed_usec": 7373117,
+      "semantic_ticks": 180,
+      "steps": 721,
+      "acks": 5760,
+      "native_ticks_s": 24.4130128411091,
+      "primary_cpu_s": 1.4375,
+      "process_cpu_s": 6.828125,
+      "headless": true
+    },
+    {
+      "delay_usec": 0,
+      "source": "703652decff6562326ec314fec3d041ce169dffd",
+      "native_sha256": "c483f4625a2c82a82f7f8530744f483f6182f23b72848e62d04d903759ecef32",
+      "script_sha256": "9d394dbd7c8e4378602e1ac127311f348b717968837bbdcbb0455ec878f804b8",
+      "checks": 368,
+      "elapsed_usec": 7152307,
+      "semantic_ticks": 180,
+      "steps": 721,
+      "acks": 5760,
+      "native_ticks_s": 25.1667049526817,
+      "primary_cpu_s": 1.4375,
+      "process_cpu_s": 7.515625,
+      "headless": true
+    },
+    {
+      "delay_usec": 100,
+      "source": "703652decff6562326ec314fec3d041ce169dffd",
+      "native_sha256": "c483f4625a2c82a82f7f8530744f483f6182f23b72848e62d04d903759ecef32",
+      "script_sha256": "79f0e572a6faf374a181d5079a0070a2c86f176fdd098296bf758c8a46baefa6",
+      "checks": 368,
+      "elapsed_usec": 6209908,
+      "semantic_ticks": 180,
+      "steps": 721,
+      "acks": 5760,
+      "native_ticks_s": 28.9859366676608,
+      "primary_cpu_s": 1.125,
+      "process_cpu_s": 5.859375,
+      "headless": true
+    },
+    {
+      "delay_usec": 0,
+      "source": "703652decff6562326ec314fec3d041ce169dffd",
+      "native_sha256": "c483f4625a2c82a82f7f8530744f483f6182f23b72848e62d04d903759ecef32",
+      "script_sha256": "9d394dbd7c8e4378602e1ac127311f348b717968837bbdcbb0455ec878f804b8",
+      "checks": 368,
+      "elapsed_usec": 9471872,
+      "semantic_ticks": 180,
+      "steps": 720,
+      "acks": 5760,
+      "native_ticks_s": 19.0036351842592,
+      "primary_cpu_s": 1.6875,
+      "process_cpu_s": 9.859375,
+      "headless": true
+    }
+  ],
+  "decision": "Keep the 100-microsecond argument. Removing the nominal wait had inconsistent native throughput and greater total process CPU in both adjacent comparisons. This headless experiment has no display measurements."
+}
