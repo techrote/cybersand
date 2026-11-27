@@ -36,7 +36,12 @@ class RecoveryRequest(unittest.TestCase):
             for index,names in enumerate(cases):
                 archive=root/(str(index)+'.zip')
                 with zipfile.ZipFile(archive,'w') as bundle:
-                    for name in names: bundle.writestr(name,b'preserved original')
+                    for name in names:
+                        # ZipInfo normalizes OS separators on Windows. Write the
+                        # fixture's literal filename on every producer platform.
+                        member = zipfile.ZipInfo(name)
+                        member.filename = name
+                        bundle.writestr(member,b'preserved original')
                 with self.assertRaises((ValueError,RuntimeError,FileExistsError)):
                     extract(archive,root/('out'+str(index)))
             archive=root/'valid.zip'
