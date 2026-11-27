@@ -238,7 +238,7 @@ def admit(request_path: Path, product: Path, harness: Path) -> dict:
         contracts["tools/ci/run_godot_regressions.py"] = "855f324f13d47221e742a44a4f9649c6f395ff113e9b714852480f1199c3d496"
     if "objectshard_m4" in features and "persistent_areas" in features:
         # The combined registrar supplies opt-in CLI flags only to named M4 fixtures.
-        contracts["tools/ci/run_godot_regressions.py"] = "257c08e55c3b7f2c42ad2f6e2532cfbbb96173558f866a0b793085c070e0c07c"
+        contracts["tools/ci/run_godot_regressions.py"] = "c2ba62a8ff629f2ea822c2176bdcc8caa3db8069117f422bd1a63ebbec89bc5e"
     if "swarm" in features:
         contracts["tools/qualify_workbench_landscapes.py"] = "8a5360070fc8e90c191d875dac906234ab88dcb882201bb38e64e2088a8c6170"
     for name, digest in contracts.items():
