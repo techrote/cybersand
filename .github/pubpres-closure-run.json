@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
   "phase": "windows-focus",
-  "purpose": "Reproduce and qualify owner contact play in Wave512 and Mixed2048 with the real thruster Fire toggle, native material 6 writes and on-screen moving contact pixels. Exercise deliberate wall and Water contacts, picking, and both 90-second Fire-on Follow patrols; keep physical owner acceptance HOLD.",
+  "purpose": "Verify Fire-on wall, Water and exhaust contact, sustained Follow, picking and held placement after exact stationary endpoint reuse.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "c91f62a04b59ea0c380c8797e02957be67ba303fe59c2a0f5b15481998465dfc",
+  "payload_sha256": "8d6938322a70ca63164fe9a9a652fe9e85f4eabd7e268e4856de722380e2af12",
   "physical_acceptance": "HOLD"
 }
