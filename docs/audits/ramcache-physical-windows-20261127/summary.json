@@ -1,0 +1,186 @@
+{
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "engine_version": "4.7.stable.official.5b4e0cb0f",
+  "files_sha256": {
+    "layout-1920x1080.png": "e50f6b148ec46865e752ad6d16ef5d75f43a9240ecbb24ffc694c2112468c8a2",
+    "ramcache-controls-720-after-travel.png": "d329f349e0ba1fc08caf7f571097b8d18a4d58af9da6aaee93cd5735ea949de6",
+    "travel-operations.jsonl": "5eb66877ad82f36d3ae8c281b5f76d7c65e20daa127e08df1c78b43fe22fc6be"
+  },
+  "hardware": {
+    "driver": "32.0.15.8180",
+    "gpu": "NVIDIA TITAN RTX",
+    "platform": "Windows 11 Pro"
+  },
+  "native_inputs": 114,
+  "native_sha256": "2b05042ac26390327b707bbe97aa9922e25cf973cbd1f98ab86316d90ce03e6d",
+  "producer_artifact": 15173136608,
+  "producer_attempt": 1,
+  "producer_run": 45939972097,
+  "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "scope": "Physical Windows registered 30 zero-debt HOT and 30 WARM samples for each worker count, real fresh reader; owner playfeel remains open",
+  "source_commit": "9cc106b312b080b5bd6d079c23be918722f5cea4",
+  "source_tree": "77f34d2005f85fadd90f7fa45420823a0185e537",
+  "status": "passed",
+  "workers": {
+    "1": {
+      "hot": {
+        "maximum_correlated_main_frame_ms": 34.458,
+        "native_ticks": 0,
+        "p50_ms": 91.0,
+        "p95_ms": 100.0,
+        "samples": 30,
+        "worst_ms": 100.0
+      },
+      "reopen": {
+        "cache_checks": 163,
+        "command": [
+          "C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "--path",
+          "C:\\cs-consolidation\\areas-titan-s15\\godot",
+          "--audio-driver",
+          "Dummy",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_persistent_area_ramcache.gd",
+          "--",
+          "--persistent-profile=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w1\\profile",
+          "--persistent-evidence=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w1",
+          "--persistent-test-mode=reopen",
+          "--persistent-test-workers=1",
+          "--persistent-start-paused",
+          "--ramcache-hot-samples=30",
+          "--ramcache-warm-samples=30",
+          "--persistent-require-graphics"
+        ],
+        "elapsed_seconds": 25.26112199999625,
+        "log_sha256": "7d968388d7a9ec5cd9b0235dabbac449f55e1d6a1c77b0c6d17955475822e735",
+        "original_receipt_sha256": "77bf84c2a947969e1fc5f4f6c16134a6c5bd505e8cb73497b27b5ecfb2dc4302",
+        "os_peak_rss_bytes": 535375872,
+        "pid": 36328,
+        "workbench_assertions_in_saved_receipt": 165
+      },
+      "warm": {
+        "maximum_correlated_main_frame_ms": 413.404,
+        "native_ticks": 0,
+        "p50_ms": 2033.0,
+        "p95_ms": 2201.0,
+        "samples": 30,
+        "worst_ms": 2265.0
+      },
+      "write": {
+        "cache_checks": 1822,
+        "command": [
+          "C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "--path",
+          "C:\\cs-consolidation\\areas-titan-s15\\godot",
+          "--audio-driver",
+          "Dummy",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_persistent_area_ramcache.gd",
+          "--",
+          "--persistent-profile=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w1\\profile",
+          "--persistent-evidence=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w1",
+          "--persistent-test-mode=write",
+          "--persistent-test-workers=1",
+          "--persistent-start-paused",
+          "--ramcache-hot-samples=30",
+          "--ramcache-warm-samples=30",
+          "--persistent-require-graphics"
+        ],
+        "elapsed_seconds": 184.10079990001395,
+        "log_sha256": "de7470551541c5a1619feec47cda238ae86e015f16d14eb4ac0c6f00b51f472c",
+        "original_receipt_sha256": "aee1b889cd9311f0e391c22a3a0270dd805f31b7bbd57d176a7b6dfa14f9188d",
+        "os_peak_rss_bytes": 563924992,
+        "pid": 40040,
+        "workbench_assertions_in_saved_receipt": 1824
+      }
+    },
+    "4": {
+      "hot": {
+        "maximum_correlated_main_frame_ms": 29.719,
+        "native_ticks": 0,
+        "p50_ms": 99.0,
+        "p95_ms": 100.0,
+        "samples": 30,
+        "worst_ms": 100.0
+      },
+      "reopen": {
+        "cache_checks": 163,
+        "command": [
+          "C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "--path",
+          "C:\\cs-consolidation\\areas-titan-s15\\godot",
+          "--audio-driver",
+          "Dummy",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_persistent_area_ramcache.gd",
+          "--",
+          "--persistent-profile=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w4\\profile",
+          "--persistent-evidence=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w4",
+          "--persistent-test-mode=reopen",
+          "--persistent-test-workers=4",
+          "--persistent-start-paused",
+          "--ramcache-hot-samples=30",
+          "--ramcache-warm-samples=30",
+          "--persistent-require-graphics"
+        ],
+        "elapsed_seconds": 24.872844299999997,
+        "log_sha256": "5becb4fedcc3e6978545d4e177c6686586b67ae0b08f981672e810926ca66884",
+        "original_receipt_sha256": "a64c4b45cf1b81f4476b44f5b81ff4eea916b25425bd548e796eab3dd8211864",
+        "os_peak_rss_bytes": 533262336,
+        "pid": 46508,
+        "workbench_assertions_in_saved_receipt": 165
+      },
+      "warm": {
+        "maximum_correlated_main_frame_ms": 364.395,
+        "native_ticks": 0,
+        "p50_ms": 2032.0,
+        "p95_ms": 2231.0,
+        "samples": 30,
+        "worst_ms": 2299.0
+      },
+      "write": {
+        "cache_checks": 1822,
+        "command": [
+          "C:\\Godot47\\Godot_v4.7-stable_win64.exe",
+          "--path",
+          "C:\\cs-consolidation\\areas-titan-s15\\godot",
+          "--audio-driver",
+          "Dummy",
+          "--rendering-method",
+          "gl_compatibility",
+          "--rendering-driver",
+          "opengl3",
+          "--script",
+          "res://tests/test_persistent_area_ramcache.gd",
+          "--",
+          "--persistent-profile=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w4\\profile",
+          "--persistent-evidence=C:\\cs-consolidation\\evidence\\areas-titan-9cc106b312b0-1795754677\\graphical\\ramcache-w4",
+          "--persistent-test-mode=write",
+          "--persistent-test-workers=4",
+          "--persistent-start-paused",
+          "--ramcache-hot-samples=30",
+          "--ramcache-warm-samples=30",
+          "--persistent-require-graphics"
+        ],
+        "elapsed_seconds": 182.92150430002948,
+        "log_sha256": "c7c454358cd388b03504c34768fdcbe78e80b04790ca86f02b73b9fd74845f94",
+        "original_receipt_sha256": "ab146e22dc2df8dbb6bf20bf80b4da3d0bc19f7bc0198ca8f2e20a224af1ffd1",
+        "os_peak_rss_bytes": 556404736,
+        "pid": 37692,
+        "workbench_assertions_in_saved_receipt": 1824
+      }
+    }
+  }
+}
