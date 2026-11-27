@@ -29,6 +29,15 @@ func _run() -> void:
 	var original := Transform2D(0.0,Vector2(85,90))
 	var moved := Transform2D(0.0,Vector2(94,90))
 	var pilot_area := Rect2i(67,68,48,48)
+	var far_patch := PackedInt32Array([150,85,4,4,0,8])
+	check(Coherence.patches_preserve_region(pilot_area,far_patch),
+		"a complete disjoint published patch preserves dry pixels")
+	far_patch.append_array(PackedInt32Array([70,70,1,1,32,2]))
+	check(not Coherence.patches_preserve_region(pilot_area,far_patch),
+		"a single authored cell intersecting the region revokes inherited clearance")
+	check(not Coherence.patches_preserve_region(pilot_area,PackedInt32Array())
+		and not Coherence.patches_preserve_region(pilot_area,PackedInt32Array([0,0,512,512,0,1024])),
+		"missing patch evidence or a full refresh cannot imply a dry region")
 	check(Coherence.region_is_empty(image,pilot_area) and Coherence.empty_region_covers_sweep(
 		pilot_area,original,Transform2D(PI/3.0,moved.origin),rectangles),
 		"a wholly Empty published area covers the continuous rotating pilot")

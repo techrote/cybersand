@@ -197,6 +197,7 @@ func _exercise() -> void:
 		samples.append({"time_usec":now,"tick":session.tick,"position":[pose.origin.x,pose.origin.y],
 			"visible":presented is Transform2D,"dry_if_hidden":dry,"reason":reason,"source":source,
 			"upload":frame.get("upload_serial",-1),"cache_usec":frame.get("upload_cache_usec",-1),
+			"dry_region_status":frame.get("dry_region_status","unavailable"),"patch_count":frame.get("patch_count",-1),
 			"resolve_usec":frame.get("resolve_usec",-1),"cells":guard.get("cells_examined",-1),
 			"world":frame.get("world_generation",-1),"epoch":frame.get("epoch",-1)})
 		prior = pose

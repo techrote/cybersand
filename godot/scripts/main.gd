@@ -1833,6 +1833,7 @@ var _presentation_upload_cache_usec: int = 0
 var _presentation_pending_cache_usec: int = 0
 var _presentation_pending_clearance_cells: int = 0
 var _workbench_dry_region: Dictionary = {}
+var _workbench_dry_region_status: String = "none"
 var workbench_presentation_last: Dictionary = {}
 var workbench_presentation_totals: Dictionary = {
 	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
@@ -4282,7 +4283,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"current_texture_id":_material_publication_rid(texture).get_id(),
 		"previous_texture_id":_material_publication_rid(previous_texture).get_id(),
 		"deadline_usec":started_usec+maxi(0,PRESENTATION_FRAME_TIME_BUDGET_USEC-cache_usec),
-		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec}
+		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec,
+		"dry_region_status":_workbench_dry_region_status,"patch_count":_material_pending_rectangles.size()/RENDER_PATCH_METADATA_STRIDE}
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
 		"blocked_other":0,"budget_vetoes":0,"cells_examined":_presentation_pending_clearance_cells,"elapsed_usec":0,
 		"intentional_holds":0,"withheld":0,"refined_queries":0,"refined_clear":0,
@@ -7445,6 +7447,7 @@ func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 # comparisons consume this upload's guard allowance. It certifies Empty pixels
 # only; pose, generation, native mask and submission checks stay in the resolver.
 func _prepare_workbench_dry_region(started_usec: int) -> Dictionary:
+	_workbench_dry_region_status = "inactive"
 	if paused or shared_workbench == null or not shared_workbench.has_method("pilot_id") or not _workbench_water_composition_enabled() \
 			or physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
 			or _presentation_previous_unknown or _presentation_previous_image == null \
@@ -7454,17 +7457,37 @@ func _prepare_workbench_dry_region(started_usec: int) -> Dictionary:
 	var bridge: WorkbenchBridge = physical_actor_session.bridge
 	var slot: int = bridge.actor_body_index(actor)
 	if slot < 0 or bridge != rapier_bridge or not bridge.is_initialized(): return {}
+	var previous: Dictionary = _workbench_presentation_state.get(slot,{})
+	if previous.get("water_composed",false):
+		_workbench_dry_region_status = "water_composed"
+		return {}
 	var position: Vector2 = bridge.body_transform(slot).origin
 	if not position.is_finite(): return {}
+	var inherited: Dictionary = {}
+	if not _workbench_dry_region.is_empty() and _workbench_dry_region.world == last_uploaded_world_generation \
+			and _workbench_dry_region.session == bridge._session and _workbench_dry_region.epoch == bridge._epoch \
+			and _workbench_dry_region.current == _presentation_current_content_id \
+			and WorkbenchPresentationCoherence.patches_preserve_region(_workbench_dry_region.area,_material_pending_rectangles):
+		# Only the old current image becomes previous. The complete validated
+		# patch inventory proves that every pixel in this area stays unchanged
+		# in the new current image. This charges no new material-cell reads.
+		inherited = _workbench_dry_region.duplicate()
+		_workbench_dry_region_status = "unchanged_patches"
+		if Rect2i(inherited.area).grow(-12).has_point(Vector2i(position.floor())): return inherited
 	var area := Rect2i(Vector2i(position.floor())-Vector2i(24,24),Vector2i(48,48))
 	var cells := area.get_area()
 	var deadline := started_usec+PRESENTATION_FRAME_TIME_BUDGET_USEC-_presentation_pending_cache_usec
 	if _presentation_pending_clearance_cells+cells > PRESENTATION_FRAME_SCAN_BUDGET \
-			or Time.get_ticks_usec() >= deadline: return {}
+			or Time.get_ticks_usec() >= deadline:
+		if inherited.is_empty(): _workbench_dry_region_status = "budget_before_scan"
+		return inherited
 	_presentation_pending_clearance_cells += cells
 	if not WorkbenchPresentationCoherence.region_is_empty(image,area) or Time.get_ticks_usec() >= deadline \
 			or not WorkbenchPresentationCoherence.region_is_empty(_presentation_previous_image,area) \
-			or Time.get_ticks_usec() >= deadline: return {}
+			or Time.get_ticks_usec() >= deadline:
+		if inherited.is_empty(): _workbench_dry_region_status = "scan_incomplete_or_occupied"
+		return inherited
+	_workbench_dry_region_status = "scanned"
 	return {"area":area,"world":last_uploaded_world_generation,"session":bridge._session,"epoch":bridge._epoch}
 
 
@@ -7476,6 +7499,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	texture = previous_texture
 	previous_texture = old_current_texture
 	var cache_started_usec: int = Time.get_ticks_usec()
+	var previous_dry: Dictionary = _workbench_dry_region
 	_workbench_dry_region = _prepare_workbench_dry_region(cache_started_usec)
 	var next_bytes: PackedByteArray = image.get_data()
 	var next_shape := Vector3i(image.get_width(),image.get_height(),image.get_format())
@@ -7495,6 +7519,13 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	_presentation_current_bytes = next_bytes
 	_presentation_current_content_id = next_content_id
 	_presentation_current_content_shape = next_shape
+	if _workbench_dry_region.is_empty() and _workbench_dry_region_status == "budget_before_scan" \
+			and not previous_dry.is_empty() and previous_dry.current == _presentation_previous_content_id \
+			and (previous_dry.current == next_content_id or previous_dry.previous == next_content_id):
+		# A full refresh can still install the identical two certified images.
+		# Actual immutable bytes and dimensions established these content IDs.
+		_workbench_dry_region = previous_dry.duplicate()
+		_workbench_dry_region_status = "same_contents"
 	if not _workbench_dry_region.is_empty():
 		_workbench_dry_region["current"] = _presentation_current_content_id
 		_workbench_dry_region["previous"] = _presentation_previous_content_id

@@ -28,6 +28,19 @@ static func _is_rigid(pose: Transform2D) -> bool:
 		and pose.x.cross(pose.y) > 0.0
 
 
+# Main supplies only the validated rectangles actually applied to the image.
+# A bounded disjoint update preserves all previously certified pixels in the
+# area. A full refresh, intersecting update or incomplete list needs a new proof.
+static func patches_preserve_region(region: Rect2i, patches: PackedInt32Array) -> bool:
+	const STRIDE := 6
+	if not region.has_area() or patches.is_empty() or patches.size()%STRIDE != 0 or patches.size() > 64*STRIDE:
+		return false
+	for offset in range(0,patches.size(),STRIDE):
+		var patch := Rect2i(patches[offset],patches[offset+1],patches[offset+2],patches[offset+3])
+		if patch.position.x < 0 or patch.position.y < 0 or not patch.has_area() or patch.intersects(region): return false
+	return true
+
+
 # A material-only certificate for an exact subregion of the two actual images.
 # The second RG8 channel is material state, so examine only material IDs.
 static func region_is_empty(image: Image, region: Rect2i) -> bool:
