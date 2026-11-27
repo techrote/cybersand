@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "windows-focus",
-  "purpose": "Resolve the Windows blank startup timeout using the explicitly 512-square held-pointer fixture, actual pending-owner diagnostics, three independent Build02 submission gates and the verified source-equivalent original 88bb Windows runtime.",
+  "phase": "delivery",
+  "purpose": "Ship and independently execute the source-exact evaluator after the official and three custom renderer held-limb inputs passed Windows run 46030558777. Retain 88bb matched fallback and five-minute results for the explicitly compared identical application tree.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "de5579dbf7d82ad5c5507c80083801d226a3d0c1356f4673d66f01efe6afe3eb",
+  "payload_sha256": "68710da86a068e3f67a12aa1f02928355f9ebf96e7b502f1f2cbd831ea84f061",
   "physical_acceptance": "HOLD"
 }
