@@ -603,13 +603,26 @@ def sandbox_package(args, manifest: dict, installed: dict) -> dict:
         # ledger deliberately uses canonical LF (see project_inputs), including
         # UID text that Windows Git can archive with CRLF. Compare like contracts
         # only after every raw ZIP payload has passed its independent hash check.
+        windows_binding = "godot/tools/swarm004-runtime.windows.json"
+        linux_binding = "godot/tools/swarm004-runtime.linux.json"
+        if files & {linux_binding, "godot/tools/gentek_reciprocal"}:
+            raise ValueError("Windows package contains a Linux reciprocal runtime")
         for name, expected in manifest["build_inputs"].items():
+            if name == linux_binding:
+                continue
             if name.startswith(("godot/", "examples/worldgen/")) or name in included_pins:
                 if name not in package["files_sha256"]:
                     raise ValueError("Delivered project is missing qualified source input: " + name)
                 canonical = archive.read(name).replace(b"\r\n", b"\n")
                 if hashlib.sha256(canonical).hexdigest() != expected:
                     raise ValueError("Delivered project differs from qualified source input: " + name)
+        if windows_binding in manifest["build_inputs"]:
+            binding = json.loads(archive.read(windows_binding))
+            cli = "godot/tools/gentek_reciprocal.exe"
+            if (binding.get("platform") != "windows" or binding.get("artifact") != cli
+                    or cli not in files or package["files_sha256"][cli] != binding.get("sha256")
+                    or archive.getinfo(cli).file_size != binding.get("bytes")):
+                raise ValueError("Windows reciprocal CLI differs from its qualified source binding")
     expected_modules = {"vcruntime140.dll", NATIVE["windows"], RAPIER["windows"]}
     records = modules.get("modules", [])
     if (modules.get("status") != "passed" or modules.get("source_commit") != manifest["source_commit"]
