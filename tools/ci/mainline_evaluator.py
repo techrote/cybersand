@@ -469,13 +469,14 @@ def assemble(args) -> None:
     launchers["Open Goblin.cmd"] = goblin_launcher()
     for name, value in launchers.items():
         (args.output / name).write_text(value, encoding="utf-8", newline="\r\n")
+    actor_controls = "Configuration… → Actors" if "actor_compose" in admission["integrated_features"] else "Actor Composition…"
     guide = (
         "# CyberSand — accepted-main Windows Workbench\n\n"
         f"**Accepted product source:** `{admission['source_commit']}`.\n\n"
         "Extract the whole ZIP into a writable folder. Double-click **Open Workbench.cmd**. "
         "The first launch imports resources locally. Experimental actor behaviours and Goblin remain opt-in.\n\n"
         "## Try procedural inhabitants\n\n"
-        "Open **Actor Composition…**, choose one of the five ambient examples, select **Load scene**, then **Play**. "
+        f"Open **{actor_controls}**, choose one of the five ambient examples, select **Load scene**, then **Play**. "
         "The examples cover Oil/Water interests, ledges, an industrial yard, a settlement and flight. "
         "The example selector and profile editor expose the opt-in behaviour; loading an example is an explicit action. "
         "The six living-inhabitant scenes and staged behaviour editor are also available; "
