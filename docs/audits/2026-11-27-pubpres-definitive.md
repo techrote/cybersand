@@ -6,6 +6,96 @@
 `13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b`. The accepted main commit is the
 fixed comparison source for this campaign. Physical owner acceptance is on hold.
 
+## Qualification of application 00478f29b
+
+The [standalone Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225226778)
+contains `00478f29b9abaccb1e358137e8a9a48894c1690b`. The inner ZIP is
+105,500,799 bytes, SHA-256 `79abd9beb457a79b0735fbb78e962d72bebacf6ce01ca91200e323197bccc990`.
+All 2,849 payload hashes, including original Git bytes for 1,130 candidate and
+865 frozen-control scripts, scenes, resources and recipes, were verified. All
+14 official launcher runs exited normally. The collector verified 197 files
+from 11 profiles. The selected and fallback modes each passed 215 graphical
+authoring checks and 71 fresh-process reopen checks. Their complete saved
+material planes had the same SHA-256. [Windows installed and collector evidence](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225376523)
+
+The candidate DLL SHA-256 is `91998791a44a7eddad0300f646835b006be42a3d9bf6187846b681e8e3f04a9b`
+and its Linux SO SHA-256 is `56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1`.
+Each platform independently built historical main, consolidated main, candidate
+and frozen donor. Consolidated main and candidate share 104 native files and
+all 2,259 dependency entries by content. Five native files changed and the
+candidate adds the persistent worker pool header. [Windows runtime receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223540829)
+· [Linux runtime receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223746130)
+
+The selected Windows Water replay passed 207 checks, with 16,972 composed
+member observations and zero withheld members across 4,854 draws. All
+four bodies appeared in the first restored frame and all six Runner members
+shared step eight. All 1,125 RGB channel samples matched their retained PNGs.
+[Windows Stock Safe draw, input and native receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225376523)
+
+On Linux, official Stock Safe with Water composition passed the 19 frozen
+outcomes, 150 native owner checks, 574 multipart checks, 12 held-placement checks
+and 207 mounted Water assertions. Of 4,930 observed draws, eight withheld 24
+members in total. Three of those draws withheld all actors. Every refusal
+exhausted the 2 ms time allowance with at most 2,671 of 24,000 cells charged.
+Both 2,338-draw pauses and the first restored frame showed every member. All
+five shown/hidden/restored RGB controls passed. [Linux native, graphical, input and pixel receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15224141603)
+
+The first Separate0 observation after Restore could refer to the next accepted
+frame when the renderer delivered two post-draw callbacks in one process frame.
+The supplemental fixture records the frozen engine submission at the point of
+acceptance. The first Separate0 replacement draw advanced from serial 4,832 to
+4,833, and Separate4 from 1,705 to 1,706. Each showed all four bodies at step
+zero, charged 666 cells and had zero refusals. Each passed 208 assertions,
+all five restored pixel controls and the six-member moving Runner case.
+Separate0 still withheld 108 members in 54 of 4,870 observed draws. Separate4
+withheld 149 in 79 of 1,729. Both retained a visible actor on every sampled
+draw. The first-frame witness changes the test and its reader only.
+[Original missed Separate0 observation](https://github.com/techrote/cybersand/actions/runs/46046512132/artifacts/15223319048)
+· [Separate0 accepted draws and PNGs](https://github.com/techrote/cybersand/actions/runs/46049916515/artifacts/15224592946)
+· [Separate4 accepted draws and PNGs](https://github.com/techrote/cybersand/actions/runs/46049916515/artifacts/15223719219)
+
+On hosted Linux, Stock Safe with Water composition passed the registered
+relative tests on both workloads. Wave512 rose from 9.26 to 9.60 completed
+physical steps/s, with a candidate p95 gap of 107–109 ms. Wave2048 rose from
+3.96–4.03 to 4.93–5.02, with p95 297–298 ms. The Water-off fallback on its
+own VM rose from 11.61–11.85 to 12.11–12.34 at 512 and from 4.91–4.93 to
+6.27–6.34 at 2048. The latter cut gaps over 250 ms from 87/89 on main to
+zero on both candidate arms. All matched arms reproduced the first 144
+physical trajectories and input hashes. [Selected Linux N/C/C/N](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15224871286)
+· [Fallback Linux N/C/C/N and medium, pressure and FreeMass controls](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223946933)
+
+The Windows Stock Safe Water-off fallback passed both relative comparisons.
+Wave512 rose from 10.40–10.84 to 11.18–11.91 physical steps/s and Wave2048
+from 2.38–2.39 to 3.41–3.63. Wave2048 p95 was 407–470 ms, and one gap
+reached 999 ms. From the start of that gap, a healthy packet was available at
+153 ms. A subsequent 8 MiB texture upload occupied 395–989 ms. Both candidate
+arms eliminated gaps over one second on this host. Medium Wave, Pressure512
+and FreeMass2048 each completed their 144-step native and physical controls.
+[Windows fallback clocks, original pixels and resource traces](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15224458182)
+
+The selected Windows sessions at Wave512, Wave1024, Wave2048 and mixed 2048
+completed 5,158, 4,205, 3,796 and 2,941 physical steps in five minutes.
+Each accepted all 79 actions, retained two sampled texture RIDs, had no
+sampled terrain backlog and exited normally. Peak RSS was 769–953 MiB.
+Final-minute observed consecutive-step p95 gaps were 146, 149, 176 and
+171 ms. The longest verified Wave2048 late gap reached 254 ms at 277 s
+without an action within one second. Multi-step sample spans bound any
+unobserved gap in the covered late intervals below 395 ms. [Windows session clocks, framebuffers and process resources](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223904133)
+
+## Owner evaluation
+
+1. Extract the Actions download, then extract the Windows ZIP inside it. Start
+   **Open Wave 512.cmd**. Pilot a body, turn on Follow, grab a moving limb,
+   paint Water and Sand, then pause, step and resume.
+2. Use **Save start**, close normally, relaunch the same scene and **Load start**.
+   Try **Open Wave 2048.cmd** and **Open Mixed 2048.cmd**. Each has an adjacent
+   **Stock Safe Fallback** launcher for the same scene with Water composition off.
+3. Close normally and run **Collect Results.cmd**. The report identifies the
+   launcher, engine, native runtime and policy. Compare stalls, input response
+   and actor visibility on the owner's physical Windows 11/NVIDIA display.
+
+## Earlier playable comparison
+
 The independently verified pre-refresh [Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46040083640/artifacts/15222321415)
 contains application `be9195c9c81df63cf5b8322405a5518218a663ae`. Its inner
 ZIP SHA-256 is `4f63110b2efda9c4020dc63ec2f09099311e66620a50527d3a80a6a14544cb09`.
