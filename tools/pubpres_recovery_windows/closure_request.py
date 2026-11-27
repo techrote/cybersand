@@ -58,7 +58,7 @@ def main():
         value=validate_record({'schema':'pubpres-closure-run-v1','phase':args.phase,'purpose':args.purpose,
             'historical_main':M,'current_main':args.current_main,'frozen_donor':D,
             'payload_sha256':fingerprint(),'physical_acceptance':'HOLD'})
-        (ROOT/REQUEST).write_text(json.dumps(value,indent=2)+'\n')
+        (ROOT/REQUEST).write_bytes((json.dumps(value,indent=2)+'\n').encode('utf-8'))
         print('Prepared source-bound request; commit this marker before publishing the principal branch.')
         return
     value=validate()
