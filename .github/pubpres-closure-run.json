@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "timing-replay",
-  "purpose": "Replay the unchanged, admitted Water-off comparison at the delivered 00478f29b source, using the original native, build02, source-projected staged files, process journals and certified absolute paths. Run both observer calibrations and all six registered render arms on one fresh Windows host.",
+  "phase": "windows-focus",
+  "purpose": "Qualify repaired owner flight on Windows using the installed Stock Safe renderer and both shipped scene starts. Preserve graphical atomic picking and live body membership checks, capture the 90-second continuous Follow paths, physical completions, presentation bounds, telemetry and framebuffer witnesses. Preserve Draft/HOLD for physical NVIDIA acceptance.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "76400a02d6e5ca5bdef84d25e85e7cde9058972e23d4debe51c6351291d707bd",
+  "payload_sha256": "17c6aab1ad1c14261c22c48b094515c7e9491e99dcbeaece29cb6a8e2cf22b9d",
   "physical_acceptance": "HOLD"
 }
