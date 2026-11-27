@@ -57,3 +57,45 @@ The stress case also used `--scene=stress --camera=overview --sampling=light
 --recording=off`. The respective JSON receipts had SHA-256
 `76ef9efae40b39bd5af307113c7513bdeac2f1742de72221a4c085fb14064e71`
 and `03e463d02ef8a3dd755ff6d2c6eed01ce3df8fbfb6381abf73c9f9e4ea628bf4`.
+
+## Integrated native memory budget
+
+[Run 45924129713](https://github.com/techrote/cybersand/actions/runs/45924129713)
+passed 96,500 sanitizer checks and 192 World cases at `8c6bc1e76`. Seven
+retained Lab cohorts exceeded the 6 MiB native C++ allocation limit. The
+empty Lab retained 6,619,244 bytes and three reacting bodies retained
+6,768,272 bytes. The 4,096-slot integrated actor response workspace exposed
+a redundant reservation in the structural owner. A 24,576-cell Lab reserved
+49,152 relocation records despite visiting each occupied source index once.
+
+Commit `551928f48` bounds that reservation by both the finite World area and
+the existing carrier limit at construction. The complete g++-13 release
+benchmark (`--ticks 1200 --repetitions 3 --qualify`, Ubuntu 24.04 WSL)
+passed its original limits. The empty and three-reacting-body cases retained
+5,636,204 and 5,785,232 bytes respectively. All nine scene cohorts recorded
+zero steady-state allocations. The native response range and mutation
+admission rules are unchanged.
+
+## Main-thread receipt timing on TITAN RTX
+
+The official Windows DLL from the same run was
+`f79bc16ebf0a183219e0b1704fa65632187d5054265c4bfdf1714744378b99e0`.
+Four alternating shipped-driver runs used the eight-body stress scene above.
+All four passed 370 checks with 721 shared Rapier steps. Windows
+`GetThreadTimes` measured the thread that owns the visible Godot window.
+The removed rows already owned private deep copies of the result and frame.
+The candidate transfers these values to Main under the existing queue mutex.
+
+| Instrumented source | Elapsed s | Main CPU s | Dequeue copy ms | Explicit wait s | Native ticks/s | Renderer submissions/s |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Control `3b72de339` | 11.51 | 2.84 | 174.0 | 4.01 | 15.64 | 59.70 |
+| Transfer `fb1f8926f` | 11.39 | 2.83 | 5.4 | 4.13 | 15.80 | 59.87 |
+| Control `3b72de339` | 11.84 | 3.09 | 186.3 | 3.96 | 15.20 | 59.79 |
+| Transfer `fb1f8926f` | 10.46 | 2.47 | 4.6 | 4.16 | 17.21 | 59.68 |
+
+The first control published 8,648 shard rows with unchanged carrier and
+geometry revisions. Its 2,278 requested 100-microsecond waits consumed
+4.01 seconds, while acquisition of the dequeue mutex consumed 0.94 ms.
+Main CPU totals cover the full timed scene window. The timing observations
+do not qualify display scanout, owner playfeel or a change to rendezvous
+policy.

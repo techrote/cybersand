@@ -1790,7 +1790,9 @@ func object_shard_take_owner_results(maximum: int = 8) -> Array:
 		return []
 	_mutex.lock()
 	var n: int = mini(maximum,_m4_control_results.size())
-	var value: Array = _m4_control_results.slice(0,n).duplicate(true)
+	# Each queued frame and result is already a private deep copy. Transfer
+	# the removed rows while the mutex still excludes the producer.
+	var value: Array = _m4_control_results.slice(0,n)
 	_m4_control_results = _m4_control_results.slice(n)
 	_mutex.unlock()
 	return value

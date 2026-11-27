@@ -166,8 +166,8 @@ func _poll_once() -> bool:
 			var kind: String = _pending_kind
 			_pending_serial = 0
 			_pending_kind = ""
-			last_receipt = row.get("result",{}).duplicate(true)
-			frame = row.get("frame",{}).duplicate(true)
+			last_receipt = row.get("result",{})
+			frame = row.get("frame",{})
 			controls_completed += 1
 			if not last_receipt.get("ok",false):
 				if kind=="complete" and _motion_lease==0 and not frame.get("quarantined",true):
