@@ -165,5 +165,87 @@
     "pilot_repeat": 220
   },
   "original_pilot_observation": "Cold initial Workbench installation exceeded its wait under contention. Unchanged test passed on a fresh profile with 3 low-priority CPUs and a 1280x800 Xvfb screen.",
-  "scope": "Functional checks only. Application cc0 predates the final 2ac2 Water staging guard and its two tests. No throughput or physical display claim."
+  "scope": "Functional checks only. Application cc0 predates the final 2ac2 Water staging guard and its two tests. No throughput or physical display claim.",
+  "placement_followup": {
+    "stock_graphical_scene": "Same pinned Godot, native and Rapier. Xvfb 1280x800, 3 low-priority CPUs, create and reopen in separate processes.",
+    "cases": [
+      {
+        "source": "7b1d77df1ed39971cd29022d0e4bebe60370dc00",
+        "case": "test_workbench_actor_interaction/stdout.log",
+        "checks": 74,
+        "failures": [
+          "canvas picks a real articulated runner part",
+          "actor configuration and authored angle precision survive JSON"
+        ],
+        "stdout_sha256": "88d04ba66d7ca4c75a54b2a46f0f299b3382320fc18c8e5842a4a02402bd44eb",
+        "placements": [
+          {
+            "elapsed_usec": 1017205,
+            "epoch": 2,
+            "joints": 5,
+            "parts": 6,
+            "position": [
+              228.25,
+              302.500030517578
+            ],
+            "rotation": 0.261799424886703
+          }
+        ],
+        "elapsed_ms": 32201
+      },
+      {
+        "source": "3dafa465da9c1336eb07cb8aec63c70bcd994893",
+        "case": "3dafa-create.log",
+        "checks": 92,
+        "failures": [],
+        "stdout_sha256": "965ec09a9980abb72728cfc57065b8eff6d101233dd2dc1c57b1d9d7307e11a7",
+        "placements": [
+          {
+            "elapsed_usec": 936595,
+            "epoch": 2,
+            "joints": 5,
+            "parts": 6,
+            "position": [
+              228.25,
+              302.500030517578
+            ],
+            "rotation": 0.261799424886703
+          }
+        ],
+        "elapsed_ms": 22979
+      },
+      {
+        "source": "3dafa465da9c1336eb07cb8aec63c70bcd994893",
+        "case": "3dafa-reopen.log",
+        "checks": 15,
+        "failures": [],
+        "stdout_sha256": "601681a7968befad467d29612cfa864c7125f6231277dc0aac56042aca6aed69",
+        "placements": [],
+        "elapsed_ms": 9230
+      }
+    ],
+    "diagnostic": "The original test clicked an undisplayed physical limb and ordinary JSON formatting truncated the fractional authored spawn Y from 302.5000305175781 to 302.500030517578.",
+    "held_contact": {
+      "green": {
+        "product_base": "3dafa465da9c1336eb07cb8aec63c70bcd994893",
+        "three_contact_components": "3dafa465da9c1336eb07cb8aec63c70bcd994893",
+        "fixture": "ceed3512c6aeffe1825921aee6782f494a673512",
+        "checks": 12,
+        "failures": [],
+        "receipt_sha256": "0232d5fba0959e23a709bcff850c3fbec6e4e2a2097f36b7f5722714c0e611e9",
+        "stdout_sha256": "6352a063a1dd2df022ac584b1f6517472d73f724ed14b4e43f6824323f76bb82"
+      },
+      "red": {
+        "product_base": "3dafa465da9c1336eb07cb8aec63c70bcd994893",
+        "three_contact_components": "b76cc11a630fef212a760acd2fdfb6562033bc3b",
+        "fixture": "ceed3512c6aeffe1825921aee6782f494a673512",
+        "checks": 7,
+        "failures": [
+          "initial preview puts the acquired foot-local contact under the displayed pointer"
+        ],
+        "receipt_sha256": "028d73be6fb8d6cd0dd6ba50006081ae4e8e419794118a0470006096b6f72bbb",
+        "stdout_sha256": "8b2f5fe70a081c354d8b4bb38578e493689e3b01e89d4cdbd4cc51d1da9001bc"
+      }
+    }
+  }
 }
