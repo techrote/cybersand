@@ -75,7 +75,9 @@ def main():
         save()
         print(json.dumps({'complete':report['complete'],'scope':report['scope']}))
         return 0 if report['complete'] else 1
-    if stock_ok and water_ok and members_ok and atomic_native:
+    # Water and multipart failures still reject the final inventory. Their
+    # renderer-specific counterparts can provide independent diagnostic pixels.
+    if stock_ok and atomic_native:
         atomic_ok=qualify('atomic-frozen-correctness',custom,'frozen')
         if atomic_ok:
             for thread,budget in (('safe',0),('separate',0),('separate',4)):
@@ -87,7 +89,7 @@ def main():
                 '--stock-engine',stock,'--output',output/'atomic-font-and-first-read',*exact],3600)
         else:report['unexecuted'].append({'gate':'atomic application integration','reason':'Original custom-engine correctness failed'})
     elif stock_ok:
-        report['unexecuted'].append({'gate':'atomic application integration','reason':'Stock Water/multipart or actual atomic native ownership failed'})
+        report['unexecuted'].append({'gate':'atomic application integration','reason':'Actual atomic native ownership failed'})
     report['complete']=not report['unexecuted'] and all(row['returncode']==0 and not row['timed_out'] for row in report['outcomes'])
     save()
     if report['complete']:
