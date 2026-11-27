@@ -66,6 +66,21 @@ def engine_restorer():
     return result
 
 
+def verify_reciprocal(project: Path) -> None:
+    receipt = json.loads((project / "tools/swarm004-runtime.windows.json").read_bytes())
+    helper = project / "tools/gentek_reciprocal.exe"
+    need(receipt["platform"] == "windows" and receipt["artifact"] == "godot/tools/gentek_reciprocal.exe"
+         and receipt["bytes"] == helper.stat().st_size and receipt["sha256"] == digest(helper),
+         "Windows reciprocal helper differs from its accepted source binding")
+    base.pe_x64(helper)
+
+
+def qualified_engine(original: Path, packaged: Path) -> Path:
+    need(original is not None and original.is_file() and digest(original) == digest(packaged),
+         "Packaged engine differs from the executable used for qualification")
+    return original.resolve()
+
+
 def verify_patched(output: Path, record: dict):
     if record is None:
         return
@@ -230,7 +245,7 @@ def verify(output: Path, candidate: str) -> dict:
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("candidate-root", "candidate-runtime", "donor-root", "donor-runtime", "godot-zip", "vc-runtime", "notices", "archive", "patched-engine-archive", "stock-correctness", "water-correctness", "members-correctness", "native-correctness", "atomic-engine-directory", "atomic-inventory"):
+    for name in ("candidate-root", "candidate-runtime", "donor-root", "donor-runtime", "godot-zip", "vc-runtime", "notices", "archive", "patched-engine-archive", "stock-correctness", "water-correctness", "members-correctness", "native-correctness", "atomic-engine-directory", "atomic-inventory", "qualified-stock-engine"):
         parser.add_argument("--" + name, type=Path)
     parser.add_argument("--candidate-sha", required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
@@ -254,6 +269,12 @@ def main():
         need(base.canonical_digest((ROOT / name).read_bytes()) == base.canonical_digest(base.committed(root, args.candidate_sha, name)), "Packer source differs: " + name)
     output.mkdir(parents=True)
     sources = {"C": base.stage_project(root, args.candidate_sha, "C", args.candidate_runtime, output, MISSION)}
+    # The shared source projection materializes both platform companions. Only
+    # the admitted Windows helper and its Windows receipt ship in this package.
+    project = output / sources["C"]["project"]
+    for linux_only in ("tools/gentek_reciprocal", "tools/swarm004-runtime.linux.json"):
+        (project / linux_only).unlink()
+    verify_reciprocal(project)
     if args.donor_root:
         base.git(root, "merge-base", "--is-ancestor", DONOR, args.candidate_sha)
         sources["D"] = base.stage_project(args.donor_root, DONOR, "D", args.donor_runtime, output, MISSION)
@@ -272,9 +293,12 @@ def main():
     else:
         need(args.atomic_engine_directory is None and args.atomic_inventory is None,'Stock-only package cannot carry unregistered atomic inputs')
     need(args.stock_correctness is not None,'Recovery evaluator requires retained actual Windows correctness')
-    gate=recovery_policy.qualify(root,args.candidate_runtime.resolve(),output/engine['gui']['path'],
+    # Process evidence is path-bound to the executable that actually ran.
+    # Replaying it with the staged duplicate would misidentify that process.
+    stock_engine = qualified_engine(args.qualified_stock_engine, output / engine["gui"]["path"])
+    gate=recovery_policy.qualify(root,args.candidate_runtime.resolve(),stock_engine,
         args.stock_correctness,args.water_correctness,members_summary=args.members_correctness,native_summary=args.native_correctness,
-        atomic_root=None if atomic is None else output/atomic['root'],
+        atomic_root=None if atomic is None else args.atomic_engine_directory.resolve(),
         atomic_inventory=args.atomic_inventory)
     write_json(output/'qualification/recovery-correctness.json',gate)
     patched = None

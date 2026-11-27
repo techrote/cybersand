@@ -103,6 +103,16 @@ class FinalPackageTests(unittest.TestCase):
         self.save()
         with self.assertRaisesRegex(ValueError,'Source-pinned recovery'):self.verify()
 
+    def test_replay_uses_executed_path_and_refuses_a_different_packaged_engine(self):
+        original = self.root / "observed.exe"
+        packaged = self.root / "duplicate.exe"
+        original.write_bytes(b"observed executable")
+        packaged.write_bytes(original.read_bytes())
+        self.assertEqual(package.qualified_engine(original, packaged), original.resolve())
+        packaged.write_bytes(b"substituted executable")
+        with self.assertRaisesRegex(ValueError, "executable used for qualification"):
+            package.qualified_engine(original, packaged)
+
     def test_missing_graphical_gate_cannot_be_rehashed_into_qualification(self):
         path=self.root/'qualification/recovery-correctness.json';value=json.loads(path.read_bytes())
         value['stock']['outcomes']=18;fixtures.put(self.root,'qualification/recovery-correctness.json',json.dumps(value));self.save()

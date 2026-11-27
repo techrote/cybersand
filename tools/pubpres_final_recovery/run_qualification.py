@@ -328,7 +328,12 @@ def main():
             environment["PUBPRES_DISPLAY_RECEIPT"] = str(folder / "display-owner.json")
         if test == "import":
             command += ["--quit"]
-        item = run(command, environment, folder, 1200 if test == "import" else 600)
+        timeout = 1200 if test == "import" else 600
+        if os.name == "nt" and test == "test_workbench_water_composition_native":
+            # The two paused history-retirement intervals alone require over
+            # 4,000 real draws, including on the hosted ANGLE software adapter.
+            timeout = 1800
+        item = run(command, environment, folder, timeout)
         item.update(test=test, slots=slots, graphical=graphical)
         text = (folder / "stdout.log").read_text(encoding="utf-8", errors="replace")
         try:
