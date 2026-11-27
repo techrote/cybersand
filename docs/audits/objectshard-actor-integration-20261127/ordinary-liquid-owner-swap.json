@@ -1,0 +1,95 @@
+{
+  "schema": "objectshard-ordinary-liquid-owner-swap-evidence-v1",
+  "source_with_production_fix": "92d0803937960a767c2b0585cbf149dc3483c185",
+  "shipping_candidate": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "shared_source_fix": "78e8d626c8ac2c5764c270ce7060732d33299d88",
+  "positive_oracle": "b6e3b08050a442cef328f7f98438e258d6502f08",
+  "negative_source": "23e8dcfb083861f2483930c0ee1c7fd1c84e26fc",
+  "negative_liquid_errors": {
+    "test_liquid_desktop_default_host": {
+      "raw_log_sha256": "272ca09e7a6ba95f63dd083fb73687ae5bbf18a8ad44cad444e43ffa3bfa0b18",
+      "failure": "missing ID after native commit while worker mutex held",
+      "execution": "stopped after captured script error"
+    },
+    "test_liquid_trial_body": {
+      "raw_log_sha256": "b97dbac76c1753477d2e696c9c9ed66c5e4eafee25a2b49df009595a19dd8c71",
+      "failure": "missing ID after native commit while worker mutex held",
+      "execution": "stopped after captured script error"
+    }
+  },
+  "postterminal_windows": {
+    "status": "failed",
+    "fixture": "test_liquid_desktop_default_host",
+    "checks": 86,
+    "reported_failures": 0,
+    "process_exit_unsigned": 3221225477,
+    "windows_status": "0xC0000005",
+    "original_runner_line": "test_liquid_desktop_default_host failed; elapsed=37.388s; exit=3221225477",
+    "watchdog_reached": false,
+    "duration_seconds": 37.388,
+    "original_godot_log_sha256": "b06d2b7c94195eca8de5deed318e71928ec64049330819a9f90e78aaee16b973",
+    "original_godot_log_git_notes_ref": "refs/notes/codex/objectshard-desktop-postterminal",
+    "original_godot_log_attached_to": "92d0803937960a767c2b0585cbf149dc3483c185",
+    "faulting_module": "unidentified"
+  },
+  "completed": {
+    "windows": [
+      {
+        "fixture": "test_liquid_desktop_default_host",
+        "checks": 86,
+        "pid": 29740,
+        "process_exit": 0,
+        "natural": true,
+        "seconds": 34.084,
+        "log_sha256": "20b2746d189450b8034d9bc1b1d5b68504c5362fb8ec470a59e99ba409c9a5ad"
+      },
+      {
+        "fixture": "test_liquid_trial_body",
+        "checks": 117,
+        "pid": 26316,
+        "process_exit": 0,
+        "natural": true,
+        "seconds": 44.505,
+        "log_sha256": "dfea0e691598e6e762a52024b433b21bc338d68eb6c63a789d8938dbf9cc1d36"
+      },
+      {
+        "fixture": "test_persistent_area_owner_adversarial",
+        "checks": 29,
+        "pid": 48816,
+        "process_exit": 0,
+        "natural": true,
+        "seconds": 7.297,
+        "log_sha256": "fed4325517c9b58e3a792fcf17a24a74183e21bed42167fe5403c0708f0b2b16"
+      }
+    ],
+    "linux": [
+      {
+        "fixture": "test_liquid_desktop_default_host",
+        "checks": 86,
+        "pid": 2221,
+        "process_exit": 0,
+        "natural": true,
+        "seconds": 19.965,
+        "log_sha256": "bda6ba8afb94d68ff1b4780052fb9b769dc872ebe6c05fc754b9d0913321124a"
+      },
+      {
+        "fixture": "test_liquid_trial_body",
+        "checks": 117,
+        "pid": 2253,
+        "process_exit": 0,
+        "natural": true,
+        "seconds": 29.342,
+        "log_sha256": "dacf03c3b3d7bad2941b070985901be58f4990082ae03b92d16d4f0dcb28c768"
+      },
+      {
+        "fixture": "test_persistent_area_owner_adversarial",
+        "checks": 29,
+        "pid": 2222,
+        "process_exit": 0,
+        "natural": true,
+        "seconds": 4.388,
+        "log_sha256": "072073bb0f82534cc176b0a781a376c170c780a1d88b0c18fdfe3fe1cf5ca54f"
+      }
+    ]
+  }
+}
