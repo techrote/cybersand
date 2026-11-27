@@ -204,7 +204,18 @@ func _exercise() -> void:
 	var elapsed := Time.get_ticks_usec()-began
 	var steps: int = session.tick-tick0
 	for code: Key in [KEY_A,KEY_D,KEY_W,KEY_S]: _key(code,false)
-	ui.toggle_pause()
+	var paused_step: int = session.tick
+	var pause_ok: bool = ui.toggle_pause()
+	var step_ok := true
+	if patrol:
+		for draw in range(8): await RenderingServer.frame_post_draw
+		pause_ok = pause_ok and app.paused and session.tick == paused_step
+		step_ok = ui.step_once()
+		var timeout := Time.get_ticks_msec()+5000
+		while ui.step_pending and Time.get_ticks_msec()<timeout:
+			await RenderingServer.frame_post_draw
+		for draw in range(4): await RenderingServer.frame_post_draw
+		step_ok = step_ok and not ui.step_pending and session.tick == paused_step+1
 	var report := {"scene":scene_name,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"elapsed_usec":elapsed,"physical_steps":steps,"flight_seconds_per_wall_second":steps/60.0/(elapsed/1000000.0),
 		"travel_cells":travel,"moved_draws":moved_draws,"sampled_draws":samples.size(),"hidden_draws":hidden,
@@ -212,11 +223,11 @@ func _exercise() -> void:
 		"native_tick":app.latest_snapshot.tick_index,"timed_start_usec":began,
 		"held_callbacks_serviced":app.get("_serviced_flight_callbacks"),
 		"coupling_only_completions":app.simulation_worker.take_latest_physics_snapshot().lab_context.get("coupling_only_completions",0),
-		"patrol":patrol,"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
+		"paused_ok":pause_ok,"manual_step_ok":step_ok,"patrol":patrol,"framebuffer_requested":pixels_requested,"moving_pixels":pixels}
 	print("WORKBENCH_FLIGHT_VISIBILITY ",JSON.stringify(report))
 	report["samples"] = samples
 	var out := FileAccess.open(receipt_path.get_base_dir().path_join("flight.json"),FileAccess.WRITE)
 	out.store_string(JSON.stringify(report))
 	out.close()
 	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0
-		and (not pixels_requested or not pixels.is_empty()) else 1)
+		and pause_ok and step_ok and (not pixels_requested or not pixels.is_empty()) else 1)

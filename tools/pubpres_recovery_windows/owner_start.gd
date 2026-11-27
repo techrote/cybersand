@@ -105,8 +105,10 @@ func _poll() -> void:
 	var receipt := {"schema":"pubpres-recovery-owner-start-v1","ready":true,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"engine":Engine.get_version_info(),"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),
-		"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"),
-		"rapier_sha256":FileAccess.get_sha256("res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"),
+		"native_sha256":FileAccess.get_sha256("res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+			if OS.get_name() == "Linux" else "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"),
+		"rapier_sha256":FileAccess.get_sha256("res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+			if OS.get_name() == "Linux" else "res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"),
 		"main_sha256":FileAccess.get_sha256("res://scripts/main.gd"),
 		"observer_sha256":FileAccess.get_sha256(get_script().resource_path),
 		"project_sha256":FileAccess.get_sha256("res://project.godot"),
