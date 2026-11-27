@@ -9,7 +9,8 @@
   "platform": {
     "display": "primary unrotated DisplayPort 2560x1440",
     "driver": "NVIDIA TITAN RTX 581.80, Godot 4.7 ANGLE D3D11",
-    "counter_frequency": 10000000
+    "counter_frequency": 10000000,
+    "counter_scope": "QPC units per second"
   },
   "cohorts": {
     "mixed": {
@@ -57,7 +58,6 @@
         "p95_gap_ms": 17.8,
         "max_gap_ms": 19.1
       },
-      "trace_sha256": "98323127f73125aec402d97bfbd74f19cf7ca6bad36f4433fc843c0e2107c3b4",
       "workbench_json_sha256": "38f1e68d273f2a8f136598ea4756de931287279836c4da5567f47cc6165b4777",
       "raw_receipts": "mixed.csv",
       "client_rect": [
@@ -73,7 +73,9 @@
         193.0
       ],
       "native_input_count": 126,
-      "actual_physics_steps": 721
+      "actual_physics_steps": 721,
+      "original_windows_csv_sha256": "98323127f73125aec402d97bfbd74f19cf7ca6bad36f4433fc843c0e2107c3b4",
+      "git_lf_csv_sha256": "80abecc7410c84ec54259344d089bf2b99f2af6ecf5c7c4d403be5aad8cf3ce4"
     },
     "stress": {
       "source": "33aa6eeb52c07ccb089d5125db53376bedd614af",
@@ -120,7 +122,6 @@
         "p95_gap_ms": 83.3,
         "max_gap_ms": 1734.4
       },
-      "trace_sha256": "e64296dc0bc02b45cba0316412d14fb9eeff3c0b7837a1cd37620207db2db903",
       "workbench_json_sha256": "7f875a0779d2ef5e4736d9edde7ad26abf6d1e73a7c41b625468cd1c89c26b82",
       "raw_receipts": "stress.csv",
       "client_rect": [
@@ -136,7 +137,9 @@
         183.0
       ],
       "native_input_count": 126,
-      "actual_physics_steps": 721
+      "actual_physics_steps": 721,
+      "original_windows_csv_sha256": "e64296dc0bc02b45cba0316412d14fb9eeff3c0b7837a1cd37620207db2db903",
+      "git_lf_csv_sha256": "995d45ab093c8e3fa33f79153915cbf9100fc5dce24d80f396491a94bdda556b"
     }
   }
 }
