@@ -25,7 +25,7 @@ larger population host.
 
 ## Start with an inhabited scene
 
-Open **Shared Workbench**, then **Actor Composition…**. Under **Ambient
+Open **Shared Workbench**, then **Configuration…**. On the **Actors** tab, under **Ambient
 examples**, choose a scene and press **Load scene**. The normal native and
 physical owners prepare it before the Workbench acknowledges the replacement.
 Press **Play / Pause [P]** to begin. All architecture, fluid and actors in these
@@ -45,7 +45,7 @@ source is `godot/scripts/ambient/ambient_examples.gd`.
 
 ## Build and assign a profile
 
-In **Actor Composition…**, select an actor under **Inspect**, then open
+In **Configuration…**, select an actor under **Actors → Inspect**. On the **Controllers** tab, open
 **Behaviour profile…**. Inspecting an actor does not pilot it. The profile window
 stays bound to the actor for which it opened even if another actor is selected
 elsewhere.
