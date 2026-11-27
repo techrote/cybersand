@@ -129,6 +129,10 @@ func _poll() -> void:
 			"use_custom_user_dir":ProjectSettings.get_setting("application/config/use_custom_user_dir",false)},
 		"physical_acceptance":"HOLD",
 		"scope":"Observed ordinary installed native World and uploaded material; no gameplay or physical-device acceptance."}
+	var pacing_request := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING")
+	if not pacing_request.is_empty():
+		receipt.flight_pacing_requested = pacing_request
+		receipt.flight_pacing_enabled = app.get("_flight_pacing")
 	var writer := FileAccess.open(receipt_path,FileAccess.WRITE)
 	if writer == null:
 		push_error("PUBPRES could not write startup receipt")

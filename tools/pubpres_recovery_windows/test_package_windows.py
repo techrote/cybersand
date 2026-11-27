@@ -22,6 +22,25 @@ spec.loader.exec_module(fixtures)
 
 
 class PowerShellManifestTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('powershell') or shutil.which('pwsh'), 'PowerShell is required')
+    def test_flight_pacing_is_selected_local_retest_only(self):
+        command = r'''
+            $ErrorActionPreference='Stop'
+            . ./Start-PUBPRES-Final.ps1 -Library
+            $m=[pscustomobject]@{schema='pubpres-local-owner-retest-v1'}
+            $r=[pscustomobject]@{source='C';recovery_mode='Selected';settings=[pscustomobject]@{}}
+            Remove-Item Env:CYBERSAND_WORKBENCH_FLIGHT_PACING -ErrorAction SilentlyContinue
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_FLIGHT_PACING -ceq '1') 'Local selected default'
+            $env:CYBERSAND_WORKBENCH_FLIGHT_PACING='0'
+            Assert-PP ((Get-PFOwnerLaunchSettings $m $r).CYBERSAND_WORKBENCH_FLIGHT_PACING -ceq '0') 'Explicit comparator'
+            $r.recovery_mode='Fallback'
+            Assert-PP (-not (Get-PFOwnerLaunchSettings $m $r).Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) 'Fallback leaked pacing'
+            $r.recovery_mode='Selected'; $m.schema='pubpres-playability-recovery-windows-v1'
+            Assert-PP (-not (Get-PFOwnerLaunchSettings $m $r).Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) 'Formal package leaked pacing'
+        '''
+        subprocess.run([shutil.which('powershell') or shutil.which('pwsh'), '-NoProfile','-ExecutionPolicy','Bypass',
+                        '-Command',command],cwd=package.ROOT/package.TOOLS,check=True,timeout=30)
+
     @unittest.skipUnless(os.name == 'nt', 'Requires the shipped Windows CMD interpreter')
     def test_collector_reports_destination_retains_interactive_result_and_propagates_failure(self):
         candidate = 'a' * 40

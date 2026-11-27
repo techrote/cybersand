@@ -463,6 +463,18 @@ function Restore-PFLocalRuntimeImport([string]$Root,$Manifest,[string]$Project) 
     }
 }
 
+function Get-PFOwnerLaunchSettings($Manifest,$Record) {
+    $Settings=[ordered]@{}
+    foreach($Entry in $Record.settings.PSObject.Properties) { $Settings[$Entry.Name]=$Entry.Value }
+    if($Manifest.schema -ceq 'pubpres-local-owner-retest-v1' -and $Record.source -ceq 'C' -and $Record.recovery_mode -ceq 'Selected') {
+        $Pacing=[Environment]::GetEnvironmentVariable('CYBERSAND_WORKBENCH_FLIGHT_PACING')
+        if([string]::IsNullOrEmpty($Pacing)) { $Pacing='1' }
+        Assert-PP ($Pacing -cin @('0','1')) 'CYBERSAND_WORKBENCH_FLIGHT_PACING must be 0 or 1'
+        $Settings['CYBERSAND_WORKBENCH_FLIGHT_PACING']=$Pacing
+    }
+    return $Settings
+}
+
 if($Library) { return }
 $PackageRoot=[IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]'\/')
 Write-Host 'Checking evaluator files...'
@@ -516,7 +528,7 @@ try {
     Write-Host 'Fallback: Open Stock Safe Fallback.cmd'
     $RunProfile=Join-PPSafe $Run $Record.profile; $Project=Join-PPSafe $Run $Record.project
     $Launch=Join-Path $Run ('launches/'+[Guid]::NewGuid().ToString('N'))
-    $Settings=[ordered]@{}; foreach($Entry in $Record.settings.PSObject.Properties) { $Settings[$Entry.Name]=$Entry.Value }
+    $Settings=Get-PFOwnerLaunchSettings $Manifest $Record
     if($Manifest.schema -ceq 'pubpres-local-owner-retest-v1' -and $Record.source -ceq 'C') {
         Write-Host 'Installing prepared runtime resources...'
         Restore-PFLocalRuntimeImport $PackageRoot $Manifest $Project
@@ -541,6 +553,10 @@ try {
     Assert-PP (Test-Path -LiteralPath $ReadyPath -PathType Leaf) 'Workbench exited without an installed native World receipt'
     $Ready=Read-PPJson $ReadyPath
     Test-PFReadyProfile $Ready $RunProfile
+    if($Settings.Contains('CYBERSAND_WORKBENCH_FLIGHT_PACING')) {
+        Assert-PP ($Ready.flight_pacing_requested -ceq $Settings.CYBERSAND_WORKBENCH_FLIGHT_PACING -and
+            $Ready.flight_pacing_enabled -is [bool] -and $Ready.flight_pacing_enabled -eq ($Ready.flight_pacing_requested -ceq '1')) 'Actual flight pacing differs from the requested policy'
+    }
     Assert-PP ($Ready.schema -ceq 'pubpres-recovery-owner-start-v1' -and $Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and
         $Ready.process_id -eq $Process.process_id -and $Ready.native_sha256 -ceq $Item.native.sha256 -and $Ready.rapier_sha256 -ceq $Item.rapier.sha256 -and
         $Ready.engine_sha256 -ceq $SelectedEngine.gui.sha256 -and $Ready.render_thread_inline -eq ($Record.render_thread -ceq 'safe') -and
