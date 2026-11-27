@@ -307,7 +307,9 @@ class Campaign:
                 row.update(exit_code=process.returncode, sampled_peak_rss_bytes=peak, os_peak_rss_bytes=os_peak,
                            sampled_cpu_seconds=cpu, elapsed_seconds=time.monotonic()-started)
             text = log.read_text(errors="replace")
-            if ERRORS.search(text): raise RuntimeError("Engine/script error; see " + str(log))
+            if ERRORS.search(text):
+                errors = [line[:400] for line in text.splitlines() if ERRORS.search(line)]
+                raise RuntimeError(f"Engine/script error in {label}: " + " | ".join(errors[:3]) + f"; see {log}")
             if crash_marker:
                 if not row.get("forced_termination") or process.returncode == 0:
                     raise RuntimeError("Expected actual abrupt termination did not occur.")

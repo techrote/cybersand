@@ -103,13 +103,26 @@ func exercise() -> void:
 		"ordinary actor, source, response and thruster controls remain enabled")
 	for index: int in range(bench._tool.item_count):
 		check(not bench._tool.is_item_disabled(index),"ordinary cursor tool remains available: "+bench._tool.get_item_text(index))
-	for caption: String in ["New blank","New from generator…","Water Lab…","Actor Composition…","Place at X/Y","Source at X/Y","Apply settings"]:
+	var configuration: Button
+	for caption: String in ["New blank","New from generator…","Water Lab…","Configuration…","Place at X/Y","Source at X/Y","Apply settings"]:
 		var found := false
 		for button: Node in bench.find_children("*","Button",true,false):
 			if str(button.text)==caption:
 				found = true
 				check(not button.disabled,"ordinary control enabled: "+caption)
+				if caption == "Configuration…": configuration = button as Button
 		check(found,"ordinary control is mounted: "+caption)
+	if not is_instance_valid(configuration) or configuration.disabled: return
+	configuration.pressed.emit()
+	var panel: Variant = bench._actor_panel
+	if not check(is_instance_valid(panel) and panel.visible and panel.wb == bench,
+		"ordinary Configuration opens the mounted Workbench actor panel"): return
+	var actor_page: Control = panel.tabs.get_current_tab_control()
+	check(is_instance_valid(actor_page) and actor_page.name == &"Actors" and actor_page.is_ancestor_of(panel.model)
+		and panel.model.item_count > 0 and not panel.model.disabled,
+		"the active Actors tab offers the composed actor catalogue")
+	panel.close_requested.emit()
+	check(not panel.visible,"closing Configuration returns to ordinary authoring")
 	if not await until(settled,"ordinary native authoring owner is idle"): return
 	var mark := Vector2i(96,96)
 	var falling := Vector2i(160,96)

@@ -25,7 +25,7 @@ identifies what has actually been executed and what remains unqualified.
 
 Extract the complete portable evaluator ZIP into a writable folder. Start
 **Open Workbench.cmd**, allow its first import to complete, and open
-**Actor Composition…**. Choose a living environment, select **Load scene**, wait
+**Configuration…**. On the **Actors** tab, choose a living environment under **Ambient examples**, select **Load scene**, wait
 for acknowledged native and actor replacement, then press **Play**.
 
 Every platform, wall, fluid pocket and obstacle is native editable material.
