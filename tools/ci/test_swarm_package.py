@@ -1,6 +1,7 @@
 """Post-publication LFS regression for the ordinary Windows evaluator packager."""
 import hashlib
 import io
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -73,27 +74,60 @@ class SwarmPackageTests(unittest.TestCase):
                 "godot/tools/gentek_reciprocal": pointer,
                 "godot/tools/swarm004-runtime.linux.json": b"Linux binding",
                 "godot/tools/gentek_reciprocal.exe": pointer,
-                "godot/tools/swarm004-runtime.windows.json": b"Windows binding",
+                "godot/tools/swarm004-runtime.windows.json": json.dumps({
+                    "platform": "windows", "artifact": "godot/tools/gentek_reciprocal.exe",
+                    "sha256": hashlib.sha256(original).hexdigest(), "bytes": len(original),
+                }).encode(),
             }
-            stream = io.BytesIO()
-            with tarfile.open(fileobj=stream, mode="w") as archive:
-                for name, data in archived.items():
-                    item = tarfile.TarInfo(name)
-                    item.size = len(data)
-                    archive.addfile(item, io.BytesIO(data))
+            def archive_bytes(files):
+                stream = io.BytesIO()
+                with tarfile.open(fileobj=stream, mode="w") as archive:
+                    for name, data in files.items():
+                        item = tarfile.TarInfo(name)
+                        item.size = len(data)
+                        archive.addfile(item, io.BytesIO(data))
+                return stream.getvalue()
+
+            archive = archive_bytes(archived)
             destination = root / "delivered"
-            package.stage_project_archive(stream.getvalue(), candidate, destination, root)
+            package.stage_project_archive(archive, candidate, destination, root)
             self.assertEqual((destination / "godot/tools/gentek_reciprocal.exe").read_bytes(), original)
             self.assertEqual((destination / package.native.NATIVE).read_bytes(), b"source-built adapter fixture")
             self.assertEqual((destination / "godot/project.godot").read_bytes(), b"committed project")
             self.assertTrue((destination / "godot/tools/swarm004-runtime.windows.json").is_file())
             self.assertFalse((destination / "godot/tools/gentek_reciprocal").exists())
             self.assertFalse((destination / "godot/tools/swarm004-runtime.linux.json").exists())
+            # The collaborative Art evaluator uses committed native/LFS bytes.
+            retained = root / package.native.NATIVE
+            retained.parent.mkdir(parents=True)
+            retained.write_bytes(original)
+            art_inputs = {**archived, package.native.NATIVE: pointer}
+            art = root / "art"
+            package.stage_project_archive(archive_bytes(art_inputs), None, art, root)
+            self.assertEqual((art / package.native.NATIVE).read_bytes(), original)
+            self.assertFalse((art / "godot/tools/gentek_reciprocal").exists())
+            self.assertEqual((art / "godot/tools/gentek_reciprocal.exe").read_bytes(), original)
+            key = "godot/tools/swarm004-runtime.windows.json"
+            bad_binding = json.loads(art_inputs[key])
+            bad_binding["sha256"] = "0" * 64
+            with self.assertRaisesRegex(ValueError, "differs from its Windows source binding"):
+                package.stage_project_archive(archive_bytes({**art_inputs, key: json.dumps(bad_binding).encode()}),
+                                              None, root / "foreign-binding", root)
+            historical = {name: data for name, data in art_inputs.items() if not name.startswith("godot/tools/")}
+            package.stage_project_archive(archive_bytes(historical), None, root / "historical", root)
+            self.assertFalse((root / "historical/godot/tools").exists())
+            with self.assertRaisesRegex(ValueError, "Missing Windows reciprocal generator or source binding"):
+                package.stage_project_archive(
+                    archive_bytes({**historical, "godot/scripts/workbench_reciprocal_protocol.gd": b"fixture"}),
+                    None, root / "missing-reciprocal", root)
+            retained.write_bytes(b"wrong retained adapter")
+            with self.assertRaisesRegex(ValueError, "Unmaterialized or changed LFS"):
+                package.stage_project_archive(archive_bytes(art_inputs), None, root / "corrupt-native", root)
             # A present pointer or changed Windows executable must never ship.
             for invalid in (pointer, original + b"changed"):
                 cli.write_bytes(invalid)
                 with self.assertRaisesRegex(ValueError, "Unmaterialized or changed LFS"):
-                    package.stage_project_archive(stream.getvalue(), candidate, root / "rejected", root)
+                    package.stage_project_archive(archive, candidate, root / "rejected", root)
 
 
 if __name__ == "__main__":

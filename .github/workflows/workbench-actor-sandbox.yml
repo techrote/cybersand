@@ -401,11 +401,14 @@ jobs:
             echo 'matched=false' >> "$GITHUB_OUTPUT"
           fi
       - name: Verify complete same-run evidence and variable-count LFS publication
-        if: steps.retained.outputs.matched != 'true'
         shell: bash
+        env:
+          RETAINED_PAIR: ${{ steps.retained.outputs.matched }}
         run: |
           set -euo pipefail
-          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox \
+          mode=()
+          if [[ "$RETAINED_PAIR" == true ]]; then mode+=(--verify-only); fi
+          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox "${mode[@]}" \
             --linux build/actor-publish/linux/build/actor-linux \
             --windows build/actor-publish/windows \
             --linux-report build/actor-publish/linux/evidence/linux/qualification.json \
@@ -414,6 +417,11 @@ jobs:
             --windows-modules-report build/actor-publish/windows-evidence/installed-windows/runtime-modules.json \
             --windows-extraction-report build/actor-publish/windows-evidence/windows-package-extraction.json \
             --windows-package "build/actor-publish/windows-package/CyberSand-Actor-Sandbox-Windows-${GITHUB_SHA:0:12}.zip"
+          if [[ "$RETAINED_PAIR" == true ]]; then
+            git diff --cached --exit-code
+            git diff --exit-code
+            exit 0
+          fi
           git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
           python3 tools/ci/check_actor_publication_stage.py --source "$GITHUB_SHA" --branch "$GITHUB_REF_NAME" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT"
           git diff --check --cached

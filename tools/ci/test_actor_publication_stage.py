@@ -45,8 +45,11 @@ class ActorStageGate(unittest.TestCase):
 
     def test_application_only_reuse_requires_both_live_files_and_exact_maps(self):
         changes = [b"godot/scripts/shared_workbench.gd\n"]
+        branch = [BRANCH]
 
         def git(*args):
+            if args[0] == "branch":
+                return branch[0].encode()
             if args[0] == "diff":
                 return changes[0]
             if args[0] == "rev-parse":
@@ -62,6 +65,34 @@ class ActorStageGate(unittest.TestCase):
             with patch.object(Path, "cwd", return_value=root), patch.object(gate, "git", side_effect=git), \
                     patch("native_candidate_identity.source", return_value=("e"*40, TREE, inputs)):
                 self.assertTrue(gate.reusable_pair())
+                branch[0] = "main"
+                self.assertFalse(gate.reusable_pair())
+                branch[0] = gate.SWARM_BRANCH
+                self.assertFalse(gate.reusable_pair())
+                with patch.dict(self.staged):
+                    for name in gate.PROVENANCE.values():
+                        record = json.loads(self.staged[name])
+                        record["publication_branch"] = gate.SWARM_BRANCH
+                        record["qualification"]["reciprocal_execution_sha256"] = "a" * 64
+                        self.staged[name] = json.dumps(record).encode()
+                    self.assertTrue(gate.reusable_pair())
+                    name = gate.PROVENANCE["windows"]
+                    record = json.loads(self.staged[name])
+                    del record["qualification"]["reciprocal_execution_sha256"]
+                    self.staged[name] = json.dumps(record).encode()
+                    self.assertFalse(gate.reusable_pair())
+                branch[0] = BRANCH
+                workflow = ".github/workflows/gdextension.yml"
+                changes[0] = (workflow + "\n").encode()
+                with patch.dict(self.staged):
+                    old = ("    branches: [main, codex/wb-art-paint-integrated-20261111, "
+                           + gate.SWARM_BRANCH + "]\n").encode()
+                    self.staged[SOURCE + ":" + workflow] = old
+                    key = "e" * 40 + ":" + workflow
+                    self.staged[key] = old.replace((", " + gate.SWARM_BRANCH).encode(), b"")
+                    self.assertTrue(gate.reusable_pair())
+                    self.staged[key] += b"  native: changed\n"
+                    self.assertFalse(gate.reusable_pair())
                 changes[0] = b"tools/build_native_extension_windows.sh\n"
                 self.assertFalse(gate.reusable_pair())
                 changes[0] = b"godot/scripts/shared_workbench.gd\n"
