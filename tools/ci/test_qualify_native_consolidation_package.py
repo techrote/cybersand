@@ -69,6 +69,13 @@ class ExtractionQualification(unittest.TestCase):
             for index, command in enumerate(("print('SCRIPT ERROR: fixture')", "raise SystemExit(6)")):
                 with self.subTest(command=command), self.assertRaises(ValueError):
                     gate.execute([sys.executable], ["-c", command], dict(os.environ), output / f"bad-{index}.log", 20)
+            watch = output / "timeout.log"
+            with self.assertRaisesRegex(ValueError, "watchdog"):
+                gate.execute([sys.executable], ["-c", "import time; time.sleep(20)"], dict(os.environ), watch, 0.5)
+            retired = gate.delivery.read(watch.with_suffix(".process.json"))
+            self.assertTrue(retired["timed_out"])
+            self.assertIsInstance(retired["returncode"], int)
+            self.assertEqual(retired["log_sha256"], gate.delivery.sha(watch))
 
     def test_unlisted_script_never_launches(self):
         runtime = gate.Extraction.__new__(gate.Extraction)
@@ -88,7 +95,7 @@ class ExtractionQualification(unittest.TestCase):
             roster = ["import", *(key + "/" + phase for key in features for phase in gate.PHASES[key])]
             lanes[name] = {**receipt, "status": "passed", "lane": name, "integrated_features": features,
                            "feature_results": {key: {"checks": 5} for key in features},
-                           "processes": {phase: {"pid": 100 + i, "returncode": 0, "log_sha256": "a" * 64}
+                           "processes": {phase: {"pid": 100 + i, "returncode": 0, "timed_out": False, "log_sha256": "a" * 64}
                                          for i, phase in enumerate(roster)}, "package_manifest_sha256": receipt["manifest_sha256"]}
         return lanes, request, receipt
 
@@ -105,7 +112,9 @@ class ExtractionQualification(unittest.TestCase):
                 gate.join(mutated, receipt, request)
         bad = copy.deepcopy(lanes)
         bad["worlds"]["processes"]["actor_compose/capacity"]["returncode"] = 1
-        for records in (bad, {"worlds": lanes["worlds"]}, {"worlds": lanes["worlds"], "authoring": lanes["worlds"]}):
+        late = copy.deepcopy(lanes)
+        late["worlds"]["processes"]["actor_compose/capacity"]["timed_out"] = True
+        for records in (bad, late, {"worlds": lanes["worlds"]}, {"worlds": lanes["worlds"], "authoring": lanes["worlds"]}):
             with self.assertRaises(ValueError):
                 gate.join(records, receipt, request)
 
