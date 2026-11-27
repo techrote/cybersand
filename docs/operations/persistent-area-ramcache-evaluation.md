@@ -3,23 +3,24 @@ title: Persistent area RAM cache evaluation
 document-kind: runbook
 status: Current
 canonical-for: [persistent-area-ramcache-owner-evaluation]
-scope: Draft GEN-006 successor; native residency, deferred saving, prefetch and Windows owner observations
+scope: Opt-in GEN-006 profile, native residency, deferred saving, prefetch and Windows owner observations
 keywords: [GEN-006, RAM cache, hot World, asynchronous save, prefetch, Windows]
 related-documents: [../systems/persistent-area-residency.md, persistent-areas-evaluation.md, ../audits/2026-11-22-gen006-ramcache.md]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-27
 ---
 
 # Persistent area RAM cache evaluation
 
-**Draft/HOLD successor to [#725](https://github.com/techrote/cybersand/pull/725).**
-The [qualification ledger](../audits/2026-11-22-gen006-ramcache.md) owns source/platform results.
-Physical Windows 11/NVIDIA acceptance remains an owner task.
+The three-area profile in [#745](https://github.com/techrote/cybersand/pull/745) extends the persistent areas in [#725](https://github.com/techrote/cybersand/pull/725).
+The [original qualification](../audits/2026-11-22-gen006-ramcache.md) records its source and platform results.
+The [integration record](../audits/2026-11-27-persistent-area-world-integration.md) covers the combined Workbench. Physical playfeel remains an owner assessment.
 
 ## Launch and configure
 
 Extract the whole ZIP into a writable folder. Double-click **Open Persistent Areas.cmd**.
-Pinned Godot 4.7, native DLL, Rapier and dependencies are included. The isolated profile is
-`userdata/persistent-profile`. Keep each evaluator with its profile; incompatible runtime digests refuse.
+The package includes pinned Godot 4.7, the native DLL and Rapier. The integrated launcher stores the three areas in
+`workbench/userdata/persistent-profile`. The standalone RAMCACHE evaluator uses `userdata/persistent-profile`.
+Keep each evaluator with its profile. Opening a profile from an incompatible native runtime produces a refusal.
 Open **RAM cache…**. Initial session settings: 512 MiB, strict durability, background saving on, prefetch off.
 Read the notice before selecting **Allow travel before disk saving finishes**, then **Apply cache settings**.
 A crash can lose unacknowledged RAM-only changes. The dialog also offers bounded custom budgets,
@@ -44,8 +45,8 @@ external evaluation report measures those separately.
 If a destination's publication fails after its simulation completed, validated WARM state can retain those
 completed ticks while the source remains HOT. Strict mode still requires saving before activation. Retry may
 read and validate storage to resolve a lost acknowledgement; it preserves the retained World and does not repeat
-its simulation. **Run Automated Smoke.cmd** explicitly tests the original cache-disabled persistence path;
-**Run RAM Cache Smoke.cmd** exercises the separate cache, deferred-save and predictive-preparation paths.
+its simulation. The standalone evaluator supplies **Run Automated Smoke.cmd** for the original cache-disabled path
+and **Run RAM Cache Smoke.cmd** for cache, deferred saving and predictive preparation.
 
 ## Owner scenarios
 
@@ -83,7 +84,7 @@ explicit recoverable-area Save and disclosed recovery close controls to preserve
 
 ## Automated smoke and evidence
 
-**Run RAM Cache Smoke.cmd** executes real graphical hot/warm travel, edits, fire, pressure, prefetch,
+The standalone evaluator's **Run RAM Cache Smoke.cmd** executes real graphical hot/warm travel, edits, fire, pressure, prefetch,
 write-behind and a genuinely new-process reopen in a separate smoke profile. Its short sample count is functional
 smoke; source-bound qualification retains the statistical campaign. **Run Automated Smoke.cmd** retains donor tests.
 Export diagnostics for clocks, cache state, operations, native work, I/O and refusals. After a failure, preserve
