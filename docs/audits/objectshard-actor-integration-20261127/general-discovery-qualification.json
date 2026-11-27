@@ -1,0 +1,166 @@
+{
+  "schema": "objectshard-general-discovery-corrections-v1",
+  "old_source": "5f31c40b2885f706b6756f9754c51d6dce29d859",
+  "old_runtime_sha256": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20",
+  "old_linux_cases": [
+    {
+      "name": "test_object_shard_boundary",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_capture",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_continuous_physics",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_continuous_play",
+      "status": "failed",
+      "returncode": 1
+    },
+    {
+      "name": "test_object_shard_incremental_motion",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_lab",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_m4_overlay_identity",
+      "status": "failed",
+      "returncode": 1
+    },
+    {
+      "name": "test_object_shard_m4_workbench_port",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_motion_segments",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_native_worker",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_physics_bridge",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_physics_identity",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_playability",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_rest_contacts",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_workbench_contract",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_adverse",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_commands",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_input_fences",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_navigation",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_recovery",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_rehearsal",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_replay_admission",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_resources",
+      "status": "passed",
+      "returncode": 0
+    },
+    {
+      "name": "test_object_shard_worker_scene",
+      "status": "passed",
+      "returncode": 0
+    }
+  ],
+  "negative_oracles": {
+    "test_object_shard_continuous_play": "b846b59e2e2cde7c3aea02f84277a333fd73ca270743c9ee3c2c3b5f6ba4e509",
+    "test_object_shard_m4_overlay_identity": "083b6d90d0cc6707677d98034e9d2af0710f57505363a9d4c5e5d8dc940b9a42"
+  },
+  "corrected_source": "de1cbe0e0f2896058ab1fb36cb21ce7aea95a328",
+  "corrected_tree": "c3b1e7545634070fbc33811a1f03bfe817d23a35",
+  "source_leased_application": "23e8dcfb083861f2483930c0ee1c7fd1c84e26fc",
+  "corrected": {
+    "linux": [
+      {
+        "case": "test_object_shard_continuous_play",
+        "checks": 78,
+        "display_driver": "headless",
+        "log_sha256": "fbf873e750831e48967b26bf489796ee400157a572534a29865a5293b143332e"
+      },
+      {
+        "case": "test_object_shard_m4_overlay_identity",
+        "checks": 11,
+        "display_driver": "X11",
+        "log_sha256": "6d7c24d5563b4b1672fef0f306ffd246b59c6f8418be749ebb7c32aec95582a4"
+      }
+    ],
+    "windows": [
+      {
+        "case": "test_object_shard_continuous_play",
+        "checks": 78,
+        "display_driver": "headless",
+        "log_sha256": "85f0207a13bac0d41586d8dde956049ad0fde84bac230fed9b98ee1f001528dc"
+      },
+      {
+        "case": "test_object_shard_m4_overlay_identity",
+        "checks": 11,
+        "display_driver": "Windows",
+        "log_sha256": "cda1ab0b4a2cfe915959becfcc925c50ee4a04ecc496abc1406735fd213eae38"
+      }
+    ]
+  },
+  "historical_experimental_default": "7760bbd0a",
+  "reason": "Continuous-play validation checks all four exposed budgets and retains its original 4ms live exercise. The existing ImageTexture oracle now runs with actual graphics on both operating systems."
+}
