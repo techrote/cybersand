@@ -1590,7 +1590,20 @@ func _capture_workbench_result() -> void:
 		var member: Dictionary = sample.bodies[int(row.id)-1]
 		var offset: int = (int(member.first_proxy)-1)*CyberRigidBodyCoupling.GCR_INPUT_STRIDE
 		if row.instance_id != member.instance_id or row.generation != member.generation or int(states[offset+10]) != row.sample: return
-		poses[int(row.instance_id)] = {"pose":Transform2D(states[offset+3],row.com),"sample":int(row.sample),"generation":int(row.generation)}
+		var pose := Transform2D(states[offset+3],row.com)
+		if sample.has("display_poses"):
+			# Native receives the angle, collider centres and force COM; the
+			# sampled basis cannot in general survive an atan2/sin/cos round trip.
+			# Recover the exact transform from this consumed sample and verify it
+			# projects to the native inputs before granting display authority.
+			var actual: Array = sample.display_poses
+			if actual.size() != sample.bodies.size() or not actual[int(row.id)-1] is Transform2D: return
+			pose = actual[int(row.id)-1]
+			var g: int = (int(member.first_proxy)-1)*4
+			if not pose.is_finite() or pose.get_rotation() != states[offset+3] \
+					or pose*Vector2(sample.geometry[g],sample.geometry[g+1]) != Vector2(states[offset+1],states[offset+2]) \
+					or row.com != Vector2(states[offset+12],states[offset+13]): return
+		poses[int(row.instance_id)] = {"pose":pose,"sample":int(row.sample),"generation":int(row.generation)}
 	_workbench_display = {"session":int(packet.session),"epoch":int(packet.epoch),"sample_tick":int(packet.sample_tick),
 		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses,
 		"native_completed_usec":_last_native_tick_completed_usec

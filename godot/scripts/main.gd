@@ -4035,6 +4035,33 @@ func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transf
 	return result
 
 
+# A refused successor may briefly hold its last submitted Water pose under the
+# same hold clock as a dry body. Only the prior endpoint is certified here.
+# Never associate its historical physics proof with the successor's step.
+func _submitted_water_hold(slot: int, previous: Dictionary, context: Dictionary) -> Dictionary:
+	if not _workbench_water_composition_enabled() or not _workbench_frame_error.is_empty() \
+			or simulation_worker.has_failed() or not _physical_terrain_ready or _actor_reset_receipt != 0:
+		return {}
+	var old: Dictionary = previous.get("water_coverage_identity",{})
+	var proof: Dictionary = workbench_presentation_frame.get("water_proofs",{}).get(slot,{})
+	if proof.is_empty() or old.is_empty() or not previous.get("water_composed",false) \
+			or workbench_presentation_frame.get("poses",{}).get(slot) != previous.pose \
+			or proof.get("step",-1) != previous.step:
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if bridge != rapier_bridge: return {}
+	var visible: Dictionary = proof.get("visible_material",{})
+	var entry: Dictionary = context.mask_frame.instances.get(bridge._members[slot].instance_id,{})
+	if visible.get("native_tick",-1) != context.mask_native_tick or visible.get("native_sample",-1) != entry.get("sample",-2):
+		return {}
+	var key: Dictionary = _workbench_water_coverage_identity(slot,previous.pose,previous.pose,bridge._rects[slot],context)
+	if key.is_empty() or old.owner != key.owner or old.material != key.material \
+			or old.sweep[1] != previous.pose or old.sweep[2] != key.sweep[2] \
+			or (context.previous_blend_active and old.previous != key.previous):
+		return {}
+	return proof
+
+
 func _workbench_visible_material_contents(previous_active: bool) -> Array[int]:
 	var contents: Array[int] = []
 	if _presentation_current_content_id <= 0:
@@ -4302,7 +4329,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 						and int(previous.get("withheld_frames",0)) == 0:
 					if hold_started_usec <= 0: hold_started_usec = started_usec
 					resolved.hold_age_usec[slot] = maxi(0,started_usec-hold_started_usec)
-					var held_clear: bool = certificate_valid
+					var submitted_water: Dictionary = _submitted_water_hold(slot,previous,resolved) if previous.get("water_composed",false) else {}
+					var held_clear: bool = certificate_valid or not submitted_water.is_empty()
 					if not held_clear:
 						var held_check: Dictionary = _assess_workbench_presented_sweep(anchor,anchor,bridge._rects[slot],resolved,summary)
 						held_clear = bool(held_check.safe)
@@ -4327,6 +4355,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 						selected_step = int(previous.step)
 						selected_observation = held_observation
 						resolved.sources[slot] = "held"
+						if not submitted_water.is_empty():
+							resolved.water_proofs[slot] = submitted_water
 						resolved.intentional_holds[slot] = true
 						summary.intentional_holds += 1
 					elif held_clear and not held_time_valid:
@@ -4352,6 +4382,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					"instance_id":member.instance_id,"generation":member.generation,"material_contents":certified_contents.duplicate(),
 					"observation":selected_observation,"withheld_frames":0,
 					"water_composed":resolved.water_proofs.has(slot),
+					"water_coverage_identity":(previous.get("water_coverage_identity",{}) if resolved.sources[slot] == "held"
+						else _workbench_water_coverage_cache.get(slot,{}).get("identity",{})) if resolved.water_proofs.has(slot) else {},
 					"origin_current":bool(previous.get("origin_current",false)) \
 						if resolved.sources[slot] == "held" else selected_step == physical_actor_session.tick,
 					"hold_started_usec":hold_started_usec if resolved.sources[slot] == "held" else 0}

@@ -383,13 +383,14 @@ func movement() -> bool:
 func color_error(a: Color, b: Color) -> float:
 	return maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 
-func framebuffer_visibility(label: String) -> void:
+func framebuffer_visibility(label: String, requested_slot: int = -1) -> void:
 	stage = label
 	if not graphical: return
 	if not check(await until(func() -> bool: return not host.workbench_presentation_frame.get("water_proofs",{}).is_empty()),
 		label+" actual Water-composed submission available"): return
 	var frame: Dictionary = host.workbench_presentation_frame
-	var slot: int = int(frame.water_proofs.keys()[0])
+	var slot: int = requested_slot if requested_slot >= 0 else int(frame.water_proofs.keys()[0])
+	if not check(frame.water_proofs.has(slot),label+" requested member has an actual Water proof"): return
 	var selected: Transform2D = frame.poses[slot]
 	ui._camera.select(0)
 	ui.set_camera(0)
@@ -598,6 +599,55 @@ func edits_and_lifecycle() -> void:
 	check(await until(func() -> bool: return host.physical_actor_session.tick >= first+8),"restored native-dependent simulation progresses")
 	await pause_owner()
 
+func moving_multipart() -> void:
+	stage = "multipart_install"
+	var recipe := Setup.fresh(PackedInt32Array(ui.applied.liquid_policy),Vector2i(512,512))
+	recipe.actors = [Setup.instance("runner",12,Vector2(256,350))]
+	recipe.next_id = 13
+	recipe.selected = 12
+	recipe.edits = [[0,496,512,16,58],[16,272,480,224,Setup.WATER],[40,445,30,45,Setup.SAND]]
+	var old_epoch: int = host._physical_epoch
+	if not check(ui.apply(recipe),"ordinary submerged articulated Runner setup admitted"): return
+	if not check(await until(func() -> bool: return host._physical_epoch > old_epoch \
+			and host.pending_microscenario_apply.is_empty() and host._physical_terrain_ready \
+			and host.physical_actor_session != null and host.physical_actor_session.bridge.actor_body_count(0) >= 5 \
+			and host.workbench_presentation_frame.get("water_proofs",{}).size() == host.physical_actor_session.bridge._members.size()),
+			"all submerged Runner members acquire initialized proofs"): return
+	var bridge: Variant = host.physical_actor_session.bridge
+	var initial: Transform2D = bridge.body_transform(4)
+	check(bridge.actor_body_count(0) == bridge._members.size() and bridge._members[4].actor_instance_id == 12,
+		"articulated foot belongs to authored actor 12")
+	ui._camera.select(0)
+	ui.set_camera(0)
+	ui._set_view(Vector2(176,300),Vector2i(160,100))
+	stage = "multipart_motion"
+	if not check(ui.toggle_pause(),"ordinary Play moves the submerged articulated actor"): return
+	var deadline := Time.get_ticks_msec()+WAIT_MS
+	var moving_frame: Dictionary = {}
+	while Time.get_ticks_msec() < deadline and not host.simulation_worker.has_failed():
+		if graphical: await RenderingServer.frame_post_draw
+		else: await process_frame
+		var draw_frame: Dictionary = host.workbench_presentation_frame
+		var drawn_limb: Variant = draw_frame.get("poses",{}).get(4)
+		# Join observations to the draw's sampled physical step. A later
+		# physics callback may already have completed by the next process_frame.
+		if draw_frame.get("rapier_step",-1) >= 8 and draw_frame.get("water_proofs",{}).size() == bridge._members.size() \
+				and draw_frame.get("selected_steps",{}).get(4,-1) == draw_frame.rapier_step \
+				and drawn_limb is Transform2D and drawn_limb.origin.distance_to(initial.origin) > 0.1:
+			moving_frame = draw_frame
+			break
+	if not check(not moving_frame.is_empty(),
+			"moving articulated limb reaches a distinct real completed pose with every member composed"): return
+	if graphical:
+		if not output.is_empty():
+			check(root.get_texture().get_image().save_png(output.get_base_dir().path_join("moving-runner.png"))==OK,
+				"first-read moving multipart framebuffer saved")
+		lifecycle.append({"stage":stage,"step":host.physical_actor_session.tick,
+			"steps":moving_frame.get("selected_steps",{}).duplicate(),"origins":moving_frame.get("poses",{}).duplicate(),
+			"camera_mapping":moving_frame.get("camera_mapping"),"upload_serial":moving_frame.get("upload_serial",-1)})
+	if not await pause_owner(): return
+	await framebuffer_visibility("multipart_limb_framebuffer",4)
+
 func _run() -> void:
 	if not output.is_empty(): DirAccess.make_dir_recursive_absolute(output.get_base_dir())
 	var loaded: Control = load("res://main.tscn").instantiate()
@@ -620,6 +670,7 @@ func _run() -> void:
 				await paused_history_retention("completed_paused_history")
 				await framebuffer_visibility("submerged_framebuffer")
 				await edits_and_lifecycle()
+				if failures.is_empty(): await moving_multipart()
 	check(not host.simulation_worker.has_failed(),"native World remains healthy")
 	check(native_identity_valid,"every observed proof joins real actor/native/selected-step identity without time regression")
 	var kinds: Dictionary = {}
@@ -631,7 +682,7 @@ func _run() -> void:
 			moving_wet_poses[JSON.stringify(row.pose)] = true
 	check(moving_wet_poses.size() >= 3,"moving submerged actor has multiple distinct actual completed poses in composed submissions")
 	check(composed_frames > 0 and not observations.is_empty(),"Water treatment actually executes on mounted native Workbench")
-	if graphical: check(framebuffer.size() >= 3,"initialized, completed submerged and rewet actual framebuffer controls all execute")
+	if graphical: check(framebuffer.size() == 5,"initialized, completed, rewet, restored and multipart limb framebuffer controls all execute")
 	key(KEY_D,false)
 	key(KEY_W,false)
 	if graphical: RenderingServer.frame_post_draw.disconnect(observe_frame)

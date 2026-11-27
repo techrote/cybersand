@@ -176,6 +176,41 @@ func color_error(a: Color, b: Color) -> float:
 	return maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 
 
+class SampledWorld extends RefCounted:
+	var revision := 31
+	var tick_index := 8
+	var packet: Dictionary
+	func workbench_coupling_results() -> Dictionary: return packet
+
+
+func exact_body_basis_checks() -> void:
+	var worker := CyberSimulationWorker.new()
+	var world := SampledWorld.new()
+	var pose := Transform2D(0.21875,Vector2(14.25,18.5))
+	# A native rigid rotation need not bit-round-trip through atan2 and sin.
+	pose.x.y += 0.0000000149
+	var local := Vector2(2.5,-1.25)
+	var centre := pose*local
+	var com := pose*Vector2(0.5,0.25)
+	var states := PackedFloat64Array([1,centre.x,centre.y,pose.get_rotation(),4,2,0,0,0,1,17,1,com.x,com.y,0.5,1.0/60.0,4])
+	worker._world = world
+	world.packet = {"valid":true,"session":4,"epoch":2,"sample_tick":8,
+		"rows":[{"id":1,"instance_id":56,"generation":2,"com":com,"sample":17}]}
+	worker._workbench_consumed_sample = {"session":4,"epoch":2,"states":states,
+		"bodies":[{"first_proxy":1,"instance_id":56,"generation":2}],
+		"geometry":PackedFloat64Array([local.x,local.y,4,2]),"display_poses":[pose]}
+	worker._capture_workbench_result()
+	check(worker._workbench_display.get("instances",{}).get(56,{}).get("pose") == pose,
+		"consumed proxy coordinates and force COM retain the exact sampled body basis and origin")
+	worker._workbench_consumed_sample.display_poses[0] = Transform2D(pose.x,pose.y,pose.origin+Vector2.RIGHT)
+	worker._capture_workbench_result()
+	check(worker._workbench_display.is_empty(),"a body transform disagreeing with the consumed proxy has no display authority")
+	worker._workbench_consumed_sample.display_poses[0] = pose
+	world.packet.rows[0].com += Vector2.RIGHT
+	worker._capture_workbench_result()
+	check(worker._workbench_display.is_empty(),"a different returned native force COM cannot bind a sampled display transform")
+
+
 func coverage_cache_checks() -> void:
 	# Exercise the production scan/cache seam without claiming an initialized
 	# native owner. Real authority, lifecycle and framebuffer tests are separate.
@@ -262,6 +297,27 @@ func coverage_cache_checks() -> void:
 	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),"reactivated old image cannot borrow current-only coverage")
 	check(app.workbench_presentation_frame.is_empty() and app._workbench_presentation_history.retained_observations()==0 \
 		and bridge.manual_step_count()==0,"coverage work creates no visible history or physical credit")
+	bridge._rects.append(rectangles)
+	app.rapier_bridge = bridge
+	app._physical_terrain_ready = true
+	context.previous_blend_active = false
+	var endpoint: Dictionary = app._workbench_water_coverage_cache[0].identity
+	var old := {"step":7,"pose":pose,"water_composed":true,"water_coverage_identity":endpoint}
+	var prior_proof := {"step":7,"visible_material":{"native_tick":40,"native_sample":9}}
+	app.workbench_presentation_frame = {"water_proofs":{0:prior_proof},"poses":{0:pose}}
+	context.merge({"mask_frame":{"instances":{11:{"sample":9}}},"mask_native_tick":40})
+	check(app._submitted_water_hold(0,old,context)==prior_proof,"the held Water endpoint preserves its original selected physical step")
+	context.mask_native_tick = 41
+	check(app._submitted_water_hold(0,old,context).is_empty(),"a changed visible native receipt cannot reuse a Water hold")
+	context.mask_native_tick = 40
+	app.last_uploaded_revision += 1
+	check(app._submitted_water_hold(0,old,context).is_empty(),"a new material revision invalidates the held Water endpoint")
+	app.last_uploaded_revision -= 1
+	context.previous_blend_active = true
+	check(app._submitted_water_hold(0,old,context).is_empty(),"crossfade activation invalidates a current-only hold")
+	context.previous_blend_active = false
+	bridge._epoch += 1
+	check(app._submitted_water_hold(0,old,context).is_empty(),"a replacement physical owner cannot retain old Water coverage")
 	bridge._body_rids.clear()
 	PhysicsServer2D.free_rid(body)
 	app.physical_actor_session = null
@@ -351,6 +407,7 @@ func _run() -> void:
 	identity_checks()
 	independent_authority_checks()
 	bounded_water_clearance_checks()
+	exact_body_basis_checks()
 	coverage_cache_checks()
 	check(coverage_checks_completed,"the complete production coverage fixture actually executed")
 	var water: Image = picture(3)
