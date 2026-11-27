@@ -28,7 +28,14 @@ adds `persistent_worker_pool.hpp`.
 Grab and Place now resolve the pointer through the submitted camera and pick
 the displayed physical member in draw order. A live grab revalidates the
 session, epoch, actor, part and body identity before applying force at that
-member's local anchor. The tests exercise a new Sand upload before a draw and
+member's local anchor. Paused Place translates the captured live assembly until
+the displayed limb's local contact reaches the pointer. Release checks the body
+and generation again. A private graphical control displaced and rotated the
+paused Runner while its framebuffer stayed fixed. The prior implementation
+misplaced the preview, and the fix installed the selected foot within 0.00004
+world units of the release point. Ordinary JSON Save also retains the full
+precision of a fractional authored spawn. Mouse-driven create and fresh reopen
+passed 92 and 15 checks. The tests exercise a new Sand upload before a draw and
 retired or withheld members. The multipart tests use the authored logical
 capacity and the actual maximum physical roster for their respective bounds.
 

@@ -12,8 +12,9 @@ related-documents: [pubpres-completion-001.md, ../architecture/rendering-and-gam
 
 This mission continues programme [#717](https://github.com/techrote/cybersand/issues/717)
 from frozen [#757](https://github.com/techrote/cybersand/pull/757), source
-`c90dbc46e1f57f28e06b1f4205b83467335ff657`. Accepted main at intake remains
-`00cdb02f103265b6dc5224c68283e9a0c8cb449f`. The isolated successor branch is
+`c90dbc46e1f57f28e06b1f4205b83467335ff657`. The original intake used main
+`00cdb02f103265b6dc5224c68283e9a0c8cb449f`. The definitive campaign compares
+against consolidated main `7a15691a7c537d07ff10a1bc4da9d46491c0b9d6`. The isolated successor branch is
 `codex/pubpres-playability-final-001-20261124`, [Draft #767](https://github.com/techrote/cybersand/pull/767).
 Frozen predecessors, their negative
 results and unrelated programmes retain their ownership. **Draft/HOLD: no merge,
