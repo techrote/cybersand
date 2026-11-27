@@ -92,6 +92,7 @@ func run() -> void:
 	if not check(installed.get("ok", false), "committed construction fixture installed: " + str(installed.get("error", ""))):
 		await finish()
 		return
+	assertions.reset(installed)
 	await action("pause")
 	await action("select_material", {"material": 58})
 	probe_reentry_when_busy = true
@@ -130,7 +131,7 @@ func run() -> void:
 	var unsupported: Dictionary = await adapter.execute({"id": "unsupported_fixture_action", "args": {}})
 	check(unsupported.status == "refused" and unsupported.classification == "not_applicable", "unsupported vocabulary is not an application defect")
 	installed = await adapter.install_fixture("actor_workshop", Fixtures.build("actor_workshop", adapter.policy()))
-	assertions.reset()
+	assertions.reset(installed)
 	if check(installed.get("ok", false), "actual native/Rapier actor workshop installed"):
 		var protected_edit: Dictionary = await action("brush", {"x": 96, "y": 160, "radius": 0}, "refused")
 		check(protected_edit.classification == "not_applicable" and protected_edit.admission.is_empty(),
@@ -164,7 +165,7 @@ func run() -> void:
 		check(passive.status == "refused" and passive.classification == "not_applicable", "passive barrel is not a player-controlled actor")
 		check(adapter.observe().pilot_actor == 3, "passive selection/refusal preserves actual pilot authority")
 	installed = await adapter.install_fixture("construction", Fixtures.build("construction", adapter.policy()))
-	assertions.reset()
+	assertions.reset(installed)
 	if check(installed.get("ok", false), "fresh fixture for in-flight Stop"):
 		stop_when_editor_busy = true
 		var interrupted: Dictionary = await adapter.execute({"id": "brush", "args": {"x": 80, "y": 80, "radius": 4}})

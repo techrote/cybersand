@@ -1,0 +1,89 @@
+{
+  "schema": "cybersand-goldmaps-successor-consumer-review-b.v1",
+  "observed_utc": "2026-11-24T23:46:39Z",
+  "mode": "read_only",
+  "upstream": {
+    "repository": "techrote/sandmapsreference",
+    "pr": 217,
+    "head": "0634a8eee4b172c28a6936b957dbe2998b664ddb",
+    "draft": true,
+    "technical_completion": true,
+    "production_acceptance": false,
+    "owner_accepted": false,
+    "comments_observed": 0,
+    "run": {
+      "id": 45500179792,
+      "head": "8c709093672c6761d1056187399ccc487760606b",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    "primary_kit": {
+      "file": "CyberSand-GOLDMAPS-Owner-Evaluator-8c709093672c.zip",
+      "archive_sha256": "ba3d75bf97943af4148ee4427fdfcb2c6df41ede2453c80ef69e3bd6577dfea9",
+      "bytes": 101213343,
+      "source_head": "8c709093672c6761d1056187399ccc487760606b",
+      "run_id": "45500179792",
+      "artifact_url": "https://github.com/techrote/sandmapsreference/actions/runs/45500179792/artifacts/14971496709",
+      "payload_manifest_sha256": "229d70e8e083c0eaf1750ba9fdd347cb29e8d2dd23ed1139b845f9b742da6947"
+    },
+    "delivery_overlay": {
+      "path": "collection/delivery-qualification.v1.json",
+      "sha256": "b4ac7fb50dd5d13d3fa505408f7a3299c5168b3d4c16ed53bc6289e1d7da5242",
+      "engine_head": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "unique_setups": 72,
+      "qualified_unique_setups": 70,
+      "refused_originals": 2,
+      "qualified_canonical_source_maps": 68,
+      "refused_canonical_sources": 2,
+      "qualified_logical_entries": 79,
+      "refused_logical_entries": 2,
+      "owner_accepted": false,
+      "receipt_resolution": "Every receipt path refers to the primary owner kit; native logs/runtime are intentionally absent from this reference bundle. Require exact engine/Setup identity, and inspect primary raw receipts for proof."
+    },
+    "authority": "Final package archive identity and overlay are reported by upstream's pinned decision packet and independent archive review; this reviewer did not download or independently rerun that final package."
+  },
+  "knowledge_identity": {
+    "path": "corpus-export/knowledge.v1.json",
+    "bytes": 1640704,
+    "sha256": "711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557",
+    "local_git_blob_sha1": "18afb94ff8305648bf1e4353f9d0824eab889dc0",
+    "final_package_git_blob_sha1": "18afb94ff8305648bf1e4353f9d0824eab889dc0",
+    "final_committed_path": "docs/corpus/goldmaps-owner-delivery-001/qualification/windows-final-8c709093672c/package/corpus-export/knowledge.v1.json",
+    "exact_byte_identity_established": true,
+    "upstream_actual_archive_review_agrees": true
+  },
+  "actual_consumer": {
+    "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+    "original_producer": "b4ed0fc462a5e10f3d502b4b5593ef9b4ce70041",
+    "original_run": 45481683557,
+    "original_artifact": 14966411591,
+    "checks": 31,
+    "synthetic_checks": 19,
+    "actual_export_checks": 11,
+    "retention_checks": 1,
+    "failures": 0,
+    "report_sha256": "e041123d2e22806c5fef05c307f080a6e3f1d8fef5ff910fd5a5d066fdf26794",
+    "log_sha256": "d66bf546671367acc88418cf33e375bd6b054b561ee65ada9ed657e26582a86c",
+    "rerun_for_unchanged_export": false
+  },
+  "preservation": {
+    "cards": 25,
+    "cards_sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+    "expanded_maps": 70,
+    "primary_schema_policy_population": 67,
+    "module_hints": 27,
+    "verified_importable_modules": 0,
+    "inferred_sockets": 0,
+    "original_refusals": [
+      155,
+      183
+    ],
+    "delivery_overlay_applied_to_consumer": false,
+    "native_module_import": false,
+    "model_calls": 0,
+    "owner_acceptance": false,
+    "reference_repository_mutated": false,
+    "frozen_cohorts_modified": false,
+    "github_comment_posted": false
+  }
+}

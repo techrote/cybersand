@@ -1,0 +1,15 @@
+{
+  "schema": "art-native-raw-stdout-review-v1",
+  "checks": 73,
+  "failures": [],
+  "status": "passed",
+  "fetched_from": "e536d128f85e948223b25e13931a7a801faf956d",
+  "scope": "Independent reconciliation of durably fetched lead-brokered raw-verifier stdout against the original source-bound metadata; no new native process or real model.",
+  "script_sha256": "64292c1a48babae89b51e0dfa2c99792c29e9f2f813962294da8fc6d8c4536a9",
+  "stdout_sha256": "85ed955bccb8b04aa4c517fc4bb8c0b8a640075b424049703b6367549872b2de",
+  "scenarios": 9,
+  "stages": 25,
+  "verified_readback_rows": 377234,
+  "acknowledged_cell_changes_per_arm": 184396,
+  "verified_original_file_count": 73
+}

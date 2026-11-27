@@ -8,6 +8,7 @@ const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd"
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
+const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source"]
@@ -15,6 +16,8 @@ var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").
 var _materials_lab_window: Window
 var _materials_lab_panel: Control
 var material_audition: RefCounted
+var batch_lab: Window
+var architecture_lab: Window
 # These copied bytes are only a reconstructible authored starting baseline.
 # The sole live World remains owned by the existing native simulation worker.
 var _generated_active: Dictionary = {}
@@ -238,6 +241,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"+",func() -> void: zoom_by(-1))
 	_button(row,"Actor Composition…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
+	_button(row,"Batch Lab…",open_batch_lab)
+	_button(row,"Architecture…",open_architecture_lab)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
@@ -380,6 +385,32 @@ func open_art_batches() -> void:
 	_ensure_art_batches().popup_centered()
 
 
+func open_batch_lab() -> void:
+	_cancel()
+	# Optional and lazy: ordinary Workbench startup creates no tile workers,
+	# provider sessions, experiment files or render targets.
+	if not is_instance_valid(batch_lab):
+		batch_lab = preload("res://scripts/batch_lab/batch_lab_panel.gd").new()
+		batch_lab.wb = self
+		batch_lab.hide()
+		add_child(batch_lab)
+	batch_lab.popup_centered_clamped(Vector2i(1180,780),0.92)
+
+
+func capture_batch_source(region: Rect2i) -> Dictionary:
+	return await preload("res://scripts/batch_lab/batch_lab_source.gd").capture(self,region)
+
+
+func open_architecture_lab() -> void:
+	_cancel()
+	if not is_instance_valid(architecture_lab):
+		architecture_lab = preload("res://scripts/batch_lab/architecture_stage_panel.gd").new()
+		architecture_lab.wb = self
+		architecture_lab.hide()
+		add_child(architecture_lab)
+	architecture_lab.popup_centered_clamped(Vector2i(1160,780),0.92)
+
+
 func open_actor_composition() -> void:
 	_cancel()
 	if not is_instance_valid(_actor_panel):
@@ -414,6 +445,85 @@ func open_ambient_profile(id: int) -> void:
 		add_child(_ambient_profile_editor)
 		_ambient_profile_editor.mount(self)
 	_ambient_profile_editor.open_for(id)
+
+
+
+# Scene-local reusable profiles are authored data. Assignments are explicit
+# copies, so saving a library entry cannot silently change an existing actor.
+func ambient_library() -> Dictionary:
+	var current: Dictionary = applied.get("ambient_authoring", AmbientAuthoring.blank())
+	return AmbientAuthoring.canonicalize(current)
+
+
+func set_ambient_library(library: Dictionary, expected_library: Dictionary, expected_run: String, expected_epoch: int) -> bool:
+	if not _editable() or host.physical_actor_session == null: return false
+	var session: Variant = host.physical_actor_session
+	if str(session.run_id) != expected_run or int(session.epoch) != expected_epoch:
+		return refuse("World changed; refresh the staged profile library.")
+	if ambient_library() != expected_library:
+		return refuse("Profile library changed elsewhere; refresh before applying.")
+	var error: String = AmbientAuthoring.validate(library)
+	if not error.is_empty(): return refuse(error)
+	var next: Dictionary = applied.duplicate()
+	next["ambient_authoring"] = AmbientAuthoring.canonicalize(library)
+	if JSON.stringify(next).to_utf8_buffer().size() > Setup.BYTE_LIMIT:
+		return refuse("The authored scene and profile library exceed the save-file budget.")
+	applied["ambient_authoring"] = next.ambient_authoring
+	message = "Profile library saved in this authored scene. Existing actor copies are unchanged; use Save start to persist."
+	return true
+
+
+func apply_ambient_group(ids: Array, profile: Dictionary, expected: Dictionary) -> bool:
+	if not _editable() or host.physical_actor_session == null: return false
+	var session: Variant = host.physical_actor_session
+	if ids.is_empty() or ids.size() > Setup.MAX_BODIES \
+		or not expected.has_all(["run_id", "epoch", "actors"]) or not expected.actors is Dictionary \
+		or str(expected.run_id) != str(session.run_id) or int(expected.epoch) != int(session.epoch):
+		return refuse("Invalid or stale group selection; refresh it before applying.")
+	var seen: Dictionary = {}
+	var transactions: Array[Dictionary] = []
+	var next: Dictionary = applied.duplicate(true)
+	for value: Variant in ids:
+		if not value is int or value <= 0 or seen.has(value):
+			return refuse("Group selection contains an invalid or repeated actor.")
+		var id: int = value
+		seen[id] = true
+		var current: Dictionary = actor(applied, id)
+		var staged: Variant = expected.actors.get(str(id))
+		if current.is_empty() or not staged is Dictionary \
+			or not staged.has_all(["model", "hash", "control"]) \
+			or str(staged.model) != str(current.model) or str(staged.hash) != str(current.hash) \
+			or not staged.control is Dictionary or staged.control != ActorCatalog.control_for(current):
+			return refuse("A selected actor disappeared or changed; refresh the group. No actor was changed.")
+		var control: Dictionary = ActorCatalog.control_for(current)
+		control.source = "policy"
+		control.policy = "ambient"
+		control.enabled = true
+		control["ambient"] = profile.duplicate(true)
+		var error: String = ActorCatalog.control_error(str(current.model), control)
+		if not error.is_empty(): return refuse("#%d: %s. No group member was changed." % [id, error])
+		control.ambient = ActorCatalog.AmbientProfile.canonicalize(control.ambient)
+		transactions.append({"instance_id":id, "configuration":control,
+			"expected_configuration":ActorCatalog.control_for(current)})
+		actor(next, id)["control"] = control.duplicate(true)
+	var error: String = Setup.validate(next, false)
+	if not error.is_empty(): return refuse(error)
+	if JSON.stringify(next).to_utf8_buffer().size() > Setup.BYTE_LIMIT:
+		return refuse("Group profiles exceed the authored save-file budget.")
+	if not session.set_workbench_controls(transactions, str(expected.run_id), int(expected.epoch)):
+		return refuse(str(session.last_error))
+	# The owner acknowledged every replacement before authored assignments change.
+	for item: Dictionary in transactions:
+		var id: int = item.instance_id
+		actor(applied, id)["control"] = item.configuration.duplicate(true)
+		_pilot_returns.erase(id)
+		if id == pilot_id():
+			_cancel()
+			_pilot_instance_id = 0
+			pilot_slot = -1
+	_sync_roster()
+	message = "Applied %s to %d inhabitants together; physical poses and resources retained." % [str(profile.get("name", "profile")), transactions.size()]
+	return true
 
 
 func set_ambient_overlay(id: int, enabled: bool) -> void:
@@ -740,6 +850,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
+	if candidate.has("ambient_authoring"):
+		candidate = candidate.duplicate()
+		candidate["ambient_authoring"] = AmbientAuthoring.canonicalize(candidate.ambient_authoring)
 	if not preserve and not generated_packet.is_empty() \
 			and candidate.edits.size() > Setup.native_rectangle_budget():
 		return refuse("This installed native runtime cannot reopen that detailed generated start; rebuild its GDExtension.")

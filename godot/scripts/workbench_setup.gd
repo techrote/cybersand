@@ -3,6 +3,7 @@ extends RefCounted
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const ActorCatalog = preload("res://scripts/workbench_actor_catalog.gd")
+const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 # The first nine are the powders a 4 x 24 source may emit; later entries are
@@ -553,7 +554,7 @@ static func _stamp_material(value: Variant) -> bool:
 	return bool(_extra_stamp_materials[id])
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else [])) \
+	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else []) + (["ambient_authoring"] if value.has("ambient_authoring") else [])) \
 			or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
@@ -589,6 +590,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid liquid policy envelope."
 	for word: Variant in value.liquid_policy:
 		if not _integer(word,-2147483648,2147483647): return "Invalid liquid policy word."
+	if value.has("ambient_authoring"):
+		var library_error: String = AmbientAuthoring.validate(value.ambient_authoring)
+		if not library_error.is_empty(): return "Ambient profile library: " + library_error
 	if value.has(EQUIPMENT_KEY):
 		var equipment_error := Equipment.validate(value[EQUIPMENT_KEY],size)
 		if not equipment_error.is_empty(): return "Liquid equipment: " + equipment_error
@@ -746,4 +750,6 @@ static func read_named(label: String) -> Dictionary:
 		canonical_actor_numbers(a)
 	if setup_data.has(EQUIPMENT_KEY):
 		setup_data[EQUIPMENT_KEY] = Equipment.canonical(setup_data[EQUIPMENT_KEY])
+	if setup_data.has("ambient_authoring"):
+		setup_data["ambient_authoring"] = AmbientAuthoring.canonicalize(setup_data.ambient_authoring)
 	return {"setup":setup_data}

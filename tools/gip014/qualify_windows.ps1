@@ -32,15 +32,24 @@ $engine = Join-Path $engineRoot 'Godot_v4.7-stable_win64_console.exe'
 $version = ((& $engine --version) -join "`n").Trim()
 if ($LASTEXITCODE -ne 0 -or $version -ne '4.7.stable.official.5b4e0cb0f') { throw 'Pinned Godot version mismatch.' }
 
+Invoke-Python @('-m', 'pip', 'install', '-r', 'tools/gip014/requirements.txt') (Join-Path $outputPath 'process-monitor-dependency.log')
+$env:GOBLIN_PARITY_GODOT = $engine
 Invoke-Python @('-m', 'unittest', 'discover', '-s', 'tools/gip014', '-p', 'test_*.py') (Join-Path $outputPath 'python-contracts.log')
-$cases = @('unit', 'adapter', 'controller', 'gameplay', 'baseline')
+$cases = @('unit', 'discovery', 'adapter', 'expanded', 'controller', 'laboratory', 'gameplay', 'metamorphic', 'authored_lineage', 'baseline')
 foreach ($case in $cases) {
-    Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', $case, '--out', (Join-Path $sourceTests $case)) (Join-Path $outputPath ($case + '.log'))
+    Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', $case, '--out', (Join-Path $sourceTests $case), '--timeout-seconds', '300') (Join-Path $outputPath ($case + '.log'))
 }
+Invoke-Python @('tools/gip014/qualify_reproduction.py', '--laboratory', (Join-Path $sourceTests 'laboratory'), '--out', (Join-Path $outputPath 'regression-case')) (Join-Path $outputPath 'regression-export.log')
+
 # Two distinct actual-game campaigns keep this focused lane affordable.
 Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--out', (Join-Path $sourceTests 'control-64'), '--fixture', 'actor_workshop', '--policy', 'CONTROL', '--seed', '13', '--budget', '64') (Join-Path $outputPath 'control-64.log')
 Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--out', (Join-Path $sourceTests 'builder-128'), '--fixture', 'liquid_channel', '--policy', 'BUILDER', '--seed', '605', '--budget', '128') (Join-Path $outputPath 'builder-128.log')
 Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--case', 'replay', '--out', (Join-Path $sourceTests 'control-64-replay'), '--replay', (Join-Path $sourceTests 'control-64/transcript.json')) (Join-Path $outputPath 'control-64-replay.log')
+
+# Successor policies exercise meaningful observed conditions before packaging.
+foreach ($policy in @('STATEFUL', 'NOVELTY', 'COVERAGE_HUNTER')) {
+    Invoke-Python @('tools/gip014/run_goblin.py', '--godot', $engine, '--out', (Join-Path $sourceTests ($policy.ToLowerInvariant() + '-64')), '--fixture', 'alchemy', '--policy', $policy, '--seed', '1701', '--budget', '64') (Join-Path $outputPath ($policy.ToLowerInvariant() + '-64.log'))
+}
 
 $notices = Join-Path $outputPath 'engine-notices'
 [IO.Directory]::CreateDirectory($notices) | Out-Null
@@ -54,25 +63,29 @@ $vcStage = Join-Path $outputPath 'vc-runtime'
 & tools/ci/stage_windows_vc_runtime.ps1 -Output $vcStage -License $runtimeLicense -DeveloperLicense $developerLicense
 if ($LASTEXITCODE -ne 0) { throw 'Established Visual C++ runtime staging failed.' }
 
-$candidate = Join-Path $outputPath 'CyberSand-goblin.zip'
-Invoke-Python @('tools/gip014/package_evaluator.py', '--godot-archive', $engineZip, '--engine-notices', $notices, '--vc-runtime', $vcStage, '--out', $candidate) (Join-Path $outputPath 'packaging.log')
+$candidate = Join-Path $outputPath 'CyberSand-goblin-base.zip'
+Invoke-Python @('tools/gip014/package_evaluator.py', '--godot-archive', $engineZip, '--engine-notices', $notices, '--vc-runtime', $vcStage, '--campaign-evidence', $sourceTests, '--out', $candidate) (Join-Path $outputPath 'packaging.log')
 $extracted = Join-Path $outputPath 'extracted'
 Expand-Archive -LiteralPath $candidate -DestinationPath $extracted
 $packageRoot = Join-Path $extracted 'CyberSand-goblin'
 $selftestLog = Join-Path $outputPath 'extracted-selftest.log'
-& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $packageRoot 'Open goblin.ps1') -Mode SelfTest -GraphicalSmoke 2>&1 | Tee-Object -FilePath $selftestLog
-if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator self-test failed; candidate must not be published.' }
+Invoke-Python @('tools/gip014/qualify_extracted.py', '--package', $packageRoot, '--log', $selftestLog) (Join-Path $outputPath 'extracted-process-monitor.log')
 $markers = @(Get-Content -LiteralPath $selftestLog | Where-Object { $_.StartsWith('GOBLIN_PACKAGE_SELFTEST_PASS ') })
 if ($markers.Count -ne 1) { throw 'Extracted evaluator completion is absent or ambiguous.' }
 $reportPath = $markers[0].Substring('GOBLIN_PACKAGE_SELFTEST_PASS '.Length)
 Invoke-Python @('tools/gip014/package_evaluator.py', '--verify-extracted', $packageRoot, '--qualification', $reportPath) (Join-Path $outputPath 'extracted-verification.log')
 $report = [IO.File]::ReadAllText($reportPath) | ConvertFrom-Json
 if ($report.graphical_smoke.status -ne 'pass') { throw 'The actual graphical developer scene has not passed.' }
+$final = Join-Path $outputPath 'CyberSand-goblin.zip'
+$seal = Join-Path $outputPath 'delivery-seal.json'
+Invoke-Python @('tools/gip014/seal_evaluator.py', '--base', $candidate, '--extracted', $packageRoot, '--qualification', $reportPath, '--out', $final, '--receipt', $seal) (Join-Path $outputPath 'delivery-seal.log')
 $commit = ((& git rev-parse HEAD) -join '').Trim()
 $summary = @{ schema = 'cybersand-goblin-windows-qualification-v1'; source_commit = $commit;
-    status = 'pass'; evaluator_sha256 = (Get-FileHash -LiteralPath $candidate -Algorithm SHA256).Hash.ToLowerInvariant();
+    status = 'pass'; evaluator_sha256 = (Get-FileHash -LiteralPath $final -Algorithm SHA256).Hash.ToLowerInvariant();
+    base_evaluator_sha256 = (Get-FileHash -LiteralPath $candidate -Algorithm SHA256).Hash.ToLowerInvariant();
+    delivery_seal_sha256 = (Get-FileHash -LiteralPath $seal -Algorithm SHA256).Hash.ToLowerInvariant();
     extracted_report = $reportPath; extracted_report_sha256 = (Get-FileHash -LiteralPath $reportPath -Algorithm SHA256).Hash.ToLowerInvariant();
-    source_cases = $cases + @('CONTROL actor_workshop64', 'BUILDER liquid_channel128', 'CONTROL replay64');
+    source_cases = $cases + @('native regression export/reproduction', 'CONTROL actor_workshop64', 'BUILDER liquid_channel128', 'CONTROL replay64', 'STATEFUL alchemy64', 'NOVELTY alchemy64', 'COVERAGE_HUNTER alchemy64');
     scope = 'Draft developer evaluator on hosted Windows; no physical NVIDIA owner acceptance';
     native_runtime_basis = 'retained binaries with matching105 native and4 Rapier source inputs; no native rebuild claimed' }
 [IO.File]::WriteAllText((Join-Path $outputPath 'windows-qualification.json'), (($summary | ConvertTo-Json -Depth 8) + "`n"), $utf8)

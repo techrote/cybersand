@@ -1,0 +1,23 @@
+{
+  "status": "passed_preflight_only",
+  "source_commit": "c60737e93efc151e1765b09a1bf2e91deb2b58cc",
+  "scope": "one actual30s Runner control outside the final registered194; no final application or full campaign qualification",
+  "raw_report_sha256": "b6cf602a36aa78a19c7dc7e359e24bf4c869fedd686b29afef962ae9e46533c9",
+  "raw_report_bytes": 422215,
+  "retained_gzip": "recovered-random-hold-report.json.gz",
+  "gzip_sha256": "3faa2282361720b6219fe3b8010f18c7ff750a04ab0743086bde576aa94ab949",
+  "gzip_bytes": 32568,
+  "original_console_sha256": "acfd7fc6cdac5076e80add64a1c16b1a39fdce0a17ad06f93721535a8c10e059",
+  "checks": 7812,
+  "actual_actor_episodes": 1,
+  "native_ticks": 1800,
+  "physical_ticks": 1800,
+  "accepted_commands": 300,
+  "held_windows_verified": 30,
+  "raw_and_reduced_horizontal_stall_intervals": 29,
+  "registry_generation_actual_episodes": 0,
+  "registered_campaigns": 122,
+  "registered_actor_episodes": 194,
+  "synthetic_tool_regressions": 10,
+  "synthetic_tests_are_not_physical_episodes": true
+}

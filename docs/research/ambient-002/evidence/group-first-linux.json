@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "scope": "lead actual Rapier group handoff and synthetic World-identity probes",
+  "source_commit": "b35e2e48cefa4515ad1dc22f1fc67c00a09bf47f",
+  "source_tree": "4f3801bc4038ba54eab467825ba03efa1a0a7f03",
+  "recorded_at": "2026-11-25T01:33:53.783393+00:00",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "command": [
+    "Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "godot",
+    "--script",
+    "res://tests/test_ambient_group_transaction.gd",
+    "--",
+    "--ci"
+  ],
+  "checks": 35,
+  "failures": 0,
+  "actual_rapier_steps": 8,
+  "log_sha256": "4efbe89f525e251adabe38bb976014d23eb914620662b8b7a905646eceb97f62",
+  "complete_qualification": false,
+  "world_identity_probes": "synthetic immutable envelopes",
+  "native_law_changes": false
+}

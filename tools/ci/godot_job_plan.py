@@ -39,7 +39,10 @@ def plan(cases: list[runner.Case], *, platform: str) -> dict:
         math.ceil(sum(case.weight for case in cases) / scheduling.TARGET_CASE_SECONDS),
         math.ceil(len(cases) / scheduling.MAX_CASES_PER_SHARD)))
     for count in range(minimum, maximum + 1):
-        shards, estimates = runner.build_shard_plan(cases, count)
+        try:
+            shards, estimates = runner.build_shard_plan(cases, count)
+        except runner.ShardCapacityError:
+            continue
         budgets = [sum(map(case_allowance, shard)) for shard in shards]
         if all(shards) and max(estimates) <= available:
             break
@@ -73,7 +76,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     cases = runner.discover_cases()
-    plans = {platform: plan([case for case in cases if platform == "linux" or not case.requires_display], platform=platform)
+    plans = {platform: plan([case for case in cases if platform == "linux" or runner.architecture_context.windows_applicable(case)], platform=platform)
              for platform in ("linux", "windows")}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(plans, indent=2, sort_keys=True) + "\n", encoding="utf-8")

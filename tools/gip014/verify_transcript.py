@@ -11,24 +11,87 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+from copy import deepcopy
 import hashlib
 import json
 import math
 from pathlib import Path
 import re
+import struct
 from typing import Any
 
 SCHEMA = "cybersand-goblin-transcript-v1"
 MAX_BYTES = 32 * 1024 * 1024
-MAX_ACTIONS = 256
-FIXTURES = {"material_playground", "actor_workshop", "construction", "liquid_channel", "save_reopen"}
-POLICIES = {"CONTROL", "WANDERER", "BUILDER", "TINKERER", "CURIOSITY", "RANDOM"}
+try:
+    from .vocabulary import MAX_ACTIONS, FIXTURES, POLICIES, MATERIALS, MODELS, expanded_action_valid
+    from .replay_identity import valid as valid_replay_identity
+except ImportError:
+    from vocabulary import MAX_ACTIONS, FIXTURES, POLICIES, MATERIALS, MODELS, expanded_action_valid
+    from replay_identity import valid as valid_replay_identity
 KINDS = {"unit_fixture", "headless_godot", "graphical_godot", "packaged_evaluator"}
 STATUSES = {"proposed", "accepted", "refused", "partial", "completed"}
 CLASSIFICATIONS = {"game_observation", "not_applicable", "invalid_action", "timeout", "cancelled", "native_failure", "adapter_failure"}
 EMPTY_ACTIONS = {"pause", "copy", "undo", "redo", "save_layout", "reopen_layout", "reset_fixture", "actor_reset", "single_step"}
 SHAPES = {"rectangle", "outline", "line", "select_region"}
 EDITS = {"brush", "erase", "rectangle", "outline", "line", "fill", "paste"}
+# Independent finite expectation from authored product data, not the constructor:
+# physical_actor_catalog._biped/_crawl and reference_barrel, player_actor_catalog
+# _vehicle, and retained Kestrel have zero root offset; monowheel's weighted_cab
+# is (0,1.5), with its tumbling_rim at (0,0). Rig.configure adds these offsets to
+# the authored origin, while workbench_actor_state reports the first body.
+ACTOR_ROOT_OFFSETS = {"kestrel": (0.0, 0.0), "reference_barrel": (0.0, 0.0),
+                      "runner": (0.0, 0.0), "crawler": (0.0, 0.0),
+                      "monowheel": (0.0, 1.5), "stuntbuggy": (0.0, 0.0)}
+
+
+def actor_origin_root(model: str, spawn: Any) -> list:
+    if not isinstance(model, str) or model not in ACTOR_ROOT_OFFSETS or not isinstance(spawn, list) or len(spawn) != 2:
+        return []
+    if not all(type(v) in (int, float) for v in spawn):
+        return []
+    def real(value):
+        return struct.unpack('<f', struct.pack('<f', value))[0]
+    try:
+        if not all(math.isfinite(v) for v in spawn):
+            return []
+        root = [real(real(value) + offset) for value, offset in zip(spawn, ACTOR_ROOT_OFFSETS[model])]
+    except (OverflowError, struct.error):
+        return []
+    return root if all(math.isfinite(v) for v in root) else []
+
+
+def actor_point_matches(actual: Any, expected: Any) -> bool:
+    """Exact pinned Vector2 encodings, including Godot's rounded JSON spelling.
+
+    JSON.stringify's default decimal output can spell one native float32 as a
+    nearby Python float64. Decode both to the actual native representation; do
+    not admit a geometric tolerance or a neighbouring representable position.
+    """
+    if not all(isinstance(v, list) and len(v) == 2 for v in (actual, expected)):
+        return False
+    if not all(type(v) in (int, float) for v in [*actual, *expected]):
+        return False
+    try:
+        return all(math.isfinite(v) for v in [*actual, *expected]) and struct.pack('<2f', *actual) == struct.pack('<2f', *expected)
+    except (OverflowError, struct.error):
+        return False
+
+
+def actor_origin_parts(actor: dict, model: str, spawn: Any) -> bool:
+    expected = actor_origin_root(model, spawn)
+    if not expected or actor.get('model') != model or actor.get('observed') is not True:
+        return False
+    body = actor.get('state')
+    if not isinstance(body, dict) or not actor_point_matches(body.get('position'), expected):
+        return False
+    parts = body.get('retained_parts')
+    if not isinstance(parts, list) or not parts or not isinstance(parts[0], dict) or not actor_point_matches(parts[0].get('position'), expected):
+        return False
+    if model == 'monowheel':
+        origin = actor_origin_root('runner', spawn)
+        if len(parts) < 2 or not isinstance(parts[1], dict) or not actor_point_matches(parts[1].get('position'), origin):
+            return False
+    return True
 
 
 def integer(value: Any) -> bool:
@@ -37,6 +100,156 @@ def integer(value: Any) -> bool:
 
 def bounded(value: Any, minimum: int, maximum: int) -> bool:
     return integer(value) and minimum <= value <= maximum
+
+
+def adapter_version(observation: Any) -> int:
+    """Absent/v1/v2 retain their historical oracle; only exact v3 adds lineage."""
+    value = observation.get("adapter_version", 1) if isinstance(observation, dict) else None
+    return int(value) if bounded(value, 1, 3) else 0
+
+
+def lineage_source(observation: dict) -> dict:
+    native = observation.get("native", {})
+    if not isinstance(native, dict):
+        native = {}
+    return {key: native.get(key, -1) for key in ("generation", "revision", "tick")}
+
+
+def lineage_native_valid(observation: Any) -> bool:
+    if not isinstance(observation, dict) or not isinstance(observation.get("native"), dict):
+        return False
+    native = observation["native"]
+    return (all(bounded(native.get(key), 0, 2**63 - 1) for key in ("generation", "revision", "tick"))
+            and native.get("failed") is False)
+
+
+def lineage_construction(receipt: Any, observation: dict) -> bool:
+    """Independently bind a published construction receipt to its actual owner."""
+    if not isinstance(receipt, dict) or not lineage_native_valid(observation):
+        return False
+    values = receipt.get("canonical_bytes")
+    shape = (receipt.get("kind") == "applied_run" and bounded(receipt.get("schema_version"), 1, 1)
+            and bounded(receipt.get("completed_tick"), 0, 0)
+            and bounded(receipt.get("session_generation"), 0, 2**63 - 1)
+            and receipt["session_generation"] == observation["native"]["generation"]
+            and isinstance(values, list) and 52 <= len(values) <= 1048576
+            and all(bounded(value, 0, 255) for value in values))
+    if not shape:
+        return False
+    raw = bytes(int(value) for value in values)
+    # Primary native contract: liquid_run_receipt.hpp build_applied_run_receipt
+    # and prepared_setup_identity.hpp encoding::Writer use these exact LE
+    # header fields. An old hashed payload with relabelled outer facts fails.
+    return (raw[:28] == struct.pack("<I", 24) + b"cybersand-run-receipt-v1"
+            and struct.unpack_from("<H", raw, 28)[0] == 1
+            and struct.unpack_from("<Q", raw, 36)[0] == observation["native"]["generation"]
+            and struct.unpack_from("<Q", raw, 44)[0] == 0
+            and hashlib.sha256(raw).hexdigest() == receipt.get("receipt_hash"))
+
+
+class MaterialLineageEvidence:
+    """Reconstruct applicability from native tape evidence, never its boolean.
+
+    The product contract preserves live cells across retaining replacements.
+    Positive progression proves exposure, not necessarily changed inert cells.
+    Only acknowledged ordinary fresh construction can re-establish the authored
+    relationship. This reader does not call the adapter's implementation.
+    """
+    FRESH = frozenset({"reset_fixture", "replace_fixture", "restore_start", "reopen_layout"})
+    RETAINING = frozenset({"actor_place", "actor_reset", "actor_remove", "actor_move", "actor_replace",
+                          "actor_equipment", "response_mode", "actor_settings"})
+
+    def __init__(self, initialization: Any):
+        self.state, self.source, self.reset_witness = "unknown", {}, {}
+        self.exposure_source = {}
+        if not isinstance(initialization, dict):
+            return
+        observed, receipt = initialization.get("observation", {}), initialization.get("native_receipt", {})
+        if (initialization.get("ok") is True and isinstance(observed, dict) and isinstance(observed.get("native"), dict)
+                and observed.get("paused") is True and observed.get("native", {}).get("paused") is True
+                and observed.get("native", {}).get("tick") == 0 and observed.get("scene_identity")
+                and observed.get("authored_digest") == observed.get("scene_identity")
+                and lineage_construction(receipt, observed)):
+            self.state, self.source = "authored_compatible", lineage_source(observed)
+            self.reset_witness = {"source": self.source.copy(), "receipt_hash": receipt["receipt_hash"]}
+
+    def observe(self, observed: dict) -> None:
+        current = lineage_source(observed)
+        native = observed.get("native", {})
+        if not lineage_native_valid(observed):
+            self.state = "unknown"
+        elif current["tick"] > 0:
+            self.state = "simulation_exposed"
+            self.exposure_source = current.copy()
+        elif not self.source or current["generation"] != self.source.get("generation"):
+            self.state = "unknown"
+        elif self.state != "simulation_exposed" and (
+                observed.get("paused") is not True or native.get("paused") is not True
+                or current["tick"] < self.source.get("tick", 0) or current["revision"] < self.source.get("revision", 0)):
+            self.state = "unknown"
+        self.source = current
+
+    def claimed(self, observed: dict) -> bool:
+        claim, native = observed.get("material_lineage"), observed.get("native", {})
+        if (not isinstance(native, dict) or not isinstance(claim, dict)
+                or claim.get("schema") != "cybersand-goblin-material-lineage-v1"
+                or claim.get("state") != self.state or not isinstance(claim.get("source"), dict)
+                or set(claim["source"]) != {"generation", "revision", "tick"}
+                or any(not bounded(value, 0, 2**63 - 1) for value in claim["source"].values())
+                or claim["source"] != lineage_source(observed)):
+            return False
+        witness = claim.get("witness")
+        if not isinstance(witness, dict) or not isinstance(witness.get("source"), dict):
+            return False
+        origin = witness["source"]
+        if (set(origin) != {"generation", "revision", "tick"}
+                or any(not bounded(origin.get(key), 0, 2**63 - 1) for key in ("generation", "revision", "tick"))
+                or origin["generation"] > native.get("generation", -1)):
+            return False
+        if self.state == "authored_compatible":
+            return (witness.get("kind") == "authored_construction" and origin["tick"] == 0
+                    and witness.get("action") in self.FRESH | {"fixture_install"} and bool(self.reset_witness)
+                    and origin == self.reset_witness["source"]
+                    and witness.get("receipt_hash") == self.reset_witness["receipt_hash"])
+        if self.state == "simulation_exposed":
+            return (witness.get("kind") == "native_progress" and origin["tick"] > 0
+                    and bool(self.exposure_source) and origin == self.exposure_source)
+        return self.state == "unknown" and witness.get("kind") in {
+            "invalid_source", "unobserved_generation", "unobserved_running", "nonmonotonic_source",
+            "unproven_retained_lineage", "unacknowledged_replacement", "partial_native_effect"}
+
+    def record(self, row: dict, check) -> None:
+        before, after = row["before"], row["after"]
+        self.observe(before)
+        check(row, "material_lineage_before", self.claimed(before), "evidence")
+        prior, name = self.state, row["action"]["id"]
+        complete = row.get("status") == "completed" and row.get("admission", {}).get("accepted") is True
+        replaced = (lineage_native_valid(before) and lineage_native_valid(after)
+                    and after["native"]["generation"] > before["native"]["generation"])
+        if replaced and complete and name in self.FRESH | self.RETAINING:
+            receipt = row.get("native_receipt", {})
+            acknowledged = lineage_construction(receipt, after)
+            check(row, "material_lineage_replacement_evidence", acknowledged, "evidence")
+            if (name in self.FRESH and acknowledged and after.get("paused") is True
+                    and after["native"].get("paused") is True and after["native"]["tick"] == 0):
+                self.state, self.source = "authored_compatible", lineage_source(after)
+                self.reset_witness = {"source": self.source.copy(), "receipt_hash": receipt["receipt_hash"]}
+            elif name in self.RETAINING and acknowledged:
+                stable_start = (prior == "authored_compatible" and before.get("paused") is True
+                                and before["native"].get("paused") is True and after.get("paused") is True
+                                and after["native"].get("paused") is True
+                                and before["native"]["tick"] == after["native"]["tick"] == 0)
+                self.state = prior if prior == "simulation_exposed" or stable_start else "unknown"
+                self.source = lineage_source(after)
+            else:
+                self.state = "unknown"
+        elif replaced:
+            self.state = "unknown"
+        elif (not complete and lineage_native_valid(before) and lineage_native_valid(after)
+              and before["native"]["revision"] != after["native"]["revision"] and prior != "simulation_exposed"):
+            self.state = "unknown"
+        self.observe(after)
+        check(row, "material_lineage_after", self.claimed(after), "evidence")
 
 
 def canonical(value: Any) -> str:
@@ -68,7 +281,7 @@ def action_error(action: Any) -> str | None:
     elif name == "wait_ticks":
         valid = keys(args, {"ticks"}) and bounded(args.get("ticks"), 1, 32)
     elif name == "select_material":
-        valid = keys(args, {"material"}) and integer(args.get("material")) and args["material"] in (0, 2, 3, 7, 58)
+        valid = keys(args, {"material"}) and integer(args.get("material")) and args["material"] in MATERIALS
     elif name in ("brush", "erase"):
         valid = keys(args, {"x", "y", "radius"}) and bounded(args.get("x"), 8, 503) and bounded(args.get("y"), 8, 503) and bounded(args.get("radius"), 0, 4)
     elif name in SHAPES:
@@ -79,13 +292,15 @@ def action_error(action: Any) -> str | None:
     elif name == "camera":
         valid = keys(args, {"x", "y", "width", "height"}) and bounded(args.get("x"), 0, 256) and bounded(args.get("y"), 0, 256) and integer(args.get("width")) and integer(args.get("height")) and args["width"] in (240, 480) and args["height"] in (135, 270)
     elif name in ("actor_select", "actor_pilot"):
-        valid = keys(args, {"actor_id"}) and bounded(args.get("actor_id"), 1, 8)
+        valid = keys(args, {"actor_id"}) and bounded(args.get("actor_id"), 1, 64)
     elif name == "actor_place":
-        valid = keys(args, {"model", "x", "y"}) and args.get("model") in ("kestrel", "reference_barrel") and bounded(args.get("x"), 32, 448) and bounded(args.get("y"), 32, 224)
+        valid = keys(args, {"model", "x", "y"}) and args.get("model") in MODELS and bounded(args.get("x"), 32, 448) and bounded(args.get("y"), 32, 224)
     elif name == "actor_drive":
         valid = keys(args, {"direction", "ticks"}) and args.get("direction") in ("left", "right", "up", "down") and bounded(args.get("ticks"), 1, 16)
     elif name == "panel":
         valid = keys(args, {"panel", "open"}) and args.get("panel") == "details" and type(args.get("open")) is bool
+    else:
+        valid = expanded_action_valid(name, args)
     return None if valid else "unknown action or out-of-range arguments"
 
 
@@ -178,10 +393,19 @@ def independent_failures(tape: dict) -> list[dict]:
     failures = []
     saved = None
     saved_tick, saved_capture, saved_observation = -1, {}, {}
+    saved_material_state, saved_material_lineage = "unknown", {}
+    material_lineage = MaterialLineageEvidence(tape.get("initialization", {}))
     def check(row, name, condition, kind="gameplay"):
         if not condition:
             failures.append({"step": row["index"], "id": name, "kind": kind})
     for row in tape["steps"]:
+        first_version, last_version = adapter_version(row["before"]), adapter_version(row["after"])
+        modern_lineage = first_version == last_version == 3
+        if not first_version or not last_version or (3 in (first_version, last_version) and not modern_lineage):
+            check(row, "adapter_observation_version", False, "evidence")
+            continue
+        if modern_lineage:
+            material_lineage.record(row, check)
         if row["classification"] in {"not_applicable", "invalid_action", "adapter_failure"}:
             continue
         name, args = row["action"]["id"], row["action"]["args"]
@@ -223,7 +447,7 @@ def independent_failures(tape: dict) -> list[dict]:
                 check(row, "native_changed_accounting", receipt.get("changed") == changed)
                 check(row, "native_applied_accounting_bounds", bounded(receipt.get("applied"), changed, len(last["materials"])), "evidence")
         elif name == "camera":
-            check(row, "camera_state", after.get("camera") == {"origin": [min(args["x"], 512 - args["width"]), min(args["y"], 512 - args["height"])], "size": [args["width"], args["height"]]})
+            check(row, "camera_state", {k: after.get("camera", {}).get(k) for k in ("origin", "size")} == {"origin": [min(args["x"], 512 - args["width"]), min(args["y"], 512 - args["height"])], "size": [args["width"], args["height"]]})
         elif name == "panel":
             check(row, "panel_state", after.get("details_open") is args["open"])
         elif name == "actor_select":
@@ -255,47 +479,100 @@ def independent_failures(tape: dict) -> list[dict]:
             check(row, "actor_place_roster", len(added) == 1 and len(new_ids) == len(old_ids) + 1 and all(value in new_ids for value in old_ids))
             placed = next((actor for actor in after.get("actors", []) if actor.get("id") in added), {})
             check(row, "actor_place_model", placed.get("model") == args["model"])
-            check(row, "actor_place_position", placed.get("position") == [args["x"], args["y"]])
+            spawn = [args["x"], args["y"]]
+            root = actor_origin_root(args["model"], spawn)
+            strict = bounded(after.get("adapter_version", 1), 2, 2**31 - 1) or tape.get("header", {}).get("fixture_version", 1) >= 2
+            authoring = row.get("actor_authoring", {})
+            check(row, "actor_place_position", bool(root) and actor_point_matches(placed.get("position"), root)
+                  and (not strict or actor_point_matches(authoring.get("body", {}).get("position"), root)))
+            if strict:
+                check(row, "actor_place_authored_spawn", placed.get("authored_spawn") == spawn
+                      and authoring.get("spawn") == spawn and authoring.get("authored_after", {}).get("spawn") == spawn)
+                check(row, "actor_place_part_origins", actor_origin_parts(placed, args["model"], spawn))
             check(row, "actor_place_native_publication", end["generation"] > start["generation"])
         elif name == "actor_reset":
             check(row, "actor_reset_roster", before.get("actor_ids") == after.get("actor_ids"))
             check(row, "actor_reset_native_publication", end["generation"] > start["generation"])
+            if bounded(after.get("adapter_version", 1), 2, 2**31 - 1) or tape.get("header", {}).get("fixture_version", 1) >= 2:
+                prior = next((a for a in before.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+                actor = next((a for a in after.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+                spawn, model = prior.get("authored_spawn"), prior.get("model", "")
+                root, authoring = actor_origin_root(model, spawn), row.get("actor_authoring", {})
+                check(row, "actor_reset_authored_position", bool(root) and authoring.get("spawn") == spawn
+                      and actor.get("authored_spawn") == spawn and actor_point_matches(actor.get("position"), root)
+                      and actor_point_matches(authoring.get("body", {}).get("position"), root))
+                check(row, "actor_reset_part_origins", actor_origin_parts(actor, model, spawn))
+        elif name == "actor_move":
+            prior = next((a for a in before.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+            actor = next((a for a in after.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+            spawn, model = [args["x"], args["y"]], prior.get("model", "")
+            root = actor_origin_root(model, spawn)
+            check(row, "authored_reset_spawn_readback", actor.get("authored_spawn") == spawn)
+            check(row, "actor_move_actual_position", bool(root) and actor_point_matches(actor.get("position"), root))
+            check(row, "actor_move_part_origins", actor_origin_parts(actor, model, spawn))
+        elif name == "actor_replace":
+            prior = next((a for a in before.get("actors", []) if a.get("id") == before.get("selected_actor")), {})
+            actor = next((a for a in after.get("actors", []) if a.get("id") == before.get("next_actor_id")), {})
+            spawn, model = prior.get("authored_spawn"), args["model"]
+            root = actor_origin_root(model, spawn)
+            check(row, "actor_replacement_authored_spawn", bool(root) and actor.get("authored_spawn") == spawn)
+            check(row, "actor_replacement_position", bool(root) and actor_point_matches(actor.get("position"), root))
+            check(row, "actor_replacement_part_origins", actor_origin_parts(actor, model, spawn))
         elif name == "save_layout":
             saved = row.get("persistence", {}).get("read_authored_digest")
             check(row, "authored_save_readback", bool(saved) and saved == after.get("authored_digest"))
             saved_tick, saved_capture, saved_observation = end["tick"], row.get("persistence_capture", {}), after
+            if modern_lineage:
+                saved_material_state = material_lineage.state
+                saved_material_lineage = deepcopy(after.get("material_lineage", {}))
+                check(row, "save_material_lineage_identity", row.get("persistence", {}).get("saved_material_lineage") == saved_material_lineage, "evidence")
+                if "persistence_capture" not in row:
+                    check(row, "save_capture_evidence", False, "evidence")
             if "persistence_capture" in row:
                 state = persistence_capture_state(saved_capture, after)
                 persistence = row.get("persistence", {})
                 check(row, "save_capture_evidence", state != "invalid", "evidence")
                 check(row, "save_native_tick_identity", persistence.get("saved_native_tick") == saved_tick, "evidence")
                 check(row, "save_material_capture_identity", persistence.get("material_sha256", "") == saved_capture.get("material_sha256", ""), "evidence")
-                check(row, "save_material_applicability", persistence.get("native_material_equality_applicable") == (saved_tick == 0 and state == "completed"), "evidence")
+                compatible = saved_material_state == "authored_compatible" if modern_lineage else saved_tick == 0
+                expected = compatible and state == "completed"
+                claimed = persistence.get("native_material_equality_applicable")
+                check(row, "save_material_applicability", (claimed is expected) if modern_lineage else claimed == expected, "evidence")
         elif name == "reopen_layout":
             if saved:
                 check(row, "authored_reopen_identity", after.get("authored_digest") == saved)
             persistence = row.get("persistence", {})
+            if modern_lineage:
+                check(row, "reopen_saved_material_lineage", bool(saved_material_lineage) and persistence.get("saved_material_lineage") == saved_material_lineage, "evidence")
             saved_state = persistence_capture_state(saved_capture, saved_observation) if saved_capture else "unrecorded"
             current_state = persistence_capture_state(row.get("persistence_capture", {}), after) if "persistence_capture" in row else "unrecorded"
-            custody = True
+            custody = not modern_lineage
             if "persistence_capture" in row:
                 custody = saved_state in ("completed", "native_body_protection") and current_state in ("completed", "native_body_protection") and persistence.get("saved_capture") == saved_capture and persistence.get("saved_native_tick") == saved_tick
                 check(row, "reopen_capture_evidence", custody, "evidence")
                 check(row, "reopen_material_capture_identity", persistence.get("saved_material_sha256", "") == saved_capture.get("material_sha256", "") and persistence.get("reopened_material_sha256", "") == row["persistence_capture"].get("material_sha256", ""), "evidence")
+            if modern_lineage:
+                expected = saved_material_state == "authored_compatible" and custody and saved_state == current_state == "completed"
+                check(row, "reopen_material_applicability", persistence.get("native_material_equality_applicable") is expected, "evidence")
             if persistence.get("native_material_equality_applicable"):
-                check(row, "reopen_material_applicability", saved_tick == 0 and ("persistence_capture" not in row or custody and saved_state == current_state == "completed"), "evidence")
+                if not modern_lineage:
+                    check(row, "reopen_material_applicability", saved_tick == 0 and ("persistence_capture" not in row or custody and saved_state == current_state == "completed"), "evidence")
                 expected_materials = saved_capture.get("material_sha256", "") if "persistence_capture" in row else persistence.get("saved_material_sha256", "")
                 actual_materials = row["persistence_capture"].get("material_sha256", "") if "persistence_capture" in row else persistence.get("reopened_material_sha256", "")
                 check(row, "authored_reopen_materials", bool(expected_materials) and expected_materials == actual_materials)
             else:
                 reason = persistence.get("native_material_equality_reason", "")
-                justified = (saved_tick > 0 and reason in ("", "evolved_native_tick") and custody) or (reason == "native_body_protection" and custody and "native_body_protection" in (saved_state, current_state))
+                lineage_na = ((saved_material_state == "simulation_exposed" and reason == "simulation_exposed_lineage")
+                              or (saved_material_state == "unknown" and reason == "unknown_material_lineage"))
+                authored_na = lineage_na if modern_lineage else saved_tick > 0 and reason in ("", "evolved_native_tick")
+                justified = (authored_na and custody) or (reason == "native_body_protection" and custody and "native_body_protection" in (saved_state, current_state))
                 check(row, "reopen_material_na_evidence", justified, "evidence")
         elif name == "reset_fixture":
             check(row, "reset_authored_layout", bool(after.get("scene_identity")) and after.get("authored_digest") == after.get("scene_identity"))
             check(row, "reset_native_replacement", end["generation"] > start["generation"] and end["tick"] == 0)
             saved = None
             saved_tick, saved_capture, saved_observation = -1, {}, {}
+            saved_material_state, saved_material_lineage = "unknown", {}
     return failures
 
 
@@ -312,8 +589,9 @@ def _verify(tape: Any) -> dict:
     issue(header.get("fixture_id") in FIXTURES, "unknown fixture")
     no_installed_scene = header.get("fixture_state") == "not_installed" and not steps and summary.get("termination") in {"stopped", "initialization_failure", "fixture_failure"}
     issue(no_installed_scene or (isinstance(header.get("initial_scene_identity"), str) and bool(header.get("initial_scene_identity"))), "missing initial scene identity")
-    issue(header.get("fixture_version") == 1, "unknown fixture version")
+    issue(integer(header.get("fixture_version")) and header.get("fixture_version") in (1, 2), "unknown fixture version")
     issue(header.get("policy") in POLICIES, "unknown policy")
+    issue("pacing_ms" not in header or bounded(header["pacing_ms"], 0, 3000), "invalid recorded pacing")
     issue(bounded(header.get("seed"), -(2**31), 2**31 - 1), "seed outside signed int32")
     issue(bounded(header.get("budget"), 1, MAX_ACTIONS), "invalid action budget")
     issue(len(steps) <= MAX_ACTIONS and bounded(header.get("budget"), len(steps), MAX_ACTIONS), "too many attempted actions")
@@ -323,6 +601,8 @@ def _verify(tape: Any) -> dict:
         provenance = {}
     for key, size in (("source_commit", 40), ("source_tree", 40), ("godot_sha256", 64), ("native_sha256", 64), ("rapier_sha256", 64)):
         issue(isinstance(provenance.get(key), str) and re.fullmatch("[0-9a-f]{%d}" % size, provenance[key]) is not None, "missing exact " + key)
+    if "replay_identity" in provenance:
+        issue(valid_replay_identity(provenance), "invalid portable replay identity")
     for index, row in enumerate(steps):
         if not isinstance(row, dict):
             errors.append(f"step {index}: not an object")

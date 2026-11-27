@@ -34,6 +34,8 @@ def tape(actions, *, injected=True):
                                 "capture_before": {}, "capture_after": {}, "interval": interval,
                                 "assertions": assertions, "observation_sha256": "a" * 64, "semantic_sha256": "b" * 64})
         state = after
+    # Artificial controls follow the same terminal distinction as the game.
+    result["summary"]["termination"] = "assertion_failure" if any(item["status"] == "fail" for row in result["steps"] for item in row["assertions"]) else "budget_complete"
     result["summary"] = evidence.summarize(result)
     return result
 

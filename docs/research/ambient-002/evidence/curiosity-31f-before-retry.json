@@ -1,0 +1,11 @@
+{
+  "path": "docs/research/ambient-002/evidence/curiosity-31f-before-retry.zip",
+  "bytes": 692405,
+  "sha256": "ba12c7738c9328666a51e5fb3ff5066af760f95c588b4ccfcd1c61195924644f",
+  "git_blob": "5a1a4f93123bb8a928f3d48952a451ff93bfe3ce",
+  "files": 29,
+  "completed_episodes": 5,
+  "incomplete_attempts": 1,
+  "diagnostic_source": "31f8ecf8b6d8821740b545e046501f90c86e06f3",
+  "application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45"
+}

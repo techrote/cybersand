@@ -1,0 +1,63 @@
+{
+  "schema": "ambient-002-specialist-b-home-recharge-source-review/v1",
+  "status": "STATIC_REVIEW_PASS_PENDING_RUNTIME_QUALIFICATION",
+  "reviewed_at_utc": "2026-11-25T05:09:33.539446+00:00",
+  "baseline_application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "baseline_engine_sha256": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2",
+  "baseline_engine_identity_check": "The fetched exact a725 engine text hashes to the loaded-project hash in the retained final graphical qualification receipt.",
+  "candidate_files_reviewed": {
+    "godot/scripts/ambient/ambient_engine.gd": {
+      "sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7",
+      "git_blob": "68081cf688e329284a3eed6dafbc136c04f66699",
+      "bytes": 21342
+    },
+    "godot/tests/test_ambient_living_engine.gd": {
+      "sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2",
+      "git_blob": "33248ba63eb849f4654982b52dd008741fbd170c",
+      "bytes": 35608
+    }
+  },
+  "production_diff": "One 16-line helper selects a validated arrival radius from the exact previously selected seek_home_drive home_rest module; one existing at_home expression calls it. No other ambient_engine.gd line differs.",
+  "editor_diff": {
+    "path": "godot/scripts/ambient/ambient_profile_editor.gd",
+    "before_git_blob": "f388bc953ef74782d5f2832fe7a53def1df18a2f",
+    "after_git_blob": "0193879f2232de2659af5734a9aeb9be74577385",
+    "changed_lines": 1,
+    "before_words": "exploration and rest drives",
+    "after_words": "exploration and social drives",
+    "scope": "Exactly one word changed in help text; every other line is equal."
+  },
+  "reviewed_invariants": [
+    "The engine updates drives before current arbitration, so using the previous admitted selection refers to the completed interval rather than an unexecuted new proposal.",
+    "The selected module ID must equal selected_goal, have home_rest phase and have no active override. Its cached validated definition must be seek_home_drive, enabled and positively weighted.",
+    "A second unselected home instance cannot lend a larger radius. Selected smaller radii also govern containment after drift, rather than silently expanding to the ordinary default.",
+    "Current copied position is checked against the existing effective home: horizontal displacement for ground and two-axis distance for flight.",
+    "Ordinary neutral behavior and unrelated resource-rest overrides retain the existing 16-cell condition. Actual energy, native motion and actuator paths are unchanged.",
+    "Drives-disabled behavior, clamping, same-tick inspection and existing World/profile reset paths remain intact.",
+    "The focused regression function is invoked by the test runner and covers exact boundary/outside drift, two named home instances, disabled/zero-weight modules, actual-resource override, ordinary neutral radius, ground/flight geometry, disabled drives, cap, duplicate sampling and World/profile reset.",
+    "Primary geometric home metrics retain their separate 40/16-cell definitions; no reducer, registry, preset, scene geometry or native/runtime change belongs to this correction."
+  ],
+  "observation_gap_scope": "Existing completed-time drive integration is deliberately preserved. It uses elapsed simulation time, prior intent and current copied containment; it does not establish uninterrupted physical rest across missing observations. Phase dwell retains its separate continuity rule.",
+  "negative_baseline": {
+    "observer_source": "2eea3dbb921058db418fbb243b4abc493cddbdb9",
+    "report_sha256": "241b442f92b4564b844b47c2c0f4d09ec6ddc42c940f6a8322a6b4890d3db466",
+    "home_arrival_radius_cells": 20,
+    "previous_recharge_radius_cells": 16,
+    "sampled_home_rest_seconds": [
+      48,
+      49,
+      50,
+      51
+    ],
+    "settled_distance_cells": 16.489544288749375,
+    "exploration_at48": 0.313915000000021,
+    "exploration_at51": 0.298981000000022
+  },
+  "physical_prediction": "A fresh source-bound repetition should increase exploration drive during an actually selected home_rest interval when current copied distance remains within its authored 20-cell radius. This predicts neither guaranteed arrival at an unreachable home nor a 16-cell geometric return.",
+  "scope_limits": [
+    "This review executed no Godot or native process. Local/hosted test and physical results require their own original receipts.",
+    "The approved loaded-project change set is exactly the engine, its living-engine test and the independently checked editor help word.",
+    "A later candidate file change is not covered by these byte identities."
+  ],
+  "remaining_source_review_objections": []
+}

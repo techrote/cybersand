@@ -1,0 +1,21 @@
+{
+  "schema": "cybersand-goblin-discovery-qualification-request-v1",
+  "mission": "GIP-014-goblin-002",
+  "request": 11,
+  "predecessor": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+  "previous_source": "4050bc31526558cb99024251d29ec1183c086d6a",
+  "previous_run": 45563325767,
+  "linux_plan": "long",
+  "plan": "All Linux focused, authored-lineage, regression-export, graphical and seven-episode memory gates, followed by the existing eight-episode long plan at128/256/512/1024actions. All Windows source, extracted-package, authored-lineage and final sealing gates.",
+  "comparative_campaign": "The142-episode comparison at5ee remains its own independently reviewed exact-source cohort. Requests9and10 did not reach memory or long execution because of standalone native test-fixture defects. Request11 repeats the registered8long and7memory episodes after the minimal full-provenance comparator repair. No142comparison rerun or pooling of state-v1/v2 coverage is claimed.",
+  "changes": "Repair only the standalone authored-lineage gate full-field provenance comparison to use the documented transcript integral-number representation; add14 separate artificial mutation/representation controls. Request10 completed20actual actions on each platform with zero runtime assertion failures, but its four source checks rejected105/105.0,4/4.0 and956/956.0 counts. Preserve the original failures and unchanged gameplay adapter, material history, independent oracles, package acceptance, actions and coverage definitions. Repeat the same both-platform scope.",
+  "disposition": "Draft/HOLD; no Ready promotion, merge, default activation or physical NVIDIA acceptance",
+  "evidence": "Retain every attempted process; production defects require independent reproduction and examination",
+  "memory_experiment": "One actual Control64 cultivation supplies an unchanged corpus; two matched seeds compare fresh, imported hints, and explicit four-action prefix reuse in six Coverage Hunter64 episodes. Historical observations never count as fresh coverage.",
+  "platforms": [
+    "linux",
+    "windows"
+  ],
+  "before_case": "The unchanged070 diagnostic independently reproduced the old oracle failure with9completed actions and20qualified source boundaries. Preserve the exact five-action failing tape and all earlier incomplete attempts; classify it as a test-oracle defect, not a production gameplay defect.",
+  "package_contract": "Version3 requires four actual native lineage cases and their20action tapes in the extracted evaluator. Legacy contract2 remains readable; same-source replay identity rules remain unchanged."
+}

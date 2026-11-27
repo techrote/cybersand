@@ -1,0 +1,147 @@
+{
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "all_png_hashes_verified": true,
+  "visually_inspected_png_count": 29,
+  "images_sha256": {
+    "ambient-behaviour-profile-editor.png": "d1e8298ffa714d9c32c01e3784c3ee40b6bab1537eaa5cabb13486427c2e76c3",
+    "ambient-flight-authored.png": "c823e9ab54b33afd8e240151a9d423504bf8cb87179a1841c838117013801267",
+    "ambient-flight-playing.png": "2eacae8fd1f96a6fedcf8886822cbd96e9c82a6393d1e32293f55a7f5a3d9720",
+    "ambient-industrial-yard-authored.png": "7f1af2e2c5cb1e53662c66c7d3d82783c511760296ef3aad41986b0a70a95917",
+    "ambient-industrial-yard-playing.png": "6a44dc248590ddfb233092987493fc7e4e95b84d3da08884f99296623a466a98",
+    "ambient-ledge-walkway-authored.png": "5c82a8bb6b7e5b72b07fe35f294143be1e40c1892fd5db3e194480c9c5e00370",
+    "ambient-ledge-walkway-playing.png": "e35ebb9ad8d4dd60a812854eff7e5908932d29c73cf68d0479c69d957cf8571c",
+    "ambient-oil-water-authored.png": "06d51b11db1bd5f68e9acffd7091943404b48601ad429bdc32cc3761fd9f6abf",
+    "ambient-oil-water-overlay.png": "5446da61c29028e69ce89e6e0fd3033744a0b354c169c19e59484a94f73056b0",
+    "ambient-oil-water-playing.png": "aaa624874e67051837d919c0077cea01b5341eba935b42d27178887d49a96e42",
+    "ambient-settlement-authored.png": "dfe141c90ce5cf05f7d204cdbaab35ea2bad21cc5e9e28dbc074627b08da03c3",
+    "ambient-settlement-playing.png": "694e2371812f96fc4dd111fb318289c62b1a59fdc89782198ec7e3a3f6980390",
+    "ambient2-aerial-habitat-authored.png": "5140500019dac585ac626d1fc3cdcfe43d6e5f66cd42009865d93bfce8094e03",
+    "ambient2-aerial-habitat-playing.png": "1016714256017fb45509d1f4246044ab57539204cc715835fda6c451e94f90dc",
+    "ambient2-behaviour-profile-editor.png": "fd83cc8e059de804423fe84a4d89907120f741a11c45285cb99f9d3ff5ac13ce",
+    "ambient2-cavern-authored.png": "dd680f641bd40037e47784134d9bd580576cbe9c3f973e0a1341853272465f0e",
+    "ambient2-cavern-playing.png": "46c17a717885d7f74523a035f6627aafea3d26a55baf9ef99b815f4a0eb21d81",
+    "ambient2-courtyard-authored.png": "e42e122ab91745242ec4143f7cf7c4cb1e3c20bd758b53475307d57f0313ab5f",
+    "ambient2-courtyard-playing.png": "dda993dd9263ea9cc3cec74706503ab11fd1354c826bd7c294366e4efb52113a",
+    "ambient2-floodyard-authored.png": "6c899c61859df3402f7af3e91c2b0667a4e99c990e184ef029b9623a3386d09f",
+    "ambient2-floodyard-playing.png": "11e87eb4c673340dba76ec7ec2e8683cc1de7462588fc6f80428f73bc13651d3",
+    "ambient2-library-and-group.png": "8e24aaf3565ba4665b5a782644d44dbd62640d7c166fbe80ccbcc37964cc9876",
+    "ambient2-personality-settings.png": "2981924af3078c24417f9bc5f5645ebc0d4a140b96fb12d215dcd08c27de4719",
+    "ambient2-places-and-peers.png": "8ca2e25759967a408ebed75635808dc11eb09a19d2d6bbc276ef7f579f2809a6",
+    "ambient2-refinery-authored.png": "b5838d3048524dc141351d7586de4b570c9e2d656f982ce2463289dfc47219de",
+    "ambient2-refinery-playing.png": "140fc4c206057fa9c71fd490a2bd10696f5e0720d56d4252a20591feee3904b7",
+    "ambient2-settlement-authored.png": "dc36211ee42aa315e44e8c59295c1923e2d178364d2004fe0ff6f2a6bbf36a91",
+    "ambient2-settlement-overlay.png": "2a3de721aec8f095d417ccfbe6fb1e5cd5a44acf0295b6239b2b1ec0b300b790",
+    "ambient2-settlement-playing.png": "6e02152ab4665d2734cbe42c7eb8916805b747508a60997f302d593da5298629"
+  },
+  "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "rendering_method": "gl_compatibility",
+  "physical_display_acceptance": false,
+  "new_scene_playing_captures": [
+    {
+      "image": "ambient2-settlement-playing.png",
+      "actual_actors": 8,
+      "native_tick": 121,
+      "physical_tick": 121,
+      "rendered_actor_frame": {
+        "available": true,
+        "epoch": 6,
+        "mode": "matched uploaded material",
+        "revision": 741,
+        "sample_tick": 120,
+        "session": 6,
+        "tick": 121,
+        "world_generation": 8
+      }
+    },
+    {
+      "image": "ambient2-refinery-playing.png",
+      "actual_actors": 6,
+      "native_tick": 121,
+      "physical_tick": 121,
+      "rendered_actor_frame": {
+        "available": true,
+        "epoch": 7,
+        "mode": "matched uploaded material",
+        "revision": 1336,
+        "sample_tick": 120,
+        "session": 7,
+        "tick": 121,
+        "world_generation": 9
+      }
+    },
+    {
+      "image": "ambient2-cavern-playing.png",
+      "actual_actors": 6,
+      "native_tick": 121,
+      "physical_tick": 121,
+      "rendered_actor_frame": {
+        "available": true,
+        "epoch": 8,
+        "mode": "matched uploaded material",
+        "revision": 1572,
+        "sample_tick": 120,
+        "session": 8,
+        "tick": 121,
+        "world_generation": 10
+      }
+    },
+    {
+      "image": "ambient2-courtyard-playing.png",
+      "actual_actors": 8,
+      "native_tick": 121,
+      "physical_tick": 121,
+      "rendered_actor_frame": {
+        "available": true,
+        "epoch": 9,
+        "mode": "matched uploaded material",
+        "revision": 1575,
+        "sample_tick": 120,
+        "session": 9,
+        "tick": 121,
+        "world_generation": 11
+      }
+    },
+    {
+      "image": "ambient2-floodyard-playing.png",
+      "actual_actors": 6,
+      "native_tick": 121,
+      "physical_tick": 121,
+      "rendered_actor_frame": {
+        "available": true,
+        "epoch": 10,
+        "mode": "matched uploaded material",
+        "revision": 1950,
+        "sample_tick": 120,
+        "session": 10,
+        "tick": 121,
+        "world_generation": 12
+      }
+    },
+    {
+      "image": "ambient2-aerial-habitat-playing.png",
+      "actual_actors": 6,
+      "native_tick": 121,
+      "physical_tick": 121,
+      "rendered_actor_frame": {
+        "available": true,
+        "epoch": 11,
+        "mode": "matched uploaded material",
+        "revision": 1952,
+        "sample_tick": 120,
+        "session": 11,
+        "tick": 121,
+        "world_generation": 13
+      }
+    }
+  ],
+  "observations": [
+    "All 29 original PNGfiles were opened for visual inspection; no synthetic reconstruction or generated replacement image was used.",
+    "The six new environments are legible orthographic native scenes with differentiated industrial, cavern, courtyard, flood and aerial layouts.",
+    "The authored/playing pairs show actual actor pose changes; flood-yard and predecessor industrial-yard material flow visibly changes.",
+    "Module catalogue, personality settings, authored places/peer tags, library/group assignment and staged Apply/Revert controls are visible and legible.",
+    "Intent overlays identify the selected actor, sampled radius and authored home/interest/avoid regions; these overlays do not imply global knowledge.",
+    "Actor labels can overlap in the crowded courtyard at Overview scale; Focus and zoom are useful for close observation.",
+    "The six new playing snapshots each reach 121 native and physical ticks, about 2 seconds, and therefore do not establish sustained entertainment or owner hardware playfeel.",
+    "The archived baseline catalogue timeline uses 22 labels with 20 colors, causing two repeated colors. The integrator corrected the palette separately for the later candidate; these original plots remain unmodified."
+  ]
+}

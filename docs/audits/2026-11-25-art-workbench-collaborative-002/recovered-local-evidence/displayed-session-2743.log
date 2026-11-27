@@ -1,0 +1,192 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ART_COLLAB_SESSION_CHECK ordinary Workbench ready true
+ART_COLLAB_SESSION_CHECK explicit owner brief applies true
+ART_COLLAB_SESSION_CHECK opening collaborative Art makes no model or HTTP request true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK native inspection is bounded and read-only true
+ART_COLLAB_SESSION_CHECK paced direct interval owns transport admission even while its provider is idle true
+ART_COLLAB_SESSION_CHECK pending direct run also excludes collaborative capture and offline admission true
+ART_COLLAB_SESSION_CHECK ordinary Stop releases the direct-run admission fence true
+ART_COLLAB_SESSION_CHECK unavailable palette refuses without replacing owner brief true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK discuss one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK discuss never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK discuss reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK discussion remains ordinary prose and has no executable proposal true
+ART_COLLAB_SESSION_CHECK admitted discussion retains complete user and assistant messages true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK discuss one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK discuss never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK discuss reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK second discussion sends the first acknowledged exchange in bounded session memory true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK propose one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK propose never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK propose reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK provider proposal produces one zero-write preview true
+ART_COLLAB_SESSION_CHECK stage count is host compiled; no automatic execution true
+ART_COLLAB_SESSION_CHECK collaborative approval refuses during a retained direct timer true
+ART_COLLAB_SESSION_CHECK context inspector discloses the normalized proposal supplied to Develop true
+ART_COLLAB_SESSION_CHECK explicit owner approval queues exactly one finite stage true
+ART_COLLAB_SESSION_CHECK approved stage and native readback retire true
+ART_COLLAB_SESSION_CHECK actual receipt and complete native plane match prediction true
+ART_COLLAB_SESSION_CHECK first approval stops at stage boundary true
+ART_COLLAB_SESSION_CHECK actual native readback admitted true
+ART_COLLAB_SESSION_CHECK actual native readback finishes true
+ART_COLLAB_SESSION_CHECK unapproved second stage remains unbuilt true
+ART_COLLAB_SESSION_CHECK explicit owner approval queues exactly one finite stage true
+ART_COLLAB_SESSION_CHECK approved stage and native readback retire true
+ART_COLLAB_SESSION_CHECK actual receipt and complete native plane match prediction true
+ART_COLLAB_SESSION_CHECK second independent approval completes native composition true
+ART_COLLAB_SESSION_CHECK execution reports actual completed geometry true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK review one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK review never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK review reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK review context contains actual acknowledged native receipts true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK discuss one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK discuss never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK discuss reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK displayed image admits only the selected native canvas mapping true
+ART_COLLAB_SESSION_CHECK rendered image obeys its bounded pixel envelope true
+ART_COLLAB_SESSION_CHECK explicitly admitted canvas image reaches the actual loopback transport true
+ART_COLLAB_SESSION_CHECK admitted image retains its original session audit reference true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK new image-free disclosure clears both transport bytes and prior thumbnail true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK develop one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK develop never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK develop reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK Develop retains revision lineage true
+ART_COLLAB_SESSION_CHECK Develop cannot discard explicit owner constraints true
+ART_COLLAB_SESSION_CHECK explicit owner approval queues exactly one finite stage true
+ART_COLLAB_SESSION_CHECK approved stage and native readback retire true
+ART_COLLAB_SESSION_CHECK actual receipt and complete native plane match prediction true
+ART_COLLAB_SESSION_CHECK revision adds only actual new cells true
+ART_COLLAB_SESSION_CHECK native Undo is available after verified stage true
+ART_COLLAB_SESSION_CHECK Undo uses existing PAINT history authority true
+ART_COLLAB_SESSION_CHECK native Undo completes true
+ART_COLLAB_SESSION_CHECK actual native readback admitted true
+ART_COLLAB_SESSION_CHECK actual native readback finishes true
+ART_COLLAB_SESSION_CHECK Undo restores cells and invalidates pending proposal true
+ART_COLLAB_SESSION_CHECK Redo uses existing native history authority true
+ART_COLLAB_SESSION_CHECK native Redo completes true
+ART_COLLAB_SESSION_CHECK actual native readback admitted true
+ART_COLLAB_SESSION_CHECK actual native readback finishes true
+ART_COLLAB_SESSION_CHECK Redo restores the verified authored result true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK conflicting proposal remains inspectable true
+ART_COLLAB_SESSION_CHECK conflicting preview completes true
+ART_COLLAB_SESSION_CHECK protected native cells refuse exact preview true
+ART_COLLAB_SESSION_CHECK conflicted preview cannot acquire native execution true
+ART_COLLAB_SESSION_CHECK fresh unexecuted revision admitted true
+ART_COLLAB_SESSION_CHECK finite collaboration preview finishes true
+ART_COLLAB_SESSION_CHECK exact native preview is ready true
+ART_COLLAB_SESSION_CHECK ordinary manual native drawing remains possible with Art open true
+ART_COLLAB_SESSION_CHECK relevant manual source edit marks proposal stale true
+ART_COLLAB_SESSION_CHECK obsolete plan refuses after manual edit true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK large finite construction admits true
+ART_COLLAB_SESSION_CHECK finite collaboration preview finishes true
+ART_COLLAB_SESSION_CHECK exact native preview is ready true
+ART_COLLAB_SESSION_CHECK Stop retains and retires acknowledged native prefix true
+ART_COLLAB_SESSION_CHECK Stop reports partial actual work without claiming whole stage true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK continuation recompiles against fresh complete native plane true
+ART_COLLAB_SESSION_CHECK finite collaboration preview finishes true
+ART_COLLAB_SESSION_CHECK exact native preview is ready true
+ART_COLLAB_SESSION_CHECK continuation accounts for the acknowledged prefix true
+ART_COLLAB_SESSION_CHECK explicit owner approval queues exactly one finite stage true
+ART_COLLAB_SESSION_CHECK approved stage and native readback retire true
+ART_COLLAB_SESSION_CHECK actual receipt and complete native plane match prediction true
+ART_COLLAB_SESSION_CHECK actual native readback admitted true
+ART_COLLAB_SESSION_CHECK actual native readback finishes true
+ART_COLLAB_SESSION_CHECK freshly approved continuation completes actual native region true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK finite readback-cancellation case admits true
+ART_COLLAB_SESSION_CHECK finite collaboration preview finishes true
+ART_COLLAB_SESSION_CHECK exact native preview is ready true
+ART_COLLAB_SESSION_CHECK Stop before verification retires native result true
+ART_COLLAB_SESSION_CHECK completed-but-unverified receipt is retained exactly once true
+ART_COLLAB_SESSION_CHECK unverified readback preserves actual completed work and its cancellation reason true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK reentrant approval fixture admits true
+ART_COLLAB_SESSION_CHECK finite collaboration preview finishes true
+ART_COLLAB_SESSION_CHECK exact native preview is ready true
+ART_COLLAB_SESSION_CHECK proposal replacement during approval audit invalidates the old approval before native admission true
+ART_COLLAB_SESSION_CHECK finite collaboration preview finishes true
+ART_COLLAB_SESSION_CHECK exact native preview is ready true
+ART_COLLAB_SESSION_CHECK replacement proposal retains its own identity after reentry true
+ART_COLLAB_SESSION_CHECK explicit owner approval queues exactly one finite stage true
+ART_COLLAB_SESSION_CHECK approved stage and native readback retire true
+ART_COLLAB_SESSION_CHECK actual receipt and complete native plane match prediction true
+ART_COLLAB_SESSION_CHECK actual native readback admitted true
+ART_COLLAB_SESSION_CHECK actual native readback finishes true
+ART_COLLAB_SESSION_CHECK superseded geometry never entered the native World true
+ART_COLLAB_SESSION_CHECK real loopback fixture binds true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK actual fixture HTTP connection true
+ART_COLLAB_SESSION_CHECK actual deterministic HTTP response delivered true
+ART_COLLAB_SESSION_CHECK propose one complete transport/preview lifecycle true
+ART_COLLAB_SESSION_CHECK propose never enters legacy completion-to-paint true
+ART_COLLAB_SESSION_CHECK propose reply and preview have zero native writes true
+ART_COLLAB_SESSION_CHECK malformed response preserves existing proposal and original reply true
+ART_COLLAB_SESSION_CHECK context observation finishes true
+ART_COLLAB_SESSION_CHECK inspector holds exact fresh native source true
+ART_COLLAB_SESSION_CHECK external context is never sent without exact owner authorization true
+ART_COLLAB_SESSION_CHECK owner context exclusions rebuild disclosure true
+ART_COLLAB_SESSION_CHECK disabled native details and knowledge are absent from admitted model context true
+ART_COLLAB_SESSION_CHECK eventual request guard admits current native source and policy true
+ART_COLLAB_SESSION_CHECK eventual request guard refuses changed focus even without World mutation true
+ART_COLLAB_SESSION_CHECK each summarized turn respects its complete bound including omission marker true
+ART_COLLAB_SESSION_CHECK each summarized turn respects its complete bound including omission marker true
+ART_COLLAB_SESSION_CHECK each summarized turn respects its complete bound including omission marker true
+ART_COLLAB_SESSION_CHECK each summarized turn respects its complete bound including omission marker true
+ART_COLLAB_SESSION_CHECK reviewable conversation memory has a finite total budget true
+ART_COLLAB_SESSION_CHECK bounded request memory never truncates admitted originals true
+ART_COLLAB_SESSION_CHECK all deterministic actual HTTP exchanges have one exclusive consumer each true
+ART_COLLAB_SESSION_CHECK redacted audit retains explicit stage approval records true
+ART_COLLAB_SESSION_CHECK World replacement admitted through ordinary Workbench true
+ART_COLLAB_SESSION_CHECK replacement native World acknowledged true
+ART_COLLAB_SESSION_CHECK World replacement invalidates proposals while preserving current-session conversation true
+ART_COLLAB_SESSION_CHECK retired World proposal cannot execute in replacement World true
+ART_COLLABORATION_SESSION_RESULT {"checks":184,"evidence_kind":"ordinary Workbench, deterministic real loopback HTTP and actual native material operations","failures":[],"http_requests":7,"model_calls":0,"ordinary_completions":0,"outcomes":[{"kind":"two-stage construction","receipts":[{"batch_sequence":1,"changed":48,"checked":48,"excluded":0,"human_admitted":0,"human_pending":0,"human_refused":0,"materials_sha256":"fd156ad7166ac04276f0af196898ae48abbbcd1f2bb99f4b49301b87bc3bc1fd","observed_source":{"authoring_generation":1,"generation":2,"revision":50,"tick":0},"proposal_digest":"dad73e0d9c3b4c1de50264bcbabbd01d87d9ab400890c5979ca99f1520e4665f","reason":"","refused":0,"stage":"structure","status":"completed","unchanged":0,"verified":true},{"batch_sequence":2,"changed":24,"checked":24,"excluded":0,"human_admitted":0,"human_pending":0,"human_refused":0,"materials_sha256":"79308aecc555ef78643d0c83f8cf6ae017fd94cc9163d5994dcf1a69e752e8c8","observed_source":{"authoring_generation":1,"generation":2,"revision":74,"tick":0},"proposal_digest":"dad73e0d9c3b4c1de50264bcbabbd01d87d9ab400890c5979ca99f1520e4665f","reason":"","refused":0,"stage":"detail","status":"completed","unchanged":0,"verified":true}]},{"kind":"stopped prefix","receipt":{"batch_sequence":4,"changed":4096,"checked":4096,"excluded":0,"human_admitted":0,"human_pending":0,"human_refused":0,"proposal_digest":"7986a649dcc63d0fa9bb1ba09a4c3a2a38820e0c46865402efca2a9b070c460d","reason":"Owner Stop after acknowledged native prefix","refused":0,"stage":"structure","status":"partial","unchanged":0,"verified":false}}]}
