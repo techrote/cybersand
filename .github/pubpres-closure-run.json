@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "water-focus",
-  "purpose": "Verify the corrected first-read Water controls in both separate renderer modes and normal multipart startup at the workshop extent using the retained exact e17 Windows runtime.",
+  "phase": "delivery",
+  "purpose": "Build and ship the exact Stock Safe Windows evaluator with verified receipt directory and PowerShell policy comparison; run accepted-frame and Water gates, independent build02 calibration and six arms, and matched N/C/C/N with all-worker completion.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "6f743db88637b24fd243e2a2bda660fc5df0ed26b109343563b7ebdcc2476bdb",
+  "payload_sha256": "91bf62583f80f5dfe575601eb9f040fb311d29c2bb00ae920fb1f60f1035f00d",
   "physical_acceptance": "HOLD"
 }
