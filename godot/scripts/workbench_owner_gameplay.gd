@@ -18,8 +18,9 @@ const FIELDS := {
 	"hold":["type","usec","process_frame","physics_frame","session","epoch","physics_world","step","reason","paused","wanted_sample","completed_sample","native_tick","worker_handoff_usec","required_hard_revision","packet_hard_revision","queued_hard_revision","pending_chunks"],
 	"upload":["type","completed_usec","start_usec","process_frame","world","revision","render_serial","material_tick","generated_usec","native_completed_usec","patch_bytes"],
 	"presentation":["type","usec","process_frame","boundary","local_presentation_serial","submission_serial","session","epoch","material_world","revision","render_serial","material_tick","mask_sample_tick","physical_step","paused","camera_mode","camera_xy","view_wh","extent_wh","pilot_slot","whole_frame_valid","whole_frame_reason","resolve_usec","upload_cache_usec","total_bodies","total_parts","scanned_parts","bodies"],
-	"body":["body_slot","body_instance","generation","actor_instance","actor_slot","part_index","selected_pose","overlay_part","source","reason","selected_step","selected_completed_usec","hold_age_usec","world_xy","inside_camera_center","selected_angle_rad","water_composed","flight_command_live","flight_desired_velocity_xy","swept_crop_opaque_texel"],
+	"body":["body_slot","body_instance","generation","actor_instance","actor_slot","part_index","selected_pose","overlay_part","source","reason","selected_step","selected_completed_usec","hold_age_usec","world_xy","inside_camera_center","selected_angle_rad","water_composed","flight_command_live","flight_desired_velocity_xy","swept_crop_opaque_texel","contact_guard"],
 	"swept_crop_opaque_texel":["x","y","current_material","previous_material"],
+	"contact_guard":["cells_at_entry","remaining_usec","scanned_cells","result"],
 	"draw":["type","usec","callback_process_frame","frames_drawn_at_delivery","render_thread_inline","inline_last_local_presentation_serial"],
 	"loss":["type","last_drop_usec","first_drop_usec","dropped_counts_by_type"],
 	"close":["type","usec"]
@@ -152,6 +153,7 @@ func presentation(host: Node, frame: Dictionary, boundary: String) -> void:
 	var view := Vector2i(frame.view_size)
 	var camera_rect := Rect2(camera,Vector2(view))
 	var contact_cells: Dictionary = frame.get("contact_cells",{})
+	var contact_budget: Dictionary = frame.get("contact_budget",{})
 	for slot in range(mini(members.size(),BODY_LIMIT)):
 		var member: Dictionary = members[slot]
 		var pose: Variant = frame.poses.get(slot)
@@ -164,13 +166,17 @@ func presentation(host: Node, frame: Dictionary, boundary: String) -> void:
 		if contact_cells.has(slot):
 			var witness: Dictionary = contact_cells[slot]
 			texel = [witness.cell.x,witness.cell.y,witness.current_id,witness.previous_id]
+		var guard: Variant = null
+		if member.actor_slot == host.shared_workbench.pilot_slot and member.part_index == 0 and contact_budget.has(slot):
+			var usage: Dictionary = contact_budget[slot]
+			guard = [usage.cells_before,usage.remaining_usec,usage.contact_cells,usage.contact_reason]
 		bodies.append([slot,member.instance_id,member.generation,member.actor_instance_id,member.actor_slot,
 			member.part_index,selected,part_status,frame.sources.get(slot,"hidden"),
 			frame.reasons.get(slot,frame.reason),frame.selected_steps.get(slot,-1),
 			observed.get("completed_usec",-1),frame.hold_age_usec.get(slot,-1),
 			[pose.origin.x,pose.origin.y] if selected else null,camera_rect.has_point(pose.origin) if selected else null,
 			pose.get_rotation() if selected else null,frame.water_proofs.has(slot),
-			first_part.get("flight_live"),[intent.x,intent.y] if intent is Vector2 else null,texel])
+			first_part.get("flight_live"),[intent.x,intent.y] if intent is Vector2 else null,texel,guard])
 	_presentation_serial += 1
 	_append(["presentation",Time.get_ticks_usec(),Engine.get_process_frames(),boundary,_presentation_serial,frame.get("submission_serial",-1),
 		frame.session,frame.epoch,frame.world_generation,frame.material_revision,frame.upload_serial,

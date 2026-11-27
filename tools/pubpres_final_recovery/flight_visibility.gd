@@ -125,6 +125,13 @@ func _flight_pixels(slot: int) -> Dictionary:
 func _exercise() -> void:
 	var ui: Control = app.shared_workbench
 	var session: Variant = app.physical_actor_session
+	var require_fire := OS.get_environment("CYBERSAND_FLIGHT_THRUSTER_FIRE") == "1"
+	if require_fire:
+		ui._fire.button_pressed = true
+		if not ui.fire_enabled or not ui.applied.fire:
+			push_error("Workbench Thruster fire control did not enable")
+			quit(3)
+			return
 	if not ui.pilot_instance(1) or not app.paused or not ui.toggle_pause():
 		push_error("Ordinary pilot or Play refused")
 		quit(3)
@@ -158,6 +165,8 @@ func _exercise() -> void:
 	var patrol := seconds > COMPARISON_SECONDS
 	var held := {}
 	var airborne_draws := 0
+	var last_nozzle_tick := {}
+	var observed_fire_writes := 0
 	var last_camera := Vector2.INF
 	var camera_travel := 0.0
 	var camera_moved_draws := 0
@@ -189,6 +198,14 @@ func _exercise() -> void:
 		if pose.origin.y > 40 and pose.origin.y < start.origin.y + 20:
 			airborne_draws += 1
 		var frame: Dictionary = app.workbench_presentation_frame
+		if require_fire:
+			for nozzle: Dictionary in app.tower_context.get("workbench_emitters",[]):
+				if nozzle.get("instance_id") == 1 and nozzle.get("epoch") == session.bridge._epoch \
+						and nozzle.get("material") == 6 and int(nozzle.get("changed_cells",0)) > 0 \
+						and nozzle.get("nozzle") in ["main-fire","side-fire"]:
+					if int(nozzle.tick) > int(last_nozzle_tick.get(nozzle.nozzle,-1)):
+						last_nozzle_tick[nozzle.nozzle] = nozzle.tick
+						observed_fire_writes += 1
 		var camera: Vector2 = frame.camera_origin
 		if last_camera.is_finite():
 			var pan := camera.distance_to(last_camera)
@@ -235,6 +252,7 @@ func _exercise() -> void:
 		for draw in range(4): await RenderingServer.frame_post_draw
 		step_ok = step_ok and not ui.step_pending and session.tick == paused_step+1
 	var report := {"scene":scene_name,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"thruster_fire":ui.fire_enabled,"observed_fire_writes":observed_fire_writes,
 		"elapsed_usec":elapsed,"physical_steps":steps,"flight_seconds_per_wall_second":steps/60.0/(elapsed/1000000.0),
 		"travel_cells":travel,"moved_draws":moved_draws,"camera_travel_cells":camera_travel,"camera_moved_draws":camera_moved_draws,
 		"sampled_draws":samples.size(),"hidden_draws":hidden,
@@ -251,4 +269,5 @@ func _exercise() -> void:
 	quit(0 if steps >= 12 and travel > 2.0 and moved_draws >= 6 and dry_hidden == 0 and invalid_frames == 0
 		and (not patrol or (hidden == 0 and camera_travel > 32.0 and camera_moved_draws > samples.size()*0.1
 			and moved_draws > samples.size()*0.75 and airborne_draws > samples.size()*0.9))
+		and (not require_fire or observed_fire_writes > 0)
 		and pause_ok and step_ok and (not pixels_requested or not pixels.is_empty()) else 1)
