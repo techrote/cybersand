@@ -65,6 +65,7 @@ func _flight_pixels(slot: int) -> Dictionary:
 	_key(KEY_D,true)
 	_key(KEY_W,true)
 	var deadline := Time.get_ticks_msec()+5000
+	var first_read := true
 	while Time.get_ticks_msec() < deadline:
 		await RenderingServer.frame_post_draw
 		var frame: Dictionary = app.workbench_presentation_frame
@@ -76,6 +77,7 @@ func _flight_pixels(slot: int) -> Dictionary:
 		var image: Image = root.get_texture().get_image()
 		var scale := Vector2(image.get_size())/root.get_visible_rect().size
 		var hits: Array = []
+		var diagnostic: Array = []
 		for part: Dictionary in overlay._parts:
 			if int(part.get("physical_body_index",part.get("water_body_index",-1))) != slot \
 					or part.get("water_composed",false): continue
@@ -86,6 +88,10 @@ func _flight_pixels(slot: int) -> Dictionary:
 			var area := Rect2i(box.abs().grow(1)).intersection(Rect2i(Vector2i.ZERO,image.get_size()))
 			if area.get_area() > 10000: continue
 			var fill: Color = Color(part.color).darkened(0.18)
+			if first_read:
+				var at := Vector2i(box.get_center())
+				var rgb := image.get_pixelv(at) if Rect2i(Vector2i.ZERO,image.get_size()).has_point(at) else Color.BLACK
+				diagnostic.append({"part":part.part_id,"polygon":str(polygon),"fill":fill.to_html(),"centre":rgb.to_html()})
 			for y in range(area.position.y,area.end.y):
 				for x in range(area.position.x,area.end.x):
 					if not Geometry2D.is_point_in_polygon(Vector2(x+0.5,y+0.5),polygon): continue
@@ -96,6 +102,12 @@ func _flight_pixels(slot: int) -> Dictionary:
 						if hits.size() >= 8: break
 				if hits.size() >= 8: break
 			if hits.size() >= 8: break
+		if first_read and hits.size() < 2:
+			var first_path := receipt_path.get_base_dir().path_join("unmatched-moving-draw.png")
+			image.save_png(first_path)
+			print("FLIGHT_FIRST_PIXEL_DRAW ",JSON.stringify({"expected":diagnostic,"pose":str(pose),
+				"frame":frame.reasons[slot],"source":frame.sources[slot],"size":str(image.get_size())}))
+			first_read = false
 		if hits.size() < 2: continue
 		var file := receipt_path.get_base_dir().path_join("moving-flyer.png")
 		if image.save_png(file) != OK: return {}
@@ -119,6 +131,11 @@ func _exercise() -> void:
 	# Rearm normal keyboard handling with real neutral draws after Play.
 	for neutral in range(3): await RenderingServer.frame_post_draw
 	var slot: int = session.bridge.actor_body_index(session.slot_for_instance(1))
+	var pixels_requested := OS.get_environment("CYBERSAND_FLIGHT_FRAMEBUFFER") == "1"
+	var pixels: Dictionary = await _flight_pixels(slot) if pixels_requested else {}
+	if pixels_requested:
+		for code: Key in [KEY_D,KEY_W]: _key(code,false)
+		for neutral in range(2): await RenderingServer.frame_post_draw
 	var start: Transform2D = session.bridge.body_transform(slot)
 	var prior := start
 	var last_visible := start
@@ -168,8 +185,6 @@ func _exercise() -> void:
 		prior = pose
 	var elapsed := Time.get_ticks_usec()-began
 	var steps: int = session.tick-tick0
-	var pixels_requested := OS.get_environment("CYBERSAND_FLIGHT_FRAMEBUFFER") == "1"
-	var pixels: Dictionary = await _flight_pixels(slot) if pixels_requested else {}
 	for code: Key in [KEY_A,KEY_D,KEY_W]: _key(code,false)
 	ui.toggle_pause()
 	var report := {"scene":scene_name,"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
