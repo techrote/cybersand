@@ -1,9 +1,13 @@
 """Closed package input controls, without pretending synthetic runtimes qualify."""
 from pathlib import Path
+import hashlib
+import json
+import shutil
+import subprocess
 import tempfile
 import unittest
 
-from verify_workbench_package import ENTRY, RENDERING_DRIVER, verify_inventory
+from verify_workbench_package import ENTRY, MANIFEST, RENDERING_DRIVER, REQUIRED, verify_inventory
 from package_windows_workbench import launchers
 
 
@@ -47,6 +51,50 @@ class PackageInputTests(unittest.TestCase):
         self.assertEqual(ENTRY["rendering_driver"], RENDERING_DRIVER)
         self.assertEqual(normal_args.count("--rendering-driver"), 1)
         self.assertIn("--rendering-driver " + RENDERING_DRIVER, normal_args)
+
+    @unittest.skipUnless(shutil.which("powershell.exe") or shutil.which("pwsh"), "Requires a PowerShell runtime")
+    def test_portable_verifier_binds_the_generator_even_after_a_generic_inventory_rehash(self):
+        shell = shutil.which("powershell.exe") or shutil.which("pwsh")
+        script = Path(__file__).with_name("verify_workbench_package.ps1")
+        generator = "godot/tools/gentek_reciprocal.exe"
+        binding = "godot/tools/swarm004-runtime.windows.json"
+        reopen = "godot/tests/fixtures/object_shard_m4_authored_reopen.gd"
+        data = b"synthetic executable stand-in, never run"
+        configuration = {"platform": "windows", "artifact": generator, "bytes": len(data),
+                         "sha256": hashlib.sha256(data).hexdigest()}
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            inventory = {}
+            stand_ins = {generator: data, binding: json.dumps(configuration).encode()}
+            for name in REQUIRED | {generator, binding, reopen}:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                raw = stand_ins.get(name, b"fixture")
+                path.write_bytes(raw)
+                inventory[name] = hashlib.sha256(raw).hexdigest()
+            manifest = {"schema": "objectshard-m4-workbench-package-v1", "source_commit": "1" * 40,
+                        "source_tree": "2" * 40, "entry": ENTRY, "ordinary_production_defaults_changed": False,
+                        "files_sha256": inventory}
+
+            def refusal(expected):
+                (root / MANIFEST).write_text(json.dumps(manifest), encoding="utf-8")
+                result = subprocess.run([shell, "-NoProfile", "-NonInteractive", "-File", str(script), "-Package", str(root)],
+                                        capture_output=True, text=True, timeout=30)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(expected, result.stdout + result.stderr)
+
+            # The synthetic native/engine package is intentionally incomplete.
+            # A consistent generator reaches the independent native-runtime check.
+            refusal("Unexpected runtime paths")
+            (root / generator).write_bytes(data[::-1])
+            inventory[generator] = hashlib.sha256(data[::-1]).hexdigest()
+            refusal("Windows reciprocal generator differs")
+            foreign = root / "godot/tools/swarm004-runtime.linux.json"
+            foreign.write_text("{}")
+            inventory[foreign.relative_to(root).as_posix()] = hashlib.sha256(b"{}").hexdigest()
+            refusal("Foreign reciprocal generator input")
+            del inventory[reopen]
+            refusal("Missing inventory")
 
 
 if __name__ == "__main__":
