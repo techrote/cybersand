@@ -1,0 +1,169 @@
+{
+  "application": "cc0a84756495a13ab5c16aa2226f1ec9941b11ff",
+  "engine": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_run": "46019912969/1",
+  "platform": "Linux x86_64 WSL Xvfb Mesa",
+  "outcomes": [
+    {
+      "name": "import",
+      "seconds": 13.8,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "80329aba7608fa3eb5e4bbba445a69a35eebc66c18d18462d7f2625a3cfd76e7"
+    },
+    {
+      "name": "test_workbench_actor_manipulation",
+      "seconds": 3.7,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "b5d55b2c9f667e5245a476a8dfd82a72c80ad457209c502b238757afdf591db8",
+      "fixture": "tests/test_workbench_actor_manipulation.gd",
+      "fixture_sha256": "a69bf5c61ad5e2323580506239f2a64ea19b20a5cf634c504abc641e764ed100",
+      "checks": 78,
+      "failures": []
+    },
+    {
+      "name": "test_ambient_default_off_integration",
+      "seconds": 57.6,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "cd1a2094df98f5d58bc6b35632839b24776412a741e225551b8713d86134ae01",
+      "fixture": "tests/test_ambient_default_off_integration.gd",
+      "fixture_sha256": "112cbf6031384cad5987e4679a1618e2fb10388518aa84ceee021c4c5507f74c",
+      "checks": 68,
+      "failures": []
+    },
+    {
+      "name": "test_material_audition_ambient_integration",
+      "seconds": 67.4,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "a38db35113bcf2f6fdeba4b84bc7fab38c7897be7edb5b1e1629fe36f650524e",
+      "fixture": "tests/test_material_audition_ambient_integration.gd",
+      "fixture_sha256": "0a9a9dc0ada62b0c7d1681f29098f68205a00ee049dc806d5b6b07a8808bd164",
+      "checks": 86,
+      "failures": []
+    },
+    {
+      "name": "test_workbench_actor_composition_native",
+      "seconds": 8.1,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "7a42d05a04e2e7773fe42809bff23f3b37f47e3f8fb6eb3add4bae7d7246ad8b",
+      "fixture": "tests/test_workbench_actor_composition_native.gd",
+      "fixture_sha256": "d51e46a29536b02f1d9b921f0c2b099111a115d496677e99a5e767739c825133",
+      "checks": 351
+    },
+    {
+      "name": "test_workbench_pilot_ui",
+      "seconds": 39.9,
+      "status": 1,
+      "script_errors": 0,
+      "stdout_sha256": "a03fc817058df5d05a311aa63e57f8f3e3905815f99b85cc026fbf6988511340",
+      "fixture": "tests/test_workbench_pilot_ui.gd",
+      "fixture_sha256": "5c045df3da4e7192aca2e132b53db18ae914881d06f1951d349d9d4c390c042d",
+      "checks": 1,
+      "failures": [
+        "blank workbench installed ( / )"
+      ]
+    },
+    {
+      "name": "test_art_architecture_workbench",
+      "seconds": 43.2,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "4bb3819bb88675f2927b9ba7725fbd41dbd50e141515e70edada39616de1dcb8",
+      "fixture": "tests/test_art_architecture_workbench.gd",
+      "fixture_sha256": "106d31702368d6f25d7d380e6cd27bac77035f710e750a058f59970d21d6a370",
+      "checks": 85,
+      "failures": []
+    },
+    {
+      "name": "test_workbench_authoring_patch",
+      "seconds": 3.1,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "9cf280e20587da46aed7d755c0236ab13bf3409078b5a4e77832317e313523d9",
+      "fixture": "tests/test_workbench_authoring_patch.gd",
+      "fixture_sha256": "1fea8485377fc070fd10e531f7afd664f304cdde1f27110c2410441575117cf3",
+      "checks": 132
+    },
+    {
+      "name": "test_workbench_reciprocal_controller",
+      "seconds": 20.6,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "50a8b0117c9c3ee1ee68fd36ee6a388ac4de7f990f74a9ddb74ff162aeadf7b0",
+      "fixture": "tests/test_workbench_reciprocal_controller.gd",
+      "fixture_sha256": "51dde6fa04753e3d4352b66fe1d81edfefbe00dbe9121e76476197fa4d6a3c75",
+      "checks": 48,
+      "failures": []
+    },
+    {
+      "name": "swarm-create",
+      "seconds": 33.6,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "a246551f6f3f0fbf55429836a911d04a91ce5f410f7fbc45b6948806db5214fe",
+      "fixture": "tests/swarm456_reciprocal_ui.gd",
+      "fixture_sha256": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164",
+      "checks": 264,
+      "failures": []
+    },
+    {
+      "name": "swarm-reopen",
+      "seconds": 14.1,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "15609e4594fde73b8238789fadf3f206ce52bbeeab27ef41ca8897af56c031dc",
+      "fixture": "tests/swarm456_reciprocal_ui.gd",
+      "fixture_sha256": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164",
+      "checks": 81,
+      "failures": []
+    },
+    {
+      "name": "gentek-author",
+      "seconds": 189.1,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "19b594a0ce11749260e4092fee439b730a8e26056ab73dfae9433ae7c2c01b55",
+      "fixture": "tests/fixtures/gentek2048_workbench.gd",
+      "fixture_sha256": "0198ecf3cb11a99ab2ca53735e8e0b0b5c00bb957f486008563734f6eda6d570",
+      "checks": 73
+    },
+    {
+      "name": "gentek-reopen",
+      "seconds": 237.2,
+      "status": 0,
+      "script_errors": 0,
+      "stdout_sha256": "0d4fbb7f3ddba09131acb8d8f0052329f002b68c969e6170334c2863c7738898",
+      "fixture": "tests/fixtures/gentek2048_workbench.gd",
+      "fixture_sha256": "0198ecf3cb11a99ab2ca53735e8e0b0b5c00bb957f486008563734f6eda6d570",
+      "checks": 53
+    },
+    {
+      "name": "pilot-quiet",
+      "status": 0,
+      "stdout_sha256": "5725fcc18d8beafbb406bfa5510b32fb107929e3b7d2313bd059e713b39e7c3d",
+      "script_errors": 0,
+      "fixture": "tests/test_workbench_pilot_ui.gd",
+      "fixture_sha256": "5c045df3da4e7192aca2e132b53db18ae914881d06f1951d349d9d4c390c042d",
+      "checks": 183,
+      "failures": []
+    }
+  ],
+  "native_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "reciprocal_sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+  "original_screen": "1920x1080",
+  "pilot_repeat_screen": "1280x800",
+  "command": "xvfb-run Godot_v4.7-stable_linux.x86_64 --path <staged project> --audio-driver Dummy --rendering-method gl_compatibility --max-fps 60 --script res://<fixture>",
+  "limits_seconds": {
+    "default": 300,
+    "swarm": 420,
+    "gentek": 630,
+    "pilot_repeat": 220
+  },
+  "original_pilot_observation": "Cold initial Workbench installation exceeded its wait under contention. Unchanged test passed on a fresh profile with 3 low-priority CPUs and a 1280x800 Xvfb screen.",
+  "scope": "Functional checks only. Application cc0 predates the final 2ac2 Water staging guard and its two tests. No throughput or physical display claim."
+}

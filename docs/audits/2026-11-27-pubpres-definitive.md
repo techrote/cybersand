@@ -31,3 +31,23 @@ session, epoch, actor, part and body identity before applying force at that
 member's local anchor. The tests exercise a new Sand upload before a draw and
 retired or withheld members. The multipart tests use the authored logical
 capacity and the actual maximum physical roster for their respective bounds.
+
+## Integrated Workbench checks
+
+On 27 November, the source at `cc0a8475` passed actor manipulation (78 checks),
+AMBIENT defaults and handback (68), Material Audition across World replacement
+(86), native Actor Compose (351), Art and Architecture (85), native authoring
+(132) and the SWARM controller (48). SWARM reciprocal creation and fresh-process
+reopen passed 264 and 81 checks. Gentek 2048² authoring and fresh-process reopen
+passed 73 and 53. A cold pilot test timed out during blank Workbench installation
+on a contended software display. The unchanged pilot test passed 183 checks on a
+fresh private Xvfb screen. The [test, runtime and log identities](2026-11-27-pubpres-cross-feature.json)
+include both outcomes. These tests preceded the final Water staging guard.
+
+On application `2ac2c020`, Wave1024 (four workers), Pressure512 and FreeMass2048
+each completed 144 physical and 144 native steps and reproduced the current GPU
+material plane. All 724, 921 and 812 inputs respectively were accepted. These
+Linux software-display runs used restricted CPU affinity and establish
+functional controls. The [Water receipt](2026-11-27-pubpres-water-visibility.json)
+separately records moving limbs, exact framebuffer comparisons, deadline refusals
+and the rejected row-classification experiment.
