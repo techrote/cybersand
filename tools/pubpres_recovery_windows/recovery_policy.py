@@ -112,6 +112,8 @@ def qualify(source_root,runtime,engine,stock_summary,water_summary=None,*,member
         proof=atomic_delivery.verify_payload(atomic_root)
         from qualification_gate import verify_inventory
         custom=Path(atomic_root)/proof['gui_executable']
+        # Raw command records name the absolute original project paths.
+        atomic_inventory = Path(atomic_inventory).resolve()
         atomic=verify_inventory(atomic_inventory,source,driver,engine,custom,bool(configured['water_composition']))
         atomic.update(engine_sha256=digest(custom),source_commit=source['source_commit'],
                       source_tree=source['source_tree'],native_sha256=source['native_runtime']['binary_sha256'])
