@@ -119,6 +119,8 @@ static func contact_sweep(start: Transform2D, target: Transform2D, rectangles: A
 			var extent := pose.x.abs()*half.x+pose.y.abs()*half.y+pad
 			low=low.min(pose*centre-extent)
 			high=high.max(pose*centre+extent)
+	if not low.is_finite() or not high.is_finite() or low.x<0.0 or low.y<0.0 \
+			or high.x>=front.get_width() or high.y>=front.get_height(): return refusal
 	var region := _contact_region(low,high)
 	var world := Rect2i(Vector2i.ZERO,front.get_size())
 	var channels := 2 if previous_active else 1

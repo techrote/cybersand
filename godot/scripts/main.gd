@@ -4277,7 +4277,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"mask_frame":{},"poses":{},"sources":{},"selected_steps":{},"desired_steps":{},
 		"reasons":{},"intentional_holds":{},"timeline_resets":{},"parts":[],
 		"hold_age_usec":{},"selected_observations":{},"recovery_attempts":{},"explicit_reentries":{},
-		"recovery_ceilings":{},"water_proofs":{},"water_composition":{},"contact_clips":{},"contact_cells":{},
+		"recovery_ceilings":{},"water_proofs":{},"water_composition":{},"contact_clips":{},"contact_cells":{},"contact_budget":{},
 		"follow_instance_id":shared_workbench.selected_id() if shared_workbench != null else -1,
 		"follow_target":Vector2.INF,"follow_source_step":-1,"follow_held":false,
 		"session":-1,"epoch":-1,"world_generation":last_uploaded_world_generation,
@@ -4329,6 +4329,18 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 			var slot: int = (offset+_workbench_presentation_turn) % bridge._members.size()
 			admission_order.append(slot)
 		_workbench_presentation_turn = (_workbench_presentation_turn+1) % maxi(bridge._members.size(),1)
+		# Keep rotating order within each group. Focused/on-screen roots get
+		# access before distant actors in a running scene; the mapping affects
+		# scheduling only. All bodies retain the identical global allowance.
+		if not paused and mode=="coherent" and admission_order.size()>1:
+			var visible_order: Array[int]=[]
+			var distant_order: Array[int]=[]
+			var view:=Rect2(camera_origin,Vector2(current_view_size)).grow(16.0)
+			for slot: int in admission_order:
+				if view.has_point(bridge.body_transform(slot).origin): visible_order.append(slot)
+				else: distant_order.append(slot)
+			visible_order.append_array(distant_order)
+			admission_order=visible_order
 		var initial_water: Dictionary = _initial_workbench_water_coverage(frame,resolved,summary,bridge,admission_order) \
 			if paused and _workbench_presentation_state.is_empty() else {}
 		var no_coverage: Dictionary = {}
@@ -4437,10 +4449,16 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 							# Independent native authority applies the actual physical endpoint.
 							# The texture-backed clip cannot legalize a jump across a wall:
 							# test the prior presented pose even after a withheld draw.
+							var before:=Time.get_ticks_usec()
+							resolved.contact_budget[slot]={"cells_before":int(summary.cells_examined),
+								"remaining_usec":int(resolved.deadline_usec)-before,"upload_cache_usec":cache_usec,
+								"selection_usec":before-started_usec}
 							var contact := WorkbenchPresentationCoherence.contact_sweep(anchor,desired,bridge._rects[slot],
 								image,_presentation_previous_image,resolved.previous_blend_active,
 								PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined),resolved.deadline_usec)
 							summary.cells_examined+=int(contact.scanned)
+							resolved.contact_budget[slot]["contact_cells"]=int(contact.scanned)
+							resolved.contact_budget[slot]["contact_reason"]=contact.reason
 							if contact.has("contact_cell"): resolved.contact_cells[slot]=contact.contact_cell
 							if contact.safe:
 								water_check=contact

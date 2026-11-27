@@ -593,6 +593,7 @@ func graphical_checks() -> void:
 	# and prove the adjacent exposed Water/Empty pixel still contains it.
 	current.set_pixel(2,3,Color(1.0/255.0,0,0))
 	previous.set_pixel(4,3,Color(6.0/255.0,0,0))
+	previous.set_pixel(3,3,Color.BLACK)
 	current_texture.update(current)
 	previous_texture.update(previous)
 	overlay.set_water_composition({"enabled":true,"current_texture":current_texture,"previous_texture":previous_texture,
