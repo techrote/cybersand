@@ -1,0 +1,142 @@
+{
+  "schema": "objectshard-windows-visible-region-1",
+  "runtime_source": "24f92190d7933a4f22d03cb0d0ddf72ce3918e0c",
+  "instrumented_source": "33aa6eeb52c07ccb089d5125db53376bedd614af",
+  "producer_run": 45926980128,
+  "producer_attempt": 1,
+  "windows_artifact_id": 15167545581,
+  "runtime_sha256": "53e891038e01cca9dd5b8ee9f523ced9e3d78c06bd2b81f1a38449c375ade0f7",
+  "platform": {
+    "display": "primary unrotated DisplayPort 2560x1440",
+    "driver": "NVIDIA TITAN RTX 581.80, Godot 4.7 ANGLE D3D11",
+    "counter_frequency": 10000000
+  },
+  "cohorts": {
+    "mixed": {
+      "source": "33aa6eeb52c07ccb089d5125db53376bedd614af",
+      "checks": 148,
+      "live_bodies": [
+        1,
+        1
+      ],
+      "native_ticks_per_second": 17.6349391251699,
+      "renderer_submissions_per_second": 59.9587930255775,
+      "seconds": 10.20701,
+      "region_pixels": 60333,
+      "control_seconds": 2.983128,
+      "control_observation_pairs": 178,
+      "control_pairs_changed": 178,
+      "control_max_change": 1900,
+      "control_native_ticks": [
+        1,
+        1
+      ],
+      "invalid_rows": 0,
+      "accumulated_multi": 0,
+      "any_change": {
+        "minimum_changed_pixels": 1,
+        "observed": 611,
+        "per_second": 59.861,
+        "p50_gap_ms": 16.7,
+        "p95_gap_ms": 17.8,
+        "max_gap_ms": 19.1
+      },
+      "above_control": {
+        "minimum_changed_pixels": 1901,
+        "observed": 124,
+        "per_second": 12.149,
+        "p50_gap_ms": 49.8,
+        "p95_gap_ms": 283.6,
+        "max_gap_ms": 651.0
+      },
+      "half_percent": {
+        "minimum_changed_pixels": 302,
+        "observed": 611,
+        "per_second": 59.861,
+        "p50_gap_ms": 16.7,
+        "p95_gap_ms": 17.8,
+        "max_gap_ms": 19.1
+      },
+      "trace_sha256": "98323127f73125aec402d97bfbd74f19cf7ca6bad36f4433fc843c0e2107c3b4",
+      "workbench_json_sha256": "38f1e68d273f2a8f136598ea4756de931287279836c4da5567f47cc6165b4777",
+      "raw_receipts": "mixed.csv",
+      "client_rect": [
+        579,
+        546,
+        800,
+        819
+      ],
+      "world_rect": [
+        100.0,
+        272.0,
+        156.0,
+        193.0
+      ],
+      "native_input_count": 126,
+      "actual_physics_steps": 721
+    },
+    "stress": {
+      "source": "33aa6eeb52c07ccb089d5125db53376bedd614af",
+      "checks": 372,
+      "live_bodies": [
+        8,
+        8
+      ],
+      "native_ticks_per_second": 14.3910211540815,
+      "renderer_submissions_per_second": 59.9625881420064,
+      "seconds": 12.507799,
+      "region_pixels": 185703,
+      "control_seconds": 2.984108,
+      "control_observation_pairs": 178,
+      "control_pairs_changed": 0,
+      "control_max_change": 0,
+      "control_native_ticks": [
+        1,
+        1
+      ],
+      "invalid_rows": 0,
+      "accumulated_multi": 0,
+      "any_change": {
+        "minimum_changed_pixels": 1,
+        "observed": 267,
+        "per_second": 21.347,
+        "p50_gap_ms": 33.9,
+        "p95_gap_ms": 67.4,
+        "max_gap_ms": 1734.4
+      },
+      "above_control": {
+        "minimum_changed_pixels": 1,
+        "observed": 267,
+        "per_second": 21.347,
+        "p50_gap_ms": 33.9,
+        "p95_gap_ms": 67.4,
+        "max_gap_ms": 1734.4
+      },
+      "half_percent": {
+        "minimum_changed_pixels": 929,
+        "observed": 69,
+        "per_second": 5.517,
+        "p50_gap_ms": 66.5,
+        "p95_gap_ms": 83.3,
+        "max_gap_ms": 1734.4
+      },
+      "trace_sha256": "e64296dc0bc02b45cba0316412d14fb9eeff3c0b7837a1cd37620207db2db903",
+      "workbench_json_sha256": "7f875a0779d2ef5e4736d9edde7ad26abf6d1e73a7c41b625468cd1c89c26b82",
+      "raw_receipts": "stress.csv",
+      "client_rect": [
+        441,
+        560,
+        1158,
+        819
+      ],
+      "world_rect": [
+        3.0,
+        282.0,
+        505.0,
+        183.0
+      ],
+      "native_input_count": 126,
+      "actual_physics_steps": 721
+    }
+  }
+}
