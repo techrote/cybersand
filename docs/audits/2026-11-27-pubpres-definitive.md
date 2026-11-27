@@ -6,6 +6,47 @@
 `13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b`. The accepted main commit is the
 fixed comparison source for this campaign. Physical owner acceptance is on hold.
 
+## Resulting application
+
+The delivery source is `e17ce40722a3fabdd6130990eecfca384bf5b6dd`.
+The campaign built both platform libraries from that revision. The Windows
+DLL SHA-256 is `ca5a9c751ef5c9cc4305333544c7740798202446bb4d3e6525161e8eb942e2e7`.
+The Linux SO SHA-256 is `56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1`.
+The build receipts agree on all 110 source inputs and 2,259 dependency inputs.
+[Windows builds](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15216190801)
+· [Linux builds](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15215219033)
+
+Linux Stock Safe passed 204 mounted Water checks, 574 multipart checks,
+12 held-placement checks, the 19 frozen outcomes and 150 native-owner checks.
+One member was withheld in 4,930 draws. At dry-to-wet entry all 21 cells
+under slot 0 contained Water, but the guard had reached 2,888 µs after
+charging 1,202 of 24,000 cells. The other three slots remained visible.
+Both 2,338-draw pauses, restoration and multipart motion had zero omissions.
+The five framebuffer controls restored exactly, including the moving runner's
+foot. All six members shared physical step 8 and upload 166.
+[Draws, pixels, contact and owner evidence](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15215284913)
+
+Windows Stock Safe passed its mounted native, held placement, frozen, multipart
+and Water groups. The Water replay observed 4,831 draws and zero withheld
+members. Independent PNG decoding matched all 1,125 sampled channels, with
+zero error in all five restored controls. A separate comparison VM timed out
+while starting the 2048² blank before its 1024×512 multipart fixture. Its only
+failed assertion was initial Workbench readiness. The fixture now creates the
+ordinary initial World at its registered workshop extent and records pending
+owner and native state. [Windows Stock Safe qualification](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15217833508)
+· [Comparison VM startup evidence](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15218951657)
+
+In the resulting-source Linux Water-on N/C/C/N, Wave512 reached 16.29–16.61
+physical steps/s against main's 15.93–16.12. No gap exceeded 100 ms. The
+registered direction was **not established** because p99 failed and the
+candidate's worst gap was 72.70 ms against 71.61 ms on main. Wave2048 passed
+every relative predicate. Its rate rose from 7.84–7.95 to 8.94–8.99 steps/s
+and p95 fell from 184–185 to 169–171 ms. That p95 still misses the 100 ms
+product target. The first 144 physical trajectories and input hashes matched
+in all eight arms. This host used four AMD EPYC 9V45 vCPUs. The earlier
+Linux comparisons used four Intel Xeon 6975P-C vCPUs. Both used llvmpipe
+LLVM 20.1.2. [Resulting-source Linux comparison](https://github.com/techrote/cybersand/actions/runs/46032856091/artifacts/15217755913)
+
 ## Protected World source transition
 
 The LF SHA-256 of [world.cpp](../../native/src/world.cpp) changed from
@@ -107,12 +148,16 @@ in each comparison. Final input, save and resulting-package gates are separate.
 | Linux llvmpipe, Stock Water on | Wave2048 | 4.85–4.89 | 6.23 | 233.03–233.26 | 238.63–239.04 |
 | Windows ANGLE Basic, Stock Water off | Wave512 | 10.81–10.86 | 11.70–11.92 | 256.50–263.74 | 263.52–279.83 |
 | Windows ANGLE Basic, Stock Water off | Wave2048 | 2.36–2.38 | 3.42–3.58 | 404.52–495.11 | 600.68–871.84 |
+| Windows ANGLE Basic, Stock Water on | Wave512 | 13.40–13.45 | 17.20–18.64 | 157.48–158.10 | 162.68–164.18 |
+| Windows ANGLE Basic, Stock Water on | Wave2048 | 3.92–3.93 | 5.09–5.19 | 297.42–383.90 | 519.00–550.30 |
 
-All six rows pass the pre-registered relative direction.
-The Windows cases miss the absolute p95 and maximum targets. Different hosts
+All eight rows pass the pre-registered relative direction.
+All Windows cases missed the absolute p95 target. Only Wave512 with Water on
+stayed within the 250 ms maximum on Windows. Different hosts
 ran the two Linux treatments. [Linux Water off](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15212292477)
 · [Linux Water on](https://github.com/techrote/cybersand/actions/runs/46025029508/artifacts/15213265135)
 · [Windows Water off](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15212507592)
+· [Windows Water on](https://github.com/techrote/cybersand/actions/runs/46022262388/artifacts/15215017931)
 
 The Windows Water-off candidate's small world took 4.1–4.7 ms p95 per native
 tick, while the interval from the worker's first physics handoff to execution
@@ -150,3 +195,20 @@ restored RGB controls matched exactly.
 [Water-on comparison](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15214796281)
 · [Water-off comparison](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15213628842)
 · [Graphical and native receipts](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15214485857)
+
+The same application's Windows Water-off N/C/C/N increased Wave512 from
+11.14–12.15 to 13.47–14.05 completed physical steps/s, and Wave2048 from
+2.76–2.92 to 4.04–4.07. At 2048, candidate p95 gaps were 388–497 ms and
+maxima were 722–803 ms. Across the two candidate arms, 12 gaps exceeded
+500 ms, down from 32 on main. At 512 the candidate's native tick took
+3–5 ms p95 and the first handoff to physical execution took 219–221 ms p95.
+[Windows fallback N/C/C/N and material-family controls](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15214593993)
+
+The Windows Water-on sessions at 512, 1024, 2048 and mixed 2048 completed
+5,963, 5,232, 4,748 and 3,970 physical steps in five minutes each. Each
+accepted all 79 actions and shut down normally. Final-minute observed p95
+gaps were 106, 115, 130 and 136 ms. Peak process RSS ranged from 764 to
+951 MiB, with two persistent material texture RIDs. The sampled intervals
+exclude a late gap above 500 ms. In the last three worlds, 13, 23 and
+38 multi-step intervals respectively could conceal a gap above 250 ms.
+[Ordinary session clocks, resource samples and framebuffer images](https://github.com/techrote/cybersand/actions/runs/46027331150/artifacts/15215066942)
