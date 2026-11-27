@@ -759,7 +759,8 @@ func _held_limb_placement() -> void:
 	if not check(placed.get("valid",false) and dragged_contact.distance_to(finish)<0.001,
 			"ordinary drag preserves the rotated live limb's acquired contact at the unsnapped destination"): return
 	ui._input(up)
-	if not check(not host.pending_microscenario_apply.is_empty() and session.tick==before_step,
+	var released_step: int = session.tick
+	if not check(not host.pending_microscenario_apply.is_empty() and released_step==before_step,
 			"ordinary release stages one owner transaction without manufacturing a physical step"): return
 	host.set_process(true)
 	host.set_physics_process(true)
@@ -776,7 +777,8 @@ func _held_limb_placement() -> void:
 		"preview_contact":[initial_contact.x,initial_contact.y],"dragged_contact":[dragged_contact.x,dragged_contact.y],
 		"release_target":[finish.x,finish.y],"installed_contact":[live_contact.x,live_contact.y],
 		"limb_rotations":[accepted.get_rotation(),newer.get_rotation(),actual.parts[limb].rotation],
-		"epochs":[source_epoch,host._physical_epoch],"submitted_serial":receipt.get("submission_serial",-1),
+		"epochs":[source_epoch,host._physical_epoch],"step_before":before_step,"step_after_release":released_step,
+		"installed_step":host.physical_actor_session.tick,"submitted_serial":receipt.get("submission_serial",-1),
 		"unchanged_framebuffer_sha256":pixels,"generation_refusal":true,
 		"stimulus":"rigid real RID pose change while paused, no process/physics advancement"}
 
@@ -858,10 +860,16 @@ func _run() -> void:
 
 
 func _finish() -> void:
+	var windows: bool = OS.get_name()=="Windows"
+	var native_path := "res://addons/cybersand_native/bin/" + (
+		"cybersand_native.windows.x86_64.dll" if windows else "libcybersand_native.linux.x86_64.so")
+	var rapier_path := "res://addons/godot-rapier2d/bin/" + (
+		"libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if windows else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
 	var result: Dictionary = {"schema":"workbench-stock-held-limb-placement-v1" if stock_limb_only else "workbench-actual-submission-graphical-v1","checks":checks,
 		"failures":failures,"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"engine":Engine.get_version_info(),"display":DisplayServer.get_name(),"platform":OS.get_name(),
 		"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),"process_id":OS.get_process_id(),
+		"native_sha256":FileAccess.get_sha256(native_path),"rapier_sha256":FileAccess.get_sha256(rapier_path),
 		"render_thread_inline":RenderingServer.is_on_render_thread(),
 		"requested_render_lookahead":OS.get_environment("CYBERSAND_ENGINE_RENDER_LOOKAHEAD"),
 		"submission_events":submission_events,"observations":rows,
