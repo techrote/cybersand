@@ -253,7 +253,8 @@ OBJECTSHARD_WORKBENCH_CASES = frozenset({
     "test_object_shard_m4_workbench_completion", "test_object_shard_m4_material_only_workbench",
     "test_object_shard_m4_fragment_reabsorption", "test_object_shard_m4_lifecycle_adverse",
     "test_object_shard_m4_lifecycle_fuzz", "test_object_shard_m4_completed_sample",
-    "test_object_shard_m4_equipment_completion", "test_object_shard_m4_long_burn",
+    "test_object_shard_m4_equipment_completion", "test_object_shard_m4_actor_clock",
+    "test_object_shard_m4_long_burn",
     "test_object_shard_m4_optional_diagnostics", "test_object_shard_m4_workbench_scene_refusal",
 })
 

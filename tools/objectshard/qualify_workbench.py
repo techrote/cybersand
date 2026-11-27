@@ -41,6 +41,7 @@ FOCUSED = (
     ("test_object_shard_m4_lifecycle_adverse", "objectshard-m4-lifecycle-adverse-v1"),
     ("test_object_shard_m4_completed_sample", "objectshard-m4-completed-sample-v1"),
     ("test_object_shard_m4_equipment_completion", "objectshard-m4-equipment-completion-v1"),
+    ("test_object_shard_m4_actor_clock", "objectshard-m4-actor-clock-v1"),
     ("test_object_shard_m4_long_burn", "objectshard-m4-long-burn-v1"),
     ("test_object_shard_m4_lifecycle_fuzz", "objectshard-m4-lifecycle-fuzz-v1"),
 )

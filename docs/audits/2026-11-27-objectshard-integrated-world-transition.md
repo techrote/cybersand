@@ -99,3 +99,34 @@ geometry revisions. Its 2,278 requested 100-microsecond waits consumed
 Main CPU totals cover the full timed scene window. The timing observations
 do not qualify display scanout, owner playfeel or a change to rendezvous
 policy.
+
+## Ground actor and flight clock boundaries
+
+On source `24f92190d`, the hosted Linux equipment fixture exposed a paused
+mount-pose refusal. An already admitted structural interval had completed
+while a suspended actor retained its previous mount transform. Source
+`bd2e155f5` reads completed body poses before publishing that interval;
+six fresh Linux and four fresh Windows processes each passed 95 checks
+against the same 126 native inputs. A three-actor ordinary Workbench control
+completed 24 Play/Pause cycles and 147 checks without the structural owner.
+
+The original 4LY fixed-step controller refused an admitted four-substep
+interval with `flight_unexpected_physics_step`. Source `41db1872a` refuses
+that owner combination before mutation in both directions. A complete flight
+start retires the previous structural World. The independent Windows fixture
+at `0da971b2b` executed both refusals, preserved the old owners, then advanced
+the accepted flight on its ordinary single-step clock. Ground actors gained
+1/60 second over four observed Rapier substeps, zero through Pause, and
+1/60 after Resume.
+
+## NVIDIA visible changes
+
+The [TITAN RTX cropped desktop measurements](https://github.com/techrote/cybersand/blob/0df4a76410e5ac1f6d1368486dcfeae75280e773/docs/audits/objectshard-visible-region-20261127/summary.json)
+use source `24f92190d` and its official Windows DLL. In the eight-body scene,
+the static control stayed unchanged for all 178 observations. During 12.51 s
+of activity, 267 changes reached the fixed material viewport (21.35/s).
+Changes covering at least 0.5% of that region occurred 5.52/s and the
+longest observed gap reached 1.734 s. The Water scene visibly animated
+while paused. Its active changes exceeding the maximum paused change
+occurred 12.15/s. These measures identify visible material-region changes.
+Physical owner playfeel and the sustained displayed-FPS concern remain open.
