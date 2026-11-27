@@ -59,6 +59,8 @@ int wmain(int argc, wchar_t** argv) try {
         ComPtr<IDXGIOutput> current;
         for (UINT j=0;adapter->EnumOutputs(j,&current)!=DXGI_ERROR_NOT_FOUND;++j) {
             check(current->GetDesc(&desc),"output description");
+            std::wcerr << desc.DeviceName << L" attached " << desc.AttachedToDesktop << L" rotation "
+                << desc.Rotation << L" matches " << (desc.Monitor==monitor) << L'\n';
             if (desc.Monitor==monitor && desc.AttachedToDesktop) { check(current.As(&output),"output1"); break; }
             current.Reset();
         }
