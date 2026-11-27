@@ -116,6 +116,7 @@ def execute_owned_campaign(command: list[str], *, cwd: Path, timeout: float, bun
 donor.execute_campaign = execute_owned_campaign
 EXTRA_INPUTS = {
     engine.WORKFLOW, engine.REQUEST, engine.EVIDENCE, donor.CAMPAIGN_SCRIPT,
+    "tools/ci/materialize_lfs.py",
     "tools/ci/test_gen006_ramcache_packaged_smoke.ps1",
     "tools/ci/gen006_ramcache_runtime_publication.py",
     "tools/ci/test_gen006_ramcache_runtime_publication.py",

@@ -16,6 +16,8 @@ It retains the same actor-free 512 × 512 Current/FreeMass native continuation d
 The [dated ledger](../audits/2026-11-22-gen006-ramcache.md) owns tested source, runtime and performance results.
 Ordinary production defaults, native World limits and material/solver laws remain unchanged.
 
+Resident travel, Save and normal exit wait for outstanding native edits. A collaborative Art turn can still own future work between native requests, as can an Architecture stage awaiting its receipt. Finish or Stop that work before changing areas. The ordinary Workbench retains its actor, Art and Architecture controls. The Persistent Areas profile refuses installation of an AMBIENT actor scene.
+
 ## Independent state and authority
 
 | Dimension | Authority |

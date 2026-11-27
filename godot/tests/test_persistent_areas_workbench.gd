@@ -341,6 +341,22 @@ func rejection_checks() -> void:
 	with_actor.actors = [Setup.instance(Setup.BARREL,1,Vector2(400,80))]
 	with_actor.next_id = 2
 	check(not bench.apply(with_actor),"unsupported retained actor creation is explicitly refused in this profile")
+	check(not bench.load_ambient_example("ambient-settlement"),
+		"switching to an eight-inhabitant scene requires the ordinary Workbench")
+	# Between agent turns the native worker can be idle although a controller
+	# still owns a future mutation. Exercise this gap before taking a snapshot.
+	var art: Window = bench._ensure_art_batches()
+	art.remaining_turns = 1
+	check(not controller.request_travel("b") and not controller.busy,
+		"outstanding Art turn refuses travel before a resident handoff")
+	art.remaining_turns = 0
+	bench.open_architecture_lab()
+	var architecture: Window = bench.architecture_lab
+	architecture.workflow._action = true
+	check(not controller.request_save() and not controller.busy,
+		"pending Architecture action refuses a snapshot between native stages")
+	architecture.workflow._action = false
+	architecture.hide()
 	check(not host.workbench_source(Vector2i(60,60),Setup.SAND,"configure"),"unsupported host emitter is refused before creation")
 	check(not controller.request_travel("unknown"),"incorrect area identity is refused")
 	check(not controller.request_ahead(-1),"invalid future duration is refused")

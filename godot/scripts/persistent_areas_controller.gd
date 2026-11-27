@@ -2751,10 +2751,11 @@ func _start_block_reason() -> String:
 	if not blocked.is_empty(): return blocked
 	if workbench.paint_editor != null and (workbench.paint_editor.busy() or workbench.paint_editor.recovery_required()):
 		return "Finish the current Paint transaction before capturing the area."
-	if workbench.art_batches != null:
-		var executor: RefCounted = workbench.art_batches.executor
-		if executor.active or executor.waiting or not executor.manual.is_empty() or not executor.manual_inflight.is_empty():
-			return "Finish or Stop the pending Art work before capturing the area."
+	if is_instance_valid(workbench.art_batches) and workbench.art_batches.native_authoring_pending():
+		return "Finish or Stop the pending Art work before capturing the area."
+	if is_instance_valid(workbench.architecture_lab) and is_instance_valid(workbench.architecture_lab.workflow) \
+			and workbench.architecture_lab.workflow.busy():
+		return "Finish or Stop the pending Architecture stage before capturing the area."
 	return ""
 
 
