@@ -147,6 +147,9 @@ func _run() -> void:
 	await f.until(func(): return int(f.diagnostics().get("world_generation",0)) > retired_generation and f.tick()>0,
 		"reopen creates a fresh fenced native World generation")
 	f.expect(str(f.diagnostics().get("held_reason","")) == "", "replacement leaves no stale material or pose receipt hold")
+	observations.authored_reopen = {"process_id":OS.get_process_id(),
+		"file_sha256":FileAccess.get_sha256(Setup._path(f.bench._name.text)),
+		"installed_sha256":JSON.stringify(f.bench.applied).sha256_text()}
 	observations.final = f.diagnostics()
 	observations.inventory_before = {"wood":initial_wood,"brick":initial_brick}
 	await _finish()

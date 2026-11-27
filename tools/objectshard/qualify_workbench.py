@@ -250,6 +250,11 @@ def qualify(args: argparse.Namespace) -> dict:
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0,
                                       graphical_diagnostics), schema))
+            if name == "test_object_shard_m4_workbench_completion":
+                reopen_flags = ("--script", "res://tests/fixtures/object_shard_m4_authored_reopen.gd",
+                                "--", "--objectshard-m4-workbench")
+                cases.append((runner.Case("m4_fresh_authored_reopen", reopen_flags, cases[-1][0].timeout, 0),
+                              "objectshard-m4-fresh-authored-reopen-v1"))
         diagnostics_cli_flags = ("--script", "res://tests/test_object_shard_m4_optional_diagnostics.gd", "--",
                                  "--objectshard-m4-workbench", "--objectshard-diagnostics")
         if args.render:
@@ -315,8 +320,20 @@ def qualify(args: argparse.Namespace) -> dict:
                                   "objectshard-m4-workbench-profile-v1"))
         for case, schema in cases:
             user_root = output / "isolated-user-data" / case.name
-            user_root.mkdir(parents=True)
-            case_env = dict(environment, XDG_DATA_HOME=str(user_root), APPDATA=str(user_root), LOCALAPPDATA=str(user_root))
+            reopen_env = {}
+            if case.name == "m4_fresh_authored_reopen":
+                author = report["cases"][-1]
+                if author["name"] != "test_object_shard_m4_workbench_completion" or author["name"] in report["failures"]:
+                    raise ValueError("Fresh reopen requires the preceding successful authored Save/Open")
+                witness = author["receipt"]["observations"]["authored_reopen"]
+                user_root = user_root.with_name(author["name"])
+                reopen_env = {"CYBERSAND_M4_AUTHOR_PID": str(witness["process_id"]),
+                              "CYBERSAND_M4_AUTHORED_FILE": witness["file_sha256"],
+                              "CYBERSAND_M4_INSTALLED_SETUP": witness["installed_sha256"]}
+            else:
+                user_root.mkdir(parents=True)
+            case_env = dict(environment, XDG_DATA_HOME=str(user_root), APPDATA=str(user_root),
+                            LOCALAPPDATA=str(user_root), **reopen_env)
             record, failed = run_observed_case(runner, str(engine), case, output, "ordinary-workbench-m4", env=case_env)
             if schema and not failed:
                 try:
