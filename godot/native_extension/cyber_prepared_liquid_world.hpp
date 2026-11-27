@@ -149,6 +149,11 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             extent != adapter->extent_ || !rectangles.is_empty() || !water_fills.is_empty() ||
             decoded.policy->policy_hash() != adapter->world_->liquid_solver_policy().policy_hash()))
             throw std::invalid_argument("Authoring patch requires unchanged retained Workbench settings and no alternate terrain");
+        // The construction transaction prepares a fresh World with default
+        // material configuration. A cell-preserving patch must not retire a
+        // live solver override as an unreported side effect of Apply or Undo.
+        if (authoring_patch && adapter->world_->material_audition_changes_behavior())
+            throw std::invalid_argument("Reset the active Materials Lab configuration before applying a construction patch");
         // EXPLORE-001: copied GEN-007 play-plane bytes are construction-only.
         // Nothing in this input exposes a mutable World, or admits post-commit
         // chunk mutation. Edits are ordered starting-map marks, not live state.

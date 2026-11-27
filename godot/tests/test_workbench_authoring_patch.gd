@@ -70,6 +70,15 @@ func refusal(label: String, patch: Dictionary, settings: Dictionary = {}, words 
 	refused.append({"case":label,"reason":reason,"no_live_change":state()==before})
 
 func negative_cases() -> void:
+	var original: Dictionary = world.get_material_audition_state()
+	var override_profile := {"schema_version":1,"profile_id":"patch-admission","materials":[{"material_id":2,"density":500}],"reactions":[]}
+	var activated: Dictionary = world.apply_material_audition({"world_id":original.world_id,"expected_revision":original.revision,"profile":override_profile})
+	if not check(activated.get("ok",false) and world.get_material_audition_state().changes_behavior, "live native profile is active before patch admission"): return
+	var active: Dictionary = world.get_material_audition_state()
+	refusal("patch cannot retire an active material profile",proposal())
+	check(world.get_material_audition_state() == active,"refused patch preserves exact configured material authority")
+	var restored: Dictionary = world.apply_material_audition({"world_id":active.world_id,"expected_revision":active.revision,"profile":original.profile})
+	if not check(restored.get("ok",false) and not world.get_material_audition_state().changes_behavior,"explicit reset admits ordinary default-law patch checks"): return
 	var valid := proposal()
 	var patch := valid.duplicate(true)
 	patch["unexpected"] = 1
