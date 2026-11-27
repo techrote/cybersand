@@ -142,7 +142,7 @@ def copy_committed_source(destination: Path, source_inputs: dict) -> dict:
             if entry.name.startswith("godot/.godot/"):
                 if entry.name not in {"godot/.godot/.gdignore", "godot/.godot/extension_list.cfg", "godot/.godot/global_script_class_cache.cfg"}:
                     continue
-            if "/bin/" in entry.name and entry.name not in {NATIVE, RAPIER}:
+            if entry.name.startswith("godot/") and not replay_identity.platform_game_input(entry.name.removeprefix("godot/"), "windows"):
                 continue
             stream = archive.extractfile(entry)
             if stream is None:

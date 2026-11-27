@@ -254,6 +254,32 @@ class SandboxPublication(unittest.TestCase):
         with patch.object(gate.subprocess, "check_output", return_value="main\n"):
             self.refuse()
 
+    def test_windows_package_requires_only_qualified_windows_reciprocal_tuple(self):
+        windows = "godot/tools/swarm004-runtime.windows.json"
+        linux = "godot/tools/swarm004-runtime.linux.json"
+        cli = "godot/tools/gentek_reciprocal.exe"
+        exe = b"MZ-unit-reciprocal"
+        binding = encoded({"platform": "windows", "artifact": cli, "sha256": sha(exe), "bytes": len(exe)})
+        self.inputs.update({windows: sha(binding), linux: sha(b"linux binding fixture")})
+        self.payload.update({windows: binding, cli: exe})
+
+        def verify():
+            self.package["files_sha256"] = {name: sha(data) for name, data in self.payload.items()}
+            self.make_archive()
+            installed = json.loads(self.args.windows_installed_report.read_bytes())
+            installed["installed_package"] = self.package
+            return gate.sandbox_package(self.args, self.candidates["windows"], installed)
+
+        self.assertEqual(verify()["status"], "passed")
+        for name, data in ((cli, exe + b"changed"), (windows, binding + b" "), (linux, b"linux binding fixture"),
+                           ("godot/tools/gentek_reciprocal", b"linux CLI")):
+            with self.subTest(name=name), patch.dict(self.payload, {name: data}):
+                with self.assertRaises(ValueError):
+                    verify()
+        del self.payload[cli]
+        with self.assertRaises(ValueError):
+            verify()
+
     def test_missing_baseline_and_sandbox_cases_refuse(self):
         for name in ("test_workbench_input", "test_workbench_actor_manipulation"):
             with self.subTest(name=name):
