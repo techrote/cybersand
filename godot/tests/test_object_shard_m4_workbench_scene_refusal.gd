@@ -66,6 +66,8 @@ func _run() -> void:
 	var world: Variant = worker._world
 	var original_native_instance: int = world.get_instance_id()
 	var initial_world_generation: int = int(host.latest_snapshot.render_world_generation)
+	_expect(bench.CUT_MOVING_TOOL == bench.TOOL_NAMES.size() and bench._tool.get_item_text(5) == "Grab physical part" and bench._tool.get_item_text(6) == "Place / rotate (paused)",
+		"Actor manipulation and structural edits have separate mounted controls")
 	_expect(bench._tool.item_count == bench.TOOL_NAMES.size() + 3, "Three M4-only options exist behind explicit flag")
 	_expect(bench.object_shard_m4_port.enabled and host.object_shard_m4_probe.enabled == ("--objectshard-diagnostics" in OS.get_cmdline_user_args()),
 		"Structures and optional performance recording obey their independent flags")

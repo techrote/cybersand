@@ -34,6 +34,7 @@ FOCUSED = (
     ("test_object_shard_m4_shared_main_rapier", "objectshard-m4-existing-main-rapier-v1"),
     ("test_object_shard_m4_same_world_physical_chain", "objectshard-m4-sameworld-rapier-physical-chain-v1"),
     ("test_object_shard_m4_compact_motion_packets", "objectshard-m4-compact-motion-packet-v1"),
+    ("test_object_shard_m4_workbench_scene_refusal", "objectshard-m4-ordinary-scene-refusal-v1"),
     ("test_object_shard_m4_workbench_completion", "objectshard-m4-workbench-completion-v1"),
     ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
     ("test_object_shard_m4_fragment_reabsorption", "objectshard-m4-fragment-reabsorption-v1"),
@@ -243,14 +244,17 @@ def qualify(args: argparse.Namespace) -> dict:
         for name, schema in FOCUSED:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
-            flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz", "completed_sample", "equipment_completion", "long_burn", "optional_diagnostics")):
-                flags += ("--", "--objectshard-m4-workbench")
+            flags = runner.script_case_flags(name)
             graphical_diagnostics = args.render and name.endswith("optional_diagnostics")
             if graphical_diagnostics:
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0,
                                       graphical_diagnostics), schema))
+            if name == "test_object_shard_m4_workbench_completion":
+                reopen_flags = ("--script", "res://tests/fixtures/object_shard_m4_authored_reopen.gd",
+                                "--", "--objectshard-m4-workbench")
+                cases.append((runner.Case("m4_fresh_authored_reopen", reopen_flags, cases[-1][0].timeout, 0),
+                              "objectshard-m4-fresh-authored-reopen-v1"))
         diagnostics_cli_flags = ("--script", "res://tests/test_object_shard_m4_optional_diagnostics.gd", "--",
                                  "--objectshard-m4-workbench", "--objectshard-diagnostics")
         if args.render:
@@ -316,8 +320,20 @@ def qualify(args: argparse.Namespace) -> dict:
                                   "objectshard-m4-workbench-profile-v1"))
         for case, schema in cases:
             user_root = output / "isolated-user-data" / case.name
-            user_root.mkdir(parents=True)
-            case_env = dict(environment, XDG_DATA_HOME=str(user_root), APPDATA=str(user_root), LOCALAPPDATA=str(user_root))
+            reopen_env = {}
+            if case.name == "m4_fresh_authored_reopen":
+                author = report["cases"][-1]
+                if author["name"] != "test_object_shard_m4_workbench_completion" or author["name"] in report["failures"]:
+                    raise ValueError("Fresh reopen requires the preceding successful authored Save/Open")
+                witness = author["receipt"]["observations"]["authored_reopen"]
+                user_root = user_root.with_name(author["name"])
+                reopen_env = {"CYBERSAND_M4_AUTHOR_PID": str(witness["process_id"]),
+                              "CYBERSAND_M4_AUTHORED_FILE": witness["file_sha256"],
+                              "CYBERSAND_M4_INSTALLED_SETUP": witness["installed_sha256"]}
+            else:
+                user_root.mkdir(parents=True)
+            case_env = dict(environment, XDG_DATA_HOME=str(user_root), APPDATA=str(user_root),
+                            LOCALAPPDATA=str(user_root), **reopen_env)
             record, failed = run_observed_case(runner, str(engine), case, output, "ordinary-workbench-m4", env=case_env)
             if schema and not failed:
                 try:
