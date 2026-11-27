@@ -457,6 +457,12 @@ jobs:
           if [[ "$PLATFORM" == linux ]]; then display=(--display-wrapper tools/pubpres_playability_build/owned_xvfb.py); fi
           python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "$RUNNER_TEMP/godot/$STOCK_EXE" --output "build/prerequisite/$FROZEN" --focus frozen "${display[@]}"
           python tools/pubpres_final_recovery/run_closure_comparison.py current --conservative --runtime-root build/runtime --stock-engine "$RUNNER_TEMP/godot/$STOCK_EXE" --current-main-source "$RUNNER_TEMP/pubpres-current-main" --correctness build/prerequisite --output build/performance "${display[@]}"
+      - name: Registered medium Wave, pressure and FreeMass physical controls
+        shell: bash
+        run: |
+          display=()
+          if [[ "$PLATFORM" == linux ]]; then display=(--display-wrapper tools/pubpres_playability_build/owned_xvfb.py); fi
+          python tools/pubpres_final/run_comparison.py --mode single --slots 2 --control-source . --control-runtime build/runtime/C --candidate-source . --candidate-runtime build/runtime/C --engine "$RUNNER_TEMP/godot/$STOCK_EXE" --output build/performance/controls --case wave_1024_follow_4 --case pressure_512_follow --case freemass_2048_follow "${display[@]}"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
