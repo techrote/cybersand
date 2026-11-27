@@ -4,7 +4,7 @@ status: Planned
 document-kind: guide
 scope: Source-bound experimental worker and Rapier rehearsal, continuous material input, diagnostics and Windows evaluator procedure
 canonical-for: [objectshard-m3-owner-playtest]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-27
 related-documents: [objectshard-lab-playtest.md, ../research/objectshard-m3-preflight.md, github-development-and-release.md, local-build-and-validation.md]
 ---
 
@@ -88,11 +88,12 @@ that scheduling step, so a fresh visible moving cell can be cut while the game
 keeps running. Older in-flight witnesses still refuse explicitly; they are never
 silently retargeted onto a newer pose.
 
-**Receipt work** selects the measured 4 ms soft loop budget or its 0 ms control.
-The default briefly waits for completed worker receipts within the current
-callback, reducing avoidable process-frame gaps without creating extra World or
-physics time. Deferred receipt notifications remain off. The budget is checked
-between complete receipt handlers: a handler already running can exceed 4 ms.
+**Receipt work** offers 0, 4, 8 and 12 ms soft loop budgets. The opt-in M3
+rehearsal starts at 8 ms. Choose 0 ms for the polling control or 4 ms to
+reproduce the original continuous-play test. The loop consumes worker
+receipts within the current callback and checks its budget between complete
+handlers. A handler already running can take it over the selected budget.
+Deferred receipt notifications stay off in all four modes.
 Actual pump duration and the enclosing frame callback remain visible in the
 export. A positive throughput comparison does not establish real-time 60 Hz
 simulation or target GPU frame rate.
