@@ -316,6 +316,11 @@ func _visible_phase(phase_number: int) -> void:
 func _static_visible_control(result: Dictionary) -> bool:
 	var directory := OS.get_environment("CYBERSAND_DXGI_REGION")
 	Input.mouse_mode = Input.MOUSE_MODE_HIDDEN
+	var screen := DisplayServer.get_primary_screen()
+	root.current_screen = screen
+	root.position = DisplayServer.screen_get_position(screen) + Vector2i(96,80)
+	await process_frame
+	await process_frame
 	# Select only world material, using the same aspect fit and origin as the
 	# moving-material overlay. The ordinary controls occupy other layout rows.
 	var world_rect := Rect2(100,272,156,193) if scene_id=="mixed" else Rect2(3,282,505,183)
