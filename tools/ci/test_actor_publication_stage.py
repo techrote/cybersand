@@ -4,7 +4,9 @@ import hashlib
 import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import check_actor_publication_stage as gate
@@ -40,6 +42,69 @@ class ActorStageGate(unittest.TestCase):
     def verify(self):
         return gate.verify(self.changed, self.staged, self.runtimes,
                            source=SOURCE, source_tree=TREE, branch=BRANCH, run_id=RUN, attempt=ATTEMPT)
+
+    def test_application_only_reuse_requires_both_live_files_and_exact_maps(self):
+        changes = [b"godot/scripts/shared_workbench.gd\n"]
+        branch = [BRANCH]
+
+        def git(*args):
+            if args[0] == "branch":
+                return branch[0].encode()
+            if args[0] == "diff":
+                return changes[0]
+            if args[0] == "rev-parse":
+                return TREE.encode()
+            return self.staged[args[1].removeprefix("HEAD:")]
+
+        inputs = {"native/src/world.cpp": "hash"}
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for name, payload in self.runtimes.items():
+                (root / name).parent.mkdir(parents=True, exist_ok=True)
+                (root / name).write_bytes(payload)
+            with patch.object(Path, "cwd", return_value=root), patch.object(gate, "git", side_effect=git), \
+                    patch("native_candidate_identity.source", return_value=("e"*40, TREE, inputs)):
+                self.assertTrue(gate.reusable_pair())
+                branch[0] = "main"
+                self.assertFalse(gate.reusable_pair())
+                branch[0] = gate.SWARM_BRANCH
+                self.assertFalse(gate.reusable_pair())
+                with patch.dict(self.staged):
+                    for name in gate.PROVENANCE.values():
+                        record = json.loads(self.staged[name])
+                        record["publication_branch"] = gate.SWARM_BRANCH
+                        record["qualification"]["reciprocal_execution_sha256"] = "a" * 64
+                        self.staged[name] = json.dumps(record).encode()
+                    self.assertTrue(gate.reusable_pair())
+                    name = gate.PROVENANCE["windows"]
+                    record = json.loads(self.staged[name])
+                    del record["qualification"]["reciprocal_execution_sha256"]
+                    self.staged[name] = json.dumps(record).encode()
+                    self.assertFalse(gate.reusable_pair())
+                branch[0] = BRANCH
+                workflow = ".github/workflows/gdextension.yml"
+                changes[0] = (workflow + "\n").encode()
+                with patch.dict(self.staged):
+                    old = ("    branches: [main, codex/wb-art-paint-integrated-20261111, "
+                           + gate.SWARM_BRANCH + "]\n").encode()
+                    self.staged[SOURCE + ":" + workflow] = old
+                    key = "e" * 40 + ":" + workflow
+                    self.staged[key] = old.replace((", " + gate.SWARM_BRANCH).encode(), b"")
+                    self.assertTrue(gate.reusable_pair())
+                    self.staged[key] += b"  native: changed\n"
+                    self.assertFalse(gate.reusable_pair())
+                changes[0] = b"tools/build_native_extension_windows.sh\n"
+                self.assertFalse(gate.reusable_pair())
+                changes[0] = b"godot/scripts/shared_workbench.gd\n"
+                name = gate.PROVENANCE["linux"]
+                original = self.staged[name]
+                record = json.loads(original)
+                record["source_inputs"] = {**inputs, "native/src/extra.cpp": "hash"}
+                self.staged[name] = json.dumps(record).encode()
+                self.assertFalse(gate.reusable_pair())
+                self.staged[name] = original
+                (root / gate.BINARIES["windows"]).write_bytes(b"MZcorrupt")
+                self.assertFalse(gate.reusable_pair())
 
     def check_reject(self, method):
         with self.assertRaises(gate.PublicationRejected):
