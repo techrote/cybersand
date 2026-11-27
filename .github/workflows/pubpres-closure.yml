@@ -43,7 +43,7 @@ jobs:
   windows-admission:
     needs: plan
     runs-on: windows-2022
-    timeout-minutes: 15
+    timeout-minutes: ${{ needs.plan.outputs.phase == 'windows-focus' && 120 || 15 }}
     steps:
       - name: Canonical source bytes
         shell: powershell
@@ -60,6 +60,49 @@ jobs:
           path: build/closure-admission/
           retention-days: 90
           if-no-files-found: error
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: needs.plan.outputs.phase == 'windows-focus'
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: needs.plan.outputs.phase == 'windows-focus'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46027331150
+          name: pubpres-closure-shared-runtime-windows-46027331150-1
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: needs.plan.outputs.phase == 'windows-focus'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46027331150
+          name: pubpres-closure-rapier-C-46027331150-1
+          path: build/transport-C
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: needs.plan.outputs.phase == 'windows-focus'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46027331150
+          name: pubpres-closure-original-engine02-46027331150-1
+          path: build/engine-build02
+      - name: Reproduce Stock and three custom submission modes with the retained exact inputs
+        if: needs.plan.outputs.phase == 'windows-focus'
+        shell: bash
+        run: |
+          git fetch --no-tags origin 88bb920c42755669ac8fba37b9fc46249c5bd0a6 "$PUBPRES_ENGINE_BUILD_SOURCE"
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output "$RUNNER_TEMP/godot"
+          python tools/pubpres_recovery_windows/run_held_replay.py --runtime build/runtime/C --rapier-transport build/transport-C --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/held-replay
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && needs.plan.outputs.phase == 'windows-focus'
+        with:
+          name: pubpres-held-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/held-replay/
+            !build/held-replay/**/project/**
+            !build/held-replay/**/profile/**
+            !build/held-replay/**/*-profile/**
+          retention-days: 90
+          if-no-files-found: warn
 
   runtimes:
     needs: [plan, windows-admission]
@@ -232,13 +275,13 @@ jobs:
         run: python tools/pubpres_recovery_windows/run_native_owner.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/mounted-native
       - name: Resulting-source original frozen correctness inventory
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-frozen --focus frozen --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
-      - name: Paused placement of a displayed moving multipart limb on Stock Safe
-        if: needs.plan.outputs.phase == 'full'
-        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-held-placement --focus held-placement --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - name: Actual Water and Sand native framebuffer qualification
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-water --focus water --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - name: Actual multipart history, root Follow and individual-member mouse qualification
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-members --focus members --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - name: Paused placement of a displayed moving multipart limb on Stock Safe
+        if: needs.plan.outputs.phase == 'full'
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-held-placement --focus held-placement --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -325,6 +368,7 @@ jobs:
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --output build/closure-windows/stock-held-placement --focus held-placement
       - name: Actual resulting-source stock and atomic Windows application qualification
         id: application
+        if: always() && steps.prepare.outcome == 'success'
         run: python tools/pubpres_recovery_windows/run_closure_hosted.py --runtime build/runtime/C --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/closure-windows/application
       - name: Registered observer calibrations and six-arm architecture comparison
         if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') != ''

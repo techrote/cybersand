@@ -25,7 +25,7 @@ def fingerprint(root=ROOT):
 def validate_record(value):
     fields={'schema','phase','purpose','historical_main','current_main','frozen_donor','payload_sha256','physical_acceptance'}
     if not isinstance(value,dict) or set(value)!=fields or value['schema']!='pubpres-closure-run-v1' \
-        or value['phase'] not in ('admission','runtimes','full','linux-replay') or value['historical_main']!=M or value['frozen_donor']!=D \
+        or value['phase'] not in ('admission','runtimes','full','linux-replay','windows-focus') or value['historical_main']!=M or value['frozen_donor']!=D \
         or not isinstance(value['current_main'],str) or not re.fullmatch('[0-9a-f]{40}',value['current_main']) \
         or not isinstance(value['payload_sha256'],str) or not re.fullmatch('[0-9a-f]{64}',value['payload_sha256']) \
         or not isinstance(value['purpose'],str) or not value['purpose'].strip() or value['physical_acceptance']!='HOLD':
@@ -50,7 +50,7 @@ def validate(root=ROOT):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--seal',action='store_true')
-    parser.add_argument('--phase',choices=('admission','runtimes','full','linux-replay'),default='admission')
+    parser.add_argument('--phase',choices=('admission','runtimes','full','linux-replay','windows-focus'),default='admission')
     parser.add_argument('--current-main')
     parser.add_argument('--purpose')
     args=parser.parse_args()
