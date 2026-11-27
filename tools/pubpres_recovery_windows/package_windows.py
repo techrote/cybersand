@@ -300,7 +300,9 @@ def main():
         args.stock_correctness,args.water_correctness,members_summary=args.members_correctness,native_summary=args.native_correctness,
         atomic_root=None if atomic is None else args.atomic_engine_directory.resolve(),
         atomic_inventory=args.atomic_inventory)
-    write_json(output/'qualification/recovery-correctness.json',gate)
+    qualification = output / 'qualification'
+    qualification.mkdir()
+    write_json(qualification / 'recovery-correctness.json', gate)
     patched = None
     if args.patched_engine_archive:
         restore = engine_restorer()
