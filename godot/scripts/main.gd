@@ -3951,9 +3951,8 @@ func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary
 	# native wrench ring while its uploaded material frame stays unchanged.
 	# Eviction retires force-application authority, not an already proved exact
 	# completed-pose provenance. Retain at most one immutable proof per member.
-	# Material/Water clearance is NEVER cached: both actual image histories are
-	# scanned afresh below. Transport-only refresh/blend changes cannot expire
-	# this proof when every native/world/revision/pose/completion identity agrees.
+	# This cache retains native pose provenance. The separate coverage cache
+	# certifies the required visible material images and swept geometry.
 	var cached: Dictionary = _workbench_water_closure_cache.get(slot,{})
 	if cached.get("identity") == identity:
 		_workbench_water_closure_cache_hits += 1
