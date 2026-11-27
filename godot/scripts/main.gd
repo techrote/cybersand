@@ -1785,6 +1785,10 @@ var _material_publication_fallback: String = ""
 var _material_publication_last: Dictionary = {}
 var _material_pending_rectangles := PackedInt32Array()
 var _material_image_patch_usec: int = 0
+var _check_ambient_sources := OS.get_environment("CYBERSAND_WORKBENCH_EMPTY_EFFECTS") == "1"
+var _ambient_sources_absent := false
+var _vapour_history_possible := false
+
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
@@ -7133,7 +7137,24 @@ func view_content_rect() -> Rect2:
 	return Rect2((available_size - shown_size) * 0.5, shown_size)
 
 
+# The palette projects growth, sparks and fumes into neighbouring Empty
+# cells. These four IDs can never seed those effects. Classify the actual
+# first channel of published bytes, independently of authored scene labels,
+# native statistics, condition, and simulation revisions.
+func _no_ambient_source(plane: Image) -> bool:
+	if not _check_ambient_sources or shared_workbench == null or _workbench_submission_requested \
+			or plane == null or plane.is_empty() or plane.has_mipmaps() \
+			or plane.get_format() not in [Image.FORMAT_R8,Image.FORMAT_RG8]: return false
+	var ids := plane
+	if plane.get_format() == Image.FORMAT_RG8:
+		ids = plane.duplicate()
+		ids.convert(Image.FORMAT_R8)
+	var bytes := ids.get_data()
+	return bytes.count(0) + bytes.count(2) + bytes.count(3) + bytes.count(58) == bytes.size()
+
+
 func create_render_textures() -> void:
+	_ambient_sources_absent = _no_ambient_source(image)
 	_material_deadline.cancel("textures_recreated")
 	_material_steps.cancel("textures_recreated")
 	material_presentation_timeline.reset()
@@ -7164,6 +7185,7 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		render_image_format,
 		material_cells
 	)
+	_ambient_sources_absent = _no_ambient_source(image)
 	_material_pending_rectangles = _full_material_rectangle()
 	_material_image_patch_usec = Time.get_ticks_usec() - start_usec
 	finish_texture_upload(world_revision, start_usec)
@@ -7254,6 +7276,7 @@ func apply_render_patches_to_image(
 			and image.get_width() == world_extent.x and image.get_height() == world_extent.y \
 			and image.get_format() == render_image_format and not image.has_mipmaps():
 		image.set_data(world_extent.x, world_extent.y, false, render_image_format, patch_cells)
+		_ambient_sources_absent = _no_ambient_source(image)
 		return true
 	for metadata_offset: int in range(
 		0,
@@ -7309,6 +7332,7 @@ func apply_render_patches_to_image(
 				]
 			)
 			return false
+		if _ambient_sources_absent: _ambient_sources_absent = _no_ambient_source(patch_image)
 		image.blit_rect(
 			patch_image,
 			Rect2i(0, 0, patch_width, patch_height),
@@ -7637,6 +7661,7 @@ func set_material_publication_mode(mode: String) -> bool:
 func update_shader_parameters() -> void:
 	if world_shader == null:
 		return
+	world_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
 	world_shader.set_shader_parameter(
 		"world_size_px",
 		Vector2(world_extent.x, world_extent.y)
@@ -7996,6 +8021,7 @@ func setup_vapour_trail_pipeline() -> void:
 # records current gas with zero history weight; its successor can only sample
 # that newly written target. Also used when a quality setting disables the pass.
 func reset_vapour_trail() -> void:
+	_vapour_history_possible = false
 	vapour_trail_latest = -1
 	vapour_trail_frame = -1
 	vapour_trail_usec = 0
@@ -8018,6 +8044,11 @@ func set_vapour_trail_enabled(enabled: bool) -> void:
 func update_vapour_trail() -> void:
 	if not vapour_trail_enabled or vapour_trail_viewports.is_empty() or world_shader == null:
 		return
+	# A reset starts with exactly zero history. A gas-free publication
+	# cannot add Steam or Smoke to those zero buffers. As soon as another
+	# material is observed, resume normal history until the next real reset.
+	if _ambient_sources_absent and not _vapour_history_possible: return
+	_vapour_history_possible = true
 	# Resize both generations together. Resizing only the alternating target
 	# drops the first history frame and can revive a buffer after rapid resizes.
 	# The fractional view can include one more cell on its right/bottom edges.
@@ -8031,6 +8062,7 @@ func update_vapour_trail() -> void:
 	var frame: int = Engine.get_process_frames()
 	if frame == vapour_trail_frame:
 		return
+	_vapour_history_possible = true
 	vapour_trail_frame = frame
 	var now_usec: int = Time.get_ticks_usec()
 	var delta_seconds: float = 0.0

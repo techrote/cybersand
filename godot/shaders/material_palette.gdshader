@@ -33,6 +33,7 @@ uniform float rigid_body_rotation_2 = 0.0;
 uniform vec4 rigid_body_colour : source_color = vec4(0.95, 0.12, 0.16, 1.0);
 // Alias of the CanvasItem TEXTURE. A named sampler lets bounded helper
 // functions inspect four neighbours without a second image or upload.
+uniform bool ambient_sources_absent = false;
 uniform sampler2D current_world_texture : filter_nearest, repeat_disable;
 uniform sampler2D previous_world_texture : filter_nearest, repeat_disable;
 uniform sampler2D material_lut : source_color, filter_nearest, repeat_disable;
@@ -2803,7 +2804,11 @@ void fragment() {
 		colour = mix(previous_colour, colour, snapshot_blend);
 	}
 	if (material_id == 0 && inside_view) {
-		colour = apply_ambient_particles(colour, world_pixel);
+		if (ambient_sources_absent) {
+			colour = apply_vapour_trail(colour, world_pixel);
+		} else {
+			colour = apply_ambient_particles(colour, world_pixel);
+		}
 	}
 
 	vec2 player_max = player_origin_px + player_size_px;
