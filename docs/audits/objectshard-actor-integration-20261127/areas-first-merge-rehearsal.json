@@ -1,0 +1,64 @@
+{
+  "main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "areas_head": "af45bfb332f9822780db9304779ff0cdf55661df",
+  "m4_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "merge_bases": [
+    "78e8d626c8ac2c5764c270ce7060732d33299d88",
+    "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6"
+  ],
+  "unresolved_merge_tree": "43ed67eb99c099561ee83ad83d78a3d013882227",
+  "conflicts": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "resolved_private_tree": "1e15e039b4bfc7e0f46b0354de5483592ecd7576",
+  "nonconflicting_delta_vs_m4": [
+    "docs/audits/2026-11-27-ramcache-cross-authoring.json",
+    "godot/tests/fixtures/persistent_area_cross_authoring.gd",
+    "tools/ci/gen006_ramcache_publish_request.json",
+    "tools/ci/gen006_ramcache_runtime_publication.py",
+    "tools/ci/run_persistent_areas_qualification.py",
+    "tools/ci/test_gen006_ramcache_runtime_publication.py",
+    "tools/ci/test_gen006_source_custody.py"
+  ],
+  "native126_exact_to_m4": 126,
+  "areas_native_count": 114,
+  "all_areas_native_paths_in_m4": true,
+  "areas_native_input_values_already_equal": 105,
+  "m4_build_input_changes": [
+    "godot/tests/fixtures/persistent_area_cross_authoring.gd"
+  ],
+  "m4_frozen_package_file_changes": [
+    "godot/tests/fixtures/persistent_area_cross_authoring.gd"
+  ],
+  "m4_build_inputs": 1364,
+  "workbench_donor_apps": [],
+  "m4_new_build_input_map_sha256": "cec420d9403c018ee02a0c79d9ec35b615009048d14e85bd84546271e29d4b18",
+  "m4_old_build_input_map_sha256": "c4ce6a510d331291df369ba371a8fb6810e1ff5a121fe336ebd8616bbb5675e4",
+  "only_build_input_changed_sha256": {
+    "godot/tests/fixtures/persistent_area_cross_authoring.gd": {
+      "old": "f7314b6633f884d7c5649d7ad7f064f598e6c6402fb87bb09c0b4fef5e3a55f9",
+      "joined": "332c3bd781e14cd00dfe51fee00d072aea61b1e36a6da604d76bb8356269bed9"
+    }
+  },
+  "m4_areas_reconciled_native_paths": [
+    "godot/native_extension/cyber_demo_bridge.hpp",
+    "godot/native_extension/cyber_native_cell_world.cpp",
+    "godot/native_extension/cyber_native_cell_world.hpp",
+    "godot/native_extension/cyber_persistent_area_continuation.hpp",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp",
+    "godot/native_extension/register_types.cpp",
+    "godot/native_extension/workbench_granular_coupling.inc",
+    "native/include/cybersand/world.hpp",
+    "native/src/world.cpp"
+  ],
+  "areas_to_live_main_merge_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
+  "scope": "Read-only prospective merge of the two Draft heads while main was 7a15691a. Git merge-tree and a private temporary index used only objects; neither branch nor accepted main moved.",
+  "sequence_after_owner_decisions": [
+    "Refresh accepted main and both PRs, recompute the merge tree and repeat exact ledger comparisons.",
+    "If the tree still matches this rehearsal, take the four files from the same previously published M4 runtime pair during conflict resolution. The merged production application and native source match the qualified ObjectShard candidate.",
+    "The updated cross-authoring fixture is shipped and included in the complete build manifest. On the reconciled source request the existing ObjectShard source-leased Linux/Windows publisher and full owner archive. Verify its single-parent child, complete tuple, target-platform executions, extracted product, and current Ready gates before any authorized main merge."
+  ]
+}
