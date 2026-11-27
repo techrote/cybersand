@@ -63,7 +63,7 @@ jobs:
 
   runtimes:
     needs: [plan, windows-admission]
-    if: needs.plan.outputs.phase != 'admission'
+    if: needs.plan.outputs.phase == 'runtimes' || needs.plan.outputs.phase == 'full'
     runs-on: ubuntu-24.04
     timeout-minutes: 180
     strategy:
@@ -127,7 +127,7 @@ jobs:
 
   dependencies:
     needs: [plan, windows-admission]
-    if: needs.plan.outputs.phase != 'admission'
+    if: needs.plan.outputs.phase == 'runtimes' || needs.plan.outputs.phase == 'full'
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     steps:
@@ -181,9 +181,16 @@ jobs:
 
   graphical-linux:
     needs: [plan, runtimes, dependencies]
-    if: needs.plan.outputs.phase == 'full'
+    if: |
+      always() && needs.plan.result == 'success' &&
+      (needs.plan.outputs.phase == 'linux-replay' ||
+       (needs.plan.outputs.phase == 'full' && needs.runtimes.result == 'success' && needs.dependencies.result == 'success'))
     runs-on: ubuntu-24.04
     timeout-minutes: 300
+    env:
+      ARTIFACT_RUN: ${{ needs.plan.outputs.phase == 'linux-replay' && '46022262388' || github.run_id }}
+      ARTIFACT_ATTEMPT: ${{ needs.plan.outputs.phase == 'linux-replay' && '1' || github.run_attempt }}
+      APPLICATION_SHA: ${{ needs.plan.outputs.phase == 'linux-replay' && '2ac2c0203844cf4431b57de0b1fe9c6a3f3b987e' || github.sha }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: {persist-credentials: false, fetch-depth: 1}
@@ -191,22 +198,35 @@ jobs:
         with: {python-version: '3.12'}
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: pubpres-closure-shared-runtime-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          github-token: ${{ github.token }}
+          run-id: ${{ env.ARTIFACT_RUN }}
+          name: pubpres-closure-shared-runtime-linux-${{ env.ARTIFACT_RUN }}-${{ env.ARTIFACT_ATTEMPT }}
           path: build/runtime
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: pubpres-closure-rapier-C-${{ github.run_id }}-${{ github.run_attempt }}
+          github-token: ${{ github.token }}
+          run-id: ${{ env.ARTIFACT_RUN }}
+          name: pubpres-closure-rapier-C-${{ env.ARTIFACT_RUN }}-${{ env.ARTIFACT_ATTEMPT }}
           path: build/transport-C
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: pubpres-closure-reciprocal-C-${{ github.run_id }}-${{ github.run_attempt }}
+          github-token: ${{ github.token }}
+          run-id: ${{ env.ARTIFACT_RUN }}
+          name: pubpres-closure-reciprocal-C-${{ env.ARTIFACT_RUN }}-${{ env.ARTIFACT_ATTEMPT }}
           path: build/transport-reciprocal
       - name: Actual Linux display and admitted exact runtime transport
         run: |
+          cp tools/ci/lfs_runtime_artifact.py "$RUNNER_TEMP/lfs_runtime_artifact.py"
+          if [[ "$APPLICATION_SHA" != "$GITHUB_SHA" ]]; then
+            git fetch --depth=1 --no-tags origin "$APPLICATION_SHA"
+            git checkout --detach "$APPLICATION_SHA"
+          fi
+          test "$(git rev-parse HEAD)" = "$APPLICATION_SHA"
+          export PYTHONPATH="$PWD/tools/ci"
           sudo apt-get update -qq
           sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
-          python tools/ci/lfs_runtime_artifact.py install --root . --include "$RAPIER_LINUX" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --artifact build/transport-C --output build/closure-linux/rapier-transport
-          python tools/ci/lfs_runtime_artifact.py install --root . --include "$RECIPROCAL_LINUX" --available "$RECIPROCAL_LINUX" --available "$RECIPROCAL_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --artifact build/transport-reciprocal --output build/closure-linux/gentek-transport
+          python "$RUNNER_TEMP/lfs_runtime_artifact.py" install --root . --include "$RAPIER_LINUX" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$APPLICATION_SHA" --run-id "$ARTIFACT_RUN" --attempt "$ARTIFACT_ATTEMPT" --artifact build/transport-C --output build/closure-linux/rapier-transport
+          python "$RUNNER_TEMP/lfs_runtime_artifact.py" install --root . --include "$RECIPROCAL_LINUX" --available "$RECIPROCAL_LINUX" --available "$RECIPROCAL_WINDOWS" --expected-source "$APPLICATION_SHA" --run-id "$ARTIFACT_RUN" --attempt "$ARTIFACT_ATTEMPT" --artifact build/transport-reciprocal --output build/closure-linux/gentek-transport
           python tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
       - name: Actual mounted native pool and World ownership
         run: python tools/pubpres_recovery_windows/run_native_owner.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/mounted-native
