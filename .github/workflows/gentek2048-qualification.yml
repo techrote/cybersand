@@ -52,7 +52,6 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/ci/materialize_lfs.py --expected-source "$(git rev-parse HEAD)" --output "$RUNNER_TEMP/gentek-lfs" --include godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
-          python3 tools/ci/check_repository.py
           python3 -m py_compile tools/architecture/qualify_gentek2048.py
           test -z "$(git status --porcelain --untracked-files=no)"
       - name: Download pinned Godot 4.7 and setup display
@@ -99,8 +98,6 @@ jobs:
           $ErrorActionPreference='Stop'
           python tools/ci/materialize_lfs.py --expected-source (git rev-parse HEAD) --output (Join-Path $env:RUNNER_TEMP 'gentek-lfs') --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
           if ($LASTEXITCODE -ne 0) { throw 'Exact-source LFS runtime admission failed' }
-          python tools/ci/check_repository.py
-          if ($LASTEXITCODE -ne 0) { throw 'Source/runtime provenance mismatch' }
           python -m py_compile tools/architecture/qualify_gentek2048.py
           if (git status --porcelain --untracked-files=no) { throw 'Source changed during LFS admission' }
       - name: Retrieve pinned Godot 4.7 Windows console executable

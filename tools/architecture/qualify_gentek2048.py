@@ -19,6 +19,8 @@ import time
 import uuid
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "tools/ci"))
+from check_repository import verify_runtime
 EXPECTED_GODOT = "4.7.stable.official.5b4e0cb0f"
 ERRORS = re.compile(r"SCRIPT ERROR:|Parse Error:|Failed to load script|GDExtension library not found|Error loading extension")
 
@@ -68,14 +70,22 @@ def main() -> int:
     version=subprocess.check_output([str(godot),"--version"],text=True,timeout=45).strip()
     if version!=EXPECTED_GODOT:
         parser.error("Pinned Godot version differs: "+version)
-    runtime=(ROOT/"godot/addons/cybersand_native/bin"/
-        ("cybersand_native.windows.x86_64.dll" if os.name=="nt" else "libcybersand_native.linux.x86_64.so"))
-    if not runtime.is_file() or runtime.read_bytes()[:8]==b"version ":
-        parser.error("Source-native runtime not materialized")
+    target = "windows" if os.name == "nt" else "linux"
+    native_manifest = "runtime-provenance.json" if os.name == "nt" else "runtime-provenance.linux.json"
     identity={"source":source,"source_tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],cwd=ROOT,text=True).strip(),
-              "godot_version":version,"godot_sha256":sha(godot),"native_runtime_sha256":sha(runtime),
+              "godot_version":version,"godot_sha256":sha(godot),
               "platform":platform.platform(),"physical_owner_windows11":False,
               "runner_is_graphical":not args.headless}
+    for name, path in (("native", ROOT/"godot/addons/cybersand_native"/native_manifest),
+                       ("rapier", ROOT/"godot/addons/godot-rapier2d"/f"runtime-provenance.{target}.json")):
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        errors = verify_runtime(ROOT, manifest)
+        digest = sha(ROOT / manifest["artifact"])
+        if errors or digest != manifest["sha256"]:
+            parser.error(f"{name} runtime admission failed: {errors or 'materialized bytes differ'}")
+        identity[name + "_runtime_sha256"] = digest
+        identity[name + "_provenance_sha256"] = sha(path)
+        identity[name + "_source_input_count"] = len(manifest["source_inputs"])
     write_json(out/"source-runtime-identity.json",identity)
     env=os.environ.copy()
     for key,suffix in (("XDG_DATA_HOME","data"),("XDG_CONFIG_HOME","config"),("XDG_CACHE_HOME","cache"),
