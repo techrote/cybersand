@@ -1,0 +1,29 @@
+{
+  "candidate_manifest_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+  "execution_input_count": 1508,
+  "explicit_committed_blobs_match": true,
+  "native_bytes": 5870592,
+  "native_input_count": 108,
+  "native_probe_bytes": 11654656,
+  "native_probe_sha256": "230354e476779216f7d3e790b86dee3f7aec1e11e2e354e98f304fa2410e4f1b",
+  "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+  "pe": {
+    "cybersand_native.windows.x86_64.dll": {
+      "machine": "AMD64",
+      "optional_header": "PE32+",
+      "sections": 14
+    },
+    "test_material_audition.exe": {
+      "machine": "AMD64",
+      "optional_header": "PE32+",
+      "sections": 14
+    }
+  },
+  "probe_builder_and_test_match_explicit_commit": true,
+  "run_id": "45465121123",
+  "schema": "cybersand.material-audition.independent-windows-build-review",
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "built-not-executed",
+  "toolchain_drift": false
+}

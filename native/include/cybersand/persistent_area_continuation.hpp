@@ -24,6 +24,8 @@ inline void validate_domain(const World& world) {
     const auto region = world.simulation_region();
     if (world.has_failed() || world.tick_index() != world.completed_tick_index())
         throw std::invalid_argument("Persistent area requires a healthy completed native tick boundary");
+    if (world.material_audition_changes_behavior())
+        throw std::invalid_argument("Persistent areas require the default material laws; an audition profile is active");
     if (world.physical_state_format_version() != 2 || world.physical_state_hash_version() != 2 ||
         config.liquid_solver_policy != LiquidSolverPolicy{} || config.wave_flow.enabled ||
         config.ballistic_water.enabled || config.inertial_signed_vertical ||

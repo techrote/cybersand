@@ -166,6 +166,15 @@ void negative_domains_and_atomicity() {
     auto failure=areas::restore(*failure_execution,saved.bytes,saved.sha256,saved.completed_tick,saved.physical_hash);
     refused([&]{ (void)areas::advance(*failure,1,100'000); },"private capacity failure fixture did not fail");
     require(failure->has_failed(),"failed private World was not quarantined"); preserve();
+    auto audition=fixture();
+    cybersand::MaterialAuditionProfile profile;
+    profile.profile_id="area-refusal";
+    profile.density[static_cast<std::size_t>(Material::Sand)]=500;
+    const auto activation=audition->apply_material_audition(
+        audition->material_audition_world_id(),audition->material_audition_revision(),profile);
+    require(activation.outcome==cybersand::MaterialAuditionOutcome::Applied,"audition fixture did not activate");
+    refused([&]{ (void)areas::capture(*audition); },"nondefault material laws entered a CYPS2 checkpoint");
+    preserve();
     auto wave=configuration(); wave->wave_flow.enabled=true;
     refused([&]{ (void)areas::restore(*wave,saved.bytes,saved.sha256,saved.completed_tick,saved.physical_hash); },"Wave execution silently accepted a CYPS2 checkpoint"); preserve();
     std::cout<<"GEN006_NATIVE_REFUSAL_ATOMICITY_PASS corrupt truncated wrong_tick wrong_hash oversized_slice body_mask partial_region private_tick_failure wave_refusal\n";

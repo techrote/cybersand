@@ -1,0 +1,18 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--headless",
+    "--editor",
+    "--quit"
+  ],
+  "elapsed_seconds": 10.4849999999999,
+  "exit_code": 0,
+  "log_sha256": "832805207fc0f4e3e6df640ab6d0a2177b45a644fb0826b9c5c961210a3e37d1",
+  "process_id": 3712,
+  "status": "passed",
+  "timeout_seconds": 900
+}

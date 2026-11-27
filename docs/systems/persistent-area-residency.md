@@ -18,6 +18,10 @@ Ordinary production defaults, native World limits and material/solver laws remai
 
 Resident travel, Save and normal exit wait for outstanding native edits. A collaborative Art turn can still own future work between native requests, as can an Architecture stage awaiting its receipt. Finish or Stop that work before changing areas. The ordinary Workbench retains its actor, Art and Architecture controls. The Persistent Areas profile refuses installation of an AMBIENT actor scene.
 
+The persistent-area worker uses default material laws throughout resident handoff and fresh-process recovery.
+Its Current scene audition control reports this limit before a law change can be queued.
+The ordinary Workbench supports live audition. The persistent checkpoint format accepts the default material configuration.
+
 ## Independent state and authority
 
 | Dimension | Authority |

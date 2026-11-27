@@ -378,7 +378,7 @@ static func _neighbors(view: Dictionary, context: Dictionary) -> Dictionary:
 	var admitted: Array[Dictionary] = []
 	var identities: Dictionary = {}
 	var relations: Dictionary = context.get("relations", {}) if context.get("relations", {}) is Dictionary else {}
-	result.incomplete = candidates.size() > MAX_PEER_CANDIDATES
+	result.incomplete = bool(context.get("peer_roster_incomplete", false)) or candidates.size() > MAX_PEER_CANDIDATES
 	for index: int in range(mini(candidates.size(), MAX_PEER_CANDIDATES)):
 		var neighbor: Variant = candidates[index]
 		result.examined += 1

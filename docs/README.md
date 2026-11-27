@@ -16,6 +16,14 @@ The stacked [Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cy
 
 The opt-in Draft/HOLD [three-area native continuation contract](systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
 
+Current-scene material audition: [Draft/HOLD contract](systems/material-audition.md),
+[consumer capability map](systems/material-audition-consumers.md), and
+[existing Lab controls](operations/materials-lab-authoring.md). Supported profiles
+activate in the current World; reverting configuration does not undo simulation.
+The [definitive decision packet](audits/material-audition-live-20261124/decision-packet.md)
+records source-qualified Linux/Windows execution, the exact tested portable
+evaluator, original evidence and remaining physical owner/integration gates.
+
 **Architectural Workbench / M3–M5 — Draft/HOLD:** [native module library, GOLDMAPS retrieval and staged construction](operations/world-steer-architecture.md) extend the preserved Batch Lab. [Module contract](systems/native-architectural-modules.md), [design knowledge and evaluation](systems/architectural-knowledge-and-evaluation.md), and [staged execution boundary](systems/architecture-staged-construction.md) keep observed native geometry, authored intent, hosted qualification and physical acceptance distinct.
 
 **Native Batch Lab / #579 — Draft/HOLD:** [owner workflow, isolation and experiment contract](operations/world-steer-batch-lab.md) covers the optional 2×2/4×4 native authoring grid. Actual model comparisons and physical Windows acceptance remain separate from deterministic native qualification.
@@ -46,9 +54,9 @@ For Waterwall 002, see the [Water Lab controls](operations/workbench-water-lab.m
 own the integrated fifteen-collection / 120-feature art workflow. Draft/HOLD;
 source-qualified graphical evidence and physical GPU acceptance remain distinct.
 
-WB-ACTOR-COMPOSE-001 / #589 Draft/HOLD: [Shared Workbench actor composition](systems/workbench-actor-composition.md)
+WB-ACTOR-COMPOSE-002R / #737 Draft/HOLD (accepted #683 foundation): [Shared Workbench actor composition](systems/workbench-actor-composition.md)
 integrates the existing physical catalogue, independent producers and live handoff.
-Use the [Mixed Actor Workshop owner procedure](operations/workbench-actor-composition.md)
+Use the [continuous-play sandbox owner procedure](operations/workbench-actor-composition.md)
 for ordinary UI controls, policy testing and authored saves; the
 [dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
 separates actual platform evidence from owner playfeel acceptance.

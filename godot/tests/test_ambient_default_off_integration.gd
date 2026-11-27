@@ -122,8 +122,8 @@ func run() -> void:
 
 
 func exercise() -> void:
-	check(Catalog.MAX_ACTORS == 8 and Session.MAX_ACTORS == 8,
-		"foundation retains the accepted eight-actor host limit")
+	check(Catalog.Capacity.defaults().logical_limit == 8 and Catalog.MAX_AMBIENT_CONTROLLERS == 8,
+		"ordinary defaults retain eight logical actors and eight AMBIENT slots")
 	check(bench.applied.actors.size() == 4, "all four ordinary producer families installed")
 	check_off("initial paused ordinary scene", true)
 	var session: CyberPhysicalActorSession = host.physical_actor_session

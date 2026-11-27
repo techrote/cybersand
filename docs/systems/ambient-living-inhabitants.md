@@ -28,9 +28,7 @@ instantiates a unique actor controller, model service or training loop.
 The existing physical actor session is the only control authority. The decision
 engine receives copied values and returns normalized intentions through the
 existing actuator and issued-command admission path. Native material ownership,
-Rapier stepping, movement motors, equipment laws and the accepted capacity of
-**eight logical actors** remain unchanged. Unaccepted capacity PR #762 is not a
-dependency.
+Rapier stepping, movement motors and equipment laws remain with their physical owners. The ordinary Workbench defaults to eight logical actors. Its optional sandbox capacity may admit larger physical rosters. Each scene still admits at most eight assigned AMBIENT controllers, including paused and temporarily piloted inhabitants. The physical owner copies at most 32 peer candidates per decision tick, rotating through larger rosters. The nearest seven admitted peers reach the policy; partial coverage is explicit. Authored load, single handoff and atomic group assignment enforce the same policy budget.
 
 World generation is captured from a valid immutable owner snapshot even when a
 profile requests no material sensing. The copied generation must be nonnegative,

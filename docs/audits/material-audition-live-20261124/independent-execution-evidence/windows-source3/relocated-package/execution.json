@@ -1,0 +1,484 @@
+{
+  "candidate_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+  "cases": [
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--editor",
+        "--quit"
+      ],
+      "elapsed_seconds": 9.75,
+      "exit_code": 0,
+      "log_sha256": "832805207fc0f4e3e6df640ab6d0a2177b45a644fb0826b9c5c961210a3e37d1",
+      "name": "import",
+      "process_id": 7408,
+      "status": "passed",
+      "timeout_seconds": 900
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--rendering-method",
+        "gl_compatibility",
+        "--max-fps",
+        "30",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_material_audition.gd"
+      ],
+      "completion": {
+        "checks": 4002,
+        "display": "Windows",
+        "failures": 0,
+        "frames": [
+          {
+            "file": "current-scene-density.png",
+            "height": 689,
+            "name": "current-scene-density",
+            "sha256": "261b5e3a580f5d96b6fed11ade3b51c859e22ba5fec1fea1a886ecebdafd9cf1",
+            "width": 1008
+          },
+          {
+            "file": "density-sorter.png",
+            "height": 900,
+            "name": "density-sorter",
+            "sha256": "151f90db5b850a22d30f51863217c67880cddf4fb3700693b9659c71d230f541",
+            "width": 1600
+          },
+          {
+            "file": "viscosity-channel.png",
+            "height": 900,
+            "name": "viscosity-channel",
+            "sha256": "7ed6abf3ec53cb146d45bca42c868c8885ebb90d685d522ab6b40a7f2f92be3c",
+            "width": 1600
+          },
+          {
+            "file": "reaction-contact.png",
+            "height": 900,
+            "name": "reaction-contact",
+            "sha256": "b70278bdfbe0903da6201455384665f3986509f7d8fa363a1ee36656a1d10a9a",
+            "width": 1600
+          },
+          {
+            "file": "industrial-loop.png",
+            "height": 900,
+            "name": "industrial-loop",
+            "sha256": "2f8d96c597dae5a804d9bd43e6bab06a755934ec8b44ad3a93dd55cc02e5cf84",
+            "width": 1600
+          },
+          {
+            "file": "current-scene-1000x650.png",
+            "height": 650,
+            "name": "current-scene-1000x650",
+            "sha256": "b91f9e9427c601f3389ab8e4ab78f02e1450022caa29dd225960fb890a3ed2e1",
+            "width": 1000
+          },
+          {
+            "file": "current-scene-1280x720.png",
+            "height": 720,
+            "name": "current-scene-1280x720",
+            "sha256": "996b92a3facdab93b1209a324936586cc1584284717f05d2ffec88e8a804b0ed",
+            "width": 1280
+          }
+        ],
+        "godot": "4.7-stable (official)",
+        "native_witnesses": [
+          {
+            "density_1600_sinks": true,
+            "density_3000_sinks": true,
+            "density_500_sinks": false,
+            "kind": "density",
+            "reverted_sinks": true,
+            "ticks": 16,
+            "workers": 1,
+            "world_id": "19"
+          },
+          {
+            "bays": 96,
+            "kind": "viscosity",
+            "material_id": 20,
+            "moved_bays": [
+              96,
+              46,
+              0
+            ],
+            "ticks": 1,
+            "values": [
+              0,
+              128,
+              255
+            ],
+            "workers": 1
+          },
+          {
+            "bays": 96,
+            "completed_brine_pairs": [
+              1,
+              41,
+              96
+            ],
+            "kind": "reaction",
+            "slot": 2,
+            "thresholds": [
+              0,
+              63,
+              255
+            ],
+            "ticks": 4,
+            "witness": "actual stored products; native standalone test independently checks pair event ledger",
+            "workers": 1
+          },
+          {
+            "density_1600_sinks": true,
+            "density_3000_sinks": true,
+            "density_500_sinks": false,
+            "kind": "density",
+            "reverted_sinks": true,
+            "ticks": 16,
+            "workers": 4,
+            "world_id": "49"
+          },
+          {
+            "bays": 96,
+            "kind": "viscosity",
+            "material_id": 20,
+            "moved_bays": [
+              96,
+              46,
+              0
+            ],
+            "ticks": 1,
+            "values": [
+              0,
+              128,
+              255
+            ],
+            "workers": 4
+          },
+          {
+            "bays": 96,
+            "completed_brine_pairs": [
+              1,
+              41,
+              96
+            ],
+            "kind": "reaction",
+            "slot": 2,
+            "thresholds": [
+              0,
+              63,
+              255
+            ],
+            "ticks": 4,
+            "witness": "actual stored products; native standalone test independently checks pair event ledger",
+            "workers": 4
+          },
+          {
+            "backend": "actual native World, synchronous existing worker mailbox; no worker thread in this fixture",
+            "cancelled_before_commit": true,
+            "kind": "owner-adversaries",
+            "replacement_retired_pending": true,
+            "stale_and_session_refused": true
+          },
+          {
+            "authored_rectangles": 43,
+            "extent": [
+              512,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 43,
+            "scene_id": "density-sorter"
+          },
+          {
+            "authored_rectangles": 54,
+            "extent": [
+              512,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 32,
+            "scene_id": "viscosity-channel"
+          },
+          {
+            "authored_rectangles": 27,
+            "extent": [
+              512,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 28,
+            "scene_id": "reaction-contact"
+          },
+          {
+            "authored_rectangles": 82,
+            "extent": [
+              1024,
+              512
+            ],
+            "kind": "ordinary-demo",
+            "native_ticks_observed": 18,
+            "scene_id": "industrial-loop"
+          },
+          {
+            "configuration_revert_preserves_cells": true,
+            "graphical": true,
+            "kind": "ordinary-workbench",
+            "native_apply_while_running": true,
+            "ordinary_paint_save_reopen": true,
+            "original_world_id": "82",
+            "separate_profile_saved_and_reloaded": true
+          }
+        ],
+        "status": "passed"
+      },
+      "elapsed_seconds": 86.42199999999991,
+      "exit_code": 0,
+      "log_sha256": "ecd22d0a9a8fc9e7a744124fe069efd12d328279b9a5fdcf653bc7622b59b369",
+      "name": "test_material_audition",
+      "process_id": 4380,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_authored_scenes.gd"
+      ],
+      "completion": {
+        "checks": 111,
+        "failures": 0,
+        "native_file_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+        "trials": 12
+      },
+      "elapsed_seconds": 54.10900000000015,
+      "exit_code": 0,
+      "log_sha256": "9637da9cb2cee53be1d45d05fad48c74606a6b16586b886fb825e80ca58e50e1",
+      "name": "test_material_audition_authored_scenes",
+      "process_id": 4504,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_profile.gd"
+      ],
+      "completion": {
+        "checks": 45,
+        "failures": 0
+      },
+      "elapsed_seconds": 0.75,
+      "exit_code": 0,
+      "log_sha256": "c3ef97d216f31e154cbab8aa9dbceafc0b4769f76654399e0223a2251c865525",
+      "name": "test_material_audition_profile",
+      "process_id": 7796,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_ui_contract.gd"
+      ],
+      "completion": {
+        "checks": 127,
+        "failures": 0
+      },
+      "elapsed_seconds": 1.5,
+      "exit_code": 0,
+      "log_sha256": "bad71e9ac538b43e62967c90e48288cebfda2bb72126c18fac3a2151ecf7b4e0",
+      "name": "test_material_audition_ui_contract",
+      "process_id": 5620,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_audition_layout.gd"
+      ],
+      "completion": {
+        "checks": 23,
+        "failures": 0
+      },
+      "elapsed_seconds": 1.3279999999999745,
+      "exit_code": 0,
+      "log_sha256": "5648d78f4d9e2f784826c77c7de76927cd933a5934e3bf05920600e7e016163f",
+      "name": "test_material_audition_layout",
+      "process_id": 7032,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_ui.gd",
+        "--",
+        "--workbench-mount-only"
+      ],
+      "completion": {
+        "checks": 24,
+        "failures": 0
+      },
+      "elapsed_seconds": 6.0629999999998745,
+      "exit_code": 0,
+      "log_sha256": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+      "name": "test_material_lab_ui",
+      "process_id": 4744,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_catalogue.gd"
+      ],
+      "completion": {
+        "checks": 1348,
+        "failures": 0
+      },
+      "elapsed_seconds": 0.9529999999999745,
+      "exit_code": 0,
+      "log_sha256": "95e40220dac8dae464e6da3ba5992be11ba18095e8896a7d8cbd8a34e9646186",
+      "name": "test_material_lab_catalogue",
+      "process_id": 7632,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_experiment.gd"
+      ],
+      "completion": {
+        "checks": 141,
+        "failures": 0
+      },
+      "elapsed_seconds": 20.922000000000025,
+      "exit_code": 0,
+      "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+      "name": "test_material_lab_experiment",
+      "process_id": 2828,
+      "status": "passed",
+      "timeout_seconds": 1200
+    },
+    {
+      "command": [
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+        "--headless",
+        "--script",
+        "res://tests/test_material_lab_diagnostics.gd"
+      ],
+      "completion": {
+        "checks": 193,
+        "failures": 0
+      },
+      "elapsed_seconds": 5.594000000000051,
+      "exit_code": 0,
+      "log_sha256": "1fe74736cba3226a0e4a2e2e5f54a82850937dddc33cb28f152f2005324e2bd2",
+      "name": "test_material_lab_diagnostics",
+      "process_id": 7308,
+      "status": "passed",
+      "timeout_seconds": 1200
+    }
+  ],
+  "files_sha256": {
+    "authored-scenes/authored-scene-readback.json": "3c9fd09d1a929788f6e8cbb3b507a695f29430441f69caaaa7f0326bf1eb91ba",
+    "frames/current-scene-1000x650.png": "b91f9e9427c601f3389ab8e4ab78f02e1450022caa29dd225960fb890a3ed2e1",
+    "frames/current-scene-1280x720.png": "996b92a3facdab93b1209a324936586cc1584284717f05d2ffec88e8a804b0ed",
+    "frames/current-scene-density.png": "261b5e3a580f5d96b6fed11ade3b51c859e22ba5fec1fea1a886ecebdafd9cf1",
+    "frames/density-sorter.png": "151f90db5b850a22d30f51863217c67880cddf4fb3700693b9659c71d230f541",
+    "frames/industrial-loop.png": "2f8d96c597dae5a804d9bd43e6bab06a755934ec8b44ad3a93dd55cc02e5cf84",
+    "frames/native-readback.json": "9f46b99b4f4c6c1004fa6b35acc7a404599fd0c474503bf021ef5064e943467a",
+    "frames/reaction-contact.png": "b70278bdfbe0903da6201455384665f3986509f7d8fa363a1ee36656a1d10a9a",
+    "frames/viscosity-channel.png": "7ed6abf3ec53cb146d45bca42c868c8885ebb90d685d522ab6b40a7f2f92be3c",
+    "import.log": "832805207fc0f4e3e6df640ab6d0a2177b45a644fb0826b9c5c961210a3e37d1",
+    "import.receipt.json": "85fa46078d526d267e90f951be454974e8b3170b71c5724d937b6c2c2a6fb7be",
+    "test_material_audition.log": "ecd22d0a9a8fc9e7a744124fe069efd12d328279b9a5fdcf653bc7622b59b369",
+    "test_material_audition.receipt.json": "f185e41f564f9146f34b0e8b9ec9b500d60ee8263fa7a850f8f5e3c120b7e71f",
+    "test_material_audition_authored_scenes.log": "9637da9cb2cee53be1d45d05fad48c74606a6b16586b886fb825e80ca58e50e1",
+    "test_material_audition_authored_scenes.receipt.json": "c3a2683c7fd3b8b7302cb7c86aa0d37aae8644e679ca67869f48d811e12ab1ab",
+    "test_material_audition_layout.log": "5648d78f4d9e2f784826c77c7de76927cd933a5934e3bf05920600e7e016163f",
+    "test_material_audition_layout.receipt.json": "0e5622db6f3153a98296f24ec575e158bb1ea14805276bbc9113bafb131ac78a",
+    "test_material_audition_profile.log": "c3ef97d216f31e154cbab8aa9dbceafc0b4769f76654399e0223a2251c865525",
+    "test_material_audition_profile.receipt.json": "e231df684d95c7044be16c0e4a1974153b108073372841b103899c66832c47a1",
+    "test_material_audition_ui_contract.log": "bad71e9ac538b43e62967c90e48288cebfda2bb72126c18fac3a2151ecf7b4e0",
+    "test_material_audition_ui_contract.receipt.json": "e04e43c9cd05c7136f9c0e55062d74400b15f19a12fa74a627da9a1a7114973d",
+    "test_material_lab_catalogue.log": "95e40220dac8dae464e6da3ba5992be11ba18095e8896a7d8cbd8a34e9646186",
+    "test_material_lab_catalogue.receipt.json": "15166982900a3edcb04d12a51151badf3f036e5afa8eb15e5ce2d0be3f14c978",
+    "test_material_lab_diagnostics.log": "1fe74736cba3226a0e4a2e2e5f54a82850937dddc33cb28f152f2005324e2bd2",
+    "test_material_lab_diagnostics.receipt.json": "d20d7d11af359a437a44b7a47967f018d8fb36a675a3c1e6746a234fc29647f6",
+    "test_material_lab_experiment.log": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+    "test_material_lab_experiment.receipt.json": "1669aea908b034bec403e474c4e6a4098e9ceccd74c903a1ad438d5a18291682",
+    "test_material_lab_ui.log": "3f842cd63bafe0415b70aacf69efc192fde19ec7c26eae3f6a1417c71bc23974",
+    "test_material_lab_ui.receipt.json": "18ff2a4868f1fad2d2e563b863ef42233e361655a6a38e0699f65a77c65daef1"
+  },
+  "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "graphical": true,
+  "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+  "platform": "windows",
+  "platform_detail": "Windows-2022Server-10.0.20348-SP0",
+  "schema": "cybersand.material-audition.execution",
+  "schema_version": 1,
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "passed"
+}

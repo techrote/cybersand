@@ -148,6 +148,7 @@ func select_material(id: int) -> void:
 func select_tool(tool: String) -> void:
 	var index := TOOLS.find(tool)
 	if index < 0: return
+	if bench != null and bench.get("actor_interaction") != null: bench.actor_interaction.cancel("paint_tool_selected")
 	cancel_preview()
 	_tools.select(index)
 	if bench != null: bench._tool.select(0)

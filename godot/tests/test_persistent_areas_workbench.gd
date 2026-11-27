@@ -109,6 +109,13 @@ func run() -> void:
 	check(host.physical_actor_session == null or host.physical_actor_session.bodies().is_empty(),
 		"editor traveller owns no hidden retained actor")
 	check(not bool(host.tower_context.get("wave_flow",{}).get("enabled",false)),"actual profile uses supported Current Water rather than Wave")
+	var audition: Dictionary = worker.material_audition_state()
+	var refused: Dictionary = worker.material_audition_request({
+		"session_id":str(audition.session_id),"world_id":"0","expected_revision":0,
+		"profile":{"schema_version":1,"profile_id":"persistent-refusal","materials":[],"reactions":[]}})
+	check(not audition.get("ok",false) and not refused.get("accepted",false)
+		and refused.get("code")=="owner_unavailable" and "default material laws" in str(refused.get("error","")),
+		"persistent native owner refuses live audition before durable capture or resident travel")
 	_initial_tick = int(host.latest_snapshot.tick_index)
 	_initial_clock = int(controller.clock.game_ticks)
 	phase("layout at 720p and 1080p")
