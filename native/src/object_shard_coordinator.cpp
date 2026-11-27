@@ -121,7 +121,9 @@ Coordinator::Coordinator(Config config, World* owner_world)
     component_.reserve(config_.limits.max_area);
     proposed_mask_.resize(area); materials_.resize(area);
     reserved_destinations_.resize(area);ingress_exclusion_.resize(area);
-    relocations_.reserve(config_.limits.max_total_area*4U);
+    // Each occupied source index is visited once per mask transaction. A
+    // finite World can therefore request at most one relocation per cell.
+    relocations_.reserve(std::min<std::size_t>(area, config_.limits.max_total_area * 4U));
     exposures_.reserve(config_.exposure_capacity); receipts_.resize(64);
     fire_opportunities_.resize(area);
     ingress_fences_.reserve(config_.limits.max_total_area);
