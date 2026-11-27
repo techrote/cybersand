@@ -236,6 +236,25 @@ def _weight(name: str, *, profile: dict | None = None, root: Path = ROOT) -> flo
     return scheduling.estimate(name, fallback, profile or scheduling.load_profile(), root=root)[0]
 
 
+# Only these fixtures exercise the mounted optional Structures controls.
+# A bare Workbench and the direct adapter, port and worker tests retain their
+# normal defaults, including an unbound M4 port where the fixture requires it.
+OBJECTSHARD_WORKBENCH_CASES = frozenset({
+    "test_object_shard_m4_workbench_completion", "test_object_shard_m4_material_only_workbench",
+    "test_object_shard_m4_fragment_reabsorption", "test_object_shard_m4_lifecycle_adverse",
+    "test_object_shard_m4_lifecycle_fuzz", "test_object_shard_m4_completed_sample",
+    "test_object_shard_m4_equipment_completion", "test_object_shard_m4_long_burn",
+    "test_object_shard_m4_optional_diagnostics", "test_object_shard_m4_workbench_scene_refusal",
+})
+
+
+def script_case_flags(name: str) -> tuple[str, ...]:
+    flags = ("--script", "res://tests/" + name + ".gd")
+    if name in OBJECTSHARD_WORKBENCH_CASES:
+        flags += ("--", "--objectshard-m4-workbench")
+    return flags
+
+
 def _case_requires_display(name: str) -> bool:
     return name.endswith("_render") or name in architecture_context.GRAPHICAL_CASES
 
@@ -245,7 +264,7 @@ def discover_cases(root: Path = ROOT) -> list[Case]:
     cases = [
         Case(
             p.stem,
-            ("--script", "res://tests/" + p.name),
+            script_case_flags(p.stem),
             execution_policy.case_seconds(p.stem, _case_requires_display(p.stem),
                 complex_fixture="support/ci_execution_policy.gd" in p.read_text(encoding="utf-8")),
             _weight(p.stem, profile=profile, root=root),

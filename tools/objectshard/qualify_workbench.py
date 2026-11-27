@@ -34,6 +34,7 @@ FOCUSED = (
     ("test_object_shard_m4_shared_main_rapier", "objectshard-m4-existing-main-rapier-v1"),
     ("test_object_shard_m4_same_world_physical_chain", "objectshard-m4-sameworld-rapier-physical-chain-v1"),
     ("test_object_shard_m4_compact_motion_packets", "objectshard-m4-compact-motion-packet-v1"),
+    ("test_object_shard_m4_workbench_scene_refusal", "objectshard-m4-ordinary-scene-refusal-v1"),
     ("test_object_shard_m4_workbench_completion", "objectshard-m4-workbench-completion-v1"),
     ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
     ("test_object_shard_m4_fragment_reabsorption", "objectshard-m4-fragment-reabsorption-v1"),
@@ -243,9 +244,7 @@ def qualify(args: argparse.Namespace) -> dict:
         for name, schema in FOCUSED:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
-            flags = ("--script", "res://tests/" + name + ".gd")
-            if name.endswith(("workbench_completion", "material_only_workbench", "fragment_reabsorption", "lifecycle_adverse", "lifecycle_fuzz", "completed_sample", "equipment_completion", "long_burn", "optional_diagnostics")):
-                flags += ("--", "--objectshard-m4-workbench")
+            flags = runner.script_case_flags(name)
             graphical_diagnostics = args.render and name.endswith("optional_diagnostics")
             if graphical_diagnostics:
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags

@@ -20,6 +20,17 @@ class ObjectShardPublicationTests(unittest.TestCase):
                                     separators=(",", ":"))
                 self.assertEqual(bool(re.fullmatch(pattern, result)), success, (name, result))
 
+    def test_ordinary_discovery_admits_only_mounted_workbench_fixtures(self):
+        runner = profile.engine.runner
+        cases = {c.name: c for c in runner.discover_cases()}
+        aimed = {name for name, case in cases.items() if "--objectshard-m4-workbench" in case.flags}
+        mounted = {path.stem for path in (profile.engine.ROOT / "godot/tests").glob("test_object_shard_m4*.gd")
+                   if "object_shard_m4_workbench_fixture.gd" in path.read_text(encoding="utf-8")}
+        self.assertEqual(aimed, mounted | {"test_object_shard_m4_workbench_scene_refusal"})
+        for name in aimed:
+            self.assertEqual(cases[name].flags[-2:], ("--", "--objectshard-m4-workbench"))
+        self.assertNotIn("--objectshard-m4-workbench", cases["test_object_shard_m4_workbench_port"].flags)
+
     def test_partial_retry_requires_actual_build_and_validation_attempts(self):
         bundle = Path("unused")
         manifest = {"build_attempt": "1", "workflow_attempt": "2"}
