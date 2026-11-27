@@ -74,7 +74,29 @@ func _pointer_move(position: Vector2i) -> void:
 	event.button_mask = MOUSE_BUTTON_MASK_LEFT
 	f.host.world_view.gui_input.emit(event)
 
+func _status_keeps_pointer_geometry() -> bool:
+	# Exercise the actual mounted Label and container. Rapid receipts can
+	# alternate between one line and the two visible lines during a stroke.
+	var status: Label = f.bench._status
+	var previous_text := status.text
+	var was_processing: bool = f.bench.is_processing()
+	f.bench.set_process(false)
+	status.text = "Paused"
+	await process_frame
+	await process_frame
+	var short_area: Rect2 = f.host.view_content_rect()
+	var one_line := status.get_line_count() == 1
+	status.text = "Moving material edit: waiting for the current native and physics receipt. ".repeat(12)
+	await process_frame
+	await process_frame
+	var wrapped := status.get_line_count() > 1
+	var stable: bool = short_area.has_area() and f.host.view_content_rect() == short_area
+	status.text = previous_text
+	f.bench.set_process(was_processing)
+	return f.expect(one_line and wrapped and stable,"short and wrapped structural status receipts preserve the actual viewport transform")
+
 func _cut_neck_with_pointer() -> bool:
+	if not await _status_keeps_pointer_geometry(): return false
 	if not await f.until(func(): return f.runtime().physics_ready() and f.coherent() \
 		and f.runtime().publication.get("publication_sequence")==f.runtime().frame.get("publication_sequence"),
 		"pointer starts on the latest completely displayed native publication"): return false

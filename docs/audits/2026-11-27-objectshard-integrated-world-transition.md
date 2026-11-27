@@ -130,3 +130,17 @@ longest observed gap reached 1.734 s. The Water scene visibly animated
 while paused. Its active changes exceeding the maximum paused change
 occurred 12.15/s. These measures identify visible material-region changes.
 Physical owner playfeel and the sustained displayed-FPS concern remain open.
+
+## Held pointer and receipt layout
+
+The source-bound Windows archive for `f7921ffa3` and its 126-input DLL
+(`4ab4b9ff2577e6c200a0a611f53796ace241e04d0fbc11f503343520ea7ee2aa`)
+passed four extracted launcher paths. One local downstream fragment case
+received the correct native Cut acknowledgement, then lost its held pointer.
+The next three controlled runs passed and the fourth traced the cancellation
+to a real viewport resize from 853 to 874 pixels high. A shorter status
+receipt had released one line of the toolbar. Structures now reserves its
+two visible status lines using the mounted label's font, spacing and style.
+The fragment case alternates short and wrapped text and checks the actual
+content rectangle before running its original held Cut, split, quantity and
+settlement proofs. Resizing the actual viewport continues to cancel a stroke.

@@ -403,6 +403,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_status.max_lines_visible = 2
 	_status.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_status)
+	if object_shard_m4_port.enabled: _reserve_object_shard_status_height()
 	DisplayServer.window_set_title("CyberSand · Development workbench")
 	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
@@ -1189,6 +1190,7 @@ func installed(candidate: Dictionary) -> void:
 		# Main already retired the old structural journal on this accepted
 		# replacement. Keep the new flight owner on its ordinary clock.
 		object_shard_m4_port.enabled = false
+		_status.custom_minimum_size.y = 0
 		host.object_shard_m4_runtime.shutdown()
 		if _tool.selected in MOVING_TOOLS: _tool.select(0)
 		while _tool.item_count > TOOL_NAMES.size(): _tool.remove_item(_tool.item_count-1)
@@ -1909,6 +1911,12 @@ func uses_fixed_step_flight(setup_document: Dictionary) -> bool:
 		if StringName(str(definition.model)) in ActorCatalog.Flight.IDS: return true
 	return false
 
+func _reserve_object_shard_status_height() -> void:
+	# One-line and wrapped receipts must agree on the viewport transform while
+	# a visible-cell gesture is held. Genuine viewport resizes still cancel it.
+	var style_height := _status.get_theme_stylebox(&"normal").get_minimum_size().y
+	_status.custom_minimum_size.y = 2 * _status.get_line_height() + _status.get_theme_constant(&"line_spacing") + style_height
+
 func enable_object_shard() -> bool:
 	if host == null or not host.has_method("object_shard_m4_latency_report"): return false
 	if host.has_method(&"persistent_operation_allowed"): return refuse("Persistent Areas cannot retain a structural body owner.")
@@ -1919,6 +1927,7 @@ func enable_object_shard() -> bool:
 		if extent.x > 1024 or extent.y > 1024:
 			return refuse("Choose a 512 or 1024 canvas, or load a structures scene, before enabling destructible structures.")
 	object_shard_m4_port.enabled = true
+	_reserve_object_shard_status_height()
 	if _tool.item_count == TOOL_NAMES.size():
 		_tool.add_item("Cut moving")
 		_tool.add_item("Ignite moving")

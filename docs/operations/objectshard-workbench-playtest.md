@@ -17,9 +17,9 @@ Workbench canvas, painting, Water controls, actors and Rapier space. The
 independent ObjectShard Lab and M3 rehearsal remain available as historical
 test facilities. Their results do not qualify this integration.
 
-## Qualified download and evidence
+## Historical evaluator and evidence
 
-The [principal Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170)
+The [frozen November 25 Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170)
 contains **objectshard-workbench-evaluator.zip**, **93,388,322 bytes**, SHA-256
 **1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387**.
 The GitHub download is an outer archive; extract its inner ZIP, then extract the
@@ -36,7 +36,9 @@ cargo transfer. See the
 and [complete performance analysis](../audits/objectshard-m4-recovery-20261125/final-performance-5f.md).
 These results do not establish physical NVIDIA presentation speed.
 The packaged guide remains its exact qualified source version; this repository
-page adds the terminal delivery record.
+page records that delivery. For a newer extracted candidate, the included
+`objectshard-workbench-manifest.json` identifies its own source, dependencies
+and file hashes.
 
 ## Open the evaluator
 
