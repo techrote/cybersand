@@ -144,3 +144,10 @@ two visible status lines using the mounted label's font, spacing and style.
 The fragment case alternates short and wrapped text and checks the actual
 content rectangle before running its original held Cut, split, quantity and
 settlement proofs. Resizing the actual viewport continues to cancel a stroke.
+
+An extracted run at `703652dec` also exposed an earlier completion-fixture
+assumption. A valid Cut acknowledgement can arrive while the two displayed
+frames still agree on the old inventory. The fixture now waits for the
+authenticated transaction to appear in the displayed publication before
+checking the one-cell debit, stale-target refusal and four subsequent Wood
+ignitions. The per-cell, quantity and reaction checks still run.

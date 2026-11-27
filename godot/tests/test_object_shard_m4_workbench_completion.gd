@@ -87,7 +87,13 @@ func _run() -> void:
 	f.expect(request.get("ok",false), "moving-cell erase enters actual ordinary worker command queue / " + str(request))
 	if request.get("ok",false):
 		await f.until(func(): return f.bench.object_shard_m4_port.pending_count() == 0, "moving erase terminal receipt")
-		await f.until(func(): return bool(f.diagnostics().get("physics_ready",false)) and f.coherent(), "post-edit geometry and visible publication installed")
+		# The terminal receipt can precede Main's next display callback. Two
+		# coherent old frames still describe the pre-cut inventory.
+		if not await f.until(func(): return f.runtime().physics_ready() and f.coherent() \
+			and f.bench.object_shard_m4_port.latest_edit_presented(f.runtime().publication,f.runtime().capabilities),
+			"post-edit geometry and visible publication installed for the authenticated Cut transaction"):
+			await _finish()
+			return
 		var result: Dictionary = f.bench.object_shard_m4_port.results.back()
 		f.expect(result.get("outcome") == "Applied", "native material mutation applied")
 		f.expect(result.get("native_receipt",{}).get("source_target",{}) == target,
