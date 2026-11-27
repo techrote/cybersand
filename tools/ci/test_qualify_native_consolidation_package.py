@@ -6,11 +6,13 @@ import copy
 import hashlib
 import os
 from pathlib import Path
+import struct
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 import zipfile
+import zlib
 
 import qualify_native_consolidation_package as gate
 
@@ -43,6 +45,40 @@ class ExtractionQualification(unittest.TestCase):
         gate.require_distinct({"pid": 21}, {"pid": 22})
         with self.assertRaises(ValueError):
             gate.require_distinct({"pid": 21}, {"pid": 21})
+
+    def test_material_graphical_evidence_binds_each_capture_and_named_profile_roundtrip(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary)
+            frames = output / "frames"
+            frames.mkdir()
+            rows = []
+            def chunk(kind: bytes, data: bytes) -> bytes:
+                return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
+            png = (b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", 400, 300, 8, 0, 0, 0, 0))
+                   + chunk(b"IDAT", zlib.compress(bytes(401 * 300))) + chunk(b"IEND", b""))
+            for name in ("current-scene-density", "current-scene-1000x650", "current-scene-1280x720",
+                         "density-sorter", "viscosity-channel", "reaction-contact", "industrial-loop"):
+                path = frames / (name + ".png")
+                path.write_bytes(png)
+                rows.append({"name": name, "file": path.name, "sha256": gate.delivery.sha(path), "width": 400, "height": 300})
+            workbench = dict(kind="ordinary-workbench", native_apply_while_running=True,
+                             configuration_revert_preserves_cells=True, ordinary_paint_save_reopen=True,
+                             separate_profile_saved_and_reloaded=True, graphical=True)
+            witnesses = [dict(kind=name) for name in ("density", "viscosity", "reaction", "owner-adversaries", "ordinary-demo")]
+            report = dict(checks=42, display="Windows", frames=rows, native_witnesses=[*witnesses, workbench])
+            raw = frames / "native-readback.json"
+            gate.delivery.write(raw, report)
+            self.assertEqual(len(gate.material_profile_evidence(output, report)["framebuffers_sha256"]), 7)
+            for changed in (dict(report, frames=rows[:-1]), dict(report, frames=[*rows[:-1], rows[0]]),
+                            dict(report, frames=[*rows[:-1], dict(rows[-1], file="../foreign.png")]),
+                            dict(report, frames=[*rows[:-1], dict(rows[-1], sha256="0"*64)]),
+                            dict(report, frames=[*rows[:-1], dict(rows[-1], width=800)]), dict(report, display="headless"),
+                            dict(report, native_witnesses=[*witnesses, dict(workbench, separate_profile_saved_and_reloaded=False)])):
+                with self.subTest(frame=changed["frames"][-1]["name"]), self.assertRaises(ValueError):
+                    gate.delivery.write(raw, changed)
+                    gate.material_profile_evidence(output, changed)
+            with self.assertRaises(ValueError):
+                gate.material_profile_evidence(output, report)
 
     def test_profile_excludes_external_feature_and_generator_overrides(self):
         with tempfile.TemporaryDirectory() as temporary, patch.dict(os.environ, {

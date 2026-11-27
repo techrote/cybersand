@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 import re
 import signal
+import struct
 import subprocess
 import sys
 import time
@@ -158,6 +159,40 @@ def gentek(extraction: Extraction) -> dict:
     return summary
 
 
+def material_profile_evidence(output: Path, report: dict) -> dict:
+    frames = output / "frames"
+    delivery.require(delivery.read(frames / "native-readback.json") == report and report.get("display") == "Windows",
+                     "Material readback differs from the graphical Windows process")
+    expected = {"current-scene-density", "current-scene-1000x650", "current-scene-1280x720",
+                "density-sorter", "viscosity-channel", "reaction-contact", "industrial-loop"}
+    rows = report.get("frames", [])
+    delivery.require(len(rows) == len(expected) and {row["name"] for row in rows} == expected,
+                     "Missing or duplicated graphical material captures")
+    hashes = {}
+    for row in rows:
+        filename = row["name"] + ".png"
+        path = frames / filename
+        delivery.require(row["file"] == filename and delivery.sha(path) == row["sha256"],
+                         "Material capture differs from its native receipt")
+        with path.open("rb") as stream:
+            header = stream.read(24)
+        delivery.require(len(header) == 24 and header[:16] == b"\x89PNG\r\n\x1a\n\0\0\0\rIHDR",
+                         "Material capture is not a PNG with an IHDR")
+        width, height = struct.unpack(">II", header[16:24])
+        delivery.require((width, height) == (row["width"], row["height"]) and width >= 400 and height >= 300,
+                         "Material framebuffer dimensions differ from the native receipt")
+        hashes[filename] = row["sha256"]
+    witnesses = report["native_witnesses"]
+    kinds = {row["kind"] for row in witnesses}
+    delivery.require({"density", "viscosity", "reaction", "owner-adversaries", "ordinary-demo"} <= kinds
+                     and any(row["kind"] == "ordinary-workbench" and all(row.get(key) is True for key in
+                             ("native_apply_while_running", "configuration_revert_preserves_cells",
+                              "ordinary_paint_save_reopen", "separate_profile_saved_and_reloaded", "graphical"))
+                             for row in witnesses), "Missing native or mounted Workbench material witnesses")
+    return {"checks": report["checks"], "framebuffers_sha256": hashes, "native_witnesses": witnesses,
+            "readback_sha256": delivery.sha(frames / "native-readback.json")}
+
+
 def material(extraction: Extraction) -> dict:
     output, env = extraction.environment("material_audition")
     _, content = extraction.fixture(output, "mixed-actors", "test_material_audition_ambient_integration",
@@ -166,7 +201,15 @@ def material(extraction: Extraction) -> dict:
     delivery.require(any(phase["native_ticks"] >= 24 and phase["physical_ticks"] >= 24
                          for phase in result.get("phases", [])), "Missing coupled material/actor progression")
     delivery.write(output / "mixed-actors.json", result)
-    return {"checks": result["checks"], "phases": result["phases"]}
+    validator = extraction.load_validator("tools/ci", "run_material_audition_qualification")
+    profile_env = dict(env, MAT_AUDITION_EVIDENCE_DIR=str(output / "frames"))
+    for key in ("MATERIAL_LAB_CACHED_ONLY", "MATERIAL_LAB_SKIP_COMPILE"):
+        profile_env.pop(key, None)
+    _, content = extraction.fixture(output, "named-profile", "test_material_audition", profile_env, 1200,
+                                    graphics=[*GRAPHICAL, "--max-fps", "30"])
+    report = validator.completion(content, "MATERIAL_AUDITION_RESULT")
+    profiles = material_profile_evidence(output, report)
+    return {"checks": result["checks"], "phases": result["phases"], "named_profile": profiles}
 
 
 def actors(extraction: Extraction) -> dict:
@@ -301,7 +344,7 @@ FEATURES = {"gentek_2048": gentek, "material_audition": material, "actor_compose
             "swarm": swarm, "persistent_areas": areas, "objectshard_m4": objectshard}
 LANES = {"authoring": ("gentek_2048", "material_audition", "swarm"),
          "worlds": ("actor_compose", "objectshard_m4", "persistent_areas")}
-PHASES = {"gentek_2048": ("author", "reopen"), "material_audition": ("mixed-actors",),
+PHASES = {"gentek_2048": ("author", "reopen"), "material_audition": ("mixed-actors", "named-profile"),
           "actor_compose": ("capacity", "manipulation"), "swarm": ("create", "reopen"),
           "persistent_areas": ("write", "reopen"), "objectshard_m4": ("author", "reopen", "launcher")}
 
