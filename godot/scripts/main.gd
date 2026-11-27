@@ -69,11 +69,11 @@ var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
 # The evaluator can finish scheduled fixed steps as native samples become ready.
-# No worker touches a RID. At most one recent callback is retained and the
+# No worker touches a RID. At most four recent callbacks are retained and the
 # ordinary transaction still consumes exactly one new native result per step.
 var _flight_pacing := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
 var _held_flight_callbacks: int = 0
-var _held_flight_until: int = 0
+var _held_flight_times := PackedInt64Array()
 var _held_flight_ticket: Dictionary = {}
 var _serviced_flight_callbacks: int = 0
 var _workbench_wait_sample: int = -1
@@ -2006,6 +2006,7 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 func _ready() -> void:
 	if _flight_pacing:
 		simulation_worker.workbench_sample_completed.connect(_service_held_flight_callback, CONNECT_DEFERRED)
+		RenderingServer.frame_post_draw.connect(_service_held_flight_callback)
 	if get_tree().get_meta("cybersand_feature","") == "shared_workbench" \
 			and not OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECEIPT").is_empty():
 		var recorder := OwnerGameplay.new()
@@ -2238,6 +2239,7 @@ func _process(delta: float) -> void:
 	var causal_started_usec: int = Time.get_ticks_usec() if _pubpres_trace_enabled else 0
 	if _pubpres_trace_enabled:
 		_pubpres_packet_observed("main_process_entry", causal_started_usec, null, {})
+	if _flight_pacing: _service_held_flight_callback()
 	if _workbench_same_frame_enabled: _try_same_frame_continuation()
 	_workbench_mapping_locked = false
 	_engine_lab_pump_ack()
@@ -2312,6 +2314,7 @@ func _process(delta: float) -> void:
 			_submit_workbench_presentation_frame()
 		else:
 			_present_physical_actor_overlay({})
+	if _flight_pacing: _service_held_flight_callback()
 	update_worker_frame_state()
 	if not workbench_presentation_submission_enabled(): update_shader_parameters()
 	_workbench_mapping_locked = false
@@ -2380,12 +2383,7 @@ func _write_launcher_ready_receipt() -> void:
 
 
 func _physics_process(_delta: float) -> void:
-	# A regular callback has priority. Invalidate an earlier pending lease on
-	# pause, manual Step, ownership changes and every unrelated hold.
-	if _flight_pacing and _held_flight_callbacks > 0:
-		_service_held_flight_callback()
-		_held_flight_callbacks = 0
-		_held_flight_ticket = {}
+	if _flight_pacing: _service_held_flight_callback()
 	if _pubpres_trace_enabled:
 		_pubpres_packet_observed("physics_callback_entry", Time.get_ticks_usec(), null,
 			{"manual_steps":rapier_bridge.manual_step_count(), "paused":paused})
@@ -2545,28 +2543,60 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 
 func _hold_flight_callback(snapshot: CyberSimulationSnapshot) -> void:
 	var identity := _same_frame_identity()
-	if identity.is_empty(): return
-	_held_flight_callbacks = 1
-	_held_flight_until = Time.get_ticks_usec() + 100000
+	if identity.is_empty():
+		_clear_held_flight()
+		return
+	# The ordinary keyboard path renews a lease on each callback. Older
+	# callbacks can share the renewal only while the actual command and all
+	# control generations still match. Never carry old input across a change.
+	var commands: Array = physical_actor_session._commands
+	var last: Dictionary = _held_flight_ticket.get("identity",{})
+	if last.get("sample") != identity.sample or last.get("generations") != identity.generations \
+			or _held_flight_ticket.get("commands") != commands:
+		_clear_held_flight()
+	if _held_flight_times.size() == 4: _held_flight_times.remove_at(0)
+	_held_flight_times.append(Time.get_ticks_usec())
+	_held_flight_callbacks = _held_flight_times.size()
 	_held_flight_ticket = {"identity":identity,"world_generation":snapshot.physics_world_generation,
-		"required_revision":snapshot.lab_context.get("workbench_hard_surface_revision",-1)}
+		"required_revision":snapshot.lab_context.get("workbench_hard_surface_revision",-1),
+		"commands":commands.duplicate(true)}
+
+
+func _clear_held_flight() -> void:
+	_held_flight_times.clear()
+	_held_flight_callbacks = 0
+	_held_flight_ticket = {}
 
 
 func _service_held_flight_callback() -> void:
-	if _held_flight_callbacks == 0: return
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() or _held_flight_callbacks == 0: return
 	var ticket := _held_flight_ticket
-	if Time.get_ticks_usec() > _held_flight_until or not is_inside_tree() \
-			or _same_frame_identity() != ticket.identity:
-		_held_flight_callbacks = 0
-		_held_flight_ticket = {}
+	var now := Time.get_ticks_usec()
+	while not _held_flight_times.is_empty() and now - _held_flight_times[0] > 100000:
+		_held_flight_times.remove_at(0)
+	if _held_flight_times.is_empty() or not is_inside_tree() or _same_frame_identity() != ticket.identity:
+		_clear_held_flight()
 		return
 	var result := WorkbenchSameFrameContinuation.validate_mailbox({}, ticket,
 		ticket.identity, simulation_worker.try_read_physics_mailbox())
 	if result.status != "ready": return
-	_held_flight_callbacks = 0
+	_held_flight_times.remove_at(0)
+	_held_flight_callbacks = _held_flight_times.size()
 	_held_flight_ticket = {}
-	_serviced_flight_callbacks += 1
+	physical_actor_session.ingest_ambient_snapshot(result.snapshot)
 	_complete_physics_callback(rapier_bridge.fixed_delta(), false, result.snapshot)
+	_serviced_flight_callbacks += 1
+	if _held_flight_callbacks == 0: return
+	# Validate each successor against its own sample, lease, epoch and fresh
+	# native reply. Every completion returns to the normal event loop.
+	var successor := _same_frame_identity()
+	if successor.is_empty() or successor.generations != ticket.identity.generations \
+			or successor.tick != int(ticket.identity.tick) + 1 \
+			or physical_actor_session._commands != ticket.commands:
+		_clear_held_flight()
+		return
+	ticket.identity = successor
+	_held_flight_ticket = ticket
 
 
 func same_frame_continuation_status() -> Dictionary:
