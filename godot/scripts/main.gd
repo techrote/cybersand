@@ -4277,7 +4277,7 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"mask_frame":{},"poses":{},"sources":{},"selected_steps":{},"desired_steps":{},
 		"reasons":{},"intentional_holds":{},"timeline_resets":{},"parts":[],
 		"hold_age_usec":{},"selected_observations":{},"recovery_attempts":{},"explicit_reentries":{},
-		"recovery_ceilings":{},"water_proofs":{},"water_composition":{},
+		"recovery_ceilings":{},"water_proofs":{},"water_composition":{},"contact_clips":{},"contact_cells":{},
 		"follow_instance_id":shared_workbench.selected_id() if shared_workbench != null else -1,
 		"follow_target":Vector2.INF,"follow_source_step":-1,"follow_held":false,
 		"session":-1,"epoch":-1,"world_generation":last_uploaded_world_generation,
@@ -4429,8 +4429,25 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 						# its endpoint; consecutive visible poses require the sweep.
 						var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
 						var water_start: Transform2D = desired if initial or water_reentry else anchor
-						var water_check: Dictionary = first_coverage if not first_coverage.is_empty() else _assess_workbench_water_sweep(slot,water_start,
-							desired,bridge._rects[slot],resolved,summary)
+						var water_check: Dictionary = first_coverage
+						if water_check.is_empty() and water_proof.kind=="current_completed_native_dependency" \
+								and (not paused or previous.get("contact_clipped",false)) and not recovering \
+								and (not resolved.previous_blend_active or not _presentation_previous_unknown) and not material_contents.is_empty() \
+								and resolved.current_texture_id!=0 and (not resolved.previous_blend_active or resolved.previous_texture_id!=0):
+							# Independent native authority applies the actual physical endpoint.
+							# The texture-backed clip cannot legalize a jump across a wall:
+							# test the prior presented pose even after a withheld draw.
+							var contact := WorkbenchPresentationCoherence.contact_sweep(anchor,desired,bridge._rects[slot],
+								image,_presentation_previous_image,resolved.previous_blend_active,
+								PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined),resolved.deadline_usec)
+							summary.cells_examined+=int(contact.scanned)
+							if contact.has("contact_cell"): resolved.contact_cells[slot]=contact.contact_cell
+							if contact.safe:
+								water_check=contact
+								if contact.has("clip"): resolved.contact_clips[slot]=contact.clip
+						if water_check.is_empty():
+							water_check=_assess_workbench_water_sweep(slot,water_start,
+								desired,bridge._rects[slot],resolved,summary)
 						decision = water_check
 						if bool(water_check.safe):
 							if water_check.get("coverage_reused",false):
@@ -4440,10 +4457,11 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 							# A complete Empty proof needs no Water layer or native
 							# composition exception. Keep its ordinary certificate,
 							# including across unchanged dry frames.
-							if bool(water_check.get("water_in_bounds",false)) or int(water_check.get("water_contacts",0)) > 0:
+							if resolved.contact_clips.has(slot) or bool(water_check.get("water_in_bounds",false)) or int(water_check.get("water_contacts",0)) > 0:
 								water_proof["coverage"] = water_check.duplicate()
+								water_proof.coverage.erase("clip")
 								resolved.water_proofs[slot] = water_proof
-								decision = {"safe":true,"reason":"water_composed:"+str(water_proof.kind)}
+								decision = {"safe":true,"reason":("material_clipped:" if resolved.contact_clips.has(slot) else "water_composed:")+str(water_proof.kind)}
 				# Certify only the motion since the last presented state. Old
 				# material behind that state cannot invalidate elapsed motion.
 				if decision.is_empty():
@@ -4579,9 +4597,9 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 					"desired_step":physical_actor_session.tick,
 					"instance_id":member.instance_id,"generation":member.generation,"material_contents":certified_contents.duplicate(),
 					"observation":selected_observation,"withheld_frames":0,
-					"water_composed":resolved.water_proofs.has(slot),
+					"water_composed":resolved.water_proofs.has(slot),"contact_clipped":resolved.contact_clips.has(slot),
 					"water_coverage_identity":(previous.get("water_coverage_identity",{}) if resolved.sources[slot] == "held"
-						else _workbench_water_coverage_cache.get(slot,{}).get("identity",{})) if resolved.water_proofs.has(slot) else {},
+						else _workbench_water_coverage_cache.get(slot,{}).get("identity",{})) if resolved.water_proofs.has(slot) and not resolved.contact_clips.has(slot) and not previous.get("contact_clipped",false) else {},
 					"origin_current":bool(previous.get("origin_current",false)) \
 						if resolved.sources[slot] == "held" else selected_step == physical_actor_session.tick,
 					"hold_started_usec":hold_started_usec if resolved.sources[slot] == "held" else 0}

@@ -114,6 +114,40 @@ func identity_checks() -> void:
 	bad_sample.pose = Transform2D(0,Vector2(3.6,3))
 	check(Composition.dependency(context,member,entry,observation,bad_sample,{}).is_empty(),"closure pose must be exact sampled geometry")
 
+func material_contact_checks() -> void:
+	var guard = preload("res://scripts/workbench_presentation_coherence.gd")
+	var front := Image.create_empty(24,20,false,Image.FORMAT_RG8)
+	var back: Image=front.duplicate()
+	var rects := [{"center":Vector2.ZERO,"size":Vector2(6,4)}]
+	var start := Transform2D(0,Vector2(8.5,8.5))
+	var target := Transform2D(0.2,Vector2(9.5,9.5))
+	var time := Time.get_ticks_usec()+500000
+	front.fill_rect(Rect2i(0,0,8,20),Color(1.0/255.0,0,0))
+	back.fill_rect(Rect2i(12,0,1,20),Color(6.0/255.0,0,0))
+	front.set_pixel(10,9,Color(3.0/255.0,1.0,0))
+	var visible: Dictionary = guard.contact_sweep(start,target,rects,front,back,true,2000,time)
+	check(visible.get("safe",false) and visible.get("reason")=="material_clipped_contact",
+		"actual Water, Wall and old Fire planes can clip part of a moving rotated footprint")
+	if visible.has("clip"):
+		check(guard.contact_point_visible(Vector2(10.4,9.1),visible.clip),"Water pixel on the accepted member remains pickable")
+		check(not guard.contact_point_visible(Vector2(7.9,9),visible.clip),"solid occupied pixels of the same member cannot be picked")
+		check(not guard.contact_point_visible(Vector2(12.1,9),visible.clip),"old Fire under an active blend blocks picking")
+		check(not guard.contact_point_visible(Vector2(-5,-5),visible.clip),"padding beyond the retained material area cannot pick a clipped part")
+		front.set_pixel(10,9,Color(2.0/255.0,0,0))
+		back.fill(Color.BLACK)
+		check(guard.contact_point_visible(Vector2(10,9),visible.clip) and not guard.contact_point_visible(Vector2(12,9),visible.clip),
+			"new unsubmitted Sand or expired Fire cannot change accepted pixel picking")
+	var blocked := Image.create_empty(24,20,false,Image.FORMAT_RG8)
+	blocked.fill_rect(Rect2i(11,0,1,20),Color(1.0/255.0,0,0))
+	check(not guard.contact_sweep(Transform2D(0,Vector2(5,10)),Transform2D(0,Vector2(18,10)),rects,blocked,null,false,2000,time).safe,
+		"no interior path can teleport across a one-cell continuous solid wall")
+	check(not guard.contact_sweep(start,target,rects,front,null,true,2000,time).safe,"missing active previous plane refuses")
+	blocked.fill(Color(6.0/255.0,0,0))
+	check(not guard.contact_sweep(start,target,rects,blocked,null,false,2000,time).safe,"completely engulfing Fire has no visible interior pixel")
+	check(not guard.contact_sweep(start,target,rects,front,back,true,1,time).safe,"contact clipping obeys the original shared work budget")
+	check(not guard.contact_sweep(start,target,rects,front,back,true,2000,Time.get_ticks_usec()-1).safe,"contact clipping obeys the original deadline")
+
+
 func independent_authority_checks() -> void:
 	var pose := Transform2D(0,Vector2(3.5,3))
 	var member := {"instance_id":2,"generation":6}
@@ -554,6 +588,21 @@ func graphical_checks() -> void:
 		"old visible non-Water material clips actor pixels")
 	# Repeated real disable/re-enable must release immutable-history bindings,
 	# preserve exactly one layer/material, and never leave stale actor pixels.
+	# Hard contact appears in different cells of the two original images.
+	# Keep both opaque pixels of the same continuous actor fully covered,
+	# and prove the adjacent exposed Water/Empty pixel still contains it.
+	current.set_pixel(2,3,Color(1.0/255.0,0,0))
+	previous.set_pixel(4,3,Color(6.0/255.0,0,0))
+	current_texture.update(current)
+	previous_texture.update(previous)
+	overlay.set_water_composition({"enabled":true,"current_texture":current_texture,"previous_texture":previous_texture,
+		"world_size":Vector2i(8,8),"previous_active":true,"snapshot_blend":0.5})
+	overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
+	var contact: Image=await first_water_image(viewport)
+	for p: Vector2i in [Vector2i(40,54),Vector2i(72,54)]:
+		check(color_error(contact.get_pixelv(p),contact.get_pixel(5,5))<0.005,"actual solid and previous Fire clip their own actor pixels")
+	check(color_error(contact.get_pixel(56,54),background.color.lerp(body_color,0.825))<0.015,
+		"the same accepted polygon remains visible in the neighboring Water cell")
 	var layer_id: int = overlay._water_layer.get_instance_id()
 	var material_rid: RID = overlay._water_layer.material.get_rid()
 	previous.set_pixel(3,3,Color(3.0/255.0,0,0,1))
@@ -585,6 +634,7 @@ func graphical_checks() -> void:
 func _run() -> void:
 	identity_checks()
 	independent_authority_checks()
+	material_contact_checks()
 	bounded_water_clearance_checks()
 	exact_body_basis_checks()
 	coverage_cache_checks()

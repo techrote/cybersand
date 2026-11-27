@@ -663,6 +663,11 @@ func pick_workbench_part(point: Vector2, presentation: Variant = null, padding: 
 				if body_slot < 0 or body_slot >= bridge._members.size(): continue
 				var member: Dictionary = bridge._members[body_slot]
 				if member.actor_slot != slot or member.actor_instance_id != _definitions[slot].instance_id or member.part_index != part: continue
+				# Contact-composed members are drawn through the accepted frame's
+				# material clip. A later upload cannot change which pixel was visible.
+				if presentation.get("contact_clips",{}).has(body_slot) \
+						and not preload("res://scripts/workbench_presentation_coherence.gd").contact_point_visible(
+							point,presentation.contact_clips[body_slot]): continue
 				var receipt: Dictionary = presentation.mask_frame.instances.get(int(member.instance_id), {})
 				var pose: Variant = presentation.poses.get(body_slot)
 				if receipt.get("generation",-1) == member.generation and receipt.get("pose") is Transform2D \

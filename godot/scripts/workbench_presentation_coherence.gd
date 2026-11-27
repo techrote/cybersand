@@ -76,6 +76,116 @@ static func empty_region_covers_sweep(region: Rect2i, start: Transform2D, target
 	return Rect2(region).encloses(Rect2(minimum,maximum-minimum))
 
 
+# A fragment-clipped physical pose can still straddle occupied cells. Require
+# an interior point continuously visible on the same side of a barrier through
+# the whole motion, in addition to the caller's independent live/native proof.
+# The GPU discards every non-Empty/non-Water cell in either active texture.
+const CONTACT_REGION_LIMIT := 1024
+
+static func _contact_region(low: Vector2, high: Vector2) -> Rect2i:
+	var first := Vector2i(low.floor())
+	return Rect2i(first,Vector2i(high.floor())-first+Vector2i.ONE)
+
+static func _contact_ids(plane: Image, region: Rect2i) -> Image:
+	var crop := plane.get_region(region)
+	if crop.get_format() != Image.FORMAT_R8: crop.convert(Image.FORMAT_R8)
+	return crop
+
+static func _contact_clear(ids: PackedByteArray) -> bool:
+	return not ids.is_empty() and ids.count(0)+ids.count(3)==ids.size()
+
+static func contact_sweep(start: Transform2D, target: Transform2D, rectangles: Array,
+		front: Image, back: Image, previous_active: bool, remaining: int, deadline: int) -> Dictionary:
+	var refusal := {"safe":false,"reason":"contact_unproved","scanned":0}
+	if remaining<=0 or Time.get_ticks_usec()>=deadline or rectangles.is_empty() or rectangles.size()>8 \
+			or front==null or front.is_empty() or front.get_format() not in [Image.FORMAT_RG8,Image.FORMAT_R8] \
+			or (previous_active and (back==null or back.get_size()!=front.get_size() or back.get_format()!=front.get_format())) \
+			or not start.is_finite() or not target.is_finite() or not _is_rigid(start) or not _is_rigid(target) \
+			or start.origin.distance_to(target.origin)>MAX_SHIFT_CELLS: return refusal
+	var angle := absf(wrapf(target.get_rotation()-start.get_rotation(),-PI,PI))
+	var low := Vector2.INF
+	var high := -Vector2.INF
+	for rect: Variant in rectangles:
+		if not rect is Dictionary or not rect.get("center") is Vector2 or not rect.get("size") is Vector2: return refusal
+		var centre: Vector2 = rect.center
+		var half: Vector2 = rect.size*0.5
+		if not centre.is_finite() or not half.is_finite() or half.x<=0.0 or half.y<=0.0: return refusal
+		var radius := centre.length()+half.length()
+		if radius*angle>MAX_ROTATION_SWEEP_CELLS: return refusal
+		# A rotated point deviates from its linearly interpolated endpoints
+		# by at most max|p''|/8 = radius*angle²/8. Translation is linear.
+		var pad := Vector2.ONE*(radius*angle*angle/8.0+EDGE_EPSILON)
+		for pose: Transform2D in [start,target]:
+			var extent := pose.x.abs()*half.x+pose.y.abs()*half.y+pad
+			low=low.min(pose*centre-extent)
+			high=high.max(pose*centre+extent)
+	var region := _contact_region(low,high)
+	var world := Rect2i(Vector2i.ZERO,front.get_size())
+	var channels := 2 if previous_active else 1
+	var charge := region.get_area()*channels
+	if not world.encloses(region) or region.get_area()>CONTACT_REGION_LIMIT or charge>remaining: return refusal
+	var a := _contact_ids(front,region)
+	var b := _contact_ids(back,region) if previous_active else null
+	var a_ids := a.get_data()
+	var b_ids := b.get_data() if b!=null else PackedByteArray()
+	var hard := not _contact_clear(a_ids) or (previous_active and not _contact_clear(b_ids))
+	var water := a_ids.has(3) or b_ids.has(3)
+	var result := {"safe":true,"reason":"water_compatible_swept_mask" if water else "empty_swept_mask",
+		"scanned":charge,"water_in_bounds":water,"water_contacts":0}
+	refusal.scanned = charge
+	if Time.get_ticks_usec()>=deadline: return refusal
+	if not hard: return result
+	# This is an exact occupied texel in the conservative crop. It may sit
+	# just outside the body, so never report it as a native body collision.
+	var opaque_ids := a_ids if not _contact_clear(a_ids) else b_ids
+	for i: int in range(opaque_ids.size()):
+		if opaque_ids[i] in [0,3]: continue
+		var cell := region.position+Vector2i(i%region.size.x,i/region.size.x)
+		var observed := {"scope":"swept_crop_opaque_texel","cell":cell,"current_id":a_ids[i],
+			"previous_id":b_ids[i] if previous_active else -1}
+		result["contact_cell"]=observed
+		refusal["contact_cell"]=observed
+		break
+	# Five interior points per collider. For each, check an enclosing box
+	# for its continuous path; a solid wall across the motion cannot pass.
+	for rect: Dictionary in rectangles:
+		for offset: Vector2 in [Vector2.ZERO,Vector2(-0.375,0),Vector2(0.375,0),Vector2(0,-0.375),Vector2(0,0.375)]:
+			var point: Vector2 = rect.center+offset*Vector2(rect.size)
+			var pad := Vector2.ONE*(point.length()*angle*angle/8.0+EDGE_EPSILON)
+			var from := start*point
+			var to := target*point
+			var path := _contact_region(from.min(to)-pad,from.max(to)+pad)
+			if not region.encloses(path): continue
+			charge+=path.get_area()*channels
+			if charge>remaining or Time.get_ticks_usec()>=deadline: return refusal
+			refusal.scanned=charge
+			path.position-=region.position
+			if not _contact_clear(a.get_region(path).get_data()) or (b!=null and not _contact_clear(b.get_region(path).get_data())): continue
+			result.contact_cell["clear_local_point"]=point
+			result.contact_cell["clear_path_world_cells"]=Rect2i(path.position+region.position,path.size)
+			result.reason="material_clipped_contact"
+			result.scanned=charge
+			# Immutable strings make the small click mask independent of later
+			# uploads, mutable CPU images and GPU RID rotation after acceptance.
+			result["clip"]={"area":region,"current":a_ids.hex_encode(),"previous":b_ids.hex_encode(),
+				"previous_active":previous_active}
+			return result if Time.get_ticks_usec()<deadline else refusal
+	return refusal
+
+
+static func contact_point_visible(point: Vector2, clip: Dictionary) -> bool:
+	if not point.is_finite() or not clip.get("area") is Rect2i: return false
+	var cell := Vector2i(point.floor())
+	var area: Rect2i = clip.area
+	if not area.has_point(cell): return false
+	var index := 2*((cell.y-area.position.y)*area.size.x+cell.x-area.position.x)
+	var front: String = clip.get("current","")
+	if front.length()!=2*area.get_area() or front.substr(index,2) not in ["00","03"]: return false
+	if not clip.get("previous_active",false): return true
+	var back: String = clip.get("previous","")
+	return back.length()==2*area.get_area() and back.substr(index,2) in ["00","03"]
+
+
 static func _touches_body(point: Vector2, pose: Transform2D, rectangles: Array,
 		padding: float = 0.0) -> bool:
 	var local: Vector2 = pose.affine_inverse() * point
