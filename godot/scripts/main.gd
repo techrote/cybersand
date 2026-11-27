@@ -7304,7 +7304,7 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		return
 	var start_usec: int = Time.get_ticks_usec()
 	_presentation_previous_occupied.clear()
-	_presentation_previous_image = image.duplicate() if shared_workbench != null and not _legacy_render_cadence() else null
+	_presentation_previous_image = image.duplicate() if _presentation_current_bytes.is_empty() or (shared_workbench != null and not _legacy_render_cadence()) else null
 	_presentation_previous_unknown = _presentation_previous_image == null
 	image.set_data(
 		world_extent.x,
@@ -7352,7 +7352,7 @@ func _capture_previous_presentation_occupancy(rectangles: PackedInt32Array) -> v
 	if image == null or texture == null or previous_texture == null:
 		_presentation_previous_unknown = true
 		return
-	if shared_workbench != null and not _legacy_render_cadence():
+	if _presentation_current_bytes.is_empty() or (shared_workbench != null and not _legacy_render_cadence()):
 		# Bind precisely the image that becomes previous_world_texture when the
 		# GPU slots swap. Preserve it through CPU patch mutation. Full refreshes
 		# and delayed ACK accumulation no longer imply unknown local occupancy.
@@ -7618,7 +7618,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	var cache_started_usec: int = Time.get_ticks_usec()
 	var previous_dry: Dictionary = _workbench_dry_region
 	_workbench_dry_region = _prepare_workbench_dry_region(cache_started_usec)
-	var next_bytes: PackedByteArray = image.get_data()
+	var next_bytes := PackedByteArray()
 	var next_shape := Vector3i(image.get_width(),image.get_height(),image.get_format())
 	var next_content_id: int = 0
 	# Exact equality is the proof. Revisions can change without material edits,
@@ -7629,7 +7629,16 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	# unchanged by the actual patches still carry their own local certificate.
 	var compare_full_contents := not _flight_pacing or paused or shared_workbench == null \
 		or physical_actor_session == null or next_shape.x * next_shape.y <= PRESENTATION_FRAME_SCAN_BUDGET
+	# Both immutable images already exist for bounded contact crops. On the
+	# large active path the optional byte arrays would retain/release another
+	# world-sized allocation merely to accelerate pixel reads on a fallback.
+	var retain_plane_bytes := compare_full_contents or _presentation_previous_image == null
+	if retain_plane_bytes:
+		next_bytes = image.get_data()
 	if compare_full_contents:
+		if _presentation_current_bytes.is_empty() and _presentation_previous_image != null:
+			# First refresh after pausing: this is the exact pre-edit image.
+			_presentation_current_bytes = _presentation_previous_image.get_data()
 		if next_shape == _presentation_current_content_shape and next_bytes == _presentation_current_bytes:
 			next_content_id = _presentation_current_content_id
 		elif next_shape == _presentation_previous_content_shape and next_bytes == _presentation_previous_bytes:
@@ -7722,6 +7731,8 @@ func _full_material_rectangle() -> PackedInt32Array:
 
 
 func _material_previous_cpu_image() -> Image:
+	if _presentation_previous_image != null:
+		return _presentation_previous_image.duplicate()
 	return Image.create_from_data(_presentation_previous_content_shape.x,
 		_presentation_previous_content_shape.y, false,
 		_presentation_previous_content_shape.z, _presentation_previous_bytes)
