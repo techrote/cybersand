@@ -1,0 +1,29 @@
+{
+  "case": "create",
+  "command": [
+    "/home/runner/work/_temp/swarm45-godot/Godot_v4.7-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/home/runner/work/_temp/swarm45-source/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--max-fps",
+    "60",
+    "--display-driver",
+    "x11",
+    "--script",
+    "res://tests/swarm456_reciprocal_ui.gd"
+  ],
+  "process_id": 9041,
+  "returncode": 0,
+  "timed_out": false,
+  "child_reaped": true,
+  "timeout_seconds": 420,
+  "wall_seconds": 36.444504555000094,
+  "log_sha256": "fcabe29a3f4ed06aaa6e36081972fe145192ddf7cfb55729cca55a2874a1bf7b",
+  "passed": true,
+  "example": "transaction",
+  "report_sha256": "e6b13f189a729f05d611d65a5cf52961b6a9431559490d45d590140896d27dfb",
+  "validation_errors": []
+}

@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-006",
+  "classification": "pre-reveal analysis and sampling contract",
+  "candidate_source": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+  "native_definition_sha256": "afbae85af2c44f1e539a154fbee622a3ee7533a6caab9ad1f9c5190a8e5803e4",
+  "fixtures": [
+    "owner_left_right_192x112",
+    "owner_left_right_128x128",
+    "island",
+    "concave_intrusion",
+    "foreign_solid",
+    "protected_corridor",
+    "narrow_neck",
+    "stepped_diagonal"
+  ],
+  "profiles": [
+    "industrial",
+    "industrial_gui",
+    "viaduct_like",
+    "irregular_megastructure"
+  ],
+  "replicates_per_stratum": 3,
+  "case_count": 96,
+  "candidate_policies": [
+    {
+      "name": "off",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "terminal_only",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "receptor_only",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "both",
+      "rounds": 2,
+      "role": "primary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 0,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 1,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 2,
+      "role": "primary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 3,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 4,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+no_offers",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+frame_frozen",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+mosaic_frozen",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+hard_only",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+fixed",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+reverse",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+cancel",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+frame_budget",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+mosaic_budget",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+solver_budget",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+memory_budget",
+      "rounds": 2,
+      "role": "secondary"
+    }
+  ],
+  "candidate_execution_count": 1920,
+  "reference_policy_count": 5,
+  "reference_execution_count": 480,
+  "total_native_executions": 2400,
+  "controls": false,
+  "timeout_seconds": 90,
+  "primary_comparison": {
+    "reference": "unchanged SWARM005 source c178feeb, both@2",
+    "candidate": "frozen SWARM006 a757ed4f, recovery@2",
+    "primary_endpoint_R": "native complete, can_apply true, still_required zero, and at least one authoritative qualified foreign joint",
+    "secondary_endpoint_A": "native complete, can_apply true, still_required zero",
+    "report": "96-case paired R and A transition tables, rescues and regressions, all-case rates; no claim that local-only termination is reciprocal success"
+  },
+  "secondary_endpoints": [
+    "original and new hard obligations by identity/state; immutable006 source under matched controls",
+    "offer-causal occupied-footprint XOR and material differences from explicit no-offer/frozen-peer controls; unavailable controls remain unknown and count against the96-case causal rate",
+    "charged work, conservative memory, rejected/accepted alternatives, stop and failure distributions for every policy",
+    "005 four disabled controls full behavioral parity against actual005 binaries,004 off parity against005 off; failure invalidates qualification",
+    "exact reverse recovery@2 versus recovery+reverse@2 replay, including work/history"
+  ],
+  "denominator_rules": [
+    "All96 cases remain in every policy denominator including UNSAT, exhausted, invalid, cancelled, timed out or failed children",
+    "Missing closure or work is null, never zero",
+    "No reruns that replace unsuccessful records; infrastructure reruns must be separately retained and labelled",
+    "No source/search-policy/endpoint tuning after any fresh outcome is revealed",
+    "Corrupted custody, structural violations or baseline parity failure means qualification failure regardless of success rate"
+  ],
+  "seed_recipe": {
+    "namespace": "integers in [2^30,2^31)",
+    "entropy": "one fresh32-byte OS CSPRNG value drawn only after this plan, exclusion ledger, wrapper and analyzer hashes are frozen; retain exact entropy hex",
+    "expansion": "SHA256 of ASCII GENTEK-SWARM-006-HOLDOUT-001 followed by NUL, entropy bytes, and an8-byte little-endian monotonically increasing counter; first8 digest bytes as little-endian integer modulo2^30 plus2^30",
+    "ordering": "fixture order then profile order then replicate0..2",
+    "rejections": "Reject duplicate seeds and every seed in exclusion ledger; no native outcome is consulted",
+    "all_new_seeds_unique": true
+  },
+  "sampling_limits": "Stratified synthetic native crops; not a probability sample of owner Worlds and not physical Windows/NVIDIA acceptance",
+  "exclusion_ledger_sha256": "b27fde9f11049ccfb633ac9b5422cae12873f89b03838193e703cd857131dabf"
+}

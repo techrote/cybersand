@@ -1,0 +1,227 @@
+{
+  "schema": "swarm456-q7-science-cross-review-c/v1",
+  "reviewer": "closure-independent-assurance-C",
+  "result": "PASS",
+  "completed_utc": "2026-11-24T18:50:25.541066+00:00",
+  "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "scope": "Independent original-archive custody, frozen-predicate review, full 1920-row source/process/hash/identity-chain cross-review, registered reductions, and retained final 320-case raw reanalysis. The complete definitive-team report remains the authoritative full retained raw readback.",
+  "authoritative_complete_raw_readback": {
+    "path": "/workspace/scratch/e18127ed82c6/independent-assurance/q7-revealed1920-review.json",
+    "sha256": "608df7d7e677aa1c0b17566193959d102e59cf9c3ea49b6eb564bbd5d5c50bf5"
+  },
+  "authoritative_full_readback_cases": 1920,
+  "native_documents": 1920,
+  "all_raw_documents": 5760,
+  "original_rows_and_original_process_log_request_native_joins": 1920,
+  "full_response_envelope_request_identity_fingerprints_joined": 1920,
+  "frozen_history_predicate": {
+    "path": "/workspace/scratch/28827b1ce0c8/audit-independent/fail138_original_comparison_review.py",
+    "sha256": "8818a1f197851d6bfaf9f08f160a3830cf55b0a9a684718bd58245af4949d69e"
+  },
+  "normalization_changed": false,
+  "compiled_source_inputs_exact": 100,
+  "registered_cases": 96,
+  "policies": 20,
+  "primary": {
+    "A": 82,
+    "R": 81,
+    "apply_joints": 363,
+    "closure_unknown": 12,
+    "proof_joints": 373,
+    "raw_joints": 442,
+    "statuses": {
+      "blocked": 2,
+      "complete": 82,
+      "exhausted": 12
+    }
+  },
+  "bilateral_R": 18,
+  "all_twenty_policy_reductions_match_original_manifest_q6_and_q7": true,
+  "matched_control_negative_results": {
+    "recovery+no_offers": {
+      "A_rescues": 22,
+      "A_regressions": 2,
+      "denominator": 96
+    },
+    "recovery+mosaic_frozen": {
+      "A_rescues": 22,
+      "A_regressions": 2,
+      "denominator": 96
+    },
+    "recovery+frame_frozen": {
+      "A_rescues": 2,
+      "A_regressions": 2,
+      "denominator": 96
+    }
+  },
+  "supplementary_reader": {
+    "first_invocation": {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-science-first-reader-interruption-c.json",
+      "sha256": "c6df23b258aa0bdc14554fe6477dfeb0b1764d815fdde4ad2976faf27eccb26a"
+    },
+    "logged_completed_executions_without_final_serialized_report": 1600,
+    "first_invocation_reclassified_as_pass": false,
+    "sequential_remaining_case_groups": 16,
+    "retained_remaining_executions": 320,
+    "all_retained_remaining_case_results_equal_authoritative_readback": true,
+    "checkpoints": [
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-80.json",
+        "sha256": "cbe2af383f12dfd2dd86250920462ea49d6c4ab80b813c68934a58b1d26b5e83",
+        "case_index": 80,
+        "executions": 20,
+        "reader_rss_kib": 225852,
+        "seconds": 6.251
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-81.json",
+        "sha256": "29753939162636fdcc11f6018bcde6bd66dfdd27b13670125cbe40d26147032a",
+        "case_index": 81,
+        "executions": 20,
+        "reader_rss_kib": 229628,
+        "seconds": 6.042
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-82.json",
+        "sha256": "a00248899e4d07b26feb2092543e34df435193beaf2de0265da330dacf0f67e5",
+        "case_index": 82,
+        "executions": 20,
+        "reader_rss_kib": 221604,
+        "seconds": 5.611
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-83.json",
+        "sha256": "bc68571cc6bc8453bfec5bc268dc7f2aeafcb61f5d0c5d9ac602e103f1f5ff31",
+        "case_index": 83,
+        "executions": 20,
+        "reader_rss_kib": 230984,
+        "seconds": 5.736
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-84.json",
+        "sha256": "71340b5466f9e01214707989403864eaf8f48b76d29f3c123f8c88bc40013b5a",
+        "case_index": 84,
+        "executions": 20,
+        "reader_rss_kib": 223740,
+        "seconds": 6.212
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-85.json",
+        "sha256": "64ce3143947267e02d288eba7716fbb5a899c9ab13bbfd880d37c4749d9b8efe",
+        "case_index": 85,
+        "executions": 20,
+        "reader_rss_kib": 223524,
+        "seconds": 6.019
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-86.json",
+        "sha256": "f0acf5be9a06f6aa07b4812edc4fa3e4b4ac52d96d20999c9a6336039ff2a10f",
+        "case_index": 86,
+        "executions": 20,
+        "reader_rss_kib": 224252,
+        "seconds": 6.267
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-87.json",
+        "sha256": "b52075854b8f45c83af7069f30118a4e9c13a1827846191d5c868bea36156d72",
+        "case_index": 87,
+        "executions": 20,
+        "reader_rss_kib": 222796,
+        "seconds": 6.077
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-88.json",
+        "sha256": "9d19e2ec97a155a6a5ebea1b82d3c6f21a352e2c7ee7c7ec65807bfc5b3ed99b",
+        "case_index": 88,
+        "executions": 20,
+        "reader_rss_kib": 221640,
+        "seconds": 5.892
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-89.json",
+        "sha256": "b3a0cf175533ebfea079b95d583444c4168a03b22039ac015e67c47947307990",
+        "case_index": 89,
+        "executions": 20,
+        "reader_rss_kib": 222792,
+        "seconds": 6.05
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-90.json",
+        "sha256": "12ec46030b60559701070a55c9d30e30b74b09bbf02a00f9c8368aa8d81eb2da",
+        "case_index": 90,
+        "executions": 20,
+        "reader_rss_kib": 227064,
+        "seconds": 5.865
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-91.json",
+        "sha256": "0564f05c7ad74d59f0ca1ddb3e7907e8d9cf0ff7d23b7e23d7ded80f8613655d",
+        "case_index": 91,
+        "executions": 20,
+        "reader_rss_kib": 225224,
+        "seconds": 6.297
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-92.json",
+        "sha256": "c7a934a52e4c59504718a5c811b7c88cde4db46466a6946c0d4f5f9b8188e8ca",
+        "case_index": 92,
+        "executions": 20,
+        "reader_rss_kib": 223628,
+        "seconds": 6.363
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-93.json",
+        "sha256": "fd70565c9340b2837941bf0e127a3718c4f64d1c0b303fe2c7d546546d93a4ff",
+        "case_index": 93,
+        "executions": 20,
+        "reader_rss_kib": 225500,
+        "seconds": 5.968
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-94.json",
+        "sha256": "921686fd872f63baae09876bbd1be5f258ef6074c7487079a737b2e4b5a7d11a",
+        "case_index": 94,
+        "executions": 20,
+        "reader_rss_kib": 224104,
+        "seconds": 6.26
+      },
+      {
+        "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-remaining-case-checkpoints-c/case-95.json",
+        "sha256": "2b8b6f2fa7a56467a7a6903af16bbbd652bfb387dd32bb721696639a855873b4",
+        "case_index": 95,
+        "executions": 20,
+        "reader_rss_kib": 227528,
+        "seconds": 6.365
+      }
+    ],
+    "combined_second_complete_1920_row_report_claimed": false,
+    "recovery_plan_change": "Parent directed minimum supplemental replay and no optional restart. The first failure receipt proposed all96 recovery; only the missing16 groups were subsequently checkpointed. The complete independent definitive report plus full custody/identity cross-review supplies the whole-population proof."
+  },
+  "scientific_executable": {
+    "recorded_sha256": "c6e589dac25db2f5cd661078c56e31d0b79bbbeb332974c43f8787bbd02e945e",
+    "original_executable_bytes_present": false,
+    "independent_executable_rehash_claimed": false
+  },
+  "evidence": [
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-science-archive-integrity-c.json",
+      "sha256": "7f71246da0090db1be199123abe334ca2ac77e4da91dc2680e7aa78eeaff0201"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-science-invocation-preflight-c.json",
+      "sha256": "b668a1c30acbfe1c7e17c85a326f7c01ddedac5b4ebffcddda940371ba19b117"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-historical-chain-custody-cross-review-c.json",
+      "sha256": "bb10d75917bcb4add63bcd884685be49cc67de15fb58060e139fc98b6a1acc3c"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/historical-science-supplement-c.json",
+      "sha256": "47f58c1e063dcf569676f6c2054e09b749c1d52df1963def4a75c360f0728d5a"
+    }
+  ],
+  "new_native_executions": 0,
+  "native_campaign_dispositions_changed": false,
+  "historical_FAIL138_reclassified": false,
+  "private_owner_map_or_physical_gpu_claim": false
+}

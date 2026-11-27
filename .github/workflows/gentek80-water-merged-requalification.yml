@@ -350,7 +350,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Native source/runtime custody failed' }
           Copy-Item build/architecture-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/ -Force
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
           if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Rapier pin mismatch' }
           $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'

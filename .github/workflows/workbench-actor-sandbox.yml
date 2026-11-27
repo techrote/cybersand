@@ -1,10 +1,11 @@
 name: ACTOR-COMPOSE-FINAL-001 source-bound Windows acceptance
 on:
   push:
-    branches: [integration/actor-compose-final-001-20261123]
+    branches: [integration/actor-compose-final-001-20261123, integration/swarm004-005-006-unified-20261122]
     paths:
       - '.github/workflows/workbench-actor-sandbox.yml'
       - 'tools/ci/**'
+      - 'tools/swarm45/qualify_combined_workbench.py'
       - 'tools/package_explore001_candidate.py'
       - 'tools/build_pinned_godot_cpp.sh'
       - 'tools/build_native_extension*.sh'
@@ -47,7 +48,7 @@ env:
 jobs:
   linux:
     name: Pinned native builds and Linux coupled Workbench
-    if: github.ref == 'refs/heads/integration/actor-compose-final-001-20261123'
+    if: (github.ref == 'refs/heads/integration/actor-compose-final-001-20261123' || github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122')
     runs-on: ubuntu-24.04
     timeout-minutes: 110
     env:
@@ -152,6 +153,16 @@ jobs:
           xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
             python3 tools/ci/run_workbench_actor_qualification.py test --godot "$GODOT_BIN" \
             --candidate build/actor-linux --output evidence/linux --graphical --sandbox --measure
+      - name: Exercise installed reciprocal runtime with combined Linux World
+        if: github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+        run: |
+          set -euo pipefail
+          git lfs pull --include='godot/tools/gentek_reciprocal' --exclude=''
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/swarm45/qualify_combined_workbench.py --godot "$GODOT_BIN" --project godot --candidate build/actor-linux --output evidence/swarm-linux
       - name: Retain Linux candidate and every original build/test failure
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -196,6 +207,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
           git lfs install --local
           git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Could not materialize the Windows Rapier runtime' }
+          if ($env:GITHUB_REF_NAME -eq 'integration/swarm004-005-006-unified-20261122') {
+            git lfs pull --include='godot/tools/gentek_reciprocal.exe' --exclude=''
+            if ($LASTEXITCODE -ne 0) { throw 'Could not materialize source-bound reciprocal generator' }
+          }
           if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
           python tools/ci/run_workbench_actor_qualification.py install --platform windows --candidate build/actor-windows
           if ($LASTEXITCODE -ne 0) { throw 'Native candidate source/byte identity mismatch' }
@@ -249,6 +265,10 @@ jobs:
           $engine = Join-Path $package 'Godot_v4.7-stable_win64_console.exe'
           python tools/ci/run_workbench_actor_qualification.py test --godot $engine --candidate build/actor-windows --package $package --output evidence/installed-windows --graphical --sandbox
           if ($LASTEXITCODE -ne 0) { throw 'Installed Windows Workbench failed' }
+          if ($env:GITHUB_REF_NAME -eq 'integration/swarm004-005-006-unified-20261122') {
+            python tools/swarm45/qualify_combined_workbench.py --godot $engine --project (Join-Path $package 'godot') --candidate build/actor-windows --output evidence/swarm-windows-installed
+            if ($LASTEXITCODE -ne 0) { throw 'Combined reciprocal authoring and fresh-process reopen failed' }
+          }
           ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence evidence/installed-windows/runtime-modules.json
           # Validate the packaged collector in hosted Windows without rerunning
           # the same extensive fixture during extraction qualification.
@@ -313,7 +333,7 @@ jobs:
   publish:
     name: Append the fully qualified sandbox runtime pair to the unchanged Draft branch
     needs: [linux, windows]
-    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/actor-compose-final-001-20261123' && needs.linux.result == 'success' && needs.windows.result == 'success'
+    if: github.repository == 'techrote/cybersand' && (github.ref == 'refs/heads/integration/actor-compose-final-001-20261123' || github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122') && needs.linux.result == 'success' && needs.windows.result == 'success'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:
@@ -341,8 +361,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          test "$(git ls-remote --exit-code origin refs/heads/integration/actor-compose-final-001-20261123 | cut -f1)" = "$GITHUB_SHA"
-          git switch -c integration/actor-compose-final-001-20261123 "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
+          git switch -c "$GITHUB_REF_NAME" "$GITHUB_SHA"
           git lfs install --local
           python3 tools/ci/check_ci_provider_policy.py
       - name: Restore same-run Linux candidate and complete receipts
@@ -381,11 +401,14 @@ jobs:
             echo 'matched=false' >> "$GITHUB_OUTPUT"
           fi
       - name: Verify complete same-run evidence and variable-count LFS publication
-        if: steps.retained.outputs.matched != 'true'
         shell: bash
+        env:
+          RETAINED_PAIR: ${{ steps.retained.outputs.matched }}
         run: |
           set -euo pipefail
-          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox \
+          mode=()
+          if [[ "$RETAINED_PAIR" == true ]]; then mode+=(--verify-only); fi
+          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox "${mode[@]}" \
             --linux build/actor-publish/linux/build/actor-linux \
             --windows build/actor-publish/windows \
             --linux-report build/actor-publish/linux/evidence/linux/qualification.json \
@@ -394,8 +417,13 @@ jobs:
             --windows-modules-report build/actor-publish/windows-evidence/installed-windows/runtime-modules.json \
             --windows-extraction-report build/actor-publish/windows-evidence/windows-package-extraction.json \
             --windows-package "build/actor-publish/windows-package/CyberSand-Actor-Sandbox-Windows-${GITHUB_SHA:0:12}.zip"
+          if [[ "$RETAINED_PAIR" == true ]]; then
+            git diff --cached --exit-code
+            git diff --exit-code
+            exit 0
+          fi
           git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
-          python3 tools/ci/check_actor_publication_stage.py --source "$GITHUB_SHA" --branch "integration/actor-compose-final-001-20261123" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT"
+          python3 tools/ci/check_actor_publication_stage.py --source "$GITHUB_SHA" --branch "$GITHUB_REF_NAME" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT"
           git diff --check --cached
           git diff --exit-code
       - name: Commit and upload only qualified runtimes with an exact source lease
@@ -403,7 +431,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git ls-remote --exit-code origin refs/heads/integration/actor-compose-final-001-20261123 | cut -f1)" = "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git commit -m 'build(native): publish qualified Draft sandbox runtimes'
@@ -411,7 +439,7 @@ jobs:
           python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
           # A single child commit and exact expected-parent lease cannot replace
           # concurrent source work. The LFS hook uploads only the two new objects.
-          git push --force-with-lease="refs/heads/integration/actor-compose-final-001-20261123:$GITHUB_SHA" origin HEAD:refs/heads/integration/actor-compose-final-001-20261123
+          git push --force-with-lease="$GITHUB_REF:$GITHUB_SHA" origin "HEAD:$GITHUB_REF"
           {
             echo '### Draft/HOLD sandbox runtime publication'
             echo "Qualified source: $GITHUB_SHA"

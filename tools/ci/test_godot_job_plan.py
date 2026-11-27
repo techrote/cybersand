@@ -56,6 +56,9 @@ class HostedBudgetTests(unittest.TestCase):
                             for shard in result["shards"]))
         self.assertTrue(all(shard["largest_case_allowance_seconds"] == subject.case_allowance(cases[0])
                             for shard in result["shards"]))
+        for shard in result["shards"]:
+            self.assertEqual(len(shard["cases"]), 16)
+            self.assertTrue(all(row["timeout_seconds"] == 1200 for row in shard["cases"]))
 
     def test_cannot_shorten_a_child_to_fit_a_small_parent(self):
         huge = runner.Case("large", (), 21600, 1)

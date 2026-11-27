@@ -1,0 +1,290 @@
+{
+  "schema": 1,
+  "mission": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "recorded_utc": "2026-11-24T18:46:01.422733+00:00",
+  "scope": "Reviewed postpublication ordinary-CI test correction; fresh complete ordinary gates pending at this dated checkpoint",
+  "qualified_application_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "qualified_application_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "published_runtime_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "repair_parent": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+  "qualification_run": 45445188802,
+  "qualification_attempt": 1,
+  "qualification_original_conclusion": "success",
+  "original_gde_run": 45459025464,
+  "original_gde_budget_job": 138676199669,
+  "original_failure_preserved": true,
+  "source_delta": {
+    "path": "tools/ci/test_godot_job_plan.py",
+    "before_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7",
+    "after_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd"
+  },
+  "history": {
+    "accepted_main_inventory_projection": {
+      "linux": {
+        "case_count": 340,
+        "expected_case_seconds": 7158.75,
+        "shard_count": 24
+      },
+      "windows": {
+        "case_count": 317,
+        "expected_case_seconds": 6768.75,
+        "shard_count": 23
+      }
+    },
+    "canonical_policy": "docs/operations/ci-execution-and-performance.md: Machine discovery remains authoritative as the game expands.",
+    "current_Q7_and_publication_reclassified": false,
+    "current_additional_discovered_cases": [
+      "test_workbench_authoring_patch",
+      "test_workbench_reciprocal_controller",
+      "test_workbench_reciprocal_protocol",
+      "test_workbench_reciprocal_runtime"
+    ],
+    "decision": "obsolete_live_inventory_expectation_not_actual_policy_limit",
+    "historical_commit": "9a01d782a6b93cb3878b12e50ee40ebfd502e31b",
+    "historical_source_intake": {
+      "linux_cases": 246,
+      "linux_shards": 20,
+      "windows_cases": 233,
+      "windows_shards": 19
+    },
+    "implementation_caps": {
+      "cases_per_shard": 16,
+      "expected_work_target_seconds": 300,
+      "hosted_parent_minutes": 360,
+      "matrix_entries": 256
+    },
+    "original_hosted_failure": {
+      "attempt": 1,
+      "job": 138676199669,
+      "log": "../gde-budget-job-138676199669-original.log",
+      "log_sha256": "f7dc2fa502b1b4352e4ddb72ce49f433c28f396b4ab9639a3e5049f91f705f45",
+      "run": 45459025464
+    },
+    "product_scheduler_watchdog_or_workflow_changes": false,
+    "projection_scope": "Pure planning of exact accepted-main file-name inventory through unchanged scheduler/profile/policy sources; not execution or a new main-source qualification.",
+    "proposal": {
+      "existing_assertions_preserved": [
+        "exact complete Counter",
+        "nonempty shards",
+        "full largest child allowance plus import/metadata fits parent",
+        "sum exceptional ceilings is not execution deadline",
+        "execution + setup + headroom fits360-minute parent",
+        "oversized child and >256 heavy matrix refusal"
+      ],
+      "live_inventory_lower": "ceil(case_count / 16)",
+      "live_inventory_upper": "min(case_count, 256)",
+      "new_positive_regression": "400 distinct cheap cases with weight15 and full1200-second child watchdog require exactly25 nonempty16-case shards; exact inventory and original child allowances preserved.",
+      "per_shard_addition": "assert <=16 cases",
+      "scope": "tools/ci/test_godot_job_plan.py only"
+    },
+    "review_status": "proposal_awaiting_root_and_C_agreement",
+    "reviewed_utc": "2026-11-24T18:40:04.693366+00:00",
+    "schema": 1,
+    "watchdog_sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc"
+  },
+  "input_map_comparisons": {
+    "build_inputs_sha256": {
+      "added": [],
+      "changed": [
+        {
+          "current_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+          "path": "tools/ci/test_godot_job_plan.py",
+          "qualified_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7"
+        }
+      ],
+      "current_count": 1856,
+      "missing": [],
+      "qualified_count": 1856
+    },
+    "extension_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "current_count": 106,
+      "missing": [],
+      "qualified_count": 106
+    },
+    "native_definition_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "current_count": 52,
+      "missing": [],
+      "qualified_count": 52
+    },
+    "source_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "current_count": 156,
+      "missing": [],
+      "qualified_count": 156
+    }
+  },
+  "compiled_scientific_inputs_unchanged": 100,
+  "owner_archive_source_files_unaffected": 1059,
+  "published_paths_unchanged": 8,
+  "local_helper_tests": {
+    "total": 129,
+    "passed": 129,
+    "skipped": 0,
+    "original_results_sha256": "d09f8824a44627b7ac735079da0dac02b9387d13fc22c6a4fa2adedf9a321f88",
+    "results": {
+      "all_groups_without_skips": true,
+      "changed_files": [
+        "tools/ci/test_godot_job_plan.py"
+      ],
+      "completed_utc": "2026-11-24T18:42:13.055667+00:00",
+      "groups": [
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_execution_policy.py"
+          ],
+          "elapsed_seconds": 33.3782,
+          "name": "test_execution_policy",
+          "original_log": "test_execution_policy.log",
+          "original_log_sha256": "ea6e9894d3bbd9212c2122c2f6c78131ea7ab7c759ad560ea813a8a07e92146e",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 14
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_execution_telemetry.py"
+          ],
+          "elapsed_seconds": 0.1737,
+          "name": "test_execution_telemetry",
+          "original_log": "test_execution_telemetry.log",
+          "original_log_sha256": "b29b03a2697317e5be70cdf9183e300a501a69cf666f2c048f47e1af086d26ee",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 5
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_job_performance.py"
+          ],
+          "elapsed_seconds": 0.1039,
+          "name": "test_job_performance",
+          "original_log": "test_job_performance.log",
+          "original_log_sha256": "888a0c0ed615e57d32cf72be501b0c355f33b8613c81dfdaa99db33d7959487e",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 5
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_godot_job_plan.py"
+          ],
+          "elapsed_seconds": 1.01,
+          "name": "test_godot_job_plan",
+          "original_log": "test_godot_job_plan.log",
+          "original_log_sha256": "0da094b4e46492acf8832d2185801cc9bc2df99b061e2a4198738b53700dfb10",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 12
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_godot_attempt_custody.py"
+          ],
+          "elapsed_seconds": 8.2262,
+          "name": "test_godot_attempt_custody",
+          "original_log": "test_godot_attempt_custody.log",
+          "original_log_sha256": "ecf34ab83ac87309087d0b146ca8ad881311d5b1b0f51d2d82081255c15a969f",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 6
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_godot_scheduling.py"
+          ],
+          "elapsed_seconds": 0.2444,
+          "name": "test_godot_scheduling",
+          "original_log": "test_godot_scheduling.log",
+          "original_log_sha256": "d4be35de3d82250986690334669c4d88ae35b2993f723c16c8c675d6299bc32e",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 10
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_verify_linux_godot_shards.py"
+          ],
+          "elapsed_seconds": 0.2746,
+          "name": "test_verify_linux_godot_shards",
+          "original_log": "test_verify_linux_godot_shards.log",
+          "original_log_sha256": "dfda3b56a13749fce0dcf2921d170f8be57be48d31b8170607e47075eab24d94",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 13
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_verify_retained_play_readback.py"
+          ],
+          "elapsed_seconds": 3.4074,
+          "name": "test_verify_retained_play_readback",
+          "original_log": "test_verify_retained_play_readback.log",
+          "original_log_sha256": "8477580244b0ef1ce86d94b685f1b8b878be4f117c5c409fdeb2cadaf6f65e2f",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 28
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_performance_history.py"
+          ],
+          "elapsed_seconds": 0.2438,
+          "name": "test_performance_history",
+          "original_log": "test_performance_history.log",
+          "original_log_sha256": "d3edfdc34c6c4cc4d9dabe00d1b5159488d491eba5b29236b333c7a42c0c6546",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 31
+        },
+        {
+          "command": [
+            "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+            "tools/ci/test_prepare_linux_display.py"
+          ],
+          "elapsed_seconds": 0.1677,
+          "name": "test_prepare_linux_display",
+          "original_log": "test_prepare_linux_display.log",
+          "original_log_sha256": "2b45c66e5376bd685be71859df2f62dd34b349efd6cc38c18c16eb94d295c83a",
+          "returncode": 0,
+          "skips_observed": false,
+          "tests": 5
+        }
+      ],
+      "schema": 1,
+      "source_parent": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+      "started_utc": "2026-11-24T18:41:25.809370+00:00",
+      "status": "passed",
+      "test_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+      "tests_total": 129
+    }
+  },
+  "independent_review_files_sha256": {
+    "ordinary-budget-test-source-impact.json": "1dbb4326380901d6ac8d8be39472d3baef560aaac8ca348a33357e2cb2d434f1",
+    "ordinary-budget-test-policy-review.json": "94306c9f1adcc5e5cca0298e09a927a95f6e575328b253ea51f084d93450f602",
+    "ordinary-budget-test-independent-review.json": "09017840cfd97b74ce990c1e87e8a73f518405f8edf34c38ee419372b045b3fa"
+  },
+  "policy_sources": [
+    "docs/operations/local-build-and-validation.md#published-and-development-identity-test-controls",
+    "docs/audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25"
+  ],
+  "decision": "Retain exact Q7 application/runtime/evaluator identities under existing documented postpublication test-only correction policy; execute fresh complete ordinary gates at the corrected head",
+  "historical_build_ledger_rewritten": false,
+  "Q7_claimed_to_execute_new_test": false,
+  "new_runtime_publication_authorized_for_this_delta": false,
+  "fresh_full_ordinary_gates_required": true,
+  "ready_merge_or_default_activation_authorized": false
+}

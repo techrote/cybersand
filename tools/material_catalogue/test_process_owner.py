@@ -71,7 +71,11 @@ class ProcessOwnerTests(unittest.TestCase):
                 subprocess.run(["taskkill", "/PID", str(pid), "/T", "/F"],
                                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5, check=False)
             else:
-                os.kill(pid, signal.SIGKILL)
+                try:
+                    os.kill(pid, signal.SIGKILL)
+                except ProcessLookupError:
+                    # The fixture process can retire after the liveness check.
+                    pass
 
     def _fixture(self, mode):
         leaf = "import os,sys,time; from pathlib import Path; Path(sys.argv[1]).write_text(str(os.getpid())); time.sleep(120)"

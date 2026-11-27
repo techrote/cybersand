@@ -2,20 +2,17 @@
 title: Current-scene material audition
 status: Current
 document-kind: contract
-scope: MAT-AUDITION-LIVE-001 implementation candidate from accepted main; Draft/HOLD, existing-ID numeric consumers and current Workbench World only
+scope: Existing-ID numeric material controls in the current Workbench World
 canonical-for: [current-scene-material-audition, material-profile-transaction, material-profile-retention]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 related-documents: [material-audition-consumers.md, ../operations/materials-lab-authoring.md, ../architecture/material-authoring-catalogue-plan.md, ../architecture/shared-workbench-authoring-data.md, ../operations/material-catalogue-shadow.md]
 ---
 
 # Current-scene material audition
 
-[Draft PR #768](https://github.com/techrote/cybersand/pull/768) implements
-the owner-authorized successor to [#587](https://github.com/techrote/cybersand/issues/587).
-It begins at accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f` and extends
-the accepted Materials Lab (#562) and generated capability foundation (#563).
-This document describes the candidate source. It does not assert merge,
-physical Windows acceptance or qualification of a later combined engine stack.
+Live audition extends the Materials Lab (#562) and its generated capability
+catalogue (#563). In the integrated Windows evaluator, extract the complete ZIP
+and launch the ordinary Workbench using its supplied launcher.
 
 Open ordinary **Workbench → Materials Lab → Current scene**, select a material,
 edit an admitted value, then **Apply draft**. The same native World receives an
@@ -205,6 +202,9 @@ independent review. The frozen shared ledger remains a build-input checkpoint;
 the decision packet owns the final qualification disposition.
 Source implementation, native simulation evidence, graphical automation,
 extracted-package execution and physical owner acceptance remain separate
-claims. The candidate stays **Draft/HOLD** pending owner acceptance and any
-required combined-engine reconciliation. This mission grants no merge or Ready
-authority.
+claims. The original standalone evaluator was held for physical owner review.
+The later integration added shared authoring admission. An active Art stroke
+or Architecture operation must finish before a material demo replaces the scene.
+Live material configuration uses its own native acknowledgment. See the
+[integrated source and regression](https://github.com/techrote/cybersand/commit/687b8872d2f7ccc6c935fd3ea447e89a1fe2cc20)
+and [PR #768 qualification](https://github.com/techrote/cybersand/pull/768/checks).

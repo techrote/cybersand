@@ -139,9 +139,12 @@ def build(args) -> None:
         ["git", "-c", "core.autocrlf=false", "-c", "core.eol=lf", "archive", "HEAD", "--", *names],
         cwd=ROOT, env=dict(os.environ, GIT_LFS_SKIP_SMUDGE="1"), timeout=60)
     materialized = {runtime["cybersand_runtime"]["path"], runtime["rapier_runtime"]["path"]}
+    materialized.add("godot/tools/gentek_reciprocal.exe")
     with tarfile.open(fileobj=io.BytesIO(archive)) as source:
         for entry in source:
             if not entry.isfile() or entry.name.startswith("godot/.godot/"):
+                continue
+            if entry.name in {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}:
                 continue
             if "/bin/" in entry.name and entry.name not in materialized:
                 continue

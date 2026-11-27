@@ -1,0 +1,492 @@
+{
+  "Q6_additional_receipts_needed": [
+    {
+      "archive_bytes": 6238845,
+      "artifact_id": 14949262274,
+      "artifact_name": "swarm456-runtime-publication-candidate-b126523158e22d8993b4899710799f88dd0b98d0-45437617377-2",
+      "original_API_digest": "sha256:df19e9c5051de66d349b39581180a763d844f7221f6ce3914d5f90fc67a171d4",
+      "state": "Historical semantic review happened, but present exact archive measured receipt not yet found; no new full-archive claim from metadata."
+    },
+    {
+      "archive_bytes": 43303889,
+      "artifact_id": 14947643117,
+      "artifact_name": "swarm456-windows-source-evidence-45437617377-2",
+      "original_API_digest": "sha256:a8315e24022faa83ed33d89194dd598a906bc81bcb2aac451e3b60f7b6771790",
+      "state": "Historical semantic review happened, but present exact archive measured receipt not yet found; no new full-archive claim from metadata."
+    },
+    {
+      "archive_bytes": 14104399,
+      "artifact_id": 14945767871,
+      "artifact_name": "swarm456-windows-runtime-45437617377-2",
+      "original_API_digest": "sha256:dcd5b299328b4c2666a92dbdc158f661aae40a7ed933018c30aaa3eb5dce6682",
+      "state": "Historical semantic review happened, but present exact archive measured receipt not yet found; no new full-archive claim from metadata."
+    },
+    {
+      "archive_bytes": 109980,
+      "artifact_id": 14944894820,
+      "artifact_name": "swarm456-windows-build-evidence-45437617377-2",
+      "original_API_digest": "sha256:a6a861331c8f72bfabf9efb9f1aac3d77508703dad56048ad2f4ceb26c9757d1",
+      "state": "Historical semantic review happened, but present exact archive measured receipt not yet found; no new full-archive claim from metadata."
+    }
+  ],
+  "Q6_minimum_replacement_download_bytes_if_receipts_lost": 63757113,
+  "Q6_prior_complete_receipts_now_independently_joined": [
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 114060137,
+      "archive_sha256": "ee598551ba341958a5242b0db09cbbb06f13a3613d37b3aad413e1761b4d9f6b",
+      "artifact_id": 14943499390,
+      "artifact_name": "swarm456-linux-evidence-45437617377-1",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all_members_crc_read_and_sha256",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "2f2c4f311bb5582f02114c97463c001cf45626438fa68f598bf95ad07e7e39a7",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/native-audit/q6-linux-evidence-archive-inventory.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 139550719,
+      "archive_sha256": "6d1772a745e1170344536c281e73447f13cfc44ab093dfe29d2bc22a40e02fc3",
+      "artifact_id": 14943589041,
+      "artifact_name": "swarm456-linux-runtime-45437617377-1",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all_members_crc_read_and_sha256",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "955fdd473bed454137ef827fee730d0a4f46184e3c6999abd76eefc04a30c4a3",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/native-audit/q6-linux-runtime-archive-inventory.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 114060152,
+      "archive_sha256": "9ba68f6e6a29bbf962f40d873cd3c4622b5575e3ea717219b3c37a12e2038915",
+      "artifact_id": 14948453672,
+      "artifact_name": "swarm456-linux-evidence-45437617377-2",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all_members_crc_read_and_sha256",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "74ba6d1a7f78eb117088ec0a424919ae444f81d8016bdbb0322e9b8ad3b9ab30",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/native-audit/q6-attempt2/q6-linux-evidence-archive-inventory.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 139550719,
+      "archive_sha256": "f288a4d264e405a01618f11a5ea764b6c2c72f380f353f1a86df16d3c19e8cf3",
+      "artifact_id": 14946969851,
+      "artifact_name": "swarm456-linux-runtime-45437617377-2",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all_members_crc_read_and_sha256",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "424f98fd223b3773ebfb1228abf33731ff8c77795520f0cc9bdc7551c588a638",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/native-audit/q6-attempt2/q6-linux-runtime-archive-inventory.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 9517,
+      "archive_sha256": "bf69259259c1743c890cb34e384fb675987de4199594a5dd266b7c17f4c3e235",
+      "artifact_id": 14943898251,
+      "artifact_name": "swarm456-request-45437617377-2",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "archive_crc_verified",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "5d27b12486ac25481b033358e7ab3d0cecaebe3a0698fcb35b8b0b8bb7bdadae",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/mission-evidence/q6-attempt2-request-audit-b.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 294266392,
+      "archive_sha256": "71d9e71767faef0d06be1e0687ddaa6ad17cbceb07b0219fe2030322f829ba12",
+      "artifact_id": 14944089317,
+      "artifact_name": "swarm456-recovery-evidence-45437617377-2",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all9610_members_crc_verified",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "50cea074308ce34a2e1089b77f5906d03ff4b43dde28818c6ef3587d5a8757c0",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/audit-independent/q6-attempt2-science-artifact-custody.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 41675432,
+      "archive_sha256": "84d914e0ab1ff673445c95d48560f15526f8c3b02fcb845acaa63c4e0dcb9eaf",
+      "artifact_id": 14948323602,
+      "artifact_name": "swarm456-windows-package-evidence-45437617377-2",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all_members_crc_sha256_sizes_and_safe_unique_paths_verified",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "4743fca37030746348b3bc2d6143306806180e4c36db6b88508644d7a5d2f613",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/audit-independent/q6-attempt2-package-artifact-custody.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "archive_API_digest_size_identity_joined": true,
+      "archive_bytes": 93562201,
+      "archive_sha256": "7030e9bb84bb66ebb5c4c9582701a7a73bd9e9e1c8e41fbe9ba17eb523b090cb",
+      "artifact_id": 14948438367,
+      "artifact_name": "swarm456-owner-windows-b126523158e22d8993b4899710799f88dd0b98d0-45437617377-2",
+      "current_cache_availability": "Original prior temporary paths were removed or lost after verification; receipt is a historical verification event, not a current-file assertion.",
+      "member_scope": "Retain this original receipt exact integrity field and associated semantic review; do not widen its uniform per-member hash claim.",
+      "original_receipt_integrity_field": "all_archive_crc_payload_sha256_size_and_safe_unique_paths",
+      "original_receipt_integrity_value": true,
+      "receipt_sha256": "ea4f6cf798537d435388d7facf65da7eac4d29fb80c8a4fb98f66face2f1afec",
+      "retained_original_receipt": "/workspace/scratch/28827b1ce0c8/audit-independent/q6-attempt2-owner-archive-audit.json",
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    }
+  ],
+  "baseline_recovery_manifest_sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
+  "finding": "Join8 surviving Q6 whole-archive verification receipts. Recover the4 remaining compact receipts or minimally re-download64MB original archives before representing all Q6 archives recovered. Final qualified Q7 and required ordinary archives are unaffected.",
+  "groups": [
+    {
+      "bytes": 1000492382,
+      "campaign": "Q6",
+      "classification": "Earlier Q6 original archive verification records need joining;8 compact receipts proven,4 B-owned archive receipts need recovery.",
+      "count": 12,
+      "run_id": 45437617377,
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0"
+    },
+    {
+      "bytes": 50068598,
+      "campaign": "post-publication ordinary qualification",
+      "classification": "Superseded failed ordinary GDE run; unchanged terminal final GDE fully recovered separately. No final gate depends on these metadata-only original archive bodies.",
+      "count": 7,
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 22646247,
+      "campaign": "post-publication ordinary qualification",
+      "classification": "Superseded failed ordinary GDE run; unchanged terminal final GDE fully recovered separately. No final gate depends on these metadata-only original archive bodies.",
+      "count": 30,
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    }
+  ],
+  "historical_dispositions_unchanged": true,
+  "metadata_only_after_prior_historical_join": 49,
+  "metadata_only_total_bytes": 1073207227,
+  "new_downloads": 0,
+  "new_source_or_native_executions": 0,
+  "q1_q5_q7_donor_or_final_required_archives_in_metadata_only_set": 0,
+  "remaining_failed_ordinary_bytes": 72714845,
+  "remaining_failed_ordinary_count": 37,
+  "remaining_failed_ordinary_metadata_only_archives": [
+    {
+      "bytes": 15554,
+      "digest": "sha256:f2b6a57f1559800d26af95c0e344ca5e0ef51899fd89666a9b39ba4f5d04104b",
+      "id": 14952841129,
+      "name": "godot-build-timing-linux-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 22262439,
+      "digest": "sha256:5b3f09c5742a2068e8848c6f0afcfc308c65de9d298b82835316fdc920a8f4a6",
+      "id": 14952826139,
+      "name": "linux-runtime-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 13444,
+      "digest": "sha256:ad256d2b14d778bdf4183969f3e4056b92ed9c7497fcf89f5e6db2c936103dd8",
+      "id": 14952611487,
+      "name": "godot-build-timing-windows-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 383,
+      "digest": "sha256:21c6d85163f2cae7413dba868b6e106dab88bb5895002289f3dfc7a6648b6da2",
+      "id": 14952341940,
+      "name": "windows-coverage-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 2115718,
+      "digest": "sha256:92fcb8e347065a064f8f32162726ce0036f502460ebae93c47d7dcad663bb740",
+      "id": 14952247496,
+      "name": "native-candidate-windows-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 22262439,
+      "digest": "sha256:d460dc71707920d1acc17323bbb603ad591cfbf3abb2fe22cf1b985e4d51af96",
+      "id": 14951733408,
+      "name": "native-candidate-linux-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 3398621,
+      "digest": "sha256:e7a9d1156afe383a4aa4a9e7c2b46f9f91a43b8bbdc5b7056c3df54e9b0703fb",
+      "id": 14950204942,
+      "name": "art-final-graphical-45459025464-1",
+      "run_id": 45459025464,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+    },
+    {
+      "bytes": 84481,
+      "digest": "sha256:0229d895f36eff4dba402e04823ee7490c136af84d6f673b554d6f297653044b",
+      "id": 14955911293,
+      "name": "windows-coverage-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 283193,
+      "digest": "sha256:866cc107bbae36940b9174c725268c5d212e51eee4daf588b2d2e5e08516e49f",
+      "id": 14955876453,
+      "name": "execution-performance-godot-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:f9aa5bfacfb874626af6ae2246e10c4219950aec060413c4955193944f37b83f",
+      "id": 14955785520,
+      "name": "linux-godot-shard-19-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:b365d146142c071d612aa772458407eaaff9af05c046c43cb311f81ccfdbf217",
+      "id": 14955466391,
+      "name": "linux-godot-shard-12-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:187f988e880036eaf8e1cc907761addc656c95b370b89c3fd3355b2661e90dbd",
+      "id": 14955417289,
+      "name": "linux-godot-shard-8-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:c1107796c39d7cac6d310bdb4495c7558880a8c11157b646e1c35df1187d4a9a",
+      "id": 14955401812,
+      "name": "linux-godot-shard-14-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:637d70db185700bde4dd26862708c1b730e1206de88f4dc8fd84c0711025f61e",
+      "id": 14955357207,
+      "name": "linux-godot-shard-2-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:4222a17d1bd42cd34e086f1bea995939283ca2d12309087afb3024849d73b9ba",
+      "id": 14955332347,
+      "name": "linux-godot-shard-22-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:12b161d9f78897acefe456b50c3079421322e7f0cdab406bdb6c31d5d9b09949",
+      "id": 14955327232,
+      "name": "linux-godot-shard-24-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:64460272abaacd73ffe4a10df3c1053ae6ef7aea8719a391a58d9fe38fcc45f9",
+      "id": 14955282583,
+      "name": "linux-godot-shard-11-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:64460272abaacd73ffe4a10df3c1053ae6ef7aea8719a391a58d9fe38fcc45f9",
+      "id": 14955242803,
+      "name": "linux-godot-shard-13-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:e18acef0398d07e711f8651771712e095b791031de1642dc6109777aa9e9a257",
+      "id": 14955222605,
+      "name": "art-final-graphical-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:501e34b30d44227df2b32de587c3a2c1338a1bd405fcd7e0b83a7e1ca3e26cbf",
+      "id": 14955187621,
+      "name": "linux-godot-shard-7-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:f2aeb87ee9ec6c55127a247b6c37af37b2be91531a580f1dec2557f48c92cba3",
+      "id": 14955138056,
+      "name": "linux-godot-shard-16-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 2666,
+      "digest": "sha256:2f0229888740a46415027ec27954b6b2787daf67b91418d76b0c303c4852dc20",
+      "id": 14955104992,
+      "name": "physical-timing-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:3d670c895d1327ce988f7144d6ec4fc9ac3fc66bb4c661c12798cd2f0da359a4",
+      "id": 14955062823,
+      "name": "linux-godot-shard-6-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:57f6bbc9188617e98d902f1cd2652d41dbf4e8e5c653973d43985cdc19471267",
+      "id": 14954988410,
+      "name": "linux-godot-shard-20-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:5c00251b86592597d3047d612ab1eb14df9ecd2a281aea47ab36cfb47438be0d",
+      "id": 14954923261,
+      "name": "linux-godot-shard-4-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:2ffb49cb775257385fe8c14e48cb3436d2a95457a11ac1b526567ee6de05f741",
+      "id": 14954738211,
+      "name": "linux-godot-shard-21-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:94b94c7590184023ce88ad3606c2ef696b960a0018d3d07d21c01126ca94bed9",
+      "id": 14954563349,
+      "name": "linux-godot-shard-0-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:67a21de03b44e27655ed5e453aec8c1fcef0cf887662a96508377b3cd1b04cfc",
+      "id": 14954524240,
+      "name": "linux-godot-shard-18-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 22262439,
+      "digest": "sha256:f09c2442b93b51fb92ad1779f55e0c23c0c3d03e37cc80178d7104e750df36ef",
+      "id": 14954393438,
+      "name": "native-candidate-linux-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:77697e03386440577f9853cc0d26ea175358ff6eed65edc2f22527c204c8a8bb",
+      "id": 14954368572,
+      "name": "linux-godot-shard-9-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:cbfd8d48c0682058e4f8f518664807bfa2100b492c03dba6e402c5a59fbcd1c6",
+      "id": 14953918059,
+      "name": "linux-godot-shard-3-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:eb5cb9f1cd905f6c474f7135cdb7ee048936de5621e194fcf6a10bf70ebb7755",
+      "id": 14953793210,
+      "name": "linux-godot-shard-1-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:12b161d9f78897acefe456b50c3079421322e7f0cdab406bdb6c31d5d9b09949",
+      "id": 14953733383,
+      "name": "linux-godot-shard-23-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:d69e80e5e960c534e21a2245ba034ec6febd3217ba860c69fc5a6129cf14d893",
+      "id": 14953693435,
+      "name": "linux-godot-shard-15-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:0afa62ad43f66333243da28a58a52281c745ced8e46189741f9f9456d991f1d5",
+      "id": 14953333490,
+      "name": "linux-godot-shard-5-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:f9aa5bfacfb874626af6ae2246e10c4219950aec060413c4955193944f37b83f",
+      "id": 14953313650,
+      "name": "linux-godot-shard-17-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    {
+      "bytes": 518,
+      "digest": "sha256:ea297f70dabba85a35d1a58c65cbc37f8dab7ac2a7d45b8cb9126348d4c112d6",
+      "id": 14953253732,
+      "name": "linux-godot-shard-10-45464495877-1",
+      "run_id": 45464495877,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    }
+  ],
+  "reviewer": "Closure Specialist A missing-verification classification and original Q6 custody join",
+  "schema": 1,
+  "utc": "2026-11-24T20:04:41.612086+00:00"
+}

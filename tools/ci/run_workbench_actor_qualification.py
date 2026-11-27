@@ -124,7 +124,10 @@ def project_inputs() -> dict:
         "godot/addons/godot-rapier2d/godot-rapier2d.gdextension",
         "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
         "godot/addons/godot-rapier2d/runtime-provenance.windows.json",
-        "tools/ci", "tools/package_explore001_candidate.py", "tools/requirements-build.txt",
+        "tools/ci", "tools/swarm45/qualify_combined_workbench.py", "tools/swarm45/shared.py",
+        "tools/swarm45/runtime_custody.py", "tools/swarm006/qualify_workbench.py",
+        "godot/tools/swarm004-runtime.linux.json", "godot/tools/swarm004-runtime.windows.json",
+        "tools/package_explore001_candidate.py", "tools/requirements-build.txt",
         "tools/build_pinned_godot_cpp.sh", "tools/build_native_extension.sh",
         "tools/build_native_extension_windows.sh", "tools/check_linux_runtime_floor.sh",
         "tools/toolchains",
@@ -282,6 +285,7 @@ def publish(args) -> None:
 
 
 SANDBOX_BRANCH = "integration/actor-compose-final-001-20261123"
+SWARM_BRANCH = "integration/swarm004-005-006-unified-20261122"
 SANDBOX_CAPTURE_FILES = {
     "01-living-mixed-workshop.png", "02-running-controllers.png", "03-physics-configuration.png",
     "04-paused-assembly-preview.png", "05-live-physical-grab.png", "06-barrel-crowd-64.png",
@@ -599,13 +603,26 @@ def sandbox_package(args, manifest: dict, installed: dict) -> dict:
         # ledger deliberately uses canonical LF (see project_inputs), including
         # UID text that Windows Git can archive with CRLF. Compare like contracts
         # only after every raw ZIP payload has passed its independent hash check.
+        windows_binding = "godot/tools/swarm004-runtime.windows.json"
+        linux_binding = "godot/tools/swarm004-runtime.linux.json"
+        if files & {linux_binding, "godot/tools/gentek_reciprocal"}:
+            raise ValueError("Windows package contains a Linux reciprocal runtime")
         for name, expected in manifest["build_inputs"].items():
+            if name == linux_binding:
+                continue
             if name.startswith(("godot/", "examples/worldgen/")) or name in included_pins:
                 if name not in package["files_sha256"]:
                     raise ValueError("Delivered project is missing qualified source input: " + name)
                 canonical = archive.read(name).replace(b"\r\n", b"\n")
                 if hashlib.sha256(canonical).hexdigest() != expected:
                     raise ValueError("Delivered project differs from qualified source input: " + name)
+        if windows_binding in manifest["build_inputs"]:
+            binding = json.loads(archive.read(windows_binding))
+            cli = "godot/tools/gentek_reciprocal.exe"
+            if (binding.get("platform") != "windows" or binding.get("artifact") != cli
+                    or cli not in files or package["files_sha256"][cli] != binding.get("sha256")
+                    or archive.getinfo(cli).file_size != binding.get("bytes")):
+                raise ValueError("Windows reciprocal CLI differs from its qualified source binding")
     expected_modules = {"vcruntime140.dll", NATIVE["windows"], RAPIER["windows"]}
     records = modules.get("modules", [])
     if (modules.get("status") != "passed" or modules.get("source_commit") != manifest["source_commit"]
@@ -645,15 +662,33 @@ def sandbox_package(args, manifest: dict, installed: dict) -> dict:
 def publish_sandbox(args) -> None:
     """Fail closed, then stage only the two qualified runtimes and provenance."""
     branch = subprocess.check_output(["git", "branch", "--show-current"], cwd=ROOT, text=True).strip()
-    if branch != SANDBOX_BRANCH:
+    if branch not in (SANDBOX_BRANCH, SWARM_BRANCH):
         raise ValueError("Sandbox runtime staging is confined to its dedicated Draft/HOLD branch")
     candidates = {platform: candidate(getattr(args, platform), platform) for platform in NATIVE}
     qualifications = {}
     for platform, manifest in candidates.items():
         _, qualifications[platform] = sandbox_report(getattr(args, platform + "_report"), manifest)
+    if branch == SWARM_BRANCH:
+        for platform, evidence in (("linux", args.linux_report.parent.parent / "swarm-linux"),
+                                   ("windows", args.windows_installed_report.parent.parent / "swarm-windows-installed")):
+            witness_path = evidence / "combined-reciprocal.json"
+            witness = json.loads(witness_path.read_bytes())
+            binding = json.loads((ROOT / "godot/tools" / ("swarm004-runtime." + platform + ".json")).read_bytes())
+            if (witness.get("passed") is not True or witness.get("source") != candidates[platform]["source_commit"]
+                    or witness.get("tree") != candidates[platform]["source_tree"] or witness.get("platform") != platform
+                    or witness.get("native_sha256") != candidates[platform]["sha256"]
+                    or witness.get("generator", {}).get("sha256") != binding["sha256"]
+                    or witness.get("generator", {}).get("source") != binding["source"]
+                    or witness.get("persistence", {}).get("passed") is not True):
+                raise ValueError("Missing combined reciprocal Workbench execution on " + platform)
+            qualifications[platform]["reciprocal_execution_sha256"] = digest(witness_path)
     installed, installed_evidence = sandbox_report(args.windows_installed_report, candidates["windows"], installed=True)
     package = sandbox_package(args, candidates["windows"], installed)
     package["qualification"] = installed_evidence
+    if getattr(args, "verify_only", False):
+        print(json.dumps({"verified_source": candidates["windows"]["source_commit"],
+                          "windows_package_sha256": package["sha256"], "retained_pair": True}))
+        return
     prepared = {}
     for platform, manifest in candidates.items():
         previous = json.loads((ROOT / PROVENANCE[platform]).read_text(encoding="utf-8"))
@@ -670,7 +705,7 @@ def publish_sandbox(args) -> None:
             "installed_package_qualification": package if platform == "windows" else None,
             "workflow_run": os.environ.get("GITHUB_RUN_ID", "local-unpublished"),
             "workflow_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", "local-unpublished"),
-            "publication_branch": SANDBOX_BRANCH,
+            "publication_branch": branch,
             "acceptance": "Draft/HOLD evaluation candidate. No merge, release, default promotion or owner playfeel acceptance.",
             "supersedes": {"build_commit": previous.get("build_commit"), "sha256": previous.get("sha256"),
                            "scope": "Previous accepted runtime remains recoverable from Git/LFS history."},
@@ -935,6 +970,8 @@ def main() -> int:
     publication.add_argument("--windows-modules-report", type=Path)
     sandbox_publication = commands.add_parser("publish-sandbox",
         help="Stage only fully qualified WB-ACTOR-COMPOSE-002R runtimes on its dedicated Draft/HOLD branch")
+    sandbox_publication.add_argument("--verify-only", action="store_true",
+                                     help="Verify all same-run evidence without replacing the retained runtime pair")
     for name in ("linux", "windows", "linux-report", "windows-report", "windows-installed-report",
                  "windows-modules-report", "windows-extraction-report", "windows-package"):
         sandbox_publication.add_argument("--" + name, type=Path, required=True)

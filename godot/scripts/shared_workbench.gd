@@ -99,8 +99,18 @@ var _processor_label := ""
 var water_lab := preload("res://scripts/workbench_water_lab.gd").new()
 var water_spray := preload("res://scripts/workbench_water_spray_panel.gd").new()
 var paint_editor: Control
+var reciprocal_panel: Control
 # IN-TOOLS #361 valve / drain / nozzle controls (separate owner script).
 var equipment := preload("res://scripts/workbench_liquid_equipment_panel.gd").new()
+
+func open_reciprocal() -> void:
+	_cancel()
+	if reciprocal_panel == null:
+		reciprocal_panel = load("res://scripts/workbench_reciprocal_panel.gd").new()
+		add_child(reciprocal_panel)
+		move_child(reciprocal_panel,mini(4,get_child_count()-1))
+		reciprocal_panel.mount(self)
+	reciprocal_panel.open_panel()
 
 func open_materials_lab() -> void:
 	_cancel()
@@ -234,6 +244,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
 	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Reciprocal assembly…",open_reciprocal)
 	_button(row,"Materials Lab…",open_materials_lab)
 	_button(row,"Water Lab…",water_lab.open)
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
@@ -806,7 +817,8 @@ func refuse(reason: String) -> bool:
 
 func busy() -> bool:
 	return not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
-		or is_flatten_pending() or (paint_editor != null and paint_editor.busy())
+		or is_flatten_pending() or (paint_editor != null and paint_editor.busy()) \
+		or (reciprocal_panel != null and reciprocal_panel.busy())
 
 func _editable() -> bool:
 	if busy() or applied.is_empty():
@@ -925,22 +937,27 @@ func _poll_flatten() -> void:
 func _exit_tree() -> void:
 	if actor_interaction != null: actor_interaction.cancel("closed")
 	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
+	if reciprocal_panel != null: reciprocal_panel.cancel("Workbench exited; experimental generation cancelled.")
 
 # On edits, build other actors at their actual positions while leaving the
 # saved spawn recipe intact. A deliberate restore/load uses saved spawns.
 func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		convert_liquid_inventory: bool = false, resume_play: bool = false,
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
-		apply_staged_water: bool = true, pose_overrides: Dictionary = {}) -> bool:
+		apply_staged_water: bool = true, pose_overrides: Dictionary = {}, authoring_patch: Dictionary = {}) -> bool:
 	if busy(): return refuse("Wait for the current owner transaction.")
+	if not authoring_patch.is_empty() and (not preserve or reciprocal_panel == null \
+			or not reciprocal_panel.attests(candidate,authoring_patch)):
+		return refuse("Construction history must match the current validated experimental proposal.")
 	if preserve and paint_editor != null and paint_editor.recovery_required():
 		return refuse("Undo the partial paint edit or Restore start before retaining the live World.")
 	if preserve:
 		if applied.is_empty(): return refuse("No installed session to retain.")
 		# A retained request can change ownership/settings, never substitute a
 		# different starting paint history for the native cells being copied.
-		candidate = candidate.duplicate()
-		candidate.edits = applied.edits
+		if authoring_patch.is_empty():
+			candidate = candidate.duplicate()
+			candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
 	if not error.is_empty(): return refuse(error)
 	if candidate.has("ambient_authoring"):
@@ -1015,7 +1032,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			"dirty":_liquids._dirty}
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
-		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water)
+		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water,authoring_patch)
 	if not ok: return refuse(host.microscenario_error)
 	_pending_staged_liquid_selection = retained_selection
 	_pending_generated = generated_packet.duplicate(true)
@@ -1233,6 +1250,7 @@ func installed(candidate: Dictionary) -> void:
 		set_camera(2)
 		message = "Ambient scene ready. Play, paint Oil or Water nearby, inspect decisions, and edit Behaviour profile. Save stores the authored profile; runtime timers restart on reopen."
 	if is_instance_valid(_actor_panel): _actor_panel.refresh(true)
+	if reciprocal_panel != null: reciprocal_panel.native_installed(candidate)
 	if not OS.get_environment("MAT_AUDITION_LAUNCHER_RECEIPT").is_empty():
 		preload("res://tests/support/material_audition_launcher_witness.gd").attach(self)
 
@@ -1538,6 +1556,9 @@ func save_setup() -> bool:
 		GeneratedMaps.write_named(_name.text,applied,_generated_active)
 		if not _generated_active.is_empty() else Setup.write_named(_name.text,applied))
 	if not error.is_empty(): return refuse(error)
+	if reciprocal_panel != null:
+		var evidence_error: String = reciprocal_panel.save_evidence(_name.text)
+		if not evidence_error.is_empty(): message=evidence_error;return true
 	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
 		else "Saved starting setup · ") + _name.text
 	if host.simulation_worker.has_failed():
@@ -1597,6 +1618,8 @@ func finish_art_history() -> void:
 	if paint_editor != null: paint_editor.finish_agent_history()
 
 func art_history_guard() -> String:
+	if reciprocal_panel != null and reciprocal_panel.busy():
+		return "Wait for reciprocal generation before changing World history."
 	return art_batches.history_block_reason() if art_batches != null else ""
 
 # Built-in #361 equipment starts. Each asks the native validator for one of
@@ -1795,6 +1818,11 @@ func _pick(pos: Vector2i) -> void:
 	select_instance(0)
 
 func _world_input(event: InputEvent) -> void:
+	# An external reciprocal job owns this source until it settles, including
+	# when its dock is hidden or territory painting is switched off. PAINT's
+	# own gesture routing remains unchanged when that separate job is idle.
+	if reciprocal_panel != null and reciprocal_panel.busy(): return
+	if reciprocal_panel != null and reciprocal_panel.world_input(event): return
 	if actor_interaction != null and actor_interaction.world_input(event): return
 	if not applied.is_empty() and paint_editor != null and paint_editor.world_input(event): return
 	if applied.is_empty() or busy(): return

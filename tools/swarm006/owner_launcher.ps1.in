@@ -1,0 +1,127 @@
+# Source-bound SWARM-006 owner evaluator. Generated from the exact package source.
+# Native source/GUI qualification and owner NVIDIA acceptance remain separate.
+[CmdletBinding()]
+param(
+    [string]$Archive = '',
+    [string]$Destination = '',
+    [switch]$VerifyOnly
+)
+$ErrorActionPreference = 'Stop'
+Set-StrictMode -Version Latest
+$ExpectedSource = '__SOURCE_COMMIT__'
+$ExpectedZipName = '__ZIP_NAME__'
+$ExpectedZipSha256 = '__ZIP_SHA256__'
+$ExpectedManifestSha256 = '__MANIFEST_SHA256__'
+if ($ExpectedSource -notmatch '^[0-9a-f]{40}$' -or $ExpectedZipSha256 -notmatch '^[0-9a-f]{64}$') {
+    throw 'This is an unbound source template. Download the source-bound launcher beside the SWARM006 Owner Windows artifact.'
+}
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+function Get-Sha256([string]$Path) {
+    if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) { throw "Missing required file: $Path" }
+    $algorithm = [Security.Cryptography.SHA256]::Create()
+    $stream = $null
+    try {
+        $stream = [IO.File]::OpenRead($Path)
+        return [BitConverter]::ToString($algorithm.ComputeHash($stream)).Replace('-','').ToLowerInvariant()
+    } finally {
+        if ($null -ne $stream) { $stream.Dispose() }
+        $algorithm.Dispose()
+    }
+}
+function Expand-CheckedZip([string]$Path, [string]$Target) {
+    if (Test-Path -LiteralPath $Target) { throw "Extraction destination already exists: $Target. Choose a fresh folder." }
+    $root = [IO.Path]::GetFullPath($Target) + [IO.Path]::DirectorySeparatorChar
+    $zip = [IO.Compression.ZipFile]::OpenRead($Path)
+    try {
+        $seen = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+        [long]$total = 0
+        if ($zip.Entries.Count -gt 10000) { throw 'Unexpected archive file count.' }
+        foreach ($entry in $zip.Entries) {
+            $name = $entry.FullName.Replace('\','/')
+            if ($name.StartsWith('/') -or $name.Contains(':') -or $name.Split('/') -contains '..' -or $name.Split('/') -contains '.') { throw "Unsafe archive path: $name" }
+            $full = [IO.Path]::GetFullPath((Join-Path $Target $name))
+            if (-not $full.StartsWith($root,[StringComparison]::OrdinalIgnoreCase) -or -not $seen.Add($full)) { throw "Duplicate or unsafe archive path: $name" }
+            $kind = ($entry.ExternalAttributes -shr 16) -band 0xF000
+            if ($kind -ne 0 -and $kind -ne 0x8000 -and $kind -ne 0x4000) { throw "Unsupported archive entry: $name" }
+            $total += $entry.Length
+            if ($total -gt 2147483648 -or $entry.Length -gt 1073741824) { throw 'Archive exceeds the bounded owner-package capacity.' }
+        }
+    } finally { $zip.Dispose() }
+    [IO.Compression.ZipFile]::ExtractToDirectory($Path,$Target)
+}
+function Assert-Sidecar([string]$Path) {
+    $sidecar = "$Path.sha256"
+    if (-not (Test-Path -LiteralPath $sidecar -PathType Leaf)) { throw "Missing separate SHA-256 sidecar: $sidecar" }
+    $line = (Get-Content -LiteralPath $sidecar -Raw).Trim()
+    $match = [regex]::Match($line,'^([0-9A-Fa-f]{64})\s+\*?(.+)$')
+    if (-not $match.Success -or $match.Groups[1].Value.ToLowerInvariant() -ne $ExpectedZipSha256 -or $match.Groups[2].Value -cne $ExpectedZipName) { throw 'SHA-256 sidecar does not name the exact source-bound SWARM006 package.' }
+    if ((Get-Sha256 $Path) -ne $ExpectedZipSha256) { throw 'Owner ZIP SHA-256 mismatch. Download a fresh Owner Windows artifact.' }
+}
+if ([string]::IsNullOrWhiteSpace($Archive)) {
+    $candidates = @()
+    foreach ($folder in @($PSScriptRoot, (Join-Path ([Environment]::GetFolderPath('UserProfile')) 'Downloads'))) {
+        if (Test-Path -LiteralPath $folder -PathType Container) {
+            $candidates += @(Get-ChildItem -LiteralPath $folder -File | Where-Object {
+                $_.Name -eq $ExpectedZipName -or $_.Name -eq "swarm006-owner-windows-$ExpectedSource.zip"
+            })
+        }
+    }
+    $candidates = @($candidates | Sort-Object FullName -Unique)
+    if ($candidates.Count -ne 1) { throw 'Specify -Archive with exactly one SWARM006 Owner Windows ZIP. Native-runtime and build-evidence artifacts are not owner packages.' }
+    $Archive = $candidates[0].FullName
+}
+$Archive = (Resolve-Path -LiteralPath $Archive).Path
+if ([string]::IsNullOrWhiteSpace($Destination)) {
+    $Destination = Join-Path ([Environment]::GetFolderPath('UserProfile')) ("Downloads\CyberSand-SWARM006-" + $ExpectedSource.Substring(0,12) + '-' + [DateTime]::UtcNow.ToString('yyyyMMdd-HHmmss'))
+}
+$Destination = [IO.Path]::GetFullPath($Destination)
+if (Test-Path -LiteralPath $Destination) { throw 'Destination already exists. A stale evaluation folder cannot be adopted.' }
+$inner = $Archive
+if ([IO.Path]::GetFileName($Archive) -ne $ExpectedZipName) {
+    $wrapper = $Destination + '-artifact'
+    Expand-CheckedZip $Archive $wrapper
+    $nested = @(Get-ChildItem -LiteralPath $wrapper -Recurse -File | Where-Object { $_.Name -ceq $ExpectedZipName })
+    if ($nested.Count -ne 1) { throw 'No unique source-matched SWARM006 owner ZIP found. Select Owner Windows, not native-runtime/build-evidence.' }
+    $inner = $nested[0].FullName
+}
+Assert-Sidecar $inner
+Expand-CheckedZip $inner $Destination
+$manifestPath = Join-Path $Destination 'candidate-manifest.json'
+if ((Get-Sha256 $manifestPath) -ne $ExpectedManifestSha256) { throw 'Candidate manifest does not match the source-bound package.' }
+$manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+if ($manifest.source_commit -cne $ExpectedSource -or $manifest.programme -cne 'GENTEK-SWARM-006' -or $manifest.draft_hold -ne $true) { throw 'Candidate source identity or Draft/HOLD programme mismatch.' }
+$root = [IO.Path]::GetFullPath($Destination) + [IO.Path]::DirectorySeparatorChar
+$listed = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+foreach ($entry in $manifest.files_sha256.PSObject.Properties) {
+    $name = $entry.Name.Replace('\','/')
+    if ($name.StartsWith('/') -or $name.Contains(':') -or $name.Split('/') -contains '..' -or $name.Split('/') -contains '.') { throw "Unsafe manifest path: $name" }
+    $file = [IO.Path]::GetFullPath((Join-Path $Destination $name))
+    if (-not $file.StartsWith($root,[StringComparison]::OrdinalIgnoreCase) -or -not $listed.Add($file)) { throw "Duplicate or unsafe manifest entry: $name" }
+    if ($entry.Value -notmatch '^[0-9a-f]{64}$' -or (Get-Sha256 $file) -cne $entry.Value) { throw "Packaged file hash mismatch: $name" }
+}
+foreach ($file in (Get-ChildItem -LiteralPath $Destination -Recurse -File)) {
+    if ($file.FullName -ne $manifestPath -and -not $listed.Contains($file.FullName)) { throw "Unlisted package file: $($file.FullName)" }
+}
+foreach ($name in @('Open Workbench.cmd','Godot_v4.7-stable_win64.exe','Godot_v4.7-stable_win64_console.exe','godot/project.godot','godot/tools/gentek_reciprocal.exe','godot/tools/swarm004-runtime.json','godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll','godot/addons/cybersand_native/cybersand_native.gdextension','godot/main.tscn','godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll','godot/addons/godot-rapier2d/godot-rapier2d.gdextension','vcruntime140.dll','godot/scripts/workbench_reciprocal_protocol.gd','godot/scripts/workbench_reciprocal_panel.gd','READ-ME.md')) {
+    if (-not $listed.Contains([IO.Path]::GetFullPath((Join-Path $Destination $name)))) { throw "Launch-critical file is not manifest-bound: $name" }
+}
+$genericPath = Join-Path $Destination 'godot/tools/swarm004-runtime.json'
+$preferredPath = Join-Path $Destination 'godot/tools/swarm004-runtime.windows.json'
+if (-not $listed.Contains([IO.Path]::GetFullPath($preferredPath)) -or (Get-Sha256 $genericPath) -cne (Get-Sha256 $preferredPath)) { throw 'Preferred Windows runtime binding is missing or differs from the generic compatibility binding.' }
+$runtime = Get-Content -LiteralPath $preferredPath -Raw | ConvertFrom-Json
+$expectedProgramme = 'GENTEK-SWARM-006'
+if ($manifest.PSObject.Properties.Name -contains 'runtime_programme') { $expectedProgramme = $manifest.runtime_programme }
+if ($expectedProgramme -cnotin @('GENTEK-SWARM-006','GENTEK-SWARM-004-005-MAINLINE') -or $runtime.schema -ne 1 -or $runtime.draft_hold -ne $true -or $runtime.platform -cne 'windows' -or $runtime.artifact -cne 'godot/tools/gentek_reciprocal.exe' -or $runtime.source -cne $ExpectedSource -or $runtime.programme -cne $expectedProgramme -or $runtime.sha256 -cne $manifest.reciprocal_cli_sha256 -or (Get-Sha256 (Join-Path $Destination 'godot/tools/gentek_reciprocal.exe')) -cne $runtime.sha256) { throw 'Native generator manifest/source/hash mismatch.' }
+foreach ($foreign in @('godot/tools/gentek_reciprocal','godot/tools/swarm004-runtime.linux.json')) {
+    if (Test-Path -LiteralPath (Join-Path $Destination $foreign)) { throw 'Windows evaluator contains a foreign-platform runtime.' }
+}
+if ($manifest.PSObject.Properties.Name -contains 'qualification_programme') {
+    if ($manifest.qualification_programme -cne 'GENTEK-SWARM-004-005-006-UNIFIED' -or $runtime.qualification_programme -cne $manifest.qualification_programme -or $runtime.native_definition_sha256 -cne $manifest.native_definition_sha256 -or $runtime.native_definition_sha256 -cnotmatch '^[0-9a-f]{64}$') { throw 'Unified native definition/qualification mismatch.' }
+}
+if ((Get-Sha256 (Join-Path $Destination 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll')) -cne $manifest.native_sha256) { throw 'Source-matched native GDExtension hash mismatch.' }
+Write-Host "Verified GENTEK-SWARM-006 source $ExpectedSource; $($listed.Count) packaged files; generator and Windows GDExtension."
+Write-Host "Evaluator: $Destination"
+Write-Host 'Draft/HOLD. Automated Windows qualification is separate from your NVIDIA/visual acceptance.'
+if (-not $VerifyOnly) {
+    Start-Process -FilePath $env:ComSpec -ArgumentList @('/d','/c',('""' + (Join-Path $Destination 'Open Workbench.cmd') + '""')) -WorkingDirectory $Destination
+}

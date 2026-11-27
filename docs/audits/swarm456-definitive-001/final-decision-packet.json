@@ -1,0 +1,1159 @@
+{
+  "schema": "cybersand-swarm456-definitive-decision-v1",
+  "mission": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "recorded_utc": "2026-11-24T19:52:48.519394+00:00",
+  "disposition": {
+    "status": "engineering_qualified_owner_pending",
+    "final_packet": true,
+    "engineering_qualified": true,
+    "owner_physical_acceptance": "owner_pending",
+    "draft_hold": true,
+    "ready_authorized": false,
+    "merge_authorized": false,
+    "production_default_activation_authorized": false,
+    "open_engineering_findings": []
+  },
+  "repository": {
+    "name": "techrote/cybersand",
+    "principal_pr": 729,
+    "url": "https://github.com/techrote/cybersand/pull/729",
+    "branch": "integration/swarm004-005-006-unified-20261122"
+  },
+  "identities": {
+    "historical_main": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "accepted_main_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+    "donors": {
+      "715": "919134a39d31461947c410c233d59d1965c48414",
+      "716": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    },
+    "reviewed_implementation": "4c00aaf1232484275ee0ee6891d31315a465345a",
+    "reviewed_implementation_tree": "a6a7600bc849b65fe7686953d1fdc5314f194bfe",
+    "qualified_application_runtime_evaluator_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "qualified_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+    "publication_request": "856e25fd58c375482a5b6d58cb79e6e7eca2784d",
+    "publication": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+    "publication_tree": "9c0dcf061051e32194f5845cf024a3d5435d9122",
+    "first_broad_execution": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+    "ci_test_correction": "5fd5ab8b34c46d3c275d284559498e65d80be466",
+    "corrected_broad_execution": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "transport_correction_and_final_affected_execution": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+    "transport_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+    "documentation_checkpoint": "The Git commit containing this packet identifies its documentation revision; it does not retag any original binary or campaign."
+  },
+  "lineage": {
+    "requested_records": [
+      605,
+      625,
+      662,
+      686,
+      687,
+      692,
+      693,
+      695,
+      696,
+      697,
+      698,
+      704,
+      705,
+      707,
+      710,
+      715,
+      716,
+      729
+    ],
+    "original_snapshots": 53,
+    "review": {
+      "path": "evidence/lineage-manifest.json",
+      "sha256": "903d794535b152cff585b1cd5fcb65ac686e945c4c6aaac6a6375a42f2bb1e42",
+      "bytes": 13503
+    },
+    "genuine_merge_ancestry": [
+      {
+        "sha": "d78f9e26d8b4da24adcad0f72a711c1332761816",
+        "parents": [
+          "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+          "919134a39d31461947c410c233d59d1965c48414"
+        ]
+      },
+      {
+        "sha": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+        "parents": [
+          "d78f9e26d8b4da24adcad0f72a711c1332761816",
+          "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+        ]
+      },
+      {
+        "sha": "45101dc409002e6fc6fefbf80e7fb5dca409da77",
+        "parents": [
+          "d59a82241eaf7d7bf48551139e41c3da277a8eff",
+          "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+        ]
+      }
+    ],
+    "accepted_main_change": "Preserved #727 Art session-only logging; reciprocal busy-history refusal remains before accepted Art guard.",
+    "unrelated_drafts_imported": [],
+    "excluded_programmes": [
+      "PUBPRES",
+      "ObjectShard",
+      "Actor Compose",
+      "Equipment",
+      "RAMCACHE",
+      "Art Workbench",
+      "Batch Lab",
+      "other Gentek research"
+    ],
+    "future_integration_seams": [
+      "Shared command/history routing",
+      "Native capture and authoring fences",
+      "World replacement",
+      "Persistence sidecars",
+      "Actor/equipment editing",
+      "Runtime/package ownership"
+    ],
+    "final_main_refresh": {
+      "observed_utc": "2026-11-24T19:40:51.499200+00:00",
+      "source": "fresh_authenticated_GitHub_PR_metadata",
+      "rows": [
+        {
+          "pr": 729,
+          "head": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+          "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+          "head_branch": "integration/swarm004-005-006-unified-20261122",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "updated_at": "2026-11-24T19:25:36Z"
+        },
+        {
+          "pr": 715,
+          "head": "919134a39d31461947c410c233d59d1965c48414",
+          "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+          "head_branch": "integration/swarm004-005-mainline-20261121",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "updated_at": "2026-11-21T23:16:26Z"
+        },
+        {
+          "pr": 716,
+          "head": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+          "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+          "head_branch": "integration/gentek-swarm-006-finisher-20261121",
+          "state": "open",
+          "draft": true,
+          "merged": false,
+          "updated_at": "2026-11-22T00:58:25Z"
+        }
+      ]
+    }
+  },
+  "historical_campaigns": [
+    {
+      "name": "Q1",
+      "run_id": 44976065682,
+      "attempt": 1,
+      "conclusion": "failure",
+      "reason": "Nonportable reserve premise, missing transport dependency, saved-inspection reader refusal; required Reopens incomplete.",
+      "original_outcome_immutable": true,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44976065682"
+    },
+    {
+      "name": "Q2",
+      "run_id": 44978257952,
+      "attempt": 1,
+      "conclusion": "failure",
+      "reason": "Windows path alias containment, buffered hidden-worker input without dispatch witness, saved-inspection refusal.",
+      "original_outcome_immutable": true,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44978257952"
+    },
+    {
+      "name": "Q3",
+      "run_id": 44980706584,
+      "attempt": 1,
+      "conclusion": "failure",
+      "reason": "Busy-shortcut fixture yielded until worker retirement; later independent ordinary Documentation cleanup-race and PLAY stale-runtime failures remain separate.",
+      "original_outcome_immutable": true,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44980706584"
+    },
+    {
+      "name": "Q4",
+      "run_id": 44983553549,
+      "attempt": 1,
+      "conclusion": "failure",
+      "reason": "Six constituents passed; aggregate137100053627 rejected native-prefixed GEN008Flatten capacity reason.42c7878a corrected this beforeQ5.",
+      "original_outcome_immutable": true,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44983553549"
+    },
+    {
+      "name": "Q5",
+      "run_id": 44988900817,
+      "attempt": 1,
+      "conclusion": "failure",
+      "reason": "Six constituents passed; aggregate137118578852 refused actual Windows console-wrapper5148 vs Godot/report/log7432 process identity without original parent-child custody.",
+      "original_outcome_immutable": true,
+      "url": "https://github.com/techrote/cybersand/actions/runs/44988900817"
+    }
+  ],
+  "q6": {
+    "run_id": 45437617377,
+    "source": "b126523158e22d8993b4899710799f88dd0b98d0",
+    "attempt1": {
+      "conclusion": "failure",
+      "passed_constituents": 4,
+      "failed_constituents": 2,
+      "aggregate": "skipped",
+      "source_windows_failure": "Official pinned Godot downloadHTTP500 beforeengine",
+      "package_failure": "Original owner-launch observerWinError5; exact API/cause absent and undetermined"
+    },
+    "attempt2": {
+      "conclusion": "success",
+      "all_seven_old_contract_jobs_passed": true,
+      "superseded": true,
+      "qualifies_new_Q7_witnesses": false
+    },
+    "original_failure_relabelled": false
+  },
+  "q7": {
+    "run_id": 45445188802,
+    "attempt": 1,
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "conclusion": "success",
+    "completed_utc": "2026-11-24T18:13:37Z",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45445188802",
+    "jobs": [
+      {
+        "id": 138626895094,
+        "name": "Explicit frozen-source request and helper guards",
+        "conclusion": "success"
+      },
+      {
+        "id": 138627497166,
+        "name": "Linux strict sanitizers all nine GUI examples and known360",
+        "conclusion": "success"
+      },
+      {
+        "id": 138627497236,
+        "name": "Windows full-source cross build once",
+        "conclusion": "success"
+      },
+      {
+        "id": 138627497276,
+        "name": "Exact-source revealed 006 corpus and frozen scientific harness",
+        "conclusion": "success"
+      },
+      {
+        "id": 138631072184,
+        "name": "Real extracted Windows evaluator and accepted-main smokes",
+        "conclusion": "success"
+      },
+      {
+        "id": 138631072246,
+        "name": "Actual Windows native and graphical source gates",
+        "conclusion": "success"
+      },
+      {
+        "id": 138664529371,
+        "name": "Verify every scoped gate and stage eight reviewable runtime paths",
+        "conclusion": "success"
+      }
+    ],
+    "helper_tests": 244,
+    "helper_skips": 0,
+    "mandatory_job_skips": 0,
+    "only_skipped_step": "Failure-only UNQUALIFIED owner artifact upload was not run in the successful package job.",
+    "per_lane": {
+      "examples": 9,
+      "positive_examples": 7,
+      "blocked_negative_examples": 2,
+      "graphical_input_lifecycle_processes": 24,
+      "accepted_main_smokes": 17,
+      "preservation_processes_including_import": 14,
+      "native_transactions": 21,
+      "fresh_reopens": 7
+    },
+    "lanes": [
+      "Linux source",
+      "Windows source",
+      "pristine extracted Windows evaluator"
+    ],
+    "native_transactions_total": 63,
+    "fresh_reopens_total": 21,
+    "linux_native_sanitizer_transport_processes": 21,
+    "windows_native_transport_processes": 12
+  },
+  "scientific_integrity": {
+    "review": {
+      "path": "evidence/scientific-review.json",
+      "sha256": "68c6b35617e082fa79c33d4f6ca09c7e2d2c0bafe8547d31fbbe89a1784bc38e",
+      "bytes": 39233
+    },
+    "revealed_cases": 96,
+    "policies": 20,
+    "executions": 1920,
+    "raw_compressed_pairs": 5760,
+    "donor_controls": 360,
+    "primary": {
+      "complete_apply_valid_zero_unresolved": 82,
+      "with_qualified_foreign_joint": 81,
+      "exhausted": 12,
+      "blocked": 2,
+      "denominator": 96,
+      "bilateral_success": 18
+    },
+    "original_swarm005_reference": {
+      "complete_apply_valid_zero_unresolved": 14,
+      "with_qualified_foreign_joint": 3,
+      "exhausted": 20,
+      "blocked": 62,
+      "denominator": 96
+    },
+    "current_both_at_two": {
+      "complete_apply_valid_zero_unresolved": 14,
+      "with_qualified_foreign_joint": 3,
+      "exhausted": 25,
+      "blocked": 57,
+      "denominator": 96
+    },
+    "FAIL138": {
+      "apply_changes": 0,
+      "changed_policy_counts": {
+        "both": 69,
+        "receptor_only": 69
+      },
+      "complete_original_history_inventory_sha256": "69dfca22b5249ab63a1c47936a6252d51330f86e4ea260e68f0b6e212bf46ca6",
+      "original_failed_report_sha256": "7404bb07d3552465c544d90d760f887bd7703d3937a9268a6f32355e4346df7f",
+      "original_failure_count": 138,
+      "original_failure_population_recovered_exactly": true,
+      "original_result": "FAIL",
+      "original_result_reclassified": false,
+      "raw_8cf_f9_reaudit_in_other_session": "Preserved original primary-lane checkpoint: \"Not claimed complete here; retain original report and exact ledger regardless of that re-audit status\". The later completed closure review in evidence/closure-historical-science.json independently rechecked all 1,920 original 8cf93e48/f9ddbf2 pairs, preserving the exact 138 classifications and zero Apply changes. The original FAIL disposition, report, inventory and archived primary-lane scientific review remain unchanged.",
+      "retained_inventory_classifications": {
+        "accounting_only_unchanged_geometry_and_endpoint": 127,
+        "already_exhausted_changed_refusal_stage_and_accounting": 1,
+        "earlier_blocked_to_exhausted_refusal": 10
+      },
+      "unchanged_original_pairs": 1782
+    },
+    "frozen_population": {
+      "cases": 96,
+      "child_timeout_seconds": 90,
+      "classification": "revealed_corpus_successor_regression",
+      "fresh_executions": 1920,
+      "historical_reference_executions": 480,
+      "known_donor_controls": 360,
+      "limits": {
+        "frame_work": 2000000,
+        "max_reservations": 8,
+        "max_rounds": 4,
+        "memory_bytes": 16777216,
+        "mosaic_work": 2000000,
+        "shared_work": 2000000,
+        "solver_work": 4000000
+      },
+      "ordered_seed_reconstruction": "96/96 exact; counter96; no duplicate or excluded seeds",
+      "original_registration_commit": "b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d",
+      "per_policy_denominator": 96,
+      "policies": 20,
+      "reference_executions_rerun_by_this_review": 0,
+      "registration_files_sha256": {
+        "analysis-plan.json": "35a654559f28e96fed4ba60da0567d042cdb47050a82165c7100072acda71850",
+        "draw_cases.py": "bee877ab0ecd57d9e5741412c34c4d4cc3818024ef5ecc6ffe8cc2ed92397a3a",
+        "entropy-receipt.json": "3e08e758b6ff05b603073fef0f5c3aafbca295eab5af424613838ec44dd1845b",
+        "exclusion-ledger.json": "b27fde9f11049ccfb633ac9b5422cae12873f89b03838193e703cd857131dabf",
+        "master.json": "2007a3b2fc22a76c050dcba55fd3f0520738170a46966abb74f843f5fa6fc1e8",
+        "registration-validation.json": "36411e6cf7886875f057ee72eb839c1aa372731a5d74c5359dae36a2ac0b4f4b",
+        "registration.json": "e2110f7fdbcc1ab5f507597f347c15ae68f7902ce29f1adbe21577571e49fc96"
+      },
+      "replicates_per_stratum": 3,
+      "required_original_parity_comparisons": [
+        "swarm004_off_vs_swarm005_off",
+        "swarm005_vs_swarm006_off",
+        "swarm005_vs_swarm006_terminal_only",
+        "swarm005_vs_swarm006_receptor_only",
+        "swarm005_vs_swarm006_both"
+      ],
+      "strata": 32,
+      "unseen_claim": false
+    },
+    "source_chain": "All 1,920 request, response and envelope sets preserve original f9 to Q6 to Q7 equality under the unchanged identity-only normalizer.",
+    "donor_comparison": "All 360 fresh Q7 native responses are byte-identical to independently audited Q5 responses. The original #715 normalized comparison is preserved without claiming raw historical byte equality.",
+    "unseen_claim": false,
+    "new_policy_or_algorithm": false,
+    "holdout_identities_changed": false,
+    "scientific_driver": {
+      "sha256": "c6e589dac25db2f5cd661078c56e31d0b79bbbeb332974c43f8787bbd02e945e",
+      "executable_bytes_retained": false,
+      "compiler_executable_bytes_retained": false,
+      "original_compiled_inputs_verified": 100,
+      "source_compiler_log_custody_receipts_verified": true,
+      "absent_driver_direct_rehash_claimed": false
+    }
+  },
+  "material_corrections": {
+    "q4": {
+      "commit": "42c7878aac86ec4a56781c00ddded04ee5e3e4ba",
+      "scope": "Preexisting narrow GEN008 native-prefixed failure-reason correction; distinct fromQ5"
+    },
+    "q5_process_join": {
+      "original_process_pid": 5148,
+      "original_godot_report_log_pid": 7432,
+      "original_parent_child_witness": false,
+      "strict_equality_preserved": true,
+      "repair": "Launch actual pinned graphical engine directly",
+      "original_campaign_accepted": false,
+      "byte_original_fixtures": 12,
+      "review": {
+        "path": "evidence/requested-adversarial-crosswalk.json",
+        "sha256": "5e6578c76765349a1f659fc41ec63565f4897b91c33cdfe51440c5ee30c48954",
+        "bytes": 2980
+      }
+    },
+    "native_receipt": {
+      "commit": "4c00aaf1232484275ee0ee6891d31315a465345a",
+      "production_solver_defect_demonstrated": false,
+      "scope": "Qualification producer/consumer repair: three actual native before/after capture stages; strict receipts/fences; canonical material-plane patch digest; saved map/sidecar/evidence joins across Create and fresh Reopen; blockedApply refusal.",
+      "old_evidence_rewritten": false,
+      "fresh_Q7_execution_required_and_passed": true,
+      "independent_adversarial_review": {
+        "path": "evidence/native-receipt-adversarial-review.json",
+        "sha256": "b97b7bde20df2a761ceeb45ecbaf0097b729ecca2684cf88283c295de642971c",
+        "bytes": 2742
+      }
+    },
+    "owner_observer": {
+      "scope": "Failure phase/API/PID/window/traceback observations; fatal behavior, rights, timeout and cleanup unchanged",
+      "original_access_denied_cause": "undetermined"
+    },
+    "ci_inventory": {
+      "audit": "ordinary-budget-test-correction.md",
+      "tests": 129,
+      "skips": 0,
+      "changed_test": "tools/ci/test_godot_job_plan.py",
+      "sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+      "planner_or_watchdog_changed": false
+    },
+    "ordinary_transport": {
+      "audit": "ordinary-linux-download-correction.md",
+      "review": {
+        "path": "evidence/ordinary-transport-review.json",
+        "sha256": "5bbaf86ff405329f520e53738a25fe7310d5b03134ac5a813f09c7b7432028b9",
+        "bytes": 11880
+      },
+      "official_asset": 451175419,
+      "size": 75664355,
+      "sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+      "url_replacements": 3,
+      "additional_exact_push_branches": [
+        "integration/swarm004-005-006-unified-20261122"
+      ],
+      "pins_assertions_timeouts_permissions_changed": false
+    },
+    "final_CI_overlay_scope": {
+      "historical_build_entries": 1856,
+      "unchanged": 1853,
+      "changed": [
+        "tools/ci/test_godot_job_plan.py",
+        ".github/workflows/gdextension.yml",
+        ".github/workflows/play-desktop-packet.yml"
+      ],
+      "added": 0,
+      "removed": 0,
+      "unchanged_native_inputs": 156,
+      "unchanged_extension_inputs": 106,
+      "unchanged_definition_inputs": 52,
+      "unchanged_scientific_inputs": 100,
+      "owner_source_paths_unchanged_by_CI_overlay": 1059,
+      "Q7_fixture_producer_consumer_workflow_paths_unchanged": 82,
+      "published_paths_unchanged": 8,
+      "qualified_source_retagged": false,
+      "note": "Two repository provenance paths had already changed at publication; unchanged1059 refers to laterCIoverlay, not denial of those earlier publication replacements."
+    }
+  },
+  "runtime": {
+    "producer_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+    "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "compilers": {
+      "windows": "Clang 23.1.0; pinned LLVM receipt retained",
+      "linux": "GCC 13.3.0; original compiler/build receipts retained"
+    },
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "windows": {
+      "library": {
+        "bytes": 5844992,
+        "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+      },
+      "cli": {
+        "bytes": 3283968,
+        "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+      },
+      "producer_manifest_sha256": "cd65a677c1876ab9c56a632f350f6d945f6e46cd8a8ec7a5a33c603f6eb24f17",
+      "published_provenance_sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+      "cli_binding_sha256": "6d839d6ad535862f10b4dc94b344f0c188401c113d14e9113a3c7a1c15ec8d50"
+    },
+    "linux": {
+      "library": {
+        "bytes": 5278840,
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+      },
+      "cli": {
+        "bytes": 1554128,
+        "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+      },
+      "producer_manifest_sha256": "82ec51f5f342665ce633d6df50f90e813b708a36cf4692bebdf90712de73a2c7",
+      "published_provenance_sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+      "cli_binding_sha256": "0a55efae0b59eb40749eb9aa4d80d3a52ed73dd017b06e34283a32c4e9f2f470"
+    }
+  },
+  "publication": {
+    "status": "pass",
+    "run": 45458124077,
+    "job": 138672995211,
+    "completed_utc": "2026-11-24T18:19:33Z",
+    "workflow": ".github/workflows/swarm456-runtime-publication.yml",
+    "qualified_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "parent": "856e25fd58c375482a5b6d58cb79e6e7eca2784d",
+    "commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+    "reviewed_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe",
+      "godot/tools/swarm004-runtime.linux.json",
+      "godot/tools/swarm004-runtime.windows.json"
+    ],
+    "changed_paths": 7,
+    "unchanged_verified_path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "candidate_artifact": 14951152494,
+    "candidate_bytes": 6238955,
+    "candidate_sha256": "fbb8b5b1e3317e6b40dc75518167d60e96e55b2b8d7ea9308a425c8d69edc230",
+    "plan_sha256": "8c48f3c871fe88e2ebd6e2bc158f07811fb9a5aeed097770191341e86fc4e8c2",
+    "archive_members": 9,
+    "authenticated_branch_lease": true,
+    "LFS_pre_push_hook_exercised": true,
+    "changed_LFS_objects_uploaded": 3,
+    "application_source_changed_by_publication": false,
+    "unrelated_publisher_used": false,
+    "remote_objects_proven": true,
+    "first_materialized_run": 45459015485,
+    "second_materialized_run": 45464485647,
+    "runtime_paths_materialized": 20,
+    "swarm_binary_objects": 4,
+    "lfs_fsck": "pass",
+    "review": {
+      "path": "evidence/remote-lfs-review.json",
+      "sha256": "d0feafeec0d9a38e0a775d014d26fc4dc3e1366938c9551db917e16f079a2a20",
+      "bytes": 7036
+    }
+  },
+  "ordinary_admission": {
+    "first_full": {
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+      "documentation": {
+        "run": 45459015485,
+        "status": "pass"
+      },
+      "native": {
+        "run": 45459020583,
+        "status": "pass",
+        "families": 6,
+        "commands": 20,
+        "native_cases_per_normal_ASanUBSan_TSan_family": 192,
+        "independent_aggregate_sha256": "460d1303aa2c01de5926bad5d4cdadff7b42c8b7f9a0fc0ec3bb905dda4a5b8a",
+        "review": {
+          "path": "evidence/first-full-native-review.json",
+          "sha256": "98c91279f8f5be1ee21ff86551867e2e2fe609294fcb4bf26b78e42c8577c033",
+          "bytes": 3998
+        }
+      },
+      "gdextension": {
+        "run": 45459025464,
+        "status": "failure",
+        "reason": "Historical24shard test bound; mandatorymatrices skipped"
+      },
+      "play": {
+        "run": 45458959754,
+        "status": "pass_identity_scope"
+      }
+    },
+    "corrected_broad": {
+      "documentation": {
+        "run_id": 45464485647,
+        "status": "pass",
+        "steps": 28,
+        "skips": 0
+      },
+      "native": {
+        "run_id": 45464490633,
+        "status": "pass_independently_reduced",
+        "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+        "families": 6,
+        "commands": 20,
+        "native_cases_per_normal_ASanUBSan_TSan_family": 192,
+        "original_archive_count": 9,
+        "aggregate_sha256": "8a356452b96addc75549000a6dc9b16ab02ac12ad7c8d8898eef327db39a771e",
+        "review": "evidence/corrected-full-native-review.json",
+        "review_sha256": "8bd62549c671cc1398dc352e62f4b02383bd01a32ab3d09643606875ab2f5439"
+      },
+      "gdextension": {
+        "run_id": 45464495877,
+        "status": "failed_linux_dependency_prepare_before_engine",
+        "budget_job": 138695658074,
+        "budget_status": "pass",
+        "linux_failed_shards": 25,
+        "art_failed": true,
+        "original_http403": 103,
+        "original_connection_resets": 1
+      },
+      "play": {
+        "run_id": 45464427423,
+        "attempt1": "failure:Linux pinned engine downloadHTTP403 before packet;Windows passed",
+        "retry": "affected Linux job repeatedHTTP403; retainedWindowsresults fromattempt1",
+        "status": "failed_attempts_1_and_2"
+      }
+    },
+    "final_affected": {
+      "gdextension": {
+        "run_id": 45467878171,
+        "event": "push",
+        "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "status": "pass_independently_reduced",
+        "total_jobs": 57,
+        "successful_jobs": 55,
+        "control_only_skipped_jobs": [
+          "ready validation scope",
+          "physical-actor-stress"
+        ],
+        "mandatory_job_skips": 0,
+        "artifact_count": 59,
+        "artifact_bytes": 160624462,
+        "linux_cases": 344,
+        "linux_shards": 25,
+        "linux_imports": 25,
+        "linux_original_logs": 369,
+        "windows_cases": 321,
+        "windows_shards": 23,
+        "windows_imports": 23,
+        "windows_original_logs": 344,
+        "total_cases": 665,
+        "total_original_logs": 713,
+        "rendered_pixel_cases": 23,
+        "art_assertions": 38,
+        "retained_PLAY_packets": 30,
+        "retained_adverse_process_controls": 860,
+        "missing_or_duplicate_mandatory_cases": 0,
+        "linux_independent_coverage_sha256": "726e694fa73b3e9f5cce6ea1df538bfb7e0e723f66d5a7c016adae0440affb77",
+        "windows_independent_coverage_sha256": "1791bf53b523327dc0ab84883661c696a52118c05afa9a060826447195175628",
+        "review": "evidence/final-gde-review.json",
+        "review_sha256": "cf2dacaae057cb814e797c021c2c4d3a5a667fc3b8f1b82161166fb14df65a95",
+        "local_review_note": "First Linux offline reduction refused a different absolute checkout path. The unchanged consumer passed at the pristine original hosted path; original evidence was not edited. The derived Windows report differs only in local storage prefixes; all semantic fields and original hashes match."
+      },
+      "play": {
+        "run_id": 45467888942,
+        "event": "pull_request",
+        "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "status": "pass_independent_identity_review",
+        "jobs": 3,
+        "skips": 0,
+        "helper_tests": 68,
+        "manual_cases_executed": false,
+        "review": "evidence/final-play-review.json",
+        "review_sha256": "b11ec21a90ffb7ec77a58ccab6e664a275fcb1f5ef217bed189561af5118954e"
+      },
+      "documentation": {
+        "run_id": 45467889468,
+        "event": "pull_request",
+        "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "status": "pass_current_documentation_scope",
+        "passed_steps": 27,
+        "intentional_skips": 1,
+        "skipped_step": "Validate dependency pins and published runtime provenance",
+        "materialized_runtime_evidence": "Full e4a Documentation run 45464485647 passed all 28 steps with zero skips; both 5fd PLAY original PRECHECKs additionally verified all 20 materialized paths.",
+        "review": "evidence/final-current-docs-review.json",
+        "review_sha256": "fe32afb6adf5823c5a3f55762ae3a19ef6793bafd77434b7f12b590de055a305"
+      }
+    },
+    "mandatory_gde_cases": {
+      "linux": 344,
+      "linux_shards": 25,
+      "windows": 321,
+      "windows_shards": 23,
+      "windows_inapplicable_graphical_exclusions": 23,
+      "art_graphical_required": true,
+      "both_exact_coverage_gates_required": true
+    },
+    "dispatch_success_is_qualification": false,
+    "Draft_skipped_full_workflows_count_as_pass": false,
+    "PLAY_manual_cases_claimed_executed": false,
+    "final_documentation_check": {
+      "precommit": "Current Documentation, M11, repository, diff and retrieval gates are recorded separately in evidence/documentation-validation.json.",
+      "frozen_retrieval": {
+        "questions": 32,
+        "rank1": 19,
+        "top5": 30,
+        "original_misses_retained": true
+      },
+      "mission_retrieval": {
+        "questions": 2,
+        "rank1": 2
+      },
+      "postcommit": "The exact documentation commit and hosted check outcomes are bound by the GitHub PR #729 check suite and separate final closure receipt. Documentation changes do not retag a binary producer."
+    }
+  },
+  "evaluator": {
+    "qualified_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "filename": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "bytes": 93903365,
+    "sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "payload_manifest_sha256": "d431d254b354bd0f3e07b1a7e8c700ac03202432fdbf6ba18cac09652b62d9da",
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "outer_artifact": 14949325922,
+    "outer_bytes": 93564703,
+    "outer_sha256": "9db077d7be6ba1173a63f0f869fea88c4c0c844471b504da6cbe972b9b1a47c4",
+    "payload_files": 1093,
+    "files_including_manifest": 1094,
+    "graphical_engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "sealed_launcher_sha256": "a9eef83475b4ae836fbfb52fd7f09efc6bbef17a8d14ff1ed5b60c920caca684",
+    "guide_sha256": "742e7ec82cdf67f49e400e97fdb88e4f96b130e22a8b48e49a9787eb798f9efb",
+    "launcher": "Open Workbench.cmd",
+    "requires_compilation": false,
+    "repackaged_after_qualification": false,
+    "pristine_extraction_and_actual_interactive_launch": "pass",
+    "owned_engine_pid": 616,
+    "responsive_window": {
+      "width": 984,
+      "height": 688,
+      "seconds": 10.062
+    },
+    "launcher_admission_cases": 7,
+    "hosted_renderer": "ANGLE/Microsoft Basic Render Driver",
+    "audio_scope": "Two original WASAPI errors followed by preexisting exact pinned Dummy fallback; physicalaudio notqualified",
+    "payload_review": {
+      "path": "evidence/owner-payload-review.json",
+      "sha256": "27c49adec3e2da136bbf3a2e33d578370467ad1b64528347dbc28f7ddb56561b",
+      "bytes": 294403
+    },
+    "execution_review": {
+      "path": "evidence/owner-execution-review.json",
+      "sha256": "8af38332b84e53ea811dc2b52dbf7de1cb0c12e8255dc7a5f10d5846c7537dbf",
+      "bytes": 12881
+    },
+    "private_map_upload_required": false,
+    "physical_owner_acceptance": "owner_pending",
+    "optional_collector": "Frozen v2 input: a 2048-square map with rectangular stamps, no actors and no sources. A private crop stays local; nothing uploads. This collector is optional and does not restrict GUI acceptance.",
+    "source_derived_paths": 1059,
+    "same_path_exact_Git_blobs": 1057,
+    "materialized_Rapier_LFS_paths": 1,
+    "renamed_retained_provenance_paths": 1,
+    "renamed_retained_provenance": {
+      "payload_path": "godot/addons/cybersand_native/retained-runtime-provenance.reference.json",
+      "qualified_source_path": "godot/addons/cybersand_native/runtime-provenance.json"
+    },
+    "root_repository_README_in_payload": false,
+    "delivered_guide_path": "READ-ME.md",
+    "delivered_guide_qualified_source": "docs/operations/swarm456-owner-acceptance.md"
+  },
+  "owner_acceptance": {
+    "guide": "../../operations/swarm456-owner-acceptance.md",
+    "review": {
+      "path": "evidence/owner-ergonomics-review.json",
+      "sha256": "c7e47eb9c99a0dc26eecd1193532773f897dabada0ed4a66c402026e8b043a6c",
+      "bytes": 7113
+    },
+    "workflow": [
+      "Verify and extract the exact portable ZIP; open the ordinary Workbench",
+      "Back up the original map and sidecars; Load start. For a generated start, wait for automatic generator preview verification to finish, then choose Install into workbench. Choose a new valid copy name and Save start before editing.",
+      "Configure existing presets; hold source and seed fixed; compare recovery OFF and ON",
+      "Inspect Final and provisional rounds, joints, obligations, clearance and revisions",
+      "Native Apply of a valid complete composition; construction Undo; regenerate and reapply",
+      "Save the composition checkpoint; close; reopen in a fresh process and inspect historical read-only evidence before later ordinary edits",
+      "Close the Reciprocal dock or turn Paint territory OFF; exercise painting, history, actors and simulation",
+      "Exercise Stop/cancel, busy behavior and stale/provisional refusal; use a disposable copy for World replacement",
+      "Separately save the ordinary authored result and reopen in a fresh process; a stale composition receipt may legitimately be omitted",
+      "Record physical Windows 11/NVIDIA appearance, responsiveness, sound, usability and preference; the private map stays local"
+    ],
+    "save_semantics": "Save the authored start, recipe or baseline. To author a live result, exercise supported Flatten separately after history tests under another new name.",
+    "physical_acceptance_replaced_by_hosted_CI": false,
+    "delivery_routes": "See owner_delivery: the GitHub outer artifact includes the sealed PowerShell launcher; the separately saved exact inner ZIP is extracted directly and started with Open Workbench.cmd."
+  },
+  "independent_review": {
+    "native_source": {
+      "path": "evidence/native-source-review.json",
+      "sha256": "159a34ba7063406b812a19716fa1839e447a20a6750bc39edb8f113c50896f9b",
+      "bytes": 6792
+    },
+    "final_native_and_ordinary_closure": {
+      "path": "evidence/final-native-ordinary-review.json",
+      "sha256": "73fbe6f98a042dc9d4eec503f87e00b7f8f999fc76efd9330781ca1d6c51c870",
+      "bytes": 10038
+    },
+    "independent_ordinary_union": {
+      "path": "evidence/ordinary-union-second-review.json",
+      "sha256": "58dca10f2121dce20f6372d89e526a2155da1a146338695d7edf3b28bd382b86",
+      "bytes": 13777
+    },
+    "final_publication_and_evidence_closure": {
+      "path": "evidence/final-publication-evidence-review.json",
+      "sha256": "d3c49c73251c906e0f1d9aa5325be658b8fc2ab902b3bdcde3fc7b734684028b",
+      "bytes": 21155
+    },
+    "delivered_owner_archive": {
+      "path": "evidence/saved-owner-delivery-review.json",
+      "sha256": "41d0e8c784d60d20106e3bfbcac7a5975fa909943dbed9f7ae5b0c3958d19278",
+      "bytes": 1911
+    },
+    "linux_source": {
+      "path": "evidence/linux-source-review.json",
+      "sha256": "a0784e42a1efd7e316d714f704fe5ad977937b26cb6a5223c64678790a488171",
+      "bytes": 12763
+    },
+    "windows_source": {
+      "path": "evidence/windows-source-review.json",
+      "sha256": "2221a5df993d24f75a625c2137f163296da18df90235136a96abe1f71b48c9e2",
+      "bytes": 11242
+    },
+    "science": {
+      "path": "evidence/scientific-review.json",
+      "sha256": "68c6b35617e082fa79c33d4f6ca09c7e2d2c0bafe8547d31fbbe89a1784bc38e",
+      "bytes": 39233
+    },
+    "publication": {
+      "path": "evidence/publication-review.json",
+      "sha256": "ec46eeca76a9a441c8ee64da10860147e1f82f337cc069ff95419c1f82b8a389",
+      "bytes": 4708
+    },
+    "final_decision": {
+      "status": "APPROVE_ENGINEERING_COMPLETION_OWNER_PENDING",
+      "review": "evidence/final-independent-assurance.json",
+      "hash_location": "evidence/index.json",
+      "scope": "Independent terminal review of native correctness, science, mainline reconciliation, Workbench transactions, persistence, security, evidence validation, publication and evaluator integrity. Physical owner acceptance is separate.",
+      "reviewed_packet_hashes": "Bound by the independent review record; the packet does not embed its review hash, to avoid circular identity."
+    },
+    "rotation": "C implemented the receipt consumer; A independently derived and reviewed the native patch contract; B adversarially examined saved files and generation chains. A implemented the CI test; B and C independently approved it. B implemented the transport correction; A and C independently approved it. The technical lead owned branch leases, final source, evidence checks and the decision packet.",
+    "nonblocking_limits": [
+      "Original scientific driver/compiler executable bytes absent; source/compiler/log/custody receipts independentlyverified, no absent-byte rehash claimed.",
+      "The precise API and cause of the original Q6 attempt 1 AccessDenied remain undetermined. Subsequent passing attempts do not reclassify it.",
+      "Hosted ANGLE/Microsoft Basic Render Driver and the explicit Dummy audio fallback do not establish physical NVIDIA rendering, physical audio or owner-perceived responsiveness.",
+      "All 63 authoritative Q7 receipts use strict integers. Thirty-three redundant projections contain integral floats; original receipts contain no booleans. Redundant numeric comparison cannot authorize alternate geometry or a different transaction."
+    ],
+    "closure_cross_reviews": {
+      "closure_historical_recovery": {
+        "path": "evidence/closure-historical-recovery.json",
+        "sha256": "33c4a1cd46cef9e32760c69d5acea6e4b872b5279d600cc74100cfa39da78ddb",
+        "bytes": 60241
+      },
+      "closure_historical_science": {
+        "path": "evidence/closure-historical-science.json",
+        "sha256": "47f58c1e063dcf569676f6c2054e09b749c1d52df1963def4a75c360f0728d5a",
+        "bytes": 17735
+      },
+      "closure_historical73_custody": {
+        "path": "evidence/closure-historical73-custody.json",
+        "sha256": "b8514f894ef11585921d55e992c7a7c991bbcb14447d3812d1254d3cbf53d653",
+        "bytes": 4402
+      },
+      "closure_science_cross_review": {
+        "path": "evidence/closure-science-cross-review.json",
+        "sha256": "81a00a9dc18666e8111a0a0622869fe014fac371c02e3210dd8f0084c3d52ef7",
+        "bytes": 9488
+      },
+      "closure_independent_review": {
+        "path": "evidence/closure-independent-review.json",
+        "sha256": "d833813fccf91f05355c9a5f64b40513a1e0506811f1ce9f4e2b8f236702929e",
+        "bytes": 5158
+      },
+      "owner_delivery_access_review": {
+        "path": "evidence/owner-delivery-access-review.json",
+        "sha256": "e2102225a930c686b5049d56ea4f5fd37d3d9954a1bf75a931bc6c058c800c3e",
+        "bytes": 4516
+      },
+      "closure_recovery_join_review_b": {
+        "path": "evidence/closure-recovery-join-review-b.json",
+        "sha256": "354c84508b435ed894d468de1310daaa815009d8c86ef9c17d681466fa464468",
+        "bytes": 27340
+      },
+      "closure_docs_readback_review_b": {
+        "path": "evidence/closure-docs-readback-review-b.json",
+        "sha256": "b99d72d9f2707772871dfe99c1e857215ae9e3b495de66aaac002c2b9cd2cf80",
+        "bytes": 8042
+      },
+      "closure_play_readback_review_b": {
+        "path": "evidence/closure-play-readback-review-b.json",
+        "sha256": "5f0344511a7f4d6098ca47011c2b344f95f85be891e05e069906fc0e76c3cd27",
+        "bytes": 14023
+      },
+      "closure_source_overlay_review_b": {
+        "path": "evidence/closure-source-overlay-review-b.json",
+        "sha256": "d4c480c832506b30d2ffc58c4e34264f1cf299662449f2b783d03b636f5a7cbb",
+        "bytes": 3616
+      },
+      "closure_cache_lifecycle_review_b": {
+        "path": "evidence/closure-cache-lifecycle-review-b.json",
+        "sha256": "7a5a1e41746606dfbf70ea3fa115d93a4fe01f3212cc9ea1d4db52db13b97460",
+        "bytes": 8630
+      },
+      "closure_windows_final_review_b": {
+        "path": "evidence/closure-windows-final-review-b.json",
+        "sha256": "a33058f8300b0f90da5a807bfff14fd067c22baa908ba8df57ec00bd6007f28d",
+        "bytes": 8325
+      },
+      "closure_recovery_union_review_a": {
+        "path": "evidence/closure-recovery-union-review-a.json",
+        "sha256": "e85d2ed9c9530e736953bb25d212b0dff42ee081f7ec54d10f3b4fe5a5d7ce5b",
+        "bytes": 3032
+      },
+      "closure_final_gde_review_a": {
+        "path": "evidence/closure-final-gde-review-a.json",
+        "sha256": "d5e06487135ca9f176957ca1f1d2d03bce9837f3c68c9e07908572060e151faf",
+        "bytes": 8718
+      }
+    },
+    "historical73_attribution_resolution": "The earlier attribution question in closure-independent-review.json is resolved by the later exact original inventories in closure-historical73-custody.json; it is not an open engineering finding.",
+    "closure_late_custody_reviews": {
+      "prior_Q6_receipt_join": {
+        "path": "evidence/closure-q6-prior-custody-classification-a.json",
+        "sha256": "c73d8fcc2afdf4e1d41bb181dd5e757d129b0e3686c9bc8eb603f6e659fa0630",
+        "bytes": 23274
+      },
+      "new_original_archive_recovery": {
+        "path": "evidence/closure-late-original-archive-recovery.json",
+        "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+        "bytes": 505141
+      },
+      "independent_all_byte_review": {
+        "path": "evidence/closure-late-archive-independent-review-a.json",
+        "sha256": "76b18a7752db55219adc750e4369a9918247318b27b0e630317d4bbeda2f0a64",
+        "bytes": 24970
+      },
+      "preceding_noncount_packet_review": {
+        "path": "evidence/closure-packet-noncount-review-a.json",
+        "sha256": "1c1e30fccde42fca2374b5a3a0710ca26613f0fbfea3b3dba01cf7774dd9fa77",
+        "bytes": 3596
+      },
+      "resolution": "The dated Q6 classification identified four lost temporary archive receipts and 37 failed ordinary archives. The later all-byte recovery resolves all 41 custody gaps without changing those original outcomes. Eight further Q6 proofs are supplied by exact retained original receipts."
+    }
+  },
+  "recovery": {
+    "authoritative_manifest": "evidence/recovery-manifest.json",
+    "manifest_sha256": "5cb3ebd24d559becce75b95701a65fe1c89f2f529681d8be2866e5536c6a1260",
+    "whole_vs_partial_and_cache_availability_separate": true,
+    "Q7_original_archive_count": 10,
+    "Q7_original_bytes": 746421253,
+    "Q5_all_nine_archives_verified": true,
+    "Q1_Q4_large_containers_partially_recovered": 7,
+    "selected_original_members": 25,
+    "originals_edited": false,
+    "durable_owner_and_Q7_originals_preserved": true,
+    "temporary_cache_loss": "Executor recovery cleared temporary caches. Historical verification events remain valid; the manifest separately records current availability and recovery of final ordinary originals.",
+    "manifest_bytes": 965413,
+    "final_github_artifact_records": 256,
+    "separate_scientific_original_archives": 3,
+    "final_unique_original_archive_records": 259,
+    "github_archives_with_completed_whole_archive_verification": 256,
+    "github_archives_without_completed_whole_archive_verification": 0,
+    "Q1_Q4_partial_recovery_count_scope": "The existing count of seven describes only the preserved primary-reader selected-member events. The complete closure supplement supplies separate completed whole-archive proofs for all seven; no earlier event is overwritten.",
+    "Q1_Q4_those_seven_with_closure_whole_archive_proof": 7,
+    "Q1_Q4_outstanding_whole_archive_proof_among_those_seven": 0,
+    "historical_closure_supplement": {
+      "path": "evidence/closure-historical-recovery.json",
+      "sha256": "33c4a1cd46cef9e32760c69d5acea6e4b872b5279d600cc74100cfa39da78ddb",
+      "bytes": 60241
+    },
+    "current_union_review": {
+      "path": "evidence/closure-recovery-union-review-a.json",
+      "sha256": "e85d2ed9c9530e736953bb25d212b0dff42ee081f7ec54d10f3b4fe5a5d7ce5b",
+      "bytes": 3032
+    },
+    "deduplicated_count_scope": "256 distinct GitHub artifact IDs plus three separate original scientific archives give 259 indexed original archive identities, all with completed whole-archive verification under their exact receipt scopes. Three pairs of byte-identical failed-shard archives remain six distinct GitHub/shard identities, so there are 253 distinct GitHub archive SHA-256 values and 256 including science. Counts are not claims of independent execution or uniform per-member receipt fields. All prior partial/metadata observations and dated cache states are preserved.",
+    "all_259_original_archive_identities_have_completed_whole_archive_proof": true,
+    "distinct_github_archive_sha256_values": 253,
+    "distinct_archive_sha256_values_including_scientific": 256,
+    "all_original_archive_bytes_summed_over_artifact_identities": 7168353251,
+    "late_archive_custody_completion": {
+      "path": "evidence/closure-late-original-archive-recovery.json",
+      "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+      "bytes": 505141
+    },
+    "late_archive_custody_independent_review": {
+      "path": "evidence/closure-late-archive-independent-review-a.json",
+      "sha256": "76b18a7752db55219adc750e4369a9918247318b27b0e630317d4bbeda2f0a64",
+      "bytes": 24970
+    }
+  },
+  "source_and_science_boundaries": {
+    "solver_redesign": false,
+    "SWARM007_started": false,
+    "new_catalogue_entries": false,
+    "new_recovery_policy": false,
+    "scientific_gate_relaxed": false,
+    "original_failures_relabelled": false,
+    "experimental_controls_default": "OFF/OFF/OFF",
+    "owner_private_maps_uploaded": false
+  },
+  "closure_review_supplement": {
+    "historical_recovery": {
+      "evidence": "evidence/closure-historical-recovery.json",
+      "original_archives_fully_verified": 65,
+      "original_archive_bytes": 4748255185,
+      "github_archives": 62,
+      "github_archive_bytes": 3491359509,
+      "scientific_archives": 3,
+      "scientific_archive_bytes": 1256895676,
+      "pre_import_definitive_manifest_records": 118,
+      "pre_import_manifest_GitHub_overlap": 42,
+      "overlap_identity_conflicts": 0,
+      "overlap_matching_measured_whole_hashes": 35,
+      "overlap_whole_archive_verification_supplements_partial_lane": 7,
+      "additional_predecessor_donor_diagnostic_GitHub_archives": 20,
+      "count_scope": "Stable 65-original historical subset. Overlap figures describe the pre-import 118-record checkpoint; deduplicate by artifact identity and archive SHA, then derive any final global count from the actual final manifest including subsequent ordinary artifacts.",
+      "earlier_partial_recovery_events_preserved": true,
+      "verification_event_is_current_local_retention_claim": false,
+      "final_join_checkpoint": {
+        "recorded_at_utc": "2026-11-24T20:25:18.606796+00:00",
+        "base_manifest_records": 236,
+        "base_manifest_sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
+        "final_github_records": 256,
+        "separate_scientific_originals": 3,
+        "final_unique_original_archive_records": 259,
+        "github_completed_whole_archive_proofs": 256,
+        "github_metadata_only_records": 0,
+        "final_manifest_sha256": "5cb3ebd24d559becce75b95701a65fe1c89f2f529681d8be2866e5536c6a1260",
+        "late_archive_custody_completion": {
+          "path": "evidence/closure-late-original-archive-recovery.json",
+          "sha256": "6a8da18ad0c37494cdbfe46f91dca81d3090311f787ef50507b06d2b159c1c34",
+          "bytes": 505141
+        },
+        "distinct_github_archive_sha256_values": 253,
+        "distinct_archive_sha256_values_including_scientific": 256
+      }
+    },
+    "historical_science": {
+      "evidence": "evidence/closure-historical-science.json",
+      "original_reference_executions": 480,
+      "original_reference_split": {
+        "SWARM004": 96,
+        "SWARM005": 384
+      },
+      "separate_donor_controls": 360,
+      "revealed_candidate_executions": 1920,
+      "bilateral_qualified_R_cases": 18,
+      "original_foreign_joined_obligations_in_Apply_cases": 34,
+      "Apply_cases_with_those_original_obligations": 22,
+      "Apply_cases_without_original_mandatory_obligations": 60,
+      "FAIL138": {
+        "historical_result": "FAIL",
+        "unchanged": 1782,
+        "accounting_only": 127,
+        "already_exhausted_stage_and_accounting": 1,
+        "Blocked_to_Exhausted": 10,
+        "Apply_changes": 0,
+        "frozen_comparison_reviewer_sha256": "8818a1f197851d6bfaf9f08f160a3830cf55b0a9a684718bd58245af4949d69e"
+      },
+      "primary_paired_policy_loss": {
+        "case": "island--industrial--s1849470453",
+        "reference_source": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+        "recovery_source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+        "reference": {
+          "status": "Complete",
+          "A": true,
+          "R": true
+        },
+        "recovery": {
+          "status": "Exhausted",
+          "A": false,
+          "R": false
+        },
+        "reason": "final provenance ledger allowance",
+        "already_in_registered_82_A_81_R_of_96": true,
+        "already_present_in_corrected_8cf": true,
+        "part_of_FAIL138": false
+      },
+      "four_original_provisional_defects": {
+        "source": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+        "count": 4,
+        "accepted_or_Apply_authorized_plan_failures": 0,
+        "corrected_source": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+        "original_HOLD_preserved": true,
+        "selected_geometry_or_outer_Apply_changed": false
+      },
+      "missing_interrupted_attempt_raw_records": 96,
+      "missing_records_counted_as_qualified": false
+    },
+    "historical73": {
+      "evidence": "evidence/closure-historical73-custody.json",
+      "evidence_commit": "8a269bf42c0d5ac412bfdb70287194a5164788d8",
+      "actual_scientific_execution_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+      "a757_comparison_original_sha256": "111321183d77f08d9290607a611131e4a1b4d6923459ca5a02a7c89ae00fefcd",
+      "a757_pairs": 1920,
+      "a757_unchanged": 1847,
+      "a757_changed": 73,
+      "changed_histories_all_Exhausted_non_Apply": true,
+      "already_empty_status_or_termination_corrections": 40,
+      "copied_nonempty_failed_proposals_replaced": 33,
+      "endpoint_changes": 0,
+      "work_metric_changes": 0,
+      "selected_plan_changes": 0,
+      "corrected_8cf_comparison_original_sha256": "b215dacd42de13910e1cb90f84556983477fc2a4ad8d56b0cb7dbcfc9c8854e5",
+      "corrected_8cf_pairs": 1920,
+      "corrected_8cf_unchanged": 1920,
+      "original_comparison_reviewer_sha256": "101f818d585fb890e527adccdfeac2e553fa7884f5162ad5dd90e6f67a19d522",
+      "fresh_raw_a757_Ca_execution_claimed_by_C": false,
+      "donor_final_428_execution_relabelled": false
+    },
+    "Q7_C_scientific_review": {
+      "evidence": "evidence/closure-science-cross-review.json",
+      "complete_definitive_raw_review_cases": 1920,
+      "complete_definitive_raw_review_sha256": "608df7d7e677aa1c0b17566193959d102e59cf9c3ea49b6eb564bbd5d5c50bf5",
+      "full_source_hash_predicate_and_reduction_cross_review_cases": 1920,
+      "supplementary_first_C_invocation": "BrokenProcessPool after 1600 logged executions; no final serialized report; exact cause unproved",
+      "retained_sequential_tail_executions": 320,
+      "second_complete_1920_row_C_raw_report_claimed": false,
+      "scientific_driver_bytes_retained": false,
+      "scientific_compiler_bytes_retained": false,
+      "absent_executable_direct_rehash_claimed": false
+    }
+  },
+  "owner_delivery": {
+    "single_evaluator": true,
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "evidence": "evidence/owner-delivery-access-review.json",
+    "inner_archive": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "inner_bytes": 93903365,
+    "inner_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "github_outer_artifact": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "github_route": "Extract outer ZIP; keep inner ZIP/checksum/seal/PowerShell launcher together; run the sealed PowerShell launcher; subsequent starts use Open Workbench.cmd in its extracted application folder.",
+    "saved_inner_zip": "https://chatgpt.com/library?file_id=libfile_52bf61caf6d08191a679ac5c70bb9e90&account_id=personal",
+    "saved_inner_route": "Verify inner SHA-256; extract completely to a fresh folder; open Open Workbench.cmd. No adjacent PowerShell file is required or included in this inner-only download.",
+    "saved_exact_inner_zip_status": "succeeded",
+    "repacked": false,
+    "archive_members": 1094,
+    "manifest_listed_payload_files": 1093,
+    "same_path_exact_Git_blobs": 1057,
+    "materialized_Rapier_LFS_paths": 1,
+    "renamed_retained_provenance_paths": 1,
+    "source_derived_paths": 1059,
+    "root_repository_README_in_payload": false,
+    "generated_map_Load_start": "Starts generator preview verification automatically; after it is ready choose Install into workbench, then save under a new valid copy name.",
+    "physical_owner_acceptance": "pending"
+  },
+  "record_correction": {
+    "prepared_at_utc": "2026-11-24T20:03:30.734101+00:00",
+    "baseline_packet_sha256": "4426b4eade793f96620e69d45af77970293aaddd42d002cbdc80acb47a27d23d",
+    "baseline_packet_recorded_utc": "2026-11-24T19:52:48.519394+00:00",
+    "scope": "Evidence custody, precise payload attribution and owner instructions only. All terminal qualification, source, runtime, publication, ordinary-gate and owner-pending dispositions are preserved.",
+    "late_custody_join_prepared_at_utc": "2026-11-24T20:25:18.606796+00:00",
+    "baseline_commit": "7a3241a8be4362f27c667a62b0ddea66e38316f3",
+    "baseline_tree": "5717386ea76b3a330e4ba1bacdbdf585f0cc9f08",
+    "baseline_canonical_path": "docs/audits/swarm456-definitive-001/final-decision-packet.json",
+    "baseline_matches_exact_published_git_bytes": true,
+    "baseline_review": {
+      "path": "evidence/closure-published-baseline-review-a.json",
+      "sha256": "d13c95a390e9a2e948768fb5a2a1e06cf4065e4c8545cbc42e4275bd3735f675",
+      "bytes": 5858
+    },
+    "publication_scope": "Completion of the existing canonical decision packet through documentation and evidence records only. Qualified application/runtime/evaluator identities and historical dispositions remain unchanged; containing Git history and the final independent review bind the actual publication."
+  }
+}

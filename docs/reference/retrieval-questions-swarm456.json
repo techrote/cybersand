@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-22",
+  "purpose": "Additive consolidated SWARM004/005/006 source reconciliation and admission; original frozen retrieval set unchanged.",
+  "questions": [
+    {
+      "id": "SWARM456-001",
+      "query": "How does the unified SWARM004 SWARM005 SWARM006 integration preserve Final composition, historical inspection, recovery OFF defaults and native source authority?",
+      "canonical": [
+        "operations/swarm456-unified-mainline.md"
+      ],
+      "facts": [
+        "The unified branch starts from accepted main662df51 and preserves both715/716 histories through real merges.",
+        "Final selector index0 maps to native round-1; saved historical evidence remains read-only until successful fresh generation.",
+        "Both005 controls and006 recovery remain OFF; native World, worker, materials and save formats remain authorities."
+      ],
+      "sources": [
+        "../godot/scripts/workbench_reciprocal_panel.gd",
+        "../godot/scripts/workbench_reciprocal_protocol.gd"
+      ]
+    },
+    {
+      "id": "SWARM456-002",
+      "query": "What scientific normalization, Linux Windows runtime provenance and physical NVIDIA owner gates admit the consolidated Swarm evaluator and manual merge?",
+      "canonical": [
+        "operations/swarm456-unified-mainline.md"
+      ],
+      "facts": [
+        "Replay retains all20policies×96cases, failed outcomes, distinct foreign closure versus local termination, and exact source identities.",
+        "Source-matched hosted Linux and Windows graphics plus pristine extraction do not establish physical NVIDIA acceptance.",
+        "Only explicit exact-package owner acceptance and all independent final-source gates allow Ready followed by a manual merge; auto-merge stays disabled."
+      ],
+      "sources": [
+        "../tools/swarm45/runtime_custody.py",
+        "../native/experiments/gentek_swarm/run_swarm006.py"
+      ]
+    }
+  ]
+}

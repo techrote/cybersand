@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "reviewer": "closure-specialist-B-independent-Q7-Windows-review",
+  "disposition": "APPROVE_SCOPED_Q7_WINDOWS_QUALIFICATION",
+  "unresolved_material_findings": [],
+  "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "frozen_source": "4c00aaf1232484275ee0ee6891d31315a465345a",
+  "run_id": 45445188802,
+  "run_attempt": 1,
+  "aggregate": "SUCCESS; all seven jobs independently refreshed from GitHub",
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "runtime_manifest_sha256": "cd65a677c1876ab9c56a632f350f6d945f6e46cd8a8ec7a5a33c603f6eb24f17",
+  "windows_extension": {
+    "bytes": 5844992,
+    "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+  },
+  "windows_cli": {
+    "bytes": 3283968,
+    "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+  },
+  "reviewed_source_files_sha256": {
+    "tools/swarm45/reduce_evidence.py": "e5cd740d77eb1dd085b6bc5ad1554af0eabcfd8caac3027c386f07b0ec428f47",
+    "tools/swarm45/test_native_receipt_identity.py": "57bd7fefb86ff630aca8086acbf2649af91170a07cedea0adcb89a4c30be58ed",
+    "tools/swarm45/test_reduce_evidence.py": "bc03c02bf79e74a0d19c3b10b7c90950f189087d9cc885ca1c82f5bae88aa4ee",
+    "godot/tests/swarm456_reciprocal_ui.gd": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164",
+    "tools/swarm006/owner_dispatch.py": "2efe10d4baca058d7991ea4d434d3160644119cb280972bf6e441997afdfa56e",
+    "tools/swarm006/test_owner_dispatch.py": "6051cc2c82d1de6d7f2fcbbb7a8ff4797fa3eed80c1705f93633a9c91e5c5421"
+  },
+  "independence": {
+    "new_Q7_transaction_and_owner_diagnostic_changes_authored_by_this_reviewer": false,
+    "earlier_Q5_direct_engine_producer_repair_authored_by_this_reviewer": true,
+    "earlier_Q5_repair_independently_reviewed_by": [
+      "native-source specialist A",
+      "independent-assurance specialist C"
+    ],
+    "complete_original_readers": "Unmodified functions from immutable q7-source",
+    "additional_independent_material_auditor": "Specialist C authored full native material-plane reconstruction; B executed separately on source and package",
+    "original_evidence_modified": false
+  },
+  "coverage": {
+    "request_helper_tests_passed": 244,
+    "native_receipt_tests_independently_passed": 17,
+    "owner_dispatch_tests_independently_passed": 17,
+    "original_build_commands": 6,
+    "original_windows_native_processes": 12,
+    "original_graphical_processes_source_plus_package": 48,
+    "strict_engine_report_log_pid_joins": 34,
+    "accepted_main_smoke_processes_source_plus_package": 34,
+    "full_original_preservation_and_terminal_identity": "PASS for both layouts",
+    "representative_examples_source_plus_package": 18,
+    "complete_native_plane_bytes_independently_verified": 597688320,
+    "native_apply_undo_reapply_witnesses": 42,
+    "fresh_process_save_reopen_pairs": 14,
+    "blocked_no_transaction_or_saved_apply_examples": 4,
+    "PE_images_bound_to_actual_final_owner_archive": 6
+  },
+  "findings_resolved": [
+    {
+      "topic": "Q7 native receipt predicate",
+      "finding": "Actual retained acknowledgements join separately captured source/installed identities, full material-plane differences, exact proposal files, canonical native patch digest and saved map/sidecar/evidence. Strict typed identities and negative no-Apply claims are enforced.",
+      "result": "PASS"
+    },
+    {
+      "topic": "Q7 owner observer diagnostics",
+      "finding": "New phase/API/PID/HWND/error/traceback recording preserves existing admission, process access, strict owner identity and cleanup. Historical access-denied error is not reclassified.",
+      "result": "PASS"
+    },
+    {
+      "topic": "Runtime dependency portability",
+      "finding": "Fresh Q7 native DLL and CLI normal import tables require Windows/UCRT APIs; the four pinned dependency images are byte-identical to the previously inspected images. All six exact final owner payload images have empty delay import directories. Rapier VCRUNTIME140 is bundled.",
+      "result": "PASS within static import plus existing hosted-execution scope"
+    }
+  ],
+  "historical_dispositions": [
+    "Original Q5 remains failed for unproven wrapper-to-engine PID custody.",
+    "Q6 attempt1 remains failed for original HTTP500 and unlocated observer WinError5.",
+    "Q6 attempt2 passed its exact b126 source and prior contract; it cannot supply the newly required Q7 transaction witnesses or be published onto later source."
+  ],
+  "owner_artifact": {
+    "final_owner_artifact_id": 14949325922,
+    "final_owner_outer_sha256": "9db077d7be6ba1173a63f0f869fea88c4c0c844471b504da6cbe972b9b1a47c4",
+    "final_owner_inner_zip": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "final_owner_inner_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522"
+  },
+  "remaining_outside_this_approval": [
+    "Guarded Q7 runtime publication and exact branch lease/LFS materialization proof.",
+    "Ordinary materialized post-publication regression and documentation gates.",
+    "Science and Linux/native whole-programme assurance are owned by independent specialists A/C.",
+    "Physical Windows11/NVIDIA, private owner-map usability and explicit owner acceptance remain pending."
+  ],
+  "evidence": [
+    {
+      "path": "/tmp/swarm456-q7-windows/q7-terminal-api.json",
+      "sha256": "2eb377c147a18ff2369264d7ccaccd3f03111ca6accbbef965a9d9e88e68e57d",
+      "bytes": 39030
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/archive-integrity.json",
+      "sha256": "a1db92030636fc3411b433bb4afc3c688b913b44bed01a7566d9fbf6e343a318",
+      "bytes": 5428
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/runtime-request-independent-audit-b.json",
+      "sha256": "2d2a38912362837557dd93ed3346be717ac184343c8032628c4026f3d3a7152d",
+      "bytes": 5555
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-build-audit-b.json",
+      "sha256": "984ad95e62d33ba2e634d5af952477fe970c7624441013675bdd6205c594b2ae",
+      "bytes": 5112
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-source-strict-process-audit-b.json",
+      "sha256": "0c32a4a2df5677ddb0f61af9884da2f8aeb68dc37a8a2962b01286fea0d36756",
+      "bytes": 17358
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-package-strict-process-audit-b.json",
+      "sha256": "a6fd4990d8f07394c0410c4c8ee9681adcfe95bd9d6ddfd437aa75a8cb6b5489",
+      "bytes": 17626
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-source-original-readers-audit-b.json",
+      "sha256": "f7d40b518f5c2973fe73f25253d961f4b82d8ef2160c64595cd70d80b4e82765",
+      "bytes": 131146
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-package-original-readers-audit-b.json",
+      "sha256": "80749ca16f0c1e39a65ca8ee4a433b17645480bbd3f86b2759ba449caad074af",
+      "bytes": 125025
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-source-independent-planes-b.json",
+      "sha256": "d34206f0c20fb911330da0fd4b91d7fd2e7a5332c9ab0cf70e02e96769951e65",
+      "bytes": 8549
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/windows-package-independent-planes-b.json",
+      "sha256": "d0a7e703abda4ea0561be4ce5280ad5426d53dcd43383fce0d98f1d7be7bf5f5",
+      "bytes": 8550
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/q7-windows-pe-dependencies-audit-b.json",
+      "sha256": "f98b739d09158a9dae91b8e5a28cb658ac5c59ddacb0fcd60e795ba406e2beb8",
+      "bytes": 7724
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/native-receipt-helper-tests.log",
+      "sha256": "c66798d33e603fa2942d8ff1146acaf0592bc058751872d5cf51b5f82be89df7",
+      "bytes": 3077
+    },
+    {
+      "path": "/tmp/swarm456-q7-windows/owner-dispatch-helper-tests.log",
+      "sha256": "292ac355273cdd77a6a9352dd67787270420741ba766d9a161d63fd3a895b49c",
+      "bytes": 3021
+    }
+  ],
+  "scope_limitations": [
+    "This is readback and independent reduction of immutable actual hosted Windows execution, not a claim of local Windows execution.",
+    "Static PE analysis does not replace dynamic hosted launch or physical GPU acceptance.",
+    "All implementation remains Draft/HOLD; no merge, Ready promotion or production default activation is authorized by this review."
+  ]
+}

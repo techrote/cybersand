@@ -437,6 +437,22 @@ class QueueCustodyControls(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "identity differs"):
                 queue.collect_attempts(out, value, recheck=True)
 
+    def test_reciprocal_runtime_identity_matches_each_platform_payload(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            project = Path(temporary)
+            reciprocal = set.union(*replay_identity.RECIPROCAL_FILES.values())
+            all_names = reciprocal | replay_identity.IMPORT_DESCRIPTORS | set.union(*replay_identity.RUNTIME_FILES.values())
+            for name in all_names:
+                path = project / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(name.encode())
+            for platform in ("linux", "windows"):
+                applicable = replay_identity.RECIPROCAL_FILES[platform] | replay_identity.RUNTIME_FILES[platform] | replay_identity.IMPORT_DESCRIPTORS
+                source = replay_identity.game_inputs(project, platform, all_names)
+                extracted = replay_identity.game_inputs(project, platform, applicable)
+                self.assertEqual(source, extracted)
+                self.assertEqual(set(source), applicable)
+
     def test_only_the_four_declared_descriptors_allow_crlf_normalization(self):
         with tempfile.TemporaryDirectory(prefix="goblin-normalization-unit-") as directory:
             project = Path(directory)

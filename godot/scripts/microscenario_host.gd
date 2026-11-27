@@ -124,6 +124,8 @@ func install(world: Variant, value: Variant, mode: String = "Inspect", instrumen
 			options.workbench_extent = Vector2i(candidate.extent[0],candidate.extent[1])
 			options.workbench_sample = controlled_setup.workbench_sample
 			options.workbench_retain_cells = controlled_setup.get("workbench_retain_cells",false)
+			if controlled_setup.has("workbench_authoring_patch"):
+				options.workbench_authoring_patch = controlled_setup.workbench_authoring_patch
 			if controlled_setup.has("workbench_generated"):
 				options.workbench_generated = controlled_setup.workbench_generated
 			if controlled_setup.has("workbench_material_baseline"):
