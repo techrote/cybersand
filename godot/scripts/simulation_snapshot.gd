@@ -14,6 +14,9 @@ var worker_handoff_usec: int = 0
 # No render bytes or upload permission are implied by the physical mailbox.
 var physics_world_generation: int = -1
 var physics_handoff_usec: int = 0
+# First admitted mailbox packet for this exact owner, sample, native completion
+# and terrain revision. Later status-only republications retain that clock.
+var first_physics_handoff_usec: int = 0
 # Last successfully completed native tick in this World. Status-only/paused
 # publications retain it; -1 means no completion for this World yet.
 var last_native_tick_started_usec: int = -1

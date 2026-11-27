@@ -114,6 +114,7 @@ var _last_native_tick_world_generation: int = -1
 var _last_native_tick_body_sample: int = -1
 var _last_native_tick_body_publication: int = -1
 var _last_native_tick_lateness_usec: int = 0
+var _record_owner_first_handoff := not OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECEIPT").is_empty()
 var _render_publication_gate_holds: int = 0
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _rigid_body_epoch: int = 0
@@ -3485,11 +3486,37 @@ func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
 		return null
 	snapshot.physics_handoff_usec = Time.get_ticks_usec()
 	snapshot.worker_handoff_usec = snapshot.physics_handoff_usec
+	if _record_owner_first_handoff: _record_first_handoff_locked(snapshot)
 	_published_physics_snapshot = snapshot
 	if trace_generation > 0 and (_publication_detail_trace or _physics_causal_trace):
 		_trace_workbench_handoff_locked(snapshot,trace_generation,"early")
 	_mutex.unlock()
 	return snapshot
+
+
+# Caller holds the mailbox mutex. A retired/null predecessor cannot transfer
+# a timestamp to a new owner. No mailbox publication is delayed or suppressed.
+func _record_first_handoff_locked(snapshot: CyberSimulationSnapshot) -> void:
+	var context: Dictionary = snapshot.lab_context
+	var result: Dictionary = context.get("workbench_gcr",{})
+	var sample := int(context.get("workbench_completed_sample",-1))
+	var required := int(context.get("workbench_hard_surface_revision",-1))
+	if sample < 0 or required < 0 or required != snapshot.hard_surface_revision \
+			or snapshot.simulation_failed or not str(context.get("workbench_refusal","")).is_empty() \
+			or not result.get("valid",false) or int(result.get("session",-1)) <= 0 \
+			or int(result.get("epoch",-1)) != snapshot.rigid_body_epoch: return
+	var previous := _published_physics_snapshot
+	if previous != null and previous.first_physics_handoff_usec > 0 \
+			and previous.physics_world_generation == snapshot.physics_world_generation \
+			and previous.rigid_body_epoch == snapshot.rigid_body_epoch \
+			and previous.simulation_world_revision == snapshot.simulation_world_revision \
+			and previous.hard_surface_revision == required and previous.tick_index == snapshot.tick_index \
+			and previous.last_native_tick_completed_usec == snapshot.last_native_tick_completed_usec \
+			and previous.lab_context.get("workbench_completed_sample",-1) == sample \
+			and previous.lab_context.workbench_gcr.session == result.session:
+		snapshot.first_physics_handoff_usec = previous.first_physics_handoff_usec
+	else:
+		snapshot.first_physics_handoff_usec = snapshot.worker_handoff_usec
 
 
 func _trace_workbench_handoff_locked(snapshot: CyberSimulationSnapshot, generation: int, mode: String) -> void:
@@ -3861,6 +3888,7 @@ func _publish_snapshot(
 		var physics_completion: CyberSimulationSnapshot = _publish_workbench_physics_snapshot(snapshot, trace_generation)
 		if physics_completion != null:
 			snapshot.physics_handoff_usec = physics_completion.physics_handoff_usec
+			snapshot.first_physics_handoff_usec = physics_completion.first_physics_handoff_usec
 	# The early mailbox can overlap owned material copies and metadata packing.
 	_refresh_published_render_payload()
 	snapshot.render_patch_rectangles = _published_render_patch_rectangles
@@ -3921,8 +3949,10 @@ func _publish_snapshot(
 			"native_force_full_requested":force_render_full_refresh,"native_recovery_status":native_render_recovery_status,
 			"full_refresh":snapshot.render_full_refresh},trace_generation)
 	if workbench_physics and _combined_physics_publication:
-		_published_physics_snapshot = snapshot if _running and rigid_body_epoch == _physical_effect_epoch \
-			and _workbench_sample.get("epoch", -1) == rigid_body_epoch else null
+		var admitted: bool = _running and rigid_body_epoch == _physical_effect_epoch \
+			and _workbench_sample.get("epoch", -1) == rigid_body_epoch
+		if admitted and _record_owner_first_handoff: _record_first_handoff_locked(snapshot)
+		_published_physics_snapshot = snapshot if admitted else null
 		if _physics_causal_trace and trace_generation > 0 and _published_physics_snapshot != null:
 			snapshot.physics_handoff_usec = snapshot.worker_handoff_usec
 			_trace_workbench_handoff_locked(snapshot,trace_generation,"combined")
