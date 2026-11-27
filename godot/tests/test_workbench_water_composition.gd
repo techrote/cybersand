@@ -321,6 +321,57 @@ func coverage_cache_checks() -> void:
 	context.previous_blend_active = false
 	bridge._epoch += 1
 	check(app._submitted_water_hold(0,old,context).is_empty(),"a replacement physical owner cannot retain old Water coverage")
+	bridge._epoch -= 1
+	app.paused = true
+	app._presentation_content_serial = 100
+	# The expired budget forbids a new scan. Use the actual CPU image identity
+	# assignment and the real two-slot GPU texture rotation for each upload.
+	app._presentation_previous_image = app.image.duplicate()
+	app.finish_texture_upload(app.last_uploaded_revision,Time.get_ticks_usec())
+	app.last_uploaded_render_snapshot_serial += 1
+	context.previous_blend_active = true
+	context.deadline_usec = 1
+	var charge_before: int = summary.cells_examined
+	var refreshed: Dictionary = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true)
+	check(refreshed.get("equivalent_paused_publication",false) and refreshed.get("scanned",-1)==0
+		and summary.cells_examined==charge_before,"byte-identical paused refresh keeps proven Water across the actual slot swap")
+	var new_key: Dictionary = app._workbench_water_coverage_cache[0].identity
+	check(new_key.material[2]==app.last_uploaded_render_snapshot_serial and new_key.material[5]==app.texture.get_rid().get_id()
+		and new_key.previous[2]==app.previous_texture.get_rid().get_id() and new_key.material[2]!=endpoint.material[2],
+		"refreshed coverage keeps new GPU/transport bindings and leaves the original receipt immutable")
+	check(app._submitted_water_hold(0,old,context).is_empty(),"transport-equivalent clearance cannot rebind a historical physical hold")
+	for field: String in ["material","owner","sweep"]:
+		var different: Dictionary = new_key.duplicate(true)
+		if field=="material": different.material[1] += 1
+		elif field=="owner": different.owner[2] += 1
+		else: different.sweep[1] = moved
+		check(not app._same_paused_water_coverage(endpoint,different),"paused refresh refuses mismatching "+field)
+	var wrong_back: Dictionary = new_key.duplicate(true)
+	wrong_back.full_back_rid = new_key.material[5]
+	check(not app._same_paused_water_coverage(endpoint,wrong_back),"a missing or replaced texture pair cannot rebind coverage")
+	var changed_shape: Dictionary = new_key.duplicate(true)
+	changed_shape.material[4].x += 1
+	check(not app._same_paused_water_coverage(endpoint,changed_shape),"different image geometry cannot inherit an equal numeric content ID")
+	var past_blend: Dictionary = endpoint.duplicate(true)
+	past_blend.previous = [endpoint.material[3]+1,endpoint.material[4],endpoint.full_back_rid,false]
+	check(not app._same_paused_water_coverage(past_blend,new_key),"Water found only in an old active plane cannot certify the new image")
+	app._presentation_previous_unknown = true
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),
+		"unknown active previous pixels cannot use an equivalent publication")
+	app._presentation_previous_unknown = false
+	context.previous_blend_active = false
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).get("coverage_reused",false),
+		"ending a blend between duplicate contents preserves the checked endpoint")
+	app._presentation_previous_image = app.image.duplicate()
+	app.image = picture(2)
+	app.finish_texture_upload(app.last_uploaded_revision,Time.get_ticks_usec())
+	app.last_uploaded_render_snapshot_serial += 1
+	context.previous_blend_active = true
+	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),
+		"new Sand bytes refuse cached Water at the same owner revision and with the same rotating RIDs")
+	context.deadline_usec = Time.get_ticks_usec()+100000
+	check(not app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary).safe,
+		"live current Sand over previous Water still fails the actual sweep")
 	bridge._body_rids.clear()
 	PhysicsServer2D.free_rid(body)
 	app.physical_actor_session = null

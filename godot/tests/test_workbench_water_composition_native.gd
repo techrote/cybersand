@@ -331,11 +331,23 @@ func paused_history_retention(label: String) -> void:
 	check(host.physical_actor_session.tick == first_step,label+" repeated body publication creates no physical completion")
 	check(host.workbench_presentation_frame.get("water_proofs",{}).has(0),label+" retained authority survives actual publication-history eviction")
 	var before_serial: int = host.last_uploaded_render_snapshot_serial
+	var before_content: int = host._presentation_current_content_id
+	var before_revision: int = host.last_uploaded_revision
+	var before_front: int = host.texture.get_rid().get_id()
+	var before_back: int = host.previous_texture.get_rid().get_id()
 	host.simulation_worker.request_render_full_refresh()
 	check(await until(func() -> bool: return host.last_uploaded_render_snapshot_serial > before_serial \
 		and host.workbench_presentation_frame.get("upload_serial",-1) == host.last_uploaded_render_snapshot_serial),
 		label+" transport resync actually publishes a new immutable image")
 	check(host.workbench_presentation_frame.get("water_proofs",{}).has(0),label+" full refresh preserves independently valid paused native authority")
+	var coverage: Dictionary = host.workbench_presentation_frame.get("water_proofs",{}).get(0,{}).get("coverage",{})
+	var rotated_identical: bool = before_front != before_back and before_content > 0 \
+		and host.last_uploaded_revision == before_revision and host.last_uploaded_render_snapshot_serial == before_serial+1 \
+		and before_content == host._presentation_current_content_id and before_content == host._presentation_previous_content_id \
+		and before_back == host.texture.get_rid().get_id() and before_front == host.previous_texture.get_rid().get_id()
+	if rotated_identical:
+		check(coverage.get("coverage_reused",false) and coverage.get("scanned",-1)==0,
+			label+" byte-identical two-slot refresh reuses the previous complete Water sweep without charging another scan")
 	check(host.physical_actor_session.tick == first_step,label+" full refresh creates no physical credit")
 	check(host._workbench_water_coverage_cache_hits > first_coverage_hits,
 		label+" actual fully proved immutable coverage is reused during unchanged presentation")
@@ -345,6 +357,9 @@ func paused_history_retention(label: String) -> void:
 		"step":first_step,"frames_observed":observed_frames-first_frames,
 		"omitted_needle_frames":int(omitted_by_stage.get(stage+":0",0))-first_omitted,
 		"upload_before":before_serial,"upload_after":host.last_uploaded_render_snapshot_serial,
+		"rotated_identical":rotated_identical,"content_before":before_content,
+		"content_after":[host._presentation_current_content_id,host._presentation_previous_content_id],
+		"rids_before":[before_front,before_back],"rids_after":[host.texture.get_rid().get_id(),host.previous_texture.get_rid().get_id()],
 		"proof":host.workbench_presentation_frame.get("water_proofs",{}).get(0,{}).duplicate(true),
 		"closure_cache_hits":host._workbench_water_closure_cache_hits,
 		"coverage_cache_hits":host._workbench_water_coverage_cache_hits-first_coverage_hits})

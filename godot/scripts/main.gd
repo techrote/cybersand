@@ -3989,22 +3989,56 @@ func _workbench_water_coverage_identity(slot: int, start: Transform2D, target: T
 	var bridge: Variant = physical_actor_session.bridge
 	if slot < 0 or slot >= bridge._members.size(): return {}
 	var member: Dictionary = bridge._members[slot]
+	var front_rid: int = context.current_texture_id if context.has("current_texture_id") else _material_publication_rid(texture).get_id()
+	var back_rid: int = context.previous_texture_id if context.has("previous_texture_id") else _material_publication_rid(previous_texture).get_id()
 	return {"owner":[bridge.get_instance_id(),bridge._session,bridge._epoch,
 		member.instance_id,member.generation,bridge._body_rids[slot].get_id()],
 		"material":[last_uploaded_world_generation,last_uploaded_revision,last_uploaded_render_snapshot_serial,
-			_presentation_current_content_id,_presentation_current_content_shape,
-			_material_publication_rid(texture).get_id()],
+			_presentation_current_content_id,_presentation_current_content_shape,front_rid],
 		"previous":[_presentation_previous_content_id,_presentation_previous_content_shape,
-			_material_publication_rid(previous_texture).get_id(),_presentation_previous_unknown]
+			back_rid,_presentation_previous_unknown]
 			if bool(context.previous_blend_active) else [],
+		"full_back_rid":back_rid if texture is ImageTexture and previous_texture is ImageTexture
+			and _material_full_ring == null and _material_blit_publisher == null else 0,
 		"sweep":[start,target,rectangles]}
+
+
+# A paused Full refresh can rotate the same two GPU resources and restart a
+# blend with two byte-identical material planes. finish_texture_upload assigns
+# an existing content ID only after comparing all bytes AND the format/extent.
+# The old scan must have tested exactly this one effective image: if a
+# different visible previous image contributed Water, its result cannot stand
+# in for the current image alone. Native/physical authority is proved anew.
+func _same_paused_water_coverage(old: Dictionary, current: Dictionary) -> bool:
+	if not paused or old.is_empty() or current.is_empty() or old.owner != current.owner \
+			or old.sweep != current.sweep or current.sweep[0] != current.sweep[1]: return false
+	var before: Array = old.material
+	var after: Array = current.material
+	if before[0] != after[0] or before[1] != after[1] or before[3] != after[3] or before[4] != after[4] \
+			or old.full_back_rid == 0 or current.full_back_rid == 0 or after[5] == 0 \
+			or current.full_back_rid == after[5]: return false
+	for key: Dictionary in [old,current]:
+		if not key.previous.is_empty() and (key.previous[0] != after[3] or key.previous[1] != after[4]
+				or key.previous[2] != key.full_back_rid or key.previous[3]): return false
+	if before[2] == after[2]:
+		return before[5] == after[5] and old.full_back_rid == current.full_back_rid
+	return after[2] == before[2]+1 and before[5] == current.full_back_rid and old.full_back_rid == after[5]
 
 
 func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transform2D,
 		rectangles: Array, context: Dictionary, summary: Dictionary, cached_only: bool = false) -> Dictionary:
 	var identity: Dictionary = _workbench_water_coverage_identity(slot,start,target,rectangles,context)
 	var cached: Dictionary = _workbench_water_coverage_cache.get(slot,{})
-	if not identity.is_empty() and cached.get("identity") == identity:
+	var exact: bool = not identity.is_empty() and cached.get("identity") == identity
+	var rebound: bool = not exact and _same_paused_water_coverage(cached.get("identity",{}),identity)
+	if exact or rebound:
+		if rebound:
+			# Holds and submissions still require the actual new upload and RID
+			# identities. Keep the historical immutable receipt unmodified.
+			var next: Dictionary = {"identity":identity.duplicate(true),"result":cached.result}
+			WorkbenchWaterComposition.freeze(next.identity)
+			next.make_read_only()
+			_workbench_water_coverage_cache[slot] = next
 		# This is an exact immutable image/geometry result, not physical or
 		# visible-history authority. The caller must separately prove the current
 		# actual owner/pose. No scan cells or elapsed time are invented on reuse.
@@ -4012,6 +4046,7 @@ func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transf
 		retained["original_scanned"] = retained.scanned
 		retained["scanned"] = 0
 		retained["coverage_reused"] = true
+		if rebound: retained["equivalent_paused_publication"] = true
 		return retained
 	if cached_only: return {}
 	var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
