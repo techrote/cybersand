@@ -3898,12 +3898,18 @@ func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary
 		observation: Dictionary) -> Dictionary:
 	if not _workbench_water_composition_enabled() or not _valid_workbench_mask_frame(frame) \
 			or not _workbench_frame_error.is_empty() or simulation_worker.has_failed() \
-			or not _physical_terrain_ready or _actor_reset_receipt != 0 \
-			or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null:
+			or not _physical_terrain_ready or _actor_reset_receipt != 0:
 		return {}
 	var bridge: Variant = physical_actor_session.bridge
 	if bridge != rapier_bridge or slot < 0 or slot >= bridge._members.size() \
 			or _workbench_sample_identity != [bridge._session,bridge._epoch]:
+		return {}
+	# Restore builds a separate owner while the installed session remains paused.
+	# Only an already proved closure for that installed owner can survive staging.
+	var staging := not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null
+	if staging and (not paused or _pending_physical_candidate == null
+			or _pending_physical_candidate.physics_bridge() == bridge
+			or not physical_actor_session._suspended):
 		return {}
 	var initialized: bool = physical_actor_session.tick == 0 and bridge.manual_step_count() == 0 \
 		and bridge.is_initialized() and _workbench_completed_step <= 0 and _workbench_completed_step_usec == 0
@@ -3954,6 +3960,7 @@ func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary
 		var retained: Dictionary = cached.proof.duplicate(true)
 		retained["visible_material"] = visible
 		return retained
+	if staging: return {}
 	_workbench_water_closure_cache.erase(slot)
 	var sampled: Dictionary = _workbench_bound_sample(entry).duplicate()
 	if bridge._history.is_empty(): return {}

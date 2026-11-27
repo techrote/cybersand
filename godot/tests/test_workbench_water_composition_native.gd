@@ -38,7 +38,10 @@ var failures: Array[String] = []
 var observations: Array[Dictionary] = []
 var lifecycle: Array[Dictionary] = []
 var framebuffer: Array[Dictionary] = []
-var stage := "startup"
+var stage := "startup":
+	set(value):
+		stage = value
+		print("WATER_STAGE ",value," ",Time.get_ticks_msec())
 var output := ""
 var graphical := false
 var framebuffer_control := false
@@ -163,6 +166,10 @@ func observe_frame() -> void:
 				var hidden: Dictionary = transition_identity(frame,bridge)
 				hidden["slot"] = slot
 				hidden["reason"] = frame.get("reasons",{}).get(slot,"missing")
+				hidden["response"] = bridge.last_application.duplicate(true)
+				hidden["completion"] = host._workbench_water_completion_context.duplicate()
+				hidden["entry"] = frame.get("mask_frame",{}).get("instances",{}).get(bridge._members[slot].instance_id,{}).duplicate()
+				hidden["coverage"] = frame.get("previous_blend_active",false)
 				hidden["pose"] = Trace.pose_json(bridge.body_transform(slot))
 				hidden["footprint"] = footprint(bridge.body_transform(slot),bridge._rects[slot],host.image)
 				omitted_observations.append(hidden)
@@ -418,6 +425,13 @@ func framebuffer_visibility(label: String) -> void:
 		return overlay.actor_labels.get(actor_slot,{}).get("selected",false)),
 		label+" actual ordinary selection label reaches the overlay before pixel control"): return
 	framebuffer_control = true
+	# The material shaders continue animating Water while physics is paused.
+	# Use the existing capture clock for every pixel control, with the live
+	# policy, full material histories and actual rendered actor left in place.
+	var materials: Array = [host.world_shader,host.glow_source_shader]
+	materials.append_array(host.vapour_trail_shaders)
+	for material: ShaderMaterial in materials:
+		material.set_shader_parameter("presentation_time_override",4.0)
 	# Finish a genuine publication fade, then compare actual submitted pixels
 	# through ordinary policy transitions. Keeping Main processing alive is
 	# necessary for the atomic engine's real prepared-submission contract.
@@ -479,6 +493,8 @@ func framebuffer_visibility(label: String) -> void:
 		"policy_order":["1","0","1"],"control_scope":"ordinary presentation policy transition, no physical/material mutation",
 		"pixel_point":[point.x,point.y],"size":[shown.get_width(),shown.get_height()],
 		"maximum_visible_difference":greatest,"maximum_restored_error":repeat_error,"pixels":pixels})
+	for material: ShaderMaterial in materials:
+		material.set_shader_parameter("presentation_time_override",-1.0)
 	framebuffer_control = false
 
 func framebuffer_identity(slot: int) -> Dictionary:

@@ -235,7 +235,7 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 			or (old_stride > 0 and previous_material_bytes.size() != width*height*old_stride):
 		return _refuse("material_bytes_unbounded",pre_scanned)
 	var scanned: int = 0
-	var water_cells: int = 0
+	var water_in_scan_bounds: bool = false
 	for y: int in range(first_y,last_y+1):
 		for x: int in range(first_x,last_x+1):
 			scanned += 1
@@ -259,19 +259,20 @@ static func _assess_motion(bound_pose: Transform2D, live_pose: Transform2D, rect
 			# This flag is a presentation composition proof, never empty-space
 			# permission. The caller must separately prove the current completed
 			# pose/native dependency and use the Water-only clipped draw layer.
-			var composable: bool = compose_water and current_id in [0,3] and previous_id in [0,3]
+			if compose_water and (current_id == 0 or current_id == 3) and (previous_id == 0 or previous_id == 3):
+				# Water anywhere in these conservative bounds selects the clipped
+				# layer. Only incompatible material needs the swept polygon test.
+				water_in_scan_bounds = true
+				continue
 			var cell := Vector2(float(x)+0.5,float(y)+0.5)
 			for inverse_pose: Transform2D in inverse_poses:
 				var local: Vector2 = inverse_pose*cell
 				for box: Vector4 in boxes:
 					if absf(local.x-box.x)<=box.z and absf(local.y-box.y)<=box.w:
-						if composable:
-							water_cells += 1
-							continue
 						var refused: Dictionary = _refuse("material_in_swept_mask",pre_scanned+scanned)
 						refused.steps = steps
 						refused.dilation_cells = padding
 						return refused
-	return {"safe":true,"reason":"water_composed_swept_mask" if water_cells > 0 else "empty_swept_mask",
-		"scanned":pre_scanned+scanned,"water_contacts":water_cells,
+	return {"safe":true,"reason":"water_composed_swept_mask" if water_in_scan_bounds else "empty_swept_mask",
+		"scanned":pre_scanned+scanned,"water_in_bounds":water_in_scan_bounds,
 		"steps":steps,"dilation_cells":padding}
