@@ -488,5 +488,62 @@
         ]
       }
     ]
+  },
+  "worker_failure_read_probe": {
+    "driver_sha256": "43e218d175b1aa177943ab1d12fb1125fe0a6e47e735533dd268786f4803ffe1",
+    "receipt_sha256": "49850bd78a79e8d77dfe143ba4ebfe2f68c40e5c02be68d02fcc4b6fbfeaa32b",
+    "checks": 20,
+    "active_draws": 109,
+    "withheld_member_draws": 15,
+    "live_worker_failure_reads": 435,
+    "read_usec_p50_p95_p99_max": [
+      1,
+      2,
+      7,
+      146
+    ],
+    "withheld_draw_columns": [
+      "members_withheld",
+      "total_selection_usec",
+      "all_live_failure_reads_usec"
+    ],
+    "withheld_draws": [
+      [
+        1,
+        2217,
+        150
+      ],
+      [
+        1,
+        3107,
+        11
+      ],
+      [
+        1,
+        3035,
+        4
+      ],
+      [
+        2,
+        2742,
+        3
+      ],
+      [
+        4,
+        2300,
+        2
+      ],
+      [
+        2,
+        3824,
+        7
+      ],
+      [
+        4,
+        6299,
+        3
+      ]
+    ],
+    "decision": "The publication mutex can be changed by the independent SimulationWorker during selection. The stock Safe resolver mutates held pose state per member and has no post-selection failed-owner admission fence before submitting. Batching failure reads would widen this interval. Individual reads accounted for little time on these misses so no change was selected."
   }
 }
