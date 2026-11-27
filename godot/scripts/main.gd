@@ -129,6 +129,7 @@ var _workbench_water_completion_context: Dictionary = {}
 var _workbench_water_closure_cache: Dictionary = {}
 var _workbench_water_closure_cache_hits: int = 0
 var _workbench_water_coverage_cache: Dictionary = {}
+var _workbench_contact_coverage_cache: Dictionary = {}
 var _workbench_water_coverage_cache_hits: int = 0
 var engine_lab_wait_native_sample: bool = true
 var engine_lab_ack_delay_frames: int = 0
@@ -4133,6 +4134,44 @@ func _same_paused_water_coverage(old: Dictionary, current: Dictionary) -> bool:
 	return after[2] == before[2]+1 and before[5] == current.full_back_rid and old.full_back_rid == after[5]
 
 
+# A completed swept proof also covers its target at rest. Retain one
+# immutable clipped endpoint per member. Its fresh native dependency is
+# independently required by the caller on EVERY selection, including pause.
+func _assess_workbench_contact(slot: int, start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary, remaining: int) -> Dictionary:
+	var cached: Dictionary = _workbench_contact_coverage_cache.get(slot,{})
+	var identity: Dictionary = {}
+	if start==target and not cached.is_empty():
+		identity=_workbench_water_coverage_identity(slot,target,target,rectangles,context)
+		var same: bool = not identity.is_empty() and identity==cached.identity
+		var rebound: bool = not same and _same_paused_water_coverage(cached.identity,identity)
+		if same or rebound:
+			var kept: Dictionary=cached.result.duplicate(true)
+			if rebound:
+				# Both participating images were proved byte-identical; reflect
+				# the actual active history even if its transport slot rotated.
+				kept.clip.previous_active=context.previous_blend_active
+				kept.clip.previous=kept.clip.current if context.previous_blend_active else ""
+				kept.contact_cell.previous_id=kept.contact_cell.current_id if context.previous_blend_active else -1
+				var next: Dictionary={"identity":identity,"result":kept.duplicate(true)}
+				WorkbenchWaterComposition.freeze(next)
+				_workbench_contact_coverage_cache[slot]=next
+				kept["equivalent_paused_publication"]=true
+			kept["original_scanned"]=kept.scanned
+			kept.scanned=0
+			kept["coverage_reused"]=true
+			return kept
+	var result:=WorkbenchPresentationCoherence.contact_sweep(start,target,rectangles,image,
+		_presentation_previous_image,context.previous_blend_active,remaining,context.deadline_usec)
+	if result.get("safe",false) and result.has("clip"):
+		if identity.is_empty(): identity=_workbench_water_coverage_identity(slot,target,target,rectangles,context)
+		if not identity.is_empty():
+			var value: Dictionary={"identity":identity,"result":result.duplicate(true)}
+			WorkbenchWaterComposition.freeze(value)
+			_workbench_contact_coverage_cache[slot]=value
+	return result
+
+
 func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transform2D,
 		rectangles: Array, context: Dictionary, summary: Dictionary, cached_only: bool = false) -> Dictionary:
 	var identity: Dictionary = _workbench_water_coverage_identity(slot,start,target,rectangles,context)
@@ -4453,9 +4492,8 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 							resolved.contact_budget[slot]={"cells_before":int(summary.cells_examined),
 								"remaining_usec":int(resolved.deadline_usec)-before,"upload_cache_usec":cache_usec,
 								"selection_usec":before-started_usec}
-							var contact := WorkbenchPresentationCoherence.contact_sweep(anchor,desired,bridge._rects[slot],
-								image,_presentation_previous_image,resolved.previous_blend_active,
-								PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined),resolved.deadline_usec)
+							var contact := _assess_workbench_contact(slot,anchor,desired,bridge._rects[slot],
+								resolved,PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined))
 							summary.cells_examined+=int(contact.scanned)
 							resolved.contact_budget[slot]["contact_cells"]=int(contact.scanned)
 							resolved.contact_budget[slot]["contact_reason"]=contact.reason
@@ -6021,6 +6059,7 @@ func _close_physical_actors() -> void:
 	_workbench_water_completion_context = {}
 	_workbench_water_closure_cache.clear()
 	_workbench_water_coverage_cache.clear()
+	_workbench_contact_coverage_cache.clear()
 	_workbench_follow_state.clear()
 	workbench_presentation_frame = {}
 	_workbench_mapping_locked = false

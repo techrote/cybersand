@@ -312,6 +312,42 @@ func coverage_cache_checks() -> void:
 	var rectangles := [{"center":Vector2.ZERO,"size":Vector2(3,2.5)}]
 	var context := {"previous_blend_active":true,"deadline_usec":Time.get_ticks_usec()+100000}
 	var summary := {"cells_examined":0,"budget_vetoes":0}
+	# Use actual RG8 and distinct texture RIDs for a stationary Wall/Water
+	# contact. A refresh can rebind exactly the same two material planes.
+	app.paused=true
+	app.image.set_pixel(2,3,Color(1.0/255.0,0,0))
+	app.texture.update(app.image)
+	var contact_context: Dictionary={"previous_blend_active":false,"deadline_usec":Time.get_ticks_usec()+100000}
+	var contact: Dictionary=app._assess_workbench_contact(0,pose,pose,rectangles,contact_context,2000)
+	check(contact.safe and contact.has("clip") and contact.scanned>0,"a real clipped endpoint seeds a bounded immutable contact record")
+	contact_context.deadline_usec=1
+	var retained: Dictionary=app._assess_workbench_contact(0,pose,pose,rectangles,contact_context,0)
+	check(retained.get("coverage_reused",false) and retained.scanned==0 and retained.original_scanned==contact.scanned,
+		"stationary exact contact survives expired time/zero remaining scans")
+	var original_front: Texture2D=app.texture
+	app.texture=app.previous_texture
+	app.texture.update(app.image)
+	app.previous_texture=original_front
+	app.last_uploaded_render_snapshot_serial+=1
+	app._presentation_previous_content_id=app._presentation_current_content_id
+	contact_context.previous_blend_active=true
+	var rotated: Dictionary=app._assess_workbench_contact(0,pose,pose,rectangles,contact_context,0)
+	check(rotated.get("coverage_reused",false) and rotated.get("scanned",-1)==0 and rotated.clip.previous_active \
+		and rotated.clip.previous==rotated.clip.current and rotated.contact_cell.previous_id==rotated.contact_cell.current_id,
+		"identical paused front/back swap rebinds both actual clip planes without a second scan")
+	app._presentation_current_content_id+=1
+	check(not app._assess_workbench_contact(0,pose,pose,rectangles,contact_context,0).safe,
+		"a different visible publication cannot reuse a previously clipped footprint")
+	app._presentation_current_content_id-=1
+	bridge._epoch+=1
+	check(not app._assess_workbench_contact(0,pose,pose,rectangles,contact_context,0).safe,"a retired actor owner cannot reuse contact pixels")
+	bridge._epoch-=1
+	app._workbench_contact_coverage_cache.clear()
+	app.image.set_pixel(2,3,Color(3.0/255.0,0,0))
+	app.texture.update(app.image)
+	app.previous_texture.update(app._presentation_previous_image)
+	app._presentation_previous_content_id=20
+	app.last_uploaded_render_snapshot_serial-=1
 	check(app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary,true).is_empty(),
 		"unscanned coverage never appears from the reuse path")
 	var scanned: Dictionary = app._assess_workbench_water_sweep(0,pose,pose,rectangles,context,summary)
