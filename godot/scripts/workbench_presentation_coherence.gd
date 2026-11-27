@@ -94,6 +94,12 @@ static func _contact_ids(plane: Image, region: Rect2i) -> Image:
 static func _contact_clear(ids: PackedByteArray) -> bool:
 	return not ids.is_empty() and ids.count(0)+ids.count(3)==ids.size()
 
+# Fire (6) is neither a native hard surface nor granular support. It still
+# occludes the part at every Fire fragment in either submitted material plane.
+static func _only_empty_water_fire(ids: PackedByteArray) -> bool:
+	return ids.count(0)+ids.count(3)+ids.count(6)==ids.size()
+
+
 static func contact_sweep(start: Transform2D, target: Transform2D, rectangles: Array,
 		front: Image, back: Image, previous_active: bool, remaining: int, deadline: int) -> Dictionary:
 	var refusal := {"safe":false,"reason":"contact_unproved","scanned":0}
@@ -150,6 +156,9 @@ static func contact_sweep(start: Transform2D, target: Transform2D, rectangles: A
 		break
 	# Five interior points per collider. For each, check an enclosing box
 	# for its continuous path; a solid wall across the motion cannot pass.
+	var clear_cells := Rect2i()
+	var clear_local := Vector2.ZERO
+	var basis := "continuous_clear_interior"
 	for rect: Dictionary in rectangles:
 		for offset: Vector2 in [Vector2.ZERO,Vector2(-0.375,0),Vector2(0.375,0),Vector2(0,-0.375),Vector2(0,0.375)]:
 			var point: Vector2 = rect.center+offset*Vector2(rect.size)
@@ -163,16 +172,46 @@ static func contact_sweep(start: Transform2D, target: Transform2D, rectangles: A
 			refusal.scanned=charge
 			path.position-=region.position
 			if not _contact_clear(a.get_region(path).get_data()) or (b!=null and not _contact_clear(b.get_region(path).get_data())): continue
-			result.contact_cell["clear_local_point"]=point
-			result.contact_cell["clear_path_world_cells"]=Rect2i(path.position+region.position,path.size)
-			result.reason="material_clipped_contact"
-			result.scanned=charge
-			# Immutable strings make the small click mask independent of later
-			# uploads, mutable CPU images and GPU RID rotation after acceptance.
-			result["clip"]={"area":region,"current":a_ids.hex_encode(),"previous":b_ids.hex_encode(),
-				"previous_active":previous_active}
-			return result if Time.get_ticks_usec()<deadline else refusal
-	return refusal
+			clear_local=point
+			clear_cells=Rect2i(path.position+region.position,path.size)
+			break
+		if clear_cells.has_area(): break
+	if not clear_cells.has_area() and _only_empty_water_fire(a_ids) and _only_empty_water_fire(b_ids):
+		# Both ENTIRE bounded sweep crops exclude every structural/other
+		# material. Intervening Fire can temporarily cover a moving point;
+		# it cannot form a wall. Find an exposed cell centre strictly inside
+		# the actual target footprint. Fully covered endpoints still refuse.
+		var inverse := target.affine_inverse()
+		for y: int in range(region.size.y):
+			if Time.get_ticks_usec()>=deadline: return refusal
+			for x: int in range(region.size.x):
+				if charge+channels>remaining: return refusal
+				charge+=channels
+				refusal.scanned=charge
+				var index := y*region.size.x+x
+				if a_ids[index] not in [0,3] or (previous_active and b_ids[index] not in [0,3]): continue
+				var cell := region.position+Vector2i(x,y)
+				var local := inverse*(Vector2(cell)+Vector2(0.5,0.5))
+				for rect: Dictionary in rectangles:
+					var distance: Vector2=(local-Vector2(rect.center)).abs()
+					var half: Vector2=Vector2(rect.size)*0.5
+					if distance.x>=half.x-EDGE_EPSILON or distance.y>=half.y-EDGE_EPSILON: continue
+					clear_cells=Rect2i(cell,Vector2i.ONE)
+					clear_local=local
+					basis="fire_only_sweep_and_clear_endpoint"
+					break
+				if clear_cells.has_area(): break
+			if clear_cells.has_area(): break
+	if not clear_cells.has_area(): return refusal
+	result.contact_cell["clear_local_point"]=clear_local
+	result.contact_cell["clear_path_world_cells"]=clear_cells
+	result.contact_cell["basis"]=basis
+	result.reason="material_clipped_contact"
+	result.scanned=charge
+	# Immutable strings keep the click mask independent of future uploads.
+	result["clip"]={"area":region,"current":a_ids.hex_encode(),"previous":b_ids.hex_encode(),
+		"previous_active":previous_active}
+	return result if Time.get_ticks_usec()<deadline else refusal
 
 
 static func contact_point_visible(point: Vector2, clip: Dictionary) -> bool:

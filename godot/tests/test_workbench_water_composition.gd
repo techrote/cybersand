@@ -141,6 +141,24 @@ func material_contact_checks() -> void:
 	blocked.fill_rect(Rect2i(11,0,1,20),Color(1.0/255.0,0,0))
 	check(not guard.contact_sweep(Transform2D(0,Vector2(5,10)),Transform2D(0,Vector2(18,10)),rects,blocked,null,false,2000,time).safe,
 		"no interior path can teleport across a one-cell continuous solid wall")
+	var flame := Image.create_empty(24,20,false,Image.FORMAT_RG8)
+	flame.fill_rect(Rect2i(11,0,1,20),Color(6.0/255.0,0,0))
+	flame.fill_rect(Rect2i(15,8,7,5),Color(6.0/255.0,0,0))
+	flame.set_pixel(19,10,Color(3.0/255.0,0,0))
+	var before := Transform2D(0,Vector2(5,10))
+	var after := Transform2D(0,Vector2(18,10))
+	var through: Dictionary=guard.contact_sweep(before,after,rects,flame,null,false,3000,time)
+	check(through.get("contact_cell",{}).get("basis")=="fire_only_sweep_and_clear_endpoint",
+		"a transient flame crossing retains the single exposed true endpoint cell in a fire-only sweep")
+	if through.has("clip"):
+		check(guard.contact_point_visible(Vector2(19.5,10.5),through.clip)
+			and not guard.contact_point_visible(Vector2(18.5,10.5),through.clip),
+			"an exposed Water cell remains pickable while adjacent endpoint Fire stays occluded")
+	check(not guard.contact_sweep(before,after,rects,flame,blocked,true,5000,time).safe,
+		"a wall in the previous texture cannot be dismissed as current Fire")
+	flame.set_pixel(19,10,Color(6.0/255.0,0,0))
+	check(not guard.contact_sweep(before,after,rects,flame,null,false,3000,time).safe,
+		"no current endpoint is invented behind complete Fire occlusion")
 	check(not guard.contact_sweep(start,target,rects,front,null,true,2000,time).safe,"missing active previous plane refuses")
 	blocked.fill(Color(6.0/255.0,0,0))
 	check(not guard.contact_sweep(start,target,rects,blocked,null,false,2000,time).safe,"completely engulfing Fire has no visible interior pixel")
