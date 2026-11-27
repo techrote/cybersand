@@ -540,14 +540,14 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 768},)
 
 
-# Scoped actor-capacity bookkeeping; material identities and laws are retained.
+# Actor Compose on the admitted Material Audition World (original actor record retained).
 REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
-  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
-  'to_lf_sha256': '7a8ee79b188a94b54793e4241b189554e1199f86760923714d8f1d7684e08546',
-  'source_commit': '1b5001072cd703488c6c0ba566c71f12b8f21840',
-  'record': 'docs/audits/2026-11-22-workbench-actor-sandbox/material-source-transition.md',
+  'from_lf_sha256': 'c5bd52b8827e5edef262ae2e9df2ec286abb9140d2e7ba6471b40d187e24ef14',
+  'to_lf_sha256': '98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c',
+  'source_commit': '53b2202408fea7130fd354ae35540880e926ba5e',
+  'record': 'docs/audits/2026-11-27-actor-material-world-transition.md',
   'issue': 737,
-  'pr': 742},)
+  'pr': 762},)
 
 
 def lf(data: bytes) -> bytes:
