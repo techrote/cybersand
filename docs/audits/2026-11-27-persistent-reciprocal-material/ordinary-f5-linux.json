@@ -1,0 +1,73 @@
+{
+  "source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+  "source_tree": "790b071e118de953f7a063418951e7c7596e6337",
+  "native_elf": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+  "rapier": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "platform": "Linux X11/Xvfb, Godot 4.7, compatibility rendering",
+  "receipt": {
+    "area_digest": "75c392ce3390d71d6ffac290552448c743ba3ef2a37fca0c87ae0cd0d21855a8",
+    "area_history": "3f02f4f1e8e54d607ebd9c6dd66179a32ce15a8d40a418f3922220c85400b95f",
+    "checks": 76,
+    "display": "X11",
+    "failures": [],
+    "pid": 424,
+    "trace": [
+      {
+        "event": "F5",
+        "generation": 3,
+        "model": "physical/barrel",
+        "owner": "barrel",
+        "receipt": "dd9eaf870f925ea1722301d4e8318f2876a9f8f65d030575ffacf249d5a7a1d4"
+      },
+      {
+        "event": "F5",
+        "generation": 4,
+        "model": "",
+        "owner": "",
+        "receipt": "7470a307f5d61c3db042de3212776fb1bcff73c74129c0f6b076467a0c996412"
+      },
+      {
+        "event": "F5",
+        "generation": 5,
+        "model": "physical/ripper",
+        "owner": "ripper",
+        "receipt": "c6d71616de08455c3f6f8648bec73df41a301410c85af9859f17123c3390b70a"
+      },
+      {
+        "event": "F5",
+        "generation": 6,
+        "model": "",
+        "owner": "",
+        "receipt": "be0d4a28e7c5775410b77497927b020f9fadf32b2445ef595d0a034e8448e169"
+      },
+      {
+        "cycle": 0,
+        "event": "ordinary-blank",
+        "history": "0cf2963636bc5cfdc0dcf3e475cb356ebdf3601ed55b78a957bbf9ac7c531e51",
+        "worker": -9223370854950233284
+      },
+      {
+        "cycle": 0,
+        "digest": "75c392ce3390d71d6ffac290552448c743ba3ef2a37fca0c87ae0cd0d21855a8",
+        "event": "reopened-A",
+        "history": "3f02f4f1e8e54d607ebd9c6dd66179a32ce15a8d40a418f3922220c85400b95f",
+        "revision": 6,
+        "worker": -9223370637785946709
+      },
+      {
+        "cycle": 1,
+        "event": "ordinary-blank",
+        "history": "9a0feaa782db60653e52fc1ef52c6ff524e0051d54d170007307bfead5d9affa",
+        "worker": -9223370295648186700
+      },
+      {
+        "cycle": 1,
+        "digest": "75c392ce3390d71d6ffac290552448c743ba3ef2a37fca0c87ae0cd0d21855a8",
+        "event": "reopened-A",
+        "history": "3f02f4f1e8e54d607ebd9c6dd66179a32ce15a8d40a418f3922220c85400b95f",
+        "revision": 8,
+        "worker": -9223370078500674575
+      }
+    ]
+  }
+}
