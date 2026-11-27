@@ -111,6 +111,8 @@ replaces the current authored scene after explaining that operation. It is
 separate from live Apply. The recipes preserve the applied liquid solver policy and
 contain ordinary finite construction/material stamps, no private fixture owner.
 Save work you want to retain before replacing a scene.
+Finish the active Art batch or Architecture action before loading a demo.
+The Workbench keeps its current World until those owners release their work.
 
 | Scene | Experiment |
 | --- | --- |

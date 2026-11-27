@@ -31,6 +31,9 @@ Reset an active solver-changing profile in Materials Lab before using a
 reciprocal construction Apply or Undo. These operations prepare a replacement
 World and the native owner refuses the transition while such a profile is active.
 The named profile can be reapplied after the construction operation.
+Finish an active Art batch or Architecture action before generating, applying
+or undoing reciprocal construction. Both native capture and patch submission
+preserve that author's pending work until acknowledgement.
 
 **Draft / HOLD.** The owner authorized one consolidated integration on 22 November
 2026. This supersedes the two separate mergedown operations in [#715](https://github.com/techrote/cybersand/pull/715)

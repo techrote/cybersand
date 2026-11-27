@@ -317,6 +317,10 @@ func _build_modules() -> void:
 func _actions() -> Node:
 	return workflow if is_instance_valid(workflow) else session
 
+func authoring_busy() -> bool:
+	var owner := _actions()
+	return _harvesting or _building_starters or (is_instance_valid(owner) and owner.busy())
+
 func _build_workflow() -> void:
 	var body:=_scroll_tab("Intent and tasks")
 	workflow_panel=WorkflowPanel.new()

@@ -60,6 +60,37 @@ func same_owners(label: String) -> void:
 	check(Catalog.control_for(bench.actor(bench.applied,303)).policy == "ambient",
 		label + ": explicitly opted-in actor retains its ambient producer")
 
+func inspect_authored_region(session: Node, region: Rect2i, result: Dictionary) -> void:
+	var observed: Dictionary = await session.inspect_region(region)
+	result.merge(observed)
+
+func verify_demo_admission(demo_id: String) -> bool:
+	var area := Rect2i(84,84,1,1)
+	var original: Dictionary = await bench.capture_batch_source(area)
+	if not check(original.get("ok",false),"read the native Art target before demo admission"): return false
+	var material := 0 if original.config.source_cells.decode_u16(0) == 58 else 58
+	var worker_generation: int = host.simulation_worker.paint_state().generation
+	var art: RefCounted = bench.art_batches.executor
+	var submitted: Dictionary = art.submit([{"shape":"pixels","material":material,"points":[[84,84]]}],area,[],[material])
+	if not check(submitted.status == "queued" and art.active,"Art admitted a real write before its native receipt"): return false
+	var refused: Dictionary = bench.load_material_audition_demo(demo_id)
+	if not check(not refused.get("ok",true) and not str(refused.get("error","")).is_empty()
+			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
+			"the Material demo preserves the pending Art writer and queues no replacement"): return false
+	if not await until(func() -> bool: return not art.active,"Art owner settles after refused demo"): return false
+	if not check(art.result.status == "completed" and int(art.result.changed) == 1,
+			"the Art owner receives the original native write acknowledgement"): return false
+	var inspection := {}
+	inspect_authored_region(bench.architecture_lab.session,area,inspection)
+	if not check(bench.architecture_lab.authoring_busy(),"Architecture is inspecting the actual native result"): return false
+	refused = bench.load_material_audition_demo(demo_id)
+	if not check(not refused.get("ok",true) and not str(refused.get("error","")).is_empty()
+			and host.pending_microscenario_apply.is_empty(),"the Material demo preserves Architecture's active source read"): return false
+	if not await until(func() -> bool: return not inspection.is_empty(),"Architecture source inspection settles"): return false
+	return check(inspection.get("ok",false) and inspection.cells.decode_u16(0) == material
+			and int(inspection.generation) == worker_generation and not bench.architecture_lab.authoring_busy(),
+			"Architecture reads the acknowledged Art edit in the original native World")
+
 
 func exercise() -> void:
 	check(Catalog.Capacity.defaults().logical_limit == 8 and Catalog.MAX_AMBIENT_CONTROLLERS == 8,
@@ -173,6 +204,7 @@ func exercise() -> void:
 	check(not bench.material_audition.request_material_audition(stale).get("ok",true),
 		"old material authority cannot affect the newly owned actor scene")
 	var demo_id: String = str(MaterialScenes.SCENES[0].id)
+	if not await verify_demo_admission(demo_id): return
 	check(bench.load_material_audition_demo(demo_id).get("ok",false), "material demo enters the shared authored replacement path")
 	if not await until(ordinary_installed,"material demo acknowledgement"): return
 	check(bench.applied.actors.is_empty() and host.physical_actor_session == null,
