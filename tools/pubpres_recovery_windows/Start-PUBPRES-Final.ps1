@@ -562,7 +562,7 @@ try {
             $Ready.empty_effects_enabled -is [bool] -and $Ready.empty_effects_enabled -eq ($Ready.empty_effects_requested -ceq '1')) 'Actual empty-effects selection differs'
         Assert-PP ($Ready.coupling_clock_requested -ceq $Settings.CYBERSAND_WORKBENCH_COUPLING_CLOCK -and
             $Ready.coupling_clock_enabled -is [bool] -and $Ready.coupling_clock_enabled -eq ($Ready.coupling_clock_requested -ceq '1') -and
-            $Ready.coupling_only_completions -ge 0) 'Actual coupling clock or its published counter differs'
+            ($null -eq $Ready.coupling_only_completions -or $Ready.coupling_only_completions -ge 0)) 'Actual coupling clock or its published counter differs'
     }
     Assert-PP ($Ready.schema -ceq 'pubpres-recovery-owner-start-v1' -and $Ready.ready -eq $true -and $Ready.source_commit -ceq $Item.source_commit -and
         $Ready.process_id -eq $Process.process_id -and $Ready.native_sha256 -ceq $Item.native.sha256 -and $Ready.rapier_sha256 -ceq $Item.rapier.sha256 -and

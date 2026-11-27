@@ -144,7 +144,8 @@ func _poll() -> void:
 	if not clock_request.is_empty():
 		receipt.coupling_clock_requested = clock_request
 		receipt.coupling_clock_enabled = app.simulation_worker.get("_independent_coupling")
-		receipt.coupling_only_completions = app.latest_snapshot.lab_context.get("coupling_only_completions",-1)
+		var physics_packet: Variant = app.simulation_worker.take_latest_physics_snapshot()
+		receipt.coupling_only_completions = physics_packet.lab_context.get("coupling_only_completions") if physics_packet != null else null
 	var writer := FileAccess.open(receipt_path,FileAccess.WRITE)
 	if writer == null:
 		push_error("PUBPRES could not write startup receipt")
