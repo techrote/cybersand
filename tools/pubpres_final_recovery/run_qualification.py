@@ -191,6 +191,20 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
                          and row["proof"]["visible_material"]["upload_serial"] == row["upload_after"]
                          and coverage["coverage_reused"] and coverage["scanned"] == 0 and coverage["original_scanned"] > 0,
                          row["stage"] + " rotated transport lacks its original coverage and current publication")
+            restored = next(row["shown_identity"] for row in data["framebuffer"]
+                            if row["label"] == "restored_authoring_framebuffer")
+            first = next((row for row in data["transition_observations"]
+                          if row["frame_valid"] and row["frame_world"] == restored["world"]
+                          and row["session"] == restored["session"] and row["epoch"] == restored["epoch"]), {})
+            work = first.get("initial_water_coverage", {})
+            members = {int(slot) for slot in restored["labels"]}
+            need(work and first["bridge"] == restored["bridge"] and first["uploaded_world"] == restored["world"]
+                 and first["physical_step"] == first["manual_steps"] == first["completed_usec"] == 0
+                 and first["terrain_ready"] and not first["pending_apply"] and not first["pending_owner"]
+                 and work["members"] == len(members) and set(first["visible_slots"]) == members and work["refusals"] == 0
+                 and 0 < work["cells"] <= first["guard"]["cells_examined"] <= 24000
+                 and 0 < work["budget_at_entry_usec"] <= 2000 and work["elapsed_usec"] >= 0,
+                 "First restored Water draw lacks its new owner, footprints, shared budget or visible member")
             result["water_framebuffer_sha256"] = water_framebuffers(data, folder)
         if test == "test_workbench_member_presentation":
             need(data == terminal and data.get("graphical") is True

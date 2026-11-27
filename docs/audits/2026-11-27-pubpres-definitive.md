@@ -135,6 +135,19 @@ image or a different member still requires a fresh proof.
 [Separate0 failure](https://github.com/techrote/cybersand/actions/runs/46039009759/artifacts/15220170938)
 · [Separate4 control](https://github.com/techrote/cybersand/actions/runs/46039009759/artifacts/15219178238)
 
+After the stationary-coverage repair, both Windows renderers retained
+every member during both long pauses, including across an observed rotation
+with zero additional cells scanned. Separate4 passed the mounted suite.
+Separate0 withheld one 212-cell Water-covered member in the first accepted
+frame of the restored World. The first three members consumed 224 cells and
+the selection had reached 2,182 µs before checking the fourth. Its native
+owner and World were new, so prior-owner coverage could not justify drawing
+it. The resolver now checks stationary footprints together before constructing
+per-member native proofs on the first valid paused tick-zero frame. The shared
+2 ms and 24,000-cell limits, independent native checks and Sand veto still
+apply. [Original Separate0 restored draw](https://github.com/techrote/cybersand/actions/runs/46042058637/artifacts/15221193719)
+· [Separate4 pixels and completion records](https://github.com/techrote/cybersand/actions/runs/46042058637/artifacts/15220024134)
+
 ## Integrated Workbench checks
 
 On 27 November, the source at `cc0a8475` passed actor manipulation (78 checks),
