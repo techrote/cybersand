@@ -1,0 +1,130 @@
+{
+  "qualified_product_source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "guarded_publication": "d5cd2b19ca36fa0c6c1e0ec93701f9d3ccc111c9",
+  "reducer_commit": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "reducer_tree": "d59a3b2759ad98bce006b39855e4e00caf46fe0f",
+  "official_scoped_run": 45944204842,
+  "official_owner_artifact": 15176676582,
+  "package": {
+    "manifest_sha256": "49ce8a9e8602c95bb4aac3fcadf46fa1fbbe07539a7a3a2a948c94af2a965885",
+    "retained_inventory_files": 1470,
+    "sha256": "f815246262bffb39abc6f28c4d1c9b2fa2e39020e6ef71729c5a61f086e61410"
+  },
+  "changed_paths": [
+    "tools/ci/test_verify_linux_godot_shards.py",
+    "tools/ci/verify_godot_shard_command.py",
+    "tools/ci/verify_linux_godot_shards.py",
+    "tools/ci/verify_windows_godot_shards.py"
+  ],
+  "containment": {
+    "inside_shipped_archive": [],
+    "inside_126_native_inputs": [],
+    "inside_1364_build_inputs": [],
+    "changed_emitter_launcher_or_evaluator_sources": []
+  },
+  "original_general_run": 45944204055,
+  "original_general_attempt": 1,
+  "original_aggregate_outcome": "two independent command reducers rejected the source-appended persistent flags",
+  "offline_replay": {
+    "sealed_transport_artifacts": 70,
+    "original_transport_bytes": 193367365,
+    "transport_manifest_sha256": "b076b6e300cea75fd7089eb71fa167bce018c16567886fa1862237601c527f4e",
+    "linux": {
+      "unique": 521,
+      "shards": 34,
+      "all_logs_including_import": 555,
+      "result_sha256": "6ceb5f67b6f13639e36753e169c46b3aa5e5782337fbbf9b8edae5e2d9b2d87b",
+      "fresh_retained_play_readbacks": 15
+    },
+    "windows": {
+      "unique": 498,
+      "shards": 32,
+      "all_logs_including_import": 530,
+      "result_sha256": "787daa1f046214149e1279239ba3f2e9b1907edb37d170fc9728bc7b6d82affe",
+      "fresh_retained_play_readbacks": 15
+    },
+    "real_report_mutation_controls": [
+      {
+        "platform": "windows",
+        "control": "foreign private profile",
+        "rejected_for": "source-derived command or watchdog mismatch"
+      },
+      {
+        "platform": "linux",
+        "control": "foreign private profile",
+        "rejected_for": "Linux original command differs from source"
+      },
+      {
+        "platform": "windows",
+        "control": "changed sample count",
+        "rejected_for": "source-derived command or watchdog mismatch"
+      },
+      {
+        "platform": "linux",
+        "control": "changed sample count",
+        "rejected_for": "Linux original command differs from source"
+      },
+      {
+        "platform": "windows",
+        "control": "missing start paused",
+        "rejected_for": "source-derived command or watchdog mismatch"
+      },
+      {
+        "platform": "linux",
+        "control": "missing start paused",
+        "rejected_for": "Linux original command differs from source"
+      },
+      {
+        "platform": "windows",
+        "control": "foreign write mode",
+        "rejected_for": "source-derived command or watchdog mismatch"
+      },
+      {
+        "platform": "linux",
+        "control": "foreign write mode",
+        "rejected_for": "Linux original command differs from source"
+      }
+    ]
+  },
+  "publication_evidence": {
+    "source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+    "source_tree": "817dfae5f30d00e1b2ee3a10c6e1fa53239eea8a",
+    "publication": "d5cd2b19ca36fa0c6c1e0ec93701f9d3ccc111c9",
+    "publication_tree": "710b8965330aa50a653f60dccf0903fce06662fa",
+    "workflow_run": 45944204842,
+    "attempt": 1,
+    "changed_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "platforms": {
+      "windows": {
+        "sha256": "78a5481193d6379ce8f36689aedc521f3b0d79fd17a2a88815f5c49e737bdce9",
+        "size": 7260160,
+        "validation_sha256": "f033df2726f66a902d67ca654733c5bd71e66a75ab0f7857257b550abe82cd4f",
+        "validation_output": "objectshard-m4-production-attempt-1-windows-45944204842/validation.json",
+        "validated_platform": "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution)"
+      },
+      "linux": {
+        "sha256": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20",
+        "size": 6064632,
+        "validation_sha256": "19a2d2229e9117d847588e09dbf40c9d4d1e8350ceb16a53aabe711dcc817e62",
+        "validation_output": "objectshard-m4-production-attempt-1-linux-45944204842/validation.json",
+        "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)"
+      }
+    },
+    "verified_ledger": {
+      "source_inputs": {
+        "entries": 126,
+        "normalized_map_sha256": "1bb6a7f8d9071967e4129bdbf96e88007d05dcb7f3952b0d6f91d49831b28396"
+      },
+      "build_inputs": {
+        "entries": 1364,
+        "normalized_map_sha256": "c4ce6a510d331291df369ba371a8fb6810e1ff5a121fe336ebd8616bbb5675e4"
+      }
+    },
+    "unique_hashed_git_blobs": 1490
+  },
+  "current_general_run": 45968845174
+}
