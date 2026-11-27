@@ -86,7 +86,7 @@ func _reload_profiles() -> void:
 			_profile.set_item_metadata(_profile.item_count - 1, path)
 	_profile_error = ""
 	if _profile.item_count == 0:
-		_profile_error = "No readable GEN-007 profiles found. Reinstall the complete Workbench package with godot/authoring/worldgen, or use Choose profile fileâ€¦ Searched: %s; %s" % [ProjectSettings.globalize_path(PACKAGED_PROFILES), ProjectSettings.globalize_path(CHECKOUT_PROFILES)]
+		_profile_error = "No readable GEN-007 profiles found. Reinstall the complete Workbench package with godot/authoring/worldgen, or use Choose profile file… Searched: %s; %s" % [ProjectSettings.globalize_path(PACKAGED_PROFILES), ProjectSettings.globalize_path(CHECKOUT_PROFILES)]
 	else:
 		for i: int in _profile.item_count:
 			if _profile.get_item_text(i) == "gen007-deepworks":
@@ -120,7 +120,7 @@ func _row(parent: VBoxContainer) -> HBoxContainer:
 
 func mount(workbench: Control) -> void:
 	_workbench = workbench
-	title = "GEN-007 Â· New playable starting map"
+	title = "GEN-007 · New playable starting map"
 	ok_button_text = "Install into workbench"
 	cancel_button_text = "Keep current map"
 	get_ok_button().disabled = true
@@ -171,18 +171,18 @@ func mount(workbench: Control) -> void:
 		_field(row, setting[0], knob)
 	_field(row, "Size", _extent)
 	for side: int in [512, 1024, 2048]:
-		_extent.add_item("%d Ã— %d" % [side, side], side)
+		_extent.add_item("%d × %d" % [side, side], side)
 	_extent.select(1)
 	_extent.item_selected.connect(func(_i: int) -> void: _invalidate())
 	row = _row(root)
-	_architecture_button.text = "Architectural Generatorâ€¦"
+	_architecture_button.text = "Architectural Generator…"
 	row.add_child(_architecture_button)
 	_architecture_button.pressed.connect(_open_architecture)
 	add_child(_architecture)
 	_architecture.mount()
 	_architecture.project_compiled.connect(func(result: Dictionary) -> void: start_architectural(result.project))
 	var choose := Button.new()
-	choose.text = "Choose profile fileâ€¦"
+	choose.text = "Choose profile file…"
 	row.add_child(choose)
 	choose.pressed.connect(func() -> void: _browse.popup_centered(Vector2i(840,600)))
 	_browse.access = FileDialog.ACCESS_FILESYSTEM
@@ -262,7 +262,7 @@ func open_new() -> void:
 	_saved_setup.clear()
 	_saved_recipe.clear()
 	_invalidate()
-	title = "GEN-007 Â· New playable starting map"
+	title = "GEN-007 · New playable starting map"
 	_popup_bounded()
 
 func open_saved(starting_setup: Dictionary, generation: Dictionary) -> void:
@@ -281,7 +281,7 @@ func open_saved(starting_setup: Dictionary, generation: Dictionary) -> void:
 	for i: int in _extent.item_count:
 		if _extent.get_item_id(i) == side: _extent.select(i)
 	_invalidate()
-	title = "GEN-007 Â· Verify and reopen saved starting map"
+	title = "GEN-007 · Verify and reopen saved starting map"
 	_popup_bounded()
 	_start()
 
@@ -319,7 +319,7 @@ func _fail(reason: String) -> void:
 	_zone_overlay.visible = false
 	_zone_toggle.visible = false
 	_zone_diagnostics.visible = false
-	_status.text = "Refused Â· " + reason
+	_status.text = "Refused · " + reason
 	_composition.text = "No installable material proposal."
 	if not _accepted_proposal.is_empty():
 		_status.text += " Previous verified preview is retained; Restore previous preview restores its settings."
@@ -373,7 +373,7 @@ func start_architectural(project: Dictionary) -> bool:
 	for i: int in _extent.item_count:
 		if _extent.get_item_id(i) == int(project.extent[0]): _extent.select(i)
 	_preview_button.disabled = false
-	title = "GEN-007 Â· Architectural starting map"
+	title = "GEN-007 · Architectural starting map"
 	if not visible: _popup_bounded()
 	_start()
 	return _phase in ["chunks", "plane", "render", "ready"]
@@ -435,7 +435,7 @@ func _show_zone_diagnostics() -> void:
 	if not _architecture_active or _architecture_result.is_empty(): return
 	var lines: Array[String] = []
 	for entry: Dictionary in _architecture_result.coverage:
-		lines.append("%s Â· %s: target %.2f%% â†’ assigned %.2f%% Â· %d blocks Â· %d component(s)" % [
+		lines.append("%s · %s: target %.2f%% → assigned %.2f%% · %d blocks · %d component(s)" % [
 			ZONE_COLOUR_NAMES[_zone_palette_index(int(entry.slot))], str(entry.name), float(entry.requested_percent), float(entry.achieved_percent), int(entry.blocks), int(entry.components)])
 	_zone_diagnostics.text = "Style-zone area (including empty space)\n" + "\n".join(lines)
 	var zones: Dictionary = _architecture_result.zones
@@ -496,12 +496,12 @@ func _start() -> void:
 		_recipe = result.recipe.duplicate(true)
 	else:
 		if _profile.selected < 0:
-			_fail(_profile_error if not _profile_error.is_empty() else "Choose a JSON generation profile with Choose profile fileâ€¦")
+			_fail(_profile_error if not _profile_error.is_empty() else "Choose a JSON generation profile with Choose profile file…")
 			return
 		var path := str(_profile.get_item_metadata(_profile.selected))
 		var file := FileAccess.open(path, FileAccess.READ)
 		if file == null:
-			_fail("Cannot read profile %s (error %d). Reinstall the complete package or use Choose profile fileâ€¦" % [path, FileAccess.get_open_error()])
+			_fail("Cannot read profile %s (error %d). Reinstall the complete package or use Choose profile file…" % [path, FileAccess.get_open_error()])
 			return
 		if file.get_length() > PROFILE_MAX_BYTES:
 			_fail("Generator recipe exceeds the bounded 1 MiB profile limit.")
@@ -575,7 +575,7 @@ func _plane_result(packet: Dictionary, attempt_serial: int = -1) -> void:
 		_fail(str(packet.get("error","Native semantic-plane generation failed.")))
 		return
 	if packet.get("state","") == "running":
-		_status.text = "Native play-plane proposal Â· %s / %d cells" % [
+		_status.text = "Native play-plane proposal · %s / %d cells" % [
 			str(packet.get("completed_cells",0)), _size.x*_size.y]
 		return
 	if packet.get("state","") != "ready" or packet.get("bounds",Rect2i()) != _region or \
@@ -631,7 +631,7 @@ func _begin_render() -> void:
 		return
 	_render_at = 0
 	_material_counts.clear()
-	_status.text = "Native terrain complete; preparing preview coloursâ€¦"
+	_status.text = "Native terrain complete; preparing preview colours…"
 
 func _process(_delta: float) -> void:
 	if not visible or _generator == null: return
@@ -689,11 +689,11 @@ func _complete() -> void:
 	var top: Array[String] = []
 	for i: int in mini(ranked.size(),7):
 		top.append("ID %d: %d" % [int(ranked[i]),int(_material_counts[ranked[i]])])
-	_composition.text = "%d distinct material IDs Â· %s Â· final PLAY plane only" % [
+	_composition.text = "%d distinct material IDs · %s · final PLAY plane only" % [
 		ranked.size(),", ".join(top)]
 	var nonempty: int = _cells.size() - int(_material_counts.get(0,0))
 	_phase = "ready"
-	_status.text = "Verified native proposal Â· %dx%d Â· %d nonempty cells Â· %d source receipts Â· %.2fs to preview. Install replaces unsaved work." % [
+	_status.text = "Verified native proposal · %dx%d · %d nonempty cells · %d source receipts · %.2fs to preview. Install replaces unsaved work." % [
 		_size.x,_size.y,nonempty,_receipts.size(),(Time.get_ticks_usec()-_start_usec)/1000000.0]
 	get_ok_button().disabled = false
 	_show_zone_diagnostics()
