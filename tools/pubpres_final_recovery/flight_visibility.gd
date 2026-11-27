@@ -75,6 +75,9 @@ func _flight_pixels(slot: int) -> Dictionary:
 		previous = pose.origin
 		if moved <= 0.01 or not overlay.is_visible_in_tree(): continue
 		var image: Image = root.get_texture().get_image()
+		# Sample the actual PNG encoding. HDR get_pixel().g8 can round one code
+		# higher than save_png's conversion of the same linear readback.
+		image.convert(Image.FORMAT_RGBA8)
 		var scale := Vector2(image.get_size())/root.get_visible_rect().size
 		var hits: Array = []
 		var diagnostic: Array = []
