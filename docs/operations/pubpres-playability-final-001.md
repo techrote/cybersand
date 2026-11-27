@@ -112,6 +112,8 @@ During Restore, the paused installed owner can continue drawing from its proved 
 
 On 27 November 2026, source `be01cc37f` passed 203 mounted assertions across 4,906 observed stock Safe Linux software-rendered draws. The five shown/hidden/restored controls each recovered the same pixels, including the restored authoring view and a moving six-member Runner's foot after pause. Both 2,338-draw paused intervals, manual Step, material edits and Restore kept every member visible. Active movement still withheld 22 individual member-draws when the shared clearance deadline expired. Every recorded withheld footprint contained only Empty or Water. These refusals are a remaining responsiveness defect. The receipt records the original executable and input hashes, per-stage counts and framebuffer digests. [Mounted Water evidence](../audits/2026-11-27-pubpres-water-visibility.json)
 
+An additional matched movement test compared the retained clearance against individual row classification. In control/rows/rows/control order, 0/4/9/7 member-draws were withheld and the selection p95 was 1.51/1.73/2.62/2.04 ms. The row treatment was rejected, preserving the existing shared cell and time limits.
+
 ## Comparison and evidence contract
 
 [Prospective registration](../../tools/pubpres_final/registration.json) defines

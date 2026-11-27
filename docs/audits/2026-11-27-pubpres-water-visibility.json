@@ -194,5 +194,299 @@
     "stdout.log": "d8afffa30ef2907fc0507aeb95e74f4fd6f12634555bfc57dd94fcc004322282",
     "restored_authoring_framebuffer-shown.png": "cd1b06b0b151923a9d982a22660b8600144308f72da3562d320fd50e519846dd"
   },
-  "raw_custody": "Mission workspace C:/cs-pubdef/evidence/water-be01. The following SHA-256 values identify the original receipt, stdout and 16 first-read PNGs."
+  "raw_custody": "Mission workspace C:/cs-pubdef/evidence/water-be01. The following SHA-256 values identify the original receipt, stdout and 16 first-read PNGs.",
+  "row_classification_comparison": {
+    "base_commit": "40d21f2899941e957fb0fb1197c135d1638bf8ed",
+    "hypothesis": "Where a cropped region contains a hard material, classify individual rows and skip polygon tests on rows containing only Empty or Water. Charge all scanned cells at the existing shared limits.",
+    "decision": "Rejected. Whole-member losses and selection duration tails increased in the row arms. Retain the existing whole-region fast path and bounds.",
+    "scope": "Sequential short diagnostic arms at stock Safe on private Xvfb, llvmpipe with 2 threads, nice 17 and CPU affinity 9-11. Each launched a fresh process and ran the mounted native fixture install, submerged movement and dry-to-wet entry. Each passed the same 20 assertions. Distinct submitted steps are counted by the draw observer. Held totals excluded. No architecture throughput inference.",
+    "patch_sha256": "6b504967e3f79bd65dac598affd8b9cfb22e9f47726366738bb011a94451cc35",
+    "focus_driver_sha256": "73403d748bb35c9a91efa64dabcf079fe91e34b210587397a37af8d3fa5960e1",
+    "arm_driver_sha256": "95382153f2bc1875169e8581cd353fbc392e26379a229a39562b376f8329a9a8",
+    "stock_coherence_sha256": "4d6bfe581b666bb2121989a163a5d12ce87760c4dfe37c080d1bb920ebe4fced",
+    "row_coherence_sha256": "e00a9d4d2b69cf714900ca3cd8791473c99aa9001e1dbf05e6218a971e6dbfdf",
+    "native_so_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+    "raw_custody": "Mission workspace C:/cs-pubdef/evidence/water-rows.",
+    "arms": [
+      {
+        "arm": "control1",
+        "receipt_sha256": "5f84d7dbb10781d17f8e57ac11b9d6252f49c1eef91d7705d040b7e52e8849c0",
+        "observed_moving_draws": 102,
+        "distinct_submitted_rapier_steps": 98,
+        "omissions": 0,
+        "selection_usec_p50_p95_p99_max": [
+          989,
+          1510,
+          2053,
+          3247
+        ],
+        "cells_p50_p95_p99_max": [
+          1274,
+          1320,
+          1652,
+          1764
+        ]
+      },
+      {
+        "arm": "rows1",
+        "receipt_sha256": "4d9a0edd51a9117a9cb81f074801408409234a9165dba5800111bb2ba9bf4f6a",
+        "observed_moving_draws": 104,
+        "distinct_submitted_rapier_steps": 100,
+        "omissions": 4,
+        "selection_usec_p50_p95_p99_max": [
+          948,
+          1733,
+          3068,
+          3100
+        ],
+        "cells_p50_p95_p99_max": [
+          1258,
+          1274,
+          1282,
+          1748
+        ]
+      },
+      {
+        "arm": "rows2",
+        "receipt_sha256": "c5e990a9d887f0b133d3504d2b2ff97442f868db2e35993660017eda2118dfcc",
+        "observed_moving_draws": 98,
+        "distinct_submitted_rapier_steps": 94,
+        "omissions": 9,
+        "selection_usec_p50_p95_p99_max": [
+          917,
+          2621,
+          5814,
+          5814
+        ],
+        "cells_p50_p95_p99_max": [
+          1250,
+          1282,
+          1866,
+          1866
+        ]
+      },
+      {
+        "arm": "control2",
+        "receipt_sha256": "de39ac65248f8c61c18e514e8da7468958f08dcc2f908989feb164bf92118f8d",
+        "observed_moving_draws": 107,
+        "distinct_submitted_rapier_steps": 103,
+        "omissions": 7,
+        "selection_usec_p50_p95_p99_max": [
+          940,
+          2036,
+          2681,
+          4126
+        ],
+        "cells_p50_p95_p99_max": [
+          1258,
+          1282,
+          1578,
+          1756
+        ]
+      }
+    ]
+  },
+  "deadline_refusals": {
+    "source": "Existing original omitted_observations. cells_examined is monotonic within a frame. A final charge below the shared ceiling proves the ceiling was never reached on that frame. Per-query start times were not emitted on this revision.",
+    "pre_entry_time": 15,
+    "in_query_time": 7,
+    "pre_entry_cell_exhaustion": 0,
+    "shared_cell_limit": 24000,
+    "time_limit_usec": 2000,
+    "columns": [
+      "engine_frame",
+      "phase",
+      "slot",
+      "raw_reason",
+      "final_frame_cells_charged",
+      "final_selection_usec",
+      "upload_cache_usec",
+      "total_elapsed_usec"
+    ],
+    "observations": [
+      [2393,"moving_submerged",0,"shared_budget",700,5026,26,5052],
+      [2418,"moving_submerged",1,"shared_budget",2541,2264,37,2301],
+      [2424,"moving_submerged",3,"time_budget",1024,5666,28,5694],
+      [2425,"moving_submerged",0,"time_budget",1269,2306,36,2342],
+      [2437,"dry_to_wet_entry",0,"shared_budget",832,2712,90,2802],
+      [2437,"dry_to_wet_entry",3,"time_budget",832,2712,90,2802],
+      [2441,"dry_to_wet_entry",0,"shared_budget",1104,4728,31,4759],
+      [2444,"dry_to_wet_entry",3,"time_budget",1638,2026,146,2172],
+      [2445,"dry_to_wet_entry",0,"shared_budget",300,3092,41,3133],
+      [2445,"dry_to_wet_entry",2,"shared_budget",300,3092,41,3133],
+      [2445,"dry_to_wet_entry",3,"shared_budget",300,3092,41,3133],
+      [2462,"dry_to_wet_entry",1,"shared_budget",1012,3345,32,3377],
+      [2472,"dry_to_wet_entry",2,"shared_budget",360,3769,40,3809],
+      [2472,"dry_to_wet_entry",3,"shared_budget",360,3769,40,3809],
+      [2473,"dry_to_wet_entry",0,"time_budget",1186,2536,28,2564],
+      [2492,"dry_to_wet_entry",2,"shared_budget",350,3173,50,3223],
+      [2492,"dry_to_wet_entry",3,"shared_budget",350,3173,50,3223],
+      [2493,"dry_to_wet_entry",0,"shared_budget",840,6733,35,6768],
+      [2493,"dry_to_wet_entry",3,"time_budget",840,6733,35,6768],
+      [2503,"dry_to_wet_entry",1,"shared_budget",964,7430,48,7478],
+      [2503,"dry_to_wet_entry",2,"shared_budget",964,7430,48,7478],
+      [4963,"multipart_motion",0,"time_budget",138,2102,59,2161]
+    ]
+  },
+  "query_timing_control": {
+    "base_commit": "40d21f2899941e957fb0fb1197c135d1638bf8ed",
+    "test_driver_sha256": "899caf80d3b938f922f47e1df75fc255456cf2df92c8e03fe32e1e52d3c90f23",
+    "scope": "Two additional serial stock Safe installs and native movements. Fixture subclass timed the unchanged production dependency and clearance methods with monotonic wall clocks, at the same CPU affinity and renderer as the four matched arms. Other local tasks and scheduler preemption could affect individual durations. No CPU attribution.",
+    "query_columns": [
+      "slot",
+      "raw_result",
+      "start_usec_from_selection",
+      "cells_charged_before",
+      "cells_charged_by_call"
+    ],
+    "traces": [
+      {
+        "receipt_sha256": "38316f0053dfefb8662f29df2127bf98a5ad9a7c62853ea64b88df04bdd79169",
+        "active_draws": 129,
+        "fully_withheld": 0,
+        "intentional_holds": 0,
+        "slow_draws": []
+      },
+      {
+        "receipt_sha256": "a0791c7ad7a6841f5e1c56797e85882d1bb076c225c14fa5d375aee36d43b7f4",
+        "active_draws": 124,
+        "fully_withheld": 11,
+        "intentional_holds": 0,
+        "slow_draws": [
+          {
+            "withheld": 1,
+            "selection_usec": 2114,
+            "cache_usec": 22,
+            "charged_cells": 676,
+            "dependency_usec": 156,
+            "water_sweep_usec": 194,
+            "ordinary_sweep_usec": 4,
+            "queries": [
+              [
+                2,
+                "shared_budget",
+                1980,
+                676,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 2,
+            "selection_usec": 2211,
+            "cache_usec": 69,
+            "charged_cells": 1062,
+            "dependency_usec": 163,
+            "water_sweep_usec": 1598,
+            "ordinary_sweep_usec": 6,
+            "queries": [
+              [
+                0,
+                "time_budget",
+                1906,
+                992,
+                70
+              ],
+              [
+                1,
+                "shared_budget",
+                2057,
+                1062,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 1,
+            "selection_usec": 2260,
+            "cache_usec": 26,
+            "charged_cells": 1232,
+            "dependency_usec": 237,
+            "water_sweep_usec": 1610,
+            "ordinary_sweep_usec": 5,
+            "queries": [
+              [
+                0,
+                "shared_budget",
+                2079,
+                1232,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 3,
+            "selection_usec": 7652,
+            "cache_usec": 35,
+            "charged_cells": 884,
+            "dependency_usec": 6504,
+            "water_sweep_usec": 483,
+            "ordinary_sweep_usec": 8,
+            "queries": [
+              [
+                0,
+                "shared_budget",
+                7092,
+                884,
+                0
+              ],
+              [
+                1,
+                "shared_budget",
+                7328,
+                884,
+                0
+              ],
+              [
+                2,
+                "shared_budget",
+                7472,
+                884,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 4,
+            "selection_usec": 2513,
+            "cache_usec": 31,
+            "charged_cells": 56,
+            "dependency_usec": 175,
+            "water_sweep_usec": 1857,
+            "ordinary_sweep_usec": 17,
+            "queries": [
+              [
+                2,
+                "time_budget",
+                209,
+                0,
+                56
+              ],
+              [
+                3,
+                "shared_budget",
+                2192,
+                56,
+                0
+              ],
+              [
+                0,
+                "shared_budget",
+                2298,
+                56,
+                0
+              ],
+              [
+                1,
+                "shared_budget",
+                2430,
+                56,
+                0
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  }
 }
