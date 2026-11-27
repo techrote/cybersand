@@ -15,6 +15,7 @@ const WorkbenchMaterialTimeline = preload("res://scripts/workbench_material_time
 const WorkbenchPresentationHistory = preload("res://scripts/workbench_presentation_history.gd")
 const WorkbenchPresentationSubmission = preload("res://scripts/workbench_presentation_submission.gd")
 const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
+const OwnerGameplay = preload("res://scripts/workbench_owner_gameplay.gd")
 const WorkbenchNativeRendezvous = preload("res://scripts/workbench_native_rendezvous.gd")
 const WorkbenchSameFrameContinuation = preload("res://scripts/workbench_same_frame_continuation.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
@@ -91,6 +92,7 @@ var _workbench_same_frame_enabled: bool = _workbench_same_frame_requested and no
 var shared_workbench: Control
 # Opt-in physical presentation trace. Empty and inactive in normal operation.
 var workbench_pose_trace = WorkbenchPoseTrace.new()
+var _owner_gameplay: OwnerGameplay
 var _workbench_pose_trace_reasons: Dictionary = {}
 # Causal observation seam shared with the bounded worker trace. Ordinary play
 # creates no event dictionaries or additional reads. Main retains no event log.
@@ -2004,6 +2006,12 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 func _ready() -> void:
 	if _flight_pacing:
 		simulation_worker.workbench_sample_completed.connect(_service_held_flight_callback, CONNECT_DEFERRED)
+	if get_tree().get_meta("cybersand_feature","") == "shared_workbench" \
+			and not OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECEIPT").is_empty():
+		var recorder := OwnerGameplay.new()
+		if recorder.start(get_instance_id()):
+			_owner_gameplay = recorder
+			RenderingServer.frame_post_draw.connect(_owner_gameplay.draw)
 	if _workbench_submission_requested:
 		if WorkbenchPresentationSubmission.atomic_admission_supported():
 			if WorkbenchPresentationSubmission.revision_is_valid(OS.get_environment("CYBERSAND_SOURCE_REVISION")):
@@ -2200,6 +2208,10 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if _owner_gameplay != null:
+		RenderingServer.frame_post_draw.disconnect(_owner_gameplay.draw)
+		_owner_gameplay.close()
+		_owner_gameplay = null
 	_workbench_submission_notification_pending = false
 	if _workbench_submission != null: _workbench_submission.close()
 	_material_deadline.cancel("exit_tree")
@@ -2517,6 +2529,8 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 			if physical_actor_session.tick > before_completed_tick:
 				_workbench_completed_step = physical_actor_session.tick
 				_workbench_completed_step_usec = cadence_step_completed_usec
+				if _owner_gameplay != null and rapier_bridge is WorkbenchBridge and physics_snapshot != null:
+					_owner_gameplay.physics_step(self,cadence_step_completed_usec,physics_snapshot,single_step)
 				_capture_workbench_water_dependencies(physics_snapshot)
 				_record_completed_playable_course_step()
 				_cadence_rapier_completed(cadence_step_started_usec,cadence_step_completed_usec,physics_snapshot)
@@ -4594,6 +4608,8 @@ func _submit_workbench_presentation_frame() -> void:
 		shared_workbench.actor_interaction.present_mapping(resolved.screen_transform.affine_inverse() * resolved.camera_mapping)
 	physical_actor_overlay.set_water_composition(resolved.get("water_composition",{}))
 	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect)
+	if _owner_gameplay != null and not _workbench_submission_preparing:
+		_owner_gameplay.presentation(self,resolved,"stock_overlay_applied")
 	if not _workbench_submission_preparing and workbench_pose_trace.active and physical_actor_session != null:
 		_workbench_trace_presentation_frame(resolved.original_mask_frame,resolved.mask_frame,
 			resolved.poses,resolved.parts,resolved.camera_origin,resolved.content_rect)
@@ -4718,6 +4734,8 @@ func _commit_workbench_presentation_submission(engine_admission: bool = false) -
 		if _workbench_submission_notification_pending:
 			_workbench_submission_notification_pending = false
 			var submitted: Dictionary = workbench_presentation_frame
+			if _owner_gameplay != null:
+				_owner_gameplay.presentation(self,submitted,"atomic_submission_accepted")
 			if workbench_pose_trace.active and physical_actor_session != null:
 				_workbench_trace_presentation_frame(submitted.original_mask_frame,submitted.mask_frame,
 					submitted.poses,submitted.parts,submitted.camera_origin,submitted.content_rect)
@@ -4814,6 +4832,8 @@ func _cadence_frame_post_draw() -> void:
 
 
 func _cadence_physics_hold(reason: String, snapshot: CyberSimulationSnapshot = null) -> void:
+	if _owner_gameplay != null and (physical_actor_session == null or rapier_bridge is WorkbenchBridge):
+		_owner_gameplay.physics_hold(self,reason,snapshot)
 	if not workbench_pose_trace.active: return
 	_cadence_physics_hold_counts[reason] = int(_cadence_physics_hold_counts.get(reason,0))+1
 	workbench_pose_trace.observe_event({"event":"rapier_hold","reason":reason,
@@ -5523,6 +5543,7 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 				"revision":snapshot.world_revision,"world_generation":snapshot.render_world_generation,
 				"full_refresh":snapshot.render_full_refresh,"patch_bytes":snapshot.render_patch_cells.size(),
 				"material_publication":material_publication_status()}
+			if _owner_gameplay != null: _owner_gameplay.upload(_cadence_upload)
 			if workbench_pose_trace.active:
 				workbench_pose_trace.observe_event(_cadence_upload.duplicate())
 			# Only an accepted World replacement invalidates presentation history.
