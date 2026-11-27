@@ -1,0 +1,128 @@
+{
+  "source_commit": "ac798d9ad806bc88ead7ee9de185e7c015af6e3a",
+  "local_test_delta": "godot/tests/fixtures/persistent_area_cross_authoring.gd",
+  "fixture_sha256_lf": "f7314b6633f884d7c5649d7ad7f064f598e6c6402fb87bb09c0b4fef5e3a55f9",
+  "native_inputs": 114,
+  "native_producer": "3f03eb3c49a4cbe2e7a5a99b7ddaf4c666a86e48",
+  "native_build_run": 45926564761,
+  "native_build_attempt": 1,
+  "native_build_artifact": 15167227687,
+  "native_windows_sha256": "98a12da827dce45fba42ea235cc32bdd7994d1bc8225ec367fb77559fa9dd003",
+  "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "renderer": "Godot 4.7 OpenGL 3.3.0 NVIDIA TITAN RTX, driver 581.80",
+  "timeout_seconds_per_process": 420,
+  "workers": 1,
+  "command": [
+    "$GODOT",
+    "--path",
+    "godot",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--script",
+    "res://tests/fixtures/persistent_area_cross_authoring.gd",
+    "--",
+    "--persistent-profile=$FRESH_PROFILE",
+    "--persistent-evidence=$EVIDENCE",
+    "--persistent-test-mode=$PHASE",
+    "--persistent-test-workers=1",
+    "--persistent-start-paused",
+    "--persistent-require-graphics"
+  ],
+  "phases": [
+    {
+      "checks": 77,
+      "failures": [],
+      "graphical": true,
+      "mode": "write",
+      "pid": 27260,
+      "exit_code": 0,
+      "wall_seconds": 30.579,
+      "log_sha256": "5b4c245aac24e3d8d428783ff58c76a2a97a23c31df3112b75071f0e8a424fd1",
+      "receipt_sha256": "a53cc64ffb24402324a0f9099d75dbf9ccce619cd21acea588aeab84c71fced8"
+    },
+    {
+      "checks": 25,
+      "failures": [],
+      "graphical": true,
+      "mode": "reopen",
+      "pid": 32036,
+      "exit_code": 0,
+      "wall_seconds": 13.709,
+      "log_sha256": "426b5082a92e07c0a2819cf37fcb1e8515e0b5cc9970c1bdcb0be32b22ee2aba",
+      "receipt_sha256": "d8b414c064504d5eab0e3da0d2f7d9382d9b8bd340d4fa91bb412838a2abe292"
+    }
+  ],
+  "writer": {
+    "architecture_receipts": 1,
+    "art_changed": 180,
+    "art_receipt_count": 1,
+    "durable_revision": 9,
+    "marker": 58,
+    "process_id": 27260,
+    "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+    "session_id": "2d709e8fe31721b0e1da5a727b32c677"
+  },
+  "independent_reader_repeats": {
+    "source_commit": "f70f3258640420dc4d4f091a9abfa2c9acc245f5",
+    "local_test_delta": "godot/tests/fixtures/persistent_area_cross_authoring.gd",
+    "fixture_sha256_lf": "332c3bd781e14cd00dfe51fee00d072aea61b1e36a6da604d76bb8356269bed9",
+    "windows": {
+      "native_sha256": "98a12da827dce45fba42ea235cc32bdd7994d1bc8225ec367fb77559fa9dd003",
+      "phases": {
+        "write": {
+          "pid": 15692,
+          "checks": 77,
+          "failures": [],
+          "session_id": "321dd3d3a097bb1dc94958bdeef5df1a",
+          "durable_revision": 9,
+          "marker": 58,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "original_sha256": "50003305e7b2a3a1fc9cf2a06a31678ba72951e97bc28a9b7972f65ea7872066",
+          "log_sha256": "d48a4693fc9d5576f7999807b109745e7c156d139464c4950e6c31574aa468b5"
+        },
+        "reopen": {
+          "pid": 35928,
+          "checks": 26,
+          "failures": [],
+          "session_id": "321dd3d3a097bb1dc94958bdeef5df1a",
+          "durable_revision": 11,
+          "marker": 58,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "original_sha256": "2986873bec23c9113364c84530d08d9987cdc8759044996a730b2e7cc2e076be",
+          "log_sha256": "5a40e3097bc0714a5e315903de9051698805c6309cc6b01ca50df25831dc0cf3"
+        }
+      }
+    },
+    "linux": {
+      "native_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+      "phases": {
+        "write": {
+          "pid": 449,
+          "checks": 77,
+          "failures": [],
+          "session_id": "acdce330308165026c9557a21d13514f",
+          "durable_revision": 9,
+          "marker": 58,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "original_sha256": "b36db2898ee04599f55b3ec0b92fd6c00802f093b8c89437a1d5f668be3e3421",
+          "log_sha256": "e576c4a1c1a43df1f8beca962526e0705ab923840480b8b85e1d822c27b58ede"
+        },
+        "reopen": {
+          "pid": 604,
+          "checks": 26,
+          "failures": [],
+          "session_id": "acdce330308165026c9557a21d13514f",
+          "durable_revision": 11,
+          "marker": 58,
+          "projected_sha256": "941a6931ab90b3cd4542e66667460cbeffc4614d06e9f675b12d2aa2491f9164",
+          "original_sha256": "812d6173e67aa262bca4240a000062afcf746e5066cc88149754dca307b02279",
+          "log_sha256": "6b28b2acdc25f6d891613b23225ddfddd034f59248bdfb3287be939b60c1ae63"
+        }
+      }
+    }
+  }
+}

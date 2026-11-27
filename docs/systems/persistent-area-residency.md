@@ -3,17 +3,17 @@ title: Persistent area native residency and write-behind
 document-kind: contract
 status: Current
 canonical-for: [persistent-area-native-residency, persistent-area-cache-and-prefetch]
-scope: Draft GEN-006 RAM-cache successor; exclusive native ownership, bounded resources, asynchronous durability and predictive preparation
+scope: Opt-in GEN-006 RAM cache, exclusive native ownership, bounded resources, asynchronous durability and predictive preparation
 keywords: [GEN-006, HOT, WARM, COLD, residency, prefetch, durability, game time]
 related-documents: [persistent-authored-areas.md, ../architecture/data-ownership-and-lifetimes.md, ../decisions/ADR-016-persistent-area-native-residency.md, ../operations/persistent-area-ramcache-evaluation.md, ../audits/2026-11-22-gen006-ramcache.md]
-last-reviewed: 2026-11-22
+last-reviewed: 2026-11-27
 ---
 
 # Persistent area native residency and write-behind
 
-This opt-in Draft/HOLD successor extends the [three-area contract](persistent-authored-areas.md).
+The opt-in RAM cache extends the [three-area contract](persistent-authored-areas.md).
 It retains the same actor-free 512 × 512 Current/FreeMass native continuation domain and authored fixtures.
-The [dated ledger](../audits/2026-11-22-gen006-ramcache.md) owns tested source, runtime and performance results.
+The [original campaign](../audits/2026-11-22-gen006-ramcache.md) records runtime and performance results. The [integration record](../audits/2026-11-27-persistent-area-world-integration.md) covers shared Workbench ownership.
 Ordinary production defaults, native World limits and material/solver laws remain unchanged.
 
 Resident travel, Save and normal exit wait for outstanding native edits. A collaborative Art turn can still own future work between native requests, as can an Architecture stage awaiting its receipt. Finish or Stop that work before changing areas. The ordinary Workbench retains its actor, Art and Architecture controls. The Persistent Areas profile refuses installation of an AMBIENT actor scene.
