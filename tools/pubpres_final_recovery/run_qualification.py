@@ -177,6 +177,20 @@ def supplemental_result(test, text, folder, source, project, *, engine_sha=None,
                 need(len(serials) == 4 and all(type(serial) is int for serial in serials)
                      and (all(a < b for a, b in zip(serials, serials[1:])) if expected_atomic else serials == [-1]*4),
                      row["label"] + " did not preserve the first read of three successive control states")
+            pauses = [row for row in data["lifecycle"] if row.get("stage") in
+                      ("initialized_paused_history", "completed_paused_history")]
+            need(len(pauses) == 2 and len({row["stage"] for row in pauses}) == 2
+                 and any(row["rotated_identical"] for row in pauses),
+                 "Mounted Water control did not observe a byte-identical two-slot refresh")
+            for row in pauses:
+                if row["rotated_identical"]:
+                    coverage = row["proof"]["coverage"]
+                    need(row["upload_after"] == row["upload_before"] + 1
+                         and row["rids_before"][::-1] == row["rids_after"] and len(set(row["rids_after"])) == 2
+                         and row["content_after"] == [row["content_before"]]*2
+                         and row["proof"]["visible_material"]["upload_serial"] == row["upload_after"]
+                         and coverage["coverage_reused"] and coverage["scanned"] == 0 and coverage["original_scanned"] > 0,
+                         row["stage"] + " rotated transport lacks its original coverage and current publication")
             result["water_framebuffer_sha256"] = water_framebuffers(data, folder)
         if test == "test_workbench_member_presentation":
             need(data == terminal and data.get("graphical") is True
