@@ -14,12 +14,21 @@ func wait_state() -> Dictionary:
 
 
 func canvas_position(point: Vector2) -> Vector2:
-	var content: Rect2 = host.view_content_rect()
-	var local: Vector2 = content.position+(point-host.camera_origin.floor())*content.size/Vector2(host.current_view_size)
+	var frame: Dictionary = host.workbench_presentation_frame
+	var screen: Vector2 = frame.camera_mapping * point
+	var local: Vector2 = host._world_view_screen_transform().affine_inverse() * screen
 	return host.world_view.get_global_transform_with_canvas()*local
 
 
+func displayed_part_position(actor_id: int, part: int) -> Vector2:
+	var session = host.physical_actor_session
+	var slot: int = session.bridge.actor_body_index(session.slot_for_instance(actor_id)) + part
+	var pose: Variant = host.workbench_presentation_frame.poses.get(slot)
+	return pose.origin if pose is Transform2D else Vector2.INF
+
+
 func pointer(point: Vector2, pressed: bool, outside: bool = false) -> void:
+	if not outside and not check(point.is_finite(),"requested pointer point is visible"): return
 	var event := InputEventMouseButton.new()
 	event.position = Vector2(4,4) if outside else canvas_position(point)
 	event.global_position = event.position
@@ -134,7 +143,7 @@ func paused_placement() -> void:
 	var original: Dictionary = host.physical_actor_session.capture_workbench_assembly(2)
 	var old_rids := body_rids(2)
 	var pilot: int = ui.pilot_id()
-	await pointer(original.parts[0].position,true)
+	await pointer(displayed_part_position(2,0),true)
 	if not check(not interaction.placement.is_empty(),"canvas click picks complete multipart actor"): return
 	check(ui.selected_id()==2 and ui.pilot_id()==pilot,"canvas selection preserves human piloting authority")
 	await motion(Vector2(original.parts[0].position)+Vector2(38,-42))
@@ -154,7 +163,7 @@ func paused_placement() -> void:
 	settings.snap_enabled = true
 	settings.grid_size = 8.0
 	check(interaction.configure(settings),"optional grid configuration admitted")
-	await pointer(original.parts[0].position,true)
+	await pointer(displayed_part_position(2,0),true)
 	await motion(Vector2(original.parts[0].position)+Vector2(37,-37))
 	check(Vector2(interaction.placement.position).is_equal_approx(Vector2(interaction.placement.position).snapped(Vector2(8,8))),
 		"drag preview snaps the assembly origin to configured grid")
@@ -183,7 +192,7 @@ func paused_placement() -> void:
 	var retained_session = host.physical_actor_session
 	check(not interaction.place_exact(2,Vector2(-8,30),0),"out-of-bounds assembly placement refuses")
 	check(ui.applied==retained and host.physical_actor_session==retained_session,"bounds refusal preserves authored and native owner")
-	await pointer(moved.parts[0].position,true)
+	await pointer(displayed_part_position(2,0),true)
 	await pointer(Vector2.ZERO,false,true)
 	check(interaction.placement.is_empty() and host.physical_actor_session==retained_session,"release outside canvas cancels preview")
 	host.reject_next_preparation = true
@@ -209,7 +218,7 @@ func live_interactions() -> void:
 	var before_edits: int = ui.applied.edits.size()
 	var old_rids := body_rids(3)
 	var npc_before: int = session.workbench_control(2).accepted
-	await pointer(initial.parts[0].position,true)
+	await pointer(displayed_part_position(3,0),true)
 	if not check(interaction.grab_state().active and int(interaction.grab_state().instance_id)==3,"actual viewport grabs passive physical barrel"): return
 	var target: Vector2 = Vector2(initial.parts[0].position)+Vector2(-65,-70)
 	await motion(target)
@@ -228,9 +237,13 @@ func live_interactions() -> void:
 	if not await phase("released body continues ordinary simulation",6): return
 	var runner: Dictionary = session.capture_workbench_assembly(2)
 	var limb: Dictionary = runner.parts.back()
-	await pointer(limb.position,true)
+	var last_part: int = runner.parts.size()-1
+	var displayed_limb := displayed_part_position(2,last_part)
+	if not check(displayed_limb.is_finite(),"runner limb is present in the displayed frame"): return
+	await pointer(displayed_limb,true)
 	if check(interaction.grab_state().active and int(interaction.grab_state().instance_id)==2,"canvas picks a real articulated runner part"):
 		var chosen: int = interaction.grab_state().part_index
+		check(chosen==last_part,"the displayed runner limb receives the live grab")
 		var accepted: int = session.workbench_control(2).accepted
 		await motion(Vector2(limb.position)+Vector2(28,-60))
 		await phase("limb force propagates through retained Rapier joints",18)
@@ -243,8 +256,7 @@ func live_interactions() -> void:
 		await phase("released runner resumes its original controller",12)
 		check(session.workbench_control(2).accepted>accepted,"release resumes previous scripted producer")
 	for reason: String in ["focus","panel","pause","save"]:
-		var barrel: Dictionary = session.capture_workbench_assembly(3)
-		await pointer(barrel.parts[0].position,true)
+		await pointer(displayed_part_position(3,0),true)
 		if not check(interaction.grab_state().active,"repeat grab before "+reason): continue
 		match reason:
 			"focus":
