@@ -6,7 +6,7 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 ---
 
 # Data ownership and lifetimes
@@ -47,6 +47,14 @@ observations and submit bounded, independently revocable leases. They own no
 World, body RID, material-edit pointer or inference-blocking worker. The prepared
 replacement graph remains frozen until the existing native adoption transaction
 accepts it. Source changes and authoring replacements retire stale authority.
+WB-ACTOR-COMPOSE-002R temporary grabbing belongs to that same session: a weak
+session reference and run/epoch/instance/part identity resolve the current body
+before bounded point-force application. No input overlay owns a RID or native
+World. Only the grabbed actor's drive is suppressed; release revokes old command
+leases before its source resumes. Paused placement previews copied transforms
+and commits one frozen prepared graph. Retained transactions refuse changed
+equipment topology rather than silently rebuilding different joints. Numeric
+logical, body and proxy budgets are independently validated before adoption.
 
 The bounded [desktop single-trial-body owner](liquid-prepared-setup-and-receipts.md#desktop-single-trial-body-preparation)
 retains one dynamic barrel/Ripper in an automatically inactive permanent private

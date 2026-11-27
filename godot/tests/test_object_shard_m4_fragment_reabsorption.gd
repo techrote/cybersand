@@ -81,7 +81,7 @@ func _cut_neck_with_pointer() -> bool:
 	var first: Dictionary = _target_for_source(Vector2i(154,425))
 	var second: Dictionary = _target_for_source(Vector2i(154,426))
 	if not f.expect(not first.is_empty() and not second.is_empty(),"both neck cells have actual displayed native witnesses"): return false
-	f.bench._tool.select(5)
+	f.bench._tool.select(f.bench.CUT_MOVING_TOOL)
 	var before: int = f.bench.object_shard_m4_port.results.size()
 	_pointer_button(first.position,true)
 	f.expect(not f.bench._brush.editable,"moving Cut disables the unrelated ordinary radius control")
@@ -108,7 +108,7 @@ func _cut_neck_with_pointer() -> bool:
 	for callback: int in range(3): await process_frame
 	var fenced: bool = f.bench.object_shard_m4_port.results.size()==before+1 \
 		and f.bench.object_shard_m4_port.pending_count()==0 \
-		and f.bench._object_shard_pointer_tool==5 and f.bench._drag_button==MOUSE_BUTTON_LEFT
+		and f.bench._object_shard_pointer_tool == f.bench.CUT_MOVING_TOOL and f.bench._drag_button==MOUSE_BUTTON_LEFT
 	evidence.pointer_receipt_fence = {"main_callback_delayed":not f.host.is_processing(),
 		"results":f.bench.object_shard_m4_port.results.slice(before).duplicate(true),
 		"pending_count":f.bench.object_shard_m4_port.pending_count(),
@@ -223,8 +223,8 @@ func _run() -> void:
 	if not f.expect(not target.is_empty(),"settled owned Wood has exact displayed witness"):
 		await _finish(); return
 	var before_action: int = f.runtime()._reabsorption_action_serial
-	f.bench._tool.select(7)
-	f.bench._tool.item_selected.emit(7)
+	f.bench._tool.select(f.bench.SETTLE_MOVING_TOOL)
+	f.bench._tool.item_selected.emit(f.bench.SETTLE_MOVING_TOOL)
 	_pointer_button(target.position,true)
 	_pointer_button(target.position,false)
 	evidence.settle_pointer = {"tool":f.bench._tool.selected,

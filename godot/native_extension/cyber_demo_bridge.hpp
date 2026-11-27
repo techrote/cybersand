@@ -121,8 +121,8 @@ class CyberDemoBridge final : public RefCounted {
         adapter.render_exchange_.swap(exchange);
         adapter.retire_liquid_construction_identity();
         ++adapter.liquid_policy_session_generation_;
-        adapter.current_bodies_ = {};
-        adapter.previous_bodies_ = {};
+        adapter.current_bodies_.fill({});
+        adapter.previous_bodies_.fill({});
         adapter.clear_observations();
         adapter.raster_indices_.clear();
         adapter.last_stats_ = {};

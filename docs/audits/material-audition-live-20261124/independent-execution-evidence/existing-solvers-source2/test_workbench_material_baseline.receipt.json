@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--path",
+    "/workspace/scratch/1f637294a480/mat-solver-source2/godot",
+    "--script",
+    "res://tests/test_workbench_material_baseline.gd"
+  ],
+  "elapsed_seconds": 1.2205972470001143,
+  "exit_code": 0,
+  "log_sha256": "78239aa530dc5985e35934915585ae7a6833aab402b7640a42c200e8524b3863",
+  "process_id": 787,
+  "status": "passed",
+  "timeout_seconds": 900
+}

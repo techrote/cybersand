@@ -57,7 +57,7 @@ func hostile_json() -> void:
 	for value: Variant in [-1, 0.25, 9007199254740992, INF, NAN]: bad(["seed"],value,"non-exact/out-of-range seed")
 	for value: Variant in [[], [0], [0,0,0], [true,0], [0.5,0], [INF,0], [-1000001,0], [999000,0]]:
 		bad(["origin"],value,"invalid source coordinate " + str(value))
-	for value: Variant in [[512,1024], [0,0], [2048,2048], [false,512], [512.5,512], [512]]:
+	for value: Variant in [[512,1024], [0,0], [4096,4096], [2048,1024], [false,512], [512.5,512], [512]]:
 		bad(["extent"],value,"invalid extent " + str(value))
 	for value: Variant in [0, 15, 63, 1024, 64.5]: bad(["zone_scale"],value,"invalid allocation scale " + str(value))
 	for value: Variant in [[], [null], [{}], ["style"]]: bad(["styles"],value,"malformed style array")
@@ -331,12 +331,68 @@ func native_identity_edges() -> void:
 	check(catalogue.modules.size() == expected_schemas.size(),
 		"native catalogue contains exactly the reviewed legacy and architectural variants")
 
+
+func large_world_2048_contracts() -> void:
+	# An expanded World has more raster cells, not additional native solver blocks.
+	var project: Dictionary = Project.default_project()
+	project.extent = [2048,2048]
+	project.zone_scale = 128
+	project.origin = [-256,384]
+	project.seed = 1701
+	var original: Dictionary = project.duplicate(true)
+	var first: Dictionary = Project.compile(project)
+	if not check(first.get("ok",false), "2048-square planner compiles: " + str(first.get("error",""))): return
+	check(project == original, "large project compilation leaves the caller immutable")
+	check(first.zones.width == 16 and first.zones.height == 16 and first.zones.cell_size == 128 and
+			first.zones.cells.size() == 256, "2048-square uses exactly 256 native planner cells")
+	check(first.recipe.spatial.assignments[0].specification.width == 16 and
+			first.recipe.spatial.assignments[0].specification.height == 16 and
+			first.recipe.spatial.assignments[0].specification.cell_size == 128,
+			"native spatial assignment has no increased solver dimensions")
+	check(first.recipe.modules.size() == 3 and first.recipe.modules[0].bounds == [-256,384,2048,2048],
+			"2048-square native module bounds retain signed origin and complete extent")
+	for coverage: Dictionary in first.coverage:
+		check(component_count(first.zones,int(coverage.slot)) == 1,
+			"2048-square style remains four-connected in the finite planning grid")
+	var replay: Dictionary = Project.compile(JSON.parse_string(JSON.stringify(project)))
+	check(replay.get("ok",false) and replay.recipe == first.recipe and
+			replay.project_hash == first.project_hash and replay.zones == first.zones,
+			"2048-square signed-origin compiler is deterministic after JSON roundtrip")
+	var wrong_zone: Dictionary = project.duplicate(true)
+	wrong_zone.zone_scale = 64
+	refused(wrong_zone,"2048-square refuses a 32x32 planner instead of widening native limits")
+	var unsupported: Dictionary = project.duplicate(true)
+	unsupported.extent = [4096,4096]
+	refused(unsupported,"4096-square remains reserved for independently qualified world-size work")
+	unsupported.extent = [2048,1024]
+	refused(unsupported,"rectangular extent is not silently admitted by this square project planner")
+	var five: Dictionary = project.duplicate(true)
+	var presets: Array = Project.builtin_presets()
+	for slot: int in range(3,5):
+		five.styles.append({"enabled":true,"share":0.0,"preset":presets[slot].duplicate(true)})
+	for slot: int in five.styles.size():
+		five.styles[slot].share = 20.0
+	var result: Dictionary = Project.compile(five)
+	if not check(result.get("ok",false), "five-style 2048-square compiles: " + str(result.get("error",""))): return
+	check(result.recipe.modules.size() == 5 and result.zones.cells.size() == 256 and
+			result.recipe.limits.max_operations_per_chunk == 160000000,
+			"five-style 2048-square retains existing bounded native chunk work policy")
+	if not check(ClassDB.class_exists(&"CyberWorldGenerator"), "native extension required for large-world contract"): return
+	var generator: Variant = ClassDB.instantiate(&"CyberWorldGenerator")
+	if not check(generator.configure(result.recipe).get("ok",false), "2048-square native module plan admitted"): return
+	for coordinate: Vector2i in [Vector2i(-2,3),Vector2i(13,18)]:
+		var chunk: Dictionary = generator.generate_chunk(coordinate)
+		check(chunk.get("ok",false) and chunk.get("state","") == "ready" and
+				chunk.get("cells",PackedByteArray()).size() == 128*128,
+				"2048-square signed-origin edge chunk produces actual native materials: " + str(coordinate))
+
 func run() -> void:
 	hostile_json()
 	expanded_styles()
 	new_native_algorithms()
 	classic_genteks()
 	planner_invariants()
+	large_world_2048_contracts()
 	native_identity_edges()
 	print("ARCHITECTURAL_PROJECT_CONTRACT checks=%d failures=%d" % [checks,failures])
 	quit(1 if failures else 0)

@@ -521,6 +521,33 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'record': 'docs/audits/2026-11-19-wave-oil-lava.md',
   'issue': 679,
   'pr': 679},)
+# MAT-AUDITION-LIVE-001: exact reviewed scene-local consumer overlays and
+# nondefault physical identity / save refusal. Canonical catalogue and frozen
+# lock are unchanged; this does not authorize the concurrent engine branches.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'to_lf_sha256': 'c5bd52b8827e5edef262ae2e9df2ec286abb9140d2e7ba6471b40d187e24ef14',
+  'source_commit': 'f66e0949dfd5257bc926adc87988ddd0f4634761',
+  'record': 'docs/audits/material-audition-live-20261124/independent-native-review.md',
+  'issue': 587,
+  'pr': 768},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1',
+  'to_lf_sha256': '70c617cea5556bb6121aba3b09af37ee7774fb6c08719dcf60b7042b72566817',
+  'source_commit': 'f66e0949dfd5257bc926adc87988ddd0f4634761',
+  'record': 'docs/audits/material-audition-live-20261124/independent-native-review.md',
+  'issue': 587,
+  'pr': 768},)
+
+
+# Scoped actor-capacity bookkeeping; material identities and laws are retained.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'to_lf_sha256': '7a8ee79b188a94b54793e4241b189554e1199f86760923714d8f1d7684e08546',
+  'source_commit': '1b5001072cd703488c6c0ba566c71f12b8f21840',
+  'record': 'docs/audits/2026-11-22-workbench-actor-sandbox/material-source-transition.md',
+  'issue': 737,
+  'pr': 742},)
 
 
 # OBJECTSHARD-001: opt-in mutation witnesses and shared selected lifecycle decisions.

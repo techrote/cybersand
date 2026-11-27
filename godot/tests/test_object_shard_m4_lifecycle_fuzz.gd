@@ -95,7 +95,7 @@ func _plan(seed: int) -> Array[String]:
 	return plan
 
 func _erase(row: Dictionary) -> bool:
-	_set_tool(5)
+	_set_tool(f.bench.CUT_MOVING_TOOL)
 	var target: Dictionary = f.moving_target(7)
 	if not f.expect(not target.is_empty(),"fuzz erase has an exact displayed owned Wood cell"): return false
 	old_target = target.duplicate(true)
@@ -142,7 +142,7 @@ func _action(kind: String, random: RandomNumberGenerator, row: Dictionary) -> bo
 			return f.expect(f.tick()==tick+1 and f.runtime().physical_intervals==intervals+1 \
 				and f.host.physical_actor_session.tick==actor_tick+1,"fuzz Step advances native, Rapier and actor exactly once")
 		"tool":
-			var index: int = [0,5,6,7][random.randi_range(0,3)]
+			var index: int = [0, f.bench.CUT_MOVING_TOOL, f.bench.IGNITE_MOVING_TOOL, f.bench.SETTLE_MOVING_TOOL][random.randi_range(0,3)]
 			_set_tool(index)
 			row.selected_tool = index
 			return f.expect(f.bench._object_shard_pointer_tool==-1 and f.bench._brush.editable==(index==0),

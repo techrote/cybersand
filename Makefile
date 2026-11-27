@@ -127,6 +127,27 @@ wave-body-boundary-thread-sanitize: $(BUILD_DIR)/test_wave_body_boundary_tsan
 
 .PHONY: material-baseline-test material-baseline-sanitize
 
+# MAT-AUDITION-LIVE-001: scene-local profile transactions and actual consumers.
+.PHONY: material-audition-test material-audition-sanitize material-audition-thread-sanitize
+
+$(BUILD_DIR)/test_material_audition: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_audition.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_material_audition.cpp -o $@
+
+$(BUILD_DIR)/test_material_audition_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_audition.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_material_audition.cpp -o $@
+
+$(BUILD_DIR)/test_material_audition_tsan: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_audition.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread $(SIMULATION_SOURCES) native/tests/test_material_audition.cpp -o $@
+
+material-audition-test: $(BUILD_DIR)/test_material_audition
+	./$(BUILD_DIR)/test_material_audition
+
+material-audition-sanitize: $(BUILD_DIR)/test_material_audition_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_material_audition_sanitized
+
+material-audition-thread-sanitize: $(BUILD_DIR)/test_material_audition_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_material_audition_tsan
+
 $(BUILD_DIR)/test_material_baseline: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_material_baseline.cpp | $(BUILD_DIR)
 	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_material_baseline.cpp -o $@
 
@@ -138,6 +159,20 @@ material-baseline-test: $(BUILD_DIR)/test_material_baseline
 
 material-baseline-sanitize: $(BUILD_DIR)/test_material_baseline_sanitized
 	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} ./$(BUILD_DIR)/test_material_baseline_sanitized
+
+.PHONY: test-workbench-actor-capacity test-workbench-actor-capacity-sanitize
+
+$(BUILD_DIR)/test_workbench_actor_capacity: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_actor_capacity.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/tests/test_workbench_actor_capacity.cpp -o $@
+
+$(BUILD_DIR)/test_workbench_actor_capacity_sanitized: $(SIMULATION_SOURCES) $(CORE_HEADERS) native/tests/test_workbench_actor_capacity.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/tests/test_workbench_actor_capacity.cpp -o $@
+
+test-workbench-actor-capacity: $(BUILD_DIR)/test_workbench_actor_capacity
+	$<
+
+test-workbench-actor-capacity-sanitize: $(BUILD_DIR)/test_workbench_actor_capacity_sanitized
+	ASAN_OPTIONS=$${ASAN_OPTIONS:-detect_leaks=1:strict_string_checks=1} UBSAN_OPTIONS=$${UBSAN_OPTIONS:-halt_on_error=1} $<
 
 .PHONY: physics-characterisation-test physics-characterisation-sanitize
 

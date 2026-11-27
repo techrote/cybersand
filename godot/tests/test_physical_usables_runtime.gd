@@ -5,6 +5,7 @@ extends SceneTree
 const Runtime = preload("res://scripts/physical_usable_runtime.gd")
 const Catalog = preload("res://scripts/usable_catalog.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
+const Effects = preload("res://scripts/physical_actor_effects.gd")
 var failures: int = 0
 var checks: int = 0
 var world: Object
@@ -438,6 +439,57 @@ func _committed_alternate_admission() -> void:
 		_check(not survived, "early activation did not consume the original owned payload")
 
 
+func _expanded_capacity_first_frame() -> void:
+	_reset(12)
+	# The worker can reset an empty owner at its new epoch before the first
+	# physical frame arrives. Allocate from that first frame, including actor
+	# identities above the old 8-slot and 64-bit boundaries, at the SAME epoch.
+	runtime.reset(int(frame.epoch))
+	frame.actors.clear()
+	var owners: Array[int] = [0, 63, 64, 127, 255, 4095]
+	for index: int in owners.size():
+		frame.actors.append(_actor(12, owners[index], Vector2(100.5 + index * 40.0, 100.5), owners[index] + 1))
+	_masks()
+	var requests: Array = []
+	for owner: int in owners: requests.append(_request("use", owner))
+	var result := _step(requests)
+	_check(str(result.last_error).is_empty(), "same-epoch first frame did not allocate expanded owner slots: " + str(result.last_error))
+	_check(int(result.actor_count) == owners.size(), "expanded identities missing from actual equipment owner")
+	_check(result.projectiles.size() == owners.size(), "high-ID owners did not launch independent real-native payloads")
+	if result.projectiles.size() != owners.size(): return
+	var admitted: Dictionary = {}
+	for receipt: Dictionary in result.receipts:
+		_check(bool(receipt.accepted), "expanded equipment request refused: " + str(receipt))
+		admitted[int(receipt.actor_id)] = true
+	_check(admitted.size() == owners.size(), "high equipment identities collided")
+	var original: Dictionary = result.duplicate(true)
+	result = _step(requests)
+	_check(result.projectiles.size() == owners.size(), "high-ID replay duplicated payloads")
+	for receipt: Dictionary in result.receipts:
+		_check(str(receipt.reason) == "sequence", "high-ID replay bypassed per-owner sequence fence")
+	_check(float(result.actors.back().charge) < 100.0, "first-frame allocation repeated and reset resources")
+	_check(float(result.projectiles.back().age) > float(original.projectiles.back().age), "expanded committed payload stopped progressing")
+	var effects := Effects.new()
+	var deposits: Array = []
+	for actor: Dictionary in frame.actors:
+		deposits.append({"actor_slot":int(actor.actor_id),"epoch":1,"sequence":1,
+			"source_body_id":int(actor.body_id),"source_part":0,"kind":"deposit",
+			"source":actor.position,"origin":Vector2(actor.position)+Vector2(6,0),
+			"radius":1,"strength":1.0,"material":2})
+	var effects_receipts := effects.apply(world,deposits,1)
+	_check(effects_receipts.size()==owners.size(),"high-ID physical tool receipts missing")
+	for receipt: Dictionary in effects_receipts:
+		_check(int(receipt.changed_cells)==5,"actor-local effect identities aliased above63: "+str(receipt))
+	# A new composition belongs to a new prepared owner. Growing an already
+	# active epoch must refuse without destroying its committed payloads.
+	_reset(12)
+	result = _step([_request()])
+	frame.actors.append(_actor(12, 64, Vector2(160.5, 100.5), 65))
+	result = _step()
+	_check(result.last_error == "actor_capacity_transition" and result.actor_count == 1 and result.projectiles.size() == 1,
+		"active same-epoch population change reset existing equipment")
+
+
 func _run() -> void:
 	if not ClassDB.class_exists(&"CyberNativeCellWorld"):
 		push_error("USABLE002_NATIVE requires source-matched CyberNativeCellWorld")
@@ -451,5 +503,6 @@ func _run() -> void:
 	_processor_pickup_history()
 	_processor_budget_atomicity()
 	_committed_alternate_admission()
+	_expanded_capacity_first_frame()
 	print("USABLE002_NATIVE checks=%d failures=%d native=executed catalogue=32" % [checks, failures])
 	quit(1 if failures > 0 else 0)

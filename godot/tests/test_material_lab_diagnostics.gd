@@ -175,7 +175,9 @@ func check_window_layout(panel: Variant) -> void:
 	var former_tab: int = panel._tabs.current_tab
 	var actions: Array = [["Make editable copy"],["New powder (definition test only)","Save material preset…"],
 		["Check built-in rule","Run edited reaction"],["Prepare experiment","Inspect contact","Swap the two cells"],
-		["Build + run comparison","Save World recipe…"]]
+		["Build + run comparison","Save World recipe…"],["Apply draft","Revert configuration"]]
+	expect(panel._tabs.get_tab_count() == actions.size() and panel._tabs.get_tab_title(5) == "Current scene",
+		"The retained five-tab layout plus Current scene have explicit visible-action coverage")
 	for dimensions: Vector2i in [Vector2i(1000,650),Vector2i(1280,720)]:
 		root.size = dimensions
 		root.content_scale_size = Vector2i(1920,1080)
@@ -187,7 +189,8 @@ func check_window_layout(panel: Variant) -> void:
 			expect(panel.get_global_rect().end.y <= visible.end.y and panel.get_global_rect().end.x <= visible.end.x,
 				"Tab %d remains inside the %s window instead of growing controls offscreen" % [tab,dimensions])
 			var scroll: ScrollContainer = panel._tabs.get_current_tab_control()
-			for caption: String in actions[tab]:
+			var captions: Array = actions[tab] if tab < actions.size() else []
+			for caption: String in captions:
 				var button: Button = find_button(panel,caption)
 				expect(button != null,"Layout action exists: " + caption)
 				if button == null: continue

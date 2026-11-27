@@ -4,9 +4,10 @@ extends RefCounted
 # The only owner of physical-equipment cellular effects. No scene node, body RID,
 # controller or main-thread callback crosses this copied-value boundary.
 const Catalog = preload("res://scripts/usable_catalog.gd")
-const MAX_ACTORS: int = 8
-const MAX_REQUESTS: int = 8
-const MAX_DEVICES: int = 16
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const MAX_ACTORS: int = Capacity.MAX_ACTORS
+const MAX_REQUESTS: int = Capacity.MAX_ACTORS
+const MAX_DEVICES: int = Capacity.MAX_ACTORS * 2
 const IDENTITY_KEYS: Array[String] = ["run_id", "epoch", "actor_id", "generation",
 	"equipment_epoch", "instance_id", "usable_index", "body_id"]
 const REQUEST_KEYS: Array[String] = ["version", "run_id", "epoch", "actor_id", "generation",
@@ -23,14 +24,14 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 	var receipts: Dictionary = {}
 	var last_sequences: PackedInt64Array = PackedInt64Array()
 	var body_owners: Dictionary = {}
-	var device_history: Dictionary = {} # At most eight actors × ten catalogue processors.
+	var device_history: Dictionary = {} # Bounded admitted actors × ten catalogue processors.
 	var active_world: Object
 	var world_extent := Vector2i(1024,1024)
 	var last_error: String = ""
 	var source_diagnostic: Dictionary = {}
 
-	func reset_physical(next_epoch: int = -1) -> void:
-		configure(MAX_ACTORS)
+	func reset_physical(next_epoch: int = -1, actor_slots: int = Capacity.DEFAULT_ACTORS) -> void:
+		configure(actor_slots, Capacity.MAX_ACTORS)
 		_reset_budget()
 		epoch = next_epoch
 		run_id = ""
@@ -38,7 +39,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		receipts.clear()
 		body_owners.clear()
 		device_history.clear()
-		last_sequences.resize(MAX_ACTORS)
+		last_sequences.resize(actor_slots)
 		last_sequences.fill(-1)
 		last_error = ""
 		source_diagnostic.clear()
@@ -55,8 +56,17 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		if int(next_frame.epoch) < epoch:
 			last_error = "epoch"
 			return
-		if int(next_frame.epoch) != epoch:
-			reset_physical(int(next_frame.epoch))
+		var required_slots := 0
+		for row: Dictionary in next_frame.actors:
+			required_slots = maxi(required_slots, int(row.actor_id) + 1)
+		# An empty worker may already have adopted this epoch before its first
+		# copied frame arrives. That first frame establishes its bounded storage;
+		# subsequent frames cannot grow the active owner or reset resource state.
+		if int(next_frame.epoch) != epoch or (frame.is_empty() and run_id.is_empty()):
+			reset_physical(int(next_frame.epoch), required_slots)
+		elif required_slots > _actors.size():
+			last_error = "actor_capacity_transition"
+			return
 		if not run_id.is_empty() and str(next_frame.run_id) != run_id:
 			last_error = "run_id"
 			return
@@ -68,7 +78,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			if not transition_error.is_empty():
 				last_error = transition_error
 				return
-		if not is_finite(delta) or delta <= 0.0 or requests.size() > MAX_ACTORS:
+		if not is_finite(delta) or delta <= 0.0 or requests.size() > CyberPhysicalUsableRuntime.MAX_REQUESTS:
 			last_error = "delta_or_capacity"
 			return
 		if world == null or not world.has_method(&"material_at") \
@@ -83,7 +93,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		active_world = world
 		world_extent = extent
 		body_owners.clear()
-		_centres.resize(MAX_ACTORS)
+		_centres.resize(_actors.size())
 		for actor: Dictionary in frame.actors:
 			var owner: int = int(actor.actor_id)
 			_centres[owner] = actor.muzzle
@@ -109,7 +119,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		# state. Releasing held input does not silently delete a launched fuse.
 		_step_projectiles(dt, world)
 		_step_objects(dt, world)
-		for index: int in range(MAX_ACTORS):
+		for index: int in range(_actors.size()):
 			_actors[index].charge = minf(MAX_CHARGE, float(_actors[index].charge) + CHARGE_PER_SECOND * dt)
 			_actors[index].cooldown = maxf(0.0, float(_actors[index].cooldown) - dt)
 		var seen: Dictionary = {}
@@ -138,7 +148,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		for pose: Dictionary in frame.actors:
 			var owner: int = int(pose.actor_id)
 			_actors[owner]["cell_patch"] = {}
-			if read_count_last + 81 > MAX_READS:
+			if read_count_last + 81 > _read_limit:
 				continue
 			var center: Vector2 = Vector2(pose.muzzle) + Vector2(pose.direction).normalized() * 6.0
 			var origin := Vector2i(center.floor()) - Vector2i(4, 4)
@@ -220,7 +230,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 
 	func _accept_deployment(request: Dictionary, pose: Dictionary, definition: Dictionary, world: Object) -> String:
 		var owner: int = int(request.actor_id)
-		if _objects.size() >= MAX_OBJECTS or _owned_object_count(owner) >= MAX_OBJECTS_PER_ACTOR:
+		if _objects.size() >= _object_limit or _owned_object_count(owner) >= MAX_OBJECTS_PER_ACTOR:
 			return "capacity"
 		var key: String = _device_key(pose)
 		for object: Dictionary in _objects:
@@ -327,7 +337,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 			Vector2i((center + Vector2(offset, 1).rotated(angle)).round())]
 
 	func _body_at(point: Vector2i) -> int:
-		if read_count_last >= MAX_READS or active_world == null:
+		if read_count_last >= _read_limit or active_world == null:
 			refused_reads_last += 1
 			return -1
 		if not _inside_world(point):
@@ -443,7 +453,7 @@ class PhysicalEngine extends "res://scripts/usable_runtime.gd":
 		return 3
 
 	func _write(point: Vector2i, material: int, world) -> bool:
-		if write_count_last >= MAX_WRITES or read_count_last + _write_read_cost() > MAX_READS \
+		if write_count_last >= _write_limit or read_count_last + _write_read_cost() > _read_limit \
 			or not _inside_world(point):
 			refused_writes_last += 1
 			return false
@@ -537,7 +547,7 @@ static func frame_error(frame: Dictionary) -> String:
 				return "actor_identity"
 		if row.actor_id < 0 or row.actor_id >= MAX_ACTORS or seen_actors.has(row.actor_id) \
 			or row.usable_index < -1 or row.usable_index >= Catalog.count() \
-			or row.body_id < 0 or row.body_id > 64 or row.generation < 0 \
+			or row.body_id < 0 or row.body_id > CyberRigidBodyCoupling.MAX_BODIES or row.generation < 0 \
 			or row.equipment_epoch < 0 or not row.get("instance_id") is String or str(row.instance_id).is_empty():
 			return "actor_identity"
 		seen_actors[row.actor_id] = true
@@ -550,7 +560,7 @@ static func frame_error(frame: Dictionary) -> String:
 			return "actor_parts"
 		var owned_parts: Dictionary = {}
 		for part: Variant in row.parts:
-			if not part is Dictionary or not part.get("body_id") is int or part.body_id < 1 or part.body_id > 64 \
+			if not part is Dictionary or not part.get("body_id") is int or part.body_id < 1 or part.body_id > CyberRigidBodyCoupling.MAX_BODIES \
 				or not part.get("position") is Vector2 or not Vector2(part.position).is_finite() \
 				or not part.get("half_extents") is Vector2 or not Vector2(part.half_extents).is_finite() \
 				or not _finite_number(part.get("rotation")):
@@ -584,7 +594,7 @@ static func frame_error(frame: Dictionary) -> String:
 		for key: String in ["actor_id", "equipment_epoch", "usable_index", "body_id"]:
 			if not device.get(key) is int:
 				return "device_identity"
-		if device.actor_id < 0 or device.actor_id >= MAX_ACTORS or device.body_id < 1 or device.body_id > 64 \
+		if device.actor_id < 0 or device.actor_id >= MAX_ACTORS or device.body_id < 1 or device.body_id > CyberRigidBodyCoupling.MAX_BODIES \
 			or device.usable_index < 22 or device.usable_index >= Catalog.count() \
 			or not device.get("instance_id") is String or str(device.instance_id).is_empty() \
 			or device.equipment_epoch < 0 or seen_devices.has(device.body_id):

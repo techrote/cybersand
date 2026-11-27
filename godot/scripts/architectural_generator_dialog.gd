@@ -94,10 +94,11 @@ func mount() -> void:
 			control.custom_arrow_step = 1.0
 		control.custom_minimum_size.x = 120 if control == _seed else 85
 		_field(row, entry[0], control)
-	for side: int in [512, 1024]: _extent.add_item("%d²" % side, side)
+	for side: int in [512, 1024, 2048]: _extent.add_item("%d²" % side, side)
 	for side: int in [16, 32, 64, 128, 256, 512]: _zone_scale.add_item("%d" % side, side)
 	_field(row, "Map", _extent)
 	_field(row, "Zone", _zone_scale)
+	_extent.item_selected.connect(_map_extent_changed)
 	_zone_scale.tooltip_text = "Style-zone planning block size in cells."
 	_corridor.min_value = 2
 	_corridor.max_value = 64
@@ -228,6 +229,15 @@ func _select_id(control: OptionButton, id: int) -> void:
 		if control.get_item_id(index) == id:
 			control.select(index)
 			return
+
+func _map_extent_changed(_index: int) -> void:
+	if _syncing: return
+	# Preserve the native 16x16 / 256-block planner. Do not silently
+	# expand its domains when the user selects a larger canvas.
+	var required_scale: int = maxi(16, _extent.get_selected_id() / 16)
+	if _zone_scale.get_selected_id() < required_scale:
+		_select_id(_zone_scale, required_scale)
+		_status.text = "Zone size raised to %d cells to retain the native 16x16 planning grid." % required_scale
 
 func _sync_controls() -> void:
 	_syncing = true
@@ -362,8 +372,8 @@ func set_project(value: Dictionary) -> bool:
 	if not result.get("ok", false):
 		_status.text = "Refused · " + str(result.get("error", "Invalid architectural project."))
 		return false
-	if int(result.project.extent[0]) not in [512, 1024]:
-		_status.text = "Refused · Shared Workbench architectural previews support 512 or 1024 cells per side. The 256-cell project size is available to native qualification tools."
+	if int(result.project.extent[0]) not in [512, 1024, 2048]:
+		_status.text = "Refused · Shared Workbench architectural previews support 512, 1024 or 2048 cells per side. The 256-cell project size is available to native qualification tools."
 		return false
 	_project = result.project.duplicate(true)
 	_sync_controls()

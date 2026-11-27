@@ -1,0 +1,30 @@
+{
+  "schema": "cybersand.material-audition.independent-evidence-commit-review",
+  "schema_version": 1,
+  "status": "passed",
+  "commit": "0f19ee5f1c786dbd02af0e81b2a4dc7050906643",
+  "parent": "1a713a83ac9065b8e23c5a570d06acaa7c073d42",
+  "files_added": 92,
+  "only_prefix": "docs/audits/material-audition-live-20261124/",
+  "modified_existing_files": 0,
+  "source_runtime_build_execution_input_intersections": [],
+  "qualified_input_union_count": 1589,
+  "nested_attributes_path": "docs/audits/material-audition-live-20261124/independent-execution-evidence/.gitattributes",
+  "nested_attributes_text": "# Preserve immutable receipt and original process-log bytes on every platform.\n* -text\n*.log -diff -merge\n",
+  "root_attributes_unchanged": true,
+  "scope": "Review of the added documentation/evidence patch for safe cherry-pick; it is not a new native build.",
+  "committed_original_file_inventories_sha256_verified": {
+    "existing-solvers-source2": 20,
+    "windows-source3": 63
+  },
+  "delivery_addendum": {
+    "commit": "b645774f941a3bf85290b091ffd255bacbbb30c5",
+    "changed_files": 4,
+    "protected_input_intersection": [],
+    "reviewer_script_sha256_matches_receipt": true,
+    "native_108_are_exact_subset_of_execution_1508": true,
+    "historical_pending_receipt_retained": true,
+    "status": "passed",
+    "scope": "Independent patch, receipt and review-script inspection; full archive reads performed by specialist C."
+  }
+}

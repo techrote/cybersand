@@ -5,6 +5,8 @@ extends SceneTree
 # additionally verifies copied telemetry against the native world adapter.
 const Worker = preload("res://scripts/simulation_worker.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
+const Effects = preload("res://scripts/physical_actor_effects.gd")
+const CAPACITY: int = Effects.MAX_REQUESTS
 const EPOCH: int = 17
 var assertions: int = 0
 var failures: int = 0
@@ -24,7 +26,7 @@ func expect(value: bool, message: String) -> void:
 func requests(count: int, epoch: int = EPOCH, first_actor: int = 0) -> Array:
 	var result: Array = []
 	for index: int in range(count):
-		var actor: int = (first_actor + index) % 8
+		var actor: int = (first_actor + index) % Effects.MAX_ACTORS
 		result.append({"actor_slot": actor, "epoch": epoch, "sequence": 1,
 			"kind": "deposit", "source": Vector2(100 + 32 * actor, 100),
 			"origin": Vector2(109 + 32 * actor, 100), "source_body_id": actor + 1,
@@ -47,15 +49,15 @@ func frame(worker: CyberSimulationWorker, paused: bool) -> void:
 func run() -> void:
 	var worker := Worker.new()
 	worker.set_physical_actor_epoch(EPOCH)
-	var batch: Array = requests(8)
+	var batch: Array = requests(CAPACITY)
 	var accepted: Dictionary = worker.set_rigid_body_states(states(), EPOCH, batch)
-	expect(accepted.status == "queued" and accepted.queued == 8 and accepted.refused == 0,
-		"the complete eight-request batch fits")
+	expect(accepted.status == "queued" and accepted.queued == CAPACITY and accepted.refused == 0,
+		"the complete maximum-capacity request batch fits")
 	var queued: Array = worker._pending_physical_effects.duplicate(true)
 	batch[0].origin = Vector2.ZERO
 	accepted.queued = -1
 	expect(worker._pending_physical_effects == queued, "producer mutation cannot change queued effects")
-	expect(worker.physical_actor_effect_admission().last_batch.queued == 8,
+	expect(worker.physical_actor_effect_admission().last_batch.queued == CAPACITY,
 		"returned admission result does not alias internal history")
 	var updated_states: PackedFloat32Array = states(110.0)
 	var refused: Dictionary = worker.set_rigid_body_states(updated_states, EPOCH, requests(1))
@@ -64,14 +66,14 @@ func run() -> void:
 	expect(worker._pending_physical_effects == queued, "saturation preserves every earlier request")
 	expect(worker._rigid_body_states == updated_states and worker._rigid_body_epoch == EPOCH,
 		"effect saturation does not withhold the newest body sample")
-	refused = worker.set_rigid_body_states(updated_states, EPOCH, requests(9))
-	expect(refused.reason == "batch_capacity" and refused.refused == 9 and refused.queued == 0,
+	refused = worker.set_rigid_body_states(updated_states, EPOCH, requests(CAPACITY + 1))
+	expect(refused.reason == "batch_capacity" and refused.refused == CAPACITY + 1 and refused.queued == 0,
 		"an oversized batch receives one complete refusal")
-	expect(worker._pending_physical_effects == queued, "oversized batch never contributes an eight-request prefix")
+	expect(worker._pending_physical_effects == queued, "oversized batch never contributes a partially admitted prefix")
 	var stats: Dictionary = worker.physical_actor_effect_admission()
-	expect(stats.capacity == 8 and stats.pending_requests == 8 and stats.accepted_batches == 1
-		and stats.accepted_requests == 8 and stats.refused_batches == 2
-		and stats.refused_requests == 10 and stats.overflow_batches == 2,
+	expect(stats.capacity == CAPACITY and stats.pending_requests == CAPACITY and stats.accepted_batches == 1
+		and stats.accepted_requests == CAPACITY and stats.refused_batches == 2
+		and stats.refused_requests == CAPACITY + 2 and stats.overflow_batches == 2,
 		"bounded telemetry counts actual admission and overflow outcomes")
 	var no_effects: Dictionary = worker.set_rigid_body_states(updated_states, EPOCH)
 	expect(no_effects.status == "no_effects" and no_effects.requested == 0
@@ -88,22 +90,22 @@ func run() -> void:
 	expect(snapshot.physical_actor_effects.is_empty(), "queue receipts do not impersonate applied-cell receipts")
 	var retained: Dictionary = snapshot.physical_actor_effect_admission.duplicate(true)
 	expect(not worker.cancel_physical_actor_effects(EPOCH + 1, 0)
-		and not worker.cancel_physical_actor_effects(EPOCH, 8)
+		and not worker.cancel_physical_actor_effects(EPOCH, Effects.MAX_ACTORS)
 		and worker._pending_physical_effects == queued, "wrong epoch or actor cannot revoke this queue")
 	expect(worker.cancel_physical_actor_effects(EPOCH, 0), "actor-specific cancellation is admitted")
 	var surviving: Array = worker._admit_physical_effects(queued, EPOCH)
-	expect(surviving.size() == 7 and worker._pending_physical_effects.size() == 7,
+	expect(surviving.size() == CAPACITY - 1 and worker._pending_physical_effects.size() == CAPACITY - 1,
 		"cancellation retires queued and already-copied work for only one actor")
-	var seven: Array = worker._pending_physical_effects.duplicate(true)
+	var remaining: Array = worker._pending_physical_effects.duplicate(true)
 	refused = worker.set_rigid_body_states(updated_states, EPOCH, requests(2))
 	expect(refused.reason == "pending_capacity" and refused.refused == 2
-		and worker._pending_physical_effects == seven, "one free slot never partially admits a two-request batch")
+		and worker._pending_physical_effects == remaining, "one free slot never partially admits a two-request batch")
 	expect(worker.set_rigid_body_states(updated_states, EPOCH, requests(1)).status == "queued"
-		and worker._pending_physical_effects.size() == 8, "fresh work can use the cancelled actor's freed slot")
+		and worker._pending_physical_effects.size() == CAPACITY, "fresh work can use the cancelled actor's freed slot")
 	expect(worker.cancel_physical_actor_effects(EPOCH) and worker._pending_physical_effects.is_empty(),
 		"all-actor cancellation drains the queue")
-	expect(worker.physical_actor_effect_admission().accepted_requests == 9
-		and worker.physical_actor_effect_admission().refused_requests == 12,
+	expect(worker.physical_actor_effect_admission().accepted_requests == CAPACITY + 1
+		and worker.physical_actor_effect_admission().refused_requests == CAPACITY + 4,
 		"cancellation preserves historical admissions and refusals")
 	worker.set_physical_actor_epoch(EPOCH + 1)
 	stats = worker.physical_actor_effect_admission()
@@ -137,7 +139,7 @@ func run() -> void:
 	var validator := Worker.new()
 	validator.set_physical_actor_epoch(EPOCH)
 	var malformed: Array = requests(1)
-	malformed.append({"actor_slot": 8})
+	malformed.append({"actor_slot": Effects.MAX_ACTORS})
 	refused = validator.set_rigid_body_states(states(), EPOCH, malformed)
 	expect(refused.reason == "actor_slot" and refused.refused == 2
 		and validator._pending_physical_effects.is_empty(), "invalid actor slot cannot partially enqueue its valid peer")

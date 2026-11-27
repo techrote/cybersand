@@ -105,8 +105,8 @@ func human_action() -> bool:
 
 
 func exercise() -> void:
-	check(Catalog.MAX_ACTORS==8 and Session.MAX_ACTORS==8 and Setup.MAX_BODIES==8,
-		"ordinary host retains eight actual actors without Actor Capacity imports")
+	check(Catalog.Capacity.defaults().logical_limit == 8 and Catalog.MAX_AMBIENT_CONTROLLERS == 8,
+		"ordinary host retains the eight-actor default and AMBIENT budget")
 	check(wb.applied.actors.size()==4 and session.bodies().size()>=4,"four authored actors own real retained Rapier bodies")
 	check(wb._ambient_profile_editor==null and not session._ambient_sensor_active,"ordinary startup has no ambient editor or material sensor")
 	wb.open_ambient_profile(101)

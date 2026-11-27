@@ -66,7 +66,7 @@ func _run() -> void:
 	var world: Variant = worker._world
 	var original_native_instance: int = world.get_instance_id()
 	var initial_world_generation: int = int(host.latest_snapshot.render_world_generation)
-	_expect(bench._tool.item_count == 7, "Two M4-only options exist behind explicit flag")
+	_expect(bench._tool.item_count == bench.TOOL_NAMES.size() + 3, "Three M4-only options exist behind explicit flag")
 	_expect(bench.object_shard_m4_port.enabled and host.object_shard_m4_probe.enabled == ("--objectshard-diagnostics" in OS.get_cmdline_user_args()),
 		"Structures and optional performance recording obey their independent flags")
 	var capability: Dictionary = bench.object_shard_m4_status()
@@ -77,12 +77,12 @@ func _run() -> void:
 	var brush_before: Dictionary = worker.paint_state()
 	_expect(not bool(brush_before.get("legacy_busy", true)),
 		"No ordinary brush is pending at the negative-input checkpoint")
-	_pointer(MOUSE_BUTTON_RIGHT, 5)
+	_pointer(MOUSE_BUTTON_RIGHT, bench.CUT_MOVING_TOOL)
 	_expect(bench.message.contains("CompetingOrUnattachedWorld"),
 		"Right-click M4 erase visibly refuses rather than invoking ordinary erase")
 	_expect(bench.object_shard_m4_port.pending_count() == 0,
 		"Refused moving erase never enters native queue")
-	_pointer(MOUSE_BUTTON_LEFT, 6)
+	_pointer(MOUSE_BUTTON_LEFT, bench.IGNITE_MOVING_TOOL)
 	_expect(bench.message.contains("CompetingOrUnattachedWorld"),
 		"Left-click M4 ignite visibly refuses rather than emitting Fire")
 	_expect(bench.object_shard_m4_port.pending_count() == 0,
@@ -109,7 +109,7 @@ func _run() -> void:
 		await process_frame
 	_expect(host.latest_snapshot.tick_index > before_live_tick and not worker.has_failed(),
 		"Real ordinary World advances a semantic tick while M4 seam is unavailable")
-	_pointer(MOUSE_BUTTON_RIGHT, 5)
+	_pointer(MOUSE_BUTTON_RIGHT, bench.CUT_MOVING_TOOL)
 	_expect(bench.message.contains("CompetingOrUnattachedWorld") \
 			and bench.object_shard_m4_port.pending_count() == 0,
 		"Running World refuses moving-cell edit without routing it into terrain")

@@ -70,6 +70,18 @@ Preserve PUBPRES, GEN-006, SWARM and CI mission ownership. The owner authorized
 M0–M2 implementation and qualification, not Ready, merge, production defaults or
 release. Source-bound Windows automation does not establish physical acceptance.
 
+## Material audition — 2026-11-24
+
+[Draft PR #768](https://github.com/techrote/cybersand/pull/768) owns the
+[current-scene material profile contract](../systems/material-audition.md) and
+[consumer capability map](../systems/material-audition-consumers.md). It starts
+from accepted main `00cdb02f`; retain the independent PUBPRES/ObjectShard/Art/SWARM
+programmes and reconcile only the listed narrow seams. No canonical catalogue,
+identity allocation or production default is retuned. Keep Draft/HOLD.
+The [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+binds source `5f73b0ae`, runtime-only child `206f14da`, original target-platform
+execution and the independently verified Windows ZIP. Its final integration
+snapshot and physical owner gates remain authoritative for this candidate.
 
 ## Art storage mergedown — 2026-11-26
 
