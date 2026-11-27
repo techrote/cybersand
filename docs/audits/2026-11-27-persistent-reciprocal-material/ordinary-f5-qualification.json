@@ -1,0 +1,101 @@
+{
+  "source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+  "source_tree": "790b071e118de953f7a063418951e7c7596e6337",
+  "common_owner_fix": "78e8d626c8ac2c5764c270ce7060732d33299d88",
+  "fixture_sha256": "bb6ef0c4f3e365726ce97303620cf546a8a2f89059b9b6caf4b70643bdfa5f16",
+  "platform": "Windows 11, NVIDIA TITAN RTX, D3D11 ANGLE",
+  "godot": "4.7.stable.official.5b4e0cb0f",
+  "rapier": "0.35.2",
+  "native_inputs": 114,
+  "sha256": {
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "98a12da827dce45fba42ea235cc32bdd7994d1bc8225ec367fb77559fa9dd003",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "command": [
+    "Godot_v4.7-stable_win64.exe",
+    "--path",
+    "godot",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3_angle",
+    "--max-fps",
+    "60",
+    "--script",
+    "docs/audits/2026-11-27-persistent-reciprocal-material/ordinary_f5_recovery.gd",
+    "--",
+    "--persistent-start-paused",
+    "--persistent-profile=<fresh profile dir>",
+    "--persistent-evidence=<result dir>"
+  ],
+  "environment": "Use fresh APPDATA and LOCALAPPDATA and the corresponding native/Rapier runtime. Engine exit 0 under a 540-second wall timeout.",
+  "scope": "One real desktop process used four F5 transitions, with no named MicroScenario, and two full ordinary Workbench/Areas scene replacement loops with an independent edit. The test compared all 512 x 512 resident cells and history at every return.",
+  "receipt": {
+    "area_digest": "75c392ce3390d71d6ffac290552448c743ba3ef2a37fca0c87ae0cd0d21855a8",
+    "area_history": "3f02f4f1e8e54d607ebd9c6dd66179a32ce15a8d40a418f3922220c85400b95f",
+    "checks": 76,
+    "display": "Windows",
+    "failures": [],
+    "pid": 8996,
+    "trace": [
+      {
+        "event": "F5",
+        "generation": 3,
+        "model": "physical/barrel",
+        "owner": "barrel",
+        "receipt": "dd9eaf870f925ea1722301d4e8318f2876a9f8f65d030575ffacf249d5a7a1d4"
+      },
+      {
+        "event": "F5",
+        "generation": 4,
+        "model": "",
+        "owner": "",
+        "receipt": "7470a307f5d61c3db042de3212776fb1bcff73c74129c0f6b076467a0c996412"
+      },
+      {
+        "event": "F5",
+        "generation": 5,
+        "model": "physical/ripper",
+        "owner": "ripper",
+        "receipt": "c6d71616de08455c3f6f8648bec73df41a301410c85af9859f17123c3390b70a"
+      },
+      {
+        "event": "F5",
+        "generation": 6,
+        "model": "",
+        "owner": "",
+        "receipt": "be0d4a28e7c5775410b77497927b020f9fadf32b2445ef595d0a034e8448e169"
+      },
+      {
+        "cycle": 0,
+        "event": "ordinary-blank",
+        "history": "0cf2963636bc5cfdc0dcf3e475cb356ebdf3601ed55b78a957bbf9ac7c531e51",
+        "worker": -9223370830925259973
+      },
+      {
+        "cycle": 0,
+        "digest": "75c392ce3390d71d6ffac290552448c743ba3ef2a37fca0c87ae0cd0d21855a8",
+        "event": "reopened-A",
+        "history": "3f02f4f1e8e54d607ebd9c6dd66179a32ce15a8d40a418f3922220c85400b95f",
+        "revision": 6,
+        "worker": -9223370612620122711
+      },
+      {
+        "cycle": 1,
+        "event": "ordinary-blank",
+        "history": "9a0feaa782db60653e52fc1ef52c6ff524e0051d54d170007307bfead5d9affa",
+        "worker": -9223370265432419969
+      },
+      {
+        "cycle": 1,
+        "digest": "75c392ce3390d71d6ffac290552448c743ba3ef2a37fca0c87ae0cd0d21855a8",
+        "event": "reopened-A",
+        "history": "3f02f4f1e8e54d607ebd9c6dd66179a32ce15a8d40a418f3922220c85400b95f",
+        "revision": 8,
+        "worker": -9223370046875629932
+      }
+    ]
+  }
+}
