@@ -115,6 +115,36 @@ def valid_guard_fixture() -> dict:
 
 
 class QualificationGuards(unittest.TestCase):
+    def test_cross_authoring_requires_both_original_processes_and_complete_native_write(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / "cross-authoring").mkdir()
+            value = {"source_inputs_sha256": {"godot/tests/fixtures/persistent_area_cross_authoring.gd": "1" * 64},
+                     "files_sha256": {}}
+            rows = {}
+            for mode, pid in (("write", 111), ("reopen", 222)):
+                marker = {"mode": mode, "checks": 25, "failures": [], "pid": pid, "graphical": True}
+                log = mode + ".log"
+                (root / log).write_text("PERSISTENT_AREAS_WORKBENCH " + json.dumps(marker) + "\n")
+                path = f"cross-authoring/workbench-{mode}.json"
+                raw = {"mode": mode, "process_id": pid, "assertions": 24, "failures": [], "graphical": True}
+                (root / path).write_text(json.dumps(raw))
+                value["files_sha256"][path] = profile.sha(root / path)
+                rows[f"ramcache-cross-authoring-{mode}"] = {"log": log, "completion": marker, "pid": pid, "exit_code": 0}
+            original = "cross-authoring/cross-authoring.json"
+            writer = {"process_id": 111, "art_changed": 180, "art_receipt_count": 1, "architecture_receipts": 1,
+                      "projected_sha256": "a" * 64, "session_id": "b" * 32, "durable_revision": 9}
+            (root / original).write_text(json.dumps(writer))
+            value["files_sha256"][original] = profile.sha(root / original)
+            profile.verify_cross_authoring(root, value, rows)
+            for changed in ({"process_id": 222}, {"art_changed": 179}, {"architecture_receipts": 0}):
+                (root / original).write_text(json.dumps(writer | changed))
+                with self.subTest(changed=changed), self.assertRaises(RuntimeError):
+                    profile.verify_cross_authoring(root, value, rows)
+            with self.assertRaises(RuntimeError):
+                profile.verify_cross_authoring(root, value, {"ramcache-cross-authoring-write": rows["ramcache-cross-authoring-write"]})
+            profile.verify_cross_authoring(root, {"source_inputs_sha256": {}}, {})
+
     def test_late_native_prefix_preserves_debt_and_credits_only_completed_future(self):
         # Publication arithmetic only; real native/process receipts are a separate gate.
         clock = dict(version=1, game_ticks=160, areas={

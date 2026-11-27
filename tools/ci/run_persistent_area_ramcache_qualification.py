@@ -97,6 +97,7 @@ class Campaign(donor.Campaign):
         if len(receipts) != 1 or receipts[0].get("failures") != [] or receipts[0].get("assertions", 0) < 1:
             raise RuntimeError("Missing or failing actual native residency receipt")
         row["completion"] = receipts[0]
+        self.cross_authoring()
         self.writeback_faults()
         self.healthy_recovery()
         self.recovery_workbench()
@@ -108,6 +109,27 @@ class Campaign(donor.Campaign):
             self.ramcache_workbench("reopen", workers)
         self.responsiveness()
         self.cold_comparison()
+
+    def cross_authoring(self) -> None:
+        folder = self.output / "cross-authoring"
+        writer_pid = None
+        for mode in ("write", "reopen"):
+            arguments = [f"--persistent-profile={folder / 'profile'}", f"--persistent-evidence={folder}",
+                         f"--persistent-test-mode={mode}", "--persistent-test-workers=1", "--persistent-start-paused"]
+            if not self.args.headless:
+                arguments.append("--persistent-require-graphics")
+            command = self.command("fixtures/persistent_area_cross_authoring.gd", arguments, not self.args.headless)
+            row = self.run(f"ramcache-cross-authoring-{mode}", command, marker="PERSISTENT_AREAS_WORKBENCH", timeout=420)
+            receipt = json.loads((folder / f"workbench-{mode}.json").read_text(encoding="utf-8"))
+            # The donor serializes its assertion count before checking the receipt file opened successfully.
+            if receipt["process_id"] != row["pid"] or row["completion"]["pid"] != row["pid"] \
+                    or receipt["mode"] != mode or receipt["assertions"] + 1 != row["completion"]["checks"] \
+                    or receipt["failures"] or receipt["graphical"] != (not self.args.headless):
+                raise RuntimeError("Cross-authoring receipt differs from its measured process")
+            if mode == "write":
+                writer_pid = row["pid"]
+            elif row["pid"] == writer_pid:
+                raise RuntimeError("Cross-authoring recovery requires a fresh process")
 
     def responsiveness(self) -> None:
         self.report["ramcache_responsiveness"] = {}
