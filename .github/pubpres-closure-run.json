@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
-  "phase": "delivery",
-  "purpose": "Build and ship the exact Stock Safe Windows evaluator with verified receipt directory and PowerShell policy comparison; run accepted-frame and Water gates, independent build02 calibration and six arms, and matched N/C/C/N with all-worker completion.",
+  "phase": "water-focus",
+  "purpose": "Reproduce both Windows Separate Water transitions on the repaired exact two-slot paused refresh, enforcing native owner and unchanged Sand refusal, first-read RGB, and mounted multipart controls before full selection.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "91bf62583f80f5dfe575601eb9f040fb311d29c2bb00ae920fb1f60f1035f00d",
+  "payload_sha256": "2f853e2c81e06e2907abec276e72c5012fbbc94656e2242ffe43f84b79adee3a",
   "physical_acceptance": "HOLD"
 }
