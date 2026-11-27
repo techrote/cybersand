@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
   "phase": "runtimes",
-  "purpose": "Build and verify consolidated N and integrated C native input and dependency hashes on Linux and Windows before application qualification",
+  "purpose": "Build the consolidated Linux and Windows native cohort after preserving frozen qualification invocation and sealing canonical request bytes",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "427a1fb11fd987292190c648d7252e20a4d1deb38e4bac2d76a7e2532299caa7",
+  "payload_sha256": "2efcb19bcd28e6ede1a2388952e0eb0bd2780ff3f7c1852d6430df341582ca43",
   "physical_acceptance": "HOLD"
 }
