@@ -246,9 +246,9 @@ class SandboxPublication(unittest.TestCase):
         for platform in gate.NATIVE:
             result = json.loads((self.root / gate.PROVENANCE[platform]).read_text())
             self.assertEqual("evaluation-candidate-passed", result["status"])
-            self.assertEqual(41, len(result["qualification"]["cases"]))
+            self.assertEqual(44, len(result["qualification"]["cases"]))
         windows = json.loads((self.root / gate.PROVENANCE["windows"]).read_text())
-        self.assertEqual(18, len(windows["installed_package_qualification"]["qualification"]["cases"]))
+        self.assertEqual(21, len(windows["installed_package_qualification"]["qualification"]["cases"]))
 
     def test_wrong_branch_refuses(self):
         with patch.object(gate.subprocess, "check_output", return_value="main\n"):
