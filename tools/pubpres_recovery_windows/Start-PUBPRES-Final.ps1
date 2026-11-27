@@ -110,6 +110,18 @@ function Test-PPPackage([string]$Root,[string]$Candidate) {
             $Binding.binary_sha256 -ceq $Manifest.sources.C.native.sha256 -and $Binding.dependency_builder_commit -ceq $QualificationCommit -and
             $Binding.production_runtime_promotion -eq $false -and $Manifest.recovery_selection.architecture -ceq 'stock_safe' -and
             (Get-PPHash (Join-PPSafe $Root 'qualification/recovery-correctness.json')) -ceq '02efc30a8e0dd351aba06ed00f2299e40ad3fa1ee7f4eb1e84bafddc927281ca') 'Local retest lacks its original Windows build and historical qualification'
+        $Import=$Manifest.local_import
+        $ImportFiles=@($Import.files.PSObject.Properties)
+        Assert-PP ($Import.source_commit -ceq $Candidate -and $Import.engine_sha256 -ceq $Manifest.engine.gui.sha256 -and
+            $ImportFiles.Count -gt 3 -and $ImportFiles.Count -le 256) 'Runtime import source, engine or extent differs'
+        foreach($Required in @('extension_list.cfg','global_script_class_cache.cfg','uid_cache.bin')) {
+            Assert-PP ($null -ne $Import.files.PSObject.Properties[$Required]) ('Missing runtime import: '+$Required)
+        }
+        foreach($Entry in $ImportFiles) {
+            $Path='qualification/runtime-import/'+$Entry.Name
+            Assert-PP ($Entry.Name -cmatch '^(extension_list\.cfg|global_script_class_cache\.cfg|uid_cache\.bin|imported/[\w.-]+\.ctex)$' -and
+                $Entry.Value -cmatch '^[0-9a-f]{64}$' -and $Manifest.files_sha256.$Path -ceq $Entry.Value) 'Invalid runtime import inventory'
+        }
     }
     $Defaults=$Manifest.defaults
     $SelectedConfiguration=Get-PFConfiguration 'C' 'Selected'
@@ -440,8 +452,20 @@ function Test-PFRun([string]$Run,[string]$Root,$Manifest) {
     return $Record
 }
 
+function Restore-PFLocalRuntimeImport([string]$Root,$Manifest,[string]$Project) {
+    $Cache=Join-Path $Project '.godot'
+    foreach($Entry in $Manifest.local_import.files.PSObject.Properties) {
+        $From=Join-PPSafe $Root ('qualification/runtime-import/'+$Entry.Name)
+        $To=Join-PPSafe $Cache $Entry.Name
+        [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($To))|Out-Null
+        [IO.File]::Copy($From,$To,$true)
+        Assert-PP ((Get-PPHash $To) -ceq $Entry.Value) ('Restored runtime resource differs: '+$Entry.Name)
+    }
+}
+
 if($Library) { return }
 $PackageRoot=[IO.Path]::GetFullPath($PackageRoot).TrimEnd([char[]]'\/')
+Write-Host 'Checking evaluator files...'
 $Manifest=Test-PPPackage $PackageRoot $ExpectedCandidate
 $script:PPProcessOwnerPath=Join-PPSafe $PackageRoot 'tools/pubpres_playability_windows/process_owner.cs'
 Write-Host ('Verified '+$Manifest.file_count+' source/runtime files. Draft/HOLD; physical NVIDIA acceptance is pending.')
@@ -474,8 +498,10 @@ try {
     catch { throw ('Close the Workbench already using this profile. '+$_.Exception.Message) }
     if(-not (Test-Path -LiteralPath $Run)) {
         Assert-PP (-not $ReopenRun) 'Requested reopen directory does not exist'
+        Write-Host 'Preparing the scene profile...'
         New-PFRun $PackageRoot $Manifest $Key $EngineName $Thread $FullImageSlots $RenderingDriver $Scene $Run $RecoveryMode
     }
+    Write-Host 'Checking the scene profile...'
     $Record=Test-PFRun $Run $PackageRoot $Manifest
     foreach($Choice in @(@('Source','source',$Key),@('Engine','engine',$EngineName),@('RenderThread','render_thread',$Thread),
             @('FullImageSlots','full_image_slots',$FullImageSlots),@('RenderingDriver','render_driver',$RenderingDriver),@('Scene','scene',$Scene),@('RecoveryMode','recovery_mode',$RecoveryMode))) {
@@ -491,10 +517,16 @@ try {
     $RunProfile=Join-PPSafe $Run $Record.profile; $Project=Join-PPSafe $Run $Record.project
     $Launch=Join-Path $Run ('launches/'+[Guid]::NewGuid().ToString('N'))
     $Settings=[ordered]@{}; foreach($Entry in $Record.settings.PSObject.Properties) { $Settings[$Entry.Name]=$Entry.Value }
-    Invoke-PPProcess $Executable @('--headless','--path',$Project,'--editor','--import','--audio-driver','Dummy','--quit') ($Launch+'-import') $RunProfile $Settings $Item.source_commit 300|Out-Null
-    Test-PFRun $Run $PackageRoot $Manifest|Out-Null
-    $ImportText=[IO.File]::ReadAllText((Join-Path ($Launch+'-import') 'stdout.log'))+[IO.File]::ReadAllText((Join-Path ($Launch+'-import') 'stderr.log'))
-    Assert-PP ($ImportText -notmatch 'ERROR:') 'Strict import diagnostic failure; evidence retained'
+    if($Manifest.schema -ceq 'pubpres-local-owner-retest-v1' -and $Record.source -ceq 'C') {
+        Write-Host 'Installing prepared runtime resources...'
+        Restore-PFLocalRuntimeImport $PackageRoot $Manifest $Project
+    } else {
+        Write-Host 'Importing project resources...'
+        Invoke-PPProcess $Executable @('--headless','--path',$Project,'--editor','--import','--audio-driver','Dummy','--quit') ($Launch+'-import') $RunProfile $Settings $Item.source_commit 300|Out-Null
+        Test-PFRun $Run $PackageRoot $Manifest|Out-Null
+        $ImportText=[IO.File]::ReadAllText((Join-Path ($Launch+'-import') 'stdout.log'))+[IO.File]::ReadAllText((Join-Path ($Launch+'-import') 'stderr.log'))
+        Assert-PP ($ImportText -notmatch 'ERROR:') 'Strict import diagnostic failure; evidence retained'
+    }
     $ReadyPath=Join-Path $Run ('ready-'+[Guid]::NewGuid().ToString('N')+'.json')
     $Settings['CYBERSAND_PLAYABILITY_OWNER_RECEIPT']=$ReadyPath
     if($QuitAfterReady) { $Settings['CYBERSAND_PLAYABILITY_OWNER_QUIT_AFTER_READY']='1' }

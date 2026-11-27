@@ -3,8 +3,10 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import sys
+import tempfile
 import zipfile
 
 import package_windows as package
@@ -17,6 +19,40 @@ from retained_runtime import make_binding, BINDING
 ORIGINAL = "00478f29b9abaccb1e358137e8a9a48894c1690b"
 ARCHIVE_SHA = "79abd9beb457a79b0735fbb78e962d72bebacf6ce01ca91200e323197bccc990"
 MANIFEST_SHA = "5ffd095397ac17017835320138b19b770e596ae063d5b372cefcaee09e12a9a5"
+
+def prepare_import(payload, record, commit):
+    """Run the pinned editor once. Ship only relocatable runtime resources."""
+    engine = payload / record["engine"]["gui"]["path"]
+    with tempfile.TemporaryDirectory(prefix="PUBPRES prepare imports ") as temp:
+        scratch = Path(temp)
+        project = scratch / "godot"
+        shutil.copytree(payload / record["sources"]["C"]["project"], project)
+        shutil.copyfile(payload / record["owner_observer"], project / "tests/pubpres_playability_owner_start.gd")
+        profile = scratch / "profile"
+        profile.mkdir()
+        env = {k:v for k,v in os.environ.items() if not k.startswith("CYBERSAND_")}
+        for key in ("APPDATA","LOCALAPPDATA","XDG_DATA_HOME","XDG_CONFIG_HOME","XDG_CACHE_HOME"):
+            env[key] = str(profile / key)
+        result = subprocess.run([str(engine),"--headless","--editor","--path",str(project),"--import","--quit",
+                                 "--audio-driver","Dummy"],env=env,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,
+                                creationflags=subprocess.CREATE_NO_WINDOW,timeout=300)
+        package.need(result.returncode == 0 and b"ERROR:" not in result.stdout,
+                     "Local headless import failed: "+result.stdout[-3000:].decode(errors="replace"))
+        cache = project / ".godot"
+        resources = [cache / n for n in ("extension_list.cfg","global_script_class_cache.cfg","uid_cache.bin")]
+        resources.extend(p for p in (cache / "imported").glob("*.ctex") if not p.name.endswith(".editor.ctex"))
+        package.need(3 < len(resources) <= 256, "Missing runtime import textures or unexpected growth")
+        files = {}
+        for resource in resources:
+            name = resource.relative_to(cache).as_posix()
+            data = resource.read_bytes()
+            package.need(0 < len(data) <= 10*1024**2 and str(scratch).lower().encode() not in data.lower()
+                         and scratch.as_posix().lower().encode() not in data.lower(), "Nonportable runtime cache: "+name)
+            target = payload / "qualification/runtime-import" / name
+            target.parent.mkdir(parents=True,exist_ok=True)
+            target.write_bytes(data)
+            files[name] = package.digest(target)
+    return {"source_commit":commit,"engine_sha256":package.digest(engine),"files":files}
 
 
 def main():
@@ -85,6 +121,7 @@ def main():
     (payload / package.recovery_policy.FALLBACK_COMMAND).write_bytes(package.command(commit,mode="Fallback"))
     (payload / package.recovery_policy.DONOR_COMMAND).write_bytes(package.command(commit,mode="Fallback",donor=True))
     package.write_json(payload / "qualification" / BINDING, binding)
+    record["local_import"] = prepare_import(payload, record, commit)
     scope = "Local owner retest. The original Windows qualification applies to 00478f29. This application requires new owner evaluation."
     (payload/"READ-ME.md").write_text("# Local Windows Workbench retest\n\n"+scope+"\n\n"+
                                       (payload / package.TOOLS / "README.md").read_text(encoding="utf-8"),encoding="utf-8")
