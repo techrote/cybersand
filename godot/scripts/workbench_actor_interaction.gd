@@ -33,9 +33,9 @@ func set_mode(value: String) -> void:
 	if value not in ["paint","grab","place"]: return
 	bench._cancel()
 	bench._tool.select({"paint":0,"grab":GRAB_TOOL,"place":PLACE_TOOL}[value])
-	bench.message = {"paint":"Paint Â· Brush and Eraser work during Play; precise tools require Pause.",
-		"grab":"Live grab Â· Play, then drag a physical part. Release anywhere or Escape to let go.",
-		"place":"Place / rotate Â· Pause, drag an actor, Q/E rotate, arrows nudge, Shift for fine adjustment, Escape cancels."}[value]
+	bench.message = {"paint":"Paint · Brush and Eraser work during Play; precise tools require Pause.",
+		"grab":"Live grab · Play, then drag a physical part. Release anywhere or Escape to let go.",
+		"place":"Place / rotate · Pause, drag an actor, Q/E rotate, arrows nudge, Shift for fine adjustment, Escape cancels."}[value]
 
 func configure(value: Dictionary) -> bool:
 	if value.size() != DEFAULT_SETTINGS.size() or not value.has_all(DEFAULT_SETTINGS.keys()):
@@ -198,7 +198,7 @@ func world_input(event: InputEvent) -> bool:
 		bench.select_instance(int(picked.instance_id))
 		var started: Dictionary = current.begin_grab_hit(point,picked)
 		if started.is_empty(): bench.refuse("The selected physical body is unavailable.")
-		else: bench.message = "Grabbing #%d Â· %s with physical forces; other actors continue." % [int(started.instance_id),str(started.part_id)]
+		else: bench.message = "Grabbing #%d · %s with physical forces; other actors continue." % [int(started.instance_id),str(started.part_id)]
 	else:
 		begin_placement(int(picked.instance_id),point)
 	return true
@@ -229,7 +229,7 @@ func _refresh_preview(position: Vector2, rotation: float) -> void:
 		return
 	placement["active"] = true
 	placement["rotation_degrees"] = rad_to_deg(float(placement.rotation))
-	bench.message = "Placement preview #%d Â· (%.2f, %.2f) Â· %.1fÂ° Â· %s" % [int(_source.instance_id),position.x,position.y,
+	bench.message = "Placement preview #%d · (%.2f, %.2f) · %.1f° · %s" % [int(_source.instance_id),position.x,position.y,
 		placement.rotation_degrees,"release to prepare / Esc cancels" if placement.valid else str(placement.reason)]
 
 func place_exact(instance_id: int, position: Vector2, rotation_degrees: float) -> bool:

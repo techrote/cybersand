@@ -25,7 +25,7 @@ func _draw() -> void:
 		var centre: Vector2 = world_to_local * Vector2(proposed.position)
 		draw_circle(centre,4.0,color)
 		draw_line(centre,centre+Vector2(26,0).rotated(float(proposed.rotation)),color,2.0,true)
-		var caption := "%.2f, %.2f  /  %.1fÂ°" % [proposed.position.x,proposed.position.y,float(proposed.rotation_degrees)]
+		var caption := "%.2f, %.2f  /  %.1f°" % [proposed.position.x,proposed.position.y,float(proposed.rotation_degrees)]
 		draw_string(ThemeDB.fallback_font,centre+Vector2(12,-12),caption,HORIZONTAL_ALIGNMENT_LEFT,-1,14,color)
 	var grabbed: Dictionary = interaction.grab_state()
 	if grabbed.get("active",false):

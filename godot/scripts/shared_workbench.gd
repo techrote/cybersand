@@ -11,7 +11,7 @@ const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
 const ActorInteraction = preload("res://scripts/workbench_actor_interaction.gd")
 const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
-const RESPONSE_LABELS := ["LA-SA Â· selective arrivals","LA Â· all events","LA Â· events off","RFT Â· fixed 20"]
+const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source","Grab physical part","Place / rotate (paused)"]
 var actor_interaction: RefCounted
@@ -163,13 +163,13 @@ func open_materials_lab() -> void:
 		_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
 	else:
 		if not preload("res://scripts/workbench_lab_window_policy.gd").open(_materials_lab_window):
-			refuse("Materials Lab needs a 1000Ã—650 client plus its title bar inside the game window.")
+			refuse("Materials Lab needs a 1000×650 client plus its title bar inside the game window.")
 			return
 	if _materials_lab_window.force_native:
 		var usable: Rect2i = DisplayServer.screen_get_usable_rect(get_window().current_screen)
 		if not _fit_materials_lab_native(usable,Vector2i(1520,900)):
 			_materials_lab_window.hide()
-			refuse("Materials Lab needs its 1000Ã—650 client plus window borders inside the desktop work area (%dÃ—%d)." % [usable.size.x,usable.size.y])
+			refuse("Materials Lab needs its 1000×650 client plus window borders inside the desktop work area (%d×%d)." % [usable.size.x,usable.size.y])
 
 func _fit_materials_lab_native(usable: Rect2i, requested: Vector2i) -> bool:
 	# Godot's centered-clamped popup uses the full monitor. Native decorations
@@ -257,17 +257,17 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	theme = compact
 	var row := _row(self)
 	_label(row,"Pilot")
-	_picker(row,_roster,["Choose flyerâ€¦"],_roster_changed)
+	_picker(row,_roster,["Choose flyer…"],_roster_changed)
 	_fill_roster()
 	_button(row,"Play / Pause [P]",toggle_pause)
 	_button(row,"Step [.]",step_once)
 	_button(row,"Reset selected [R]",reset_selected)
 	_button(row,"Restore start",restore_start)
 	_button(row,"New blank",new_canvas)
-	_button(row,"New from generatorâ€¦",func() -> void: _generated_dialog.open_new())
-	_button(row,"Reciprocal assemblyâ€¦",open_reciprocal)
-	_button(row,"Materials Labâ€¦",open_materials_lab)
-	_button(row,"Water Labâ€¦",water_lab.open)
+	_button(row,"New from generator…",func() -> void: _generated_dialog.open_new())
+	_button(row,"Reciprocal assembly…",open_reciprocal)
+	_button(row,"Materials Lab…",open_materials_lab)
+	_button(row,"Water Lab…",water_lab.open)
 	engine_lab = preload("res://scripts/workbench_engine_lab.gd").new()
 	engine_lab.name = "EngineLab"
 	# Window nodes default visible. Keep it hidden *before* entering
@@ -275,14 +275,14 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	engine_lab.hide()
 	add_child(engine_lab)
 	engine_lab.mount(host,self)
-	_button(row,"Engine Labâ€¦",func() -> void: engine_lab.open())
+	_button(row,"Engine Lab…",func() -> void: engine_lab.open())
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
-	_button(row,"âˆ’",func() -> void: zoom_by(1))
+	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
-	_button(row,"Configurationâ€¦",open_actor_composition)
+	_button(row,"Configuration…",open_actor_composition)
 	_button(row,"Art batches",open_art_batches)
-	_button(row,"Batch Labâ€¦",open_batch_lab)
-	_button(row,"Architectureâ€¦",open_architecture_lab)
+	_button(row,"Batch Lab…",open_batch_lab)
+	_button(row,"Architecture…",open_architecture_lab)
 	_button(row,"Details",func() -> void: _details.visible = not _details.visible)
 	_button(row,"Menu [F2]",func() -> void: get_tree().change_scene_to_file("res://feature_launcher.tscn"))
 	row = _row(self)
@@ -311,7 +311,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		if not applied.is_empty(): applied.brush = maxi(2,int(value)))
 	_button(row,"Source at X/Y",func() -> void: place_source(Vector2i(entered_position())))
 	_button(row,"Burst [B]",burst)
-	_stream.text = "Stream â‰¤600 ticks"
+	_stream.text = "Stream ≤600 ticks"
 	_stream.focus_mode = Control.FOCUS_NONE
 	_stream.toggled.connect(stream)
 	row.add_child(_stream)
@@ -347,7 +347,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	for key: String in Setup.DEFAULT_OPTIONS:
 		var low := 5.0 if key == "budget" else (1.0 if key == "boost_multiplier" else (0.01 if key in ["mass_multiplier","inertia_multiplier"] else 0.0))
 		var high := 80.0 if key == "budget" else (8.0 if key == "boost_multiplier" else 64.0)
-		_fields[key] = _spin(row,key.replace("_multiplier"," Ã—").capitalize(),SpinBox.new(),low,high,1 if key == "budget" else 0.01,Setup.DEFAULT_OPTIONS[key])
+		_fields[key] = _spin(row,key.replace("_multiplier"," ×").capitalize(),SpinBox.new(),low,high,1 if key == "budget" else 0.01,Setup.DEFAULT_OPTIONS[key])
 	_button(row,"Reload JSON + reset",reload_definitions)
 	row = _row(_details)
 	for axis: String in ["New width","height"]:
@@ -375,7 +375,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_name.tooltip_text = "Name of the authored starting map; Save does not capture evolved simulation."
 	save_start_button.reparent(paint_editor)
 	load_start_button.reparent(paint_editor)
-	_flatten_button = _button(paint_editor,"Flatten / Bake Historyâ€¦",_flatten_pressed)
+	_flatten_button = _button(paint_editor,"Flatten / Bake History…",_flatten_pressed)
 	_flatten_button.tooltip_text = "Make the current stored materials the new baseline and discard earlier construction/Undo history. The live World keeps running. Save remains separate."
 	_flatten_confirmation.title = "Flatten / Bake History"
 	_flatten_confirmation.dialog_text = "Make the current material layout the new authored baseline?\nEarlier construction and Undo/Redo history will be discarded.\nThe live simulation and actors continue unchanged. This does not Save."
@@ -384,7 +384,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	add_child(_flatten_confirmation)
 	_material.clear()
 	for material_id: int in host.simulation_worker.paint_materials():
-		_material.add_item("%s Â· %d" % [host.material_name(material_id).capitalize(),material_id],material_id)
+		_material.add_item("%s · %d" % [host.material_name(material_id).capitalize(),material_id],material_id)
 	_brush.min_value = 0
 	_brush.tooltip_text = "Radius in cells. Zero paints one cell; [ and ] adjust width."
 	_liquids = host.playable_session_panel.policy_editor
@@ -400,11 +400,11 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_status.max_lines_visible = 2
 	_status.mouse_filter = Control.MOUSE_FILTER_PASS
 	add_child(_status)
-	DisplayServer.window_set_title("CyberSand Â· Development workbench")
-	_processor_label = "%s Â· %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
+	DisplayServer.window_set_title("CyberSand · Development workbench")
+	_processor_label = "%s · %d logical CPUs" % [OS.get_processor_name(),OS.get_processor_count()]
 	var binary := "cybersand_native.windows.x86_64.dll" if OS.get_name() == "Windows" else "libcybersand_native.linux.x86_64.so"
 	var binary_hash := FileAccess.get_sha256("res://addons/cybersand_native/bin/"+binary)
-	_runtime_label = "%s Â· Godot %s Â· native %s Â· definitions %s" % [OS.get_name(),Engine.get_version_info().string,binary_hash.left(12),Fleet.registry_hash().left(12)]
+	_runtime_label = "%s · Godot %s · native %s · definitions %s" % [OS.get_name(),Engine.get_version_info().string,binary_hash.left(12),Fleet.registry_hash().left(12)]
 	if recovery.is_empty(): new_canvas.call_deferred()
 	else: apply.call_deferred(recovery)
 
@@ -492,7 +492,7 @@ func set_sandbox_capacity(value: Dictionary) -> bool:
 	# Updating the admitted budget uses the existing prepared-owner protocol.
 	# No actors are deleted and no body count is silently clipped.
 	if not apply(next,true,0,false,not host.paused,{},{},false): return false
-	message = "Preparing capacity Â· %d actors / %d bodies / %d proxies. Existing poses and terrain retained; controllers restart." % [value.logical_limit,value.body_limit,value.proxy_limit]
+	message = "Preparing capacity · %d actors / %d bodies / %d proxies. Existing poses and terrain retained; controllers restart." % [value.logical_limit,value.body_limit,value.proxy_limit]
 	return true
 
 
@@ -505,7 +505,7 @@ func set_actor_tuning(id: int, options: Dictionary) -> bool:
 	var error := Setup.validate(next,false)
 	if not error.is_empty(): return refuse(error)
 	if not apply(next,true,0,false,not host.paused,{},{},false): return false
-	message = "Preparing physical tuning for #%d Â· existing poses and terrain retained; controllers restart." % id
+	message = "Preparing physical tuning for #%d · existing poses and terrain retained; controllers restart." % id
 	return true
 
 
@@ -515,7 +515,7 @@ func load_actor_sandbox(kind: String, count: int = 64) -> bool:
 	if candidate.is_empty(): return refuse("Sandbox example could not be built within the physical resource limits.")
 	if not apply(candidate,false,0,false,false,{},{},false): return false
 	_pending_sandbox_demo = kind
-	message = "Preparing %s playground with %d real actorsâ€¦" % [kind,candidate.actors.size()]
+	message = "Preparing %s playground with %d real actors…" % [kind,candidate.actors.size()]
 	return true
 
 
@@ -548,7 +548,7 @@ func commit_actor_placement(source: Dictionary, proposed: Dictionary) -> bool:
 	var overrides := {id:{"position":confirmed.position,"retained_parts":confirmed.parts}}
 	if not apply(next,true,0,false,false,{},{},false,overrides): return false
 	_actor_action = "Placed / rotated"
-	message = "Preparing #%d placement once Â· current articulation retained; momentum is cleared for this actor; controllers restart." % id
+	message = "Preparing #%d placement once · current articulation retained; momentum is cleared for this actor; controllers restart." % id
 	return true
 
 
@@ -766,7 +766,7 @@ func set_actor_control(id: int, control: Dictionary) -> bool:
 		_pilot_instance_id = 0
 		pilot_slot = -1
 	_sync_roster()
-	message = "#%d Â· %s Â· %s; live pose and resources retained." % [id,control.source,"enabled" if control.enabled else "decisions stopped"]
+	message = "#%d · %s · %s; live pose and resources retained." % [id,control.source,"enabled" if control.enabled else "decisions stopped"]
 	return true
 
 
@@ -841,7 +841,7 @@ func body_state(id: int) -> Dictionary:
 	return host.physical_actor_session.workbench_actor_state(id)
 
 func refuse(reason: String) -> bool:
-	message = "Refused Â· " + reason.trim_prefix("MicroScenario rejected; ")
+	message = "Refused · " + reason.trim_prefix("MicroScenario rejected; ")
 	return false
 
 func busy() -> bool:
@@ -894,9 +894,9 @@ func request_flatten(capacity_bytes: int = 2048*2048*2) -> Dictionary:
 	if not admitted.get("ok",false): return _refuse_flatten(str(admitted.get("reason","Native material capture refused.")))
 	_flatten_request = {"token":int(admitted.token),"generation":int(state.generation),
 		"extent":Setup.extent_of(applied),"edits":applied.edits.duplicate(true),"started_usec":requested_usec}
-	_flatten_status = {"status":"pending","token":int(admitted.token),"reason":"Capturing native stored materialsâ€¦"}
+	_flatten_status = {"status":"pending","token":int(admitted.token),"reason":"Capturing native stored materials…"}
 	if _flatten_button != null: _flatten_button.text = "Cancel Flatten"
-	message = "Flatten Â· capturing native stored materials; previous history retained until validation completesâ€¦"
+	message = "Flatten · capturing native stored materials; previous history retained until validation completes…"
 	return admitted
 
 func cancel_flatten(reason: String = "Flatten cancelled; previous authoring history retained.") -> void:
@@ -905,7 +905,7 @@ func cancel_flatten(reason: String = "Flatten cancelled; previous authoring hist
 		host.simulation_worker.material_capture_cancel(int(_flatten_request.token))
 	_flatten_request = {}
 	_flatten_status = {"status":"failed","reason":reason}
-	if _flatten_button != null: _flatten_button.text = "Flatten / Bake Historyâ€¦"
+	if _flatten_button != null: _flatten_button.text = "Flatten / Bake History…"
 	message = reason
 
 func _poll_flatten() -> void:
@@ -915,29 +915,29 @@ func _poll_flatten() -> void:
 	var transfer_usec := Time.get_ticks_usec()-poll_usec
 	if captured.is_empty(): return
 	if not captured.get("ok",false):
-		cancel_flatten("Flatten failed Â· "+str(captured.get("error","Incomplete native material capture.")))
+		cancel_flatten("Flatten failed · "+str(captured.get("error","Incomplete native material capture.")))
 		return
 	if int(captured.get("request_token",-1)) != int(_flatten_request.token) \
 			or int(captured.get("generation",-1)) != int(_flatten_request.generation) \
 			or Setup.extent_of(applied) != _flatten_request.extent or applied.edits != _flatten_request.edits:
-		cancel_flatten("Flatten refused Â· stale native capture or changed authored history.")
+		cancel_flatten("Flatten refused · stale native capture or changed authored history.")
 		return
 	var stage_usec := Time.get_ticks_usec()
 	var staged := MaterialBaseline.stage(captured,_flatten_request.extent)
 	if staged.has("error"):
-		cancel_flatten("Flatten refused Â· "+str(staged.error))
+		cancel_flatten("Flatten refused · "+str(staged.error))
 		return
 	var candidate := applied.duplicate(true)
 	candidate.edits = []
 	var error := Setup.validate(candidate)
 	if not error.is_empty():
-		cancel_flatten("Flatten refused Â· "+error)
+		cancel_flatten("Flatten refused · "+error)
 		return
 	stage_usec = Time.get_ticks_usec()-stage_usec
 	var adoption_usec := Time.get_ticks_usec()
 	var finished: Dictionary = host.simulation_worker.material_capture_finish(int(_flatten_request.token),true)
 	if not finished.get("ok",false):
-		cancel_flatten("Flatten refused Â· "+str(finished.get("reason","Native owner changed.")))
+		cancel_flatten("Flatten refused · "+str(finished.get("reason","Native owner changed.")))
 		return
 	# The complete validated plane already exists. Only authoring references and
 	# history change here; no prepared World, actor API, pause or simulation call.
@@ -959,8 +959,8 @@ func _poll_flatten() -> void:
 		"transfer_usec":transfer_usec,"stage_usec":stage_usec,"adoption_usec":Time.get_ticks_usec()-adoption_usec,
 		"total_usec":Time.get_ticks_usec()-int(_flatten_request.started_usec)}
 	_flatten_request = {}
-	if _flatten_button != null: _flatten_button.text = "Flatten / Bake Historyâ€¦"
-	message = "Flattened %s Â· %d bytes (2/cell). Earlier history discarded; live World unchanged. Save start when ready." % [
+	if _flatten_button != null: _flatten_button.text = "Flatten / Bake History…"
+	message = "Flattened %s · %d bytes (2/cell). Earlier history discarded; live World unchanged. Save start when ready." % [
 		str(_material_baseline.extent),_material_baseline.cells.size()]
 
 func _exit_tree() -> void:
@@ -1077,7 +1077,7 @@ func install_generated_start(candidate: Dictionary, packet: Dictionary) -> bool:
 	# Explicit dialog confirmation is the only replacement path. No partial
 	# native writes occur before the owner's acknowledged prepared commit.
 	if not apply(candidate,false,0,false,false,packet): return false
-	message = "Installing verified GEN-007 terrainâ€¦"
+	message = "Installing verified GEN-007 terrain…"
 	return true
 
 func new_canvas() -> bool:
@@ -1104,7 +1104,7 @@ func load_water_comparison(scene_id: String) -> bool:
 	# It never silently chooses a solver or modifies another law's options.
 	if not apply(candidate): return false
 	_pending_water_comparison = scene_id
-	message = "Preparing Water comparison scene with requested solver / tuningâ€¦"
+	message = "Preparing Water comparison scene with requested solver / tuning…"
 	return true
 
 func _editable_authored_world() -> bool:
@@ -1215,7 +1215,7 @@ func installed(candidate: Dictionary) -> void:
 	_instances.clear()
 	_instances.add_item("Observer",0)
 	for a: Dictionary in applied.actors:
-		_instances.add_item("%d Â· %s" % [int(a.id),str(a.model).capitalize()],int(a.id))
+		_instances.add_item("%d · %s" % [int(a.id),str(a.model).capitalize()],int(a.id))
 	select_instance(selected_id(),true)
 	if not applied.source.is_empty():
 		host.workbench_source(Vector2i(applied.source[0],applied.source[1]),int(applied.source[2]),"configure")
@@ -1224,7 +1224,7 @@ func installed(candidate: Dictionary) -> void:
 		_name.text = "water-" + _pending_water_comparison
 		_camera.select(2)
 		set_camera(2)
-		message = "%s Â· %s" % [str(scene.get("label","Water comparison")),str(scene.get("help",""))]
+		message = "%s · %s" % [str(scene.get("label","Water comparison")),str(scene.get("help",""))]
 		_pending_water_comparison = ""
 	equipment.installed(applied)
 	for i: int in 3:
@@ -1263,14 +1263,14 @@ func installed(candidate: Dictionary) -> void:
 		_name.text = "actor-sandbox-" + _pending_sandbox_demo
 		_camera.select(2)
 		set_camera(2)
-		message = "%s ready Â· %d physical actors. Play to grab a part or paint; Pause to place / rotate an assembly." % [_pending_sandbox_demo.capitalize(),applied.actors.size()]
+		message = "%s ready · %d physical actors. Play to grab a part or paint; Pause to place / rotate an assembly." % [_pending_sandbox_demo.capitalize(),applied.actors.size()]
 		_pending_sandbox_demo = ""
 	if not _pending_material_demo.is_empty():
 		var scene := preload("res://scripts/workbench_material_audition_scenes.gd").description(_pending_material_demo)
 		_name.text = "materials-" + _pending_material_demo
 		_camera.select(2)
 		set_camera(2)
-		message = "%s Â· %s" % [str(scene.get("label","Material audition")),str(scene.get("help",""))]
+		message = "%s · %s" % [str(scene.get("label","Material audition")),str(scene.get("help",""))]
 		_pending_material_demo = ""
 	if not _pending_ambient_example.is_empty():
 		_name.text = _pending_ambient_example
@@ -1322,7 +1322,7 @@ func _inventory_report(receipt: Dictionary, rounded_on_apply: bool) -> String:
 	var added := int(receipt.get("normalization_produced",0))
 	var removed := int(receipt.get("normalization_consumed",0))
 	if not receipt.get("requested",false) and not rounded_on_apply and not added and not removed and halo == 0 and losses.is_empty(): return ""
-	var report := " Water quantity %d â†’ %d." % [int(receipt.water_before),int(receipt.water_after)]
+	var report := " Water quantity %d → %d." % [int(receipt.water_before),int(receipt.water_after)]
 	if rounded_on_apply or added or removed: report += " Rounding added %d and removed %d Water units." % [added,removed]
 	if halo > 0:
 		report += " Kept %d cells outside the canvas (%s), including %d visible Water units." % [
@@ -1350,17 +1350,17 @@ func _details_visibility_changed() -> void:
 func _participation_report(snapshot: CyberSimulationSnapshot) -> String:
 	if snapshot == null: return "Waiting for the native worker."
 	var requested := "Auto" if snapshot.native_worker_request <= 0 else str(snapshot.native_worker_request)
-	var result := "%s Â· native pool %s" % [_processor_label,requested]
+	var result := "%s · native pool %s" % [_processor_label,requested]
 	var sample := snapshot.native_worker_participation
 	if sample.is_empty() or sample.world_generation != snapshot.render_world_generation:
-		return result + " Â· waiting for a completed tick sample."
+		return result + " · waiting for a completed tick sample."
 	result += ", capacity %d" % int(sample.worker_capacity)
-	result += "\nTick %d Â· %d task claimants (peak in one cell-update phase) Â· cell-update phase jobs %s" % [
+	result += "\nTick %d · %d task claimants (peak in one cell-update phase) · cell-update phase jobs %s" % [
 		sample.completed_tick,sample.workers_observed,str(sample.phase_jobs)]
 	if sample.has("native_tick_ms"):
 		var elapsed: float = sample.native_tick_ms
 		var budget_ms := 1000.0/60.0
-		result += " Â· %.2f ms (%.0f%% of the %.2f ms tick budget)" % [elapsed,100.0*elapsed/budget_ms,budget_ms]
+		result += " · %.2f ms (%.0f%% of the %.2f ms tick budget)" % [elapsed,100.0*elapsed/budget_ms,budget_ms]
 	return result + ". An inline owner counts as one claimant. CPU utilization is a separate measure."
 
 
@@ -1396,7 +1396,7 @@ func _reveal_selected() -> void:
 func _change_actor(candidate: Dictionary, id: int, label: String) -> bool:
 	if not apply(candidate,true,id,false,not host.paused,{},{},false): return false
 	_actor_action = label
-	message = "Preparing %s #%dâ€¦" % [str(actor(candidate,id).model).capitalize(),id]
+	message = "Preparing %s #%d…" % [str(actor(candidate,id).model).capitalize(),id]
 	return true
 
 
@@ -1542,9 +1542,9 @@ func apply_liquids() -> bool:
 	next.rule_radius = maxi(_liquids.geometry_picker.get_selected_id(),int(validation.receipt.get("minimum_rule_radius",2)))
 	if not apply(next,true,0,true,not host.paused): return false
 	_liquid_action = true
-	message = ("Preparing Wave Flow tuningâ€¦ retained cells stay; face momentum resets."
+	message = ("Preparing Wave Flow tuning… retained cells stay; face momentum resets."
 		if wave_requested
-		else "Preparing liquid settingsâ€¦")
+		else "Preparing liquid settings…")
 	return true
 
 func _save_block_reason() -> String:
@@ -1588,8 +1588,8 @@ func save_setup() -> bool:
 	if reciprocal_panel != null:
 		var evidence_error: String = reciprocal_panel.save_evidence(_name.text)
 		if not evidence_error.is_empty(): message=evidence_error;return true
-	message = ("Saved flattened material start Â· " if not _material_baseline.is_empty() else "Saved generated starting map Â· " if not _generated_active.is_empty()
-		else "Saved starting setup Â· ") + _name.text
+	message = ("Saved flattened material start · " if not _material_baseline.is_empty() else "Saved generated starting map · " if not _generated_active.is_empty()
+		else "Saved starting setup · ") + _name.text
 	if host.simulation_worker.has_failed():
 		message += ". Native owner remains failed; restart the application and Load this start. Failed runtime state was not captured."
 	if material_audition != null:
@@ -2000,7 +2000,7 @@ func _process(_delta: float) -> void:
 			for a: Dictionary in applied.get("actors",[]):
 				var slot: int = host.physical_actor_session.slot_for_instance(int(a.id))
 				var control := ActorCatalog.control_for(a)
-				labels[slot] = {"text":"#%d %s Â· %s" % [a.id,a.model,"PILOT" if int(a.id) == pilot_id() else control.source],
+				labels[slot] = {"text":"#%d %s · %s" % [a.id,a.model,"PILOT" if int(a.id) == pilot_id() else control.source],
 					"color":Color("ffd37b") if int(a.id) == pilot_id() else (Color("c4b4ff") if control.source == "policy" else Color("82e3bb")),
 					"selected":int(a.id) == selected_id()}
 		host.physical_actor_overlay.show_actor_labels(labels)
@@ -2013,11 +2013,11 @@ func _process(_delta: float) -> void:
 	if host.latest_snapshot != null and host.latest_snapshot.simulation_failed:
 		owner_error = host.latest_snapshot.last_tick_error
 	if not owner_error.is_empty() and not reason.contains(owner_error):
-		reason += " Â· " + owner_error
-	_status.text = "%s Â· cell %s Â· %s Â· %s   |   source %d inserted / %d blocked" % [
+		reason += " · " + owner_error
+	_status.text = "%s · cell %s · %s · %s   |   source %d inserted / %d blocked" % [
 		state,cursor,str(applied.get("extent","")),reason,int(source.get("inserted",0)),int(source.get("blocked",0))]
-	_status.text += " Â· pilot " + pilot_description()
-	_status.text += " Â· granular %s Â· active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
+	_status.text += " · pilot " + pilot_description()
+	_status.text += " · granular %s · active Water %s" % [gcr.get("response","pending"),_water_identity(context)]
 	_status.tooltip_text = _status.text
 	water_spray.refresh(context)
 	equipment.refresh(context)
@@ -2041,12 +2041,12 @@ func _process(_delta: float) -> void:
 					delivery = entry
 					break
 			if delivery.is_empty(): delivery = {"refusal":ledger.get("refusal","pending")}
-		var actual := "Observer" if selected.is_empty() else "%s #%d Â· mass %.3f Â· inertia %.3f Â· force ceiling %.2f Â· torque ceiling %.2f" % [
+		var actual := "Observer" if selected.is_empty() else "%s #%d · mass %.3f · inertia %.3f · force ceiling %.2f · torque ceiling %.2f" % [
 			selected.model,selected_id(),selected.mass,selected.inertia,selected.force_limit,selected.torque_limit]
-		_detail_label.text = "%s\n%s\nWorld requested %s / native %s Â· body budget %s Â· native J %s / torque %s Â· arrivals %s Â· proxies %s\nRapier application %s\nLiquid r%d Â· %s\n%s" % [
-			_runtime_label,actual,_requested_response,gcr.get("response","pending"),selected_row.get("budget","â€”"),selected_row.get("impulse","â€”"),
-			selected_row.get("torque","â€”"),selected_row.get("arrival_count","â€”"),selected_row.get("proxy_count","â€”"),str(delivery),
+		_detail_label.text = "%s\n%s\nWorld requested %s / native %s · body budget %s · native J %s / torque %s · arrivals %s · proxies %s\nRapier application %s\nLiquid r%d · %s\n%s" % [
+			_runtime_label,actual,_requested_response,gcr.get("response","pending"),selected_row.get("budget","—"),selected_row.get("impulse","—"),
+			selected_row.get("torque","—"),selected_row.get("arrival_count","—"),selected_row.get("proxy_count","—"),str(delivery),
 			int(policy.get("maximum_rule_radius",0)),", ".join(assignments),str(ActorCatalog.entry(str(actor(applied,selected_id()).get("model",""))).get("controls",""))]
-		_detail_label.text += "\nWorld limits Â· %s bodies, %s proxies, %s raster cells Â· arrivals %s bytes" % [
-			gcr.get("body_limit","â€”"),gcr.get("proxy_limit","â€”"),gcr.get("world_mask_cell_limit","â€”"),gcr.get("arrival_storage_bytes","â€”")]
+		_detail_label.text += "\nWorld limits · %s bodies, %s proxies, %s raster cells · arrivals %s bytes" % [
+			gcr.get("body_limit","—"),gcr.get("proxy_limit","—"),gcr.get("world_mask_cell_limit","—"),gcr.get("arrival_storage_bytes","—")]
 		_detail_label.text += "\n" + _participation_report(host.latest_snapshot)
