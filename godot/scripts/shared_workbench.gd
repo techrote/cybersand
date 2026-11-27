@@ -525,6 +525,8 @@ func commit_actor_placement(source: Dictionary, proposed: Dictionary) -> bool:
 	var session = host.physical_actor_session
 	if session == null or session.run_id != str(source.get("run_id","")) or session.epoch != int(source.get("epoch",-1)):
 		return refuse("The physical owner changed during placement; no authored data was modified.")
+	if source.has("pointer_hit") and session.workbench_grab_body(source.pointer_hit) == null:
+		return refuse("The displayed part changed during placement; start a new preview.")
 	var id := int(source.get("instance_id",0))
 	var next := applied.duplicate(true)
 	var selected := actor(next,id)

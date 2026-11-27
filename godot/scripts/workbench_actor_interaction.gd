@@ -200,10 +200,10 @@ func world_input(event: InputEvent) -> bool:
 		if started.is_empty(): bench.refuse("The selected physical body is unavailable.")
 		else: bench.message = "Grabbing #%d · %s with physical forces; other actors continue." % [int(started.instance_id),str(started.part_id)]
 	else:
-		begin_placement(int(picked.instance_id),point)
+		begin_placement(int(picked.instance_id),point,picked)
 	return true
 
-func begin_placement(instance_id: int, pointer: Vector2) -> bool:
+func begin_placement(instance_id: int, pointer: Vector2, hit: Dictionary = {}) -> bool:
 	if not bench.host.paused: return bench.refuse("Pause before placing an entire actor.")
 	if bench.busy(): return bench.refuse("Wait for the current owner transaction.")
 	bench.select_instance(instance_id)
@@ -211,8 +211,18 @@ func begin_placement(instance_id: int, pointer: Vector2) -> bool:
 	if current == null: return bench.refuse("Physical owner unavailable.")
 	_source = current.capture_actor(instance_id)
 	if _source.is_empty(): return bench.refuse("Actor pose is unavailable.")
-	_offset = Vector2(_source.position)-pointer
-	_refresh_preview(_source.position,float(_source.rotation))
+	var contact := pointer
+	if not hit.is_empty():
+		if hit.get("instance_id") != instance_id or bench.host.physical_actor_session.workbench_grab_body(hit) == null:
+			_source.clear()
+			return bench.refuse("The displayed part is no longer available.")
+		var part: Dictionary = _source.parts[int(hit.part_index)]
+		# Preserve the displayed local contact when the physical assembly has
+		# moved or articulated since submission. Only the preview is translated.
+		contact = Transform2D(float(part.rotation),part.position) * Vector2(hit.local_anchor)
+		_source["pointer_hit"] = hit.duplicate()
+	_offset = Vector2(_source.position)-contact
+	_refresh_preview(pointer+_offset,float(_source.rotation))
 	return true
 
 func update_placement(pointer: Vector2, fine: bool = false) -> void:

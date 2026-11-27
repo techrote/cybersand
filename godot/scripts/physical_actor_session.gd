@@ -670,7 +670,11 @@ func pick_workbench_part(point: Vector2, presentation: Variant = null, padding: 
 					accepted[part] = pose
 		var hit: Dictionary = _rigs[slot].pick_part(point, accepted, padding)
 		if hit.is_empty(): continue
-		hit.merge({"instance_id":int(_definitions[slot].instance_id), "actor_slot":slot,
+		var member_index: int = bridge.actor_body_index(slot) + int(hit.part_index)
+		if member_index < 0 or member_index >= bridge._members.size(): continue
+		var picked_member: Dictionary = bridge._members[member_index]
+		hit.merge({"member_id":picked_member.instance_id, "member_generation":picked_member.generation,
+			"instance_id":int(_definitions[slot].instance_id), "actor_slot":slot,
 			"run_id":run_id, "epoch":epoch, "extent":_definitions[slot].canvas_extent})
 		return hit
 	return {}
@@ -684,7 +688,12 @@ func workbench_grab_body(hit: Dictionary) -> RigidBody2D:
 	if slot < 0 or slot != int(hit.get("actor_slot", -1)) or not str(_rigs[slot].fault).is_empty(): return null
 	var parts: Array = _rigs[slot].bodies()
 	var index := int(hit.get("part_index", -1))
-	if index < 0 or index >= parts.size(): return null
+	if index < 0 or index >= parts.size() or not bridge is WorkbenchBridge: return null
+	var member_index: int = bridge.actor_body_index(slot) + index
+	if member_index < 0 or member_index >= bridge._members.size(): return null
+	var member: Dictionary = bridge._members[member_index]
+	if member.instance_id != hit.get("member_id",-1) or member.generation != hit.get("member_generation",-1) \
+			or member.actor_slot != slot or member.part_index != index: return null
 	var body: RigidBody2D = parts[index]
 	if not is_instance_valid(body) or body.get_instance_id() != int(hit.get("body_identity", -1)) \
 		or not body.get_rid().is_valid() or body.freeze: return null
