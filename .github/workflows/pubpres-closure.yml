@@ -232,6 +232,9 @@ jobs:
         run: python tools/pubpres_recovery_windows/run_native_owner.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/mounted-native
       - name: Resulting-source original frozen correctness inventory
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-frozen --focus frozen --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - name: Paused placement of a displayed moving multipart limb on Stock Safe
+        if: needs.plan.outputs.phase == 'full'
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-held-placement --focus held-placement --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - name: Actual Water and Sand native framebuffer qualification
         run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-water --focus water --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
       - name: Actual multipart history, root Follow and individual-member mouse qualification
@@ -317,6 +320,9 @@ jobs:
           python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
           if($LASTEXITCODE -ne 0){throw 'Pinned stock engine acquisition failed'}
           ./tools/pubpres_final/prepare_windows_dependencies.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies')
+      - name: Verify ordinary Stock Safe held-limb placement and owner replacement
+        id: placement
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --output build/closure-windows/stock-held-placement --focus held-placement
       - name: Actual resulting-source stock and atomic Windows application qualification
         id: application
         run: python tools/pubpres_recovery_windows/run_closure_hosted.py --runtime build/runtime/C --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/closure-windows/application
@@ -325,7 +331,7 @@ jobs:
         run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded
       - name: Assemble source-exact qualified selected and fallback Workbench
         id: package
-        if: always() && steps.prepare.outcome == 'success'
+        if: always() && steps.prepare.outcome == 'success' && steps.placement.outcome == 'success'
         shell: powershell
         run: |
           $ErrorActionPreference='Stop'
