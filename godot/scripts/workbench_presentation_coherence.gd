@@ -28,6 +28,41 @@ static func _is_rigid(pose: Transform2D) -> bool:
 		and pose.x.cross(pose.y) > 0.0
 
 
+# A material-only certificate for an exact subregion of the two actual images.
+# The second RG8 channel is material state, so examine only material IDs.
+static func region_is_empty(image: Image, region: Rect2i) -> bool:
+	if image == null or region.size.x <= 0 or region.size.y <= 0 \
+			or not Rect2i(Vector2i.ZERO,image.get_size()).encloses(region) \
+			or image.get_format() not in [Image.FORMAT_R8,Image.FORMAT_RG8]: return false
+	var ids := image.get_region(region)
+	ids.convert(Image.FORMAT_R8)
+	return ids.get_data().count(0) == region.get_area()
+
+
+# Every rotated point in any collider remains within radius of the linearly
+# translated origin. The enclosing box therefore covers the continuous rigid
+# sweep, including intermediate rotations. Preserve the ordinary motion caps.
+static func empty_region_covers_sweep(region: Rect2i, start: Transform2D, target: Transform2D,
+		rectangles: Array) -> bool:
+	if not start.is_finite() or not target.is_finite() or not _is_rigid(start) or not _is_rigid(target) \
+			or rectangles.is_empty() or rectangles.size() > 8 \
+			or start.origin.distance_to(target.origin) > MAX_SHIFT_CELLS: return false
+	var radius := 0.0
+	for rect: Variant in rectangles:
+		if not rect is Dictionary: return false
+		var center: Variant = rect.get("center")
+		var size: Variant = rect.get("size")
+		if not center is Vector2 or not size is Vector2 or not center.is_finite() or not size.is_finite() \
+				or size.x <= 0.0 or size.y <= 0.0: return false
+		radius = maxf(radius,Vector2(center).length()+Vector2(size).length()*0.5)
+	if absf(wrapf(target.get_rotation()-start.get_rotation(),-PI,PI))*radius > MAX_ROTATION_SWEEP_CELLS:
+		return false
+	var edge := Vector2.ONE*(radius+EDGE_EPSILON)
+	var minimum := start.origin.min(target.origin)-edge
+	var maximum := start.origin.max(target.origin)+edge
+	return Rect2(region).encloses(Rect2(minimum,maximum-minimum))
+
+
 static func _touches_body(point: Vector2, pose: Transform2D, rectangles: Array,
 		padding: float = 0.0) -> bool:
 	var local: Vector2 = pose.affine_inverse() * point

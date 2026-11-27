@@ -1816,6 +1816,8 @@ var _presentation_current_content_shape := Vector3i.ZERO
 var _presentation_previous_content_shape := Vector3i.ZERO
 var _presentation_upload_cache_usec: int = 0
 var _presentation_pending_cache_usec: int = 0
+var _presentation_pending_clearance_cells: int = 0
+var _workbench_dry_region: Dictionary = {}
 var workbench_presentation_last: Dictionary = {}
 var workbench_presentation_totals: Dictionary = {
 	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
@@ -4184,9 +4186,10 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 		"deadline_usec":started_usec+maxi(0,PRESENTATION_FRAME_TIME_BUDGET_USEC-cache_usec),
 		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec}
 	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
-		"blocked_other":0,"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0,
+		"blocked_other":0,"budget_vetoes":0,"cells_examined":_presentation_pending_clearance_cells,"elapsed_usec":0,
 		"intentional_holds":0,"withheld":0,"refined_queries":0,"refined_clear":0,
 		"water_coverage_reuses":0}
+	_presentation_pending_clearance_cells = 0
 	var bridge: Variant = physical_actor_session.bridge if physical_actor_session != null else null
 	var identity: Array = [bridge._session,bridge._epoch,last_uploaded_world_generation] \
 		if bridge is WorkbenchBridge else []
@@ -4293,6 +4296,14 @@ func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
 				decision = {"safe":false,"reason":"recovery_time_unknown" if int(target_observation.get("completed_usec",0)) <= 0 else "recovery_age_expired"}
 			elif certificate_valid and anchor == target:
 				decision = {"safe":true,"reason":"same_presented_pose"}
+			elif not _workbench_dry_region.is_empty() and not _presentation_previous_unknown \
+					and _workbench_dry_region.world == last_uploaded_world_generation \
+					and _workbench_dry_region.session == bridge._session and _workbench_dry_region.epoch == bridge._epoch \
+					and _workbench_dry_region.current == _presentation_current_content_id \
+					and _workbench_dry_region.previous == _presentation_previous_content_id \
+					and WorkbenchPresentationCoherence.empty_region_covers_sweep(
+						_workbench_dry_region.area,anchor,target,bridge._rects[slot]):
+				decision = {"safe":true,"reason":"empty_published_region"}
 			else:
 				# Prove the actual current physical/native authority FIRST, then
 				# ask the Water-compatible guard once. An empty-only guard would
@@ -4563,6 +4574,7 @@ func _workbench_presentation_bookkeeping() -> Dictionary:
 		"follow":_workbench_follow_state,"totals":workbench_presentation_totals,
 		"last":workbench_presentation_last,"frame":workbench_presentation_frame,
 		"reasons":_workbench_pose_trace_reasons,"cache_usec":_presentation_pending_cache_usec,
+		"clearance_cells":_presentation_pending_clearance_cells,
 		"camera_request":camera_origin,"view_request":current_view_size,
 		"focus_pending":shared_workbench._focus_pending if shared_workbench != null else false}
 
@@ -4578,6 +4590,7 @@ func _install_workbench_presentation_bookkeeping(state: Dictionary) -> void:
 	workbench_presentation_frame = state.frame
 	_workbench_pose_trace_reasons = state.reasons
 	_presentation_pending_cache_usec = state.cache_usec
+	_presentation_pending_clearance_cells = state.clearance_cells
 	camera_origin = state.camera_request
 	current_view_size = state.view_request
 	if shared_workbench != null: shared_workbench._focus_pending = state.focus_pending
@@ -7300,6 +7313,33 @@ func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	simulation_worker.request_render_full_refresh()
 
 
+# Validate a small area surrounding the piloted body before World-sized byte
+# comparisons consume this upload's guard allowance. It certifies Empty pixels
+# only; pose, generation, native mask and submission checks stay in the resolver.
+func _prepare_workbench_dry_region(started_usec: int) -> Dictionary:
+	if paused or shared_workbench == null or not shared_workbench.has_method("pilot_id") or not _workbench_water_composition_enabled() \
+			or physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or _presentation_previous_unknown or _presentation_previous_image == null \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty():
+		return {}
+	var actor: int = physical_actor_session.slot_for_instance(shared_workbench.pilot_id())
+	var bridge: WorkbenchBridge = physical_actor_session.bridge
+	var slot: int = bridge.actor_body_index(actor)
+	if slot < 0 or bridge != rapier_bridge or not bridge.is_initialized(): return {}
+	var position: Vector2 = bridge.body_transform(slot).origin
+	if not position.is_finite(): return {}
+	var area := Rect2i(Vector2i(position.floor())-Vector2i(24,24),Vector2i(48,48))
+	var cells := area.get_area()
+	var deadline := started_usec+PRESENTATION_FRAME_TIME_BUDGET_USEC-_presentation_pending_cache_usec
+	if _presentation_pending_clearance_cells+cells > PRESENTATION_FRAME_SCAN_BUDGET \
+			or Time.get_ticks_usec() >= deadline: return {}
+	_presentation_pending_clearance_cells += cells
+	if not WorkbenchPresentationCoherence.region_is_empty(image,area) or Time.get_ticks_usec() >= deadline \
+			or not WorkbenchPresentationCoherence.region_is_empty(_presentation_previous_image,area) \
+			or Time.get_ticks_usec() >= deadline: return {}
+	return {"area":area,"world":last_uploaded_world_generation,"session":bridge._session,"epoch":bridge._epoch}
+
+
 func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	# Ping-pong two GPU textures. The shader blends movable occupancy from the
 	# previous snapshot to the current one, masking the intentional two-cell
@@ -7308,6 +7348,7 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	texture = previous_texture
 	previous_texture = old_current_texture
 	var cache_started_usec: int = Time.get_ticks_usec()
+	_workbench_dry_region = _prepare_workbench_dry_region(cache_started_usec)
 	var next_bytes: PackedByteArray = image.get_data()
 	var next_shape := Vector3i(image.get_width(),image.get_height(),image.get_format())
 	var next_content_id: int = 0
@@ -7326,6 +7367,9 @@ func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	_presentation_current_bytes = next_bytes
 	_presentation_current_content_id = next_content_id
 	_presentation_current_content_shape = next_shape
+	if not _workbench_dry_region.is_empty():
+		_workbench_dry_region["current"] = _presentation_current_content_id
+		_workbench_dry_region["previous"] = _presentation_previous_content_id
 	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
 	_presentation_pending_cache_usec += _presentation_upload_cache_usec
 	update_render_texture()

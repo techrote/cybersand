@@ -28,6 +28,25 @@ func _run() -> void:
 	var rectangles: Array = [{"center":Vector2.ZERO,"size":Vector2(10,6)}]
 	var original := Transform2D(0.0,Vector2(85,90))
 	var moved := Transform2D(0.0,Vector2(94,90))
+	var pilot_area := Rect2i(67,68,48,48)
+	check(Coherence.region_is_empty(image,pilot_area) and Coherence.empty_region_covers_sweep(
+		pilot_area,original,Transform2D(PI/3.0,moved.origin),rectangles),
+		"a wholly Empty published area covers the continuous rotating pilot")
+	var old_plane := image.duplicate()
+	for material: int in [2,3]:
+		_paint(old_plane,91,90,material)
+		check(not Coherence.region_is_empty(old_plane,pilot_area),
+			"Sand or Water in either active plane cannot authorize dry presentation")
+	_paint(old_plane,91,90,0)
+	old_plane.set_pixel(91,90,Color(0,1,0,1))
+	check(Coherence.region_is_empty(old_plane,pilot_area),"material state is separate from material ID")
+	check(not Coherence.empty_region_covers_sweep(pilot_area,original,Transform2D(0,Vector2(112,90)),rectangles),
+		"the whole moving footprint must remain inside the certified area")
+	check(not Coherence.empty_region_covers_sweep(pilot_area,original,moved,[{}])
+		and not Coherence.empty_region_covers_sweep(pilot_area,original,moved.scaled(Vector2(2,1)),rectangles),
+		"malformed collider or transform cannot reuse a published Empty area")
+	check(not Coherence.region_is_empty(image,Rect2i(-1,0,48,48)),
+		"out-of-image bounds refuse even when returned pixels might be padded Empty")
 	check(Coherence.assess(original,moved,rectangles,image).safe,
 		"clear swept ordinary body admits live pose")
 	check(Coherence.assess(original,original,rectangles,image).reason == "same_pose",
