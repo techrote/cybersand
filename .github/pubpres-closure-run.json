@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-closure-run-v1",
   "phase": "windows-focus",
-  "purpose": "Verify Fire-on wall, Water and exhaust contact, sustained Follow, picking and held placement after exact stationary endpoint reuse.",
+  "purpose": "Fire-on Follow and accepted wall, Water and flame contact after bounding sparse effects, eliminating full-plane contact arrays and admitting only exposed geometry through Fire.",
   "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
   "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
-  "payload_sha256": "8d6938322a70ca63164fe9a9a652fe9e85f4eabd7e268e4856de722380e2af12",
+  "payload_sha256": "b76e368387b1fd4694651b7511ee15e3420df1f3444ad98e6df4cf1b13c241a1",
   "physical_acceptance": "HOLD"
 }
