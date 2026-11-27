@@ -437,12 +437,12 @@ jobs:
         with:
           name: gen006-ramcache-build-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
           path: build/gen006-ramcache-windows
-      - name: Verify exact source and pinned Windows Rapier
+      - name: Verify exact source and acquire the Windows Rapier and reciprocal runtimes
         run: |
           set -euo pipefail
           python tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
           git lfs install --local
-          python tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output "$RUNNER_TEMP/gen006-current-lfs.json"
+          python tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$RUNNER_TEMP/gen006-current-lfs.json"
           echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum --check --strict
       - name: Prepare isolated qualified donor for controlled cold comparison
         run: |
