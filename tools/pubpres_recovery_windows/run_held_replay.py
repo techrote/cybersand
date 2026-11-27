@@ -61,6 +61,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for flag in ("runtime", "rapier-transport", "stock-engine", "atomic-root", "output"):
         parser.add_argument("--" + flag, type=Path, required=True)
+    parser.add_argument("--arm", choices=("stock-held-placement","atomic-submission-safe-0",
+                                        "atomic-submission-separate-0","atomic-submission-separate-4"))
     args = parser.parse_args()
     need(os.name == "nt", "Held replay requires actual Windows graphical execution")
     original, stock, atomic_root, output = (p.resolve() for p in (args.runtime, args.stock_engine, args.atomic_root, args.output))
@@ -93,6 +95,8 @@ def main():
         ("atomic-submission-separate-0", custom, "submission", "separate", 0),
         ("atomic-submission-separate-4", custom, "submission", "separate", 4),
     ):
+        if args.arm and args.arm != label:
+            continue
         folder = output / label
         cmd = [sys.executable, RECOVERY / "run_qualification.py", "--source", ROOT, "--runtime", runtime,
                "--engine", engine, "--output", folder, "--focus", focus, "--render-thread", thread,

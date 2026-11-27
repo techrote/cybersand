@@ -42,6 +42,10 @@ jobs:
 
   windows-admission:
     needs: plan
+    strategy:
+      fail-fast: false
+      matrix:
+        arm: ${{ fromJSON(needs.plan.outputs.phase == 'windows-focus' && '["stock-held-placement","atomic-submission-safe-0","atomic-submission-separate-0","atomic-submission-separate-4"]' || '["admission"]') }}
     runs-on: windows-2022
     timeout-minutes: ${{ needs.plan.outputs.phase == 'windows-focus' && 120 || 15 }}
     steps:
@@ -49,12 +53,12 @@ jobs:
         shell: powershell
         run: git config --global core.autocrlf false
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-        with: {persist-credentials: false}
+        with: {persist-credentials: false, fetch-depth: 64}
       - name: Actual PowerShell 5.1 parser and configuration refusal
         shell: powershell
         run: ./tools/pubpres_recovery_windows/Test-Configuration.ps1 -Output build/closure-admission/windows-configuration.json
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        if: always()
+        if: always() && (matrix.arm == 'admission' || matrix.arm == 'stock-held-placement')
         with:
           name: pubpres-closure-admission-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/closure-admission/
@@ -85,19 +89,21 @@ jobs:
           run-id: 46027331150
           name: pubpres-closure-original-engine02-46027331150-1
           path: build/engine-build02
-      - name: Reproduce Stock and three custom submission modes with the retained exact inputs
+      - name: Run this graphical input treatment with the retained exact inputs
         if: needs.plan.outputs.phase == 'windows-focus'
         shell: bash
         run: |
           git fetch --no-tags origin 88bb920c42755669ac8fba37b9fc46249c5bd0a6 "$PUBPRES_ENGINE_BUILD_SOURCE"
           python tools/pubpres_playability_build/download_engine.py --platform windows --output "$RUNNER_TEMP/godot"
-          python tools/pubpres_recovery_windows/run_held_replay.py --runtime build/runtime/C --rapier-transport build/transport-C --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/held-replay
+          python tools/pubpres_recovery_windows/run_held_replay.py --arm "${{ matrix.arm }}" --runtime build/runtime/C --rapier-transport build/transport-C --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/held-replay
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always() && needs.plan.outputs.phase == 'windows-focus'
         with:
-          name: pubpres-held-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          name: pubpres-held-replay-${{ matrix.arm }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/held-replay/
+            !build/held-replay/bound-runtime/**
+            build/held-replay/bound-runtime/PUBPRES-NATIVE-INPUT-REUSE.json
             !build/held-replay/**/project/**
             !build/held-replay/**/profile/**
             !build/held-replay/**/*-profile/**
