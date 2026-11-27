@@ -4,6 +4,8 @@ extends RefCounted
 # Observers connect deferred. Only the immutable mailbox carries physical authority.
 signal workbench_sample_completed
 var _notify_sample_completion := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
+var _independent_coupling := OS.get_environment("CYBERSAND_WORKBENCH_COUPLING_CLOCK") == "1"
+var _coupling_only_count: int = 0
 var _last_notified_sample: int = -1
 var _last_notified_epoch: int = -1
 
@@ -1616,6 +1618,21 @@ func _capture_workbench_result() -> void:
 			if _last_native_tick_world_generation == _world_generation else -1}
 
 
+func _zero_workbench_response(sample: int) -> bool:
+	if not _workbench_result.get("valid",false) or _workbench_display.is_empty(): return false
+	var rows: Array = _workbench_result.get("rows",[])
+	if rows.is_empty(): return false
+	for row: Dictionary in rows:
+		if row.sample != sample or row.contacts != 0 or row.displaced != 0 or row.unresolved != 0 \
+				or row.impulse != Vector2.ZERO or row.correction != Vector2.ZERO or row.torque != 0.0:
+			return false
+	_mutex.lock()
+	var clear: bool = _workbench_emitters.is_empty() and _workbench_source_commands.is_empty() \
+		and _workbench_equipment_commands.is_empty() and _water_spray_requests.is_empty()
+	_mutex.unlock()
+	return clear
+
+
 func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
 	# Linearize short source edits and nozzle requests with input cancellation.
 	# The maximum burst is 96 cells, the stream is 4 cells per tick for <=600
@@ -2852,6 +2869,7 @@ func _worker_loop() -> void:
 		var pause_requested_at_entry: bool = false
 		var pause_request_serial_at_entry: int = 0
 		var native_ticked_this_turn: bool = false
+		var coupling_only: bool = false
 		var local_horizontal_input: float = 0.0
 		var local_jetpack_active: bool = false
 		var local_interest_center: Vector2i = Vector2i.ZERO
@@ -3142,6 +3160,7 @@ func _worker_loop() -> void:
 					local_paused = true
 				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
 					var prepare_started_usec: int = Time.get_ticks_usec() if trace_physics else 0
+					var pre_coupling_revision: int = int(_world.revision) if _independent_coupling else -1
 					if not _workbench_sample_inside(sample.states,_workbench_extent):
 						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
@@ -3153,7 +3172,21 @@ func _worker_loop() -> void:
 					else:
 						_workbench_prepared_sample = workbench_serial
 						_workbench_consumed_sample = sample
-						if _workbench_result.is_empty(): _capture_workbench_result()
+						if _independent_coupling and not local_paused and not local_pause_request \
+								and local_lab.is_empty() and not _simulation_failed and not _actor_session.active() \
+								and pre_coupling_revision == int(_world.revision) \
+								and _last_native_tick_world_generation == _world_generation \
+								and Time.get_ticks_usec() - _last_native_tick_started_usec < local_pixel_interval_usec:
+							# Before the next material tick is due, an additional physical
+							# sample can have an exact native response of its own. Preparing
+							# its swept mask cleared all prior per-body contact accumulators.
+							_capture_workbench_result()
+							coupling_only = _zero_workbench_response(workbench_serial)
+							if coupling_only:
+								_workbench_completed_sample = workbench_serial
+								_coupling_only_count += 1
+								_workbench_display["coupling_only"] = true
+						elif _workbench_result.is_empty(): _capture_workbench_result()
 					if prepare_started_usec > 0:
 						_append_render_cadence_event(_workbench_phase_event("coupling_prepare",
 							prepare_started_usec,Time.get_ticks_usec(),sample,
@@ -3165,7 +3198,7 @@ func _worker_loop() -> void:
 					_mutex.lock()
 					_paused = true
 					_mutex.unlock()
-				_consume_workbench_emissions(local_paused,sample)
+				_consume_workbench_emissions(local_paused or coupling_only,sample)
 			else:
 				_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
 			# Admission is rechecked at the exclusive owner's consume boundary.
@@ -3181,7 +3214,7 @@ func _worker_loop() -> void:
 			if _world.has_method(&"has_failed") and _world.has_failed():
 				_simulation_failed = true
 
-			if not local_paused and not _simulation_failed:
+			if not local_paused and not _simulation_failed and not coupling_only:
 				native_ticked_this_turn = true
 				if (
 					_sampled_character_enabled
@@ -3395,6 +3428,7 @@ func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
 		snapshot.last_native_tick_lateness_usec = _last_native_tick_lateness_usec
 	snapshot.lab_context = {
 		"workbench_gcr":_workbench_result.duplicate(true),
+		"coupling_only_completions":_coupling_only_count,
 		"workbench_hard_surface_revision":source.lab_context.workbench_hard_surface_revision,
 		"workbench_completed_sample":_workbench_completed_sample,
 		"workbench_refusal":_workbench_refusal,
