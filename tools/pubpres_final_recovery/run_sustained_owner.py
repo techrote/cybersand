@@ -45,6 +45,7 @@ def reduce_session(folder, case, source, project, engine, selected, process):
          and cpu["complete"] and process["exit_code"] == 0, "Installed engine, policy or native owner differs")
     duration = data["ended_usec"] - data["began_usec"]
     need(duration >= 300_000_000 and data["pulses"] == 30 and not data["failures"]
+         and data["actor_count"] == bodies+1 and data["epoch"] > data["initial_epoch"]
          and all(row["accepted"] is True for row in data["actions"])
          and len([row for row in data["actions"] if row["action"].startswith("paint-")]) == 30,
          "Incomplete five-minute gameplay, authoring, or ownership handoff")

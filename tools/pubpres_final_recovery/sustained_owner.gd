@@ -28,18 +28,32 @@ func _action(name: String, ok: bool) -> void:
 
 func _exercise() -> void:
 	var ui: Control = app.shared_workbench
+	var prior_epoch: int = app._physical_epoch
+	var runner_id: int = ui.applied.next_id
+	_action("place procedural runner",ui.place("runner",Vector2(260,120)))
+	var setup_deadline := Time.get_ticks_msec()+120000
+	while failures.is_empty() and Time.get_ticks_msec() < setup_deadline:
+		if not ui.busy() and app._physical_epoch > prior_epoch and app.physical_actor_session != null \
+				and app.physical_actor_session.slot_for_instance(runner_id) >= 0 and app._physical_terrain_ready \
+				and app.last_uploaded_world_generation == app.latest_snapshot.render_world_generation:
+			break
+		await process_frame
+	if not failures.is_empty() or Time.get_ticks_msec() >= setup_deadline:
+		push_error("Sustained scenario could not install authored runner: "+str(ui.message))
+		quit(3)
+		return
 	var session = app.physical_actor_session
 	var world: int = app.last_uploaded_world_generation
 	var point := Vector2i(230, int(app.world_extent.y) - 160)
 	var output := receipt_path.get_base_dir()
 	await RenderingServer.frame_post_draw
 	_action("initial framebuffer", root.get_texture().get_image().save_png(output+"/before.png") == OK)
-	var control := Catalog.control_for(ui.actor(ui.applied,1))
+	var control := Catalog.control_for(ui.actor(ui.applied,runner_id))
 	control.source = "policy"
 	control.policy = "ambient"
 	control.ambient = Profile.blank("pubpres-owner-play")
 	control.ambient.modules = [Profile.make_module("seek_material")]
-	_action("activate AMBIENT", ui.set_actor_control(1,control))
+	_action("activate AMBIENT", ui.set_actor_control(runner_id,control))
 	_action("start active Water and bodies", app.paused and ui.toggle_pause())
 	var began := Time.get_ticks_usec()
 	var previous := began
@@ -80,21 +94,24 @@ func _exercise() -> void:
 			var index := pulse
 			pulse += 1
 			var camera := 0 if index % 2 == 0 else 1
+			ui.zoom_by(1 if camera == 0 else -1)
 			ui._camera.select(camera)
 			ui.set_camera(camera)
-			ui.zoom_by(1 if camera == 0 else -1)
 			if camera == 0: ui._set_view(Vector2(50+index*2,70), app.current_view_size)
+			_action("camera-%02d" % index, ui._camera.selected == camera)
 			var cell := point + Vector2i((index % 8)*10, 0)
 			_action("paint-%02d" % index, ui.paint(cell,[CyberCellWorld.SAND,3,58,0][index % 4]))
 			match index:
 				2, 17:
-					_action("pilot takeover",ui.pilot_instance(1))
+					_action("pilot takeover",ui.pilot_instance(runner_id))
 				3, 18:
+					_action("hand back to AMBIENT",ui.hand_back_pilot())
+					_action("AMBIENT policy restored",Catalog.control_for(ui.actor(ui.applied,runner_id)).policy == "ambient")
+				4, 19:
+					_action("pilot flyer",ui.pilot_instance(1))
+				5, 20:
 					_action("pilot flight",session.submit_workbench_action(1,{"move":Vector2.UP},
 						{"q":false,"e":false,"s":false,"boost":false},false))
-				4, 19:
-					_action("hand back to AMBIENT",ui.hand_back_pilot())
-					_action("AMBIENT policy restored",Catalog.control_for(ui.actor(ui.applied,1)).policy == "ambient")
 				10:
 					_action("pause",not app.paused and ui.toggle_pause())
 					paused_at = tick
@@ -113,7 +130,8 @@ func _exercise() -> void:
 	_action("terminal framebuffer",root.get_texture().get_image().save_png(output+"/after.png") == OK)
 	var report := {"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"scene":scene_name,
 		"process_id":OS.get_process_id(),"began_usec":began,"ended_usec":ended,"failures":failures,
-		"world":world,"epoch":session.epoch,"initial_tick":initial_tick,"actions":actions,"frames_usec":frame_gaps,
+		"world":world,"epoch":session.epoch,"initial_tick":initial_tick,"runner_id":runner_id,
+		"initial_epoch":prior_epoch,"actor_count":ui.applied.actors.size(),"actions":actions,"frames_usec":frame_gaps,
 		"physical_observations":progress,"resources":resources,"pulses":pulse,
 		"before_sha256":FileAccess.get_sha256(output+"/before.png"),"after_sha256":FileAccess.get_sha256(output+"/after.png")}
 	var file := FileAccess.open(output+"/session.json",FileAccess.WRITE)
