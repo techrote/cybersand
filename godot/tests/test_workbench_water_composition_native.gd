@@ -391,6 +391,24 @@ func movement() -> bool:
 func color_error(a: Color, b: Color) -> float:
 	return maxf(absf(a.r-b.r),maxf(absf(a.g-b.g),absf(a.b-b.b)))
 
+# A real atomic admission is bound to a CPU draw, while a deferred post-draw
+# notification on a separate renderer may describe an older queued frame.
+func control_frame_ready(slot: int, enabled: bool, after_serial: int) -> bool:
+	var frame: Dictionary = host.workbench_presentation_frame
+	if after_serial>=0 and int(frame.get("submission_serial",-1))<=after_serial: return false
+	return frame.get("valid",false) and frame.get("water_proofs",{}).has(slot)==enabled \
+		and float(frame.get("snapshot_blend",0.0))>=1.0
+
+func read_control_frame() -> Image:
+	if host.workbench_presentation_submission_enabled():
+		# The predicate had to observe a newer frozen receipt in process_frame,
+		# after admission returned to the engine. Drain the already-enqueued draw
+		# before the first read. This never forces an additional atomic draw.
+		RenderingServer.force_sync()
+	else:
+		await RenderingServer.frame_post_draw
+	return root.get_texture().get_image()
+
 func framebuffer_visibility(label: String, requested_slot: int = -1) -> void:
 	stage = label
 	if not graphical: return
@@ -437,6 +455,7 @@ func framebuffer_visibility(label: String, requested_slot: int = -1) -> void:
 	# The material shaders continue animating Water while physics is paused.
 	# Use the existing capture clock for every pixel control, with the live
 	# policy, full material histories and actual rendered actor left in place.
+	var clock_serial: int = int(host.workbench_presentation_frame.get("submission_serial",-1))
 	var materials: Array = [host.world_shader,host.glow_source_shader]
 	materials.append_array(host.vapour_trail_shaders)
 	for material: ShaderMaterial in materials:
@@ -444,36 +463,36 @@ func framebuffer_visibility(label: String, requested_slot: int = -1) -> void:
 	# Finish a genuine publication fade, then compare actual submitted pixels
 	# through ordinary policy transitions. Keeping Main processing alive is
 	# necessary for the atomic engine's real prepared-submission contract.
-	if not check(await until(func() -> bool: return float(host.workbench_presentation_frame.get("snapshot_blend",0.0)) >= 1.0),
+	if not check(await until(func() -> bool: return control_frame_ready(slot,true,clock_serial)),
 		label+" paused actual image history fade completes"):
 		framebuffer_control = false
 		return
 	var material_bytes: PackedByteArray = host.image.get_data()
 	var old_bytes: PackedByteArray = host._presentation_previous_image.get_data()
 	var physical_step: int = host.physical_actor_session.tick
-	await RenderingServer.frame_post_draw
+	var shown: Image = await read_control_frame()
 	var shown_identity: Dictionary = framebuffer_identity(slot)
-	var shown: Image = root.get_texture().get_image()
+	var shown_serial: int = int(host.workbench_presentation_frame.get("submission_serial",-1))
 	var local: Vector2 = overlay._point(selected.origin)
 	var viewport_point: Vector2 = overlay.get_global_transform_with_canvas()*local
 	var point := Vector2i((viewport_point*Vector2(shown.get_size())/root.get_visible_rect().size).floor())
 	OS.set_environment("CYBERSAND_DIAG_WATER_COMPOSITION","0")
-	if not check(await until(func() -> bool: return not host.workbench_presentation_frame.get("water_proofs",{}).has(slot)),
+	if not check(await until(func() -> bool: return control_frame_ready(slot,false,shown_serial)),
 		label+" ordinary disabled Water policy submits its conservative control"):
 		OS.set_environment("CYBERSAND_DIAG_WATER_COMPOSITION","1")
 		framebuffer_control = false
 		return
-	await RenderingServer.frame_post_draw
+	var hidden: Image = await read_control_frame()
 	var hidden_identity: Dictionary = framebuffer_identity(slot)
-	var hidden: Image = root.get_texture().get_image()
+	var hidden_serial: int = int(host.workbench_presentation_frame.get("submission_serial",-1))
 	OS.set_environment("CYBERSAND_DIAG_WATER_COMPOSITION","1")
-	if not check(await until(func() -> bool: return host.workbench_presentation_frame.get("water_proofs",{}).has(slot)),
+	if not check(await until(func() -> bool: return control_frame_ready(slot,true,hidden_serial)),
 		label+" ordinary enabled Water policy restores exact paused actor authority"):
 		framebuffer_control = false
 		return
-	await RenderingServer.frame_post_draw
+	var restored: Image = await read_control_frame()
 	var restored_identity: Dictionary = framebuffer_identity(slot)
-	var restored: Image = root.get_texture().get_image()
+	var restored_serial: int = int(host.workbench_presentation_frame.get("submission_serial",-1))
 	check(shown_identity == hidden_identity and shown_identity == restored_identity,
 		label+" all pixel reads retain identical actual label, mapping, owner, pose and material identities")
 	var greatest: float = 0.0
@@ -500,6 +519,7 @@ func framebuffer_visibility(label: String, requested_slot: int = -1) -> void:
 		"shown_identity":shown_identity,"hidden_identity":hidden_identity,"restored_identity":restored_identity,
 		"selected_pose":Trace.pose_json(selected),"viewport_point":Trace.xy(viewport_point),
 		"policy_order":["1","0","1"],"control_scope":"ordinary presentation policy transition, no physical/material mutation",
+		"control_submission_serials":[clock_serial,shown_serial,hidden_serial,restored_serial],
 		"pixel_point":[point.x,point.y],"size":[shown.get_width(),shown.get_height()],
 		"maximum_visible_difference":greatest,"maximum_restored_error":repeat_error,"pixels":pixels})
 	for material: ShaderMaterial in materials:

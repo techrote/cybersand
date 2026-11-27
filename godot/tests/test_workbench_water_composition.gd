@@ -328,7 +328,23 @@ func coverage_cache_checks() -> void:
 	app.free()
 	coverage_checks_completed = true
 
+var explicit_first_draws := 0
+
+func first_water_image(viewport: Viewport) -> Image:
+	if RenderingServer.is_on_render_thread():
+		await RenderingServer.frame_post_draw
+	else:
+		# With automatic draws stopped, let SceneTree flush this transition's
+		# queued CanvasItem redraw. Submit one draw and read its render FIFO.
+		# A separate-thread post-draw notification can belong to an older frame.
+		await process_frame
+		RenderingServer.force_draw(false)
+		explicit_first_draws += 1
+	return viewport.get_texture().get_image()
+
 func graphical_checks() -> void:
+	var separate: bool = not RenderingServer.is_on_render_thread()
+	if separate: RenderingServer.set_render_loop_enabled(false)
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(128,128)
 	viewport.disable_3d = true
@@ -352,8 +368,7 @@ func graphical_checks() -> void:
 		overlay.set_water_composition({"enabled":true,"current_texture":current_texture,
 			"previous_texture":previous_texture,"world_size":Vector2i(8,8),"previous_active":true,"snapshot_blend":blend})
 		overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
-		await RenderingServer.frame_post_draw
-		var pixels: Image = viewport.get_texture().get_image()
+		var pixels: Image = await first_water_image(viewport)
 		var expected: Color = background.color.lerp(body_color,1.0-0.35*blend)
 		var actual: Color = pixels.get_pixel(56,48)
 		check(absf(actual.r-expected.r)<0.015 and absf(actual.g-expected.g)<0.015 and absf(actual.b-expected.b)<0.015,
@@ -366,16 +381,15 @@ func graphical_checks() -> void:
 	overlay.set_water_composition({"enabled":true,"current_texture":current_texture,
 		"previous_texture":previous_texture,"world_size":Vector2i(8,8),"previous_active":true,"snapshot_blend":1.0})
 	overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
-	await RenderingServer.frame_post_draw
-	var clipped: Image = viewport.get_texture().get_image()
+	var clipped: Image = await first_water_image(viewport)
 	check(clipped.get_pixel(56,65).is_equal_approx(background.color) \
 		or color_error(clipped.get_pixel(56,65),background.color)<0.015,"fractional hard floor border is clipped")
 	# Old occupied pixels must also clip during an active history blend.
 	previous.set_pixel(3,3,Color(1.0/255.0,0,0,1))
 	previous_texture.update(previous)
 	overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
-	await RenderingServer.frame_post_draw
-	check(color_error(viewport.get_texture().get_image().get_pixel(56,56),background.color)<0.015,
+	var old_clipped: Image = await first_water_image(viewport)
+	check(color_error(old_clipped.get_pixel(56,56),background.color)<0.015,
 		"old visible non-Water material clips actor pixels")
 	# Repeated real disable/re-enable must release immutable-history bindings,
 	# preserve exactly one layer/material, and never leave stale actor pixels.
@@ -389,8 +403,8 @@ func graphical_checks() -> void:
 	for cycle: int in range(12):
 		overlay.set_water_composition({})
 		overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
-		await RenderingServer.frame_post_draw
-		clean_disabled = clean_disabled and color_error(viewport.get_texture().get_image().get_pixel(56,48),background.color)<0.015
+		var disabled: Image = await first_water_image(viewport)
+		clean_disabled = clean_disabled and color_error(disabled.get_pixel(56,48),background.color)<0.015
 		stable = stable and overlay._water_layer.get_instance_id()==layer_id \
 			and overlay._water_layer.material.get_rid()==material_rid and overlay.get_child_count()==1 \
 			and overlay._water_layer.material.get_shader_parameter("current_material")==null \
@@ -398,11 +412,12 @@ func graphical_checks() -> void:
 		overlay.set_water_composition({"enabled":true,"current_texture":current_texture,
 			"previous_texture":previous_texture,"world_size":Vector2i(8,8),"previous_active":true,"snapshot_blend":1.0})
 		overlay.present([part],Vector2.ZERO,Vector2i(8,8),Rect2(0,0,128,128))
-		await RenderingServer.frame_post_draw
-		restored = restored and color_error(viewport.get_texture().get_image().get_pixel(56,48),background.color.lerp(body_color,0.65))<0.015
+		var enabled: Image = await first_water_image(viewport)
+		restored = restored and color_error(enabled.get_pixel(56,48),background.color.lerp(body_color,0.65))<0.015
 	check(stable,"Water layer and material remain singly owned; disabled histories are unbound")
 	check(clean_disabled,"disabled Water layer leaves no retained framebuffer actor pixels")
 	check(restored,"re-enabled Water layer has correct first-read opacity on every transition")
+	if separate: RenderingServer.set_render_loop_enabled(true)
 	viewport.queue_free()
 	await process_frame
 
@@ -425,5 +440,5 @@ func _run() -> void:
 	check(not proof(water,water,true,true,false,1).safe,"shared geometry budget is not bypassed")
 	if DisplayServer.get_name() != "headless": await graphical_checks()
 	print("PUBPRES_WATER_COMPOSITION_RESULT "+JSON.stringify({"checks":checks,"failures":failures,
-		"graphical":DisplayServer.get_name() != "headless"}))
+		"graphical":DisplayServer.get_name() != "headless","separate_first_draws":explicit_first_draws}))
 	quit(0 if failures.is_empty() else 1)
