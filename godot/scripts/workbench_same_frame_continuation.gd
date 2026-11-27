@@ -75,7 +75,10 @@ func take_ready(frame: int, identity: Dictionary, read_mailbox: Callable) -> Dic
 	result.status = "owner_or_input_changed"
 	if not valid_identity(identity) or identity != ticket.identity: return result
 	result.polls = 1
-	var mailbox: Dictionary = read_mailbox.call()
+	return validate_mailbox(result, ticket, identity, read_mailbox.call())
+
+
+static func validate_mailbox(result: Dictionary, ticket: Dictionary, identity: Dictionary, mailbox: Dictionary) -> Dictionary:
 	result.status = str(mailbox.get("status", "invalid"))
 	if result.status != "active": return result
 	result.status = "owner_changed"

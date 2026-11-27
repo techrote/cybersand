@@ -67,6 +67,14 @@ var physical_trial_input = PhysicalTrial.new()
 var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
+# The evaluator can finish scheduled fixed steps as native samples become ready.
+# No worker touches a RID. At most one recent callback is retained and the
+# ordinary transaction still consumes exactly one new native result per step.
+var _flight_pacing := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
+var _held_flight_callbacks: int = 0
+var _held_flight_until: int = 0
+var _held_flight_ticket: Dictionary = {}
+var _serviced_flight_callbacks: int = 0
 var _workbench_wait_sample: int = -1
 var _workbench_frame_error: String = ""
 var _workbench_collider_frame: int = -1
@@ -1994,6 +2002,8 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	if _flight_pacing:
+		simulation_worker.workbench_sample_completed.connect(_service_held_flight_callback, CONNECT_DEFERRED)
 	if _workbench_submission_requested:
 		if WorkbenchPresentationSubmission.atomic_admission_supported():
 			if WorkbenchPresentationSubmission.revision_is_valid(OS.get_environment("CYBERSAND_SOURCE_REVISION")):
@@ -2242,6 +2252,7 @@ func _process(delta: float) -> void:
 	if _pubpres_trace_enabled:
 		_pubpres_packet_observed("material_consumption", material_started_usec, latest_snapshot,
 			{"uploaded_serial":last_uploaded_render_snapshot_serial, "ack_serial":_engine_lab_last_ack_serial})
+	if _flight_pacing: _service_held_flight_callback()
 	_advance_prepared_physical_candidate()
 	if shared_workbench != null and physical_actor_session != null:
 		physical_actor_session.ingest_ambient_snapshot(latest_snapshot)
@@ -2357,6 +2368,12 @@ func _write_launcher_ready_receipt() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	# A regular callback has priority. Invalidate an earlier pending lease on
+	# pause, manual Step, ownership changes and every unrelated hold.
+	if _flight_pacing and _held_flight_callbacks > 0:
+		_service_held_flight_callback()
+		_held_flight_callbacks = 0
+		_held_flight_ticket = {}
 	if _pubpres_trace_enabled:
 		_pubpres_packet_observed("physics_callback_entry", Time.get_ticks_usec(), null,
 			{"manual_steps":rapier_bridge.manual_step_count(), "paused":paused})
@@ -2437,6 +2454,7 @@ func _physics_process(_delta: float) -> void:
 						_cadence_physics_hold("terrain_installation",physics_snapshot)
 						return
 			if physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample:
+				if _flight_pacing: _hold_flight_callback(physics_snapshot)
 				if _workbench_same_frame_enabled: _arm_same_frame_continuation(_delta, physics_snapshot)
 				_cadence_physics_hold("native_sample",physics_snapshot)
 				return
@@ -2510,6 +2528,32 @@ func _complete_physics_callback(_delta: float, single_step: bool,
 		shared_workbench.step_requested = false
 		tower_command({"step":true,"workbench_step_serial":shared_workbench.step_serial})
 		if physical_actor_session != null: physical_actor_session.set_suspended(true)
+
+func _hold_flight_callback(snapshot: CyberSimulationSnapshot) -> void:
+	var identity := _same_frame_identity()
+	if identity.is_empty(): return
+	_held_flight_callbacks = 1
+	_held_flight_until = Time.get_ticks_usec() + 100000
+	_held_flight_ticket = {"identity":identity,"world_generation":snapshot.physics_world_generation,
+		"required_revision":snapshot.lab_context.get("workbench_hard_surface_revision",-1)}
+
+
+func _service_held_flight_callback() -> void:
+	if _held_flight_callbacks == 0: return
+	var ticket := _held_flight_ticket
+	if Time.get_ticks_usec() > _held_flight_until or not is_inside_tree() \
+			or _same_frame_identity() != ticket.identity:
+		_held_flight_callbacks = 0
+		_held_flight_ticket = {}
+		return
+	var result := WorkbenchSameFrameContinuation.validate_mailbox({}, ticket,
+		ticket.identity, simulation_worker.try_read_physics_mailbox())
+	if result.status != "ready": return
+	_held_flight_callbacks = 0
+	_held_flight_ticket = {}
+	_serviced_flight_callbacks += 1
+	_complete_physics_callback(rapier_bridge.fixed_delta(), false, result.snapshot)
+
 
 func same_frame_continuation_status() -> Dictionary:
 	return {"version":WorkbenchSameFrameContinuation.VERSION,

@@ -1,6 +1,12 @@
 class_name CyberSimulationWorker
 extends RefCounted
 
+# Observers connect deferred. Only the immutable mailbox carries physical authority.
+signal workbench_sample_completed
+var _notify_sample_completion := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
+var _last_notified_sample: int = -1
+var _last_notified_epoch: int = -1
+
 # This worker owns every mutable simulation object. The main thread sends only
 # small commands and receives immutable snapshots, so rendering never reads a
 # PackedByteArray while the cellular solver is modifying it.
@@ -3850,6 +3856,12 @@ func _publish_snapshot(
 			_trace_workbench_handoff_locked(snapshot,trace_generation,"combined")
 	_published_snapshot = snapshot
 	_mutex.unlock()
+
+	if _notify_sample_completion and workbench_physics and _workbench_completed_sample >= 0 \
+			and (_last_notified_sample != _workbench_completed_sample or _last_notified_epoch != rigid_body_epoch):
+		_last_notified_sample = _workbench_completed_sample
+		_last_notified_epoch = rigid_body_epoch
+		workbench_sample_completed.emit()
 
 
 func has_failed() -> bool:
