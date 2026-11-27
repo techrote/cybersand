@@ -106,6 +106,17 @@ func exercise() -> void:
 	check(active_density() == 500 and int(panel.active_state.revision) == default_revision + 1,
 		"Apply activates only the requested native configuration revision")
 	same_owners("paused Apply")
+	var larger_budget: Dictionary = Catalog.Capacity.defaults()
+	larger_budget.logical_limit = 16
+	check(bench.set_sandbox_capacity(larger_budget), "retained actor prepare reaches native material admission")
+	if not await until(func() -> bool: return not bench.busy() and host.pending_microscenario_apply.is_empty(),
+		"retained preparation receives its terminal native receipt"): return
+	check(host.microscenario_error.contains("Reset live material overrides") and not bench.applied.has("sandbox_capacity"),
+		"native refusal identifies active configuration and leaves authored capacity untouched")
+	panel.refresh_scene()
+	check(active_density() == 500 and int(panel.active_state.revision) == default_revision + 1,
+		"refused retained prepare preserves the live override and revision")
+	same_owners("refused retained actor preparation")
 	var after: Dictionary = await bench.capture_batch_source(region)
 	check(after.get("ok",false) and after.get("config",{}).get("source_cells") == before.config.source_cells,
 		"paused configuration Apply preserves the native material plane observed by Architecture")

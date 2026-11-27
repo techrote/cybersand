@@ -256,6 +256,10 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         }
         if (retain && (!adapter->workbench_ || adapter->extent_ != extent))
             throw std::invalid_argument("Live content requires the retained workbench extent");
+        // Retaining terrain constructs a new World and retires its predecessor's
+        // audition identity. Require an explicit reset before losing live laws.
+        if (retain && adapter->world_->material_audition_changes_behavior())
+            throw std::invalid_argument("Reset live material overrides in Materials Lab before rebuilding the retained scene");
         const PackedInt32Array region = options.get("region", PackedInt32Array());
         if (region.size() != 4 || region[0] < 0 || region[1] < 0 || region[2] < 1 || region[3] < 1 ||
             region[2] > extent.x || region[3] > extent.y ||
