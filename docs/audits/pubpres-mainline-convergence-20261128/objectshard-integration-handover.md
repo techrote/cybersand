@@ -1,5 +1,93 @@
 # PUBPRES → ObjectShard M4 integration handover
 
+## Current integration foundation — final PUBPRES delivery source
+
+**This preface supersedes the historical uses of “current” below.** The source
+selected for subsequent ObjectShard M4 integration is the final PUBPRES
+application `65f71aaf4be3a67896bafac7f5220a0cb25a8fb7`, tree
+`f6b7b8d3d613b70cdcdf3643fb906934b3887173`. Its [final delivery
+campaign](https://github.com/techrote/cybersand/actions/runs/46144440297) is
+attempt 1. The exact delivery and extracted-package outcomes belong to the
+[final independent custody ledger](independent-final-custody.md); they must be
+read before treating the foundation as accepted. The positively evaluated
+physical owner application remains the earlier `9f212725` reference.
+Neither a merged text preview nor hosted execution grants physical acceptance.
+
+| Role | Exact identity |
+|---|---|
+| Final PUBPRES application | [`65f71aaf4be3a67896bafac7f5220a0cb25a8fb7`](https://github.com/techrote/cybersand/tree/65f71aaf4be3a67896bafac7f5220a0cb25a8fb7) |
+| Final application tree | `f6b7b8d3d613b70cdcdf3643fb906934b3887173` |
+| Reconciled accepted main | `50e3bcb839211eac2abe1e065750cbcba4d36f8c` |
+| Guarded native publication | `427c0ea3b6326f3ebda71fbbff7e40564757de2b`, tree `7bb3a0eabf3b2a7ad74b3dd15d1539eca410fe77` |
+| Original native build | `b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34`, tree `5d292e17fdeba0466ee744d8d23e719039908c7f` |
+| Fully hosted-gated Q4 application | `ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae`; [all 26 required gates](https://github.com/techrote/cybersand/actions/runs/46140937427) passed |
+| Frozen ObjectShard preview source | `c4e10e3ca629c491f7340c6f383adcc347200fa5`, tree `e88fd1a1d89d10bf4482cb619174325390ced44d` |
+| Frozen PUBPRES preview source | `0670733eb0a418c8580458a9c5dd9aff24f342c6`, tree `3df9cc4f11b0ef0a3009830a78720bf41bb9f1a9` |
+
+C independently compared the complete final and Q4 trees. Their production
+application and original qualification bytes are unchanged. The differences
+are the guarded native pointers/manifests, reviewed publication and inspection
+plumbing, request marker and documentation. The original native build is not
+relabeled as a build at the later application source: both published platform
+manifests bind all 115 native and eight additional build inputs, whose Git
+identities remain equal to the original build. A separate read-only inspection
+of the original publication receipt proves fresh remote retrieval of both
+native objects.
+
+The **067/c4e merge preview is historical, read-only evidence**. Its eleven
+conflicts remain useful locations for the following mission, but it was never
+a combined build or executable compatibility result. The historical local
+review commits and preview trees below are not substitutes for the final
+remote PUBPRES source. Re-run a disposable preview against the actual qualified
+M4 source and the final PUBPRES commit before editing; do not transplant the
+old preview tree or merge unfinished M4 development into the PUBPRES branch.
+
+The later observed M4 head `8064c73270dee2ce1a0d53316aae334136335483`
+advanced three commits and six paths from frozen c4e. The parent independently
+inspected that delta and reported no shared production-runtime changes.
+The dated movement appendix below retains those exact paths. It gives no
+current-HEAD compatibility credit. Refresh the live PR and accepted-main
+identities close to the next integration and preserve any new movement as a
+separate observation.
+
+### Contracts to preserve in the next integration
+
+The detailed ownership and conflict tables below remain applicable, with
+these resulting-source points made explicit:
+
+- Keep one native World mutation owner and one physical interval authority.
+  M4 multi-cell transactions and geometry reconstruction must retain their
+  precise presentation acknowledgements and structural-edit opportunities.
+- Early physical packets carry truthful native owner freshness while granting
+  no material publication authority: absent render World `-1`, established
+  absence serial `0`, and empty render payload. Ambient consumes native
+  freshness separately from its retained material cache. A late genuine
+  material envelope must not roll native tick, revision or World ownership
+  backward.
+- Select resolves continuous coordinates through the accepted, submitted
+  camera and existing member/occlusion/owner policy. Do not restore integer
+  geometry picking or map a click through a newer unpublished camera.
+- The retained Water helper revalidates only the old submitted geometry under
+  current and previous material ownership, preserving its original native and
+  physical clocks and 100 ms deadline. Prior contact-clipped geometry remains
+  ineligible. This fallback cannot acknowledge newly reconstructed M4 geometry
+  or disguise stale detached-body ownership.
+- The final delivery helpers, native input bindings, resource/process receipts
+  and original graphical fixtures are reusable infrastructure. Reuse does not
+  carry over application acceptance: any combined source needs its own native,
+  actual rendered/editing, sustained play, package and physical-owner gates.
+
+ObjectShard M4 is not absorbed, its active branch is untouched, and unrelated
+M5 work remains out of scope. Mainline promotion still requires explicit owner
+authorization and all applicable exact-source gates.
+
+## Historical inspections and preserved conflict evidence
+
+The following record is retained unchanged. Any sentence calling an earlier
+candidate “current” is scoped to its original dated investigation; the final
+source table above is authoritative for the next integration.
+
+
 **Disposition: source review and read-only merge preview; combined execution is unqualified.**
 
 The next ObjectShard integration should start from the completed PUBPRES candidate and preserve its one native World, actual Rapier completion and accepted presentation identities. This mission has not merged ObjectShard, changed its branch or introduced its unfinished features into the PUBPRES evaluator.
@@ -85,7 +173,8 @@ For input adaptation, preserve the candidate's repaired continuous accepted-fram
 The Ambient integration repair additionally makes the early packet contract
 explicit: a material-free native/physical completion carries genuine
 `physics_world_generation`, native tick/revision, backend and failure metadata,
-while `render_world_generation` and `render_snapshot_serial` are `-1`.
+while `render_world_generation` is `-1` and the established absent
+`render_snapshot_serial` is `0`.
 Combined publication continues to carry its genuine material identity.
 
 ObjectShard integration must preserve that distinction when adapting structural
@@ -104,3 +193,32 @@ transaction owner. See
 The 067 merge preview above predates this narrow subsequent repair; resulting
 source runtime qualification and any later ObjectShard merge must use the final
 mission source identity, not inherit acceptance from this preview.
+
+## Later live ObjectShard branch movement — 28 November, 11:45 UTC
+
+The integration owner refreshed PR #754 and observed live HEAD
+`8064c73270dee2ce1a0d53316aae334136335483`, still open and Draft against the
+accepted main baseline `50e3bcb839211eac2abe1e065750cbcba4d36f8c`.
+The read-only comparison from frozen
+`c4e10e3ca629c491f7340c6f383adcc347200fa5` showed three commits ahead and
+zero behind, changing exactly these six paths:
+
+- `docs/audits/objectshard-m4-live-edit-20261128/integration-handover.md`
+- `docs/audits/objectshard-m4-reliability-20261128/m5-handover.md`
+- `godot/.godot/global_script_class_cache.cfg`
+- `godot/tests/test_object_shard_m4_capacity_recovery.gd`
+- `tools/ci/run_godot_regressions.py`
+- `tools/objectshard/qualify_workbench.py`
+
+That inspected delta contains no shared production runtime changes. It does
+not extend the frozen c4e merge preview into a claim of current-HEAD runtime
+compatibility. No part of this later development, including the M5 handover,
+was absorbed into PUBPRES. The final M4 integration mission must refresh the
+then-current **qualified** ObjectShard source and its physical acceptance
+before using the shared-contract guidance above. Both original branches and
+all frozen preview evidence remain intact; no combined source was built or
+executed by this mission.
+
+The final PUBPRES application and native publication identities are supplied
+by the mission delivery ledger and PR #767. The preview source `0670733`
+is an explicitly narrower historical source-review scope.
