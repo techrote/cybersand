@@ -160,9 +160,10 @@ jobs:
           "FOCUSED_COPY=$copy" | Out-File -Append $env:GITHUB_ENV
           $env:FOCUSED_COPY=$copy
           @'
-          import os
+          import os, sys
           from pathlib import Path
-          from tools.objectshard.package_windows_lab import copy_committed_tree
+          sys.path.insert(0,str(Path("tools/objectshard").resolve()))
+          from package_windows_lab import copy_committed_tree
           copy_committed_tree(Path(os.environ["FOCUSED_COPY"]),Path("reused-native"),"docs/operations/objectshard-workbench-playtest.md")
           '@ | python -
           if ($LASTEXITCODE -ne 0) { throw 'Fresh extracted package-like source copy failed' }
