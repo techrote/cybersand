@@ -1,4 +1,4 @@
-name: RAMCACHE Strata portable verifier environment diagnosis
+name: RAMCACHE Strata independent published Windows consumer
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 env:
   GIT_CONFIG_COUNT: '2'
@@ -19,232 +20,913 @@ env:
   JAVA_HOME: ''
 
 jobs:
-  verifier:
-    name: Exercise shipped Windows verifier and observer module environment
+  consume:
+    name: Independently download and exercise the final published evaluator
     runs-on: windows-2022
-    timeout-minutes: 15
+    timeout-minutes: 30
     defaults:
       run:
         shell: pwsh
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 746f95512606ffa61b446a4c93321b66f883b4e1
+          ref: 50e3bcb839211eac2abe1e065750cbcba4d36f8c
           fetch-depth: 0
           lfs: false
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Execute tracked Windows verifier and observer-environment controls
-        run: |
-          python -B tools/ci/test_ramcache_strata_qualification.py WindowsVerifierControls
-          if ($LASTEXITCODE -ne 0) { throw 'Tracked Windows verifier controls failed' }
-      - name: Independently record actual Windows 5.1 verifier and module outcomes
+      - name: Authenticate and exercise the actual downloaded final archive
+        env:
+          CYBERSAND_CONSUMER_TOKEN: ${{ github.token }}
         run: |
           $driver = @'
           #!/usr/bin/env python3
-          """Exercise exact shipped verification and the legacy observer environment on Windows."""
+          """Independently consume the already published Windows evaluator on a clean runner.
+          
+          The final source and all input artifact identities are pinned in an external,
+          hash-pinned configuration. This does not publish a replacement evaluator, rerun
+          the source campaigns, or relabel original producer execution.
+          """
           from __future__ import annotations
           
           import argparse
+          import base64
           import hashlib
           import importlib
           import json
+          import ntpath
           import os
-          from pathlib import Path
+          import re
+          from pathlib import Path, PurePosixPath
+          import shutil
+          import stat
+          import struct
           import subprocess
           import sys
           import time
           import traceback
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          import zipfile
+          
+          REPOSITORY = "techrote/cybersand"
+          API = "https://api.github.com/repos/" + REPOSITORY
+          MAX_EXPANDED = 4 * 1024 ** 3
+          CREDENTIAL_KEYS = {"CYBERSAND_CONSUMER_TOKEN", "GH_TOKEN", "GITHUB_TOKEN", "ACTIONS_RUNTIME_TOKEN"}
+          FRAME_SUFFIXES = (
+              "strata/optics/industrial-underworks/install/profile-classic.png",
+              "strata/preference-reopen/owner-diorama-reopen.png",
+              "strata/boundary-data/strata-refused-write.png",
+          )
           
           
-          def sha(path: Path) -> str:
-              with path.open("rb") as stream:
-                  return hashlib.file_digest(stream, "sha256").hexdigest()
-          
-          
-          def write(path: Path, value: object) -> None:
-              path.write_text(json.dumps(value, sort_keys=True, indent=2) + "\n", encoding="utf-8")
-          
-          
-          def require(value: bool, message: str) -> None:
+          def require(value, message):
               if not value:
                   raise RuntimeError(message)
           
           
-          def main() -> int:
+          def sha(path):
+              with Path(path).open("rb") as stream:
+                  return hashlib.file_digest(stream, "sha256").hexdigest()
+          
+          
+          def canonical(value):
+              return (json.dumps(value, sort_keys=True, indent=2) + "\n").encode("utf-8")
+          
+          
+          def write(path, value):
+              Path(path).write_bytes(canonical(value))
+          
+          
+          def read(path):
+              return json.loads(Path(path).read_text(encoding="utf-8-sig"))
+          
+          
+          def inventory(directory):
+              return {p.relative_to(directory).as_posix(): {"bytes": p.stat().st_size, "sha256": sha(p)}
+                      for p in sorted(directory.rglob("*")) if p.is_file()}
+          
+          
+          def retain_downloaded_originals(installation, output, expected_files, manifest, package):
+              """Retain bounded, unmodified bytes for review when the full artifact is too large.
+          
+              This evidence is a selected subset of the actual downloaded evaluator, not a
+              second evaluator. Complete archive admission and execution remain mandatory.
+              """
+              selected = {name for name in expected_files if "/" not in name or name.startswith("qualification/")}
+              selected.update("source/" + name for name in package.MATERIALIZED)
+              selected.update({"source/.git/HEAD", "source/.git/config", "source/.git/refs/heads/portable-source"})
+              if "source/.git/packed-refs" in expected_files:
+                  selected.add("source/.git/packed-refs")
+              selected.update(name for name in expected_files
+                              if name.startswith(("source/godot/addons/cybersand_native/", "source/godot/addons/godot-rapier2d/"))
+                              and (name.endswith(".gdextension") or "/runtime-provenance." in name))
+              require(selected <= set(expected_files), "Selected original review files are missing")
+              total = sum((installation / name).stat().st_size for name in selected)
+              require(total <= 400 * 1024 ** 2, "Selected original review evidence exceeds its bounded size")
+              destination = output / "downloaded-original-files"
+              destination.mkdir()
+              retained = {}
+              for name in sorted(selected):
+                  package.safe_name(name)
+                  target = destination / name
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(installation / name, target)
+                  require(sha(target) == expected_files[name], "Retained original bytes changed: " + name)
+                  retained[name] = {"bytes": target.stat().st_size, "sha256": expected_files[name]}
+              observed = {}
+              original = manifest["source_repository"]["original_files"]
+              for name, expected_blob in original.items():
+                  package.safe_name(name)
+                  if name in package.REGENERATED_RAPIER_IMPORTS:
+                      require("source/" + name not in expected_files, "Pristine source omission changed")
+                      continue
+                  target = installation / "source" / name
+                  digest, blob = sha(target), package.lab.blob_oid(target)
+                  require(digest == expected_files["source/" + name], "Observed source hash differs: " + name)
+                  if name not in package.MATERIALIZED:
+                      require(blob == expected_blob, "Observed source Git blob differs: " + name)
+                  observed[name] = {"bytes": target.stat().st_size, "sha256": digest, "git_blob": blob}
+              write(output / "downloaded-pristine-inventory.json", expected_files)
+              write(output / "downloaded-source-observations.json", observed)
+              write(output / "downloaded-original-files.json", retained)
+              return {"status": "passed", "files": len(retained), "expanded_bytes": total,
+                      "source_files_observed": len(observed), "omitted_source_imports": package.REGENERATED_RAPIER_IMPORTS,
+                      "source_observations_sha256": sha(output / "downloaded-source-observations.json"),
+                      "pristine_inventory_sha256": sha(output / "downloaded-pristine-inventory.json"),
+                      "selected_inventory_sha256": sha(output / "downloaded-original-files.json"),
+                      "scope": "Unmodified selected bytes from the independently downloaded archive, plus full pristine hash inventory and actual tracked-source byte/blob observations. This subset is review evidence, not a runnable evaluator."}
+          
+          
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, response, code, message, headers, new_url):
+                  return None
+          
+          
+          def api(path, token):
+              require(path.startswith("/") and ".." not in path, "Unsafe GitHub API path")
+              request = urllib.request.Request(API + path, headers={
+                  "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "CyberSand-independent-evaluator-consumer"})
+              with urllib.request.build_opener(NoRedirect).open(request, timeout=60) as response:
+                  data = response.read(16 * 1024 * 1024 + 1)
+              require(len(data) <= 16 * 1024 * 1024, "Oversized GitHub metadata")
+              return json.loads(data)
+          
+          
+          def download_artifact(pin, expected_run, expected_source, target, token):
+              metadata = api("/actions/artifacts/" + str(pin["id"]), token)
+              for key in ("id", "name", "size_in_bytes", "digest"):
+                  require(metadata.get(key) == pin.get(key), "Artifact metadata differs: " + key)
+              require(metadata.get("expired") is False
+                      and metadata.get("workflow_run", {}).get("id") == expected_run
+                      and metadata["workflow_run"].get("head_sha") == expected_source, "Artifact is expired or cross-source/run")
+              request = urllib.request.Request(API + "/actions/artifacts/" + str(pin["id"]) + "/zip", headers={
+                  "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "CyberSand-independent-evaluator-consumer"})
+              try:
+                  urllib.request.build_opener(NoRedirect).open(request, timeout=60)
+                  raise RuntimeError("Artifact API did not provide its expected storage redirect")
+              except urllib.error.HTTPError as error:
+                  require(error.code in (301, 302, 303, 307, 308), "Artifact redirect request failed")
+                  signed_location = error.headers.get("Location", "")
+              location = urllib.parse.urlsplit(signed_location)
+              require(location.scheme == "https" and bool(location.hostname) and not location.username and not location.password,
+                      "Invalid artifact storage redirect")
+              # A fresh request deliberately omits the GitHub credential at the storage host.
+              digest, count = hashlib.sha256(), 0
+              with urllib.request.urlopen(signed_location, timeout=120) as source, target.open("xb") as destination:
+                  while chunk := source.read(4 * 1024 * 1024):
+                      count += len(chunk)
+                      require(count <= pin["size_in_bytes"], "Artifact exceeds its exact admitted byte length")
+                      digest.update(chunk)
+                      destination.write(chunk)
+              require(count == pin["size_in_bytes"] and "sha256:" + digest.hexdigest() == pin["digest"],
+                      "Actual downloaded artifact bytes fail their admitted identity")
+              return metadata
+          
+          
+          def extract_original(archive, destination, safe_name):
+              require(not destination.exists(), "Extraction must be clean")
+              destination.mkdir(parents=True)
+              names, folded, total = {}, set(), 0
+              with zipfile.ZipFile(archive) as bundle:
+                  require(bundle.testzip() is None, "Downloaded original artifact CRC failure")
+                  for member in bundle.infolist():
+                      if member.is_dir():
+                          safe_name(member.filename.rstrip("/"))
+                          continue
+                      name = safe_name(member.orig_filename)
+                      require(name == member.filename and name.casefold() not in folded and not member.flag_bits & 1,
+                              "Unsafe, encrypted or duplicate original artifact member")
+                      require(stat.S_IFMT(member.external_attr >> 16) in (0, stat.S_IFREG), "Original artifact contains a special file")
+                      folded.add(name.casefold())
+                      total += member.file_size
+                      require(total <= MAX_EXPANDED and member.file_size <= 2 * 1024 ** 3, "Original artifact extraction bound exceeded")
+                      target = destination / name
+                      target.parent.mkdir(parents=True, exist_ok=True)
+                      digest = hashlib.sha256()
+                      with bundle.open(member) as source, target.open("xb") as output:
+                          while chunk := source.read(1024 * 1024):
+                              digest.update(chunk)
+                              output.write(chunk)
+                      require(target.stat().st_size == member.file_size, "Extracted member has the wrong size")
+                      names[name] = {"bytes": member.file_size, "sha256": digest.hexdigest(), "crc32": member.CRC}
+              return names
+          
+          
+          def unique_suffix(directory, suffix):
+              values = [p for p in directory.rglob("*") if p.is_file()
+                        and (p.relative_to(directory).as_posix() == suffix
+                             or p.relative_to(directory).as_posix().endswith("/" + suffix))]
+              require(len(values) == 1, "Missing or ambiguous original member: " + suffix)
+              return values[0]
+          
+          
+          def emit_record(name, data, kind):
+              digest = hashlib.sha256(data).hexdigest()
+              encoded = base64.b64encode(data).decode("ascii")
+              chunks = [encoded[start:start + 49152] for start in range(0, len(encoded), 49152)]
+              print("CYBERSAND_RECORD_BEGIN " + json.dumps({"name": name, "kind": kind, "bytes": len(data),
+                    "sha256": digest, "chunks": len(chunks)}, sort_keys=True), flush=True)
+              for index, chunk in enumerate(chunks):
+                  print("CYBERSAND_RECORD_CHUNK " + json.dumps({"name": name, "index": index, "data": chunk}), flush=True)
+              print("CYBERSAND_RECORD_END " + json.dumps({"name": name, "sha256": digest}), flush=True)
+          
+          
+          def verify_module_record(record, manifest, installation):
+              require(record.get("schema") == 1 and record.get("status") == "passed" and record.get("source_commit") == manifest["source_commit"]
+                      and record.get("source_tree") == manifest["source_tree"], "Wrong or failed loaded-module receipt")
+              normalized = lambda value: ntpath.normcase(ntpath.normpath(value))
+              require(normalized(record["package"]) == normalized(installation), "Module probe used another installation")
+              require(type(record.get("pid")) is int and record["pid"] > 0
+                      and record["startup_deadline_seconds"] == 60 and 0 <= record["elapsed_seconds"] <= 180,
+                      "Invalid owned module-probe process or bound")
+              rows = [record["executable"], *record["modules"]]
+              require(len(rows) == 4, "Incomplete module file inventory")
+              required = {
+                  "Godot_v4.7-stable_win64.exe",
+                  "vcruntime140.dll",
+                  "source/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+                  "source/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              }
+              require({row["relative_path"] for row in rows} == required, "Wrong required loaded files")
+              require(record["arguments"] == ["--audio-driver", "Dummy", "--rendering-method", "gl_compatibility",
+                      "--rendering-driver", "opengl3_angle", "--path", ntpath.join(installation, "source", "godot"),
+                      "--", "--workbench"], "Module observation ran another application command")
+              for row in rows:
+                  expected_path = ntpath.join(installation, *row["relative_path"].split("/"))
+                  expected_hash = manifest["files_sha256"][row["relative_path"]]
+                  require(row["status"] == "verified" and normalized(row["expected_path"]) == normalized(expected_path)
+                          and normalized(row["observed_path"]) == normalized(expected_path)
+                          and row["expected_sha256"] == row["packaged_sha256"] == row["observed_sha256"] == expected_hash,
+                          "Loaded module escaped the package or its exact hash")
+                  matches = [item for item in record["observed_module_inventory"]
+                             if item["name"].casefold() == row["name"].casefold()]
+                  require(len(matches) == 1 and normalized(matches[0]["path"]) == normalized(expected_path),
+                          "Required module is absent or contradictory in the original full loader inventory")
+              cleanup = record["cleanup"]
+              require(cleanup["terminated_owned_process"] is True and cleanup["environment_restored"] is True
+                      and type(cleanup.get("exit_code")) is int
+                      and not cleanup.get("error") and not record.get("error"), "Module probe did not clean up its own process")
+              return {"status": "passed", "pid": record["pid"], "files": rows, "cleanup": cleanup,
+                      "scope": "Intentionally terminated owned module probe; distinct from naturally zero-exit shipped CMD runs."}
+          
+          
+          def validate_reopen_pair(launches):
+              require(isinstance(launches, list) and len(launches) == 2, "Missing original launch pair")
+              for launch in launches:
+                  ready, saved = launch["admission"], launch["profile"]
+                  require(ready["session"] == saved["session_id"] and ready["area"] == saved["active_area"]
+                          and type(ready["revision"]) is int and 0 < ready["revision"] <= saved["revision"],
+                          "Original readiness contradicts its own retained durable profile")
+              first, second = launches
+              before, after = first["profile"], second["profile"]
+              require(before["session_id"] == after["session_id"]
+                      and set(first["engine_process_ids"]).isdisjoint(second["engine_process_ids"]),
+                      "Reopen was not the same session in fresh engine processes")
+              require(second["admission"]["revision"] >= before["revision"]
+                      and after["revision"] >= before["revision"]
+                      and second["admission"]["area"] == after["active_area"] == before["active_area"],
+                      "Reopen rolled back or selected another active area")
+              stable = ("area_id", "incarnation", "extent", "authoring_sha256", "authored_source_sha256",
+                        "physics_profile_sha256", "policy_sha256", "native_format_version", "physical_hash_version")
+              for area in ("a", "b", "c"):
+                  left, right = before["native_areas"][area], after["native_areas"][area]
+                  require(all(key in left and key in right and left[key] == right[key] for key in stable),
+                          "Reopen changed durable area identity or authored policy: " + area)
+                  require(right["completed_tick"] >= left["completed_tick"], "Reopen rolled back simulation ticks")
+                  if area != before["active_area"]:
+                      require(left == right and before["files_sha256"][left["blob"]] == after["files_sha256"][right["blob"]],
+                              "No-travel reopen changed an inactive native area")
+              return {"status": "passed", "session": before["session_id"], "active_area": before["active_area"],
+                      "first_saved_revision": before["revision"], "reopen_ready_revision": second["admission"]["revision"],
+                      "reopen_saved_revision": after["revision"], "stable_area_fields": list(stable),
+                      "inactive_native_records_and_bytes_unchanged": True}
+          
+          
+          def main():
               parser = argparse.ArgumentParser(description=__doc__)
               parser.add_argument("--repository", type=Path, required=True)
-              parser.add_argument("--expected-source", required=True)
+              parser.add_argument("--configuration", type=Path, required=True)
+              parser.add_argument("--configuration-sha256", required=True)
+              parser.add_argument("--work", type=Path, required=True)
               parser.add_argument("--output", type=Path, required=True)
               args = parser.parse_args()
               repository = args.repository.resolve(strict=True)
-              output = args.output.resolve()
-              require(not output.exists() and not output.is_relative_to(repository), "Use a fresh output outside source")
+              configuration = args.configuration.resolve(strict=True)
+              require(sha(configuration) == args.configuration_sha256, "Consumer configuration changed")
+              config = read(configuration)
+              require(config.get("schema") == "ramcache-strata-independent-consumer-input-v1", "Wrong consumer configuration")
+              work, output = args.work.resolve(), args.output.resolve()
+              require(not work.exists() and not output.exists() and " " in str(work), "Use fresh work path with spaces and fresh evidence")
+              require(not work.is_relative_to(repository) and not output.is_relative_to(repository)
+                      and not work.is_relative_to(output) and not output.is_relative_to(work), "Consumer writes overlap source/evidence")
+              work.mkdir(parents=True)
               output.mkdir(parents=True)
+              token = os.environ.get("CYBERSAND_CONSUMER_TOKEN", "")
+              require(bool(token), "Read-only artifact credential is required")
+              credentials = {key: value for key, value in os.environ.items() if key.upper() in CREDENTIAL_KEYS}
+              for key in credentials:
+                  del os.environ[key]
               started = time.monotonic()
               report = {
-                  "schema": "ramcache-strata-payload-verifier-diagnostic-v2",
-                  "status": "running", "diagnostic_only": True,
-                  "full_installed_qualification_executed": False,
-                  "scope": "Exact shipped Verify Package.ps1 on valid, altered and missing files plus unchanged observer commands/hash algorithms under its child-only corrected module environment; no actual loaded-module/evaluator acceptance or release publication.",
-                  "expected_source": args.expected_source,
-                  "runner_script_sha256": sha(Path(__file__)),
-                  "workflow_run": os.environ.get("GITHUB_RUN_ID", ""),
-                  "workflow_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", ""),
-                  "workflow_checkout": os.environ.get("GITHUB_SHA", ""),
+                  "schema": "ramcache-strata-independent-published-consumer-v1", "status": "running",
+                  "consumer_run": os.environ.get("GITHUB_RUN_ID", ""), "consumer_workflow_source": os.environ.get("GITHUB_SHA", ""),
+                  "consumer_script_sha256": sha(Path(__file__)), "configuration_sha256": sha(configuration),
+                  "application_source": config["source_commit"], "application_tree": config["source_tree"],
+                  "producer_run": config["producer_run"], "producer_attempt": config["producer_attempt"],
                   "runner_image": {key: os.environ.get(key, "") for key in ("ImageOS", "ImageVersion", "RUNNER_OS", "RUNNER_ARCH")},
-                  "commands": {},
+                  "events": [], "commands": {}, "physical_owner_gpu_test": False,
+                  "credential_keys_removed_before_any_child": sorted(credentials),
+                  "scope": "Independent download of the published archive, exact original producer readback, fresh shipped Windows CMD/durable reopen/module/hash execution. Original full feature campaigns are not relabelled or rerun.",
               }
+              emitted_frames = []
           
-              def command(name: str, argv: list[str], environment: dict[str, str], cwd: Path) -> tuple[int, str]:
-                  before = time.monotonic()
+              def event(name):
+                  report["events"].append({"name": name, "seconds": round(time.monotonic() - started, 3)})
+                  write(output / "consumer.json", report)
+                  print("CYBERSAND_CONSUMER_STAGE " + json.dumps(report["events"][-1]), flush=True)
+          
+              def command(name, argv, cwd, environment, timeout):
                   log = output / (name + ".log")
-                  row = {"argv": argv, "cwd": str(cwd), "timeout_seconds": 180}
+                  before = time.monotonic()
+                  row = {"argv": argv, "cwd": str(cwd), "timeout_seconds": timeout}
                   report["commands"][name] = row
                   try:
                       with log.open("wb") as stream:
-                          result = subprocess.run(argv, cwd=cwd, env=environment, stdout=stream, stderr=subprocess.STDOUT, timeout=180)
+                          result = subprocess.run(argv, cwd=cwd, env=environment, stdout=stream, stderr=subprocess.STDOUT, timeout=timeout)
                       row["exit_code"] = result.returncode
                   finally:
-                      row["elapsed_seconds"] = round(time.monotonic() - before, 3)
+                      row["seconds"] = round(time.monotonic() - before, 3)
                       row["log_sha256"] = sha(log) if log.exists() else None
                       write(output / (name + ".json"), row)
-                      write(output / "diagnostic.json", report)
-                  return result.returncode, log.read_text(encoding="utf-8", errors="replace")
+                  require(result.returncode == 0, "Consumer command failed: " + name)
+                  return log.read_bytes()
           
               try:
-                  require(sys.platform == "win32", "The actual shipped PowerShell verifier requires standard Windows")
+                  require(sys.platform == "win32", "Actual independent portable consumer requires Windows")
                   sys.path[:0] = [str(repository / "tools"), str(repository / "tools/ci")]
                   package = importlib.import_module("package_ramcache_strata")
-                  require(Path(package.__file__).resolve() == repository / "tools/package_ramcache_strata.py", "Wrong packager module")
+                  require(Path(package.__file__).resolve() == repository / "tools/package_ramcache_strata.py", "Wrong consumer source module")
                   git_environment = package.lab.lab.clean_git_environment()
                   git_environment["PYTHONDONTWRITEBYTECODE"] = "1"
-                  git = lambda *arguments: subprocess.check_output(["git", "-C", str(repository), *arguments], env=git_environment).decode().strip()
-                  head, tree = git("rev-parse", "HEAD"), git("rev-parse", "HEAD^{tree}")
-                  require(head == args.expected_source and not git("status", "--porcelain"), "Wrong or dirty source checkout")
-                  report.update(source_commit=head, source_tree=tree)
-                  report["production_inputs_sha256"] = {name: sha(repository / name) for name in (
-                      "tools/package_ramcache_strata.py", "tools/ci/ramcache_strata_lab_package.py", "tools/package_materials_lab_candidate.py",
-                      "tools/ci/check_windows_package_modules.ps1")}
-                  fixture = output / "verifier fixture with spaces"
-                  (fixture / "payload").mkdir(parents=True)
-                  payloads = {"payload/000-empty.bin": b"", "payload/001-abc.bin": b"abc",
-                              "payload/002-multiblock.bin": bytes(range(256)) * 8192}
-                  payloads.update({f"payload/{index:03d}-control.bin": f"CyberSand verifier control {index}\n".encode()
-                                   for index in range(3, 101)})
-                  expected = {name: hashlib.sha256(data).hexdigest() for name, data in payloads.items()}
-                  require(expected["payload/000-empty.bin"] == "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-                          and expected["payload/001-abc.bin"] == "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad",
-                          "Independent SHA-256 known-answer controls failed")
-                  for name, data in payloads.items():
-                      (fixture / name).write_bytes(data)
-                  script = fixture / "Verify Package.ps1"
-                  script.write_text(package.VERIFY_PS1, encoding="utf-8", newline="\n")
-                  write(fixture / "evaluation-manifest.json", {
-                      "schema": "ramcache-strata-workbench-evaluation-v1", "source_commit": head, "files_sha256": expected})
-                  write(output / "fixture-inputs.json", {
-                      "files_sha256": expected, "files_bytes": {name: len(data) for name, data in payloads.items()},
-                      "verifier_sha256": sha(script), "manifest_sha256": sha(fixture / "evaluation-manifest.json"),
-                      "known_answers": {name: expected[name] for name in ("payload/000-empty.bin", "payload/001-abc.bin")}})
-                  report["verifier_sha256"] = sha(script)
-                  environment = package.lab.dependency_environment(fixture)
-                  folded_environment = {key.upper(): value for key, value in environment.items()}
-                  report["portable_environment"] = {key: folded_environment.get(key.upper(), "") for key in ("PATH", "PSModulePath", "SystemRoot", "PYTHONUTF8", "PYTHONNOUSERSITE")}
-                  powershell = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32/WindowsPowerShell/v1.0/powershell.exe"
-                  require(powershell.is_file(), "Missing built-in Windows PowerShell executable")
-                  report["powershell"] = {"path": str(powershell), "sha256": sha(powershell)}
-                  prefix = [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass"]
-                  code, version = command("powershell-version", prefix + ["-Command", "$PSVersionTable.PSVersion.ToString()"], environment, fixture)
-                  require(code == 0 and version.strip().startswith("5.1."), "Expected built-in Windows PowerShell 5.1")
-                  argv = prefix + ["-File", str(script)]
-                  code, log = command("valid-payload", argv, environment, fixture)
-                  require(code == 0 and f"Verified {len(payloads)} original payload files. Application {head}" in log,
-                          "Shipped verifier did not accept every known-good original file")
-                  changed = fixture / "payload/001-abc.bin"
-                  changed.write_bytes(b"abcd")
-                  code, log = command("altered-payload", argv, environment, fixture)
-                  require(code != 0 and "Changed payload: payload/001-abc.bin" in log, "Shipped verifier did not reject the altered file")
-                  changed.write_bytes(payloads["payload/001-abc.bin"])
-                  missing = fixture / "payload/000-empty.bin"
-                  missing.unlink()
-                  code, log = command("missing-payload", argv, environment, fixture)
-                  require(code != 0 and "Missing payload: payload/000-empty.bin" in log, "Shipped verifier did not reject the missing file")
-                  missing.write_bytes(payloads["payload/000-empty.bin"])
-                  require({name: sha(fixture / name) for name in expected} == expected, "Fixture restoration or original file custody failed")
-                  require(script.read_bytes() == package.VERIFY_PS1.encode("utf-8"), "Test altered the shipped verifier")
-                  original_environment = dict(environment)
-                  module_environment = package.windows_powershell_environment(environment)
-                  require(environment == original_environment, "Observer preparation altered its parent environment")
-                  require(module_environment == {key: value for key, value in environment.items() if key.upper() != "PSMODULEPATH"},
-                          "Observer environment changed more than the inherited PowerShell module path")
-                  require(module_environment["PATH"] == environment["PATH"], "Observer lost the actual portable application PATH")
-                  probe = output / "module-observer-command-probe.ps1"
-                  probe.write_text(r'''param([string]$Root)
-          $ErrorActionPreference = 'Stop'
-          $commands = [ordered]@{}
-          foreach ($name in @('Get-FileHash', 'Get-Process', 'Start-Process', 'Get-Content', 'ConvertFrom-Json')) {
-              $resolved = Get-Command -Name $name -ErrorAction Stop
-              $commands[$name] = [ordered]@{ name = [string]$resolved.Name; type = [string]$resolved.CommandType; module = [string]$resolved.ModuleName }
-          }
-          $hashes = [ordered]@{}
-          foreach ($name in @('payload/000-empty.bin', 'payload/001-abc.bin', 'payload/002-multiblock.bin')) {
-              $hashes[$name] = (Get-FileHash -LiteralPath (Join-Path $Root $name) -Algorithm SHA256).Hash.ToLowerInvariant()
-          }
-          [ordered]@{ version = $PSVersionTable.PSVersion.ToString(); module_path = $env:PSModulePath; commands = $commands; hashes = $hashes } | ConvertTo-Json -Depth 6
-          ''', encoding="utf-8", newline="\n")
-                  code, log = command("module-observer-command-probe", prefix + ["-File", str(probe), "-Root", str(fixture)], module_environment, fixture)
-                  require(code == 0, "Actual legacy observer command/module admission failed")
-                  observed = json.loads(log)
-                  command_names = ("Get-FileHash", "Get-Process", "Start-Process", "Get-Content", "ConvertFrom-Json")
-                  require(observed.get("version", "").startswith("5.1.") and set(observed.get("commands", {})) == set(command_names),
-                          "Legacy observer command inventory or PowerShell version differs")
-                  for name in command_names:
-                      require(observed["commands"][name]["name"] == name and observed["commands"][name]["type"], "Observer command failed resolution: " + name)
-                  require(observed.get("hashes") == {name: expected[name] for name in (
-                      "payload/000-empty.bin", "payload/001-abc.bin", "payload/002-multiblock.bin")}, "Get-FileHash disagrees with independent known-answer payloads")
-                  require({name: sha(fixture / name) for name in expected} == expected and script.read_bytes() == package.VERIFY_PS1.encode("utf-8"),
-                          "Observer command probe modified original fixture inputs")
-                  report["module_observer_environment"] = {"removed_keys": sorted(key for key in environment if key.upper() == "PSMODULEPATH"),
-                      "parent_unchanged": True, "portable_path_unchanged": True, "other_variables_unchanged": True,
-                      "probe_script_sha256": sha(probe), "observed": observed,
-                      "scope": "Actual WinPS command discovery and known-answer hashing only; final copied-application loaded-module probe still required."}
-                  require(git("rev-parse", "HEAD") == head and git("rev-parse", "HEAD^{tree}") == tree and not git("status", "--porcelain"),
-                          "Diagnostic changed source identity")
-                  report["cases"] = {"valid": "accepted", "altered": "rejected with exact changed-file marker",
-                                     "missing": "rejected with exact missing-file marker"}
-                  report["fixture_restored"] = True
-                  report["status"] = "passed_diagnostic_only"
+                  git = lambda *values: subprocess.check_output(["git", "-C", str(repository), *values], env=git_environment).decode().strip()
+                  require(git("rev-parse", "HEAD") == config["source_commit"]
+                          and git("rev-parse", "HEAD^{tree}") == config["source_tree"]
+                          and not git("status", "--porcelain"), "Consumer checkout differs from the clean final source")
+                  source = package.q.identity()
+                  require(source["source_commit"] == config["source_commit"] and source["source_tree"] == config["source_tree"],
+                          "Current source identity differs")
+                  event("authenticating_final_main_and_published_artifacts")
+                  producer = api("/actions/runs/" + str(config["producer_run"]), token)
+                  require(producer["id"] == config["producer_run"] and producer["run_attempt"] == config["producer_attempt"]
+                          and producer["head_sha"] == config["source_commit"] and producer["head_branch"] == "main"
+                          and producer["event"] == "push" and producer["status"] == "completed"
+                          and producer["conclusion"] == "success", "Producer was not a successful exact final-main push")
+                  require(api("/branches/main", token)["commit"]["sha"] == config["source_commit"], "Main advanced before independent consumption")
+                  report["producer_run_metadata"] = {key: producer[key] for key in (
+                      "id", "run_attempt", "head_sha", "head_branch", "event", "status", "conclusion", "html_url")}
+                  required_free = config["evaluator"]["size_in_bytes"] * 2 + config["inner"]["expanded_bytes"] + config["extracted"]["size_in_bytes"] + 1024 ** 3
+                  require(shutil.disk_usage(work).free > required_free, "Insufficient independent runner disk for one archive and clean extraction")
+                  report["disk_before"] = {"free": shutil.disk_usage(work).free, "required_with_margin": required_free}
+                  artifact_records = {}
+                  for label in ("evaluator", "extracted"):
+                      destination = work / (label + "-original.zip")
+                      artifact_records[label] = download_artifact(config[label], config["producer_run"], config["source_commit"], destination, token)
+                  report["artifact_metadata"] = artifact_records
+                  write(output / "artifact-metadata.json", artifact_records)
+                  evaluator_root = work / "published outer artifact"
+                  outer_members = extract_original(work / "evaluator-original.zip", evaluator_root, package.safe_name)
+                  write(output / "evaluator-outer-members.json", outer_members)
+                  inner_candidates = [p for p in evaluator_root.rglob("*.zip") if p.is_file()]
+                  require(len(inner_candidates) == 1 and inner_candidates[0].name == config["inner"]["filename"], "Wrong or ambiguous published inner archive")
+                  inner = inner_candidates[0]
+                  require(inner.stat().st_size == config["inner"]["bytes"] and sha(inner) == config["inner"]["sha256"], "Published inner bytes differ from qualified identity")
+                  identity = read(unique_suffix(evaluator_root, inner.with_suffix(".identity.json").name))
+                  for key in ("filename", "bytes", "sha256", "expanded_bytes", "manifest_sha256"):
+                      require(identity[key] == config["inner"][key], "Published package identity differs: " + key)
+                  require(identity["source_commit"] == config["source_commit"] and identity["source_tree"] == config["source_tree"],
+                          "Published package identity is cross-source")
+                  report["inner_archive"] = identity
+                  event("strictly_admitting_and_extracting_the_downloaded_inner_archive")
+                  expected_files = package.inspect_archive(inner)
+                  installation = work / "fresh independently downloaded installation"
+                  installation.mkdir()
+                  with zipfile.ZipFile(inner) as bundle:
+                      require(bundle.testzip() is None, "Actual published inner ZIP CRC failed")
+                      for name in expected_files:
+                          target = installation / name
+                          target.parent.mkdir(parents=True, exist_ok=True)
+                          with bundle.open(name) as src, target.open("xb") as dst:
+                              shutil.copyfileobj(src, dst, 1024 * 1024)
+                  require({name: sha(installation / name) for name in expected_files} == expected_files,
+                          "Clean extraction differs from the actual published bytes")
+                  manifest = package.verify(installation, pristine=True)
+                  require(manifest["source_identity"] == source and sha(installation / package.MANIFEST) == identity["manifest_sha256"],
+                          "Actual archive source or manifest differs from qualification")
+                  require(manifest["runtime"]["cybersand_runtime"]["sha256"] == config["native_sha256"]
+                          and manifest["runtime"]["rapier_runtime"]["sha256"] == config["rapier_sha256"],
+                          "Actual published native runtime differs from the independently pinned retained runtime")
+                  require(manifest["classic_default"] is True and manifest["objectshard_m4_included"] is False
+                          and manifest["physical_gpu_acceptance_for_this_archive"] is False, "Wrong defaults or acceptance claims")
+                  write(output / "evaluation-manifest.json", manifest)
+                  report["downloaded_original_files"] = retain_downloaded_originals(
+                      installation, output, expected_files, manifest, package)
+                  with zipfile.ZipFile(inner) as bundle:
+                      measured_members = {item.filename: {"bytes": item.file_size, "compressed_bytes": item.compress_size,
+                          "crc32": item.CRC, "flag_bits": item.flag_bits, "external_attr": item.external_attr,
+                          "compression": item.compress_type, "sha256": expected_files[item.filename]}
+                          for item in bundle.infolist()}
+                  require(set(measured_members) == set(expected_files), "Measured original ZIP inventory differs")
+                  write(output / "downloaded-zip-members.json", measured_members)
+                  report["downloaded_original_files"]["zip_members_sha256"] = sha(output / "downloaded-zip-members.json")
+                  shutil.copyfile(unique_suffix(evaluator_root, inner.with_suffix(".identity.json").name),
+                                  output / "published-package.identity.json")
+                  shutil.copyfile(unique_suffix(evaluator_root, inner.name + ".sha256"),
+                                  output / "published-package.zip.sha256")
+                  report["source_identity"] = {
+                      "source_commit": source["source_commit"], "source_tree": source["source_tree"],
+                      "input_count": len(source["source_inputs_sha256"]), "asset_count": len(source["source_assets_sha256"]),
+                      "full_identity_sha256": hashlib.sha256(canonical(source)).hexdigest(),
+                      "original_qualification_source": manifest["qualification_source_identity"]["source_commit"],
+                      "original_qualification_run": manifest["qualification_reuse"]["original_run_id"],
+                      "original_qualification_run_conclusion": manifest["qualification_reuse"]["original_run_conclusion"],
+                      "qualification_summary_hashes": manifest["qualification"],
+                  }
+                  report["native_runtime"] = manifest["runtime"]
+                  report["native_reuse"] = manifest["native_reuse"]
+                  report["offline_dependencies"] = manifest["offline_authoring_dependencies"]
+                  require(sum((installation / name).stat().st_size for name in expected_files) == identity["expanded_bytes"],
+                          "Actual expansion differs from the published inner identity")
+                  report["pristine_payload"] = {"files_including_manifest": len(expected_files),
+                      "inventory_sha256": hashlib.sha256(canonical(expected_files)).hexdigest(),
+                      "expanded_bytes": sum((installation / name).stat().st_size for name in expected_files),
+                      "portable_source_ref": (installation / "source/.git/refs/heads/portable-source").read_text(encoding="ascii")}
+                  require(report["pristine_payload"]["portable_source_ref"] == config["source_commit"] + "\n",
+                          "Downloaded source lost its actual portable Git ref")
+                  excluded_paths = config["excluded_production_paths"]
+                  require(isinstance(excluded_paths, list) and len(excluded_paths) == config["excluded_production_path_count"]
+                          and len(set(excluded_paths)) == len(excluded_paths) and bool(excluded_paths), "Missing pinned exclusion inventory")
+                  for name in excluded_paths:
+                      package.safe_name(name)
+                      require("source/" + name not in expected_files and not (installation / "source" / name).exists(), "Excluded implementation entered the actual archive: " + name)
+                  environment = package.lab.dependency_environment(installation)
+                  environment = {key: value for key, value in environment.items() if key.upper() not in CREDENTIAL_KEYS}
+                  require(environment.get("JAVA_HOME", "") == "", "Independent cold launch must not discover a hosted Java SDK")
+                  bundled_git = str(installation / "dependencies/git/cmd/git.exe")
+                  for label, commit in config["excluded_heads"].items():
+                      require(len(commit) == 40 and all(c in "0123456789abcdef" for c in commit), "Invalid excluded head")
+                      probe = subprocess.run([bundled_git, "-C", str(installation / "source"), "cat-file", "-e", commit + "^{commit}"],
+                                             env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30)
+                      require(probe.returncode != 0, "Off-ancestry excluded commit entered the portable Git database: " + label)
+                  report["exclusion"] = {"production_paths_absent": len(excluded_paths), "heads_absent": config["excluded_heads"],
+                                        "full_source_git_and_native_ledger_verified": True}
+                  event("replaying_original_producer_installed_evidence_without_relabelling")
+                  originals = work / "original producer extracted evidence"
+                  original_members = extract_original(work / "extracted-original.zip", originals, package.safe_name)
+                  write(output / "producer-original-members.json", original_members)
+                  original_summary_path = unique_suffix(originals, "extracted-verification.json")
+                  original_root = original_summary_path.parent
+                  summary = read(original_summary_path)
+                  require(summary["schema"] == "ramcache-strata-extracted-evaluator-v1" and summary["status"] == "passed"
+                          and summary["source_commit"] == config["source_commit"] and summary["source_tree"] == config["source_tree"]
+                          and summary["manifest_sha256"] == identity["manifest_sha256"], "Wrong original producer installed acceptance")
+                  for key in ("filename", "bytes", "sha256", "expanded_bytes"):
+                      require(summary["archive"][key] == identity[key], "Original installed acceptance belongs to another archive")
+                  require(summary["cold_cmd_was_first_engine_invocation"] is True and summary["physical_gpu_acceptance"] is False,
+                          "Invalid original installed execution claims")
+                  reports = {}
+                  for mode in ("ramcache", "strata", "lab"):
+                      folder = original_root / mode
+                      require(sha(folder / "integration.json") == summary["extracted_modes"][mode], "Original installed campaign hash differs")
+                      result = package.q.verify(folder, source)
+                      require(result["source_identity"] == source and result["platform"] == "win32" and result["mode"] == mode,
+                              "Original installed campaign is cross-source/platform/mode")
+                      reports[mode] = result
+                  original_cold = package.read_launcher_evidence(original_root / "cold-launch", config["source_commit"])
+                  require(original_cold == summary["cold_launch"], "Original cold launcher summary differs from raw evidence")
+                  require(sha(original_root / "persistent-shortcut-verification.json") == summary["persistent_shortcut_receipt_sha256"],
+                          "Original persistent shortcut summary hash differs")
+                  producer_shortcuts = read(original_root / "persistent-shortcut-verification.json")
+                  original_shortcut_replays = []
+                  for phase in ("first", "reopen"):
+                      location = original_root / ("persistent-shortcut-" + phase)
+                      replay = package.read_launcher_evidence(location, config["source_commit"], persistent=True)
+                      replay["profile"] = package.read_persistent_profile(location / "original-profile", config["native_sha256"])
+                      original_shortcut_replays.append(replay)
+                  require(producer_shortcuts["status"] == "passed" and producer_shortcuts["launches"] == original_shortcut_replays,
+                          "Original persistent pair is incomplete")
+                  require(sha(original_root / "runtime-modules.json") == summary["runtime_modules_sha256"]
+                          and sha(original_root / "runtime-modules-observer.log") == summary["runtime_modules_observer_log_sha256"],
+                          "Original module observation bytes differ")
+                  producer_modules = read(original_root / "runtime-modules.json")
+                  producer_installation = ntpath.dirname(ntpath.dirname(reports["lab"]["project"]["path"]))
+                  producer_module_witness = verify_module_record(producer_modules, manifest, producer_installation)
+                  original_pair_continuity = validate_reopen_pair(original_shortcut_replays)
+          
+                  # Snapshot the downloaded source with its actual bundled tools. Preserve
+                  # the producer path when replaying the original compilation receipt.
+                  snapshot_command = [str(installation / "dependencies/python/python.exe"), "-I", "-c",
+                      "import json,sys;sys.path.insert(0,sys.argv[1]);import world_candidate;print(json.dumps(world_candidate._source_snapshot()[0],sort_keys=True))",
+                      str(installation / "source/tools/material_catalogue")]
+                  snapshot = json.loads(command("consumer-bundled-source-snapshot", snapshot_command, installation / "source", environment, 30))
+                  original_world = package.q.validate_marker(
+                      (original_root / "lab/material-lab-author/process.log").read_text(encoding="utf-8"),
+                      "MAT_WB_EVIDENCE ")["candidate_world_receipt"]
+                  package.validate_portable_compiler(original_world, producer_installation,
+                      manifest["offline_authoring_dependencies"], config["source_commit"], snapshot)
+                  require(snapshot["git_head"] == config["source_commit"], "Consumer bundled source snapshot is cross-source")
+                  for name, digest in snapshot["lf_sha256"].items():
+                      package.safe_name(name)
+                      require(hashlib.sha256((installation / "source" / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == digest,
+                              "Consumer bundled source snapshot differs from actual bytes")
+                  require(sha(original_root / "portable-lab-source-snapshot.json") == summary["offline_authoring"]["source_snapshot_sha256"]
+                          and read(original_root / "portable-lab-source-snapshot.json") == snapshot,
+                          "Original producer source snapshot differs from independently downloaded source")
+                  require(summary["offline_authoring"]["source_commit"] == config["source_commit"]
+                          and summary["offline_authoring"]["campaign_sha256"] == summary["extracted_modes"]["lab"],
+                          "Original compiled authoring acceptance is cross-source/campaign")
+                  dependency_tools = manifest["offline_authoring_dependencies"]["tools"]
+                  for name, row in summary["offline_authoring"]["resolved_tools"].items():
+                      expected = dependency_tools[name]
+                      require(ntpath.normcase(ntpath.normpath(row["path"])) == ntpath.normcase(ntpath.join(
+                          producer_installation, "dependencies", *expected["path"].split("/")))
+                          and row["sha256"] == expected["sha256"] and row["version"] == expected["version"],
+                          "Original producer authoring resolved an unshipped tool")
+                  require({name: sha(installation / name) for name in expected_files} == expected_files,
+                          "Bundled authoring snapshot altered original payload or Git index")
+                  report["producer_installed_readback"] = {
+                      "summary_sha256": sha(original_summary_path), "original_summary": summary,
+                      "campaign_hashes": {mode: sha(original_root / mode / "integration.json") for mode in reports},
+                      "campaign_case_counts": {mode: len(value["cases"]) for mode, value in reports.items()},
+                      "original_producer_installation": producer_installation,
+                      "original_cold_launcher": original_cold, "original_persistent_pair": original_shortcut_replays,
+                      "original_loaded_modules": producer_module_witness,
+                      "original_pair_continuity": original_pair_continuity,
+                      "original_compilation": {"receipt_sha256": hashlib.sha256(canonical(original_world)).hexdigest(),
+                          "source_snapshot": snapshot, "compiler": original_world["compiler"],
+                          "compiler_version": original_world["compiler_version"],
+                          "reference_build": original_world["reference_build"], "candidate_build": original_world["candidate_build"],
+                          "scope": "Original producer native comparison replayed against downloaded source; no new consumer compilation or relabelling."},
+                  }
+          
+                  event("executing_downloaded_normal_cmd_as_first_engine_invocation")
+                  previous = dict(os.environ)
+                  application_environment = {key: value for key, value in environment.items()
+                      if key.upper() not in CREDENTIAL_KEYS}
+                  report["application_credential_keys_removed"] = sorted(key for key in environment
+                      if key.upper() in CREDENTIAL_KEYS)
+                  try:
+                      os.environ.clear()
+                      os.environ.update(application_environment)
+                      package.cold.execute_launcher(installation, output / "cold-launch", package.q.metrics)
+                      cold = package.read_launcher_evidence(output / "cold-launch", config["source_commit"])
+                      write(output / "cold-launch-verification.json", cold)
+                      lifetimes = read(output / "cold-launch/lifetimes.json")
+                      require(not any(ntpath.basename(row["image_path"]).casefold() in ("keytool.exe", "java.exe", "javaw.exe")
+                                      for row in lifetimes["rows"]), "Downloaded cold launch invoked an unshipped Java tool")
+                      report["actual_cold_launcher"] = cold
+                      report["actual_cold_lifetimes"] = lifetimes
+                      report["cold_cmd_was_first_engine_invocation"] = True
+                      report["hosted_keytool_absent"] = True
+                      shortcuts = []
+                      for phase in ("first", "reopen"):
+                          event("executing_downloaded_persistent_cmd_" + phase)
+                          location = output / ("persistent-shortcut-" + phase)
+                          package.cold.execute_launcher(installation, location, package.q.metrics, persistent=True)
+                          result = package.read_launcher_evidence(location, config["source_commit"], persistent=True)
+                          profiles = list((installation / "userdata/roaming").glob(
+                              "Godot/app_userdata/*/persistent-areas/three-areas-v1/current.cypm"))
+                          require(len(profiles) == 1, "Downloaded shortcut did not use the package-local shared profile")
+                          retained = location / "original-profile"
+                          shutil.copytree(profiles[0].parent, retained)
+                          result["profile"] = package.read_persistent_profile(retained, config["native_sha256"])
+                          ready, saved = result["admission"], result["profile"]
+                          require(ready["session"] == saved["session_id"] and ready["area"] == saved["active_area"]
+                                  and ready["revision"] <= saved["revision"], "Downloaded persistent readiness contradicts durable saved bytes")
+                          write(location / "verification.json", result)
+                          shortcuts.append(result)
+                      first, reopened = shortcuts
+                      require(first["profile"]["session_id"] == reopened["profile"]["session_id"]
+                              and set(first["engine_process_ids"]).isdisjoint(reopened["engine_process_ids"]),
+                              "Downloaded package did not reopen the same session in fresh engine processes")
+                      require(reopened["admission"]["revision"] >= first["profile"]["revision"]
+                              and reopened["profile"]["revision"] >= first["profile"]["revision"]
+                              and reopened["admission"]["area"] == reopened["profile"]["active_area"] == first["profile"]["active_area"],
+                              "Downloaded package reopened an older revision or another active area")
+                      pair_continuity = validate_reopen_pair(shortcuts)
+                      write(output / "persistent-shortcut-verification.json", {"status": "passed", "launches": shortcuts,
+                          "scope": "Fresh independent actual published-CMD normal WM_CLOSE and durable same-profile reopen."})
+                      report["actual_persistent_pair"] = shortcuts
+                      report["actual_pair_continuity"] = pair_continuity
+          
+                      event("observing_actual_downloaded_native_module_paths_and_hashes")
+                      powershell = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32/WindowsPowerShell/v1.0/powershell.exe"
+                      module_command = [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+                          str(repository / "tools/ci/check_windows_package_modules.ps1"), "-Package", str(installation),
+                          "-Evidence", str(output / "runtime-modules.json"), "-Manifest", package.MANIFEST,
+                          "-ProjectRelative", "source/godot"]
+                      module_environment = package.windows_powershell_environment(application_environment)
+                      require(module_environment == {key: value for key, value in application_environment.items() if key.upper() != "PSMODULEPATH"},
+                              "Actual consumer observer environment differs from the bounded correction")
+                      command("runtime-modules-observer", module_command, installation, module_environment, 180)
+                      modules = read(output / "runtime-modules.json")
+                      report["actual_loaded_modules"] = verify_module_record(modules, manifest, str(installation))
+                      report["actual_module_receipt_sha256"] = sha(output / "runtime-modules.json")
+                      report["actual_module_environment"] = {"portable_path_unchanged": module_environment["PATH"] == application_environment["PATH"],
+                                                             "inherited_psmodulepath_present": any(k.upper() == "PSMODULEPATH" for k in module_environment)}
+                      event("verifying_original_downloaded_payload_after_execution")
+                      package.verify(installation)
+                      command("shipped-powershell-verifier", [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass",
+                          "-File", str(installation / "Verify Package.ps1")], installation, application_environment, 180)
+                      require({name: sha(installation / name) for name in expected_files} == expected_files,
+                              "Actual execution changed an original published payload file")
+                      report["all_original_payload_bytes_unchanged"] = True
+                      report["git_index_sha256"] = sha(installation / "source/.git/index")
+                  finally:
+                      os.environ.clear()
+                      os.environ.update(previous)
+                  event("sealing_original_receipt_custody_and_selected_original_frames")
+                  require(inventory(originals) == {name: {"bytes": row["bytes"], "sha256": row["sha256"]}
+                          for name, row in original_members.items()}, "Independent readback changed original producer evidence")
+                  for mode in reports:
+                      shutil.copyfile(original_root / mode / "integration.json", output / ("producer-" + mode + "-integration.json"))
+                  shutil.copyfile(original_summary_path, output / "producer-extracted-verification.json")
+                  shutil.copyfile(original_root / "runtime-modules.json", output / "producer-runtime-modules.json")
+                  frames = []
+                  for suffix in FRAME_SUFFIXES:
+                      frame = unique_suffix(originals, suffix)
+                      relative = frame.relative_to(originals).as_posix()
+                      data = frame.read_bytes()
+                      require(data[:8] == b"\x89PNG\r\n\x1a\n" and data[12:16] == b"IHDR" and len(data) <= 2 * 1024**2,
+                              "Original selected frame is not a bounded PNG")
+                      width, height = struct.unpack_from(">II", data, 16)
+                      require(0 < width <= 4096 and 0 < height <= 4096
+                              and hashlib.sha256(data).hexdigest() == original_members[relative]["sha256"],
+                              "Original selected frame dimensions or custody differ")
+                      name = frame.name
+                      destination = output / name
+                      require(not destination.exists(), "Ambiguous selected frame basename")
+                      destination.write_bytes(data)
+                      frames.append({"name": name, "original_member": relative, "sha256": sha(destination), "bytes": len(data),
+                                     "width": width, "height": height, "execution_source": config["source_commit"],
+                                     "producer_run": config["producer_run"],
+                                     "scope": "Unedited original producer installed frame; numeric depth is proven by original preference JSON, not pixels alone."})
+                      emitted_frames.append((name, data))
+                  report["original_frames"] = frames
+                  report["original_producer_evidence_unchanged"] = True
+                  require(git("rev-parse", "HEAD") == config["source_commit"]
+                          and git("rev-parse", "HEAD^{tree}") == config["source_tree"]
+                          and not git("status", "--porcelain"), "Independent consumer mutated source checkout")
+                  require(api("/branches/main", token)["commit"]["sha"] == config["source_commit"],
+                          "Main advanced before independent acceptance completed")
+                  report["final_main_still_matches"] = True
+                  report["status"] = "passed"
                   return 0
               except BaseException as error:
                   report["status"] = "failed"
-                  report["failure"] = {"type": type(error).__name__, "message": str(error)}
-                  (output / "failure-traceback.log").write_text(traceback.format_exc(), encoding="utf-8")
+                  message = str(error).replace(token, "<credential-redacted>")
+                  message = re.sub(r"https?://\S+", "<url-redacted>", message)
+                  report["failure"] = {"type": type(error).__name__, "message": message}
+                  trace = traceback.format_exc().replace(token, "<credential-redacted>")
+                  trace = re.sub(r"https?://\S+", "<url-redacted>", trace)
+                  (output / "failure-traceback.log").write_text(trace, encoding="utf-8")
                   return 1
               finally:
+                  os.environ.update(credentials)
                   report["elapsed_seconds"] = round(time.monotonic() - started, 3)
-                  report["retained_files_sha256"] = {path.relative_to(output).as_posix(): sha(path)
-                      for path in output.rglob("*") if path.is_file() and path.name != "diagnostic.json"}
-                  write(output / "diagnostic.json", report)
-                  print(json.dumps({"status": report["status"], "diagnostic_only": True, "evidence": str(output),
-                                    "diagnostic_sha256": sha(output / "diagnostic.json")}))
+                  report["retained_files_sha256"] = {p.relative_to(output).as_posix(): sha(p)
+                      for p in output.rglob("*") if p.is_file() and p.name != "consumer.json"}
+                  write(output / "consumer.json", report)
+                  emit_record("consumer-audit", (output / "consumer.json").read_bytes(), "application/json")
+                  if report["status"] == "passed":
+                      for name in ("producer-extracted-verification.json", "producer-runtime-modules.json", "runtime-modules.json"):
+                          emit_record(name, (output / name).read_bytes(), "application/json")
+                      for name, data in emitted_frames:
+                          emit_record(name, data, "image/png")
           
           
           if __name__ == "__main__":
               raise SystemExit(main())
           '@
-          $driver = $driver.Replace("`r`n", "`n").TrimEnd([char[]]"`r`n") + "`n"
-          [System.IO.File]::WriteAllText("$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py", $driver, [System.Text.UTF8Encoding]::new($false))
-          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne '1cdd76f66b7ed93c5303f99a156476d094804155ac96344eaa095eac22c4bfd6') { throw 'External verifier diagnostic driver bytes changed' }
-          python -B "$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py" --repository "$env:GITHUB_WORKSPACE" --expected-source 746f95512606ffa61b446a4c93321b66f883b4e1 --output "$env:RUNNER_TEMP/ramcache-verifier-diagnostic"
-          if ($LASTEXITCODE -ne 0) { throw 'Actual independent Windows verifier diagnostic failed' }
-      - name: Preserve original verifier evidence without publishing an evaluator
+          $driver = $driver.Replace("`r`n", "`n").TrimEnd([char[]]"`r`n") + "`n`n"
+          [System.IO.File]::WriteAllText("$env:RUNNER_TEMP/ramcache_strata_published_consumer.py", $driver, [System.Text.UTF8Encoding]::new($false))
+          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_published_consumer.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne '322a33aff10d4b5a466aff0d031d3ac3012aac1b6bf697d7d1f466848fefe63d') { throw 'Independent consumer driver bytes changed' }
+          $configuration = @'
+          {
+            "evaluator": {
+              "digest": "sha256:66e259140b761d8ee9e2555e4799b6f004408f8b6e964fa0699b178ff112fa4e",
+              "id": 15252662597,
+              "name": "ramcache-strata-workbench-windows-50e3bcb839211eac2abe1e065750cbcba4d36f8c-1",
+              "size_in_bytes": 1358497599
+            },
+            "excluded_heads": {
+              "objectshard": "327afc58227b246390b19c275f58df77ae2dd734",
+              "pubpres": "957b4696b9f7987df18b4bf437e56ca3f391b956"
+            },
+            "excluded_production_path_count": 141,
+            "excluded_production_paths": [
+              "godot/native_extension/cyber_object_shard_lab.cpp",
+              "godot/native_extension/cyber_object_shard_lab.hpp",
+              "godot/object_shard_lab.tscn",
+              "godot/object_shard_worker_rehearsal.tscn",
+              "godot/scripts/object_shard_capture.gd",
+              "godot/scripts/object_shard_lab.gd",
+              "godot/scripts/object_shard_lab_presets.gd",
+              "godot/scripts/object_shard_lab_session.gd",
+              "godot/scripts/object_shard_lab_view.gd",
+              "godot/scripts/object_shard_m4_latency_probe.gd",
+              "godot/scripts/object_shard_m4_runtime.gd",
+              "godot/scripts/object_shard_m4_workbench_port.gd",
+              "godot/scripts/object_shard_native_worker.gd",
+              "godot/scripts/object_shard_physics_bridge.gd",
+              "godot/scripts/object_shard_workbench_overlay.gd",
+              "godot/scripts/object_shard_workbench_scenes.gd",
+              "godot/scripts/object_shard_worker_host.gd",
+              "godot/scripts/object_shard_worker_rehearsal.gd",
+              "godot/tests/capture_object_shard_finisher.gd",
+              "godot/tests/capture_object_shard_lab.gd",
+              "godot/tests/capture_object_shard_worker.gd",
+              "godot/tests/fixtures/object_shard_m4_authored_reopen.gd",
+              "godot/tests/fixtures/objectshard_owner_d_retained_actions.json",
+              "godot/tests/probe_object_shard_package_boot.gd",
+              "godot/tests/probe_object_shard_rest_stability.gd",
+              "godot/tests/probe_object_shard_retained_actions.gd",
+              "godot/tests/probe_object_shard_workbench_package.gd",
+              "godot/tests/probe_object_shard_worker_package_boot.gd",
+              "godot/tests/profile_object_shard_lab.gd",
+              "godot/tests/profile_object_shard_m4_disabled_control.gd",
+              "godot/tests/profile_object_shard_m4_render_control.gd",
+              "godot/tests/profile_object_shard_m4_throughput.gd",
+              "godot/tests/profile_object_shard_m4_workbench.gd",
+              "godot/tests/profile_object_shard_worker.gd",
+              "godot/tests/replay_object_shard_trace.gd",
+              "godot/tests/replay_object_shard_worker_trace.gd",
+              "godot/tests/support/object_shard_m4_workbench_fixture.gd",
+              "godot/tests/test_object_shard_boundary.gd",
+              "godot/tests/test_object_shard_capture.gd",
+              "godot/tests/test_object_shard_continuous_physics.gd",
+              "godot/tests/test_object_shard_continuous_play.gd",
+              "godot/tests/test_object_shard_fragment_motion.gd",
+              "godot/tests/test_object_shard_incremental_motion.gd",
+              "godot/tests/test_object_shard_lab.gd",
+              "godot/tests/test_object_shard_m4_actor_clock.gd",
+              "godot/tests/test_object_shard_m4_brush_revision.gd",
+              "godot/tests/test_object_shard_m4_camera_lifecycle.gd",
+              "godot/tests/test_object_shard_m4_compact_motion_packets.gd",
+              "godot/tests/test_object_shard_m4_completed_sample.gd",
+              "godot/tests/test_object_shard_m4_edit_delivery_fence.gd",
+              "godot/tests/test_object_shard_m4_equipment_completion.gd",
+              "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
+              "godot/tests/test_object_shard_m4_fresh_barrel.gd",
+              "godot/tests/test_object_shard_m4_latency_probe.gd",
+              "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+              "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd",
+              "godot/tests/test_object_shard_m4_long_burn.gd",
+              "godot/tests/test_object_shard_m4_material_only_workbench.gd",
+              "godot/tests/test_object_shard_m4_material_preparation_render.gd",
+              "godot/tests/test_object_shard_m4_material_presentation_render.gd",
+              "godot/tests/test_object_shard_m4_optional_diagnostics.gd",
+              "godot/tests/test_object_shard_m4_overlay_identity.gd",
+              "godot/tests/test_object_shard_m4_receipt_scheduling.gd",
+              "godot/tests/test_object_shard_m4_remote_barrel.gd",
+              "godot/tests/test_object_shard_m4_same_world_extension.gd",
+              "godot/tests/test_object_shard_m4_same_world_physical_chain.gd",
+              "godot/tests/test_object_shard_m4_shared_main_rapier.gd",
+              "godot/tests/test_object_shard_m4_small_fragment_chain.gd",
+              "godot/tests/test_object_shard_m4_sparse_parent_motion.gd",
+              "godot/tests/test_object_shard_m4_workbench_completion.gd",
+              "godot/tests/test_object_shard_m4_workbench_port.gd",
+              "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd",
+              "godot/tests/test_object_shard_motion_segments.gd",
+              "godot/tests/test_object_shard_native_worker.gd",
+              "godot/tests/test_object_shard_physics_bridge.gd",
+              "godot/tests/test_object_shard_physics_identity.gd",
+              "godot/tests/test_object_shard_playability.gd",
+              "godot/tests/test_object_shard_rest_contacts.gd",
+              "godot/tests/test_object_shard_workbench_contract.gd",
+              "godot/tests/test_object_shard_worker_adverse.gd",
+              "godot/tests/test_object_shard_worker_commands.gd",
+              "godot/tests/test_object_shard_worker_input_fences.gd",
+              "godot/tests/test_object_shard_worker_navigation.gd",
+              "godot/tests/test_object_shard_worker_recovery.gd",
+              "godot/tests/test_object_shard_worker_rehearsal.gd",
+              "godot/tests/test_object_shard_worker_replay_admission.gd",
+              "godot/tests/test_object_shard_worker_resources.gd",
+              "godot/tests/test_object_shard_worker_scene.gd",
+              "native/bench/object_shard_admission.cpp",
+              "native/include/cybersand/material_lifecycle.hpp",
+              "native/include/cybersand/object_shard.hpp",
+              "native/include/cybersand/object_shard_contact.hpp",
+              "native/include/cybersand/object_shard_coordinator.hpp",
+              "native/include/cybersand/object_shard_discovery.hpp",
+              "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+              "native/include/cybersand/object_shard_mutation.hpp",
+              "native/src/object_shard.cpp",
+              "native/src/object_shard_coordinator.cpp",
+              "native/src/object_shard_fire.inc",
+              "native/tests/benchmark_object_shard.cpp",
+              "native/tests/test_object_shard_admission.cpp",
+              "native/tests/test_object_shard_chemistry.cpp",
+              "native/tests/test_object_shard_contact.cpp",
+              "native/tests/test_object_shard_coordinator.cpp",
+              "native/tests/test_object_shard_external_fire.cpp",
+              "native/tests/test_object_shard_storage.cpp",
+              "tools/objectshard/analyze_owner_evidence.py",
+              "tools/objectshard/check_preset_connectivity.py",
+              "tools/objectshard/compare_throughput.py",
+              "tools/objectshard/lab_budgets.json",
+              "tools/objectshard/lab_performance.py",
+              "tools/objectshard/native_budgets.json",
+              "tools/objectshard/native_receipt.py",
+              "tools/objectshard/package_windows_lab.py",
+              "tools/objectshard/package_windows_workbench.py",
+              "tools/objectshard/process_resources.py",
+              "tools/objectshard/production_runtime.py",
+              "tools/objectshard/production_runtime_request.json",
+              "tools/objectshard/qualify_lab.py",
+              "tools/objectshard/qualify_m4_workbench.py",
+              "tools/objectshard/qualify_native_presentation.py",
+              "tools/objectshard/qualify_presentation.py",
+              "tools/objectshard/qualify_windows_zip.py",
+              "tools/objectshard/qualify_workbench.py",
+              "tools/objectshard/qualify_workbench_zip.py",
+              "tools/objectshard/run_benchmarks.py",
+              "tools/objectshard/run_native_tests.py",
+              "tools/objectshard/test_lab_performance.py",
+              "tools/objectshard/test_m3_package.py",
+              "tools/objectshard/test_package_verifier.py",
+              "tools/objectshard/test_process_resources.py",
+              "tools/objectshard/test_production_runtime.py",
+              "tools/objectshard/test_qualification_receipts.py",
+              "tools/objectshard/test_windows_zip.py",
+              "tools/objectshard/test_workbench_package_inputs.py",
+              "tools/objectshard/test_workbench_provenance.py",
+              "tools/objectshard/test_workbench_qualification.py",
+              "tools/objectshard/verify_package.ps1",
+              "tools/objectshard/verify_package.py",
+              "tools/objectshard/verify_workbench_package.ps1",
+              "tools/objectshard/verify_workbench_package.py"
+            ],
+            "exclusion_inventory_sha256": "99cabfa99cc897a87bc8b165de1e167c74f640dc183c253607137682617f0f90",
+            "extracted": {
+              "digest": "sha256:9a7ef144e4617332d75c7c33d2f3613972a93a4dc42e816b4e0b370911ff3290",
+              "id": 15252617722,
+              "name": "ramcache-strata-extracted-50e3bcb839211eac2abe1e065750cbcba4d36f8c-1",
+              "size_in_bytes": 51373787
+            },
+            "inner": {
+              "bytes": 1358496322,
+              "expanded_bytes": 2256272014,
+              "filename": "CyberSand-RAMCACHE-Strata-Workbench-Windows-50e3bcb83921.zip",
+              "manifest_sha256": "974a3b74c02b2e5d951e6658cdba992b2c6cb0c9ad7b12f15e6f4a434ad08e8b",
+              "sha256": "5ad76d0b87c9f3c5faa43c9b28c499eaabcec913179c15ba12fea74effff40ae"
+            },
+            "native_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+            "producer_attempt": 1,
+            "producer_run": 46114390381,
+            "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "schema": "ramcache-strata-independent-consumer-input-v1",
+            "source_commit": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+            "source_tree": "ffbb3cdaf14c8971381df56317c2059f38954798"
+          }
+          '@
+          $configuration = $configuration.Replace("`r`n", "`n").TrimEnd([char[]]"`r`n") + "`n"
+          [System.IO.File]::WriteAllText("$env:RUNNER_TEMP/ramcache-strata-consumer-input.json", $configuration, [System.Text.UTF8Encoding]::new($false))
+          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache-strata-consumer-input.json" -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'aae5b803cf62be6e1b2f1677fac3dd0b082577c5cf73c7b635e22e38a3ac21b2') { throw 'Independent consumer configuration bytes changed' }
+          python -B "$env:RUNNER_TEMP/ramcache_strata_published_consumer.py" --repository "$env:GITHUB_WORKSPACE" --configuration "$env:RUNNER_TEMP/ramcache-strata-consumer-input.json" --configuration-sha256 aae5b803cf62be6e1b2f1677fac3dd0b082577c5cf73c7b635e22e38a3ac21b2 --work "$env:RUNNER_TEMP/independent downloaded evaluator" --output "$env:RUNNER_TEMP/independent-published-evidence"
+          if ($LASTEXITCODE -ne 0) { throw 'Independent actual published evaluator acceptance failed' }
+      - name: Preserve original independent audit and execution evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ramcache-strata-verifier-diagnostic-${{ github.sha }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/ramcache-verifier-diagnostic/
+          name: ramcache-strata-independent-consumer-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/independent-published-evidence/
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 90
+
