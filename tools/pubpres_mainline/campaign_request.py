@@ -103,7 +103,7 @@ def main():
             "qualification_run": args.qualification_run, "qualification_attempt": args.qualification_attempt,
             "qualification_source": args.qualification_source, "publication_commit": args.publication_commit,
             "physical_acceptance": "HOLD", "promotion": "DRAFT_ONLY"})
-        (ROOT / REQUEST).write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
+        (ROOT / REQUEST).write_bytes((json.dumps(value, indent=2) + "\n").encode("utf-8"))
     else:
         value = validate()
         if os.environ.get("GITHUB_OUTPUT"):

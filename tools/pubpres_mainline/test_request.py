@@ -2,6 +2,7 @@
 import copy
 import contextlib
 import io
+import json
 import os
 from pathlib import Path
 import tempfile
@@ -47,6 +48,19 @@ class RequestTests(unittest.TestCase):
             request.validate_record(value)
         value["publication_commit"] = "d" * 40
         request.validate_record(value)
+
+    def test_sealed_request_uses_canonical_lf_bytes_on_windows(self):
+        with tempfile.TemporaryDirectory(prefix="pubpres-request-lf-") as directory:
+            root = Path(directory)
+            (root / ".github").mkdir()
+            with mock.patch.object(request, "ROOT", root), \
+                    mock.patch.object(request, "fingerprint", return_value="f" * 64), \
+                    mock.patch("sys.argv", ["request.py", "--seal", "--purpose", "LF custody control"]):
+                request.main()
+            raw = (root / request.REQUEST).read_bytes()
+            self.assertNotIn(b"\r", raw)
+            self.assertTrue(raw.endswith(b"\n"))
+            self.assertEqual(json.loads(raw)["payload_sha256"], "f" * 64)
 
     def test_validated_cli_exports_source_bound_general_performance_hold(self):
         with tempfile.TemporaryDirectory(prefix="pubpres-request-output-") as directory:
