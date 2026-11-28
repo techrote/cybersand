@@ -1,0 +1,61 @@
+# PUBPRES → ObjectShard M4 integration handover
+
+**Disposition: source review and read-only merge preview; combined execution is unqualified.**
+
+The next ObjectShard integration should start from the completed PUBPRES candidate and preserve its one native World, actual Rapier completion and accepted presentation identities. This mission has not merged ObjectShard, changed its branch or introduced its unfinished features into the PUBPRES evaluator.
+
+## Source and evidence custody
+
+The live #754 refresh on 28 November 2026 identified qualified application **`ba6d8de45bd4d38717d92bdece7153bff115c0f0`**, tree **`33fa2aab1433fc1fece80cb38a413816cc845603`**. Its later evidence/documentation HEAD is **`7dc6d53b5e92157e5bfa2e0f52042bbcc2fc0390`**. The PR remains open Draft and explicitly holds physical owner acceptance and mainline admission. Its independent Windows evaluator is now delivered; this is no longer merely an in-progress package campaign. [Live implementation and delivered qualification](https://github.com/techrote/cybersand/pull/754).
+
+The investigation froze the qualified application, rather than consuming a moving implementation branch. The PUBPRES review checkpoint is **`5758c637140fc3ea749c7511797f4087a3eef481`**, tree **`2b0af4b74a15910b6e14a367061f1d83fc240c0b`**. Both descend from accepted RAMCACHE merge **`9920e7a7369f24e2818313c007cc33616c1a6a83`**; PUBPRES also includes accepted main **`50e3bcb839211eac2abe1e065750cbcba4d36f8c`**, including Strata Theatre and complete portable Materials Lab source custody. Later PUBPRES publication/qualification identities are in the main mission ledger and must be refreshed before starting the next integration.
+
+`git merge-tree --write-tree --name-only --messages` returned **1**, with **15 conflicted paths**. It produced only an object-database preview tree, `b083836498c9a23ce6a434f798c5b2a76ed933d3`; no checkout, branch or index was changed. That tree contains conflict markers and is not runnable. The exact command, sources, common ancestor and complete conflict list are in [objectshard-merge-preview.json](objectshard-merge-preview.json).
+
+## Shared files and required reconciliation
+
+| Boundary | Actual overlap and required treatment |
+|---|---|
+| `simulation_worker.gd` | Three conflicts inside `_worker_loop`: coupling preparation, post-native-tick work, and final publication. Combine ObjectShard's exact motion lease and pinned completed-interval packet with PUBPRES coupling-only responses. A completed M4 interval must receive exactly its one real native tick; an auxiliary coupling response must not claim that tick or retire its pending completion. |
+| `main.gd` | Conflicts span `_ready`, `_exit_tree`, `_process`, `_physics_process`, `_complete_physics_callback`, snapshot consumption, material upload and terrain synchronization. ObjectShard interval admission must enter the existing Main/Rapier owner path. Maintain one physical completion authority; preserve PUBPRES camera, full two-slot material history and accepted-frame actor picking. |
+| `shared_workbench.gd` | Conflicts include installation, authored saving, stroke cancellation, paint, input routing and process polling. Preserve Strata's retained layers and ordinary authoring while adding M4's visible-owner witnesses, swept brush continuation, cancellation and precise edit acknowledgement. Never resolve a gesture against a newer unpublished body pose. |
+| `cyber_native_cell_world.cpp` | The reset conflict joins PUBPRES's missing-render-exchange preparation with `retire_shard_for_world_replacement()`. Allocate fallible replacement resources before the commit point; retire the old shard owner immediately before swapping the admitted World. Retain both protections rather than choosing one branch's complete reset implementation. |
+| `material_palette.gdshader` | Two conflicts join PUBPRES/Strata's exact physical-pixel sample mapping with `CYBER_OBJECT_SHARD` capture-coordinate material finishing. Keep the terrain screen-to-cell calculation that agrees with picking. Apply the shard-specific material texture origin only in its conditional variant; test fractional zoom and the first/last fitted viewport pixel. |
+| `feature_launcher.gd` | Preserve accepted-main feature admission and the separate persistent-area host. ObjectShard remains an explicit admitted route; a merge must not turn it on by default. |
+| Native/Rapier adapters and World | `physical_actor_session.gd`, `rapier_physics_bridge.gd`, `workbench_physics_bridge.gd`, `cyber_native_cell_world.hpp`, `world.hpp` and `world.cpp` merge textually but require semantic review. A clean text merge does not prove interval, geometry, COM/inertia, residency or lifetime compatibility. |
+| Runtime custody and compatibility | Both platform binaries and both native manifests conflict. Build new combined-source runtimes and publish through a new guarded exact-source request. Neither parent's binary represents the combined source. `tools/material_catalogue/compatibility.py` needs an audited combined World/shader transition; its restrictions must not be bypassed to obtain a passing Lab comparison. |
+| Evidence and attributes | `.gitattributes`, development handover, retrieval index and roadmap also conflict. Preserve both evidence populations, generated-source rules and the correct current disposition. These files do not establish executable compatibility. |
+
+## Contracts that must remain authoritative
+
+The M4 worker declares `_m4_owner_busy`, `_m4_motion_lease`, `_m4_interval_tick_due` and an immutable `_m4_interval_sample`. `object_shard_acquire_motion` refuses conflicting ownership and an already completed interval awaiting its native tick. `object_shard_submit_owner_control` validates the exact lease and actor sample. These are fences around the same native World; they are not an alternative simulation scheduler. [Frozen worker source](https://github.com/techrote/cybersand/blob/ba6d8de45bd4d38717d92bdece7153bff115c0f0/godot/scripts/simulation_worker.gd).
+
+PUBPRES may publish a fresh actor-coupling response without advancing semantic material time. The merge must distinguish that response from M4's required post-physical native turn. In particular, choosing PUBPRES's final `_publish_coupling_completion` block wholesale would lose M4's inventory-service and owner-busy cleanup; choosing M4's block wholesale would discard PUBPRES's bounded coupling response path. Implement one explicit end-of-owner-turn sequence that publishes the correct packet, services legitimate structural requests, clears only the completed lease's pending interval and releases owner-busy state under its mutex. A live edit must have a bounded opportunity between legitimate motion intervals.
+
+M4 presentation independently requires actual Main geometry installation, acknowledged native pose echoes, no active partial interval, and matching native World generation/revision before `can_upload_world` permits the ordinary material publication. `present_uploaded_world` then establishes the same-owner shard publication before drawing. The combined contract must retain this acknowledgement together with PUBPRES material content/history identities; simply showing the latest shard bridge transform would be stale or ahead of the accepted terrain. [Frozen presentation/runtime source](https://github.com/techrote/cybersand/blob/ba6d8de45bd4d38717d92bdece7153bff115c0f0/godot/scripts/object_shard_m4_runtime.gd).
+
+`object_shard_m4_workbench_port.gd` validates worker/native identity, World generation, session, owner epoch, shard session, incarnation and transport generation. `latest_edit_presented` requires a subsequent same-owner transaction publication and the caller's actual physics readiness. Its `visible_error` binds the already uploaded material World/revision/render serial. Keep Applied native work distinct from coherent presented completion. Scene retirement can censor a previously Applied operation; cancellation is not proof that no native mutation occurred. [Frozen Workbench port](https://github.com/techrote/cybersand/blob/ba6d8de45bd4d38717d92bdece7153bff115c0f0/godot/scripts/object_shard_m4_workbench_port.gd).
+
+The PUBPRES retained Water fallback applies to a previously submitted ordinary actor endpoint. Its current-owner/body/geometry/World checks and original hold deadline do not authorize retaining changed ObjectShard geometry. A structural geometry revision must receive its own installed and acknowledged publication. Source review found no need to remove these PUBPRES fences for M4.
+
+RAMCACHE restoration changes native World ownership/generation. Retire M4 transport, visible witnesses, pending input and presentation state before admitting the restored owner. Do not assume detached inventory is durably represented by the ordinary persistent-area format: preserve M4's existing `can_preserve_world` refusal until actual combined save/restore qualification establishes the supported policy.
+
+## Reusable qualification and remaining uncertainty
+
+The PUBPRES convergence tooling provides exact native/dependency build receipts, unchanged-input reuse checks, three-source matched comparisons, bounded spawn timing, original five-minute owner workloads and complete Windows package extraction with portable authoring tools. `tools/pubpres_mainline/qualification.py` invokes the accepted RAMCACHE/Strata/shared/Lab semantic readers at the current application source; it does not import old application results. `extracted.py` independently executes the shipped launcher, normal persistent shutdown/reopen, extracted feature cases, native Lab compilation and actual DLL loading.
+
+M4 retains its own native transactions, lifetime/sanitizer/budget witnesses, native-renderer camera/brush/preview cases and package-only qualification under `tools/objectshard/`. Reuse those original assertions and adversarial fixtures at the combined source. The PR's successful original counts apply to its frozen source, not automatically to this new combination.
+
+The live #754 description retains unresolved moving-tower performance decreases and a censored edit presentation sample. Preserve both in the combined comparison population. Likewise, PUBPRES's hosted render callbacks and physical completion measurements do not establish physical TITAN RTX presentation. Neither a text merge nor this handover qualifies combined feature performance or physical owner acceptance.
+
+## Recommended integration order
+
+1. Freeze the final PUBPRES application and the owner-admitted M4 application; record their exact trees, accepted main and original native/publication receipts. Use an isolated integration branch without modifying either implementation branch.
+2. Reconcile worker/Main interval ownership and the post-native completion path before editing UI/presentation. Add a focused production-path witness proving one completed Rapier interval, one required native turn, bounded edit admission and no false completion credits.
+3. Reconcile native reset/retirement, structural mutation and geometry installation. Rebuild both native platforms from the combined complete input closure; retain ordinary World, Water, publication, lifetime and sanitizer gates.
+4. Reconcile accepted-frame terrain/actor/shard composition, viewport mapping and actual mouse witness acquisition. Exercise fractional zoom, overlapping owners, material occlusion, changed sleeping geometry, Fire, Water, manual stepping and a missing/delayed native response.
+5. Reconcile ordinary authoring, retained Strata layers and persistent-area admission. Exercise real edit/save/fresh reopen and scene replacement while an edit is queued or Applied; establish explicit detached-inventory persistence limits.
+6. Run both original programme qualification populations and balanced comparisons on exact-source native runtimes. Do not waive failed arms, physical-gap objectives or unresolved M4 performance decreases.
+7. Produce and independently execute a complete Windows evaluator with current guarded native provenance. Keep promotion and physical acceptance separate until explicitly authorized and satisfied.
+
+M5 impact/repair/welding work remains outside this handover and outside PUBPRES convergence.

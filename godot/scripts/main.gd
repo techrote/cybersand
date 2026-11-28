@@ -1202,6 +1202,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 				str(checked.definition.id))
 			if checked.definition.id == CyberMicroScenarioContract.WORKBENCH_ID:
 				definitions = player_configuration.workbench_actors
+			if _owner_gameplay != null and staged is PreparedPhysical:
+				staged.diagnostic_observer = _owner_gameplay.spawn_phase.bind(_microscenario_request_serial+1,self)
 			if not staged.prepare(self,definitions,_physical_epoch+1):
 				microscenario_error = staged.last_error;staged.close();return false
 		# Signal connection and all rig/equipment/space construction precede the

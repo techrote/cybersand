@@ -1047,6 +1047,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		retain_layers: bool = false) -> bool:
 	if is_instance_valid(strata) and strata.authoring_busy(): return refuse("Finish or stop Strata native authoring before replacing its source.")
 	if busy(): return refuse("Wait for the current owner transaction.")
+	var observed: bool = host._owner_gameplay != null
+	var request_serial: int = host._microscenario_request_serial+1
+	var started_usec: int = Time.get_ticks_usec() if observed else 0
 	if not authoring_patch.is_empty() and (not preserve or reciprocal_panel == null \
 			or not reciprocal_panel.attests(candidate,authoring_patch)):
 		return refuse("Construction history must match the current validated experimental proposal.")
@@ -1060,6 +1063,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			candidate = candidate.duplicate()
 			candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
+	if observed:
+		host._owner_gameplay.spawn_phase("authored_validation",started_usec,
+			{"accepted":error.is_empty(),"retained_cells":preserve,"actors":candidate.get("actors",[]).size()},request_serial,host)
 	if not error.is_empty(): return refuse(error)
 	if candidate.has("ambient_authoring"):
 		candidate = candidate.duplicate()
@@ -1097,6 +1103,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			return refuse("This installed native runtime cannot reopen that detailed authored start; rebuild its GDExtension.")
 	# Retained authoring transfers the current native cells. Stamp replay and
 	# its rectangle limit apply only when constructing an authored start.
+	var definitions_started_usec: int = Time.get_ticks_usec() if observed else 0
 	var definitions := Setup.physical_definitions(candidate)
 	if preserve:
 		for a: Dictionary in definitions:
@@ -1121,6 +1128,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		_saved_view = {"origin":host.camera_origin,"size":host.current_view_size}
 	else:
 		_saved_view.clear()
+	if observed:
+		host._owner_gameplay.spawn_phase("actor_recipe_and_retained_motion",definitions_started_usec,
+			{"actors":definitions.size(),"reset_id":reset_id},request_serial,host)
 	if art_batches != null: art_batches.executor.canvas_changed(false)
 	_cancel()
 	# Publish the current owner view before preparation captures its settings
@@ -1131,6 +1141,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		retained_selection = {"policy":_liquids.requested_policy.duplicate(),
 			"normalize":_liquids.normalize_water.button_pressed,"geometry":_liquids.geometry_picker.selected,
 			"dirty":_liquids._dirty}
+	if observed:
+		host._owner_gameplay.spawn_phase("workbench_request_assembly",started_usec,
+			{"retained_cells":preserve,"authored_runs":runs.size()/5},request_serial,host)
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
 		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water,authoring_patch)
@@ -1206,6 +1219,11 @@ func load_material_audition_demo(scene_id: String) -> Dictionary:
 	return {"ok":true,"status":"pending","scene_id":scene_id}
 
 func installed(candidate: Dictionary) -> void:
+	if host._owner_gameplay != null:
+		host._owner_gameplay.spawn_phase("owner_installed",0,
+			{"actor_count":candidate.actors.size(),"selected_actor":candidate.selected,
+			"native_tick":host.latest_snapshot.tick_index if host.latest_snapshot != null else -1},
+			int(host.pending_microscenario_apply.get("serial",-1)),host)
 	if art_batches != null: art_batches.executor.canvas_changed()
 	_pending_request_serial = 0
 	set_ambient_overlay(0, false)
@@ -1487,7 +1505,19 @@ func _reveal_selected() -> void:
 
 
 func _change_actor(candidate: Dictionary, id: int, label: String) -> bool:
-	if not apply(candidate,true,id,false,not host.paused,{},{},false): return false
+	var observed := host._owner_gameplay != null
+	var started_usec := Time.get_ticks_usec() if observed else 0
+	var request_serial: int = host._microscenario_request_serial + 1
+	if observed:
+		host._owner_gameplay.spawn_phase("request",0,{"action":label,"actor_instance":id,
+			"model":str(actor(candidate,id).get("model","")),"retained_cells":true,
+			"actor_count":candidate.actors.size(),"fire_enabled":fire_enabled,
+			"extent":[host.world_extent.x,host.world_extent.y],"paused":host.paused},request_serial,host)
+	var accepted := apply(candidate,true,id,false,not host.paused,{},{},false)
+	if observed:
+		host._owner_gameplay.spawn_phase("request_return",started_usec,
+			{"accepted":accepted,"actor_instance":id,"expected_epoch":host._physical_epoch+1},request_serial,host)
+	if not accepted: return false
 	_actor_action = label
 	message = "Preparing %s #%d…" % [str(actor(candidate,id).model).capitalize(),id]
 	return true

@@ -35,6 +35,10 @@ jobs:
       runtime_run: ${{ steps.request.outputs.runtime_run }}
       runtime_attempt: ${{ steps.request.outputs.runtime_attempt }}
       runtime_source: ${{ steps.request.outputs.runtime_source }}
+      qualification_run: ${{ steps.request.outputs.qualification_run }}
+      qualification_attempt: ${{ steps.request.outputs.qualification_attempt }}
+      qualification_source: ${{ steps.request.outputs.qualification_source }}
+      publication_commit: ${{ steps.request.outputs.publication_commit }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with: {persist-credentials: false, fetch-depth: 0}
@@ -107,6 +111,120 @@ jobs:
           retention-days: 90
           if-no-files-found: warn
 
+  qualification-linux:
+    name: qualification-linux-${{ matrix.focus }}
+    needs: admission
+    if: needs.admission.outputs.phase == 'qualify' || needs.admission.outputs.phase == 'delivery'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        focus: [frozen, water, members, held-placement, mainline, native-owner]
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-linux-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: runtimes
+      - name: Materialize exact Rapier and portable authoring helper
+        run: |
+          python3 tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --include godot/tools/gentek_reciprocal --output "$RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          chmod +x godot/tools/gentek_reciprocal
+      - name: Acquire exact Stock engine and original native-input binding
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth libgl1-mesa-dri libglx-mesa0
+          python3 tools/pubpres_mainline/setup_graphics.py --runtime runtimes/C --output "$RUNNER_TEMP/mainline-graphics"
+      - name: Run actual selected qualification population
+        env:
+          FOCUS: ${{ matrix.focus }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/mainline-qualified"
+          if [[ "$FOCUS" == 'native-owner' ]]; then
+            python3 tools/pubpres_recovery_windows/run_native_owner.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out"
+          elif [[ "$FOCUS" == 'mainline' ]]; then
+            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_mainline/run_focused.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out"
+          else
+            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_final_recovery/run_qualification.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out" --focus "$FOCUS" --render-thread safe --lookahead 0
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-qualified-linux-${{ matrix.focus }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-qualified/
+            ${{ runner.temp }}/mainline-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
+
+  qualification-windows:
+    name: qualification-windows-${{ matrix.focus }}
+    needs: admission
+    if: needs.admission.outputs.phase == 'qualify' || needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        focus: [frozen, water, members, held-placement, mainline, native-owner]
+    defaults:
+      run: {shell: pwsh}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: runtimes
+      - name: Materialize exact Rapier and portable authoring helper
+        run: |
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched dependency acquisition failed' }
+      - name: Acquire exact Stock engine and original native-input binding
+        run: |
+          python tools/pubpres_mainline/setup_graphics.py --runtime runtimes/C --output "$env:RUNNER_TEMP/mainline-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Official engine or exact native binding failed' }
+      - name: Run actual selected qualification population
+        env:
+          FOCUS: ${{ matrix.focus }}
+        run: |
+          $out = "$env:RUNNER_TEMP/mainline-qualified"
+          if ($env:FOCUS -eq 'native-owner') {
+            python tools/pubpres_recovery_windows/run_native_owner.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out
+          } elseif ($env:FOCUS -eq 'mainline') {
+            python tools/pubpres_mainline/run_focused.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out
+          } else {
+            python tools/pubpres_final_recovery/run_qualification.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out --focus $env:FOCUS --render-thread safe --lookahead 0
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows qualification failed; retain original evidence' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-qualified-windows-${{ matrix.focus }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-qualified/
+            ${{ runner.temp }}/mainline-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
+
   native:
     needs: admission
     if: needs.admission.outputs.phase == 'build'
@@ -142,5 +260,137 @@ jobs:
         with:
           name: pubpres-mainline-native-${{ matrix.kind }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/mainline-native/
+          retention-days: 90
+          if-no-files-found: warn
+
+  source-gates:
+    needs: admission
+    if: needs.admission.outputs.phase == 'qualify' || needs.admission.outputs.phase == 'delivery'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    defaults:
+      run: {working-directory: workspace/source}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {path: workspace/source, persist-credentials: false, fetch-depth: 0}
+      - name: Check documentation, palette/compiler identity and current source contracts
+        env: {CXX: g++-13, CC: gcc-13}
+        run: |
+          set -euo pipefail
+          mkdir -p build/mainline-source
+          git rev-parse HEAD > build/mainline-source/source.txt
+          python3 tools/ci/check_docs.py > build/mainline-source/docs.json
+          python3 tools/ci/check_ci_provider_policy.py > build/mainline-source/provider.json
+          python3 tools/material_catalogue/compatibility.py --check > build/mainline-source/compatibility.json
+          python3 tools/material_catalogue/compiler.py --check > build/mainline-source/compiler.json
+          python3 tools/material_catalogue/check_native_parity.py --output build/mainline-source/native-parity.json > build/mainline-source/native-parity.log 2>&1
+          python3 tools/docs/retrieval_eval.py --output build/mainline-source/retrieval.json > build/mainline-source/retrieval.log
+          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/mainline-source/retrieval-challenges.json > build/mainline-source/retrieval-challenges.log
+          python3 -m unittest discover -s tools/pubpres_mainline -p 'test_*.py' > build/mainline-source/driver-tests.log 2>&1
+          git diff --check HEAD
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-source-gates-${{ github.run_id }}-${{ github.run_attempt }}
+          path: workspace/source/build/mainline-source/
+          retention-days: 90
+          if-no-files-found: warn
+
+  features-linux:
+    name: features-linux-${{ matrix.mode }}
+    needs: admission
+    if: needs.admission.outputs.phase == 'qualify' || needs.admission.outputs.phase == 'delivery'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 160
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: {mode: [ramcache, strata, shared]}
+    env: {LIBGL_ALWAYS_SOFTWARE: '1', LP_NUM_THREADS: '2', CXX: g++-13, CC: gcc-13}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-linux-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: runtimes
+      - name: Materialize exact dependencies and admit original build
+        run: |
+          set -euo pipefail
+          python3 tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --include godot/tools/gentek_reciprocal --output "$RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          chmod +x godot/tools/gentek_reciprocal
+          python3 -c 'from pathlib import Path; import sys; sys.path.insert(0,"tools"); from package_explore001_candidate import stage_generator_profiles; stage_generator_profiles(Path.cwd())'
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth libgl1-mesa-dri libglx-mesa0
+          python3 tools/pubpres_mainline/setup_graphics.py --runtime runtimes/C --output "$RUNNER_TEMP/mainline-graphics"
+      - name: Execute complete accepted feature population
+        env: {MODE: '${{ matrix.mode }}'}
+        run: |
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_mainline/qualification.py run --source "$PWD" --runtime runtimes/C --project "$PWD/godot" --engine "$GODOT_EXE" --mode "$MODE" --output "$RUNNER_TEMP/mainline-feature"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-feature-linux-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-feature/
+            ${{ runner.temp }}/mainline-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
+
+  features-windows:
+    name: features-windows-${{ matrix.mode }}
+    needs: admission
+    if: needs.admission.outputs.phase == 'qualify' || needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 160
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix: {mode: [ramcache, strata, shared]}
+    defaults:
+      run: {shell: pwsh}
+    env: {CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: runtimes
+      - name: Materialize exact dependencies and admit original build
+        run: |
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned dependency acquisition failed' }
+          python -c 'from pathlib import Path; import sys; sys.path.insert(0,"tools"); from package_explore001_candidate import stage_generator_profiles; stage_generator_profiles(Path.cwd())'
+          if ($LASTEXITCODE -ne 0) { throw 'Canonical generator staging failed' }
+          python tools/pubpres_mainline/setup_graphics.py --runtime runtimes/C --output "$env:RUNNER_TEMP/mainline-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned source/build/engine admission failed' }
+      - name: Execute complete accepted feature population
+        env: {MODE: '${{ matrix.mode }}'}
+        run: |
+          python tools/pubpres_mainline/qualification.py run --source "$PWD" --runtime runtimes/C --project "$PWD/godot" --engine $env:GODOT_CONSOLE --mode $env:MODE --output "$env:RUNNER_TEMP/mainline-feature"
+          if ($LASTEXITCODE -ne 0) { throw 'Resulting-source Windows feature qualification failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-feature-windows-${{ matrix.mode }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-feature/
+            ${{ runner.temp }}/mainline-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
           retention-days: 90
           if-no-files-found: warn

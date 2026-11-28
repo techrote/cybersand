@@ -1,0 +1,43 @@
+{
+  "schema": "pubpres-mainline-objectshard-readonly-preview-v1",
+  "pubpres_checkpoint": "5758c637140fc3ea749c7511797f4087a3eef481",
+  "pubpres_tree": "2b0af4b74a15910b6e14a367061f1d83fc240c0b",
+  "objectshard_application": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "objectshard_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "objectshard_current_documentation_head": "7dc6d53b5e92157e5bfa2e0f52042bbcc2fc0390",
+  "common_ancestor": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+  "command": [
+    "git",
+    "merge-tree",
+    "--write-tree",
+    "--name-only",
+    "--messages",
+    "5758c637140fc3ea749c7511797f4087a3eef481",
+    "ba6d8de45bd4d38717d92bdece7153bff115c0f0"
+  ],
+  "exit_code": 1,
+  "preview_tree": "b083836498c9a23ce6a434f798c5b2a76ed933d3",
+  "conflicted_paths": [
+    ".gitattributes",
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "godot/native_extension/cyber_native_cell_world.cpp",
+    "godot/scripts/feature_launcher.gd",
+    "godot/scripts/main.gd",
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/simulation_worker.gd",
+    "godot/shaders/material_palette.gdshader",
+    "tools/material_catalogue/compatibility.py"
+  ],
+  "checkout_or_branch_changed": false,
+  "combined_runtime_built": false,
+  "combined_application_executed": false,
+  "compatible_claimed": false,
+  "objectshard_pr_state": "open Draft; physical owner acceptance pending",
+  "scope": "Read-only merge planning. Preview tree contains conflict markers and is not an executable integration candidate."
+}

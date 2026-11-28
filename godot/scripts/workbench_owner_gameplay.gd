@@ -23,6 +23,7 @@ const FIELDS := {
 	"contact_guard":["cells_at_entry","remaining_usec","scanned_cells","result"],
 	"draw":["type","usec","callback_process_frame","frames_drawn_at_delivery","render_thread_inline","inline_last_local_presentation_serial"],
 	"loss":["type","last_drop_usec","first_drop_usec","dropped_counts_by_type"],
+	"spawn":["type","usec","phase","request_serial","session","epoch","world","process_frame","physics_frame","duration_usec","details"],
 	"close":["type","usec"]
 }
 
@@ -49,6 +50,7 @@ var _last_nozzle_sample := -1
 
 
 func start(owner_id: int) -> bool:
+	if OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECORDING") == "0": return false
 	var receipt := OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECEIPT")
 	if receipt.is_empty(): return false
 	_where = ProjectSettings.globalize_path(DIRECTORY)
@@ -130,6 +132,18 @@ func physics_hold(host: Node, reason: String, snapshot: CyberSimulationSnapshot)
 		snapshot.tick_index if snapshot != null else -1,snapshot.physics_handoff_usec if snapshot != null else -1,
 		context.get("workbench_hard_surface_revision",-1),snapshot.hard_surface_revision if snapshot != null else -1,
 		host.last_hard_surface_revision,host.rapier_bridge.pending_hard_surface_chunks()])
+
+
+# Spawn observations use this existing bounded queue and writer. The callback
+# is installed only when owner recording is enabled; it performs no World query,
+# GPU readback, admission, body mutation or synchronization with the worker.
+func spawn_phase(phase: String, started_usec: int, details: Dictionary, request_serial: int, host: Node) -> void:
+	var now := Time.get_ticks_usec()
+	var session: Variant = host.physical_actor_session
+	_append(["spawn",now,phase,request_serial,
+		session.bridge._session if session != null else -1,host._physical_epoch,
+		host.last_uploaded_world_generation,Engine.get_process_frames(),Engine.get_physics_frames(),
+		now-started_usec if started_usec > 0 else 0,details])
 
 
 func upload(packet: Dictionary) -> void:

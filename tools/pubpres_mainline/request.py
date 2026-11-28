@@ -29,8 +29,9 @@ def fingerprint():
 
 def validate_record(value):
     keys = {"schema", "phase", "purpose", "accepted_main", "owner_reference", "payload_sha256",
-            "runtime_run", "runtime_attempt", "runtime_source", "physical_acceptance", "promotion"}
-    if not isinstance(value, dict) or set(value) != keys or value["schema"] != "pubpres-mainline-request-v1":
+            "runtime_run", "runtime_attempt", "runtime_source", "qualification_run", "qualification_attempt",
+            "qualification_source", "publication_commit", "physical_acceptance", "promotion"}
+    if not isinstance(value, dict) or set(value) != keys or value["schema"] != "pubpres-mainline-request-v2":
         raise ValueError("Unknown integration request shape")
     if value["phase"] not in PHASES or value["accepted_main"] != MAIN or value["owner_reference"] != OWNER:
         raise ValueError("Unregistered phase or comparison sources")
@@ -48,6 +49,17 @@ def validate_record(value):
             raise ValueError("An exact original runtime run and attempt are required")
         if not isinstance(value["runtime_source"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["runtime_source"]):
             raise ValueError("Missing exact runtime build source")
+    if value["phase"] in ("publish", "delivery"):
+        if not all(type(value[k]) is int and value[k] > 0 for k in ("qualification_run", "qualification_attempt")) \
+                or not isinstance(value["qualification_source"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["qualification_source"]):
+            raise ValueError("Publication and delivery require an exact original qualification source/run/attempt")
+    elif any(value[k] is not None for k in ("qualification_run", "qualification_attempt", "qualification_source")):
+        raise ValueError("Build/qualification cannot impersonate already completed source gates")
+    if value["phase"] == "delivery":
+        if not isinstance(value["publication_commit"], str) or not re.fullmatch(r"[0-9a-f]{40}", value["publication_commit"]):
+            raise ValueError("Delivery requires an exact guarded publication commit")
+    elif value["publication_commit"] is not None:
+        raise ValueError("A publication identity is only admissible for final delivery")
     return value
 
 
@@ -77,19 +89,26 @@ def main():
     parser.add_argument("--runtime-run", type=int)
     parser.add_argument("--runtime-attempt", type=int)
     parser.add_argument("--runtime-source")
+    parser.add_argument("--qualification-run", type=int)
+    parser.add_argument("--qualification-attempt", type=int)
+    parser.add_argument("--qualification-source")
+    parser.add_argument("--publication-commit")
     args = parser.parse_args()
     if args.seal:
-        value = validate_record({"schema": "pubpres-mainline-request-v1", "phase": args.phase,
+        value = validate_record({"schema": "pubpres-mainline-request-v2", "phase": args.phase,
             "purpose": args.purpose, "accepted_main": MAIN, "owner_reference": OWNER,
             "payload_sha256": fingerprint(), "runtime_run": args.runtime_run,
             "runtime_attempt": args.runtime_attempt, "runtime_source": args.runtime_source,
+            "qualification_run": args.qualification_run, "qualification_attempt": args.qualification_attempt,
+            "qualification_source": args.qualification_source, "publication_commit": args.publication_commit,
             "physical_acceptance": "HOLD", "promotion": "DRAFT_ONLY"})
         (ROOT / REQUEST).write_text(json.dumps(value, indent=2) + "\n", encoding="utf-8")
     else:
         value = validate()
         if os.environ.get("GITHUB_OUTPUT"):
             with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as stream:
-                for key in ("phase", "runtime_run", "runtime_attempt", "runtime_source"):
+                for key in ("phase", "runtime_run", "runtime_attempt", "runtime_source", "qualification_run",
+                            "qualification_attempt", "qualification_source", "publication_commit"):
                     stream.write(f"{key}={value[key] or ''}\n")
         print(json.dumps(value, indent=2))
 

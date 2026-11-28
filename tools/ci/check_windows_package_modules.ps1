@@ -7,7 +7,7 @@ param(
     [Parameter(Mandatory = $true)][string]$Package,
     [Parameter(Mandatory = $true)][string]$Evidence,
     [switch]$Combined,
-    [ValidateSet('candidate-manifest.json','materials-lab-evaluation.json','evaluation-manifest.json')]
+    [ValidateSet('candidate-manifest.json','materials-lab-evaluation.json','evaluation-manifest.json','PUBPRES-MAINLINE-EVALUATOR.json')]
     [Alias('Manifest')][string]$ManifestFile,
     [ValidateSet('godot','source/godot')][string]$ProjectRelative
 )

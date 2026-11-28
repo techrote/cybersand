@@ -202,10 +202,13 @@ static func valid_definitions(definitions: Array) -> bool:
 	return parts <= int(limits.body_limit) and proxies <= int(limits.proxy_limit)
 
 
-func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
+func configure(definitions: Array, space: RID, new_epoch: int = 1, diagnostic_observer: Callable = Callable()) -> bool:
+	var configuration_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	if _active or not is_inside_tree() or not valid_definitions(definitions) or new_epoch < 1:
 		last_error = "Invalid physical actor configuration or live owner"
 		return false
+	if diagnostic_observer.is_valid():
+		diagnostic_observer.call("session_validation",configuration_started,{"expected_epoch":new_epoch})
 	epoch = new_epoch
 	tick = 0
 	_completed_time_seconds = 0.0
@@ -232,6 +235,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	var all_bodies: Array[RigidBody2D] = []
 	var sizes := PackedVector2Array()
 	for index: int in range(definitions.size()):
+		var actor_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 		var definition: Dictionary = definitions[index]
 		_has_flight = _has_flight or StringName(str(definition.model)) in Flight.IDS
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
@@ -240,6 +244,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		if fleet_index >= 0:
 			data = Equipment.definition(Fleet.definition(fleet_index))
 		_catalogue.append(data)
+		if diagnostic_observer.is_valid():
+			diagnostic_observer.call("actor_definition",actor_started,{"slot":index,"model":str(definition.model)})
+		var rig_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 		var rig = Rig.new()
 		add_child(rig)
 		_body_offsets.append(all_bodies.size())
@@ -250,6 +257,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 			last_error = "Physical rig refused: " + str(definition.model)
 			close()
 			return false
+		if diagnostic_observer.is_valid():
+			diagnostic_observer.call("actor_bodies_shapes",rig_started,{"slot":index,"bodies":rig.bodies().size()})
+		var adapters_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 		if definition.has("retained_motion"):
 			var body: RigidBody2D = rig.bodies()[0]
 			body.global_rotation = float(definition.retained_motion.rotation)
@@ -300,6 +310,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		history.resize(MAX_LEASE + 1)
 		history.fill(-1)
 		_issued.append(history)
+		if diagnostic_observer.is_valid():
+			diagnostic_observer.call("actor_adapters_and_retained_motion",adapters_started,{"slot":index})
+	var bridge_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	var error: Error = bridge.initialize(space, all_bodies, sizes)
 	if error == OK and bridge is WorkbenchBridge:
 		error = bridge.configure_instances(_definitions, _rigs, epoch)
@@ -311,6 +324,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		for index: int in range(_equipment.size()):
 			if _equipment[index].body_id > 0:
 				_equipment[index].body_id = bridge.proxy_for_body(_equipment[index].body_id - 1)
+	if diagnostic_observer.is_valid():
+		diagnostic_observer.call("physical_bridge",bridge_started,{"bodies":all_bodies.size(),"actors":_rigs.size()})
 	_sequences.resize(_rigs.size())
 	_sequences.fill(-1)
 	_deadlines.resize(_rigs.size())
@@ -321,6 +336,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_ambient_completed_physics_step = bridge.manual_step_count()
 	_flight_pause_step = _flight_completed_step
 	_active = true
+	if diagnostic_observer.is_valid():
+		diagnostic_observer.call("session_configuration",configuration_started,{"expected_epoch":new_epoch,"bodies":all_bodies.size()})
 	return true
 
 

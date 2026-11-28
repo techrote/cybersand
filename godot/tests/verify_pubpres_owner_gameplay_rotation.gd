@@ -2,6 +2,12 @@ extends SceneTree
 
 const Recorder = preload("res://scripts/workbench_owner_gameplay.gd")
 
+class SpawnHost extends Node:
+	var physical_actor_session: Variant = null
+	var _physical_epoch := 7
+	var last_uploaded_world_generation := 11
+
+
 
 func _initialize() -> void:
 	var error := _check()
@@ -15,6 +21,22 @@ func _initialize() -> void:
 
 func _check() -> String:
 	var recorder := Recorder.new()
+	var prior_recording := OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECORDING")
+	OS.set_environment("CYBERSAND_PLAYABILITY_OWNER_RECORDING","0")
+	var disabled_started := recorder.start(1)
+	OS.set_environment("CYBERSAND_PLAYABILITY_OWNER_RECORDING",prior_recording)
+	if disabled_started or recorder._thread.is_started(): return "Recording-off started a writer"
+	var spawn_host := SpawnHost.new()
+	var started := Time.get_ticks_usec()
+	recorder.spawn_phase("request",started,{"actor_instance":5,"retained_cells":true},13,spawn_host)
+	spawn_host.free()
+	if recorder._batch.size() != 1: return "Spawn observation was not appended to the bounded recorder"
+	var spawn: Array = recorder._batch[0]
+	if spawn.size() != Recorder.FIELDS.spawn.size() or spawn[0] != "spawn" or spawn[2] != "request" \
+			or spawn[3] != 13 or spawn[4] != -1 or spawn[5] != 7 or spawn[6] != 11 \
+			or spawn[9] < 0 or spawn[10] != {"actor_instance":5,"retained_cells":true}:
+		return "Spawn observation lost its request, physical owner, phase timing or copied details"
+	recorder._batch.clear()
 	# This test creates only process-private files, independent of an owner profile.
 	recorder._where = ProjectSettings.globalize_path("user://pubpres-recorder-test-%d-%d" % [OS.get_process_id(),Time.get_ticks_usec()])
 	recorder._identity = {"schema":Recorder.SCHEMA,"launch_receipt":"rotation-fixture"}

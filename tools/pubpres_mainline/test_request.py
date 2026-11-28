@@ -6,9 +6,10 @@ import request
 
 class RequestTests(unittest.TestCase):
     def setUp(self):
-        self.good = {"schema": "pubpres-mainline-request-v1", "phase": "build", "purpose": "Three exact native builds",
+        self.good = {"schema": "pubpres-mainline-request-v2", "phase": "build", "purpose": "Three exact native builds",
             "accepted_main": request.MAIN, "owner_reference": request.OWNER, "payload_sha256": "a" * 64,
             "runtime_run": None, "runtime_attempt": None, "runtime_source": None,
+            "qualification_run": None, "qualification_attempt": None, "qualification_source": None, "publication_commit": None,
             "physical_acceptance": "HOLD", "promotion": "DRAFT_ONLY"}
 
     def test_fresh_build_and_bound_qualification(self):
@@ -28,6 +29,18 @@ class RequestTests(unittest.TestCase):
         bad = dict(self.good, phase="qualify")
         with self.assertRaises(ValueError):
             request.validate_record(bad)
+
+    def test_publication_and_delivery_have_separate_exact_authority(self):
+        value = dict(self.good, phase="publish", runtime_run=1, runtime_attempt=1, runtime_source="b" * 40)
+        with self.assertRaises(ValueError):
+            request.validate_record(value)
+        value.update(qualification_run=2, qualification_attempt=1, qualification_source="c" * 40)
+        request.validate_record(value)
+        value["phase"] = "delivery"
+        with self.assertRaises(ValueError):
+            request.validate_record(value)
+        value["publication_commit"] = "d" * 40
+        request.validate_record(value)
 
 
 if __name__ == "__main__":

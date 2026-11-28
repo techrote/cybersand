@@ -12,6 +12,45 @@ const MAXIMUM: Array[int] = [255,255,255,32,1,60,2,60]
 const UNITS: Array[String] = ["0..255 chance after actual motion; 0 disables","0..255 strength × successful Water mass / 255","0..255 disturbance units for pickup","0..32 extra disturbance units per packed neighbour","0 gentle loose grains / 1 threshold packed pickup","1..60 ticks per density-exchange lane; symmetric liquid/grain","1 sampled / 2 existing lateral candidates","1..60 ticks per lateral opportunity; independent of strength"]
 const LOCAL_PATH: String = "user://transport-profile.json"
 
+# Main and the exclusive simulation owner validate the same profile repeatedly
+# during a prepared World replacement. The 81 x 81 compiled table is a pure
+# value of this bounded schema. Retain ONE immutable input/table, independent of
+# World, native, physics and presentation ownership. Never retain a caller's
+# mutable Dictionary or expose the cached PackedInt32Array for mutation.
+static var _compiled_mutex := Mutex.new()
+static var _compiled_profile: Dictionary = {}
+static var _compiled_values := PackedInt32Array()
+static var _compiled_hash := ""
+
+static func _freeze_profile(value: Variant) -> void:
+	if value is Dictionary:
+		for child: Variant in value.values(): _freeze_profile(child)
+		value.make_read_only()
+	elif value is Array:
+		for child: Variant in value: _freeze_profile(child)
+		value.make_read_only()
+
+static func _reuse_compiled(profile: Dictionary) -> Dictionary:
+	_compiled_mutex.lock()
+	var hit: bool = not _compiled_profile.is_empty() and _compiled_profile == profile
+	var packed: PackedInt32Array = _compiled_values.duplicate() if hit else PackedInt32Array()
+	var identity: String = _compiled_hash
+	_compiled_mutex.unlock()
+	return {"ok":true,"packed":packed,"hash":identity,"profile":profile.duplicate(true)} if hit else {}
+
+static func _retain_compiled(profile: Dictionary, packed: PackedInt32Array, identity: String) -> void:
+	var retained := profile.duplicate(true)
+	_freeze_profile(retained)
+	# Compilation stays outside the short value-transfer lock. Concurrent cold
+	# misses may both compile; each result is correct and the last one replaces
+	# the single retained entry. Neither thread waits for another compilation.
+	var copied := packed.duplicate()
+	_compiled_mutex.lock()
+	_compiled_profile = retained
+	_compiled_values = copied
+	_compiled_hash = identity
+	_compiled_mutex.unlock()
+
 static func preset(index: int) -> Dictionary:
 	index = clampi(index,0,2)
 	var families: Dictionary = {"powder":{"mixing":0,"pickup":64,"packing":8},"liquid":{"carrying":0,"erosion":0,"permeability":1,"horizontal":2,"cadence":1}}
@@ -90,6 +129,11 @@ static func resolve(profile: Variant) -> Dictionary:
 		for key: String in keys:
 			if seen.has(key): return error
 			seen[key] = true
+	# Validate every public request before considering reuse. Only an exact
+	# previously compiled input can bypass the complete table expansion below;
+	# changed/invalid carrying laws still pass through the original compiler.
+	var cached := _reuse_compiled(profile)
+	if not cached.is_empty(): return cached
 	var packed: PackedInt32Array = PackedInt32Array([VERSION])
 	for field_index: int in [6,7]:
 		for source: int in range(81): packed.append(effective(profile,source,0)["values"][field_index])
@@ -100,6 +144,7 @@ static func resolve(profile: Variant) -> Dictionary:
 				return {"ok":false,"error":"Schema v1 only enables carrying for directed Water → Sand/Dust/Rust pairs"}
 			for i: int in range(6): packed.append(int(values[i]))
 	var identity: String = packed.to_byte_array().hex_encode().sha256_text()
+	_retain_compiled(profile,packed,identity)
 	return {"ok":true,"packed":packed,"hash":identity,"profile":profile.duplicate(true)}
 
 static func parse(text: String) -> Dictionary:
