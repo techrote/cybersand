@@ -1,10 +1,12 @@
 #include "cybersand/object_shard_coordinator.hpp"
 #include "cybersand/object_shard_m4_mutable_adapter.hpp"
 #include "cybersand/object_shard_contact.hpp"
+#include "cybersand/object_shard_mutation.hpp"
 #include "cybersand/material_lifecycle.hpp"
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <cstdio>
 #include <limits>
@@ -16,6 +18,11 @@
 // admission is paused, modelling an erroneous/stale external owner. Production
 // callers have no mutable World access through Coordinator.
 namespace cybersand::object_shard {
+struct MutationJournalTestAccess {
+    static void generations(MutationJournal& journal,std::uint64_t material,std::uint64_t topology) {
+        journal.revision_=material;journal.topology_revision_=topology;
+    }
+};
 struct CoordinatorTestAccess {
     static World& world(Coordinator& coordinator) { return *coordinator.world_; }
     static Registry& registry(Coordinator& coordinator) { return coordinator.registry_; }
@@ -2422,7 +2429,346 @@ void small_low_inertia_fragment_accepts_bounded_actual_segment() {
     check_population_balance(coordinator);
 }
 
+
+Handle batch_fixture(Coordinator& coordinator,bool mixed=false) {
+    for (int y=20;y<28;++y) for (int x=20;x<28;++x)
+        CHECK(coordinator.edit(x,y,{mixed && (x%2) ? Material::RedBrick : Material::Wood,37,0,402}).outcome==Outcome::Accepted);
+    const auto prepared=discover(coordinator);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return {};
+    CHECK(activate(coordinator,prepared.shard));return prepared.shard;
+}
+std::vector<ShardEditRequest> batch_witnesses(Coordinator& coordinator,Handle handle) {
+    std::vector<ShardEditRequest> requests;
+    const auto* shard=coordinator.registry().find(handle);
+    if (!shard) {CHECK(false);return requests;}
+    PoseSample pose;
+    for (const auto& body:coordinator.snapshot(false).bodies) if (body.shard==handle) pose=body.pose;
+    for (std::uint32_t at=0;at<shard->area();++at) if (shard->structural(at))
+        requests.push_back({handle,coordinator.next_transaction(),pose.body_generation,shard->geometry().revision,
+            pose.pose_serial,shard->material_revision(),at,shard->schedule(at).incarnation,shard->payload(at)});
+    return requests;
+}
+void m4_batch_world_generation_preflight_is_nonwrapping() {
+    MutationJournal journal(0,0,1,1);
+    MutationJournalTestAccess::generations(journal,UINT64_MAX-3,UINT64_MAX-1);
+    CHECK(journal.can_observe(2,1));
+    CHECK(!journal.can_observe(4,1));
+    CHECK(!journal.can_observe(2,2));
+    journal.observe(0,0,Material::Wood);
+    CHECK(journal.revision()==UINT64_MAX-2 && journal.topology_revision()==UINT64_MAX);
+    CHECK(journal.can_observe(2,0));
+    CHECK(!journal.can_observe(1,1));
+    journal.observe(0,0,Material::Wood);journal.observe(0,0,Material::Wood);
+    CHECK(journal.revision()==UINT64_MAX && !journal.exhausted());
+    CHECK(!journal.can_observe(1,0));
+    journal.observe(0,0,Material::Wood);
+    CHECK(journal.exhausted() && !journal.can_observe(0,0));
+}
+void m4_batch_fragment_capacity_retains_inventory_and_recovers() {
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World owner(wc);const RectI64 domain{0,0,128,96};
+    owner.reserve_region({-32,-32,192,160});owner.reserve_temperature_region({-32,-32,192,160});
+    owner.set_simulation_region(domain);owner.configure_transient_obstacles(domain,true);(void)owner.tick();
+    auto config=small_config();config.limits.max_shards=2;
+    Coordinator coordinator(owner,config);
+    const auto parent=batch_fixture(coordinator);if (!parent.id) return;
+    CHECK(coordinator.edit(65,40,{Material::Wood,37,0,402}).outcome==Outcome::Accepted);
+    const auto prepared=discover(coordinator);CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    const auto blocker=prepared.shard;CHECK(activate(coordinator,blocker));
+    CHECK(coordinator.m4_owner_readback().active_count==2 && owned_population(coordinator,Material::Wood)==65);
+    const auto* source=coordinator.registry().find(parent);
+    auto cut=batch_witnesses(coordinator,parent);
+    std::erase_if(cut,[&](const auto& request){return source->bounds().x+request.cell%source->bounds().width!=24;});
+    CHECK(cut.size()==8);
+    const auto result=coordinator.act_on_shard_batch(cut,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.removed_cells==8 && result.stats.geometry_rebuilds==1);
+    CHECK(result.stats.islands_after==2 && source->counts().structural==56);
+    install_geometry(coordinator);
+    const auto retained=source->payload_digest();
+    CHECK(coordinator.prepare_next().outcome!=Outcome::Accepted);
+    CHECK(!coordinator.paused() && source->payload_digest()==retained && source->counts().structural==56);
+    bool deferred=false;
+    for (const auto& body:coordinator.m4_owner_readback().bodies) if (body.shard==parent) deferred=body.fragment_deferred;
+    CHECK(deferred && owned_population(coordinator,Material::Wood)==57 && world_population(coordinator,Material::Wood)==0);
+    CHECK(coordinator.accept_motion(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(source->payload_digest()==retained);check_population_balance(coordinator);
+    const auto erase_blocker=coordinator.act_on_shard_batch(batch_witnesses(coordinator,blocker),ShardAction::Erase);
+    CHECK(erase_blocker.result.outcome==Outcome::Accepted && erase_blocker.stats.removed_cells==1);
+    install_geometry(coordinator);
+    CHECK(coordinator.m4_owner_readback().active_count==1 && owned_population(coordinator,Material::Wood)==56);
+    // Existing retirement policy reclaims an empty draining carrier during
+    // the next real semantic exchange interval, after physical retirement.
+    CHECK(coordinator.begin_owner_world_tick().outcome==Outcome::Accepted);(void)owner.tick();
+    CHECK(coordinator.after_owner_world_tick().outcome==Outcome::Accepted);
+    CHECK(coordinator.registry().find(blocker)==nullptr);
+    const auto split=coordinator.prepare_next();CHECK(split.outcome==Outcome::Accepted);
+    if (split.outcome!=Outcome::Accepted) return;
+    CHECK(coordinator.acknowledge(ack_for(coordinator,AckKind::PhysicsReserved)).outcome==Outcome::Accepted);
+    install_geometry(coordinator);
+    CHECK(coordinator.acknowledge(ack_for(coordinator,AckKind::TerrainInstalled)).outcome==Outcome::Accepted);
+    CHECK(coordinator.acknowledge(ack_for(coordinator,AckKind::BodyActivated)).outcome==Outcome::Accepted);
+    CHECK(!coordinator.paused() && coordinator.m4_owner_readback().active_count==2);
+    CHECK(owned_population(coordinator,Material::Wood)==56 && world_population(coordinator,Material::Wood)==0);
+    CHECK(coordinator.accounting().authored_destroyed[static_cast<std::uint8_t>(Material::Wood)]==9);
+    check_population_balance(coordinator);
+}
+void m4_batch_witness_atomicity_and_material_accounting() {
+    Coordinator coordinator(small_config());const auto handle=batch_fixture(coordinator);
+    if (!handle.id) return;
+    auto requests=batch_witnesses(coordinator,handle);
+    const auto* shard=coordinator.registry().find(handle);
+    const auto original=shard->payload_digest(),original_geometry=shard->geometry().revision;
+    auto invalid=requests;invalid.back().expected.state_a^=1;
+    auto result=coordinator.act_on_shard_batch(invalid,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Stale && result.stats.changed_cells==0);
+    CHECK(shard->payload_digest()==original && shard->geometry().revision==original_geometry);
+    requests=batch_witnesses(coordinator,handle);invalid=requests;invalid.back().shard.id+=1;
+    result=coordinator.act_on_shard_batch(invalid,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Stale && result.stats.changed_cells==0);
+    CHECK(shard->payload_digest()==original);
+    requests=batch_witnesses(coordinator,handle);invalid=requests;
+    invalid.push_back(invalid[0]);invalid.back().incarnation+=1;
+    result=coordinator.act_on_shard_batch(invalid,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Stale && result.stats.changed_cells==0);
+    CHECK(shard->payload_digest()==original);
+    requests=batch_witnesses(coordinator,handle);invalid=requests;invalid[0].shard.session+=1;
+    const auto sequence=coordinator.next_transaction();
+    result=coordinator.act_on_shard_batch(invalid,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Retired && coordinator.next_transaction()==sequence);
+    invalid=std::vector<ShardEditRequest>(kMaximumEditCells+1,requests[0]);
+    result=coordinator.act_on_shard_batch(invalid,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Capacity && coordinator.next_transaction()==sequence);
+    result=coordinator.act_on_shard_batch({},ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Invalid && coordinator.next_transaction()==sequence);
+    result=coordinator.act_on_shard_batch(requests,ShardAction::Erase,{1'000'001,0,-1});
+    CHECK(result.result.outcome==Outcome::Invalid && shard->payload_digest()==original);
+    result=coordinator.act_on_shard_batch(requests,ShardAction::Erase,{0,16,-1});
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.eligible_cells==64 && result.stats.changed_cells==0);
+    CHECK(result.stats.geometry_rebuilds==0 && shard->geometry().revision==original_geometry && shard->payload_digest()==original);
+
+    // Real accepted rotating/sleeping source pose remains editable. Removal
+    // preserves the velocity field of surviving cells and wakes its geometry.
+    auto poses=next_poses(coordinator);poses[0].rotation=0.10;poses[0].vx=3.0;poses[0].vy=4.0;
+    poses[0].angular_velocity=0.75;poses[0].sleeping=true;
+    CHECK(coordinator.accept_motion(poses).outcome==Outcome::Accepted);
+    requests=batch_witnesses(coordinator,handle);requests.resize(8);requests.push_back(requests[0]);
+    const auto old_mass=shard->geometry().mass;const auto tick=coordinator.world().completed_tick_index();
+    result=coordinator.act_on_shard_batch(requests,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.requested_cells==9 && result.stats.unique_cells==8);
+    CHECK(result.stats.eligible_cells==8 && result.stats.changed_cells==8 && result.stats.removed_cells==8);
+    CHECK(result.stats.geometry_rebuilds==1 && shard->geometry().revision==original_geometry+1);
+    CHECK(shard->geometry().mass.mass==56 && coordinator.world().completed_tick_index()==tick);
+    const auto after_pose=coordinator.snapshot(false).bodies[0].pose;
+    const auto dx=shard->geometry().mass.com_x-old_mass.com_x,dy=shard->geometry().mass.com_y-old_mass.com_y;
+    CHECK(std::abs(after_pose.vx-(3.0-.75*(std::sin(.10)*dx+std::cos(.10)*dy)))<1e-12);
+    CHECK(std::abs(after_pose.vy-(4.0+.75*(std::cos(.10)*dx-std::sin(.10)*dy)))<1e-12);
+    CHECK(after_pose.angular_velocity==.75 && !after_pose.sleeping && coordinator.paused());
+    check_population_balance(coordinator);
+    const auto remaining=owned_population(coordinator,Material::Wood);
+    const auto replay=coordinator.act_on_shard_batch(requests,ShardAction::Erase);
+    CHECK(replay.replayed && replay.stats.removed_cells==8 && replay.result.outcome==Outcome::Accepted);
+    CHECK(owned_population(coordinator,Material::Wood)==remaining);
+    requests[0].expected.state_b=1;
+    CHECK(coordinator.act_on_shard_batch(requests,ShardAction::Erase).result.outcome==Outcome::Stale);
+    install_geometry(coordinator);CHECK(!coordinator.paused());
+    requests=batch_witnesses(coordinator,handle);
+    result=coordinator.act_on_shard_batch(requests,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.removed_cells==56 && result.stats.geometry_rebuilds==1);
+    CHECK(shard->counts().structural==0 && shard->geometry().mass.mass==0 && shard->geometry().shapes.empty());
+    install_geometry(coordinator);CHECK(!coordinator.paused());
+    CHECK(owned_population(coordinator,Material::Wood)==0);check_population_balance(coordinator);
+}
+void m4_batch_weathering_and_ignition_are_deterministic() {
+    // Mixed architectural materials belong to ordinary M4, while the retained
+    // standalone Lab deliberately discovers its original Wood-only domain.
+    WorldConfig wc;wc.backend=SimulationBackend::SerialInPlace;wc.worker_threads=1;
+    World first_world(wc),second_world(wc);
+    for (World* world:{&first_world,&second_world}) {
+        world->reserve_region({-32,-32,192,160});world->reserve_temperature_region({-32,-32,192,160});
+        world->set_simulation_region(RectI64{0,0,128,96});world->configure_transient_obstacles({0,0,128,96},true);
+        (void)world->tick();
+    }
+    Coordinator first(first_world,small_config()),second(second_world,small_config());
+    const auto a=batch_fixture(first,true),b=batch_fixture(second,true);
+    if (!a.id || !b.id) return;
+    auto wa=batch_witnesses(first,a),wb=batch_witnesses(second,b);
+    std::reverse(wb.begin(),wb.end());wb.push_back(wb.front());
+    const EditSelection weather{470'000,123456,static_cast<int>(Material::Wood)};
+    const auto ra=first.act_on_shard_batch(wa,ShardAction::Erase,weather);
+    const auto rb=second.act_on_shard_batch(wb,ShardAction::Erase,weather);
+    CHECK(ra.result.outcome==Outcome::Accepted && rb.result.outcome==Outcome::Accepted);
+    CHECK(ra.stats.eligible_cells==32 && rb.stats.eligible_cells==32);
+    CHECK(ra.stats.changed_cells>0 && ra.stats.changed_cells<32 && ra.stats.changed_cells==rb.stats.changed_cells);
+    const auto* sa=first.registry().find(a);const auto* sb=second.registry().find(b);
+    CHECK(sa->payload_digest()==sb->payload_digest());
+    CHECK(sa->geometry().shape_digest==sb->geometry().shape_digest);
+    CHECK(owned_population(first,Material::RedBrick)==32 && owned_population(second,Material::RedBrick)==32);
+    check_population_balance(first);check_population_balance(second);
+    install_geometry(first);install_geometry(second);
+    wa=batch_witnesses(first,a);
+    const auto revision=sa->geometry().revision;
+    auto ignition=first.act_on_shard_batch(wa,ShardAction::Ignite);
+    CHECK(ignition.result.outcome==Outcome::Accepted && ignition.stats.changed_cells==32-ra.stats.removed_cells);
+    CHECK(ignition.stats.removed_cells==0 && ignition.stats.geometry_rebuilds==0 && sa->geometry().revision==revision);
+    const auto material_revision=sa->material_revision();
+    wa=batch_witnesses(first,a);ignition=first.act_on_shard_batch(wa,ShardAction::Ignite);
+    CHECK(ignition.result.outcome==Outcome::Accepted && ignition.stats.changed_cells==0 && ignition.stats.eligible_cells==0);
+    CHECK(sa->material_revision()==material_revision);
+    for (const auto& cell:wa) if (cell.expected.material==Material::Wood) {
+        auto value=cell.expected;value.state_b=117;
+        CHECK(CoordinatorTestAccess::registry(first).find(a)->set_cell(cell.cell,value,Role::Structural,first.world().completed_tick_index())==Outcome::Accepted);
+        CHECK(first.ignite_shard(a,cell.cell).outcome==Outcome::Accepted);
+        CHECK(sa->payload(cell.cell).state_b==117);
+        break;
+    }
+    wa=batch_witnesses(first,a);ignition=first.act_on_shard_batch(wa,ShardAction::Ignite);
+    CHECK(ignition.stats.changed_cells==0);check_population_balance(first);
+}
+void m4_world_batch_is_witnessed_deduplicated_and_owner_protected() {
+    Coordinator coordinator(small_config());
+    for (int x=30;x<38;++x) CHECK(coordinator.edit(x,40,{Material::Wood,37,0,402}).outcome==Outcome::Accepted);
+    const auto witnesses=[&]() {
+        std::vector<WorldEditTarget> targets;
+        for (int x=30;x<38;++x) targets.push_back({x,40,coordinator.inspect_world(x,40),coordinator.world_witness(x,40)});
+        targets.push_back(targets[0]);return targets;
+    };
+    auto targets=witnesses();const auto revision=coordinator.world_material_revision();
+    auto result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),revision+1,targets,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Stale && world_population(coordinator,Material::Wood)==8);
+    targets=witnesses();targets.back().expected.state_b=1;
+    result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),revision,targets,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Stale && world_population(coordinator,Material::Wood)==8);
+    targets=witnesses();
+    result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),revision,targets,ShardAction::Ignite);
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.requested_cells==9 && result.stats.unique_cells==8 && result.stats.changed_cells==8);
+    CHECK(result.stats.removed_cells==0 && result.stats.geometry_rebuilds==0);
+    targets=witnesses();
+    result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),coordinator.world_material_revision(),targets,ShardAction::Ignite);
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.changed_cells==0);
+    CHECK(coordinator.inspect_world(30,40).state_b==240);
+    auto burning=coordinator.inspect_world(30,40);burning.state_b=31;
+    CHECK(coordinator.edit(30,40,burning).outcome==Outcome::Accepted);
+    CHECK(coordinator.ignite(30,40).outcome==Outcome::Accepted && coordinator.inspect_world(30,40).state_b==31);
+    targets=witnesses();
+    result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),coordinator.world_material_revision(),targets,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::Accepted && result.stats.removed_cells==8);
+    CHECK(world_population(coordinator,Material::Wood)==0);check_population_balance(coordinator);
+
+    const auto owner=batch_fixture(coordinator);
+    if (!owner.id) return;
+    CHECK(coordinator.edit(70,70,{Material::RedBrick,0,0,200}).outcome==Outcome::Accepted);
+    targets={{70,70,coordinator.inspect_world(70,70),coordinator.world_witness(70,70)},
+        {23,23,coordinator.inspect_world(23,23),coordinator.world_witness(23,23)}};
+    result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),coordinator.world_material_revision(),targets,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::DestinationUnavailable && result.stats.changed_cells==0);
+    CHECK(coordinator.inspect_world(70,70).material==Material::RedBrick);
+    CHECK(owned_population(coordinator,Material::Wood)==64);check_population_balance(coordinator);
+    // Product carriers remain visibly owned even inside a true collider hole.
+    // Deliberately seed hidden ordinary terrain via the test-only World seam
+    // to prove the batch never falls through a visible, uncuttable carrier.
+    auto hole=batch_witnesses(coordinator,owner);
+    const auto bounds=coordinator.registry().find(owner)->bounds();
+    std::erase_if(hole,[&](const auto& r) {
+        const auto x=bounds.x+r.cell%bounds.width,y=bounds.y+r.cell/bounds.width;
+        return x<22 || x>24 || y<22 || y>24;
+    });
+    CHECK(coordinator.act_on_shard_batch(hole,ShardAction::Erase).result.outcome==Outcome::Accepted);
+    install_geometry(coordinator);
+    const auto center=static_cast<std::uint32_t>((23-bounds.y)*bounds.width+23-bounds.x);
+    auto* carrier=CoordinatorTestAccess::registry(coordinator).find(owner);
+    CHECK(carrier->set_cell(center,{Material::Smoke,100,0,350},Role::Product,coordinator.world().completed_tick_index())==Outcome::Accepted);
+    CHECK(!coordinator.world().transient_obstacle_at(23,23));
+    CHECK(CoordinatorTestAccess::world(coordinator).set_cell_state(23,23,Material::RedBrick,0,0));
+    targets={{23,23,coordinator.inspect_world(23,23),coordinator.world_witness(23,23)}};
+    result=coordinator.act_on_world_batch(coordinator.m4_owner_readback().session,coordinator.next_transaction(),coordinator.world_material_revision(),targets,ShardAction::Erase);
+    CHECK(result.result.outcome==Outcome::DestinationUnavailable && result.stats.changed_cells==0);
+    CHECK(coordinator.inspect_world(23,23).material==Material::RedBrick);
+}
+
+
+void m4_matched_native_batch_performance() {
+    using Clock=std::chrono::steady_clock;
+    for (const int radius:{1,4,8,16,0}) for (int sample=0;sample<3;++sample) {
+        Coordinator single(small_config()),batch(small_config());
+        const auto prepare=[](Coordinator& coordinator) {
+            bool authored=true;
+            for (int y=16;y<64;++y) for (int x=24;x<72;++x)
+                authored=coordinator.edit(x,y,{Material::Wood,37,0,402}).outcome==Outcome::Accepted && authored;
+            CHECK(authored);
+            const auto promoted=discover(coordinator);CHECK(promoted.outcome==Outcome::Accepted);
+            if (promoted.outcome!=Outcome::Accepted) return Handle{};
+            CHECK(activate(coordinator,promoted.shard));return promoted.shard;
+        };
+        const auto a=prepare(single),b=prepare(batch);
+        if (!a.id || !b.id) return;
+        const auto* sa=single.registry().find(a);const auto* sb=batch.registry().find(b);
+        std::vector<std::uint32_t> cells;
+        const auto bounds=sa->bounds();
+        for (std::uint32_t at=0;at<sa->area();++at) if (sa->structural(at)) {
+            const auto x=static_cast<int>(bounds.x+at%bounds.width),y=static_cast<int>(bounds.y+at/bounds.width);
+            if (radius ? (x-48)*(x-48)+(y-40)*(y-40)<=radius*radius : x==48) cells.push_back(at);
+        }
+        const auto witness=[](Coordinator& coordinator,Handle handle,std::uint32_t at) {
+            const auto* shard=coordinator.registry().find(handle);
+            const auto proof=coordinator.m4_owner_readback();PoseSample pose;
+            for (std::size_t index=0;index<proof.copied_count;++index)
+                if (proof.bodies[index].shard==handle) pose=proof.bodies[index].pose;
+            return ShardEditRequest{handle,coordinator.next_transaction(),pose.body_generation,
+                shard->geometry().revision,pose.pose_serial,shard->material_revision(),at,
+                shard->schedule(at).incarnation,shard->payload(at)};
+        };
+        const auto installed=[](Coordinator& coordinator,Handle handle) {
+            const auto* shard=coordinator.registry().find(handle);const auto proof=coordinator.m4_owner_readback();
+            for (std::size_t index=0;index<proof.copied_count;++index) if (proof.bodies[index].shard==handle) {
+                const auto& body=proof.bodies[index];const auto& g=shard->geometry();
+                return coordinator.acknowledge({handle,body.transaction,body.body_generation,shard->payload_digest(),
+                    g.revision,g.mask_digest,g.shape_digest,AckKind::GeometryInstalled,{}}).outcome==Outcome::Accepted;
+            }
+            return false;
+        };
+        const auto a_revision=sa->geometry().revision,b_revision=sb->geometry().revision;
+        bool single_ok=true;
+        const auto single_start=Clock::now();
+        for (const auto cell:cells) {
+            single_ok=single.erase_shard(witness(single,a,cell)).outcome==Outcome::Accepted && single_ok;
+            single_ok=installed(single,a) && single_ok;
+        }
+        const auto single_ns=std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-single_start).count();
+        const auto batch_start=Clock::now();
+        std::vector<ShardEditRequest> requests;requests.reserve(cells.size());
+        for (const auto cell:cells) requests.push_back(witness(batch,b,cell));
+        const auto receipt=batch.act_on_shard_batch(requests,ShardAction::Erase);
+        const bool batch_ok=installed(batch,b);
+        const auto batch_ns=std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-batch_start).count();
+        CHECK(single_ok && batch_ok && receipt.result.outcome==Outcome::Accepted);
+        CHECK(sa->payload_digest()==sb->payload_digest());
+        CHECK(sa->geometry().mask_digest==sb->geometry().mask_digest);
+        CHECK(sa->geometry().shape_digest==sb->geometry().shape_digest);
+        CHECK(sa->geometry().mass.mass==sb->geometry().mass.mass);
+        CHECK(sa->geometry().mass.com_x==sb->geometry().mass.com_x && sa->geometry().mass.com_y==sb->geometry().mass.com_y);
+        CHECK(sa->geometry().mass.inertia==sb->geometry().mass.inertia);
+        CHECK(sa->geometry().revision-a_revision==cells.size() && sb->geometry().revision-b_revision==1);
+        CHECK(receipt.stats.removed_cells==cells.size() && receipt.stats.geometry_rebuilds==1);
+        check_population_balance(single);check_population_balance(batch);
+        std::printf("M4_BATCH_BENCH {\"radius\":%d,\"slice\":%s,\"sample\":%d,\"body_area\":%zu,\"initial_material_cells\":2304,\"removed_cells\":%zu,\"single_ns\":%lld,\"batch_ns\":%lld,\"single_geometry_rebuilds\":%llu,\"batch_geometry_rebuilds\":%u,\"batch_target_ns\":%llu,\"batch_mutation_ns\":%llu,\"batch_geometry_ns\":%llu,\"matched\":%s}\n",
+            radius,radius ? "false" : "true",sample,sa->area(),cells.size(),
+            static_cast<long long>(single_ns),static_cast<long long>(batch_ns),
+            static_cast<unsigned long long>(sa->geometry().revision-a_revision),receipt.stats.geometry_rebuilds,
+            static_cast<unsigned long long>(receipt.stats.target_ns),static_cast<unsigned long long>(receipt.stats.mutation_ns),
+            static_cast<unsigned long long>(receipt.stats.geometry_ns),
+            single_ok && batch_ok && sa->payload_digest()==sb->payload_digest() && sa->geometry().shape_digest==sb->geometry().shape_digest ? "true" : "false");
+        std::fflush(stdout);
+    }
+}
+
 int main() {
+    m4_matched_native_batch_performance();
+    m4_batch_world_generation_preflight_is_nonwrapping();
+    m4_batch_fragment_capacity_retains_inventory_and_recovers();
+    m4_batch_witness_atomicity_and_material_accounting();
+    m4_batch_weathering_and_ignition_are_deterministic();
+    m4_world_batch_is_witnessed_deduplicated_and_owner_protected();
     small_low_inertia_fragment_accepts_bounded_actual_segment();
     m4_attached_displacement_crosses_original_mixed_pool_with_exact_inventory();
     m4_displacement_radius_and_work_refuse_before_any_material_move();

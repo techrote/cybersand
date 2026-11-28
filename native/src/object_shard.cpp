@@ -2,6 +2,7 @@
 #include "cybersand/interaction_rules.hpp"
 
 #include <algorithm>
+#include <chrono>
 #include <limits>
 #include <new>
 #include <stdexcept>
@@ -297,10 +298,11 @@ Outcome Shard::build_shape_cover(GeometryScratch& scratch, std::size_t erased_ce
     return Outcome::Accepted;
 }
 
-Outcome Shard::rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) noexcept {
+Outcome Shard::rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick,
+        bool prepared_cover) noexcept {
     if (!geometry_dirty_) return Outcome::Accepted;
     if (geometry_.revision == kNever) return Outcome::GenerationExhausted;
-    const auto cover = build_shape_cover(scratch,area());
+    const auto cover = prepared_cover ? Outcome::Accepted : build_shape_cover(scratch,area());
     if (cover != Outcome::Accepted) {
         if (authoritative_ && cover == Outcome::Capacity) phase_ = Phase::Suspended;
         return cover;
@@ -608,21 +610,60 @@ Outcome Registry::commit_fragment(Handle parent_handle, Handle child_handle, std
     return Outcome::Accepted;
 }
 Outcome Registry::erase_structural(Handle handle, std::size_t cell, std::uint64_t tick) noexcept {
+    if (cell > std::numeric_limits<std::uint32_t>::max()) return Outcome::Unsupported;
+    const auto index=static_cast<std::uint32_t>(cell);
+    return erase_structural_batch(handle,std::span<const std::uint32_t>(&index,1),tick);
+}
+Outcome Registry::erase_structural_batch(Handle handle,
+        std::span<const std::uint32_t> cells, std::uint64_t tick,StructuralEditTiming* timing) noexcept {
+    using Clock=std::chrono::steady_clock;
+    const auto elapsed=[](auto start) {return static_cast<std::uint64_t>(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(Clock::now()-start).count());};
+    if (timing) *timing={};
+    if (cells.size()>kMaximumEditCells) return Outcome::Capacity;
     auto* shard=find(handle);
     if (!shard) return Outcome::Stale;
     if (shard->phase_!=Phase::Active || !shard->authoritative_ || shard->geometry_dirty_ ||
         shard->applied_physics_revision_!=shard->geometry_.revision) return Outcome::Fenced;
-    if (cell>=shard->area() || !shard->structural(cell)) return Outcome::Unsupported;
+    if (cells.empty()) return Outcome::Accepted;
     const Payload empty{Material::Empty,0,0,limits_.ambient_temperature};
-    const auto admitted=shard->validate_cell_write(cell,empty,Role::Empty,tick);
-    if (admitted!=Outcome::Accepted) return admitted;
+    std::fill_n(scratch_.seen_.begin(),shard->area(),std::uint8_t{0});
+    std::uint32_t unique=0;
+    for (const auto cell:cells) {
+        if (cell>=shard->area() || !shard->structural(cell)) return Outcome::Unsupported;
+        if (scratch_.seen_[cell]) continue;
+        const auto admitted=shard->validate_cell_write(cell,empty,Role::Empty,tick);
+        if (admitted!=Outcome::Accepted) return admitted;
+        scratch_.seen_[cell]=1;
+        ++unique;
+    }
+    if (shard->material_revision_>kNever-unique || shard->topology_revision_>kNever-unique)
+        return Outcome::GenerationExhausted;
     if (shard->geometry_.revision==kNever) return Outcome::GenerationExhausted;
-    const auto cover=shard->build_shape_cover(scratch_,cell);
+    const auto cover_start=Clock::now();
+    const auto cover=shard->build_shape_cover(scratch_,shard->area(),
+        std::span<const std::uint8_t>(scratch_.seen_.data(),shard->area()));
+    if (timing) timing->geometry_ns=elapsed(cover_start);
     if (cover!=Outcome::Accepted) return cover;
     // All geometry/storage capacities are reserved and the coordinator is the
     // exclusive owner. No writer or physics step can interleave this commit.
-    if (shard->set_cell(cell,empty,Role::Empty,tick)!=Outcome::Accepted ||
-        shard->rebuild_geometry(scratch_,tick)!=Outcome::Accepted) {
+    const auto mutation_start=Clock::now();
+    for (const auto cell:cells) {
+        if (!scratch_.seen_[cell]) continue;
+        scratch_.seen_[cell]=0;
+        if (shard->set_cell(cell,empty,Role::Empty,tick)!=Outcome::Accepted) {
+            if (timing) timing->mutation_ns=elapsed(mutation_start);
+            shard->phase_=Phase::Quarantined;
+            return Outcome::Quarantined;
+        }
+    }
+    if (timing) timing->mutation_ns=elapsed(mutation_start);
+    // The exact cover was reserved and computed before the first debit. Cell
+    // writes do not use geometry scratch; reuse it for one coherent rebuild.
+    const auto geometry_start=Clock::now();
+    const auto rebuilt=shard->rebuild_geometry(scratch_,tick,true);
+    if (timing) timing->geometry_ns+=elapsed(geometry_start);
+    if (rebuilt!=Outcome::Accepted) {
         shard->phase_=Phase::Quarantined;
         return Outcome::Quarantined;
     }

@@ -97,6 +97,15 @@ public:
     [[nodiscard]] std::uint64_t incarnation() const noexcept { return incarnation_; }
     [[nodiscard]] std::size_t pending() const noexcept { return count_; }
     [[nodiscard]] bool exhausted() const noexcept { return exhausted_; }
+    // Exclusive-owner transactions reserve a conservative write count before
+    // the first payload debit. Reaching the final representable witness is
+    // allowed; trying to write beyond it must never produce a changed prefix.
+    [[nodiscard]] bool can_observe(std::uint64_t payload_writes,
+                                   std::uint64_t topology_writes) const noexcept {
+        return !exhausted_ &&
+            payload_writes <= std::numeric_limits<std::uint64_t>::max() - revision_ &&
+            topology_writes <= std::numeric_limits<std::uint64_t>::max() - topology_revision_;
+    }
     // Synchronous, opt-in coordinator seam. A real Fire opportunity already
     // applied to shard Wood must not execute again against World Wood after
     // mechanical displacement. The coordinator owns this bounded field and
@@ -116,6 +125,7 @@ public:
             queue_.capacity() * sizeof(std::uint32_t);
     }
 private:
+    friend struct MutationJournalTestAccess;
     static std::uint8_t topology_class(Material material) noexcept {
         if (material == Material::Wood) return 1;
         if (material == Material::RedBrick) return 2;

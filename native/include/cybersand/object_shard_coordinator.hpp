@@ -115,6 +115,8 @@ struct Metrics {
     std::uint64_t relocation_probes{}, relocation_probe_limit_hits{};
     std::uint64_t relocated_cells{}, relocated_water_cells{}, relocated_sand_cells{};
     std::uint64_t fragments{}, fragment_refusals{}, reabsorptions{};
+    std::uint64_t batch_edits{}, batch_requested_cells{}, batch_changed_cells{}, batch_geometry_rebuilds{};
+    std::uint64_t batch_target_ns{}, batch_mutation_ns{}, batch_geometry_ns{};
     std::uint64_t world_ns{}, chemistry_ns{}, contact_ns{}, occupancy_ns{}, geometry_ns{}, snapshot_ns{};
     std::uint64_t discovery_ns{},terrain_ns{},exchange_ns{},relocation_ns{};
     std::uint64_t maximum_pause_ns{}, maximum_geometry_age{}, maximum_geometry_wait_ns{},maximum_product_age{};
@@ -164,6 +166,26 @@ struct ShardEditRequest {
     std::uint32_t capability_version{kCapabilityVersion};
 };
 enum class ShardAction : std::uint8_t { Erase, Ignite, Inspect, Reabsorb };
+struct EditSelection {
+    std::uint32_t probability_ppm{1'000'000};
+    std::uint64_t seed{};
+    std::int32_t material_filter{-1};
+};
+struct WorldEditTarget {
+    std::int64_t x{}, y{};
+    Payload expected{};
+    std::uint64_t witness{};
+};
+struct BatchEditStats {
+    std::uint32_t requested_cells{}, unique_cells{}, eligible_cells{}, changed_cells{}, removed_cells{};
+    std::uint32_t geometry_rebuilds{}, islands_before{}, islands_after{};
+    std::uint64_t target_ns{}, mutation_ns{}, geometry_ns{};
+};
+struct BatchEditResult {
+    Result result{};
+    BatchEditStats stats{};
+    bool replayed{};
+};
 
 class Coordinator {
 public:
@@ -203,6 +225,14 @@ public:
     [[nodiscard]] Result ignite_shard(Handle shard, std::uint32_t cell);
     [[nodiscard]] Result erase_shard(const ShardEditRequest& request);
     [[nodiscard]] Result act_on_shard(const ShardEditRequest& request, ShardAction action);
+    // Every cell carries the same owner/pose/geometry/material witness and
+    // sequence. All are validated before selection or any material mutation.
+    // Atomic within one owner; a multi-owner gesture uses separate receipts.
+    [[nodiscard]] BatchEditResult act_on_shard_batch(std::span<const ShardEditRequest> requests,
+        ShardAction action, EditSelection selection = {});
+    [[nodiscard]] BatchEditResult act_on_world_batch(std::uint64_t session,
+        std::uint64_t sequence, std::uint64_t material_revision,
+        std::span<const WorldEditTarget> targets, ShardAction action, EditSelection selection = {});
     // Retirement without replacing the World may not dispose any owned or
     // prepared inventory. Reset/owner destruction remains explicit disposal.
     [[nodiscard]] bool can_detach() const noexcept;
@@ -301,6 +331,7 @@ private:
     [[nodiscard]] Result finish(Result result) noexcept;
     [[nodiscard]] bool resident(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] bool immutable_occupied(std::int64_t x, std::int64_t y) const noexcept;
+    [[nodiscard]] bool owned_material_at(std::int64_t x, std::int64_t y) const noexcept;
     [[nodiscard]] BodyView* body(Handle handle) noexcept;
     [[nodiscard]] const BodyView* body(Handle handle) const noexcept;
     void preserve_material_point_velocity(Handle handle, MassProperties previous) noexcept;

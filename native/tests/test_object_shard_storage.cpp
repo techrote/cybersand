@@ -410,6 +410,103 @@ void fragments_preserve_carriers_clocks_and_refuse_without_debit() {
         exact_cover(*parent);exact_cover(*child);
     }
 }
+
+void batched_erase_is_atomic_bounded_and_rebuilds_once() {
+    Registry registry;
+    Handle handle;
+    CHECK(registry.prepare({10,20,20,20},5,handle)==Outcome::Accepted);
+    auto* shard=registry.find(handle);
+    for (std::uint32_t y=1;y<19;++y) for (std::uint32_t x=1;x<19;++x)
+        CHECK(shard->set_cell(y*20+x,wood(),Role::Structural,5)==Outcome::Accepted);
+    activate(registry,handle);
+    std::array<std::uint32_t,100> cells{};
+    std::size_t count=0;
+    for (int y=6;y<=12;++y) for (int x=6;x<=12;++x)
+        if ((x-9)*(x-9)+(y-9)*(y-9)<=9) cells[count++]=static_cast<std::uint32_t>(y*20+x);
+    const auto unique=count;
+    cells[count++]=cells[0];cells[count++]=cells[2];
+    const auto revision=shard->geometry().revision, material=shard->material_revision();
+    const auto allocated=allocations.load();
+    CHECK(registry.erase_structural_batch(handle,{cells.data(),count},6)==Outcome::Accepted);
+    CHECK(allocations.load()==allocated);
+    CHECK(shard->geometry().revision==revision+1);
+    CHECK(shard->material_revision()==material+unique);
+    CHECK(shard->counts().structural==324-unique);
+    CHECK(shard->geometry().mass.mass==324-unique);
+    exact_cover(*shard);
+    double cx=0,cy=0,inertia=0;
+    for (std::size_t at=0;at<shard->area();++at) if (shard->structural(at)) {
+        cx+=at%20+0.5;cy+=at/20+0.5;
+    }
+    cx/=shard->counts().structural;cy/=shard->counts().structural;
+    for (std::size_t at=0;at<shard->area();++at) if (shard->structural(at)) {
+        const auto dx=at%20+0.5-cx,dy=at/20+0.5-cy;inertia+=dx*dx+dy*dy+1.0/6.0;
+    }
+    CHECK(shard->geometry().mass.com_x==cx && shard->geometry().mass.com_y==cy);
+    CHECK(shard->geometry().mass.inertia==inertia);
+    CHECK(shard->acknowledge_geometry(shard->geometry().revision,shard->geometry().mask_digest,shard->geometry().shape_digest)==Outcome::Accepted);
+    const auto digest=shard->payload_digest(),before_noop=shard->geometry().revision;
+    CHECK(registry.erase_structural_batch(handle,{},6)==Outcome::Accepted);
+    CHECK(shard->payload_digest()==digest && shard->geometry().revision==before_noop);
+    std::vector<std::uint32_t> oversized(kMaximumEditCells+1,21);
+    CHECK(registry.erase_structural_batch(handle,oversized,6)==Outcome::Capacity);
+    CHECK(shard->payload_digest()==digest && shard->geometry().revision==before_noop);
+    const std::array<std::uint32_t,2> invalid{{21,401}};
+    CHECK(registry.erase_structural_batch(handle,invalid,6)==Outcome::Unsupported);
+    CHECK(shard->payload_digest()==digest && shard->geometry().revision==before_noop);
+    std::vector<std::uint32_t> all;
+    for (std::uint32_t at=0;at<shard->area();++at) if (shard->structural(at)) all.push_back(at);
+    CHECK(registry.erase_structural_batch(handle,all,7)==Outcome::Accepted);
+    CHECK(shard->phase()==Phase::Draining && shard->counts().total()==0);
+    CHECK(shard->geometry().shapes.empty() && shard->geometry().mass.mass==0 && shard->geometry().islands==0);
+    exact_cover(*shard);
+
+    Limits tight;tight.max_shapes=1;
+    Registry capacity(tight);Handle small;
+    CHECK(capacity.prepare({0,0,7,7},0,small)==Outcome::Accepted);
+    auto* body=capacity.find(small);
+    for (std::uint32_t y=1;y<6;++y) for (std::uint32_t x=1;x<6;++x)
+        CHECK(body->set_cell(y*7+x,wood(),Role::Structural,0)==Outcome::Accepted);
+    activate(capacity,small);
+    const auto original=body->payload_digest();const auto shape_revision=body->geometry().revision;
+    const std::array<std::uint32_t,3> hole{{24,24,25}};
+    CHECK(capacity.erase_structural_batch(small,hole,1)==Outcome::Capacity);
+    CHECK(body->payload_digest()==original && body->geometry().revision==shape_revision);
+    CHECK(body->phase()==Phase::Active && body->counts().structural==25);
+}
+
+void maximum_batch_and_single_cell_equivalence() {
+    Limits limits;limits.max_area=4356;limits.max_total_area=4356;limits.max_shards=1;limits.max_shapes=512;
+    Registry registry(limits);Handle handle;
+    CHECK(registry.prepare({0,0,66,66},0,handle)==Outcome::Accepted);
+    auto* shard=registry.find(handle);
+    std::array<std::uint32_t,kMaximumEditCells> cells{};
+    for (std::uint32_t y=1;y<=64;++y) for (std::uint32_t x=1;x<=64;++x) {
+        const auto cell=y*66+x;cells[(y-1)*64+x-1]=cell;
+        CHECK(shard->set_cell(cell,wood(),Role::Structural,0)==Outcome::Accepted);
+    }
+    activate(registry,handle);
+    const auto before=shard->geometry().revision;
+    CHECK(registry.erase_structural_batch(handle,cells,1)==Outcome::Accepted);
+    CHECK(shard->counts().total()==0 && shard->geometry().revision==before+1);
+    CHECK(shard->geometry().mass.mass==0 && shard->geometry().shapes.empty());
+
+    Registry single,batch;Handle a,b;
+    CHECK(single.prepare({3,7,5,5},0,a)==Outcome::Accepted);
+    CHECK(batch.prepare({3,7,5,5},0,b)==Outcome::Accepted);
+    for (std::uint32_t cell=6;cell<19;++cell) if (cell%5>0 && cell%5<4) {
+        CHECK(single.find(a)->set_cell(cell,wood(),Role::Structural,0)==Outcome::Accepted);
+        CHECK(batch.find(b)->set_cell(cell,wood(),Role::Structural,0)==Outcome::Accepted);
+    }
+    activate(single,a);activate(batch,b);
+    const std::uint32_t cell=12;
+    CHECK(single.erase_structural(a,cell,1)==Outcome::Accepted);
+    CHECK(batch.erase_structural_batch(b,{&cell,1},1)==Outcome::Accepted);
+    CHECK(single.find(a)->payload_digest()==batch.find(b)->payload_digest());
+    CHECK(single.find(a)->geometry().mask_digest==batch.find(b)->geometry().mask_digest);
+    CHECK(single.find(a)->geometry().shape_digest==batch.find(b)->geometry().shape_digest);
+    CHECK(single.find(a)->geometry().revision==batch.find(b)->geometry().revision);
+}
 } // namespace
 
 void* operator new(std::size_t size) {
@@ -423,6 +520,8 @@ void operator delete(void* pointer, std::size_t) noexcept { std::free(pointer); 
 void operator delete[](void* pointer, std::size_t) noexcept { std::free(pointer); }
 
 int main() {
+    batched_erase_is_atomic_bounded_and_rebuilds_once();
+    maximum_batch_and_single_cell_equivalence();
     fragments_preserve_carriers_clocks_and_refuse_without_debit();
     payload_identity_and_activation();
     exact_geometry_holes_and_islands();

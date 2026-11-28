@@ -17,6 +17,9 @@ inline constexpr std::uint32_t kPolicyVersion = 1;
 inline constexpr std::uint32_t kMaximumShards = 64;
 inline constexpr std::uint32_t kMaximumArea = 65'536;
 inline constexpr std::uint32_t kMaximumShapes = 4'096;
+// A live edit is bounded independently of a body's storage area. Geometry and
+// connectivity are rebuilt once for this entire owner-local cell set.
+inline constexpr std::uint32_t kMaximumEditCells = 4'096;
 
 enum class Outcome : std::uint8_t {
     Accepted, Invalid, Stale, Capacity, Unsupported, Busy, Fenced, Expired,
@@ -90,6 +93,9 @@ struct MemoryUsage {
     std::size_t live_bytes{}, retained_bytes{}, peak_bytes{};
     std::uint64_t construction_allocations{}, steady_state_allocations{};
 };
+struct StructuralEditTiming {
+    std::uint64_t mutation_ns{}, geometry_ns{};
+};
 
 class Registry;
 class GeometryScratch;
@@ -146,7 +152,8 @@ private:
     friend class Registry;
     Outcome prepare(Handle handle, std::uint64_t world, Bounds bounds,
         std::uint64_t captured_tick, const Limits& limits);
-    Outcome rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick) noexcept;
+    Outcome rebuild_geometry(GeometryScratch& scratch, std::uint64_t tick,
+        bool prepared_cover = false) noexcept;
     Outcome build_shape_cover(GeometryScratch& scratch, std::size_t erased_cell,
         std::span<const std::uint8_t> excluded = {}) const noexcept;
     void clear_inventory() noexcept;
@@ -214,6 +221,9 @@ public:
     // Expected capacity refusal leaves payload, clocks and geometry unchanged.
     [[nodiscard]] Outcome erase_structural(Handle handle, std::size_t cell,
         std::uint64_t semantic_tick) noexcept;
+    [[nodiscard]] Outcome erase_structural_batch(Handle handle,
+        std::span<const std::uint32_t> cells, std::uint64_t semantic_tick,
+        StructuralEditTiming* timing = nullptr) noexcept;
     [[nodiscard]] Outcome reserve_physics(Handle handle) noexcept;
     [[nodiscard]] Outcome commit(Handle handle) noexcept;
     // Coordinator validates real installed terrain/mask/body receipts first.

@@ -79,6 +79,7 @@ func _run() -> void:
     expect(frame.get("ok", false) and int(frame.get("session", 0)) == int(state.shard_session),
         "copied same-World native materials and shard snapshot")
     expect(int(frame.get("tick", -1)) == before, "snapshot uses authoritative World semantic tick")
+    _terrain_batches(world, state)
     var sample2: Dictionary = sample.duplicate(true)
     for index: int in range(64): sample2.states[index * 17 + 10] = 2
     sample2.states[1] = 50.125
@@ -106,6 +107,90 @@ func _run() -> void:
     world = null
     adapter = null
     _finish()
+
+func _terrain_request(world: Variant, state: Dictionary, cells: Array, operation: String = "erase") -> Dictionary:
+    return {"native_instance_id":world.get_instance_id(), "session":501, "owner_epoch":501,
+        "world_generation":1, "transport_generation":1, "shard_session":state.shard_session,
+        "world_incarnation":state.world_incarnation, "action_id":1, "port_generation":1,
+        "operation":operation, "domain":"terrain", "position":cells[0], "target":{},
+        "terrain_cells":cells, "observation":{"world_revision":world.get_revision(), "publication_sequence":1},
+        "probability_ppm":1000000, "seed":31, "material_filter":-1}
+
+func _terrain_batches(world: Variant, state: Dictionary) -> void:
+    const A := Vector2i(10,190)
+    const B := Vector2i(11,190)
+    for cell: Vector2i in [A,B]:
+        expect(world.object_shard_edit_cell(cell,7,37,0,402).get("ok",false), "native terrain batch fixture written")
+    var base: Dictionary = _terrain_request(world,state,[A,B,B])
+    var malformed: Array[Dictionary] = []
+    var bad: Dictionary = base.duplicate(true)
+    bad.terrain_cells = 42
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.terrain_cells = []
+    bad.terrain_cells.resize(4097)
+    bad.terrain_cells.fill(A)
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.target = {"unexpected":{"nested":[1,2,3]}}
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.position = B
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.domain = "moving"
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.seed = -1
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.native_instance_id += 1
+    malformed.append(bad)
+    bad = base.duplicate(true)
+    bad.observation.world_revision -= 1
+    malformed.append(bad)
+    for rejected: Dictionary in malformed:
+        var receipt: Dictionary = world.object_shard_workbench_action(rejected)
+        expect(not receipt.get("ok",false), "malformed, oversized, foreign or stale native batch refused")
+        expect(world.stored_material_at(A.x,A.y)==7 and world.stored_material_at(B.x,B.y)==7 \
+            and world.get_revision()==base.observation.world_revision, "native parser refusal preserves all material and revision")
+    for domain: Variant in ["unknown",17,{"nested":[]}]:
+        bad = base.duplicate(true)
+        bad.erase("terrain_cells")
+        bad.targets = [{}]
+        bad.domain = domain
+        expect(world.object_shard_workbench_action(bad).get("outcome","")=="InvalidBatchDomain",
+            "unknown or non-string structural domain refuses before target parsing")
+    var protected: Dictionary = _terrain_request(world,state,[A,Vector2i(50,50)])
+    expect(not world.object_shard_workbench_action(protected).get("ok",false), "immutable actor overlap refuses complete native batch")
+    expect(world.stored_material_at(A.x,A.y)==7, "protected later cell cannot permit an earlier debit")
+    var ignite: Dictionary = _terrain_request(world,state,[A,B,B],"ignite")
+    var result: Dictionary = world.object_shard_workbench_action(ignite)
+    expect(result.get("accepted",false) and result.get("same_world",false) and result.get("changed_cells",0)==2 \
+        and result.get("requested_cells",0)==3 and result.get("unique_cells",0)==2 \
+        and result.get("geometry_rebuilds",-1)==0 and result.get("removed_cells",-1)==0,
+        "native area ignition deduplicates actual cells without geometry reconstruction")
+    expect(result.get("source_terrain_cells",[])==ignite.terrain_cells and result.get("terrain_changed_cells",[]).size()==2,
+        "native terrain receipt echoes source and exact deduplicated changed cells")
+    expect(world.object_shard_edit_cell(A,7,37,117,402).get("ok",false), "fixture simulates a progressed burning countdown")
+    ignite = _terrain_request(world,state,[A,B,B],"ignite")
+    result = world.object_shard_workbench_action(ignite)
+    expect(result.get("accepted",false) and result.get("changed_cells",-1)==0 \
+        and world.object_shard_inspect_cell(A).get("state_b",0)==117 \
+        and world.get_revision()==ignite.observation.world_revision, "repeated ignition cannot reset countdown or fabricate a material revision")
+    var filtered: Dictionary = _terrain_request(world,state,[A,B])
+    filtered.material_filter = 43
+    result = world.object_shard_workbench_action(filtered)
+    expect(result.get("accepted",false) and result.get("changed_cells",-1)==0 \
+        and world.get_revision()==filtered.observation.world_revision, "no eligible filtered material is an observable native no-op")
+    base = _terrain_request(world,state,[A,B,B])
+    result = world.object_shard_workbench_action(base)
+    expect(result.get("accepted",false) and result.get("removed_cells",0)==2 \
+        and result.get("terrain_changed_cells",[]).size()==2 \
+        and world.stored_material_at(A.x,A.y)==0 and world.stored_material_at(B.x,B.y)==0,
+        "one native terrain transaction erases exactly the two unique cells")
+    expect(world.get_revision()==base.observation.world_revision+1, "native terrain batch publishes one facade revision")
+    expect(not world.object_shard_workbench_action(base).get("ok",false), "previous terrain observation cannot be replayed after material publication")
 
 func _finish() -> void:
     print(JSON.stringify({"schema":"objectshard-m4-actual-godot-sameworld-v1",

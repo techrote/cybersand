@@ -7,6 +7,8 @@
 #include <godot_cpp/variant/packed_int32_array.hpp>
 #include <godot_cpp/variant/packed_int64_array.hpp>
 #include <godot_cpp/variant/rect2i.hpp>
+#include <godot_cpp/variant/transform2d.hpp>
+#include <algorithm>
 #include <charconv>
 #include <cmath>
 #include <limits>
@@ -43,6 +45,78 @@ bool identity(const Dictionary& row, os::Handle& handle) {
         field(row, "generation", handle.generation);
 }
 
+const char* read_edit(const Dictionary& request, os::ShardEditRequest& copied) {
+    std::uint64_t cell{},incarnation{},capability{};
+    if (!identity(request,copied.shard) || !field(request,"sequence",copied.sequence) ||
+        !field(request,"body_generation",copied.body_generation) ||
+        !field(request,"geometry_revision",copied.geometry_revision) ||
+        !field(request,"pose_serial",copied.pose_serial) ||
+        !field(request,"material_revision",copied.material_revision) ||
+        !field(request,"cell",cell) || !field(request,"incarnation",incarnation) ||
+        !field(request,"capability_version",capability) || cell>UINT32_MAX || incarnation>UINT32_MAX || capability>UINT32_MAX)
+        return "InvalidShardEditIdentity";
+    const Variant expected_value=request.get("expected",Variant());
+    if (expected_value.get_type()!=Variant::DICTIONARY) return "InvalidPayload";
+    const Dictionary expected=expected_value;
+    for (const auto* key:{"material","state_a","state_b","temperature"})
+        if (!expected.has(key) || expected[key].get_type()!=Variant::INT) return "InvalidPayload";
+    const auto material=static_cast<std::int64_t>(expected["material"]);
+    const auto state_a=static_cast<std::int64_t>(expected["state_a"]);
+    const auto state_b=static_cast<std::int64_t>(expected["state_b"]);
+    const auto temperature=static_cast<std::int64_t>(expected["temperature"]);
+    if (material<0 || material>=static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size()) ||
+        state_a<0 || state_a>65535 || state_b<0 || state_b>255 || temperature<-32768 || temperature>32767 ||
+        !cybersand::material_definition(static_cast<cybersand::Material>(material)).valid) return "InvalidPayload";
+    copied.cell=static_cast<std::uint32_t>(cell);copied.incarnation=static_cast<std::uint32_t>(incarnation);
+    copied.capability_version=static_cast<std::uint32_t>(capability);
+    copied.expected={static_cast<cybersand::Material>(material),static_cast<std::uint16_t>(state_a),
+        static_cast<std::uint8_t>(state_b),static_cast<std::int16_t>(temperature)};
+    return nullptr;
+}
+
+bool read_selection(const Dictionary& request,os::EditSelection& selection) {
+    for (const auto* key:{"probability_ppm","seed","material_filter"})
+        if (request.has(key) && request[key].get_type()!=Variant::INT) return false;
+    const auto probability=static_cast<std::int64_t>(request.get("probability_ppm",1'000'000));
+    const auto seed=static_cast<std::int64_t>(request.get("seed",0));
+    const auto filter=static_cast<std::int64_t>(request.get("material_filter",-1));
+    if (probability<0 || probability>1'000'000 || seed<0 || filter<-1 ||
+        filter>=static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size()) ||
+        (filter>=0 && !cybersand::material_definition(static_cast<cybersand::Material>(filter)).valid)) return false;
+    selection={static_cast<std::uint32_t>(probability),static_cast<std::uint64_t>(seed),static_cast<std::int32_t>(filter)};
+    return true;
+}
+
+bool bounded_target(const Dictionary& target) {
+    if (target.size()>24 || target.get("expected",Variant()).get_type()!=Variant::DICTIONARY) return false;
+    const Dictionary expected=target["expected"];
+    if (expected.size()!=4) return false;
+    for (const auto* key:{"material","state_a","state_b","temperature"})
+        if (expected.get(key,Variant()).get_type()!=Variant::INT) return false;
+    const Array keys=target.keys();
+    for (int64_t at=0;at<keys.size();++at) {
+        if (keys[at].get_type()!=Variant::STRING) return false;
+        if (keys[at]==Variant(String("expected"))) continue;
+        const auto type=target[keys[at]].get_type();
+        if (type!=Variant::INT && type!=Variant::VECTOR2I) return false;
+    }
+    return true;
+}
+
+void batch_receipt(Dictionary& receipt,const os::BatchEditResult& value) {
+    const auto& s=value.stats;
+#define EDIT_STAT(name) receipt[#name]=static_cast<std::int64_t>(s.name)
+    EDIT_STAT(requested_cells);EDIT_STAT(unique_cells);EDIT_STAT(eligible_cells);EDIT_STAT(changed_cells);
+    EDIT_STAT(removed_cells);EDIT_STAT(geometry_rebuilds);EDIT_STAT(islands_before);EDIT_STAT(islands_after);
+    EDIT_STAT(target_ns);EDIT_STAT(mutation_ns);EDIT_STAT(geometry_ns);
+#undef EDIT_STAT
+    receipt["native_edit_ns"]=static_cast<std::int64_t>(s.target_ns+s.mutation_ns+s.geometry_ns);
+    receipt["changed_owners"]=s.changed_cells>0 ? 1 : 0;
+    receipt["batch"]=true;receipt["replayed"]=value.replayed;
+    receipt["atomicity"]="one_owner";
+    receipt["partial"]=value.result.outcome==os::Outcome::Quarantined && s.changed_cells>0;
+}
+
 Dictionary payload(os::Payload cell) {
     Dictionary row;
     row["material"] = static_cast<std::int64_t>(cell.material);
@@ -74,6 +148,8 @@ Dictionary metrics_value(const os::Metrics& value) {
     COPY_METRIC(exposure_overflows); COPY_METRIC(stale_messages); COPY_METRIC(mask_cells);
     COPY_METRIC(ingress_blocked);
     COPY_METRIC(composed_overlap_cells); COPY_METRIC(composed_reuses); COPY_METRIC(fragments); COPY_METRIC(fragment_refusals); COPY_METRIC(reabsorptions);
+    COPY_METRIC(batch_edits); COPY_METRIC(batch_requested_cells); COPY_METRIC(batch_changed_cells); COPY_METRIC(batch_geometry_rebuilds);
+    COPY_METRIC(batch_target_ns); COPY_METRIC(batch_mutation_ns); COPY_METRIC(batch_geometry_ns);
     COPY_METRIC(relocation_probes); COPY_METRIC(relocation_probe_limit_hits);
     COPY_METRIC(relocated_cells); COPY_METRIC(relocated_water_cells); COPY_METRIC(relocated_sand_cells);
     COPY_METRIC(sweep_samples); COPY_METRIC(world_ns); COPY_METRIC(chemistry_ns);
@@ -345,36 +421,7 @@ Dictionary CyberObjectShardLab::erase_shard(const Dictionary& request) {
 Dictionary CyberObjectShardLab::act_on_shard(const Dictionary& request,os::ShardAction action) {
     if (!owned()) return refusal("Fenced");
     os::ShardEditRequest copied;
-    std::uint64_t cell{}, incarnation{}, capability{};
-    if (!identity(request, copied.shard) || !field(request, "sequence", copied.sequence) ||
-        !field(request, "body_generation", copied.body_generation) ||
-        !field(request, "geometry_revision", copied.geometry_revision) ||
-        !field(request, "pose_serial", copied.pose_serial) ||
-        !field(request, "material_revision", copied.material_revision) ||
-        !field(request, "cell", cell) || !field(request, "incarnation", incarnation) ||
-        !field(request, "capability_version", capability) ||
-        cell > std::numeric_limits<std::uint32_t>::max() ||
-        incarnation > std::numeric_limits<std::uint32_t>::max() ||
-        capability > std::numeric_limits<std::uint32_t>::max()) return refusal("InvalidShardEditIdentity");
-    const Variant expected_value = request.get("expected", Variant());
-    if (expected_value.get_type() != Variant::DICTIONARY) return refusal("InvalidPayload");
-    const Dictionary expected = expected_value;
-    for (const auto* key : {"material", "state_a", "state_b", "temperature"})
-        if (!expected.has(key) || expected[key].get_type() != Variant::INT) return refusal("InvalidPayload");
-    const auto material = static_cast<std::int64_t>(expected["material"]);
-    const auto state_a = static_cast<std::int64_t>(expected["state_a"]);
-    const auto state_b = static_cast<std::int64_t>(expected["state_b"]);
-    const auto temperature = static_cast<std::int64_t>(expected["temperature"]);
-    if (material < 0 || material >= static_cast<std::int64_t>(cybersand::kMaterialDefinitions.size()) ||
-        state_a < 0 || state_a > 65535 || state_b < 0 || state_b > 255 ||
-        temperature < -32768 || temperature > 32767 ||
-        !cybersand::material_definition(static_cast<cybersand::Material>(material)).valid)
-        return refusal("InvalidPayload");
-    copied.cell = static_cast<std::uint32_t>(cell);
-    copied.incarnation = static_cast<std::uint32_t>(incarnation);
-    copied.capability_version = static_cast<std::uint32_t>(capability);
-    copied.expected = {static_cast<cybersand::Material>(material), static_cast<std::uint16_t>(state_a),
-        static_cast<std::uint8_t>(state_b), static_cast<std::int16_t>(temperature)};
+    if (const auto* error=read_edit(request,copied)) return refusal(error);
     try {
         auto receipt=result(coordinator_->act_on_shard(copied,action));
         const auto* shard=coordinator_->registry().find(copied.shard);
@@ -404,9 +451,6 @@ Dictionary CyberObjectShardLab::workbench_action(const Dictionary& request) {
     if (!field(request,"shard_session",session) || session!=proof.session ||
         !field(request,"world_incarnation",incarnation) || incarnation!=proof.world_incarnation)
         return refusal("Retired");
-    const Variant value=request.get("target",Variant());
-    if (value.get_type()!=Variant::DICTIONARY) return refusal("InvalidPayload");
-    const Dictionary target=value;
     const String operation=request.get("operation","");
     os::ShardAction action;
     if (operation=="erase") action=os::ShardAction::Erase;
@@ -414,12 +458,26 @@ Dictionary CyberObjectShardLab::workbench_action(const Dictionary& request) {
     else if (operation=="inspect") action=os::ShardAction::Inspect;
     else if (operation=="reabsorb") action=os::ShardAction::Reabsorb;
     else return refusal("UnsupportedAction");
-    Dictionary exact=target.duplicate(true);
-    exact["session"]=static_cast<std::int64_t>(session);
-    exact["id"]=target.get("owner",0);
-    exact["sequence"]=static_cast<std::int64_t>(coordinator_->next_transaction());
-    exact["capability_version"]=os::kCapabilityVersion;
-    Dictionary receipt=act_on_shard(exact,action);
+    Dictionary target,receipt;
+    if (request.has("targets") || request.has("terrain_cells")) {
+        receipt=workbench_batch_action(request,action);
+        if (request.get("target",Variant()).get_type()==Variant::DICTIONARY) {
+            const Dictionary candidate=request["target"];
+            // A malformed refused request must not reach the deep-copy echo
+            // below with unbounded caller-controlled nested containers.
+            if (candidate.is_empty() || bounded_target(candidate)) target=candidate;
+        }
+    } else {
+        const Variant value=request.get("target",Variant());
+        if (value.get_type()!=Variant::DICTIONARY) return refusal("InvalidPayload");
+        target=value;
+        Dictionary exact=target.duplicate(true);
+        exact["session"]=static_cast<std::int64_t>(session);
+        exact["id"]=target.get("owner",0);
+        exact["sequence"]=static_cast<std::int64_t>(coordinator_->next_transaction());
+        exact["capability_version"]=os::kCapabilityVersion;
+        receipt=act_on_shard(exact,action);
+    }
     receipt["accepted"]=receipt.get("ok",false);
     receipt["same_world"]=true;
     receipt["source_target"]=target.duplicate(true);
@@ -433,6 +491,128 @@ Dictionary CyberObjectShardLab::workbench_action(const Dictionary& request) {
         if (static_cast<bool>(receipt.get("ok",false))) reabsorption_receipt_=receipt.duplicate(true);
     }
     return receipt;
+}
+
+Dictionary CyberObjectShardLab::workbench_batch_action(const Dictionary& request,os::ShardAction action) {
+    if (action!=os::ShardAction::Erase && action!=os::ShardAction::Ignite) return refusal("UnsupportedAction");
+    os::EditSelection selection;
+    if (!read_selection(request,selection)) return refusal("InvalidBatchSelection");
+    const Variant domain=request.get("domain",String());
+    if (domain.get_type()!=Variant::STRING ||
+        (domain!=Variant(String()) && domain!=Variant(String("terrain")))) return refusal("InvalidBatchDomain");
+    const bool terrain=domain==Variant(String("terrain"));
+    if (request.has("targets") == request.has("terrain_cells") ||
+        terrain!=request.has("terrain_cells")) return refusal("InvalidBatchDomain");
+    const Variant value=request.get(terrain ? "terrain_cells" : "targets",Variant());
+    if (value.get_type()!=Variant::ARRAY) return refusal("InvalidBatchTargets");
+    const Array targets=value;
+    if (targets.is_empty() || targets.size()>os::kMaximumEditCells) return refusal("BatchCapacity");
+    if (request.get("position",Variant()).get_type()!=Variant::VECTOR2I ||
+        request.get("target",Variant()).get_type()!=Variant::DICTIONARY) return refusal("InvalidBatchPosition");
+    const Dictionary first_target=request["target"];
+    if (terrain && (!first_target.is_empty() || request["position"]!=targets[0])) return refusal("InvalidTerrainTarget");
+    if (!terrain && (!bounded_target(first_target) || request["position"]!=first_target.get("position",Variant())))
+        return refusal("InvalidBatchFirstTarget");
+    const auto proof=coordinator_->m4_owner_readback();
+    struct VisibleCell {std::uint64_t owner{};std::uint32_t cell{};bool structural{};};
+    const auto foreground=[&](Vector2i position) {
+        VisibleCell visible;
+        for (std::size_t at=0;at<proof.copied_count;++at) {
+            const auto& b=proof.bodies[at];const auto* shard=coordinator_->registry().find(b.shard);
+            if (!shard || !shard->owns_inventory() || b.shard.id<visible.owner) continue;
+            const Transform2D pose(static_cast<real_t>(b.pose.rotation),
+                Vector2(static_cast<real_t>(b.pose.x),static_cast<real_t>(b.pose.y)));
+            const Vector2 local=(pose.affine_inverse().xform(Vector2(position)+Vector2(0.5,0.5))).floor();
+            const auto bounds=shard->bounds();
+            if (local.x<0 || local.y<0 || local.x>=bounds.width || local.y>=bounds.height) continue;
+            const auto cell=static_cast<std::uint32_t>(local.y)*bounds.width+static_cast<std::uint32_t>(local.x);
+            if (shard->occupied(cell)) visible={b.shard.id,cell,shard->structural(cell)};
+        }
+        return visible;
+    };
+    try {
+        Dictionary receipt;
+        if (terrain) {
+            std::vector<os::WorldEditTarget> copied;
+            copied.reserve(static_cast<std::size_t>(targets.size()));
+            for (int64_t at=0;at<targets.size();++at) {
+                if (targets[at].get_type()!=Variant::VECTOR2I) return refusal("InvalidTerrainTarget");
+                const Vector2i position=targets[at];
+                if (foreground(position).owner) return refusal("DestinationUnavailable");
+                copied.push_back({position.x,position.y,coordinator_->inspect_world(position.x,position.y),
+                    coordinator_->world_witness(position.x,position.y)});
+            }
+            const auto applied=coordinator_->act_on_world_batch(proof.session,coordinator_->next_transaction(),
+                coordinator_->world_material_revision(),copied,action,selection);
+            receipt=result(applied.result);batch_receipt(receipt,applied);
+            receipt["domain"]="terrain";receipt["source_terrain_cells"]=targets.duplicate(true);
+            std::sort(copied.begin(),copied.end(),[](const auto& a,const auto& b) {
+                return a.y<b.y || (a.y==b.y && a.x<b.x);
+            });
+            Array changed;
+            for (std::size_t at=0;at<copied.size();++at) {
+                const auto& before=copied[at];
+                if (at && before.x==copied[at-1].x && before.y==copied[at-1].y) continue;
+                if (before.expected!=coordinator_->inspect_world(before.x,before.y))
+                    changed.push_back(Vector2i(static_cast<int32_t>(before.x),static_cast<int32_t>(before.y)));
+            }
+            receipt["terrain_changed_cells"]=changed;
+        } else {
+            const Variant observation_value=request.get("observation",Variant());
+            if (observation_value.get_type()!=Variant::DICTIONARY) return refusal("VisiblePublicationRequired");
+            const Dictionary observation=observation_value;
+            if (request.get("target",Variant()).get_type()!=Variant::DICTIONARY ||
+                targets[0].get_type()!=Variant::DICTIONARY || request["target"]!=targets[0])
+                return refusal("InvalidBatchFirstTarget");
+            std::vector<os::ShardEditRequest> copied;
+            copied.reserve(static_cast<std::size_t>(targets.size()));
+            for (int64_t at=0;at<targets.size();++at) {
+                if (targets[at].get_type()!=Variant::DICTIONARY) return refusal("InvalidBatchTargets");
+                const Dictionary target=targets[at];
+                if (!bounded_target(target)) return refusal("InvalidBatchTargets");
+                if (target.get("position",Variant()).get_type()!=Variant::VECTOR2I) return refusal("InvalidBatchPosition");
+                for (const auto* key:{"session","owner_epoch","shard_session","world_incarnation","transport_generation"})
+                    if (target.get(key,Variant()).get_type()!=Variant::INT || target.get(key,Variant())!=request.get(key,Variant()))
+                        return refusal("Stale");
+                if (target.get("publication_sequence",Variant()).get_type()!=Variant::INT ||
+                    target.get("publication_sequence",Variant())!=observation.get("publication_sequence",Variant()))
+                    return refusal("Stale");
+                Dictionary exact=target.duplicate(true);
+                exact["session"]=static_cast<std::int64_t>(proof.session);
+                exact["id"]=target.get("owner",0);
+                exact["sequence"]=static_cast<std::int64_t>(coordinator_->next_transaction());
+                exact["capability_version"]=os::kCapabilityVersion;
+                os::ShardEditRequest parsed;
+                if (const auto* error=read_edit(exact,parsed)) return refusal(error);
+                // Use the same Godot value transform as the visible picker,
+                // against native's acknowledged pose. Highest owner id is
+                // the documented foreground order in the Workbench overlay.
+                const Vector2i position=target["position"];
+                const auto visible=foreground(position);
+                if (!visible.structural || visible.owner!=parsed.shard.id || visible.cell!=parsed.cell) return refusal("Stale");
+                copied.push_back(parsed);
+            }
+            const auto applied=coordinator_->act_on_shard_batch(copied,action,selection);
+            receipt=result(applied.result);batch_receipt(receipt,applied);
+            receipt["source_targets"]=targets.duplicate(true);
+            const auto& first=copied.front();
+            const auto* shard=coordinator_->registry().find(first.shard);
+            if (shard) {
+                receipt["material_revision"]=static_cast<std::int64_t>(shard->material_revision());
+                receipt["geometry_revision"]=static_cast<std::int64_t>(shard->geometry().revision);
+                receipt["applied_physics_revision"]=static_cast<std::int64_t>(shard->applied_physics_revision());
+                receipt["incarnation"]=first.cell<shard->area() ? shard->schedule(first.cell).incarnation : 0;
+            }
+            for (std::size_t at=0;at<proof.copied_count;++at) if (proof.bodies[at].shard==first.shard) {
+                receipt["pose_serial"]=static_cast<std::int64_t>(proof.bodies[at].pose.pose_serial);
+                receipt["body_generation"]=static_cast<std::int64_t>(proof.bodies[at].body_generation);break;
+            }
+            receipt["owner"]=static_cast<std::int64_t>(first.shard.id);receipt["cell"]=first.cell;
+        }
+        receipt["probability_ppm"]=selection.probability_ppm;
+        receipt["seed"]=static_cast<std::int64_t>(selection.seed);receipt["material_filter"]=selection.material_filter;
+        return receipt;
+    } catch (const std::exception& error) {return fail(error.what());}
 }
 
 Dictionary CyberObjectShardLab::ignite_shard(std::int64_t id, std::int64_t generation, std::int64_t cell) {

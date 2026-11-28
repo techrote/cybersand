@@ -44,6 +44,8 @@ private:
         cybersand::object_shard::Config config);
     [[nodiscard]] Dictionary after_owner_tick();
     [[nodiscard]] Dictionary workbench_action(const Dictionary& request);
+    [[nodiscard]] Dictionary workbench_batch_action(const Dictionary& request,
+        cybersand::object_shard::ShardAction action);
     [[nodiscard]] Dictionary act_on_shard(const Dictionary& request,
         cybersand::object_shard::ShardAction action);
     std::thread::id owner_;

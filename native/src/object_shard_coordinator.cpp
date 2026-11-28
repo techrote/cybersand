@@ -69,6 +69,28 @@ std::uint64_t edit_fingerprint(const ShardEditRequest& r, ShardAction action) no
     hash_word(hash,r.expected.state_b);hash_word(hash,static_cast<std::uint16_t>(r.expected.temperature));
     return hash;
 }
+bool valid_selection(EditSelection selection) noexcept {
+    return selection.probability_ppm<=1'000'000 && (selection.material_filter==-1 ||
+        (selection.material_filter>=0 && selection.material_filter<static_cast<std::int32_t>(kMaterialDefinitions.size()) &&
+         material_definition(static_cast<Material>(selection.material_filter)).valid));
+}
+bool edit_selected(EditSelection selection, std::int64_t x, std::int64_t y) noexcept {
+    if (selection.probability_ppm==1'000'000) return true;
+    if (!selection.probability_ppm) return false;
+    // Integer-only, session-independent sampling. A fragment preserves its
+    // captured lattice coordinates, so splitting cannot change the pattern.
+    std::uint64_t hash=1469598103934665603ULL;
+    hash_word(hash,selection.seed);hash_word(hash,static_cast<std::uint64_t>(x));
+    hash_word(hash,static_cast<std::uint64_t>(y));
+    // Mix the FNV key before modulo; adjacent lattice cells remain decorrelated.
+    hash^=hash>>30;hash*=0xbf58476d1ce4e5b9ULL;
+    hash^=hash>>27;hash*=0x94d049bb133111ebULL;hash^=hash>>31;
+    return hash%1'000'000<selection.probability_ppm;
+}
+void selection_fingerprint(std::uint64_t& hash, EditSelection selection) noexcept {
+    hash_word(hash,selection.probability_ppm);hash_word(hash,selection.seed);
+    hash_word(hash,static_cast<std::uint64_t>(selection.material_filter));
+}
 contact::Pose contact_pose(const PoseSample& p) noexcept {return {p.x,p.y,p.rotation};}
 }
 
@@ -90,6 +112,8 @@ struct Coordinator::Receipt {
     std::uint64_t sequence{}, fingerprint{};
     Result result{};
     std::array<std::uint64_t, 3> acknowledgements{};
+    BatchEditStats batch_stats{};
+    bool batch{};
 };
 
 Coordinator::Coordinator(Config config) : Coordinator(config, nullptr) {}
@@ -290,6 +314,8 @@ Metrics Coordinator::lifetime_metrics() const noexcept {
     CS_ADD_METRIC(chemistry_cells);CS_ADD_METRIC(products_created);CS_ADD_METRIC(output_blocked);CS_ADD_METRIC(sand_ingested);
     CS_ADD_METRIC(exposure_overflows);CS_ADD_METRIC(stale_messages);CS_ADD_METRIC(mask_cells);CS_ADD_METRIC(sweep_samples);CS_ADD_METRIC(ingress_blocked);
     CS_ADD_METRIC(composed_overlap_cells);CS_ADD_METRIC(composed_reuses);CS_ADD_METRIC(fragments);CS_ADD_METRIC(fragment_refusals);CS_ADD_METRIC(reabsorptions);
+    CS_ADD_METRIC(batch_edits);CS_ADD_METRIC(batch_requested_cells);CS_ADD_METRIC(batch_changed_cells);CS_ADD_METRIC(batch_geometry_rebuilds);
+    CS_ADD_METRIC(batch_target_ns);CS_ADD_METRIC(batch_mutation_ns);CS_ADD_METRIC(batch_geometry_ns);
     CS_ADD_METRIC(relocation_probes);CS_ADD_METRIC(relocation_probe_limit_hits);
     CS_ADD_METRIC(relocated_cells);CS_ADD_METRIC(relocated_water_cells);CS_ADD_METRIC(relocated_sand_cells);
     CS_ADD_METRIC(world_ns);CS_ADD_METRIC(chemistry_ns);CS_ADD_METRIC(contact_ns);CS_ADD_METRIC(occupancy_ns);CS_ADD_METRIC(geometry_ns);CS_ADD_METRIC(snapshot_ns);
@@ -375,6 +401,7 @@ Result Coordinator::edit(std::int64_t x, std::int64_t y, Payload value) {
 Result Coordinator::ignite(std::int64_t x, std::int64_t y) {
     auto p = inspect_world(x,y);
     if (p.material != Material::Wood) return finish({Outcome::Unsupported});
+    if (p.state_b!=0) return finish({Outcome::Accepted,{},0,Phase::Empty,"already burning; countdown preserved"});
     p.state_b = 240;
     return edit(x,y,p);
 }
@@ -384,6 +411,7 @@ Result Coordinator::ignite_shard(Handle h, std::uint32_t cell) {
     if (!shard || !shard->chemistry_allowed() || cell >= shard->area()) return finish({Outcome::Stale,h});
     auto p = shard->payload(cell);
     if (p.material != Material::Wood) return finish({Outcome::Unsupported,h});
+    if (p.state_b!=0) return finish({Outcome::Accepted,h,0,shard->phase(),"already burning; countdown preserved"});
     p.state_b = 240;
     const auto result = shard->set_cell(cell,p,Role::Structural,world_->completed_tick_index());
     return finish({result,h});
@@ -446,6 +474,8 @@ Result Coordinator::act_on_shard(const ShardEditRequest& r, ShardAction action) 
         auto payload=shard->payload(r.cell);
         if (payload.material!=Material::Wood)
             return done(Outcome::Unsupported,"only witnessed Wood can be ignited");
+        if (payload.state_b!=0)
+            return done(Outcome::Accepted,"already burning; countdown preserved");
         payload.state_b=240;
         return done(shard->set_cell(r.cell,payload,Role::Structural,tick),
             "exact native Wood ignition applied; inventory unchanged");
@@ -465,6 +495,248 @@ Result Coordinator::act_on_shard(const ShardEditRequest& r, ShardAction action) 
     preserve_material_point_velocity(r.shard,previous_mass);
     b->geometry_pending=true;b->geometry_pending_tick=tick;b->geometry_pending_ns=now_ns();
     return done(Outcome::Accepted,"owned structural cell erased; exact geometry awaits physics acknowledgement");
+}
+
+BatchEditResult Coordinator::act_on_shard_batch(std::span<const ShardEditRequest> requests,
+        ShardAction action, EditSelection selection) {
+    BatchEditResult out;
+    out.stats.requested_cells=static_cast<std::uint32_t>(std::min<std::size_t>(requests.size(),UINT32_MAX));
+    if (requests.empty() || requests.size()>kMaximumEditCells || !valid_selection(selection) ||
+        (action!=ShardAction::Erase && action!=ShardAction::Ignite)) {
+        out.result=finish({requests.size()>kMaximumEditCells ? Outcome::Capacity : Outcome::Invalid,
+            {},0,Phase::Empty,"bounded structural batch requires 1..4096 targets and a supported selection"});return out;
+    }
+    const auto& first=requests.front();
+    std::uint64_t fingerprint=1469598103934665603ULL;
+    hash_word(fingerprint,0x4241544348454449ULL);selection_fingerprint(fingerprint,selection);
+    hash_word(fingerprint,requests.size());
+    for (const auto& request:requests) hash_word(fingerprint,edit_fingerprint(request,action));
+    if (first.shard.session!=session_) {out.result=finish({Outcome::Retired,first.shard,first.sequence});return out;}
+    if (const auto* previous=prior(first.sequence)) {
+        if (previous->fingerprint==fingerprint && previous->batch) {
+            out.result=previous->result;out.stats=previous->batch_stats;out.replayed=true;return out;
+        }
+        out.result=finish({Outcome::Stale,first.shard,first.sequence});return out;
+    }
+    if (first.sequence!=next_transaction_) {
+        out.result=finish({first.sequence<next_transaction_ ? Outcome::Expired : Outcome::Stale,first.shard,first.sequence});return out;
+    }
+    if (next_transaction_==std::numeric_limits<std::uint64_t>::max()) {
+        out.result=finish({Outcome::GenerationExhausted,first.shard,first.sequence});return out;
+    }
+    ++next_transaction_;
+    ++metrics_.batch_edits;metrics_.batch_requested_cells+=requests.size();
+    const auto started=now_ns();
+    const auto done=[&](Outcome outcome,const char* detail) {
+        if (!out.stats.target_ns) out.stats.target_ns=now_ns()-started;
+        const auto* current=registry_.find(first.shard);
+        out.result=remember({outcome,first.shard,first.sequence,current ? current->phase() : Phase::Empty,detail},fingerprint);
+        auto& slot=receipts_[first.sequence%receipts_.size()];slot.batch=true;slot.batch_stats=out.stats;
+        metrics_.batch_changed_cells+=out.stats.changed_cells;metrics_.batch_geometry_rebuilds+=out.stats.geometry_rebuilds;
+        metrics_.batch_target_ns+=out.stats.target_ns;metrics_.batch_mutation_ns+=out.stats.mutation_ns;
+        metrics_.batch_geometry_ns+=out.stats.geometry_ns;
+        return out;
+    };
+    if (paused()) return done(Outcome::Fenced,"material/physics installation barrier");
+    auto* shard=registry_.find(first.shard);auto* physical=body(first.shard);
+    if (!shard || !physical || !physical->has_body || shard->phase()!=Phase::Active)
+        return done(Outcome::Stale,"no active installed shard body");
+    std::array<std::uint32_t,kMaximumEditCells> ordered{},selected{};
+    for (std::size_t index=0;index<requests.size();++index) {
+        const auto& r=requests[index];ordered[index]=static_cast<std::uint32_t>(index);
+        if (r.shard!=first.shard || r.sequence!=first.sequence ||
+            r.body_generation!=physical->body_generation ||
+            r.geometry_revision!=shard->geometry().revision ||
+            r.geometry_revision!=shard->applied_physics_revision() ||
+            r.pose_serial!=physical->pose.pose_serial || r.material_revision!=shard->material_revision())
+            return done(Outcome::Stale,"batch owner, body, geometry, material or pose witness changed");
+        if (r.capability_version!=kCapabilityVersion)
+            return done(Outcome::Unsupported,"unsupported material capability version");
+        if (r.cell>=shard->area() || r.incarnation!=shard->schedule(r.cell).incarnation ||
+            r.expected!=shard->payload(r.cell))
+            return done(Outcome::Stale,"batch exact cell witness changed");
+    }
+    std::sort(ordered.begin(),ordered.begin()+requests.size(),[&](auto a,auto b) {return requests[a].cell<requests[b].cell;});
+    std::uint32_t selected_count=0,last_cell=UINT32_MAX;
+    const auto bounds=shard->bounds();
+    for (std::size_t at=0;at<requests.size();++at) {
+        const auto& r=requests[ordered[at]];
+        if (r.cell==last_cell) continue;
+        last_cell=r.cell;++out.stats.unique_cells;
+        if (shard->role(r.cell)!=Role::Structural ||
+            (selection.material_filter>=0 && static_cast<int>(r.expected.material)!=selection.material_filter) ||
+            (action==ShardAction::Ignite && (r.expected.material!=Material::Wood || r.expected.state_b!=0))) continue;
+        ++out.stats.eligible_cells;
+        if (edit_selected(selection,bounds.x+r.cell%bounds.width,bounds.y+r.cell/bounds.width)) selected[selected_count++]=r.cell;
+    }
+    out.stats.islands_before=out.stats.islands_after=shard->geometry().islands;
+    out.stats.target_ns=now_ns()-started;
+    if (!selected_count) return done(Outcome::Accepted,"no eligible selected material; no geometry rebuild");
+    const auto tick=world_->completed_tick_index();
+    if (action==ShardAction::Ignite) {
+        if (shard->material_revision()>UINT64_MAX-selected_count)
+            return done(Outcome::GenerationExhausted,"batch material revision capacity");
+        for (std::uint32_t at=0;at<selected_count;++at) {
+            auto value=shard->payload(selected[at]);value.state_b=240;
+            const auto admitted=shard->validate_cell_write(selected[at],value,Role::Structural,tick);
+            if (admitted!=Outcome::Accepted) return done(admitted,"batch ignition preflight refused");
+        }
+        const auto mutation_start=now_ns();
+        for (std::uint32_t at=0;at<selected_count;++at) {
+            auto value=shard->payload(selected[at]);value.state_b=240;
+            if (shard->set_cell(selected[at],value,Role::Structural,tick)!=Outcome::Accepted) {
+                quarantined_=true;(void)registry_.quarantine(first.shard);
+                out.stats.mutation_ns=now_ns()-mutation_start;
+                return done(Outcome::Quarantined,"unexpected ignition commit failure; exact changed prefix retained");
+            }
+            ++out.stats.changed_cells;
+        }
+        out.stats.mutation_ns=now_ns()-mutation_start;
+        return done(Outcome::Accepted,"bounded Wood ignition applied; existing combustion countdowns preserved");
+    }
+    const auto previous_mass=shard->geometry().mass;
+    StructuralEditTiming timing;
+    const auto outcome=registry_.erase_structural_batch(first.shard,
+        std::span<const std::uint32_t>(selected.data(),selected_count),tick,&timing);
+    out.stats.geometry_ns=timing.geometry_ns;out.stats.mutation_ns=timing.mutation_ns;
+    if (outcome!=Outcome::Accepted && outcome!=Outcome::Quarantined)
+        return done(outcome,"exact post-cut geometry or storage preflight refused before material debit");
+    // Account only actual debits, including the defensive uncertain-commit path.
+    for (std::size_t at=0;at<requests.size();++at) {
+        const auto& r=requests[ordered[at]];
+        if (at && r.cell==requests[ordered[at-1]].cell) continue;
+        if (r.expected.material!=Material::Empty && shard->payload(r.cell).material==Material::Empty) {
+            ++accounting_.authored_destroyed[static_cast<std::uint8_t>(r.expected.material)];
+            ++out.stats.changed_cells;++out.stats.removed_cells;
+        }
+    }
+    if (outcome==Outcome::Quarantined) {quarantined_=true;return done(outcome,"unexpected erase commit failure; exact debits retained");}
+    out.stats.geometry_rebuilds=1;out.stats.islands_after=shard->geometry().islands;
+    preserve_material_point_velocity(first.shard,previous_mass);
+    physical->pose.sleeping=false;
+    physical->geometry_pending=true;physical->geometry_pending_tick=tick;physical->geometry_pending_ns=now_ns();
+    return done(Outcome::Accepted,"bounded structural edit applied; one exact geometry awaits physics acknowledgement");
+}
+
+BatchEditResult Coordinator::act_on_world_batch(std::uint64_t session,std::uint64_t sequence,
+        std::uint64_t material_revision,std::span<const WorldEditTarget> targets,
+        ShardAction action,EditSelection selection) {
+    BatchEditResult out;
+    out.stats.requested_cells=static_cast<std::uint32_t>(std::min<std::size_t>(targets.size(),UINT32_MAX));
+    if (targets.empty() || targets.size()>kMaximumEditCells || !valid_selection(selection) ||
+        (action!=ShardAction::Erase && action!=ShardAction::Ignite)) {
+        out.result=finish({targets.size()>kMaximumEditCells ? Outcome::Capacity : Outcome::Invalid,
+            {},0,Phase::Empty,"bounded World batch requires 1..4096 targets and a supported selection"});return out;
+    }
+    std::uint64_t fingerprint=1469598103934665603ULL;
+    hash_word(fingerprint,0x574f524c44424154ULL);hash_word(fingerprint,session);hash_word(fingerprint,sequence);
+    hash_word(fingerprint,material_revision);hash_word(fingerprint,static_cast<std::uint8_t>(action));
+    selection_fingerprint(fingerprint,selection);hash_word(fingerprint,targets.size());
+    for (const auto& r:targets) {
+        hash_word(fingerprint,static_cast<std::uint64_t>(r.x));hash_word(fingerprint,static_cast<std::uint64_t>(r.y));
+        hash_word(fingerprint,r.witness);hash_word(fingerprint,static_cast<std::uint8_t>(r.expected.material));
+        hash_word(fingerprint,r.expected.state_a);hash_word(fingerprint,r.expected.state_b);
+        hash_word(fingerprint,static_cast<std::uint16_t>(r.expected.temperature));
+    }
+    if (session!=session_) {out.result=finish({Outcome::Retired,{},sequence});return out;}
+    if (const auto* previous=prior(sequence)) {
+        if (previous->fingerprint==fingerprint && previous->batch) {
+            out.result=previous->result;out.stats=previous->batch_stats;out.replayed=true;return out;
+        }
+        out.result=finish({Outcome::Stale,{},sequence});return out;
+    }
+    if (sequence!=next_transaction_) {out.result=finish({sequence<next_transaction_ ? Outcome::Expired : Outcome::Stale,{},sequence});return out;}
+    if (next_transaction_==UINT64_MAX) {out.result=finish({Outcome::GenerationExhausted,{},sequence});return out;}
+    ++next_transaction_;++metrics_.batch_edits;metrics_.batch_requested_cells+=targets.size();
+    const auto started=now_ns();
+    const auto done=[&](Outcome outcome,const char* detail) {
+        if (!out.stats.target_ns) out.stats.target_ns=now_ns()-started;
+        out.result=remember({outcome,{},sequence,Phase::Empty,detail},fingerprint);
+        auto& slot=receipts_[sequence%receipts_.size()];slot.batch=true;slot.batch_stats=out.stats;
+        metrics_.batch_changed_cells+=out.stats.changed_cells;metrics_.batch_target_ns+=out.stats.target_ns;
+        metrics_.batch_mutation_ns+=out.stats.mutation_ns;
+        return out;
+    };
+    if (paused()) return done(Outcome::Fenced,"material/physics installation barrier");
+    if (world_->object_shard_mutations_->exhausted())
+        return done(Outcome::GenerationExhausted,"World material witness generation exhausted");
+    if (material_revision!=world_material_revision()) return done(Outcome::Stale,"World material revision changed");
+    std::array<std::uint32_t,kMaximumEditCells> ordered{},selected{};
+    for (std::size_t at=0;at<targets.size();++at) {
+        const auto& r=targets[at];ordered[at]=static_cast<std::uint32_t>(at);
+        if (!resident(r.x,r.y)) return done(Outcome::NotResident,"World batch crosses residency boundary");
+        if (world_->transient_obstacle_at(r.x,r.y) || owned_material_at(r.x,r.y))
+            return done(Outcome::DestinationUnavailable,"World batch intersects protected physical or visible material ownership");
+        if (world_witness(r.x,r.y)!=r.witness || inspect_world(r.x,r.y)!=r.expected)
+            return done(Outcome::Stale,"World cell witness changed");
+    }
+    std::sort(ordered.begin(),ordered.begin()+targets.size(),[&](auto a,auto b) {
+        return targets[a].y<targets[b].y || (targets[a].y==targets[b].y && targets[a].x<targets[b].x);
+    });
+    std::uint32_t selected_count=0;
+    for (std::size_t at=0;at<targets.size();++at) {
+        const auto& r=targets[ordered[at]];
+        if (at && r.x==targets[ordered[at-1]].x && r.y==targets[ordered[at-1]].y) continue;
+        ++out.stats.unique_cells;
+        if (r.expected.material==Material::Empty ||
+            (selection.material_filter>=0 && static_cast<int>(r.expected.material)!=selection.material_filter) ||
+            (action==ShardAction::Ignite && (r.expected.material!=Material::Wood || r.expected.state_b!=0))) continue;
+        ++out.stats.eligible_cells;
+        if (edit_selected(selection,r.x,r.y)) selected[selected_count++]=ordered[at];
+    }
+    out.stats.target_ns=now_ns()-started;
+    if (!selected_count) return done(Outcome::Accepted,"no eligible selected World material");
+    // edit() can dirty both the tuple and its temperature. Erasure changes at
+    // most one topology class per selected coordinate; ignition changes none.
+    // Every slot already resides in the fixed journal, so no queue allocation
+    // or additional capacity is needed after this generation preflight.
+    if (!world_->object_shard_mutations_->can_observe(2ULL*selected_count,
+            action==ShardAction::Erase ? selected_count : 0))
+        return done(Outcome::GenerationExhausted,"World batch would exhaust material witness generations");
+    const auto mutation_start=now_ns();
+    for (std::uint32_t at=0;at<selected_count;++at) {
+        const auto& r=targets[selected[at]];
+        auto value=action==ShardAction::Erase ? Payload{Material::Empty,0,0,config_.limits.ambient_temperature} : r.expected;
+        if (action==ShardAction::Ignite) value.state_b=240;
+        const auto material=static_cast<std::uint8_t>(r.expected.material);
+        const auto accounted_before=accounting_.authored_destroyed[material];
+        Outcome committed=Outcome::Quarantined;
+        try {committed=edit(r.x,r.y,value).outcome;}
+        catch (...) {
+            // Even an unexpected exception after the tuple debit must retain
+            // the actual prefix and cannot escape as a no-effect refusal.
+        }
+        const auto actual=inspect_world(r.x,r.y);
+        if (actual!=r.expected) ++out.stats.changed_cells;
+        if (action==ShardAction::Erase && actual.material==Material::Empty) {
+            ++out.stats.removed_cells;
+            // edit() normally books this debit itself. A failure between its
+            // World write and ledger update must still account it exactly once.
+            if (accounting_.authored_destroyed[material]==accounted_before)
+                ++accounting_.authored_destroyed[material];
+        }
+        if (committed!=Outcome::Accepted || actual!=value) {
+            quarantined_=true;out.stats.mutation_ns=now_ns()-mutation_start;
+            return done(Outcome::Quarantined,"unexpected World commit failure; actual prefix accounted");
+        }
+    }
+    out.stats.mutation_ns=now_ns()-mutation_start;
+    return done(Outcome::Accepted,"bounded World edit applied under one exclusive owner transaction");
+}
+
+bool Coordinator::owned_material_at(std::int64_t x,std::int64_t y) const noexcept {
+    for (const auto& b:bodies_) {
+        const auto* shard=registry_.find(b.shard);
+        if (!shard || !shard->owns_inventory()) continue;
+        const auto local=contact::to_local(contact::frame(contact_pose(b.pose)),
+            {static_cast<double>(x)+.5,static_cast<double>(y)+.5});
+        const auto bounds=shard->bounds();
+        if (local.x<0 || local.y<0 || local.x>=bounds.width || local.y>=bounds.height) continue;
+        const auto cell=static_cast<std::uint32_t>(std::floor(local.y))*bounds.width+
+            static_cast<std::uint32_t>(std::floor(local.x));
+        if (shard->occupied(cell)) return true;
+    }
+    return false;
 }
 
 bool Coordinator::pending_conflict(Bounds bounds) const noexcept {

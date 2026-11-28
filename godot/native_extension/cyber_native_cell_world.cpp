@@ -623,8 +623,23 @@ Dictionary CyberNativeCellWorld::object_shard_workbench_action(const Dictionary&
         static_cast<std::int64_t>(request.get("native_instance_id",0))!=static_cast<std::int64_t>(get_instance_id())) {
         Dictionary refusal;refusal["ok"]=false;refusal["outcome"]="ForeignNativeOwner";return refusal;
     }
+    if (request.has("terrain_cells")) {
+        const Variant observation_value=request.get("observation",Variant());
+        if (observation_value.get_type()!=Variant::DICTIONARY) {
+            Dictionary refused;refused["ok"]=false;refused["outcome"]="VisiblePublicationRequired";return refused;
+        }
+        const Dictionary observation=observation_value;
+        if (observation.get("world_revision",Variant()).get_type()!=Variant::INT ||
+            static_cast<std::int64_t>(observation["world_revision"])!=static_cast<std::int64_t>(revision_)) {
+            Dictionary refused;refused["ok"]=false;refused["outcome"]="Stale";
+            refused["detail"]="terrain batch visible World revision changed";return refused;
+        }
+    }
+    const auto before=shard_lab_->coordinator_->world_material_revision();
     auto receipt=shard_lab_->workbench_action(request);
+    if (shard_lab_->coordinator_->world_material_revision()!=before) ++revision_;
     receipt["native_instance_id"]=static_cast<std::int64_t>(get_instance_id());
+    receipt["world_revision"]=static_cast<std::int64_t>(revision_);
     return receipt;
 }
 Dictionary CyberNativeCellWorld::object_shard_edit_cell(Vector2i cell,
