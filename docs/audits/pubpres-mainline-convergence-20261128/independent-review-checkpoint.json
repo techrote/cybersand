@@ -1,0 +1,180 @@
+{
+  "adverse_or_unqualified": [
+    {
+      "disposition": "failed at setup_graphics source admission after redundant in-project recipe staging; no feature fixture executed; workflow staging removed for next source campaign",
+      "run": 46134343592,
+      "scope": "all six cross-feature jobs"
+    },
+    {
+      "disposition": "independent root/B investigation found genuine accepted-frame Select truncation boundary; repair and new-source qualification pending; Linux Water success is not substituted",
+      "run": 46134343592,
+      "scope": "Windows Water"
+    },
+    {
+      "disposition": "B/A retained SIGKILL and process-observer failures; no completed gameplay acceptance credited",
+      "scope": "local complete import"
+    },
+    {
+      "disposition": "no new physical evidence or merge authorization",
+      "scope": "physical TITAN RTX and owner acceptance"
+    }
+  ],
+  "disposition": "checkpoint only; final resulting-source cross-feature and extracted package gates pending",
+  "hosted_original_replay": [
+    {
+      "archive_bytes": 16626569,
+      "archive_sha256": "77590eb992e162c27017fea7b7dbe108ba9686e3f778d193d5ed57f34d105e69",
+      "artifact_id": 15259063155,
+      "focus": "mainline",
+      "platform": "windows",
+      "rendered_control_images_visually_inspected": [
+        "held.png",
+        "hidden-control.png"
+      ],
+      "replay": {
+        "complete": true,
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+        "processes": 7,
+        "raw_native_and_graphical_readers_replayed": false,
+        "source": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+        "summary_sha256": "e760d119a76dffa3e7ab2771a66f9a1e59aee6bb47866ba996d5cbf5be7dc33a"
+      },
+      "status": "passed"
+    },
+    {
+      "archive_bytes": 16373111,
+      "archive_sha256": "b6ab0193eb8d007e2294ce26153b1ae5beb453045e724ded6ba16e56893e7168",
+      "artifact_id": 15259710723,
+      "focus": "held-placement",
+      "platform": "windows",
+      "replay": {
+        "complete": true,
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+        "processes": 2,
+        "raw_native_and_graphical_readers_replayed": true,
+        "source": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+        "summary_sha256": "0c5cec50e62324f905e2043fb2da80a45548ee02ac54470624003bfcf4011669"
+      },
+      "status": "passed"
+    },
+    {
+      "archive_bytes": 15687979,
+      "archive_sha256": "e0a5566b16eca1663dd8afcd0f703bf002e09b82231c7ff5de94a06c37c54627",
+      "artifact_id": 15258788845,
+      "focus": "native-owner",
+      "platform": "windows",
+      "replay": {
+        "complete": true,
+        "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "native_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+        "processes": 2,
+        "raw_native_and_graphical_readers_replayed": true,
+        "source": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+        "summary_sha256": "f243abf1f1b0bfd9aa56c6f2fccc83a16e525d336f21d84ca73b465a2ed3e3ea"
+      },
+      "status": "passed"
+    },
+    {
+      "archive_bytes": 35820440,
+      "archive_sha256": "bd3b4fdfa90f2769318597c0f4a83f5e1a9bb784b1d240a79cab490dc74875ca",
+      "artifact_id": 15258762694,
+      "focus": "water",
+      "platform": "linux",
+      "replay": {
+        "complete": true,
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+        "processes": 4,
+        "raw_native_and_graphical_readers_replayed": true,
+        "source": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+        "summary_sha256": "1c5168956ba0b8fa065d436fdea723fe30b3e7a39325e1ddb72d3c7c7883003d"
+      },
+      "status": "passed"
+    }
+  ],
+  "merge_authorized": false,
+  "native": {
+    "linux": {
+      "archive_sha256": "3bc7f458df05f4f735a4c06a6ae5c06f773b28036291e66f748d249070fc0849",
+      "artifact_id": 15257739675,
+      "independent_receipt_sha256": "2ba7d2d3f4c27d12d37c38b68b153c1d9aa4740d94e4c03582b0235b43c6ca89",
+      "matched_toolchains": true,
+      "roles": {
+        "C": {
+          "binary_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "native_source_count": 115,
+          "original_manifest_sha256": "11acf99a7b78ac01a290a461d71c875cdd1212a43295c4cd8bba2a2d51c1a57f",
+          "source": {
+            "source_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+            "source_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f"
+          }
+        },
+        "M": {
+          "binary_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+          "native_source_count": 114,
+          "original_manifest_sha256": "6b25fa2f71118aa936d25f02ef0df06dc683e354e72ae41fa9f15e5c396d7d1d",
+          "source": {
+            "source_commit": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+            "source_tree": "ffbb3cdaf14c8971381df56317c2059f38954798"
+          }
+        },
+        "P": {
+          "binary_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+          "native_source_count": 110,
+          "original_manifest_sha256": "e4f86e1911101ace271d6aa558b26a498492eb61fb6e9e7efbfa7906abd13a30",
+          "source": {
+            "source_commit": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+            "source_tree": "ff8466056bf6cb736436a59181bbcb1245aced91"
+          }
+        }
+      },
+      "run": 46132881112,
+      "scope": "Independent complete original build/dependency/native-input reader on each frozen source. Binary identity verified; no actual application or physical acceptance claimed.",
+      "status": "passed"
+    },
+    "windows": {
+      "archive_sha256": "526238d54b20b6b288b314ae22543429bd11984a9c242d64b93a4ed7cca02ded",
+      "artifact_id": 15258800849,
+      "independent_receipt_sha256": "a527c094ee87df20a076b1fa6fb16adfca979b1bbf0712bfa95d398d60278604",
+      "matched_toolchains": true,
+      "roles": {
+        "C": {
+          "binary_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+          "native_source_count": 115,
+          "original_manifest_sha256": "127932e1c12e778149beaf8ba44ef0b81cd9f6bda60395add0086a1acaef1f99",
+          "source": {
+            "source_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+            "source_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f"
+          }
+        },
+        "M": {
+          "binary_sha256": "e0a15be09681502c33b5a3282bae7db6e6e5bec7be39d3d74a64f96f060207b6",
+          "native_source_count": 114,
+          "original_manifest_sha256": "16708c7e15c597be8c99d3eac5bd5ce7ce6b337cc3472595ad6bc2f19973715c",
+          "source": {
+            "source_commit": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+            "source_tree": "ffbb3cdaf14c8971381df56317c2059f38954798"
+          }
+        },
+        "P": {
+          "binary_sha256": "619818a83a2c3f4514c70d095871bc1b450eb6c89f6376c88c6bc80e278d4e8c",
+          "native_source_count": 110,
+          "original_manifest_sha256": "e36f2dd1d5c4203a8530b0fa6e2f64c32cf251db1178f89280e55e42c9daf9dc",
+          "source": {
+            "source_commit": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+            "source_tree": "ff8466056bf6cb736436a59181bbcb1245aced91"
+          }
+        }
+      },
+      "run": 46132881112,
+      "scope": "Independent complete original build/dependency/native-input reader on each frozen source. PE bytes verified; no Windows execution or physical acceptance claimed.",
+      "status": "passed"
+    }
+  },
+  "observed_utc": "2026-11-28T10:37:00Z",
+  "physical_owner_evaluated": false,
+  "reviewer": "integration_qualification",
+  "schema": "pubpres-mainline-independent-review-checkpoint-v1"
+}

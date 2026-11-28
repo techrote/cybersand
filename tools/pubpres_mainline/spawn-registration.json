@@ -1,0 +1,16 @@
+{
+  "schema": "pubpres-mainline-spawn-pair-v1",
+  "owner_reference": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+  "scenes": ["wave512", "mixed2048"],
+  "cases": ["first-air-fire-off", "warm-air-fire-off", "warm-air-fire-on", "near-material-fire-on", "scene-replacement", "post-replacement-spawn"],
+  "order": [
+    {"role": "P", "recording": "off", "recording_order": "on-off"},
+    {"role": "C", "recording": "both", "recording_order": "on-off"},
+    {"role": "C", "recording": "both", "recording_order": "off-on"},
+    {"role": "P", "recording": "off", "recording_order": "on-off"}
+  ],
+  "physical_targets_ms": {"p95": 100, "maximum": 250},
+  "comparison": "Two reference recording-off processes and two candidate recording-off processes per scene, in P/C/C/P order. Candidate recording-on is independently repeated in opposite on/off order. All six Place/Reset/Restore cases execute in every process.",
+  "fixture": "Unchanged ordinary owner Wave512 and Mixed2048 authored starts and native Water laws. Real keyboard pulse lasting at least 100 ms and held until its first observed physical application, within a three-second observation window; later requests follow continuously advancing production state, not artificially equal-step snapshots.",
+  "scope": "Hosted graphical Stock Safe OpenGL ANGLE observations. Compare request, admission, coherent callback, input and actual completed-step rates on the same runner. Exact physical completion tails require candidate recording-on; reference/off process-frame samples are upper bounds and cannot certify exact tails. No NVIDIA scanout, five-minute gameplay, universal actor visibility or physical owner acceptance is inferred. Performance direction is descriptive; all original adverse arms remain."
+}

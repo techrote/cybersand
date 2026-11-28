@@ -358,6 +358,14 @@ func _run() -> void:
 		host.workbench_presentation_frame = current_frame
 	finish()
 
+
+func selected_owner_readback() -> Dictionary:
+	if not is_instance_valid(host) or host.simulation_worker == null: return {}
+	return {"flight_pacing":host._flight_pacing and host.simulation_worker._notify_sample_completion,
+		"coupling_clock":host.simulation_worker._independent_coupling,
+		"empty_effects":host._check_ambient_sources}
+
+
 func finish() -> void:
 	if finished: return
 	finished = true
@@ -371,6 +379,7 @@ func finish() -> void:
 	var rapier_path: String = "res://addons/godot-rapier2d/bin/"+(
 		"libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if windows else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
 	var result := {"schema":"pubpres-member-presentation-v1","checks":checks,"failures":failures,
+		"selected_owner_readback":selected_owner_readback(),
 		"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"input_hashes":hashes,
 		"graphical":DisplayServer.get_name()!="headless","display":DisplayServer.get_name(),
 		"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),"process_id":OS.get_process_id(),

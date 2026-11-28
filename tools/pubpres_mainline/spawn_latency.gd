@@ -120,6 +120,8 @@ func _case(label: String, kind: String, position: Vector2, fire: bool) -> void:
 			row.epoch = app._physical_epoch
 			row.world = app.last_uploaded_world_generation
 			row.admission_physical_step = app.physical_actor_session.tick
+			row.admission_rapier_steps = app.physical_actor_session.bridge.manual_step_count()
+			row.physical_delta_seconds = app.physical_actor_session.bridge.fixed_delta()
 			row.admission_native_tick = app.latest_snapshot.tick_index
 			break
 		await process_frame
@@ -179,12 +181,15 @@ func _case(label: String, kind: String, position: Vector2, fire: bool) -> void:
 	_key(KEY_C,false)
 	row.end_usec = Time.get_ticks_usec()
 	row.final_physical_steps = session.tick
+	row.final_rapier_steps = session.bridge.manual_step_count()
 	row.final_native_tick = app.latest_snapshot.tick_index
 	row.final_static_bytes = OS.get_static_memory_usage()
 	row.final_paused = app.paused
 	row.final_refusal = str(app.tower_context.get("workbench_refusal",""))
 	row.nozzle_write_receipts = app.tower_context.get("workbench_emitters",[]).size()
 	active_case = {}
+	if row.final_rapier_steps-row.admission_rapier_steps != row.final_physical_steps-row.admission_physical_step:
+		failures.append(label+": session completion count differs from actual Rapier completion")
 	if row.first_observed_step_usec < 0: failures.append(label+": no real physical completion")
 	if row.input_accepted_observed_usec < 0: failures.append(label+": no accepted keyboard command")
 	if row.input_applied_observed_usec < 0: failures.append(label+": keyboard command did not reach a completed physical step")

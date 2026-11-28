@@ -10,6 +10,10 @@ related-documents: [pubpres-completion-001.md, ../architecture/rendering-and-gam
 
 # PUBPRES-PLAYABILITY-FINAL-001
 
+The current [mainline convergence](pubpres-mainline-convergence.md) owns the
+28 November accepted-main reconciliation and final Windows delivery. This page
+retains the preceding programme's architecture, experiments and original scopes.
+
 This mission continues programme [#717](https://github.com/techrote/cybersand/issues/717)
 from frozen [#757](https://github.com/techrote/cybersand/pull/757), source
 `c90dbc46e1f57f28e06b1f4205b83467335ff657`. The original intake used main

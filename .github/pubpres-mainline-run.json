@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-mainline-request-v2",
   "phase": "qualify",
-  "purpose": "Qualify integrated transport reuse, retained Water presentation and accepted mainline features on exact native runtimes",
+  "purpose": "Complete legacy and selected-owner Water, continuous Select, bounded spawn, accepted-feature and native-publication prerequisite qualification",
   "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
   "owner_reference": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
-  "payload_sha256": "cfc7a3d36b7890b84fbc00d2b8be9cd428700112dae8665a0ceb1e4653ede917",
+  "payload_sha256": "7a7775f6ff6f6f9bd1fdf98c4b2ff45aa4d0425708bc3b165928941e506b998b",
   "runtime_run": 46132881112,
   "runtime_attempt": 1,
   "runtime_source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",

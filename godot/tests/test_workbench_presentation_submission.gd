@@ -901,6 +901,14 @@ func _run() -> void:
 	_finish()
 
 
+
+func selected_owner_readback() -> Dictionary:
+	if not is_instance_valid(host) or host.simulation_worker == null: return {}
+	return {"flight_pacing":host._flight_pacing and host.simulation_worker._notify_sample_completion,
+		"coupling_clock":host.simulation_worker._independent_coupling,
+		"empty_effects":host._check_ambient_sources}
+
+
 func _finish() -> void:
 	var windows: bool = OS.get_name()=="Windows"
 	var native_path := "res://addons/cybersand_native/bin/" + (
@@ -908,6 +916,7 @@ func _finish() -> void:
 	var rapier_path := "res://addons/godot-rapier2d/bin/" + (
 		"libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" if windows else "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so")
 	var result: Dictionary = {"schema":"workbench-stock-held-limb-placement-v1" if stock_limb_only else "workbench-actual-submission-graphical-v1","checks":checks,
+		"selected_owner_readback":selected_owner_readback(),
 		"failures":failures,"source_revision":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
 		"engine":Engine.get_version_info(),"display":DisplayServer.get_name(),"platform":OS.get_name(),
 		"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),"process_id":OS.get_process_id(),

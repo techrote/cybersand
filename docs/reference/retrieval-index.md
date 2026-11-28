@@ -10,6 +10,15 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## PUBPRES mainline convergence and ordinary Workbench
+
+The [current convergence runbook](../operations/pubpres-mainline-convergence.md)
+owns selected architecture, bounded spawn reuse, retained Water visibility,
+accepted-feature integration, guarded runtime publication and complete extracted
+Windows delivery. [Focused questions](retrieval-questions-pubpres-mainline.json)
+are additive to unchanged predecessor and frozen questions. Physical acceptance
+of the old application does not qualify this new source; Draft/HOLD remains.
+
 ## Native-independent PUBPRES renderer diagnosis
 
 For the finite Linux/Windows font, Separate startup and queued material controls,

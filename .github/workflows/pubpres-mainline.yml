@@ -121,7 +121,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        focus: [frozen, water, members, held-placement, mainline, native-owner]
+        focus: [frozen, water, members, held-placement, mainline, native-owner, selected-water, selected-members, selected-held-placement]
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       LP_NUM_THREADS: '2'
@@ -153,6 +153,8 @@ jobs:
             python3 tools/pubpres_recovery_windows/run_native_owner.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out"
           elif [[ "$FOCUS" == 'mainline' ]]; then
             xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_mainline/run_focused.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out"
+          elif [[ "$FOCUS" == selected-* ]]; then
+            xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_mainline/run_selected_qualification.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out" --focus "${FOCUS#selected-}" --render-thread safe --lookahead 0
           else
             xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_final_recovery/run_qualification.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out" --focus "$FOCUS" --render-thread safe --lookahead 0
           fi
@@ -178,7 +180,7 @@ jobs:
       fail-fast: false
       max-parallel: 3
       matrix:
-        focus: [frozen, water, members, held-placement, mainline, native-owner]
+        focus: [frozen, water, members, held-placement, mainline, native-owner, selected-water, selected-members, selected-held-placement]
     defaults:
       run: {shell: pwsh}
     steps:
@@ -209,6 +211,8 @@ jobs:
             python tools/pubpres_recovery_windows/run_native_owner.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out
           } elseif ($env:FOCUS -eq 'mainline') {
             python tools/pubpres_mainline/run_focused.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out
+          } elseif ($env:FOCUS.StartsWith('selected-')) {
+            python tools/pubpres_mainline/run_selected_qualification.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out --focus $env:FOCUS.Substring(9) --render-thread safe --lookahead 0
           } else {
             python tools/pubpres_final_recovery/run_qualification.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out --focus $env:FOCUS --render-thread safe --lookahead 0
           }
@@ -285,12 +289,17 @@ jobs:
           mkdir -p build/mainline-source
           git rev-parse HEAD > build/mainline-source/source.txt
           python3 tools/ci/check_docs.py > build/mainline-source/docs.json
+          python3 tools/ci/check_m11_consistency.py > build/mainline-source/m11.json
           python3 tools/ci/check_ci_provider_policy.py > build/mainline-source/provider.json
           python3 tools/material_catalogue/compatibility.py --check > build/mainline-source/compatibility.json
           python3 tools/material_catalogue/compiler.py --check > build/mainline-source/compiler.json
           python3 tools/material_catalogue/check_native_parity.py --output build/mainline-source/native-parity.json > build/mainline-source/native-parity.log 2>&1
           python3 tools/docs/retrieval_eval.py --output build/mainline-source/retrieval.json > build/mainline-source/retrieval.log
           python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-challenges.json --output build/mainline-source/retrieval-challenges.json > build/mainline-source/retrieval-challenges.log
+          python3 tools/docs/retrieval_eval.py --queries docs/reference/retrieval-questions-pubpres-mainline.json --output build/mainline-source/retrieval-mainline.json > build/mainline-source/retrieval-mainline.log
+          if [[ "${{ needs.admission.outputs.phase }}" == 'delivery' ]]; then
+            python3 tools/ci/check_repository.py > build/mainline-source/published-repository.json
+          fi
           python3 -m unittest discover -s tools/pubpres_mainline -p 'test_*.py' > build/mainline-source/driver-tests.log 2>&1
           git diff --check HEAD
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -388,6 +397,538 @@ jobs:
             ${{ runner.temp }}/mainline-feature/
             ${{ runner.temp }}/mainline-graphics/GRAPHICS-SETUP.json
             ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
+
+  original-local-evidence:
+    needs: admission
+    if: needs.admission.outputs.phase == 'qualify'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Independently verify and preserve original local evidence bytes
+        env: {GITHUB_TOKEN: '${{ github.token }}'}
+        run: python3 tools/pubpres_mainline/publish_local_evidence.py --output "$RUNNER_TEMP/original-local-evidence"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-original-local-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/original-local-evidence/
+          retention-days: 90
+          if-no-files-found: error
+
+  publish-qualified-runtime:
+    needs: admission
+    if: needs.admission.outputs.phase == 'publish'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: true, fetch-depth: 0}
+      - name: Replay original source gates and publish exactly four runtime paths
+        env:
+          PUBPRES_PUBLICATION_TOKEN: ${{ github.token }}
+          PUBPRES_ALLOW_RUNTIME_PUBLICATION: four-path-principal-fast-forward-v1
+        run: python3 tools/pubpres_mainline/publish_runtime.py --output "$RUNNER_TEMP/guarded-runtime-publication" --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-guarded-publication-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/guarded-runtime-publication/PUBLICATION.json
+          retention-days: 90
+          if-no-files-found: warn
+
+# Append under jobs in the source-owned PUBPRES workflow. All outputs are from
+# this exact delivery run; no old-source feature evidence is reused. Performance,
+# spawn and sustained outcomes remain separate final-disposition requirements.
+  package-windows:
+    name: Complete source-exact Windows evaluator
+    needs: [admission, source-gates, qualification-linux, qualification-windows, features-linux, features-windows]
+    if: needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 75
+    defaults:
+      run: {shell: pwsh}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+    outputs:
+      inner_sha256: ${{ steps.package.outputs.inner_sha256 }}
+      inner_bytes: ${{ steps.package.outputs.inner_bytes }}
+      manifest_sha256: ${{ steps.package.outputs.manifest_sha256 }}
+      artifact_id: ${{ steps.archive.outputs.artifact-id }}
+      artifact_digest: ${{ steps.archive.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: ${{ runner.temp }}/mainline-package-runtimes
+      - name: Download all three original current-source Windows feature records
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          pattern: pubpres-mainline-feature-windows-*-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-package-features
+          merge-multiple: false
+      - name: Admit final source, published runtime bytes and exact engine
+        run: |
+          python tools/pubpres_mainline/request.py
+          if ($LASTEXITCODE -ne 0) { throw 'Final sealed delivery request refused' }
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/package-runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-exact published runtime/dependency acquisition failed' }
+          python tools/pubpres_mainline/setup_graphics.py --runtime "$env:RUNNER_TEMP/mainline-package-runtimes/C" --output "$env:RUNNER_TEMP/mainline-package-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned source/build/engine admission failed' }
+          python -m unittest discover -s tools/pubpres_mainline -p test_evaluator_boundaries.py -v
+          if ($LASTEXITCODE -ne 0) { throw 'Portable delivery integrity/refusal controls failed' }
+      - name: Stage accepted licensed portable dependency inputs
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'mainline-package-notices'
+          New-Item -ItemType Directory -Path $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 180 --output (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot licence/notice acquisition failed' }
+          }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 180 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Microsoft runtime licence acquisition failed' }
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 180 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Microsoft redistribution licence acquisition failed' }
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output "$env:RUNNER_TEMP/mainline-package-vc" -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Signed licensed Visual Studio release runtime staging failed' }
+      - name: Replay source-bound original feature receipts and build the complete evaluator
+        id: package
+        run: |
+          @'
+          import json, os, pathlib, sys
+          root = pathlib.Path.cwd().resolve()
+          sys.path.insert(0, str(root / 'tools/pubpres_mainline'))
+          import common, qualification, package
+          temporary = pathlib.Path(os.environ['RUNNER_TEMP'])
+          runtime = temporary / 'mainline-package-runtimes/C'
+          package.publication_identity(root, runtime)
+          common.install_runtime(root, runtime, root / 'godot', 'windows')
+          gates = {}
+          for mode in ('ramcache', 'strata', 'shared'):
+              folder = temporary / 'mainline-package-features' / ('pubpres-mainline-feature-windows-' + mode + '-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'])
+              matches = list(folder.rglob(qualification.MANIFEST))
+              common.require(len(matches) == 1, 'Missing or ambiguous original current-source feature record: ' + mode)
+              record = qualification.verify(root, runtime, root / 'godot', matches[0].parent, 'windows')
+              common.require(record['mode'] == mode and record['source']['source_commit'] == os.environ['GITHUB_SHA'], 'Foreign feature source/mode')
+              gates[mode] = str(matches[0].parent)
+          common.write_json(temporary / 'mainline-package-gates.json', gates)
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Independent original same-source Windows feature replay refused' }
+          $gates = Get-Content -Raw "$env:RUNNER_TEMP/mainline-package-gates.json" | ConvertFrom-Json
+          $archive = "$env:RUNNER_TEMP/mainline-delivery/archive/CyberSand-PUBPRES-Mainline-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          python tools/pubpres_mainline/package.py build --source "$PWD" --runtime "$env:RUNNER_TEMP/mainline-package-runtimes/C" --project "$PWD/godot" --godot-zip $env:GODOT_ARCHIVE --vc-runtime "$env:RUNNER_TEMP/mainline-package-vc" --notices "$env:RUNNER_TEMP/mainline-package-notices" --output "$env:RUNNER_TEMP/mainline-delivery/evaluator" --archive $archive --qualification $gates.ramcache --qualification $gates.strata --qualification $gates.shared
+          if ($LASTEXITCODE -ne 0) { throw 'Complete source-exact portable evaluator build refused' }
+          $receipt = Get-Content -Raw ($archive + '.json') | ConvertFrom-Json
+          if ($receipt.source_commit -ne $env:GITHUB_SHA -or $receipt.archive_sha256 -notmatch '^[a-f0-9]{64}$' -or $receipt.archive_bytes -le 0) { throw 'Final inner archive identity differs' }
+          "inner_sha256=$($receipt.archive_sha256)" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_OUTPUT
+          "inner_bytes=$($receipt.archive_bytes)" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_OUTPUT
+          "manifest_sha256=$($receipt.manifest_sha256)" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_OUTPUT
+      - name: Publish source-exact evaluator archive for separate independent extraction
+        id: archive
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-delivery/archive/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+      - name: Preserve package custody evidence even after refusal
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-package-custody-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-package-gates.json
+            ${{ runner.temp }}/package-runtime-acquisition.json
+            ${{ runner.temp }}/mainline-package-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/mainline-delivery/evaluator/PUBPRES-MAINLINE-EVALUATOR.json
+            ${{ runner.temp }}/mainline-delivery/archive/*.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  extracted-windows:
+    name: Independent extracted Windows application and authoring
+    needs: [admission, package-windows]
+    if: needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    # Each unchanged production witness retains its own registered deadline.
+    # This aggregate ceiling does not extend a failed individual test.
+    timeout-minutes: 160
+    defaults:
+      run: {shell: pwsh}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+      EXPECTED_INNER_SHA256: ${{ needs.package-windows.outputs.inner_sha256 }}
+      EXPECTED_INNER_BYTES: ${{ needs.package-windows.outputs.inner_bytes }}
+      EXPECTED_MANIFEST_SHA256: ${{ needs.package-windows.outputs.manifest_sha256 }}
+      EXPECTED_ARTIFACT_ID: ${{ needs.package-windows.outputs.artifact_id }}
+      EXPECTED_ARTIFACT_DIGEST: ${{ needs.package-windows.outputs.artifact_digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Independently authenticate current-run evaluator artifact metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($env:EXPECTED_ARTIFACT_ID -notmatch '^[0-9]+$' -or $env:EXPECTED_ARTIFACT_DIGEST -notmatch '^[a-f0-9]{64}$') { throw 'Missing exact uploaded artifact identity' }
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $artifact = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$env:EXPECTED_ARTIFACT_ID"
+          $expectedName = "pubpres-mainline-windows-evaluator-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          if ($artifact.name -ne $expectedName -or $artifact.expired -or $artifact.digest -ne "sha256:$env:EXPECTED_ARTIFACT_DIGEST" -or $artifact.workflow_run.id -ne [long]$env:GITHUB_RUN_ID -or $artifact.workflow_run.head_sha -ne $env:GITHUB_SHA) { throw 'Independent live artifact metadata identifies a different source/run/archive' }
+          $artifact | ConvertTo-Json -Depth 20 | Set-Content -Encoding utf8 "$env:RUNNER_TEMP/evaluator-download-admission.json"
+      - name: Independently download the actual owner archive
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-mainline-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-independent-archive
+      - name: Verify independent inner archive identity and execute the shipped package
+        run: |
+          @'
+          import hashlib, json, os, pathlib, zipfile
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mainline-independent-archive'
+          archives = list(root.glob('*.zip'))
+          assert len(archives) == 1, 'Missing or ambiguous delivered inner ZIP'
+          archive = archives[0]
+          with archive.open('rb') as stream: actual = hashlib.file_digest(stream, 'sha256').hexdigest()
+          assert actual == os.environ['EXPECTED_INNER_SHA256'] and archive.stat().st_size == int(os.environ['EXPECTED_INNER_BYTES']), 'Independent inner ZIP hash/size differs'
+          with zipfile.ZipFile(archive) as bundle:
+              raw = bundle.read('PUBPRES-MAINLINE-EVALUATOR.json')
+              assert hashlib.sha256(raw).hexdigest() == os.environ['EXPECTED_MANIFEST_SHA256'], 'Independent package manifest differs'
+              record = json.loads(raw)
+              assert record['source_commit'] == os.environ['GITHUB_SHA'] and record['physical_owner_evaluated'] is False and record['merge_authorized'] is False
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as output:
+              output.write('INDEPENDENT_INNER_ARCHIVE=' + str(archive) + '\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Independent exact delivered archive integrity failed' }
+          python tools/pubpres_mainline/extracted.py --archive $env:INDEPENDENT_INNER_ARCHIVE --sha256 $env:EXPECTED_INNER_SHA256 --installation "$env:RUNNER_TEMP/Owner (PUBPRES) Ω/nested/CyberSand Workbench" --output "$env:RUNNER_TEMP/mainline-extracted"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual shipped CMD, portable source/tools, authored persistence or extracted feature qualification failed' }
+      - name: Preserve independent extracted original evidence, including refusals
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-extracted-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-extracted/
+            ${{ runner.temp }}/evaluator-download-admission.json
+            ${{ runner.temp }}/Owner (PUBPRES) Ω/nested/CyberSand Workbench/diagnostics/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+# Append under jobs in the source-owned PUBPRES workflow. Each lane waits for
+# all current-source Windows correctness arms. Original raw prerequisite
+# artifacts remain immutable; Fire-on runs only on a separately copied project.
+  performance-windows:
+    name: Windows balanced M-P-C comparison (${{ matrix.case }})
+    needs: [admission, qualification-windows]
+    if: needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 90
+    defaults:
+      run: {shell: pwsh}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        case: [wave_512_follow, wave_1024_follow_4, wave_gameplay_2048_follow]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: ${{ runner.temp }}/mainline-performance-runtimes
+      - name: Download original current-source frozen correctness evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-mainline-qualified-windows-frozen-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-performance-prerequisites/frozen
+      - name: Download original current-source broad Water evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-mainline-qualified-windows-water-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-performance-prerequisites/water
+      - name: Admit exact source, native cohort, Rapier and official Stock Safe engine
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_mainline/request.py
+          if ($LASTEXITCODE -ne 0) { throw 'Sealed delivery request refused' }
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/performance-runtime-acquisition" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Exact dependency acquisition failed' }
+          python tools/pubpres_mainline/setup_graphics.py --runtime "$env:RUNNER_TEMP/mainline-performance-runtimes/C" --output "$env:RUNNER_TEMP/mainline-performance-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine/native admission failed' }
+          git worktree add --detach "$env:RUNNER_TEMP/mainline-performance-main" $env:PUBPRES_MAIN
+          if ($LASTEXITCODE -ne 0) { throw 'Registered accepted-main checkout failed' }
+          git worktree add --detach "$env:RUNNER_TEMP/mainline-performance-owner" $env:PUBPRES_OWNER
+          if ($LASTEXITCODE -ne 0) { throw 'Registered owner-reference checkout failed' }
+      - name: Execute all six registered M-P-C-C-P-M arms and independent original readers
+        env:
+          REGISTERED_CASE: ${{ matrix.case }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $frozen = @(Get-ChildItem -Recurse -File "$env:RUNNER_TEMP/mainline-performance-prerequisites/frozen" -Filter SUMMARY.json)
+          $water = @(Get-ChildItem -Recurse -File "$env:RUNNER_TEMP/mainline-performance-prerequisites/water" -Filter SUMMARY.json)
+          if ($frozen.Count -ne 1 -or $water.Count -ne 1) { throw 'Missing or ambiguous original correctness prerequisite' }
+          python tools/pubpres_mainline/run_performance.py --main-source "$env:RUNNER_TEMP/mainline-performance-main" --owner-source "$env:RUNNER_TEMP/mainline-performance-owner" --main-runtime "$env:RUNNER_TEMP/mainline-performance-runtimes/M" --owner-runtime "$env:RUNNER_TEMP/mainline-performance-runtimes/P" --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --rapier-runtime "$PWD/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --frozen-correctness $frozen[0].FullName --water-correctness $water[0].FullName --output "$env:RUNNER_TEMP/mainline-performance" --case $env:REGISTERED_CASE
+          if ($LASTEXITCODE -ne 0) { throw 'Registered comparison or equal-step physical/input parity failed; retain every adverse arm' }
+      - name: Preserve all timing traces, reducers, process resources and failed-arm projects
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-performance-windows-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-performance/
+            !${{ runner.temp }}/mainline-performance/template-M/project/
+            !${{ runner.temp }}/mainline-performance/template-P/project/
+            !${{ runner.temp }}/mainline-performance/template-C/project/
+            ${{ runner.temp }}/mainline-performance-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/performance-runtime-acquisition/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+  sustained-windows:
+    name: Windows original five-minute owner session (${{ matrix.case }})
+    needs: [admission, qualification-windows]
+    if: needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run: {shell: pwsh}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [wave512, mixed2048]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: ${{ runner.temp }}/mainline-sustained-runtimes
+      - name: Admit exact dependencies and official engine
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_mainline/request.py
+          if ($LASTEXITCODE -ne 0) { throw 'Sealed delivery request refused' }
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/sustained-runtime-acquisition" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Exact dependency acquisition failed' }
+          python tools/pubpres_mainline/setup_graphics.py --runtime "$env:RUNNER_TEMP/mainline-sustained-runtimes/C" --output "$env:RUNNER_TEMP/mainline-sustained-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine/native admission failed' }
+      - name: Run original 300-second actions, CPU/RSS observer and reducer with selected policies
+        env:
+          REGISTERED_CASE: ${{ matrix.case }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_mainline/run_sustained.py --runtime $env:BOUND_RUNTIME --stock-engine $env:GODOT_EXE --output "$env:RUNNER_TEMP/mainline-sustained" --case $env:REGISTERED_CASE
+          if ($LASTEXITCODE -ne 0) { throw 'Original five-minute sustained workload or selected-policy admission failed' }
+      - name: Preserve complete sustained actions, diagnostic segments and resource observations
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-sustained-windows-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-sustained/
+            ${{ runner.temp }}/mainline-sustained-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/sustained-runtime-acquisition/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+  fire-on-windows:
+    name: Windows original 90-second Fire-on owner patrols
+    needs: [admission, qualification-windows]
+    if: needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run: {shell: pwsh}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: ${{ runner.temp }}/mainline-fire-runtimes
+      - name: Download pristine current-source held-placement evidence
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-mainline-qualified-windows-held-placement-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-fire-original
+      - name: Admit exact dependencies and official engine
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_mainline/request.py
+          if ($LASTEXITCODE -ne 0) { throw 'Sealed delivery request refused' }
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/fire-runtime-acquisition" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Exact dependency acquisition failed' }
+          python tools/pubpres_mainline/setup_graphics.py --runtime "$env:RUNNER_TEMP/mainline-fire-runtimes/C" --output "$env:RUNNER_TEMP/mainline-fire-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine/native admission failed' }
+      - name: Independently replay the original held receipt and copy its project before overlaying observers
+        id: copy
+        run: |
+          $ErrorActionPreference = 'Stop'
+          @'
+          import json, os, pathlib, shutil, sys
+          root = pathlib.Path.cwd().resolve()
+          sys.path.insert(0, str(root / 'tools/pubpres_mainline'))
+          import common
+          sys.path.insert(0, str(root / 'tools/pubpres_final_recovery'))
+          from identity import driver_identity
+          from run_campaign import source_identity
+          from retained_runtime import validate_runtime
+          from qualification_gate import verify_summary
+          temporary = pathlib.Path(os.environ['RUNNER_TEMP'])
+          original = temporary / 'mainline-fire-original'
+          matches = list(original.rglob('SUMMARY.json'))
+          common.require(len(matches) == 1, 'Missing or ambiguous original held-placement evidence')
+          source = source_identity(root)
+          source['native_runtime'] = validate_runtime(root, source, pathlib.Path(os.environ['BOUND_RUNTIME']), False)
+          prerequisite = verify_summary(matches[0], source, driver_identity(), pathlib.Path(os.environ['GODOT_EXE']), 'held-placement')
+          inventory = {p.relative_to(original).as_posix(): common.digest(p) for p in original.rglob('*') if p.is_file()}
+          common.require(inventory, 'Original held-placement artifact is empty')
+          copy = temporary / 'mainline-fire-working-copy'
+          shutil.copytree(matches[0].parent, copy)
+          custody = {'schema':'pubpres-fire-original-custody-v1', 'source':source, 'prerequisite':prerequisite,
+              'original':str(original), 'working_copy':str(copy), 'original_files_sha256':inventory,
+              'permitted_copy_overlays':['project/tests/flight_visibility.gd','project/tests/pubpres_playability_owner_start.gd','project/tests/flight_fire_contact.gd'],
+              'original_unchanged':False}
+          common.write_json(temporary / 'mainline-fire-custody.json', custody)
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as output:
+              output.write('FIRE_QUALIFIED_COPY=' + str(copy) + '\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Independent held-placement admission or pristine project copy failed' }
+      - name: Run unchanged Wave512 and Mixed2048 90-second patrols with real Thruster fire
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_recovery_windows/run_owner_follow.py --qualified $env:FIRE_QUALIFIED_COPY --engine $env:GODOT_EXE --output "$env:RUNNER_TEMP/mainline-fire-patrol" --thruster-fire
+          if ($LASTEXITCODE -ne 0) { throw 'Original Fire-on patrol failed; retain actual raw observations' }
+      - name: Run original Fire, wall-contact and Water-contact observations
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_recovery_windows/run_owner_follow.py --qualified $env:FIRE_QUALIFIED_COPY --engine $env:GODOT_EXE --output "$env:RUNNER_TEMP/mainline-fire-contact" --contact
+          if ($LASTEXITCODE -ne 0) { throw 'Original Fire/Water/wall-contact observation failed; retain raw evidence' }
+      - name: Prove the original raw qualification was never mutated
+        if: always() && steps.copy.outcome == 'success'
+        run: |
+          $ErrorActionPreference = 'Stop'
+          @'
+          import json, os, pathlib, sys
+          root = pathlib.Path.cwd().resolve()
+          sys.path.insert(0, str(root / 'tools/pubpres_mainline'))
+          import common
+          path = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mainline-fire-custody.json'
+          record = json.loads(path.read_bytes())
+          original = pathlib.Path(record['original'])
+          current = {p.relative_to(original).as_posix(): common.digest(p) for p in original.rglob('*') if p.is_file()}
+          record['original_unchanged'] = current == record['original_files_sha256']
+          common.write_json(path, record)
+          common.require(record['original_unchanged'], 'Original held-placement qualification artifact was mutated')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Original raw qualification custody check failed' }
+      - name: Preserve complete Fire-on traces, first-read frames and source custody
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-fire-on-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-fire-patrol/
+            ${{ runner.temp }}/mainline-fire-contact/
+            ${{ runner.temp }}/mainline-fire-custody.json
+            ${{ runner.temp }}/mainline-fire-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/fire-runtime-acquisition/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+  # Merge this job into .github/workflows/pubpres-mainline.yml after reviewing
+  # the committed paired runner. Existing workflow env/admission remain owners.
+  spawn-windows:
+    name: Windows owner-reference and candidate spawn comparison
+    needs: admission
+    if: needs.admission.outputs.phase == 'delivery'
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run: {shell: pwsh}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ needs.admission.outputs.runtime_run }}
+          name: pubpres-mainline-runtimes-windows-${{ needs.admission.outputs.runtime_run }}-${{ needs.admission.outputs.runtime_attempt }}
+          path: runtimes
+      - name: Materialize original owner and candidate dependency identities
+        run: |
+          $owner = Join-Path $env:RUNNER_TEMP 'spawn-owner-source'
+          git worktree add --detach $owner $env:PUBPRES_OWNER
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen physical-owner source could not be staged' }
+          python tools/ci/materialize_lfs.py --root $env:GITHUB_WORKSPACE --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output "$env:RUNNER_TEMP/spawn-dependencies-candidate" --allowance-seconds 300
+          if ($LASTEXITCODE -ne 0) { throw 'Candidate Rapier custody failed' }
+          python tools/ci/materialize_lfs.py --root $owner --expected-source $env:PUBPRES_OWNER --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output "$env:RUNNER_TEMP/spawn-dependencies-owner" --allowance-seconds 300
+          if ($LASTEXITCODE -ne 0) { throw 'Original owner Rapier custody failed' }
+      - name: Acquire exact official Stock engine and candidate native-input binding
+        run: |
+          python tools/pubpres_mainline/setup_graphics.py --runtime runtimes/C --output "$env:RUNNER_TEMP/spawn-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned engine or original native build custody failed' }
+      - name: Run unchanged Wave512 and Mixed2048 spawn workloads in balanced source and recorder order
+        run: |
+          python tools/pubpres_mainline/run_spawn_pair.py --owner-source "$env:RUNNER_TEMP/spawn-owner-source" --candidate-source $env:GITHUB_WORKSPACE --owner-runtime runtimes/P --candidate-runtime runtimes/C --engine $env:GODOT_EXE --output "$env:RUNNER_TEMP/spawn-pair" --budget-seconds 1200
+          if ($LASTEXITCODE -ne 0) { throw 'Registered spawn comparison failed; preserve every original arm' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-spawn-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/spawn-pair/
+            !${{ runner.temp }}/spawn-pair/**/template/**
+            ${{ runner.temp }}/spawn-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/spawn-dependencies-candidate/
+            ${{ runner.temp }}/spawn-dependencies-owner/
           include-hidden-files: true
           retention-days: 90
           if-no-files-found: warn

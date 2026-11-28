@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
@@ -29,9 +30,11 @@ def metrics(values):
     values = sorted(values)
     if not values:
         return None
-    return {"count": len(values), "p50_usec": values[int((len(values)-1)*.50)],
-            "p95_usec": values[int((len(values)-1)*.95)],
-            "p99_usec": values[int((len(values)-1)*.99)], "maximum_usec": values[-1]}
+    # Match the established completion-gap readers' nearest-rank convention.
+    # A tiny adverse sample must not lose its tail through floor interpolation.
+    return {"count": len(values), "p50_usec": values[math.ceil(len(values)*.50)-1],
+            "p95_usec": values[math.ceil(len(values)*.95)-1],
+            "p99_usec": values[math.ceil(len(values)*.99)-1], "maximum_usec": values[-1]}
 
 
 def reduce(folder: Path, report):
@@ -48,10 +51,15 @@ def reduce(folder: Path, report):
     cases = []
     for case in report["cases"]:
         start, end = case["request_usec"], case.get("end_usec", case["request_return_usec"])
-        def gaps(times):
-            # Include the gap which straddles request or completion. In
-            # particular, owner replacement must not erase its physical gap.
-            return [b-a for a, b in zip(times, times[1:]) if b >= start and a <= end]
+        def gaps(times, context=False):
+            # A completed interval belongs to the case in which it ends. Keep
+            # the gap across this request, but do not attribute the following
+            # case's spawn to this case's tail. The original both-boundary
+            # distribution remains visible as context.
+            return [b-a for a, b in zip(times, times[1:]) if b >= start and (a <= end if context else b <= end)]
+        def suffix(times):
+            previous = [value for value in times if value <= end]
+            return end-previous[-1] if previous else None
         exact = [r for r in rows if r[0] == "step" and r[1] >= start and r[5] == case.get("epoch")]
         phases = [{"phase":r[2], "completed_usec":r[1], "duration_usec":r[9], "details":r[10]}
                   for r in rows if r[0] == "spawn" and r[3] == case["request_serial"] and start <= r[1] <= end]
@@ -65,6 +73,14 @@ def reduce(folder: Path, report):
                   "input_physical_application_observed_usec":case["input_applied_observed_usec"]-case["first_input_usec"] if case["input_applied_observed_usec"] >= 0 else None,
                   "input_upward_pose_response_observed_usec":case["input_response_observed_usec"]-case["first_input_usec"] if case.get("input_response_observed_usec",-1) >= 0 else None,
                   "physical_gaps":metrics(gaps(step_times)), "draw_callback_gaps":metrics(gaps(draw_times)),
+                  "physical_gap_context_both_boundaries":metrics(gaps(step_times,True)),
+                  "physical_unfinished_suffix_usec":suffix(step_times),
+                  "draw_callback_gap_context_both_boundaries":metrics(gaps(draw_times,True)),
+                  "draw_callback_unfinished_suffix_usec":suffix(draw_times),
+                  "observed_draw_callback_gaps":metrics(gaps(report.get("draw_callback_usec",[]))),
+                  "observed_draw_callback_gap_context_both_boundaries":metrics(gaps(report.get("draw_callback_usec",[]),True)),
+                  "observed_draw_callback_unfinished_suffix_usec":suffix(report.get("draw_callback_usec",[])),
+                  "process_sampled_completion_gaps_upper_bound":metrics(gaps(report.get("observed_completion_usec",[]))),
                   "phases":phases}
         owned_times = [r[1] for r in exact if r[1] <= end]
         tail = [b-a for a,b in zip(owned_times,owned_times[1:]) if a >= end-1_000_000]
@@ -85,15 +101,20 @@ def reduce(folder: Path, report):
         admitted = case["admitted_usec"]
         seconds = (end-admitted)/1e6 if admitted >= 0 and end > admitted else 0
         result["post_admission"] = {"wall_seconds":seconds,
-            "physical_steps_per_second":(case["final_physical_steps"]-case["admission_physical_step"])/seconds
-                if seconds and "admission_physical_step" in case and "final_physical_steps" in case else None,
+            "physical_steps_per_second":(case["final_rapier_steps"]-case["admission_rapier_steps"])/seconds
+                if seconds and "admission_rapier_steps" in case and "final_rapier_steps" in case else None,
             "native_ticks_per_second":(case["final_native_tick"]-case["admission_native_tick"])/seconds
                 if seconds and "admission_native_tick" in case and "final_native_tick" in case else None}
+        result["post_admission"]["simulated_seconds_per_wall_second"] = (
+            result["post_admission"]["physical_steps_per_second"] * case["physical_delta_seconds"]
+            if result["post_admission"]["physical_steps_per_second"] is not None and "physical_delta_seconds" in case else None)
         cases.append(result)
     return {"cases":cases,"recorder_loss_intervals":lost,"recorder_closed":any(r[0]=="close" for r in rows),
             "recorded_actual_steps":len(step_times),
             "recorded_draw_callbacks":len(draw_times),
-            "scope":"Headless draw fields remain null. CPU callbacks are not GPU duration or physical display. Loss means observed tails are incomplete. First process-frame step is an upper bound; actual step rows supply exact completion times when recording is enabled."}
+            "whole_recording_physical_gaps":metrics([b-a for a,b in zip(step_times,step_times[1:])]),
+            "whole_observer_draw_gaps":metrics([b-a for a,b in zip(report.get("draw_callback_usec",[]),report.get("draw_callback_usec",[])[1:])]),
+            "scope":"Primary gaps end within this case, retaining the interval across its request. Both-boundary context preserves a following-case interval. Unfinished suffixes are right-censored lower bounds, not completed gaps. Whole-recording maxima remain. Headless draw fields remain null. CPU callbacks are not GPU duration or physical display. Loss means observed tails are incomplete. First process-frame step is an upper bound; actual step rows supply exact completion times when recording is enabled."}
 
 
 def complete_recording(reduced, graphical):
@@ -162,6 +183,8 @@ def main():
     parser.add_argument("--source", help="Optional expected application revision; must equal source-root HEAD")
     parser.add_argument("--scene", action="append", choices=("wave512","wave1024","wave2048","mixed2048"))
     parser.add_argument("--recording", choices=("on","off","both"), default="both")
+    parser.add_argument("--recording-order", choices=("on-off","off-on"), default="on-off",
+                        help="Order of the two independent processes when --recording both")
     parser.add_argument("--headless", action="store_true")
     parser.add_argument("--timeout", type=int, default=480)
     args = parser.parse_args()
@@ -184,7 +207,7 @@ def main():
                   "driver":driver,
                   "graphical":not args.headless}
     (output / "IDENTITY.json").write_text(json.dumps(identities,indent=2)+"\n",encoding="utf-8")
-    modes = ("on","off") if args.recording == "both" else (args.recording,)
+    modes = tuple(args.recording_order.split("-")) if args.recording == "both" else (args.recording,)
     results = []
     summary = {"schema":"pubpres-spawn-qualification-v2","identity":identities,"results":results,
                "pass":False,"physical_hardware_acceptance":False}
@@ -226,7 +249,12 @@ def main():
                       and ready["flight_pacing_enabled"] and ready["coupling_clock_enabled"] and ready["empty_effects_enabled"]
                       and ready["render_thread_inline"] and ready["recovery"]["water_enabled"]
                       and process.get("process_cpu",{}).get("summary",{}).get("complete",False)
-                      and len(report["cases"]) == 6)
+                      and len(report["cases"]) == 6
+                      and all(case.get("final_rapier_steps",-1)-case.get("admission_rapier_steps",-1)
+                              == case.get("final_physical_steps",-2)-case.get("admission_physical_step",-1)
+                              and case.get("physical_delta_seconds",0) > 0 for case in report["cases"])
+                      and len(report.get("draw_callback_usec",[])) < 20000
+                      and len(report.get("observed_completion_usec",[])) < 20000)
                 reduced = reduce(folder,report)
                 (folder / "REDUCED.json").write_text(json.dumps(reduced,indent=2)+"\n",encoding="utf-8")
                 detail["recorder_complete"] = complete_recording(reduced,not args.headless) if mode == "on" else None

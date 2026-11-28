@@ -1,0 +1,354 @@
+{
+  "schema": "pubpres-local-spawn-before-after-v1",
+  "rows": [
+    {
+      "recording": "on",
+      "case": "first-air-fire-off",
+      "before": {
+        "request_latency_usec": 84168,
+        "owner_admission_observed_usec": 662351,
+        "first_completed_step_usec": 666060,
+        "input_admission_observed_usec": 14384,
+        "input_physical_application_observed_usec": 14385,
+        "physical_gaps": {
+          "count": 184,
+          "p50_usec": 13909,
+          "p95_usec": 20920,
+          "p99_usec": 23398,
+          "maximum_usec": 677833
+        },
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 5627,
+        "owner_admission_observed_usec": 239936,
+        "first_completed_step_usec": 239559,
+        "input_admission_observed_usec": 15627,
+        "input_physical_application_observed_usec": 15629,
+        "physical_gaps": {
+          "count": 183,
+          "p50_usec": 14208,
+          "p95_usec": 21168,
+          "p99_usec": 27471,
+          "maximum_usec": 245489
+        },
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "on",
+      "case": "warm-air-fire-off",
+      "before": {
+        "request_latency_usec": 80457,
+        "owner_admission_observed_usec": 677673,
+        "first_completed_step_usec": 677300,
+        "input_admission_observed_usec": 13664,
+        "input_physical_application_observed_usec": 13666,
+        "physical_gaps": {
+          "count": 180,
+          "p50_usec": 13926,
+          "p95_usec": 20899,
+          "p99_usec": 49461,
+          "maximum_usec": 677833
+        },
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 6829,
+        "owner_admission_observed_usec": 222922,
+        "first_completed_step_usec": 222508,
+        "input_admission_observed_usec": 15538,
+        "input_physical_application_observed_usec": 15542,
+        "physical_gaps": {
+          "count": 183,
+          "p50_usec": 13952,
+          "p95_usec": 20975,
+          "p99_usec": 21484,
+          "maximum_usec": 246949
+        },
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "on",
+      "case": "warm-air-fire-on",
+      "before": {
+        "request_latency_usec": 86362,
+        "owner_admission_observed_usec": 633468,
+        "first_completed_step_usec": 633037,
+        "input_admission_observed_usec": 8979,
+        "input_physical_application_observed_usec": 8981,
+        "physical_gaps": {
+          "count": 184,
+          "p50_usec": 13888,
+          "p95_usec": 20877,
+          "p99_usec": 32861,
+          "maximum_usec": 679291
+        },
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 8817,
+        "owner_admission_observed_usec": 234539,
+        "first_completed_step_usec": 234144,
+        "input_admission_observed_usec": 15332,
+        "input_physical_application_observed_usec": 15334,
+        "physical_gaps": {
+          "count": 183,
+          "p50_usec": 13996,
+          "p95_usec": 20870,
+          "p99_usec": 21109,
+          "maximum_usec": 246949
+        },
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "on",
+      "case": "near-material-fire-on",
+      "before": {
+        "request_latency_usec": 81899,
+        "owner_admission_observed_usec": 673779,
+        "first_completed_step_usec": 678862,
+        "input_admission_observed_usec": 8900,
+        "input_physical_application_observed_usec": 8902,
+        "physical_gaps": {
+          "count": 183,
+          "p50_usec": 13940,
+          "p95_usec": 20906,
+          "p99_usec": 29110,
+          "maximum_usec": 695529
+        },
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 8355,
+        "owner_admission_observed_usec": 210630,
+        "first_completed_step_usec": 215207,
+        "input_admission_observed_usec": 19118,
+        "input_physical_application_observed_usec": 19120,
+        "physical_gaps": {
+          "count": 183,
+          "p50_usec": 13955,
+          "p95_usec": 20965,
+          "p99_usec": 22721,
+          "maximum_usec": 244356
+        },
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "on",
+      "case": "scene-replacement",
+      "before": {
+        "request_latency_usec": 101098,
+        "owner_admission_observed_usec": 686234,
+        "first_completed_step_usec": 694910,
+        "input_admission_observed_usec": 16174,
+        "input_physical_application_observed_usec": 16176,
+        "physical_gaps": {
+          "count": 182,
+          "p50_usec": 13903,
+          "p95_usec": 20850,
+          "p99_usec": 21618,
+          "maximum_usec": 695529
+        },
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 27373,
+        "owner_admission_observed_usec": 223609,
+        "first_completed_step_usec": 238412,
+        "input_admission_observed_usec": 13386,
+        "input_physical_application_observed_usec": 13388,
+        "physical_gaps": {
+          "count": 182,
+          "p50_usec": 14035,
+          "p95_usec": 21301,
+          "p99_usec": 24006,
+          "maximum_usec": 244356
+        },
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "on",
+      "case": "post-replacement-spawn",
+      "before": {
+        "request_latency_usec": 83279,
+        "owner_admission_observed_usec": 648173,
+        "first_completed_step_usec": 647733,
+        "input_admission_observed_usec": 13322,
+        "input_physical_application_observed_usec": 18510,
+        "physical_gaps": {
+          "count": 183,
+          "p50_usec": 13922,
+          "p95_usec": 21198,
+          "p99_usec": 36112,
+          "maximum_usec": 653982
+        },
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 10059,
+        "owner_admission_observed_usec": 215473,
+        "first_completed_step_usec": 220112,
+        "input_admission_observed_usec": 20618,
+        "input_physical_application_observed_usec": 20619,
+        "physical_gaps": {
+          "count": 179,
+          "p50_usec": 14168,
+          "p95_usec": 21118,
+          "p99_usec": 23865,
+          "maximum_usec": 220605
+        },
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "off",
+      "case": "first-air-fire-off",
+      "before": {
+        "request_latency_usec": 79890,
+        "owner_admission_observed_usec": 630147,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 8338,
+        "input_physical_application_observed_usec": 8340,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 7052,
+        "owner_admission_observed_usec": 235984,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 13537,
+        "input_physical_application_observed_usec": 13539,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "off",
+      "case": "warm-air-fire-off",
+      "before": {
+        "request_latency_usec": 86744,
+        "owner_admission_observed_usec": 665917,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 8465,
+        "input_physical_application_observed_usec": 8467,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 10825,
+        "owner_admission_observed_usec": 210782,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 8340,
+        "input_physical_application_observed_usec": 8342,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "off",
+      "case": "warm-air-fire-on",
+      "before": {
+        "request_latency_usec": 83178,
+        "owner_admission_observed_usec": 640445,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 20767,
+        "input_physical_application_observed_usec": 20768,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 9711,
+        "owner_admission_observed_usec": 231659,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 9099,
+        "input_physical_application_observed_usec": 9100,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "off",
+      "case": "near-material-fire-on",
+      "before": {
+        "request_latency_usec": 81806,
+        "owner_admission_observed_usec": 636533,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 8558,
+        "input_physical_application_observed_usec": 8559,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 8407,
+        "owner_admission_observed_usec": 226215,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 15400,
+        "input_physical_application_observed_usec": 15402,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "off",
+      "case": "scene-replacement",
+      "before": {
+        "request_latency_usec": 95688,
+        "owner_admission_observed_usec": 683278,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 7755,
+        "input_physical_application_observed_usec": 23457,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 31001,
+        "owner_admission_observed_usec": 254087,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 15419,
+        "input_physical_application_observed_usec": 15421,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      }
+    },
+    {
+      "recording": "off",
+      "case": "post-replacement-spawn",
+      "before": {
+        "request_latency_usec": 84997,
+        "owner_admission_observed_usec": 675225,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 7969,
+        "input_physical_application_observed_usec": 13756,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      },
+      "after": {
+        "request_latency_usec": 15939,
+        "owner_admission_observed_usec": 248677,
+        "first_completed_step_usec": null,
+        "input_admission_observed_usec": 15519,
+        "input_physical_application_observed_usec": 15520,
+        "physical_gaps": null,
+        "draw_callback_gaps": null
+      }
+    }
+  ],
+  "archive": {
+    "file": "raw-evidence.tar.gz",
+    "bytes": 1261587,
+    "sha256": "3b98692ecd8e95ea83d6e1df2c2102776a74d0a8adeeccd80f41ae24bcdec951"
+  },
+  "uncompressed_bytes": 11828570,
+  "files": 49,
+  "pre_repair_base": "957b4696b9f7987df18b4bf437e56ca3f391b956",
+  "post_repair_base": "1ea8c4d2fa",
+  "repair_commit": "e8ab8a6000",
+  "native_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "scope": "Exact recorded local script deltas and fixture hashes; no graphical callback, GPU duration or physical owner claim"
+}

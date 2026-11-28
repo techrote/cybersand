@@ -2037,8 +2037,8 @@ func presented_part_at(point: Vector2, padding: float = 0.0) -> Dictionary:
 	return host.physical_actor_session.pick_workbench_part(point, frame, padding)
 
 
-func _pick(pos: Vector2i) -> void:
-	var hit := presented_part_at(Vector2(pos), 2.0)
+func _pick(pos: Vector2) -> void:
+	var hit := presented_part_at(pos, 2.0)
 	select_instance(int(hit.get("instance_id", 0)))
 
 
@@ -2084,7 +2084,10 @@ func _world_input(event: InputEvent) -> void:
 	_drag_button = 0
 	match _tool.selected:
 		1: place(model_choice(),Vector2(pos))
-		2: _pick(pos)
+		# Actor contact is continuous geometry. Rounding the accepted pointer
+		# to a material cell can move it outside a thin or clipped visible part.
+		# Keep the same submitted camera and the picker's exact material fences.
+		2: _pick(host.world_position_from_local_point(event.position, true))
 		3:
 			_position[0].value = pos.x
 			_position[1].value = pos.y

@@ -608,6 +608,15 @@ REVIEWED_TRANSITIONS += ({"path": "godot/scripts/transport_profiles.gd",
     "issue": 717, "pr": 767},)
 
 
+# Keep unusual script-owned Object keys outside the pure value reuse lifetime.
+REVIEWED_TRANSITIONS += ({"path": "godot/scripts/transport_profiles.gd",
+    "from_lf_sha256": "4e97c1d67ef87b8a610024c71837a506ff13d95181179bbc7bd8e17cd361241a",
+    "to_lf_sha256": "ca36baa34c14cf4d95519cf7b7bc9b46dc9f794bf1882110eae5e7353b4c9b21",
+    "source_commit": "7f9bc26c1c5e51de9497868f4604ea07458c870c",
+    "record": "docs/audits/2026-11-28-pubpres-mainline/transport-transition.md",
+    "issue": 717, "pr": 767},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

@@ -541,9 +541,27 @@ func framebuffer_visibility(label: String, requested_slot: int = -1) -> void:
 	var overlay: Control = host.physical_actor_overlay
 	var layer: Control = overlay._water_layer
 	if not check(is_instance_valid(layer) and layer.is_visible_in_tree(),label+" actual Water draw layer is visible"): return
-	ui._pick(Vector2i(selected.origin))
+	# Use the ordinary mouse route and retain its continuous accepted-camera
+	# position. A COM-origin compound can have its nearest integer cell just
+	# outside the visible collider after settling against material.
+	ui._tool.select(2)
+	check(ui.select_instance(0),label+" ordinary selection clears before the actual mouse click")
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.pressed = true
+	click.position = host._world_view_screen_transform().affine_inverse() * (frame.camera_mapping * selected.origin)
+	var clicked_world: Vector2 = host.world_position_from_local_point(click.position,true)
+	var clicked_cell: Vector2i = host.world_cell_from_local_point(click.position,true)
+	ui._world_input(click)
 	check(ui.selected_id() == int(host.physical_actor_session.bridge._members[slot].actor_instance_id),
 		label+" ordinary picking uses the presented submerged actor")
+	lifecycle.append({"stage":label+"_actual_mouse_pick","slot":slot,"pose":Trace.pose_json(selected),
+		"world_point":Trace.xy(clicked_world),"material_cell":[clicked_cell.x,clicked_cell.y],
+		"selected_id":ui.selected_id(),"expected_id":int(member.actor_instance_id),
+		"contact_clipped":frame.get("contact_clips",{}).has(slot),
+		"frame_world":frame.get("world_generation",-1),"frame_session":frame.get("session",-1),
+		"frame_epoch":frame.get("epoch",-1),"frame_step":frame.get("selected_steps",{}).get(slot,-1),
+		"frame_upload":frame.get("upload_serial",-1)})
 	var actor_slot: int = host.physical_actor_session.slot_for_instance(int(member.actor_instance_id))
 	# UI selection is admitted immediately, but the ordinary actor-label owner
 	# refreshes on its150ms status cadence. Its visible selection ring must be
@@ -886,6 +904,8 @@ func _run() -> void:
 		"transition_observations":transition_observations,"transition_observations_dropped":transition_observations_dropped,
 		"proof_kinds":kinds,"moving_wet_distinct_poses":moving_wet_poses.size(),"compound_model":selected_compound,
 		"observations":observations,"lifecycle":lifecycle,"framebuffer":framebuffer,
+		"selected_owner_readback":{"flight_pacing":host._flight_pacing and host.simulation_worker._notify_sample_completion,
+			"coupling_clock":host.simulation_worker._independent_coupling,"empty_effects":host._check_ambient_sources},
 		"scope":"Actual mounted Main/native/Rapier and first-read framebuffer visibility controls; explicit injected ordinary keyboard input. No comparative performance, compositor, physical scanout or owner NVIDIA acceptance."}
 	host.simulation_worker.stop_worker()
 	host.queue_free()

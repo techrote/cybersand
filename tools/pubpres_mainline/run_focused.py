@@ -26,6 +26,7 @@ CASES = (
     ("verify_pubpres_owner_gameplay_rotation", "PUBPRES_OWNER_GAMEPLAY_ROTATION_OK", False),
     ("test_workbench_retained_water_hold", "PUBPRES_RETAINED_WATER_HOLD_RESULT ", False),
     ("test_workbench_retained_water_hold_native", "PUBPRES_RETAINED_WATER_NATIVE_RESULT ", True),
+    ("test_workbench_continuous_actor_pick", "PUBPRES_CONTINUOUS_ACTOR_PICK_RESULT ", True),
 )
 
 
@@ -61,7 +62,8 @@ def main():
         profile.mkdir()
         env = common.selected_environment(dict(clean, APPDATA=str(profile), LOCALAPPDATA=str(profile),
             XDG_DATA_HOME=str(profile), XDG_CONFIG_HOME=str(profile), XDG_CACHE_HOME=str(profile),
-            CYBERSAND_SOURCE_REVISION=source["source_commit"], CYBERSAND_RETAINED_WATER_NATIVE_OUTPUT=str(folder / "receipt.json")))
+            CYBERSAND_SOURCE_REVISION=source["source_commit"], CYBERSAND_RETAINED_WATER_NATIVE_OUTPUT=str(folder / "receipt.json"),
+            CYBERSAND_WATER_COMPOSITION_OUTPUT=str(folder / "receipt.json")))
         command = [str(engine), "--path", str(project), "--audio-driver", "Dummy", "--render-thread", "safe"]
         if graphical:
             command += ["--rendering-method", "gl_compatibility", "--rendering-driver", "opengl3_angle" if platform == "windows" else "opengl3"]
@@ -81,7 +83,35 @@ def main():
                 if test == "test_microscenarios":
                     match = re.search(r"MICROSCENARIOS: (\d+) assertions; (\d+) failures", text)
                     common.require(match is not None and int(match[1]) > 0 and int(match[2]) == 0, "MicroScenario original assertions failed")
-            if graphical:
+            if test == "test_workbench_continuous_actor_pick":
+                receipt = json.loads((folder / "receipt.json").read_bytes())
+                common.require(receipt.get("schema") == "pubpres-continuous-actor-pick-v1"
+                               and receipt.get("source_revision") == source["source_commit"]
+                               and receipt.get("engine_sha256") == common.digest(engine)
+                               and receipt.get("failures") == [] and receipt.get("checks", 0) >= 22
+                               and receipt.get("display") == ("Windows" if platform == "windows" else "X11")
+                               and receipt.get("selected_owner_readback") == {"flight_pacing": True, "coupling_clock": True, "empty_effects": True},
+                               "Mounted continuous actor picking receipt differs")
+                common.require(receipt.get("input_hashes"), "Mounted picking source inventory is absent")
+                for name, expected in receipt["input_hashes"].items():
+                    common.require(name.startswith("res://") and common.digest(project / name.removeprefix("res://")) == expected,
+                                   "Mounted continuous picking source input differs")
+                records = receipt.get("records", [])
+                labels = ["visible_continuous_origin", "opaque_member_pixel", "foreign_owner", "restored_original_owner"]
+                common.require(len(records) == 5 and [value.get("label") for value in records[:4]] == labels
+                               and [value.get("selected") for value in records[:4]] == [4, 0, 0, 4]
+                               and [value.get("expected") for value in records[:4]] == [4, 0, 0, 4]
+                               and all(value.get("physical_step") == 0 for value in records[:4]),
+                               "All continuous mouse selection and refusal controls must execute without physical credits")
+                for index, record in enumerate(records[:4]):
+                    common.require(record.get("mask_session") == record.get("session", -2) + (1 if index == 2 else 0)
+                                   and all(record.get(key, 0) > 0 for key in ("session", "epoch", "world")),
+                                   "Mounted picking owner adversary identity differs")
+                common.require(records[4].get("framebuffer") == "continuous-pick.png"
+                               and common.digest(folder / "continuous-pick.png") == records[4].get("sha256"),
+                               "Mounted continuous picking framebuffer is absent or changed")
+                row.update(receipt=receipt, receipt_sha256=common.digest(folder / "receipt.json"))
+            elif graphical:
                 receipt = json.loads((folder / "receipt.json").read_bytes())
                 common.require(receipt.get("schema") == "pubpres-retained-water-native-v1"
                                and receipt.get("source_revision") == source["source_commit"]

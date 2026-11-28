@@ -36,3 +36,20 @@ The first hosted source gate correctly refused the otherwise reviewed edit
 because this explicit identity record was missing. Its failed result is retained
 in run `46134343592`; it is not relabelled as a pass. The corrected campaign must
 execute the original compatibility checker and native-parity reader again.
+
+## Object lifetime refinement
+
+The independently reviewed subsequent source
+`7f9bc26c1c5e51de9497868f4604ea07458c870c` changes
+`godot/scripts/transport_profiles.gd` from
+`4e97c1d67ef87b8a610024c71837a506ff13d95181179bbc7bd8e17cd361241a` to
+`ca36baa34c14cf4d95519cf7b7bc9b46dc9f794bf1882110eae5e7353b4c9b21`.
+The existing validator stringifies dictionary keys, permitting unusual scripted
+Object keys. Such keys now bypass value reuse while retaining the original
+acceptance and compilation behavior. The bounded cache cannot prolong those
+objects' lifetimes. Ordinary JSON/Workbench scalar keys retain the measured path.
+A new WeakRef lifetime control extends the focused gate from 18 to 20 checks.
+The native specialist executed those 20 checks successfully; the presentation
+specialist independently reviewed the new lifetime boundary and test. Earlier
+18-check timing evidence remains attributed to its original source. The final
+20-check source must pass the new Linux and Windows hosted campaign.

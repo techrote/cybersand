@@ -30,7 +30,8 @@ import campaign_request as request
 ROOT = Path(__file__).resolve().parents[2]
 REPOSITORY = "techrote/cybersand"
 WORKFLOW = ".github/workflows/pubpres-mainline.yml"
-FOCUSES = ("frozen", "water", "members", "held-placement", "mainline", "native-owner")
+FOCUSES = ("frozen", "water", "members", "held-placement", "mainline", "native-owner",
+           "selected-water", "selected-members", "selected-held-placement")
 FEATURES = ("ramcache", "strata", "shared")
 BUILD_JOBS = {"admission", "runtimes (linux)", "runtimes (windows)", "native (normal)", "native (sanitizers)", "native (ownership)"}
 QUALIFICATION_JOBS = {"admission", "source-gates"} | {
@@ -175,6 +176,20 @@ def replay_summary(directory, source, platform, focus, native):
     require(len(paths) == 1, "Missing or ambiguous actual qualification summary")
     path = paths[0]
     proof = json.loads(path.read_bytes())
+    selected_owner = focus.startswith("selected-")
+    if selected_owner:
+        focus = focus.removeprefix("selected-")
+        selected = proof.get("selected_workbench_owner", {})
+        flags = {key: common.SELECTORS[key] for key in (
+            "CYBERSAND_WORKBENCH_FLIGHT_PACING", "CYBERSAND_WORKBENCH_COUPLING_CLOCK", "CYBERSAND_WORKBENCH_EMPTY_EFFECTS")}
+        require(selected.get("schema") == "pubpres-mainline-selected-owner-v1"
+                and selected.get("owner_flags") == flags
+                and selected.get("actual_readback") == {"flight_pacing": True, "coupling_clock": True, "empty_effects": True}
+                and selected.get("failure") is None
+                and selected.get("adapter_sha256") == digest(ROOT / "tools/pubpres_mainline/run_selected_qualification.py")
+                and selected.get("original_driver_sha256") == digest(ROOT / "tools/pubpres_final_recovery/run_qualification.py")
+                and selected.get("case_population_readers_and_timeouts_unchanged") is True,
+                "Selected owner qualification adapter or actual readback differs")
     require(proof.get("complete") is True and proof.get("physical_acceptance") == "HOLD"
             and proof.get("source", {}).get("source_commit") == source
             and proof["source"].get("source_tree") == git("rev-parse", source + "^{tree}")
@@ -186,9 +201,13 @@ def replay_summary(directory, source, platform, focus, native):
         require(not PurePosixPath(name).is_absolute() and ".." not in PurePosixPath(name).parts, "Unsafe staged source member")
         if name not in {".godot/global_script_class_cache.cfg", ".godot/extension_list.cfg"}:
             require(digest(project / name) == expected, "Original staged execution byte changed: " + name)
-    expected_count = {"frozen": 19, "water": 4, "members": 4, "held-placement": 2, "mainline": 7, "native-owner": 2}[focus]
+    expected_count = {"frozen": 19, "water": 4, "members": 4, "held-placement": 2, "mainline": 8, "native-owner": 2}[focus]
     require(len(proof["outcomes"]) == expected_count and all(row.get("valid") is True and row.get("returncode") == 0
             and row.get("timed_out") is False for row in proof["outcomes"]), "Original process population failed or is incomplete")
+    if selected_owner:
+        require(len(selected.get("processes", [])) == expected_count
+                and all(row.get("owner_flags") == flags for row in selected["processes"]),
+                "Selected owner process population differs")
     for row in proof["outcomes"]:
         name = row["test"] + ("-slots" + str(row["slots"]) if "slots" in row else "")
         folder = path.parent / name
@@ -200,6 +219,10 @@ def replay_summary(directory, source, platform, focus, native):
                 engine_sha=ENGINE_SHA256[platform], expected_inline=True, expected_lookahead=0,
                 expected_atomic=False, stock_held=focus == "held-placement")
             require(actual == row["evidence"], "Original graphical reader no longer reproduces its receipt")
+            if selected_owner and (folder / "receipt.json").is_file():
+                raw = json.loads((folder / "receipt.json").read_bytes())
+                require(raw.get("selected_owner_readback") == selected["actual_readback"],
+                        "Original graphical Main/worker readback changed")
         elif focus == "native-owner" and row["test"] != "import":
             raw = json.loads((folder / "receipt.json").read_bytes())
             actual = validate_native_owner(raw, text, source=source, test_sha=digest(project / "tests" / (row["test"] + ".gd")),
@@ -211,11 +234,33 @@ def replay_summary(directory, source, platform, focus, native):
         elif focus == "mainline" and row.get("graphical"):
             raw = row["receipt"]
             require(digest(folder / "receipt.json") == row["receipt_sha256"] and json.loads((folder / "receipt.json").read_bytes()) == raw
-                    and raw.get("checks", 0) >= 45 and raw.get("failures") == []
-                    and [p.get("label") for p in raw.get("probes", [])] == ["held", "expired"], "Retained actual draw controls differ")
-            require(set(raw["framebuffer_files_sha256"]) == {"held.png", "expired.png", "hidden-control.png", "restored.png"}, "Incomplete rendered controls")
-            for image, sha in raw["framebuffer_files_sha256"].items():
-                require(digest(folder / image) == sha, "Actual retained framebuffer changed")
+                    and raw.get("failures") == [] and raw.get("source_revision") == source
+                    and raw.get("engine_sha256") == ENGINE_SHA256[platform]
+                    and raw.get("selected_owner_readback") == {"flight_pacing": True, "coupling_clock": True, "empty_effects": True},
+                    "Actual mounted graphical source/readback differs")
+            require(raw.get("input_hashes"), "Missing mounted graphical input inventory")
+            for name, sha in raw["input_hashes"].items():
+                require(name.startswith("res://") and ".." not in PurePosixPath(name.removeprefix("res://")).parts
+                        and digest(project / name.removeprefix("res://")) == sha, "Mounted graphical source byte differs")
+            if row["test"] == "test_workbench_retained_water_hold_native":
+                require(raw.get("checks", 0) >= 45 and raw.get("schema") == "pubpres-retained-water-native-v1"
+                        and [p.get("label") for p in raw.get("probes", [])] == ["held", "expired"], "Retained actual draw controls differ")
+                require(set(raw["framebuffer_files_sha256"]) == {"held.png", "expired.png", "hidden-control.png", "restored.png"}, "Incomplete rendered controls")
+                for image, sha in raw["framebuffer_files_sha256"].items():
+                    require(digest(folder / image) == sha, "Actual retained framebuffer changed")
+            else:
+                require(row["test"] == "test_workbench_continuous_actor_pick" and raw.get("checks", 0) >= 22
+                        and raw.get("schema") == "pubpres-continuous-actor-pick-v1", "Unknown mounted graphical case")
+                rows = raw.get("records", [])
+                require(len(rows) == 5 and [r.get("label") for r in rows[:4]] == ["visible_continuous_origin", "opaque_member_pixel", "foreign_owner", "restored_original_owner"]
+                        and [r.get("selected") for r in rows[:4]] == [4, 0, 0, 4]
+                        and [r.get("expected") for r in rows[:4]] == [4, 0, 0, 4]
+                        and all(r.get("physical_step") == 0 for r in rows[:4]), "Actual Select and refusal population differs")
+                for index, r in enumerate(rows[:4]):
+                    require(r.get("mask_session") == r.get("session", -2) + (1 if index == 2 else 0)
+                            and all(r.get(k, 0) > 0 for k in ("session", "epoch", "world")), "Select owner adversary differs")
+                require(rows[4].get("framebuffer") == "continuous-pick.png"
+                        and digest(folder / "continuous-pick.png") == rows[4].get("sha256"), "Select framebuffer changed")
     for key in ("source_mutations", "import_source_mutations", "final_source_mutations"):
         if key in proof:
             require(proof[key] == [], "Execution changed authored inputs")
@@ -228,6 +273,44 @@ def remote_head():
     value = git("ls-remote", "origin", "refs/heads/" + request.BRANCH).split()
     require(len(value) == 2 and value[1] == "refs/heads/" + request.BRANCH, "Missing principal branch")
     return value[0]
+
+
+def replay_native_gate(directory, source, kind):
+    require((directory / "source.txt").read_text().strip() == source,
+            "Original native gate belongs to another source")
+    name = "thread-sanitizer.log" if kind == "ownership" else kind + ".log"
+    path = directory / name
+    text = path.read_text(encoding="utf-8", errors="replace")
+    rows = re.findall(r'^PUBPRES_POOL_LIFETIME_RESULT (.+)$', text, re.M)
+    require(len(rows) == 1 and json.loads(rows[0]) == {"checks": 509, "failures": []},
+            "Original native ownership/lifetime population did not complete")
+    require(not re.search(r'ERROR: (AddressSanitizer|LeakSanitizer)|WARNING: ThreadSanitizer|runtime error:', text),
+            "Original native sanitizer evidence contains an error")
+    if kind != "ownership":
+        require("192 tests passed" in text and "RENDER_COPY_QUALIFICATION " in text,
+                "Original complete World/publication test population is absent")
+        value = json.loads(re.findall(r'^RENDER_COPY_QUALIFICATION (.+)$', text, re.M)[0])
+        require(value.get("assertions") == 153284 and value.get("failures") == 0,
+                "Original material publication assertions did not complete")
+    return {"source": source, "log_sha256": digest(path), "lifetime_checks": 509,
+            "actual_process_success_authenticated": True, "raw_terminal_evidence_replayed": True}
+
+
+def verify_published_lfs(output, child, manifests):
+    # A new LFS store prevents our local upload cache from satisfying this read.
+    # This read uses the ordinary repository remote after its exact child exists.
+    storage = output / "fresh-remote-lfs"
+    require(not storage.exists(), "Remote runtime replay must start with an empty LFS store")
+    git("-c", "lfs.storage=" + str(storage), "lfs", "fetch", "origin", child,
+        "--include=" + ",".join(sorted(common.NATIVE.values())), "--exclude=")
+    result = {}
+    for platform, manifest in manifests.items():
+        sha = manifest["sha256"]
+        path = storage / "objects" / sha[:2] / sha[2:4] / sha
+        require(path.is_file() and path.stat().st_size == manifest["size"] and digest(path) == sha,
+                "Published remote runtime failed independent fresh-store retrieval")
+        result[platform] = {"sha256": sha, "bytes": manifest["size"], "fresh_store_retrieval_verified": True}
+    return result
 
 
 def main():
@@ -248,6 +331,18 @@ def main():
     report = {"schema": "pubpres-mainline-guarded-publication-v1", "parent": parent, "build": build, "qualification": qualified,
               "projection": projection, "platforms": {}, "physical_acceptance": "HOLD", "merge_authorized": False, "published": False}
     common.write_json(output / "PUBLICATION.json", report)
+    report["native_gates"] = {}
+    for kind in ("normal", "sanitizers", "ownership"):
+        folder = output / ("native-" + kind)
+        name = f"pubpres-mainline-native-{kind}-{build['run']}-{build['attempt']}"
+        archive = acquire(api, build_artifacts, name, folder, build["run"], build["source"])
+        report["native_gates"][kind] = {"artifact": archive,
+            "replay": replay_native_gate(folder, build["source"], kind)}
+    report["cross_feature_evidence_scope"] = {
+        "all_six_exact_source_jobs_authenticated_success": True,
+        "original_semantic_readers_executed_by_each_job": True,
+        "raw_feature_readers_replayed_by_this_publisher": False,
+        "final_delivery_reexecutes_all_features_and_independent_package_readers": True}
     manifests = {}
     for platform in ("linux", "windows"):
         runtime_folder = output / (platform + "-runtime")
@@ -276,6 +371,7 @@ def main():
                 "manifest_sha256": digest(original / "PUBPRES-RUNTIME.json"), "dependency_sha256": digest(original / "GODOT-CPP-DEPENDENCY.json"),
                 "godot_cpp_library_sha256": native["godot_cpp_library_sha256"], "log_sha256": native["log_sha256"]},
             "native_input_binding": binding, "qualification": {"source": qualified["source"], "run": qualified["run"], "attempt": qualified["attempt"], "outcomes": outcomes},
+            "native_gates": report["native_gates"], "cross_feature_evidence_scope": report["cross_feature_evidence_scope"],
             "publication_source_comparison": projection, "publication_branch": request.BRANCH,
             "publication_workflow": WORKFLOW, "publication_run": os.environ["GITHUB_RUN_ID"], "publication_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
             "workflow_run": str(build["run"]), "workflow_attempt": str(build["attempt"]),
@@ -294,6 +390,10 @@ def main():
         original = output / (platform + "-runtime") / "C"
         shutil.copyfile(original / Path(common.NATIVE[platform]).name, ROOT / common.NATIVE[platform])
         common.write_json(ROOT / common.MANIFEST[platform], manifest)
+    sys.path.insert(0, str(ROOT / "tools/ci"))
+    from check_repository import verify_runtime
+    for manifest in manifests.values():
+        require(verify_runtime(ROOT, manifest) == [], "Current repository native provenance reader refused publication")
     git("add", "--", *sorted(PATHS))
     require(set(git("diff", "--cached", "--name-only").splitlines()) == PATHS, "Staged publication escaped the exact four runtime paths")
     for platform, manifest in manifests.items():
@@ -310,6 +410,9 @@ def main():
     git("push", "origin", "HEAD:refs/heads/" + request.BRANCH)
     require(remote_head() == child, "Published branch identity does not match its exact child")
     report.update(published=True, commit=child, tree=git("rev-parse", "HEAD^{tree}"), changed_paths=sorted(PATHS))
+    common.write_json(output / "PUBLICATION.json", report)
+    report["remote_lfs_retrieval"] = verify_published_lfs(output, child, manifests)
+    require(remote_head() == child, "Principal branch changed during final remote runtime verification")
     common.write_json(output / "PUBLICATION.json", report)
     print(json.dumps({"published": True, "parent": parent, "commit": child, "tree": report["tree"], "physical_acceptance": "HOLD"}))
 

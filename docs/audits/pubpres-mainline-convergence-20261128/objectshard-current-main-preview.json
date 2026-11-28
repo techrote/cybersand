@@ -1,0 +1,48 @@
+{
+  "schema": "pubpres-mainline-objectshard-readonly-preview-v1",
+  "observed_utc": "2026-11-28T10:45:29Z",
+  "pubpres_checkpoint": "7ec95a34bd6229286e158b7500093b7c5140882a",
+  "pubpres_tree": "99c886ba518aaf75e81738071dc4ed48a675a6dc",
+  "objectshard_application": "c4e10e3ca629c491f7340c6f383adcc347200fa5",
+  "objectshard_tree": "e88fd1a1d89d10bf4482cb619174325390ced44d",
+  "objectshard_parents": [
+    "7dc6d53b5e92157e5bfa2e0f52042bbcc2fc0390",
+    "50e3bcb839211eac2abe1e065750cbcba4d36f8c"
+  ],
+  "objectshard_qualified_previous_application": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "common_ancestor": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "command": [
+    "git",
+    "merge-tree",
+    "--write-tree",
+    "--name-only",
+    "--messages",
+    "7ec95a34bd6229286e158b7500093b7c5140882a",
+    "c4e10e3ca629c491f7340c6f383adcc347200fa5"
+  ],
+  "exit_code": 1,
+  "preview_tree": "45058529364ec14ecd94d5d85f484204d9e3f911",
+  "conflicted_paths": [
+    ".gitattributes",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "godot/native_extension/cyber_native_cell_world.cpp",
+    "godot/scripts/main.gd",
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/simulation_worker.gd",
+    "godot/shaders/material_palette.gdshader",
+    "tools/material_catalogue/compatibility.py"
+  ],
+  "stdout_sha256": "009596201514442c83dae3ac79a0c9e724dfda3e0b2c9372e99630d7f524b7b7",
+  "stdout": "45058529364ec14ecd94d5d85f484204d9e3f911\n.gitattributes\ngodot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\ngodot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\ngodot/addons/cybersand_native/runtime-provenance.json\ngodot/addons/cybersand_native/runtime-provenance.linux.json\ngodot/native_extension/cyber_native_cell_world.cpp\ngodot/scripts/main.gd\ngodot/scripts/shared_workbench.gd\ngodot/scripts/simulation_worker.gd\ngodot/shaders/material_palette.gdshader\ntools/material_catalogue/compatibility.py\n\nAuto-merging .gitattributes\nCONFLICT (content): Merge conflict in .gitattributes\nAuto-merging README.md\nAuto-merging docs/README.md\nAuto-merging docs/architecture/data-ownership-and-lifetimes.md\nAuto-merging docs/operations/cybersand-codex-development-handover.md\nAuto-merging docs/reference/retrieval-corpus.json\nAuto-merging docs/reference/retrieval-index.md\nAuto-merging docs/reference/status-and-roadmap.md\nAuto-merging godot/.godot/global_script_class_cache.cfg\nAuto-merging godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\nCONFLICT (content): Merge conflict in godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll\nAuto-merging godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\nCONFLICT (content): Merge conflict in godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\nAuto-merging godot/addons/cybersand_native/runtime-provenance.json\nCONFLICT (content): Merge conflict in godot/addons/cybersand_native/runtime-provenance.json\nAuto-merging godot/addons/cybersand_native/runtime-provenance.linux.json\nCONFLICT (content): Merge conflict in godot/addons/cybersand_native/runtime-provenance.linux.json\nAuto-merging godot/native_extension/cyber_native_cell_world.cpp\nCONFLICT (content): Merge conflict in godot/native_extension/cyber_native_cell_world.cpp\nAuto-merging godot/native_extension/cyber_native_cell_world.hpp\nAuto-merging godot/scripts/feature_launcher.gd\nAuto-merging godot/scripts/main.gd\nCONFLICT (content): Merge conflict in godot/scripts/main.gd\nAuto-merging godot/scripts/physical_actor_session.gd\nAuto-merging godot/scripts/rapier_physics_bridge.gd\nAuto-merging godot/scripts/shared_workbench.gd\nCONFLICT (content): Merge conflict in godot/scripts/shared_workbench.gd\nAuto-merging godot/scripts/simulation_worker.gd\nCONFLICT (content): Merge conflict in godot/scripts/simulation_worker.gd\nAuto-merging godot/scripts/workbench_paint_editor_controller.gd\nAuto-merging godot/scripts/workbench_physics_bridge.gd\nAuto-merging godot/shaders/material_palette.gdshader\nCONFLICT (content): Merge conflict in godot/shaders/material_palette.gdshader\nAuto-merging native/include/cybersand/world.hpp\nAuto-merging native/src/world.cpp\nAuto-merging tools/material_catalogue/compatibility.py\nCONFLICT (content): Merge conflict in tools/material_catalogue/compatibility.py\n",
+  "stderr": "",
+  "checkout_or_branch_changed": false,
+  "combined_runtime_built": false,
+  "combined_application_executed": false,
+  "compatible_claimed": false,
+  "objectshard_pr_state": "open Draft; active separate accepted-main integration; physical owner acceptance pending",
+  "scope": "Read-only source movement update. Previous frozen application preview is retained. Neither principal implementation branch was changed."
+}

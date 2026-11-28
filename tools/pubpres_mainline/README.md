@@ -28,9 +28,11 @@ must preserve all authored source; the original runtime manifest remains in Git.
 
 The six cases cover the first additional actor after startup, warmed reset with
 Fire off, warmed reset with Fire on, placement near authored material, restoration
-of the authored start, and a further placement after restoration. A real 100 ms
-W keyboard pulse establishes input acceptance and application; neutral flight
-then measures three seconds of operating cadence. C remains held during that
+of the authored start, and a further placement after restoration. A real W
+keyboard pulse lasts at least 100 ms and remains held until its first observed
+physical application; it may be longer on a slow arm. The complete observation
+window lasts three seconds, including that pulse and subsequent neutral flight.
+C remains held during that
 interval, so the real Thruster control determines whether Fire is emitted.
 No physical pose, velocity, simulation counter or native credit is injected.
 
@@ -72,6 +74,57 @@ Local Python clock-join tests run with:
 ```sh
 python -m unittest tools/pubpres_mainline/test_spawn_reduction.py
 ```
+
+## Registered Windows comparison
+
+`run_spawn_pair.py` executes the committed `spawn-registration.json` population
+on one actual Windows runner. Its source order is owner-reference P, candidate C,
+candidate C, P. Both unchanged Wave512 and Mixed2048 starts execute in each arm.
+P uses recording off; each C arm runs both recorder modes, with their order
+reversed in the second C arm. This provides two source comparisons with recording
+off and two independent recording-on observations for exact candidate step tails.
+Every process still executes all six production spawn, reset and restore cases.
+
+```sh
+python tools/pubpres_mainline/run_spawn_pair.py \
+  --owner-source /frozen/9f212725/checkout --candidate-source /exact/candidate \
+  --owner-runtime /original/P/build --candidate-runtime /original/C/build \
+  --engine /pinned/Godot_v4.7-stable_win64.exe \
+  --output /new/paired/output --budget-seconds 1200
+```
+
+The pair reader requires the same committed observer and engine, original pinned
+native compiler/dependency cohort, exact application identities, authored setup,
+Water configuration, worker count, adapter, accepted requests and keyboard route.
+Missing, reordered, refused or failed arms invalidate comparative qualification;
+their raw receipts are retained. Each source keeps its own admitted native
+runtime. No source file from P is substituted into the candidate application.
+
+Request, observed owner admission, coherent draw callback and first-input clocks
+are comparable with recording off. The fixture's independently bounded draw
+callback observation supplies draw-gap distributions in both modes. Process-frame
+physical samples remain labelled upper bounds; they cannot supply an exact
+reference physical-gap distribution. Exact candidate recording-on step gaps and
+their deficits against 100 ms p95/250 ms maximum are reported separately.
+Completed Rapier rate, native tick rate and simulated seconds per wall second use
+their distinct actual counters and the admitted bridge's fixed delta. The
+admission/final `manual_step_count()` delta must equal the separately recorded
+session completion delta. Gap percentiles use the established nearest-rank
+convention, including short adverse tails. A primary per-case gap ends inside
+that case's observation, preserving the interval across its request without
+attributing the next spawn to the previous tail. The original both-boundary
+distribution remains explicit context. The unfinished suffix is a right-censored
+lower bound; target maximum deficits include it. Whole-recording maxima remain
+available, so no adverse interval is removed from the evidence.
+
+The two repetitions are descriptive, not a significance test. Initial authored
+worlds and event routes are matched, while the simulation advances normally
+between requests; later requests are not forced onto identical physical steps.
+The separate registered M/P/C gameplay comparison retains its stronger equal-step
+outcome oracle. None of these hosted ANGLE callbacks establishes physical NVIDIA
+presentation or owner acceptance. All evidence other than reproducible imported
+template copies is hashed into `EVIDENCE-MANIFEST.json`; each template's source
+and exact native/observer overlays remain bound in `source-custody.json`.
 
 The existing `verify_pubpres_owner_gameplay_rotation.gd` test also verifies the
 new phase schema while retaining its actual bounded-file and loss-accounting

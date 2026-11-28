@@ -1,0 +1,27 @@
+{
+  "schema": "pubpres-mainline-original-local-evidence-v1",
+  "scope": "Original local engineering observations, including adverse arms. Not final-source Windows or physical-owner acceptance.",
+  "archives": [
+    {
+      "role": "spawn",
+      "filename": "spawn-original-local-evidence.tar.gz",
+      "git_blob": "cd43bf0bc0c89f163873ace5599d5cd2e93b409f",
+      "sha256": "3b98692ecd8e95ea83d6e1df2c2102776a74d0a8adeeccd80f41ae24bcdec951",
+      "bytes": 1261587
+    },
+    {
+      "role": "presentation",
+      "filename": "retained-water-original-local-evidence.tar.gz",
+      "git_blob": "dfccdfffde327d2be8bfb6ff4ee819cd8203f6d9",
+      "sha256": "6afbef1a2c5efde0363ced44efd534cd38be197def38f1be3a519eb42e67cdc7",
+      "bytes": 859227
+    },
+    {
+      "role": "presentation-followup",
+      "filename": "presentation-complete-local-evidence.tar.gz",
+      "git_blob": "e299cb70f480986dd23b76d91e09dcd4eb24c3a2",
+      "sha256": "519a5fb08fd4d9f8aa1c55eecd37eaee605796a1ab3f74a3db966d10cd6da345",
+      "bytes": 964518
+    }
+  ]
+}
