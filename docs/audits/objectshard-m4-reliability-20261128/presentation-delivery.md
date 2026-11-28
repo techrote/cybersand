@@ -194,6 +194,17 @@ These add coverage; no original registered case or assertion is removed.
 
 ## Portable delivery route and remaining gates
 
+The first explicit preparation smoke, [run 46096195855](https://github.com/techrote/cybersand/actions/runs/46096195855)
+at source `bd97c2599eb86958ee8e8d9c8e6ee5c6935edb9b`, correctly refused readiness
+on both actual renderers: its requested one-row target did not produce an image
+of that size. Shader compilation and temporary viewport retirement completed,
+but this is a **failed preparation qualification**. Existing material parity,
+texture identity and shader guards passed. The bounded repair uses a 2×2
+target, records actual target/image dimensions and retains the positive Wood
+colour/alpha plus transparent Empty assertions. Linux artifact `15243552307`
+and Windows artifact `15243632042` preserve the failed receipts; the repair
+requires a new actual-renderer execution.
+
 The established `[objectshard-m4-publish]` path source-leases the current
 principal branch, builds fresh Linux/Windows native extensions, verifies both
 build/runtime receipts and publishes exactly the two binaries plus their two

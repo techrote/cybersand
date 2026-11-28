@@ -82,7 +82,9 @@ static func _prepare_materials(tree: SceneTree) -> void:
 	_material_preparation.before_draw_usec = Time.get_ticks_usec()-int(_material_preparation.started_usec)
 	var view := SubViewport.new()
 	view.name = "ObjectShardMaterialPreparation"
-	view.size = Vector2i(2,1)
+	# Godot render targets normalize each dimension to at least two pixels.
+	# Keep the two material witnesses on the first row of a supported target.
+	view.size = Vector2i(2,2)
 	view.transparent_bg = true
 	view.render_target_update_mode = SubViewport.UPDATE_ONCE
 	tree.root.add_child(view)
@@ -113,9 +115,11 @@ static func _prepare_materials(tree: SceneTree) -> void:
 	var image: Image = view.get_texture().get_image()
 	_material_preparation.first_draw_usec = Time.get_ticks_usec()-draw_started
 	_material_preparation.shader_instance_id = material.shader.get_instance_id()
-	_material_preparation.rendered = image != null and image.get_size()==Vector2i(2,1) \
+	_material_preparation.target_size = view.size
+	_material_preparation.image_size = image.get_size() if image != null else Vector2i.ZERO
+	_material_preparation.rendered = image != null and image.get_size()==Vector2i(2,2) \
 		and image.get_pixel(0,0).a>.99 and image.get_pixel(0,0).g>1.0/255.0 and image.get_pixel(1,0).a<=1.0/255.0
-	if image != null and image.get_size()==Vector2i(2,1):
+	if image != null and image.get_size()==Vector2i(2,2):
 		var occupied: Color = image.get_pixel(0,0)
 		_material_preparation.occupied_rgba = [occupied.r,occupied.g,occupied.b,occupied.a]
 		_material_preparation.empty_alpha = image.get_pixel(1,0).a
