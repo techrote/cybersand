@@ -30,6 +30,10 @@ import campaign_request as request
 ROOT = Path(__file__).resolve().parents[2]
 REPOSITORY = "techrote/cybersand"
 WORKFLOW = ".github/workflows/pubpres-mainline.yml"
+INSPECTION_WORKFLOW = ".github/workflows/pubpres-mainline-inspect.yml"
+# Exact read-only Q2 inspector repair: add only strategy.max-parallel: 2.
+# This is deliberately not a general workflow path exception.
+INSPECTION_SCHEDULING_BLOBS = ("45a52c76d35bbe5395d296eebae46ae76c82aebe", "ee280abbd5726ccd98504379b61437b8304906f3")
 FOCUSES = ("frozen", "water", "members", "held-placement", "mainline", "native-owner",
            "selected-water", "selected-members", "selected-held-placement")
 FEATURES = ("ramcache", "strata", "shared")
@@ -161,17 +165,28 @@ def source_projection(reference):
     require(subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor", reference, "HEAD"], check=False).returncode == 0,
             "Original qualified source is not an ancestor")
     changed = git("diff", "--name-only", reference, "HEAD").splitlines()
+    inspector_transition = None
+    if INSPECTION_WORKFLOW in changed:
+        before = git("ls-tree", reference, "--", INSPECTION_WORKFLOW).split()
+        after = git("ls-tree", "HEAD", "--", INSPECTION_WORKFLOW).split()
+        require(before == ["100644", "blob", INSPECTION_SCHEDULING_BLOBS[0], INSPECTION_WORKFLOW]
+                and after == ["100644", "blob", INSPECTION_SCHEDULING_BLOBS[1], INSPECTION_WORKFLOW],
+                "Inspector differs from the exact reviewed scheduling-only transition")
+        inspector_transition = {"path": INSPECTION_WORKFLOW, "before_blob": before[2], "after_blob": after[2],
+                                "change": "Add strategy.max-parallel: 2; read-only artifact contents unchanged"}
     # Publication plumbing and dated engineering evidence may follow successful
     # execution. Every production byte, original reader and actual q adapter is
     # immutable across that join. Final delivery executes its complete source.
     allowed = {request.REQUEST, WORKFLOW, "tools/pubpres_mainline/publish_runtime.py",
                "tools/pubpres_mainline/test_publication.py", "tools/pubpres_mainline/publish_local_evidence.py",
                "tools/pubpres_mainline/local_evidence.json"}
-    require(all(name in allowed or name.startswith("docs/audits/") for name in changed),
+    require(all(name in allowed or name.startswith("docs/audits/")
+                or (name == INSPECTION_WORKFLOW and inspector_transition is not None) for name in changed),
             "Unqualified source change after the exact successful application campaign")
     return {"qualified_source": reference, "qualified_tree": git("rev-parse", reference + "^{tree}"),
             "publication_parent": git("rev-parse", "HEAD"), "publication_parent_tree": git("rev-parse", "HEAD^{tree}"),
-            "non_execution_changes": changed, "production_and_qualification_bytes_identical": True}
+            "non_execution_changes": changed, "production_and_qualification_bytes_identical": True,
+            "reviewed_inspector_scheduling_transition": inspector_transition}
 
 
 def replay_summary(directory, source, platform, focus, native):

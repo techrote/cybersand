@@ -164,5 +164,61 @@ class OriginalEvidenceTransportTests(unittest.TestCase):
             evidence.validate_record(changed)
 
 
+class InspectionSchedulingProjectionTests(unittest.TestCase):
+    """Only the reviewed read-only inspector scheduling repair can join Q4."""
+
+    def project(self, before=None, after=None, extra=()):
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        reference = "a" * 40
+        path = publication.INSPECTION_WORKFLOW
+        old, new = publication.INSPECTION_SCHEDULING_BLOBS
+        replies = {
+            ("diff", "--name-only", reference, "HEAD"): "\n".join([path, *extra]),
+            ("ls-tree", reference, "--", path): before or f"100644 blob {old}\t{path}",
+            ("ls-tree", "HEAD", "--", path): after or f"100644 blob {new}\t{path}",
+            ("rev-parse", reference + "^{tree}"): "b" * 40,
+            ("rev-parse", "HEAD"): "c" * 40,
+            ("rev-parse", "HEAD^{tree}"): "d" * 40,
+        }
+        with patch.object(publication, "git", side_effect=lambda *args: replies[args]), \
+                patch.object(publication.subprocess, "run", return_value=SimpleNamespace(returncode=0)):
+            return publication.source_projection(reference)
+
+    def test_current_inspector_is_exactly_the_single_reviewed_line_addition(self):
+        import hashlib
+        raw = (publication.ROOT / publication.INSPECTION_WORKFLOW).read_bytes()
+        line = b"      max-parallel: 2\n"
+        self.assertEqual(raw.count(line), 1)
+        self.assertIn(b"    strategy:\n      fail-fast: false\n" + line + b"      matrix:\n", raw)
+        original = raw.replace(line, b"", 1)
+
+        def blob(data):
+            return hashlib.sha1(b"blob " + str(len(data)).encode("ascii") + b"\0" + data).hexdigest()
+
+        self.assertEqual((blob(original), blob(raw)), publication.INSPECTION_SCHEDULING_BLOBS)
+        result = self.project()
+        self.assertEqual(result["reviewed_inspector_scheduling_transition"]["before_blob"], blob(original))
+        self.assertEqual(result["reviewed_inspector_scheduling_transition"]["after_blob"], blob(raw))
+        self.assertIs(result["production_and_qualification_bytes_identical"], True)
+
+    def test_foreign_reversed_same_blob_and_file_mode_changes_refuse(self):
+        path = publication.INSPECTION_WORKFLOW
+        old, new = publication.INSPECTION_SCHEDULING_BLOBS
+        for before, after in (("0" * 40, new), (old, "0" * 40), (new, old), (old, old), (new, new)):
+            with self.subTest(before=before, after=after), self.assertRaisesRegex(ValueError, "exact reviewed"):
+                self.project(f"100644 blob {before}\t{path}", f"100644 blob {after}\t{path}")
+        for mode, kind in (("100755", "blob"), ("120000", "blob"), ("040000", "tree")):
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, "exact reviewed"):
+                self.project(after=f"{mode} {kind} {new}\t{path}")
+
+    def test_exact_inspector_repair_cannot_carry_application_or_qualification_changes(self):
+        for path in ("godot/scripts/main.gd", "native/src/world.cpp",
+                     "tools/pubpres_mainline/run_focused.py", "tools/pubpres_mainline/qualification.py",
+                     ".github/workflows/another.yml"):
+            with self.subTest(path=path), self.assertRaisesRegex(ValueError, "Unqualified source change"):
+                self.project(extra=(path,))
+
+
 if __name__ == "__main__":
     unittest.main()
