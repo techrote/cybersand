@@ -146,6 +146,7 @@ FOLLOWUP_DRIVER_PATHS = frozenset({
     "tools/pubpres_mainline/common.py",
     "tools/pubpres_mainline/run_spawn_pair.py",
     "tools/pubpres_mainline/test_spawn_reader_binding.py",
+    "tools/pubpres_mainline/test_evaluator_boundaries.py",
     ".github/workflows/pubpres-mainline-spawn-followup.yml",
 })
 
