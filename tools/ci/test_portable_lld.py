@@ -174,7 +174,7 @@ class PortableLLDTests(unittest.TestCase):
                 return_value=subprocess_result(0, b"LLD 23.1.0 (fixture)\n")) as run:
             executed = portable_lld.verify(self.root, execute=True)
         self.assertEqual(staged, executed)
-        self.assertEqual(Path(run.call_args.args[0][0]), self.root / "bin/ld.lld.exe")
+        self.assertTrue(Path(run.call_args.args[0][0]).samefile(self.root / "bin/ld.lld.exe"))
         with self._pinned(), self._compiler(), mock.patch.object(
                 portable_lld.subprocess, "run",
                 return_value=subprocess_result(0, b"LLD 99.0.0\n")):
