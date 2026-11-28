@@ -2,7 +2,8 @@ extends SceneTree
 ## Real Workbench, real HTTPRequest, real native worker. Input is routed through
 ## embedded Window/Button hit testing; never substitutes close_requested.emit().
 ## The fixture profile and every endpoint are created by the Python loopback runner.
-const Setup = preload("res://scripts/workbench_setup.gd")\nconst Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const CANARY := "art-fixture-private-key::2026-QA"
 const RESPONSE_CHUNK_BYTES := 256*1024
 const MIB_RESPONSE_MODELS := ["fixture-large","fixture-large-error","fixture-large-envelope-error","fixture-malicious-usage"]
