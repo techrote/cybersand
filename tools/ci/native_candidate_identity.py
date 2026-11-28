@@ -10,6 +10,7 @@ from pathlib import Path
 import subprocess
 
 NAME = "candidate-provenance.json"
+REUSE_NAME = "candidate-reuse-provenance.json"
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 
 
