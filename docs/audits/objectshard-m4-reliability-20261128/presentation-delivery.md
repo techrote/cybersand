@@ -175,7 +175,7 @@ campaign; the failed first campaign is not a native qualification pass.
 | Ordinary Tower collapse, independent reference barrel | Existing ordinary Workbench completion plus new `test_object_shard_m4_remote_barrel`; natural contact and remote support-cut scopes remain distinct from the unreconstructed owner sequence. |
 | Low-inertia angular fragment / bounded refusal | New actual Rapier `test_object_shard_fragment_motion`, actual native-ACK `test_object_shard_m4_small_fragment_chain`, native contact/coordinator coverage and A's source-matched integration witnesses. |
 | Moving cut, fragmentation, geometry/mass and explicit settle | Existing completion, fragment/reabsorption, lifecycle/adverse/fuzz tests and independent material accounting. |
-| Combustion, Water extinguishing and Sand lodging | Existing long-burn, same-World physical chain, mixed profiles and retained positive lodging witness; source-sensitive applicable tests rerun. |
+| Combustion, Water extinguishing and Sand lodging | Existing long-burn and registered `test_object_shard_lab` exchange witness execute in source and extracted payload: actual Sand enters Cargo with exact World+Cargo quantity, and Water extinguishes the same surviving Wood incarnation. Mixed profiles separately prove relocation. |
 | Semantic throughput and body cohorts | Matched B controls plus existing disabled/zero-body, Tower, stress, paused, recorded/unrecorded profile routes; headless/render callback/physical acceptance scopes stay separate. |
 | Active/paused/Held pan, zoom, resize | New mounted `test_object_shard_m4_camera_lifecycle`, including an active lease, cropped initial view, far pan on a 1,024 World and actual Restore. Graphical in source render and pristine extracted Windows replay. Injected Held is an inspection fixture, not reproduction of the owner's original sequence. |
 | Native RG8 and detached finish | Mounted native camera lifecycle checks exact material bytes plus synthetic actual-framebuffer parity fixture on Linux and Windows. |
@@ -204,6 +204,31 @@ target, records actual target/image dimensions and retains the positive Wood
 colour/alpha plus transparent Empty assertions. Linux artifact `15243552307`
 and Windows artifact `15243632042` preserve the failed receipts; the repair
 requires a new actual-renderer execution.
+The downloaded artifact hashes and full failed preparation receipts are
+retained as [Linux](presentation-smoke/warmup-failed-linux.json) and
+[Windows](presentation-smoke/warmup-failed-windows.json). The final-COM local
+[camera replay](presentation-smoke/local-final-com-camera.json) passed 210
+checks, including the active-lease Held crop/resize case and explicit headless
+preparation admission. Its local compiler drift and non-graphical scope remain
+recorded separately from hosted qualification.
+
+The existing shipped-launch process and per-operation watchdogs are 300
+seconds, and the shared graphical case watchdog is 1,200 seconds. The earlier
+software Windows cold ordinary/body captures totalled about 84 seconds. No
+watchdog has been enlarged for this change: final clean extracted launches
+must complete under the established deadlines, including their actual cold
+preparation. These are watchdogs, not performance acceptance thresholds.
+
+The second preparation [run 46096628357](https://github.com/techrote/cybersand/actions/runs/46096628357)
+at source `19485bbb5e474f0d4d90c40617a36b3120552f5b` established an actual
+2×2 rendered target, opaque Wood `(0.270588, 0.2, 0.152941, 1)` and transparent
+Empty on Linux; preparation reached ready and retired its viewport in 1.733
+seconds. Its subsequent synthetic body fixture failed because its clipped
+overlay had zero size. Both downloaded body PNGs were entirely transparent.
+The fixture now supplies the same explicit view-sized overlay as the existing
+parity fixture and production layout, and records sampled output pixels. Its
+opaque/transparent assertions remain unchanged. This second failed fixture is
+not a completed warm-up qualification and requires another actual execution.
 
 The established `[objectshard-m4-publish]` path source-leases the current
 principal branch, builds fresh Linux/Windows native extensions, verifies both

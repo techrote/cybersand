@@ -37,7 +37,10 @@ func _capture(view: SubViewport,label: String) -> Image:
 	await process_frame
 	await RenderingServer.frame_post_draw
 	var image: Image = view.get_texture().get_image()
-	var row: Dictionary = {"label":label,"elapsed_usec":Time.get_ticks_usec()-started}
+	var centre: Color = image.get_pixel(32,32)
+	var row: Dictionary = {"label":label,"elapsed_usec":Time.get_ticks_usec()-started,
+		"size":image.get_size(),"centre_rgba":[centre.r,centre.g,centre.b,centre.a],
+		"empty_alpha":image.get_pixel(0,0).a}
 	if not output.is_empty():
 		var path: String = output.path_join(label+".png")
 		_check(image.save_png(path)==OK,"save rendered "+label)
@@ -80,6 +83,7 @@ func _run() -> void:
 	host.add_child(host.world_view)
 	var overlay: Control = Overlay.new()
 	overlay.host = host
+	overlay.size = host.world_view.size
 	host.world_view.add_child(overlay)
 	overlay.present(_publication(1))
 	var first: Image = await _capture(view,"prepared-first-body")
@@ -93,6 +97,7 @@ func _run() -> void:
 	_check(Overlay.material_preparation_observation()==prepared,"scene retirement and repeated admission do not restart preparation")
 	overlay = Overlay.new()
 	overlay.host = host
+	overlay.size = host.world_view.size
 	host.world_view.add_child(overlay)
 	overlay.present(_publication(2))
 	var replacement: Image = await _capture(view,"prepared-replacement-body")

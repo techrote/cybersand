@@ -100,6 +100,10 @@ only for a sustained receipt wait. Internal phases remain in the tooltip and
 exported diagnostics. **Held** is placed first in the status line, with its
 reason and the visible route **Structures → Save diagnostics; Restore start**.
 A capacity refusal still preserves the owned material and remains explicit.
+If the reason is **MaterialPreparationFailed**, save diagnostics, close the
+application and start it again. That preparation failure names the restart
+route in the status line; **Restore start** does not restart process-local
+shader preparation.
 
 ## First collapse
 
@@ -189,8 +193,9 @@ still be displayed poorly. The candidate's diagnostics separate:
 
 Renderer callbacks establish that the engine submitted work; they do not prove
 the exact frame displayed by the NVIDIA driver. Headless runs cannot establish
-displayed FPS. Do not use a headless 60 Hz callback as acceptance of the earlier
-owner-observed active-body rate below 10 FPS.
+displayed FPS. The owner's previous diagnostic measured approximately 17–24
+native semantic ticks per second before the protective halt. A headless 60 Hz
+callback cannot establish that physical-machine performance has improved.
 
 Performance recording is **off by default**, including in the portable
 evaluator. Ordinary play retains the full native, Rapier, chemistry and
