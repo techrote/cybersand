@@ -289,10 +289,15 @@ jobs:
                   require(len(matches) == 1 and normalized(matches[0]["path"]) == normalized(expected_path),
                           "Required module is absent or contradictory in the original full loader inventory")
               cleanup = record["cleanup"]
+              # The unchanged observer sets terminated_owned_process only after its owned
+              # Process.Kill() and a successful bounded WaitForExit(5000). ExitCode is an
+              # informational property and can serialize as null; never reinterpret that
+              # as zero or apply this rule to the natural-exit CMD/feature receipts.
               require(cleanup["terminated_owned_process"] is True and cleanup["environment_restored"] is True
-                      and type(cleanup.get("exit_code")) is int
+                      and "exit_code" in cleanup and (cleanup["exit_code"] is None or type(cleanup["exit_code"]) is int)
                       and not cleanup.get("error") and not record.get("error"), "Module probe did not clean up its own process")
               return {"status": "passed", "pid": record["pid"], "files": rows, "cleanup": cleanup,
+                      "cleanup_exit_code_reported": cleanup["exit_code"] is not None,
                       "scope": "Intentionally terminated owned module probe; distinct from naturally zero-exit shipped CMD runs."}
           
           
@@ -735,7 +740,7 @@ jobs:
           '@
           $driver = $driver.Replace("`r`n", "`n").TrimEnd([char[]]"`r`n") + "`n`n"
           [System.IO.File]::WriteAllText("$env:RUNNER_TEMP/ramcache_strata_published_consumer.py", $driver, [System.Text.UTF8Encoding]::new($false))
-          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_published_consumer.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne '322a33aff10d4b5a466aff0d031d3ac3012aac1b6bf697d7d1f466848fefe63d') { throw 'Independent consumer driver bytes changed' }
+          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_published_consumer.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'dd8a10c9f697e6bcd0d5b3a6f72d4db4a2e1171b5b535933019c69a7054488fd') { throw 'Independent consumer driver bytes changed' }
           $configuration = @'
           {
             "evaluator": {
