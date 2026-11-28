@@ -110,6 +110,8 @@ Dictionary is a deep, recursively frozen copy. Returned profile and packed
 values are independent copies. A short mutex protects comparison and complete
 entry replacement; compilation remains outside the lock. It stores no World,
 physical owner, native handle, material history or presentation identity.
+Unusual script-created Object keys retain their original compiler acceptance but
+bypass reuse, so the cache cannot extend a live object's lifetime.
 
 The direct warmed call observations fell to 12–73 microseconds; first cold
 compilation remains necessary. The independent golden-output, mutation and

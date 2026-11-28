@@ -3,7 +3,8 @@
 Full source compatibility history and portable authoring tools use the accepted
 #794 implementations. New native bytes have an explicit, independently replayed
 build overlay; the original committed manifest and every source blob remain
-recoverable in the clean embedded Git database. No runtime publication is implied.
+recoverable in the clean embedded Git database. The final delivery also verifies
+the separate guarded four-path production publication from that same history.
 """
 from __future__ import annotations
 import argparse
@@ -26,6 +27,7 @@ import ramcache_strata_lab_package as lab
 from package_wave_flow_candidate import omit_regenerated_imports, REGENERATED_RAPIER_IMPORTS
 from package_explore001_candidate import verify_vc_runtime
 import qualification
+import campaign_request
 
 spec = importlib.util.spec_from_file_location('pubpres_original_windows_packager', ROOT / 'tools/pubpres_playability_windows/package_windows.py')
 base = importlib.util.module_from_spec(spec)
@@ -96,6 +98,88 @@ def read_manifest(package):
     return value
 
 
+def publication_identity(source: Path, runtime: Path) -> dict:
+    """Independently inspect the guarded publication retained in portable Git.
+
+    Actions authentication belongs to the source-owned publisher and final
+    independent run audit. This reader establishes its exact committed result,
+    retained production pointers and unchanged build identities without network
+    access or reclassifying the qualification overlay as a publication.
+    """
+    selected = campaign_request.validate_record(json.loads(common.git(
+        source, 'show', 'HEAD:' + campaign_request.REQUEST)))
+    require(selected['phase'] == 'delivery', 'Final evaluator needs a sealed delivery request')
+    entries = common.git(source, 'ls-tree', '-r', '-z', 'HEAD').split(b'\0')
+    sealed = [row for row in entries if row and row.split(b'\t', 1)[1].decode() != campaign_request.REQUEST]
+    require(hashlib.sha256(b'\0'.join(sealed) + b'\0').hexdigest() == selected['payload_sha256'],
+            'Delivery source-tree seal differs')
+    commit = selected['publication_commit']
+    common.git(source, 'merge-base', '--is-ancestor', commit, 'HEAD')
+    parents = common.git(source, 'show', '-s', '--format=%P', commit).decode().split()
+    require(len(parents) == 1, 'Runtime publication must be one ordinary fast-forward child')
+    parent = parents[0]
+    paths = set(common.NATIVE.values()) | set(common.MANIFEST.values())
+    changed = set(common.git(source, 'diff', '--name-only', parent, commit).decode().splitlines())
+    require(changed == paths, 'Runtime publication changed more than its exact four registered paths')
+    original = json.loads((runtime / 'PUBPRES-RUNTIME.json').read_bytes())
+    require(original['source_commit'] == selected['runtime_source'], 'Delivery points to a different original native build')
+    platforms = {}
+    publication_runs = set()
+    for platform in ('linux', 'windows'):
+        for name in (common.NATIVE[platform], common.MANIFEST[platform]):
+            require(common.git(source, 'rev-parse', 'HEAD:' + name) ==
+                    common.git(source, 'rev-parse', commit + ':' + name),
+                    'Delivery source changed a published runtime blob: ' + name)
+        raw = common.git(source, 'show', commit + ':' + common.MANIFEST[platform])
+        manifest = json.loads(raw)
+        pointer = lab.LFS_POINTER.fullmatch(common.git(source, 'show', commit + ':' + common.NATIVE[platform]))
+        require(pointer is not None and pointer[1].decode() == manifest['sha256']
+                and int(pointer[2]) == manifest['size'] and manifest['artifact'] == common.NATIVE[platform],
+                'Published runtime pointer and its provenance disagree')
+        require(manifest.get('kind') == 'source-matched-pubpres-mainline-draft-runtime'
+                and manifest.get('status') == 'validated-development-runtime'
+                and manifest.get('source_input_hash_kind') == 'sha256-canonical-lf'
+                and manifest.get('source_commit') == manifest.get('build_commit') == selected['runtime_source']
+                and manifest.get('source_inputs') == original['source_inputs_sha256']
+                and manifest.get('publication_branch') == campaign_request.BRANCH
+                and manifest.get('publication_workflow') == '.github/workflows/pubpres-mainline.yml',
+                'Production runtime no longer has the reviewed source-bound publication identity')
+        projection = manifest.get('publication_source_comparison', {})
+        require(projection.get('publication_parent') == parent
+                and projection.get('publication_parent_tree') == common.git(source, 'rev-parse', parent + '^{tree}').decode().strip()
+                and projection.get('qualified_source') == selected['qualification_source']
+                and projection.get('production_and_qualification_bytes_identical') is True,
+                'Publication has a different qualified source or parent')
+        for field, expected in (('build_custody', ('runtime', 'source')),
+                                ('qualification', ('qualification', 'source'))):
+            prefix, source_key = expected
+            value = manifest.get(field, {})
+            require(value.get(source_key) == selected[prefix + '_source']
+                    and value.get('run') == selected[prefix + '_run']
+                    and value.get('attempt') == selected[prefix + '_attempt'],
+                    'Published native custody belongs to another declared campaign')
+        require(str(manifest.get('publication_run', '')).isdigit()
+                and int(manifest['publication_run']) > 0
+                and str(manifest.get('publication_attempt', '')).isdigit()
+                and int(manifest['publication_attempt']) > 0, 'Missing guarded publication run identity')
+        publication_runs.add((str(manifest['publication_run']), str(manifest['publication_attempt'])))
+        if platform == 'windows':
+            require(manifest['sha256'] == original['runtime_sha256']
+                    and manifest['size'] == original['runtime_bytes']
+                    and manifest['build_custody'].get('manifest_sha256') == digest(runtime / 'PUBPRES-RUNTIME.json'),
+                    'Delivered Windows runtime is not the separately published original build')
+        platforms[platform] = {'manifest_sha256': hashlib.sha256(raw).hexdigest(),
+                              'native_sha256': manifest['sha256'], 'native_bytes': manifest['size']}
+    require(len(publication_runs) == 1, 'The two runtimes came from different publication jobs')
+    run, attempt = next(iter(publication_runs))
+    return {'schema': 'pubpres-mainline-delivery-publication-v1', 'commit': commit, 'parent': parent,
+            'tree': common.git(source, 'rev-parse', commit + '^{tree}').decode().strip(),
+            'workflow_run': int(run), 'workflow_attempt': int(attempt), 'platforms': platforms,
+            'qualified_source': selected['qualification_source'], 'original_build_source': selected['runtime_source'],
+            'exact_four_path_result_verified': True, 'current_production_pointers_retained': True,
+            'physical_owner_acceptance': 'HOLD', 'mainline_merge_authorized': False}
+
+
 def verify_source(package, record, *, connected_history=True):
     """Verify original Git source plus exactly two declared build-overlay files."""
     source = package / 'source'
@@ -130,6 +214,8 @@ def verify_source(package, record, *, connected_history=True):
     runtime = package / 'provenance/windows'
     native = common.observed_runtime(source, runtime, source / 'godot', 'windows')
     require(native == record.get('runtime'), 'Evaluator runtime observation changed')
+    require(publication_identity(source, runtime) == record.get('native_publication'),
+            'Separate guarded runtime publication identity changed')
     overrides = {common.NATIVE['windows'], common.MANIFEST['windows']}
     materialized = record.get('materialized_dependencies', {})
     require(set(materialized) == {common.RAPIER['windows'], 'godot/tools/gentek_reciprocal.exe'},
@@ -198,6 +284,7 @@ def build(args):
     for parent in (common.ACCEPTED_MAIN, common.OWNER_REFERENCE):
         common.git(source, 'merge-base', '--is-ancestor', parent, identity['source_commit'])
     native_record, _ = common.runtime_record(source, args.runtime, 'windows')
+    publication = publication_identity(source, args.runtime)
     output, archive = args.output.resolve(), args.archive.resolve()
     require(not output.exists() and not archive.exists() and not output.is_relative_to(source)
             and not archive.is_relative_to(output), 'Choose fresh external payload/archive destinations')
@@ -247,7 +334,7 @@ def build(args):
               'source_gate_records_sha256': {mode: digest(gates / (mode + '.json')) for mode in modes},
               'extracted_package_qualification': 'pending independent execution',
               'physical_owner_evaluated': False, 'merge_authorized': False,
-              'native_publication': 'Build overlay only; guarded production publication is a separate required gate.'}
+              'native_publication': publication}
     record['files_sha256'] = file_map(output)
     record['file_count'] = len(record['files_sha256'])
     record['expanded_bytes'] = sum((output / name).stat().st_size for name in record['files_sha256'])

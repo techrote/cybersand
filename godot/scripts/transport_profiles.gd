@@ -22,6 +22,19 @@ static var _compiled_profile: Dictionary = {}
 static var _compiled_values := PackedInt32Array()
 static var _compiled_hash := ""
 
+static func _immutable_profile_keys(value: Variant) -> bool:
+	# The older public validator compares str(key), so retain its acceptance
+	# semantics for unusual script-created keys without retaining live Objects.
+	# Ordinary authored/JSON profiles contain only immutable scalar keys.
+	if value is Dictionary:
+		for key: Variant in value:
+			if not (key is String or key is StringName or key is int or key is float): return false
+			if not _immutable_profile_keys(value[key]): return false
+	elif value is Array:
+		for child: Variant in value:
+			if not _immutable_profile_keys(child): return false
+	return true
+
 static func _freeze_profile(value: Variant) -> void:
 	if value is Dictionary:
 		for child: Variant in value.values(): _freeze_profile(child)
@@ -132,7 +145,8 @@ static func resolve(profile: Variant) -> Dictionary:
 	# Validate every public request before considering reuse. Only an exact
 	# previously compiled input can bypass the complete table expansion below;
 	# changed/invalid carrying laws still pass through the original compiler.
-	var cached := _reuse_compiled(profile)
+	var cacheable := _immutable_profile_keys(profile)
+	var cached := _reuse_compiled(profile) if cacheable else {}
 	if not cached.is_empty(): return cached
 	var packed: PackedInt32Array = PackedInt32Array([VERSION])
 	for field_index: int in [6,7]:
@@ -144,7 +158,7 @@ static func resolve(profile: Variant) -> Dictionary:
 				return {"ok":false,"error":"Schema v1 only enables carrying for directed Water → Sand/Dust/Rust pairs"}
 			for i: int in range(6): packed.append(int(values[i]))
 	var identity: String = packed.to_byte_array().hex_encode().sha256_text()
-	_retain_compiled(profile,packed,identity)
+	if cacheable: _retain_compiled(profile,packed,identity)
 	return {"ok":true,"packed":packed,"hash":identity,"profile":profile.duplicate(true)}
 
 static func parse(text: String) -> Dictionary:

@@ -1,7 +1,7 @@
 """A stale request or a foreign source must not dispatch qualification/publication."""
 import copy
 import unittest
-import request
+import campaign_request as request
 
 
 class RequestTests(unittest.TestCase):

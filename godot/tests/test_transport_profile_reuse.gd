@@ -9,6 +9,9 @@ const GOLDEN := ["1b27b4e934dc7560e6901eb09e634ed604c0111dcf26d5dac6b10885a3e5e2
 var failures: Array[String] = []
 var checks := 0
 
+class MutableKey extends RefCounted:
+	func _to_string() -> String: return "powder"
+
 func check(ok: bool, label: String) -> void:
 	checks += 1
 	if not ok:
@@ -70,6 +73,16 @@ func _initialize() -> void:
 	bad = Profiles.preset(0)
 	bad.version = 2
 	check(not Profiles.resolve(bad).ok,"A warmed profile never admits a foreign schema")
+	var object_key: RefCounted = MutableKey.new()
+	var lifetime: WeakRef = weakref(object_key)
+	var unusual := Profiles.preset(0)
+	unusual.families[object_key] = {"mixing":255}
+	var legacy := Profiles.resolve(unusual)
+	check(legacy.ok and legacy.hash==GOLDEN[0],"Unusual script keys retain original compiler acceptance and lookup behavior")
+	legacy.clear()
+	unusual.clear()
+	object_key = null
+	check(lifetime.get_ref()==null,"The pure-value reuse cache cannot retain a mutable Object key")
 	var left := Thread.new()
 	var right := Thread.new()
 	check(left.start(thread_calls.bind(0))==OK,"First concurrent value compiler starts")

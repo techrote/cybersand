@@ -598,6 +598,16 @@ REVIEWED_TRANSITIONS += ({"path": "godot/shaders/material_palette.gdshader",
     "issue": 717, "pr": 767},)
 
 
+# One immutable exact-input compiled value is reused; public validation,
+# directed carrying constraints and all produced transport integers are retained.
+REVIEWED_TRANSITIONS += ({"path": "godot/scripts/transport_profiles.gd",
+    "from_lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+    "to_lf_sha256": "4e97c1d67ef87b8a610024c71837a506ff13d95181179bbc7bd8e17cd361241a",
+    "source_commit": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+    "record": "docs/audits/2026-11-28-pubpres-mainline/transport-transition.md",
+    "issue": 717, "pr": 767},)
+
+
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")
 

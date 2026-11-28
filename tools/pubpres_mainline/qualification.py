@@ -12,6 +12,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 from types import SimpleNamespace
@@ -25,6 +26,44 @@ ORIGINAL_SCHEMA = 'ramcache-strata-integration-v1'
 SCHEMA = 'pubpres-mainline-cross-feature-v1'
 MANIFEST = 'pubpres-mainline-qualification.json'
 require, digest, write_json = common.require, common.digest, common.write_json
+
+
+def generator_profiles(source: Path, project: Path) -> dict:
+    """Admit canonical recipes and any legacy byte-identical in-project copies.
+
+    Full-source packages discover examples/worldgen directly. Older source
+    runners stage the same recipes under the project; that optional discovery
+    root must never introduce a second, independently mutable catalogue.
+    """
+    names = common.git(source, 'ls-tree', '-r', '--name-only', 'HEAD', '--',
+                       'examples/worldgen').decode().splitlines()
+    names = sorted(name for name in names if Path(name).parent.as_posix() == 'examples/worldgen'
+                   and Path(name).suffix == '.json')
+    require({'examples/worldgen/gen007-deepworks.json', 'examples/worldgen/gen007-qualification.json'}
+            <= set(names), 'Missing canonical generation recipes')
+    canonical = {}
+    for name in names:
+        expected = common.git(source, 'show', 'HEAD:' + name)
+        path = source / name
+        require(path.is_file() and not path.is_symlink() and path.read_bytes() == expected,
+                'Generation recipe differs from committed source: ' + name)
+        canonical[name] = hashlib.sha256(expected).hexdigest()
+    copies = {}
+    for label, root in (('source', source / 'godot'), ('project', project)):
+        folder = root / 'authoring/worldgen'
+        if not folder.exists():
+            copies[label] = {}
+            continue
+        require(folder.is_dir() and not folder.is_symlink(), 'Linked generation discovery root')
+        actual = list(folder.rglob('*'))
+        expected_names = {Path(name).name for name in names}
+        require(all(path.is_file() and not path.is_symlink() and path.parent == folder for path in actual)
+                and {path.name for path in actual} == expected_names,
+                'Unregistered generation profile discovery population')
+        copies[label] = {path.name: digest(path) for path in sorted(actual)}
+        require(copies[label] == {Path(name).name: value for name, value in canonical.items()},
+                'Staged generation recipes differ from canonical source')
+    return {'canonical_sha256': canonical, 'optional_copies_sha256': copies}
 
 
 @contextlib.contextmanager
@@ -72,6 +111,9 @@ def bind(source: Path, runtime: Path, project: Path, platform: str):
             require(hashlib.sha256((source / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() == expected,
                     'Qualification adapter differs from committed source: ' + name)
             value['source_inputs_sha256'][name] = expected
+        profiles = generator_profiles(source, project)
+        value['source_inputs_sha256'].update(profiles['canonical_sha256'])
+        value['generation_profiles'] = profiles
         value['source_inputs_sha256'] = dict(sorted(value['source_inputs_sha256'].items()))
         value['local_delta'] = []
         value['explicit_native_build_overlay'] = overlay
@@ -90,12 +132,18 @@ def bind(source: Path, runtime: Path, project: Path, platform: str):
     def admission():
         for ancestor in (common.ACCEPTED_MAIN, common.OWNER_REFERENCE):
             common.git(source, 'merge-base', '--is-ancestor', ancestor, 'HEAD')
+        production = common.git(source, 'ls-tree', '-r', '--name-only', 'HEAD', '--', 'native', 'godot').decode().splitlines()
+        require(not any(re.search(r'object[_-]?shard', name, re.I) for name in production),
+                'ObjectShard production source is excluded from this PUBPRES campaign')
+        retained_request = inherited.validate_request(inherited.read(source / inherited.REQUEST))
         current = inherited.identity()
         return {'schema': 'pubpres-mainline-source-admission-v1', 'source_identity': current,
+                'excluded_objectshard_production': True,
+                'retained_feature_request_sha256': digest(source / inherited.REQUEST),
                 'native_reuse': {'disposition': 'original-build-with-complete-input-equivalence', 'overlay': overlay,
                                  'native_input_count': len(native['native_source_inputs'])},
                 'performance_policy': {'classic_default': True, 'optional_profile_original_target': 0.9,
-                    'optional_profile_target_disposition': 'owner-waived-2026-11-28',
+                    'optional_profile_target_disposition': retained_request['optional_optics_90_percent_gate'],
                     'new_performance_benchmark_claimed': False}}
 
     def environment(path):

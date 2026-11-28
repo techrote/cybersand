@@ -125,7 +125,7 @@ def stage(source_root: Path, runtime: Path, engine: Path, output: Path):
     # Use the same owned-process timeout boundary as the accepted build tools.
     with (output / "import.log").open("x",encoding="utf-8") as stream:
         code,timed_out = bounded_process([str(engine),"--headless","--audio-driver","Dummy","--path",str(project),
-                                         "--editor","--import"],cwd=ROOT,stdout=stream,stderr=subprocess.STDOUT,timeout=300)
+                                         "--editor","--import"],cwd=ROOT,stdout=stream,timeout=300)
     bootstrap = {".godot/global_script_class_cache.cfg",".godot/extension_list.cfg"}
     mutations = [name for name,expected in authored.items() if name not in bootstrap and digest(project / name)!=expected]
     common.write_json(output / "source-custody.json",{"source":source,"authored_files_sha256":authored,
