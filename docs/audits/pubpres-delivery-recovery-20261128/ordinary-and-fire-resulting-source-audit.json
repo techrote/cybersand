@@ -1,0 +1,125 @@
+{
+  "schema": "cybersand-pubpres-resulting-source-ordinary-fire-audit-v1",
+  "date": "2026-11-28",
+  "run": {
+    "id": "46175797719",
+    "url": "https://github.com/techrote/cybersand/actions/runs/46175797719",
+    "application_commit": "a621611baeb6ff442954e402300c6e576b8a010c",
+    "application_tree": "b138e9361826ec6f7e0f73196c08021ed2540f9b",
+    "qualified_exact_head": true
+  },
+  "runtime": {
+    "platform": "Hosted Windows; ANGLE with Microsoft Basic Render Driver adapter, not the requested physical NVIDIA TITAN RTX host",
+    "engine": "Official Godot 4.7-stable",
+    "native_binary_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+    "native_manifest_sha256": "127932e1c12e778149beaf8ba44ef0b81cd9f6bda60395add0086a1acaef1f99",
+    "native_input_reuse": true,
+    "selected_owner_flags_read_back": {
+      "CYBERSAND_WORKBENCH_FLIGHT_PACING": "1",
+      "CYBERSAND_WORKBENCH_COUPLING_CLOCK": "1",
+      "CYBERSAND_WORKBENCH_EMPTY_EFFECTS": "1"
+    },
+    "physical_acceptance": "HOLD"
+  },
+  "sustained": {
+    "wave512": {
+      "artifact_id": "15276856030",
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46175797719/artifacts/15276856030",
+      "summary_sha256": "54b25ac56eb6d3320bc2909496f1d9dde3689e75c9ebb3fdb28b273820037f80",
+      "execution": "passed; exact-source 300.019327-second capture; no failures",
+      "rapier_physical_steps": 9616,
+      "rapier_steps_per_second": 32.051268,
+      "native_semantic_ticks": 9476,
+      "native_semantic_ticks_per_second": 31.584632,
+      "simulated_seconds_per_wall_second": 0.534188,
+      "whole_playing_exact_adjacent_gap_ms": {"count":164,"p50":22.2305,"p95":65.2234,"p99":74.42992,"max":75.523},
+      "last_minute_exact_adjacent_gap_ms": {"count":25,"p50":19.46,"p95":64.2986,"p99":65.04768,"max":65.118},
+      "observed_completion_rows": 3714,
+      "completed_steps_not_individually_observed": 5902,
+      "observed_gaps_over_100ms": 0,
+      "draw_callback_gap_ms": {"count":4076,"p50":75.847,"p95":114.65825,"p99":128.81925,"max":179.847},
+      "peak_rss_bytes": 808128512,
+      "mean_process_cpu_cores": 3.221861,
+      "pause_seconds_included_in_total_wall_rate": 20.034911,
+      "manual_step_accepted": true,
+      "pause_and_resume_accepted": true
+    },
+    "mixed2048": {
+      "artifact_id": "15276652388",
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46175797719/artifacts/15276652388",
+      "summary_sha256": "22a695ed5efa8e4ce96d654e27ca21a69bbbfcd006b95c16fbccdff5291a4a31",
+      "execution": "passed; exact-source 300.065108-second capture; no failures",
+      "rapier_physical_steps": 4669,
+      "rapier_steps_per_second": 15.559956,
+      "native_semantic_ticks": 4410,
+      "native_semantic_ticks_per_second": 14.696810,
+      "simulated_seconds_per_wall_second": 0.259333,
+      "whole_playing_exact_adjacent_gap_ms": {"count":575,"p50":83.565,"p95":136.0373,"p99":151.67266,"max":218.563},
+      "last_minute_exact_adjacent_gap_ms": {"count":91,"p50":36.794,"p95":92.636,"p99":95.812,"max":98.404},
+      "observed_completion_rows": 2417,
+      "completed_steps_not_individually_observed": 2252,
+      "observed_gaps_over_100ms": 67,
+      "observed_gaps_over_250ms": 0,
+      "draw_callback_gap_ms": {"count":2756,"p50":110.972,"p95":168.83025,"p99":194.9333,"max":322.462},
+      "peak_rss_bytes": 993402880,
+      "mean_process_cpu_cores": 3.364378,
+      "pause_seconds_included_in_total_wall_rate": 20.032736,
+      "manual_step_accepted": true,
+      "pause_and_resume_accepted": true
+    }
+  },
+  "fire": {
+    "artifact_id": "15276427983",
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46175797719/artifacts/15276427983",
+    "wave512": {
+      "flight_json_sha256": "9e3656a26981a705e0f80a5569efb6cb9d6b0c6bde419a924f579758b0192cee",
+      "timed_seconds": 90.053476,
+      "rapier_physical_steps": 3621,
+      "rapier_steps_per_second": 40.209442,
+      "simulated_seconds_per_wall_second": 0.670157,
+      "native_tick_start_nearest_trace_row": 7,
+      "native_tick_end_snapshot": 1710,
+      "approx_native_semantic_ticks_per_second": 18.910986,
+      "native_rate_boundary_caveat": "The flight records only its ending native tick; start tick is the nearest preceding retained trace row, so this rate is approximate.",
+      "needle_presentation": {"visible_draw_samples":1137,"total_draw_samples":1137,"hidden":0,"invalid":0,"conservatively_dry_hidden":0},
+      "fire_writes": 565,
+      "thruster_fire_enabled": true,
+      "paused_after_flight_ok": true,
+      "manual_step_after_flight_ok": true,
+      "completion_gap_percentiles": "not recorded"
+    },
+    "mixed2048": {
+      "flight_json_sha256": "cb7d5827eaa81b1c56140f882b7bc6d4b0a277335bbbb61e355a297ab22fc89e",
+      "timed_seconds": 90.07712,
+      "rapier_physical_steps": 1821,
+      "rapier_steps_per_second": 20.21601,
+      "simulated_seconds_per_wall_second": 0.336934,
+      "native_tick_start_nearest_trace_row": 4,
+      "native_tick_end_snapshot": 1608,
+      "approx_native_semantic_ticks_per_second": 17.806964,
+      "native_rate_boundary_caveat": "The flight records only its ending native tick; start tick is the nearest preceding retained trace row, so this rate is approximate.",
+      "needle_presentation": {"visible_draw_samples":936,"total_draw_samples":936,"hidden":0,"invalid":0,"conservatively_dry_hidden":0},
+      "fire_writes": 379,
+      "thruster_fire_enabled": true,
+      "paused_after_flight_ok": true,
+      "manual_step_after_flight_ok": true,
+      "completion_gap_percentiles": "not recorded"
+    },
+    "contact_witnesses": {
+      "wave512": {"pass":true,"fire_writes":29,"wall_draws":11,"water_draws":4,"hidden_fire_draws":0,"missing_contacts":{"dry":0,"wall":0,"water":0},"repeat_while_moving":0},
+      "mixed2048": {"pass":true,"fire_writes":32,"wall_draws":14,"water_draws":5,"hidden_fire_draws":0,"missing_contacts":{"dry":0,"wall":0,"water":0},"repeat_while_moving":10,"stale_moving_draws":0,"worst_frozen_travel_cells":1.048774,"worst_frozen_usec":111917}
+    },
+    "trace_limit": "Only segment-0 (2 MiB) is retained although trace header advertises four segments; do not derive complete flight gap distributions from it."
+  },
+  "interpretation": {
+    "execution_and_acceptance_are_distinct": true,
+    "physical_gap_reference_objectives_ms": {"p95_approx":100,"maximum_approx":250},
+    "wave512_gap_objective": "Observed subset is below both reference values, but 5,902 of 9,616 completions were not individually observed. Full-population p95 and maximum acceptance are unproven.",
+    "mixed2048_gap_objective": "Whole-run observed subset exceeds the p95 reference (136.037 ms; 67/575 above 100 ms). Observed subset maximum is 218.563 ms, but 2,252 of 4,669 completions were not individually observed, so full-population maximum is unproven. The last-minute subset is below the reference and does not replace the whole-run result.",
+    "gap_reducer_scope": "Percentiles use only consecutive observation rows with physical step counters differing by exactly one and both phases marked playing. Missed polling intervals and pause/manual-step boundaries are excluded.",
+    "draw_callback_limit": "Callback cadence is CPU-observed and is not GPU presentation or physical scanout; Mixed2048 callback max is 322.462 ms.",
+    "throughput": "All four measured simulated-seconds/wall-second rates are below 1.0. Sustained rates include the deliberate pause; the 90-second fire timing excludes later pause/manual-step controls.",
+    "comparison": "These are resulting-source execution observations only. No complete matched M/P/C comparison cohort is established; no non-regression claim follows.",
+    "final_disposition": "Hosted execution passed for the named workloads. Performance objectives are not fully established, and physical NVIDIA owner acceptance and promotion remain HOLD."
+  }
+}
