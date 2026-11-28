@@ -279,7 +279,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Focused Windows displayed Art fixture failed' }
           if (-not (Select-String -Quiet -Path evidence/focused-art/conversation-apply.log -Pattern 'ART_CONVERSATION_APPLY_RESULT')) { throw 'Focused Art result marker absent' }
           if (-not (Select-String -Quiet -Path evidence/focused-art/conversation-apply.log -Pattern '"failures":\[\]')) { throw 'Focused Art result retains failures' }
-      - uses: actions/upload-artifact@ea165f8d65b5e75b540449e92b4886f43607fa02
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: objectshard-m4-focused-windows-art-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
