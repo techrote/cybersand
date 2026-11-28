@@ -57,9 +57,10 @@ def startup_match(ready):
         "parameters", "workers_requested", "water_cells", "water_quantity", "construction_options")}}
 
 
-def qualify(arms, registration, sources):
+def qualify(arms, registration, sources, driver=None):
     """Fail closed on missing/reordered arms, source drift or changed fixtures."""
     common.require(len(arms) == len(registration["order"]), "Incomplete registered spawn comparison")
+    driver_source = driver if driver is not None else sources["C"]
     population = {}
     fixture_matches = {}
     native_by_role = {}
@@ -73,8 +74,8 @@ def qualify(arms, registration, sources):
                        and identity["source_tree"] == sources[role]["source_tree"] and identity["graphical"]
                        and identity["selected"] == common.SELECTORS
                        and identity["native_sha256"] == sources[role]["native_runtime_sha256"]
-                       and identity["driver"]["source_commit"] == sources["C"]["source_commit"]
-                       and identity["driver"]["source_tree"] == sources["C"]["source_tree"],
+                       and identity["driver"]["source_commit"] == driver_source["source_commit"]
+                       and identity["driver"]["source_tree"] == driver_source["source_tree"],
                        "Spawn source, graphical mode or selected policy differs")
         native_by_role.setdefault(role, identity["native_sha256"])
         common.require(native_by_role[role] == identity["native_sha256"], "Native runtime changed within a source role")
@@ -139,6 +140,34 @@ def qualify(arms, registration, sources):
             "physical_owner_acceptance": "HOLD", "mainline_promotion": "HOLD"}
 
 
+FROZEN_APPLICATION = {"source_commit": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
+                      "source_tree": "f6b7b8d3d613b70cdcdf3643fb906934b3887173"}
+FOLLOWUP_DRIVER_PATHS = frozenset({
+    "tools/pubpres_mainline/common.py",
+    "tools/pubpres_mainline/run_spawn_pair.py",
+    "tools/pubpres_mainline/test_spawn_reader_binding.py",
+    ".github/workflows/pubpres-mainline-spawn-followup.yml",
+})
+
+
+def frozen_driver_projection(driver, candidate, changed_paths):
+    """Separate the corrected measurement program from the immutable application."""
+    common.require(candidate == FROZEN_APPLICATION, "Follow-up application is not the exact frozen candidate")
+    common.require(set(changed_paths) == FOLLOWUP_DRIVER_PATHS and len(changed_paths) == len(FOLLOWUP_DRIVER_PATHS),
+                   "Follow-up driver changed an application, fixture, native input or unregistered path")
+    common.require(driver["source_commit"] != candidate["source_commit"]
+                   and common.HEX40.fullmatch(driver["source_commit"]) and common.HEX40.fullmatch(driver["source_tree"]),
+                   "Corrected measurement driver requires its own committed source identity")
+    return {"schema": "pubpres-spawn-frozen-application-driver-v1",
+            "application": dict(candidate),
+            "measurement_driver": {key: driver[key] for key in ("source_commit", "source_tree")},
+            "changed_driver_paths": sorted(changed_paths), "application_and_fixture_bytes_identical": True,
+            "original_failed_run": 46144440297, "original_failed_attempt": 1,
+            "original_budget_seconds": 1200, "followup_budget_seconds": 1800, "individual_process_timeout_seconds": 240,
+            "scope": "Only reader-module import ownership and explicit driver/application identity are corrected. "
+                     "The complete original P/C/C/P source, fixture, input, native and recording population is rerun."}
+
+
 def collect(folder, index, planned, code, timed_out, error):
     arm = {"index": index, "plan": planned, "exit_code": code, "timed_out": timed_out,
            "error": error, "pass": False, "results": []}
@@ -167,6 +196,8 @@ def main():
     parser.add_argument("--engine", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--budget-seconds", type=int, default=1200)
+    parser.add_argument("--frozen-candidate", action="store_true",
+                        help="Use only final65f application with the explicitly bounded corrected measurement-driver projection")
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -195,9 +226,17 @@ def main():
         roots = {"P": args.owner_source.resolve(), "C": args.candidate_source.resolve()}
         runtimes = {"P": args.owner_runtime.resolve(), "C": args.candidate_runtime.resolve()}
         sources = {role: common.source_identity(root) for role, root in roots.items()}
-        common.require(sources["P"]["source_commit"] == registration["owner_reference"]
-                       and sources["C"] == {key: driver[key] for key in ("source_commit", "source_tree")},
-                       "Frozen owner or candidate/driver source differs")
+        common.require(sources["P"]["source_commit"] == registration["owner_reference"],
+                       "Frozen owner source differs")
+        if args.frozen_candidate:
+            common.require(args.budget_seconds == 1800, "Follow-up aggregate allowance must be the registered1800 seconds")
+            common.git(ROOT, "merge-base", "--is-ancestor", FROZEN_APPLICATION["source_commit"], driver["source_commit"])
+            changed = common.git(ROOT, "diff", "--name-only", FROZEN_APPLICATION["source_commit"],
+                                 driver["source_commit"]).decode().splitlines()
+            report["measurement_projection"] = frozen_driver_projection(driver, sources["C"], changed)
+        else:
+            common.require(sources["C"] == {key: driver[key] for key in ("source_commit", "source_tree")},
+                           "Candidate and executing driver source differ without explicit frozen projection")
         native = {role: common.runtime_record(roots[role], runtimes[role], "windows")[0] for role in roots}
         fields = ("compiler_version", "godot_cpp_commit", "godot_cpp_dependency_sha256", "godot_cpp_library_sha256")
         common.require({key: native["P"][key] for key in fields} == {key: native["C"][key] for key in fields},
@@ -236,7 +275,7 @@ def main():
             except Exception as error:
                 report["failures"].append({"index": index, "error": str(error)})
             save()
-        report["comparison"] = qualify(report["arms"], registration, sources)
+        report["comparison"] = qualify(report["arms"], registration, sources, driver)
         report["complete"] = not report["failures"]
     except Exception as error:
         report["failures"].append({"error": str(error)})
