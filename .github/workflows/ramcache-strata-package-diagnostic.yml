@@ -1,4 +1,4 @@
-name: RAMCACHE Strata portable dependency diagnosis
+name: RAMCACHE Strata portable source and launch diagnosis
 
 on:
   push:
@@ -7,121 +7,369 @@ on:
 
 permissions:
   contents: read
+  actions: read
+
+env:
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.eol
+  GIT_CONFIG_VALUE_1: lf
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
-  staging:
-    name: Verify corrected Windows dependency staging admission
+  source_launch:
+    name: Verify corrected source ZIP and actual Windows CMD paths
     runs-on: windows-2022
-    timeout-minutes: 20
+    timeout-minutes: 45
+    defaults:
+      run:
+        shell: pwsh
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 521ce3cbc6d0e36278a51dc23a2d80caf234aaa6
+          ref: 6a07ca01d19ad6b7fc6cf15a055fc5107deab23c
           fetch-depth: 0
           lfs: false
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Verify complete corrected dependency copy and strict archive admission
-        shell: pwsh
+      - name: Authenticate fixed original evidence and exact packaging-only applicability
         env:
-          PYTHONUTF8: '1'
+          CYBERSAND_QUALIFICATION_TOKEN: ${{ github.token }}
         run: |
+          git fetch --no-tags origin 1ec3f214662f7d5a0a38ff727b684c15b41c067b
+          if ($LASTEXITCODE -ne 0) { throw 'Excluded-anchor read failed' }
+          python -B tools/ci/test_ramcache_strata_lab_package.py
+          if ($LASTEXITCODE -ne 0) { throw 'Windows source packaging controls failed' }
+          python -B tools/package_ramcache_strata.py reuse-admission --output "$env:RUNNER_TEMP/qualification-reuse-admission.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Fixed original evidence reuse refused' }
+      - name: Download exact original N six source campaigns
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46105901845
+          pattern: ramcache-strata-*-*-d414774ddc582cbc03d74e119937665368dc3476-1
+          path: ${{ runner.temp }}/ramcache-source-originals
+      - name: Download pinned original portable engine and notices
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46105901845
+          name: ramcache-strata-dependencies-d414774ddc582cbc03d74e119937665368dc3476-1
+          path: ${{ runner.temp }}/ramcache-source-dependencies
+      - name: Authenticate actual retained Windows runtime and arrange original evidence
+        run: |
+          python -B tools/ci/materialize_lfs.py --expected-source 6a07ca01d19ad6b7fc6cf15a055fc5107deab23c --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched runtime acquisition failed' }
           @'
-          import hashlib, json, os, pathlib, subprocess, sys, zipfile
-          root = pathlib.Path.cwd()
-          sys.path.insert(0, str(root / 'tools'))
-          sys.path.insert(0, str(root / 'tools/ci'))
-          import ramcache_strata_lab_package as lab
-          import package_ramcache_strata as package
-          source = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
-          assert source == '521ce3cbc6d0e36278a51dc23a2d80caf234aaa6', source
-          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ramcache-strata-package-diagnostic'
-          output.mkdir()
-          def sha(path):
-              with path.open('rb') as stream:
-                  return hashlib.file_digest(stream, 'sha256').hexdigest()
-          def generated_inventory(folder):
-              result = {}
-              for path in sorted(folder.rglob('*')):
-                  if path.is_file() and any(part in ('userdata','.godot','__pycache__') for part in path.relative_to(folder).parts):
-                      name = path.relative_to(folder).as_posix()
-                      result[name] = {'bytes': path.stat().st_size, 'sha256': sha(path)}
-              return result
-          record = {
-              'schema': 'ramcache-strata-package-staging-diagnostic-v2',
-              'scope': 'Corrected complete dependency staging only; no application/runtime qualification or evaluator publication',
-              'source_commit': source,
-              'source_tree': subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip(),
-              'workflow_commit': os.environ['GITHUB_SHA'],
-              'workflow_run': os.environ['GITHUB_RUN_ID'],
-              'image': {key: os.environ.get(key) for key in ('ImageOS','ImageVersion','RUNNER_OS','RUNNER_ARCH')},
-              'python': sys.version,
-              'staging_helper_sha256': sha(root / 'tools/ci/ramcache_strata_lab_package.py'),
-              'archive_reader_sha256': sha(root / 'tools/package_ramcache_strata.py'),
-              'before': {},
-          }
-          try:
-              for label, folder in (('python',pathlib.Path(sys.base_prefix)), ('git',pathlib.Path(r'C:\Program Files\Git')), ('cxx',pathlib.Path(r'C:\mingw64'))):
-                  record['before'][label] = generated_inventory(folder)
-              compiler_root = pathlib.Path(r'C:\mingw64')
-              record['compiler_original_files'] = {path.relative_to(compiler_root).as_posix(): {'bytes': path.stat().st_size, 'sha256': sha(path)} for path in sorted(compiler_root.rglob('*')) if path.is_file()}
-              target = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ramcache-strata-diagnostic-staged' / 'dependencies'
-              record['dependency_identity'] = lab.stage_dependencies(target)
-              record['staged_generated_files'] = generated_inventory(target)
-              before = {label + '/' + name: value for label, values in record['before'].items() for name, value in values.items()}
-              record['staged_byte_identical_to_runner'] = [name for name, value in record['staged_generated_files'].items() if before.get(name) == value]
-              record['staged_new_or_changed'] = [name for name, value in record['staged_generated_files'].items() if before.get(name) != value]
-              assert not record['staged_generated_files'], record['staged_generated_files']
-              compiler_copy = target / 'cxx'
-              record['compiler_retained_files'] = {path.relative_to(compiler_copy).as_posix(): {'bytes': path.stat().st_size, 'sha256': sha(path)} for path in sorted(compiler_copy.rglob('*')) if path.is_file()}
-              original = record['compiler_original_files']
-              retained = record['compiler_retained_files']
-              omitted = set(original) - set(retained)
-              assert omitted == {name for name in original if '__pycache__' in pathlib.PurePosixPath(name).parts}, sorted(omitted)
-              assert all(original[name] == value for name, value in retained.items()), 'A retained compiler file changed'
-              record['compiler_omitted_files'] = sorted(omitted)
-              full_members = {('dependencies/' + path.relative_to(target).as_posix()): sha(path) for path in sorted(target.rglob('*')) if path.is_file()}
-              full_probe = pathlib.Path(os.environ['RUNNER_TEMP']) / 'complete-corrected-dependencies.zip'
-              with zipfile.ZipFile(full_probe, 'w', zipfile.ZIP_DEFLATED, compresslevel=1) as archive:
-                  for name in full_members:
-                      archive.write(target / name.removeprefix('dependencies/'), name)
-                  archive.writestr(package.MANIFEST, json.dumps({'files_sha256': full_members}, sort_keys=True))
-              admitted_members = package.inspect_archive(full_probe)
-              assert {name: digest for name, digest in admitted_members.items() if name != package.MANIFEST} == full_members
-              record['complete_dependency_archive'] = {'status':'admitted', 'sha256':sha(full_probe), 'bytes':full_probe.stat().st_size, 'payload_files':len(full_members), 'files_sha256':full_members}
-              members = {('dependencies/' + name): (target / name).read_bytes() for name in record['staged_generated_files']}
-              if not members:
-                  members = {'diagnostic-clean-sentinel.txt': b'No forbidden staged dependency members.\n'}
-              manifest = {'files_sha256': {name: hashlib.sha256(data).hexdigest() for name, data in members.items()}}
-              probe = output / 'original-member-reproduction.zip'
-              with zipfile.ZipFile(probe, 'w', zipfile.ZIP_DEFLATED) as archive:
-                  for name, data in members.items():
-                      archive.writestr(name, data)
-                  archive.writestr(package.MANIFEST, json.dumps(manifest))
-              record['probe_members'] = list(members)
-              record['probe_sha256'] = sha(probe)
-              try:
-                  package.inspect_archive(probe)
-              except RuntimeError as exc:
-                  record['original_guard'] = {'outcome': 'refused', 'error': str(exc)}
-                  assert record['staged_generated_files'], 'Unexpected guard refusal without generated members'
-                  assert str(exc) == 'Shipped package contains prior generated state or an altered committed bootstrap', str(exc)
-              else:
-                  record['original_guard'] = {'outcome': 'admitted'}
-                  assert not record['staged_generated_files'], 'Original guard admitted generated files'
-              record['status'] = 'diagnostic-completed'
-              print(json.dumps({'compiler_omitted':len(record['compiler_omitted_files']), 'compiler_retained':len(record['compiler_retained_files']), 'full_dependency_archive':{k:v for k,v in record['complete_dependency_archive'].items() if k != 'files_sha256'}, 'status': record['status'], 'image': record['image'], 'counts_before': {k:len(v) for k,v in record['before'].items()}, 'staged_count':len(record['staged_generated_files']), 'first_staged_names':list(record['staged_generated_files'])[:10], 'guard':record['original_guard']}, indent=2))
-          finally:
-              (output / 'staging-diagnostic.json').write_text(json.dumps(record, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          import os,pathlib,shutil
+          root=pathlib.Path(os.environ['RUNNER_TEMP'])/'ramcache-source-originals'
+          target=pathlib.Path(os.environ['RUNNER_TEMP'])/'ramcache-source-evidence'
+          target.mkdir()
+          for platform in ('linux','win32'):
+              for mode in ('ramcache','strata','shared'):
+                  matches=list(root.glob('ramcache-strata-'+platform+'-'+mode+'-*/**/integration.json'))
+                  assert len(matches)==1,('Missing or ambiguous original campaign',platform,mode,matches)
+                  shutil.copytree(matches[0].parent,target/(platform+'-'+mode))
           '@ | python -B -
-          if ($LASTEXITCODE -ne 0) { throw 'Corrected dependency staging diagnostic failed' }
-      - name: Preserve original diagnosis and exact rejected member bytes
+          if ($LASTEXITCODE -ne 0) { throw 'Original artifact inventory admission failed' }
+      - name: Build and extract real ZIP then exercise real CMD and source tools
+        run: |
+          $driver = @'
+          #!/usr/bin/env python3
+          """Diagnostic-only real portable ZIP, source Git and shipped-CMD roundtrip.
+          
+          Run on a standard Windows runner against a clean corrective source checkout and
+          the fixed, unchanged N qualification originals. This deliberately does not emit
+          the production extracted-evaluator acceptance schema or run its full campaigns.
+          """
+          from __future__ import annotations
+          
+          import argparse
+          import hashlib
+          import importlib
+          import json
+          import os
+          from pathlib import Path
+          import shutil
+          import subprocess
+          import sys
+          import time
+          import traceback
+          import zipfile
+          
+          
+          def sha(path: Path) -> str:
+              with path.open("rb") as stream:
+                  return hashlib.file_digest(stream, "sha256").hexdigest()
+          
+          
+          def write(path: Path, value: dict) -> None:
+              path.write_text(json.dumps(value, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+          
+          
+          def require(condition: bool, message: str) -> None:
+              if not condition:
+                  raise RuntimeError(message)
+          
+          
+          def main() -> int:
+              parser = argparse.ArgumentParser(description=__doc__)
+              for name in ("repository", "dependencies", "evidence", "qualification-admission", "work", "output"):
+                  parser.add_argument("--" + name, type=Path, required=True)
+              parser.add_argument("--expected-source", required=True)
+              args = parser.parse_args()
+              repository = args.repository.resolve(strict=True)
+              dependencies = args.dependencies.resolve(strict=True)
+              evidence = args.evidence.resolve(strict=True)
+              admission = args.qualification_admission.resolve(strict=True)
+              work, output = args.work.resolve(), args.output.resolve()
+              require(not work.exists() and not output.exists(), "Use fresh diagnostic work and evidence directories")
+              require(" " in str(work), "Diagnostic extraction work path must contain spaces")
+              for destination in (work, output):
+                  require(not any(destination.is_relative_to(origin) for origin in (repository, dependencies, evidence)),
+                          "Diagnostic writes must be outside source and original inputs")
+              require(not work.is_relative_to(output) and not output.is_relative_to(work),
+                      "Keep diagnostic evidence separate from its disposable package work directory")
+              work.mkdir(parents=True)
+              output.mkdir(parents=True)
+              began = time.monotonic()
+              report = {
+                  "schema": "ramcache-strata-portable-source-diagnostic-v1",
+                  "status": "running",
+                  "diagnostic_only": True,
+                  "full_installed_qualification_executed": False,
+                  "expected_source": args.expected_source,
+                  "runner_script_sha256": sha(Path(__file__)),
+                  "workflow_run": os.environ.get("GITHUB_RUN_ID", ""),
+                  "workflow_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", ""),
+                  "workflow_checkout": os.environ.get("GITHUB_SHA", ""),
+                  "runner_image": {key: os.environ.get(key, "") for key in ("ImageOS", "ImageVersion", "RUNNER_OS", "RUNNER_ARCH")},
+                  "repository": str(repository),
+                  "work_directory": str(work),
+                  "output_directory": str(output),
+                  "qualification_admission_sha256": sha(admission),
+                  "events": [],
+                  "commands": {},
+                  "scope": "Full current-source package build, actual ZIP extraction and pristine source/tool verification; actual shipped ordinary CMD and persistent CMD normal close/fresh reopen only. No full RAMCACHE, Strata or Materials Lab installed qualification and no release publication.",
+              }
+          
+              def event(name: str) -> None:
+                  report["events"].append({"name": name, "elapsed_seconds": round(time.monotonic() - began, 3)})
+                  write(output / "diagnostic.json", report)
+          
+              def command(name: str, argv: list[str], *, cwd: Path, environment: dict, timeout: int) -> bytes:
+                  log = output / (name + ".log")
+                  started = time.monotonic()
+                  row = {"argv": argv, "cwd": str(cwd), "timeout_seconds": timeout}
+                  report["commands"][name] = row
+                  try:
+                      with log.open("wb") as stream:
+                          child = subprocess.run(argv, cwd=cwd, env=environment, stdout=stream,
+                                                 stderr=subprocess.STDOUT, timeout=timeout)
+                      row["exit_code"] = child.returncode
+                  except BaseException as error:
+                      row["failure"] = type(error).__name__ + ": " + str(error)
+                      raise
+                  finally:
+                      row["elapsed_seconds"] = round(time.monotonic() - started, 3)
+                      row["log_sha256"] = sha(log) if log.exists() else None
+                      write(output / (name + ".json"), row)
+                      write(output / "diagnostic.json", report)
+                  require(child.returncode == 0, "Diagnostic command failed: " + name + " (see retained original log)")
+                  return log.read_bytes()
+          
+              try:
+                  require(sys.platform == "win32", "This actual portable-CMD diagnostic requires Windows")
+                  sys.path.insert(0, str(repository / "tools"))
+                  sys.path.insert(0, str(repository / "tools/ci"))
+                  package = importlib.import_module("package_ramcache_strata")
+                  require(Path(package.__file__).resolve() == repository / "tools/package_ramcache_strata.py",
+                          "Imported packager is not the supplied source checkout")
+                  environment = package.lab.lab.clean_git_environment()
+                  environment["PYTHONDONTWRITEBYTECODE"] = "1"
+                  head = subprocess.check_output(["git", "-C", str(repository), "rev-parse", "HEAD"], env=environment).decode().strip()
+                  require(head == args.expected_source, "Diagnostic source checkout differs from the intended candidate")
+                  require(not subprocess.check_output(["git", "-C", str(repository), "status", "--porcelain"], env=environment),
+                          "Diagnostic source checkout is not clean")
+                  source = package.q.identity()
+                  report["source_commit"], report["source_tree"] = source["source_commit"], source["source_tree"]
+                  report["production_inputs_sha256"] = {name: sha(repository / name) for name in (
+                      "tools/package_ramcache_strata.py", "tools/ci/ramcache_strata_lab_package.py",
+                      "tools/ci/ramcache_strata_qualification.py", "tools/ci/strata3_cold_launcher.py")}
+                  admitted = package.q.read(admission)
+                  require(admitted.get("status") == "passed" and admitted.get("source_commit") == head
+                          and admitted.get("source_tree") == source["source_tree"], "Wrong target-source reuse admission")
+                  shutil.copyfile(admission, output / "original-qualification-admission.json")
+                  staged, archive, installation = work / "staged evaluator", work / "diagnostic-only-evaluator.zip", work / "fresh extracted evaluator"
+                  event("building_current_source_with_original_qualification")
+                  command("build", [sys.executable, "-B", str(repository / "tools/package_ramcache_strata.py"), "build",
+                      "--dependencies", str(dependencies), "--evidence", str(evidence),
+                      "--qualification-admission", str(admission), "--output", str(staged), "--archive", str(archive)],
+                      cwd=repository, environment=environment, timeout=1800)
+                  report["archive"] = {"filename": archive.name, "bytes": archive.stat().st_size, "sha256": sha(archive)}
+                  for suffix in (".identity.json", ".zip.sha256"):
+                      original = archive.with_suffix(suffix)
+                      require(original.is_file(), "Production build omitted its archive identity")
+                      shutil.copyfile(original, output / original.name)
+                  names = package.inspect_archive(archive)
+                  report["archive_member_count"] = len(names)
+                  report["archive_member_hashes_sha256"] = hashlib.sha256(json.dumps(names, sort_keys=True).encode()).hexdigest()
+                  event("extracting_actual_files_only_archive")
+                  installation.mkdir()
+                  with zipfile.ZipFile(archive) as bundle:
+                      require(bundle.testzip() is None, "Diagnostic archive CRC failed")
+                      for name in names:
+                          target = installation / name
+                          target.parent.mkdir(parents=True, exist_ok=True)
+                          with bundle.open(name) as src, target.open("xb") as dst:
+                              shutil.copyfileobj(src, dst, 1024 * 1024)
+                  require({path.relative_to(installation).as_posix(): sha(path)
+                           for path in installation.rglob("*") if path.is_file()} == names,
+                          "Actual extracted bytes differ from the produced ZIP")
+                  # Preserve the original small custody records before the first bundled
+                  # Git query, so another extraction failure cannot hide its source layout.
+                  shutil.copyfile(installation / package.MANIFEST, output / package.MANIFEST)
+                  report["manifest_sha256"] = sha(installation / package.MANIFEST)
+                  dotgit = installation / "source/.git"
+                  write(output / "extracted-git-layout.json", {
+                      "directories": sorted(path.relative_to(dotgit).as_posix()
+                                            for path in dotgit.rglob("*") if path.is_dir()),
+                      "files": {path.relative_to(dotgit).as_posix(): {"bytes": path.stat().st_size, "sha256": sha(path)}
+                                for path in dotgit.rglob("*") if path.is_file()},
+                      "head": (dotgit / "HEAD").read_text(encoding="ascii") if (dotgit / "HEAD").is_file() else None,
+                      "portable_ref": (dotgit / package.lab.PORTABLE_SOURCE_REF).read_text(encoding="ascii")
+                          if (dotgit / package.lab.PORTABLE_SOURCE_REF).is_file() else None})
+                  event("verifying_pristine_extracted_source_and_bundled_tools")
+                  manifest = package.verify(installation, pristine=True)
+                  anchor = installation / "source/.git" / package.lab.PORTABLE_SOURCE_REF
+                  report["portable_source_ref"] = {"path": package.lab.PORTABLE_SOURCE_REF,
+                      "sha256": sha(anchor), "value": anchor.read_text(encoding="ascii").strip()}
+                  require(anchor.read_bytes() == (head + "\n").encode(), "Actual archive lost or changed its exact loose source ref")
+                  shipped_environment = package.lab.dependency_environment(installation)
+                  tools = manifest["offline_authoring_dependencies"]["tools"]
+                  resolved = {}
+                  for name, executable in (("python", "python"), ("git", "git"), ("compiler", "g++")):
+                      expected = installation / "dependencies" / tools[name]["path"]
+                      found = shutil.which(executable, path=shipped_environment["PATH"])
+                      require(found and Path(found).resolve() == expected.resolve(), "Tool resolution escaped the shipped package: " + name)
+                      resolved[name] = {"path": str(expected), "sha256": sha(expected), "version": tools[name]["version"]}
+                  report["verified_bundled_tools"] = resolved
+                  git = str(installation / "dependencies/git/cmd/git.exe")
+                  remote = command("extracted-git-remote", [git, "-C", str(installation / "source"), "remote"],
+                                   cwd=installation, environment=shipped_environment, timeout=30)
+                  require(not remote.strip(), "Extracted source retained a remote")
+                  identity = command("extracted-git-identity", [git, "-C", str(installation / "source"), "rev-parse", "HEAD", "HEAD^{tree}"],
+                                     cwd=installation, environment=shipped_environment, timeout=30)
+                  require(identity.decode().splitlines() == [head, source["source_tree"]], "Bundled Git source identity differs")
+                  event("capturing_actual_bundled_python_and_git_authoring_source")
+                  snapshot_command = [str(installation / "dependencies/python/python.exe"), "-I", "-c",
+                      "import json,sys;sys.path.insert(0,sys.argv[1]);import world_candidate;print(json.dumps(world_candidate._source_snapshot()[0],sort_keys=True))",
+                      str(installation / "source/tools/material_catalogue")]
+                  snapshot_bytes = command("portable-lab-source-snapshot", snapshot_command,
+                      cwd=installation / "source", environment=shipped_environment, timeout=30)
+                  snapshot = json.loads(snapshot_bytes)
+                  require(snapshot.get("git_head") == head and isinstance(snapshot.get("lf_sha256"), dict)
+                          and snapshot["lf_sha256"], "Actual bundled authoring source snapshot lacks target-source identity")
+                  for name, digest in snapshot["lf_sha256"].items():
+                      package.safe_name(name)
+                      source_file = installation / "source" / name
+                      require(source_file.is_file()
+                              and hashlib.sha256(source_file.read_bytes().replace(b"\r\n", b"\n")).hexdigest() == digest,
+                              "Actual authoring snapshot differs from installed source: " + name)
+                  write(output / "portable-lab-source-snapshot.json", snapshot)
+                  report["portable_lab_source_snapshot_sha256"] = sha(output / "portable-lab-source-snapshot.json")
+                  # Include the complete original payload, especially Git's mutable index;
+                  # new untracked Python imports are not substitutions for original files.
+                  retained_hashes = {name: sha(installation / name) for name in names if (installation / name).is_file()}
+                  changed = {name: {"expected": digest, "actual": retained_hashes.get(name)}
+                             for name, digest in names.items() if retained_hashes.get(name) != digest}
+                  write(output / "post-authoring-probe-payload.json", {
+                      "status": "passed" if not changed else "failed", "original_files": len(names),
+                      "git_index_expected_sha256": names.get("source/.git/index"),
+                      "git_index_actual_sha256": retained_hashes.get("source/.git/index"), "changed_or_missing": changed})
+                  require(not changed, "Bundled authoring-source probe changed original payload bytes")
+                  event("launching_actual_normal_cmd_as_first_engine_invocation")
+                  package.cold.execute_launcher(installation, output / "cold-launch", package.q.metrics)
+                  observation = package.read_launcher_evidence(output / "cold-launch", head)
+                  write(output / "cold-launch-verification.json", observation)
+                  report["cold_cmd_was_first_engine_invocation"] = True
+                  shortcuts = []
+                  for phase in ("first", "reopen"):
+                      event("launching_actual_persistent_cmd_" + phase)
+                      location = output / ("persistent-shortcut-" + phase)
+                      package.cold.execute_launcher(installation, location, package.q.metrics, persistent=True)
+                      result = package.read_launcher_evidence(location, head, persistent=True)
+                      profiles = list((installation / "userdata/roaming").glob(
+                          "Godot/app_userdata/*/persistent-areas/three-areas-v1/current.cypm"))
+                      require(len(profiles) == 1, "Persistent CMD did not use the package-local default profile")
+                      retained = location / "original-profile"
+                      shutil.copytree(profiles[0].parent, retained)
+                      result["profile"] = package.read_persistent_profile(retained, manifest["runtime"]["cybersand_runtime"]["sha256"])
+                      ready, saved = result["admission"], result["profile"]
+                      require(ready["session"] == saved["session_id"] and ready["area"] == saved["active_area"]
+                              and ready["revision"] <= saved["revision"], "Persistent readiness contradicts its durable profile")
+                      write(location / "verification.json", result)
+                      shortcuts.append(result)
+                  require(shortcuts[0]["profile"]["session_id"] == shortcuts[1]["profile"]["session_id"]
+                          and set(shortcuts[0]["engine_process_ids"]).isdisjoint(shortcuts[1]["engine_process_ids"]),
+                          "Persistent CMD did not reopen the same profile through fresh engine processes")
+                  first_saved, reopened = shortcuts[0]["profile"], shortcuts[1]
+                  require(reopened["admission"]["revision"] >= first_saved["revision"]
+                          and reopened["profile"]["revision"] >= first_saved["revision"]
+                          and reopened["admission"]["area"] == reopened["profile"]["active_area"] == first_saved["active_area"],
+                          "Persistent CMD reopened an older revision or a different active area")
+                  write(output / "persistent-shortcut-verification.json", {"status": "passed", "launches": shortcuts,
+                      "scope": "Diagnostic actual shipped persistent CMD, normal readiness-driven WM_CLOSE and same-profile fresh-process reopen."})
+                  event("verifying_all_original_payload_bytes_after_launches")
+                  package.verify(installation)
+                  powershell = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32/WindowsPowerShell/v1.0/powershell.exe"
+                  command("shipped-powershell-verifier", [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+                      str(installation / "Verify Package.ps1")], cwd=installation, environment=shipped_environment, timeout=180)
+                  require(package.q.identity() == source, "Checkout identity changed during the diagnostic")
+                  require(not subprocess.check_output(["git", "-C", str(repository), "status", "--porcelain"], env=environment),
+                          "Diagnostic modified its source checkout")
+                  report["status"] = "passed_diagnostic_only"
+                  report["payload_after_execution"] = "all original manifest files unchanged"
+                  report["cold_launch_verification_sha256"] = sha(output / "cold-launch-verification.json")
+                  report["persistent_shortcut_verification_sha256"] = sha(output / "persistent-shortcut-verification.json")
+                  event("diagnostic_complete_full_installed_qualification_still_required")
+                  return 0
+              except BaseException as error:
+                  report["status"] = "failed"
+                  report["failure"] = {"type": type(error).__name__, "message": str(error)}
+                  (output / "failure-traceback.log").write_text(traceback.format_exc(), encoding="utf-8")
+                  return 1
+              finally:
+                  report["elapsed_seconds"] = round(time.monotonic() - began, 3)
+                  report["retained_files_sha256"] = {path.relative_to(output).as_posix(): sha(path)
+                      for path in output.rglob("*") if path.is_file() and path.name != "diagnostic.json"}
+                  write(output / "diagnostic.json", report)
+                  print(json.dumps({"status": report["status"], "diagnostic_only": True,
+                                    "evidence": str(output), "diagnostic_sha256": sha(output / "diagnostic.json")}))
+          
+          
+          if __name__ == "__main__":
+              raise SystemExit(main())
+          '@
+          $driver = $driver.Replace("`r`n", "`n").TrimEnd([char[]]"`r`n") + "`n"
+          [System.IO.File]::WriteAllText("$env:RUNNER_TEMP/ramcache_strata_windows_diagnostic.py", $driver, [System.Text.UTF8Encoding]::new($false))
+          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_windows_diagnostic.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne '90ced80d9f740f30f131993b936b106aca25c389a7b790328885a94ae350a379') { throw 'External diagnostic driver bytes changed' }
+          python -B "$env:RUNNER_TEMP/ramcache_strata_windows_diagnostic.py" --repository "$env:GITHUB_WORKSPACE" --expected-source 6a07ca01d19ad6b7fc6cf15a055fc5107deab23c --dependencies "$env:RUNNER_TEMP/ramcache-source-dependencies" --evidence "$env:RUNNER_TEMP/ramcache-source-evidence" --qualification-admission "$env:RUNNER_TEMP/qualification-reuse-admission.json" --work "$env:RUNNER_TEMP/Ramcache Source Diagnostic Work" --output "$env:RUNNER_TEMP/ramcache-source-diagnostic"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual candidate source/CMD diagnostic failed; retained original evidence remains authoritative' }
+      - name: Preserve original diagnostic evidence without publishing a release
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: ramcache-strata-package-staging-diagnostic-${{ github.sha }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/ramcache-strata-package-diagnostic/
-          if-no-files-found: error
+          name: ramcache-strata-source-launch-diagnostic-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ramcache-source-diagnostic/
+            ${{ runner.temp }}/qualification-reuse-admission.json
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          if-no-files-found: warn
           retention-days: 90
