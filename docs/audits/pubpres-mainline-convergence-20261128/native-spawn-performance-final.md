@@ -152,6 +152,17 @@ The complete follow-up also preserves consequential adverse observations:
 - Recording ON/OFF comparisons are separately retained. Across the six cases, ON/OFF observed-admission ratios span0.739–1.200 in Wave512 and0.929–1.272 in Mixed2048. Input-application ratios vary substantially. These short repeated observations do not prove zero recorder overhead.
 - The OFF-mode physical-completion timings remain process-observation upper bounds; the reference P has no new exact recorder inserted. No exact P-versus-C physical-gap tail comparison is claimed.
 
+The exact candidate recording-ON traces also separate the first actual physical completion from graphical interruption. These extrema cover two processes and 12 case windows per scene; they are not paired P/C tail estimates.
+
+| Candidate recording ON | Wave512 | Mixed2048 |
+|---|---:|---:|
+| Request to first actual new-owner Rapier completion, range |562.450–989.188 ms|2349.116–3735.051 ms|
+| Largest primary case draw-gap p95 |241.128 ms|223.336 ms|
+| Largest primary case draw gap |298.814 ms|314.920 ms|
+| Largest complete draw gap in both-boundary context |646.312 ms|683.553 ms|
+
+Primary draw gaps end within the case and retain the interval crossing its request. Both-boundary context also preserves the complete interval ending after the case. All four large final-case context maxima occur after the final post-replacement-spawn observation, when the unchanged fixture immediately invokes ordinary Pause, serializes/closes its report and requests quit. Each final case retains one additional recorder draw interval in that context. These are real CPU draw-callback intervals adjacent to the intentional final transition/shutdown sequence; they are not isolated spawn intervals, and the evidence does not assign their full duration to Pause, report writing, shutdown or GPU execution. No adverse interval has been discarded. The [frozen fixture](https://github.com/techrote/cybersand/blob/65f71aaf4be3a67896bafac7f5220a0cb25a8fb7/tools/pubpres_mainline/spawn_latency.gd) and [unchanged reducer](https://github.com/techrote/cybersand/blob/65f71aaf4be3a67896bafac7f5220a0cb25a8fb7/tools/pubpres_mainline/run_spawn.py) define those boundaries.
+
 The corrected paired-spawn measurement succeeds in its registered source/input/owner/capture scope. **Physical owner acceptance remains HOLD**, and it does not replace the separately failed general-performance cohorts below. The original failed P admissions and the first isolated fixture failure remain immutable historical evidence.
 
 ## 6. Three-source performance failure

@@ -1,7 +1,7 @@
 {
   "schema": "pubpres-mainline-native-spawn-performance-final-v1",
   "mission": "PUBPRES-MAINLINE-CONVERGENCE-001",
-  "as_of_utc": "2026-11-28T13:25:19Z",
+  "as_of_utc": "2026-11-28T13:35:00Z",
   "author_role": "Specialist A; independent source/data review coordinated with Root, B and C",
   "frozen_application": {
     "source": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
@@ -16164,7 +16164,76 @@
       "P_off_physical_completion": "Sampled process callback upper bound; no exact added recorder"
     },
     "quantile_method": "Spawn nearest-rank; primary gaps end inside the case. Original both-boundary context and right-censored unfinished suffixes remain.",
-    "repetition_statistic": "Ordinary median of two repetitions per source/scene/case; no confidence interval or universal performance inference"
+    "repetition_statistic": "Ordinary median of two repetitions per source/scene/case; no confidence interval or universal performance inference",
+    "latency_and_draw_gap_extrema": {
+      "population": "Four candidate recording-ON processes, two per scene, six cases per process; every new owner's first actual step1/manual1 retained.",
+      "units": "microseconds",
+      "primary_gap_scope": "Complete CPU draw callback intervals whose ending timestamp is within the case. Intervals crossing the request remain included.",
+      "context_scope": "Complete intervals overlapping either case boundary are retained separately. A context maximum larger than the primary maximum necessarily ends after the case.",
+      "final_boundary_scope": "All four large final-case context maxima occur at the end of post-replacement-spawn. The unchanged fixture immediately invokes ordinary Pause, serializes/closes its report, and requests quit. This identifies transition/shutdown adjacency, without assigning the whole interval to any one operation or to GPU work.",
+      "fixture_git_blob": "6563556832d9c843457db84660498f12ff5b7079",
+      "reducer_git_blob": "09627ece881af4a7b21023b3c9d82ea4e8c2d53d",
+      "scenes": {
+        "wave512": {
+          "processes": 2,
+          "cases": 12,
+          "first_actual_completion_usec": {
+            "minimum": 562450,
+            "maximum": 989188
+          },
+          "worst_case_primary_draw_p95_usec": 241128,
+          "primary_draw_gap_maximum_usec": 298814,
+          "both_boundary_context_draw_gap_maximum_usec": 646312,
+          "final_case_contexts": [
+            {
+              "index": 1,
+              "case": "post-replacement-spawn",
+              "primary_draw_gap_maximum_usec": 189298,
+              "both_boundary_context_draw_gap_maximum_usec": 646312,
+              "additional_context_interval_count": 1,
+              "unfinished_suffix_lower_bound_usec": 52
+            },
+            {
+              "index": 2,
+              "case": "post-replacement-spawn",
+              "primary_draw_gap_maximum_usec": 124555,
+              "both_boundary_context_draw_gap_maximum_usec": 645048,
+              "additional_context_interval_count": 1,
+              "unfinished_suffix_lower_bound_usec": 42
+            }
+          ]
+        },
+        "mixed2048": {
+          "processes": 2,
+          "cases": 12,
+          "first_actual_completion_usec": {
+            "minimum": 2349116,
+            "maximum": 3735051
+          },
+          "worst_case_primary_draw_p95_usec": 223336,
+          "primary_draw_gap_maximum_usec": 314920,
+          "both_boundary_context_draw_gap_maximum_usec": 683553,
+          "final_case_contexts": [
+            {
+              "index": 1,
+              "case": "post-replacement-spawn",
+              "primary_draw_gap_maximum_usec": 198311,
+              "both_boundary_context_draw_gap_maximum_usec": 683553,
+              "additional_context_interval_count": 1,
+              "unfinished_suffix_lower_bound_usec": 74
+            },
+            {
+              "index": 2,
+              "case": "post-replacement-spawn",
+              "primary_draw_gap_maximum_usec": 196255,
+              "both_boundary_context_draw_gap_maximum_usec": 646143,
+              "additional_context_interval_count": 1,
+              "unfinished_suffix_lower_bound_usec": 66
+            }
+          ]
+        }
+      }
+    }
   },
   "three_source_performance": {
     "planned_processes": 18,
