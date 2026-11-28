@@ -256,6 +256,22 @@ and derived hash. All unrelated changes still refuse. The
 provide local evidence only; focused Windows and complete extraction remain
 separate required gates.
 
+The [next focused run](../audits/pubpres-delivery-recovery-20261128/utf8-linker-file-open-refusal.json)
+passed those metadata proofs and four non-Unicode compiler paths. On Unicode
+paths `collect2` now starts bundled GNU `ld`, which then fails opening the
+bundled startup objects and libraries. This is a further real linker failure,
+not a successful portable authoring control. The exact original linker reports
+GNU Binutils 2.44; its source contains the documented multibyte-path/wide-buffer
+separator defect. The candidate repair retains GCC 14.2 and its runtime libraries
+and adds a source-pinned GNU-compatible LLVM linker selected only for verified
+packaged Materials Lab commands. No production native runtime input changes.
+Its bundled DLL closure, licences and command selection require independent
+verification and the same complete focused/extracted qualification.
+The [LLD local controls](../audits/pubpres-delivery-recovery-20261128/lld-candidate-local-controls.json)
+record successful real compile/link/execute from a combined Unicode path,
+actual DLL-complete linker staging/version readback, and positive/negative
+receipt tests. They do not establish a hosted or complete extracted-package pass.
+
 ## Owner route and subsequent ObjectShard integration
 
 The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)

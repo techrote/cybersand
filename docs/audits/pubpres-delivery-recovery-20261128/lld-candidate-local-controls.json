@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-28",
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "source_parent": "d665b28b9644bbc3fe147b51b0d749248f152344",
+  "source_local_delta_sha256": {
+    "tools/ci/portable_lld.py": "5e52d38e8fe51b151e650496d326715893800abc3748c7dabcfbb7bca03eb1f5",
+    "tools/ci/test_portable_lld.py": "451edcb60a39e853d9dddad790a703c6505ad24e52556cbb946ef0825866c47f",
+    "tools/ci/ramcache_strata_lab_package.py": "9be6ede7f93c3a54d89b003a6590a17ef2dc6548ec043cc59b4a33f6b9fdfad8",
+    "tools/ci/test_ramcache_strata_lab_package.py": "1f70b4349ab0fec7fe955df3c856d6e7b24cc65dedd6ba4e2dbeb392494a91b9",
+    "tools/material_catalogue/lab.py": "c270cf295a39839df1d5960e45359b8826597f96dc75e2bb71b235d345c64098",
+    "tools/material_catalogue/world_candidate.py": "c63be9120997ce5b01a339018af5a68ecec2d503c4689c4da90e6e813e15b299",
+    "tools/material_catalogue/test_portable_linker.py": "684c0a93e1df9c5340f4dbd742fc3f743f877ee78921d4f81c577db789d3d014",
+    "tools/pubpres_mainline/portable_authoring.py": "3352878fe6f1ca731c88f629439138580467b2240388535800dc992fdda972d4",
+    ".github/workflows/pubpres-mainline.yml": "6a06f9896f4b427b1af644555a31ac89c828f5ba38789fe018ad58d69117def7",
+    ".github/workflows/pubpres-portable-authoring-witness.yml": "2f8813f0eb04c876325f0a4ad386edc0197ab057bad857363d4d59f75db0d3e5"
+  },
+  "implementation": "Preserve GNU14.2 and its UTF-8 prepared code/data proof; add pinned LLVM-MinGW23.1 GNU-compatible LLD plus full non-system DLL closure into both tool bin directories; include exact license/provenance marker; shared production Lab compiler_linker_options adds -fuse-ld=lld only after verified marker. Original marker-less readers retain their identity and compiler behavior.",
+  "llvm_release": {
+    "url": "https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-x86_64.zip",
+    "bytes": 190721391,
+    "sha256": "ae601f4e0f72bbdf441ad2df8bb16f037e2e9251559ea6b37b4057aef39c06c3",
+    "lld_version": "LLD23.1.0",
+    "llvm_commit": "ea7d852a70e8bdfaf601d6626a760f9771b2c4b4"
+  },
+  "local_feasibility": {
+    "purpose": "local feasibility control only; actual production Lab/witness still required",
+    "elapsed_seconds": 12.39365280000493,
+    "compiler_exit": 0,
+    "execution_exit": 0,
+    "execution_stdout": "real-lld-link-ok\r\n",
+    "executable_sha256": "cb320f2b64605439cb209f1ed5a4849c1425b46a7f01f26c7ba74e9901102fcb",
+    "compiler_metadata": "verified"
+  },
+  "feasibility_output_limit": "The final optional console rendering of verbose GCC stderr failed with cp1252 after the native compiler/executable succeeded and the raw JSON was written. The stored native exits/stdout above are the actual observations; no successful full witness is inferred.",
+  "local_source_population_limit": {
+    "status": "failed",
+    "expected_files": 13764,
+    "actual_files": 13763,
+    "missing": [
+      "bin/make.exe"
+    ],
+    "extra": [],
+    "changed": [],
+    "elapsed_seconds": 59.53458530001808,
+    "scope": "local extracted original compiler source population versus immutable failed evaluator manifest; no new package qualification"
+  },
+  "real_stage_and_version_verification": "Production portable_lld.stage and verify(execute=True) passed on the combined Unicode CXX root; 14 pinned binary/license rows; independently reread by a second agent.",
+  "checks": [
+    {
+      "scope": "pubpres driver tests",
+      "tests": 53,
+      "status": "passed"
+    },
+    {
+      "scope": "GNU UTF8 metadata tests",
+      "tests": 19,
+      "status": "passed"
+    },
+    {
+      "scope": "pinnedLLD custody tests",
+      "tests": 7,
+      "status": "passed"
+    },
+    {
+      "scope": "Lab selection tests",
+      "tests": 8,
+      "status": "passed"
+    },
+    {
+      "scope": "package tests",
+      "tests": 23,
+      "skipped": 2,
+      "status": "passed except explicit platform-permission skips"
+    },
+    {
+      "scope": "targeted package dependency proof tests",
+      "tests": 7,
+      "status": "passed"
+    },
+    {
+      "scope": "CI provider and whitespace",
+      "status": "passed"
+    }
+  ],
+  "independent_review": "No concrete code blocker; source-bound verifier imports, immutable source/file/driver proof, legacy absence handling and actual compiler argv selection reviewed.",
+  "focused_hosted": "pending",
+  "complete_extracted_package": "pending",
+  "physical_owner_acceptance": "HOLD",
+  "promotion": "DRAFT_ONLY",
+  "merge_authorized": false
+}

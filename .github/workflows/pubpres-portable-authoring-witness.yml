@@ -14,6 +14,8 @@ on:
       - 'tools/ci/ramcache_strata_lab_package.py'
       - 'tools/ci/portable_compiler_utf8.py'
       - 'tools/ci/test_portable_compiler_utf8.py'
+      - 'tools/ci/portable_lld.py'
+      - 'tools/ci/test_portable_lld.py'
       - 'tools/ci/test_ramcache_strata_lab_package.py'
       - 'tools/package_materials_lab_candidate.py'
       - 'tools/material_catalogue/**'
@@ -38,6 +40,7 @@ jobs:
       GIT_LFS_SKIP_SMUDGE: '1'
       PYTHONUTF8: '1'
       PYTHONDONTWRITEBYTECODE: '1'
+      CYBERSAND_PORTABLE_LLD_ARCHIVE: ${{ runner.temp }}/pubpres-llvm-mingw-20260826-ucrt-x86_64.zip
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -54,6 +57,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Portable witness positive/negative controls failed' }
           python -B -m unittest discover -s tools/ci -p 'test_portable_compiler_utf8.py' -v
           if ($LASTEXITCODE -ne 0) { throw 'Compiler metadata preservation controls failed' }
+          python -B -m unittest discover -s tools/ci -p 'test_portable_lld.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned linker custody controls failed' }
+          python -B -m unittest discover -s tools/material_catalogue -p 'test_portable_linker.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Production compiler-linker selection controls failed' }
           python -B tools/ci/test_ramcache_strata_lab_package.py DependencyReceiptTests -v
           if ($LASTEXITCODE -ne 0) { throw 'Nested portable compiler receipt integration controls failed' }
           python -B -m unittest discover -s tools/ci -p 'test_portable_authoring_environment.py' -v
@@ -107,6 +114,13 @@ jobs:
           g++ --version | Select-Object -First 1
           & "$root\bin\g++.exe" -dumpmachine
           & "$root\bin\g++.exe" -print-search-dirs
+      - name: Acquire pinned offline GNU-compatible linker input
+        run: |
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 300 --silent --show-error --output $env:CYBERSAND_PORTABLE_LLD_ARCHIVE https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-x86_64.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned linker archive acquisition failed' }
+          $archive = Get-Item -LiteralPath $env:CYBERSAND_PORTABLE_LLD_ARCHIVE
+          $digest = (Get-FileHash -LiteralPath $archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($archive.Length -ne 190721391 -or $digest -ne 'ae601f4e0f72bbdf441ad2df8bb16f037e2e9251559ea6b37b4057aef39c06c3') { throw 'Pinned linker archive identity differs' }
       - name: Execute production-path compiler and Materials Lab witnesses
         run: |
           python tools/pubpres_mainline/portable_authoring.py --compiler-root C:\mingw64 --git-root 'C:\Program Files\Git' --python-root $env:pythonLocation --parent $env:RUNNER_TEMP --output "$env:RUNNER_TEMP\portable-authoring-output" --run-id "$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT" --block-network

@@ -1,0 +1,92 @@
+{
+  "date": "2026-11-28",
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "source": {
+    "source_commit": "4232a25995650e1846c1ee7cc8d550c1210e5a13",
+    "source_tree": "c108244a670106469dffee26bfd069d3f9e8e5e5"
+  },
+  "run": "https://github.com/techrote/cybersand/actions/runs/46171025142",
+  "artifact": "https://github.com/techrote/cybersand/actions/runs/46171025142/artifacts/15272964357",
+  "artifact_sha256": "445e922620fed121cb8f6be0f763e3eeab4051a0819be16425eca68cd4535d13",
+  "witness_sha256": "4629940cb9b4d23fd2d9214c90579d7ef0aab0076b02bc70adf332d4febf7d8b",
+  "status": "failed; no complete focused or extracted-package qualification",
+  "compiler_metadata": "All 15 pinned GNU executable resource transformations and independent static proofs passed; four non-Unicode path controls compiled, linked and executed with the complete actual process chain observed inside the bundle.",
+  "path_results": [
+    {
+      "label": "short_ascii",
+      "status": "passed",
+      "minimal": "passed",
+      "compiler_exit": 0,
+      "missing_process_roles": [],
+      "observer_errors": []
+    },
+    {
+      "label": "spaces",
+      "status": "passed",
+      "minimal": "passed",
+      "compiler_exit": 0,
+      "missing_process_roles": [],
+      "observer_errors": []
+    },
+    {
+      "label": "parentheses",
+      "status": "passed",
+      "minimal": "passed",
+      "compiler_exit": 0,
+      "missing_process_roles": [],
+      "observer_errors": []
+    },
+    {
+      "label": "unicode",
+      "status": "failed",
+      "minimal": "failed",
+      "compiler_exit": 1,
+      "missing_process_roles": [],
+      "observer_errors": []
+    },
+    {
+      "label": "nested",
+      "status": "passed",
+      "minimal": "passed",
+      "compiler_exit": 0,
+      "missing_process_roles": [],
+      "observer_errors": []
+    },
+    {
+      "label": "combined_adverse",
+      "status": "failed",
+      "minimal": "failed",
+      "compiler_exit": 1,
+      "missing_process_roles": [],
+      "observer_errors": []
+    }
+  ],
+  "unicode_boundary": "collect2 now starts the bundled ld.exe; ld cannot open existing startup objects and libraries under Unicode paths. Correct-looking UTF-8 paths are reported for crt2.o/crtbegin.o, libstdc++ and other CRT libraries.",
+  "real_lab": "Create succeeded and density changed1600->1601; /compile_test then failed at the same linker-file-open boundary. No candidate World receipt or generated-probe execution credit.",
+  "original_negative_control": {
+    "status": "reproduced_expected_failure_behavior_only",
+    "attempt_count": 3,
+    "qualification_credit": "negative_control_only",
+    "collect2_path_credit": false
+  },
+  "new_original_binary_readback": {
+    "scope": "Local upstream archive executable matches immutable old evaluator file hashes; build-info and ld readback, not a replacement extracted evaluator",
+    "ld_version": "GNU ld (GNU Binutils) 2.44",
+    "ld_original_sha256": "bb85d4d163e876eb7121d13579020105be0d8d477cd83fc77407e142f5083b64",
+    "build_info_sha256": "d9c2eea9e49e9089bb2c1a98b74214987574723ea02f0b62b1c433464a3147ca",
+    "upstream_release": "https://github.com/niXman/mingw-builds-binaries/releases/tag/14.2.0-rt_v12-rev2"
+  },
+  "source_diagnosis": {
+    "status": "Same UTF-8 byte-count/wide-buffer separator defect confirmed in official GNU binutils2.44 source; observed binary behavior is consistent with that defect. No claim of binary disassembly or source-reproducible rebuild.",
+    "tar_sha256": "ce2017e059d63e67ddb9240e9d4ec49c2893605035cd60e92ad53177f4377237",
+    "sources": [
+      "https://sourceware.org/pipermail/binutils/2025-November/145728.html",
+      "https://sourceware.org/pipermail/binutils/2025-November/145740.html",
+      "https://github.com/niXman/mingw-builds/pull/661"
+    ]
+  },
+  "next_candidate": "Retain GCC14.2 and its libraries; stage exact pinned GNU-compatible LLVM LLD with runtime closure and licenses, selected explicitly in real Lab compile argv. Requires new six-path and real World execution.",
+  "physical_owner_acceptance": "HOLD",
+  "promotion": "DRAFT_ONLY",
+  "merge_authorized": false
+}

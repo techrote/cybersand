@@ -89,6 +89,7 @@ for key, value in [
     ('actual_process_paths_inside_bundle', False),
     ('collect2_path_credit', True),
     ('fully_observed_process_chain', True),
+    ('forbidden_linker_process_observed', True),
 ]:
     assert not _negative_control_attempt_valid({**good, key: value}), key
 skipped = _original_unicode_control(Path('unused-parent'), None, None, [])

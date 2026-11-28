@@ -18,6 +18,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import package_materials_lab_candidate as lab
 import portable_compiler_utf8
+import portable_lld
 from package_wave_flow_candidate import REGENERATED_RAPIER_IMPORTS
 
 WINDOWS_LFS = frozenset({
@@ -247,6 +248,9 @@ def dependency_identity(destination: Path, *, execute: bool) -> dict:
     if (destination / "cxx/CYBERSAND-COMPILER-UTF8.json").is_file():
         record["compiler_utf8"] = portable_compiler_utf8.verify(
             destination / "cxx", execute=execute and os.name == "nt")
+    if (destination / "cxx" / portable_lld.RECEIPT_NAME).is_file():
+        record["portable_lld"] = portable_lld.verify(
+            destination / "cxx", execute=execute and os.name == "nt")
     return record
 
 
@@ -276,7 +280,8 @@ def _ignore_compiler_python_cache(directory: str, names: list[str]) -> set[str]:
 
 def stage_dependencies(destination: Path, *, python_root: Path = Path(sys.base_prefix),
                        git_root: Path = Path(r"C:\Program Files\Git"),
-                       compiler_root: Path = Path(r"C:\mingw64")) -> dict:
+                       compiler_root: Path = Path(r"C:\mingw64"),
+                       linker_archive: Path | None = None) -> dict:
     require(os.name == "nt", "Stage the offline Windows tools on the Windows package runner")
     require(not destination.exists(), "Refuse to overwrite offline dependency destination")
     destination.mkdir(parents=True)
@@ -284,8 +289,15 @@ def stage_dependencies(destination: Path, *, python_root: Path = Path(sys.base_p
     lab.copy_git(git_root, destination / "git")
     lab.copy_portable_tree(compiler_root, destination / "cxx", ignore=_ignore_compiler_python_cache)
     portable_compiler_utf8.prepare(destination / "cxx")
+    if linker_archive is None:
+        configured_archive = os.environ.get("CYBERSAND_PORTABLE_LLD_ARCHIVE", "")
+        require(bool(configured_archive),
+                "New portable evaluator build requires CYBERSAND_PORTABLE_LLD_ARCHIVE")
+        linker_archive = Path(configured_archive)
+    portable_lld.stage(destination / "cxx", linker_archive)
     record = dependency_identity(destination, execute=True)
     require("compiler_utf8" in record, "New portable compiler lacks UTF-8 resource custody")
+    require("portable_lld" in record, "New portable compiler lacks pinned LLD custody")
     return record
 
 

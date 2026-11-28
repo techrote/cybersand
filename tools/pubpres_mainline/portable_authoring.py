@@ -35,9 +35,9 @@ import common
 import ramcache_strata_lab_package as portable_stack
 import lab
 
-SCHEMA = "pubpres-portable-authoring-witness-v2"
+SCHEMA = "pubpres-portable-authoring-witness-v3"
 EXPECTED_GCC_SHA256 = "eccc5963340f7b57805b3750efc182c25c6d4eddb828c8cee2b0f974a0d943ac"
-PROCESS_NAMES = {"g++.exe", "gcc.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe"}
+PROCESS_NAMES = {"g++.exe", "gcc.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "ld.lld.exe", "as.exe"}
 RULE_PREFIX = "PUBPRES-Portable-Authoring-"
 PROBE_FUNCTION_COUNT = 128
 PROBE_VOLATILE_ASSIGNMENTS_PER_FUNCTION = 128
@@ -566,6 +566,9 @@ def _tool_identity(package: Path, env: dict[str, str]) -> dict:
     need(selected is not None and Path(selected).resolve() == compiler.resolve(),
          "The production environment does not resolve its bundled g++.exe")
     result = {}
+    compiler_options = lab.compiler_linker_options(str(compiler), False)
+    selected_linker = "ld.lld.exe" if compiler_options else "ld.exe"
+    result["compiler_linker_options"] = compiler_options
     queries = {"version": ["--version"], "target": ["-dumpmachine"],
                "full_version": ["-dumpfullversion"], "search_dirs": ["-print-search-dirs"]}
     query_receipts = {}
@@ -592,6 +595,23 @@ def _tool_identity(package: Path, env: dict[str, str]) -> dict:
                         "bytes": resolved.stat().st_size if in_bundle else None,
                         "in_bundled_compiler": in_bundle,
                         "resolved_inside_bundle": in_bundle}
+    # Read the selected linker independently; GCC's bare `ld` query still names
+    # the retained original BFD even when -fuse-ld=lld selects LLVM at link time.
+    run = lab._run([str(compiler), "-print-prog-name=" + selected_linker], package, 30)
+    selected_path = resolve_reported_program(run.stdout.strip(), compiler_root, env["PATH"])
+    need(selected_path is not None and _under(selected_path, compiler_root),
+         "The selected linker does not resolve inside the bundled compiler")
+    linker_version = lab._run([str(selected_path), "--version"], package, 30)
+    result["selected_linker"] = {"program": selected_linker, "resolved_path": str(selected_path),
+                                  "relative_to_bundle": selected_path.relative_to(compiler_root.resolve()).as_posix(),
+                                  "sha256": sha(selected_path), "bytes": selected_path.stat().st_size,
+                                  "version": (linker_version.stdout + linker_version.stderr).strip(),
+                                  "compiler_options": compiler_options}
+    original_path = resolve_reported_program(result["ld.exe"]["reported_by_compiler"], compiler_root, env["PATH"])
+    need(original_path is not None and _under(original_path, compiler_root),
+         "Original BFD linker readback is outside the bundle")
+    original_version = lab._run([str(original_path), "--version"], package, 30)
+    result["original_bfd_version"] = (original_version.stdout + original_version.stderr).strip()
     for role in ("cc1plus", "cc1plus.exe"):
         run = lab._run([str(compiler), "-print-prog-name=" + role], package, 30)
         reported = run.stdout.strip()
@@ -674,6 +694,11 @@ def compiler_probe_source() -> tuple[str, dict, str]:
 def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressRules | None, *,
                     expected_link_success: bool = True, probe_directory: Path | None = None) -> dict:
     compiler = package / "dependencies/cxx/bin/g++.exe"
+    compiler_options = lab.compiler_linker_options(str(compiler), False)
+    need(compiler_options == (["-fuse-ld=lld"] if expected_link_success else []),
+         "Candidate and untouched original compiler selections differ from their registered contracts")
+    linker_process = "ld.lld.exe" if expected_link_success else "ld.exe"
+    compiler_argv = [str(compiler), *compiler_options, "-std=c++20", "-O2", "-Wall", "-Wextra", "-Werror"]
     # Installation roots vary one property at a time. Putting Unicode into
     # every probe's own directory would invalidate the ASCII control.
     directory = probe_directory or package / "authoring-temp" / "minimal-cpp"
@@ -695,8 +720,8 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
     try:
         try:
             with capture_popen_roots(observer):
-                compile_result = lab._run([str(compiler), "-std=c++20", "-O2", "-Wall", "-Wextra", "-Werror",
-                                           str(source), "-o", str(executable)], directory, 120, check=False)
+                compile_result = lab._run([*compiler_argv, str(source), "-o", str(executable)],
+                                           directory, 120, check=False)
             if compile_result.returncode == 0:
                 need(executable.is_file() and executable.stat().st_size > 0,
                      "The production compiler returned success without a nonempty linked executable")
@@ -721,7 +746,9 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
     paths: dict[str, list[str]] = {}
     for row in observed["observations"]:
         paths.setdefault(Path(row["image_path"]).name.casefold(), []).append(row["image_path"])
-    needed = {"g++.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe"}
+    needed = {"g++.exe", "cc1plus.exe", "collect2.exe", linker_process, "as.exe"}
+    forbidden_linker = "ld.exe" if expected_link_success else "ld.lld.exe"
+    forbidden_linker_observed = forbidden_linker in paths
     expected_absent = {"ld.exe"} if not expected_link_success else set()
     required = (needed - expected_absent if expected_link_success
                 else {"g++.exe", "cc1plus.exe", "as.exe"})
@@ -756,18 +783,22 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
                                  and executable_absent)
     if expected_link_success:
         status = "passed" if (compiler_succeeded and execution_ok and all_seen and observed_inside
-                               and compiler_root_observed and not observed["observer_errors"]) else "failed"
+                               and compiler_root_observed and not forbidden_linker_observed
+                               and not observed["observer_errors"]) else "failed"
     else:
         expected_failure = (expected_failure_observed and all_seen and not expected_absent_observed
                             and observed_inside and compiler_root_observed
-                            and not observed["observer_errors"])
+                            and not forbidden_linker_observed and not observed["observer_errors"])
         status = "reproduced_expected_failure_behavior_only" if expected_failure else "failed"
     return {"status": status,
             "qualification_credit": "positive_compiler_control" if expected_link_success else "negative_control_only",
             "expected_behavior": "compile_link_execute" if expected_link_success else "collect2_missing_ld_failure",
             "started_utc": started,
-            "compiler_argv": [str(compiler), "-std=c++20", "-O2", "-Wall", "-Wextra", "-Werror",
-                              str(source), "-o", str(executable)],
+            "compiler_argv": [*compiler_argv, str(source), "-o", str(executable)],
+            "selected_linker_process": linker_process,
+            "compiler_linker_options": compiler_options,
+            "forbidden_linker_process": forbidden_linker,
+            "forbidden_linker_process_observed": forbidden_linker_observed,
             "source_sha256": sha(source),
             "source_workload": source_workload,
             "executable_sha256": sha(executable) if executable.is_file() else None,
@@ -953,6 +984,7 @@ def _negative_control_attempt_valid(row: dict) -> bool:
         and row.get("actual_process_paths_inside_bundle") is True
         and row.get("collect2_path_credit") is False
         and row.get("fully_observed_process_chain") is False
+        and row.get("forbidden_linker_process_observed", False) is False
     )
 
 
@@ -1012,7 +1044,8 @@ def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgres
     for row in observed["observations"]:
         paths.setdefault(Path(row["image_path"]).name.casefold(), []).append(row["image_path"])
     compiler_root = package / "dependencies/cxx"
-    required = {"python.exe", "g++.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe"}
+    required = {"python.exe", "g++.exe", "cc1plus.exe", "collect2.exe", "ld.lld.exe", "as.exe"}
+    original_bfd_observed = bool(paths.get("ld.exe"))
     missing = sorted(required - set(paths))
     expected_python = python.resolve()
     python_roots = [row for row in observed["roots"]
@@ -1022,7 +1055,7 @@ def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgres
     packaged_python_firewall_blocked = firewall is not None and str(expected_python) in firewall.executables
     compiler_paths_inside = all(
         _under(Path(path), compiler_root)
-        for name in ("g++.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe")
+        for name in ("g++.exe", "cc1plus.exe", "collect2.exe", "ld.lld.exe", "as.exe")
         for path in paths.get(name, []))
     packaged_python_observed = any(_under(Path(path), package / "dependencies/python")
                                    for path in paths.get("python.exe", []))
@@ -1035,7 +1068,7 @@ def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgres
         error_text = "\n".join(str(row) for row in errors)
     compiler_argv = {role: receipt.get(role, {}).get("argv", []) for role in ("reference_build", "candidate_build")}
     exact_compiler_argv = all(argv and Path(argv[0]).resolve() == (package / "dependencies/cxx/bin/g++.exe").resolve()
-                              for argv in compiler_argv.values()) if receipt else False
+                              and "-fuse-ld=lld" in argv for argv in compiler_argv.values()) if receipt else False
     expected_probe_hashes = {role: receipt.get(role + "_build", {}).get("native_executable_sha256")
                              for role in ("reference", "candidate")}
     rules_by_role = {row.get("role"): row for row in world_rules if type(row) is dict}
@@ -1052,7 +1085,8 @@ def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgres
     passed = (compile_process["exit_code"] == 0 and type(result) is dict and result.get("ok") is True
               and result.get("state") == "compiled_tested" and receipt.get("runtime_active") is False
               and receipt.get("checks", {}).get("candidate_qualification") is True
-              and exact_compiler_argv and not missing and compiler_paths_inside and packaged_python_observed
+              and exact_compiler_argv and not missing and not original_bfd_observed
+              and compiler_paths_inside and packaged_python_observed
               and packaged_python_root
               and packaged_python_firewall_blocked
               and generated_probes_blocked
@@ -1075,6 +1109,8 @@ def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgres
             "required_actual_processes_observed": sorted(required - set(missing)),
             "required_actual_processes_missing": missing,
             "actual_compiler_process_paths_inside_bundle": compiler_paths_inside,
+            "original_bfd_linker_process_observed": original_bfd_observed,
+            "selected_linker_process": "ld.lld.exe",
             "packaged_python_root_observed": packaged_python_root,
             "packaged_python_observed": packaged_python_observed,
             "packaged_python_egress_rule_registered": packaged_python_firewall_blocked,

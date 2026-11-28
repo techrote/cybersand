@@ -308,6 +308,8 @@ jobs:
           fi
           python3 -m unittest discover -s tools/pubpres_mainline -p 'test_*.py' > build/mainline-source/driver-tests.log 2>&1
           python3 -m unittest discover -s tools/ci -p 'test_portable_compiler_utf8.py' > build/mainline-source/compiler-metadata-tests.log 2>&1
+          python3 -m unittest discover -s tools/ci -p 'test_portable_lld.py' > build/mainline-source/linker-custody-tests.log 2>&1
+          python3 -m unittest discover -s tools/material_catalogue -p 'test_portable_linker.py' > build/mainline-source/linker-selection-tests.log 2>&1
           python3 tools/ci/test_ramcache_strata_lab_package.py DependencyReceiptTests -v > build/mainline-source/compiler-package-integration-tests.log 2>&1
           python3 -m unittest discover -s tools/ci -p 'test_portable_authoring_environment.py' > build/mainline-source/compiler-environment-tests.log 2>&1
           git diff --check HEAD
@@ -466,6 +468,7 @@ jobs:
     env:
       JAVA_HOME: ''
       PYTHONDONTWRITEBYTECODE: '1'
+      CYBERSAND_PORTABLE_LLD_ARCHIVE: ${{ runner.temp }}/pubpres-llvm-mingw-20260826-ucrt-x86_64.zip
     outputs:
       inner_sha256: ${{ steps.package.outputs.inner_sha256 }}
       inner_bytes: ${{ steps.package.outputs.inner_bytes }}
@@ -499,6 +502,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Pinned source/build/engine admission failed' }
           python -m unittest discover -s tools/pubpres_mainline -p test_evaluator_boundaries.py -v
           if ($LASTEXITCODE -ne 0) { throw 'Portable delivery integrity/refusal controls failed' }
+      - name: Acquire pinned offline GNU-compatible linker input
+        run: |
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 300 --silent --show-error --output $env:CYBERSAND_PORTABLE_LLD_ARCHIVE https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-x86_64.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned linker archive acquisition failed' }
+          $archive = Get-Item -LiteralPath $env:CYBERSAND_PORTABLE_LLD_ARCHIVE
+          $digest = (Get-FileHash -LiteralPath $archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($archive.Length -ne 190721391 -or $digest -ne 'ae601f4e0f72bbdf441ad2df8bb16f037e2e9251559ea6b37b4057aef39c06c3') { throw 'Pinned linker archive identity differs' }
       - name: Stage accepted licensed portable dependency inputs
         run: |
           $notices = Join-Path $env:RUNNER_TEMP 'mainline-package-notices'
