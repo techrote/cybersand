@@ -1,0 +1,125 @@
+{
+  "schema": "strata2-github-ancestry-observation-v1",
+  "note": "Recovered repository is shallow at316020a4; this original GitHub compare response proves ancestry without altering the local shallow boundary.",
+  "comparisons": [
+    {
+      "label": "predecessor",
+      "status": "ahead",
+      "ahead_by": 5,
+      "behind_by": 0,
+      "total_commits": 5,
+      "merge_base": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "head": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+      "commits": [
+        {
+          "sha": "6e30c31f7761a750e63e42bb833da9f96e53522c",
+          "parents": [
+            "80623d039aa49bc0c1d84a9206d89812ffa99ea6"
+          ]
+        },
+        {
+          "sha": "316020a4aa87ca7993716f00d714301884d580f7",
+          "parents": [
+            "6e30c31f7761a750e63e42bb833da9f96e53522c"
+          ]
+        },
+        {
+          "sha": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+          "parents": [
+            "316020a4aa87ca7993716f00d714301884d580f7"
+          ]
+        },
+        {
+          "sha": "4a34331283c448c2a9f919d61f5d0a676e74289f",
+          "parents": [
+            "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd"
+          ]
+        },
+        {
+          "sha": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+          "parents": [
+            "4a34331283c448c2a9f919d61f5d0a676e74289f"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "accepted_main",
+      "status": "ahead",
+      "ahead_by": 11,
+      "behind_by": 0,
+      "total_commits": 11,
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "head": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+      "commits": [
+        {
+          "sha": "93b0bbff2c52d2918820a453b89e52c37741023d",
+          "parents": [
+            "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+          ]
+        },
+        {
+          "sha": "16054c8894af6ba747ae72cf6b3cb582aa113c4c",
+          "parents": [
+            "93b0bbff2c52d2918820a453b89e52c37741023d"
+          ]
+        },
+        {
+          "sha": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+          "parents": [
+            "16054c8894af6ba747ae72cf6b3cb582aa113c4c"
+          ]
+        },
+        {
+          "sha": "d95f9ceaa77ff444d8ff85ce9b90a1173edb7989",
+          "parents": [
+            "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc"
+          ]
+        },
+        {
+          "sha": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+          "parents": [
+            "d95f9ceaa77ff444d8ff85ce9b90a1173edb7989"
+          ]
+        },
+        {
+          "sha": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+          "parents": [
+            "d365f78190af0e006ee9998a17b453f04f31b3ae"
+          ]
+        },
+        {
+          "sha": "6e30c31f7761a750e63e42bb833da9f96e53522c",
+          "parents": [
+            "80623d039aa49bc0c1d84a9206d89812ffa99ea6"
+          ]
+        },
+        {
+          "sha": "316020a4aa87ca7993716f00d714301884d580f7",
+          "parents": [
+            "6e30c31f7761a750e63e42bb833da9f96e53522c"
+          ]
+        },
+        {
+          "sha": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+          "parents": [
+            "316020a4aa87ca7993716f00d714301884d580f7"
+          ]
+        },
+        {
+          "sha": "4a34331283c448c2a9f919d61f5d0a676e74289f",
+          "parents": [
+            "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd"
+          ]
+        },
+        {
+          "sha": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+          "parents": [
+            "4a34331283c448c2a9f919d61f5d0a676e74289f"
+          ]
+        }
+      ]
+    }
+  ]
+}
+

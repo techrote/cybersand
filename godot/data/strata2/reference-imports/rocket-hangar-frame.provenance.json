@@ -1,0 +1,95 @@
+{
+  "format": "cybersand-strata-reference-import-v1",
+  "id": "rocket-hangar-frame",
+  "source_repository": "techrote/sandmapsreference",
+  "source_commit": "99a166e7fcae45eb22be1740e9f33f62faccbcc7",
+  "source_path": "artwork/works_yards/batch1/orbital_assembly_hangars-rocket_assembly_hall-cool_precision.png",
+  "source_url": "https://raw.githubusercontent.com/techrote/sandmapsreference/99a166e7fcae45eb22be1740e9f33f62faccbcc7/artwork/works_yards/batch1/orbital_assembly_hangars-rocket_assembly_hall-cool_precision.png",
+  "original_sha256": "033534dc0971a8250f27a7d9a91e60af6230559a872107505f574c33e1420fef",
+  "original_bytes": 2711315,
+  "original_resolution": [1536, 1024],
+  "original_mode": "RGB",
+  "original_alpha_zero": 0,
+  "original_alpha_partial": 0,
+  "selected_original_crop": [368, 112, 512, 320],
+  "crop_path": "res://data/strata2/reference-imports/rocket-hangar-frame.png",
+  "crop_file_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+  "crop_rgb_pixels_sha256": "fb21c815af6419386ba1babbbc3e58b837e16f09d9d7889544cc39962968ac63",
+  "crop_semantics": "Exact original RGB pixels selected without scaling, filtering or altered colours; original file remains unchanged.",
+  "mask_path": "res://data/strata2/reference-imports/rocket-hangar-frame.mask.png",
+  "mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+  "mask_rectangles": [
+    [40, 14, 472, 36],
+    [40, 50, 24, 270],
+    [395, 135, 24, 185],
+    [390, 110, 122, 18]
+  ],
+  "mask_semantics": "Explicit authored selection proposal. White opaque rectangles include; all other pixels are transparent/no-write. This mask is not source alpha or inferred authoritative depth.",
+  "mapping_policy": {
+    "plane": "scripted",
+    "crop": [0, 0, 512, 320],
+    "origin": [128, 128],
+    "scale": 1,
+    "transform": "identity",
+    "alpha_mode": "overlay",
+    "alpha_threshold": 128,
+    "mask_path": "res://data/strata2/reference-imports/rocket-hangar-frame.mask.png",
+    "palette": [
+      {
+        "rgb": [57, 70, 89],
+        "material": 62,
+        "role": "dark steel"
+      },
+      {
+        "rgb": [92, 102, 115],
+        "material": 114,
+        "role": "bright steel"
+      },
+      {
+        "rgb": [22, 35, 51],
+        "material": 130,
+        "role": "deep frame"
+      },
+      {
+        "rgb": [126, 84, 22],
+        "material": 76,
+        "role": "gold crane paint"
+      },
+      {
+        "rgb": [198, 150, 61],
+        "material": 79,
+        "role": "amber detail"
+      },
+      {
+        "rgb": [126, 208, 244],
+        "material": 77,
+        "role": "cyan signal"
+      }
+    ],
+    "color_distance": 64,
+    "unmapped": "skip"
+  },
+  "proposal_counts": {
+    "source_pixels": 163840,
+    "mapped": 27582,
+    "mask_no_write": 133732,
+    "unmapped_skipped": 2526,
+    "explicit_empty": 0
+  },
+  "proposed_uint16le_sha256": "a3df87bcdfd9ec8e8a7dc694906c7dcb3955c5299660acb90d913078f4e67650",
+  "proposed_write_mask_sha256": "5d48a36f27a74049fd4777238deeb4b7382db393adf96f5ba995adc1dbf486e3",
+  "native_qualification": {
+    "canvas": [512, 512],
+    "selected_crop": [0, 0, 448, 320],
+    "origin": [32, 64],
+    "proposed_uint16le_sha256": "c13e45cf87cbe88908dc37c340d900de0382d8729552177c75c6594c86893584",
+    "proposed_write_mask_sha256": "a73f8dc48e3d5581078d028d9c9ee47fe10f6b751735092605fb9c5e2d45ece3",
+    "mapped": 24251,
+    "no_write": 119109,
+    "mask_no_write": 116708,
+    "unmapped_skipped": 2401,
+    "scope": "Explicit qualification crop within the unchanged shipped source; same mapping/mask; no resampling."
+  },
+  "qualification": "Deterministic input/proposal fixture only; native receipt/readback and actual Godot framebuffer belong to the source-bound Workbench qualification.",
+  "original_preservation": "The original is not copied into this small fixture bundle; exact source URL and SHA-256 identify the unmodified original. The shipped crop retains exact pixels and explicit crop coordinates."
+}

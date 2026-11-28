@@ -10,6 +10,14 @@ related-documents: [../operations/configuration-and-capacity-budgets.md, ../syst
 
 # Configuration reference
 
+## Strata Workbench composition
+
+The opt-in [Strata contract](../systems/strata-workbench.md) owns its explicit
+512–2048 axis bounds, three static clocks, 16,384-cell edit/copy limit, 32-step
+per-plane history, presentation limits and checksummed authored envelope.
+Standalone depth defaults below remain unchanged; play simulation and camera
+configuration remain with the ordinary Workbench owner.
+
 ## Architectural Generator project controls
 
 [Architectural Generator](../systems/architectural-generator.md) owns explicit

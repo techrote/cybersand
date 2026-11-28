@@ -1,0 +1,22 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--script",
+    "res://tools/qualify_workbench_strata.gd"
+  ],
+  "error": "Godot process failed; inspect D:\\a\\cybersand\\cybersand\\build\\strata-windows\\arcology\\install\\process.log",
+  "exit_code": 1,
+  "log_sha256": "f8b5381861aa5bb8c209da50bbdc9b16d6b0b9fc22a32c51af464eccece31f63",
+  "pid": 4404,
+  "seconds": 80.766,
+  "status": "failed",
+  "timeout_seconds": 420
+}

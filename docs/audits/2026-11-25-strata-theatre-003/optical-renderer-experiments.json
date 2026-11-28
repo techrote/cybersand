@@ -1,0 +1,599 @@
+{
+  "schema": "cybersand-strata003-specialist-experiment-register-v1",
+  "created_utc_date": "2026-11-25",
+  "owner": "Specialist A",
+  "integration_note": "Initial per-experiment checkpoints remain historical. Later source-bound observations are recorded in subsequent_evidence; a positive subtest does not qualify a whole failed application or a later changed source.",
+  "experiments": [
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A001-pixel-aperture",
+      "hypothesis": "Integer-centred premultiplied kernels can suggest lens depth while avoiding bilinear material-pixel bleeding.",
+      "parameters": [
+        "defocus",
+        "dof_width",
+        "focus_distance",
+        "planes.*.depth",
+        "planes.*.defocus",
+        "quality"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "all five Strata002 environments"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "maximum_surface_samples_per_fragment": {
+          "low": 5,
+          "balanced": 9,
+          "high": 17
+        },
+        "maximum_radius_native_cells": 6,
+        "cost_kind": "source-bound upper bound, not a GPU timing measurement"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A002-detail-preservation",
+      "hypothesis": "Attenuating fine interior colour contrast while preserving alpha retains useful architectural silhouettes.",
+      "parameters": [
+        "defocus_method=detail",
+        "detail",
+        "planes.*.depth"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "vertical-transfer-spine",
+        "industrial-underworks"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "reuses_aperture_samples": true,
+        "alpha_silhouette": "original source coverage"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A003-highlight-diffusion",
+      "hypothesis": "Bounded bright-pixel spread can imply atmospheric optics without uncontrolled fullscreen bloom.",
+      "parameters": [
+        "defocus_method=diffusion",
+        "illumination",
+        "planes.*.glow"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "neon-rain-arcology",
+        "abyss-foundry"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "reuses_aperture_samples": true,
+        "native_emission_classifier": false
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A004-tonal-chromatic-air",
+      "hypothesis": "Contrast hierarchy, chromatic attenuation and exponential scattering can establish depth while keeping lens radius zero.",
+      "parameters": [
+        "tonal",
+        "chromatic",
+        "atmosphere",
+        "scattering_color",
+        "planes.*.contrast",
+        "planes.*.saturation",
+        "planes.*.tint",
+        "planes.*.brightness"
+      ],
+      "applicable_scenes": [
+        "all five Strata002 environments"
+      ],
+      "cost_contract": {
+        "extra_texture_samples_for_colour_only": 0,
+        "tone_pivot": 0.5,
+        "colour_space": "existing non-HDR material-surface working colour, no physically calibrated radiance claim"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A005-architectural-projection-shadow",
+      "hypothesis": "Existing published Play solid silhouettes can cast bounded presentation shadows onto authored rear architecture.",
+      "parameters": [
+        "shadow",
+        "shadow_offset",
+        "shadow_softness",
+        "planes.*.depth"
+      ],
+      "applicable_scenes": [
+        "11 material-mask witnesses",
+        "abyss-foundry",
+        "lunar-terminator-observatory"
+      ],
+      "cost_contract": {
+        "native_captures": 0,
+        "maximum_play_reads_per_fragment": 5,
+        "occluder_definition": "all admitted native MaterialState::Solid IDs except reserved10",
+        "physical_transmission": false
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A006-local-clarity",
+      "hypothesis": "Rear attenuation near physical silhouettes and the published primary-player rectangle can reduce false-platform emphasis without changing Play opacity.",
+      "parameters": [
+        "clarity",
+        "inspection.clarity",
+        "planes.*.opacity"
+      ],
+      "applicable_scenes": [
+        "readability-fixture",
+        "all five Strata002 environments"
+      ],
+      "cost_contract": {
+        "native_captures": 0,
+        "maximum_play_reads_per_fragment": 5,
+        "actor_scope": "published primary-player rectangle; no complete arbitrary-rig visibility oracle"
+      }
+    },
+    {
+      "implementation": {
+        "source_commit": "909a139df101481017f5ffaba44389945515a212",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "180b4828e3b6cf8af4329c4788893be636ec1e2d6c501cfc43e7594fa335d424",
+          "godot/scripts/depth/workbench_strata_presentation.gd": "f0b4b395c649c1bbcc1a31da2febd004f58f05a57def330a14e66e811db8625c",
+          "godot/shaders/strata_optical_plane.gdshader": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+          "godot/tests/test_strata_optical_renderer.gd": "92159cc580c915d9162b9ee455ef5e53447d50d2429721e76f20f20666af79e9"
+        }
+      },
+      "graphical_evidence": {
+        "status": "pending_explicit_hosted_campaign",
+        "captures": []
+      },
+      "local_execution": {
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "fixture": "test_strata_optical_renderer.gd",
+        "checks": 18,
+        "failures": 0,
+        "display": "headless",
+        "graphical_required": true
+      },
+      "disposition": "implemented_candidate_pending_graphical_qualification",
+      "artistic_assessment": "Not yet scored from matched Strata003 application captures.",
+      "id": "A007-one-pass-comparison-focus",
+      "hypothesis": "A shared shader can compare Classic and processed pixels without duplicate rendering or new edit authority.",
+      "parameters": [
+        "inspection.bypass",
+        "inspection.wipe",
+        "inspection.focus_override",
+        "focus_mode",
+        "transition_speed",
+        "planes.*.parallax"
+      ],
+      "applicable_scenes": [
+        "transparent-alpha fixture",
+        "ordinary Workbench lifecycle"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "extra_full_scene_renders": 0,
+        "wipe_geometry": "Classic parallax while partial wipe is active",
+        "play_processing": false
+      }
+    },
+    {
+      "id": "A008-dense-monotone-aperture",
+      "implementation": {
+        "source_commit": "0338b80146444bdeac30589b61cea3296c1c2eac",
+        "files": {
+          "godot/scripts/depth/strata_optical_renderer.gd": "904bc846c8f0c1dafd495d1517790af9705ba4dc916d18a42cd5eda188d2e65a",
+          "godot/shaders/strata_optical_plane.gdshader": "b2dd5f0f2bf8b85c81444471605a1e90fde2fc804025b34014cdd023aaef137a",
+          "godot/tests/test_strata_optical_renderer.gd": "cf36cb4a80f09a2e47b570bfa930bb2e814d3150b4661d6a9c684d7caf1c8fc7"
+        }
+      },
+      "hypothesis": "Positive dense binomial cross kernels prevent fine-detail contrast return during focus changes while preserving integer pixel sampling and bounded single-pass cost.",
+      "parameters": [
+        "defocus",
+        "dof_width",
+        "focus_distance",
+        "planes.*.depth",
+        "planes.*.defocus",
+        "quality"
+      ],
+      "applicable_scenes": [
+        "one-cell checker and thin white impulse fixture",
+        "all Strata002/003 scenes using pixel lens"
+      ],
+      "cost_contract": {
+        "additional_render_targets": 0,
+        "maximum_surface_samples_per_fragment": {
+          "low": 5,
+          "balanced": 13,
+          "high": 25
+        },
+        "maximum_radius_native_cells": {
+          "low": 1,
+          "balanced": 3,
+          "high": 6
+        },
+        "scalar_weights_per_plane": 7,
+        "cost_kind": "source-bound upper bound; no timing benefit claimed"
+      },
+      "correctness_evidence": {
+        "headless_checks": 21,
+        "headless_failures": 0,
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "normalization_positive_weights": "25 fractional radii",
+        "monotone_transfer": "81 frequency pairs over the same radius progression",
+        "actual_pixel_gate": "checker contrast and pure-hue/coverage at0/1/2/3/6; pending next hosted campaign"
+      },
+      "graphical_evidence": {
+        "status": "pending_new_exact_source_campaign",
+        "captures": []
+      },
+      "artistic_assessment": "The cross filter retains directional anisotropy; actual scene comparison after replacement remains required.",
+      "disposition": "selected_bounded_candidate_pending_graphical_and_performance_qualification",
+      "research_record": "optical-filter-spectral-review.md"
+    },
+    {
+      "id": "A009-published-actor-bounds",
+      "implementation": {
+        "source_commit": "333e9a73525e0ecf8928bb792407fd45386c5795",
+        "files": {
+          "godot/scripts/actor_presentation_bounds.gd": "928f511488669d9cc623004cd72f7cb082ac85ac94d5766e5247edfbc164c0c0",
+          "godot/scripts/physical_actor_overlay.gd": "0e6c7be717b97a7a2dedf5cbd6c3adc152b8ef8231dd279a6741d7ad5f5bbe3c",
+          "godot/scripts/actor_prototype_overlay.gd": "fb344346413d1feb86f641b26e06c53c1833462e664623a5c183fa29d4107ec9",
+          "godot/tests/test_actor_presentation_bounds.gd": "904dfc8fc1846dfa5fbfbf445f38e0dedd3c4036bb45a44a16a492a439d876dc"
+        }
+      },
+      "hypothesis": "Read-only bounds of already-presented physical and prototype actors can attenuate nearby rear architecture without changing actor authority or adding native observations.",
+      "parameters": [
+        "clarity",
+        "inspection.clarity"
+      ],
+      "applicable_scenes": [
+        "ordinary native Workbench actors",
+        "sampled prototype actors",
+        "multiple-actor adversarial fixture"
+      ],
+      "capacity": {
+        "active_actor_rectangles": 8,
+        "physical_parts_inspected": 64,
+        "actor_identity_magnitude": "Any nonnegative integer; cap applies to distinct active count.",
+        "additional_native_queries": 0,
+        "additional_render_targets": 0
+      },
+      "correctness_evidence": {
+        "pure_helper_checks": 29,
+        "failures": 0,
+        "engine": "4.7.stable.official.5b4e0cb0f",
+        "scope": [
+          "Rotated/compound displayed bounds",
+          "Legacy and extended prototype states",
+          "High monotonic instance IDs including8/100",
+          "Malformed/nonfinite source omission",
+          "Source immutability and empty retirement"
+        ]
+      },
+      "graphical_evidence": {
+        "status": "pending_next_integrated_source",
+        "registered_witness": "Near/far local attenuation, retired actor reveal clearing, multiple-actor native scene motion."
+      },
+      "artistic_assessment": "Conservative unions can include empty gaps between articulated parts; no perfect foreground occlusion or collision mask is claimed.",
+      "disposition": "implemented_bounded_candidate_pending_integrated_graphical_qualification",
+      "capacity_review": {
+        "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "finding": "Ordinary Workbench admission independently bounds eight active actors and64parts/proxies; current physical render_parts emits slot indices0..7. High persistent instance IDs map separately. Sampled player_rectangle is a separate character, not a fallback for a selected physical actor.",
+        "future_limit": "No selected-actor priority if a future publisher admits more than eight combined actors."
+      }
+    },
+    {
+      "id": "A010-exact-framebuffer-boundary",
+      "implementation": {
+        "source_commit": "bdd7a6cf7c004b7b020d9ef2c95be4153a250013",
+        "files": {
+          "godot/shaders/strata_optical_plane.gdshader": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+          "godot/scripts/depth/strata_optical_renderer.gd": "69c7e3086fe00137a29d4010e0a8c03578c710021d632dda5794c4a427b9d7ba",
+          "godot/tests/test_strata_optical_renderer.gd": "e819a172204a041378e57cbdc32c9a0f06e2495660d47bd6b9c55bacdec0e170"
+        },
+        "published_application": "fd0830abcfadd9ae19162e5677943bb131223e59"
+      },
+      "hypothesis": "Premultiplied filtering and interpolation can retain alpha correctness while a direct legacy Classic branch and matching straight-alpha framebuffer blend preserve exact RGBA8 comparison bytes.",
+      "parameters": [
+        "comparison_wipe",
+        "effect_strength",
+        "classic_haze",
+        "plane_opacity",
+        "parent opacity"
+      ],
+      "applicable_scenes": [
+        "Haze 0.3 / parent opacity 0.5 checker, impulse and partial-blue fixture",
+        "Every integrated Classic comparison"
+      ],
+      "cost_contract": {
+        "new_texture_reads": 0,
+        "new_render_targets": 0,
+        "arithmetic_change": "One final unpremultiply on processed output; direct Classic branch avoids conversion roundtrip."
+      },
+      "correctness_evidence": {
+        "source_review": "optical-boundary-review-a.md",
+        "local_headless_checks": 21,
+        "local_failures": 0,
+        "actual_graphical": "Required at published application; run45721790366 pending when recorded."
+      },
+      "disposition": "focused_correction_pending_actual_graphical_requalification",
+      "research_record": "optical-assertion-review-a.md"
+    }
+  ],
+  "retained_negative_results": [
+    {
+      "id": "A-NEG01-built-in-sampler",
+      "observation": "Initial headless compiler emitted !actions.custom_samplers.has(function->arguments[j].tex_builtin) while test exit code alone remained zero.",
+      "repair": "Named surface_texture alias of existing SubViewport texture. No texture allocation/copy.",
+      "status": "compiler error removed; graphical behavior not inferred from exit code"
+    },
+    {
+      "id": "A-NEG02-geometry-copy",
+      "observation": "First helper cached complete plane dictionaries including authored rectangles on optical configuration changes.",
+      "repair": "Cache only validated depth metadata; settings-only presenter API.",
+      "status": "source bounded; end-to-end slider timing pending"
+    },
+    {
+      "id": "A-NEG03-incomplete-shadow-family",
+      "observation": "B review found MAT002 basal/metal building IDs omitted by old relief-derived classifier.",
+      "repair": "Full admitted native Solid range and eleven rendered material-mask witnesses.",
+      "status": "source repaired; rendered witnesses pending"
+    },
+    {
+      "id": "A-NEG04-alpha-compatibility",
+      "observation": "Original HAZE normal blending is mathematically different from premultiplied filtering; changing it would alter Classic.",
+      "repair": "Restore exact original materials for Classic; separate premultiplied processed path and equivalent Classic branch in wipe.",
+      "status": "actual half-alpha capture and exact restoration checks pending"
+    },
+    {
+      "id": "A-NEG05-host-display",
+      "observation": "Local graphical display unavailable; Xvfb socket creation denied EPERM.",
+      "repair": "Use authorized exact-source hosted Linux/Windows graphical campaign.",
+      "status": "local graphical blocked; no physical GPU claims"
+    },
+    {
+      "id": "A-negative-sparse-spectral-return",
+      "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "shader_sha256": "e919e9cc17d82320fe54b34f5a48d649fc01fe11dd8ac702fc5fff21b6442312",
+      "finding": "Sparse expanding cross restores one-cell checker contrast at even integer radii; smooth ring interpolation does not prevent texture contrast from reappearing during focus.",
+      "evidence_kind": "Exact kernel transfer derivation; first flat-bar graphical fixture could not expose this.",
+      "disposition": "Replaced by dense positive binomial cross; original captures/source retained."
+    },
+    {
+      "id": "A-negative-typed-empty-bounds",
+      "source_commit": "692b4edf",
+      "finding": "Integrated presenter passed an untyped empty Array through a dynamic call requiring Array[Rect2]; repeated runtime errors invalidate positive harness assertion counts.",
+      "reviewer": "Specialist C",
+      "fix_commit": "41adff8d",
+      "disposition": "Explicitly typed local before renderer call; next integrated runtime qualification required."
+    },
+    {
+      "id": "A-negative-actor-id-range",
+      "source_commit": "692b4edf",
+      "finding": "Initial helper conflated the eight-active-actor budget with numeric identity range0..7; later monotonic IDs such as8 and100 could be omitted.",
+      "reviewer": "Integration lead",
+      "fix_commit": "333e9a73525e0ecf8928bb792407fd45386c5795",
+      "disposition": "Bound eight distinct active nonnegative identities and64parts; stable sorted output;29pure checks pass.",
+      "subsequent_scope_clarification": "This is a helper-level capacity defect demonstrated with synthetic high IDs. Current ordinary physical render_parts publishes slot indices0..7, so no actual omitted high-instance-ID actor was established; the repair remains defensive and tested."
+    },
+    {
+      "id": "A-negative-framebuffer-precision",
+      "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+      "artifact_id": 15070878821,
+      "finding": "Classic wipe failed exact bytes under haze0.3 and parent opacity0.5: fixed-function straight blending and shader premultiplication round differently on actual llvmpipe RGBA8.",
+      "initial_review_error": "Algebraic equivalence was incorrectly treated as sufficient for bit-exact framebuffer output.",
+      "fix_commit": "bdd7a6cf7c004b7b020d9ef2c95be4153a250013",
+      "oracle": "Exact bytes retained; both baseline and wipe are now captured with changed-channel/max-delta diagnostics.",
+      "disposition": "Candidate failed1/108 actual renderer checks; focused correction requires fresh actual qualification."
+    }
+  ],
+  "subsequent_evidence": [
+    {
+      "id": "hosted-renderer-01",
+      "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45711742479",
+      "renderers": [
+        "ANGLE/Microsoft Basic Render Driver",
+        "Mesa llvmpipe"
+      ],
+      "checks_per_platform": 59,
+      "failures_per_platform": 0,
+      "scope": "Isolated premultiplied alpha, sparse aperture, flat-detail silhouette, diffusion, eleven material-mask witnesses, Classic restoration, wipe, focus and material reuse.",
+      "review": "renderer-campaign-01/README.md",
+      "data": "renderer-campaign-01/review.json",
+      "limits": [
+        "Flat bars do not establish detail-frequency suppression.",
+        "No physical GPU performance claim.",
+        "Predates dense kernel and published actor bounds."
+      ]
+    },
+    {
+      "id": "underworks-profile-01",
+      "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45712854522",
+      "artifacts": {
+        "linux": 15067809163,
+        "windows": 15067754459
+      },
+      "checks_per_platform": 913,
+      "failures_per_platform": 0,
+      "scope": "One integrated native scene; eleven matched profiles; exact Classic return on each backend; zero decorative native-capture/upload delta from optical controls.",
+      "review": "blind-review-a-underworks-unmasked.json",
+      "frozen_review": "blind-review-a-underworks.json",
+      "limits": [
+        "Earlier sparse lens source.",
+        "One paused overview per profile, not a human navigation study.",
+        "Whole-scene Linux/Windows pixels differ; each same-backend Classic return is exact.",
+        "A/B artistic ordering differs and ties remain."
+      ]
+    },
+    {
+      "id": "hosted-renderer-05-negative",
+      "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+      "artifact_id": 15070878821,
+      "renderers": [
+        "Mesa25.2.8 llvmpipe LLVM20.1.2"
+      ],
+      "checks": 108,
+      "failures": 1,
+      "review": "renderer-campaign-05-review-a.json",
+      "positive_scope": [
+        "Dense checker contrast204 RGBA8 levels at radius0, zero at radii1/2/3/6",
+        "Thin white RGB equals coverage throughout the tested radii",
+        "Detail contrast204 to51 with every alpha unchanged",
+        "Bounded diffusion halo4/255 with opaque impulse centre",
+        "Published actor near/far and retirement fixture"
+      ],
+      "negative_scope": "Classic wipe with haze/parent opacity failed; whole candidate is not qualified.",
+      "limits": [
+        "Synthetic pixels cannot establish human readability or physical GPU performance.",
+        "The failed campaign did not separately save the Classic-haze baseline; later correction adds it."
+      ]
+    }
+  ]
+}

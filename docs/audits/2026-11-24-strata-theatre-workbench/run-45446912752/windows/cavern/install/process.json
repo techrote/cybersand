@@ -1,0 +1,22 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--script",
+    "res://tools/qualify_workbench_strata.gd"
+  ],
+  "error": "Godot process failed; inspect D:\\a\\cybersand\\cybersand\\build\\strata-windows\\cavern\\install\\process.log",
+  "exit_code": 1,
+  "log_sha256": "c6aab05035d8a4c30a6a53aa5a90a7e2e039ebad47cf5192eaa52cf74386222d",
+  "pid": 5604,
+  "seconds": 87.656,
+  "status": "failed",
+  "timeout_seconds": 420
+}

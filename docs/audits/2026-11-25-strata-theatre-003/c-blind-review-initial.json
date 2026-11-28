@@ -1,0 +1,160 @@
+{
+  "schema": "strata003-profile-blind-review-initial-v1",
+  "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "platform": "linux",
+  "scene": "optics-readability-challenge",
+  "packet_sha256": "f53d456db95884adfd443150f8a842023a3ece7557622fd3d984fc6caee78f0e",
+  "registration_sha256": "4bcba2f3147ae45be2507a60547121967998f9600707bae46d281d9e6f0e6b52",
+  "source_artifact_id": 15075800269,
+  "source_artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "report_sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059",
+  "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+  "assessor": "Specialist C, independent agent visual assessment",
+  "started_utc": "2026-11-26T00:24:53.278188+00:00",
+  "score_key_known": false,
+  "all_original_bytes_verified": true,
+  "viewing": "Original unchanged 1600×900 full-frame images viewed individually at the same tool display scale. No crops or altered images.",
+  "direct_label_leaks": [
+    "No profile name or treatment key was visible in any of the eleven original frames. Common toolbar text reports an optical presentation update but does not identify the selected profile."
+  ],
+  "artistic_guess_disclosure": "No profile mapping consulted. Differences in softness, neutral tonality, desaturation or colour treatment can suggest likely profiles; no explicit profile guesses are used to assign scores.",
+  "scores": [
+    {
+      "sample": "sample-01.png",
+      "sha256": "a796e21c169d060de413d9938c71ab98a5606096c9d0ebdf92c12902f4fe09fe",
+      "physical_platform_distinction": 1,
+      "real_passage_readability": 1,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 1,
+      "overall_visual_balance": 2,
+      "notes": "The upper left physical platform and aligned rear extension read as one continuous, same-value beam. The rear rectangle appears to close the central framed passage. Fine lattice, stairs and ladder remain crisp, but repeated verticals compete equally with physical boundaries. The actor position is supplied by the PILOT label and ring; its body is unresolved at this overview."
+    },
+    {
+      "sample": "sample-02.png",
+      "sha256": "0989e4cddc2667b2b707a65f19af35af993da564c42443c18d1f378687743bd5",
+      "physical_platform_distinction": 2,
+      "real_passage_readability": 2,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 2,
+      "overall_visual_balance": 3,
+      "notes": "Cool violet distant uprights and greener rear beams give a modest colour hierarchy while preserving the fine lattice. The false platform remains structurally continuous with the physical beam and the central rear rectangle still looks solid. Passage edges are slightly more distinct but no reliable tonal ownership emerges. Actor body remains unresolved; label and ring carry location."
+    },
+    {
+      "sample": "sample-03.png",
+      "sha256": "30ff7421cdd85984102a5879d140e2b2236cc67a700c67183958a992031f0873",
+      "physical_platform_distinction": 4,
+      "real_passage_readability": 3,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 4,
+      "overall_visual_balance": 4,
+      "notes": "The physical beam is brighter than its aligned extension, and its right physical support makes the termination easier to see. Rear stairs, ladder and lattice stay crisp while dropping in prominence. Bright physical passage edges separate from the darker rear rectangle, but the rectangle still suggests a wall occupying the opening. The actor remains marker-dependent at this scale. Restrained neutral hierarchy retains detail without distracting colour."
+    },
+    {
+      "sample": "sample-04.png",
+      "sha256": "63d0754a54eeb446d0d88d73d243c6d3f25fb30dee32d1734ec3ee9b6f1789bf",
+      "physical_platform_distinction": 1,
+      "real_passage_readability": 1,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 1,
+      "overall_visual_balance": 2,
+      "notes": "The false upper platform extension and actual platform have very similar values and a continuous texture/edge impression. The central rear rectangle reads as an opaque wall in the opening. Dense fine lattice and warm material flecks remain excellent, but nearly all structures compete at similar prominence. The actor is located by label/ring, with no resolved body. This is detailed but spatially flat in this deliberately same-material fixture."
+    },
+    {
+      "sample": "sample-05.png",
+      "sha256": "a54e19802fe042ac5a13bdee1b411b900cdc89216ea086aa1da88bcf233de57f",
+      "physical_platform_distinction": 5,
+      "real_passage_readability": 4,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 4,
+      "depth_order_coherence": 4,
+      "overall_visual_balance": 4,
+      "notes": "The physical beam and support dominate decisively over the dim aligned extension. The central rectangle is subdued enough to reveal distant uprights through it, strengthening the reading of a separate rear surface inside the bright physical frame. Fine rear grids remain countable but their texture and low-contrast detail are substantially suppressed. Strong Play-versus-decoration hierarchy is clearer than the separation among the rear depths. Actor body remains unresolved despite the less busy background."
+    },
+    {
+      "sample": "sample-06.png",
+      "sha256": "ef2d37dcf9e5ff0182d2a0c1c7b573840ae37be5da2d4b04157fbb89e777343c",
+      "physical_platform_distinction": 2,
+      "real_passage_readability": 1,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 4,
+      "depth_order_coherence": 2,
+      "overall_visual_balance": 3,
+      "notes": "The distant vertical frame has visible soft edges while nearer fine grids remain mostly crisp. That focus cue helps separate the far uprights but does little to break the continuous upper platform impression: the rear extension remains bright and plausibly traversable. The rear rectangle still reads as a solid wall. Fine structure survives with mild blur, yet local ownership at the difficult overlaps remains ambiguous. Actor body is not resolved."
+    },
+    {
+      "sample": "sample-07.png",
+      "sha256": "9f7b7f9c04684caec116e09f70424c888e87598443b398b6a7213dcd1ff7a1c7",
+      "physical_platform_distinction": 1,
+      "real_passage_readability": 1,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 2,
+      "overall_visual_balance": 3,
+      "notes": "A warm khaki cast makes the large far uprights somewhat distinct from the neutral physical concrete, and all fine rear lines remain crisp. The aligned platform still reads as one bright continuous beam, however, and the central filled rectangle still looks like a physical obstruction. Tonal competition remains high. The warm treatment is coherent but does not solve the main ownership ambiguity; actor body remains marker-only at overview scale."
+    },
+    {
+      "sample": "sample-08.png",
+      "sha256": "a50ee529aad8363f824b720c94b4742e09f27956946c30431337392b50f0ca18",
+      "physical_platform_distinction": 1,
+      "real_passage_readability": 1,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 2,
+      "overall_visual_balance": 2,
+      "notes": "Fine architecture is preserved and there is a faint cool cast on the far frame, but overall this is close to the visually flat high-detail samples. The upper left platform and rear continuation remain nearly equal, and the central rear panel reads as an opaque obstacle. The far-depth colour cue is weaker than the ownership conflict. The PILOT annotation still provides location without a resolved actor body."
+    },
+    {
+      "sample": "sample-09.png",
+      "sha256": "16417c529abda16bf755560366fad0be0b3abb6c9a982285fb557427d5f85e76",
+      "physical_platform_distinction": 2,
+      "real_passage_readability": 2,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 2,
+      "overall_visual_balance": 3,
+      "notes": "The rear architecture has a warmer, slightly subdued appearance relative to the physical concrete. This gives a small cue at the platform join and around the framed passage, but the aligned beam still looks usable and the rear rectangle still plausibly blocks passage. Fine rails, verticals and ladder are retained crisply. The colour treatment is controlled, yet it is a weak ownership signal for equal-material structures. Actor remains marker-dependent."
+    },
+    {
+      "sample": "sample-10.png",
+      "sha256": "0320b38159f72c0f4962481284414febf0b4b93d0bc0c937e805efea0676ec27",
+      "physical_platform_distinction": 3,
+      "real_passage_readability": 2,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 3,
+      "depth_order_coherence": 3,
+      "overall_visual_balance": 3,
+      "notes": "There is a definite sharp physical frame against softer rear platforms, steps, verticals and the filled rear rectangle. This distinguishes physical edges better than colour-only treatments, though the aligned blurred beam remains plausibly traversable and the filled passage remains visually obstructed. Fine lattice edges and material texture soften noticeably while major silhouettes survive. The effect adds focus depth at a meaningful detail cost; actor body is still unresolved."
+    },
+    {
+      "sample": "sample-11.png",
+      "sha256": "851bd050a0a96fb01db5a0154b1dbbbdde3a3e194a04c8f782d35b0ff11046a5",
+      "physical_platform_distinction": 1,
+      "real_passage_readability": 1,
+      "actor_visibility": 2,
+      "architectural_detail_retention": 5,
+      "depth_order_coherence": 1,
+      "overall_visual_balance": 2,
+      "notes": "All planes have strong, high-frequency material texture and the bright distant uprights compete with the physical frame. The false platform is a highly convincing continuation of the physical one; the central filled rear rectangle strongly resembles a blocking physical wall. Fine decorative rails and ladder remain exceptionally crisp, but there is little ownership hierarchy. Actor body is obscured at overview scale and location depends on its annotation."
+    }
+  ],
+  "limitations": [
+    "Assessor already knows authoritative fixture geometry; not an unprimed player comprehension study.",
+    "Agent visual scoring is not a human perceptual result or owner acceptance.",
+    "Overview stills do not establish moving-actor visibility, camera comfort, focus-transition quality or physical responsiveness.",
+    "Scores are separate axes and are not summed into a universal quality index."
+  ],
+  "frozen_utc": "2026-11-26T00:27:25.511142+00:00",
+  "completed": true,
+  "initial_cross_sample_findings": [
+    "Samples 03 and 05 provide the strongest platform and passage separation while retaining useful rear structure.",
+    "Samples 06 and 10 show a recognizable focus cue, but rear beam continuity and the apparent wall remain ambiguous; sample10 loses more fine texture.",
+    "Several colour-only or mild treatments preserve architecture yet give little useful physical ownership distinction in this same-material challenge.",
+    "Every overview actor visibility score is2 because the marker/label identifies position while the body is unresolved.",
+    "No profile mapping was read before this score record was frozen."
+  ]
+}

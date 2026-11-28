@@ -1,0 +1,788 @@
+{
+  "schema": "strata-theatre-002-decision-v1",
+  "mission": "STRATA-THEATRE-002",
+  "disposition": "Draft/HOLD",
+  "qualification_state": "functional-source-platform-and-pristine-package-passed-admission-target-missed-owner-acceptance-pending",
+  "pull_request": "https://github.com/techrote/cybersand/pull/776",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "predecessor": {
+    "pull_request": 769,
+    "application": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "application_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "archival_head": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+    "qualification_run": 45457176340,
+    "evaluator_sha256": "344ff7de0caf120096baa377967585918fd985fd9d35ad7b7620e1c6c9b03a71",
+    "immutable": true
+  },
+  "qualified_successor_source": {
+    "commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+    "qualification_run": 45509477752,
+    "run_attempt": 1
+  },
+  "portable_evaluator": {
+    "bytes": 208785019,
+    "name": "CyberSand-Strata2-Workbench-Windows-934cc0c0eef7.zip",
+    "sha256": "1a619b8b9c6af51529517f1609b457a7f25ed727deccbac8cd92269c7c23a547",
+    "artifact_id": 14978334114,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45509477752/artifacts/14978334114",
+    "payload_manifest": "windows-evaluation-manifest.json",
+    "payload_manifest_sha256": "82dbaa526b8cdb8f805162f1d5d5c73989a4cab2c44dd6411d584d7385b959b2",
+    "manifest_listed_files": 1688,
+    "payload_bytes_excluding_manifest": 331180403,
+    "zip_files_including_manifest": 1689,
+    "outer_artifact": {
+      "bytes": 208493785,
+      "id": 14978334114,
+      "name": "strata2-workbench-windows-evaluator-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "run_attempt": 1,
+      "run_id": 45509477752,
+      "sha256": "6d642a243fbe982dd07bc5ac3f79e65379221188ad2d6f59d27bed51e06f3645"
+    },
+    "original_execution_artifact": {
+      "bytes": 223384971,
+      "id": 14978448778,
+      "name": "strata2-package-evidence-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "run_attempt": 1,
+      "run_id": 45509477752,
+      "sha256": "2211905b26c4caf5db06fa8dd32a35b29194269de1069517032044b19682a52e"
+    }
+  },
+  "original_negative_campaigns": [
+    {
+      "run": 45484675371,
+      "source": "316020a4aa87ca7993716f00d714301884d580f7",
+      "source_tree": "50b0d869a84ff1ba4a3b3632aa433ff8b79a6268",
+      "linux_artifact": 14964647532,
+      "linux_archive_sha256": "5c34c69cffb87521ec1b7650fc3d84c919f7194020a22ff9d90769feee34b5fd",
+      "windows_artifact": 14965732536,
+      "windows_archive_sha256": "ec0b83d3f67cd5cef4e9892a4ef7be6fabbb81a951ba372cc203d7eb4a3e0509",
+      "qualification_passed": false,
+      "windows_admission_seconds": {
+        "orbital-terminal": 53.952,
+        "neon-rain-arcology": 49.52,
+        "industrial-underworks": 52.505,
+        "abyss-foundry": 63.373,
+        "vertical-transfer-spine": 57.991
+      },
+      "admission_target_seconds": 45,
+      "admission_target_misses": 5,
+      "package_executed": false
+    },
+    {
+      "run": 45493745153,
+      "source": "1a124c0a47cd9f94e07b541e5c451602b8e8e0fd",
+      "source_tree": "8cecb1df9dee26e3b0730e5ddda4824da4a03aaf",
+      "linux_artifact": 14967949955,
+      "linux_archive_bytes": 89677038,
+      "linux_archive_sha256": "0f2c10d46b1a5da76af436f0517090653211a8375e8adeb46730c2e4835b4b4f",
+      "windows_artifact": 14969991588,
+      "windows_archive_bytes": 68866410,
+      "windows_archive_sha256": "9ce2ceff8f21139430e687cb2179fdbe99417b9cda2eda37a88073884808a67d",
+      "qualified": false,
+      "native_regressions_per_platform": 16,
+      "scene_install_reopen_pairs_passed_per_platform": 4,
+      "only_install_failure": "orbital-terminal: background remains visible with exact opaque source colour",
+      "orbital_reopen_executed": false,
+      "package_executed": false,
+      "windows_admission_seconds": {
+        "orbital-terminal": 30.924,
+        "neon-rain-arcology": 35.396,
+        "industrial-underworks": 40.704,
+        "abyss-foundry": 55.235,
+        "vertical-transfer-spine": 40.35
+      },
+      "admission_target_seconds": 45,
+      "admission_target_misses": [
+        "abyss-foundry"
+      ],
+      "independent_download_audit": {
+        "all_original_ledger_files_per_platform": 265,
+        "actual_outer_bytes_matched_api_digest": true
+      }
+    },
+    {
+      "run": 45502846309,
+      "source": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+      "source_tree": "4f61de7919e8a67f3622e0642cbb7e53ee3f778c",
+      "qualified": false,
+      "linux_artifact": 14973098171,
+      "linux_archive_bytes": 86892203,
+      "linux_archive_sha256": "5a567d77baf48966db0a4e9124e6984420472976736e07b8ba7bc931e3f0d240",
+      "windows_artifact": 14974382540,
+      "windows_archive_bytes": 66570656,
+      "windows_archive_sha256": "b99143cbc4723de993870969d2ef18abd624cda19e755ff678e05d458e45c0a1",
+      "only_failures": "Ready display messages compared with untrimmed backend strings; original raw strings not recorded, source-supported diagnosis",
+      "scene_install_reopen_pairs_passed_per_platform": 3,
+      "package_executed": false,
+      "native_import_hashes_and_undo_passed": true,
+      "compose_stop_zero_writes_passed": true,
+      "exact_pixel_oracle": {
+        "native_cell": [
+          596,
+          246
+        ],
+        "material": 131,
+        "rgb_tolerance": 0.08,
+        "linux_max_error": 0.000436604022979736,
+        "windows_max_error": 0
+      },
+      "windows_admission_seconds": {
+        "orbital-terminal": 52.798,
+        "neon-rain-arcology": 52.613,
+        "industrial-underworks": 48.529,
+        "abyss-foundry": 46.716,
+        "vertical-transfer-spine": 51.35
+      },
+      "admission_target_seconds": 45,
+      "admission_target_misses": 5,
+      "real_product_finding": "Ready Import summary omitted target region; source4 supplies exact selected-stage origin and extent"
+    }
+  ],
+  "delivered_source_scope": [
+    "four-plane native ownership retained",
+    "strict v1 compatibility and CYSSTRAT v2 authored extensions",
+    "reviewed PNG alpha/mask/palette conversion",
+    "exact masked native modules and read-only frozen #770 adapter",
+    "bounded finite layered plans and native readback",
+    "per-plane history and honest Stop prefixes",
+    "six presentation-only motif kinds",
+    "five native showcase scenes",
+    "offline actual-capture gallery generator"
+  ],
+  "native_decorative_dynamics": {
+    "implemented": false,
+    "decision": "deferred",
+    "reason": "Static native owners and bounded visual motifs deliver the useful slice without introducing clocks/scheduling. Existing hosted cost and memory do not justify an unqualified extra native schedule. No native dynamic trial is claimed."
+  },
+  "physical_owner_acceptance": {
+    "status": "pending",
+    "platform": "Windows 11 / NVIDIA",
+    "scope": [
+      "appearance",
+      "interaction",
+      "real movement",
+      "pacing",
+      "aesthetic usefulness"
+    ]
+  },
+  "authorization": {
+    "draft": true,
+    "default_enabled": false,
+    "ready": false,
+    "merge": false,
+    "paid_inference": false
+  },
+  "application_candidate": {
+    "commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+    "qualification_run": 45509477752,
+    "qualified": true,
+    "platforms_qualified": true,
+    "package_qualified": true
+  },
+  "archival_closure": {
+    "kind": "documentation-only",
+    "qualified_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "qualified_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+    "commit_identity": "Resolve the Git commit containing this packet; exact SHA/tree also recorded in the final PR delivery comment and supplemental archival-closure.json",
+    "new_application_execution": false,
+    "application_input_equivalence_record": "archival-source-equivalence.json"
+  },
+  "artwork": {
+    "native_authority": "Explicit approved material proposals; source pixels do not imply physical or depth authority",
+    "reference_repository": "techrote/sandmapsreference",
+    "reference_commit": "99a166e7fcae45eb22be1740e9f33f62faccbcc7",
+    "reference_originals": "opaque RGB, with separately authored explicit masks",
+    "originals_unmodified": true,
+    "synthetic_alpha_fixture": {
+      "extent": [
+        64,
+        48
+      ],
+      "mapped_cells": 1315,
+      "no_write_cells": 1757,
+      "unknown_opaque_refusal": "separate adverse fixtures"
+    },
+    "real_reference_imports": [
+      {
+        "id": "asteroid-service-gallery",
+        "mapped": 19552,
+        "mask_excluded": 103156,
+        "unmapped_skipped": 172,
+        "original_crop": [
+          1180,
+          384,
+          384,
+          320
+        ],
+        "import_crop": [
+          0,
+          0,
+          384,
+          320
+        ],
+        "origin": [
+          128,
+          128
+        ],
+        "provenance": "godot/data/strata2/reference-imports/asteroid-service-gallery.provenance.json"
+      },
+      {
+        "id": "rocket-hangar-frame",
+        "mapped": 27582,
+        "mask_excluded": 133732,
+        "unmapped_skipped": 2526,
+        "original_crop": [
+          368,
+          112,
+          512,
+          320
+        ],
+        "import_crop": [
+          0,
+          0,
+          512,
+          320
+        ],
+        "origin": [
+          128,
+          128
+        ],
+        "provenance": "godot/data/strata2/reference-imports/rocket-hangar-frame.provenance.json"
+      }
+    ]
+  },
+  "budgets": {
+    "png_bytes": 16777216,
+    "png_max_axis": 2048,
+    "crop_max_axis": 512,
+    "integer_scale": [
+      1,
+      4
+    ],
+    "converted_max_cells": 262144,
+    "palette_entries": 32,
+    "native_request_cells": 4096,
+    "existing_decorative_edit_cap": 16384,
+    "plan_stages": 16,
+    "plan_requested_cells": 262144,
+    "plan_inspected_cells": 1048576,
+    "history_entries_per_decorative_plane": 32,
+    "provenance_records": 64,
+    "provenance_bytes": 262144,
+    "atmosphere_regions": 12,
+    "atmosphere_motifs_total": 384,
+    "atmosphere_motifs_per_effect": 96,
+    "atmosphere_max_delta_seconds": 0.1
+  },
+  "examples": [
+    {
+      "id": "orbital-terminal",
+      "extent": [
+        2048,
+        1024
+      ],
+      "source": "godot/data/strata2/orbital-terminal.json",
+      "native": true,
+      "play_geometry_unchanged_in_visual_refinement_v2": true
+    },
+    {
+      "id": "neon-rain-arcology",
+      "extent": [
+        2048,
+        1024
+      ],
+      "source": "godot/data/strata2/neon-rain-arcology.json",
+      "native": true,
+      "play_geometry_unchanged_in_visual_refinement_v2": true
+    },
+    {
+      "id": "industrial-underworks",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source": "godot/data/strata2/industrial-underworks.json",
+      "native": true,
+      "play_geometry_unchanged_in_visual_refinement_v2": true
+    },
+    {
+      "id": "abyss-foundry",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source": "godot/data/strata2/abyss-foundry.json",
+      "native": true,
+      "play_geometry_unchanged_in_visual_refinement_v2": true
+    },
+    {
+      "id": "vertical-transfer-spine",
+      "extent": [
+        1024,
+        1536
+      ],
+      "source": "godot/data/strata2/vertical-transfer-spine.json",
+      "native": true,
+      "play_geometry_unchanged_in_visual_refinement_v2": true
+    }
+  ],
+  "persistence": {
+    "format": "CYSSTRAT",
+    "v1_read_write_meaning_preserved": true,
+    "semantics": "authored layouts and settings",
+    "physical_continuation": false,
+    "visual_phase_saved": false,
+    "save_service": "existing native atomic replacement, with its existing durability limits",
+    "new_extensions_require_version": 2,
+    "supported_read_write_versions": [
+      1,
+      2
+    ],
+    "write_version_follows_validated_document": true,
+    "original_png_bytes_embedded": false,
+    "native_geometry_and_source_metadata_saved": true,
+    "executed_negative_cases": [
+      "invalid-save retains previous valid save",
+      "corrupt and truncated envelope refusal"
+    ],
+    "unexecuted_durability_cases": [
+      "process interruption during atomic replacement",
+      "disk-full during atomic replacement",
+      "power loss"
+    ]
+  },
+  "authority": {
+    "planes": [
+      "play",
+      "scripted",
+      "effects",
+      "background"
+    ],
+    "play_world_owners": 1,
+    "decorative_native_worlds": 3,
+    "decorative_native_hz": 0,
+    "decorative_actors": false,
+    "cross_plane_physics": false,
+    "new_camera": false,
+    "new_global_scheduler": false,
+    "ordinary_art_target": "play-only",
+    "architecture_donor_application_imported": false
+  },
+  "local_source3_focus": {
+    "executed_base": "4a34331283c448c2a9f919d61f5d0a676e74289f",
+    "delta_blobs_equal_published_tree": true,
+    "session": {
+      "checks": 85,
+      "seconds": 1.019599199295044,
+      "failures": []
+    },
+    "native_workbench": {
+      "checks": 430,
+      "seconds": 20.76123023033142,
+      "failures": []
+    },
+    "python_tests": 25,
+    "new_adverse_receipt_mutations": 21,
+    "scope": "Headless native/value execution before publication, independently bound to the exact published application bytes; not graphical qualification."
+  },
+  "unmeasured_or_limited": [
+    "physical Windows11/NVIDIA appearance, input and presented FPS",
+    "marginal Strata memory and actual GPU residency",
+    "isolated temporary candidate peak",
+    "separate full import conversion/ACK latency",
+    "sustained dense2048-square play",
+    "complete long-route traversal and high-speed collision readability",
+    "native decorative dynamic trial",
+    "dedicated source2 reference-import post-Undo screenshot",
+    "local Gallery browser layout",
+    "Unused offline generator rotation-name helper is not a runtime interface; shipped presets use identity transforms",
+    "Final native import Undo is an exact material-hash witness; dedicated post-Undo raster-import PNG not captured"
+  ],
+  "reviews": {
+    "source_and_runtime": "reviews/independent-review-934cc0c.md",
+    "runtime_inputs": "reviews/source-runtime-custody-934cc0c.json",
+    "source2_visuals": "reviews/refined-linux-visual-review-b.md",
+    "source2_native_import_visuals": "reviews/reference-import-visual-review-b.md",
+    "owner_tour": "owner-visual-quick-tour.md",
+    "source3_windows_negative": "reviews/source3-windows-negative-review.md",
+    "source3_approval_visuals": "reviews/source3-ready-ui-review-b.md",
+    "source4_visuals": "reviews/source4-visual-review-b.md",
+    "source4_native_import_visuals": "reviews/source4-native-import-visual-addendum-b.md",
+    "independent_c_visuals": "reviews/source4-c-cross-lane-visual-review.json",
+    "independent_observations": "reviews/source4-independent-observations.md",
+    "source4_source_platforms": "source4-platform-verification.json",
+    "semantic_a": "reviews/decision-packet-semantic-review-a.md",
+    "semantic_b": "reviews/packet-semantic-review-b.md",
+    "lead_final_visuals": "reviews/source4-lead-visual-review.json",
+    "coverage": "reviews/final-coverage-review-a.md",
+    "flatten_supplement": "reviews/flatten-supplement-source4/README.md",
+    "final_downloaded_payload": "final-downloaded-evaluator-audit.json",
+    "final_costs": "final-qualified-observations.json",
+    "package_gallery_and_guides": "reviews/package-gallery-guide-review-b.md",
+    "gallery_caption_cross_review": "reviews/final-gallery-caption-cross-review.json",
+    "final_windows_runtime_bytes": "reviews/final-windows-runtime-byte-audit.json",
+    "final_package_independent_a": "reviews/final-package-review-a.md",
+    "final_extracted_observations_independent_a": "reviews/final-extracted-windows-independent-observations.json"
+  },
+  "final_qualification": {
+    "run": 45509477752,
+    "attempt": 1,
+    "source": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+    "jobs": {
+      "linux": 138853161501,
+      "windows": 138853160999,
+      "pristine_windows": 138865865442
+    },
+    "all_jobs_success": true,
+    "cases_per_campaign": 28,
+    "admitted_evidence_members_per_campaign": 273,
+    "scene_install_reopen_pairs_per_campaign": 5,
+    "extracted_campaign_seconds": 2515.297,
+    "extracted_campaign_sha256": "b6a6e74e534b9a0f01aace8fe9cc6458186064f78d74acc47f5a5239ec296eac",
+    "actual_ordinary_launcher": {
+      "extent": [
+        2048,
+        2048
+      ],
+      "source_revision": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+      "strata_enabled": false,
+      "workbench_script": "res://scripts/shared_workbench.gd",
+      "worker_id": "-9223371959830575630",
+      "world_generation": 2
+    },
+    "launcher_sha256": "3ea8097a49bb8b65d40a5da6a0c0fed90cd0c373025bdfb27d4e0f0fa98b90d0",
+    "package_job_completed_utc": "2026-11-25T00:34:39Z",
+    "physical_owner_acceptance": false
+  },
+  "final_cost_observations": {
+    "record": "final-qualified-observations.json",
+    "source_campaigns": 2,
+    "extracted_campaigns": 1,
+    "prospective_admission_seconds": 45,
+    "source_admissions_met": 20,
+    "source_admissions_observed": 20,
+    "extracted_install_target_misses": {
+      "orbital-terminal": 51.619,
+      "neon-rain-arcology": 66.316,
+      "industrial-underworks": 66.2,
+      "abyss-foundry": 59.958,
+      "vertical-transfer-spine": 54.804
+    },
+    "extracted_reopens_seconds": [
+      8.881,
+      8.891,
+      7.636,
+      7.622,
+      7.706
+    ],
+    "extracted_reopen_target_misses": 0,
+    "extracted_static_callback_p50_ms": [
+      423.391,
+      425.022,
+      303.102,
+      305.954,
+      307.468
+    ],
+    "extracted_animated_callback_p50_ms": [
+      427.65,
+      424.686,
+      303.5,
+      307.696,
+      309.429
+    ],
+    "unchanged_decorative_native_capture_upload_delta": 0,
+    "route_native_rapier_completions": [
+      59,
+      60
+    ],
+    "extracted_route_end_to_end_seconds_range": [
+      19.223,
+      31.202
+    ],
+    "physical_gpu_fps": false,
+    "all_budget_targets_passed": false,
+    "causal_performance_improvement_claimed": false,
+    "extracted_paused_2048_square": {
+      "wall_seconds": 164.375,
+      "observed_cpu_seconds": 343.25,
+      "sampled_tree_rss_bytes": 1472425984,
+      "callback_p50_ms": 462.911,
+      "scope": "whole process, paused; no marginal native heap/GPU attribution or sustained dense play"
+    }
+  },
+  "final_package_audit": {
+    "record": "final-downloaded-evaluator-audit.json",
+    "sha256": "980939bdd95b9c5140962617c6194acb88ae5c7ff8d1725be4e4a2c76bc235d7",
+    "auditor_sha256": "d95485be629501fa9c81d5155138e73dfd109527d365248a224cac75ce0f8c17",
+    "status": "passed",
+    "independent_manifest_file_hashes": 1688,
+    "new_runtime_execution": false
+  },
+  "local_source4_focus": {
+    "executed_base": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+    "five_delta_blobs_equal_published_tree": true,
+    "harness_parse": {
+      "passed": true,
+      "seconds": 2.3276
+    },
+    "ui": {
+      "checks": 48,
+      "passed": true,
+      "seconds": 0.3892
+    },
+    "native_workbench": {
+      "checks": 431,
+      "passed": true,
+      "seconds": 19.2805,
+      "console_checks_before_teardown": 430
+    },
+    "python": {
+      "tests": 26,
+      "passed": true,
+      "seconds": 3.221
+    },
+    "scope": "Local headless/value/native execution with exact published blob binding; not graphical qualification"
+  },
+  "source_identity": {
+    "normalized_inputs": 1156,
+    "exact_raw_png_mask_assets": 6,
+    "runtime_declared_input_checks": 218,
+    "runtime_unique_input_files": 109,
+    "unchanged_runtime_manifests": 4
+  },
+  "design_choices": [
+    {
+      "choice": "Reuse existing private candidate owner and borrowed Play presentation",
+      "alternative": "New shared renderer or old standalone Play host",
+      "reason": "Preserve one authoritative Play owner and existing presentation/camera scheduling"
+    },
+    {
+      "choice": "Explicit PNG palette/mask proposal and no-write transparency",
+      "alternative": "Automatic depth inference or alpha-induced erasure",
+      "reason": "Source pixels do not confer physical or depth authority"
+    },
+    {
+      "choice": "Checked per-plane native chunks with acknowledged prefix",
+      "alternative": "Unproven cross-plane atomicity or rollback",
+      "reason": "Retain actual existing authority and truthful outcomes"
+    },
+    {
+      "choice": "Separate explicit appearance approval",
+      "alternative": "Geometry placement silently changes appearance",
+      "reason": "Settings replace the complete atmosphere configuration and require owner review"
+    },
+    {
+      "choice": "Paused native decoration plus bounded visual motifs",
+      "alternative": "Independent native cellular dynamics or new scheduling",
+      "reason": "Existing hosted cost and useful static/visual slice do not justify an unqualified clock extension"
+    }
+  ],
+  "runtime_custody": {
+    "reuse": "Retained exact unchanged inputs; no native rebuild required by changed GDScript/UI inputs",
+    "declared_checks": 218,
+    "unique_inputs": 109,
+    "manifests_and_lfs_pointers_unchanged": true,
+    "native_source": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+    "rapier_source": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+    "linux_actual": {
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "native_bytes": 5253776,
+      "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "rapier_bytes": 117275416,
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "actual_final_windows_payload_verified": true,
+    "windows_actual": {
+      "godot_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "godot_gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "native_bytes": 5820416,
+      "native_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "rapier_bytes": 9987072,
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "import_policy": {
+    "raster_alpha_threshold_range": [
+      1,
+      255
+    ],
+    "overlay_zero_or_below_threshold": "no-write, preserving current destination cells",
+    "raster_replace_zero_or_below_threshold": "explicit Empty proposal",
+    "raster_selection_mask_excluded": "always no-write, including Replace",
+    "native_module_mask_zero": "no-write by default; explicit native clear/Replace can request Empty",
+    "native_module_mask_one_material_zero": "explicit Empty operation",
+    "all_clears": "bounds, protection, clearance, selected-plane preview and approval required",
+    "sampling": "crop, admitted orthogonal transform, integer nearest replication; native IDs never raster-resampled",
+    "depth_inference": false,
+    "unknown_colours": "explicit refuse or visibly counted Skip",
+    "palette_distance": "Euclidean RGB byte distance0..442, equal-distance ties earlier row"
+  },
+  "atmosphere_policy": {
+    "category": "presentation-only",
+    "kinds": [
+      "haze",
+      "steam",
+      "rain",
+      "dust",
+      "beacon",
+      "machinery"
+    ],
+    "saved": [
+      "configuration",
+      "seed"
+    ],
+    "phase_saved": false,
+    "global_pause": "freeze all motifs",
+    "hidden_solo_flat_zero_opacity_or_disabled_plane": "freeze plane phase and stop recurring motif processing",
+    "individual_disabled_effect": "hide; re-enable rejoins shared plane phase if another motif kept it moving",
+    "locked_plane": "regional authoring refused; visible existing animation continues",
+    "max_callback_contribution_seconds": 0.1,
+    "catch_up": false,
+    "native_writes_or_physics": false,
+    "appearance_preset": "separate approval after complete native construction; replaces entire atmosphere configuration"
+  },
+  "history_and_completion": {
+    "decorative_retained_entries_per_plane": 32,
+    "native_chunk_is_separate_history_step": true,
+    "displaced_chunks_undoable": false,
+    "submitted_mutation": "original owner ACK plus independent readback required",
+    "stop": "no next chunk; submitted operation resolves and actual committed prefix remains",
+    "cross_plane_atomicity": false,
+    "empty_request_stage": "refused by Plan.compile",
+    "already_matching_requested_material": "explicit requested chunk still requires actual owner ACK/history/readback; changed-cell count is separate"
+  },
+  "source_platform_qualification": {
+    "run": 45509477752,
+    "linux": {
+      "job": 138853161501,
+      "artifact": 14975742969,
+      "archive_bytes": 89063883,
+      "archive_sha256": "76f4006e9e633e5f81cc62e293642cc99696591196cb43c82456306156cd1646",
+      "qualification_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4",
+      "cases_passed": 28,
+      "scene_pairs": 5,
+      "admitted_evidence_members": 273
+    },
+    "windows": {
+      "job": 138853160999,
+      "artifact": 14976602377,
+      "archive_bytes": 67120825,
+      "archive_sha256": "7f5c27a5b27674c6bfc7db21e6c382f8d0dbc33c2e48b0d32c740dcff626ecaf",
+      "qualification_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978",
+      "cases_passed": 28,
+      "scene_pairs": 5,
+      "admitted_evidence_members": 273
+    }
+  },
+  "source_platform_cost_observations": {
+    "record": "source4-qualified-observations.json",
+    "admissions_met": 20,
+    "admissions_observed": 20,
+    "target_seconds": 45,
+    "software_renderers": {
+      "linux": "llvmpipe LLVM20.1.2",
+      "windows": "ANGLE Microsoft Basic Render Driver Direct3D11"
+    },
+    "independently_recomputed_callback_windows": 40,
+    "independently_recomputed_process_cases": 56,
+    "unchanged_native_capture_upload_deltas": 0,
+    "route_completed_native_rapier": [
+      59,
+      60
+    ],
+    "route_end_to_end_seconds_range": [
+      9.037,
+      18.72
+    ],
+    "paused_2048_square_sampled_process_peak_bytes": {
+      "linux": 2019147776,
+      "windows": 1484115968
+    },
+    "causal_performance_improvement_claimed": false
+  },
+  "supplemental_fresh_import_reopen": {
+    "scope": "Local headless ordinary Main/Workbench; surviving imported Play layout and completed decorative composition; not graphical/package acceptance",
+    "checks": 79,
+    "seconds": 8.144461631774902,
+    "save_sha256": "eea04ef7ec9e20ff4df6680e02bdd2d303a237a4c78a38c733075cc79b856027",
+    "all_four_native_hashes_independently_recomputed": true,
+    "provenance_records_exact": 17,
+    "atmosphere_exact": true,
+    "native_edits_requested_by_reader": 0,
+    "save_bytes_unchanged": true,
+    "application_inputs_unchanged": true,
+    "writer_binding_limit": "Writer source_revision empty and saveSHA not captured at writer execution. Original base986+five exact934blobs and matching provenance/historicalowner/nativehashes/settings/timestamps bind the save retrospectively. Reader explicitly records934.",
+    "lead_review": "reviews/fresh-reopen-lead-review.json",
+    "specialist_review": "reviews/fresh-import-reopen-source4/README.md"
+  },
+  "ownership_refresh": "ownership-refresh-final.json",
+  "input_qualification": {
+    "actual_viewport_sizes": [
+      [
+        1600,
+        1000
+      ],
+      [
+        1280,
+        800
+      ]
+    ],
+    "content_scales": [
+      1.0,
+      1.25
+    ],
+    "pan_zoom_parallax": true,
+    "viewport_event_native_material_readback": true,
+    "physical_monitor_or_os_dpi_transition": false,
+    "round_trips_per_scene_install": 216,
+    "maximum_observed_screen_pixel_error": 0.00030517578125,
+    "viewport_event_full_interaction_scenes": 2
+  },
+  "supplemental_flatten": {
+    "scope": "Local Linux headless, unchanged existing tests, ordinary default-OFF Strata,512-square; no mounted-four-plane Flatten execution",
+    "process_checks": [
+      194,
+      43,
+      53,
+      44
+    ],
+    "process_seconds": [
+      17.181,
+      8.801,
+      7.239,
+      7.748
+    ],
+    "all_passed": true,
+    "source_and_runtime_bytes_unchanged": true,
+    "real_native_failure_and_fresh_reopen": true,
+    "storage_interruption_faults_executed": false,
+    "review_sha256": "92d9e8c89f95f16fd45b36051e2ad3ace44250891d070879436fe77fcd9d483c",
+    "report_sha256": "c01ace73f4d58ce762d531d67e68a7f0b452cf7dee2c1601534082285bffec1f"
+  },
+  "gallery": {
+    "displayed_capture_count": 55,
+    "html_sha256": "6c87018443e734e777999cb40ca25c4269938a815141d8ed3a4a9c2ae6a91c6a",
+    "inputs_sha256": "bb7697525414aa99570aeb2a55996395ee74cc1415816af7882c1dbaf8da3c1e",
+    "scenes": 5,
+    "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "native_grid_caption_erratum": {
+      "affected_views": 10,
+      "literal_shipped_labels": [
+        "1:1 capture",
+        "one native cell per captured pixel"
+      ],
+      "actual_recorded_scale_range": [
+        1.0003662109375,
+        1.00091552734375
+      ],
+      "admitted_scale_tolerance": 0.01,
+      "correct_interpretation": "nominal near-1:1 unresampled framebuffer crop; browser and OS scaling separate",
+      "payload_corrected_or_repackaged": false
+    },
+    "local_browser_layout_executed": false
+  }
+}

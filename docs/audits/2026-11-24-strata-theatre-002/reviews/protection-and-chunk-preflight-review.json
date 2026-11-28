@@ -1,0 +1,113 @@
+{
+  "disposition": "Draft/HOLD",
+  "files": {
+    "godot/native_extension/cyber_native_cell_world.cpp": {
+      "reviewed_working_file_equal": true,
+      "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+    },
+    "godot/scripts/depth/strata_construction_plan.gd": {
+      "reviewed_working_file_equal": false,
+      "sha256": "c7706fd6254eb558b6299b8c5d2dff287d4fc6a43c23c3b06b3aa56235aac78b"
+    },
+    "godot/scripts/depth/strata_construction_session.gd": {
+      "reviewed_working_file_equal": true,
+      "sha256": "a248180efb231f4440b05191bc5157acb4a48ba5d00daa626f71fed8a2273407"
+    },
+    "godot/scripts/depth/workbench_strata_authoring.gd": {
+      "reviewed_working_file_equal": true,
+      "sha256": "5d95a21813d228fa0e0e6c8f1d53883cae53e203aa2b29b96395e36f8117e2bd"
+    },
+    "godot/scripts/workbench_paint_editor_controller.gd": {
+      "reviewed_working_file_equal": true,
+      "sha256": "cffd2e5e5002bcd2f6567f812ef75ca844664b2925cad84e804951b34755a48c"
+    },
+    "godot/scripts/workbench_paint_editor_executor.gd": {
+      "reviewed_working_file_equal": true,
+      "sha256": "003f7bcff6ad5aaedbbd1657e006e8fb921d8d030def281652ce9468b27be4f4"
+    },
+    "godot/scripts/workbench_paint_editor_history.gd": {
+      "reviewed_working_file_equal": true,
+      "sha256": "1e9aa02be1247874e9e507129a404c1aba9a76399a23978dd6039de0bf96732a"
+    },
+    "godot/tests/test_strata2_workflow.gd": {
+      "reviewed_working_file_equal": true,
+      "sha256": "6aa1a65abbb4a59cd7deee374d8826b1534551788d7e185c1f2d5b32865c7e9f"
+    },
+    "native/src/world.cpp": {
+      "reviewed_working_file_equal": true,
+      "sha256": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a"
+    }
+  },
+  "findings": [
+    {
+      "disposition": "fixed-source-reviewed",
+      "evidence": "Exact sorted 4096-cell partitions match Session apply path; cumulative private History.prepare across Play stages; copied candidate only; reset on each preview/scene retirement.",
+      "id": "exact_play_chunk_preflight"
+    },
+    {
+      "disposition": "existing-authority-preserved",
+      "evidence": "Before approval Session captures complete declared target regions, including no-write cells. Ordinary native executor checks full canvas bounds, existing protected source rectangles and actual rigid body occupancy during capture as well as mutation. Native in_bounds has no additional hidden fixed edge ring.",
+      "id": "protected_scope"
+    },
+    {
+      "disposition": "source-and-original-lead-log-reviewed",
+      "evidence": "Actual workflow changes haze, tests original settings token refusal, restores haze, edits/undoes native material and tests advanced revision refusal. Canonical visual candidate is hashed before approval.",
+      "id": "stale_settings_execution"
+    }
+  ],
+  "independent_scope": [
+    "lead exact chunked Play preflight",
+    "existing ordinary source/body/bounds protection seam",
+    "lead canonical visual proposal and stale approval regressions"
+  ],
+  "lead_execution_inspected_not_rerun": {
+    "aggregate_checks": 404,
+    "failures": [],
+    "original_log_sha256": "c7361cdaabbbed43d7ce716e2bd7040cb0d942aad56f94991532040b216641ec",
+    "process": {
+      "elapsed_seconds": 22.929377230000682,
+      "exit_code": 0,
+      "maximum_rss_kib": 433004,
+      "source_revision": "da34aa1088c5540f1f0b491da6185ddf0111ca52",
+      "source_tree": "e98204eff94a233310c51dd374fd5adee74008bf"
+    },
+    "scope": "Original lead-owned actual Main/native headless workflow log inspected; no independent rerun, hosted display or GPU claim.",
+    "source_commit": "da34aa1088c5540f1f0b491da6185ddf0111ca52",
+    "workflow_checks": 403
+  },
+  "limits": [
+    "No cross-plane atomicity; target changes after approval may refuse later work and retain a truthful acknowledged prefix.",
+    "Capturing a protected no-write area conservatively refuses the whole preview rather than bypassing existing native source/body protection.",
+    "Historical original reviews and negatives remain unchanged; later source requires new exact qualification.",
+    "Physical Windows/NVIDIA appearance, interaction and display pacing remain owner gates."
+  ],
+  "owned_dependency_fix_not_independent_certification": {
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "finding": "Raw composition dependency IDs could repeat A while supplied and used parts included A and B; the shipped Library already refused duplicate entries. Public Plan now requires exact dependency identity set.",
+    "logs": {
+      "fixed": {
+        "checks": 76,
+        "exit_code": 0,
+        "failures": 0,
+        "path": "strata2-composition-dependency-fixed.txt",
+        "sha256": "cf6b4cfc0389ce457fc71f5deb96c6036828e0b994bd271ba505a27c32ca7ebd"
+      },
+      "original-negative": {
+        "checks": 76,
+        "exit_code": 1,
+        "failures": 1,
+        "path": "strata2-composition-dependency-original-negative.txt",
+        "sha256": "22f6fe554a66c53b233d15a175b6fbc95f3aa94b90656acca921c53da26c320a"
+      }
+    },
+    "source_commit": "b67347e71892d6ce13e231ae1d02552e1c41e4d6",
+    "source_tree": "a76fc8109ff09ba9fd8c7f3d7f60592ad339ae80",
+    "tests": "Copied FixtureHost plus actual admitted material catalogue; no native mutation or framebuffer claim."
+  },
+  "reviewer": "specialist-A-native-authoring",
+  "schema": "strata2-independent-source-review-followup-v1",
+  "source_commit": "da34aa1088c5540f1f0b491da6185ddf0111ca52",
+  "source_tree": "e98204eff94a233310c51dd374fd5adee74008bf",
+  "working_source_note": "All independently reviewed lead-owned files still matched the pinned commit when this receipt was written. Plan differed only because the lead had already integrated the separately identified b67347e71 exact dependency fix. File hashes here are computed from pinned git objects; this is source review, not a claim of a new unchanged-tree execution."
+}

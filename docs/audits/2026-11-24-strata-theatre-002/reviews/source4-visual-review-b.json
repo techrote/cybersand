@@ -1,0 +1,2247 @@
+{
+  "schema": "strata2-source4-visual-review-b-v1",
+  "reviewed_at_utc": "2026-11-25T00:11:34.633400+00:00",
+  "reviewer": "Specialist B",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "run": 45509477752,
+  "conclusion": "No blocking visual or approval-layout defect found in the 30 directly inspected original final-source PNGs. Retain the frozen application and the explicit owner-evaluation limits.",
+  "independence": "B authored scene, atmosphere and explicit reference-mask design: that part is author visual QA. B independently reviewed A/C import, construction and approval UI behavior; A, C and lead provide separate reviews of B-authored art/effects.",
+  "new_render_or_native_execution": false,
+  "application_changed": false,
+  "physical_owner_acceptance": "pending",
+  "pristine_package_execution": "outside this image review; C owns separate source-exact audit",
+  "browser_layout": "Not executed locally. Recovered environment AF_UNIX probe remained EPERM; no browser startup/render claim.",
+  "platforms": {
+    "linux": {
+      "archive": {
+        "name": "source4-linux-original.zip",
+        "artifact": 14975742969,
+        "bytes": 89063883,
+        "sha256": "76f4006e9e633e5f81cc62e293642cc99696591196cb43c82456306156cd1646"
+      },
+      "qualification_sha256": "c41958967f9681a6fbbb489fff83185c4120264cdf8863aec34d07393d3838c4",
+      "campaign_status": "passed",
+      "input_custody": "passed",
+      "images": [
+        {
+          "path": "orbital-terminal/reference-composite.png",
+          "sha256": "5d9f32fa215f266da56adbec0a8abf8c5af8e0dd73d7a45303b06ccd026c6501",
+          "bytes": 929317,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/reference-composite.png",
+          "sha256": "840edead68be8de90fb27370d4ce403bd5bfe5276db46e4e272335bec3b0049f",
+          "bytes": 1201665,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "industrial-underworks/reference-composite.png",
+          "sha256": "9d481ed0ad70eb330bea608e2c77ae60791a30334ebe925df4e1b5a123a4a365",
+          "bytes": 578188,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "abyss-foundry/reference-composite.png",
+          "sha256": "fccd5b0c139b429d791681312557f26970d39c0cd183c57a2dbd888b58cbac7d",
+          "bytes": 769464,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "vertical-transfer-spine/reference-composite.png",
+          "sha256": "b6e5ef3adbd85d3d55a6dcde9f5433fc47e59d21a138a36e0582c343c9277d79",
+          "bytes": 464826,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/composition-ready-approval.png",
+          "sha256": "4d5080c402b1a1bd15149af5cc02527d0aaa2b7010f4ebdccb5513bc96d8c01c",
+          "bytes": 145906,
+          "dimensions": [
+            817,
+            634
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/reference-import-asteroid-service-gallery-approval.png",
+          "sha256": "0feed90dc24756855937c6b65be75170cb692c98992e5659fc124e7443339a78",
+          "bytes": 186047,
+          "dimensions": [
+            817,
+            634
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png",
+          "sha256": "3e3cd5dbc95652616f4314d5ec66cbc14938688f114fcb4fb9d76f2b05ce0370",
+          "bytes": 194237,
+          "dimensions": [
+            817,
+            634
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/atmosphere-off.png",
+          "sha256": "c690f9a2f32223b5c5504879cb29c61bd824b0245a03982ac0b99e4d447f611d",
+          "bytes": 937588,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/atmosphere-on.png",
+          "sha256": "3286a6385a404d986462a2d873f051a00a002ec65ba7c82a6845c6e290c63517",
+          "bytes": 940422,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/atmosphere-off.png",
+          "sha256": "4b173c64249f6b06ceb1012251a1748cc6c997485db9ba09fb326739237bab6d",
+          "bytes": 1224655,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/atmosphere-on.png",
+          "sha256": "45ebcec3f84940ecdb6accc5433de6e529b55220d6cb809249a95992814529fb",
+          "bytes": 1226975,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/native-grid-play.png",
+          "sha256": "4f0ea92b2b7236564f0edd1eaa15781e3a0c136f0f21473966ffa59ed160fba4",
+          "bytes": 293223,
+          "dimensions": [
+            1566,
+            751
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/native-grid-scripted.png",
+          "sha256": "c055322d12f3881fd4773cafe086848499bcdf2422b941a1d072d93f6a9d7d96",
+          "bytes": 387738,
+          "dimensions": [
+            1566,
+            751
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "abyss-foundry/reference-plane-play.png",
+          "sha256": "ead13744769dc9bd94cdd5e458683944578c1560b9dc5c13e0e5bee70c90c05d",
+          "bytes": 479854,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        }
+      ],
+      "original_scene_receipts": {
+        "orbital-terminal": {
+          "original_report_sha256": "6df76e7632e2ccff8cc7cd4e4d8452fa7f537661c26d556e2495b254eb859bd6",
+          "original_showcase_native_hashes": {
+            "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+            "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+            "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+            "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 2659,
+              "max_channel_delta": 0.5008544921875,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "6cbcb790d9c3bcfe207dcf11b18824cac6bb3c3eef7482cc5fbbade41d8b4e99",
+              "effects": "245030be0ef87b416156f031cdc68a03ed06af43c8526a4af68d7e9c6350fffa",
+              "play": "a415da32335a66b60f3793a94a6aed6fc9397a1395c7323c9e871c9ef6df072d",
+              "scripted": "b8367525259e977dbe3f77ee4cf5d4643c6b15f2531022a7dfd0e9999d282fb8"
+            },
+            "native_hashes_after": {
+              "background": "6cbcb790d9c3bcfe207dcf11b18824cac6bb3c3eef7482cc5fbbade41d8b4e99",
+              "effects": "245030be0ef87b416156f031cdc68a03ed06af43c8526a4af68d7e9c6350fffa",
+              "play": "a415da32335a66b60f3793a94a6aed6fc9397a1395c7323c9e871c9ef6df072d",
+              "scripted": "b8367525259e977dbe3f77ee4cf5d4643c6b15f2531022a7dfd0e9999d282fb8"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "319975072812"
+              ],
+              "actor_session_id": "319857632293",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "319975072812"
+              ],
+              "actor_session_id": "319857632293",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371883561348485",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371717399796704"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.5,
+                "scripted": 1.5
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                259.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.00042724609375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                259.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.00042724609375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            }
+          ],
+          "reference_import": {
+            "actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+            "approved_token": "3f590f50fb62ad57a5f1201942fcc6214f695f52cd7dc12142d366a3a7176f24",
+            "before_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+            "completed_status": "completed",
+            "expected_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+            "geometry_sha256": "1c4f7f23c9356ecb170be460dc23eb92b8793b88b8768ac5181a0d7a59667740",
+            "history_chunks": 5,
+            "id": "asteroid-service-gallery",
+            "mapped": 19552,
+            "mask_sha256": "e2de46497c90616aa6fda207ca6b16b5fac805682e446d34d3549bb5db239605",
+            "no_write": 103328,
+            "original_source_sha256": "e663ce4379554b49c168447b023f24481ad7df3dc9106bddcd29ed40c952cf28",
+            "plane": "scripted",
+            "play_after_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+            "play_before_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+            "ready_review": {
+              "approval_enabled": true,
+              "approval_visible": true,
+              "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+              "backend_token": "3f590f50fb62ad57a5f1201942fcc6214f695f52cd7dc12142d366a3a7176f24",
+              "changed_counts": "Target: scripted · region [128, 128, 384, 320]\nChanged cells: 19087 · mapped: 19552 · no-write: 103328 · explicit Empty: 0 · unmapped: 172\nSource: 3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9\nProposed geometry: be679be04382f5046c31d9fa88dfcc44f0ef482b4d63052cba91fbee1774fd7c",
+              "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+              "expected_region": [
+                128,
+                128,
+                384,
+                320
+              ],
+              "filename": "reference-import-asteroid-service-gallery-approval.png",
+              "proposal_visible": true,
+              "region_label": "Target: scripted · region [128, 128, 384, 320]",
+              "reviewed_token": "3f590f50fb62ad57a5f1201942fcc6214f695f52cd7dc12142d366a3a7176f24",
+              "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+              "scroll_vertical": 799,
+              "status": "ready"
+            },
+            "region": [
+              128,
+              128,
+              384,
+              320
+            ],
+            "restored_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+            "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+            "source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+            "visual_difference": {
+              "changed_samples": 28055,
+              "max_channel_delta": 0.982009887695312,
+              "samples": 167104,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "write_mask_sha256": "8ac096a521e8f28aad3bdf1de8af3572bc31e42565b2c37c9bff7b773df3c674"
+          },
+          "composition_review": {
+            "approval_enabled": true,
+            "approval_visible": true,
+            "approved": false,
+            "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+            "backend_token": "e958548bd492a09226b70c5f9532dd087f9fb3bb5800da21e1da82a516d87385",
+            "cancelled_without_approval": true,
+            "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+            "filename": "composition-ready-approval.png",
+            "id": "factory-service-bay",
+            "native_hashes_after": {
+              "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+              "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+              "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+              "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+            },
+            "native_hashes_before": {
+              "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+              "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+              "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+              "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+            },
+            "proposal_visible": true,
+            "reviewed_token": "e958548bd492a09226b70c5f9532dd087f9fb3bb5800da21e1da82a516d87385",
+            "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+            "scroll_vertical": 695,
+            "stage_count": 4,
+            "status": "ready",
+            "stop": {
+              "applied_cells": 0,
+              "approval_disabled": true,
+              "can_approve": false,
+              "status": "cancelled",
+              "token": ""
+            }
+          }
+        },
+        "neon-rain-arcology": {
+          "original_report_sha256": "dc8612b59e262a9a4fe9a406af3379b7ee98dba277323e49faef8c2f6fc80ea6",
+          "original_showcase_native_hashes": {
+            "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+            "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+            "play": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+            "scripted": "f7b0d095e9e09f5fc38e509353a5b5dfc5f297dbe8bd2be4efdb503de2a26878"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 3390,
+              "max_channel_delta": 0.485916137695312,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+              "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+              "play": "4bf4ae1a53e7854f587b18c9cf6b98cfbb4aeb03368bf73d1d96ca810dfbe5e3",
+              "scripted": "0be41e5d1afdc02651e1cabcfc5ab4d9d54abf08b33fe2d1f696549b947e61ce"
+            },
+            "native_hashes_after": {
+              "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+              "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+              "play": "4bf4ae1a53e7854f587b18c9cf6b98cfbb4aeb03368bf73d1d96ca810dfbe5e3",
+              "scripted": "0be41e5d1afdc02651e1cabcfc5ab4d9d54abf08b33fe2d1f696549b947e61ce"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "319572419628"
+              ],
+              "actor_session_id": "319454979109",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "319572419628"
+              ],
+              "actor_session_id": "319454979109",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371883561348486",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371717802449888"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.5,
+                "scripted": 1.5
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                297.0,
+                84.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.0003662109375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                297.0,
+                84.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.0003662109375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            }
+          ],
+          "reference_import": {
+            "actual_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+            "approved_token": "dfc6117196effc6356be75b09b0d5425dedd748b613f7de6fe8bcdc536ab8eec",
+            "before_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+            "completed_status": "completed",
+            "expected_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+            "geometry_sha256": "a3df87bcdfd9ec8e8a7dc694906c7dcb3955c5299660acb90d913078f4e67650",
+            "history_chunks": 7,
+            "id": "rocket-hangar-frame",
+            "mapped": 27582,
+            "mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+            "no_write": 136258,
+            "original_source_sha256": "033534dc0971a8250f27a7d9a91e60af6230559a872107505f574c33e1420fef",
+            "plane": "scripted",
+            "play_after_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+            "play_before_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+            "ready_review": {
+              "approval_enabled": true,
+              "approval_visible": true,
+              "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+              "backend_token": "dfc6117196effc6356be75b09b0d5425dedd748b613f7de6fe8bcdc536ab8eec",
+              "changed_counts": "Target: scripted · region [128, 128, 512, 320]\nChanged cells: 27427 · mapped: 27582 · no-write: 136258 · explicit Empty: 0 · unmapped: 2526\nSource: 7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960\nProposed geometry: c4dea27b412044774969da0295965c0a8cbb04cfa12882c2f9d5b0cd05ef6db2",
+              "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+              "expected_region": [
+                128,
+                128,
+                512,
+                320
+              ],
+              "filename": "reference-import-rocket-hangar-frame-approval.png",
+              "proposal_visible": true,
+              "region_label": "Target: scripted · region [128, 128, 512, 320]",
+              "reviewed_token": "dfc6117196effc6356be75b09b0d5425dedd748b613f7de6fe8bcdc536ab8eec",
+              "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+              "scroll_vertical": 799,
+              "status": "ready"
+            },
+            "region": [
+              128,
+              128,
+              512,
+              320
+            ],
+            "restored_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+            "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+            "source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+            "visual_difference": {
+              "changed_samples": 41210,
+              "max_channel_delta": 0.982009887695312,
+              "samples": 223427,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "write_mask_sha256": "5d48a36f27a74049fd4777238deeb4b7382db393adf96f5ba995adc1dbf486e3"
+          }
+        },
+        "industrial-underworks": {
+          "original_report_sha256": "f7fae823126ce1d8eb7033d90745d9e1a2cc3c82f29ed13db2cfa1b628bbb453",
+          "original_showcase_native_hashes": {
+            "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+            "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+            "play": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+            "scripted": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 502,
+              "max_channel_delta": 0.652908325195312,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+              "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+              "play": "b63c8efdf8c26262eb8d8ffa7717104d67e82bfbc816ac70fb31f953a97988ba",
+              "scripted": "159ba15a4a4c66bd599f23d03bf490855e9ecd08d5d939ccc94ac61feb3e392a"
+            },
+            "native_hashes_after": {
+              "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+              "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+              "play": "b63c8efdf8c26262eb8d8ffa7717104d67e82bfbc816ac70fb31f953a97988ba",
+              "scripted": "159ba15a4a4c66bd599f23d03bf490855e9ecd08d5d939ccc94ac61feb3e392a"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "319756969004"
+              ],
+              "actor_session_id": "319639528485",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "319756969004"
+              ],
+              "actor_session_id": "319639528485",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371883561348477",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371717584346080"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 1.5,
+                "effects": 1.5,
+                "scripted": 1.5
+              },
+              "moving_after": {
+                "background": 2.2,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_before": {
+                "background": 2.2,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_after": {
+                "background": 2.2,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_before": {
+                "background": 2.2,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_after": {
+                "background": 2.2,
+                "effects": 2.2,
+                "scripted": 2.2
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                174.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976562,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                174.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976562,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            }
+          ]
+        },
+        "abyss-foundry": {
+          "original_report_sha256": "cd874345ab286d99419abdd73cc14849dd114b18a2cd38e6af8c6b233085a2ce",
+          "original_showcase_native_hashes": {
+            "background": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+            "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+            "play": "52ccafce52a14e743fe4e0c3e8ef627401071ca6cb226c878b9061076a4bbdc1",
+            "scripted": "a6312dce620f3baefb5c8cd3e8cfd61b80f67402c7d44e739b24ce1a07a0d4c7"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 2769,
+              "max_channel_delta": 0.460037231445312,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+              "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+              "play": "31031014ddeb70009d7d74d07dd36ce9b3a5ad8ab58883e9811cb52a96053d3c",
+              "scripted": "26e07110d5a3404c15e8962c592fab646d558dcd618186b193fc4af47e94ce68"
+            },
+            "native_hashes_after": {
+              "background": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+              "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+              "play": "31031014ddeb70009d7d74d07dd36ce9b3a5ad8ab58883e9811cb52a96053d3c",
+              "scripted": "26e07110d5a3404c15e8962c592fab646d558dcd618186b193fc4af47e94ce68"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "320008627244"
+              ],
+              "actor_session_id": "319891186725",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "320008627244"
+              ],
+              "actor_session_id": "319891186725",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371883561348485",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371717349465056"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.5,
+                "scripted": 1.5
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                54.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976562,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                54.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976562,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            }
+          ]
+        },
+        "vertical-transfer-spine": {
+          "original_report_sha256": "7bc6b01bce9ac6b3bae1f11409074a506ffd6c7a36d750b1d5d6183070c5f659",
+          "original_showcase_native_hashes": {
+            "background": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+            "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+            "play": "eb0cfc3f9271badf05ec1f57154845764b44f36467062c3ea3539164f36c77fa",
+            "scripted": "ad50b3811f32e0d2a4e8d89fec087c88a9a6ed53003fff39310e10f299881fe3"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 1078,
+              "max_channel_delta": 0.3404541015625,
+              "samples": 92504,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 92504,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+              "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+              "play": "349fecb87ca73812eb0a2786c8355d31595af322610e9512f784b8a96d6d0a65",
+              "scripted": "fabb5941d59bef3937c95fde271dab203b448bfe29be0e3f9d304db6e2babfd5"
+            },
+            "native_hashes_after": {
+              "background": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+              "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+              "play": "349fecb87ca73812eb0a2786c8355d31595af322610e9512f784b8a96d6d0a65",
+              "scripted": "fabb5941d59bef3937c95fde271dab203b448bfe29be0e3f9d304db6e2babfd5"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "319891186732"
+              ],
+              "actor_session_id": "319773746213",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "319891186732"
+              ],
+              "actor_session_id": "319773746213",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953790777733",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371883561348477",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371717466905568"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.5,
+                "scripted": 1.5
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 2.2,
+                "scripted": 2.2
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                164.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.00091552734375,
+              "pixels_per_cell_y": 1.00088500976562,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                164.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.00091552734375,
+              "pixels_per_cell_y": 1.00088500976562,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "windows": {
+      "archive": {
+        "name": "source4-windows-original.zip",
+        "artifact": 14976602377,
+        "bytes": 67120825,
+        "sha256": "7f5c27a5b27674c6bfc7db21e6c382f8d0dbc33c2e48b0d32c740dcff626ecaf"
+      },
+      "qualification_sha256": "94eaefac1376f6453f4a4a8611133dbf9a5051f7abc883d1db47e220de60a978",
+      "campaign_status": "passed",
+      "input_custody": "passed",
+      "images": [
+        {
+          "path": "orbital-terminal/reference-composite.png",
+          "sha256": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+          "bytes": 927383,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/reference-composite.png",
+          "sha256": "ccbf13e5c90958ae379d4dceb7e4f82c10f282fc99dcd88e5afdc5fa2064c568",
+          "bytes": 1200319,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "industrial-underworks/reference-composite.png",
+          "sha256": "7c8768ef846e8c3535e88e20eda15f59bba25219e6ac4fe70aeaf3d8e6967c1d",
+          "bytes": 576478,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "abyss-foundry/reference-composite.png",
+          "sha256": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+          "bytes": 767892,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "vertical-transfer-spine/reference-composite.png",
+          "sha256": "26f1791361f9d3eb55e65ab71b2efb277464e49c734e1ddcf3bf19fcecb89779",
+          "bytes": 463459,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/composition-ready-approval.png",
+          "sha256": "9afe2c882bc7cff3c727a5c84b7f0a6ce930f5b75228737bd0a6e5a1e7fe74ef",
+          "bytes": 140739,
+          "dimensions": [
+            817,
+            607
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/reference-import-asteroid-service-gallery-approval.png",
+          "sha256": "2e22d2ff5257d1fa4dac737750a80874e9426dd9e24630fb306e0dc3416297aa",
+          "bytes": 181099,
+          "dimensions": [
+            817,
+            607
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png",
+          "sha256": "7fd6e27e7b975a25168da422ce097c959bdff171bd181619ed4c4f2af7ba1f38",
+          "bytes": 189909,
+          "dimensions": [
+            817,
+            607
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/atmosphere-off.png",
+          "sha256": "bf5e0262b7a589d2170dff2527f26f4613abaff2a7eb8d06a8eb41f93ef00b60",
+          "bytes": 941204,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/atmosphere-on.png",
+          "sha256": "d37b7cff18a7dcad710007a615e6ff029e3c5d55b1a555231782605a451aef67",
+          "bytes": 943789,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/atmosphere-off.png",
+          "sha256": "93ed1ace525438fdc2e9404f042f8b44af18c8f9b0e73ee195de741e1996f863",
+          "bytes": 1211256,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "neon-rain-arcology/atmosphere-on.png",
+          "sha256": "cab2de5076d13d8b00d5d7fc31e48f99a6968165e3d1f0d3d73322df47df9f69",
+          "bytes": 1214067,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/native-grid-play.png",
+          "sha256": "f9988ea218658e22e8efad47a6975127de27c592ecf03f5424bcc303834bccf0",
+          "bytes": 292763,
+          "dimensions": [
+            1566,
+            751
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "orbital-terminal/native-grid-scripted.png",
+          "sha256": "939fc0a32cb77976b79525aad2abed1f8dd6193e884cf05b231a72d755573bb2",
+          "bytes": 387756,
+          "dimensions": [
+            1566,
+            751
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        },
+        {
+          "path": "abyss-foundry/reference-plane-play.png",
+          "sha256": "f2a6757c31bbc2843ca935b81bda2f22170cf90fede080ef552fe5e007c991f9",
+          "bytes": 479284,
+          "dimensions": [
+            1600,
+            900
+          ],
+          "visually_inspected": true,
+          "inspection_kind": "Actual original PNG displayed directly; no resampling, redraw or new execution by this review."
+        }
+      ],
+      "original_scene_receipts": {
+        "orbital-terminal": {
+          "original_report_sha256": "6c04730b181e4cd7929b91d02f990d87ad00d77d45909e699053f6def6b714c8",
+          "original_showcase_native_hashes": {
+            "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+            "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+            "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+            "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 2779,
+              "max_channel_delta": 0.501960810273886,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "6cbcb790d9c3bcfe207dcf11b18824cac6bb3c3eef7482cc5fbbade41d8b4e99",
+              "effects": "245030be0ef87b416156f031cdc68a03ed06af43c8526a4af68d7e9c6350fffa",
+              "play": "a415da32335a66b60f3793a94a6aed6fc9397a1395c7323c9e871c9ef6df072d",
+              "scripted": "b8367525259e977dbe3f77ee4cf5d4643c6b15f2531022a7dfd0e9999d282fb8"
+            },
+            "native_hashes_after": {
+              "background": "6cbcb790d9c3bcfe207dcf11b18824cac6bb3c3eef7482cc5fbbade41d8b4e99",
+              "effects": "245030be0ef87b416156f031cdc68a03ed06af43c8526a4af68d7e9c6350fffa",
+              "play": "a415da32335a66b60f3793a94a6aed6fc9397a1395c7323c9e871c9ef6df072d",
+              "scripted": "b8367525259e977dbe3f77ee4cf5d4643c6b15f2531022a7dfd0e9999d282fb8"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "347875583020"
+              ],
+              "actor_session_id": "347758142501",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "347875583020"
+              ],
+              "actor_session_id": "347758142501",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371882990923132",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371689499286496"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.3,
+                "scripted": 1.3
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 1.78963833333333,
+                "scripted": 1.78963833333333
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 1.78963833333333,
+                "scripted": 1.78963833333333
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 1.78963833333333,
+                "scripted": 1.78963833333333
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 1.78963833333333,
+                "scripted": 1.78963833333333
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 1.78963833333333,
+                "scripted": 1.78963833333333
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                259.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.00042724609375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                259.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.00042724609375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            }
+          ],
+          "reference_import": {
+            "actual_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+            "approved_token": "523593fa272b20ed2bfec9c40b46bdff1d095b125919022436b0c305f90f311f",
+            "before_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+            "completed_status": "completed",
+            "expected_sha256": "4bd4fff17578b2c080a9ab5f92d8a0d21b4892b51bbc932ddcf65b912e5c93fb",
+            "geometry_sha256": "1c4f7f23c9356ecb170be460dc23eb92b8793b88b8768ac5181a0d7a59667740",
+            "history_chunks": 5,
+            "id": "asteroid-service-gallery",
+            "mapped": 19552,
+            "mask_sha256": "e2de46497c90616aa6fda207ca6b16b5fac805682e446d34d3549bb5db239605",
+            "no_write": 103328,
+            "original_source_sha256": "e663ce4379554b49c168447b023f24481ad7df3dc9106bddcd29ed40c952cf28",
+            "plane": "scripted",
+            "play_after_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+            "play_before_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+            "ready_review": {
+              "approval_enabled": true,
+              "approval_visible": true,
+              "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+              "backend_token": "523593fa272b20ed2bfec9c40b46bdff1d095b125919022436b0c305f90f311f",
+              "changed_counts": "Target: scripted · region [128, 128, 384, 320]\nChanged cells: 19087 · mapped: 19552 · no-write: 103328 · explicit Empty: 0 · unmapped: 172\nSource: 3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9\nProposed geometry: be679be04382f5046c31d9fa88dfcc44f0ef482b4d63052cba91fbee1774fd7c",
+              "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+              "expected_region": [
+                128,
+                128,
+                384,
+                320
+              ],
+              "filename": "reference-import-asteroid-service-gallery-approval.png",
+              "proposal_visible": true,
+              "region_label": "Target: scripted · region [128, 128, 384, 320]",
+              "reviewed_token": "523593fa272b20ed2bfec9c40b46bdff1d095b125919022436b0c305f90f311f",
+              "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+              "scroll_vertical": 831,
+              "status": "ready"
+            },
+            "region": [
+              128,
+              128,
+              384,
+              320
+            ],
+            "restored_sha256": "833d95286d9741eca8d73315a7248a1ed3415a73d0775c726b2f4f6d33f1bd94",
+            "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+            "source_sha256": "3c4236e732a9ffa17219ae83072722fdf222ead42c312aac3ba37ff2f21015f9",
+            "visual_difference": {
+              "changed_samples": 28055,
+              "max_channel_delta": 0.980392156168818,
+              "samples": 167104,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "write_mask_sha256": "8ac096a521e8f28aad3bdf1de8af3572bc31e42565b2c37c9bff7b773df3c674"
+          },
+          "composition_review": {
+            "approval_enabled": true,
+            "approval_visible": true,
+            "approved": false,
+            "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+            "backend_token": "5aa2abd2ca503c471301515faf85e3410f482055d3dc7b18c04a22cf5a4cbd1f",
+            "cancelled_without_approval": true,
+            "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+            "filename": "composition-ready-approval.png",
+            "id": "factory-service-bay",
+            "native_hashes_after": {
+              "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+              "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+              "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+              "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+            },
+            "native_hashes_before": {
+              "background": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+              "effects": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+              "play": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+              "scripted": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be"
+            },
+            "proposal_visible": true,
+            "reviewed_token": "5aa2abd2ca503c471301515faf85e3410f482055d3dc7b18c04a22cf5a4cbd1f",
+            "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+            "scroll_vertical": 727,
+            "stage_count": 4,
+            "status": "ready",
+            "stop": {
+              "applied_cells": 0,
+              "approval_disabled": true,
+              "can_approve": false,
+              "status": "cancelled",
+              "token": ""
+            }
+          }
+        },
+        "neon-rain-arcology": {
+          "original_report_sha256": "6bdb7297bec35106f94564c9042e1419a0ee2d355d597ad45a8e643c04b5078b",
+          "original_showcase_native_hashes": {
+            "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+            "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+            "play": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+            "scripted": "f7b0d095e9e09f5fc38e509353a5b5dfc5f297dbe8bd2be4efdb503de2a26878"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 3445,
+              "max_channel_delta": 0.486274538561702,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 279377,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+              "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+              "play": "4bf4ae1a53e7854f587b18c9cf6b98cfbb4aeb03368bf73d1d96ca810dfbe5e3",
+              "scripted": "0be41e5d1afdc02651e1cabcfc5ab4d9d54abf08b33fe2d1f696549b947e61ce"
+            },
+            "native_hashes_after": {
+              "background": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+              "effects": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+              "play": "4bf4ae1a53e7854f587b18c9cf6b98cfbb4aeb03368bf73d1d96ca810dfbe5e3",
+              "scripted": "0be41e5d1afdc02651e1cabcfc5ab4d9d54abf08b33fe2d1f696549b947e61ce"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "347842028588"
+              ],
+              "actor_session_id": "347724588069",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "347842028588"
+              ],
+              "actor_session_id": "347724588069",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371882990923132",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371689532840928"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.294392,
+                "scripted": 1.294392
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 1.844173,
+                "scripted": 1.844173
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 1.844173,
+                "scripted": 1.844173
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 1.844173,
+                "scripted": 1.844173
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 1.844173,
+                "scripted": 1.844173
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 1.844173,
+                "scripted": 1.844173
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                297.0,
+                84.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.0003662109375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                297.0,
+                84.5
+              ],
+              "framebuffer_crop": [
+                17,
+                135,
+                1566,
+                751
+              ],
+              "pixels_per_cell_x": 1.0003662109375,
+              "pixels_per_cell_y": 1.00045776367188,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1566,
+                751
+              ]
+            }
+          ],
+          "reference_import": {
+            "actual_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+            "approved_token": "1e56e003716c6c7614a2a9cec491d95a0cdd0dfd2a127cbfe53d29160eda0c57",
+            "before_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+            "completed_status": "completed",
+            "expected_sha256": "940c32603d9541daaaed5d518a9eb90c5ae7b5e7898e0dcec69679945f0c3453",
+            "geometry_sha256": "a3df87bcdfd9ec8e8a7dc694906c7dcb3955c5299660acb90d913078f4e67650",
+            "history_chunks": 7,
+            "id": "rocket-hangar-frame",
+            "mapped": 27582,
+            "mask_sha256": "8c61a3d8ee71f52f1b5a5365364880119321199c990a0b9f713c74f78f8c2e8a",
+            "no_write": 136258,
+            "original_source_sha256": "033534dc0971a8250f27a7d9a91e60af6230559a872107505f574c33e1420fef",
+            "plane": "scripted",
+            "play_after_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+            "play_before_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+            "ready_review": {
+              "approval_enabled": true,
+              "approval_visible": true,
+              "backend_message": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk. ",
+              "backend_token": "1e56e003716c6c7614a2a9cec491d95a0cdd0dfd2a127cbfe53d29160eda0c57",
+              "changed_counts": "Target: scripted · region [128, 128, 512, 320]\nChanged cells: 27427 · mapped: 27582 · no-write: 136258 · explicit Empty: 0 · unmapped: 2526\nSource: 7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960\nProposed geometry: c4dea27b412044774969da0295965c0a8cbb04cfa12882c2f9d5b0cd05ef6db2",
+              "displayed_status": "Review exact material-ID projection, then Approve. Existing owner history records each <=4096-cell chunk.",
+              "expected_region": [
+                128,
+                128,
+                512,
+                320
+              ],
+              "filename": "reference-import-rocket-hangar-frame-approval.png",
+              "proposal_visible": true,
+              "region_label": "Target: scripted · region [128, 128, 512, 320]",
+              "reviewed_token": "1e56e003716c6c7614a2a9cec491d95a0cdd0dfd2a127cbfe53d29160eda0c57",
+              "scope": "Actual scrolled Workbench controls and native-ID proposal; no automatic application.",
+              "scroll_vertical": 831,
+              "status": "ready"
+            },
+            "region": [
+              128,
+              128,
+              512,
+              320
+            ],
+            "restored_sha256": "3f741156856525756384d90e0596f7436fd539fcdabcd06b32ee68c8333eec0c",
+            "scope": "Actual Import controls, explicit reviewed approval, authoritative native readback, real Godot pixels and per-chunk Undo; original opaque art and explicit selection mask stay distinct.",
+            "source_sha256": "7ae95ab333cf478972941a2914c63fa93f3cc1b8dc63bf1cc228b4e23cc3c960",
+            "visual_difference": {
+              "changed_samples": 41219,
+              "max_channel_delta": 0.980392156168818,
+              "samples": 223427,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "write_mask_sha256": "5d48a36f27a74049fd4777238deeb4b7382db393adf96f5ba995adc1dbf486e3"
+          }
+        },
+        "industrial-underworks": {
+          "original_report_sha256": "c062f40c6290143cf0eb6ad72bf2487fa9e5bcdd0746b98c16c3466c0ceddd35",
+          "original_showcase_native_hashes": {
+            "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+            "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+            "play": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+            "scripted": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 529,
+              "max_channel_delta": 0.654901979491115,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+              "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+              "play": "b63c8efdf8c26262eb8d8ffa7717104d67e82bfbc816ac70fb31f953a97988ba",
+              "scripted": "159ba15a4a4c66bd599f23d03bf490855e9ecd08d5d939ccc94ac61feb3e392a"
+            },
+            "native_hashes_after": {
+              "background": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+              "effects": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+              "play": "b63c8efdf8c26262eb8d8ffa7717104d67e82bfbc816ac70fb31f953a97988ba",
+              "scripted": "159ba15a4a4c66bd599f23d03bf490855e9ecd08d5d939ccc94ac61feb3e392a"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "343849051180"
+              ],
+              "actor_session_id": "343731610661",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "343849051180"
+              ],
+              "actor_session_id": "343731610661",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371882990923132",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371693492263904"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 1.280583,
+                "effects": 1.280583,
+                "scripted": 1.280583
+              },
+              "moving_after": {
+                "background": 1.754683,
+                "effects": 1.754683,
+                "scripted": 1.754683
+              },
+              "paused_before": {
+                "background": 1.754683,
+                "effects": 1.754683,
+                "scripted": 1.754683
+              },
+              "paused_after": {
+                "background": 1.754683,
+                "effects": 1.754683,
+                "scripted": 1.754683
+              },
+              "hidden_before": {
+                "background": 1.754683,
+                "effects": 1.754683,
+                "scripted": 1.754683
+              },
+              "hidden_after": {
+                "background": 1.754683,
+                "effects": 1.754683,
+                "scripted": 1.754683
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                174.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976563,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                174.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976563,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            }
+          ]
+        },
+        "abyss-foundry": {
+          "original_report_sha256": "aed84240daa0b76b9692f2441af4497c4c319517baf82bb63d7b6bb25485e645",
+          "original_showcase_native_hashes": {
+            "background": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+            "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+            "play": "52ccafce52a14e743fe4e0c3e8ef627401071ca6cb226c878b9061076a4bbdc1",
+            "scripted": "a6312dce620f3baefb5c8cd3e8cfd61b80f67402c7d44e739b24ce1a07a0d4c7"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 2778,
+              "max_channel_delta": 0.454901961609721,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 139129,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+              "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+              "play": "31031014ddeb70009d7d74d07dd36ce9b3a5ad8ab58883e9811cb52a96053d3c",
+              "scripted": "26e07110d5a3404c15e8962c592fab646d558dcd618186b193fc4af47e94ce68"
+            },
+            "native_hashes_after": {
+              "background": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+              "effects": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+              "play": "31031014ddeb70009d7d74d07dd36ce9b3a5ad8ab58883e9811cb52a96053d3c",
+              "scripted": "26e07110d5a3404c15e8962c592fab646d558dcd618186b193fc4af47e94ce68"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "350459274284"
+              ],
+              "actor_session_id": "350341833765",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "350459274284"
+              ],
+              "actor_session_id": "350341833765",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371882990923132",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371686898818016"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.279561,
+                "scripted": 1.279561
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 1.75922633333333,
+                "scripted": 1.75922633333333
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 1.75922633333333,
+                "scripted": 1.75922633333333
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 1.75922633333333,
+                "scripted": 1.75922633333333
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 1.75922633333333,
+                "scripted": 1.75922633333333
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 1.75922633333333,
+                "scripted": 1.75922633333333
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                54.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976563,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                54.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.0008544921875,
+              "pixels_per_cell_y": 1.00088500976563,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            }
+          ]
+        },
+        "vertical-transfer-spine": {
+          "original_report_sha256": "4b7a77caa0a3c8a9b015232c129cfc8632aefb6f5a44520c14e11a0874f1ed20",
+          "original_showcase_native_hashes": {
+            "background": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+            "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+            "play": "eb0cfc3f9271badf05ec1f57154845764b44f36467062c3ea3539164f36c77fa",
+            "scripted": "ad50b3811f32e0d2a4e8d89fec087c88a9a6ed53003fff39310e10f299881fe3"
+          },
+          "atmosphere": {
+            "category": "presentation-only; no native simulation, light transport or material transfer",
+            "visual_difference": {
+              "changed_samples": 1088,
+              "max_channel_delta": 0.341176476329565,
+              "samples": 92504,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "solo_leakage": {
+              "changed_samples": 0,
+              "max_channel_delta": 0.0,
+              "samples": 92504,
+              "scope": "actual framebuffer pixels within the ordinary world view; UI labels excluded",
+              "stride": 2,
+              "threshold": 0.003
+            },
+            "native_capture_delta": 0,
+            "native_hashes_before": {
+              "background": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+              "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+              "play": "349fecb87ca73812eb0a2786c8355d31595af322610e9512f784b8a96d6d0a65",
+              "scripted": "fabb5941d59bef3937c95fde271dab203b448bfe29be0e3f9d304db6e2babfd5"
+            },
+            "native_hashes_after": {
+              "background": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+              "effects": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+              "play": "349fecb87ca73812eb0a2786c8355d31595af322610e9512f784b8a96d6d0a65",
+              "scripted": "fabb5941d59bef3937c95fde271dab203b448bfe29be0e3f9d304db6e2babfd5"
+            },
+            "identity_before": {
+              "actor_body_ids": [
+                "342540428332"
+              ],
+              "actor_session_id": "342422987813",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "identity_after": {
+              "actor_body_ids": [
+                "342540428332"
+              ],
+              "actor_session_id": "342422987813",
+              "native_tick": 0,
+              "physical_epoch": 1,
+              "rapier_tick": 0,
+              "worker_id": "-9223371953203575164",
+              "world_generation": 3
+            },
+            "play_material_time": {
+              "emission_original": null,
+              "emission_restored": true,
+              "emission_shader_instance": "-9223371882990923132",
+              "fixed": 12.5,
+              "original": -1.0,
+              "restored": true,
+              "shader_instance": "-9223371694817663968"
+            },
+            "phase_seconds": {
+              "moving_before": {
+                "background": 0.0,
+                "effects": 1.280577,
+                "scripted": 1.280577
+              },
+              "moving_after": {
+                "background": 0.0,
+                "effects": 1.762031,
+                "scripted": 1.762031
+              },
+              "paused_before": {
+                "background": 0.0,
+                "effects": 1.762031,
+                "scripted": 1.762031
+              },
+              "paused_after": {
+                "background": 0.0,
+                "effects": 1.762031,
+                "scripted": 1.762031
+              },
+              "hidden_before": {
+                "background": 0.0,
+                "effects": 1.762031,
+                "scripted": 1.762031
+              },
+              "hidden_after": {
+                "background": 0.0,
+                "effects": 1.762031,
+                "scripted": 1.762031
+              }
+            },
+            "counter_scope": "Original qualifier counters and real native hash readbacks; this review executes no new World."
+          },
+          "native_grid_details": [
+            {
+              "camera_origin": [
+                0.0,
+                164.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.00091552734375,
+              "pixels_per_cell_y": 1.00088500976563,
+              "plane": "play",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            },
+            {
+              "camera_origin": [
+                0.0,
+                164.5
+              ],
+              "framebuffer_crop": [
+                288,
+                135,
+                1024,
+                751
+              ],
+              "pixels_per_cell_x": 1.00091552734375,
+              "pixels_per_cell_y": 1.00088500976563,
+              "plane": "scripted",
+              "source": "Actual Godot framebuffer crop; no resampling or concept-art substitution.",
+              "view_size": [
+                1024,
+                751
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "source_files_sha256": {
+    "godot/data/strata2/orbital-terminal.json": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+    "godot/data/strata2/neon-rain-arcology.json": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+    "godot/data/strata2/industrial-underworks.json": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+    "godot/data/strata2/abyss-foundry.json": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+    "godot/data/strata2/vertical-transfer-spine.json": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+    "godot/scripts/depth/strata_atmosphere.gd": "deb5f23de72d85d1d6afe91bba7e03dd497da3f10fe32213cd4663f93bd4cdbb",
+    "godot/scripts/depth/strata_atmosphere_profiles.gd": "321b6ef1fee155ad4677de0a380dd93b4c7fd20d87b829fd5047642a9b84472b",
+    "godot/scripts/depth/strata_construction_plan.gd": "47fb0379056a0ffcaa01c94f37f1f87621d83b5df688494df1da3d2412b7b35f",
+    "godot/scripts/depth/strata_construction_session.gd": "a50d12c5ab5680ac0ef5afd2b2ebb7aa485e79e31e5c903afe716fd68a2a76ad",
+    "godot/scripts/depth/workbench_strata_scenes.gd": "843486b722e2124552d4cac1f0add5b73e832e2c66102b94cea683f5aa921a69",
+    "godot/tools/qualify_workbench_strata2.gd": "48070844e8c27e9dfb094bcb862f5bcc5abbda6521cc06ddfd0d4eaa6ac015b8"
+  },
+  "scene_observations": {
+    "orbital-terminal": {
+      "strengths": "Bright suspended Play decks, rear X-trusses and machinery, connected distant dock/hull silhouettes, and a generous lower flight void remain legible in both platforms.",
+      "owner_judgment": "The composition deliberately remains open and restrained; the small Overview actor is primarily found by its PILOT label. Closer zoom is needed to judge piloting and rear depth."
+    },
+    "neon-rain-arcology": {
+      "strengths": "Uneven bright physical roofs and platforms sit in front of darker inhabited blocks and stepped far towers; several large internal gaps remain open.",
+      "owner_judgment": "Diagonal native facade texture is present with atmosphere OFF. ON adds sparse rain in voids and restrained low haze; do not describe the facade texture itself as native or physically simulated rain."
+    },
+    "industrial-underworks": {
+      "strengths": "The large static native turbine, pressure columns and rear cabinets give the environment a distinct industrial hierarchy behind bright service decks.",
+      "owner_judgment": "The orange lower truss resembles a bridge but is decorative. The turbine geometry is static; this image does not demonstrate a rotating physical machine."
+    },
+    "abyss-foundry": {
+      "strengths": "Connected irregular rock surrounds a large central void, with readable mineral edges and bright physical decks. Darker rear rock remains visible through openings.",
+      "owner_judgment": "The central orange gantry disappears in the inspected isolated Play capture; it is decorative. The right-side orange pipe remains on Play, so colour alone is not a collision rule."
+    },
+    "vertical-transfer-spine": {
+      "strengths": "Rear carriage cages, continuous cables/pulley, repeated trusses and alternating bright physical landings create a tall industrial rhythm.",
+      "owner_judgment": "Rear cross-trusses resemble barriers but do not define Play collision. Fit-to-world reduces the actor and material grid; inspect closer before judging route readability."
+    }
+  },
+  "owner_gallery_selection": [
+    {
+      "title": "Orbital fabrication terminal",
+      "path": "orbital-terminal/reference-composite.png",
+      "sha256": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+      "caption": "Actual full native stack; open flight corridor and distinct rear machinery. Overview is for composition inspection.",
+      "original_artifact": 14976602377
+    },
+    {
+      "title": "Organic / industrial abyss",
+      "path": "abyss-foundry/reference-composite.png",
+      "sha256": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+      "caption": "Actual full native stack; the central orange gantry is decorative. Compare Solo Play for collision ownership.",
+      "original_artifact": 14976602377
+    },
+    {
+      "title": "Explicit masked native import",
+      "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png",
+      "sha256": "7fd6e27e7b975a25168da422ce097c959bdff171bd181619ed4c4f2af7ba1f38",
+      "caption": "Actual ordinary Workbench Ready controls. The RGB source uses an explicit authored mask; the coloured proposal encodes material IDs.",
+      "original_artifact": 14976602377
+    },
+    {
+      "title": "Layered composition review",
+      "path": "orbital-terminal/composition-ready-approval.png",
+      "sha256": "9afe2c882bc7cff3c727a5c84b7f0a6ce930f5b75228737bd0a6e5a1e7fe74ef",
+      "caption": "Actual selected-stage Before/After and fixed-order, current-opacity native-ID composite. Appearance settings require separate approval after native construction.",
+      "original_artifact": 14976602377
+    },
+    {
+      "title": "Arcology atmosphere OFF",
+      "path": "neon-rain-arcology/atmosphere-off.png",
+      "sha256": "93ed1ace525438fdc2e9404f042f8b44af18c8f9b0e73ee195de741e1996f863",
+      "caption": "Actual matched native scene/camera before enabling decorative atmosphere; diagonal facade texture is already native geometry presentation.",
+      "original_artifact": 14976602377
+    },
+    {
+      "title": "Arcology atmosphere ON",
+      "path": "neon-rain-arcology/atmosphere-on.png",
+      "sha256": "cab2de5076d13d8b00d5d7fc31e48f99a6968165e3d1f0d3d73322df47df9f69",
+      "caption": "Actual matching scene with presentation-only sparse rain and haze. Native material hashes remain unchanged; this still does not qualify motion quality or GPU FPS.",
+      "original_artifact": 14976602377
+    }
+  ],
+  "native_grid_scope": "Unresampled actual framebuffer crops with measured pixels/native cell within 1% of unity; not mathematical 1:1 and not a guarantee of the viewer/browser display scale.",
+  "atmosphere_scope": "Original actual framebuffer samples, frozen/restored borrowed Play palette and emission clocks, equal four-plane native material hashes, no recurring decorative native capture delta, recorded paused/hidden phase equality. Stills are not a physical lighting, material simulation, motion-quality or FPS witness.",
+  "import_scope": "Both reference crops are RGB and fully opaque. Explicit B-authored binary masks and deterministic reviewed palettes produce native requests; original image pixels do not confer authoritative depth. Ready thumbnails encode native IDs, not material-surface appearance. Native apply/Undo is supported by original full-region hashes, not inferred from the thumbnail.",
+  "compose_scope": "The inspected graphical Compose case was reviewed then stopped without approval. It proves visible proposal/approval controls and zero-write cancellation, not graphical execution of the full construction plan. Separate native workflow evidence covers acknowledged construction.",
+  "limitations": [
+    "No complete route traversal or high-speed playability inferred from initial actor progression or still images.",
+    "No physical Windows 11/NVIDIA appearance, motion, input or performance acceptance.",
+    "No new native decorative simulation, physical light transport or cross-plane transfer.",
+    "No original-source-1/2/3 failure reclassified as a passing execution; source3 produced no evaluator.",
+    "Only the exact selected images listed here were directly viewed by B in this final review. Other counters are attributed to original qualifier receipts."
+  ],
+  "semantic_addendum": {
+    "original_snapshot_review": {
+      "markdown_blob": "6e332275948b5b6a7f3e58ccfbbf0438995b74c4",
+      "json_blob": "b65645d50d1af0f1fad74c2d5c26b163d817c925"
+    },
+    "correction": "Empty-request stages refuse at Plan.compile. Zero changed cells is different: explicitly requested cells still enter bounded owner operations and require their real ACK/history and native readback. There is no no-ACK stage-completion shortcut.",
+    "source_review": [
+      "strata_construction_plan.gd compile: writes.is_empty refusal and complete explicit cell list",
+      "strata_construction_session.gd _finish_preview: changed count is diagnostic; explicit stage.cells remains intact",
+      "strata_construction_session.gd _request_apply/_handle_apply/_finish_readback: bounded full requests, real receipt and actual native region readback"
+    ],
+    "new_native_execution": false,
+    "previous_review_rewritten": false
+  }
+}

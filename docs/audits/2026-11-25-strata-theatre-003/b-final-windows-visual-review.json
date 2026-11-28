@@ -1,0 +1,687 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "date": "2026-11-26",
+  "items": [
+    {
+      "actual_windows_image_inspected": true,
+      "captures": {
+        "linux": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              410.0,
+              600.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 548311,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              768
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              298.888885498047,
+              135.0,
+              1002.22216796875,
+              751.666625976562
+            ]
+          },
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "optics-readability-challenge/install/profile-classic.png",
+          "report_sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059",
+          "sha256": "851bd050a0a96fb01db5a0154b1dbbbdde3a3e194a04c8f782d35b0ff11046a5"
+        },
+        "windows": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              410.0,
+              600.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 547865,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              768
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              298.888885498047,
+              135.0,
+              1002.22216796875,
+              751.666625976563
+            ]
+          },
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "optics-readability-challenge/install/profile-classic.png",
+          "report_sha256": "56a16a9cf0afcd47c76becada000409f1a0f7190db4e4201feceb3afd643d35d",
+          "sha256": "960c5f237cb7ac4cb51e66e337b64333b0045dde0a438dc077d19aa90f58ab73"
+        }
+      },
+      "paired_metadata_exactly_equal": {
+        "actor_state": true,
+        "camera": false,
+        "configuration_sha256": true,
+        "geometry_group_sha256": true,
+        "image_size": true
+      },
+      "profile": "classic",
+      "scene": "optics-readability-challenge",
+      "visual_observation": "The repeated gray rear bars, ladder, stair forms and filled central rear panel remain plausible physical geometry. The actual blue water and yellow sand are legible, but the orange actor label and marker dominate the tiny body at this overview.",
+      "world_rect_diagnostic": {
+        "binary32_representations_equal": true,
+        "maximum_absolute_decimal_difference": 9.094947017729282e-13,
+        "scope": "Raw report values retained. Last decimal serialization differs; this diagnostic does not replace any frozen comparison gate."
+      }
+    },
+    {
+      "actual_windows_image_inspected": true,
+      "captures": {
+        "linux": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              410.0,
+              600.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 450025,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              768
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              298.888885498047,
+              135.0,
+              1002.22216796875,
+              751.666625976562
+            ]
+          },
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "optics-readability-challenge/install/profile-gameplay_clarity.png",
+          "report_sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059",
+          "sha256": "a54e19802fe042ac5a13bdee1b411b900cdc89216ea086aa1da88bcf233de57f"
+        },
+        "windows": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              410.0,
+              600.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 447884,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              768
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              298.888885498047,
+              135.0,
+              1002.22216796875,
+              751.666625976563
+            ]
+          },
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "optics-readability-challenge/install/profile-gameplay_clarity.png",
+          "report_sha256": "56a16a9cf0afcd47c76becada000409f1a0f7190db4e4201feceb3afd643d35d",
+          "sha256": "bcdfa4ab9dfc96c00c38ae777e22e208a34fa2d6cc2b546d28ee29787c958cc9"
+        }
+      },
+      "paired_metadata_exactly_equal": {
+        "actor_state": true,
+        "camera": false,
+        "configuration_sha256": true,
+        "geometry_group_sha256": true,
+        "image_size": true
+      },
+      "profile": "gameplay_clarity",
+      "scene": "optics-readability-challenge",
+      "visual_observation": "The real lower-left and lower-right structures and central material boundaries stand forward while rear bars, ladder, stairs and panel are substantially subordinate. The retained silhouettes can still suggest an affordance; this is improved separation, not proof that a player understands every passage. Actor body remains unresolved at this overview.",
+      "world_rect_diagnostic": {
+        "binary32_representations_equal": true,
+        "maximum_absolute_decimal_difference": 9.094947017729282e-13,
+        "scope": "Raw report values retained. Last decimal serialization differs; this diagnostic does not replace any frozen comparison gate."
+      }
+    },
+    {
+      "actual_windows_image_inspected": true,
+      "captures": {
+        "linux": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              512.0,
+              842.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 537618,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              1024
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              424.166656494141,
+              135.0,
+              751.666625976562,
+              751.666625976562
+            ]
+          },
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "industrial-underworks/install/profile-diorama.png",
+          "report_sha256": "2877c0563ac6c6156059f9c85b38915a8ddf6312f57944a7357d4f157807ed9d",
+          "sha256": "b09c1800bc689cd441b71121180a71206c1067eaaf16b27e730a0f7692d6441b"
+        },
+        "windows": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              512.0,
+              842.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 537509,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              1024
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              424.166656494141,
+              135.0,
+              751.666625976563,
+              751.666625976563
+            ]
+          },
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "industrial-underworks/install/profile-diorama.png",
+          "report_sha256": "4222a16057e05974b8422a783bec4ca607f74be2fdd75540f758fbdcc397afff",
+          "sha256": "639b6c9623adb9936c600a5176c95ff6217a98763e18c560cca24db983788d9e"
+        }
+      },
+      "paired_metadata_exactly_equal": {
+        "actor_state": true,
+        "camera": false,
+        "configuration_sha256": true,
+        "geometry_group_sha256": true,
+        "image_size": true
+      },
+      "profile": "diorama",
+      "scene": "industrial-underworks",
+      "visual_observation": "The large wheel rim and six spokes remain identifiable. Rear machinery surfaces, grilles and small horizontal details soften while the bright playable platform edges remain crisp. The lower rear orange truss remains a coherent apparent route. This supports the final dense-kernel artistic observation without treating defocus as an ownership cue.",
+      "world_rect_diagnostic": {
+        "binary32_representations_equal": true,
+        "maximum_absolute_decimal_difference": 9.094947017729282e-13,
+        "scope": "Raw report values retained. Last decimal serialization differs; this diagnostic does not replace any frozen comparison gate."
+      }
+    },
+    {
+      "actual_windows_image_inspected": true,
+      "captures": {
+        "linux": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              768.0,
+              588.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 662679,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1536,
+              768
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              48.3333320617676,
+              135.0,
+              1503.33325195312,
+              751.666625976562
+            ]
+          },
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "lunar-terminator-observatory/install/profile-diorama.png",
+          "report_sha256": "37e35fcbff3eeafc349b9f6f52b50642e8730ee8faadd873a4efa6169d4e16c8",
+          "sha256": "189e62faba4a07b11437c1abfa43d24e5fa0978dd65f2032d8eea1c2fcbf6495"
+        },
+        "windows": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              768.0,
+              588.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 660613,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1536,
+              768
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              48.3333320617676,
+              135.0,
+              1503.33325195313,
+              751.666625976563
+            ]
+          },
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "lunar-terminator-observatory/install/profile-diorama.png",
+          "report_sha256": "34b6f416dd77eee4c31ec316a8ed27f9dd1c258cc9eeb7c30bba5c18cc84a236",
+          "sha256": "239d8807615e008db00eafeb06eb078ce79e88dc2bd0b17d427901a64126c531"
+        }
+      },
+      "paired_metadata_exactly_equal": {
+        "actor_state": true,
+        "camera": false,
+        "configuration_sha256": true,
+        "geometry_group_sha256": true,
+        "image_size": true
+      },
+      "profile": "diorama",
+      "scene": "lunar-terminator-observatory",
+      "visual_observation": "The broad negative sky and clearly separated instruments support the optional miniature presentation. Ring, sensor and solar-panel identities remain distinct while rear fine texture softens. This remains a scene-specific artistic option, not an ordinary gameplay or performance recommendation.",
+      "world_rect_diagnostic": {
+        "binary32_representations_equal": true,
+        "maximum_absolute_decimal_difference": 1.000444171950221e-11,
+        "scope": "Raw report values retained. Last decimal serialization differs; this diagnostic does not replace any frozen comparison gate."
+      }
+    },
+    {
+      "actual_windows_image_inspected": true,
+      "captures": {
+        "linux": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              512.0,
+              826.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 662073,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              1024
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              424.166656494141,
+              135.0,
+              751.666625976562,
+              751.666625976562
+            ]
+          },
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "xeno-resonance-grotto/install/profile-alien_bioluminescence.png",
+          "report_sha256": "8edb238108af0d70ec7fa26ddb9f570322e5c9db5a0832b2386ad47ab9a91425",
+          "sha256": "9a590b90b74f41fc03378b3ef6f5151f7be201fbc01bdd1fc814fb33407f7ead"
+        },
+        "windows": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              512.0,
+              826.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 659971,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1024,
+              1024
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              424.166656494141,
+              135.0,
+              751.666625976563,
+              751.666625976563
+            ]
+          },
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "xeno-resonance-grotto/install/profile-alien_bioluminescence.png",
+          "report_sha256": "84140368382c7efc2e26da58c940a9a1e0ff57fc3fd163eb1d216015cf738f3f",
+          "sha256": "6020bc0958ea27cb522f9d189a8d06128d91ed700df927a7e8fe06c7c05471bb"
+        }
+      },
+      "paired_metadata_exactly_equal": {
+        "actor_state": true,
+        "camera": false,
+        "configuration_sha256": true,
+        "geometry_group_sha256": true,
+        "image_size": true
+      },
+      "profile": "alien_bioluminescence",
+      "scene": "xeno-resonance-grotto",
+      "visual_observation": "Muted violet rear cave masses and restrained green motifs preserve an organic identity behind crisp cyan platform lips. The lower rear truss still reads as an apparent horizontal traverse. Procedural illumination is too subtle here to establish a convincing volumetric-light outcome.",
+      "world_rect_diagnostic": {
+        "binary32_representations_equal": true,
+        "maximum_absolute_decimal_difference": 9.094947017729282e-13,
+        "scope": "Raw report values retained. Last decimal serialization differs; this diagnostic does not replace any frozen comparison gate."
+      }
+    },
+    {
+      "actual_windows_image_inspected": true,
+      "captures": {
+        "linux": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              768.0,
+              814.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 768473,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1536,
+              1024
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              236.25,
+              135.0,
+              1127.5,
+              751.666625976562
+            ]
+          },
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "sunward-freight-megastructure/install/profile-cinematic_deep_focus.png",
+          "report_sha256": "7487570a928db5e69ef9286d0376f9b90c8c34b34e6325fd14ba7f08d9163694",
+          "sha256": "8cc4b450030141c758bb093f22e0e7c54345b9ec9d43ab2a257dbf306054465d"
+        },
+        "windows": {
+          "actor_state": {
+            "linear_velocity": [
+              0.0,
+              0.0
+            ],
+            "position": [
+              768.0,
+              814.0
+            ],
+            "rapier_tick": 0,
+            "rotation": 0.0
+          },
+          "bytes": 769309,
+          "camera": {
+            "content_scale_factor": 1.0,
+            "origin": [
+              0.0,
+              0.0
+            ],
+            "view_size": [
+              1536,
+              1024
+            ],
+            "window_size": [
+              1600,
+              1000
+            ],
+            "world_rect": [
+              236.25,
+              135.0,
+              1127.5,
+              751.666625976563
+            ]
+          },
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "image_size": [
+            1600,
+            900
+          ],
+          "relative_path": "sunward-freight-megastructure/install/profile-cinematic_deep_focus.png",
+          "report_sha256": "f3f48f82d237958b0f824bd1612b50067e061f064e8cfc2e9ed0b6e90f2a6591",
+          "sha256": "096c786473888b06a07c1ae97bf351c61cc8e786f414b423147a78ad600224a9"
+        }
+      },
+      "paired_metadata_exactly_equal": {
+        "actor_state": true,
+        "camera": false,
+        "configuration_sha256": true,
+        "geometry_group_sha256": true,
+        "image_size": true
+      },
+      "profile": "cinematic_deep_focus",
+      "scene": "sunward-freight-megastructure",
+      "visual_observation": "The four freight housings and their detailed rear grids remain recognizable around the central dark gap. Bright Play platforms are legible, but the long rear lower truss and orange line remain apparent routes. Deep Focus supports architectural richness and does not replace Clarity on ownership ambiguity.",
+      "world_rect_diagnostic": {
+        "binary32_representations_equal": true,
+        "maximum_absolute_decimal_difference": 9.094947017729282e-13,
+        "scope": "Raw report values retained. Last decimal serialization differs; this diagnostic does not replace any frozen comparison gate."
+      }
+    }
+  ],
+  "limitations": [
+    "All inspected overview actors are localized mainly by label and marker; no body-visibility success is inferred.",
+    "Subtle light motifs lack an isolated on/off visual witness and remain an experimental treatment.",
+    "Cross-platform pixel identity is not claimed; Specialist A separately records up-to-one-u8 synthetic backend differences.",
+    "Enabled optical profiles retain the registered performance HOLD; the optional A1 candidate is not adopted."
+  ],
+  "linux_artifact": {
+    "id": 15075800269,
+    "zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011"
+  },
+  "outcome": "Representative Windows images support the prior scene-specific artistic recommendations. No new conspicuous halo, coverage displacement or silhouette loss was observed in these six overview images. This is not exhaustive pixel/backend equivalence or proof of perceptual success.",
+  "reviewer": "Specialist B",
+  "schema": "strata3-specialist-b-windows-visual-addendum-v1",
+  "scope": "Six actual final Windows full-frame PNGs inspected, compared with the already reviewed final Linux counterparts. Named profiles and known geometry; source-bound agent visual judgement, not a blinded human study. No continuous movement or physical GPU claim.",
+  "windows_artifact": {
+    "campaign_sha256": "af7fded1a69d50a12fcbbcbca61b6365af0e1cc02ccdf444366b828eafa3b1bc",
+    "id": 15078368890,
+    "zip_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13"
+  },
+  "workflow_run": 45721790366
+}

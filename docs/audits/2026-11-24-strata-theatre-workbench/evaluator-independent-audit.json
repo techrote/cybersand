@@ -1,0 +1,75 @@
+{
+  "schema": "strata-independent-evaluator-audit-v1",
+  "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+  "archive": "/workspace/scratch/f1ade3e61398/deliverables/CyberSand-Strata-Workbench-Windows-d365f78190af.zip",
+  "archive_sha256": "344ff7de0caf120096baa377967585918fd985fd9d35ad7b7620e1c6c9b03a71",
+  "archive_bytes": 204378995,
+  "payload_file_count": 1359,
+  "frozen_archived_files_exact": 1057,
+  "canonical_profiles_exact": 17,
+  "manifest_sha256": "0b6f88603afa07b6a44f713ab8ac06887db4ad34c91d0e6c153f5a18c01594a8",
+  "embedded_campaigns": {
+    "linux": {
+      "manifest_sha256": "73eea760ed6ae56433356c44c47baf0450bed4e3f1735b0c2c4a9ce7f08b3420",
+      "evidence_files": 136,
+      "status": "passed"
+    },
+    "win32": {
+      "manifest_sha256": "352121aa9206fd3770ec3971359a5c72223f76802eee4e25ff945ccf0fcc0106",
+      "evidence_files": 136,
+      "status": "passed"
+    }
+  },
+  "frozen_audit_dependencies_sha256": {
+    "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/ci/physical_progress_watchdog.py": "3e56def37106eabb44d8ce5e04eed82a431be66126cf7f365c0aac050cd3b379",
+    "tools/ci/godot_process_monitor.py": "8012d2f9d6e8b9153325adf8d5866c9d0ae4e3f95e20ae06eeea0bbcd6904571",
+    "tools/ci/execution_telemetry.py": "3022c51d9fc08316c840c68f04417108b9b4b91fa644eb2ede1a891ca7f3d137",
+    "tools/ci/performance_history.py": "dd0994efd22585e2194cbcc7e81c08d23a9b25bc6179b4ddb3a0380d1b2b937a",
+    "tools/ci/godot_scheduling.py": "a4729708e3631ac728aa6a6ebd1dce7ca524f54325b6f62f997587a018712062",
+    "tools/ci/run_godot_regressions.py": "f7a9b2c825fe4ef9d42d3846e39fb13d197889f36114600f74d540f7cff27969",
+    "tools/ci/run_windows_godot_regressions.py": "5350e385c92d8a4b9333fa09dd310c99ceaa2b3d1b89f7a8935400471f446cb1",
+    "tools/docs/retrieval_policy.py": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+    "tools/docs/engineering_history.py": "e6bf4c41a2e24760eecfebe7e40bcc55e70e6ef226828aebe5851ec77ba6847b",
+    "tools/ci/check_docs.py": "69cec3189b81770c26b368884f37c6351a5a2a150ac0c57aa06cfec9e5e55e5e",
+    "tools/ci/check_repository.py": "bb93a88eef1bf37a51fb67760e78505a73df08bb96427dd6a8203ab8e4e34983",
+    "tools/ci/stress_physical_godot.py": "fdf4cf24bf10934be7c05a1dcf7313673644c69bdc5c430d68cba81e1734ed19",
+    "tools/qualify_workbench_landscapes.py": "4a07fbb56600038ed16500d24c632ab1ae88a55337cb8d8b3f1cf12fbd895c86",
+    "tools/ci/strata_process_metrics.py": "0d00224a124e2db65f9943fb56317c6c9bd3144ae3be05421f06d67464f2f730",
+    "tools/ci/qualify_strata_workbench.py": "a0de46a145a7908c5798173a084cefe6a0aef1782a6ebba05af3e29b6223137b",
+    "tools/ci/native_candidate_identity.py": "51fdf546b8217935628e41b44e514fe757f48d62d4a15985334bf6f99c4e8720",
+    "tools/package_explore001_candidate.py": "08fe25690469a217ccd7583b492cef5d36eb199d201d4802d782fe1b03080cc5",
+    "tools/ci/wave_mt_runtime_publication.py": "c7dfbd51b8a422598afc7fcc09e1a04691af15b65274723288cc446e0bf5bd8c",
+    "tools/package_wave_flow_candidate.py": "0c7786bcf9b365ff3d3c71494fc0c1502eabbc8c54fbfb0c5ed3b701358cfb56",
+    "tools/package_workbench_landscape_review.py": "3a3830ca4e89a983cb664eeda61b6306b53d8f73d641bf596c6e3639ec5e522c",
+    "tools/package_strata_workbench.py": "466053a008c4c26942e100b0d8063c94adc7d8eafe5c8b6dd1e9d69a027ded9e"
+  },
+  "extracted_execution": {
+    "status": "passed",
+    "manifest_sha256": "7eb196d6e64227f486f151185b2a1a24580361f304f11806994d85b63abfdbd8",
+    "project_path": "D:\\a\\_temp\\strata owner package\\godot",
+    "evidence_files": 136
+  },
+  "ordinary_cmd_execution": {
+    "status": "passed",
+    "receipt_sha256": "2095d31dc1cbad1a00b3f07704e5202b1fe84032c1e658995d0233cbd18668cc",
+    "admitted": {
+      "extent": [
+        2048,
+        2048
+      ],
+      "source_revision": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+      "strata_enabled": false,
+      "workbench_script": "res://scripts/shared_workbench.gd",
+      "worker_id": "-9223371959830575630",
+      "world_generation": 2
+    },
+    "stdout_sha256": "64318ef4d45202a388adf6a29969e8d8459a5d66a35e02c50d8dc69171054cb1",
+    "stderr_sha256": "adeadf86b9fc0a9f5305a10791cb2669e569e2f711fdb4d10b5f97f6361e6397"
+  },
+  "owner_physical_windows11_nvidia": "pending",
+  "draft_hold": true,
+  "verified_portable_evaluator": true
+}

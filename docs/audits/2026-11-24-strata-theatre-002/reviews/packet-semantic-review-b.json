@@ -1,0 +1,94 @@
+{
+  "format": "cybersand-strata-semantic-review-v1",
+  "reviewer": "Specialist B",
+  "reviewed_at_utc": "2026-11-24T23:58:25.961476+00:00",
+  "application_source": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "application_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "qualification_run": 45509477752,
+  "scope": "Independent semantic review of lead Markdown/JSON packet and owner flow against frozen source and already inspected original source2/source3 captures; no new application/runtime/browser execution.",
+  "original_pending_drafts": {
+    "md": {
+      "sha256": "a38b9f005438c8daa8bdf43c99e2c0faa3959195e593e8c5fb171acaabc44dab",
+      "bytes": 28930,
+      "scope": "Original explicitly pending lead decision draft, before final platform/package/evidence fields were completed."
+    },
+    "json": {
+      "sha256": "1d50e63c3a5409cd9ada5e493dc60c57d03ef5ec71aeaadadad8622789780be2",
+      "bytes": 17964,
+      "scope": "Original explicitly pending lead decision draft, before final platform/package/evidence fields were completed."
+    }
+  },
+  "supporting_source_sha256": {
+    "godot/scripts/depth/strata_atmosphere.gd": "deb5f23de72d85d1d6afe91bba7e03dd497da3f10fe32213cd4663f93bd4cdbb",
+    "godot/scripts/depth/strata_atmosphere_profiles.gd": "321b6ef1fee155ad4677de0a380dd93b4c7fd20d87b829fd5047642a9b84472b",
+    "godot/scripts/depth/workbench_strata_controller.gd": "ee5fd855f520fda97e59b625778f8ef552d558678ee0181d45e5c52236fee4e9",
+    "godot/scripts/depth/workbench_strata_authoring.gd": "9e3502d649668f0ab653903f2f0f74272979611df88fa67d87404d322a816022",
+    "godot/scripts/depth/workbench_strata_authoring_panel.gd": "ae4f77ffda0f31e2e6559f5224c069b8099c74612fdba6db538b3121067a995e",
+    "godot/scripts/depth/strata_native_module.gd": "ba5a0e560d59636d3d31d24ecd30880db0f32f671bd3240fc2c427d229ee24d7",
+    "godot/scripts/depth/workbench_layer_document.gd": "25c4dbd5db0ae3f32f4e24edb39cff7ebb448c729daa6f89a9dc2c9c07ea70ec",
+    "godot/scripts/gcr_review_fleet.gd": "344f6fcbc30967ac7591aff03c00e47d8ed87594b7f4a35a28c48a2381c9467a",
+    "godot/scripts/workbench_actor_catalog.gd": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+    "godot/authoring/flyers/midge.json": "b440c3ecbe6ded37d47f76f7ff728c7f15071ebb0b37e44f2633e4c6867703e6",
+    "tools/build_strata2_gallery.py": "420456e897cc73ca388d0f4f6b362c9af8bb0a0ec2d31134a54a5c25f221f47a"
+  },
+  "findings": [
+    {
+      "topic": "Import and Compose review surfaces",
+      "resolution": "Import Source/Mask/Proposed layout is distinct from Compose per-stage Before/After plus composite. The packet now matches the actual source3 UI and source4 code.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Raster and native clearing",
+      "resolution": "PNG selection-mask exclusions remain no-write in either alpha mode. Native mask0 preserves by default but explicit native clear/Replace can request Empty; native mask1 plus material0 is an explicit Empty operation. Every request retains target/protection/clearance approval.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Original and imported crops",
+      "resolution": "JSON separates original artwork crop from zero-origin crop of the shipped PNG, declares placement (128, 128) and links exact provenance.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Reference alpha",
+      "resolution": "Two original gallery images are opaque RGB with explicit authored masks. The 64×48 synthetic fixture provides source-alpha controls; no dark-pixel or inferred-depth authority is claimed.",
+      "status": "accurate"
+    },
+    {
+      "topic": "Appearance approval",
+      "resolution": "Reviewed depth/opacity/parallax/haze and atmosphere are separate approval after completed native stages; atmosphere replaces the complete prior configuration and creates no native history.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Visual clocks",
+      "resolution": "Hidden, Solo/Flat-excluded, zero-opacity and globally disabled presentation freeze plane phase/processing. Global Pause freezes; individual disable hides and later rejoins a progressing plane phase. Native phase and material evolution are not claimed.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Native grid and browser evidence",
+      "resolution": "Native-grid details are nominal near-1:1 with a recorded 1% tolerance. PNG crops are unresampled; browser/desktop scaling remains separate. No local browser layout execution is claimed from an EPERM socket probe.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Persistence",
+      "resolution": "The validated document determines v1/v2 write choice; new extensions require v2. Authored geometry/settings/provenance are saved, but original PNG bytes and evolved physical continuation are not embedded.",
+      "status": "corrected_in_reviewed_draft"
+    },
+    {
+      "topic": "Owner controls and geometry",
+      "resolution": "Canonical tour identifies actual Midge body-axis thrust/rotation/upright/brake and model-specific live controls. Decorative orange beams and tiny Overview pilot remain explicit readability caveats. This hint is in the canonical tour; the package README remains generic pilot guidance.",
+      "status": "accurate_with_separate_shipped_guidance_scope"
+    },
+    {
+      "topic": "Pending execution",
+      "resolution": "Source2/source3 remain failed campaigns; source3 produced no evaluator. Final Windows, package bytes and source4 actual image review remain separate pending gates in this review snapshot.",
+      "status": "retained"
+    }
+  ],
+  "decision": "No remaining visual/import/atmosphere policy overclaim identified in the reviewed clauses. Pending source/result/package fields are not accepted as evidence.",
+  "latest_owner_tour_git_blob": "f431bf69e6e4783f6fb8841d093ffacd1de6db49",
+  "limitations": [
+    "B authored scene/atmosphere/reference-mask assets; their source/design review is author QA, while review of lead/A/C packet, native import execution and UI is independent.",
+    "This semantic review does not approve final unknown source4 images, hashes, Windows execution, package custody or owner acceptance.",
+    "Dedicated reference-import post-Undo captures are not present in the inspected campaigns; native restored hashes supply that particular witness.",
+    "The dormant generator transform-alias helper remains explicitly unsupported; shipped identity presets and runtime transforms are separate."
+  ]
+}

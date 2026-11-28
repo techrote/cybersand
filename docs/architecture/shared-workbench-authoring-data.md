@@ -322,6 +322,16 @@ second active specification or an alternative mode.
 complete physical-state saves and a general operation journal. They are not
 prerequisites for finite-World Flatten.
 
+## Strata authored composition successor — 2026-11-24
+
+The Draft/HOLD [Strata Workbench contract](../systems/strata-workbench.md) adds a
+distinct checksummed outer envelope at the normal named-start path. It embeds
+the unchanged Setup/generated/GEN-008 play source and three static decorative
+material layouts plus settings. Ordinary readers and Flatten's play-only meaning
+remain unchanged. It does not claim exact multi-World physical continuation or
+introduce a second play owner. All candidate native Worlds and copied display
+packets are validated before ordinary play admission.
+
 ## Incremental source convergence plan
 
 **Historical 8 November convergence register; later joins need current-source inspection.** Reconcile/rebase as

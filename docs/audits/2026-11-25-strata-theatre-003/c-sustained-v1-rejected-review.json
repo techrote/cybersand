@@ -1,0 +1,663 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "disposition": "REJECTED ORIGINAL V1 ANNEX / POST-HOC OWNER-CONTRACT DIAGNOSTIC ONLY / V2 GRAPHICAL QUALIFICATION PENDING",
+  "interpretation_limits": [
+    "Completed draw is not input-to-photon latency.",
+    "Native publication deltas may coalesce several native ticks; Rapier completion timestamps retain every actual physical step.",
+    "Sequential profile windows contain live tonal edits and evolving geometry; they are not matched stock-profile cost comparisons.",
+    "Whole-process CPU/RSS includes startup, screenshots outside timing and the external observer/retained arrays.",
+    "Hosted llvmpipe and Microsoft Basic Render Driver are not physical NVIDIA measurements.",
+    "Five minutes and bounded resource counts do not establish long-duration leak absence.",
+    "The previous five original45-second final Windows admission failures remain unchanged."
+  ],
+  "owner_contract_source": "godot/scripts/depth/workbench_layer_owner.gd::_owner_id and stats at immutable application source",
+  "platforms": {
+    "linux": {
+      "actual_observation_checks": 2319,
+      "actual_observation_failures": [],
+      "actual_source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "admission_elapsed_ms": 12598,
+      "admission_target_met": true,
+      "annex_sha256": "b3c65f333bdfbe4e2fa6f571ad8dadbae38c9de6f1abc2ffae7233f64a3ffb39",
+      "artifact_id": 15074805518,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45724928964/artifacts/15074805518",
+      "artifact_zip_sha256": "7087f4b07387a1d43c9ef73fcc9d47b472c9225bbc46ebef076f352d8f19a27f",
+      "observer_source": {
+        "location": "external-to-application-project",
+        "source_commit": "a1c4df06e42a345c929fd065a599a217ecfddf85",
+        "source_inputs_raw_sha256": {
+          "tools/ci/strata3_sustained.gd": "a55dc4488e17cc97895fed432a43810bfbcf963925c38b21afca7d4fa41e40d8",
+          "tools/ci/strata3_sustained.py": "641d0b1c5dfcdb200899360c5fc0e5a4f5e00ed69d2b021e17ce9753c3eb9f91",
+          "tools/ci/test_strata3_sustained.py": "cb4f2b577d633b40a20b2e29607e2e5168e754ac625632af70579ccc56b8398e"
+        },
+        "source_tree": "4f43017a648c1f318f3598effce81afc77ca4ab0"
+      },
+      "original_annex_completed": false,
+      "original_annex_failures": [
+        "Missing actual decorative owner witness"
+      ],
+      "posthoc_custody_summary": {
+        "captures": [
+          [
+            "sustained-before.png",
+            1600,
+            900
+          ],
+          [
+            "sustained-after.png",
+            1600,
+            900
+          ]
+        ],
+        "engine_pid": 3191,
+        "observation_errors": [],
+        "observed_cpu_seconds": 668.5,
+        "original_process_no_script_errors": true,
+        "peak_observed_tree_rss_bytes": 1330286592,
+        "process_seconds": 337.005,
+        "resource_samples_with_engine": 668,
+        "resource_span_seconds": 336.492703,
+        "runtime_and_engine_pins_match": true,
+        "scope": "Independent post-hoc custody diagnostic of rejected v1 originals; does not alter their disposition.",
+        "source_and_loaded_files_match": true
+      },
+      "posthoc_observation_summary": {
+        "original_reader_sha256": "641d0b1c5dfcdb200899360c5fc0e5a4f5e00ed69d2b021e17ce9753c3eb9f91",
+        "reader_sha256": "5ff2e155f1e030c6e3fcbe73594dbede026315a15c927307c4cdd8893c7c1473",
+        "scope": "Post-hoc diagnostic with only opaque-owner fence contract corrected; original hosted annex remains rejected, not final qualification.",
+        "source_report_sha256": "9f402db2cb6c8c930a77dfd30a286c25480d3ebcbb039dcaa333394133ab6825",
+        "summary": {
+          "actor_distance_sum_of_window_endpoints_cells": 574.5486953004172,
+          "comparison_limit": "Sequential windows have evolving geometry and actor states; these are sustained observations, not matched profile-cost comparisons.",
+          "completed_physical_steps": 1850,
+          "elapsed_usec": 300858971,
+          "native_tick_delta": 1849,
+          "node_range_after_first_catalogue_cycle": 0,
+          "physical_intervals_usec_including_boundaries": {
+            "count": 1849,
+            "maximum": 344524,
+            "p50": 164700,
+            "p95": 214187,
+            "p99": 249148
+          },
+          "resource_range_after_first_catalogue_cycle": 0,
+          "scope": "One five-minute hosted session with evolving Play geometry. No physical Windows/NVIDIA acceptance or long-duration leak claim.",
+          "slider_callback_to_authored_usec": {
+            "count": 72,
+            "maximum": 2106,
+            "p50": 1379,
+            "p95": 2029,
+            "p99": 2106
+          },
+          "slider_callback_to_next_completed_draw_usec": {
+            "count": 72,
+            "maximum": 259223,
+            "p50": 164776,
+            "p95": 212931,
+            "p99": 259223
+          },
+          "slider_draw_scope": "Completed-draw observation, not input-to-photon latency.",
+          "windows": [
+            {
+              "actor_distance_cells": 365.00286325985223,
+              "completed_steps": 187,
+              "elapsed_usec": 25062593,
+              "index": 0,
+              "native_tick_delta": 186,
+              "native_ticks_per_second": 7.421418845208874,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 186,
+                "maximum": 178628,
+                "p50": 128316,
+                "p95": 174635,
+                "p99": 178553
+              },
+              "profile": "classic",
+              "rapier_ticks_per_second": 7.461318946527201,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 209.545832040565,
+              "completed_steps": 147,
+              "elapsed_usec": 25090231,
+              "index": 1,
+              "native_tick_delta": 147,
+              "native_ticks_per_second": 5.858853989825762,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 146,
+                "maximum": 234339,
+                "p50": 163305,
+                "p95": 226137,
+                "p99": 234276
+              },
+              "profile": "architectural",
+              "rapier_ticks_per_second": 5.858853989825762,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 138,
+              "elapsed_usec": 25013783,
+              "index": 2,
+              "native_tick_delta": 138,
+              "native_ticks_per_second": 5.516958390500149,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 137,
+                "maximum": 261222,
+                "p50": 174956,
+                "p95": 228815,
+                "p99": 259430
+              },
+              "profile": "gameplay_clarity",
+              "rapier_ticks_per_second": 5.516958390500149,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 150,
+              "elapsed_usec": 25140078,
+              "index": 3,
+              "native_tick_delta": 150,
+              "native_ticks_per_second": 5.9665686001451546,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 149,
+                "maximum": 235256,
+                "p50": 163693,
+                "p95": 206423,
+                "p99": 233699
+              },
+              "profile": "cinematic_deep_focus",
+              "rapier_ticks_per_second": 5.9665686001451546,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 183,
+              "elapsed_usec": 25058669,
+              "index": 4,
+              "native_tick_delta": 183,
+              "native_ticks_per_second": 7.302861935723721,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 182,
+                "maximum": 184181,
+                "p50": 131923,
+                "p95": 174198,
+                "p99": 182508
+              },
+              "profile": "classic",
+              "rapier_ticks_per_second": 7.302861935723721,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 147,
+              "elapsed_usec": 25020831,
+              "index": 5,
+              "native_tick_delta": 147,
+              "native_ticks_per_second": 5.8751046278199155,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 146,
+                "maximum": 238998,
+                "p50": 166194,
+                "p95": 222061,
+                "p99": 238458
+              },
+              "profile": "architectural",
+              "rapier_ticks_per_second": 5.8751046278199155,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 137,
+              "elapsed_usec": 25058732,
+              "index": 6,
+              "native_tick_delta": 137,
+              "native_ticks_per_second": 5.467156119471648,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 136,
+                "maximum": 255110,
+                "p50": 178472,
+                "p95": 234079,
+                "p99": 253993
+              },
+              "profile": "gameplay_clarity",
+              "rapier_ticks_per_second": 5.467156119471648,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 144,
+              "elapsed_usec": 25154601,
+              "index": 7,
+              "native_tick_delta": 144,
+              "native_ticks_per_second": 5.724598851717028,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 143,
+                "maximum": 242419,
+                "p50": 168620,
+                "p95": 224790,
+                "p99": 242117
+              },
+              "profile": "cinematic_deep_focus",
+              "rapier_ticks_per_second": 5.724598851717028,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 188,
+              "elapsed_usec": 25067361,
+              "index": 8,
+              "native_tick_delta": 188,
+              "native_ticks_per_second": 7.499792259743656,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 187,
+                "maximum": 184128,
+                "p50": 129979,
+                "p95": 168937,
+                "p99": 183183
+              },
+              "profile": "classic",
+              "rapier_ticks_per_second": 7.499792259743656,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 151,
+              "elapsed_usec": 25083414,
+              "index": 9,
+              "native_tick_delta": 151,
+              "native_ticks_per_second": 6.01991419509322,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 150,
+                "maximum": 236294,
+                "p50": 164254,
+                "p95": 199407,
+                "p99": 234773
+              },
+              "profile": "architectural",
+              "rapier_ticks_per_second": 6.01991419509322,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 133,
+              "elapsed_usec": 25062542,
+              "index": 10,
+              "native_tick_delta": 133,
+              "native_ticks_per_second": 5.306724274018174,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 132,
+                "maximum": 262407,
+                "p50": 178962,
+                "p95": 251656,
+                "p99": 261582
+              },
+              "profile": "gameplay_clarity",
+              "rapier_ticks_per_second": 5.306724274018174,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 145,
+              "elapsed_usec": 25046136,
+              "index": 11,
+              "native_tick_delta": 145,
+              "native_ticks_per_second": 5.7893161643776105,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 144,
+                "maximum": 237899,
+                "p50": 166226,
+                "p95": 223566,
+                "p99": 236646
+              },
+              "profile": "cinematic_deep_focus",
+              "rapier_ticks_per_second": 5.7893161643776105,
+              "resource_count": 176
+            }
+          ]
+        }
+      },
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    "windows": {
+      "actual_observation_checks": 1711,
+      "actual_observation_failures": [],
+      "actual_source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "admission_elapsed_ms": 35608,
+      "admission_target_met": true,
+      "annex_sha256": "c5140efb76cbdd052196a7afc92cd0440be9137c4e2d7d2e7433018fb96d0497",
+      "artifact_id": 15074123103,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45724928964/artifacts/15074123103",
+      "artifact_zip_sha256": "0ed590ab43b7ac1278971fb0e7416be1637b8199a2847b5ff5c7d67e91fa29d8",
+      "observer_source": {
+        "location": "external-to-application-project",
+        "source_commit": "a1c4df06e42a345c929fd065a599a217ecfddf85",
+        "source_inputs_raw_sha256": {
+          "tools/ci/strata3_sustained.gd": "a55dc4488e17cc97895fed432a43810bfbcf963925c38b21afca7d4fa41e40d8",
+          "tools/ci/strata3_sustained.py": "641d0b1c5dfcdb200899360c5fc0e5a4f5e00ed69d2b021e17ce9753c3eb9f91",
+          "tools/ci/test_strata3_sustained.py": "cb4f2b577d633b40a20b2e29607e2e5168e754ac625632af70579ccc56b8398e"
+        },
+        "source_tree": "4f43017a648c1f318f3598effce81afc77ca4ab0"
+      },
+      "original_annex_completed": false,
+      "original_annex_failures": [
+        "Missing actual decorative owner witness"
+      ],
+      "posthoc_custody_summary": {
+        "captures": [
+          [
+            "sustained-before.png",
+            1600,
+            900
+          ],
+          [
+            "sustained-after.png",
+            1600,
+            900
+          ]
+        ],
+        "engine_pid": 1372,
+        "observation_errors": [],
+        "observed_cpu_seconds": 1236.90625,
+        "original_process_no_script_errors": true,
+        "peak_observed_tree_rss_bytes": 989097984,
+        "process_seconds": 384.86,
+        "resource_samples_with_engine": 704,
+        "resource_span_seconds": 383.922,
+        "runtime_and_engine_pins_match": true,
+        "scope": "Independent post-hoc custody diagnostic of rejected v1 originals; does not alter their disposition.",
+        "source_and_loaded_files_match": true
+      },
+      "posthoc_observation_summary": {
+        "original_reader_sha256": "641d0b1c5dfcdb200899360c5fc0e5a4f5e00ed69d2b021e17ce9753c3eb9f91",
+        "reader_sha256": "5ff2e155f1e030c6e3fcbe73594dbede026315a15c927307c4cdd8893c7c1473",
+        "scope": "Post-hoc diagnostic with only opaque-owner fence contract corrected; original hosted annex remains rejected, not final qualification.",
+        "source_report_sha256": "7c65f8e1aa34e918884241c83a23d1fdae6cfc3fa84b9b8b3ac815421c78d71c",
+        "summary": {
+          "actor_distance_sum_of_window_endpoints_cells": 573.7271159912426,
+          "comparison_limit": "Sequential windows have evolving geometry and actor states; these are sustained observations, not matched profile-cost comparisons.",
+          "completed_physical_steps": 1242,
+          "elapsed_usec": 301776787,
+          "native_tick_delta": 1241,
+          "node_range_after_first_catalogue_cycle": 0,
+          "physical_intervals_usec_including_boundaries": {
+            "count": 1241,
+            "maximum": 772300,
+            "p50": 254780,
+            "p95": 314133,
+            "p99": 566144
+          },
+          "resource_range_after_first_catalogue_cycle": 0,
+          "scope": "One five-minute hosted session with evolving Play geometry. No physical Windows/NVIDIA acceptance or long-duration leak claim.",
+          "slider_callback_to_authored_usec": {
+            "count": 72,
+            "maximum": 4055,
+            "p50": 2056,
+            "p95": 2384,
+            "p99": 4055
+          },
+          "slider_callback_to_next_completed_draw_usec": {
+            "count": 72,
+            "maximum": 482149,
+            "p50": 246736,
+            "p95": 285260,
+            "p99": 482149
+          },
+          "slider_draw_scope": "Completed-draw observation, not input-to-photon latency.",
+          "windows": [
+            {
+              "actor_distance_cells": 211.36125485539137,
+              "completed_steps": 126,
+              "elapsed_usec": 25035894,
+              "index": 0,
+              "native_tick_delta": 125,
+              "native_ticks_per_second": 4.992831492256678,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 125,
+                "maximum": 366716,
+                "p50": 192266,
+                "p95": 213867,
+                "p99": 326430
+              },
+              "profile": "classic",
+              "rapier_ticks_per_second": 5.032774144194731,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 255.25737543437316,
+              "completed_steps": 102,
+              "elapsed_usec": 25168438,
+              "index": 1,
+              "native_tick_delta": 102,
+              "native_ticks_per_second": 4.05269488714397,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 101,
+                "maximum": 479123,
+                "p50": 254492,
+                "p95": 270875,
+                "p99": 472393
+              },
+              "profile": "architectural",
+              "rapier_ticks_per_second": 4.05269488714397,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 107.10848570147809,
+              "completed_steps": 92,
+              "elapsed_usec": 25139160,
+              "index": 2,
+              "native_tick_delta": 92,
+              "native_ticks_per_second": 3.659629040906697,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 91,
+                "maximum": 646462,
+                "p50": 280052,
+                "p95": 534506,
+                "p99": 646462
+              },
+              "profile": "gameplay_clarity",
+              "rapier_ticks_per_second": 3.659629040906697,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 91,
+              "elapsed_usec": 25064387,
+              "index": 3,
+              "native_tick_delta": 91,
+              "native_ticks_per_second": 3.6306493352500504,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 90,
+                "maximum": 762857,
+                "p50": 263796,
+                "p95": 287120,
+                "p99": 762857
+              },
+              "profile": "cinematic_deep_focus",
+              "rapier_ticks_per_second": 3.6306493352500504,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 128,
+              "elapsed_usec": 25138834,
+              "index": 4,
+              "native_tick_delta": 128,
+              "native_ticks_per_second": 5.091723824581522,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 127,
+                "maximum": 335748,
+                "p50": 195120,
+                "p95": 213102,
+                "p99": 219209
+              },
+              "profile": "classic",
+              "rapier_ticks_per_second": 5.091723824581522,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 94,
+              "elapsed_usec": 25142370,
+              "index": 5,
+              "native_tick_delta": 94,
+              "native_ticks_per_second": 3.7387088011193854,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 93,
+                "maximum": 772300,
+                "p50": 272028,
+                "p95": 520550,
+                "p99": 772300
+              },
+              "profile": "architectural",
+              "rapier_ticks_per_second": 3.7387088011193854,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 87,
+              "elapsed_usec": 25101165,
+              "index": 6,
+              "native_tick_delta": 87,
+              "native_ticks_per_second": 3.465974587235294,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 86,
+                "maximum": 765166,
+                "p50": 289201,
+                "p95": 537387,
+                "p99": 765166
+              },
+              "profile": "gameplay_clarity",
+              "rapier_ticks_per_second": 3.465974587235294,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 95,
+              "elapsed_usec": 25196612,
+              "index": 7,
+              "native_tick_delta": 95,
+              "native_ticks_per_second": 3.7703481722066443,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 94,
+                "maximum": 726634,
+                "p50": 256985,
+                "p95": 492774,
+                "p99": 726634
+              },
+              "profile": "cinematic_deep_focus",
+              "rapier_ticks_per_second": 3.7703481722066443,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 131,
+              "elapsed_usec": 25016399,
+              "index": 8,
+              "native_tick_delta": 131,
+              "native_ticks_per_second": 5.236565022807639,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 130,
+                "maximum": 217216,
+                "p50": 192012,
+                "p95": 210933,
+                "p99": 215760
+              },
+              "profile": "classic",
+              "rapier_ticks_per_second": 5.236565022807639,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 105,
+              "elapsed_usec": 25156946,
+              "index": 9,
+              "native_tick_delta": 105,
+              "native_ticks_per_second": 4.173797566683969,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 104,
+                "maximum": 501065,
+                "p50": 246737,
+                "p95": 316926,
+                "p99": 497882
+              },
+              "profile": "architectural",
+              "rapier_ticks_per_second": 4.173797566683969,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 95,
+              "elapsed_usec": 25499917,
+              "index": 10,
+              "native_tick_delta": 95,
+              "native_ticks_per_second": 3.725502322223245,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 94,
+                "maximum": 606095,
+                "p50": 277921,
+                "p95": 316958,
+                "p99": 606095
+              },
+              "profile": "gameplay_clarity",
+              "rapier_ticks_per_second": 3.725502322223245,
+              "resource_count": 176
+            },
+            {
+              "actor_distance_cells": 0.0,
+              "completed_steps": 96,
+              "elapsed_usec": 25116665,
+              "index": 11,
+              "native_tick_delta": 96,
+              "native_ticks_per_second": 3.8221634918489378,
+              "node_count": 3197,
+              "physical_intervals_usec": {
+                "count": 95,
+                "maximum": 539356,
+                "p50": 264217,
+                "p95": 490523,
+                "p99": 539356
+              },
+              "profile": "cinematic_deep_focus",
+              "rapier_ticks_per_second": 3.8221634918489378,
+              "resource_count": 176
+            }
+          ]
+        }
+      },
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    }
+  },
+  "posthoc_method": "Retained original v1 reader copied outside original artifact folders; only owner-ID type/shape predicate corrected. Complete unchanged original observation populations validate. Original artifact byte ledger, frozen application/loaded/native/runtime pins, successful process/log, actual-engine CPU/RSS samples and decoded PNG hash/extent checks independently pass. Original annex completed=false/failures are not rewritten; final source-preservation-after-process flag was not produced because the original runner stopped at the reader rejection.",
+  "reviewer": "Specialist C",
+  "root_cause": "Reader treated the established WorkbenchLayerOwner opaque session:generation:plane owner_id as numeric. Only native_instance_id is a numeric Godot ObjectID. Original actual GDScript observations completed successfully, but the failed strict reader gate remains part of the original outcome.",
+  "run_id": 45724928964,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/45724928964",
+  "schema": "strata003-sustained-rejected-run-review-v1",
+  "v2_observer_source": "c4ae5ee9b4ad8d170cd9eeb44dbbbc8821266c15",
+  "v2_run_id": 45726494262,
+  "visibility_limit": "V1 invokes the actual original tonal HSlider callback programmatically but checks only scene-tree visibility; its row may be below the scroll viewport. V2 centers the real slider, retains an actual Lab capture and per-callback/next-draw enclosure witnesses."
+}

@@ -1,0 +1,299 @@
+{
+  "schema": "strata003-independent-shader-cost-v1-windows-rejection-v1",
+  "assessor": "Specialist C",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+  "run_id": 45730815481,
+  "artifact_id": 15077761504,
+  "zip_sha256": "e8e19df1885f08545c912e53eeb269550d663adcfd1ea5dc7b6ecd71afe1f0cd",
+  "zip_bytes": 12409038,
+  "annex_sha256": "82f13d894fb76a0aa041c3d4cbacec3984b8c6a33137ba6d7e25047f00ce80c9",
+  "report_sha256": "10fbb91b0d3817080edaf952027bc5031ddfd21c2a88f96ff55c16a8f268626e",
+  "annex_completed": false,
+  "annex_failures": [
+    "Actual shader, bounded resources or native isolation changed"
+  ],
+  "gd_checks": 4010,
+  "gd_failures": [],
+  "actual_backend": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+  "file_hashes_verified": 70,
+  "synthetic_fixture": {
+    "pairs": [
+      {
+        "filename": "actor-reveal.png",
+        "original_sha256": "3de8aff34864035c3b2edc5c18bd2d671929e36ace7b92afdfb672648330f4e4",
+        "candidate_sha256": "3de8aff34864035c3b2edc5c18bd2d671929e36ace7b92afdfb672648330f4e4",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "classic-alpha.png",
+        "original_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+        "candidate_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "detail-preserving.png",
+        "original_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "candidate_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-0.png",
+        "original_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "candidate_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-1.png",
+        "original_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "candidate_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-2.png",
+        "original_sha256": "f111716cc8ec8acc6b8f17c0842649404c506a1e9c611b0eb762eff508943b24",
+        "candidate_sha256": "f111716cc8ec8acc6b8f17c0842649404c506a1e9c611b0eb762eff508943b24",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-3.png",
+        "original_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+        "candidate_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-6.png",
+        "original_sha256": "427699ef32a85cc6b513285b59f8d527bc9be340c1449a20b9d60c48b43161b1",
+        "candidate_sha256": "427699ef32a85cc6b513285b59f8d527bc9be340c1449a20b9d60c48b43161b1",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-detail.png",
+        "original_sha256": "3fa5839ef475f560c4121a8ec830af255d7e38a8c628251f23669d443f7b31a3",
+        "candidate_sha256": "3fa5839ef475f560c4121a8ec830af255d7e38a8c628251f23669d443f7b31a3",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-diffusion.png",
+        "original_sha256": "acb40fc9b5d59efe5c5766835b4f93eb033d914e56fe60c452e64154191e9b8b",
+        "candidate_sha256": "acb40fc9b5d59efe5c5766835b4f93eb033d914e56fe60c452e64154191e9b8b",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-haze-opacity-classic.png",
+        "original_sha256": "52edd62108cfbba3d616aa9fad762d7678aae5372d382f3cab1755bafabf163c",
+        "candidate_sha256": "52edd62108cfbba3d616aa9fad762d7678aae5372d382f3cab1755bafabf163c",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-haze-opacity-wipe.png",
+        "original_sha256": "240b0e574f7aa7025a58eb690ba7404c9d3eadb547cb070b047a0c2216d00532",
+        "candidate_sha256": "240b0e574f7aa7025a58eb690ba7404c9d3eadb547cb070b047a0c2216d00532",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-low-aperture.png",
+        "original_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "candidate_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-reference.png",
+        "original_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "candidate_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "highlight-diffusion.png",
+        "original_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+        "candidate_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "pixel-aperture.png",
+        "original_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+        "candidate_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "processed-alpha.png",
+        "original_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "candidate_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "wipe-alpha.png",
+        "original_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+        "candidate_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      }
+    ],
+    "assertions_per_shader": 109,
+    "failures_per_shader": 0,
+    "total_compared_rgba_bytes": 884736,
+    "changed_channels": 0,
+    "classic_wipe_rgba_bytes_each_shader": 16384
+  },
+  "native_identity_observations": [
+    {
+      "case_id": "classic-original",
+      "repeat": 0,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-original",
+      "repeat": 0,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 91
+    },
+    {
+      "case_id": "architectural-empty-coverage",
+      "repeat": 0,
+      "variant": "empty-coverage",
+      "driver_reported_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-original",
+      "repeat": 0,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 91
+    },
+    {
+      "case_id": "clarity-empty-coverage",
+      "repeat": 0,
+      "variant": "empty-coverage",
+      "driver_reported_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-empty-coverage",
+      "repeat": 1,
+      "variant": "empty-coverage",
+      "driver_reported_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-original",
+      "repeat": 1,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-empty-coverage",
+      "repeat": 1,
+      "variant": "empty-coverage",
+      "driver_reported_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-original",
+      "repeat": 1,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "classic-original",
+      "repeat": 1,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "classic-original",
+      "repeat": 2,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-original",
+      "repeat": 2,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-empty-coverage",
+      "repeat": 2,
+      "variant": "empty-coverage",
+      "driver_reported_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-original",
+      "repeat": 2,
+      "variant": "original",
+      "driver_reported_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 91
+    },
+    {
+      "case_id": "clarity-empty-coverage",
+      "repeat": 2,
+      "variant": "empty-coverage",
+      "driver_reported_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "statistics_expression_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    }
+  ],
+  "application_after_receipt_present": false,
+  "disposition": "V1 strict rejected. Runtime attachment was not explicitly witnessed for native windows; infer neither original-only execution nor candidate speed. Later headless diagnostic proves frozen statistics expression can differ from live resource code. See c-shader-identity-correction.md.",
+  "limits": [
+    "Synthetic exact output is a separate admitted scope from the rejected native timing comparison.",
+    "No successful application-after custody receipt exists in this annex.",
+    "ANGLE Microsoft Basic is a software renderer; no owner physical GPU claim."
+  ]
+}

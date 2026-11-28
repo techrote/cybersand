@@ -1,0 +1,910 @@
+{
+  "kind": "source-derived upper bounds; not hardware measurements",
+  "rows": [
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        }
+      },
+      "profile": "classic",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        }
+      },
+      "profile": "classic",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 0,
+          "surface_reads_max": 1,
+          "total_reads_max": 1
+        }
+      },
+      "profile": "classic",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "architectural",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "architectural",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "architectural",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 11
+        },
+        "effects": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 11
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 11
+        }
+      },
+      "profile": "gameplay_clarity",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "effects": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        }
+      },
+      "profile": "gameplay_clarity",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "effects": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        }
+      },
+      "profile": "gameplay_clarity",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "cinematic_deep_focus",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "cinematic_deep_focus",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.13500000000000004,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.6749999999999999,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "optical_lens",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 3.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 13,
+          "total_reads_max": 18
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.13500000000000004,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.6749999999999999,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "optical_lens",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 3.1125,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 17,
+          "total_reads_max": 22
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.13500000000000004,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.6749999999999999,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "optical_lens",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.5082000000000002,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "diorama",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 3.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 13,
+          "total_reads_max": 18
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.5082000000000002,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.6830000000000003,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 9,
+          "total_reads_max": 14
+        }
+      },
+      "profile": "diorama",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 5.874,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 25,
+          "total_reads_max": 30
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.5082000000000002,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.6830000000000003,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 9,
+          "total_reads_max": 14
+        }
+      },
+      "profile": "diorama",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.31199999999999994,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "atmospheric_industrial",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.4625000000000001,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 9,
+          "total_reads_max": 14
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.31199999999999994,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "atmospheric_industrial",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 1.4625000000000001,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 9,
+          "total_reads_max": 14
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.31199999999999994,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "atmospheric_industrial",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 11
+        },
+        "effects": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 11
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 11
+        }
+      },
+      "profile": "noir",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "effects": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        }
+      },
+      "profile": "noir",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "effects": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 5,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 15
+        }
+      },
+      "profile": "noir",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "cold_orbital",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "cold_orbital",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "cold_orbital",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.9112499999999999,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.11474999999999996,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "alien_bioluminescence",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.9112499999999999,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.11474999999999996,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "alien_bioluminescence",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.9112499999999999,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.11474999999999996,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "alien_bioluminescence",
+      "quality": "high"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 1,
+          "surface_reads_max": 5,
+          "total_reads_max": 6
+        }
+      },
+      "profile": "sunlit_megastructure",
+      "quality": "low"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "sunlit_megastructure",
+      "quality": "balanced"
+    },
+    {
+      "planes": {
+        "background": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "effects": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        },
+        "scripted": {
+          "clarity_mask_reads_max": 0,
+          "radius_cells": 0.0,
+          "shadow_mask_reads_max": 5,
+          "surface_reads_max": 5,
+          "total_reads_max": 10
+        }
+      },
+      "profile": "sunlit_megastructure",
+      "quality": "high"
+    }
+  ],
+  "source_files": {
+    "res://scripts/depth/strata_optical_profiles.gd": "91d696a1feac21638df8e207be4c8fe7d99a3a849dd6801705e95fda0784765e",
+    "res://scripts/depth/strata_optical_renderer.gd": "efb823dd079a1864bae1fa6a133b4e05316f62c77f820bd173f0a94fdb7acfc1",
+    "res://shaders/strata_optical_plane.gdshader": "b2dd5f0f2bf8b85c81444471605a1e90fde2fc804025b34014cdd023aaef137a"
+  },
+  "source_commit": "f69797a594ffae9d49a9ca1247987e260ce87dbf",
+  "engine": "4.7.stable.official.5b4e0cb0f",
+  "analysis": "Each profile starts at its authored Play/manual zero focus; no temporary inspection; full processed width; quality as named; authoritative Play mask assumed available. Count only potential texture reads in the rear final-composite fragment, not native palette or actor draws. Counts are source upper bounds, not measured fetches, time, FPS or physical progression.",
+  "formula": {
+    "surface_reads": "1 + 4*ceil(max(defocus_radius,1 when detail or illumination active)); Classic=1",
+    "shadow_mask_reads": "1 at Low or softness<0.01; otherwise5; only active positive shadow and positive optical depth",
+    "clarity_mask_reads": "5 when authored clarity>0; otherwise0",
+    "total_reads": "surface + shadow + clarity; at most8 actor rectangles add arithmetic but no texture fetches"
+  }
+}

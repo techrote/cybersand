@@ -1,0 +1,184 @@
+{
+  "schema": "strata-pristine-package-cost-v1",
+  "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+  "platform": "win32",
+  "status": "passed",
+  "manifest_sha256": "7eb196d6e64227f486f151185b2a1a24580361f304f11806994d85b63abfdbd8",
+  "scope": "Separate pristine extracted Windows run. Whole-process observations include startup, qualification and framebuffers. Callback intervals are not physical GPU FPS. Original process/evidence files remain authoritative.",
+  "scenes": [
+    {
+      "name": "industrial-assembly",
+      "status": "passed",
+      "phases": {
+        "install": {
+          "checks": 880,
+          "bootstrap_ms": 68754,
+          "engine_process_id": 712,
+          "wall_seconds": 293.671,
+          "observed_cpu_seconds": 657.171875,
+          "sampled_peak_process_rss_bytes": 1021673472,
+          "callback_wait_rechecks": [
+            {
+              "elapsed_ms": 87289,
+              "label": "play and all three decorative native owners adopted",
+              "limit_ms": 45000
+            }
+          ],
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "mode_samples": [
+            {
+              "mode": "disabled",
+              "callback_p50_usec": 296261,
+              "callback_p95_usec": 306565,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            },
+            {
+              "mode": "flat",
+              "callback_p50_usec": 300541,
+              "callback_p95_usec": 309748,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            },
+            {
+              "mode": "stack",
+              "callback_p50_usec": 308964,
+              "callback_p95_usec": 321198,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            }
+          ]
+        },
+        "reopen": {
+          "checks": 162,
+          "bootstrap_ms": 5904,
+          "engine_process_id": 1084,
+          "wall_seconds": 29.094,
+          "observed_cpu_seconds": 77.984375,
+          "sampled_peak_process_rss_bytes": 773668864,
+          "callback_wait_rechecks": [],
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+        }
+      }
+    },
+    {
+      "name": "arcology",
+      "status": "passed",
+      "phases": {
+        "install": {
+          "checks": 880,
+          "bootstrap_ms": 70873,
+          "engine_process_id": 6680,
+          "wall_seconds": 283.11,
+          "observed_cpu_seconds": 641.234375,
+          "sampled_peak_process_rss_bytes": 1029578752,
+          "callback_wait_rechecks": [
+            {
+              "elapsed_ms": 74863,
+              "label": "play and all three decorative native owners adopted",
+              "limit_ms": 45000
+            }
+          ],
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "mode_samples": [
+            {
+              "mode": "disabled",
+              "callback_p50_usec": 293798,
+              "callback_p95_usec": 302208,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            },
+            {
+              "mode": "flat",
+              "callback_p50_usec": 295064,
+              "callback_p95_usec": 307683,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            },
+            {
+              "mode": "stack",
+              "callback_p50_usec": 305370,
+              "callback_p95_usec": 311030,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            }
+          ]
+        },
+        "reopen": {
+          "checks": 162,
+          "bootstrap_ms": 5493,
+          "engine_process_id": 4732,
+          "wall_seconds": 28.407,
+          "observed_cpu_seconds": 76.71875,
+          "sampled_peak_process_rss_bytes": 766705664,
+          "callback_wait_rechecks": [],
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+        }
+      }
+    },
+    {
+      "name": "cavern",
+      "status": "passed",
+      "phases": {
+        "install": {
+          "checks": 880,
+          "bootstrap_ms": 53433,
+          "engine_process_id": 3140,
+          "wall_seconds": 240.375,
+          "observed_cpu_seconds": 604.9375,
+          "sampled_peak_process_rss_bytes": 1157259264,
+          "callback_wait_rechecks": [
+            {
+              "elapsed_ms": 49164,
+              "label": "play and all three decorative native owners adopted",
+              "limit_ms": 45000
+            }
+          ],
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "mode_samples": [
+            {
+              "mode": "disabled",
+              "callback_p50_usec": 302837,
+              "callback_p95_usec": 314895,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            },
+            {
+              "mode": "flat",
+              "callback_p50_usec": 304631,
+              "callback_p95_usec": 317615,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            },
+            {
+              "mode": "stack",
+              "callback_p50_usec": 314554,
+              "callback_p95_usec": 322395,
+              "native_snapshots_during_sample": 0,
+              "decorative_uploads_during_sample": 0
+            }
+          ]
+        },
+        "reopen": {
+          "checks": 162,
+          "bootstrap_ms": 5533,
+          "engine_process_id": 6252,
+          "wall_seconds": 29.187,
+          "observed_cpu_seconds": 79.515625,
+          "sampled_peak_process_rss_bytes": 777199616,
+          "callback_wait_rechecks": [],
+          "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+        }
+      }
+    }
+  ],
+  "maximum": {
+    "status": "passed",
+    "checks": 82,
+    "wall_seconds": 193.484,
+    "observed_cpu_seconds": 372.5625,
+    "sampled_peak_process_rss_bytes": 1434902528,
+    "scope": "Paused2048square native edit/identity/render/retirement only; not sustained dense-map play."
+  }
+}

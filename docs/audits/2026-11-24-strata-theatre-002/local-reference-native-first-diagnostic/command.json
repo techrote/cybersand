@@ -1,0 +1,14 @@
+{
+  "source": "eb67fc22336b89d79a8bfd160c2a48daa308f749",
+  "command": [
+    "timeout",
+    "300s",
+    "/tmp/strata2-runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/tmp/strata2-source/godot",
+    "--script",
+    "res://tests/test_strata2_reference_native.gd"
+  ],
+  "scope": "actual native ordinary Workbench; no graphical claim"
+}

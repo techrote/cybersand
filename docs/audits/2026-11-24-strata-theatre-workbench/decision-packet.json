@@ -1,0 +1,789 @@
+{
+  "schema": "strata-theatre-workbench-decision-v1",
+  "mission": "STRATA-THEATRE-WORKBENCH-001",
+  "disposition": "Draft/HOLD",
+  "completed": true,
+  "owner_intent_issue": "https://github.com/techrote/cybersand/issues/588",
+  "pull_request": "https://github.com/techrote/cybersand/pull/769",
+  "accepted_base": {
+    "commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "tree": "06b62d73138028d1f7615b83edc9810491bf6287"
+  },
+  "qualified_application": {
+    "commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "local_tree_equivalent_commit": "22ff4bdf0251d58164b68ad1f81d0bbf2cdb479c",
+    "workflow_run": 45457176340,
+    "status": "passed: Linux and Windows source campaigns; pristine extracted Windows campaign; actual shipped CMD admission; independent source/payload audit",
+    "source_input_count": 1105,
+    "source_inputs_map_sha256": "abd8df5c1d0bc85ef0497e0f843e21e3b59d767f632f7e579743e132efbf5de2",
+    "source_inputs_map_hash_encoding": "UTF-8 canonical JSON with sorted keys and comma/colon separators"
+  },
+  "implementation": {
+    "default_enabled": false,
+    "ordinary_workbench_integration": true,
+    "play_world": "borrowed existing asynchronous worker; unchanged actor/collision owner",
+    "decorative_worlds": 3,
+    "plane_ids": [
+      "play",
+      "scripted",
+      "effects",
+      "background"
+    ],
+    "decorative_simulation": "static,0Hz,paused; unsupported clocks refused",
+    "content_domain": "authored-material-layout",
+    "save_magic": "CYSSTRAT",
+    "save_version": 1,
+    "extent_min": [
+      512,
+      512
+    ],
+    "extent_max": [
+      2048,
+      2048
+    ],
+    "extent_step": 64,
+    "max_edit_cells": 16384,
+    "max_brush_points": 1024,
+    "history_per_decorative_plane": 32,
+    "cross_plane_physical_transfer": false,
+    "play_revision_policy": "Existing authored Play source and live worker generation/revision/tick remain authoritative. The Play plane document revision is preserved metadata, not a live material counter or publication fence."
+  },
+  "scenes": [
+    {
+      "id": "industrial-assembly",
+      "path": "godot/data/strata/industrial-assembly.json",
+      "extent": [
+        1024,
+        768
+      ]
+    },
+    {
+      "id": "arcology",
+      "path": "godot/data/strata/arcology.json",
+      "extent": [
+        1024,
+        768
+      ]
+    },
+    {
+      "id": "cavern",
+      "path": "godot/data/strata/cavern.json",
+      "extent": [
+        1024,
+        768
+      ]
+    }
+  ],
+  "qualification": {
+    "local_source_review": "performed; independent reviews retained",
+    "linux_graphical": "PASS at d365; complete campaign independently re-admitted",
+    "windows_graphical": "PASS at d365; complete source campaign independently re-admitted",
+    "maximum_extent": [
+      {
+        "platform": "linux",
+        "status": "passed",
+        "checks": 82,
+        "extent": [
+          2048,
+          2048
+        ],
+        "planes": {
+          "background": {
+            "extent": [
+              2048,
+              2048
+            ],
+            "native_material": 131,
+            "owner": "-9223371651700218914",
+            "pixel_delta": 0.111404418945312
+          },
+          "effects": {
+            "extent": [
+              2048,
+              2048
+            ],
+            "native_material": 131,
+            "owner": "-9223371651750550555",
+            "pixel_delta": 0.111404418945312
+          },
+          "scripted": {
+            "extent": [
+              2048,
+              2048
+            ],
+            "native_material": 131,
+            "owner": "-9223371651784104991",
+            "pixel_delta": 0.111404418945312
+          }
+        },
+        "identity": {
+          "after": {
+            "actor_body_ids": [
+              "310160393747"
+            ],
+            "actor_session_id": "310042953250",
+            "native_tick": 0,
+            "physical_epoch": 1,
+            "rapier_tick": 0,
+            "worker_id": "-9223371957884418565",
+            "world_generation": 3
+          },
+          "before": {
+            "actor_body_ids": [
+              "310160393747"
+            ],
+            "actor_session_id": "310042953250",
+            "native_tick": 0,
+            "physical_epoch": 1,
+            "rapier_tick": 0,
+            "worker_id": "-9223371957884418565",
+            "world_generation": 3
+          }
+        },
+        "play_hash_before": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+        "play_hash_after": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+        "teardown": {
+          "cache_hits": 0,
+          "construction_usec": 72340,
+          "generation": 2,
+          "last_edit_usec": 423,
+          "layers": {},
+          "native_snapshot_calls": 6,
+          "native_world_count": 0,
+          "owns_play_world": false,
+          "pending_native_world_count": 0,
+          "pending_token": -1,
+          "retired_worlds": 3,
+          "session_id": "b904677d5059a5048c52530f46050f82"
+        },
+        "wall_seconds": 59.649,
+        "observed_cpu_seconds": 93.88,
+        "sampled_peak_process_rss_bytes": 2017308672,
+        "scope": "paused default2048 canvas identity/native edit/render/retirement; not sustained dense-map play"
+      },
+      {
+        "platform": "windows",
+        "status": "passed",
+        "checks": 82,
+        "extent": [
+          2048,
+          2048
+        ],
+        "planes": {
+          "background": {
+            "extent": [
+              2048,
+              2048
+            ],
+            "native_material": 131,
+            "owner": "-9223371612374424611",
+            "pixel_delta": 0.10980392806232
+          },
+          "effects": {
+            "extent": [
+              2048,
+              2048
+            ],
+            "native_material": 131,
+            "owner": "-9223371612424763879",
+            "pixel_delta": 0.10980392806232
+          },
+          "scripted": {
+            "extent": [
+              2048,
+              2048
+            ],
+            "native_material": 131,
+            "owner": "-9223371612491865120",
+            "pixel_delta": 0.10980392806232
+          }
+        },
+        "identity": {
+          "after": {
+            "actor_body_ids": [
+              "354469021202"
+            ],
+            "actor_session_id": "354351580666",
+            "native_tick": 0,
+            "physical_epoch": 1,
+            "rapier_tick": 0,
+            "worker_id": "-9223371957297216004",
+            "world_generation": 3
+          },
+          "before": {
+            "actor_body_ids": [
+              "354469021202"
+            ],
+            "actor_session_id": "354351580666",
+            "native_tick": 0,
+            "physical_epoch": 1,
+            "rapier_tick": 0,
+            "worker_id": "-9223371957297216004",
+            "world_generation": 3
+          }
+        },
+        "play_hash_before": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+        "play_hash_after": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+        "teardown": {
+          "cache_hits": 0,
+          "construction_usec": 124698,
+          "generation": 2,
+          "last_edit_usec": 359,
+          "layers": {},
+          "native_snapshot_calls": 6,
+          "native_world_count": 0,
+          "owns_play_world": false,
+          "pending_native_world_count": 0,
+          "pending_token": -1,
+          "retired_worlds": 3,
+          "session_id": "72947a3dd72cfc1bb4bfaba00de22a74"
+        },
+        "wall_seconds": 157.546,
+        "observed_cpu_seconds": 289.65625,
+        "sampled_peak_process_rss_bytes": 1469501440,
+        "scope": "paused default2048 canvas identity/native edit/render/retirement; not sustained dense-map play"
+      }
+    ],
+    "fresh_process_reopen": {
+      "linux": "PASS:3distinct-processpairs at d365",
+      "windows": "PASS:3distinct-processpairs at d365"
+    },
+    "pristine_windows_package": {
+      "status": "passed",
+      "workflow_run": 45457176340,
+      "job_id": 138680405877,
+      "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+      "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+      "extracted_checks_per_scene": {
+        "install": 880,
+        "reopen": 162
+      },
+      "scene_count": 3,
+      "maximum_checks": 82,
+      "actual_cmd_admission": "passed: ordinary2048square SharedWorkbench, Strata off, exit0",
+      "post_run_payload_verification": "passed",
+      "independent_audit": "evaluator-independent-audit.json",
+      "lifecycle_review": "package-lifecycle-review-a.json"
+    },
+    "physical_windows_11_nvidia": "OWNER EVALUATION PENDING",
+    "failure_containment": {
+      "executed": [
+        "invalid complete document refusal",
+        "stale/forged/malformed packet refusal",
+        "native owner cancellation",
+        "ordinary teardown",
+        "Play material and actor isolation"
+      ],
+      "source_reviewed_without_mounted_fault_injection": [
+        "failed Play ACK while composition staged",
+        "partial native edit quarantine",
+        "committed edit with failed presentation publication"
+      ]
+    },
+    "source_campaigns": [
+      {
+        "platform": "linux",
+        "status": "passed",
+        "artifact_id": 14952301125,
+        "artifact_bytes": 75589150,
+        "artifact_sha256": "e534c6091a6c430925b2b9afdf2afa3f5c3d752edec75fc1a8ae7a641bd9e5aa",
+        "report_sha256": "73eea760ed6ae56433356c44c47baf0450bed4e3f1735b0c2c4a9ce7f08b3420",
+        "process_cases": 12,
+        "evidence_files": 136,
+        "elapsed_seconds": 438.364,
+        "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+        "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+        "scenes": [
+          {
+            "name": "industrial-assembly",
+            "status": "passed",
+            "install_checks": 880,
+            "reopen_checks": 162,
+            "same_saved_sha256": true,
+            "same_four_native_plane_hashes": true
+          },
+          {
+            "name": "arcology",
+            "status": "passed",
+            "install_checks": 880,
+            "reopen_checks": 162,
+            "same_saved_sha256": true,
+            "same_four_native_plane_hashes": true
+          },
+          {
+            "name": "cavern",
+            "status": "passed",
+            "install_checks": 880,
+            "reopen_checks": 162,
+            "same_saved_sha256": true,
+            "same_four_native_plane_hashes": true
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "status": "passed",
+        "artifact_id": 14952860817,
+        "artifact_bytes": 63138059,
+        "artifact_sha256": "c62e0ca647308873967d76e0ef7f7f95a2c1e9af4cf91d30419a34ff6b611ca8",
+        "report_sha256": "352121aa9206fd3770ec3971359a5c72223f76802eee4e25ff945ccf0fcc0106",
+        "process_cases": 12,
+        "evidence_files": 136,
+        "elapsed_seconds": 937.485,
+        "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+        "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+        "scenes": [
+          {
+            "name": "industrial-assembly",
+            "status": "passed",
+            "install_checks": 880,
+            "reopen_checks": 162,
+            "same_saved_sha256": true,
+            "same_four_native_plane_hashes": true
+          },
+          {
+            "name": "arcology",
+            "status": "passed",
+            "install_checks": 880,
+            "reopen_checks": 162,
+            "same_saved_sha256": true,
+            "same_four_native_plane_hashes": true
+          },
+          {
+            "name": "cavern",
+            "status": "passed",
+            "install_checks": 880,
+            "reopen_checks": 162,
+            "same_saved_sha256": true,
+            "same_four_native_plane_hashes": true
+          }
+        ]
+      }
+    ],
+    "source_matched_scene_assertions_each": {
+      "install": 880,
+      "fresh_process_reopen": 162
+    }
+  },
+  "negative_campaigns": "negative-campaigns.json",
+  "local_diagnostics": "local-diagnostics.json",
+  "independent_reviews": [
+    {
+      "lane": "A",
+      "report": "independent-review-a.md",
+      "sha256": "da1e98914a7371348e08d5df979c36932675b08060b04b854719e6cb299b416c",
+      "scope": "Presentation/ownership cross-review; maximum-native extent, exact saved-layout replay, extracted lifecycle and live scope",
+      "result": "no remaining blocker for scoped Draft/HOLD evaluator delivery; physical owner gate and explicit coverage limits retained"
+    },
+    {
+      "lane": "B",
+      "report": "independent-review-b.md",
+      "sha256": "5f3a00f594bd48a885a247793e8b75f53ac6accd4ea8bbf5350382e39ae546ef",
+      "scope": "Owner/document cross-review; actual native images, source-exact three scenes and shipped owner handoff",
+      "result": "no remaining blocker for scoped Draft/HOLD evaluator delivery; physical owner gate and explicit coverage limits retained"
+    },
+    {
+      "lane": "C",
+      "report": "independent-review-c.md",
+      "sha256": "4895e919f33c370ced6d5cd181f0eeb1716f9d83f026f4d10a280fed48034b25",
+      "scope": "Independent native/document source review, complete platform readmission, adverse custody controls and streamed exact evaluator audit",
+      "result": "no remaining blocker for scoped Draft/HOLD evaluator delivery; physical owner gate and explicit coverage limits retained"
+    }
+  ],
+  "cost_summary": {
+    "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "scope": "Actual hosted software adapters; short sequential paused callback samples retain all composition resources. Process CPU/RSS includes startup, tests and captures. Not presented GPU FPS or incremental layer-native memory.",
+    "process_sample_interval_seconds": 0.5,
+    "scenes": [
+      {
+        "platform": "linux",
+        "scene": "industrial-assembly",
+        "bootstrap_ms": 12479,
+        "process_wall_seconds": 93.589,
+        "observed_process_cpu_seconds": 150.69,
+        "sampled_peak_process_rss_bytes": 1418244096,
+        "mode_samples": [
+          {
+            "mode": "disabled",
+            "callback_p50_usec": 115539,
+            "callback_p95_usec": 128002,
+            "callback_max_usec": 130247,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 123308898.0
+          },
+          {
+            "mode": "flat",
+            "callback_p50_usec": 119243,
+            "callback_p95_usec": 131139,
+            "callback_max_usec": 143642,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 123320814.0
+          },
+          {
+            "mode": "stack",
+            "callback_p50_usec": 126723,
+            "callback_p95_usec": 131107,
+            "callback_max_usec": 137531,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 123324006.0
+          }
+        ]
+      },
+      {
+        "platform": "linux",
+        "scene": "arcology",
+        "bootstrap_ms": 10276,
+        "process_wall_seconds": 90.557,
+        "observed_process_cpu_seconds": 146.56,
+        "sampled_peak_process_rss_bytes": 1385246720,
+        "mode_samples": [
+          {
+            "mode": "disabled",
+            "callback_p50_usec": 115889,
+            "callback_p95_usec": 128120,
+            "callback_max_usec": 140625,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 122699688.0
+          },
+          {
+            "mode": "flat",
+            "callback_p50_usec": 119504,
+            "callback_p95_usec": 130790,
+            "callback_max_usec": 133764,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 122711604.0
+          },
+          {
+            "mode": "stack",
+            "callback_p50_usec": 127090,
+            "callback_p95_usec": 131185,
+            "callback_max_usec": 144690,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 122750736.0
+          }
+        ]
+      },
+      {
+        "platform": "linux",
+        "scene": "cavern",
+        "bootstrap_ms": 10067,
+        "process_wall_seconds": 89.801,
+        "observed_process_cpu_seconds": 146.59,
+        "sampled_peak_process_rss_bytes": 1392222208,
+        "mode_samples": [
+          {
+            "mode": "disabled",
+            "callback_p50_usec": 115853,
+            "callback_p95_usec": 126318,
+            "callback_max_usec": 130968,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 123518664.0
+          },
+          {
+            "mode": "flat",
+            "callback_p50_usec": 118475,
+            "callback_p95_usec": 124627,
+            "callback_max_usec": 138630,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 123530580.0
+          },
+          {
+            "mode": "stack",
+            "callback_p50_usec": 125054,
+            "callback_p95_usec": 130084,
+            "callback_max_usec": 150611,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 123533772.0
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "scene": "industrial-assembly",
+        "bootstrap_ms": 54916,
+        "process_wall_seconds": 209.938,
+        "observed_process_cpu_seconds": 473.859375,
+        "sampled_peak_process_rss_bytes": 1162444800,
+        "mode_samples": [
+          {
+            "mode": "disabled",
+            "callback_p50_usec": 210835,
+            "callback_p95_usec": 233422,
+            "callback_max_usec": 244323,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 127361404.0
+          },
+          {
+            "mode": "flat",
+            "callback_p50_usec": 217768,
+            "callback_p95_usec": 239201,
+            "callback_max_usec": 244538,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 127373320.0
+          },
+          {
+            "mode": "stack",
+            "callback_p50_usec": 231644,
+            "callback_p95_usec": 254453,
+            "callback_max_usec": 256226,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 127376512.0
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "scene": "arcology",
+        "bootstrap_ms": 59012,
+        "process_wall_seconds": 227.125,
+        "observed_process_cpu_seconds": 511.40625,
+        "sampled_peak_process_rss_bytes": 1130835968,
+        "mode_samples": [
+          {
+            "mode": "disabled",
+            "callback_p50_usec": 238234,
+            "callback_p95_usec": 245347,
+            "callback_max_usec": 247106,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 126752162.0
+          },
+          {
+            "mode": "flat",
+            "callback_p50_usec": 241389,
+            "callback_p95_usec": 246948,
+            "callback_max_usec": 251416,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 126764078.0
+          },
+          {
+            "mode": "stack",
+            "callback_p50_usec": 249906,
+            "callback_p95_usec": 257187,
+            "callback_max_usec": 258430,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 126767270.0
+          }
+        ]
+      },
+      {
+        "platform": "windows",
+        "scene": "cavern",
+        "bootstrap_ms": 56817,
+        "process_wall_seconds": 208.172,
+        "observed_process_cpu_seconds": 466.28125,
+        "sampled_peak_process_rss_bytes": 1161846784,
+        "mode_samples": [
+          {
+            "mode": "disabled",
+            "callback_p50_usec": 210449,
+            "callback_p95_usec": 224470,
+            "callback_max_usec": 242492,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 127571210.0
+          },
+          {
+            "mode": "flat",
+            "callback_p50_usec": 211939,
+            "callback_p95_usec": 219957,
+            "callback_max_usec": 229375,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 127583126.0
+          },
+          {
+            "mode": "stack",
+            "callback_p50_usec": 220598,
+            "callback_p95_usec": 248372,
+            "callback_max_usec": 252759,
+            "decorative_uploads_during_sample": 0,
+            "native_snapshots_during_sample": 0,
+            "godot_tracked_static_memory_bytes": 127586318.0
+          }
+        ]
+      }
+    ],
+    "prior_observed_wait_overruns": "Original campaign2 Windows first admissions exceeded the45s callback limit; retained in campaign2-cost.md/.json. Later timings do not erase those observations.",
+    "observed_callback_budget_overruns": [
+      {
+        "platform": "windows",
+        "scene": "industrial-assembly",
+        "phase": "install",
+        "elapsed_ms": 52169,
+        "label": "play and all three decorative native owners adopted",
+        "limit_ms": 45000
+      },
+      {
+        "platform": "windows",
+        "scene": "arcology",
+        "phase": "install",
+        "elapsed_ms": 56579,
+        "label": "play and all three decorative native owners adopted",
+        "limit_ms": 45000
+      },
+      {
+        "platform": "windows",
+        "scene": "cavern",
+        "phase": "install",
+        "elapsed_ms": 50789,
+        "label": "play and all three decorative native owners adopted",
+        "limit_ms": 45000
+      }
+    ],
+    "separate_pristine_package_observations": "package-cost.json",
+    "separate_pristine_package_admission_overruns": [
+      {
+        "scene": "industrial-assembly",
+        "bootstrap_ms": 68754,
+        "waits": [
+          {
+            "elapsed_ms": 87289,
+            "label": "play and all three decorative native owners adopted",
+            "limit_ms": 45000
+          }
+        ]
+      },
+      {
+        "scene": "arcology",
+        "bootstrap_ms": 70873,
+        "waits": [
+          {
+            "elapsed_ms": 74863,
+            "label": "play and all three decorative native owners adopted",
+            "limit_ms": 45000
+          }
+        ]
+      },
+      {
+        "scene": "cavern",
+        "bootstrap_ms": 53433,
+        "waits": [
+          {
+            "elapsed_ms": 49164,
+            "label": "play and all three decorative native owners adopted",
+            "limit_ms": 45000
+          }
+        ]
+      }
+    ]
+  },
+  "windows_evaluator": {
+    "archive": "CyberSand-Strata-Workbench-Windows-d365f78190af.zip",
+    "bytes": 204378995,
+    "sha256": "344ff7de0caf120096baa377967585918fd985fd9d35ad7b7620e1c6c9b03a71",
+    "payload_manifest": "CyberSand-Strata-Workbench-Windows-d365f78190af.manifest.json",
+    "payload_manifest_sha256": "0b6f88603afa07b6a44f713ab8ac06887db4ad34c91d0e6c153f5a18c01594a8",
+    "payload_files": 1359,
+    "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "transport_artifact_id": 14953297332,
+    "transport_artifact_sha256": "293eb6348b9e5a51c3c370923b624a2b8344fbc079b546f3dfff151ad3e024a7",
+    "evidence_artifact_id": 14954041935,
+    "evidence_artifact_sha256": "7d81349bad6e67e5621f36108a11a8ce919fedc98b0e75112510ace1c92bb35c",
+    "verified_portable_evaluator": true,
+    "independent_audit": "evaluator-independent-audit.json",
+    "ordinary_launcher": "Open Workbench.cmd",
+    "shipped_manifest": "evaluation-manifest.json",
+    "frozen_archived_source_files": 1057,
+    "canonical_profiles": 17,
+    "source_execution_inputs": 1105,
+    "physical_windows11_nvidia_owner_gate": "pending"
+  },
+  "authority": {
+    "ready_promotion": false,
+    "merge": false,
+    "default_activation": false,
+    "native_runtime_publication": false,
+    "pubpres_branch_import": false
+  },
+  "limitations": [
+    "Decorative Worlds do not simulate or own actors/collision.",
+    "Saved compositions restore authored material layouts and settings, not exact physical continuation or Undo stacks.",
+    "Hosted software rendering and callback/resource measurements do not establish physical Windows11/NVIDIA appearance, interaction or GPU FPS.",
+    "Future accepted publication/camera/palette changes require fresh qualification at the documented adapter seam.",
+    "Failed Play ACK while staged, partial native edit quarantine and committed-edit/failed-publication paths are source-reviewed without direct mounted fault injection.",
+    "Maximum2048square qualification is paused capacity/native-edit/identity/render/retirement; it is not sustained dense-map play.",
+    "Synthetic viewport/control events do not establish physical mouse, desktop DPI or every actor type.",
+    "Source and pristine-package Windows admission exceeded nominal45second callback budgets despite eventual functional completion."
+  ],
+  "candidate_application": {
+    "commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "local_tree_equivalent_commit": "22ff4bdf0251d58164b68ad1f81d0bbf2cdb479c",
+    "workflow_run": 45457176340
+  },
+  "prior_campaign_archive": {
+    "file_name": "CyberSand-Strata-Prior-Campaigns.zip",
+    "bytes": 304889637,
+    "sha256": "a49712f42b00bbc9c3b0627d2acf62e3bd9dc5abf3bfd77290afc2581e868419",
+    "original_downloaded_archives": 6,
+    "scope": "Original three development campaigns; first two source campaigns failed, third source platforms passed but its package admission failed. Historical statuses retained."
+  },
+  "runtime": {
+    "linux": {
+      "godot": {
+        "version": "4.7.stable.official.5b4e0cb0f",
+        "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+      },
+      "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "runtime_provenance": {
+        "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1"
+      },
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "size": 5253776
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      }
+    },
+    "windows": {
+      "godot": {
+        "version": "4.7.stable.official.5b4e0cb0f",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+      },
+      "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "runtime_provenance": {
+        "path": "godot/addons/cybersand_native/runtime-provenance.json",
+        "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+      },
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+        "size": 5820416
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+        "size": 9987072
+      }
+    }
+  },
+  "completion_scope": "Scoped Draft/HOLD implementation, source platform campaigns, pristine Windows evaluator and independent review delivered; physical Windows11/NVIDIA owner acceptance remains pending.",
+  "native_reference_images": "native-reference-images.json",
+  "evidence_publication_policy": "Subsequent documentation-only evidence commit is distinct from frozen qualified application d365; all1105executioninputs must remain byte-identical.",
+  "local_final_gates": "local-final-gates.json",
+  "retrieval_fact_review": "final-retrieval-review.json"
+}

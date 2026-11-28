@@ -1,0 +1,72 @@
+{
+  "schema": "strata-source-ancestry-api-v1",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e",
+  "comparisons": [
+    {
+      "url": "https://api.github.com/repos/techrote/cybersand/compare/80623d039aa49bc0c1d84a9206d89812ffa99ea6...934cc0c0eef70dad528155e9a92eebe25e2757eb",
+      "base": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "head": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+      "merge_base": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "status": "ahead",
+      "ahead_by": 6,
+      "behind_by": 0,
+      "head_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e"
+    },
+    {
+      "url": "https://api.github.com/repos/techrote/cybersand/compare/00cdb02f103265b6dc5224c68283e9a0c8cb449f...934cc0c0eef70dad528155e9a92eebe25e2757eb",
+      "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "head": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+      "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "status": "ahead",
+      "ahead_by": 12,
+      "behind_by": 0,
+      "head_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e"
+    }
+  ],
+  "delta_from_source3": {
+    "base": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+    "merge_base": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+    "status": "ahead",
+    "ahead_by": 1,
+    "behind_by": 0,
+    "files": [
+      {
+        "path": "godot/scripts/depth/workbench_strata_authoring_panel.gd",
+        "sha": "07e9c3a6f6afc270b2f3073f43d20f1213944a79",
+        "status": "modified",
+        "additions": 13,
+        "deletions": 1
+      },
+      {
+        "path": "godot/tests/test_strata2_authoring_ui.gd",
+        "sha": "0eff0ee5d594a3ff12b203142c1f58f05c1a82c6",
+        "status": "modified",
+        "additions": 9,
+        "deletions": 1
+      },
+      {
+        "path": "godot/tools/qualify_workbench_strata2.gd",
+        "sha": "a38f1e4b2db5697e8b98fa3a80d83698b15bab6b",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 2
+      },
+      {
+        "path": "tools/ci/qualify_strata2_workbench.py",
+        "sha": "8e59913e12772474ddaa6e107760a91cc231fbfb",
+        "status": "modified",
+        "additions": 15,
+        "deletions": 1
+      },
+      {
+        "path": "tools/ci/test_strata2_qualification.py",
+        "sha": "aee9f004400bd557fb0e8191ce559dc8946bdef3",
+        "status": "modified",
+        "additions": 22,
+        "deletions": 0
+      }
+    ]
+  },
+  "branch_status": "Candidate created but not yet published to branch; no graphical qualification claimed."
+}

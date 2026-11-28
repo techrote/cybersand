@@ -1,0 +1,42 @@
+{
+  "schema": "strata-native-reference-images-v1",
+  "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+  "workflow_run": 45457176340,
+  "artifact_id": 14952301125,
+  "artifact_sha256": "e534c6091a6c430925b2b9afdf2afa3f5c3d752edec75fc1a8ae7a641bd9e5aa",
+  "rendering": "Actual Godot4.7 display-backed Linux llvmpipe; original unedited PNGs, no generated imagery",
+  "files": [
+    {
+      "file": "CyberSand-Strata-Industrial-Assembly.png",
+      "scene": "industrial-assembly",
+      "original_path": "industrial-assembly/reference-composite.png",
+      "sha256": "b7e2a5f63117eea92db5e36ab88cb63e0bfb980f144ffb1b701339cbfcfd21f3",
+      "bytes": 975588,
+      "stage": "Untouched native reference composition before qualifier edits"
+    },
+    {
+      "file": "CyberSand-Strata-Arcology.png",
+      "scene": "arcology",
+      "original_path": "arcology/reference-composite.png",
+      "sha256": "26d3defc438ab59e0d3bdc78682624ca04958df9552836cdf1b2d4bfbf55f45d",
+      "bytes": 1162249,
+      "stage": "Untouched native reference composition before qualifier edits"
+    },
+    {
+      "file": "CyberSand-Strata-Organic-Industrial-Cavern.png",
+      "scene": "cavern",
+      "original_path": "cavern/reference-composite.png",
+      "sha256": "81b3c39db8fe83ce3fefdd6a47a09785ab41c97b8328a45045725fe99d3e596b",
+      "bytes": 1207649,
+      "stage": "Untouched native reference composition before qualifier edits"
+    },
+    {
+      "file": "CyberSand-Strata-Authoring-Panel.png",
+      "original_path": "industrial-assembly/strata-panel.png",
+      "sha256": "b81c177fe36825ed025dd07ab10b1aa639a5ea7ef5597bdba542fd0d2063a430",
+      "bytes": 96358,
+      "stage": "Actual panel during qualified control-signal test; settings are that test state"
+    }
+  ]
+}

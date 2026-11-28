@@ -1,0 +1,199 @@
+{
+  "schema": "strata2-visual-refinement-review-v1",
+  "reviewer": "specialist B, scene author; actual image critique plus source checks, independently challenged by lead and specialist C",
+  "original_capture_source": "316020a4aa87ca7993716f00d714301884d580f7",
+  "original_run": "https://github.com/techrote/cybersand/actions/runs/45484675371",
+  "original_capture_scope": "actual Linux Godot ordinary Workbench framebuffer; unchanged original files",
+  "revised_generator_version": 2,
+  "revised_qualification_status": "PENDING new native/framebuffer execution on integrated frozen source",
+  "source_validation": {
+    "godot_source_checks": 61,
+    "failures": 0,
+    "generator_check": "PASS",
+    "independent_geometry_check": "PASS"
+  },
+  "limitations": [
+    "This review does not certify physical owner appearance or playfeel.",
+    "Original atmosphere OFF/ON pixel counts were confounded by ordinary Play shader TIME; specialist C corrected the matched witness for the next run.",
+    "Original isolated images could include authored visual motifs; the next harness explicitly disables atmosphere for native isolated planes.",
+    "Geometric route clearances are not full actor traversal; first horizontal actuation used yaw without thrust and specialist C is correcting the harness.",
+    "Analytic exposed-cell counts use zero parallax and opaque nearer materials, not actual composited visibility."
+  ],
+  "scenes": [
+    {
+      "id": "orbital-terminal",
+      "original_source_file_sha256": "1e83955067c27b9116462de1389abfad175b80bd88e5abb04a21e4f03a776818",
+      "revised_source_file_sha256": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+      "play_material_uint16le_sha256_unchanged": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+      "play_arrays_spawn_routes_extent_effects_presentation_views_unchanged": true,
+      "original_capture_review": "The upper distant rectangle was disconnected, and most rear architecture lay below the broad upper openings.",
+      "revision": "Connected stepped dock towers, a linked orbital arm and docking fingers now occupy selected distant openings; the separate floating rectangle is removed.",
+      "original_inspected_images": [
+        {
+          "relative_path": "orbital-terminal/reference-composite.png",
+          "sha256": "e39e090999762c8fc98e53ffbd8e14666bd5a6665ebdd4c1223d161ecd64d51c",
+          "bytes": 771970
+        },
+        {
+          "relative_path": "orbital-terminal/reference-plane-background.png",
+          "sha256": "5af06b71b430eb2f6299082ab1879fe0fa15759b45e1bce6fbae36ecc01f1a2d",
+          "bytes": 267554
+        },
+        {
+          "relative_path": "orbital-terminal/detail-orbital-window.png",
+          "sha256": "a507d1acc3dfaa4772ac773e36397b9761136f88900e8461eff64a264c5721b3",
+          "bytes": 158554
+        }
+      ],
+      "background_exposed_cells_before": 191939,
+      "background_exposed_cells_after": 383401,
+      "native_union_fraction_before": 0.28789615631103516,
+      "native_union_fraction_after": 0.3791923522949219,
+      "native_recipe_counts_after": {
+        "play": 358,
+        "scripted": 4178,
+        "effects": 32,
+        "background": 227
+      },
+      "native_authored_write_cells_after": {
+        "play": 289233,
+        "scripted": 225960,
+        "effects": 6822,
+        "background": 531954
+      }
+    },
+    {
+      "id": "neon-rain-arcology",
+      "original_source_file_sha256": "fae2d198a222803d7809f445635f4c3c43c18bcfbad0b525c796ffd559a21958",
+      "revised_source_file_sha256": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+      "play_material_uint16le_sha256_unchanged": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+      "play_arrays_spawn_routes_extent_effects_presentation_views_unchanged": true,
+      "original_capture_review": "The rear inhabited panels were distinct, but the far skyline remained low and had little influence through the upper gaps.",
+      "revision": "Narrow stepped far towers with smaller windows rise through selected gaps; two low distant links establish a coherent skyline without a complete backing wall.",
+      "original_inspected_images": [
+        {
+          "relative_path": "neon-rain-arcology/reference-composite.png",
+          "sha256": "e07831507dbbd8c409dc9186d74c45277b4c0bb509e21a3414e73f2e53145a11",
+          "bytes": 1107956
+        }
+      ],
+      "background_exposed_cells_before": 239153,
+      "background_exposed_cells_after": 342968,
+      "native_union_fraction_before": 0.4811587333679199,
+      "native_union_fraction_after": 0.5306615829467773,
+      "native_recipe_counts_after": {
+        "play": 303,
+        "scripted": 1184,
+        "effects": 33,
+        "background": 273
+      },
+      "native_authored_write_cells_after": {
+        "play": 378082,
+        "scripted": 1033194,
+        "effects": 5598,
+        "background": 454895
+      }
+    },
+    {
+      "id": "industrial-underworks",
+      "original_source_file_sha256": "a30c5c97adc45064a65dd407ddd39bfc7e8113d768b52d1d4779ae6f31d59789",
+      "revised_source_file_sha256": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+      "play_material_uint16le_sha256_unchanged": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+      "play_arrays_spawn_routes_extent_effects_presentation_views_unchanged": true,
+      "original_capture_review": "Repeated near and distant hollow rectangular racks produced little large-scale hierarchy.",
+      "revision": "A large native annular turbine, spokes and pressure columns replace the repeated distant frames. Every shape remains static native geometry on the background plane.",
+      "original_inspected_images": [
+        {
+          "relative_path": "industrial-underworks/reference-composite.png",
+          "sha256": "5df732590d83bf0e3c9132d0c46ebd48275f492269d9a654f088e58f3d636d6e",
+          "bytes": 528478
+        },
+        {
+          "relative_path": "industrial-underworks/atmosphere-on.png",
+          "sha256": "a81e8e0e6dd26d221528d9b9ef145f3aaa13107fc68fd21ecdbe49dfabbf8d8b",
+          "bytes": 532596
+        }
+      ],
+      "background_exposed_cells_before": 76297,
+      "background_exposed_cells_after": 148774,
+      "native_union_fraction_before": 0.32610511779785156,
+      "native_union_fraction_after": 0.39522457122802734,
+      "native_recipe_counts_after": {
+        "play": 210,
+        "scripted": 911,
+        "effects": 20,
+        "background": 2521
+      },
+      "native_authored_write_cells_after": {
+        "play": 192048,
+        "scripted": 112022,
+        "effects": 2824,
+        "background": 227569
+      }
+    },
+    {
+      "id": "abyss-foundry",
+      "original_source_file_sha256": "c7f2a23610be07aa0d8ee0b606896c6b31dc6b9697f4e2ba8d27883d27bd3cf4",
+      "revised_source_file_sha256": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+      "play_material_uint16le_sha256_unchanged": "52ccafce52a14e743fe4e0c3e8ef627401071ca6cb226c878b9061076a4bbdc1",
+      "play_arrays_spawn_routes_extent_effects_presentation_views_unchanged": true,
+      "original_capture_review": "The physical basalt chamber read clearly, while four distant rock strips had abrupt disconnected upper edges.",
+      "revision": "A separate irregular far ceiling, tapered attached formations and uneven side cliffs connect the rear geology; central and lower voids remain.",
+      "original_inspected_images": [
+        {
+          "relative_path": "abyss-foundry/reference-composite.png",
+          "sha256": "953173a9a51c7c1449f3e88f8c0b5b33d90654479b38afeae67d0adb68a607c4",
+          "bytes": 715418
+        }
+      ],
+      "background_exposed_cells_before": 193395,
+      "background_exposed_cells_after": 281342,
+      "native_union_fraction_before": 0.5747957229614258,
+      "native_union_fraction_after": 0.6586685180664062,
+      "native_recipe_counts_after": {
+        "play": 825,
+        "scripted": 346,
+        "effects": 14,
+        "background": 397
+      },
+      "native_authored_write_cells_after": {
+        "play": 403018,
+        "scripted": 41343,
+        "effects": 1128,
+        "background": 401586
+      }
+    },
+    {
+      "id": "vertical-transfer-spine",
+      "original_source_file_sha256": "6fb5fbe31684ae81f3469213d8b2d41834ec26839bb40367ec8196e7603d4fda",
+      "revised_source_file_sha256": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+      "play_material_uint16le_sha256_unchanged": "eb0cfc3f9271badf05ec1f57154845764b44f36467062c3ea3539164f36c77fa",
+      "play_arrays_spawn_routes_extent_effects_presentation_views_unchanged": true,
+      "original_capture_review": "The repeated large rear rectangles resembled detached panels, and the last one extended below the physical chamber floor in the overview.",
+      "revision": "Bounded rear carriage cages, continuous hoist cables and one pulley establish machinery context; final lower panels stop inside the chamber.",
+      "original_inspected_images": [
+        {
+          "relative_path": "vertical-transfer-spine/reference-composite.png",
+          "sha256": "ced3794598733a85078baa03788ba5e3967bf19d5cbafb85f9d841861be1d9e2",
+          "bytes": 449668
+        }
+      ],
+      "background_exposed_cells_before": 242109,
+      "background_exposed_cells_after": 231271,
+      "native_union_fraction_before": 0.4112377166748047,
+      "native_union_fraction_after": 0.4265677134195964,
+      "native_recipe_counts_after": {
+        "play": 291,
+        "scripted": 3814,
+        "effects": 30,
+        "background": 128
+      },
+      "native_authored_write_cells_after": {
+        "play": 285295,
+        "scripted": 233394,
+        "effects": 3120,
+        "background": 336344
+      }
+    }
+  ]
+}

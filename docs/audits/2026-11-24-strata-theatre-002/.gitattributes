@@ -1,0 +1,5 @@
+# Preserve original target-host receipt bytes; no application source exceptions.
+# The repository root already uses this policy for raw Windows campaign JSON.
+windows-evaluation-manifest.json -text whitespace=cr-at-eol
+# This original read-only API response includes a valid trailing blank line.
+reviews/ancestry-api-986c9d4.json -text whitespace=-blank-at-eof

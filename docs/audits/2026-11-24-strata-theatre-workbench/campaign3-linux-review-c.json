@@ -1,0 +1,744 @@
+{
+  "source_commit": "d95f9ceaa77ff444d8ff85ce9b90a1173edb7989",
+  "source_tree": "c38460e875ee7ca6b2a07b13ea4f05c04ffa3481",
+  "source_inputs_verified": 1105,
+  "platform": "linux",
+  "campaign_status": "passed",
+  "maximum_original": {
+    "process": {
+      "command": [
+        "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-method",
+        "gl_compatibility",
+        "--rendering-driver",
+        "opengl3",
+        "--path",
+        "/home/runner/work/cybersand/cybersand/godot",
+        "--script",
+        "res://tools/qualify_workbench_strata_maximum.gd"
+      ],
+      "exit_code": 0,
+      "label": "maximum",
+      "log_sha256": "a9f0ad89fd0ecb52765e9d22d71555b23e724f56f97f55d73902b33d8f282f80",
+      "pid": 3229,
+      "resources": {
+        "available": true,
+        "observation_errors": [],
+        "observed_cpu_seconds": 94.03,
+        "observer_wall_seconds": 0.5425259580001125,
+        "peak_observed_tree_rss_bytes": 2019151872,
+        "process_identities": [
+          [
+            3229,
+            12975
+          ]
+        ],
+        "root_pid": 3229,
+        "root_start_id": 12975,
+        "sample_count": 115,
+        "sample_interval_seconds": 0.5,
+        "schema": "strata-process-resources-v1",
+        "scope": "observed_process_and_descendants",
+        "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+      },
+      "resources_sha256": "9302584b7aef0ea6b4bca670607276526c313ee5228ceb6a542f672d30c347f6",
+      "seconds": 58.062,
+      "status": "passed",
+      "timeout_seconds": 420
+    },
+    "report_sha256": "cb4ddc78a4286b0d889a51a13af02758953fcd97b95c8a4b6d139b8f29ef3e4e",
+    "result": {
+      "bootstrap_elapsed_ms": 9790,
+      "checks": 82,
+      "completed": true,
+      "cost": {
+        "callback_intervals_usec": [
+          262052,
+          269468,
+          249409,
+          249110,
+          248546,
+          249359,
+          252342,
+          250325,
+          262015,
+          252826,
+          247404,
+          273838,
+          251165,
+          249445,
+          248508,
+          250317,
+          249273,
+          250368,
+          251607,
+          249715,
+          256791,
+          248684,
+          247930,
+          253472,
+          248389,
+          252505,
+          247841,
+          251267,
+          262972,
+          250500,
+          246628,
+          250856,
+          279844,
+          249400,
+          267017,
+          250242,
+          248651,
+          250437,
+          247406,
+          248928,
+          279345,
+          249931,
+          247882,
+          249099
+        ],
+        "callback_max_usec": 279844,
+        "callback_p50_usec": 250317,
+        "callback_p95_usec": 273838,
+        "decorative_uploads_during_sample": 0,
+        "elapsed_usec": 11156023,
+        "godot_process_seconds": [
+          0.357618,
+          0.357618,
+          0.357618,
+          0.268833,
+          0.268833,
+          0.268833,
+          0.268833,
+          0.251911,
+          0.251911,
+          0.251911,
+          0.251911,
+          0.261563,
+          0.261563,
+          0.261563,
+          0.261563,
+          0.273322,
+          0.273322,
+          0.273322,
+          0.273322,
+          0.251228,
+          0.251228,
+          0.251228,
+          0.251228,
+          0.25625,
+          0.25625,
+          0.25625,
+          0.25625,
+          0.252943,
+          0.252943,
+          0.252943,
+          0.252943,
+          0.262555,
+          0.262555,
+          0.262555,
+          0.262555,
+          0.279433,
+          0.279433,
+          0.279433,
+          0.279433,
+          0.250007,
+          0.250007,
+          0.250007,
+          0.250007,
+          0.279005,
+          0.279005
+        ],
+        "godot_tracked_static_memory_bytes": 191210293.0,
+        "mode": "stack",
+        "native_snapshots_during_sample": 0,
+        "resource_state": "composition resources retained in disabled, flat and stack",
+        "scope": "main callbacks and Godot tracked memory; not presented physical GPU FPS or total native RSS"
+      },
+      "display_server": "X11",
+      "extent": [
+        2048,
+        2048
+      ],
+      "failures": [],
+      "final_diagnostics": {
+        "active_layer": "play",
+        "actor_ids": [
+          1
+        ],
+        "enabled": true,
+        "layers": {
+          "cache_hits": 0,
+          "construction_usec": 74535,
+          "generation": 1,
+          "last_edit_usec": 464,
+          "layers": {
+            "background": {
+              "cached_bytes": 8388608,
+              "clock_mode": "static",
+              "dirty": false,
+              "error": "",
+              "failed": false,
+              "native_instance_id": -9223371653428272173,
+              "native_revision": 115,
+              "native_tick": 0,
+              "owner_id": "bee4086191ff10e1391a159d6abafada:1:background",
+              "paused": true,
+              "publication_serial": 2,
+              "rate_hz": 0,
+              "ready": true,
+              "redo": 0,
+              "revision": 2,
+              "undo": 1
+            },
+            "effects": {
+              "cached_bytes": 8388608,
+              "clock_mode": "static",
+              "dirty": false,
+              "error": "",
+              "failed": false,
+              "native_instance_id": -9223371653478603801,
+              "native_revision": 115,
+              "native_tick": 0,
+              "owner_id": "bee4086191ff10e1391a159d6abafada:1:effects",
+              "paused": true,
+              "publication_serial": 2,
+              "rate_hz": 0,
+              "ready": true,
+              "redo": 0,
+              "revision": 2,
+              "undo": 1
+            },
+            "scripted": {
+              "cached_bytes": 8388608,
+              "clock_mode": "static",
+              "dirty": false,
+              "error": "",
+              "failed": false,
+              "native_instance_id": -9223371653512158240,
+              "native_revision": 115,
+              "native_tick": 0,
+              "owner_id": "bee4086191ff10e1391a159d6abafada:1:scripted",
+              "paused": true,
+              "publication_serial": 2,
+              "rate_hz": 0,
+              "ready": true,
+              "redo": 0,
+              "revision": 2,
+              "undo": 1
+            }
+          },
+          "native_snapshot_calls": 6,
+          "native_world_count": 3,
+          "owns_play_world": false,
+          "pending_native_world_count": 0,
+          "pending_token": -1,
+          "retired_worlds": 0,
+          "session_id": "bee4086191ff10e1391a159d6abafada"
+        },
+        "pending": false,
+        "physical_session_id": 308885325346,
+        "play_apply_serial": 0,
+        "play_generation": 3,
+        "play_revision": 3,
+        "play_tick": 0,
+        "presentation": {
+          "active_shader_instance_id": -9223371652102872022,
+          "additional_native_play_worlds": 0,
+          "additional_play_texture_uploads": 0,
+          "camera_origin": "(0.0, 0.0)",
+          "content_rect": "[P: (489.0, 0.0), S: (902.0, 902.0)]",
+          "decorative_rg8_capacity_bytes": 25165824,
+          "decorative_rgba_capacity_bytes": 50331648,
+          "decorative_surface_count": 3,
+          "enabled": true,
+          "extent": "(2048, 2048)",
+          "full_rg8_uploaded_bytes": 50331648,
+          "full_rg8_uploads": 6,
+          "last_error": "",
+          "layers": {
+            "background": {
+              "accepted_packets": 2,
+              "bake_requests": 2,
+              "copied_patch_bytes": 16777216,
+              "effective_visible": true,
+              "expected": {
+                "owner_id": "bee4086191ff10e1391a159d6abafada:1:background",
+                "reset_generation": 1,
+                "revision": 2
+              },
+              "identity": {
+                "extent": [
+                  2048,
+                  2048
+                ],
+                "owner_id": "bee4086191ff10e1391a159d6abafada:1:background",
+                "reset_generation": 1,
+                "revision": 2,
+                "serial": 2
+              },
+              "last_rejection": "",
+              "layer_id": "background",
+              "layer_tick": 0,
+              "material_surface_size": "(2048, 2048)",
+              "native_texture_size": "(2048, 2048)",
+              "rejected_packets": 0,
+              "render_enabled": false,
+              "reset_generation": 1,
+              "static_bake": true,
+              "upload_count": 2,
+              "uploaded_bytes": 16777216,
+              "viewport_update_mode": 1
+            },
+            "effects": {
+              "accepted_packets": 2,
+              "bake_requests": 2,
+              "copied_patch_bytes": 16777216,
+              "effective_visible": true,
+              "expected": {
+                "owner_id": "bee4086191ff10e1391a159d6abafada:1:effects",
+                "reset_generation": 1,
+                "revision": 2
+              },
+              "identity": {
+                "extent": [
+                  2048,
+                  2048
+                ],
+                "owner_id": "bee4086191ff10e1391a159d6abafada:1:effects",
+                "reset_generation": 1,
+                "revision": 2,
+                "serial": 2
+              },
+              "last_rejection": "",
+              "layer_id": "effects",
+              "layer_tick": 0,
+              "material_surface_size": "(2048, 2048)",
+              "native_texture_size": "(2048, 2048)",
+              "rejected_packets": 0,
+              "render_enabled": false,
+              "reset_generation": 1,
+              "static_bake": true,
+              "upload_count": 2,
+              "uploaded_bytes": 16777216,
+              "viewport_update_mode": 1
+            },
+            "scripted": {
+              "accepted_packets": 2,
+              "bake_requests": 2,
+              "copied_patch_bytes": 16777216,
+              "effective_visible": true,
+              "expected": {
+                "owner_id": "bee4086191ff10e1391a159d6abafada:1:scripted",
+                "reset_generation": 1,
+                "revision": 2
+              },
+              "identity": {
+                "extent": [
+                  2048,
+                  2048
+                ],
+                "owner_id": "bee4086191ff10e1391a159d6abafada:1:scripted",
+                "reset_generation": 1,
+                "revision": 2,
+                "serial": 2
+              },
+              "last_rejection": "",
+              "layer_id": "scripted",
+              "layer_tick": 0,
+              "material_surface_size": "(2048, 2048)",
+              "native_texture_size": "(2048, 2048)",
+              "rejected_packets": 0,
+              "render_enabled": false,
+              "reset_generation": 1,
+              "static_bake": true,
+              "upload_count": 2,
+              "uploaded_bytes": 16777216,
+              "viewport_update_mode": 1
+            }
+          },
+          "original_shader_instance_id": -9223371958052190667,
+          "play_effective_visible": true,
+          "play_glow_source_sha256": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+          "play_glow_variant_bound": true,
+          "play_glow_variant_sha256": "e1a27dcfd6e2c5143ba4c4ece42d7fddb510d416cee16c19ba55ebbb25a07997",
+          "play_overlay_instance_ids": [
+            125527133641,
+            124319174022,
+            117121747966,
+            125678128589,
+            130392526492,
+            139502555226,
+            139536109660,
+            139569664094,
+            139603218528,
+            149837320835,
+            240048415455
+          ],
+          "play_shader_source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+          "play_shader_variant_bound": true,
+          "play_shader_variant_sha256": "357586406765633223017859e0f35d4863082943b90c15763275420e45ea8994",
+          "play_texture_instance_id": -9223371733254270346,
+          "prepared": true,
+          "rejected_packets": 0,
+          "view_size": "(2048.0, 2048.0)"
+        },
+        "simulation_worker_id": -9223371957884418565
+      },
+      "framebuffers": {
+        "maximum-before-background": {
+          "content_scale_factor": 1.0,
+          "pixels": [
+            1600,
+            900
+          ],
+          "window_size": [
+            1600,
+            1000
+          ]
+        },
+        "maximum-before-effects": {
+          "content_scale_factor": 1.0,
+          "pixels": [
+            1600,
+            900
+          ],
+          "window_size": [
+            1600,
+            1000
+          ]
+        },
+        "maximum-before-scripted": {
+          "content_scale_factor": 1.0,
+          "pixels": [
+            1600,
+            900
+          ],
+          "window_size": [
+            1600,
+            1000
+          ]
+        },
+        "maximum-brush-background": {
+          "content_scale_factor": 1.0,
+          "pixels": [
+            1600,
+            900
+          ],
+          "window_size": [
+            1600,
+            1000
+          ]
+        },
+        "maximum-brush-effects": {
+          "content_scale_factor": 1.0,
+          "pixels": [
+            1600,
+            900
+          ],
+          "window_size": [
+            1600,
+            1000
+          ]
+        },
+        "maximum-brush-scripted": {
+          "content_scale_factor": 1.0,
+          "pixels": [
+            1600,
+            900
+          ],
+          "window_size": [
+            1600,
+            1000
+          ]
+        }
+      },
+      "identity": {
+        "after": {
+          "actor_body_ids": [
+            "309002765843"
+          ],
+          "actor_session_id": "308885325346",
+          "native_tick": 0,
+          "physical_epoch": 1,
+          "rapier_tick": 0,
+          "worker_id": "-9223371957884418565",
+          "world_generation": 3
+        },
+        "before": {
+          "actor_body_ids": [
+            "309002765843"
+          ],
+          "actor_session_id": "308885325346",
+          "native_tick": 0,
+          "physical_epoch": 1,
+          "rapier_tick": 0,
+          "worker_id": "-9223371957884418565",
+          "world_generation": 3
+        }
+      },
+      "ordinary_disabled_baseline": {
+        "callback_intervals_usec": [
+          153891,
+          111696,
+          110464,
+          122657,
+          111410,
+          112239,
+          136189,
+          111832,
+          151836,
+          110774,
+          110061,
+          111399,
+          110504,
+          113639,
+          109889,
+          110782,
+          109974,
+          110832,
+          109069,
+          111286,
+          113873,
+          112796,
+          110446,
+          113268,
+          110943,
+          112525,
+          111054,
+          115804,
+          111518
+        ],
+        "extent": [
+          2048,
+          2048
+        ],
+        "godot_process_seconds": [
+          7.76567,
+          7.76567,
+          7.76567,
+          7.76567,
+          7.76567,
+          0.153246,
+          0.153246,
+          0.153246,
+          0.153246,
+          0.153246,
+          0.153246,
+          0.153246,
+          0.153246,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.151484,
+          0.113534,
+          0.113534,
+          0.113534,
+          0.113534,
+          0.113534,
+          0.113534,
+          0.113534,
+          0.113534
+        ],
+        "godot_tracked_static_memory_after": 121609211,
+        "godot_tracked_static_memory_before": 121604215,
+        "native_tick_after": 0,
+        "native_tick_before": 0,
+        "scope": "ordinary bootstrap before Strata allocation; diagnostic baseline is not matched scene cost",
+        "snapshot_serial_after": 678,
+        "snapshot_serial_before": 469,
+        "strata_initialized": false
+      },
+      "ordinary_workbench": true,
+      "phase": "maximum",
+      "planes": {
+        "background": {
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_material": 131,
+          "owner": "-9223371653428272173",
+          "pixel_delta": 0.111404418945312
+        },
+        "effects": {
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_material": 131,
+          "owner": "-9223371653478603801",
+          "pixel_delta": 0.111404418945312
+        },
+        "scripted": {
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_material": 131,
+          "owner": "-9223371653512158240",
+          "pixel_delta": 0.111404418945312
+        }
+      },
+      "play_hash_after": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+      "play_hash_before": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+      "process_id": 3229,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "rendering_method": "gl_compatibility",
+      "schema": "strata-maximum-execution-v1",
+      "source_revision": "d95f9ceaa77ff444d8ff85ce9b90a1173edb7989",
+      "teardown": {
+        "cache_hits": 0,
+        "construction_usec": 74535,
+        "generation": 2,
+        "last_edit_usec": 464,
+        "layers": {},
+        "native_snapshot_calls": 6,
+        "native_world_count": 0,
+        "owns_play_world": false,
+        "pending_native_world_count": 0,
+        "pending_token": -1,
+        "retired_worlds": 3,
+        "session_id": "bee4086191ff10e1391a159d6abafada"
+      },
+      "world_count": {
+        "decorative_owned": 3,
+        "play_borrowed": 1
+      }
+    },
+    "status": "passed"
+  },
+  "scene_receipts_independently_verified": [
+    {
+      "scene": "industrial-assembly",
+      "phase": "install",
+      "checks": 880,
+      "engine_pid": 3286,
+      "wrapper_pid": 3286,
+      "native_hashes": {
+        "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+        "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+        "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+        "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+      },
+      "bootstrap_ms": 9953,
+      "deadline_rechecks": [],
+      "process_seconds": 93.316,
+      "observed_cpu_seconds": 154.17,
+      "peak_observed_tree_rss_bytes": 1395441664,
+      "sample_count": 185,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    {
+      "scene": "industrial-assembly",
+      "phase": "reopen",
+      "checks": 162,
+      "engine_pid": 3352,
+      "wrapper_pid": 3352,
+      "native_hashes": {
+        "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+        "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+        "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+        "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+      },
+      "bootstrap_ms": 7524,
+      "deadline_rechecks": [],
+      "process_seconds": 26.578,
+      "observed_cpu_seconds": 34.97,
+      "peak_observed_tree_rss_bytes": 994144256,
+      "sample_count": 53,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    {
+      "scene": "arcology",
+      "phase": "install",
+      "checks": 880,
+      "engine_pid": 3407,
+      "wrapper_pid": 3407,
+      "native_hashes": {
+        "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+        "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+        "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+        "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+      },
+      "bootstrap_ms": 9774,
+      "deadline_rechecks": [],
+      "process_seconds": 91.991,
+      "observed_cpu_seconds": 152.08,
+      "peak_observed_tree_rss_bytes": 1422442496,
+      "sample_count": 183,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    {
+      "scene": "arcology",
+      "phase": "reopen",
+      "checks": 162,
+      "engine_pid": 3500,
+      "wrapper_pid": 3500,
+      "native_hashes": {
+        "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+        "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+        "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+        "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+      },
+      "bootstrap_ms": 6999,
+      "deadline_rechecks": [],
+      "process_seconds": 25.405,
+      "observed_cpu_seconds": 33.55,
+      "peak_observed_tree_rss_bytes": 1000841216,
+      "sample_count": 51,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    {
+      "scene": "cavern",
+      "phase": "install",
+      "checks": 880,
+      "engine_pid": 3548,
+      "wrapper_pid": 3548,
+      "native_hashes": {
+        "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+        "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+        "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+        "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+      },
+      "bootstrap_ms": 9406,
+      "deadline_rechecks": [],
+      "process_seconds": 90.398,
+      "observed_cpu_seconds": 150.24,
+      "peak_observed_tree_rss_bytes": 1400184832,
+      "sample_count": 180,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    },
+    {
+      "scene": "cavern",
+      "phase": "reopen",
+      "checks": 162,
+      "engine_pid": 3610,
+      "wrapper_pid": 3610,
+      "native_hashes": {
+        "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+        "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+        "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+        "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+      },
+      "bootstrap_ms": 7113,
+      "deadline_rechecks": [],
+      "process_seconds": 25.606,
+      "observed_cpu_seconds": 33.83,
+      "peak_observed_tree_rss_bytes": 1006780416,
+      "sample_count": 51,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+    }
+  ],
+  "original_evidence_hashes_verified": 136,
+  "full_campaign_independently_readmitted": true,
+  "note": "Read-only source-bound verification of original evidence; the original campaign status is retained without promotion."
+}

@@ -1,0 +1,69 @@
+{
+  "schema": "strata003-profile-blind-review-registration-v1",
+  "registered_utc": "2026-11-25 23:54:58 UTC",
+  "expected_application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "scene": "optics-readability-challenge",
+  "assessor": "Specialist C, independent agent visual assessment",
+  "packet_preparer": "Specialist B",
+  "sample_count": 11,
+  "treatment_key": "Withheld until all initial numerical scores and notes are saved with original image hashes.",
+  "capture_contract": "Byte-identical actual application PNGs, randomized opaque filenames, matched paused geometry/camera/actor state. Do not repaint, recolour, crop away labels or otherwise alter the originals to manufacture blinding.",
+  "disclosure_contract": "Any visible treatment name, direct UI leak or known mapping is disclosed. Recognizable artistic cues may suggest a treatment; report guesses separately and do not consult the key before score freeze.",
+  "scale": "Integer1..5. Anchors1/3/5 below;2/4 are intermediate. Do not combine dimensions into a fabricated universal quality score.",
+  "criteria": {
+    "physical_platform_distinction": {
+      "1": "The contiguous rear extension appears physically traversable and true platform ownership is difficult to identify.",
+      "3": "The true platform is visually stronger, but the aligned rear extension remains plausibly traversable.",
+      "5": "The actual physical platform has clear structural dominance and the rear extension reads as separate decoration."
+    },
+    "real_passage_readability": {
+      "1": "The decorative rear wall strongly appears to close the physically open passage.",
+      "3": "Passage openness can be inferred from foreground edges, with residual decorative ambiguity.",
+      "5": "The real opening reads clearly while rear architecture retains its own visible depth."
+    },
+    "actor_visibility": {
+      "1": "Neither actor body nor position is readily identifiable.",
+      "3": "The body can be identified, though small size or local competing detail makes tracking uncertain.",
+      "5": "The actor body and local spatial relationship to physical geometry are immediately clear.",
+      "marker_only_rule": "If only a label or selection marker identifies the actor and the body is unresolved, score at most2 and state that limitation."
+    },
+    "architectural_detail_retention": {
+      "1": "Rear construction loses important architectural identity and becomes indistinct.",
+      "3": "Major trusses and machinery survive, with clear loss of fine structure.",
+      "5": "Fine beams, repeated patterns and major silhouettes remain legible without obvious processing artifacts."
+    },
+    "depth_order_coherence": {
+      "1": "Planes visually merge or conflict, producing little reliable spatial hierarchy.",
+      "3": "The nearer plane is generally stronger, with several ambiguous overlaps.",
+      "5": "Near, rear and distant structures form a consistent hierarchy across the scene."
+    },
+    "overall_visual_balance": {
+      "1": "Processing creates severe washout, muddiness, distracting emphasis or broken composition.",
+      "3": "The composition is usable with a visible aesthetic or readability compromise.",
+      "5": "The environment retains visual interest and a restrained, coherent relationship to gameplay."
+    }
+  },
+  "known_native_truth": {
+    "real_platform": {"point": [160, 214], "play_material": 58, "scripted_material": 0},
+    "false_platform_extension": {"point": [350, 214], "play_material": 0, "scripted_material": 58},
+    "apparently_blocked_passage": {"point": [560, 360], "play_material": 0, "scripted_material": 58},
+    "decorative_step": {"point": [798, 260], "play_material": 0, "scripted_material": 58},
+    "decorative_ladder": {"point": [890, 180], "play_material": 0, "effects_material": 58},
+    "real_ground": {"point": [420, 694], "play_material": 58}
+  },
+  "followup_order": [
+    "Verify packet original hashes and disclose label leaks.",
+    "Inspect all eleven actual captures at the same viewing scale; save scores and notes with opaque image names.",
+    "Freeze and hash the initial score record before obtaining the profile mapping.",
+    "Decode the mapping and retain any disagreement with expected profile intent.",
+    "Run source-bound opaque Play material RGB preservation and rear edge/brightness measurements on the eleven originals.",
+    "Inspect the separate actual three-actor movement/pan/zoom sequences; keep motion judgements separate from still scores."
+  ],
+  "limitations": [
+    "The assessor knows the authoritative fixture geometry; this is not an unprimed player comprehension experiment.",
+    "An agent visual assessment does not establish human perceptual success, accessibility equivalence or owner artistic acceptance.",
+    "Still frames do not establish moving-actor visibility, parallax comfort, focus-transition distraction or physical responsiveness.",
+    "Encoded-image contrast metrics provide supporting numerical observations, not perception proof or linear-light photometry.",
+    "No conclusion about physical Windows11/NVIDIA performance is drawn from hosted captures."
+  ]
+}

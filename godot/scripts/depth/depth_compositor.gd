@@ -152,22 +152,33 @@ func screen_to_layer(local_position: Vector2, layer_index: int) -> Vector2:
 	var logical: Vector2 = (local_position - rect.position) / rect.size * view_size
 	var factor: float = layer_parallax[layer_index]
 	var scale: float = layer_scale[layer_index]
-	var anchor: Vector2 = world_size * 0.5
-	var delta: Vector2 = camera_origin + view_size * 0.5 - anchor
-	var effective_factor: float = 1.0 + (factor - 1.0) * parallax_strength
-	return anchor + delta * effective_factor + (logical - view_size * 0.5) / scale
+	return logical_to_layer(logical, world_size, view_size, camera_origin, scale, factor, parallax_strength)
 
 func get_layer_screen_position(world_position: Vector2, layer_index: int) -> Vector2:
 	if layer_index < 0 or layer_index >= IDS.size():
 		return Vector2(-1, -1)
 	var factor: float = layer_parallax[layer_index]
 	var scale: float = layer_scale[layer_index]
-	var anchor: Vector2 = world_size * 0.5
-	var delta: Vector2 = camera_origin + view_size * 0.5 - anchor
-	var effective_factor: float = 1.0 + (factor - 1.0) * parallax_strength
-	var logical: Vector2 = (world_position - anchor - delta * effective_factor) * scale + view_size * 0.5
+	var logical: Vector2 = layer_to_logical(world_position, world_size, view_size, camera_origin, scale, factor, parallax_strength)
 	var rect := content_rect()
 	return rect.position + logical / view_size * rect.size
+
+# One reversible transform is shared by standalone depth and the Workbench's
+# borrowed-camera adapter. These functions never create a camera, World or GPU
+# resource; the caller supplies the already accepted presentation view.
+static func logical_to_layer(logical: Vector2, extent: Vector2, view: Vector2,
+		origin: Vector2, scale: float, factor: float, strength: float) -> Vector2:
+	var anchor: Vector2 = extent * 0.5
+	var delta: Vector2 = origin + view * 0.5 - anchor
+	var effective_factor: float = 1.0 + (factor - 1.0) * strength
+	return anchor + delta * effective_factor + (logical - view * 0.5) / scale
+
+static func layer_to_logical(point: Vector2, extent: Vector2, view: Vector2,
+		origin: Vector2, scale: float, factor: float, strength: float) -> Vector2:
+	var anchor: Vector2 = extent * 0.5
+	var delta: Vector2 = origin + view * 0.5 - anchor
+	var effective_factor: float = 1.0 + (factor - 1.0) * strength
+	return (point - anchor - delta * effective_factor) * scale + view * 0.5
 
 func content_rect() -> Rect2:
 	var target_aspect: float = view_size.x / view_size.y

@@ -1,0 +1,35 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "-u",
+    "-c",
+    "import time; print('MAXIMUM_DIRECTORY_ADMITTED'); time.sleep(0.7)"
+  ],
+  "exit_code": 0,
+  "log_sha256": "55ca2a1aa468a540e3cd5d83ea11da6712c382ed491a03b602cd2efb7f83211e",
+  "pid": 7,
+  "resources": {
+    "available": true,
+    "observation_errors": [],
+    "observed_cpu_seconds": 0.05,
+    "observer_wall_seconds": 0.0014844869983789977,
+    "peak_observed_tree_rss_bytes": 6422528,
+    "process_identities": [
+      [
+        7,
+        887560
+      ]
+    ],
+    "root_pid": 7,
+    "root_start_id": 887560,
+    "sample_count": 2,
+    "sample_interval_seconds": 0.5,
+    "schema": "strata-process-resources-v1",
+    "scope": "observed_process_and_descendants",
+    "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+  },
+  "resources_sha256": "f2eb8fc84f8c4af83dbe9a5a3e2db5c6fcf95b2cdacf95fc433e01b5b44b97b3",
+  "seconds": 0.825,
+  "status": "passed",
+  "timeout_seconds": 5
+}

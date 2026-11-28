@@ -1,0 +1,46 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--script",
+    "res://tools/qualify_workbench_strata.gd"
+  ],
+  "exit_code": 0,
+  "log_sha256": "4b89659012d766e0acdb4ced7df26762a78882936e75c9f068abed0cb724f7be",
+  "pid": 3068,
+  "resources": {
+    "available": true,
+    "observation_errors": [],
+    "observed_cpu_seconds": 52.40625,
+    "observer_wall_seconds": 0.09499999999979991,
+    "peak_observed_tree_rss_bytes": 764833792,
+    "process_identities": [
+      [
+        3068,
+        134400185744135435
+      ],
+      [
+        7384,
+        134400185744196478
+      ]
+    ],
+    "root_pid": 3068,
+    "root_start_id": 134400185744135435,
+    "sample_count": 38,
+    "sample_interval_seconds": 0.5,
+    "schema": "strata-process-resources-v1",
+    "scope": "observed_process_and_descendants",
+    "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+  },
+  "resources_sha256": "b8c3f3b10b44cfa770a127a29b4214bd0eb7e1b6d2548a1f7b744816863561d8",
+  "seconds": 20.266,
+  "status": "passed",
+  "timeout_seconds": 420
+}

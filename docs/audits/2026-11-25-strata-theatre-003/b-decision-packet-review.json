@@ -1,0 +1,36 @@
+{
+  "schema": "strata3-b-decision-packet-review-v1",
+  "reviewer": "Specialist B",
+  "reviewed_utc": "2026-11-26T01:18:31.945389+00:00",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "reviewed_working_packet": "decision-packet.md",
+  "packet_sha256_at_record": "1e8472732e4889386543f40b6e95b08f2226266080bff1e5929bd2cb7bc9177f",
+  "scope": "Artistic/profile/capture and owner-walkthrough sections only. Evolving evaluator identity and new performance annexes require their own final review. No edit to the lead packet was made.",
+  "selected_capture_manifest": "selected-captures/manifest.json",
+  "selected_capture_manifest_sha256": "e07a75ca82e07df03d6d13b57c2537aee706deff1cd3d5ae71e576c3a878233e",
+  "original_artifact": 15075800269,
+  "original_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "selected_captures_verified": 12,
+  "custody_findings": [
+    "All12 archived PNG bytes exactly equal the admitted fd Linux corpus originals.",
+    "Each byte size, decoded PNG extent, SHA256 and original report hash matches.",
+    "Each retained configuration/configuration hash, camera, selected actor state and geometry group matches its original profile capture entry."
+  ],
+  "artistic_findings": [
+    "Optional Lunar Diorama preference is correctly distinguished from ordinary-play clarity and performance acceptance.",
+    "Detail-preserving Architectural/Deep Focus limitations and C disagreement are retained.",
+    "New light-volume success remains unestablished; actor Overview markers are not represented as resolved bodies.",
+    "Strongest remaining rear-bridge and repeated-floor ambiguities are explicitly identified."
+  ],
+  "owner_walkthrough_findings": [
+    "Solo is explicitly unchecked before Stack.",
+    "Named custom preset persistence is distinguished from native scene Save/Load.",
+    "Selected-focal-plane and manual focus modes are distinct; Lab scrolling is explained.",
+    "Portable availability remains explicitly pending and no on-device NVIDIA claim is made."
+  ],
+  "prose_clarifications_sent": [
+    "Describe12 archived selected originals with representative pairs embedded, because the first inspected packet embedded6 of12 images.",
+    "Describe40 captures of a three-actor scene, with bodies resolved when in frame; frame09 contains only the selected actor within the camera."
+  ],
+  "verdict": "Artistic, capture-custody and owner-walkthrough scope supported, subject to the two wording clarifications and later delivery identity update. Not a blanket engineering/performance approval."
+}

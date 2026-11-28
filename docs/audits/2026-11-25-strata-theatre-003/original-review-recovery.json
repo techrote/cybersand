@@ -1,0 +1,170 @@
+{
+  "schema": "strata3-original-review-recovery-v1",
+  "source_commit": "ac511fc900a63803ee29b46cfc830cf3e7193268",
+  "destination_base": "32b01d9ac466c35a87b884dae0e69af7fa50b244",
+  "scope": "Exact committed blobs recovered from surviving shared Git objects. Only paths absent from final32b were restored. Current canonical docs/coldv2/application not overwritten. Original temporary runtime artifacts were absent and require separate recovery.",
+  "files": [
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/archive-validation-checkpoint-0205.json",
+      "git_blob": "398a42ed827014770fdcd8967d8cdd0f3eb63e8a",
+      "sha256": "6e21e4a82b82483d0c32fc368eb5e1e588bc24a4029c4ec5e7c48242e6820bbe",
+      "bytes": 3082
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-cold-command-source-review.json",
+      "git_blob": "59cbf31fb7bb9b45e41b3ffa0f239ac12d87a532",
+      "sha256": "3c0912246be79a20e1c2355fa887fa648d10e0d11ed3285d1387cfb87dd2343e",
+      "bytes": 2922
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-final-windows-visual-review.json",
+      "git_blob": "90dc3c597914a08034e97d70180791f6062f8bf9",
+      "sha256": "9a41e160288c46eafcbb7f6b8581f6449f555015ee3462f462ca092153498e3b",
+      "bytes": 23924
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-final-windows-visual-review.md",
+      "git_blob": "b7bb35c0832e3e20bddb1e6cb7be2ace550e2dda",
+      "sha256": "ee40fb0dd57edd45304f53209600a487995378b04cba7f58c66b822e204f9246",
+      "bytes": 3700
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-portable-package-reader-registration.json",
+      "git_blob": "372b877ca863eb100b0483f4d59edb57ab872687",
+      "sha256": "7c52f7e4af4d4bb46a6bca874b0db114fa400a0ccb8a4bb200ce1741909fb2a0",
+      "bytes": 5047
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-portable-package-reader.md",
+      "git_blob": "ad824fac3eb19ca30539f66a20cc61c95a63e6e6",
+      "sha256": "b7b2e1c960fb6a7dc7760ed04c9ff1699b39cb29915c4db086a476d0ceb5cafe",
+      "bytes": 4874
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-portable-predecessor-linux.json",
+      "git_blob": "8a3cfb04e606d6fd307231436cc13ce160baf2fb",
+      "sha256": "f2e34bca7858201e76d2446148d902a99766c6b990632b1139fbc2bc7b23c269",
+      "bytes": 10795
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-portable-predecessor-reader.md",
+      "git_blob": "55e5a56001f911472a3031d36e5ebc5b87dab25b",
+      "sha256": "d0bc8600b07e60018a84697acabfa66e062db3720143c5493cc8cf30d150584f",
+      "bytes": 5893
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-portable-predecessor-tests.json",
+      "git_blob": "23dd88a9673a15bab3646cb69356bdcaa0f0195d",
+      "sha256": "2989c00d2d0e8440a785dfab77126f813671a5788cc347835e0e9edbdae6fb7e",
+      "bytes": 1155
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/b-portable-predecessor-windows.json",
+      "git_blob": "a01acc2be116073a4a203226dca7cdba930607fa",
+      "sha256": "c1e70623db457efce2d5b1a05db4da6de3bc01674e26e399e9d35d925cd9ddec",
+      "bytes": 6005
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/c-shader-cost-v2-actual-review.json",
+      "git_blob": "e202580c237c3c19ed8a003f52f41215ae5f4663",
+      "sha256": "e46aa61ed8660f11dc01593a6bea5585b4a261785c17f9c68ef3064c4c9488d0",
+      "bytes": 19361
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/c-shader-cost-v2-actual-review.md",
+      "git_blob": "65eebd1f33afacc4655234940f0cb71bc28cf30f",
+      "sha256": "f90773bd1a95c29fa2baa3e396f7207c8cb3803e20d60df166688cc4b0eba6e3",
+      "bytes": 6224
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/c-windows-owner-ui-motion-review.json",
+      "git_blob": "75a9c1b31a025693e7fe668605d418b989257e39",
+      "sha256": "1613e0b5a201f1cebe24667dbca74f70ae4927f350b70952325a62c057ae5aaa",
+      "bytes": 15820
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/c-windows-owner-ui-motion-review.md",
+      "git_blob": "2df96f17d2b0fa0489747bb4246f1ac4cd5f2673",
+      "sha256": "a6919fff8a32a7bd74118d7d40f897477d87e24ff0d1f72ad3039534bd1934c9",
+      "bytes": 5466
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/cold-first-command-independent-source-review-a.md",
+      "git_blob": "03b72a87285c1f493012c9a1008e1435dadd166e",
+      "sha256": "48d1b072029ee2de9549ceca8cc99617bc21069d7f6f2663a92945414ddf38a1",
+      "bytes": 6098
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/concurrent-seams-inputs-a.json",
+      "git_blob": "4bf74056e927249d9f6b2b767d7bd78cc2587cc4",
+      "sha256": "89d936187e10f8840454ec172ab51c57d1195e8f3b2857b8ec9ceb9fc96b7455",
+      "bytes": 2637
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/concurrent-seams-refresh-a.json",
+      "git_blob": "99f92c230d943b84b3fe84f0d8bdc007195f46bb",
+      "sha256": "a12875bf7125711b847fb5e923b1369d33ca87d4705ae6372a96ac1113cf77ab",
+      "bytes": 1040
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/concurrent-seams-review-a.md",
+      "git_blob": "e090cb9cb401ac05cf27eb9aab1298babb46b0a7",
+      "sha256": "1a67fd19e19dd300c6a6fe09a5763df8dbede7b35b5f5b0b6c024ce5c6c36636",
+      "bytes": 5135
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/execution-handoff-0205.json",
+      "git_blob": "477a7c3e7738b4c0c0e903071e71acf15bed4cec",
+      "sha256": "beb37210c8227fe88c89c97025ba404058503e4bcd1077061c844c2b95700666",
+      "bytes": 3911
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/final-decision-adversarial-review-a.md",
+      "git_blob": "119eacb344b5045ea7ae68f7f85a9ad1bc69f73d",
+      "sha256": "2fcbb92eb94394c4337fe221ba62b5a16b7f125e34afd34e7639137087c685d3",
+      "bytes": 4561
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/portable-package-reader-independent-review-a.md",
+      "git_blob": "1034bc2a9a44e6478332a2b19fb82f095496887b",
+      "sha256": "c8a70509f39238d0febb7d7b2a1525dbeeeb6150f29ba2125c8fe9569bbb1be3",
+      "bytes": 2709
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/portable-paired-reader-independent-review-a.json",
+      "git_blob": "a01acc2be116073a4a203226dca7cdba930607fa",
+      "sha256": "c1e70623db457efce2d5b1a05db4da6de3bc01674e26e399e9d35d925cd9ddec",
+      "bytes": 6005
+    },
+    {
+      "path": "docs/audits/2026-11-25-strata-theatre-003/portable-paired-reader-independent-review-a.md",
+      "git_blob": "6b7a3218d6dbf3be2192acc036125a9e0e31601a",
+      "sha256": "eba56b7c0fce670a196ff81d79737575d9b4f4c97f7ea338c81a0d411816e201",
+      "bytes": 5128
+    },
+    {
+      "path": "tools/ci/strata3_package_portable_verify.py",
+      "git_blob": "1a613aa51f69c4656fe763782d3d7e09e0ecb3c0",
+      "sha256": "65f0b6e13a89afd9ed5500ce96d1925947e08dcb83ecb65937c1281c7945eec8",
+      "bytes": 12034
+    },
+    {
+      "path": "tools/ci/strata3_predecessor_portable_verify.py",
+      "git_blob": "ea59becebdbc5bb711c046cb24c29d04cb484822",
+      "sha256": "acc4b927e4e1addd053aedd9d505673818a84398326bca5d4bc86f9d6c031dda",
+      "bytes": 7384
+    },
+    {
+      "path": "tools/ci/test_strata3_package_portable_verify.py",
+      "git_blob": "45391986a8d9c922dffedd19a6b778cb3bbb38fb",
+      "sha256": "ffde8341374ad76973d59aed98d52e809f456397afba08819df0c4331d5dcfa0",
+      "bytes": 7613
+    },
+    {
+      "path": "tools/ci/test_strata3_predecessor_portable_verify.py",
+      "git_blob": "32a619a3145beb28a8e1826c4f3c125323d571d2",
+      "sha256": "4cf0d2e85b7fb884c2e939340a112d9df7ebfaa9e5c1d6668e656cc3f55feed0",
+      "bytes": 5299
+    }
+  ]
+}

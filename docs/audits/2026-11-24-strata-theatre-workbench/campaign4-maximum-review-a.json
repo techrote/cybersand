@@ -1,0 +1,330 @@
+{
+  "schema": "strata-independent-final-maximum-review-v1",
+  "status": "passed_scoped_maximum_review",
+  "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+  "local_same_tree_commit_for_source_review": "22ff4bdf0251d58164b68ad1f81d0bbf2cdb479c",
+  "reviewer": "Specialist A reviewing C actual maximum harness and retained witnesses",
+  "platforms": [
+    {
+      "platform": "linux",
+      "original_directory": "/workspace/scratch/f1ade3e61398/final-evidence/campaign4-linux/maximum",
+      "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+      "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+      "checks": 82,
+      "failures": [],
+      "original_report_sha256": "f0840804067d6059ef940dd95828b33675d1455fc38ac95791ec68e3207f6ba5",
+      "original_process_sha256": "679b2e9f29688bc88ad74bc399c2b841a0592a159e03053fde12ec9657cea9c2",
+      "original_resource_sha256": "9b37ed07a3a08570daa1bb88abecc2ecd7469a67ac58fed70e65a81a958137f4",
+      "original_log_sha256": "a9f0ad89fd0ecb52765e9d22d71555b23e724f56f97f55d73902b33d8f282f80",
+      "engine_pid": 3215,
+      "launcher_pid": 3215,
+      "raw_samples_containing_engine": 118,
+      "rendering_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+      "play_identity_before_and_after": {
+        "actor_body_ids": [
+          "310160393747"
+        ],
+        "actor_session_id": "310042953250",
+        "native_tick": 0,
+        "physical_epoch": 1,
+        "rapier_tick": 0,
+        "worker_id": "-9223371957884418565",
+        "world_generation": 3
+      },
+      "whole_play_material_sha256_before_and_after": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+      "native_and_rendered_planes": [
+        {
+          "plane": "background",
+          "native_owner": "-9223371651700218914",
+          "native_material": 131,
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_rg8_packet_bytes": 8388608,
+          "owner_revision": 2,
+          "publication_serial": 2,
+          "png_pixel": [
+            800,
+            392
+          ],
+          "before_rgb8": [
+            4,
+            7,
+            11
+          ],
+          "after_material_rgb8": [
+            32,
+            31,
+            32
+          ],
+          "separate_brush_guide_rgb8": [
+            98,
+            196,
+            218
+          ],
+          "independent_png_delta": 0.10980392156862745,
+          "recorded_float_pixel_delta": 0.111404418945312,
+          "before_png_sha256": "691cbe4dfca1c1109ad9891839e72164397e83beba2a15dfe0f200de361220bb",
+          "after_png_sha256": "2463e98f5fbac4b1f35b272a9783ce09a1f50fafb95d7a9469a1317a58327b28"
+        },
+        {
+          "plane": "effects",
+          "native_owner": "-9223371651750550555",
+          "native_material": 131,
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_rg8_packet_bytes": 8388608,
+          "owner_revision": 2,
+          "publication_serial": 2,
+          "png_pixel": [
+            800,
+            392
+          ],
+          "before_rgb8": [
+            4,
+            7,
+            11
+          ],
+          "after_material_rgb8": [
+            32,
+            31,
+            32
+          ],
+          "separate_brush_guide_rgb8": [
+            98,
+            196,
+            218
+          ],
+          "independent_png_delta": 0.10980392156862745,
+          "recorded_float_pixel_delta": 0.111404418945312,
+          "before_png_sha256": "047d47ad8335a265ac115e9b52bd9faeea13b55aa1d7da43388f8adf88ac06fd",
+          "after_png_sha256": "40ff9c4f434f39851a4953141d1cab8b9606782874e64111c04e3557e4ed7413"
+        },
+        {
+          "plane": "scripted",
+          "native_owner": "-9223371651784104991",
+          "native_material": 131,
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_rg8_packet_bytes": 8388608,
+          "owner_revision": 2,
+          "publication_serial": 2,
+          "png_pixel": [
+            800,
+            392
+          ],
+          "before_rgb8": [
+            4,
+            7,
+            11
+          ],
+          "after_material_rgb8": [
+            32,
+            31,
+            32
+          ],
+          "separate_brush_guide_rgb8": [
+            98,
+            196,
+            218
+          ],
+          "independent_png_delta": 0.10980392156862745,
+          "recorded_float_pixel_delta": 0.111404418945312,
+          "before_png_sha256": "fab6cff840445112ea6f5473f76ce2e391331184ae958a7bb94d49a9ceb5da46",
+          "after_png_sha256": "c65b5a0cf5a6ec4d5931da864d04251bdcdc22278f814f1d4efb274d85d0a6f9"
+        }
+      ],
+      "owner_teardown": {
+        "cache_hits": 0,
+        "construction_usec": 72340,
+        "generation": 2,
+        "last_edit_usec": 423,
+        "layers": {},
+        "native_snapshot_calls": 6,
+        "native_world_count": 0,
+        "owns_play_world": false,
+        "pending_native_world_count": 0,
+        "pending_token": -1,
+        "retired_worlds": 3,
+        "session_id": "b904677d5059a5048c52530f46050f82"
+      },
+      "static_processing": {
+        "snapshots_and_uploads_total": 6,
+        "native_snapshots_during_sample": 0,
+        "decorative_uploads_during_sample": 0,
+        "decorative_rg8_capacity_bytes": 25165824,
+        "decorative_rgba_capacity_bytes": 50331648
+      }
+    },
+    {
+      "platform": "win32",
+      "original_directory": "/workspace/scratch/f1ade3e61398/final-evidence/campaign4-windows/maximum",
+      "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+      "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+      "checks": 82,
+      "failures": [],
+      "original_report_sha256": "6f253bd37eb158951b9191ade9ee5ec40bb8965038a3284eb8f2dde129c42138",
+      "original_process_sha256": "5d57e24ec53bd334601564ad8d7288344831cd42324e0b4ac6c0fd0189387457",
+      "original_resource_sha256": "d89c68d576dfa88686a7c8d27837f5aba9b02acbd05f706ef2e232dcb569b95f",
+      "original_log_sha256": "67146eb04841a9e38d543b822ef60f3092605b586c892ffd9176702083f89d74",
+      "engine_pid": 5580,
+      "launcher_pid": 3704,
+      "raw_samples_containing_engine": 296,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+      "play_identity_before_and_after": {
+        "actor_body_ids": [
+          "354469021202"
+        ],
+        "actor_session_id": "354351580666",
+        "native_tick": 0,
+        "physical_epoch": 1,
+        "rapier_tick": 0,
+        "worker_id": "-9223371957297216004",
+        "world_generation": 3
+      },
+      "whole_play_material_sha256_before_and_after": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+      "native_and_rendered_planes": [
+        {
+          "plane": "background",
+          "native_owner": "-9223371612374424611",
+          "native_material": 131,
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_rg8_packet_bytes": 8388608,
+          "owner_revision": 2,
+          "publication_serial": 2,
+          "png_pixel": [
+            800,
+            392
+          ],
+          "before_rgb8": [
+            5,
+            7,
+            12
+          ],
+          "after_material_rgb8": [
+            33,
+            32,
+            33
+          ],
+          "separate_brush_guide_rgb8": [
+            98,
+            196,
+            219
+          ],
+          "independent_png_delta": 0.10980392156862745,
+          "recorded_float_pixel_delta": 0.10980392806232,
+          "before_png_sha256": "46ae983a8c1efe0ff00f77c547a411fcd8ecf32953751bf57af159bb391da621",
+          "after_png_sha256": "efab2ef45dec48475b7082c746da2193c402d6f4038fdde10ebed9b80428da87"
+        },
+        {
+          "plane": "effects",
+          "native_owner": "-9223371612424763879",
+          "native_material": 131,
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_rg8_packet_bytes": 8388608,
+          "owner_revision": 2,
+          "publication_serial": 2,
+          "png_pixel": [
+            800,
+            392
+          ],
+          "before_rgb8": [
+            5,
+            7,
+            12
+          ],
+          "after_material_rgb8": [
+            33,
+            32,
+            33
+          ],
+          "separate_brush_guide_rgb8": [
+            98,
+            196,
+            219
+          ],
+          "independent_png_delta": 0.10980392156862745,
+          "recorded_float_pixel_delta": 0.10980392806232,
+          "before_png_sha256": "2b7cf9029bac01bd889a38562b8fd6dd463a06e382b455fe8a91b34086d3e0fe",
+          "after_png_sha256": "9f3e682d8194bf9e2e986166dcc674fc1bdb0ba7b7cf7d12e33deeda26a151bf"
+        },
+        {
+          "plane": "scripted",
+          "native_owner": "-9223371612491865120",
+          "native_material": 131,
+          "extent": [
+            2048,
+            2048
+          ],
+          "native_rg8_packet_bytes": 8388608,
+          "owner_revision": 2,
+          "publication_serial": 2,
+          "png_pixel": [
+            800,
+            392
+          ],
+          "before_rgb8": [
+            5,
+            7,
+            12
+          ],
+          "after_material_rgb8": [
+            33,
+            32,
+            33
+          ],
+          "separate_brush_guide_rgb8": [
+            98,
+            196,
+            219
+          ],
+          "independent_png_delta": 0.10980392156862745,
+          "recorded_float_pixel_delta": 0.10980392806232,
+          "before_png_sha256": "6aa960a3d8bc2b26f83f0726f9d5f4bc483e75b929b6d4bf7012042548611125",
+          "after_png_sha256": "a163b55aee8d2896bfade0e47e3d15035d67c8c2d8fb28d7896b24fb4f8c24a6"
+        }
+      ],
+      "owner_teardown": {
+        "cache_hits": 0,
+        "construction_usec": 124698,
+        "generation": 2,
+        "last_edit_usec": 359,
+        "layers": {},
+        "native_snapshot_calls": 6,
+        "native_world_count": 0,
+        "owns_play_world": false,
+        "pending_native_world_count": 0,
+        "pending_token": -1,
+        "retired_worlds": 3,
+        "session_id": "72947a3dd72cfc1bb4bfaba00de22a74"
+      },
+      "static_processing": {
+        "snapshots_and_uploads_total": 6,
+        "native_snapshots_during_sample": 0,
+        "decorative_uploads_during_sample": 0,
+        "decorative_rg8_capacity_bytes": 25165824,
+        "decorative_rgba_capacity_bytes": 50331648
+      }
+    }
+  ],
+  "limits": [
+    "This is a targeted review of final-source maximum native, presentation, identity and retirement witnesses; complete campaign custody and CPU/RSS reduction are independently owned by C.",
+    "The maximum control is paused: native and Rapier ticks remain zero. It proves actual 2048-square authoring and ownership, not sustained 2048-square physical play or maximum-density scenes.",
+    "All three owner references retire and live/pending counts reach zero. This does not establish allocator memory return or repeated maximum replacement stress.",
+    "The PNG sample is an actual changed material pixel, separately distinguished from the cyan brush guide. Exact cross-adapter pixel parity is not asserted.",
+    "Software llvmpipe and ANGLE/Microsoft Basic Render Driver do not establish physical Windows 11/NVIDIA appearance, interaction, frame pacing or GPU FPS.",
+    "Previous campaign files retain their original source identities. These newly inspected originals belong only to d365f781/tree4e2; no historic receipt was relabelled."
+  ]
+}

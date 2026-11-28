@@ -18,6 +18,8 @@ import subprocess
 import sys
 import time
 
+from strata_generated_imports import is_generated_strata_import
+
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA = "art-collaborative-gates-v1"
 TESTS = {
@@ -61,6 +63,8 @@ def untracked_source_rows(status: str) -> list[str]:
         if row.startswith("?? evidence/"):
             continue
         if row.startswith("?? godot/") and row.endswith((".gd.uid", ".gdshader.uid")):
+            continue
+        if row.startswith("?? ") and is_generated_strata_import(ROOT, row[3:]):
             continue
         if row.startswith("?? "):
             rejected.append(row)
@@ -111,7 +115,7 @@ def source_identity(diagnostic_path: Path | None = None) -> dict:
                 encoding="utf-8")
         if tracked:
             raise ValueError("Commit tracked source changes before this qualification campaign; rejected status rows:\n" + tracked)
-        raise ValueError("Commit or remove untracked source before qualification; only evidence/ and generated Godot UID sidecars are excluded:\n" + "\n".join(untracked))
+        raise ValueError("Commit or remove untracked source before qualification; only evidence/, generated Godot UID sidecars and six hash-verified Strata texture descriptors are excluded:\n" + "\n".join(untracked))
     return {"commit": git("rev-parse", "HEAD"), "tree": git("rev-parse", "HEAD^{tree}"),
             "tracked_source_clean": True}
 

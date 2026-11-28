@@ -16,6 +16,8 @@ func _ready() -> void:
 		launch.call_deferred("persistent_areas")
 		return
 	if first_launch and "--workbench" in OS.get_cmdline_user_args():
+		# Retain the existing argument-routing receipt for its current consumers.
+		# Strata qualification separately requires actual native World admission.
 		print("SHARED_WORKBENCH_LAUNCH_READY")
 		launch.call_deferred("shared_workbench")
 		return

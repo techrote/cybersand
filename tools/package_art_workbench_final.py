@@ -22,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools/ci"))
 from check_repository import verify_runtime
 from art_evaluator_qualification_scope import validate_completed_decision
+from strata_generated_imports import is_generated_strata_import
 
 NATIVE = "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll"
 GUIDE = "docs/operations/art-workbench-final-evaluation.md"
@@ -42,10 +43,13 @@ def check_source_inputs(inputs: list[str]) -> None:
     # no changed or untracked transitive dependency can attest committed source.
     status = git("status", "--porcelain=v1", "--untracked-files=all", "--", *inputs, "tools")
     # Godot imports create UID sidecars; the committed archive never consumes
-    # those generated files. Any other untracked source/tool can shadow imports
-    # and must be committed or removed before source-qualified packaging.
+    # those generated files. Six exact Strata texture descriptors are also
+    # regenerated and hash-checked against the pinned importer and PNGs.
+    # Any other untracked source/tool can shadow imports and must be committed
+    # or removed before source-qualified packaging.
     dirty = [line for line in status.splitlines() if not (
-        line.startswith("?? godot/") and line.endswith((".gd.uid", ".gdshader.uid")))]
+        line.startswith("?? godot/") and line.endswith((".gd.uid", ".gdshader.uid"))
+        or line.startswith("?? ") and is_generated_strata_import(ROOT, line[3:]))]
     if dirty:
         raise ValueError("Commit application/package inputs before source-qualified packaging; rejected status rows:\n" + "\n".join(dirty))
 
@@ -78,6 +82,7 @@ def build(args: argparse.Namespace) -> dict:
     inputs = ["godot", "examples/worldgen", "third_party", "tools/package_art_workbench_final.py",
               "tools/package_explore001_candidate.py", "tools/ci/check_repository.py",
               "tools/ci/art_evaluator_qualification_scope.py",
+              "tools/ci/strata_generated_imports.py",
               "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md", GUIDE]
     check_source_inputs(inputs)
     source = git("rev-parse", "HEAD")

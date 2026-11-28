@@ -19,6 +19,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 sys.path.insert(0, str(ROOT / "tools/ci"))
 import package_art_collaborative as package
 import run_art_collaborative_gates as gates
+from strata_generated_imports import is_generated_strata_import
 
 COMMIT = "a" * 40
 TREE = "b" * 40
@@ -230,6 +231,108 @@ class CollaborativeReceiptBoundary(unittest.TestCase):
         self.assertEqual(gates.untracked_source_rows(status), [
             "?? godot/scripts/foreign.gd", "?? tools/ci/foreign.py", "?? foreign_root.py",
             "?? build/foreign.py", "?? docs/unchecked-guide.md"])
+
+    def test_strata_generated_descriptor_requires_pinned_bytes_and_committed_artwork(self):
+        relative = "godot/data/strata2/imports/alpha-cutout.png.import"
+        # Actual lossless texture descriptor emitted by pinned Godot 4.7. UID
+        # allocation is intentionally dynamic; every importer parameter is fixed.
+        original = '''[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://7wcfv4787v24"
+path="res://.godot/imported/alpha-cutout.png-e55300f0a143bde734085e86b9d9e06e.ctex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://data/strata2/imports/alpha-cutout.png"
+dest_files=["res://.godot/imported/alpha-cutout.png-e55300f0a143bde734085e86b9d9e06e.ctex"]
+
+[params]
+
+compress/mode=0
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/uastc_level=0
+compress/rdo_quality_loss=0.0
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/channel_remap/red=0
+process/channel_remap/green=1
+process/channel_remap/blue=2
+process/channel_remap/alpha=3
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=1
+'''
+        image_bytes = (ROOT / relative.removesuffix(".import")).read_bytes()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            descriptor = root / relative
+            descriptor.parent.mkdir(parents=True)
+            source = descriptor.with_suffix("")
+            source.write_bytes(image_bytes)
+            def run_git(*args):
+                return subprocess.check_output(["git", *args], cwd=root, stderr=subprocess.STDOUT)
+            run_git("init", "-q")
+            run_git("add", "godot")
+            run_git("-c", "user.name=Art qualification fixture", "-c", "user.email=art-fixture@example.invalid",
+                    "commit", "-qm", "committed Strata artwork fixture")
+            with patch.object(gates, "ROOT", root), patch.object(package.retained, "ROOT", root):
+                for valid in (original, original.replace("7wcfv4787v24", "abc123"), original.replace("\n", "\r\n")):
+                    descriptor.write_bytes(valid.encode())
+                    self.assertTrue(is_generated_strata_import(root, relative))
+                    self.assertEqual(gates.untracked_source_rows("?? " + relative + "\0"), [])
+                    package.retained.check_source_inputs(["godot"])
+                for invalid in (
+                    original.replace("compress/mode=0", "compress/mode=2"),
+                    original.replace("res://.godot/imported/", "res://foreign/"),
+                    original.replace('uid="uid://7wcfv4787v24"\n', ""),
+                    original.replace('uid="uid://7wcfv4787v24"\n', 'uid="uid://a"\nuid="uid://b"\n'),
+                    original + "\n[foreign]\nscript=\"res://foreign.gd\"\n",
+                ):
+                    with self.subTest(invalid=invalid[-100:]):
+                        descriptor.write_bytes(invalid.encode())
+                        self.assertFalse(is_generated_strata_import(root, relative))
+                        self.assertEqual(gates.untracked_source_rows("?? " + relative + "\0"), ["?? " + relative])
+                        with self.assertRaisesRegex(ValueError, "Commit application"):
+                            package.retained.check_source_inputs(["godot"])
+                descriptor.write_bytes(original.encode())
+                source.write_bytes(image_bytes + b"changed")
+                self.assertFalse(is_generated_strata_import(root, relative))
+                source.write_bytes(image_bytes)
+                run_git("rm", "--cached", relative.removesuffix(".import"))
+                run_git("-c", "user.name=Art qualification fixture", "-c", "user.email=art-fixture@example.invalid",
+                        "commit", "-qm", "remove committed source negative control")
+                self.assertFalse(is_generated_strata_import(root, relative))
+                self.assertFalse(is_generated_strata_import(root, "godot/unknown.png.import"))
+
+    def test_strata_generated_descriptor_never_follows_symlinks(self):
+        relative = "godot/data/strata2/imports/alpha-cutout.png.import"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            descriptor = root / relative
+            descriptor.parent.mkdir(parents=True)
+            private = root / "private"
+            private.write_bytes(b"must not read")
+            try:
+                descriptor.symlink_to(private)
+            except (OSError, NotImplementedError):
+                self.skipTest("This host cannot create isolated symbolic-link fixtures")
+            with patch.object(Path, "read_bytes", side_effect=AssertionError("Symlink target was read")):
+                self.assertFalse(is_generated_strata_import(root, relative))
 
     def test_dirty_source_keeps_exact_status_and_hashed_failure_evidence(self):
         with tempfile.TemporaryDirectory() as directory:

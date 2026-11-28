@@ -10,11 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
-## GEN-006 persistent authored areas candidate
+## RAMCACHE and Strata owner-accepted integration — 2026-11-28
 
-The [stacked Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cybersand/pull/734) implements [native HOT ownership, bounded WARM/COLD caching, explicit asynchronous durability and real destination prefetch](../systems/persistent-area-residency.md). The [November 22 ledger](../audits/2026-11-22-gen006-ramcache.md) separates implementation, exact-source platform qualification, performance targets and pending physical owner acceptance. It changes no ordinary production default and does not complete broader GEN-006.
+**Approved integration / implemented candidate:** [RAMCACHE-STRATA-INTEGRATION-001](../operations/ramcache-strata-integration.md) integrates #745 and the complete #776/#785 Strata lineage with accepted main. The owner physically accepted both original evaluators and waived only the optional-optics 90% retention gate. Classic remains default, original failed measurements remain preserved, and persistent-area/Strata composition is explicitly refused. Current-source qualification, actual main merges and the definitive package retain separate evidence in the mission record. ObjectShard M4, PUBPRES development and deferred UX remain outside this mission.
 
-The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) owns current evidence and remaining gates. Draft/HOLD; broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
+## GEN-006 persistent authored areas
+
+The [owner-accepted RAMCACHE integration #745](https://github.com/techrote/cybersand/pull/745) preserves #725/#734 and implements [native HOT ownership, bounded WARM/COLD caching, explicit asynchronous durability and real destination prefetch](../systems/persistent-area-residency.md). The [November 22 ledger](../audits/2026-11-22-gen006-ramcache.md) separates implementation, exact-source platform qualification, performance targets and the then-pending physical owner acceptance. The 28 November owner decision above supersedes that pending status for the original evaluator. It changes no ordinary production default and does not complete broader GEN-006.
+
+The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) retains original evidence; the [combined integration record](../operations/ramcache-strata-integration.md) owns current acceptance and final-source gates. Broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
 
 ## Unified SWARM-004/005/006 definitive candidate — 2026-11-24
 
@@ -2360,6 +2364,22 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+**24 November 2026 successors, Draft/HOLD:**
+[#769](https://github.com/techrote/cybersand/pull/769) established the ordinary
+borrowed-Play adapter, three static editable native planes and authored
+persistence. [STRATA-THEATRE-002 / #776](https://github.com/techrote/cybersand/pull/776)
+retains that ancestry and adds [native import and finite layered construction](../systems/strata-authoring.md),
+eight reusable parts, three layered presets, six bounded visual motif kinds and
+five substantial [native environments](../systems/strata-environments.md).
+[Ownership and persistence](../systems/strata-workbench.md) retain default-OFF,
+one Play authority, v1 compatibility and strict v2 authored metadata. The
+[decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md) and
+[owner evaluation](../operations/strata-workbench-evaluation.md) distinguish
+actual platform/package evidence from physical Windows/NVIDIA acceptance.
+Cross-plane transfer, independently simulated decoration, broad Art integration,
+browser acceptance and default activation remain outside this candidate.
+The standalone host retains its earlier capabilities and evidence scope.
 
 ## WORKBENCH-001 / #391 integration candidate
 

@@ -1,0 +1,168 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "artifact_custody": "Local original diagnostic only; no uploaded diagnostic artifact is claimed. Final hosted supplemental run uploads its own exact source-bound original evidence. Repository policy excludes logs and archives; this compact receipt is committed.",
+  "camera_events": 60,
+  "checks": 15386,
+  "completed_physical_steps": 14921,
+  "decorative_capture_delta": 0,
+  "decorative_upload_delta": 0,
+  "diagnostic_headless": true,
+  "elapsed_usec": 300051480,
+  "failures": [],
+  "graphical_qualification": false,
+  "local_originals": {
+    "/tmp/strata3-sustained-diagnostic/process.log": "93f46584d76acc32b893b6e073a41b7dc3f829d54e6118b42924975617924743",
+    "/tmp/strata3-sustained-diagnostic/report.json": "ae7f9920e703b1c0468b42d6a0df102cc6a230acd68af1c5363d4869d477b0a6"
+  },
+  "material_counts": [
+    0,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+  ],
+  "native_tick_delta": 14921,
+  "node_counts": [
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197,
+    3197
+  ],
+  "observer_source_scope": "Development observer before final resource-bound registration field and additional action/decorative-identity receipts. The exact shipped external observer is independently frozen and qualified by its supplemental campaign. Development env driver SHA was explicitly diagnostic; this report is not a source-frozen final observation.",
+  "play_material_bytes_evolved": true,
+  "raw_report_sha256": "ae7f9920e703b1c0468b42d6a0df102cc6a230acd68af1c5363d4869d477b0a6",
+  "resource_counts": [
+    176,
+    176,
+    176,
+    176,
+    176,
+    176,
+    176,
+    176,
+    176,
+    176,
+    176,
+    176
+  ],
+  "schema": "strata003-sustained-development-diagnostic-v1",
+  "slider_callbacks": 72,
+  "static_decorative_bytes_preserved": true,
+  "teardown_worlds": 0,
+  "visible_control_layout_diagnostic": {
+    "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "checks": 323,
+    "external_diagnostic_overlay": "extends \"/tmp/strata-optics-c/tools/ci/strata3_sustained.gd\"\n\nfunc _run_uninterrupted() -> void:\n\trecord.layout_diagnostic_only = true\n\trecord.layout_profiles = []\n\tfor id: String in SUSTAINED_PROFILES:\n\t\tcheck(strata.select_optics_profile(id),\"layout diagnostic actual profile selection\")\n\t\tawait settle()\n\t\tcheck(_slider_is_visible(),\"layout diagnostic actual tonal viewport enclosure\")\n\t\trecord.layout_profiles.append({\"profile\":id,\"visibility\":_slider_visibility()})\n",
+    "failures": [],
+    "graphical_acceptance": false,
+    "headless": true,
+    "layout_profiles": [
+      {
+        "profile": "classic",
+        "visibility": {
+          "fully_enclosed": true,
+          "scroll_vertical": 743,
+          "slider_rect": [
+            12.0,
+            265.0,
+            423.0,
+            16.0
+          ],
+          "slider_visible": true,
+          "viewport_rect": [
+            12.0,
+            78.0,
+            540.0,
+            389.0
+          ],
+          "window_visible": true
+        }
+      },
+      {
+        "profile": "architectural",
+        "visibility": {
+          "fully_enclosed": true,
+          "scroll_vertical": 743,
+          "slider_rect": [
+            12.0,
+            291.0,
+            423.0,
+            16.0
+          ],
+          "slider_visible": true,
+          "viewport_rect": [
+            12.0,
+            78.0,
+            540.0,
+            389.0
+          ],
+          "window_visible": true
+        }
+      },
+      {
+        "profile": "gameplay_clarity",
+        "visibility": {
+          "fully_enclosed": true,
+          "scroll_vertical": 743,
+          "slider_rect": [
+            12.0,
+            317.0,
+            423.0,
+            16.0
+          ],
+          "slider_visible": true,
+          "viewport_rect": [
+            12.0,
+            78.0,
+            540.0,
+            389.0
+          ],
+          "window_visible": true
+        }
+      },
+      {
+        "profile": "cinematic_deep_focus",
+        "visibility": {
+          "fully_enclosed": true,
+          "scroll_vertical": 743,
+          "slider_rect": [
+            12.0,
+            291.0,
+            423.0,
+            16.0
+          ],
+          "slider_visible": true,
+          "viewport_rect": [
+            12.0,
+            78.0,
+            540.0,
+            389.0
+          ],
+          "window_visible": true
+        }
+      }
+    ],
+    "observer_gd_sha256": "b6c092c78e4d6d8c50798b61189b66524674d14183cd900625478c27668a6585",
+    "original_report_path": "/tmp/strata3-sustained-layout-diagnostic/report.json",
+    "original_report_sha256": "46101aef4eeb82e97d9b43677ae57e55ee38a7b51c6486961b5812e0d92158ec",
+    "scope": "Four profile refreshes through actual Godot UI layout, no timed window. Verifies scroll enclosure before hosted v2; not a graphical screenshot or performance acceptance.",
+    "sustained_session": false
+  },
+  "window_count": 12
+}

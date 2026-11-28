@@ -1,0 +1,431 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "candidate_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+  "date_utc": "2026-11-26",
+  "native_performance_disposition": "REJECTED: v1 identity disagreement, no actual drawable attachment witnesses and no application-after receipt; no rate admitted",
+  "next_observer": {
+    "diagnostic_script_sha256": "5c88b7229b7a617b08dd7016b633d1cc00ecd0dff08ef4e2ccbef339944d986c",
+    "required_additions": [
+      "per-host source-pinned headless resource semantics diagnostic",
+      "live cached and drawable Shader/ShaderMaterial identities before and after every native window",
+      "statistics hash retained explicitly as original-source expression",
+      "each touched resource restored; application before/after exact"
+    ],
+    "run_id": 45733231981,
+    "source": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+    "status_at_checkpoint": "in_progress; not admitted by this review",
+    "tree": "edc750a1e2205b079dca5fd284af9091038aca6d"
+  },
+  "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+  "original_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+  "platforms": {
+    "linux": {
+      "annex_completed": false,
+      "annex_failures": [
+        "Actual shader, bounded resources or native isolation changed"
+      ],
+      "annex_sha256": "3ffb0dbcca296f8b0f4cb0d1a54c971bf712880401ecffd82326869a94da2f86",
+      "application_after_present": false,
+      "artifact": {
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "artifact_id": 15075884273,
+        "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45730815481/artifacts/15075884273",
+        "extracted_path": "/tmp/strata003-cost-campaign1/linux",
+        "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+        "workflow_run": 45730815481,
+        "zip_bytes": 14690912,
+        "zip_path": "/tmp/strata003-cost-campaign1/linux.zip",
+        "zip_sha256": "60f8265419830d411022978f70311575a6877b1fa3faa1f6a7fb56db57bf0564"
+      },
+      "captures": {
+        "actor-reveal": {
+          "candidate_png_sha256": "9cd813a26ff531bd609c25224b0317ad3c78358da94e8c36d7ac946629e7adb9",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "9cd813a26ff531bd609c25224b0317ad3c78358da94e8c36d7ac946629e7adb9",
+          "width": 192
+        },
+        "classic-alpha": {
+          "candidate_png_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+          "width": 192
+        },
+        "detail-preserving": {
+          "candidate_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "width": 192
+        },
+        "frequency-aperture-0": {
+          "candidate_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "width": 192
+        },
+        "frequency-aperture-1": {
+          "candidate_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "width": 192
+        },
+        "frequency-aperture-2": {
+          "candidate_png_sha256": "f9e99fd295504513f1275489e3031d97b73ed047ebac3fd00b71016864893169",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "f9e99fd295504513f1275489e3031d97b73ed047ebac3fd00b71016864893169",
+          "width": 192
+        },
+        "frequency-aperture-3": {
+          "candidate_png_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+          "width": 192
+        },
+        "frequency-aperture-6": {
+          "candidate_png_sha256": "37f64920bd583fb9eb8c19cbb03a0c685c2191cd3886218423d22221aea654ea",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "37f64920bd583fb9eb8c19cbb03a0c685c2191cd3886218423d22221aea654ea",
+          "width": 192
+        },
+        "frequency-detail": {
+          "candidate_png_sha256": "5793ad31e4cc4ca68cd76ed8fe996afb6d8125556ef2b251d4353f14a6bd3cdc",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "5793ad31e4cc4ca68cd76ed8fe996afb6d8125556ef2b251d4353f14a6bd3cdc",
+          "width": 192
+        },
+        "frequency-diffusion": {
+          "candidate_png_sha256": "eab920e760cd4902d7b34a55c1e7bb8b47a6bd96d889bec4f8839d74ce42b764",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "eab920e760cd4902d7b34a55c1e7bb8b47a6bd96d889bec4f8839d74ce42b764",
+          "width": 192
+        },
+        "frequency-haze-opacity-classic": {
+          "candidate_png_sha256": "cea45e6d7b1ff00a134b7fd304bbe2d76f6535e38ae753e6bd8275af6c00dec1",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "cea45e6d7b1ff00a134b7fd304bbe2d76f6535e38ae753e6bd8275af6c00dec1",
+          "width": 192
+        },
+        "frequency-haze-opacity-wipe": {
+          "candidate_png_sha256": "e2c0afb92f2e84a119b75623e6c8bb19f7e7e27dcc74d35eeed87cf4b29308d9",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "e2c0afb92f2e84a119b75623e6c8bb19f7e7e27dcc74d35eeed87cf4b29308d9",
+          "width": 192
+        },
+        "frequency-low-aperture": {
+          "candidate_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "width": 192
+        },
+        "frequency-reference": {
+          "candidate_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "width": 192
+        },
+        "highlight-diffusion": {
+          "candidate_png_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+          "width": 192
+        },
+        "pixel-aperture": {
+          "candidate_png_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+          "width": 192
+        },
+        "processed-alpha": {
+          "candidate_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "width": 192
+        },
+        "wipe-alpha": {
+          "candidate_png_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+          "width": 192
+        }
+      },
+      "graphical_fixture_equivalence": {
+        "synthetic_compared_bytes": 884736,
+        "synthetic_png_pairs": 18
+      },
+      "native_driver_checks": 4007,
+      "native_driver_failures": [],
+      "native_windows_retained": 15,
+      "process_receipts": {
+        "progression": {
+          "backend": [
+            "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+          ],
+          "process_json_sha256": "0da91c0f43ca78793e2644f68b90ac2354182cd2f717aa12bb7b74a4cf035746",
+          "process_log_sha256": "9d86d7938a6c3993be1383e5d68fac09ff58e89edd861beb4838a750b7697f22",
+          "renderer_markers": []
+        },
+        "shader-candidate": {
+          "backend": [
+            "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+          ],
+          "process_json_sha256": "beceabf282a34633a4f7989e1d7c499b2ae7e52fe6dc303607a0c98e4b279f54",
+          "process_log_sha256": "db833c65a2df31ac853b4ea91076bab020ccc75769889d887611241e234e7e45",
+          "renderer_markers": [
+            "STRATA003_OPTICAL_RENDERER graphical_required=false checks=109 failures=0"
+          ]
+        },
+        "shader-original": {
+          "backend": [
+            "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+          ],
+          "process_json_sha256": "d939a4ef7ee9cf915a72907d92c6341c866ee088c7d85cfbf600ca81ec459296",
+          "process_log_sha256": "435303bf339f370501b0b8184231acbe0b281dcce897a22c8caff0df1aa8c0f1",
+          "renderer_markers": [
+            "STRATA003_OPTICAL_RENDERER graphical_required=false checks=109 failures=0"
+          ]
+        }
+      }
+    },
+    "windows": {
+      "annex_completed": false,
+      "annex_failures": [
+        "Actual shader, bounded resources or native isolation changed"
+      ],
+      "annex_sha256": "82f13d894fb76a0aa041c3d4cbacec3984b8c6a33137ba6d7e25047f00ce80c9",
+      "application_after_present": false,
+      "artifact": {
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "artifact_id": 15077761504,
+        "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45730815481/artifacts/15077761504",
+        "extraction_path": "/tmp/strata003-cost-campaign1/windows",
+        "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+        "run_id": 45730815481,
+        "zip_path": "/tmp/strata003-cost-campaign1/windows.zip",
+        "zip_sha256": "e8e19df1885f08545c912e53eeb269550d663adcfd1ea5dc7b6ecd71afe1f0cd",
+        "zip_size_bytes": 12409038
+      },
+      "captures": {
+        "actor-reveal": {
+          "candidate_png_sha256": "3de8aff34864035c3b2edc5c18bd2d671929e36ace7b92afdfb672648330f4e4",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "3de8aff34864035c3b2edc5c18bd2d671929e36ace7b92afdfb672648330f4e4",
+          "width": 192
+        },
+        "classic-alpha": {
+          "candidate_png_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+          "width": 192
+        },
+        "detail-preserving": {
+          "candidate_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "width": 192
+        },
+        "frequency-aperture-0": {
+          "candidate_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "width": 192
+        },
+        "frequency-aperture-1": {
+          "candidate_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "width": 192
+        },
+        "frequency-aperture-2": {
+          "candidate_png_sha256": "f111716cc8ec8acc6b8f17c0842649404c506a1e9c611b0eb762eff508943b24",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "f111716cc8ec8acc6b8f17c0842649404c506a1e9c611b0eb762eff508943b24",
+          "width": 192
+        },
+        "frequency-aperture-3": {
+          "candidate_png_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+          "width": 192
+        },
+        "frequency-aperture-6": {
+          "candidate_png_sha256": "427699ef32a85cc6b513285b59f8d527bc9be340c1449a20b9d60c48b43161b1",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "427699ef32a85cc6b513285b59f8d527bc9be340c1449a20b9d60c48b43161b1",
+          "width": 192
+        },
+        "frequency-detail": {
+          "candidate_png_sha256": "3fa5839ef475f560c4121a8ec830af255d7e38a8c628251f23669d443f7b31a3",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "3fa5839ef475f560c4121a8ec830af255d7e38a8c628251f23669d443f7b31a3",
+          "width": 192
+        },
+        "frequency-diffusion": {
+          "candidate_png_sha256": "acb40fc9b5d59efe5c5766835b4f93eb033d914e56fe60c452e64154191e9b8b",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "acb40fc9b5d59efe5c5766835b4f93eb033d914e56fe60c452e64154191e9b8b",
+          "width": 192
+        },
+        "frequency-haze-opacity-classic": {
+          "candidate_png_sha256": "52edd62108cfbba3d616aa9fad762d7678aae5372d382f3cab1755bafabf163c",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "52edd62108cfbba3d616aa9fad762d7678aae5372d382f3cab1755bafabf163c",
+          "width": 192
+        },
+        "frequency-haze-opacity-wipe": {
+          "candidate_png_sha256": "240b0e574f7aa7025a58eb690ba7404c9d3eadb547cb070b047a0c2216d00532",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "240b0e574f7aa7025a58eb690ba7404c9d3eadb547cb070b047a0c2216d00532",
+          "width": 192
+        },
+        "frequency-low-aperture": {
+          "candidate_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+          "width": 192
+        },
+        "frequency-reference": {
+          "candidate_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+          "width": 192
+        },
+        "highlight-diffusion": {
+          "candidate_png_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+          "width": 192
+        },
+        "pixel-aperture": {
+          "candidate_png_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+          "width": 192
+        },
+        "processed-alpha": {
+          "candidate_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+          "width": 192
+        },
+        "wipe-alpha": {
+          "candidate_png_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+          "changed_channels": 0,
+          "compared_bytes": 49152,
+          "height": 64,
+          "original_png_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+          "width": 192
+        }
+      },
+      "graphical_fixture_equivalence": {
+        "synthetic_compared_bytes": 884736,
+        "synthetic_png_pairs": 18
+      },
+      "native_driver_checks": 4010,
+      "native_driver_failures": [],
+      "native_windows_retained": 15,
+      "process_receipts": {
+        "progression": {
+          "backend": [
+            "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+          ],
+          "process_json_sha256": "b0fa107fd34f0279e91e8ca12997a1bb5c8bf624d682ff398f779d6e104e0e0e",
+          "process_log_sha256": "5cded86bcba38be9702be1ff40ccbd1d7c327be808b88a7e6506c7e77b04fb24",
+          "renderer_markers": []
+        },
+        "shader-candidate": {
+          "backend": [
+            "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+          ],
+          "process_json_sha256": "972e0179baa5deba52fb17b5dc262695d36b9a263c375a2c0d47ae359dcae593",
+          "process_log_sha256": "06a088438c9c4c9fbc7ee5bee6ea78892a91228a816d0bac877b47932233f603",
+          "renderer_markers": [
+            "STRATA003_OPTICAL_RENDERER graphical_required=false checks=109 failures=0"
+          ]
+        },
+        "shader-original": {
+          "backend": [
+            "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+          ],
+          "process_json_sha256": "055fbd859cee15daab14016a30ba0a542a378e5fe7cbcf36b7d6103092446370",
+          "process_log_sha256": "c3c12e44d59236534bfdabdf1379a62f9f1c21a60704167c6a3b6d6ae5e13800",
+          "renderer_markers": [
+            "STRATA003_OPTICAL_RENDERER graphical_required=false checks=109 failures=0"
+          ]
+        }
+      }
+    }
+  },
+  "rendering_scope": "Actual isolated renderer fixtures only; not full native-scene or physical GPU acceptance",
+  "reviewer": "Specialist A",
+  "run_id": 45730815481,
+  "schema": "strata3-a1-v1-partial-evidence-review-v1"
+}

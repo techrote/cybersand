@@ -1,0 +1,488 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "artifact_id": 15078368890,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15078368890",
+  "campaign_sha256": "af7fded1a69d50a12fcbbcbca61b6365af0e1cc02ccdf444366b828eafa3b1bc",
+  "cases": {
+    "architectural": {
+      "median_native_rate": 2.5013420824471018,
+      "median_physical_p95_usec": 397219,
+      "median_rapier_rate": 2.5294470496656083,
+      "native_criterion": false,
+      "native_ratio_to_classic": 0.8412194981357836,
+      "physical_p95_limit_usec": 402738.0,
+      "physical_tail_criterion": true,
+      "rapier_criterion": false,
+      "rapier_ratio_to_classic": 0.8412194981357835,
+      "repeats": [
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 35707191,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.4924951391443813,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1135599,
+            "p50": 388206,
+            "p95": 398772,
+            "p99": 1135599,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.520500702505554,
+          "repeat": 0,
+          "scene_admission_elapsed_ms": 7553,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 35580899,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.5013420824471018,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1109866,
+            "p50": 386347,
+            "p95": 397219,
+            "p99": 1109866,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.5294470496656083,
+          "repeat": 1,
+          "scene_admission_elapsed_ms": 7293,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 35477719,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.5086167461893476,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1116363,
+            "p50": 385828,
+            "p95": 394283,
+            "p99": 1116363,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.536803451202711,
+          "repeat": 2,
+          "scene_admission_elapsed_ms": 7087,
+          "scene_admission_target_met": true
+        }
+      ]
+    },
+    "cinematic_deep_focus": {
+      "median_native_rate": 2.4691973183296394,
+      "median_physical_p95_usec": 405805,
+      "median_rapier_rate": 2.496941108423231,
+      "native_criterion": false,
+      "native_ratio_to_classic": 0.8304089806426582,
+      "physical_p95_limit_usec": 402738.0,
+      "physical_tail_criterion": false,
+      "rapier_criterion": false,
+      "rapier_ratio_to_classic": 0.8304089806426582,
+      "repeats": [
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 36044102,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.4691973183296394,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1128618,
+            "p50": 393044,
+            "p95": 405805,
+            "p99": 1128618,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.496941108423231,
+          "repeat": 0,
+          "scene_admission_elapsed_ms": 6559,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 36281078,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.453069338237414,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1129581,
+            "p50": 395489,
+            "p95": 407306,
+            "p99": 1129581,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.4806319150715423,
+          "repeat": 1,
+          "scene_admission_elapsed_ms": 7973,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 35669424,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.495134207942354,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1139311,
+            "p50": 387312,
+            "p95": 397085,
+            "p99": 1139311,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.523169423761931,
+          "repeat": 2,
+          "scene_admission_elapsed_ms": 7671,
+          "scene_admission_target_met": true
+        }
+      ]
+    },
+    "classic": {
+      "median_native_rate": 2.973471356750879,
+      "median_physical_p95_usec": 335615,
+      "median_rapier_rate": 3.00688114727617,
+      "native_criterion": true,
+      "native_ratio_to_classic": 1.0,
+      "physical_p95_limit_usec": 402738.0,
+      "physical_tail_criterion": true,
+      "rapier_criterion": true,
+      "rapier_ratio_to_classic": 1.0,
+      "repeats": [
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 29931346,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.973471356750879,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 339449,
+            "p50": 325827,
+            "p95": 335615,
+            "p99": 339449,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 0,
+              "250000": 89,
+              "500000": 0
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 3.00688114727617,
+          "repeat": 0,
+          "scene_admission_elapsed_ms": 6400,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 29698523,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.9967820285204083,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 949293,
+            "p50": 323265,
+            "p95": 331870,
+            "p99": 949293,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 0,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 3.030453736706031,
+          "repeat": 1,
+          "scene_admission_elapsed_ms": 7081,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 30494073,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.9185999521939885,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 925127,
+            "p50": 333016,
+            "p95": 342028,
+            "p99": 925127,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 0,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.951393210083809,
+          "repeat": 2,
+          "scene_admission_elapsed_ms": 6613,
+          "scene_admission_target_met": true
+        }
+      ]
+    },
+    "diorama": {
+      "median_native_rate": 2.249768943673824,
+      "median_physical_p95_usec": 438785,
+      "median_rapier_rate": 2.2757994870954836,
+      "native_criterion": false,
+      "native_ratio_to_classic": 0.7566136255410757,
+      "physical_p95_limit_usec": 402738.0,
+      "physical_tail_criterion": false,
+      "rapier_criterion": false,
+      "rapier_ratio_to_classic": 0.7568637986097495,
+      "repeats": [
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 39546542,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.250512826127756,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 443763,
+            "p50": 430179,
+            "p95": 438256,
+            "p99": 443763,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 0,
+              "250000": 89,
+              "500000": 0
+            }
+          },
+          "quality": "high",
+          "rapier_delta": 90,
+          "rapier_rate": 2.2757994870954836,
+          "repeat": 0,
+          "scene_admission_elapsed_ms": 6961,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 39559618,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.249768943673824,
+          "physical_distribution_usec": {
+            "count": 90,
+            "max": 1247809,
+            "p50": 429970,
+            "p95": 438785,
+            "p99": 1247809,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "high",
+          "rapier_delta": 91,
+          "rapier_rate": 2.3003255491496404,
+          "repeat": 1,
+          "scene_admission_elapsed_ms": 7405,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 40481155,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.1985538703132357,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1258146,
+            "p50": 441000,
+            "p95": 450511,
+            "p99": 1258146,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "high",
+          "rapier_delta": 90,
+          "rapier_rate": 2.2232567227886655,
+          "repeat": 2,
+          "scene_admission_elapsed_ms": 7335,
+          "scene_admission_target_met": true
+        }
+      ]
+    },
+    "gameplay_clarity": {
+      "median_native_rate": 2.2575061699672845,
+      "median_physical_p95_usec": 439741,
+      "median_rapier_rate": 2.285552797236581,
+      "native_criterion": false,
+      "native_ratio_to_classic": 0.7592157109036585,
+      "physical_p95_limit_usec": 402738.0,
+      "physical_tail_criterion": false,
+      "rapier_criterion": false,
+      "rapier_ratio_to_classic": 0.7601074619483994,
+      "repeats": [
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 39424034,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.2575061699672845,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1268316,
+            "p50": 428358,
+            "p95": 439741,
+            "p99": 1268316,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.2828714078320855,
+          "repeat": 0,
+          "scene_admission_elapsed_ms": 5762,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 39815313,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.2353208676269856,
+          "physical_distribution_usec": {
+            "count": 90,
+            "max": 1254142,
+            "p50": 432896,
+            "p95": 447796,
+            "p99": 1254142,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 91,
+          "rapier_rate": 2.285552797236581,
+          "repeat": 1,
+          "scene_admission_elapsed_ms": 7297,
+          "scene_admission_target_met": true
+        },
+        {
+          "decorative_upload_delta": 0,
+          "elapsed_usec": 39152089,
+          "native_capture_delta": 0,
+          "native_delta": 89,
+          "native_rate": 2.2731864958725447,
+          "physical_distribution_usec": {
+            "count": 89,
+            "max": 1240605,
+            "p50": 425808,
+            "p95": 438262,
+            "p99": 1240605,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 1,
+              "250000": 89,
+              "500000": 1
+            }
+          },
+          "quality": "balanced",
+          "rapier_delta": 90,
+          "rapier_rate": 2.2987279171744834,
+          "repeat": 2,
+          "scene_admission_elapsed_ms": 6614,
+          "scene_admission_target_met": true
+        }
+      ]
+    }
+  },
+  "disposition": "Frozen fd application matched five-profile observation. Independent arithmetic only; complete strict optical admission performed separately. No A1 candidate or physical NVIDIA acceptance.",
+  "initial_admission_elapsed_ms": 51798,
+  "initial_admission_target_met": false,
+  "progression_registration": {
+    "callbacks_per_sample": 90,
+    "confound": "Fresh authored scene and native Play hash per sample; same input control observer and callback budget. Wall-clock phase and shared hosted CPU load can vary, so repeat spread and software-renderer limitations remain material.",
+    "geometry_reset_between_samples": true,
+    "order": "forward/reverse/forward",
+    "per_sample_watchdog_usec": 90000000,
+    "physical_scope": "Hosted renderer; physical owner acceptance remains open.",
+    "quality_by_profile": {
+      "architectural": "balanced",
+      "cinematic_deep_focus": "balanced",
+      "classic": "balanced",
+      "diorama": "high",
+      "gameplay_clarity": "balanced"
+    },
+    "repeats": 3,
+    "warmup": "six display callbacks while physically paused; no native evolution before timed window"
+  },
+  "result_sha256": "38caabe80197e78d3ad2e2d370e24b6135ff21a87d9fded22a4d9d6e314db4ce",
+  "review_date_utc": "2026-11-26",
+  "reviewer": "Specialist A",
+  "run_id": 45721790366,
+  "zip_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13"
+}
