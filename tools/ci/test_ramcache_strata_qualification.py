@@ -332,6 +332,24 @@ class IntegrationControls(unittest.TestCase):
                          "source/godot/.godot/script-classes.cfg"):
                 self.reject(lambda: package.inspect_archive(self.archive(root, name)))
 
+    def test_archive_refuses_dependency_cache_and_identifies_original_member(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name in (
+                "dependencies/cxx/opt/lib/python3.12/__pycache__/_weakrefset.cpython-312.pyc",
+                "dependencies/git/ucrt64/share/tool/__pycache__/module.cpython-312.pyc",
+                "dependencies/python/Lib/json/__pycache__/decoder.cpython-312.pyc",
+                "dependencies/cxx/userdata/prior-profile.json",
+                "dependencies/cxx/.godot/prior-import.bin",
+            ):
+                with self.subTest(name=name):
+                    # A complete, internally consistent payload manifest cannot
+                    # authorize generated state inherited from an offline tool.
+                    with self.assertRaises(RuntimeError) as refused:
+                        package.inspect_archive(self.archive(root, name))
+                    self.assertEqual(str(refused.exception),
+                        "Shipped package contains prior generated state or an altered committed bootstrap: " + name)
+
     def launcher(self):
         values = list(execution())
         source = "1" * 40

@@ -152,6 +152,25 @@ archive must pass clean spaced-path extraction, real CMD startup and fresh-proce
 save/reopen, including Materials Lab authoring with only its bundled tools,
 with payload hashes checked again after execution.
 
+The compiler copy omits only embedded-Python `__pycache__` directories whose
+regular `.pyc` entries have their accompanying source modules. It retains those
+modules, executables, libraries and licenses; unusual cache contents or missing
+source refuse staging. Other generated state is not silently removed. The
+complete pristine archive guard runs before build success and again before
+extraction, and a refusal identifies its exact member.
+
+This boundary was exercised after the first merged-main
+[delivery run](https://github.com/techrote/cybersand/actions/runs/46101219741)
+built an archive but refused it **before extraction or application launch**.
+Its original log did not identify the member and that archive was not published.
+A separate, standard Windows
+[staging diagnostic](https://github.com/techrote/cybersand/actions/runs/46104274357)
+using the unchanged main source and the same `20261123.376.1` runner image
+reproduced the identical guard refusal from 49 compiler Python-cache files.
+That diagnostic is packaging evidence, not a new application pass. The original
+failure remains recorded; the corrected final-main package still requires all
+source campaigns and actual extracted launcher/authoring/reopen gates above.
+
 Hosted Linux software rendering and Windows ANGLE/Microsoft Basic execution
 qualify those environments. Only the original evaluators received the owner's
 physical TITAN RTX evaluation; the new package is not described as physically

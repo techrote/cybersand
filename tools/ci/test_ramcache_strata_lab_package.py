@@ -105,6 +105,103 @@ class SourcePackageTests(unittest.TestCase):
             self.verify()
 
 
+class CompilerCopyTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="ramcache-strata-compiler-copy-")
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.donor = self.root / "runner-compiler"
+        self.destination = self.root / "portable-compiler"
+        self.modules = {
+            "opt/lib/python3.12/_weakrefset.py": b"class WeakSet: pass\n",
+            "share/gdb/python/gdb/__init__.py": b"# retained GDB module\n",
+        }
+        self.caches = {
+            "opt/lib/python3.12/__pycache__/_weakrefset.cpython-312.pyc": b"runner bytecode",
+            "opt/lib/python3.12/__pycache__/_weakrefset.cpython-312.opt-1.pyc": b"optimized runner bytecode",
+            "share/gdb/python/gdb/__pycache__/__init__.cpython-312.pyc": b"runner GDB bytecode",
+        }
+        self.retained = {
+            **self.modules,
+            "bin/g++.exe": b"retained compiler executable\0",
+            "bin/libstdc++-6.dll": b"retained compiler dependency\0",
+            "licenses/COPYING": b"retained compiler license\n",
+            "share/gdb/python/LICENSE.txt": b"retained module license\n",
+            "opt/lib/python3.12/module.pyc": b"unrelated sourceless module must not be dropped",
+            "share/unrelated.cache": b"unrelated cache name",
+            "share/__pycache__-notes.txt": b"similar name is not an omission",
+            "userdata/prior-profile.json": b"must remain for archive refusal",
+            ".godot/prior-import.bin": b"must remain for archive refusal",
+        }
+        for name, data in {**self.retained, **self.caches}.items():
+            self.write(name, data)
+
+    def write(self, name, data):
+        path = self.donor / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+
+    def files(self, root):
+        return {path.relative_to(root).as_posix(): path.read_bytes()
+                for path in root.rglob("*") if path.is_file()}
+
+    def copy(self):
+        package.lab.copy_portable_tree(self.donor, self.destination,
+                                      ignore=package._ignore_compiler_python_cache)
+
+    def test_real_copy_omits_only_reproducible_caches_and_preserves_donor(self):
+        before = self.files(self.donor)
+        self.copy()
+        self.assertEqual(self.files(self.destination), self.retained)
+        self.assertEqual(self.files(self.donor), before)
+        self.assertFalse(any(path.name == "__pycache__" for path in self.destination.rglob("*")))
+
+    def test_cache_contents_cannot_hide_unexpected_files_or_nested_directories(self):
+        for name in ("LICENSE.txt", "module.py", "module.cpython-312.pyc.exe", "nested/other.pyc"):
+            with self.subTest(name=name):
+                target = self.donor / "opt/lib/python3.12/__pycache__" / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(b"must refuse, never silently remove")
+                with self.assertRaisesRegex(RuntimeError, "Unexpected compiler Python cache entry"):
+                    self.copy()
+                self.assertEqual(target.read_bytes(), b"must refuse, never silently remove")
+                target.unlink()
+                if name.startswith("nested/"):
+                    target.parent.rmdir()
+                # shutil.copytree can create the root before a later subtree
+                # refuses. Each attempt gets its own untouched destination.
+                self.destination = self.root / ("next-copy-" + name.replace("/", "-"))
+
+    def test_malformed_or_sourceless_cache_is_refused(self):
+        for name, message in (("module.pyc", "Unrecognized compiler Python cache"),
+                              ("absent.cpython-312.pyc", "lacks its retained module")):
+            with self.subTest(name=name):
+                target = self.donor / "opt/lib/python3.12/__pycache__" / name
+                target.write_bytes(b"unrecognized or irreplaceable bytecode")
+                with self.assertRaisesRegex(RuntimeError, message):
+                    self.copy()
+                self.assertTrue(target.is_file())
+                target.unlink()
+                self.destination = self.root / ("next-copy-" + name)
+
+    def test_cache_name_must_be_a_real_directory(self):
+        self.write("share/__pycache__", b"file with reserved cache name")
+        with self.assertRaisesRegex(RuntimeError, "not a real directory"):
+            self.copy()
+
+    def test_symlink_refusal_precedes_cache_omission(self):
+        target = self.donor / "opt/lib/python3.12/__pycache__/_weakrefset.cpython-312.pyc"
+        target.unlink()
+        try:
+            target.symlink_to(self.donor / "opt/lib/python3.12/_weakrefset.py")
+        except (OSError, NotImplementedError) as error:
+            self.skipTest("Host cannot create the actual symlink control: " + str(error))
+        with self.assertRaisesRegex(RuntimeError, "contains a symlink"):
+            self.copy()
+        self.assertFalse(self.destination.exists())
+        self.assertTrue(target.is_symlink())
+
+
 class DependencyReceiptTests(unittest.TestCase):
     def test_dependency_bytes_and_notices_are_replayed_without_execution(self):
         with tempfile.TemporaryDirectory(prefix="ramcache-strata-dependencies-") as directory:
