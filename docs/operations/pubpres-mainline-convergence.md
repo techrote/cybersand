@@ -185,6 +185,10 @@ skipped, even when this scoped source-owned campaign passes.
 
 ## Owner route and subsequent ObjectShard integration
 
+The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)
+provides the sixteen-step route, exact launcher and control names, recorder
+switches, saved-start semantics and residual manual-Step reproduction limits.
+
 Start with **Open Wave 512.cmd**, spawn and pilot Needle, enable Thruster fire,
 try Follow/free cameras, and compare initial/warmed spawn and respawn. Paint
 while running, pick and manipulate visible actors, then use **Open Mixed

@@ -1,17 +1,17 @@
 {
   "schema": "pubpres-mainline-request-v2",
-  "phase": "publish",
-  "purpose": "Publish source-matched runtimes after target-platform replay of original Q4 artifacts; preserve the failed host-platform preflight and Draft/HOLD",
+  "phase": "delivery",
+  "purpose": "Definitive source-exact Windows evaluator after guarded runtime publication, with complete resulting-source application, matched performance, sustained play and independent extracted-package qualification",
   "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
   "owner_reference": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
-  "payload_sha256": "836cd4b593ca7d9861202f9da62b02ed6f2c7bd5822c1fcae41e1961abfa7af7",
+  "payload_sha256": "5cc70bf5fb9f84d9c09a8e08de51e89eeab82663b7c59c4af342ba602e755e10",
   "runtime_run": 46132881112,
   "runtime_attempt": 1,
   "runtime_source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
   "qualification_run": 46140937427,
   "qualification_attempt": 1,
   "qualification_source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
-  "publication_commit": null,
+  "publication_commit": "427c0ea3b6326f3ebda71fbbff7e40564757de2b",
   "physical_acceptance": "HOLD",
   "promotion": "DRAFT_ONLY"
 }

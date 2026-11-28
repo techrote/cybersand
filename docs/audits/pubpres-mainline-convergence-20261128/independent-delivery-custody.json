@@ -334,5 +334,224 @@
     "Inner ZIP filename, SHA256, bytes, manifest hash and direct artifact link",
     "Independent actual extracted Windows launcher, native modules, save/reopen, diagnostics and three mode receipts",
     "Exact owner physical acceptance and explicit merge authorization remain unavailable unless separately provided"
-  ]
+  ],
+  "post_publication_checkpoint": {
+    "observed_utc": "2026-11-28T12:20:08Z",
+    "q4": {
+      "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+      "tree": "560fb1fb8c2a718b04fa251bfc2971947dcf0b31",
+      "run": 46140937427,
+      "attempt": 1,
+      "required_jobs": 26,
+      "passed": 26,
+      "failed": 0,
+      "phase_skipped_jobs": 9,
+      "all_required_jobs_independently_authenticated": true
+    },
+    "documentation": {
+      "repair_source": "0afe7de629cc6ca1461875a5a1482a063c4e47a4",
+      "run": 46141810286,
+      "job": 140969173462,
+      "status": "success",
+      "workflow_inventory": 149,
+      "scheduling_tests": 10,
+      "draft_skipped_runtime_provenance_substep": true,
+      "original_failed_run_preserved": 46140941585
+    },
+    "publication_attempts": [
+      {
+        "label": "P1",
+        "source": "a303299e59228363a229ae80bfce6746cbbfd771",
+        "run": 46143088429,
+        "job": 140973443808,
+        "status": "failed before writes",
+        "artifact_id": 15262511886,
+        "artifact_sha256": "8cd7944dc6351a5968bb6c0c4dccf6678707cee871c0f9f6d50e99c7be458204",
+        "reason": "Inherited multipart reader selected runtime filenames using publisher host OS while replaying Windows evidence. No application, native or fixture change was indicated. Original failure retained."
+      },
+      {
+        "label": "P2",
+        "source": "a9905b850f775603e0ac7af7c886947926b9b531",
+        "tree": "5d40af6a4bccf5b8ec11f5dfdd0ffbf8dff4c2f2",
+        "run": 46143827387,
+        "attempt": 1,
+        "job": 140975678369,
+        "status": "success",
+        "admission_tests": 36,
+        "artifact": {
+          "id": 15262439719,
+          "bytes": 12521,
+          "sha256": "3add55b2a5bc26af56ed80ea5a82d1aab16883bfdd41e83820b9cb55431566de"
+        },
+        "repair_scope": "Only the imported immutable legacy reader receives an authenticated target-platform OS facade. Host os/pathlib/process behavior and original reader checks remain unchanged. Nested, exception, wrong-platform and wrong-runtime-hash controls passed."
+      }
+    ],
+    "publication": {
+      "sha": "427c0ea3b6326f3ebda71fbbff7e40564757de2b",
+      "tree": "7bb3a0eabf3b2a7ad74b3dd15d1539eca410fe77",
+      "parents": [
+        "a9905b850f775603e0ac7af7c886947926b9b531"
+      ],
+      "files": [
+        {
+          "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "status": "modified",
+          "sha": "e376af0d92d0b726d349b94775c0dcc9f7d2f153"
+        },
+        {
+          "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "status": "modified",
+          "sha": "b0de366051c7b8f9cc1f4ed440b0deab1af21dae"
+        },
+        {
+          "path": "godot/addons/cybersand_native/runtime-provenance.json",
+          "status": "modified",
+          "sha": "47dfda4bbb74a6a5801adc35a87b2c472950d3fb"
+        },
+        {
+          "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+          "status": "modified",
+          "sha": "d826897c9067d8ae5e38477af73715b2e06cab56"
+        }
+      ],
+      "manifest_identities": {
+        "windows": {
+          "git_blob": "47dfda4bbb74a6a5801adc35a87b2c472950d3fb",
+          "sha256": "7d542e126d560bbc3add127c0542cf2c09fd58a2ceb55477f2ed0c60b85f0575"
+        },
+        "linux": {
+          "git_blob": "d826897c9067d8ae5e38477af73715b2e06cab56",
+          "sha256": "d042a3b60ff0b70d37ec27c3456eb499db0b2518738e23cbba2010d28ad2da4e"
+        }
+      },
+      "platforms": {
+        "windows": {
+          "source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+          "tree": "5d292e17fdeba0466ee744d8d23e719039908c7f",
+          "binary": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+          "bytes": 6901760,
+          "native_inputs": 115,
+          "build_inputs": 123,
+          "extra": {
+            "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+            "tools/build_native_extension_windows.sh": "8839324c107ead3f5c4c68a261452f967d3f671391043a5eb27a7f6681e22e52",
+            "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+            "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+            "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+            "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
+            "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+            "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+          },
+          "publication": {
+            "run": "46143827387",
+            "attempt": "1",
+            "workflow": ".github/workflows/pubpres-mainline.yml"
+          },
+          "scope": {
+            "all_six_exact_source_jobs_authenticated_success": true,
+            "final_delivery_reexecutes_all_features_and_independent_package_readers": true,
+            "original_semantic_readers_executed_by_each_job": true,
+            "raw_feature_readers_replayed_by_this_publisher": false
+          }
+        },
+        "linux": {
+          "source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+          "tree": "5d292e17fdeba0466ee744d8d23e719039908c7f",
+          "binary": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "bytes": 5633848,
+          "native_inputs": 115,
+          "build_inputs": 123,
+          "extra": {
+            "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+            "tools/build_native_extension.sh": "4bc6bc179c763b3bd64d2a59c536e73ecb6b7d6677806b8457f3a5b747ec64a7",
+            "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+            "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+            "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+            "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
+            "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+            "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+          },
+          "publication": {
+            "run": "46143827387",
+            "attempt": "1",
+            "workflow": ".github/workflows/pubpres-mainline.yml"
+          },
+          "scope": {
+            "all_six_exact_source_jobs_authenticated_success": true,
+            "final_delivery_reexecutes_all_features_and_independent_package_readers": true,
+            "original_semantic_readers_executed_by_each_job": true,
+            "raw_feature_readers_replayed_by_this_publisher": false
+          }
+        }
+      },
+      "independent_direct_pointer_and_manifest_check": true,
+      "fresh_remote_lfs_retrieval_scope": "Required by the reviewed writer before its successful terminal result; full PUBLICATION.json field replay remains separate from C's direct Git and job-log inspection."
+    },
+    "independent_native_tree_equality": {
+      "original_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f",
+      "application_tree": "560fb1fb8c2a718b04fa251bfc2971947dcf0b31",
+      "inputs": 115,
+      "all_blob_and_mode_identities_equal": true,
+      "scope": "Independent Git tree equality against the already replayed original C build closure; not an extra native execution."
+    },
+    "independent_extra_build_input_replay": [
+      {
+        "path": "third_party/native-toolchain.lock.json",
+        "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+        "git_blob": "26907e1dff6eee6de8438a35b3d1300537934554"
+      },
+      {
+        "path": "tools/build_native_extension_windows.sh",
+        "sha256": "8839324c107ead3f5c4c68a261452f967d3f671391043a5eb27a7f6681e22e52",
+        "git_blob": "40fe8aecce6c0d9ecb4d6e314e4d283275fb0875"
+      },
+      {
+        "path": "tools/build_pinned_godot_cpp.sh",
+        "sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+        "git_blob": "0101f96c42e52b1a795f559a811f9373148221b9"
+      },
+      {
+        "path": "tools/pubpres_playability_build/build_runtime.py",
+        "sha256": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+        "git_blob": "63b5e8bf16e7f35e7505a9cf8ad77b3119d97a1f"
+      },
+      {
+        "path": "tools/pubpres_playability_build/dependency_custody.py",
+        "sha256": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+        "git_blob": "5e4868eca5b5cac30ccab23bbe1567ba2c0c5943"
+      },
+      {
+        "path": "tools/pubpres_playability_build/process_owner.py",
+        "sha256": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
+        "git_blob": "007d6304182ac16484b13ca8a50bd42297be2e61"
+      },
+      {
+        "path": "tools/requirements-build.txt",
+        "sha256": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+        "git_blob": "821fb1eea3b1029e16664f0babb61ae735e719fa"
+      },
+      {
+        "path": "tools/toolchains/g++",
+        "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09",
+        "git_blob": "770c78de035f7a445db45bee27cd7463215d00df"
+      },
+      {
+        "path": "tools/build_native_extension.sh",
+        "sha256": "4bc6bc179c763b3bd64d2a59c536e73ecb6b7d6677806b8457f3a5b747ec64a7",
+        "git_blob": "ccf8c7ef9779c6a6eede0181ede1f692a3ab0355"
+      }
+    ],
+    "original_native_build_retained": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+    "final_delivery_status": "Not yet executed. The publication commit is a qualified-runtime successor; the final application, all six feature suites, presentation gates, comparisons and actual extracted package must be executed at the final delivery source.",
+    "acceptance": {
+      "q4_application_hosted_qualified": true,
+      "guarded_native_published": true,
+      "final_delivery_source_fully_qualified": false,
+      "windows_package_built": false,
+      "extracted_package_qualified": false,
+      "new_source_physically_owner_evaluated": false,
+      "merge_authorized": false,
+      "actually_merged": false
+    }
+  }
 }

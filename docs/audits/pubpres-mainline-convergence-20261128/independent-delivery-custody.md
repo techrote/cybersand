@@ -113,3 +113,51 @@ The next update must append actual Q4 conclusions, the successful standard Docum
 The delivery section must identify the direct artifact link, inner ZIP SHA-256 and byte size, manifest identity, exact engine/dependency files, source-bound performance/spawn/sustained results, and independent actual extracted launcher, loaded modules, normal close/fresh-process reopen, authored-save, collector and three-mode qualification receipts. Performance deficits and original failed arms remain explicit.
 
 At this checkpoint: implementation and independent source reviews exist; scoped local and hosted tests have executed; a complete resulting-source qualification and extracted delivery are pending. **No new source has been physically owner-evaluated, no mainline merge is authorized and no merge has occurred.** The historical positive owner evaluation remains scoped to P.
+
+
+## Publication checkpoint — 28 November, 12:20 UTC
+
+The [Q4 campaign](https://github.com/techrote/cybersand/actions/runs/46140937427) completed successfully at application `ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae`, tree `560fb1fb8c2a718b04fa251bfc2971947dcf0b31`, attempt 1. C independently authenticated all **26 required jobs**, each present once and successful. Nine jobs for other phases were skipped and receive no acceptance credit. Both unchanged nineteen-case frozen suites, all presentation scopes and all six actual RAMCACHE/Strata/shared feature suites passed.
+
+The CI-only scheduling correction's [standard Documentation run](https://github.com/techrote/cybersand/actions/runs/46141810286) passed: 149 workflow inventory entries, ten scheduling-policy tests, and the documentation/parity/retrieval/LFS checks. The dependency-pin and published-runtime provenance substep remained Draft-skipped. The original failing Documentation run remains recorded. Native C++, GDExtension and Palette Draft skips are still not passes.
+
+### Guarded runtime publication
+
+The [first publisher](https://github.com/techrote/cybersand/actions/runs/46143088429) refused Windows multipart evidence before any write: its unchanged inherited reader selected Linux runtime filenames from the Ubuntu publisher's OS. The original failed receipt is retained as [artifact15262511886](https://github.com/techrote/cybersand/actions/runs/46143088429/artifacts/15262511886). This was a data-reader platform mismatch, not an application test failure. The narrow repair scopes a target-platform facade to that imported reader and restores it even on nested calls or exceptions; global host OS, filesystem/process behavior, and the original reader checks remain unchanged.
+
+The [second guarded publisher](https://github.com/techrote/cybersand/actions/runs/46143827387), attempt 1, passed its **36 tests** and original evidence replays, then published:
+
+| Identity | Value |
+|---|---|
+| Request source | `a9905b850f775603e0ac7af7c886947926b9b531` |
+| Published commit | `427c0ea3b6326f3ebda71fbbff7e40564757de2b` |
+| Published tree | `7bb3a0eabf3b2a7ad74b3dd15d1539eca410fe77` |
+| Writer job | `140975678369` |
+| Original receipt artifact | [15262439719](https://github.com/techrote/cybersand/actions/runs/46143827387/artifacts/15262439719) |
+| Receipt archive | 12,521 bytes; SHA-256 `3add55b2a5bc26af56ed80ea5a82d1aab16883bfdd41e83820b9cb55431566de` |
+
+C independently fetched the commit and confirmed its sole parent is the request source and its diff contains exactly the two native LFS pointers and two runtime-provenance manifests. Both pointers match the original C binary lengths and digests tabulated above. The original native build remains `b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34`; no binary was relabelled as newly compiled at the later application source.
+
+The writer replayed all nine Linux and nine Windows original qualification scopes. Its manifests explicitly distinguish those raw replays from the six cross-feature job attestations: each feature job executed its original semantic reader, but this publisher did not independently replay those six feature archives. Final delivery executes the features again, and the Windows package replays its original feature receipts. Fresh remote LFS retrieval is a required step before this writer's successful terminal result; C's checkpoint directly verifies the Git objects, pointers, manifests and completed job, while the full original `PUBLICATION.json` retrieval fields remain a separate data-only inspection.
+
+### Complete native and build-input closure
+
+C independently compared all **115 native Git blob and file-mode identities** between the original C build tree and Q4; all are identical. Both published manifests retain the full 115-input SHA-256 map and explicit original build/dependency identities. Each platform also binds **eight build inputs**, making 123 total entries. Seven are shared; the eighth is its platform-specific native build script. The union contains the following nine paths. C fetched every current file, recomputed its canonical-LF SHA-256, and independently verified its canonical Git blob against the original build tree.
+
+| Build input | SHA-256 |
+|---|---|
+| `third_party/native-toolchain.lock.json` | `1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414` |
+| `tools/build_native_extension_windows.sh` | `8839324c107ead3f5c4c68a261452f967d3f671391043a5eb27a7f6681e22e52` |
+| `tools/build_pinned_godot_cpp.sh` | `72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea` |
+| `tools/pubpres_playability_build/build_runtime.py` | `4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483` |
+| `tools/pubpres_playability_build/dependency_custody.py` | `ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681` |
+| `tools/pubpres_playability_build/process_owner.py` | `55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a` |
+| `tools/requirements-build.txt` | `6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409` |
+| `tools/toolchains/g++` | `eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09` |
+| `tools/build_native_extension.sh` | `4bc6bc179c763b3bd64d2a59c536e73ecb6b7d6677806b8457f3a5b747ec64a7` |
+
+The Windows provenance JSON Git blob is `47dfda4bbb74a6a5801adc35a87b2c472950d3fb`, SHA-256 `7d542e126d560bbc3add127c0542cf2c09fd58a2ceb55477f2ed0c60b85f0575`; Linux is `d826897c9067d8ae5e38477af73715b2e06cab56`, SHA-256 `d042a3b60ff0b70d37ec27c3456eb499db0b2518738e23cbba2010d28ad2da4e`. The adjacent JSON ledger preserves both full extra-input maps, each independently recomputed Git identity, and the complete four-path publication identity.
+
+### Remaining delivery and acceptance
+
+This checkpoint establishes the complete Q4 hosted application gate and guarded runtime publication. The final delivery source still needs its own resulting-source feature/presentation execution, matched performance/spawn and sustained-session results, complete Windows archive, and independent execution of the extracted shipped launchers. Those are not credited in advance. The package and current application have not been physically evaluated on the owner's TITAN RTX. PR #767 remains Draft/HOLD; main remains `50e3bcb839211eac2abe1e065750cbcba4d36f8c`, and neither merge authorization nor an actual merge is recorded.
