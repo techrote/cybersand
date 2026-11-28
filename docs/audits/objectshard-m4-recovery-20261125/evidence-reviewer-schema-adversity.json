@@ -1,0 +1,295 @@
+{
+  "after_false_passes": [],
+  "before_false_passes": [
+    "missing-focused-receipt",
+    "dropped-native-key",
+    "dropped-script-key",
+    "wrong-focused-schema",
+    "missing-overlay-receipt",
+    "wrong-profile-schema",
+    "partial-inventory",
+    "absent-inventory"
+  ],
+  "cases": [
+    {
+      "case": "synthetic-complete-control",
+      "results": {
+        "after": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "e860e9356505643d08b3ee24e61e13962aebc890e1196c38ecb3ca2430e76112"
+    },
+    {
+      "case": "wrong-source",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "headless source/tree differs"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "headless source/tree differs"
+        }
+      },
+      "synthetic_archive_sha256": "c6a8811c5cb1b394a17c879a643478a009e21a7609e6cd943df03a4f552bbc1f"
+    },
+    {
+      "case": "wrong-tree",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "headless source/tree differs"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "headless source/tree differs"
+        }
+      },
+      "synthetic_archive_sha256": "5a5d536b712dbaf21b4487734c165e325434d5746bdd205d5f3e3fbb8740f6eb"
+    },
+    {
+      "case": "altered-log",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Original process log hash differs: headless/test_object_shard_m4_latency_probe.log"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "Original process log hash differs: headless/test_object_shard_m4_latency_probe.log"
+        }
+      },
+      "synthetic_archive_sha256": "c45e7c8d599553814121203d8851249ca75b2998f035e7299d63396cd262f7c8"
+    },
+    {
+      "case": "altered-receipt",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Report does not match unique original process footer: headless/test_object_shard_m4_latency_probe.log"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "Report does not match unique original process footer: headless/test_object_shard_m4_latency_probe.log"
+        }
+      },
+      "synthetic_archive_sha256": "a98d9a98a7084e597477642704d877cd4a03853d49430e2c61482b31b8cfef70"
+    },
+    {
+      "case": "missing-focused-receipt",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Missing registered process footer: headless/test_object_shard_m4_latency_probe.log"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "dc392e672b5e10cc97ca534cbef6735d4e43cc1bb0427107a9c876c7b47a32e3"
+    },
+    {
+      "case": "dropped-native-key",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "headless incomplete registered native_source_inputs"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "e3c182660c82aa79b97a793a5b59f65aee988c762adaf151939683600fd73835"
+    },
+    {
+      "case": "dropped-script-key",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "headless incomplete registered executed_script_inputs"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "c4dca839bb32e9d6df138599b7272ac79c04d303eca4491737a8264d8680021f"
+    },
+    {
+      "case": "removed-registered-case",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "headless registered inventory differs"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "headless registered inventory differs"
+        }
+      },
+      "synthetic_archive_sha256": "9cf5edc25b64dff8c46fb8acb6ed2f1be69dd53520ddc6d1b1586495f745ac55"
+    },
+    {
+      "case": "duplicated-footer",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Report does not match unique original process footer: headless/test_object_shard_m4_latency_probe.log"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "Report does not match unique original process footer: headless/test_object_shard_m4_latency_probe.log"
+        }
+      },
+      "synthetic_archive_sha256": "8af5db88f0d1ce6c1600172473d9eae0f79bac28b42b22a20f1e9463c76b8e2b"
+    },
+    {
+      "case": "wrong-focused-schema",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Wrong registered footer schema: headless/test_object_shard_m4_latency_probe.log"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "f770dfe364288e2df6c2cee21a1d1a7b90052991cdcd5bae9e1470c6584607a5"
+    },
+    {
+      "case": "missing-overlay-receipt",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Missing registered process footer: graphical/test_object_shard_m4_overlay_identity.log"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "8236a865475afd6f3cedacefd1d196b9b2dbdc3eb82b4720969064e1455fc396"
+    },
+    {
+      "case": "wrong-profile-schema",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Wrong registered footer schema: headless/m4_workbench_tower_overview_headless.log"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "2f9706417f54c7d14365c172a74cd227b1fc4fb7082e7731d32e82bd40203b07"
+    },
+    {
+      "case": "altered-launcher-receipt",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "refusal": "Launcher raw receipt differs"
+        },
+        "before": {
+          "accepted_application_pass": false,
+          "refusal": "Launcher raw receipt differs"
+        }
+      },
+      "synthetic_archive_sha256": "fdccfb59a09db4c0ebea7c58669f46f2a2a84b09ecb22d2a0df569b84eee91d8"
+    },
+    {
+      "case": "partial-inventory",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "application_qualification": "reported-passes-inventory-unverified",
+          "integrity_status": "passed"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "e860e9356505643d08b3ee24e61e13962aebc890e1196c38ecb3ca2430e76112"
+    },
+    {
+      "case": "absent-inventory",
+      "results": {
+        "after": {
+          "accepted_application_pass": false,
+          "application_qualification": "reported-passes-inventory-unverified",
+          "integrity_status": "passed"
+        },
+        "before": {
+          "accepted_application_pass": true,
+          "application_qualification": "passed",
+          "integrity_status": "passed"
+        }
+      },
+      "synthetic_archive_sha256": "e860e9356505643d08b3ee24e61e13962aebc890e1196c38ecb3ca2430e76112"
+    }
+  ],
+  "intermediate_review": {
+    "false_passes": [
+      "missing-overlay-receipt",
+      "wrong-profile-schema"
+    ],
+    "negative_cases": 15,
+    "revision": "b1633d6fd01a2ceb3048c1ec82ea4c401e3d6697",
+    "sha256": "1e5db4c27a9dcf7f1594de729a25f928fa42debccfb510f83b545e498349a3f0"
+  },
+  "negative_cases": 15,
+  "original_archive_sha256": "3f35d18a7e54ce8327d0b6f63dc57cf3e035380e7b87714c612dd0370f3650d7",
+  "original_result": {
+    "after": {
+      "accepted_application_pass": false,
+      "application_qualification": "failed-or-incomplete",
+      "integrity_status": "passed"
+    },
+    "before": {
+      "accepted_application_pass": false,
+      "application_qualification": "failed-or-incomplete",
+      "integrity_status": "passed"
+    }
+  },
+  "original_reviewer_revision": "0d717ad5b8cd569e5b5543f35f0e3285680382d7",
+  "recovery_base_revision": "537ddef6e88eca2a59b8a02816a149601504dc7e",
+  "registered_inventory_cross_review": {
+    "complete_ordered_cases_match": true,
+    "graphical": 31,
+    "headless": 42,
+    "local_equivalent": "537ddef6e88eca2a59b8a02816a149601504dc7e",
+    "method": "Independently reconstruct from exact qualifier AST constants, reviewed case construction branches and workflow flags",
+    "package-replay": 16,
+    "published_source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+    "reviewed_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919"
+  },
+  "reviewed_after_source": "Review-only source delta identified by reviewer_sha256.after; no application execution input changed",
+  "reviewer_base_revision": "b1633d6fd01a2ceb3048c1ec82ea4c401e3d6697",
+  "reviewer_sha256": {
+    "after": "8d55b6847dc13519d77c850ef763fc281e3f11993d07d0e0ea81cf830928cfe0",
+    "before": "e46888c2e5d13815b5f3f905e08e1c7087e3ff7a31011c11c5b55855978ba0fd"
+  },
+  "schema": "objectshard-m4-independent-evidence-reviewer-adversity-v1",
+  "scope": "Synthetic repinned metadata challenges inner verification only; no synthetic fixture is application qualification evidence.",
+  "status": "passed"
+}

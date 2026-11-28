@@ -1,0 +1,163 @@
+{
+  "checks": 24,
+  "failures": 0,
+  "observations": [
+    {
+      "check": "real scene completes native setup",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "host admission pressure is real and bounded",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual pointer handler captures one UI intent before host admission",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "backpressure preserves the original timestamp and exact target",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "one real queue slot admits the retained pointer",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "host receives actual original-input time including the UI wait",
+      "detail": {
+        "admission_delay_usec": 26927
+      },
+      "ok": true
+    },
+    {
+      "check": "all real queued native edits complete",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "terminal result retains both clocks without rewriting original input time",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "input-to-result includes exactly the retained UI delay",
+      "detail": {
+        "host_admission_usec": 117459,
+        "original_input_usec": 144386
+      },
+      "ok": true
+    },
+    {
+      "check": "input-to-publication includes exactly the retained UI delay",
+      "detail": {
+        "host_admission_usec": 117576,
+        "original_input_usec": 144503
+      },
+      "ok": true
+    },
+    {
+      "check": "invalid observational clocks cannot enter the material queue",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "headless scene does not fabricate a real rendered-frame timing receipt",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "scene resumes after independent input-clock probe",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual support tool executes ordinary native erasures",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual awake shard is promoted for continuous admission test",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "a displayed owner starts the chosen actual receipt-pump mode",
+      "detail": {
+        "pump_usec": 0
+      },
+      "ok": true
+    },
+    {
+      "check": "awake moving owner accepts exactly one displayed pointer cell while running",
+      "detail": {
+        "after_inventory": 525,
+        "attempts": 2,
+        "awake_motion": true,
+        "before_inventory": 526,
+        "pump_usec": 0
+      },
+      "ok": true
+    },
+    {
+      "check": "successful live pointer admission preserves real semantic and physical progression",
+      "detail": {
+        "intervals": 1,
+        "pump_usec": 0
+      },
+      "ok": true
+    },
+    {
+      "check": "pause finishes only admitted work after live input",
+      "detail": {
+        "pump_usec": 0
+      },
+      "ok": true
+    },
+    {
+      "check": "a displayed owner starts the chosen actual receipt-pump mode",
+      "detail": {
+        "pump_usec": 4000
+      },
+      "ok": true
+    },
+    {
+      "check": "awake moving owner accepts exactly one displayed pointer cell while running",
+      "detail": {
+        "after_inventory": 524,
+        "attempts": 2,
+        "awake_motion": true,
+        "before_inventory": 525,
+        "pump_usec": 4000
+      },
+      "ok": true
+    },
+    {
+      "check": "successful live pointer admission preserves real semantic and physical progression",
+      "detail": {
+        "intervals": 1,
+        "pump_usec": 4000
+      },
+      "ok": true
+    },
+    {
+      "check": "pause finishes only admitted work after live input",
+      "detail": {
+        "pump_usec": 4000
+      },
+      "ok": true
+    },
+    {
+      "check": "scene closes actual worker and physics ownership cleanly",
+      "detail": {},
+      "ok": true
+    }
+  ],
+  "schema": "independent-live-admission-review-v1",
+  "scope": "Actual native/Rapier scene and pointer-handler execution, headless. Original-time backpressure probe and continuous awake pointer cuts at pump0 and4000. No displayed-frame timing or physical GPU acceptance.",
+  "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+}

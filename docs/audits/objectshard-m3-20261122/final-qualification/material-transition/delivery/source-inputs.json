@@ -1,0 +1,55 @@
+{
+  "schema": "objectshard-catalogue-transition-delivery-inputs-v1",
+  "source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "source_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "files": {
+    ".github/workflows/documentation.yml": {
+      "bytes": 10393,
+      "sha256": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d",
+      "lf_sha256": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d"
+    },
+    "tools/material_catalogue/compatibility.py": {
+      "bytes": 52680,
+      "sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302",
+      "lf_sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302"
+    },
+    "tools/material_catalogue/compiler.py": {
+      "bytes": 46773,
+      "sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098",
+      "lf_sha256": "81a0658655574ee5e65ecc144db9750b9128380595d51af70c2b04d0a209a098"
+    },
+    "tools/material_catalogue/check_native_parity.py": {
+      "bytes": 22888,
+      "sha256": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696",
+      "lf_sha256": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696"
+    },
+    "tools/material_catalogue/world_candidate.py": {
+      "bytes": 24625,
+      "sha256": "8b1b2f68bb0a299dc83f6e06c71dd36209b9b4742eb6eb086a888ff3d28747a1",
+      "lf_sha256": "8b1b2f68bb0a299dc83f6e06c71dd36209b9b4742eb6eb086a888ff3d28747a1"
+    },
+    "tools/material_catalogue/reaction_effects.py": {
+      "bytes": 12197,
+      "sha256": "6ad898ee23cda7ba82c7dcbc32094ca5d57dfd63bbf0f9965882a4e351483d29",
+      "lf_sha256": "6ad898ee23cda7ba82c7dcbc32094ca5d57dfd63bbf0f9965882a4e351483d29"
+    },
+    "materials/catalogue/compatibility-lock.json": {
+      "bytes": 15569,
+      "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+      "lf_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+    },
+    "native/src/world.cpp": {
+      "bytes": 290625,
+      "sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1"
+    },
+    "native/include/cybersand/object_shard_mutation.hpp": {
+      "bytes": 7150,
+      "sha256": "f2d94ba52bce97cfa939b08ded5a19cbcd2b4482ed8694ad3350108d3175ed46",
+      "lf_sha256": "f2d94ba52bce97cfa939b08ded5a19cbcd2b4482ed8694ad3350108d3175ed46"
+    }
+  },
+  "production_provenance_condition": "if: github.event_name != 'pull_request' || github.event.pull_request.draft == false",
+  "qualified_runtime_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "scope": "Read-only source input capture; actual new CI result will be recorded separately. Draft PR production provenance step is skipped by pre-existing workflow policy."
+}

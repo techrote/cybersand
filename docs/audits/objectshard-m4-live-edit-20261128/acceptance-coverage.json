@@ -1,0 +1,683 @@
+{
+  "schema": "objectshard-live-edit-acceptance-coverage-v1",
+  "generated_utc": "2026-11-28T07:05:19.333771+00:00",
+  "application_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "source_tree": "ff8f99e8292370a347cc9471c29038d15cfafd09",
+  "scope": "Independent Specialist C mapping. Exact assertions and local evidence are described; unreceived hosted/package receipts are not claimed. This first candidate is blocked and requires corrective qualification.",
+  "campaign": {
+    "run_id": 46118132005,
+    "acceptance": "blocked",
+    "blocks": [
+      "Portable PowerShell verifier retained five-scene inventory; A correction independently passes6 package contracttests with actual pwsh7.4.6.",
+      "Windows native camera fixture: three held-lease-far-pan view/clip/transform failures; B reproduced late Control resize and owns correction.",
+      "Early real preview observer46119197243: actual Escape cancellation also toggles Pause, and logical-canvas resize premise misses canvas_items stretch; B corrections pending."
+    ],
+    "known_hosted_results": {
+      "native_sanitizers": "native execution138280 checks and192World cases passed; whole job failed later Python portable-verifier gate",
+      "native_benchmark": "4276351 checks/74 limits passed, independently verified by A",
+      "windows_native_producer": "passed, exact DLL provenance independently verified by A",
+      "windows_native_brush_revision": "159 checks passed",
+      "windows_native_camera": "226 checks,3 failures",
+      "synthetic_retained_presentation_windows": "passed; material/camera synthetic scope distinct from new native candidate execution",
+      "main_windows_workbench": "in_progress",
+      "fresh_extracted_package": "not_available",
+      "early_real_preview": "100 checks,2 failures;10 projection/pixel preview witnesses and12 PNG captures succeeded",
+      "main_linux_workbench": "77cases, sole22-check scene_refusal fixture has4old-premise failures; all new editing cases pass individually as headless commands. Corrected36-check fixture passes locally."
+    }
+  },
+  "local_native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+  "local_native_sanitizers": {
+    "schema": 1,
+    "scope": "Final local native production sources, ASan+UBSan; leak detection disabled by retained harness. Hosted committed-source qualification remains separate.",
+    "input_digest": "9709a1aeab35e0e5e3469f705c35181d751fb0da7a3ed5c2d7600e7a07dcd774",
+    "base_git_head": "327afc58227b246390b19c275f58df77ae2dd734",
+    "status": "passed",
+    "checks_reported": 138280,
+    "suites": {
+      "admission": {
+        "binary_sha256": "e0017b65ef1c43e8cfd569ec79929c4b9c1b7e5280d50c747d87165b891b2cff",
+        "checks": 28092,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed",
+        "execution": {
+          "elapsed_seconds": 1.7758965639986855,
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      "chemistry": {
+        "binary_sha256": "b1e1f33bbfc2a568f5b968fb740545dc3281b021f3b8f246a61670fb20295136",
+        "checks": 4472,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed",
+        "execution": {
+          "elapsed_seconds": 1.6865236459998414,
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      "contact": {
+        "binary_sha256": "e311b9340f19ae6defc93de08296f55bb290ae781a4c72dd68dc08ed6331f994",
+        "checks": 81255,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed",
+        "execution": {
+          "elapsed_seconds": 0.01776395200067782,
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      "coordinator": {
+        "binary_sha256": "4734ddcf86a1124c6d6d38745eda595493a850f99cf435526b2f1ca3489923d7",
+        "checks": 7100,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed",
+        "execution": {
+          "elapsed_seconds": 17.416488474998914,
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      "external_fire": {
+        "binary_sha256": "fafcc08ce4408f603c60f96b5e6ff102ef5f7b23b3ac4cb985f2f08ad47552ca",
+        "checks": 3689,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed",
+        "execution": {
+          "elapsed_seconds": 1.0271758809976745,
+          "returncode": 0,
+          "timed_out": false
+        }
+      },
+      "storage": {
+        "binary_sha256": "b7722477aace848d5c18df62e1a3733ae8d3f3a5e88e6447351f67a6d76910d9",
+        "checks": 13672,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed",
+        "execution": {
+          "elapsed_seconds": 0.061666895999223925,
+          "returncode": 0,
+          "timed_out": false
+        }
+      }
+    }
+  },
+  "fixtures": {
+    "input": {
+      "path": "godot/tests/test_object_shard_m4_live_input.gd",
+      "sha256": "6be35cebdf13fa4ad32fac8f22268bab60cb3be7406a0e508a15fb94e9c9f38b",
+      "local_checks": 100,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 104,
+        "failures": [],
+        "schema": "objectshard-m4-live-input-v1",
+        "log_sha256": "36034996f3a8df5ad9c7cf5c13eeed11ec468b5daa79d45c3681059e41b156e7"
+      }
+    },
+    "tools": {
+      "path": "godot/tests/test_object_shard_m4_live_tools.gd",
+      "sha256": "c42f8cfc44a1d4d98a4c1713ee9809cc8701c6af1aa731918a627665b6763ffa",
+      "local_checks": 210,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 215,
+        "failures": [],
+        "schema": "objectshard-m4-live-tools-v1",
+        "log_sha256": "22ab97f9d67be201e28a077a8d095b717a9ac9dbaa597b4894afa5636c7e7428"
+      }
+    },
+    "stress": {
+      "path": "godot/tests/test_object_shard_m4_live_stress.gd",
+      "sha256": "973b0c05ac1f5c2571cd01cc38d654758134c664f53282c1cff20aae077e2811",
+      "local_checks": 213,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 224,
+        "failures": [],
+        "schema": "objectshard-m4-live-stress-v1",
+        "log_sha256": "26c3978a4b5cdf5ed1bb7a692d7f7d6e984e3a9b8db42dcecbf619a68deebaf1"
+      }
+    },
+    "disabled": {
+      "path": "godot/tests/test_object_shard_m4_disabled_input.gd",
+      "sha256": "0d92a6ee15c94031cc98e38d6cfbdba5f8643bb1b9d529eaff11c7bdb15cb4cd",
+      "local_checks": 9,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 9,
+        "failures": [],
+        "schema": "objectshard-m4-disabled-input-v1",
+        "log_sha256": "8493586af3c24ce5dbb8179061b8fffec0554fcae7bbf4a92c9f7dcd188f4ade"
+      }
+    },
+    "footprints": {
+      "path": "godot/tests/test_object_shard_m4_visible_footprints.gd",
+      "sha256": "6597d226ffa1f8e881dea228e5243d835df62f26f61b1712298a99cee5c3ae0b",
+      "local_checks": 19,
+      "local_status": "passed",
+      "local_scope": "value_contract_or_headless_physics",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 19,
+        "failures": [],
+        "schema": "objectshard-m4-visible-footprints-v1",
+        "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40"
+      }
+    },
+    "recipes": {
+      "path": "godot/tests/test_object_shard_m4_creative_scenes.gd",
+      "sha256": "d8dc20accb00cd65ca3618be6de13df05efa0735cfb5709d145c6fdf6d7de05f",
+      "local_checks": 61,
+      "local_status": "passed",
+      "local_scope": "value_contract_or_headless_physics",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 61,
+        "failures": [],
+        "schema": "objectshard-m4-creative-scenes-v1",
+        "log_sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d"
+      }
+    },
+    "constructions": {
+      "path": "godot/tests/test_object_shard_m4_creative_constructions.gd",
+      "sha256": "cba67e978a0d66eab75413d56101945f4ad1f94c4230000f634cfc53d451382c",
+      "local_checks": 212,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 224,
+        "failures": [],
+        "schema": "objectshard-m4-creative-constructions-v1",
+        "log_sha256": "308628ed10752b9dbe82aba4dcfe32ae3167c1e467c8beda36e4e484f469b76d"
+      }
+    },
+    "owner": {
+      "path": "godot/tests/test_object_shard_m4_owner_authored.gd",
+      "sha256": "d5f1f048467d741c2185850e8489fe03fe33ec08eac27fb2072d393fbfa471ce",
+      "local_checks": 137,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 147,
+        "failures": [],
+        "schema": "objectshard-m4-owner-authored-v1",
+        "log_sha256": "d154141d8ab1e851e9732b1bbc1ef025e819019ef9d367f99f771b62b4a137bd"
+      }
+    },
+    "bridge": {
+      "path": "godot/tests/test_object_shard_physics_bridge.gd",
+      "sha256": "1710969b699d9bcd2b946162ea816bbdbac0282f4849b08effa3ae6cae0daa15",
+      "local_checks": 28,
+      "local_status": "passed",
+      "local_scope": "value_contract_or_headless_physics",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 28,
+        "failures": 0,
+        "schema": "objectshard-physics-bridge-test-v1",
+        "log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84"
+      }
+    },
+    "rest": {
+      "path": "godot/tests/test_object_shard_rest_contacts.gd",
+      "sha256": "3e508979566ae603902d9e2318e661b7169c6d27b45d2ccaf57da002596a8ba9",
+      "local_checks": 37,
+      "local_status": "passed",
+      "local_scope": "value_contract_or_headless_physics",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 37,
+        "failures": 0,
+        "schema": "objectshard-rest-contact-test-v1",
+        "log_sha256": "59c06736643160bf3c16592c3202855066e431b9826d8fee2401614e4d0d2cc3"
+      }
+    },
+    "preview": {
+      "path": "godot/tests/test_object_shard_m4_edit_preview_render.gd",
+      "sha256": "9745b3b889ab36d721c5317263b301aa335f5a0ed19a6e262c40fe1719cc4bc3",
+      "local_checks": null,
+      "local_status": "parse_only_render_execution_pending",
+      "local_scope": "script parses; real cursor/framebuffer assertions require hosted graphical execution",
+      "hosted_status": "pending_case_receipt",
+      "package_status": "not_qualified"
+    },
+    "transport": {
+      "path": "godot/tests/test_object_shard_live_edit_contract.gd",
+      "sha256": "9b49002c171be5f222851825910f712de060967eea3186e38c9ba9b348a5f833",
+      "local_checks": 60,
+      "local_status": "passed",
+      "local_scope": "60-check recorded C review run; B later expanded the test; final hosted count is separately authoritative",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 65,
+        "failures": [],
+        "schema": "objectshard-live-edit-transport-contract-v1",
+        "log_sha256": "8d18d7031e9faafd6e4b7ffdc9ae56886c5f9dd350e0160800b94b14e2d8ae69"
+      }
+    },
+    "diagnostics": {
+      "path": "godot/tests/test_object_shard_live_edit_diagnostics.gd",
+      "sha256": "0e08a5e9ed8c7112dc298aed45e9b077cb9bef49517aa04624e7ca8d4f7fb926",
+      "local_checks": 27,
+      "local_status": "passed",
+      "local_scope": "value_contract_or_headless_physics",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 27,
+        "failures": 0,
+        "schema": "objectshard-live-edit-diagnostics-test-v1",
+        "log_sha256": "20d4d3f266b73948b00ce7ea8fc6ee848932095845ff34f17e0339a68400c85e"
+      }
+    },
+    "facade": {
+      "path": "godot/tests/test_object_shard_m4_same_world_extension.gd",
+      "sha256": "8eda5c200803e4efee435a585c478ab5e8bed047fe7cac9f85b81824c1b5bbda",
+      "local_checks": 59,
+      "local_status": "passed",
+      "local_scope": "headless_actual_native_input",
+      "hosted_status": "passed_individual_first_candidate_case; corrective_candidate_pending",
+      "package_status": "not_qualified",
+      "first_hosted_case": {
+        "headless": true,
+        "checks": 59,
+        "failures": [],
+        "schema": "objectshard-m4-actual-godot-sameworld-v1",
+        "log_sha256": "d7c0adf8b92d5bf07b20e5466bfbf804814c7cc64a20c963ac3eb68f87b5b8d3"
+      }
+    }
+  },
+  "workbench_requirements": [
+    {
+      "requirement": 1,
+      "description": "Ordinary eraser removes a structural support",
+      "fixtures": [
+        "input",
+        "stress"
+      ],
+      "assertions": "Production world_view.gui_input right-button/motion events remove authored ordinary supports; stress Slice debits all48 terrain cells across8 support stems.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 2,
+      "description": "Structure detaches and falls",
+      "fixtures": [
+        "input",
+        "constructions"
+      ],
+      "assertions": "After support removal, native owned bodies appear and semantic ticks progress; each new demonstration runs45 physical ticks with material accounting.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 3,
+      "description": "Same interaction continues against detached material",
+      "fixtures": [
+        "input",
+        "constructions"
+      ],
+      "assertions": "Held ordinary mode0 eraser transitions from terrain support into detached material without tool change; mixed yard then routes the same eraser into its rooted ordinary wing.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 4,
+      "description": "Brush mutates multiple cells with one reconstruction per owner",
+      "fixtures": [
+        "input",
+        "tools",
+        "stress"
+      ],
+      "assertions": "Detached held eraser removes186cells; Drill49 and Slice169 record one geometry rebuild; maximum-radius transactions remove197 and143cells and require Applied receipts.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 5,
+      "description": "Falling or rotating body remains editable",
+      "fixtures": [
+        "input",
+        "tools",
+        "footprints"
+      ],
+      "assertions": "Live falling body is cut and Slice release is committed during an actual in-flight physical interval; rotated inverse-coordinate/occlusion math is separately checked by the value fixture, not claimed as a physical rotated-body playtest.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 6,
+      "description": "Sleeping body can be cut and wake or fragment",
+      "fixtures": [
+        "input",
+        "tools",
+        "rest"
+      ],
+      "assertions": "Natural Rapier sleeping body is cut and wakes; settled panel Slice produces connected-island split and actual child bodies; retained support-removal tests verify natural wake.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 7,
+      "description": "Slice severs a substantial structural member",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "169-cell slice changes islands1->2, installs fragmentation and continues30 actual physical ticks.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 8,
+      "description": "Weathering is bounded and reproducible",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "Seed91999, density35%, radius8 removes69 actual cells; a fresh authored replay reproduces the exact removed coordinates.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 9,
+      "description": "Drill creates an actual structural hole",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "Radius4 circular Drill removes49 cells, native center becomes Empty and receipt records one owner reconstruction.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 10,
+      "description": "Area ignition does not perpetually reset combustion",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "49-cell ignition followed by60 semantic ticks and repeat application preserves existing nonzero countdown rather than restarting it.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 11,
+      "description": "Pointer release stops future admission",
+      "fixtures": [
+        "input",
+        "stress"
+      ],
+      "assertions": "Global outside-canvas release produces no new admitted capsule over16 callbacks; maximum-radius release drops the remaining stroke tail. Already admitted work may finish.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 12,
+      "description": "Camera changes preserve targeting",
+      "fixtures": [
+        "input",
+        "footprints",
+        "preview"
+      ],
+      "assertions": "Pan, zoom and resize route precision to the intended actual cell and cancel stale gestures. Real warped cursor and framebuffer preview alignment are a separate render-only pending gate.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 13,
+      "description": "Scene replacement retires previous input and owner",
+      "fixtures": [
+        "input",
+        "stress"
+      ],
+      "assertions": "Restore/replacement during held or pending gestures cancels future admission and installs a new session; no prior scene tail mutates the replacement.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    },
+    {
+      "requirement": 14,
+      "description": "ObjectShard-disabled ordinary editing stays compatible",
+      "fixtures": [
+        "disabled"
+      ],
+      "assertions": "Actual Main without the opt-in flag receives ordinary right-button eraser input, removes the intended Wall cell, preserves its neighbour and creates no hidden structural owner.",
+      "implemented": true,
+      "local_status": "passed_with_stated_scope",
+      "hosted_status": "first_candidate_Linux_headless_fixtures_passed; corrected_source_and_render_gates_pending",
+      "package_status": "not_qualified",
+      "physical_owner_status": "pending"
+    }
+  ],
+  "important_boundaries": [
+    {
+      "boundary": "Single-cell equivalence and maximum native batch",
+      "evidence": "native storage: batched_erase_is_atomic_bounded_and_rebuilds_once; maximum_batch_and_single_cell_equivalence",
+      "assertion": "Exact single-cell equivalence, duplicate elimination, all4096-cell removal and bounded maximum.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Atomic witness prevalidation",
+      "evidence": "native coordinator: m4_batch_witness_atomicity_and_material_accounting; facade59",
+      "assertion": "Every witness validated before debit; stale/foreign revisions and malformed outer position refuse; valid different projected positions may dedupe to one material cell.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Collider complexity/capacity",
+      "evidence": "native storage batched erase preflight",
+      "assertion": "Exact surviving geometry prepared before mutation; capacity refusal preserves inventory and collider state.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Fragment owner capacity",
+      "evidence": "native coordinator: m4_batch_fragment_capacity_retains_inventory_and_recovers",
+      "assertion": "Existing capacity policy retains compound inventory under pressure and later recovers, with no silent loss.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Terrain generation overflow",
+      "evidence": "native coordinator: m4_batch_world_generation_preflight_is_nonwrapping",
+      "assertion": "World journal preflight refuses nonwrapping capacity before any debit.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Deterministic selection and no-op",
+      "evidence": "native coordinator: m4_batch_weathering_and_ignition_are_deterministic; tools210",
+      "assertion": "Native deterministic coordinate selection independent of request order; no-op has zero rebuild and existing fire is not reset.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Foreground ownership and hidden terrain",
+      "evidence": "native coordinator: m4_world_batch_is_witnessed_deduplicated_and_owner_protected; footprints19",
+      "assertion": "Actual Product material in a true collider hole protects hidden terrain; synthetic overlapping owners test Cargo/Product foreground ranking and true Empty visibility.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "native_suites_passed_in_blocked_first_campaign",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Large footprint and long Slice",
+      "evidence": "footprints19; stress213",
+      "assertion": "Radius24 bounded footprints<=4096 with bounded scan count; partial freehand capsule is observable, oversized deliberate Slice refuses without a clipped success; actual wide edits must report Applied.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Malformed/lost/stale/uncertain receipt",
+      "evidence": "live_edit_contract; retained edit_delivery",
+      "assertion": "Strict scalar/envelope/source-target echoes and terrain subsets are checked; malformed or uncertain completion retains defensive state rather than a fabricated success.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Mass, inertia, COM and velocity",
+      "evidence": "physics_bridge28; actual input/tools/constructions f.validate",
+      "assertion": "Surviving occupied material drives physical properties; COM changes preserve the velocity field of surviving material. Open-system erasure does not claim total momentum conservation.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Natural sleeping support removal",
+      "evidence": "rest_contacts37; live_input100",
+      "assertion": "Sleeping bodies remain eligible; removal of support causes natural wake rather than artificial suspension.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Sparse carrier and retained physical regressions",
+      "evidence": "retained fragment_reabsorption134; physics_bridge28; complete matrix pending",
+      "assertion": "Sparse parent geometry, exact child geometry, reabsorption and conservative occupied motion bounds retain their existing assertions.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Complete owner retirement",
+      "evidence": "live_tools210",
+      "assertion": "All147 remaining owned cells (144Wood plus3Wall support-cap cells) are intentionally erased and body is retired; accounting includes every material.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Prolonged8-owner interaction",
+      "evidence": "live_stress213",
+      "assertion": "180 semantic ticks precede edits; all8 original owners are edited; owned and awake counts are recorded separately; repeated mutations and wider edits preserve progression and no Held state.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Rapid controls and cancellation",
+      "evidence": "live_stress213; preview render pending",
+      "assertion": "Tool switching, pause/resume, release and scene replacement cancel unadmitted work; actual viewport wheel/pan/Escape preview cancellation is separate graphical qualification.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Owner authored recipe",
+      "evidence": "owner_authored137; creative_scenes61",
+      "assertion": "Exact4207-byte attached recipe SHAad00c753...,5465Wood/Brick cells,90 native ticks, fresh reconstruction and explicit original_live_state_restored=false.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "New creative constructions",
+      "evidence": "creative_scenes61; creative_constructions212",
+      "assertion": "Perforated wall, weathered timber shed and mixed terrain/owned yard use ordinary demo routes and genuine material holes; owner tower extends preserved original five scenes.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    },
+    {
+      "boundary": "Delivered package custody and launchers",
+      "evidence": "fresh independent-windows-package workflow; verify_workbench_package.py/.ps1",
+      "assertion": "Immutable uploaded artifact ID, four clean shipped CMD path probes with negative mutations, exact source/native/runtime manifest checks and package-only engine/scripts replay. Pending actual corrected campaign.",
+      "local_status": "passed_or_reviewed_as_stated",
+      "hosted_status": "pending_exact_case_receipt",
+      "package_status": "not_qualified"
+    }
+  ],
+  "known_limits": [
+    "Slice and Drill place one owner transaction; a continuous gesture may visit multiple owners in a deterministic sequence but is not atomic across owners.",
+    "Native owner batch is at most4096 cells; UI radius is0..24. Long freehand movement is bounded/coalesced; a too-large deliberate Slice refuses visibly.",
+    "Slice release commits one immutable intent with a2-second safe-admission deadline; camera/tool/scene/new-gesture cancellation retires it before native admission.",
+    "Capacity pressure uses retained M4 compound ownership and explicit refusal. No debris-budget redesign is included.",
+    "Weathering removes authoritative material with deterministic selection. Repair, addition, welding, composition, stress/fatigue and Impact are not part of this candidate.",
+    "Saved authored-start constructions reconstruct a new World. They are not serialized live rigid-body checkpoints.",
+    "Local headless and hosted software-rendered timings are not physical Ryzen5600X/TITAN RTX performance. Owner physical acceptance remains pending.",
+    "PR754 remains Draft/HOLD. Mainline reconciliation and definitive integration acceptance belong to the subsequent mission."
+  ]
+}

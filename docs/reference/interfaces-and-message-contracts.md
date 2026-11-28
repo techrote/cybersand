@@ -6,10 +6,21 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 ---
 
 # Interfaces and message contracts
+
+The opt-in [ObjectShard M4 editing contract](../research/objectshard-m4-workbench.md#bounded-native-structural-transactions)
+extends the existing copied `object_shard_workbench_action` request with a bounded
+same-owner `targets` array or a separate `domain: terrain` / `terrain_cells`
+array, plus integer density/seed/material selection. The original exact `target`
+remains supported. Receipts echo immutable source witnesses separately from
+post-edit revisions and report exact cell counts and native stage costs. The
+worker/port validate bounded containers, identity and operation-specific accounting;
+unknown post-write completion holds authority. This is a private opt-in adapter
+extension, with no C ABI or native save-format change. Cross-owner gestures are
+sequential rather than a single atomic request.
 
 The opt-in [GEN-006 persistent-area interface](../systems/persistent-authored-areas.md) adds `capture_workbench_continuation`, private prepared continuation capture and bounded advance to `CyberDemoBridge`, plus `CyberPersistentAreaStorage` for locked immutable-file/manifest transactions. `simulation_worker.persistent_request/persistent_poll` admits one operation lease and copied result at a time. A nonzero-tick `workbench_continuation` receipt binds the source checkpoint, current full state, original construction definition and session/area/generation/operation identity. Ordinary `applied_run` and strict host evidence admission remain distinct. No C ABI, World capacity or native save-format version changes.
 

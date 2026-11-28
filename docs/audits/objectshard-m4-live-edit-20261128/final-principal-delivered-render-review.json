@@ -1,0 +1,79 @@
+{
+  "schema": "objectshard-live-edit-principal-delivered-render-review-v1",
+  "reviewer": "Astra principal",
+  "reviewed_utc": "2026-11-28T09:16:45.372162+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "workflow_run": 46125028803,
+  "evaluator_artifact_id": 15256411748,
+  "execution_evidence_artifact_id": 15256726038,
+  "status": "PASS",
+  "images": [
+    {
+      "source_artifact_path": "package-replay/test_object_shard_m4_live_tools-artifacts/drilled-panel.png",
+      "retained_path": "screenshots/delivered-drilled-panel.png",
+      "sha256": "50b83f20eb3716165e5c0b1d0a8e264a197d13e23bbb0dbeb6c418c2d411fbf7",
+      "bytes": 78693,
+      "dimensions": [
+        1028,
+        578
+      ],
+      "observation": "Visible circular opening; 49 removed cells and one parent rebuild are proved separately by the matched action receipt."
+    },
+    {
+      "source_artifact_path": "package-replay/test_object_shard_m4_live_tools-artifacts/weathered-panel.png",
+      "retained_path": "screenshots/delivered-weathered-panel.png",
+      "sha256": "7a33b88cc9b4fdcecbade2f1e42499a38d5791251098f77f2e84735e50dec18e",
+      "bytes": 80218,
+      "dimensions": [
+        1028,
+        578
+      ],
+      "observation": "Visible sparse pitting; reproducible seed/census equality comes from the same native input fixture."
+    },
+    {
+      "source_artifact_path": "package-replay/test_object_shard_m4_live_tools-artifacts/sliced-panel.png",
+      "retained_path": "screenshots/delivered-sliced-panel.png",
+      "sha256": "77c4ce2f3d72caa5d42341547c258e1c4ad720f93ace6f10260f823114b9be56",
+      "bytes": 78198,
+      "dimensions": [
+        1028,
+        578
+      ],
+      "observation": "Two physical bodies are reported after the line cut; exact separation is validated by the native/physical assertions, not inferred solely from this overview."
+    },
+    {
+      "source_artifact_path": "package-replay/test_object_shard_m4_creative_constructions-artifacts/construction-weathered.png",
+      "retained_path": "screenshots/delivered-weathered-shed.png",
+      "sha256": "2392f25f9ce53e4140e9e1bc126189987f49d02bc0b5ed96e8d8da1d9fb72e17",
+      "bytes": 83877,
+      "dimensions": [
+        1028,
+        578
+      ],
+      "observation": "Timber floor and wall members and pitting are visible after an acknowledged edit; the capture is paused while structural rebuilding is reported."
+    },
+    {
+      "source_artifact_path": "package-replay/test_object_shard_m4_creative_constructions-artifacts/construction-editing_yard.png",
+      "retained_path": "screenshots/delivered-editing-yard.png",
+      "sha256": "413eaa8068538ac74ad57b7cc31c7edeb018252b240422fc37adc417be97b55b",
+      "bytes": 92058,
+      "dimensions": [
+        1028,
+        578
+      ],
+      "observation": "Perforated detached panel and rooted timber/brick wing remain visibly distinct within the mixed-ownership fixture."
+    },
+    {
+      "source_artifact_path": "package-replay/material-presentation-captures/structures-weathering-controls.png",
+      "retained_path": "screenshots/delivered-structures-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "dimensions": [
+        740,
+        650
+      ],
+      "observation": "Nine construction choices, weathering percentage and seed, selected-material filter, recording and diagnostics controls, and authored-start explanation are readable."
+    }
+  ],
+  "scope": "Visual review of the actual producer-extracted evaluator captures, checked against independent execution receipts; overview images do not independently prove material counts or fragment topology. Hosted ANGLE, not physical owner evaluation."
+}

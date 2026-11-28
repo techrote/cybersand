@@ -1,0 +1,38 @@
+{
+  "schema": "objectshard-material-transition-artifact-custody-v1",
+  "retrieved_utc": "2026-11-22T08:37:59.358727+00:00",
+  "source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "artifact": {
+    "id": 14745999101,
+    "name": "ci-workflow-inventory-45003383402-1",
+    "size_in_bytes": 20111,
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745999101",
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745999101/zip",
+    "expired": false,
+    "created_at": "2026-11-22T08:34:24Z",
+    "expires_at": "2027-02-20T08:33:43Z",
+    "updated_at": "2026-11-22T08:34:24Z",
+    "digest": "sha256:6d83743fb83d859abac46112c6ca0e23314e90b96fc03034e9af97140706001a",
+    "workflow_run": {
+      "id": 45003383402,
+      "repository_id": 1350077435,
+      "head_repository_id": 1350077435,
+      "head_branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "head_sha": "73018218092e79fbe935aa60890e33bd9f4859ac"
+    }
+  },
+  "file_id": "file_00000000be94821083b2585270b298b0",
+  "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-material-transition/delivery/m3-transition-ci-inventory-14745999101.zip",
+  "archive_bytes": 20111,
+  "archive_sha256": "6d83743fb83d859abac46112c6ca0e23314e90b96fc03034e9af97140706001a",
+  "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-material-transition/delivery/14745999101",
+  "members": [
+    {
+      "path": "ci-workflow-inventory.json",
+      "bytes": 296801,
+      "extracted": true,
+      "sha256": "64d4fa19e87cf7778afb504554026a102769b767fbe81a1d8b8f41420de2f793"
+    }
+  ],
+  "extraction_scope": "complete"
+}

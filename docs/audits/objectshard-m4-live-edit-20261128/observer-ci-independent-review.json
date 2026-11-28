@@ -1,0 +1,112 @@
+{
+  "schema": "objectshard-live-edit-observer-ci-independent-review-v1",
+  "reviewer": "Specialist C; B independently reviews Slice helper, C independently reviews B drain and A workflow",
+  "application_source_unchanged_from": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "source_changes_scope": "test observation and CI scheduling only; final commit pending",
+  "reviewed_inputs": {
+    ".github/workflows/objectshard-m4-completion.yml": "1a7cba9324a8fee8c733aa16acb1563718028ed6fef47aa074ced4e79fef31da",
+    "godot/tests/support/object_shard_m4_live_input_fixture.gd": "7965f56522aa1de47bba69b8e9dda0961e0bd5b3e5e293679edb100f70b23af8",
+    "godot/tests/test_object_shard_m4_live_tools.gd": "8f0478d4492cd50035372437afdb7134215e47ba41677b8bdb4f728777e5f715",
+    "godot/tests/test_object_shard_m4_live_stress.gd": "90420d741bc4d2dcbfd0084d748c3c656d81a448063297fd78fb7fc42369f339"
+  },
+  "failed_campaign": {
+    "run": 46120081906,
+    "source": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+    "artifact": 15254602484,
+    "artifact_sha256": "b5ce645ff3985abcd44cb6ad082b3c7e3c74cbfc85b4621d85339a24f64665a4",
+    "bytes": 32546092,
+    "headless": "77 cases passed",
+    "graphical": "65 cases; live_tools and live_stress failed; entire campaign remains failed"
+  },
+  "causal_findings": [
+    "Old live_tools process_frame observer required interval_active and pending_serial simultaneously; rendered schedule progressed6643 native ticks without exposing this transient subphase.",
+    "Old live_stress drain required simultaneous global physics_ready despite completed edit: body1 geometry revision2 installed with169usec,wake and mass change at physicsstep876; final3141native ticks and12564physical steps,noheldreason.",
+    "Completed Rapier interval still waits for authoritative native tick; actual AwaitingCompletedNativeTick with worker tick_due AND owner_busy is genuine unfinished physical/semantic work. Mere Play is insufficient.",
+    "Forced5fps exposed a new test-only retirement overconstraint: body has noRID, published has_body=false,geometry_pending=false,lastpresented/current coherent true,exactApplied147removed, but emptyDraining carrier still owns_inventory=true. Corrected observer checks actual allEmpty materials plus generation/geometry/noRID/nohas_body instead of treating ownership capability as occupied inventory. Diagnostic reproductions deliberately stopped after decisive capture, not claimed passing."
+  ],
+  "corrected_contracts": {
+    "slice_release": "Existing GUI mouse release occurs immediately after recording real pending segment OR completed interval pending native tick, with full fence/lease/serial/tick/owner identity. Native timing/state is not altered.",
+    "completion": "Selected action id + port generation + full native owner identity; exact successful Applied receipt; genuine production last-presented latch; coherent post-transaction publication; installed bridge body generation/geometry or complete retirement. Does not demand process-frame observer sample global idle again.",
+    "ci": "Both full Windows matrix commands retained verbatim with nonzero guards and same immutable producer/pinned engine/runtime. Evaluator package/4 launcher roots/extracted replay unchanged. Fresh independent package consumes evaluator artifact ID. Guarded publication retains all5old gates and adds both split matrix gates."
+  },
+  "local_observation": {
+    "tools": {
+      "checks": 215,
+      "failures": [],
+      "log_sha256": "cdabd4ca0405ddb397c0588edb1e32d0e4d0561818cbbffbdc794411d3e96ed1",
+      "release_witness": {
+        "kind": "segment_receipt_pending",
+        "phase": "RealRapierInterval",
+        "interval_active": true,
+        "pending_serial": 417,
+        "motion_lease": 83,
+        "native_tick": 82
+      },
+      "slice_removed_cells": 169
+    },
+    "low_callback_tools": {
+      "checks": 210,
+      "failures": [],
+      "exit_code": 0,
+      "max_fps": 5,
+      "log_sha256": "6a2cb033130df77f8e63c39a24c1a46b509c2e0c8709db3155e1bb70351c82ef",
+      "log_bytes": 366634,
+      "release_witness": {
+        "interval_active": true,
+        "kind": "segment_receipt_pending",
+        "motion_fence": {
+          "completed_sample": -1,
+          "current_sample": -1,
+          "due_sample": -1,
+          "lease": 288,
+          "ordinary_refusal": "",
+          "owner_busy": false,
+          "prepared_sample": -1,
+          "reused_prepared_samples": 287,
+          "tick_due": false
+        },
+        "motion_lease": 288,
+        "native_instance_id": -9223371950351448520,
+        "native_tick": 285,
+        "pending_kind": "motion",
+        "pending_serial": 1442,
+        "phase": "RealRapierInterval",
+        "physical_intervals": 287,
+        "release_usec": 23089330,
+        "scope": "actual unfinished physical/semantic transaction at pointer release",
+        "world_generation": 4
+      },
+      "complete_removed_cells": 147
+    },
+    "low_callback_stress": {
+      "checks": 213,
+      "failures": [],
+      "max_fps": 5,
+      "log_sha256": "9b4ac0a9c7f12d0a58024198950b8f260ab2004509a06b2cee0156dfd39d5b17",
+      "log_bytes": 211136,
+      "scope": "B fullstress run before final empty-retirement branch refinement and final editing footer retention; its occupied-body completion path is unchanged",
+      "native_ticks": [
+        220,
+        334
+      ],
+      "editing_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 12,
+        "receipt": 12,
+        "wait": 21
+      }
+    },
+    "normal_tools_scope": "215checks run before final empty-carrier observer refinement; allpass; historical local observation"
+  },
+  "qualification_limits": [
+    "Local Linux headless only; hosted rendered replay pending new exact source.",
+    "Final Windows evaluator and independent extracted-package gates remain pending.",
+    "Physical owner acceptance not established."
+  ],
+  "independent_reviews": [
+    "C independently reviewed B completion predicate and A workflow split.",
+    "B independently reviewed C unfinished-transaction Slice witness."
+  ]
+}

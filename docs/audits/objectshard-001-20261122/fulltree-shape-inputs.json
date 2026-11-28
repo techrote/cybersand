@@ -1,0 +1,27 @@
+{
+  "source_sha256": "792fe0ce22a5b4de924b6ed3c9fd8b4567ceb419ab31154f791e5402ed76979e",
+  "benchmark_source_sha256": "bf47f6c0755f2bed5a3603b325bb247f7ef4c2a23bd628354606b87a13acac98",
+  "implementation_inputs": "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/inputs.json",
+  "command": [
+    "g++",
+    "-std=c++20",
+    "-O3",
+    "-DNDEBUG",
+    "-pthread",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "-I",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/source/native/include",
+    "build/objectshard-fulltree-shape-readback/readback.cpp",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/world.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/material_rules.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/scheduler_geometry.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/settled_world_discovery.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/object_shard.o",
+    "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/objects/object_shard_coordinator.o",
+    "-o",
+    "build/objectshard-fulltree-shape-readback/readback"
+  ]
+}

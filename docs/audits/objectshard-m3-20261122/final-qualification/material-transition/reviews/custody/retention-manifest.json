@@ -1,0 +1,75 @@
+{
+  "schema": "objectshard-independent-material-transition-retention-v1",
+  "utc": "2026-11-22T08:46:21.590125+00:00",
+  "tool_source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "tool_source_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "qualified_runtime_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "files": [
+    {
+      "path": "audit_transition.py",
+      "bytes": 12074,
+      "sha256": "bf57ea2a6aa5c21166718f0e77443e67b09ae1e0ee69f70e8d09e083a3bbe73d"
+    },
+    {
+      "path": "checkout-merge-commit.json",
+      "bytes": 2844,
+      "sha256": "07f5880a2c5abbb011e51898577a1be96db2a6541fd37fbc19ba657655f2023c"
+    },
+    {
+      "path": "completion-review.json",
+      "bytes": 6717,
+      "sha256": "98ff3ac37bf20a6197993bf1e563c8a6bfd2b1c4ba16a428aa025f336c3d28f8"
+    },
+    {
+      "path": "documentation-44989675198-137107785492.log",
+      "bytes": 137961,
+      "sha256": "4db1ee70376724b683628819e42f92c812948e35a2eea3d8078827c0f1b95426"
+    },
+    {
+      "path": "documentation-44999120750-137136528058.log",
+      "bytes": 138373,
+      "sha256": "d8d39cc23d581b84196aed97fbd83524e2000a67c21066361faa5dc1dcd04fab"
+    },
+    {
+      "path": "documentation-45002794045-137147763392.log",
+      "bytes": 138459,
+      "sha256": "994cab767080c5af4ff5675013c1cdbd3863792d8a11cda380c70a6904ef03d4"
+    },
+    {
+      "path": "documentation-45003383402-137149569699.log",
+      "bytes": 283319,
+      "sha256": "4f86b4ca9e599d6255b9ce80f2dcc47faebb0f1fefeb78382f61627067a36b3c"
+    },
+    {
+      "path": "final-workflow-readback.json",
+      "bytes": 8906,
+      "sha256": "431821b5e2a7f76126206b45c51a22005a25a002f6e527c9b610fe229e0fe3d1"
+    },
+    {
+      "path": "precision-and-local-guard-review.json",
+      "bytes": 2663,
+      "sha256": "54a1ced2ebaa40c099ae07c92d62fcb01143ea04ac64b9b8a039b5b78d0e4526"
+    },
+    {
+      "path": "published-source-review.json",
+      "bytes": 1332,
+      "sha256": "7576160a6e39c1e0bdd94c06d24c158f4c570e3622dc59c239608cfdd4a6d8ff"
+    },
+    {
+      "path": "seal_completion.py",
+      "bytes": 9585,
+      "sha256": "1e776e95eea053a996020a8302c247e7c92868c475e48c618cabfe4c70e877f8"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 12193,
+      "sha256": "de1e48125bb56fe5117e900fae6b5095855b333b2e651c671f3f236d45132682"
+    },
+    {
+      "path": "workflow-readback.json",
+      "bytes": 21715,
+      "sha256": "4f644b7fc73e9914843fa4f54f9f57edf71f57234b72c35a7727edf8b51008aa"
+    }
+  ],
+  "scope": "This later transition audit supplements the unchanged sealed e034 review. Historical failures remain exact retained logs. The manifest excludes itself; downloaded parity ZIP/member remain in the separately authenticated delivery directory."
+}

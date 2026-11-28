@@ -1,0 +1,318 @@
+{
+  "schema": "objectshard-windows-zip-qualification-v1",
+  "archive": "D:\\a\\cybersand\\cybersand\\build\\objectshard-windows-evaluator.zip",
+  "zip_sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+  "cases": [
+    {
+      "case": "spaces",
+      "root": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard evaluation with spaces",
+      "root_characters": 71,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "commands": [
+        {
+          "script": "Verify ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 7.25
+        },
+        {
+          "script": "Open ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 7.844000000000051
+        },
+        {
+          "script": "Open ObjectShard M3 Preflight.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 5.8279999999999745
+        }
+      ],
+      "launch_receipt": {
+        "checks": 6,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard evaluation with spaces\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by launch qualification",
+        "physics": {
+          "geometry_install_max_usec": 0,
+          "geometry_install_usec": 0,
+          "pose_copy_usec": 24,
+          "rapier_flush_usec": 5,
+          "rapier_step_usec": 225,
+          "terrain_install_max_usec": 764,
+          "terrain_install_usec": 78
+        },
+        "schema": "objectshard-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 41
+      },
+      "preflight_launch_receipt": {
+        "checks": 15,
+        "completed_ticks": 2,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "host": "standalone-exclusive-worker-rehearsal",
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard evaluation with spaces\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by automated GUI launch qualification",
+        "production_workbench": false,
+        "schema": "objectshard-worker-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 3
+      },
+      "verifier_adversaries": {
+        "get_file_hash_shadow_exit_code": 0,
+        "tamper_exit_code": 1,
+        "tamper_path": "READ-ME.md",
+        "specific_hash_failure_observed": true,
+        "restored_sha256": "654a71f6bdd2c763e1e89788ac2eb3610cb161d335514d00110e2ebc76bc4bd1",
+        "after_restoration_inventory_verified": true,
+        "scope": "Unchanged delivered ZIP; explicit adversarial extraction restored and fully reverified"
+      }
+    },
+    {
+      "case": "parentheses",
+      "root": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard Lab (1)",
+      "root_characters": 56,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "commands": [
+        {
+          "script": "Verify ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 1.015999999999849
+        },
+        {
+          "script": "Open ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 8.094000000000051
+        },
+        {
+          "script": "Open ObjectShard M3 Preflight.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 5.625
+        }
+      ],
+      "launch_receipt": {
+        "checks": 6,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard Lab (1)\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by launch qualification",
+        "physics": {
+          "geometry_install_max_usec": 0,
+          "geometry_install_usec": 0,
+          "pose_copy_usec": 26,
+          "rapier_flush_usec": 8,
+          "rapier_step_usec": 194,
+          "terrain_install_max_usec": 639,
+          "terrain_install_usec": 107
+        },
+        "schema": "objectshard-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 41
+      },
+      "preflight_launch_receipt": {
+        "checks": 15,
+        "completed_ticks": 2,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "host": "standalone-exclusive-worker-rehearsal",
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard Lab (1)\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by automated GUI launch qualification",
+        "production_workbench": false,
+        "schema": "objectshard-worker-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 3
+      }
+    },
+    {
+      "case": "nested",
+      "root": "D:\\a\\_temp\\objectshard-delivered-zip\\nested evaluation\\another level\\longer extraction directory\\owner playtesting\\candidate",
+      "root_characters": 124,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "commands": [
+        {
+          "script": "Verify ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 1.0779999999999745
+        },
+        {
+          "script": "Open ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 8.030999999999949
+        },
+        {
+          "script": "Open ObjectShard M3 Preflight.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 5.891000000000076
+        }
+      ],
+      "launch_receipt": {
+        "checks": 6,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\nested evaluation\\another level\\longer extraction directory\\owner playtesting\\candidate\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by launch qualification",
+        "physics": {
+          "geometry_install_max_usec": 0,
+          "geometry_install_usec": 0,
+          "pose_copy_usec": 25,
+          "rapier_flush_usec": 6,
+          "rapier_step_usec": 202,
+          "terrain_install_max_usec": 620,
+          "terrain_install_usec": 74
+        },
+        "schema": "objectshard-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 41
+      },
+      "preflight_launch_receipt": {
+        "checks": 15,
+        "completed_ticks": 2,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "host": "standalone-exclusive-worker-rehearsal",
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\nested evaluation\\another level\\longer extraction directory\\owner playtesting\\candidate\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by automated GUI launch qualification",
+        "production_workbench": false,
+        "schema": "objectshard-worker-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 3
+      }
+    },
+    {
+      "case": "unicode",
+      "root": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard_日本語_é",
+      "root_characters": 54,
+      "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "commands": [
+        {
+          "script": "Verify ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 1.0310000000001764
+        },
+        {
+          "script": "Open ObjectShard Lab.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 8.1099999999999
+        },
+        {
+          "script": "Open ObjectShard M3 Preflight.cmd",
+          "exit_code": 0,
+          "elapsed_seconds": 5.921999999999798
+        }
+      ],
+      "launch_receipt": {
+        "checks": 6,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard_日本語_é\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by launch qualification",
+        "physics": {
+          "geometry_install_max_usec": 0,
+          "geometry_install_usec": 0,
+          "pose_copy_usec": 33,
+          "rapier_flush_usec": 6,
+          "rapier_step_usec": 222,
+          "terrain_install_max_usec": 653,
+          "terrain_install_usec": 122
+        },
+        "schema": "objectshard-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 41
+      },
+      "preflight_launch_receipt": {
+        "checks": 15,
+        "completed_ticks": 2,
+        "engine": {
+          "build": "official",
+          "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+          "hex": 263936,
+          "major": 4,
+          "minor": 7,
+          "patch": 0,
+          "status": "stable",
+          "string": "4.7-stable (official)",
+          "timestamp": 0
+        },
+        "failures": 0,
+        "host": "standalone-exclusive-worker-rehearsal",
+        "manifest_path": "D:\\a\\_temp\\objectshard-delivered-zip\\ObjectShard_日本語_é\\.\\objectshard-lab-manifest.json",
+        "physical_owner_acceptance": "not established by automated GUI launch qualification",
+        "production_workbench": false,
+        "schema": "objectshard-worker-package-launch-v1",
+        "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "tick": 3
+      }
+    }
+  ],
+  "failures": [],
+  "status": "passed"
+}

@@ -1,0 +1,203 @@
+{
+  "results": {
+    "fragment_negative_controls": {
+      "checks": 386,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": [],
+      "platform": "Linux",
+      "raw_log_sha256": "4d4b71362548e961ba65f37a75dc5074aedba673543ca43f8be3c8c5b79f443a",
+      "schema": "objectshard-fragment-motion-v1",
+      "scope": "actual Rapier natural off-centre collision, bridge readback and protective envelope controls; native ACK is independently covered by coordinator/integration suites"
+    },
+    "identity": {
+      "checks": 70,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": 0,
+      "platform": "Linux",
+      "raw_log_sha256": "f6b79cf9c7af79d1420b15afa09addd89b5630fbb349e0e725f059c7fd022b58",
+      "schema": "objectshard-physics-identity-test-v1"
+    },
+    "incremental": {
+      "checks": 137,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": 0,
+      "platform": "Linux",
+      "raw_log_sha256": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39",
+      "schema": "objectshard-incremental-motion-test-v1"
+    },
+    "lab": {
+      "checks": 379,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": 0,
+      "platform": "Linux",
+      "raw_log_sha256": "f1f7bef10be1ab1171122b10753cb119b69bfa723bc4d24fec64c6486a995ecf",
+      "schema": "objectshard-lab-integration-test-v1"
+    },
+    "motion_segments": {
+      "checks": 47,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": 0,
+      "platform": "Linux",
+      "raw_log_sha256": "0f7ff2d4eeca689e76ca1cfbb355334c8bd1bf0192751f7424d028d9d45028fb",
+      "schema": "objectshard-motion-segment-test-v1"
+    },
+    "physics_mass_com": {
+      "checks": 28,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": 0,
+      "platform": "Linux",
+      "raw_log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84",
+      "schema": "objectshard-physics-bridge-test-v1"
+    },
+    "rest_geometry": {
+      "checks": 37,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": 0,
+      "platform": "Linux",
+      "raw_log_sha256": "e858828369df89684daf15417d365eea8c9e99a8e8a99130a5a6844399ecc504",
+      "schema": "objectshard-rest-contact-test-v1"
+    },
+    "small_fragment_native": {
+      "actual_physical_segments": 2400,
+      "cases": [
+        {
+          "completed_native_intervals": 120,
+          "healthy": true,
+          "initial_horizontal_velocity": 0.5,
+          "maximum_segment_rotation": 0.232285737991333,
+          "native_instance_id": -9223372008014739994,
+          "peak_angular_velocity": 55.8112716674805
+        },
+        {
+          "completed_native_intervals": 120,
+          "healthy": true,
+          "initial_horizontal_velocity": 0.6,
+          "maximum_segment_rotation": 0.293247044086456,
+          "native_instance_id": -9223372007930853912,
+          "peak_angular_velocity": 70.5055999755859
+        },
+        {
+          "completed_native_intervals": 120,
+          "healthy": true,
+          "initial_horizontal_velocity": 0.7,
+          "maximum_segment_rotation": 0.351135730743408,
+          "native_instance_id": -9223372007846967834,
+          "peak_angular_velocity": 84.4896545410156
+        },
+        {
+          "completed_native_intervals": 120,
+          "healthy": true,
+          "initial_horizontal_velocity": 0.8,
+          "maximum_segment_rotation": 0.356914639472961,
+          "native_instance_id": -9223372007763081752,
+          "peak_angular_velocity": 85.8875274658203
+        },
+        {
+          "completed_native_intervals": 120,
+          "healthy": true,
+          "initial_horizontal_velocity": 0.9,
+          "maximum_segment_rotation": 0.36427903175354,
+          "native_instance_id": -9223372007679195674,
+          "peak_angular_velocity": 87.6693954467773
+        }
+      ],
+      "checks": 8471,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": [],
+      "native_pose_acknowledgements": 2400,
+      "platform": "Linux",
+      "raw_log_sha256": "2ffcc5bfa89c18169ce256e7c5f84bb801b3b5e91a56e88277432c8eed97d767",
+      "schema": "objectshard-m4-small-fragment-native-chain-v1",
+      "scope": "real same-World material debit, real gravity/ledge collision, every actual Rapier pose natively acknowledged, exact material inventory and single semantic clock"
+    },
+    "worker_rehearsal": {
+      "checks": 41,
+      "failures": 0,
+      "raw_log_sha256": "de0328e27bc8ad07faaeb1a021778c6e94b03f656ca348ce15dff7f5c196dbf8",
+      "schema": "objectshard-worker-rehearsal-test-v1",
+      "scope": "Actual standalone exclusive native thread and real main-thread Rapier; not production Workbench integration"
+    }
+  },
+  "schema": "objectshard-com-focused-tests-v1",
+  "source_commit": "062670c1e75c43a0e72fc3727fbe0f62bb3736f6"
+}

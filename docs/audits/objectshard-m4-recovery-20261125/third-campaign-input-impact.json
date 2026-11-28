@@ -1,0 +1,77 @@
+{
+  "schema": "objectshard-m4-third-campaign-impact-v1",
+  "disposition": "READY_FOR_SOURCE_BOUND_QUALIFICATION_NOT_YET_QUALIFIED",
+  "prior_source": "422d131048db573c0abd08bcca25f6b3999e8703",
+  "prior_tree": "0077add3ad68ccaa782b28beb62b19552f48a124",
+  "reviewed_implementation_commit": "30b8cc696f39d08b02e8833d0c45a229e9a2fe1a",
+  "native_input_count": 117,
+  "native_inputs_unchanged": true,
+  "linux_build_contract_inputs_unchanged": true,
+  "native_input_map_sha256": "5f1abd8676b875201a8b44a15bb2b4bbdcdb4c348fb6bddef2b3d6d8a7fbbb79",
+  "qualification_input_count": 1078,
+  "qualification_input_map_sha256": "495af7560c46c793c03b40485d9598414b7185d320128721b1b8389f4a3f8cff",
+  "changed_execution_inputs": [
+    {
+      "path": "godot/scripts/object_shard_m4_workbench_port.gd",
+      "change": "modified",
+      "before_sha256": "b3c447b6ab5a166d6656d9fccdd4d34652e2cd6ef0b3bcfd996ef7b919cdaa8d",
+      "sha256": "35887a6285d262d494303da6ab5caf92e926869151c10487ff039b82ae895ea3"
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "change": "modified",
+      "before_sha256": "c8405e32db3a81e9f48d6c94a05b35346b68203307be52721f69d9c6e1519a26",
+      "sha256": "308eca97913df3fcd91630b95596d6b4dac205a4b23fae66d92ba51b340eee85"
+    },
+    {
+      "path": "godot/tests/profile_object_shard_m4_disabled_control.gd",
+      "change": "modified",
+      "before_sha256": "dbabbc94d87fc449d89ae3cc0c99ee12ba6f4b6db526dfacb7397259a5fdefb0",
+      "sha256": "6fc42b178288ddc47c5f3801f1f46535904e54d9f55ba00a2ba8d8f8fb69c8ea"
+    },
+    {
+      "path": "godot/tests/test_object_shard_m4_edit_delivery_fence.gd",
+      "change": "added",
+      "sha256": "0dc2c1666afed9a1dbb7ad48df8f6bb26845905d576b8f1e3fc64f6d9098d247"
+    },
+    {
+      "path": "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
+      "change": "modified",
+      "before_sha256": "ff5dd71c012b0accf0a26731cc69e13769509844fb3b92932a00a5db4679426f",
+      "sha256": "31bbcebf0b30354ff139d8c8048f99a92d3499d2094714829c3107205c7fee96"
+    },
+    {
+      "path": "tools/objectshard/qualify_workbench.py",
+      "change": "modified",
+      "before_sha256": "fab4ff0df15c8404ba2661e19d483ef057d4c3ac3f5f9d5bc73f0bc7dc8b7b03",
+      "sha256": "595a93788a76a2f97d97a5fe392f99bf0af64307426e7e36162aa73bffbb6bc2"
+    }
+  ],
+  "product_scope": [
+    "Authenticated bounded applied-edit delivery identity in existing port; complete owner/port retirement binding and monotonic transaction high-water mark.",
+    "Ordinary held-pointer admission waits for the actual coherent displayed transaction in addition to unchanged physics/geometry readiness.",
+    "No C++, material laws, native ownership, physics steps, worker pacing, production defaults or dependency versions changed."
+  ],
+  "qualification_scope": [
+    "Preserved all prior cases, with43 primary/32 graphical-lane/17 pristine-package cases and18 actual rendered cases.",
+    "Exact user-Pause ACK before disabled-control measurement; unchanged12-second and zero-progression assertions.",
+    "Deterministic actual delayed-Main receipt adversity, plus actual mounted Settle gesture on naturally sleeping plank.",
+    "New36-assertion value-only metadata identity/order/retirement challenge."
+  ],
+  "required_campaign": [
+    "Fresh existing source-bound native candidate artifacts under unchanged native inputs/toolchains.",
+    "Full native/sanitizer/budget/material contract gate.",
+    "Actual Linux and Windows ordinary Workbench, graphical, Water/actor/equipment regressions.",
+    "Actual shipped CMD, all provenance refusals, pristine extracted replay and independently verified immutable evaluator ZIP."
+  ],
+  "retained_failures": [
+    "Run45517975210 remainsFAIL (long-burn mixed-clock witness; disabled-control Pause admission).",
+    "Run45522534938 Linux remainsFAIL (actual held-pointer publication race). Windows outcome still pending at this impact checkpoint.",
+    "Interrupted and SIGKILL local pause-control attempts areNOTPASS; cause not established."
+  ],
+  "local_positive_evidence": [
+    "held-pointer-fix-independent-review.json",
+    "mounted-settle-local.json"
+  ],
+  "owner_acceptance": "Physical Windows11/NVIDIA performance remainsHOLD; headless or hosted renderer rates do not close it."
+}

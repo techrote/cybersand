@@ -1,0 +1,24 @@
+{
+  "execution_input_sha256": {
+    "godot/tests/profile_object_shard_m4_disabled_control.gd": "dbabbc94d87fc449d89ae3cc0c99ee12ba6f4b6db526dfacb7397259a5fdefb0",
+    "godot/tests/profile_object_shard_m4_render_control.gd": "ac53eb4c975a50422921ad59e0f60b241e5b13d69ebf2d0724ed93f76973357f",
+    "godot/tests/profile_object_shard_m4_workbench.gd": "824006412e6941bb1a3503d2ca51f7437cffcbd8a724ce87f0fbd13b3ca00b53",
+    "tools/objectshard/qualify_workbench.py": "b4cd98ac19e2e56ff351aecebb44750280235714327742495985232ab7f85646",
+    "tools/objectshard/test_workbench_qualification.py": "685cdeea760b22db6b77c847d685ec8ad65d0ace9b5e28eb66276d0caee11d85"
+  },
+  "findings": [
+    "Disabled control starts the actual ordinary Workbench with the same tower recipe, overview camera and one ordinary actor; no ObjectShard enabling flag, alternate native World or substitute physics is introduced.",
+    "Paused/running control rows assert absent attachment, no material body and no coordinator snapshots; actual ordinary native and Rapier progression is required only while running.",
+    "Disabled/enabled graphical report admission requires identical scene, camera, canvas, authored rectangle hash and view origin/size.",
+    "Callback sampling and diagnostic recording are independent options, so light tower recording on/off uses the same callback sampling policy.",
+    "Graphical qualification now explicitly requires display for both ordinary checkbox and CLI recording fixtures; their registered footer remains objectshard-m4-optional-diagnostics-v1.",
+    "Profile and control validation is additive; retained physical workload, native pose echo and material conservation requirements remain in place."
+  ],
+  "native_authority_changed": false,
+  "performance_interpretation_limit": "Enabled render-control Fixture.open connects per-callback and per-draw display coherence observers; disabled control manual setup does not. The disabled/enabled difference therefore includes asymmetric qualification observer cost. Matched recording on/off light profiles use the same observer policy.",
+  "runtime_result": "Pending source-bound hosted qualification; this record is independent code review only.",
+  "schema": "objectshard-m4-independent-performance-controls-review-v1",
+  "source_commit": "61213289ccaf2ec9771274f73576752ac1d648ff",
+  "source_tree": "639b3709c7ae82236aacab86ff3cb13327b5e446",
+  "verdict": "APPROVE for qualification; disclose asymmetric coherence observer cost in disabled/enabled comparison"
+}

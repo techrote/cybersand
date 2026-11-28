@@ -1,0 +1,126 @@
+{
+  "artifact": {
+    "bytes": 5242715,
+    "id": 14980020675,
+    "sha256": "9e65cbe3bf9e8b84fe6906b04d39639920ff83d3334cc2e3610a94f774d7b5f6"
+  },
+  "before_tick_reconstruction": "The retained pre-ignition raw inventory source.tick and raw_state_scan.tick are34. Ignition remains paused; the first trace/progress record is34 and the frozen progress condition agrees. Native structural debit at514 is therefore exactly480elapsed native ticks.",
+  "bound_native_ticks": 480,
+  "case_checks": 79,
+  "completion": "natural exit 1, not timeout",
+  "diagnosis": "The test combines runtime.frame tick/geometry with runtime.publication material/state/incarnation. The native structure already has eight surviving cells and revision2 at exactly480ticks, while its displayed cell is still the old Wood and applied geometry remains revision1. Next observed native tick carries the acknowledged display. This is an invalid mixed-clock lifetime measurement; it is not evidence that the native chemistry law requires481ticks.",
+  "displayed_empty_observation_native_tick": 515,
+  "disposition": "FAILED campaign preserved; fixture-only correction admitted for focused proof and new source-exact qualification. No native, physics, chemistry or presentation implementation change is justified by this evidence.",
+  "failure": [
+    "exact moving Wood naturally exhausts all 240 period-two opportunities within 480 native ticks"
+  ],
+  "headless_matrix": {
+    "executed": 42,
+    "failed": [
+      "test_object_shard_m4_long_burn"
+    ],
+    "graphical_and_package": "not executed; never counted as qualified",
+    "passed": 41
+  },
+  "job_id": 138885301327,
+  "job_status": "failure",
+  "limits": "The failed trace does not retain the native material array separately or the displayed publication tick. Its metadata/structural debit and frozen source establish the clock mismatch; the corrected case must directly observe native cell/tick together and independently prove delivered display state.",
+  "native_structural_debit_tick": 514,
+  "observed_trace_boundary": [
+    {
+      "applied_physics_revision": 1,
+      "cell": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 1
+      },
+      "geometry_revision": 1,
+      "has_body": true,
+      "structural": 9,
+      "tick": 512
+    },
+    {
+      "applied_physics_revision": 1,
+      "cell": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 1
+      },
+      "geometry_revision": 1,
+      "has_body": true,
+      "structural": 9,
+      "tick": 513
+    },
+    {
+      "applied_physics_revision": 1,
+      "cell": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 1
+      },
+      "geometry_revision": 2,
+      "has_body": true,
+      "structural": 8,
+      "tick": 514
+    },
+    {
+      "applied_physics_revision": 2,
+      "cell": {
+        "incarnation": 3,
+        "material": 0,
+        "state_a": 0,
+        "state_b": 0
+      },
+      "geometry_revision": 2,
+      "has_body": true,
+      "structural": 8,
+      "tick": 515
+    }
+  ],
+  "original_log": {
+    "bytes": 92015,
+    "member": "headless/test_object_shard_m4_long_burn.log",
+    "sha256": "e9ca4a6d5fad4865daf5d2313b9f21d9ae41b73fcfa09041b93a212119800314"
+  },
+  "progress_ticks": [
+    34,
+    94,
+    154,
+    214,
+    274,
+    334,
+    394,
+    454,
+    514
+  ],
+  "reconstructed_before_tick": 34,
+  "required_correction": [
+    "Capture one immutable copied native frame per lifetime sample and read tick/material/state/incarnation from that frame.",
+    "Preserve the240opportunity and<=480native-tick assertions.",
+    "Record displayed cell and its own publication tick/sequence separately.",
+    "Require acknowledged reduced geometry, visible Air, complete conservation and terminal RID/native retirement after the real Pause boundary.",
+    "Keep the shared displayed-cell helper unchanged, since other moving-tool tests intentionally use displayed source."
+  ],
+  "retained_display_coherence": {
+    "between_callback_observations": 2084,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "reviewer": "technical lead; independently confirmed by all three specialists",
+  "run_attempt": 1,
+  "run_id": 45517975210,
+  "schema": "objectshard-m4-long-burn-clock-diagnosis-v1",
+  "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+  "source_inputs": {
+    "godot/scripts/object_shard_m4_runtime.gd": "8d6da4727a85f6b52f619e349882ffa5f31bea34c2d92e97a2900f569a588918",
+    "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+    "godot/tests/test_object_shard_m4_long_burn.gd": "8741a45ba1aa03a67c6a93f20709d6e9c0f7c1ad9507ceef1c6bfb0c47b0ff13"
+  },
+  "source_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919"
+}

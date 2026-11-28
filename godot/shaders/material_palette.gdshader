@@ -10,6 +10,12 @@ uniform vec2 view_size_px = vec2(320.0, 180.0);
 // by main.gd for pointer-to-world mapping.
 uniform vec4 view_rect_uv = vec4(0.0, 0.0, 1.0, 1.0);
 uniform vec2 camera_origin_px = vec2(0.0);
+#ifdef CYBER_OBJECT_SHARD
+// A material body retains its capture-coordinate finish while its geometry
+// moves. This affects only the ObjectShard shader variant; ordinary terrain
+// retains its existing world texture coordinates and presentation hierarchy.
+uniform vec2 material_texture_origin_px = vec2(0.0);
+#endif
 uniform vec2 player_origin_px = vec2(150.0, 145.0);
 uniform vec2 player_size_px = vec2(8.0, 14.0);
 uniform vec4 player_colour : source_color = vec4(0.12, 1.0, 0.88, 1.0);
@@ -156,7 +162,13 @@ vec2 corrosion_field(vec2 pixel, float up_bias) {
 }
 
 int sampled_material_id(vec2 pixel, bool previous_snapshot) {
+#ifdef CYBER_OBJECT_SHARD
+	vec2 local_pixel = floor(pixel) - material_texture_origin_px;
+	if (any(lessThan(local_pixel, vec2(0.0))) || any(greaterThanEqual(local_pixel, world_size_px))) return 0;
+	vec2 clamped_pixel = local_pixel;
+#else
 	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+#endif
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
 	// Relief reads the same snapshot as the material being shaded, so the old
 	// side of a crossfade keeps its own neighbourhood. Same four reads.
@@ -2004,7 +2016,13 @@ int water_add_ordered_sample(int mask, int sample_count, int rank, int subcell) 
 }
 
 int sampled_water_condition_byte(vec2 pixel, bool previous_snapshot) {
+#ifdef CYBER_OBJECT_SHARD
+	vec2 local_pixel = floor(pixel) - material_texture_origin_px;
+	if (any(lessThan(local_pixel, vec2(0.0))) || any(greaterThanEqual(local_pixel, world_size_px))) return 0;
+	vec2 clamped_pixel = local_pixel;
+#else
 	vec2 clamped_pixel = clamp(floor(pixel), vec2(0.0), world_size_px - vec2(1.0));
+#endif
 	vec2 world_uv = (clamped_pixel + vec2(0.5)) / world_size_px;
 	vec2 cell_sample;
 	if (previous_snapshot) {
@@ -2738,7 +2756,11 @@ void fragment() {
 	vec2 view_pixel = floor(continuous_view_pixel);
 	vec2 world_pixel = camera_origin_px + view_pixel;
 	vec2 cell_fraction = fract(camera_origin_px + continuous_view_pixel);
+#ifdef CYBER_OBJECT_SHARD
+	vec2 world_uv = (world_pixel - material_texture_origin_px + vec2(0.5)) / world_size_px;
+#else
 	vec2 world_uv = (world_pixel + vec2(0.5)) / world_size_px;
+#endif
 	vec2 cell_sample = texture(TEXTURE, world_uv).rg;
 	vec2 previous_cell_sample = texture(previous_world_texture, world_uv).rg;
 	int stored_material_id = int(floor(cell_sample.r * 255.0 + 0.5));
@@ -2761,6 +2783,7 @@ void fragment() {
 	);
 	vec4 colour = material_colour(inside_view ? material_id : 0,
 		inside_view ? condition : 0.0, world_pixel, false);
+#ifndef CYBER_OBJECT_SHARD
 	if (
 		inside_view && previous_material_id != material_id
 		&& (
@@ -2807,6 +2830,11 @@ void fragment() {
 	if (inside_view && inside_test_body) {
 		colour = rigid_body_colour;
 	}
+#else
+	// Empty carriers reveal the ordinary terrain beneath them. They do not
+	// paint Empty's background, ambient particles or another actor silhouette.
+	if (!inside_view || stored_material_id == 0) colour = vec4(0.0);
+#endif
 
 	COLOR = colour;
 }

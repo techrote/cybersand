@@ -1,0 +1,3367 @@
+{
+  "contact_boundary": "Some native Wall contact cells remain DestinationUnavailable under the existing transient occupied-cell protection. The test does not weaken that fence or claim all stump contact can be erased or the original stationary owner sequence reconstructed.",
+  "fixture": "test_object_shard_m4_brush_revision.gd",
+  "negative_probe_sha256": "b150d4de1daa0577652d17ec265dd654602ad5622976b68fa835143fb5a0fb57",
+  "post_fix_application_note": "Private cherry-pick of c3d6580e4 onto the complete integrated e6fe40cac application. All126 native inputs match the recorded A build ledger.",
+  "post_fix_application_source": "29a3816a4a9304ebf4c149c52d2d5f85e4483683",
+  "post_fix_native_sha256": "656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18",
+  "pre_fix_application_source": "e6fe40cacb57cb170057f46d9287b365a01495ee",
+  "pre_fix_native_sha256": "547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0",
+  "receipts": [
+    {
+      "checks": 91,
+      "disposition": "confirmed_pre_fix_defect",
+      "evidence": {
+        "contact": {
+          "hit": true,
+          "native_terrain": true,
+          "normal": [
+            -2.08146644808949e-07,
+            -1.0
+          ],
+          "point": [
+            139.008483886719,
+            373.0
+          ]
+        },
+        "display_coherence": {
+          "between_callback_observations": 2107,
+          "draw_observations": 0,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "exact_cell_after": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "last_result": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": false,
+            "outcome": "DestinationUnavailable",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948287850875,
+            "session": 1,
+            "tick": 327,
+            "world_incarnation": 1,
+            "world_revision": 55
+          },
+          "native_before": {
+            "native_instance_id": -9223371948287850875,
+            "session": 1,
+            "tick": 327,
+            "world_incarnation": 1,
+            "world_revision": 55
+          },
+          "refusals": 108,
+          "source": {
+            "native_instance_id": -9223371948287850875,
+            "next_transaction": 3,
+            "owner_epoch": 2,
+            "publication_sequence": 656,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 327,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 55
+          },
+          "world_material_sha256": "9a60683df7878737a222efbe4180558abd065eedb764aaa838fd94c94e1370a4"
+        },
+        "exact_cell_predicates": {
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            55,
+            20,
+            656
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            55,
+            656,
+            327
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            55,
+            656,
+            327
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physics_ready": true,
+          "runtime_frame_sequence": 656,
+          "runtime_publication_sequence": 656,
+          "snapshot_tuple": [
+            3,
+            55,
+            20,
+            55
+          ],
+          "upload_tuple": [
+            3,
+            55,
+            20
+          ],
+          "workbench_error": ""
+        },
+        "explicit_render_refresh_counterfactual": {
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            56,
+            21,
+            657
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            56,
+            657,
+            327
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            56,
+            657,
+            327
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physics_ready": true,
+          "runtime_frame_sequence": 657,
+          "runtime_publication_sequence": 657,
+          "snapshot_tuple": [
+            3,
+            56,
+            21,
+            56
+          ],
+          "upload_tuple": [
+            3,
+            56,
+            21
+          ],
+          "workbench_error": ""
+        },
+        "final_paint_state": {
+          "art_busy": false,
+          "authoring_generation": 1,
+          "busy": false,
+          "epoch": 5,
+          "erase_allowed": true,
+          "error": "",
+          "executing": false,
+          "extent": "(512, 512)",
+          "flatten_busy": false,
+          "generation": 3,
+          "legacy_busy": false,
+          "paint_allowed": true,
+          "paused": true,
+          "queued": false,
+          "receipt_ready": false,
+          "result_operation_id": 0,
+          "revision": 56,
+          "settings_revision": 3,
+          "status": "idle",
+          "tick": 327,
+          "transition_busy": false
+        },
+        "final_predicates": {
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            55,
+            20,
+            656
+          ],
+          "displayed_inventory_request": {
+            "ok": false,
+            "outcome": "WaitForDisplayedInventoryPublication"
+          },
+          "frame_tuple": [
+            3,
+            56,
+            657,
+            327
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            56,
+            657,
+            327
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physics_ready": true,
+          "runtime_frame_sequence": 657,
+          "runtime_publication_sequence": 656,
+          "snapshot_tuple": [
+            3,
+            56,
+            20,
+            56
+          ],
+          "upload_tuple": [
+            3,
+            55,
+            20
+          ],
+          "workbench_error": ""
+        },
+        "fine_stamp_after": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "last_result": {
+            "detail": "unchanged World cell",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948287850875,
+            "session": 1,
+            "tick": 327,
+            "world_incarnation": 1,
+            "world_revision": 56
+          },
+          "native_before": {
+            "native_instance_id": -9223371948287850875,
+            "session": 1,
+            "tick": 327,
+            "world_incarnation": 1,
+            "world_revision": 56
+          },
+          "refusals": 116,
+          "source": {
+            "native_instance_id": -9223371948287850875,
+            "next_transaction": 3,
+            "owner_epoch": 2,
+            "publication_sequence": 657,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 327,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 56
+          },
+          "world_material_sha256": "9a60683df7878737a222efbe4180558abd065eedb764aaa838fd94c94e1370a4"
+        },
+        "initial": {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.0,
+          "body_generation": 1,
+          "com_x": 48.8702201843262,
+          "com_y": 59.0209159851074,
+          "generation": 1,
+          "geometry_digest": "8596091151412056983",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11537891.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4446.0,
+          "motion_radius": 83.0658335893138,
+          "motion_reference": "(48.87022, 59.02092)",
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 3.98917117913564,
+          "reported_contacts": 0,
+          "rotation": 0.0,
+          "rotation_radius": 159.624559513879,
+          "segment_rotation_limit": 0.2,
+          "shape_count": 23,
+          "sleeping": false,
+          "vx": 0.0,
+          "vy": 0.649729251861572,
+          "x": 119.0,
+          "y": 243.001724243164
+        },
+        "integrated_before": {
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            55,
+            20,
+            656
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            55,
+            656,
+            327
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            55,
+            656,
+            327
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physics_ready": true,
+          "runtime_frame_sequence": 656,
+          "runtime_publication_sequence": 656,
+          "snapshot_tuple": [
+            3,
+            55,
+            20,
+            55
+          ],
+          "upload_tuple": [
+            3,
+            55,
+            20
+          ],
+          "workbench_error": ""
+        },
+        "native_before": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "last_result": {
+            "detail": "Obstructed",
+            "generation": 0,
+            "id": 0,
+            "ok": false,
+            "outcome": "Unsupported",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948287850875,
+            "session": 1,
+            "tick": 327,
+            "world_incarnation": 1,
+            "world_revision": 55
+          },
+          "native_before": {
+            "native_instance_id": -9223371948287850875,
+            "session": 1,
+            "tick": 327,
+            "world_incarnation": 1,
+            "world_revision": 55
+          },
+          "refusals": 107,
+          "source": {
+            "native_instance_id": -9223371948287850875,
+            "next_transaction": 3,
+            "owner_epoch": 2,
+            "publication_sequence": 656,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 327,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 55
+          },
+          "world_material_sha256": "9a60683df7878737a222efbe4180558abd065eedb764aaa838fd94c94e1370a4"
+        },
+        "native_ticks_while_resting": 60,
+        "remaining_posts": [
+          {
+            "wall_count": 1,
+            "wall_max_y": 463,
+            "wall_min_y": 463,
+            "x": 138
+          },
+          {
+            "wall_count": 1,
+            "wall_max_y": 463,
+            "wall_min_y": 463,
+            "x": 139
+          },
+          {
+            "wall_count": 0,
+            "wall_max_y": null,
+            "wall_min_y": null,
+            "x": 140
+          },
+          {
+            "wall_count": 2,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 141
+          },
+          {
+            "wall_count": 2,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 194
+          },
+          {
+            "wall_count": 2,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 195
+          },
+          {
+            "wall_count": 0,
+            "wall_max_y": null,
+            "wall_min_y": null,
+            "x": 196
+          },
+          {
+            "wall_count": 2,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 197
+          }
+        ],
+        "resting": {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": -4.16762901522816e-07,
+          "body_generation": 1,
+          "com_x": 48.8702201843262,
+          "com_y": 59.0209159851074,
+          "generation": 1,
+          "geometry_digest": "8596091151412056983",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11537891.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4446.0,
+          "motion_radius": 83.0658335893138,
+          "motion_reference": "(48.87022, 59.02092)",
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": -4.16762901522816e-07,
+          "rotation_radius": 159.624559513879,
+          "segment_rotation_limit": 0.2,
+          "shape_count": 23,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 119.01692199707,
+          "y": 248.000061035156
+        },
+        "support_before": [
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 138
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 139
+          },
+          {
+            "wall_count": 90,
+            "wall_max_y": 463,
+            "wall_min_y": 374,
+            "x": 140
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 141
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 194
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 195
+          },
+          {
+            "wall_count": 90,
+            "wall_max_y": 463,
+            "wall_min_y": 374,
+            "x": 196
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 197
+          }
+        ]
+      },
+      "failures": [
+        "ordinary no-op/refused contact brush leaves the paused publication usable"
+      ],
+      "raw_log_filename": "integrated-supported-contact-before.log",
+      "raw_log_sha256": "cada67f779fae5dc70e7b9f8fdff0f20bae8b8626ba104df5eea4ff2d1ecd832",
+      "schema": "objectshard-m4-supported-contact-probe-v1",
+      "scope": "complete integrated application; actual supported Tower contact and source-bound native inspection; no native ownership protection bypass",
+      "source_commit": "e6fe40cacb57cb170057f46d9287b365a01495ee"
+    },
+    {
+      "checks": 149,
+      "disposition": "additional_control_setup_invalid",
+      "evidence": {
+        "contact": {
+          "hit": true,
+          "native_terrain": true,
+          "normal": [
+            -2.14286700384037e-07,
+            -1.0
+          ],
+          "point": [
+            139.00910949707,
+            373.0
+          ]
+        },
+        "display_coherence": {
+          "between_callback_observations": 706,
+          "draw_observations": 0,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "exact_cell_after": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "control_material": 0,
+          "last_result": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": false,
+            "outcome": "DestinationUnavailable",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 328,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "native_before": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 328,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "refusals": 123,
+          "source": {
+            "native_instance_id": -9223371948170410363,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 655,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 328,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+        },
+        "final_predicates": {
+          "actor_tick": 326,
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            54,
+            19,
+            655
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            54,
+            655,
+            328
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            54,
+            655,
+            328
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physical_intervals": 327,
+          "physics_ready": true,
+          "runtime_frame_sequence": 655,
+          "runtime_publication_sequence": 655,
+          "snapshot_tuple": [
+            3,
+            54,
+            19,
+            54
+          ],
+          "upload_tuple": [
+            3,
+            54,
+            19
+          ],
+          "workbench_error": ""
+        },
+        "fine_stamp_after": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "control_material": 0,
+          "last_result": {
+            "detail": "unchanged World cell",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 328,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "native_before": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 328,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "refusals": 129,
+          "source": {
+            "native_instance_id": -9223371948170410363,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 655,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 328,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+        },
+        "initial": {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.0,
+          "body_generation": 1,
+          "com_x": 48.8702201843262,
+          "com_y": 59.0209159851074,
+          "generation": 1,
+          "geometry_digest": "8596091151412056983",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11537891.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4446.0,
+          "motion_radius": 83.0658335893138,
+          "motion_reference": "(48.87022, 59.02092)",
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.0,
+          "rotation_radius": 159.624559513879,
+          "segment_rotation_limit": 0.2,
+          "shape_count": 23,
+          "sleeping": false,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 119.0,
+          "y": 243.0
+        },
+        "integrated_before": {
+          "actor_tick": 326,
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            54,
+            19,
+            655
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            54,
+            655,
+            328
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            54,
+            655,
+            328
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physical_intervals": 327,
+          "physics_ready": true,
+          "runtime_frame_sequence": 655,
+          "runtime_publication_sequence": 655,
+          "snapshot_tuple": [
+            3,
+            54,
+            19,
+            54
+          ],
+          "upload_tuple": [
+            3,
+            54,
+            19
+          ],
+          "workbench_error": ""
+        },
+        "native_before": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "control_material": 0,
+          "last_result": {
+            "detail": "Obstructed",
+            "generation": 0,
+            "id": 0,
+            "ok": false,
+            "outcome": "Unsupported",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 328,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "native_before": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 328,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "refusals": 122,
+          "source": {
+            "native_instance_id": -9223371948170410363,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 655,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 328,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+        },
+        "native_ticks_while_resting": 60,
+        "real_mutation_control": {
+          "empty": {
+            "cells": [
+              {
+                "material": 0,
+                "x": 138,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 138,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 138,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 139,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 141,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 194,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 195,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 197,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 374
+              }
+            ],
+            "control_material": 0,
+            "last_result": {
+              "detail": "unchanged World cell",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "native_after": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 328,
+              "world_incarnation": 1,
+              "world_revision": 54
+            },
+            "native_before": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 328,
+              "world_incarnation": 1,
+              "world_revision": 54
+            },
+            "refusals": 129,
+            "source": {
+              "native_instance_id": -9223371948170410363,
+              "next_transaction": 2,
+              "owner_epoch": 2,
+              "publication_sequence": 655,
+              "session": 1,
+              "shard_session": 1,
+              "tick": 328,
+              "transport_generation": 2,
+              "world_generation": 3,
+              "world_incarnation": 1,
+              "world_revision": 54
+            },
+            "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+          },
+          "erased": {
+            "cells": [
+              {
+                "material": 0,
+                "x": 138,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 138,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 138,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 139,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 141,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 194,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 195,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 197,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 374
+              }
+            ],
+            "control_material": 0,
+            "last_result": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "native_after": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 328,
+              "world_incarnation": 1,
+              "world_revision": 56
+            },
+            "native_before": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 328,
+              "world_incarnation": 1,
+              "world_revision": 56
+            },
+            "refusals": 129,
+            "source": {
+              "native_instance_id": -9223371948170410363,
+              "next_transaction": 2,
+              "owner_epoch": 2,
+              "publication_sequence": 657,
+              "session": 1,
+              "shard_session": 1,
+              "tick": 328,
+              "transport_generation": 2,
+              "world_generation": 3,
+              "world_incarnation": 1,
+              "world_revision": 56
+            },
+            "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+          },
+          "painted": {
+            "cells": [
+              {
+                "material": 0,
+                "x": 138,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 138,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 138,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 139,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 141,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 194,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 195,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 197,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 374
+              }
+            ],
+            "control_material": 7,
+            "last_result": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "native_after": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 328,
+              "world_incarnation": 1,
+              "world_revision": 55
+            },
+            "native_before": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 328,
+              "world_incarnation": 1,
+              "world_revision": 55
+            },
+            "refusals": 129,
+            "source": {
+              "native_instance_id": -9223371948170410363,
+              "next_transaction": 2,
+              "owner_epoch": 2,
+              "publication_sequence": 656,
+              "session": 1,
+              "shard_session": 1,
+              "tick": 328,
+              "transport_generation": 2,
+              "world_generation": 3,
+              "world_incarnation": 1,
+              "world_revision": 55
+            },
+            "world_material_sha256": "1849ffea5aafdbe7696db6e1d0983a08d2609fdca6599da51b79f4c8b88ee9cf"
+          }
+        },
+        "resting": {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": -4.22902957097904e-07,
+          "body_generation": 1,
+          "com_x": 48.8702201843262,
+          "com_y": 59.0209159851074,
+          "generation": 1,
+          "geometry_digest": "8596091151412056983",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11537891.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4446.0,
+          "motion_radius": 83.0658335893138,
+          "motion_reference": "(48.87022, 59.02092)",
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": -4.22902957097904e-07,
+          "rotation_radius": 159.624559513879,
+          "segment_rotation_limit": 0.2,
+          "shape_count": 23,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 119.018165588379,
+          "y": 248.000061035156
+        },
+        "support_before": [
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 138
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 139
+          },
+          {
+            "wall_count": 90,
+            "wall_max_y": 463,
+            "wall_min_y": 374,
+            "x": 140
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 141
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 194
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 195
+          },
+          {
+            "wall_count": 90,
+            "wall_max_y": 463,
+            "wall_min_y": 374,
+            "x": 196
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 197
+          }
+        ]
+      },
+      "failures": [
+        "independent actual same-World native facade admits the condition-only control"
+      ],
+      "raw_log_filename": "integrated-brush-revision-after.log",
+      "raw_log_sha256": "ecbe1fdf0d445e5ec422bfa0001c429650d02d67bcd222fd65db2a92bcb74a03",
+      "schema": "objectshard-m4-brush-revision-v1",
+      "scope": "actual ordinary supported Tower, protected/no-op brush revisions, exact paused publication and real material/state mutation controls; no render-refresh workaround",
+      "source_commit": "29a3816a4"
+    },
+    {
+      "checks": 154,
+      "disposition": "corrected_fixture_all_pass",
+      "evidence": {
+        "condition_control": {
+          "after": {
+            "material": 7,
+            "material_name": "wood",
+            "ok": true,
+            "owner": "World",
+            "position": "(30, 30)",
+            "state_a": 0,
+            "state_b": 0,
+            "temperature": 371
+          },
+          "before": {
+            "material": 7,
+            "material_name": "wood",
+            "ok": true,
+            "owner": "World",
+            "position": "(30, 30)",
+            "state_a": 173,
+            "state_b": 91,
+            "temperature": 371
+          },
+          "before_revision": 3,
+          "changed_revision": 4,
+          "native_tick": 1,
+          "unchanged_revision": 4
+        },
+        "contact": {
+          "hit": true,
+          "native_terrain": true,
+          "normal": [
+            -2.08146644808949e-07,
+            -1.0
+          ],
+          "point": [
+            139.008483886719,
+            373.0
+          ]
+        },
+        "display_coherence": {
+          "between_callback_observations": 617,
+          "draw_observations": 0,
+          "examples": [],
+          "foreign_draw_callbacks": 0,
+          "incoherent_observations": 0,
+          "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+        },
+        "exact_cell_after": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "control_material": 0,
+          "last_result": {
+            "detail": "accepted",
+            "generation": 0,
+            "id": 0,
+            "ok": false,
+            "outcome": "DestinationUnavailable",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 329,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "native_before": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 329,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "refusals": 123,
+          "source": {
+            "native_instance_id": -9223371948170410363,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 656,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 329,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+        },
+        "final_predicates": {
+          "actor_tick": 325,
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            54,
+            17,
+            656
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            54,
+            656,
+            329
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            54,
+            656,
+            329
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physical_intervals": 328,
+          "physics_ready": true,
+          "runtime_frame_sequence": 656,
+          "runtime_publication_sequence": 656,
+          "snapshot_tuple": [
+            3,
+            54,
+            17,
+            54
+          ],
+          "upload_tuple": [
+            3,
+            54,
+            17
+          ],
+          "workbench_error": ""
+        },
+        "fine_stamp_after": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "control_material": 0,
+          "last_result": {
+            "detail": "unchanged World cell",
+            "generation": 0,
+            "id": 0,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 329,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "native_before": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 329,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "refusals": 129,
+          "source": {
+            "native_instance_id": -9223371948170410363,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 656,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 329,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+        },
+        "initial": {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.0,
+          "body_generation": 1,
+          "com_x": 48.8702201843262,
+          "com_y": 59.0209159851074,
+          "generation": 1,
+          "geometry_digest": "8596091151412056983",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11537891.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4446.0,
+          "motion_radius": 83.0658335893138,
+          "motion_reference": "(48.87022, 59.02092)",
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 3.98917117913564,
+          "reported_contacts": 0,
+          "rotation": 0.0,
+          "rotation_radius": 159.624559513879,
+          "segment_rotation_limit": 0.2,
+          "shape_count": 23,
+          "sleeping": false,
+          "vx": 0.0,
+          "vy": 0.649729251861572,
+          "x": 119.0,
+          "y": 243.001724243164
+        },
+        "integrated_before": {
+          "actor_tick": 325,
+          "bench_busy": false,
+          "coherent": true,
+          "display_tuple": [
+            3,
+            54,
+            17,
+            656
+          ],
+          "displayed_inventory_request": {},
+          "frame_tuple": [
+            3,
+            54,
+            656,
+            329
+          ],
+          "held_reason": "",
+          "legacy_busy": false,
+          "native_tuple": [
+            3,
+            54,
+            656,
+            329
+          ],
+          "newer_owner_frame": false,
+          "pending_count": 0,
+          "phase": "Ready",
+          "physical_intervals": 328,
+          "physics_ready": true,
+          "runtime_frame_sequence": 656,
+          "runtime_publication_sequence": 656,
+          "snapshot_tuple": [
+            3,
+            54,
+            17,
+            54
+          ],
+          "upload_tuple": [
+            3,
+            54,
+            17
+          ],
+          "workbench_error": ""
+        },
+        "native_before": {
+          "cells": [
+            {
+              "material": 0,
+              "x": 138,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 138,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 138,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 139,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 139,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 140,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 141,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 141,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 194,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 194,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 195,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 195,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 372
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 196,
+              "y": 374
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 372
+            },
+            {
+              "material": 1,
+              "x": 197,
+              "y": 373
+            },
+            {
+              "material": 0,
+              "x": 197,
+              "y": 374
+            }
+          ],
+          "control_material": 0,
+          "last_result": {
+            "detail": "Obstructed",
+            "generation": 0,
+            "id": 0,
+            "ok": false,
+            "outcome": "Unsupported",
+            "phase": "Empty",
+            "session": 0,
+            "transaction": 0
+          },
+          "native_after": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 329,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "native_before": {
+            "native_instance_id": -9223371948170410363,
+            "session": 1,
+            "tick": 329,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "refusals": 122,
+          "source": {
+            "native_instance_id": -9223371948170410363,
+            "next_transaction": 2,
+            "owner_epoch": 2,
+            "publication_sequence": 656,
+            "session": 1,
+            "shard_session": 1,
+            "tick": 329,
+            "transport_generation": 2,
+            "world_generation": 3,
+            "world_incarnation": 1,
+            "world_revision": 54
+          },
+          "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+        },
+        "native_ticks_while_resting": 60,
+        "real_mutation_control": {
+          "empty": {
+            "cells": [
+              {
+                "material": 0,
+                "x": 138,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 138,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 138,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 139,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 141,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 194,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 195,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 197,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 374
+              }
+            ],
+            "control_material": 0,
+            "last_result": {
+              "detail": "unchanged World cell",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "native_after": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 329,
+              "world_incarnation": 1,
+              "world_revision": 54
+            },
+            "native_before": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 329,
+              "world_incarnation": 1,
+              "world_revision": 54
+            },
+            "refusals": 129,
+            "source": {
+              "native_instance_id": -9223371948170410363,
+              "next_transaction": 2,
+              "owner_epoch": 2,
+              "publication_sequence": 656,
+              "session": 1,
+              "shard_session": 1,
+              "tick": 329,
+              "transport_generation": 2,
+              "world_generation": 3,
+              "world_incarnation": 1,
+              "world_revision": 54
+            },
+            "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+          },
+          "erased": {
+            "cells": [
+              {
+                "material": 0,
+                "x": 138,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 138,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 138,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 139,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 141,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 194,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 195,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 197,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 374
+              }
+            ],
+            "control_material": 0,
+            "last_result": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "native_after": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 329,
+              "world_incarnation": 1,
+              "world_revision": 56
+            },
+            "native_before": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 329,
+              "world_incarnation": 1,
+              "world_revision": 56
+            },
+            "refusals": 129,
+            "source": {
+              "native_instance_id": -9223371948170410363,
+              "next_transaction": 2,
+              "owner_epoch": 2,
+              "publication_sequence": 658,
+              "session": 1,
+              "shard_session": 1,
+              "tick": 329,
+              "transport_generation": 2,
+              "world_generation": 3,
+              "world_incarnation": 1,
+              "world_revision": 56
+            },
+            "world_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5"
+          },
+          "painted": {
+            "cells": [
+              {
+                "material": 0,
+                "x": 138,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 138,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 138,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 139,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 139,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 140,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 141,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 141,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 194,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 194,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 195,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 195,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 372
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 196,
+                "y": 374
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 372
+              },
+              {
+                "material": 1,
+                "x": 197,
+                "y": 373
+              },
+              {
+                "material": 0,
+                "x": 197,
+                "y": 374
+              }
+            ],
+            "control_material": 7,
+            "last_result": {
+              "detail": "accepted",
+              "generation": 0,
+              "id": 0,
+              "ok": true,
+              "outcome": "Accepted",
+              "phase": "Empty",
+              "session": 0,
+              "transaction": 0
+            },
+            "native_after": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 329,
+              "world_incarnation": 1,
+              "world_revision": 55
+            },
+            "native_before": {
+              "native_instance_id": -9223371948170410363,
+              "session": 1,
+              "tick": 329,
+              "world_incarnation": 1,
+              "world_revision": 55
+            },
+            "refusals": 129,
+            "source": {
+              "native_instance_id": -9223371948170410363,
+              "next_transaction": 2,
+              "owner_epoch": 2,
+              "publication_sequence": 657,
+              "session": 1,
+              "shard_session": 1,
+              "tick": 329,
+              "transport_generation": 2,
+              "world_generation": 3,
+              "world_incarnation": 1,
+              "world_revision": 55
+            },
+            "world_material_sha256": "1849ffea5aafdbe7696db6e1d0983a08d2609fdca6599da51b79f4c8b88ee9cf"
+          }
+        },
+        "resting": {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": -4.16762901522816e-07,
+          "body_generation": 1,
+          "com_x": 48.8702201843262,
+          "com_y": 59.0209159851074,
+          "generation": 1,
+          "geometry_digest": "8596091151412056983",
+          "geometry_revision": 1,
+          "id": 1,
+          "inertia": 11537891.0,
+          "last_geometry_step": 100,
+          "last_geometry_usec": 0,
+          "mass": 4446.0,
+          "motion_radius": 83.0658335893138,
+          "motion_reference": "(48.87022, 59.02092)",
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": -4.16762901522816e-07,
+          "rotation_radius": 159.624559513879,
+          "segment_rotation_limit": 0.2,
+          "shape_count": 23,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 119.01692199707,
+          "y": 248.000061035156
+        },
+        "support_before": [
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 138
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 139
+          },
+          {
+            "wall_count": 90,
+            "wall_max_y": 463,
+            "wall_min_y": 374,
+            "x": 140
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 141
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 194
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 195
+          },
+          {
+            "wall_count": 90,
+            "wall_max_y": 463,
+            "wall_min_y": 374,
+            "x": 196
+          },
+          {
+            "wall_count": 91,
+            "wall_max_y": 463,
+            "wall_min_y": 373,
+            "x": 197
+          }
+        ]
+      },
+      "failures": [],
+      "raw_log_filename": "integrated-brush-revision-after-256.log",
+      "raw_log_sha256": "a758fd5403928760f76693d1e612e787ebf2c92b39d486a7b5c420e6ba03737a",
+      "schema": "objectshard-m4-brush-revision-v1",
+      "scope": "actual ordinary supported Tower, protected/no-op brush revisions, exact paused publication and real material/state mutation controls; no render-refresh workaround",
+      "source_commit": "29a3816a4"
+    }
+  ],
+  "registered_fixture_sha256": "fe4bd1fc375077eda83048e13c872cf5893cbfd14544e13fea259578acc9b38a",
+  "registered_fixture_watchdog_note": "After the successful154-check replay, the explicit exploratory15s rest watchdog was removed. The registered fixture uses the existing shared Fixture.until operation_seconds watchdog for the same120-semantic-tick plus sleep/contact predicate. No policy value, deterministic input or assertion changed. Actual-renderer source/extracted execution is separately qualified.",
+  "repair": "Attached emit_disc now advances its wrapper revision only when the coordinator authoritative world_material_revision changes. Accepted unchanged neighbours do not fabricate renderless revisions; actual state/material writes still advance.",
+  "schema": "objectshard-m4-paused-brush-revision-evidence-v1",
+  "scope": "Actual supported native-owned Tower, ordinary protected/no-op brush and publication identity. Representative cutting sequence, not a reconstruction of the owner recording. Headless Linux does not establish physical monitor presentation.",
+  "setup_failure_cause": "The additional independent condition control initially requested128x128; current Workbench preparation explicitly permits multiples of64 in256..2048. Its149-check result is retained as nonpassing. Corrected256x256 control preserves every assertion and adds separate prepare/attach assertions.",
+  "tested_fixture_sha256": "56dcbfe8bc8dbc656a852e86b8563b522b7c9799a3c56cb0bdef827fba1362ab"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "git_head": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "git_tree": "e2b0753b82650734b5738ff000be62a2c7db2abe",
+  "method": "Each captured source file SHA-256 compared against git show <qualified commit>:<path>.",
+  "reports": [
+    {
+      "input_digest": "1aab8c0f4ca49e4981697571e108e3bbf86ff2b0156416a5b737322702628ece",
+      "inputs_sha256": "4376b384e2f77a1ba6717b257c38be1187f79c0103fbe1829cc0eab43e5bb6a9",
+      "source_files": 94,
+      "mismatches": []
+    },
+    {
+      "input_digest": "0a00eea4542784565f02e7fd4cd275f5abb4ed79005b2a5bdbe284c167b4bc8d",
+      "inputs_sha256": "1b0a64ca0a962b9737c6b2b81e1faa2ebbc63e509ef16bff54518dd8b0c15016",
+      "source_files": 94,
+      "mismatches": []
+    }
+  ]
+}

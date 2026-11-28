@@ -1,0 +1,5 @@
+first exposures=1
+after relocation exposures=1 fire(47,11)=6
+after second opportunity exposures=1
+event source=(48,12) tick=213 cell=4
+225 checks, 0 failures

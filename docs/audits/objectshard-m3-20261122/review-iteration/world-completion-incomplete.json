@@ -1,0 +1,41 @@
+{
+  "schema": "objectshard-m3-world-sanitized-completion-v1",
+  "status": "incomplete_execution_custody_lost",
+  "started_utc": "2026-11-22T06:11:53.079675+00:00",
+  "reason": "Retained first complete-inventory attempt timed out at600s after185 passing named cases. Run the identical already-built World binary with1800s operational timeout to obtain a complete final count; no code, tests, budget limits or inventory changed.",
+  "input_digest": "b2cf1c02ba79dfd8975d93da0ef55319edc81c0bf01590980b7f052b5dd7f7c5",
+  "binary_sha256": "9c93083a15859c8495f9e76ed7386b2dc29483b6f49093df7de9a23eed03cd6a",
+  "git_head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "original_failed_summary": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-sanitized/summary.json",
+  "command": [
+    "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-sanitized/20261122T055557.226734Z-b2cf1c02ba79/test_object_shard_world"
+  ],
+  "cwd": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-sanitized/20261122T055557.226734Z-b2cf1c02ba79/source",
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_sanitizer": false,
+  "environment_overrides": {
+    "CYBERSAND_LCB_RECEIPT_VECTOR_OUTPUT": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-sanitized/20261122T055557.226734Z-b2cf1c02ba79/world-receipt-vectors-completion",
+    "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "timeout_seconds": 1800,
+  "log": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-worker-evidence/world-sanitized-completion.log",
+  "returncode": null,
+  "timed_out": null,
+  "test_cases": null,
+  "observed_named_passes": 52,
+  "qualifying_pass": false,
+  "custody_checked_utc": "2026-11-22T06:44:18.332629+00:00",
+  "log_sha256": "6572fee8472c981e285f782a8d62943b3951a6c06dca72ecdd58f681d09ca6c6",
+  "log_last_write_utc": "2026-11-22T06:13:44.424089+00:00",
+  "log_bytes": 2181,
+  "session_id": 58894,
+  "session_resume_outcome": "Owning agent write_stdin returned Unknown process id58894 after follow-up; parent also could not resume it.",
+  "completion_evidence": "No final subprocess return code, timeout receipt or complete test count was retained. The initial running marker was stale and does not establish ongoing execution.",
+  "process_disposition": "Execution handle unavailable; interruption or termination cause is unknown. No completed PASS or1800-second timeout is asserted.",
+  "initial_started_record": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-worker-evidence/world-sanitized-completion-started.json",
+  "follow_up": "No additional expensive run started. Root canonical exact-source CI uses unchanged repository World timeout3600seconds."
+}

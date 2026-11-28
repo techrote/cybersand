@@ -1,0 +1,152 @@
+{
+  "artifact": {
+    "archive_sha256": "bb231a6eed49f097db59b350294a6fa8ec4fb26888b41860b457c40bb8a473b0",
+    "files": 1054,
+    "id": 14735176557,
+    "manifest_sha256": "893f11b3e9e40412a8023336766e83693bdabeb4f05d4435ef34ca64d4111149",
+    "native_inputs": 114,
+    "native_sha256": "2e4a70c4c4eb80e451648deaeac0dea476aa6ad95231308ea6bb81fb445f2178"
+  },
+  "capabilities": [
+    "Actual ordinary Wood support mutation and bounded full-component native promotion",
+    "Exclusive World/registry ownership, real frozen Rapier reservation, exact terrain installation and activation acknowledgements",
+    "Shared selected Wood combustion, retained Fire/Smoke lifecycle, exact real output to World",
+    "State/temperature continuity, semantic scheduling independent of physics sleep",
+    "Exact mutable non-filling geometry and mass properties, demonstrated81 shapes",
+    "Physical bounded1-3cell Sand lodging with exact World debit and separate cargo identity",
+    "Historical non-consuming World Water exposure extinguishing same Wood incarnation",
+    "Draining products/cargo retained after skeleton/RID retirement",
+    "One to three active independent owners, explicit reset/refusal/quarantine"
+  ],
+  "class_c_and_limits": [
+    "Rounded diagonal motion-envelope decisions can differ within two binary64 ULP after portable magnitude repair; this is below existing contact path padding. No bit-identical math claim.",
+    "Native counters in rendered sequential scenarios include lifetime maxima across reset, while frame timings are per-case deltas; do not attribute all cumulative native events to one scene.",
+    "Scrollable inventory is needed for all three owner rows and some event counts; this is not missing native inventory."
+  ],
+  "evidence_files": {
+    "build/objectshard-final-review/abi-math-review/review.json": "84d624888d1c74d2216952b9224b8486f14ebe34a6fb9bd959fd10a5d4dfd8b2",
+    "build/objectshard-final-review/final-integrated/evidence-integrity.json": "47a8bdd1cc58e9c9be5f90a49c711c96ab36380df3c199543156ee325466d01b",
+    "build/objectshard-final-review/final-integrated/linux-abi-independent.json": "48542fc38386f04be10722fc83a9b39f8d268fcf8ee0b66bcf5531124142a6d3",
+    "build/objectshard-final-review/implementation-review.json": "1b82a9f5e7f70484dc56828806e2810576961b5390b7dd840f8584ed2d3c3b71"
+  },
+  "final_evidence": {
+    "actual_bridge_each_platform": {
+      "checks": 28,
+      "failures": 0
+    },
+    "actual_lab_each_platform": {
+      "checks": 379,
+      "failures": 0
+    },
+    "actual_pngs_each_platform": 10,
+    "all_profile_limits_passed": true,
+    "headless_limits_each": 56,
+    "independently_visually_reviewed_windows_pngs": 10,
+    "integrity_checks": 1929,
+    "integrity_failures": 0,
+    "leak_sanitizer": false,
+    "legacy_material_lab_each_platform": {
+      "checks": 141,
+      "failures": 0
+    },
+    "legacy_rapier_manual_step": "passed each platform and Windows package replay",
+    "native_hosted_asan_ubsan_checks": 61652,
+    "native_hosted_failures": 0,
+    "profile_checks_each": 719,
+    "profile_failures_each": 0,
+    "profile_samples_each": 9600,
+    "rendered_limits_each": 80,
+    "windows_delivered_package_replay": "379/0 Lab + 28/0 bridge +legacy scripts"
+  },
+  "findings_closed": [
+    {
+      "class": "B",
+      "closure": "Facade retains BodyView pose after RID retirement; final Linux, Windows and delivered-package replay each execute the moved-body/consumed-skeleton fixture. Exact Fire state_a=18, state_b=0, temperature=200 remains inspected at final Rapier pose (79,95.09591).",
+      "id": "OS-R1",
+      "title": "Draining inspection/render anchor reverted to capture origin"
+    },
+    {
+      "class": "A/B",
+      "closure": "Two-pass bounded physical-history sampling is independent of material transfer quota. Permanent zero-budget/public-ingest and later-body quota exhaustion tests are present; independent native delta 52/0 and final source ASan/UBSan suite pass.",
+      "id": "OS-R2",
+      "title": "Transfer budget skipped invalid side-entry history"
+    },
+    {
+      "class": "A",
+      "closure": "Platform-specific candidate/package/receipt admission and before/after script/tool/source equality are required. Independently rehashed delivered scripts, exact native inputs, package and logs; final delivered-package replay passes.",
+      "id": "OS-R3",
+      "title": "Windows qualification could omit source custody or execute different delivered scripts"
+    },
+    {
+      "class": "A/B",
+      "closure": "Shared bounded geometry-only aperture exclusion prevents overlap relocation into pocket columns, including occupied pockets. Independent source-matched native delta 154/0 and final permanent regression pass.",
+      "id": "OS-R4",
+      "title": "Mechanical World overlap relocation manufactured a pocket admission witness"
+    },
+    {
+      "class": "B",
+      "closure": "Scaled-sqrt helper independently compared with 100-digit oracle; final complete ELF and selected Rapier independently inspected. Extension GLIBC 2.33/GLIBCXX 3.4.30/CXXABI 1.3.9, bundle GLIBC 2.34, no hypot import. Final pinned Linux/Windows runtime campaign passes.",
+      "id": "OS-ABI",
+      "title": "First full Linux runtime imported hypot@GLIBC_2.35 above retained floor"
+    }
+  ],
+  "independent_prior_executions": {
+    "decimal_magnitude": {
+      "failures": 0,
+      "max_ulp": 2,
+      "pairs": 4006
+    },
+    "native_fault_and_admission_delta": {
+      "checks": 350,
+      "failures": 0
+    },
+    "world_extraction": {
+      "baseline_commit": "30e1cddd3d678456df10f52f7a2fb2210a9daaad",
+      "byte_identical": true,
+      "fixtures": 20,
+      "semantic_observations": 4248,
+      "sha256": "b8e82e4781ef559e15633da37e9eb78d182db2a4794336e78f1227e63e2973a1"
+    }
+  },
+  "open_class_a": [],
+  "open_confirmed_class_b": [],
+  "open_qualification_issues": [
+    {
+      "detail": "All nine native workloads exceed registered 2ms frame p95; perforated workload also exceeds registered50ms maximum at 64.604694 ms.4,237,384 functional assertions pass. One bounded old/new control and hosted Lab profiles do not supersede the recorded failed full native matrix. Do not classify the gap as harmless Class C or all-green qualification.",
+      "failures": 10,
+      "id": "OS-PERF-FINAL",
+      "limits": 74,
+      "status": "budget_failed"
+    },
+    {
+      "detail": "Windows 11/NVIDIA physical playability, perceived response, longer burn/split_pending appearance and practical manual operation remain owner acceptance.",
+      "id": "OS-OWNER",
+      "status": "unrecorded"
+    }
+  ],
+  "pending_documentation_delta": "Final documentation-only commit and PR gallery must retain runtime source 8f55a4e and all performance/owner-acceptance limitations; narrow correspondence review pending.",
+  "remote_mutations_by_reviewer": false,
+  "reviewed_utc": "2026-11-22T02:26:33.929789+00:00",
+  "reviewer": "/root/objectshard_final_review",
+  "runtime_campaign": 44974395620,
+  "schema": "objectshard-independent-final-review-v1",
+  "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "source_tree": "a0e3478c293908247bc5cdaab9497fc290a374c6",
+  "stage_ancestry": [
+    "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+    "1b85782a15565bad7e4dae28755b17d630daaf46",
+    "1bb6185be05f5ef838543a0e13c81428b751d969",
+    "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945"
+  ],
+  "tracked_edits_by_reviewer": false,
+  "unsupported": [
+    "Independent fragment motion; disconnected islands remain split_pending in one compound",
+    "General material admission or Plant growth",
+    "Internal gas/granular/fluid transport",
+    "Water quantity, Wave, PressureFlow, inertial or ballistic sidecar transfer",
+    "Fractional quantity, generic Acid consuming reactions, general momentum adapter",
+    "Arbitrary high-speed/rotation contact coverage beyond admitted bounded envelope",
+    "Durable save/restore, streaming or current-main production readiness"
+  ],
+  "verdict": "No unresolved confirmed Class A/B implementation or custody finding in reviewed M0-M2 source. Credible source-bound Draft/HOLD evaluator. Full native performance qualification remains failed, and owner physical acceptance is unrecorded; this is not production or merge approval."
+}

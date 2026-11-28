@@ -1,0 +1,63 @@
+{
+  "schema": "objectshard-independent-final-source-custody-review-v1",
+  "utc": "2026-11-22T06:50:48.577867+00:00",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "pr": "https://github.com/techrote/cybersand/pull/741",
+  "base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "worktree_clean_at_review": true,
+  "status": "Source inspection passed; actual final Windows artifact audit pending",
+  "native_inputs": 116,
+  "native_inputs_byte_identical_to_qualified_514": true,
+  "protected_gate_input_count": 15,
+  "production_gate_changes": [],
+  "objectshard_workflow_change": "Only additional [objectshard-m3] request markers; permissions remain contents:read/actions:read; thresholds and build/qualification steps retained",
+  "ordinary_discovered_cases": 359,
+  "package_probes_discovered": [],
+  "cust_01": "Original scene-intent capture is forwarded through admission; distinct admission timings and neutral scene_intent label preserved; source-matched rendered observations required but not yet seen",
+  "cust_02": "Strict package-only probes renamed; original legacy probe byte-identical; ordinary discovery untouched and excludes both; exact-source Windows package execution still pending",
+  "recovery_gate": "Host.open invalid exact generation/noncopyable payload preflight before owner allocation; qualifier requires 63 recovery checks",
+  "inventory": "final-source-inventory.json",
+  "inventory_sha256": "f4504f8c3c7fc4141f7dead59dd6fbe0ae039132a0367245dedd91bcf4413809",
+  "checks": {
+    "package-contracts-final-source": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tools/objectshard",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "package-contracts-final-source.log",
+      "sha256": "898044124cdb068a44cecf9cce3a608a89fc4df87cf90c26edc2b17b7ba999e4"
+    },
+    "production-provenance-final-source": {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit_code": 1,
+      "log": "production-provenance-final-source.log",
+      "sha256": "257d369122154b12d969bb1b9010a2b38f04fb70848b969496683c1e64c92488",
+      "errors": [
+        "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+        "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+        "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp",
+        "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/register_types.cpp",
+        "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/include/cybersand/world.hpp",
+        "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world.cpp"
+      ]
+    }
+  },
+  "scope_limits": [
+    "Native matrix inputs unchanged; no new matrix run and no native speedup claim",
+    "Retained native production provenance remains six failures; Draft workflow skip cannot clear them",
+    "Single-source same-platform profile pairs support workload/methodology claims, not target NVIDIA gameplay or cross-platform identical Rapier",
+    "Fresh source-matched Windows compilation, rendered observations and actual delivered ZIP audit pending"
+  ]
+}

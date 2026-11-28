@@ -119,6 +119,7 @@ class CyberDemoBridge final : public RefCounted {
         candidate->set_liquid_surface_adhesion_enabled(adapter.liquid_surface_adhesion_enabled_);
         candidate->set_simulation_region(adapter.world_->simulation_region());
         // All fallible allocation and validation precede these no-throw swaps.
+        adapter.retire_shard_for_world_replacement();
         adapter.world_.swap(candidate);
         adapter.render_exchange_.swap(exchange);
         adapter.retire_liquid_construction_identity();

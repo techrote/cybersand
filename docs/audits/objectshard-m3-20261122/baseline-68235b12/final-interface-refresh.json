@@ -1,0 +1,606 @@
+{
+  "schema": "objectshard-m3-final-interface-refresh-v1",
+  "refreshed_at_utc": "2026-11-22T07:11:54.160783+00:00",
+  "repository": "https://github.com/techrote/cybersand",
+  "frozen_candidate": {
+    "head": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+    "tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+    "pr": 741
+  },
+  "frozen_ledger": "docs/research/objectshard-m3-source-ownership.json",
+  "frozen_ledger_sha256": "4aea585a5417eb4ccfd5147d8b02639fe31e5bfd44b7ddf12133c572dac14f3e",
+  "scope": "Read-only GitHub PR/issue/main refresh and exact local immutable Git-object comparison. No sibling edits, merges, production-default changes or new runtime campaign. Concurrent branches are not execution-qualified by this candidate.",
+  "retrieval_sources": [
+    "GitHub get_pr_info for 738/740/719/682/734",
+    "GitHub branches/main REST response",
+    "git ls-remote origin for main and five relevant heads",
+    "GitHub fetch_issue and fetch_issue_comments for 577/12",
+    "local git show and SHA-256 against all earlier inspected paths"
+  ],
+  "sources": [
+    {
+      "name": "accepted_main",
+      "url": "https://github.com/techrote/cybersand/commit/662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+      "branch": "main",
+      "state": "accepted",
+      "unchanged_since_frozen_ledger": true,
+      "github_author": "techrote",
+      "runtime_executed_by_this_refresh": false,
+      "paths": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "present": true,
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "bytes": 24594
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "present": true,
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "bytes": 15277
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "present": true,
+          "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "bytes": 159560
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "present": true,
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "bytes": 155546
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "present": false
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "present": false
+        }
+      },
+      "prior_inspected_paths_match": true
+    },
+    {
+      "name": "pr738",
+      "url": "https://github.com/techrote/cybersand/pull/738",
+      "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "tree": "0b5d1b0bebb33ee63d4b2e5247b4b29d17313287",
+      "branch": "experiment/objectshard-001r-20261122",
+      "state": "open",
+      "unchanged_since_frozen_ledger": true,
+      "github_author": "techrote",
+      "runtime_executed_by_this_refresh": false,
+      "paths": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "present": true,
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "bytes": 24594
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "present": true,
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "bytes": 15277
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "present": true,
+          "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f",
+          "bytes": 159560
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "present": true,
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "bytes": 155546
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "present": true,
+          "git_blob": "2ea21267a6d53e6be811fdab572e18599cfbef3c",
+          "sha256": "2d83573283399755fd0dc3f5e07aebdd8561e437a8a71f6a98670f4620a58ea3",
+          "bytes": 33672
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "present": true,
+          "git_blob": "2e762931db4eb0827adfb5f71da4d90902a840e5",
+          "sha256": "d319b38dac94c0b4535ded429e465c39e9e6eb02edc889ff04eb58423c73a37b",
+          "bytes": 2205
+        }
+      },
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T05:30:09Z",
+      "base": "experiment/objectshard-001-m2-20261122",
+      "base_sha": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "prior_inspected_paths_match": true
+    },
+    {
+      "name": "pr740",
+      "url": "https://github.com/techrote/cybersand/pull/740",
+      "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+      "tree": "3eb5c0490aa29b4569ceebef48ccd338079b63b6",
+      "branch": "experiment/pubpres-playability-003",
+      "state": "open",
+      "unchanged_since_frozen_ledger": true,
+      "github_author": "techrote",
+      "runtime_executed_by_this_refresh": false,
+      "paths": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "present": true,
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "bytes": 24594
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "present": true,
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "bytes": 15277
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "present": true,
+          "git_blob": "039eeb8723d20330ac6ca5300ec9416cc49bd649",
+          "sha256": "b336001c6ad19b00200a1028a1b4b6c5bd620a37d6b287fde35112e41ffcf328",
+          "bytes": 186830
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "present": true,
+          "git_blob": "0b449cc5e7d976fdb4c8a78cc55ddba2d8d8fbcf",
+          "sha256": "b3d5755ddcb9aa16c17502f4d04066c5578eb1603be6cb0df9197953e89f500f",
+          "bytes": 158108
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "present": false
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "present": false
+        }
+      },
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T06:23:36Z",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "compatibility_helpers": {
+        "godot/scripts/workbench_native_rendezvous.gd": {
+          "present": true,
+          "git_blob": "c4a17de3f46fe039de051daf3e7e1cc82e68f62d",
+          "sha256": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "bytes": 9185
+        },
+        "godot/scripts/workbench_same_frame_continuation.gd": {
+          "present": true,
+          "git_blob": "0ded61b7c9a70c3b232d71f647f593fe5745dc1e",
+          "sha256": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+          "bytes": 5213
+        },
+        "godot/scripts/workbench_presentation_coherence.gd": {
+          "present": true,
+          "git_blob": "2e8b0eecd11ad1873c81770e2edaf4b8fd7a7402",
+          "sha256": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "bytes": 13747
+        }
+      },
+      "prior_inspected_paths_match": true
+    },
+    {
+      "name": "pr719",
+      "url": "https://github.com/techrote/cybersand/pull/719",
+      "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "tree": "7a57dc0873dd161abe165f3a60e14e64886d04a8",
+      "branch": "experiment/pubpres-playability-001",
+      "state": "open",
+      "unchanged_since_frozen_ledger": true,
+      "github_author": "techrote",
+      "runtime_executed_by_this_refresh": false,
+      "paths": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "present": true,
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "bytes": 24594
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "present": true,
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "bytes": 15277
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "present": true,
+          "git_blob": "bbea54883dd17fbdd2388fe6410a4d783549cbbe",
+          "sha256": "e5b5d5915e1fbbf752b7d75dd0d0078198b829cda3a7b66fe9a85ec6e662e6a5",
+          "bytes": 183686
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "present": true,
+          "git_blob": "0b449cc5e7d976fdb4c8a78cc55ddba2d8d8fbcf",
+          "sha256": "b3d5755ddcb9aa16c17502f4d04066c5578eb1603be6cb0df9197953e89f500f",
+          "bytes": 158108
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "present": false
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "present": false
+        }
+      },
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T03:20:24Z",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "compatibility_helpers": {
+        "godot/scripts/workbench_native_rendezvous.gd": {
+          "present": true,
+          "git_blob": "c4a17de3f46fe039de051daf3e7e1cc82e68f62d",
+          "sha256": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "bytes": 9185
+        },
+        "godot/scripts/workbench_same_frame_continuation.gd": {
+          "present": true,
+          "git_blob": "0ded61b7c9a70c3b232d71f647f593fe5745dc1e",
+          "sha256": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+          "bytes": 5213
+        },
+        "godot/scripts/workbench_presentation_coherence.gd": {
+          "present": true,
+          "git_blob": "2e8b0eecd11ad1873c81770e2edaf4b8fd7a7402",
+          "sha256": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "bytes": 13747
+        }
+      },
+      "prior_inspected_paths_match": true
+    },
+    {
+      "name": "pr682",
+      "url": "https://github.com/techrote/cybersand/pull/682",
+      "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "tree": "bf6c1c73279a7dde0a3f26f36c73983c1d3abab4",
+      "branch": "codex/pubpres-integration-001",
+      "state": "open",
+      "unchanged_since_frozen_ledger": true,
+      "github_author": "techrote",
+      "runtime_executed_by_this_refresh": false,
+      "paths": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "present": true,
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "bytes": 24594
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "present": true,
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "bytes": 15277
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "present": true,
+          "git_blob": "bbea54883dd17fbdd2388fe6410a4d783549cbbe",
+          "sha256": "e5b5d5915e1fbbf752b7d75dd0d0078198b829cda3a7b66fe9a85ec6e662e6a5",
+          "bytes": 183686
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "present": true,
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "bytes": 155546
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "present": false
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "present": false
+        }
+      },
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T10:40:55Z",
+      "base": "main",
+      "base_sha": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+      "compatibility_helpers": {
+        "godot/scripts/workbench_native_rendezvous.gd": {
+          "present": true,
+          "git_blob": "c4a17de3f46fe039de051daf3e7e1cc82e68f62d",
+          "sha256": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+          "bytes": 9185
+        },
+        "godot/scripts/workbench_same_frame_continuation.gd": {
+          "present": false
+        },
+        "godot/scripts/workbench_presentation_coherence.gd": {
+          "present": true,
+          "git_blob": "2e8b0eecd11ad1873c81770e2edaf4b8fd7a7402",
+          "sha256": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+          "bytes": 13747
+        }
+      },
+      "prior_inspected_paths_match": true
+    },
+    {
+      "name": "pr734",
+      "url": "https://github.com/techrote/cybersand/pull/734",
+      "head": "34606231677d4287e3f1ae595b6e2ce93cc6fa75",
+      "tree": "9c72800df054a9c6a9d6b7bd5482185c5201398e",
+      "branch": "exp/gen006-ramcache-001-20261122",
+      "state": "open",
+      "unchanged_since_frozen_ledger": true,
+      "github_author": "techrote",
+      "runtime_executed_by_this_refresh": false,
+      "paths": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "present": true,
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "bytes": 24594
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "present": true,
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "bytes": 15277
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "present": true,
+          "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+          "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08",
+          "bytes": 201193
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "present": true,
+          "git_blob": "240387a0ec78bbb4ecd64ab64311ac7f0d688448",
+          "sha256": "38618d8f57ef538ce40d12e9eea73389943a7c0e86c68ae74f965e0618006b2b",
+          "bytes": 155873
+        },
+        "godot/native_extension/cyber_object_shard_lab.cpp": {
+          "present": false
+        },
+        "godot/native_extension/cyber_object_shard_lab.hpp": {
+          "present": false
+        }
+      },
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T06:19:25Z",
+      "base": "exp/gen006-persistent-areas-001-20261121",
+      "base_sha": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+      "prior_inspected_paths_match": true
+    }
+  ],
+  "issues": [
+    {
+      "number": 577,
+      "url": "https://github.com/techrote/cybersand/issues/577",
+      "title": "RENDER-UPLOAD-001 \u2014 Incremental GPU material texture publication and full-image submission optimisation",
+      "state": "open",
+      "updated_at": "2026-11-14T17:23:18Z",
+      "github_author": "techrote",
+      "assignees": null,
+      "body_sha256": "2aed8bba4d9301167cb2faaae5a431cfc3aa61c996a40b591193c5080fec279a",
+      "comments_reported": 4,
+      "comments_retrieved": 4,
+      "comment_identities": [
+        {
+          "id": 6872215457,
+          "url": "https://github.com/techrote/cybersand/issues/577#issuecomment-6872215457",
+          "body_sha256": "24e58c16c1c3521b687220bbea3bbb8f93f809bfee57847e4e6e4faeb26aad1a"
+        },
+        {
+          "id": 6872252972,
+          "url": "https://github.com/techrote/cybersand/issues/577#issuecomment-6872252972",
+          "body_sha256": "cb8e1ba1647f755d67f55b96b7209b4033e2591d9adcd082a4a86f772061548e"
+        },
+        {
+          "id": 6872748491,
+          "url": "https://github.com/techrote/cybersand/issues/577#issuecomment-6872748491",
+          "body_sha256": "7bf3e6c4895f818ef67b4d7a8902178d7e56fd1f8ae4d77c4e21b398437f5167"
+        },
+        {
+          "id": 6881389663,
+          "url": "https://github.com/techrote/cybersand/issues/577#issuecomment-6881389663",
+          "body_sha256": "3acd1f0203dd48ccce578e020ffa53a36e451167582bd7d8630b8869ea485493"
+        }
+      ],
+      "scope_note": "Renderer programme preserves immutable worker publications and acknowledgements; old physical owner observations do not qualify this ObjectShard build."
+    },
+    {
+      "number": 12,
+      "url": "https://github.com/techrote/cybersand/issues/12",
+      "title": "Scalable reversible soliding: large-world acceleration, Rapier macro-dynamics and fracture",
+      "state": "open",
+      "updated_at": "2026-10-27T20:42:41Z",
+      "github_author": "techrote",
+      "assignees": null,
+      "body_sha256": "38e557ea86dece5e8e603e0c1674828eb4f8c40f1c615e9ae45a010fd9be0f37",
+      "comments_reported": 17,
+      "comments_retrieved": 17,
+      "comment_identities": [
+        {
+          "id": 5624449535,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5624449535",
+          "body_sha256": "732010b335fd27749bff6eb595537f5d57269cced638b074a8b6e680bdbe7442"
+        },
+        {
+          "id": 5647537648,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5647537648",
+          "body_sha256": "4967bff641bda3cb03141a7d82c06b2977f243f45c51544843bcdcb4f2978da5"
+        },
+        {
+          "id": 5649728223,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5649728223",
+          "body_sha256": "2693f665e4e3acfcf04f016269a22fee5dcb31e9e6279255765479799754e3db"
+        },
+        {
+          "id": 5652127513,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5652127513",
+          "body_sha256": "c7975e393bbe0cedc879c2535ba04b6cf10b87a07b31b8fc21fd58da433da432"
+        },
+        {
+          "id": 5652359035,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5652359035",
+          "body_sha256": "efcee117d55df44931155531179530fc1cc3c1bc81ec90553c8439f66aeb5e0e"
+        },
+        {
+          "id": 5737492839,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5737492839",
+          "body_sha256": "4e9107a9c23548cf90de98bd082f2a867139ebbfe15e1bb39479af9a9827d7d6"
+        },
+        {
+          "id": 5737519787,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5737519787",
+          "body_sha256": "a3bb9df45944463eeed2dc52d284012abcfa4a3b6a9e2447da9375c94bac5029"
+        },
+        {
+          "id": 5738539805,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5738539805",
+          "body_sha256": "c6b83a35639d465d046028b945024e29608ca74cb9750767a38955e3814c42e0"
+        },
+        {
+          "id": 5742029428,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5742029428",
+          "body_sha256": "256368a0f6b086be230a1bc36eb88d09daaecf5195caaf2dae7dcbb7890c0a59"
+        },
+        {
+          "id": 5742108341,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5742108341",
+          "body_sha256": "d0c1b6f44c318150ba0f2ba14bdcab8b5f333efb65653987bc13c73f743e0f28"
+        },
+        {
+          "id": 5742170507,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5742170507",
+          "body_sha256": "73794010d3073e2e01433e8d52e51ea87bbb2a3c66738ad5260e80da22f67333"
+        },
+        {
+          "id": 5744190992,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5744190992",
+          "body_sha256": "bd75600e13d566a0857c26a81044f00c09e6a7d7520eea2fb3b619ceb6698073"
+        },
+        {
+          "id": 5744544832,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5744544832",
+          "body_sha256": "48d53b49275864237e05a923b2cca2a19047dcd74a290b3d81b3da030e30150b"
+        },
+        {
+          "id": 5745043649,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5745043649",
+          "body_sha256": "d7379f0d5d66899da2acf19f8d3513cf1adb33f66deeba09f0d770a934a1f35f"
+        },
+        {
+          "id": 5745146437,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5745146437",
+          "body_sha256": "28224ec08f2cc0cc9f6e83f5f23b9099f28d3d351ca82234d6dc38feb83db97b"
+        },
+        {
+          "id": 5749978693,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5749978693",
+          "body_sha256": "d287928e2f522b13bc1475944f936c8ea47988a8790a6e1edb5184b28825bdcd"
+        },
+        {
+          "id": 5751427523,
+          "url": "https://github.com/techrote/cybersand/issues/12#issuecomment-5751427523",
+          "body_sha256": "b6ef7733ea83901de2a0fc41965d2640217a0dcb2d6f19d8fd547e7d0fced8a6"
+        }
+      ],
+      "scope_note": "Long-term reversible soliding programme; fracture, recellularisation, persistent residency and broad dynamic integration remain successor scope. Its historical Stage-3B text is not ObjectShard M3 runtime acceptance."
+    }
+  ],
+  "candidate_facade": {
+    "paths": {
+      "godot/native_extension/cyber_object_shard_lab.cpp": {
+        "present": true,
+        "git_blob": "2ea21267a6d53e6be811fdab572e18599cfbef3c",
+        "sha256": "2d83573283399755fd0dc3f5e07aebdd8561e437a8a71f6a98670f4620a58ea3",
+        "bytes": 33672
+      },
+      "godot/native_extension/cyber_object_shard_lab.hpp": {
+        "present": true,
+        "git_blob": "2e762931db4eb0827adfb5f71da4d90902a840e5",
+        "sha256": "d319b38dac94c0b4535ded429e465c39e9e6eb02edc889ff04eb58423c73a37b",
+        "bytes": 2205
+      }
+    },
+    "bound_methods": [
+      "configure",
+      "reset",
+      "step",
+      "accept_motion",
+      "edit_cell",
+      "erase_shard",
+      "ignite",
+      "ignite_shard",
+      "prepare_next",
+      "acknowledge",
+      "cancel",
+      "snapshot",
+      "inspect",
+      "capabilities",
+      "metrics"
+    ],
+    "has_attach_world": false,
+    "has_set_world": false,
+    "constructs_private_coordinator": true,
+    "matches_738": true
+  },
+  "findings": [
+    {
+      "id": "GCR-UNCHANGED",
+      "status": "confirmed",
+      "detail": "All six refreshed heads retain exactly the same immutable GCR parser and Workbench physics bridge. Prepared owner roster/session/epoch, shape geometry, mass and inertia cannot be replaced through ordinary GCR. Eight shapes per owner and existing transient-proxy bound remain unchanged."
+    },
+    {
+      "id": "WORKER-DELTA-NONE",
+      "status": "confirmed",
+      "detail": "All refreshed heads and all prior inspected source hashes equal the frozen ledger. PUBPRES740 retains its existing publication/physics mailbox and continuation work; GEN734 retains its separate area/custody work. No new reconciliation delta arose during this campaign."
+    },
+    {
+      "id": "FACADE-ATTACH-ABSENT",
+      "status": "confirmed",
+      "detail": "The preserved ObjectShard facade constructs a private coordinator/World and has no attach_world or set_world API. Putting it beside an ordinary Workbench would create a second World; the delivered opt-in rehearsal has one separate authoritative World and does not claim production Workbench attachment."
+    },
+    {
+      "id": "NEXT-INTEGRATION-SEAM",
+      "status": "remaining",
+      "detail": "Borrow the accepted Workbench World under its existing exclusive worker owner; add a separately versioned mutable ObjectShard geometry/activation/retirement adapter alongside immutable GCR; reconcile exact callback credit and material+pose+geometry publication with the accepted PUBPRES successor; add explicit persistence/area-residency custody before enabling save or eviction."
+    },
+    {
+      "id": "PUBPRES-METADATA",
+      "status": "observed",
+      "detail": "PR740 actual HEAD is adedb2761bad6cce91002ffe50c50c39b5f63645. Its body still names earlier checkpoint16ab4c05df15fac9727e4d76f53c898b0d116d2b; branch/API HEAD, not that stale prose checkpoint, is used here. All five refreshed PRs remain Draft and unmerged."
+    }
+  ],
+  "actual_workbench_boundary_execution": [
+    {
+      "path": "build/m3-platform/windows/14744390583/windows-lab/qualification.json",
+      "sha256": "28733372c9235fe530abc04dcc33f594e0eba5d6a5be74476720edf96876a0c7",
+      "source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+      "case": "objectshard_workbench_contract",
+      "status": "passed",
+      "receipt": {
+        "checks": 29,
+        "failures": 0,
+        "schema": "objectshard-workbench-boundary-test-v1",
+        "scope": "Actual accepted native Workbench refusal contracts; no production ObjectShard attachment is claimed"
+      },
+      "log_sha256": "069cdc10958b0980da7bec32aa04375098db008c44250ff08354f38cf84ced3d"
+    },
+    {
+      "path": "build/m3-platform/windows/14744390583/package-replay/qualification.json",
+      "sha256": "16daeeccb5edb1d96fb2889139bad273f71cf6451b0aa0552259b64ada391d02",
+      "source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+      "case": "objectshard_workbench_contract",
+      "status": "passed",
+      "receipt": {
+        "checks": 29,
+        "failures": 0,
+        "schema": "objectshard-workbench-boundary-test-v1",
+        "scope": "Actual accepted native Workbench refusal contracts; no production ObjectShard attachment is claimed"
+      },
+      "log_sha256": "069cdc10958b0980da7bec32aa04375098db008c44250ff08354f38cf84ced3d"
+    }
+  ],
+  "result": "unchanged interfaces; executable rehearsal boundary remains explicit"
+}

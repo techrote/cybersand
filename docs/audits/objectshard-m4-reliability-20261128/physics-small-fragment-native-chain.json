@@ -1,0 +1,62 @@
+{
+  "actual_physical_segments": 2400,
+  "cases": [
+    {
+      "completed_native_intervals": 120,
+      "healthy": true,
+      "initial_horizontal_velocity": 0.5,
+      "maximum_segment_rotation": 0.232285737991333,
+      "native_instance_id": -9223372008014739994,
+      "peak_angular_velocity": 55.8112716674805
+    },
+    {
+      "completed_native_intervals": 120,
+      "healthy": true,
+      "initial_horizontal_velocity": 0.6,
+      "maximum_segment_rotation": 0.293247044086456,
+      "native_instance_id": -9223372007930853912,
+      "peak_angular_velocity": 70.5055999755859
+    },
+    {
+      "completed_native_intervals": 120,
+      "healthy": true,
+      "initial_horizontal_velocity": 0.7,
+      "maximum_segment_rotation": 0.351135730743408,
+      "native_instance_id": -9223372007846967834,
+      "peak_angular_velocity": 84.4896545410156
+    },
+    {
+      "completed_native_intervals": 120,
+      "healthy": true,
+      "initial_horizontal_velocity": 0.8,
+      "maximum_segment_rotation": 0.356914639472961,
+      "native_instance_id": -9223372007763081752,
+      "peak_angular_velocity": 85.8875274658203
+    },
+    {
+      "completed_native_intervals": 120,
+      "healthy": true,
+      "initial_horizontal_velocity": 0.9,
+      "maximum_segment_rotation": 0.36427903175354,
+      "native_instance_id": -9223372007679195674,
+      "peak_angular_velocity": 87.6693954467773
+    }
+  ],
+  "checks": 8471,
+  "engine": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "native_pose_acknowledgements": 2400,
+  "platform": "Linux",
+  "schema": "objectshard-m4-small-fragment-native-chain-v1",
+  "scope": "real same-World material debit, real gravity/ledge collision, every actual Rapier pose natively acknowledged, exact material inventory and single semantic clock"
+}

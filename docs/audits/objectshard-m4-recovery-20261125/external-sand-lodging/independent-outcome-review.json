@@ -1,0 +1,112 @@
+{
+  "status": "passed",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "run": 45540808667,
+  "job": 138958566611,
+  "receipt_sha256": "3f049d42e3491069bd998f3ee821b4f29f39d80d046342f0894c62a45b66acff",
+  "summary_sha256": "5ae0fe6fe281637b0f69b6ad0ca8bbc425bca00cfb2bcb20b351c68f92e2f7bf",
+  "worlds": [
+    {
+      "label": "supported",
+      "bytes": 262144,
+      "sha256": "7091fa3c2ae533060b74dd6322b32c2023af97b091a5494783476e613f06e7f9",
+      "kind": "independently-reconstructed-full-raw-World"
+    },
+    {
+      "label": "before",
+      "bytes": 262144,
+      "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330",
+      "kind": "independently-reconstructed-full-raw-World"
+    },
+    {
+      "label": "painted",
+      "bytes": 262144,
+      "sha256": "8b45ddbf64f047de8f9af86c67f97d96c10189c3cb2332028821397fda444acb",
+      "kind": "independently-reconstructed-full-raw-World"
+    },
+    {
+      "label": "after",
+      "bytes": 262144,
+      "sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330",
+      "kind": "independently-reconstructed-full-raw-World"
+    }
+  ],
+  "owned_before_sha256": "b0e868e95943d523d7bc84420b557f145bee1d5dd9e25f9e303fa27da5d94888",
+  "owned_after_sha256": "2aad590e84e0b8bfaf297fa1c9f3e575eb09b80d1af725950f27ea5904037a23",
+  "owned_bytes": 121,
+  "mass_before": {
+    "mass": 63,
+    "com_x": 5.5,
+    "com_y": 5.928571428571429,
+    "inertia": 973.9285714285701
+  },
+  "mass_after": {
+    "mass": 64,
+    "com_x": 5.5,
+    "com_y": 5.9375,
+    "inertia": 974.4166666666656
+  },
+  "actual_rid": 18901,
+  "cargo_cell": 71,
+  "scope": "A independently reconstructed every expected raw World byte and every source-lattice carrier byte from the reviewed recipe and exact edits, compared SHA256 to byte-preserved original receipts and the hosted independent raw-file scanner, and recomputed mass/centroid/inertia. This is not a claim that cloud A redownloaded the outer raw artifact; C's approved hosted verifier actually opened/scanned those original files.",
+  "schema": "objectshard-m4-ordinary-sand-independent-outcome-v1",
+  "review_date": "2026-11-25",
+  "reviewers": [
+    "Specialist A",
+    "Specialist B independently reconstructed the same complete expected grid/carrier identities",
+    "Technical lead independently joined original bridges and terminal metadata"
+  ],
+  "run_source": "2b15c37e934f07117e297a38e8c3100104c9637d",
+  "run_attempt": 1,
+  "recorded_outcome": {
+    "checks": 168,
+    "failures": [],
+    "coherent_observations": 325,
+    "incoherent_observations": 0,
+    "normal_zero_exit": true,
+    "physical_before": 312,
+    "physical_after": 336,
+    "native_tick_before": 79,
+    "native_tick_after": 85,
+    "owner": 1,
+    "generation": 1,
+    "body_generation": 1,
+    "rid": 18901,
+    "cargo_role": 3,
+    "cargo_incarnation": 2,
+    "empty_incarnation": 1,
+    "natural_fall_native_ticks": 56,
+    "natural_fall_physical_steps": 228,
+    "natural_fall_y": 15.000366210938,
+    "original_process_log_sha256": "86f6818f24f61e5e8d7d402c69338e65417098311947167242889b0fd5ea77c1"
+  },
+  "source_staging": {
+    "source": "native/src/object_shard_coordinator.cpp:Coordinator::after_owner_world_tick; godot/native_extension/cyber_object_shard_lab.cpp:snapshot carrier row",
+    "finding": "The attached exclusive-owner post-tick path runs automatic_ingress, then dirty geometry rebuild and material-point velocity preservation before returning to publish a frame. Snapshot mass comes from the rebuilt shard geometry. Native mass64 is therefore valid in the first published ingress+Cargo frame even while geometry_pending awaits physical acknowledgement; actual Rapier64 remains independently required after Pause/drain.",
+    "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+  },
+  "original_blobs": {
+    "summary": "31d4ec85e9d3d6a9119e547d473f0e5b40366fe0",
+    "receipt": "a91eb816b0e6b904d892853efd8742cddc9115d8"
+  },
+  "artifact": {
+    "id": 14989400911,
+    "bytes": 201292,
+    "sha256": "020ff289e971e281b2bd0030c230116726df49510f77fd50fb8d8d8ab0da916b"
+  },
+  "terminal_metadata": {
+    "run_status": "completed",
+    "run_conclusion": "success",
+    "job_status": "completed",
+    "job_conclusion": "success",
+    "other_jobs_skipped": 6
+  },
+  "principal_package": {
+    "bytes": 93388322,
+    "filename": "objectshard-workbench-evaluator.zip",
+    "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387"
+  },
+  "observer_sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d",
+  "runner_sha256": "b8fa4cd0f1a5dc2938f2a1ecb8f464a9316d9419f4567507d12783a346e80cc0",
+  "retained_negative_scope": "Original8mixedprofiles retain zeroingress; prior interrupted localSand attempt remains NOTPASS."
+}

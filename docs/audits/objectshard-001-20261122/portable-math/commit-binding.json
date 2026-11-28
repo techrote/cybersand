@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "git_head": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "capture_git_head": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "tested_input_digest": "ceb176f8b88b3de87a74a68dfc1a596d06c0d64f0d711067b9a8d7f92e6ce46e",
+  "source_files_checked": 92,
+  "mismatches": [],
+  "status": "bound",
+  "inputs_sha256": "60ce7f3e23082e7fa98544b07e62e931cb0b12011554ca69d5a53fd655d1cf3b",
+  "benchmark_sha256": "b057f69b8582fc300275dc29760cb025f2fe3496db359628e49b9bc8928e58ba",
+  "qualification_status": "budget_failed",
+  "scope": "Exact source identity binding does not change the registered performance failure."
+}

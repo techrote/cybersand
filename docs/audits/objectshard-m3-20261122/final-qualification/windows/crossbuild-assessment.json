@@ -1,0 +1,52 @@
+{
+  "schema": "objectshard-m3-repair-windows-crossbuild-custody-v1",
+  "status": "passed",
+  "observed_utc": "2026-11-22T07:44:27.347840+00:00",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "run_id": 44999117090,
+  "candidate_artifact": 14745122677,
+  "crossbuild_artifact": 14745236878,
+  "native_binary": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745122677/cybersand_native.windows.x86_64.dll",
+    "sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+    "bytes": 6075904
+  },
+  "verified_native_inputs": 116,
+  "candidate_receipt_sha256": "40f3439335f647785300e9af19fd6462b1ec7652ab26140bcd7c5efd4b1a1dc5",
+  "actual_compile_receipts": [
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745236878/bindings/receipt.json",
+      "sha256": "7b3d81bdc4d92e3d0c617be3d1af4d88a35b9a4ddb01bfa6a56267839e53dc71",
+      "log_sha256": "eab4cee8aa6149d4e7cd7e8115239372ba4711534517235359bd1c0349ff9c27",
+      "elapsed_seconds": 184.276491205,
+      "source": {
+        "commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "job": "windows-build",
+        "run_attempt": "1",
+        "run_id": "44999117090",
+        "runner_name_sha256": "15c0808974b87f0b817161f6a751d875be96d394e0dabadd0881a79f5cd4c3dc",
+        "tracked_delta_sha256": null,
+        "tree": "246e7324ca618d98c43a0ed54fe19bc86a155877"
+      },
+      "label": "objectshard-bindings-windows"
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745236878/extension/receipt.json",
+      "sha256": "44df70cf300dd5810442618811761e66a1e6719dcdacbec05b455f346e4e15ff",
+      "log_sha256": "818dfd12abf6901e113609fa6d4959ccfe1ad66588c55e450271e1f3a4520650",
+      "elapsed_seconds": 54.240185139000005,
+      "source": {
+        "commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "job": "windows-build",
+        "run_attempt": "1",
+        "run_id": "44999117090",
+        "runner_name_sha256": "15c0808974b87f0b817161f6a751d875be96d394e0dabadd0881a79f5cd4c3dc",
+        "tracked_delta_sha256": null,
+        "tree": "246e7324ca618d98c43a0ed54fe19bc86a155877"
+      },
+      "label": "objectshard-extension-windows"
+    }
+  ],
+  "scope": "Fresh CI download and exact source/candidate/compiler receipt authentication. Windows actual execution and owner ZIP remain pending."
+}

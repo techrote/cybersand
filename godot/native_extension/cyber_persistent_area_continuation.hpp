@@ -114,6 +114,8 @@ inline void validate_capsule_shape(const Dictionary& capsule) {
 } // namespace persistent_area_detail
 
 inline void CyberDemoBridge::validate_continuation_dependencies(const CyberNativeCellWorld& adapter) {
+    if (adapter.shard_lab_.is_valid())
+        throw std::invalid_argument("Persistent area transition is pinned by the structural body coordinator");
     if (adapter.spray_.enabled || adapter.spray_.jet_enabled)
         throw std::invalid_argument("Persistent area transition is pinned by Water spray");
     for (const auto& body : adapter.current_bodies_) if (body.valid)

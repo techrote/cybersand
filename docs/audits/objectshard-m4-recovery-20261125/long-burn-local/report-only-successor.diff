@@ -1,0 +1,10 @@
+--- tested-external-fixture
++++ committed-report-only-successor
+@@ -192,6 +192,7 @@
+ 	evidence.natural_combustion = {"source":target,"ignition":ignition,"initial":initial,"final":final,"brick_neighbours":brick_neighbours,
+ 		"native_ticks":ticks,"physical_intervals":intervals,"physical_segments":steps,
+ 		"simulated_physical_seconds":intervals/60.0,"before_tick":before_tick,"exhaustion_tick":exhaustion_tick,
++		"lifetime_native_ticks":exhaustion_tick-before_tick,"post_exhaustion_native_ticks":f.tick()-exhaustion_tick,
+ 		"delivered_cell":delivered_cell,"displayed_after_pause_tick":f.runtime().publication.get("tick"),
+ 		"displayed_after_pause_publication_sequence":f.runtime().publication.get("publication_sequence"),
+ 		"maximum_native_ticks":MAX_BURN_TICKS,"trace":trace,

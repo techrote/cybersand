@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T09:46:14.630816+00:00",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "application_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "publication_commit": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "publication_tree": "7bdfa95b7f30770512a2a448d8cccb789e997885",
+  "publication_parent": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "changed_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "workflow_run": 46125028803,
+  "workflow_attempt": 1,
+  "head_branch": "integration/objectshard-m4-mainline-20261122",
+  "reviewer_script_sha256": "f375de94baeefd6854b0c17b6c7a9dd5e6ecc03768f985cb38cd568fb8b6ba92",
+  "input_evidence_sha256": {
+    "run-identity.json": "470807765dd1896c419e43a9ccb44d9dde033ecbca0ca26280590008ebac57f1",
+    "publication-jobs.json": "9c81b16e3ee68d1f026af0307cf22f9fc7ce3320ef310e872f969a8313077bac",
+    "publication-branch-ref.json": "f7e1a56b9fb69fcc7f009b72339898d5c9ceede19e90ac8249f2c5996aa26da3",
+    "publisher-job.log": "4ad400e0da8427cbbbb2d161be8867f6dc600046822453aab4f240948a844a6c",
+    "linux-validated-production-verification.json": "3691675e363c54521ba8308db6cfe22efea00aa079659bd83b2bf1cc08610657",
+    "windows-validated-production-verification.json": "d6ccae2426d74c8be9e2735d035966dc1869924ad5c82dbbf6e9dfc0daba06cf",
+    "linux-production-manifest.json": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+    "windows-production-manifest.json": "00f3e750d8e1d7fd4bce2f00f168ffed41accb11c260571d34ca47d2b05e31b7"
+  },
+  "required_gates": {
+    "native-sanitizers": {
+      "job_id": 140917627621,
+      "conclusion": "success"
+    },
+    "linux-workbench": {
+      "job_id": 140917627726,
+      "conclusion": "success"
+    },
+    "windows-workbench-regressions": {
+      "job_id": 140918732553,
+      "conclusion": "success"
+    },
+    "windows-workbench-graphical": {
+      "job_id": 140918732561,
+      "conclusion": "success"
+    },
+    "windows-workbench": {
+      "job_id": 140918732597,
+      "conclusion": "success"
+    },
+    "windows-native-presentation": {
+      "job_id": 140918732643,
+      "conclusion": "success"
+    },
+    "independent-windows-package": {
+      "job_id": 140926599049,
+      "conclusion": "success"
+    }
+  },
+  "publisher_job_id": 140938628666,
+  "independent_package_identity_cross_review": {
+    "reviewer": "Specialist C; A cross-checked source/run/attempt and exact native identity",
+    "receipt_sha256": "ceb0da99e173c6d40cf5b073b390ef268f3e07c6c44e52ff49113ff6b829e560",
+    "evidence_artifact_id": 15257314868,
+    "actual_evaluator_artifact_id": 15256411748,
+    "inner_archive_sha256": "cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+    "inner_archive_bytes": 96795210,
+    "physical_owner_acceptance": "pending"
+  },
+  "runtimes": {
+    "linux": {
+      "runtime_path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "manifest_path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+      "native_bytes": 6149752,
+      "manifest_sha256": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+      "validation_sha256": "3b65dde863e89980640bfcec65e88afe6c516464be407b606849c71285854c5f",
+      "production_artifact_id": 15256875803,
+      "independently_verified_target_execution_checks": 86
+    },
+    "windows": {
+      "runtime_path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "manifest_path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+      "native_bytes": 7346176,
+      "manifest_sha256": "00f3e750d8e1d7fd4bce2f00f168ffed41accb11c260571d34ca47d2b05e31b7",
+      "validation_sha256": "5c36ca765eed72b96c2e48417a06b19a3f47d29d11d36a632017dc4e0d8ba146",
+      "production_artifact_id": 15256476615,
+      "independently_verified_target_execution_checks": 86
+    }
+  },
+  "status": "PASS",
+  "scope": "Exact source-leased commit parent and four changed paths, both canonical LFS identities and byte-identical validated manifests, independently verified target-OS production bundles, and all seven mandatory publication gates. Does not merge or promote PR754 or claim physical owner acceptance."
+}

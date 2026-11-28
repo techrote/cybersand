@@ -1,0 +1,978 @@
+{
+  "final_native_performance": {
+    "all_frozen_inputs_match_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+    "budget_qualification": {
+      "failures": [
+        "empty_lab.frame.p95_us: observed 3535.535, registered maximum 2000",
+        "inert_stationary.frame.p95_us: observed 4514.675, registered maximum 2000",
+        "inert_moving.frame.p95_us: observed 3990.996, registered maximum 2000",
+        "reacting_one.frame.p95_us: observed 4247.744, registered maximum 2000",
+        "reacting_three.frame.p95_us: observed 5760.462, registered maximum 2000",
+        "perforated_reacting.frame.p95_us: observed 3528.389, registered maximum 2000",
+        "perforated_reacting.frame.max_us: observed 64604.694, registered maximum 50000",
+        "saturated_world_destinations.frame.p95_us: observed 4343.424, registered maximum 2000",
+        "dormant_twelve.frame.p95_us: observed 3491.468, registered maximum 2000",
+        "wake_burst_twelve.frame.p95_us: observed 3745.427, registered maximum 2000"
+      ],
+      "limits_checked": 74,
+      "status": "failed"
+    },
+    "checks": 4237384,
+    "failures": 0,
+    "source_commit_at_capture": "1bb6185be05f5ef838543a0e13c81428b751d969"
+  },
+  "hosted_native": {
+    "asan_ubsan": true,
+    "checks": 61652,
+    "failures": 0,
+    "leak_sanitizer": false
+  },
+  "integrity_checks": 1929,
+  "integrity_failures": [],
+  "linux_receipt": {
+    "build_contract_inputs": {
+      "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+      "tools/build_native_extension.sh": "17d817129260e4b99a64a1e3008a7e36b1c4ac29e83357fe109528dd510231e9",
+      "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+      "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+      "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+    },
+    "native_sha256": "dac291dfe1cebbe03859e2405afb028e187aa9a2dccd40b06d27735c368e974b",
+    "source_inputs": 114
+  },
+  "package": {
+    "archive_sha256": "bb231a6eed49f097db59b350294a6fa8ec4fb26888b41860b457c40bb8a473b0",
+    "files": 1054,
+    "manifest_sha256": "893f11b3e9e40412a8023336766e83693bdabeb4f05d4435ef34ca64d4111149",
+    "native_inputs": 114,
+    "native_sha256": "2e4a70c4c4eb80e451648deaeac0dea476aa6ad95231308ea6bb81fb445f2178"
+  },
+  "qualification": {
+    "linux-evidence/lab": {
+      "cases": [
+        {
+          "footers": [],
+          "log_sha256": "2b67f5201380fa34a33fa346ec0664dbd56d5496b72ec3fabd01858b60f1a985",
+          "name": "objectshard_import",
+          "seconds": 6.534
+        },
+        {
+          "footers": [],
+          "log_sha256": "919623e3c65bf2262b30590338c66087a0522e311e93d6ed64f3c8faaebe9684",
+          "name": "test_rapier_manual_step",
+          "seconds": 2.411
+        },
+        {
+          "footers": [],
+          "log_sha256": "c31bd8c47acb0a5fd28dc9c19044fbcc9da437f37d5a4da07a600813181320ab",
+          "name": "test_material_lab_experiment",
+          "seconds": 17.48
+        },
+        {
+          "footers": [
+            {
+              "checks": 28,
+              "engine": {
+                "build": "official",
+                "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                "hex": 263936,
+                "major": 4,
+                "minor": 7,
+                "patch": 0,
+                "status": "stable",
+                "string": "4.7-stable (official)",
+                "timestamp": 0
+              },
+              "failures": 0,
+              "platform": "Linux",
+              "schema": "objectshard-physics-bridge-test-v1"
+            }
+          ],
+          "log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84",
+          "name": "objectshard_bridge",
+          "seconds": 0.265
+        },
+        {
+          "footers": [
+            {
+              "checks": 379,
+              "engine": {
+                "build": "official",
+                "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                "hex": 263936,
+                "major": 4,
+                "minor": 7,
+                "patch": 0,
+                "status": "stable",
+                "string": "4.7-stable (official)",
+                "timestamp": 0
+              },
+              "failures": 0,
+              "platform": "Linux",
+              "schema": "objectshard-lab-integration-test-v1"
+            }
+          ],
+          "log_sha256": "f1f7bef10be1ab1171122b10753cb119b69bfa723bc4d24fec64c6486a995ecf",
+          "name": "objectshard_lab",
+          "seconds": 2.774
+        },
+        {
+          "footers": [
+            {
+              "captures": 10,
+              "destination": "/home/runner/work/cybersand/cybersand/evidence/lab/frames",
+              "display": "X11",
+              "failures": 0,
+              "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+              "schema": "objectshard-render-campaign-v1"
+            }
+          ],
+          "log_sha256": "5c94253ec35340cf52e706cfd283a3394bef1821121064d9b2443faa587374be",
+          "name": "objectshard_render",
+          "seconds": 5.655
+        },
+        {
+          "footers": [
+            {
+              "cases": 8,
+              "checks": 719,
+              "destination": "/home/runner/work/cybersand/cybersand/evidence/lab/objectshard_profile_headless.json",
+              "failures": 0,
+              "rendered": false,
+              "schema": "objectshard-lab-profile-v1"
+            }
+          ],
+          "log_sha256": "16b498983bb5f6bd22ba0fa9b789e07807b64ef0bf2a1aff1d9ef19f7e6c4098",
+          "name": "objectshard_profile_headless",
+          "seconds": 27.346
+        },
+        {
+          "footers": [
+            {
+              "cases": 8,
+              "checks": 719,
+              "destination": "/home/runner/work/cybersand/cybersand/evidence/lab/objectshard_profile_rendered.json",
+              "failures": 0,
+              "rendered": true,
+              "schema": "objectshard-lab-profile-v1"
+            }
+          ],
+          "log_sha256": "2d2fa1e8120d224f91550794cb00ed241a96f6c356272322b4f96decb538af85",
+          "name": "objectshard_profile_rendered",
+          "seconds": 236.456
+        }
+      ],
+      "profiles": {
+        "objectshard_profile_headless": {
+          "budgets": {
+            "failures": [],
+            "limits_checked": 56,
+            "physical_owner_acceptance": "unrecorded",
+            "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+            "status": "passed"
+          },
+          "cases": [
+            {
+              "frame": {
+                "max": 2024.0,
+                "p50": 1637.0,
+                "p95": 1686.0,
+                "p99": 1729.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "empty_lab",
+              "present_interval": null,
+              "promotion_max_usec": 0
+            },
+            {
+              "frame": {
+                "max": 2748.0,
+                "p50": 1973.0,
+                "p95": 2021.0,
+                "p99": 2062.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "inert_moving",
+              "present_interval": null,
+              "promotion_max_usec": 3457
+            },
+            {
+              "frame": {
+                "max": 3703.0,
+                "p50": 1984.0,
+                "p95": 2041.0,
+                "p99": 2150.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_one",
+              "present_interval": null,
+              "promotion_max_usec": 3411
+            },
+            {
+              "frame": {
+                "max": 5228.0,
+                "p50": 2584.0,
+                "p95": 2659.0,
+                "p99": 2841.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_three",
+              "present_interval": null,
+              "promotion_max_usec": 4099
+            },
+            {
+              "frame": {
+                "max": 3164.0,
+                "p50": 1980.0,
+                "p95": 2137.0,
+                "p99": 2205.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "perforated",
+              "present_interval": null,
+              "promotion_max_usec": 3597
+            },
+            {
+              "frame": {
+                "max": 4246.0,
+                "p50": 2010.0,
+                "p95": 2076.0,
+                "p99": 2219.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "saturated_output",
+              "present_interval": null,
+              "promotion_max_usec": 3653
+            },
+            {
+              "frame": {
+                "max": 3366.0,
+                "p50": 2552.0,
+                "p95": 2622.0,
+                "p99": 2725.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "dormant_three",
+              "present_interval": null,
+              "promotion_max_usec": 4046
+            },
+            {
+              "frame": {
+                "max": 5152.0,
+                "p50": 2600.0,
+                "p95": 2653.0,
+                "p99": 2733.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "wake_burst_three",
+              "present_interval": null,
+              "promotion_max_usec": 4105
+            }
+          ],
+          "samples": 9600
+        },
+        "objectshard_profile_rendered": {
+          "budgets": {
+            "failures": [],
+            "limits_checked": 80,
+            "physical_owner_acceptance": "unrecorded",
+            "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+            "status": "passed"
+          },
+          "cases": [
+            {
+              "frame": {
+                "max": 2280.0,
+                "p50": 1839.0,
+                "p95": 1911.0,
+                "p99": 1969.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "empty_lab",
+              "present_interval": {
+                "max": 31224.0,
+                "p50": 21702.0,
+                "p95": 27474.0,
+                "p99": 29989.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 0
+            },
+            {
+              "frame": {
+                "max": 2847.0,
+                "p50": 2243.0,
+                "p95": 2325.0,
+                "p99": 2381.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "inert_moving",
+              "present_interval": {
+                "max": 32610.0,
+                "p50": 23026.0,
+                "p95": 28490.0,
+                "p99": 30307.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 3560
+            },
+            {
+              "frame": {
+                "max": 3955.0,
+                "p50": 2272.0,
+                "p95": 2357.0,
+                "p99": 2413.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_one",
+              "present_interval": {
+                "max": 33707.0,
+                "p50": 23227.0,
+                "p95": 28297.0,
+                "p99": 31139.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 3606
+            },
+            {
+              "frame": {
+                "max": 5525.0,
+                "p50": 2889.0,
+                "p95": 2994.0,
+                "p99": 3182.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_three",
+              "present_interval": {
+                "max": 34470.0,
+                "p50": 24421.0,
+                "p95": 29597.0,
+                "p99": 33626.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 4228
+            },
+            {
+              "frame": {
+                "max": 2986.0,
+                "p50": 2264.0,
+                "p95": 2496.0,
+                "p99": 2580.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "perforated",
+              "present_interval": {
+                "max": 35334.0,
+                "p50": 23117.0,
+                "p95": 28707.0,
+                "p99": 30704.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 3962
+            },
+            {
+              "frame": {
+                "max": 4060.0,
+                "p50": 2273.0,
+                "p95": 2364.0,
+                "p99": 2500.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "saturated_output",
+              "present_interval": {
+                "max": 33129.0,
+                "p50": 23055.0,
+                "p95": 28267.0,
+                "p99": 31223.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 3585
+            },
+            {
+              "frame": {
+                "max": 4208.0,
+                "p50": 2863.0,
+                "p95": 2974.0,
+                "p99": 3069.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "dormant_three",
+              "present_interval": {
+                "max": 35330.0,
+                "p50": 24429.0,
+                "p95": 30345.0,
+                "p99": 33826.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 4389
+            },
+            {
+              "frame": {
+                "max": 5584.0,
+                "p50": 2831.0,
+                "p95": 2979.0,
+                "p99": 3055.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "wake_burst_three",
+              "present_interval": {
+                "max": 34717.0,
+                "p50": 23895.0,
+                "p95": 30259.0,
+                "p99": 33485.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 4525
+            }
+          ],
+          "samples": 9600
+        }
+      },
+      "render": {
+        "display": "X11",
+        "images": {
+          "objectshard-a-exact-shapes.png": "4c06da82c6710ec3bb010b19b2aeb2d5931c1289812dcd61b5861bfcf87e79a5",
+          "objectshard-a-impact.png": "fac09d8cb7f0407aa93c5371b9f1fa275938c145a4fc36be60dfd7e99496275c",
+          "objectshard-a-native-supported.png": "405ac16972797c43f2498dad3983de80836723bfa134fea4a4b81b7a203fbd91",
+          "objectshard-a-transferred-falling.png": "28e41cc1cd80c9117b35d48b87edccb76350e8328eaa345d5d79cec1badabf97",
+          "objectshard-b-consumed-geometry.png": "41b3b56cc01c68f7d116d928de2cb6c96be3cbb1de5fbf552635f38528ad06c4",
+          "objectshard-b-real-combustion.png": "5a90d3ea724c8cfcfe2a4f38ce03835aa7306966f240cec9ac77df8a6ae7333b",
+          "objectshard-c-carried-sand.png": "d92313972a982be53a59ab78730ece93dc6df8fd59b3ee7200bbd288c7a45af2",
+          "objectshard-c-water-extinction.png": "09492df1f372760e22eb2e7deaef27fa80cb702f6e3b21bd6a57c6b44a1678b5",
+          "objectshard-d-three-owners.png": "1226c56c3b65ddd5eca2c59e9f295dafe6e4eddfe668ebc9a686ec34a733d30e",
+          "objectshard-retired-material-anchor.png": "ba3af5192fd6f93317f044c13c5baffc11850311d68a43d9bad651e0e279a36e"
+        },
+        "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)"
+      },
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "dac291dfe1cebbe03859e2405afb028e187aa9a2dccd40b06d27735c368e974b",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    },
+    "windows-evidence/package-replay": {
+      "cases": [
+        {
+          "footers": [],
+          "log_sha256": "f1797f2606810836b95252c9754c9c785d5e3ac14de02da2329bf28e65403e64",
+          "name": "objectshard_import",
+          "seconds": 7.388
+        },
+        {
+          "footers": [],
+          "log_sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+          "name": "test_rapier_manual_step",
+          "seconds": 3.188
+        },
+        {
+          "footers": [],
+          "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+          "name": "test_material_lab_experiment",
+          "seconds": 21.113
+        },
+        {
+          "footers": [
+            {
+              "checks": 28,
+              "engine": {
+                "build": "official",
+                "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                "hex": 263936,
+                "major": 4,
+                "minor": 7,
+                "patch": 0,
+                "status": "stable",
+                "string": "4.7-stable (official)",
+                "timestamp": 0
+              },
+              "failures": 0,
+              "platform": "Windows",
+              "schema": "objectshard-physics-bridge-test-v1"
+            }
+          ],
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+          "name": "objectshard_bridge",
+          "seconds": 0.386
+        },
+        {
+          "footers": [
+            {
+              "checks": 379,
+              "engine": {
+                "build": "official",
+                "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                "hex": 263936,
+                "major": 4,
+                "minor": 7,
+                "patch": 0,
+                "status": "stable",
+                "string": "4.7-stable (official)",
+                "timestamp": 0
+              },
+              "failures": 0,
+              "platform": "Windows",
+              "schema": "objectshard-lab-integration-test-v1"
+            }
+          ],
+          "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+          "name": "objectshard_lab",
+          "seconds": 2.243
+        }
+      ],
+      "profiles": {},
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "2e4a70c4c4eb80e451648deaeac0dea476aa6ad95231308ea6bb81fb445f2178",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      }
+    },
+    "windows-evidence/windows-lab": {
+      "cases": [
+        {
+          "footers": [],
+          "log_sha256": "da5421a2c944c220a1939167c307b92110f23e77594397d71bfc7d4b2a3de989",
+          "name": "objectshard_import",
+          "seconds": 10.109
+        },
+        {
+          "footers": [],
+          "log_sha256": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+          "name": "test_rapier_manual_step",
+          "seconds": 3.191
+        },
+        {
+          "footers": [],
+          "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+          "name": "test_material_lab_experiment",
+          "seconds": 22.225
+        },
+        {
+          "footers": [
+            {
+              "checks": 28,
+              "engine": {
+                "build": "official",
+                "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                "hex": 263936,
+                "major": 4,
+                "minor": 7,
+                "patch": 0,
+                "status": "stable",
+                "string": "4.7-stable (official)",
+                "timestamp": 0
+              },
+              "failures": 0,
+              "platform": "Windows",
+              "schema": "objectshard-physics-bridge-test-v1"
+            }
+          ],
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+          "name": "objectshard_bridge",
+          "seconds": 0.394
+        },
+        {
+          "footers": [
+            {
+              "checks": 379,
+              "engine": {
+                "build": "official",
+                "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                "hex": 263936,
+                "major": 4,
+                "minor": 7,
+                "patch": 0,
+                "status": "stable",
+                "string": "4.7-stable (official)",
+                "timestamp": 0
+              },
+              "failures": 0,
+              "platform": "Windows",
+              "schema": "objectshard-lab-integration-test-v1"
+            }
+          ],
+          "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+          "name": "objectshard_lab",
+          "seconds": 2.243
+        },
+        {
+          "footers": [
+            {
+              "captures": 10,
+              "destination": "D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\frames",
+              "display": "Windows",
+              "failures": 0,
+              "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+              "schema": "objectshard-render-campaign-v1"
+            }
+          ],
+          "log_sha256": "9066c15ef09ba839869585bbb82212498bb195363b27fb5b8aa7c59d431a4b0f",
+          "name": "objectshard_render",
+          "seconds": 6.34
+        },
+        {
+          "footers": [
+            {
+              "cases": 8,
+              "checks": 719,
+              "destination": "D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\objectshard_profile_headless.json",
+              "failures": 0,
+              "rendered": false,
+              "schema": "objectshard-lab-profile-v1"
+            }
+          ],
+          "log_sha256": "bf942c4ee65a1d570e20edefd11d77bfa7e98d7924b42f095aa4c8b628f80939",
+          "name": "objectshard_profile_headless",
+          "seconds": 20.264
+        },
+        {
+          "footers": [
+            {
+              "cases": 8,
+              "checks": 719,
+              "destination": "D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\objectshard_profile_rendered.json",
+              "failures": 0,
+              "rendered": true,
+              "schema": "objectshard-lab-profile-v1"
+            }
+          ],
+          "log_sha256": "147979cd0f77ab995ec5baf081583b32441293c51a55651489705828765ddfae",
+          "name": "objectshard_profile_rendered",
+          "seconds": 162.112
+        }
+      ],
+      "profiles": {
+        "objectshard_profile_headless": {
+          "budgets": {
+            "failures": [],
+            "limits_checked": 56,
+            "physical_owner_acceptance": "unrecorded",
+            "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+            "status": "passed"
+          },
+          "cases": [
+            {
+              "frame": {
+                "max": 1984.0,
+                "p50": 1139.0,
+                "p95": 1319.0,
+                "p99": 1356.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "empty_lab",
+              "present_interval": null,
+              "promotion_max_usec": 0
+            },
+            {
+              "frame": {
+                "max": 3954.0,
+                "p50": 1425.0,
+                "p95": 1494.0,
+                "p99": 1618.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "inert_moving",
+              "present_interval": null,
+              "promotion_max_usec": 2467
+            },
+            {
+              "frame": {
+                "max": 2624.0,
+                "p50": 1443.0,
+                "p95": 1502.0,
+                "p99": 1567.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_one",
+              "present_interval": null,
+              "promotion_max_usec": 2468
+            },
+            {
+              "frame": {
+                "max": 4968.0,
+                "p50": 1941.0,
+                "p95": 2115.0,
+                "p99": 3132.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_three",
+              "present_interval": null,
+              "promotion_max_usec": 3012
+            },
+            {
+              "frame": {
+                "max": 2564.0,
+                "p50": 1448.0,
+                "p95": 1586.0,
+                "p99": 1912.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "perforated",
+              "present_interval": null,
+              "promotion_max_usec": 2843
+            },
+            {
+              "frame": {
+                "max": 3690.0,
+                "p50": 1452.0,
+                "p95": 1579.0,
+                "p99": 2030.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "saturated_output",
+              "present_interval": null,
+              "promotion_max_usec": 2546
+            },
+            {
+              "frame": {
+                "max": 2243.0,
+                "p50": 1898.0,
+                "p95": 1951.0,
+                "p99": 2013.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "dormant_three",
+              "present_interval": null,
+              "promotion_max_usec": 2988
+            },
+            {
+              "frame": {
+                "max": 3937.0,
+                "p50": 1943.0,
+                "p95": 2081.0,
+                "p99": 2260.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "wake_burst_three",
+              "present_interval": null,
+              "promotion_max_usec": 2924
+            }
+          ],
+          "samples": 9600
+        },
+        "objectshard_profile_rendered": {
+          "budgets": {
+            "failures": [],
+            "limits_checked": 80,
+            "physical_owner_acceptance": "unrecorded",
+            "scope": "Provisional standalone Lab budgets registered after measured local baseline and before final pinned Linux/Windows qualification. These are elapsed owner-thread and presentation allowances, not process CPU time or established Windows 11/NVIDIA owner acceptance.",
+            "status": "passed"
+          },
+          "cases": [
+            {
+              "frame": {
+                "max": 4672.0,
+                "p50": 2186.0,
+                "p95": 2258.0,
+                "p99": 3677.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "empty_lab",
+              "present_interval": {
+                "max": 32271.0,
+                "p50": 16002.0,
+                "p95": 16179.0,
+                "p99": 31822.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 0
+            },
+            {
+              "frame": {
+                "max": 3765.0,
+                "p50": 2664.0,
+                "p95": 2785.0,
+                "p99": 3700.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "inert_moving",
+              "present_interval": {
+                "max": 32039.0,
+                "p50": 16004.0,
+                "p95": 16198.0,
+                "p99": 31823.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 2596
+            },
+            {
+              "frame": {
+                "max": 4602.0,
+                "p50": 2652.0,
+                "p95": 2741.0,
+                "p99": 3712.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_one",
+              "present_interval": {
+                "max": 31921.0,
+                "p50": 16004.0,
+                "p95": 16164.0,
+                "p99": 31780.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 2423
+            },
+            {
+              "frame": {
+                "max": 6592.0,
+                "p50": 3432.0,
+                "p95": 3552.0,
+                "p99": 5084.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "reacting_three",
+              "present_interval": {
+                "max": 32408.0,
+                "p50": 16005.0,
+                "p95": 16315.0,
+                "p99": 31805.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 2962
+            },
+            {
+              "frame": {
+                "max": 4214.0,
+                "p50": 2665.0,
+                "p95": 3003.0,
+                "p99": 4068.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "perforated",
+              "present_interval": {
+                "max": 31997.0,
+                "p50": 16006.0,
+                "p95": 16220.0,
+                "p99": 31845.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 2736
+            },
+            {
+              "frame": {
+                "max": 4938.0,
+                "p50": 2657.0,
+                "p95": 2825.0,
+                "p99": 3867.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "saturated_output",
+              "present_interval": {
+                "max": 32311.0,
+                "p50": 16000.0,
+                "p95": 16222.0,
+                "p99": 31866.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 2440
+            },
+            {
+              "frame": {
+                "max": 6482.0,
+                "p50": 3375.0,
+                "p95": 3493.0,
+                "p99": 4811.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "dormant_three",
+              "present_interval": {
+                "max": 31982.0,
+                "p50": 16005.0,
+                "p95": 16224.0,
+                "p99": 31817.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 2993
+            },
+            {
+              "frame": {
+                "max": 6137.0,
+                "p50": 3454.0,
+                "p95": 3550.0,
+                "p99": 4367.0,
+                "samples": 1200
+              },
+              "geometry_age": 0,
+              "name": "wake_burst_three",
+              "present_interval": {
+                "max": 32004.0,
+                "p50": 16007.0,
+                "p95": 16263.0,
+                "p99": 31804.0,
+                "samples": 1199
+              },
+              "promotion_max_usec": 3107
+            }
+          ],
+          "samples": 9600
+        }
+      },
+      "render": {
+        "display": "Windows",
+        "images": {
+          "objectshard-a-exact-shapes.png": "db66ee51b5f9653281041fab17fd2ea4f83a0c11824b056f54980676938b3fee",
+          "objectshard-a-impact.png": "b30a33b5a213d9e9ce1970a6339b5bf45b8bf65ac45d274e6b2814d0238e19e0",
+          "objectshard-a-native-supported.png": "e1a7bb603456b3cb8e0eeb281d0f822e4bafae205b87dda74d0965b35c9b083f",
+          "objectshard-a-transferred-falling.png": "38cba276418ea2af39ccb1662b0ed16a06906b2ed6f86f03ab133adfd9fd2082",
+          "objectshard-b-consumed-geometry.png": "768e0b366876be4ddba5ad7bf62cdd42424a06ee610fa8a943a260a30dbcb6a5",
+          "objectshard-b-real-combustion.png": "c591c62c5493648f73ff33cccbe0691bf98cbfaec66fa90213b5ba60216d5565",
+          "objectshard-c-carried-sand.png": "8f5c92350bef7c70f951f8f9fdc3905e8e314902c57f3d85d6ad045c1a0cf988",
+          "objectshard-c-water-extinction.png": "e034bb146ac5cf2c1045c3e4f96da37d63e909ccfd7cae2006d7813c036dfbed",
+          "objectshard-d-three-owners.png": "c7d1a6e5b9e993cefe741ce78a3893c756cc9c68aa968b80ba53e5b354f6f5ec",
+          "objectshard-retired-material-anchor.png": "877f6e8bb68707501b02d9168d1b9368b093d3baca1d523bec39163d491f215b"
+        },
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      },
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "2e4a70c4c4eb80e451648deaeac0dea476aa6ad95231308ea6bb81fb445f2178",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      }
+    }
+  },
+  "qualification_limitations": [
+    "Final native benchmark remains budget_failed: 10 of 74 timing limits.",
+    "Hosted software-renderer profiles do not establish Windows 11/NVIDIA owner physical acceptance.",
+    "ASan/UBSan qualification has LeakSanitizer disabled."
+  ],
+  "schema": "objectshard-independent-final-evidence-v1",
+  "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "source_tree": "a0e3478c293908247bc5cdaab9497fc290a374c6"
+}

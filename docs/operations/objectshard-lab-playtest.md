@@ -1,0 +1,257 @@
+---
+title: ObjectShard Lab owner evaluation
+status: Planned
+document-kind: guide
+scope: Source-bound OBJECTSHARD-001R playtesting evaluator, prospective action evidence and explicit M0–M2 limitations
+canonical-for: [objectshard-owner-evaluation]
+last-reviewed: 2026-11-22
+related-documents: [github-development-and-release.md, local-build-and-validation.md]
+---
+
+# ObjectShard Lab owner evaluation
+
+The ObjectShard Lab is a separate experimental scene. It leaves ordinary
+CyberSand gameplay and Workbench defaults unchanged. Keep the implementation
+**Draft / HOLD** until the recorded native/platform qualification and your
+physical Windows acceptance are complete.
+
+The source is delivered in executable stages. The native capability panel
+identifies the implemented milestone, and unavailable scenarios stay disabled.
+M0 supplies ownership transfer and motion; M1 adds continuing material chemistry;
+M2 adds real product delivery, Sand lodging and external Water exposure. A
+scenario's presence in this guide is not evidence that an earlier-stage binary
+already implements it.
+
+The 001R candidate adds admission diagnostics, sustained-rest experiments,
+source-owned moving erasure and prospective action capture. Its qualification
+record must identify the exact tested source and delivered ZIP. Earlier M2
+qualification does not qualify a changed DLL or launcher. The historical native
+performance result remains **10 failed limits out of 74** until a separately
+identified, comparable run establishes a different result.
+
+## Open the Windows evaluator
+
+1. Extract the complete evaluation ZIP into a new directory.
+2. Double-click **Open ObjectShard Lab.cmd**. It verifies the file manifest,
+   imports the included source project and launches the bundled Godot runtime.
+3. If verification or import fails, retain the console message and do not copy
+   DLLs from another CyberSand build. **Verify ObjectShard Lab.cmd** repeats the
+   package check without starting the Lab.
+
+Extract a new folder for each candidate; do not overlay a previous build. The
+package generator resolves its root as `%~dp0.` before passing it to Windows
+argument parsers, preventing a terminal backslash from escaping a closing quote.
+Automated qualification exercises the shipped verifier and GUI launcher after
+extracting the same ZIP under paths with spaces, an ending `(1)`, nesting and
+Unicode. Consult the exact candidate record for the executed results; this
+procedure is not itself a pass.
+
+The package contains its exact source commit/tree, native build input ledger,
+native DLL hash, selected Rapier provenance, pinned Godot archive identity and
+file hashes. It is a bundled source-project evaluator, not an exported release.
+No export-template installation or developer command reconstruction is needed.
+
+## Controls
+
+Choose a scenario, then **Resume**, **Pause**, **Single step**, or **Reset**.
+The default view uses native material colours. Left-drag with **Erase**, **Wood**,
+**Sand**, **Water**, or **Ignite**. Right-click, or select **Inspect**, to inspect
+the exact owner, local identity, state and temperature of a material cell.
+
+**Erase lower Wood band** finds the lowest current Wood row and removes the
+lowest twelve rows through the same ordinary native edit operation used by the
+brush. It is a convenience for making a readable fall; there is no special
+cut-to-physics command or fixed component capture rectangle.
+
+The optional **Shapes / centre of mass / pocket** overlay shows exact collision
+rectangles in cyan, centre of mass in gold and the admitted pocket in green.
+Empty holes remain empty. The side panel records structural inventory, products,
+cargo, revisions, native events and measured frame/promotion costs.
+The ownership and inspection panes scroll when their diagnostics exceed the
+available window height. **Erase** resolves the actual material owner. Stationary
+material is edited in World; moving structural material is erased through an
+identity-fenced native shard transaction, followed by collision installation and
+acknowledgement between Rapier steps. Other moving material replacement and
+cargo painting are refused. Ignition and inspection remain owner-aware.
+
+Fast drags use a continuous four-connected cut rather than disconnected mouse
+samples. At most 256 unique cells wait in the edit queue and at most 16 execute
+per frame. The pending count is visible, and pause/export remain available. A
+target that changes owner while waiting is refused explicitly. Let the pending
+count reach zero before assessing a cut or resuming a paused multi-cut experiment.
+
+**Erode resting cell** selects an actually sleeping body, then queues one visible
+structural-cell erasure. It does not apply a scripted impulse or freeze the body.
+**External Fire burner** authors genuine Fire into Empty World cells at the
+outlined fixed source positions. It never deletes Wood, overwrites cargo or
+draws decorative flames. Its authored Fire count is separate from products
+generated by native chemistry.
+
+## Scenario A — ordinary detachment
+
+Remove part of a Wood support or use the lower-band convenience action, then
+resume. The component must lose support because its actual native cells changed.
+After a short paused handoff, it should fall, rotate when contact produces torque,
+and collide with terrain.
+
+**PASS:** the removed source material has one moving owner; it neither remains
+as a duplicate stationary structure nor disappears during the handoff. Pause and
+single-step should remain responsive. Tiny resting drift or harmless settling is
+not by itself a failure.
+
+## Scenario B — burning Wood tree
+
+The tree is genuinely Wood, with an existing native burn countdown. Resume for a
+few ticks, then remove support. Inspect a burning cell before and after promotion.
+Its burn state must continue rather than restart. Allow several seconds for Wood
+consumption to change the structure and collision geometry.
+
+Ordinary Wood combustion is unchanged. One or two initially burning pixels may
+die out without consuming the whole tree. For sustained erosion, use **J —
+Sustained external flame** or enable the visible burner and place the reacting
+structure in its path. Fire remains an external material source; native selected
+contact and combustion decisions determine whether a Wood cell ignites.
+
+**PASS:** native combustion continues after motion begins and while the body
+sleeps. Wood produces actual Fire; delivered Fire enters World and follows the
+native Fire-to-Smoke lifecycle. The side panel's product/output accounting must
+advance. Bright cells are drawn from native material state, not decorative flames.
+
+This first slice keeps disconnected structural islands in one compound. The
+panel labels this **split_pending**. Independent fragment motion is not claimed.
+Persistent, conspicuously floating branches should be reported as a gameplay
+limitation; small transient disconnected regions are expected before fracture.
+
+## Scenario C — external contact and lodging
+
+Detach the pocket structure. The authored Sand is above an open channel; more
+Sand can be placed over it. The capture must occur through the physical aperture,
+not through a solid wall. Inspect carried Sand to see its material, state,
+temperature and cargo identity.
+
+Ignite Wood, then place Water against an exposed burning surface. Water remains
+owned by World while the accepted contact extinguishes that Wood incarnation.
+Pause, inspect and single-step to see the change. Contact and ingestion are
+separate capabilities; Water is not silently copied into a private liquid solver.
+The admitted opening is one to three cells wide. A suspicious sideways entry
+holds ingestion until that local opening is clear again; it must not become a
+valid capture merely because the body subsequently stops moving.
+
+Most Sand can legitimately miss or pass through the small capture aperture and
+reach the floor. Inspect the lodged cell and cargo count to distinguish real
+ingestion from bypass. This experiment does not advertise an internal granular
+solver or an unlimited Sand container.
+
+**PASS:** real Sand is removed from World exactly once and becomes inspectable
+cargo; genuine Water contact changes burning Wood; failed delivery retains its
+inventory and reports a blocked state. A vanished pocket or retired rigid body
+must not silently delete remaining cargo or products.
+
+## Scenario D — three moving owners
+
+Remove supports from the three native Wood structures. Their identities,
+inventory, material revisions and body revisions must remain distinct. Ignite
+them and observe concurrent chemistry and motion.
+
+**PASS:** all three remain usable without freezing the control loop, sharing a
+singleton inventory, duplicating effects or accumulating an unbounded backlog.
+
+## Additional reference scenes
+
+| Scene | Native canvas | Useful experiment |
+| --- | --- | --- |
+| E — Perforated crown | 192 × 128 | Cut a perforated structure; inspect exact holes and shape count. |
+| F — Long settling control | 192 × 128 | Let three unburning structures collide and naturally sleep; erode a resting cell and observe contact recovery. |
+| G — Main structure and offcuts | 192 × 128 | While paused, cut across one large crown's support and eight small supports; drain queued edits, resume and inspect admission order. |
+| H — Irregular branching | 256 × 160 | Repeated horizontal, diagonal and awkward branching cuts with negative space. |
+| I — Diagonal / multi-support cuts | 256 × 160 | One remaining genuine support preserves anchoring; sever both to detach. |
+| J — Sustained external flame | 256 × 160 | Genuine, separately counted World Fire repeatedly contacts a Wood structure. |
+| K — Extended play canvas | 320 × 192 | Three substantial structures, asymmetric ledges and continuing manual edits. |
+
+These canvases contain 24,576, 40,960 and 61,440 World cells respectively. Their
+eight-byte carrier reference sizes are 192, 320 and 480 KiB; those figures are
+**not total residency**. World sidecars, discovery scratch, shard storage,
+textures, Rapier shapes and capture buffers add measured overhead. The default
+three body slots, 4,096-cell local bounding-box budget and exact geometry limits
+remain explicit. Additional scenes use ordinary paused native material edits
+and do not prescribe rigid-body motion.
+
+## Read an admission refusal
+
+The panel separates eligibility from admission. It shows occupied slots,
+eligible/deferred counts, discovery work and pending seeds, candidate sizes and
+the real refusal reason. A component can be genuinely anchored, still being
+searched under a bounded budget, beyond admitted geometry/residency, or waiting
+for a body slot. Its material stays with its authoritative owner.
+
+Large simultaneously eligible components receive priority. Already active tiny
+shards still own real material and cannot be silently deleted to make a slot.
+If all three slots remain occupied, a later large cut can be legitimately
+deferred. Report a missing component, incorrect anchor decision or unexplained
+refusal separately from that visible resource policy. Repeated identical
+refusals should not flood the event window or restart complete searches.
+
+## Export and acceptance
+
+Use **Export bug report / trace** to save an observation JSON and flush the
+prospective `.trace.jsonl` recording beside it. The directory opens automatically.
+Include both files, your original package ZIP/source identity, and one sentence
+describing the unexpected event. A screenshot or short video helps with visible
+contact problems. A protective hold also exports an incident automatically.
+
+The observation contains source/manifest identity, scenario and seed, numeric
+poses, actual Rapier sleep/velocity, geometry installation events, native
+ownership, candidate/admission reasons, pending edits and scoped metrics. Native
+session counters and maxima are separate from totals for the current native
+owner instance, including its resets. Replacing the canvas creates a new native
+owner; these are not claimed to be process-global totals. Cumulative
+material-accounting/disposal history is explicitly labelled. Timing includes
+owner-thread operating-system preemption and is not process CPU utilization.
+
+The prospective trace begins when the scene opens. It records named input
+operations, exact material tuples and results, requested/completed semantic
+steps, ownership/geometry events and flushed incident checkpoints. It is bounded
+to 32 MiB and 100,000 records; the UI identifies saturation as incomplete while
+play continues. The observation's action/event/sample windows have explicit
+retained/total counts. A reset starts a new session and trace.
+
+Replay requires the matching source and reissues named operations and manual
+steps in order. Cross-platform Rapier bit identity and wall-clock mouse timing
+are not promised. The original six owner JSONs have incomplete event rings and
+remain observations, never retroactively claimed as complete input replays.
+The export includes separate owner identities, material populations, geometry
+revisions and the last physical pose of a draining domain after its body retires.
+Timing values are elapsed time on the owner thread and include operating-system
+preemption; they are not process CPU utilization. Native memory counters are an
+accounted lower bound, with separate allocator measurements in the qualification
+report.
+
+The export is an observation record, not a durable gameplay save. Reset explicitly
+disposes the entire experimental session and invalidates its old handles.
+
+Block acceptance for crashes, unexplained material loss/duplication, double
+ownership, stale activation, stopped advertised chemistry, catastrophic terrain
+penetration, runaway impulses, or indefinitely stale collision. Report minor
+jitter separately from those failures. Automated Windows execution and rendered
+captures are evidence, but they do not replace physical acceptance on your
+Windows 11/NVIDIA machine.
+
+## Deliberate limits
+
+M0–M2 supports admitted structural cells, selected shared combustion/product
+lifecycle, real bounded output, whole-cell baseline Sand lodging and selected
+non-consuming Water contact. It does not provide general fracture, internal gas
+or liquid transport, fractional liquid ingestion, solver-sidecar transfer,
+durable save/restore or streaming. Wave, PressureFlow, inertial and ballistic
+state remain with their existing World owner. Production Water defaults are
+unchanged.
+
+The motion envelope retains four cells of translation and 0.20 radians of
+rotation per accepted physical segment. Bounded actual Rapier substeps reconcile
+each segment with the same native owner while chemistry advances only once per
+semantic tick. At most 16 segments are allowed; limits are not increased to hide
+unstable motion. An unsupported interval holds the Lab with exact inventory
+retained. Arbitrary high-speed chemical collision coverage is not claimed.
+The diagnostic native `transfer_budget` can be set to
+0–64 during construction for resource-pressure tests; the owner launcher uses
+the ordinary Lab default of 64 and provides no new Workbench control.

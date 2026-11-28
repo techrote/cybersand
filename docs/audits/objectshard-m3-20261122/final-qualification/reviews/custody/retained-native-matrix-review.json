@@ -1,0 +1,28 @@
+{
+  "schema": "objectshard-independent-retained-native-matrix-source-review-v1",
+  "utc": "2026-11-22T08:10:08.647833+00:00",
+  "final_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "recorded_run_head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "qualified_native_source": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "run_path": "build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4",
+  "status": "passed retained input identity and budget reduction; no new matrix execution",
+  "input_count": 94,
+  "input_digest": "1aab8c0f4ca49e4981697571e108e3bbf86ff2b0156416a5b737322702628ece",
+  "all_94_inputs_identical_to_final_and_qualified_native": true,
+  "actual_binary_sha256": "7d1ddcf453349b2458031fe66bb641f80c1617931e053a302bc11fa98dddcac0",
+  "raw_report_sha256": "c32d93f532a06f38b1b289a45cb1d3ccdf1388bb0195546358f38741323481db",
+  "inputs_sha256": "80eb845c39b868eaf5348724e1048195fbc4bdf1421c629833fdeaced56d9a3e",
+  "budget_qualification": {
+    "status": "passed",
+    "limits_checked": 74,
+    "failures": []
+  },
+  "checks": 4237399,
+  "failures": 0,
+  "peak_accounted_cpp_bytes": 6277280,
+  "budget_bytes": 6291456,
+  "margin_bytes": 14176,
+  "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0",
+  "scope": "Retained local native benchmark at #738 during uncommitted GDScript M3 staging. All native, benchmark and budget inputs are identical to qualified514 and final e034. Synthetic pose/ACK values; no Rapier, renderer, worker mailbox or total process memory qualification. World sanitizer work overlapped that historical timing trial, so no native speedup attribution. Fresh e034 Linux CI sanitizer/World and actual Lab profiles are separately audited.",
+  "negative_history": "Original M2 10/74 timing failures and finisher intermediate14/74 memory failures remain in the accepted stack; final success does not replace them."
+}

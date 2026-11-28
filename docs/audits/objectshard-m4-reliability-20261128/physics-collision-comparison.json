@@ -1,0 +1,1156 @@
+{
+  "baseline": [
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 2.89883494986043e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": -2.32310459757912e-09,
+            "session": 1001,
+            "sleeping": false,
+            "vx": 2.02918659653051e-08,
+            "vy": 0.0,
+            "x": 27.0,
+            "y": 39.0003433227539
+          }
+        ],
+        "session": 1001
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 2.16723879020719e-06,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 1.06902250940344e-10,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 2.28442733479772e-11,
+            "session": 1002,
+            "sleeping": false,
+            "vx": 7.48316547616312e-11,
+            "vy": -1.49011611938477e-08,
+            "x": 27.0,
+            "y": 39.0003890991211
+          }
+        ],
+        "session": 1002
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 1.070887645227e-08,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 0.0,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": -2.32830664470551e-11,
+            "session": 1003,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": -1.49011611938477e-08,
+            "x": 27.0,
+            "y": 39.0004043579102
+          }
+        ],
+        "session": 1003
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 0.0,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 0.0,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": -2.32830664470551e-11,
+            "session": 1004,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": -1.49011611938477e-08,
+            "x": 27.0,
+            "y": 39.0004043579102
+          }
+        ],
+        "session": 1004
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 0.0,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 1.39315474712021e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 8.02596059656935e-06,
+            "session": 1005,
+            "sleeping": false,
+            "vx": 9.75209424325385e-09,
+            "vy": -7.45058059692383e-09,
+            "x": 27.2000045776367,
+            "y": 39.0002670288086
+          }
+        ],
+        "session": 1005
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 2.90173662875759e-08,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 2.5116514734691e-07,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 9.31801605474902e-06,
+            "session": 1006,
+            "sleeping": false,
+            "vx": 1.75815799252632e-07,
+            "vy": 3.72529029846191e-09,
+            "x": 27.2000045776367,
+            "y": 39.000301361084
+          }
+        ],
+        "session": 1006
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 2.42048918153159e-06,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -6.00665472916262e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 9.52210939431097e-06,
+            "session": 1007,
+            "sleeping": false,
+            "vx": -4.20466257367025e-08,
+            "vy": -7.45058059692383e-09,
+            "x": 27.2000045776367,
+            "y": 39.0003128051758
+          }
+        ],
+        "session": 1007
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 1.79387882326409e-06,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -4.56008280025344e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 9.55296127358451e-06,
+            "session": 1008,
+            "sleeping": false,
+            "vx": -3.19206137078254e-08,
+            "vy": -7.45058059692383e-09,
+            "x": 27.2000045776367,
+            "y": 39.0003128051758
+          }
+        ],
+        "session": 1008
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 7.29980854430323e-07,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 2.626416240048e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000188177567906678,
+            "session": 1009,
+            "sleeping": false,
+            "vx": 1.8384934463711e-08,
+            "vy": 1.86264514923096e-09,
+            "x": 27.4000930786133,
+            "y": 39.000129699707
+          }
+        ],
+        "session": 1009
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 5.35077333552181e-07,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 4.22439079272863e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000217439592233859,
+            "session": 1010,
+            "sleeping": false,
+            "vx": 2.95707671682521e-08,
+            "vy": 5.58793544769287e-09,
+            "x": 27.4001083374023,
+            "y": 39.0001525878906
+          }
+        ],
+        "session": 1010
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 8.45328429477377e-07,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -2.22664581883691e-07,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000226052521611564,
+            "session": 1011,
+            "sleeping": false,
+            "vx": -1.55865379269926e-07,
+            "vy": -1.86264514923096e-09,
+            "x": 27.4001121520996,
+            "y": 39.0001564025879
+          }
+        ],
+        "session": 1011
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 4.14957412431249e-06,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -1.90602711391819e-09,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000226053656660952,
+            "session": 1012,
+            "sleeping": false,
+            "vx": -1.3342205118505e-09,
+            "vy": 1.11758708953857e-08,
+            "x": 27.4001121520996,
+            "y": 39.0001564025879
+          }
+        ],
+        "session": 1012
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 3.62648819418609e-07,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 9.81179428100586,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.178113579750061,
+            "session": 1013,
+            "sleeping": false,
+            "vx": 6.86826324462891,
+            "vy": 1.1818585395813,
+            "x": 27.8215389251709,
+            "y": 38.9422264099121
+          }
+        ],
+        "session": 1013
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 11.236141204834,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "motion": {
+          "detail": {
+            "corner_motion": 1.10863239002019,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.219715729355812,
+            "translation": 0.176457539200783
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1014
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 52.7848739624023,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "motion": {
+          "detail": {
+            "corner_motion": 1.4939508016536,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.296369716059417,
+            "translation": 0.236560642719269
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1015
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 65.4128723144531,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "motion": {
+          "detail": {
+            "corner_motion": 1.1122830858023,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.210643170401454,
+            "translation": 0.21859984099865
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1016
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 50.6011505126953,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 27.8222236633301,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.457187175750732,
+            "session": 1017,
+            "sleeping": false,
+            "vx": 19.4755783081055,
+            "vy": 2.99998188018799,
+            "x": 28.4434680938721,
+            "y": 38.8623580932617
+          }
+        ],
+        "session": 1017
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 27.8222236633301,
+      "x": 27.8
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 45.5949325561523,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.873583912849426,
+            "session": 1018,
+            "sleeping": false,
+            "vx": 31.9164905548096,
+            "vy": 4.09733963012695,
+            "x": 29.0547389984131,
+            "y": 38.853645324707
+          }
+        ],
+        "session": 1018
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 45.5949325561523,
+      "x": 27.8
+    },
+    {
+      "capture": {
+        "motion": {
+          "detail": {
+            "corner_motion": 1.24156994949384,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.215142914094031,
+            "translation": 0.328795909881592
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1019
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 63.6674461364746,
+      "x": 27.8
+    },
+    {
+      "capture": {
+        "motion": {
+          "detail": {
+            "corner_motion": 1.84426197252285,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.3284972300753,
+            "translation": 0.450566321611404
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1020
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 82.1714324951172,
+      "x": 27.8
+    }
+  ],
+  "corrected": [
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 2.89883494986043e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": -2.32310459757912e-09,
+            "session": 1001,
+            "sleeping": false,
+            "vx": 2.02918659653051e-08,
+            "vy": 0.0,
+            "x": 27.0,
+            "y": 39.0003433227539
+          }
+        ],
+        "session": 1001
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 2.16723879020719e-06,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 1.06902250940344e-10,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 2.28442733479772e-11,
+            "session": 1002,
+            "sleeping": false,
+            "vx": 7.48316547616312e-11,
+            "vy": -1.49011611938477e-08,
+            "x": 27.0,
+            "y": 39.0003890991211
+          }
+        ],
+        "session": 1002
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 1.070887645227e-08,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 0.0,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": -2.32830664470551e-11,
+            "session": 1003,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": -1.49011611938477e-08,
+            "x": 27.0,
+            "y": 39.0004043579102
+          }
+        ],
+        "session": 1003
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 0.0,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 0.0,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": -2.32830664470551e-11,
+            "session": 1004,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": -1.49011611938477e-08,
+            "x": 27.0,
+            "y": 39.0004043579102
+          }
+        ],
+        "session": 1004
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 0.0,
+      "x": 27.0
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 1.39315474712021e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 8.02596059656935e-06,
+            "session": 1005,
+            "sleeping": false,
+            "vx": 9.75209424325385e-09,
+            "vy": -7.45058059692383e-09,
+            "x": 27.2000045776367,
+            "y": 39.0002670288086
+          }
+        ],
+        "session": 1005
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 2.90173662875759e-08,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 2.5116514734691e-07,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 9.31801605474902e-06,
+            "session": 1006,
+            "sleeping": false,
+            "vx": 1.75815799252632e-07,
+            "vy": 3.72529029846191e-09,
+            "x": 27.2000045776367,
+            "y": 39.000301361084
+          }
+        ],
+        "session": 1006
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 2.42048918153159e-06,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -6.00665472916262e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 9.52210939431097e-06,
+            "session": 1007,
+            "sleeping": false,
+            "vx": -4.20466257367025e-08,
+            "vy": -7.45058059692383e-09,
+            "x": 27.2000045776367,
+            "y": 39.0003128051758
+          }
+        ],
+        "session": 1007
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 1.79387882326409e-06,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -4.56008280025344e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 9.55296127358451e-06,
+            "session": 1008,
+            "sleeping": false,
+            "vx": -3.19206137078254e-08,
+            "vy": -7.45058059692383e-09,
+            "x": 27.2000045776367,
+            "y": 39.0003128051758
+          }
+        ],
+        "session": 1008
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 7.29980854430323e-07,
+      "x": 27.2
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 2.626416240048e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000188177567906678,
+            "session": 1009,
+            "sleeping": false,
+            "vx": 1.8384934463711e-08,
+            "vy": 1.86264514923096e-09,
+            "x": 27.4000930786133,
+            "y": 39.000129699707
+          }
+        ],
+        "session": 1009
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 5.35077333552181e-07,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 4.22439079272863e-08,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000217439592233859,
+            "session": 1010,
+            "sleeping": false,
+            "vx": 2.95707671682521e-08,
+            "vy": 5.58793544769287e-09,
+            "x": 27.4001083374023,
+            "y": 39.0001525878906
+          }
+        ],
+        "session": 1010
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 8.45328429477377e-07,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -2.22664581883691e-07,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000226052521611564,
+            "session": 1011,
+            "sleeping": false,
+            "vx": -1.55865379269926e-07,
+            "vy": -1.86264514923096e-09,
+            "x": 27.4001121520996,
+            "y": 39.0001564025879
+          }
+        ],
+        "session": 1011
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 4.14957412431249e-06,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": -1.90602711391819e-09,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.000226053656660952,
+            "session": 1012,
+            "sleeping": false,
+            "vx": -1.3342205118505e-09,
+            "vy": 1.11758708953857e-08,
+            "x": 27.4001121520996,
+            "y": 39.0001564025879
+          }
+        ],
+        "session": 1012
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 3.62648819418609e-07,
+      "x": 27.4
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 9.81179428100586,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.178113579750061,
+            "session": 1013,
+            "sleeping": false,
+            "vx": 6.86826324462891,
+            "vy": 1.1818585395813,
+            "x": 27.8215389251709,
+            "y": 38.9422264099121
+          }
+        ],
+        "session": 1013
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 11.236141204834,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 26.9953117370605,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.952329158782959,
+            "session": 1014,
+            "sleeping": false,
+            "vx": 14.2409610748291,
+            "vy": 1.08486914634705,
+            "x": 28.3806209564209,
+            "y": 38.8041191101074
+          }
+        ],
+        "session": 1014
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 52.7848739624023,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 37.9390411376953,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 1.23557567596436,
+            "session": 1015,
+            "sleeping": false,
+            "vx": 17.5421924591064,
+            "vy": 2.41383814811707,
+            "x": 28.6644153594971,
+            "y": 38.8713989257812
+          }
+        ],
+        "session": 1015
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 65.4128723144531,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 50.6011505126953,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 1.075807929039,
+            "session": 1016,
+            "sleeping": false,
+            "vx": 21.0719261169434,
+            "vy": 6.74593544006348,
+            "x": 28.8017997741699,
+            "y": 38.9310646057129
+          }
+        ],
+        "session": 1016
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 50.6011505126953,
+      "x": 27.6
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 27.8222236633301,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.457187175750732,
+            "session": 1017,
+            "sleeping": false,
+            "vx": 19.4755783081055,
+            "vy": 2.99998188018799,
+            "x": 28.4434680938721,
+            "y": 38.8623580932617
+          }
+        ],
+        "session": 1017
+      },
+      "initial_speed": 60.0,
+      "peak_omega": 27.8222236633301,
+      "x": 27.8
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 45.5949325561523,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 0.873583912849426,
+            "session": 1018,
+            "sleeping": false,
+            "vx": 31.9164905548096,
+            "vy": 4.09733963012695,
+            "x": 29.0547389984131,
+            "y": 38.853645324707
+          }
+        ],
+        "session": 1018
+      },
+      "initial_speed": 100.0,
+      "peak_omega": 45.5949325561523,
+      "x": 27.8
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 63.6674461364746,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 1.28966736793518,
+            "session": 1019,
+            "sleeping": false,
+            "vx": 44.5672607421875,
+            "vy": 4.53846836090088,
+            "x": 29.6590919494629,
+            "y": 38.9507751464844
+          }
+        ],
+        "session": 1019
+      },
+      "initial_speed": 140.0,
+      "peak_omega": 63.6674461364746,
+      "x": 27.8
+    },
+    {
+      "capture": {
+        "body_count": 1,
+        "main_step_serial": 6,
+        "ok": true,
+        "outcome": "RealMainSpacePoseReadback",
+        "poses": [
+          {
+            "angular_velocity": 82.1714324951172,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "unit",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 6,
+            "rotation": 1.70347142219543,
+            "session": 1020,
+            "sleeping": false,
+            "vx": 57.5200653076172,
+            "vy": 4.03512811660767,
+            "x": 30.2107238769531,
+            "y": 39.1250877380371
+          }
+        ],
+        "session": 1020
+      },
+      "initial_speed": 180.0,
+      "peak_omega": 82.1714324951172,
+      "x": 27.8
+    }
+  ]
+}

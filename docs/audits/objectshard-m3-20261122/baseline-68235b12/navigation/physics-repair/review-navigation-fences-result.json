@@ -1,0 +1,150 @@
+{
+  "checks": 27,
+  "evidence": [
+    {
+      "check": "actual launcher starts for completion controls",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "current launcher without async readiness cannot forge a completion",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual owner opens with prior close policy false",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "owner records exact prior policy before handling close requests",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual F2 retains current owner while native disposal is pending",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "early completion cannot bypass the native disposal/worker join barrier",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "repeated real F2 preserves one closing owner and destination",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "acknowledged close finishes actual launcher navigation",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "old worker is stopped or released before launcher is visible",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "successful launcher handoff restores the exact prior close policy",
+      "detail": {
+        "actual": false,
+        "prior": false
+      },
+      "ok": true
+    },
+    {
+      "check": "actual owner opens with prior close policy true",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "owner records exact prior policy before handling close requests",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "actual F2 retains current owner while native disposal is pending",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "early completion cannot bypass the native disposal/worker join barrier",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "repeated real F2 preserves one closing owner and destination",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "acknowledged close finishes actual launcher navigation",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "old worker is stopped or released before launcher is visible",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "successful launcher handoff restores the exact prior close policy",
+      "detail": {
+        "actual": true,
+        "prior": true
+      },
+      "ok": true
+    },
+    {
+      "check": "actual owner starts for deferred successor fencing",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "native owner and RIDs are actually disposed before successor-control injection",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "only an actually closed current owner admits the deferred launcher handoff",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "late completion refuses once the owner is no longer current",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "independent successor enters despite already queued old-owner completion",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "deferred callback rechecks identity and does not replace its successor",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "explicit stale scene-instance callback remains a no-op",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "successor without readiness method cannot complete an async handoff",
+      "detail": {},
+      "ok": true
+    },
+    {
+      "check": "ordinary scene F2 continues to use the direct navigation route",
+      "detail": {},
+      "ok": true
+    }
+  ],
+  "failures": 0,
+  "limits": "Controlled F2/close handoff only. Direct externally forced replacement of a still-live owner is not claimed to have universal cleanup.",
+  "schema": "independent-navigation-completion-fences-v1",
+  "source_revision": "68235b12+navigation-repair-freeze"
+}

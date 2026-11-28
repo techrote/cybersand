@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "historical_final_result": "OBJECTSHARD-001 M2 final historical result remains 10 of 74 timing limits failed; a new passing run does not erase or relabel it.",
+  "records": [
+    {
+      "label": "m2-control",
+      "git_head": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "input_digest": "ceb176f8b88b3de87a74a68dfc1a596d06c0d64f0d711067b9a8d7f92e6ce46e",
+      "binary_sha256": "6697001acedb6e7ee66609f9ce21f7298020eaa247bfa85bc8fc00bb84b4a375",
+      "status": "qualified",
+      "artifact_sha256": {
+        "m2-control-inputs.json": "b0c67b9f19ae045e179f8ff82e1be758183181ea1419f71b115f248f2db1debf",
+        "m2-control-summary.json": "a300b4d49113252eb2630c8359975aa1e6c22470ec5dd8a50fb524a8bb234d6a",
+        "m2-control-benchmark.json": "ce3e8fa04fd7c7ac40da895b8cbee8bbc5ac6044db646c071425a13139c6ca54",
+        "m2-control-builds.json": "ccebb886a48bce0cc23145743ebf6ea2b97a9334a93846232080c43ff58f1bbd"
+      }
+    },
+    {
+      "label": "f11-memory-negative",
+      "git_head": "f11be5aa55babad3fbabe0471ae47517322989b1",
+      "input_digest": "fe83505a6cabf34257a0a114b828f57735d8b12a2ee3a6dcccc296f30a49c717",
+      "binary_sha256": "1d65aabf98a2ec77b578f20f6c792784680fa8eeafd77e799bb914e00f6b5081",
+      "status": "budget_failed",
+      "artifact_sha256": {
+        "f11-memory-negative-inputs.json": "a334286999deb86ce3c37191016aee9d51ef00a9144e8cd3965dccf263288136",
+        "f11-memory-negative-summary.json": "0e73e29fdb4f9a675d8e8b68e4b7e25b26684c33db07b64343b124ae66920ac3",
+        "f11-memory-negative-benchmark.json": "d706491323c2ecdeac34f93a7ecd8b0b12673c1f4b3fdd0a086b52d2e113c529",
+        "f11-memory-negative-builds.json": "40f9ff248916cc9e1245e2f8c409d2145edd2cc6c2825c9da70f8fe48786a4dc"
+      }
+    }
+  ]
+}

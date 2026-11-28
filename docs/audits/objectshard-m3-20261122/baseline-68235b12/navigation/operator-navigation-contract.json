@@ -1,0 +1,108 @@
+{
+  "schema": "objectshard-m3-navigation-repair-contract-v1",
+  "reviewed_at_utc": "2026-11-22T07:20:47.384318+00:00",
+  "inspected_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "finding": "OPERATOR-01",
+  "scope": "Independent source trace and minimal repair proposal only; root owns implementation/qualification; no product edits or new execution performed by C.",
+  "current_route": [
+    {
+      "stage": "global input",
+      "source": "godot/scripts/feature_navigation.gd:9\u201311",
+      "behavior": "F2 handled in autoload _input; return_to_launcher is called."
+    },
+    {
+      "stage": "scene replacement",
+      "source": "godot/scripts/feature_navigation.gd:14\u201327",
+      "behavior": "Cancels ordinary playable recovery metadata, then defers direct change_scene_to_file; no asynchronous-owner gate."
+    },
+    {
+      "stage": "new entry",
+      "source": "godot/scripts/feature_launcher.gd:96\u2013110",
+      "behavior": "ObjectShard entry routes directly to object_shard_worker_rehearsal.tscn and starts a new host/worker."
+    },
+    {
+      "stage": "existing M3 disposal",
+      "source": "godot/scripts/object_shard_worker_rehearsal.gd:263\u2013287,428\u2013442,684\u2013688",
+      "behavior": "Only own reset and window-close keep scene processing until Host.Closed. F2 does not call either. _ready sets SceneTree.auto_accept_quit=false and there is no _exit_tree restoration."
+    },
+    {
+      "stage": "host stop",
+      "source": "godot/scripts/object_shard_worker_host.gd:403\u2013415,144\u2013164",
+      "behavior": "close retires queued/inflight host actions and requests stop; later poll joins only after worker stopped, releases main RIDs, closes trace and marks Closed. Refusal/deadline becomes ShutdownHeld with owner retained."
+    },
+    {
+      "stage": "exclusive worker release",
+      "source": "godot/scripts/object_shard_native_worker.gd:129\u2013157,225\u2013256",
+      "behavior": "Dedicated stop flag+wakeup remains available under queue saturation; current native call completes before same-owner reset/disposal. Refused disposal retains native instance/thread; successful release publishes stopped and then safe join is allowed."
+    }
+  ],
+  "minimal_change_set": [
+    {
+      "file": "godot/scripts/feature_navigation.gd",
+      "change": "Before ordinary immediate scene replacement, detect an opt-in request_feature_launcher_navigation method on current scene. If present, delegate and return unconditionally; a refused/pending result must never fall through to replacement. Keep all scenes without this method on the existing route."
+    },
+    {
+      "file": "godot/scripts/object_shard_worker_rehearsal.gd",
+      "change": "Implement the opt-in hook and an explicit closing destination (launcher or process quit). Reuse current asynchronous Host.close/poll/Closed transition. Navigation prevents new edits/ticks/burner work, explicitly records cancellation of queued UI intents, cancels a pending replacement preset, and keeps the old scene until owner disposal and RID release are confirmed."
+    },
+    {
+      "file": "new focused lifecycle regression",
+      "change": "Drive the actual autoload F2 input/return path with a real native worker and Rapier host; keep external references for observation only. Assert old-owner stop/join and RID closure before new scene entry; include in exact-source qualifier and package replay."
+    }
+  ],
+  "state_contract": [
+    {
+      "when": "Idle, Opening, loading, running or awaiting native/physics acknowledgement",
+      "request": "Record navigation intent; stop further scheduling; invoke Host.close once; keep old scene active and call poll(true) on later frames.",
+      "completion": "Transition only after Host.state==Closed; a queued receipt/stop flag alone grants no release authority."
+    },
+    {
+      "when": "Reset/scenario replacement already pending",
+      "request": "Navigation supersedes replacement: clear pending preset/replacing flag and prevent _begin_owner. Existing stop remains idempotent.",
+      "completion": "Old owner closes then navigate; never construct an intermediate new World."
+    },
+    {
+      "when": "diagnostic receipt hold or Held state",
+      "request": "Navigation uses explicit session stop, bypassing diagnostic receipt consumption hold; no extra semantic/Rapier time is minted.",
+      "completion": "Successful same-owner disposal allows close; refusal/deadline retains owner, view and Export."
+    },
+    {
+      "when": "Closing toward launcher",
+      "request": "Repeated F2 is idempotent. A window-close request may upgrade destination to process quit; F2 never downgrades a pending process quit.",
+      "completion": "One completion action only, fenced by same current scene and Closed owner."
+    },
+    {
+      "when": "Host already Closed",
+      "request": "Skip native work; schedule the selected completion once.",
+      "completion": "No new host opens during navigation. Restore previous SceneTree.auto_accept_quit before successful launcher handoff."
+    },
+    {
+      "when": "ShutdownHeld or stop disposal refused/deadline exceeded",
+      "request": "Remain in existing scene, show exact reason and preserve Export; a fresh explicit F2/window-close may retry Host.close.",
+      "completion": "No scene replacement, dropped owner or unconditional join. Existing worker/RIDs remain owned until a subsequent valid Closed result."
+    },
+    {
+      "when": "scene transition itself returns an error after Closed",
+      "request": "Retain/readably report the error and permit explicit retry; do not restart a native World automatically.",
+      "completion": "A failure must not cause silent automatic retry every process callback."
+    }
+  ],
+  "non_negotiable_order": "request stop \u2192 exclusive worker finishes current native call \u2192 native session disposal succeeds \u2192 worker stopped \u2192 main joins stopped thread \u2192 main releases Rapier RIDs and closes trace \u2192 Host.Closed \u2192 restore SceneTree quit policy \u2192 change scene or quit",
+  "implementation_cautions": [
+    "Do not implement _exit_tree as a blocking wait for an active native thread; it is too late to retain the scene on disposal failure.",
+    "Do not call FeatureNavigation.return_to_launcher recursively from completion while the hook is still installed. Complete using a narrowly fenced final transition or a separate completion method.",
+    "Use a neutral navigation cancellation event/count for not-yet-admitted UI intents; do not mislabel them as explicitly_cancelled_by_reset.",
+    "Restore the prior auto_accept_quit setting, captured before M3 overrides it, rather than assuming every future parent scene wants true.",
+    "Preserve uncertain in-flight edit retirement and incomplete trace semantics already implemented by Host.close; navigation must not convert unknown mutation outcomes into a complete replay.",
+    "Do not change ordinary Workbench ownership, broader PUBPRES scheduling, native laws, production default route or GCR."
+  ],
+  "required_adversarial_checks": [
+    "F2 with actual moving body and a native request in flight; verify old worker stop+join, bridge space/RIDs gone, trace terminal state, and a new launcher with restored quit policy.",
+    "Repeated F2 while closing creates one stop/handoff; window X while closing upgrades to process exit without reopening a scene.",
+    "F2 during initial fixture loading and during UI Reset/scenario replacement prevents all subsequent owner reconstruction before handoff.",
+    "F2 after a held/lost acknowledgement and F2 during diagnostic receipt hold use explicit disposal; stale late receipt cannot resurrect the old session.",
+    "Injected real stop-disposal refusal/deadline preserves old scene/native owner/RIDs and Export; repeated explicit request retries through same contract.",
+    "Re-enter M3 after completed navigation and prove only the new native worker remains; normal window close exits and preserved Lab entry still operates."
+  ],
+  "status": "proposal only; pending independent actual F2 reproduction and root repair decision"
+}

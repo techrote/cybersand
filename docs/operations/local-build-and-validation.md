@@ -10,6 +10,25 @@ related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-re
 
 # Local build and validation
 
+## ObjectShard M4 ordinary Workbench candidate qualification
+
+Use the [M4 contract](../research/objectshard-m4-workbench.md) and
+[ordinary evaluator guide](objectshard-workbench-playtest.md) for PR #754.
+`tools/objectshard/qualify_workbench.py` verifies the complete source/native
+identity before actual ordinary Workbench tests, optional Water/actor/equipment
+regressions and scene/camera profiles. `--render` records real renderer callbacks;
+it does not establish physical monitor presentation. The dedicated completion
+workflow builds exact-source Linux and Windows native candidates and verifies
+the extracted portable Workbench launcher. It does not replace retained
+production provenance or weaken `check_repository.py`.
+
+The workflow's expensive jobs run on explicit dispatch or a candidate commit
+marked `[objectshard-m4-completion]` on its declared integration branches.
+Evidence belongs to the exact published commit and loaded bytes, including when
+a reviewed local tree is published with a different Git commit identity.
+Local compiler drift must stay labelled development evidence. Historical M3
+and November 23 M4 receipts are controls, not current-candidate qualification.
+
 ## GEN-006 persistent-area candidate qualification
 
 Use the bounded [persistent-area evaluator](persistent-areas-evaluation.md) and [exact-source qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md). `make persistent-area-test` and `make persistent-area-sanitize` exercise complete native continuation. `tools/ci/run_persistent_areas_qualification.py` runs native bridge, Store/Clock, actual Main, graphical travel and real-process crash/reopen checks. The dedicated Draft/HOLD workflow builds and qualifies source-matched Linux and Windows runtimes and an extracted Windows evaluator; it does not run the unrelated 80-Gentek publication corpus. A local toolchain-drift binary is diagnostic evidence only.

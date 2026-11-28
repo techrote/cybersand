@@ -1,0 +1,131 @@
+WorkerThreadPool: 9 threads, 2 max low-priority.
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+TextServer: Added interface "Dummy"
+TextServer: Added interface "ICU / HarfBuzz / Graphite (Built-in)"
+SDL: Init OK!
+Using "default" pen tablet driver...
+
+TextServer: Primary interface set to: "ICU / HarfBuzz / Graphite (Built-in)".
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+CORE API HASH: 3472268009
+EDITOR API HASH: 2212757246
+Loading resource: res://tests/review_navigation_lifecycle.gd remapped: res://tests/review_navigation_lifecycle.gd
+Completed load for: 'res://tests/review_navigation_lifecycle.gd' remapped 'res://tests/review_navigation_lifecycle.gd' at thread -1
+SceneTreeFTI: traversal method DEFAULT
+Loading resource: res://scripts/feature_navigation.gd remapped: res://scripts/feature_navigation.gd
+Completed load for: 'res://scripts/feature_navigation.gd' remapped 'res://scripts/feature_navigation.gd' at thread -1
+Loaded system CA certificates
+Loading resource: res://feature_launcher.tscn remapped: res://feature_launcher.tscn
+Loading resource: res://scripts/feature_launcher.gd remapped: res://scripts/feature_launcher.gd
+Completed load for: 'res://scripts/feature_launcher.gd' remapped 'res://scripts/feature_launcher.gd' at thread -1
+Completed load for: 'res://feature_launcher.tscn' remapped 'res://feature_launcher.tscn' at thread -1
+Loading resource: res://object_shard_worker_rehearsal.tscn remapped: res://object_shard_worker_rehearsal.tscn
+Loading resource: res://scripts/object_shard_worker_rehearsal.gd remapped: res://scripts/object_shard_worker_rehearsal.gd
+Completed load for: 'res://scripts/object_shard_worker_rehearsal.gd' remapped 'res://scripts/object_shard_worker_rehearsal.gd' at thread -1
+Completed load for: 'res://object_shard_worker_rehearsal.tscn' remapped 'res://object_shard_worker_rehearsal.tscn' at thread -1
+Loading resource: res://feature_launcher.tscn remapped: res://feature_launcher.tscn
+Completed load for: 'res://feature_launcher.tscn' remapped 'res://feature_launcher.tscn' at thread -1
+ERROR: active_pending navigation stops and joins the previous native worker {"auto_accept_quit":false,"current_scene":"res://feature_launcher.tscn","live_body_readbacks":[{"same_space":true,"shape_count":6,"sleeping":false,"space_live":true,"transform":"[X: (1.0, 0.0), Y: (0.0, 1.0), O: (83.0, 60.02301)]"}],"old_bridge_destroyed":true,"old_host_destroyed":true,"old_scene_destroyed":true,"worker":{"byte_scope":"Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.","control_results":0,"data_results":1,"inflight_sequence":0,"last_native_call_usec":2630,"limits":{"command_value_bytes":65536,"control":8,"control_results":8,"data":32,"data_results":32,"edit_batch":32,"native_total_shard_bbox_area":12288,"native_world_area":262144},"maximum_godot_static_bytes":35292800,"maximum_native_execute_usec":705,"maximum_pending":1,"maximum_queue_wait_usec":96,"maximum_reply_age_usec":3305,"maximum_reply_value_bytes":321756,"maximum_snapshot_usec":2683,"maximum_snapshot_value_bytes":190194,"owner_thread":26,"pending_control":0,"pending_data":0,"pending_reset_sequence":0,"retained_reply_value_bytes":190754,"session":1,"snapshot_copies":57,"started":true,"stop_requested":false,"stopped":false,"terminal":{},"transport_generation":649392},"worker_alive":true}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_lifecycle.gd:22)
+       [1] _navigate (res://tests/review_navigation_lifecycle.gd:114)
+ERROR: active_pending navigation releases old active or sleeping RIDs {"auto_accept_quit":false,"current_scene":"res://feature_launcher.tscn","live_body_readbacks":[{"same_space":true,"shape_count":6,"sleeping":false,"space_live":true,"transform":"[X: (1.0, 0.0), Y: (0.0, 1.0), O: (83.0, 60.02301)]"}],"old_bridge_destroyed":true,"old_host_destroyed":true,"old_scene_destroyed":true,"worker":{"byte_scope":"Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.","control_results":0,"data_results":1,"inflight_sequence":0,"last_native_call_usec":2630,"limits":{"command_value_bytes":65536,"control":8,"control_results":8,"data":32,"data_results":32,"edit_batch":32,"native_total_shard_bbox_area":12288,"native_world_area":262144},"maximum_godot_static_bytes":35292800,"maximum_native_execute_usec":705,"maximum_pending":1,"maximum_queue_wait_usec":96,"maximum_reply_age_usec":3305,"maximum_reply_value_bytes":321756,"maximum_snapshot_usec":2683,"maximum_snapshot_value_bytes":190194,"owner_thread":26,"pending_control":0,"pending_data":0,"pending_reset_sequence":0,"retained_reply_value_bytes":190754,"session":1,"snapshot_copies":57,"started":true,"stop_requested":false,"stopped":false,"terminal":{},"transport_generation":649392},"worker_alive":true}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_lifecycle.gd:22)
+       [1] _navigate (res://tests/review_navigation_lifecycle.gd:115)
+ERROR: active_pending navigation restores prior SceneTree close handling {"actual":false,"baseline":true}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_lifecycle.gd:22)
+       [1] _navigate (res://tests/review_navigation_lifecycle.gd:116)
+{"checks":10,"failures":3,"leave_orphan":true,"schema":"independent-f2-navigation-lifecycle-v1","source_revision":"68235b12d7f41f7b590456971f21dfc3f5c6d701"}
+WARNING: 9 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2535)
+ERROR: 1 resources still in use at exit.
+   at: clear (core/io/resource.cpp:817)
+XR: Clearing primary interface
+XR: Removed interface "Native mobile"
+XR: Removed interface "OpenXR"
+Leaked instance: GDScriptNativeClass:9223372053715878828 - Reference count: 1
+Leaked instance: RefCounted:9223372079401797230 - Reference count: 1
+Leaked instance: GDScript:9223372072858682995 - Reference count: 1
+Leaked instance: Thread:9223372079418574581 - Reference count: 1
+Leaked instance: Mutex:9223372079435351798 - Reference count: 1
+Leaked instance: Semaphore:9223372079452129015 - Reference count: 1
+Leaked instance: :9223372079519237880
+Leaked instance: :44811945735
+Leaked instance: :43251664648
+Hint: Leaked instances typically happen when nodes are removed from the scene tree (with `remove_child()`) but not freed (with `free()` or `queue_free()`).
+Resource still in use: res://scripts/object_shard_native_worker.gd (GDScript)
+Orphan StringName: _wake (static: 0, total: 3)
+Orphan StringName: results_available (static: 0, total: 3)
+Orphan StringName: MAX_COMMAND_VALUE_BYTES (static: 0, total: 1)
+Orphan StringName: _maximum_reply_value_bytes (static: 0, total: 4)
+Orphan StringName: _leaf_value_bytes (static: 0, total: 1)
+Orphan StringName: submit (static: 0, total: 1)
+Orphan StringName: CyberWorldGenerator (static: 0, total: 2)
+Orphan StringName: take_results (static: 0, total: 1)
+Orphan StringName: _run (static: 0, total: 3)
+Orphan StringName: join_if_stopped (static: 0, total: 1)
+Orphan StringName: CyberDemoBridge (static: 0, total: 2)
+Orphan StringName: _stop_requested (static: 0, total: 4)
+Orphan StringName: _snapshot (static: 0, total: 1)
+Orphan StringName: CyberObjectShardLab (static: 0, total: 2)
+Orphan StringName: CyberNativeCellWorld (static: 0, total: 2)
+Orphan StringName: ScriptBacktrace (static: 0, total: 2)
+Orphan StringName: _maximum_snapshot_usec (static: 0, total: 4)
+Orphan StringName: _maximum_snapshot_value_bytes (static: 0, total: 4)
+Orphan StringName: _generation (static: 0, total: 4)
+Orphan StringName: _execute (static: 0, total: 1)
+Orphan StringName: _maximum_pending (static: 0, total: 4)
+Orphan StringName: start (static: 0, total: 1)
+Orphan StringName: _inspect_snapshot (static: 0, total: 1)
+Orphan StringName: MAX_EDIT_BATCH (static: 0, total: 1)
+Orphan StringName: _last_request_usec (static: 0, total: 4)
+Orphan StringName: _maximum_reply_age_usec (static: 0, total: 4)
+Orphan StringName: _copyable (static: 0, total: 1)
+Orphan StringName: request_stop (static: 0, total: 1)
+Orphan StringName: _typed_parameters (static: 0, total: 1)
+Orphan StringName: OS (static: 0, total: 2)
+Orphan StringName: _session (static: 0, total: 4)
+Orphan StringName: _control (static: 0, total: 3)
+Orphan StringName: _owner_thread (static: 0, total: 4)
+Orphan StringName: FileAccess (static: 0, total: 2)
+Orphan StringName: CONTROL_REPLY_CAPACITY (static: 0, total: 1)
+Orphan StringName: _retained_reply_value_bytes (static: 0, total: 4)
+Orphan StringName: CyberObjectShardNativeWorker (static: 0, total: 3)
+Orphan StringName: _data (static: 0, total: 3)
+Orphan StringName: CONTROL_OPERATIONS (static: 0, total: 1)
+Orphan StringName: DATA_REPLY_CAPACITY (static: 0, total: 1)
+Orphan StringName: _mutex (static: 0, total: 3)
+Orphan StringName: _data_results (static: 0, total: 3)
+Orphan StringName: _snapshots (static: 0, total: 4)
+Orphan StringName: _maximum_godot_static_bytes (static: 0, total: 4)
+Orphan StringName: _value_payload_bytes (static: 0, total: 1)
+Orphan StringName: diagnostics (static: 0, total: 1)
+Orphan StringName: ProjectSettings (static: 0, total: 2)
+Orphan StringName: DATA_OPERATIONS (static: 0, total: 1)
+Orphan StringName: _inflight (static: 0, total: 3)
+Orphan StringName: _started (static: 0, total: 4)
+Orphan StringName: _thread (static: 0, total: 3)
+Orphan StringName: RefCounted (static: 0, total: 3)
+Orphan StringName: MAX_EXACT_SEQUENCE (static: 0, total: 1)
+Orphan StringName: _configuration (static: 0, total: 3)
+Orphan StringName: Object (static: 1, total: 3)
+Orphan StringName: _control_results (static: 0, total: 3)
+Orphan StringName: _maximum_queue_wait_usec (static: 0, total: 4)
+Orphan StringName: CyberNativePaintPlanner (static: 0, total: 2)
+Orphan StringName: CONTROL_CAPACITY (static: 0, total: 1)
+Orphan StringName: DATA_CAPACITY (static: 0, total: 1)
+Orphan StringName: _take_request (static: 0, total: 1)
+Orphan StringName: _terminal (static: 0, total: 3)
+Orphan StringName: _next_sequence (static: 0, total: 4)
+Orphan StringName: _stopped (static: 0, total: 4)
+Orphan StringName: ClassDB (static: 0, total: 2)
+Orphan StringName: Logger (static: 0, total: 2)
+Orphan StringName: _pending_reset_sequence_locked (static: 0, total: 1)
+Orphan StringName: _maximum_execute_usec (static: 0, total: 4)
+StringName: 68 unclaimed string names at exit.

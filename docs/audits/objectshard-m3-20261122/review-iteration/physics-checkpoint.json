@@ -1,0 +1,91 @@
+{
+  "schema": "objectshard-m3-independent-physics-review-v1",
+  "reviewer": "review_physics (independent reviewer B; no product implementation edits)",
+  "status": "iteration-checkpoint; final published source review required",
+  "utc": "2026-11-22T06:24:19.535962+00:00",
+  "source_identity": {
+    "source_parent": "44abd754d014a44078a41792d2d46967a9b8cf30",
+    "dirty_source_snapshot": true,
+    "runtime_scope": "reused native514 and pinned Rapier iteration evidence only; fresh final-source CI required",
+    "sha256": {
+      "scripts/object_shard_physics_bridge.gd": "3c0f1af7488746b4b80c9d72fb38fba0409dbc7eff2c66078a3d96726fc9d82b",
+      "scripts/object_shard_lab_view.gd": "34947a3dde5757ab49a36465db1b776b8ece2ad387ef4e02b06ea7454ab8bb78",
+      "scripts/object_shard_lab.gd": "473e5fe36d79b88b555466611fc4e4239450563b1b54b2e4b5c33d4d030a9da1",
+      "scripts/object_shard_worker_host.gd": "1fb831bdcbfdcdb57ef48712a7e22e9643084071432c2f8eadc1861f520f9e58",
+      "scripts/object_shard_worker_rehearsal.gd": "2e768ffba7624538da2da1bb2f963e5930437dd51ed9e1abc54c15309ed08e46",
+      "scripts/object_shard_capture.gd": "13b0ec2462fc6e676c6cf9afb6f9f5b717bc1839dca16ecca4914af33838ed85",
+      "scripts/object_shard_lab_presets.gd": "13c97dee2ded48aef1b830599261bfa0fd78c4f5acd357936c5360a0006f5118",
+      "scripts/object_shard_native_worker.gd": "ba8363e2d09d35a01b1a368e96ac0ae1d555683800af0e9111dc3fb42da8578f",
+      "scripts/object_shard_lab_session.gd": "9de3c25a5cd6d3b2f54a8b0d3ba138ad52d18129d7cd49dae125f1a2032517cb",
+      "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+      "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "engine": {
+    "path": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "Godot 4.7 stable official 5b4e0cb0f"
+  },
+  "class_a_findings": [],
+  "class_b_findings": [],
+  "tests": [
+    {
+      "path": "project/tests/review_physics_adversary.gd",
+      "kind": "independently authored real native/worker/Rapier adversarial receipt schedule",
+      "checks": 52,
+      "failures": 0,
+      "script_sha256": "40ca9faa337776e6932ae9080c4e98bb5b7d79467959384b0d777a5c99879e2f",
+      "log": "review-physics-adversary.log",
+      "result": "review-physics-adversary-result.json"
+    },
+    {
+      "path": "project/tests/test_object_shard_physics_identity.gd",
+      "checks": 70,
+      "failures": 0,
+      "log": "test_object_shard_physics_identity.gd.log"
+    },
+    {
+      "path": "project/tests/test_object_shard_incremental_motion.gd",
+      "checks": 137,
+      "failures": 0,
+      "log": "test_object_shard_incremental_motion.gd.log"
+    },
+    {
+      "path": "project/tests/test_object_shard_worker_input_fences.gd",
+      "checks": 46,
+      "failures": 0,
+      "log": "test_object_shard_worker_input_fences.gd.log"
+    }
+  ],
+  "confirmed": [
+    "one native owner and one actual Rapier space",
+    "Prepared inventory stays World-owned; PhysicsReserved acknowledgement transfers exactly once",
+    "reserved RID static/collision-disabled before native mask barrier; activation after actual terrain/mask receipts",
+    "withheld real receipts freeze further physics and publication across frames",
+    "exact motion receipts advance four actual subsegments; duplicate actual receipts cannot grant another step",
+    "rendered-view material pose source agrees with native and backend at accepted publication; no live-RID override",
+    "old displayed-pose witness refuses TargetChanged after unseen newer host publication",
+    "fresh structural erase changes native material and actual mass, COM, inertia; preserves exact lattice origin and point velocity within floating-point tolerance",
+    "polling and 4ms receipt pumping without requested tick create no physical or native time",
+    "retired native-session/body identity and repeated activation preserve sleep in maintained real Rapier tests"
+  ],
+  "harness_correction": {
+    "issue": "strict bit equality of full Transform2D after backend COM setters was too strong",
+    "observed_origin_delta": 0.0,
+    "observed_basis_delta": 5.96119207330048e-08,
+    "observed_point_velocity_error": 2.38418579101562e-07,
+    "correction": "retain exact origin equality; bound basis error <1e-6 and point velocity <1e-4",
+    "negative_artifacts": [
+      "review-physics-adversary-strict-basis-negative.json",
+      "review-physics-adversary-strict-basis-negative.log"
+    ],
+    "product_finding": false
+  },
+  "limitations": [
+    "Final published SHA not yet supplied; host and scene subsequently changed, so this is not final-source signoff.",
+    "Native514 and Rapier runtime were reused; this is iteration evidence, not a native rebuild claim.",
+    "Headless view upload and transform inspection do not establish actual display scanout, physical Windows/NVIDIA performance, or all possible physics fixtures.",
+    "No ordinary CyberSimulationWorker/Workbench attachment; no native M0-M2 law changes reviewed as part of this rehearsal.",
+    "No merge, Ready, default promotion or physical acceptance is authorized by this review."
+  ]
+}

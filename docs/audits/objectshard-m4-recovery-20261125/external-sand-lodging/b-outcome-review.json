@@ -1,0 +1,408 @@
+{
+  "schema": "objectshard-m4-ordinary-sand-b-outcome-review-v1",
+  "status": "PASS_SCOPED_ENGINEERING_WITNESS",
+  "reviewer": "Specialist B — ordinary Workbench, presentation and performance",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "qualification_run": 45530425519,
+  "new_witness": {
+    "source": "2b15c37e934f07117e297a38e8c3100104c9637d",
+    "run": 45540808667,
+    "attempt": 1,
+    "job": 138958566611,
+    "job_url": "https://github.com/techrote/cybersand/actions/runs/45540808667/job/138958566611",
+    "actual_platform": "Windows",
+    "display_driver": "headless",
+    "observer_sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d",
+    "runner_sha256": "b8fa4cd0f1a5dc2938f2a1ecb8f464a9316d9419f4567507d12783a346e80cc0",
+    "helper_git_blobs": {
+      "review_delivery_45530425519.py": "3cc6a1ba9b6fcd78b65a8ba1ed031d5907ee1299",
+      "run_windows_owner_witnesses.py": "6731c1b513481ae94c77e7453c586b36bb004ea4"
+    }
+  },
+  "principal_evaluator": {
+    "bytes": 93388322,
+    "filename": "objectshard-workbench-evaluator.zip",
+    "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387"
+  },
+  "artifact": {
+    "id": 14989400911,
+    "bytes": 201292,
+    "sha256": "020ff289e971e281b2bd0030c230116726df49510f77fd50fb8d8d8ab0da916b",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45540808667/artifacts/14989400911",
+    "digest_scope": "GitHub terminal artifact metadata independently fetched by B. B did not independently download the outer binary ZIP after executor loss."
+  },
+  "original_records": [
+    {
+      "filename": "summary.json",
+      "bytes": 46395,
+      "sha256": "5ae0fe6fe281637b0f69b6ad0ca8bbc425bca00cfb2bcb20b351c68f92e2f7bf",
+      "job_log_line": 252,
+      "byte_integrity": "B independently decoded original base64, verified exact byte count and SHA256, then parsed with lossless 64-bit identity handling",
+      "git_blob": "31d4ec85e9d3d6a9119e547d473f0e5b40366fe0",
+      "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-sand/summary.json"
+    },
+    {
+      "filename": "sand-receipt.json",
+      "bytes": 37543,
+      "sha256": "3f049d42e3491069bd998f3ee821b4f29f39d80d046342f0894c62a45b66acff",
+      "job_log_line": 253,
+      "byte_integrity": "B independently decoded original base64, verified exact byte count and SHA256, then parsed with lossless 64-bit identity handling",
+      "git_blob": "a91eb816b0e6b904d892853efd8742cddc9115d8",
+      "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-sand/sand-receipt.json"
+    }
+  ],
+  "decoded_job_log": {
+    "bytes": 138459,
+    "sha256": "fc1839dcdfbd14ac9169c79f6be1e7514a282779dd509b635ab034918c86513c"
+  },
+  "runtime_identity": {
+    "display_driver": "headless",
+    "engine_path": "D:/a/_temp/objectshard-sand-witness-45530425519/Pristine Sand Workbench (1)/Godot_v4.7-stable_win64.exe",
+    "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "manifest_path": "D:\\a\\_temp\\objectshard-sand-witness-45530425519\\Pristine Sand Workbench (1)\\objectshard-workbench-manifest.json",
+    "manifest_sha256": "c541d276856534f26937430662d34bd0b08b188e0c51fd8a6249aaaa0d16d596",
+    "native_sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4",
+    "observer_path": "D:/a/cybersand/cybersand/windows-sand-witness/external-inputs/observe_sand_lodging.gd",
+    "observer_sha256": "8f63f2ac57af1344018ec979f60b4e600d06cdc543441d68b741956db165068d",
+    "platform": "Windows",
+    "process_id": 2468,
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78"
+  },
+  "actual_process": {
+    "godot_pid": 2468,
+    "console_wrapper_pid": 6044,
+    "parent_runner_pid": 3968,
+    "natural_completion": true,
+    "returncode": 0,
+    "forced_cleanup_pids": [],
+    "elapsed_seconds": 9.291484594345093,
+    "elapsed_scope": "Whole correctness process with setup and raw inspections; not a throughput or FPS measurement.",
+    "process_log": {
+      "bytes": 52708,
+      "path": "D:\\a\\cybersand\\cybersand\\windows-sand-witness\\sand.log",
+      "sha256": "86f6818f24f61e5e8d7d402c69338e65417098311947167242889b0fd5ea77c1"
+    },
+    "complete_resource_record": {
+      "bytes": 34436,
+      "path": "D:\\a\\cybersand\\cybersand\\windows-sand-witness\\sand-process.json",
+      "sha256": "7a09600d2cd133235d0abe028d110056b9e5866c6be84dc5224467544a5ba024"
+    }
+  },
+  "result": {
+    "runtime_assertions": 168,
+    "runtime_failures": [],
+    "independent_checks": 44,
+    "independent_failures": [],
+    "mounted_controls": [
+      "Load start",
+      "Play / Pause [P]",
+      "Play / Pause [P]",
+      "Play / Pause [P]",
+      "Play / Pause [P]",
+      "Play / Pause [P]",
+      "Play / Pause [P]"
+    ],
+    "support_wall_cells_erased": 45,
+    "sand_cells_painted": 1,
+    "native_owner": 1,
+    "generation": 1,
+    "body_generation": 1,
+    "actual_rid": 18901,
+    "source_lattice": [
+      11,
+      11
+    ],
+    "natural_fall_native_tick_start": 22,
+    "natural_rest_native_tick": 78,
+    "natural_fall_physical_step_start": 84,
+    "natural_rest_physical_step": 312,
+    "natural_fall_native_ticks": 56,
+    "natural_fall_physical_steps": 228,
+    "natural_rest_y": 454.000366210938,
+    "detached_y": 439,
+    "natural_rest_sleeping": true,
+    "paused_paint_native_tick": 79,
+    "paused_paint_physical_step": 312,
+    "ingress_native_tick": 85,
+    "ingress_native_ticks": 6,
+    "ingress_cell": {
+      "cell": 71,
+      "incarnation": 2,
+      "role": 3,
+      "state_a": 0,
+      "state_b": 0,
+      "temperature": 200
+    },
+    "native_geometry_before": 1,
+    "native_geometry_after": 2,
+    "ingress_geometry_initially_pending": true,
+    "final_geometry_acknowledged": true,
+    "actual_geometry_step": 336,
+    "native_mass_before": 63,
+    "native_mass_after": 64,
+    "actual_rapier_mass_before": 63,
+    "actual_rapier_mass_after": 64,
+    "exact_native_instance_id": "-9223371957800532432",
+    "coherence": {
+      "between_callback_observations": 325,
+      "draw_observations": 0,
+      "examples": [],
+      "foreign_draw_callbacks": 0,
+      "incoherent_observations": 0,
+      "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+    },
+    "immutable_payload_unchanged": true
+  },
+  "independent_byte_reconstruction": {
+    "scope": "B reconstructed expected material bytes in V8 from the exact authored rectangles, actual initial detachment origin and observed single cargo cell; independently computed SHA256 equals every corresponding raw-file identity in both original receipts. The separately reviewed Windows Python runner actually read/hashed/scanned the retained raw files. This B comparison does not claim a separate binary-artifact download.",
+    "world_extent": [
+      512,
+      512
+    ],
+    "world_grid_bytes": 262144,
+    "carrier_extent": [
+      11,
+      11
+    ],
+    "carrier_bytes": 121,
+    "hashes": {
+      "supported_grid_sha256": "7091fa3c2ae533060b74dd6322b32c2023af97b091a5494783476e613f06e7f9",
+      "detached_grid_sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330",
+      "painted_grid_sha256": "8b45ddbf64f047de8f9af86c67f97d96c10189c3cb2332028821397fda444acb",
+      "final_grid_sha256": "5aa684977ea9ee0e50711f3fd95ec09d944e15bb8e51b373cb72f47aa0081330",
+      "initial_carrier_sha256": "b0e868e95943d523d7bc84420b557f145bee1d5dd9e25f9e303fa27da5d94888",
+      "final_carrier_sha256": "2aad590e84e0b8bfaf297fa1c9f3e575eb09b80d1af725950f27ea5904037a23"
+    },
+    "algorithm": [
+      "Fill a zero 512×512 array using the exact seven authored rectangles in order; compare supported hash.",
+      "Erase precisely x243..245,y449..463; remove the 63 authored Wood cells from World; compare detached hash.",
+      "Add one Sand at exact mounted(244,454); compare painted hash; remove it after ingress and compare final World hash.",
+      "Project authored Wood rectangles into the 11×11 source lattice using the actual detached origin(239,439), rotation0; compare the intact carrier hash before and after paint.",
+      "Credit exactly Cargo source cell 71 with Sand; compare the final carrier hash."
+    ]
+  },
+  "material_totals": [
+    {
+      "phase": "supported",
+      "world_wall": 27405,
+      "world_wood": 63,
+      "world_sand": 0,
+      "owned_wood": 0,
+      "owned_sand": 0
+    },
+    {
+      "phase": "detached_before_paint",
+      "world_wall": 27360,
+      "world_wood": 0,
+      "world_sand": 0,
+      "owned_wood": 63,
+      "owned_sand": 0
+    },
+    {
+      "phase": "painted_paused",
+      "world_wall": 27360,
+      "world_wood": 0,
+      "world_sand": 1,
+      "owned_wood": 63,
+      "owned_sand": 0
+    },
+    {
+      "phase": "ingested",
+      "world_wall": 27360,
+      "world_wood": 0,
+      "world_sand": 0,
+      "owned_wood": 63,
+      "owned_sand": 1
+    }
+  ],
+  "all_255_nonempty_materials_reconciled": true,
+  "independent_check_results": [
+    {
+      "label": "natural report PASS168",
+      "pass": true
+    },
+    {
+      "label": "exact frozen application",
+      "pass": true
+    },
+    {
+      "label": "separate new observer run/source",
+      "pass": true
+    },
+    {
+      "label": "exact independently reviewed runner/observer",
+      "pass": true
+    },
+    {
+      "label": "fresh process nonce",
+      "pass": true
+    },
+    {
+      "label": "unchanged principal payload",
+      "pass": true
+    },
+    {
+      "label": "actual process and import naturally completed",
+      "pass": true
+    },
+    {
+      "label": "actual GUI process independently identified",
+      "pass": true
+    },
+    {
+      "label": "actual Windows engine",
+      "pass": true
+    },
+    {
+      "label": "exact native/Rapier",
+      "pass": true
+    },
+    {
+      "label": "four original inventory witnesses",
+      "pass": true
+    },
+    {
+      "label": "independent raw scan joins supported",
+      "pass": true
+    },
+    {
+      "label": "independent raw scan joins before",
+      "pass": true
+    },
+    {
+      "label": "independent raw scan joins painted",
+      "pass": true
+    },
+    {
+      "label": "independent raw scan joins after",
+      "pass": true
+    },
+    {
+      "label": "independently reconstructed full authored native grid",
+      "pass": true
+    },
+    {
+      "label": "independently reconstructed full detached native grid",
+      "pass": true
+    },
+    {
+      "label": "drop is empty native World cell",
+      "pass": true
+    },
+    {
+      "label": "independently reconstructed exact one-cell paint grid",
+      "pass": true
+    },
+    {
+      "label": "independently reconstructed complete World grain debit",
+      "pass": true
+    },
+    {
+      "label": "detachment pose defines exact source-lattice origin",
+      "pass": true
+    },
+    {
+      "label": "independently reconstructed full 63-Wood padded native lattice",
+      "pass": true
+    },
+    {
+      "label": "one new Cargo incarnation in initially empty lattice",
+      "pass": true
+    },
+    {
+      "label": "independently reconstructed full 63-Wood-plus-one-Sand lattice",
+      "pass": true
+    },
+    {
+      "label": "native source identity/lattice at tick79",
+      "pass": true
+    },
+    {
+      "label": "native source identity/lattice at tick79",
+      "pass": true
+    },
+    {
+      "label": "native source identity/lattice at tick85",
+      "pass": true
+    },
+    {
+      "label": "native source identity/lattice at tick85",
+      "pass": true
+    },
+    {
+      "label": "native source identity/lattice at tick85",
+      "pass": true
+    },
+    {
+      "label": "actual physical identity at tick22",
+      "pass": true
+    },
+    {
+      "label": "actual physical identity at tick78",
+      "pass": true
+    },
+    {
+      "label": "actual physical identity at tick79",
+      "pass": true
+    },
+    {
+      "label": "actual physical identity at tick79",
+      "pass": true
+    },
+    {
+      "label": "actual physical identity at tick85",
+      "pass": true
+    },
+    {
+      "label": "real unforced fall and natural rest",
+      "pass": true
+    },
+    {
+      "label": "exact 45-Wall mounted erasure",
+      "pass": true
+    },
+    {
+      "label": "exact paused mounted Sand paint",
+      "pass": true
+    },
+    {
+      "label": "real six-tick ingress precedes geometry acknowledgement",
+      "pass": true
+    },
+    {
+      "label": "genuine native/physical geometry acknowledgement",
+      "pass": true
+    },
+    {
+      "label": "native and real physical mass 63 to64 on surviving RID",
+      "pass": true
+    },
+    {
+      "label": "cargo is in exact observed three-cell aperture",
+      "pass": true
+    },
+    {
+      "label": "all255 nonempty material totals independently reconcile",
+      "pass": true
+    },
+    {
+      "label": "325 coherent headless callback observations, no monitor claim",
+      "pass": true
+    },
+    {
+      "label": "exact64-bit native instance retained without Number rounding",
+      "pass": true
+    }
+  ],
+  "limits": [
+    "New external input against the unchanged qualified package; it supplements rather than replaces the full 43/32/17 qualification matrix.",
+    "The 56-tick/228-segment natural fall covers distinct sample phases; no artificial exact 4:1 boundary claim is made.",
+    "Actual mounted event injection in a headless Windows process establishes tool routing and physical/native correctness, not monitor presentation or physical owner playfeel.",
+    "This positive three-cell pocket is separate from the mixed-scene performance profiles, whose sand_ingested counter was zero.",
+    "The interrupted earlier local Sand attempt remains not qualified; this is a separately identified new positive.",
+    "Physical Windows 11/NVIDIA performance acceptance remains HOLD."
+  ]
+}

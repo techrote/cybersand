@@ -1,0 +1,823 @@
+{
+  "schema": "objectshard-m4-windows-runtime-dependency-review-v1",
+  "review_date": "2026-11-25",
+  "reviewer": "Specialist A / independent native correctness, with Specialist B primary Win32 references",
+  "status": "passed-finite-direct-import-accounting",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "principal_evaluator": {
+    "bytes": 93388322,
+    "filename": "objectshard-workbench-evaluator.zip",
+    "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387"
+  },
+  "qualification_run": 45530425519,
+  "independent_audit_run": 45537943367,
+  "independent_audit_source": "21333f8a0eb15620ecf22ce4c1b3df09fa83fc51",
+  "original_summary": {
+    "path": "independent-hosted/delivery-audit-summary.json",
+    "git_blob": "3bf68731a5a9852701ba899ffd35a96b065d20a1",
+    "sha256": "d77dcbc86157b4d5eea39817c2edbb4d7f5f73662becbeef5e0fca3d66d2b499"
+  },
+  "original_windows_observations": {
+    "path": "independent-hosted/windows-owner/summary.json",
+    "git_blob": "5977b07334559f8d48e4e8079caa07d934592559",
+    "sha256": "a8ed080cd637cb84754ad5f04ba3260d9ea8f29b166acf4dbf4249bb49fd038c",
+    "actual_platform": "sys.getwindowsversion(major=10, minor=0, build=20348, platform=2, service_pack='')",
+    "scope": "WindowsServer2022 AMD64 hosted observations and actual package execution; not physical Windows11/NVIDIA acceptance."
+  },
+  "inspected_images": [
+    {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4",
+      "original_import_table": "pe-0-imports.txt",
+      "original_import_table_sha256": "2c359f0b6e56232f606d996cac719c0e9c811b7bad122c42ce6476fe9eef14e1",
+      "imports": [
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-environment-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-filesystem-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-locale-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-private-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "KERNEL32.dll"
+        }
+      ]
+    },
+    {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "original_import_table": "pe-1-imports.txt",
+      "original_import_table_sha256": "9bf4de112b9b49291a63e4ae6c1c53889b7a788527231a30efc8bb3b0062b774",
+      "imports": [
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-synch-l1-2-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-math-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "bcryptprimitives.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "KERNEL32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "manifest-declared-package-payload",
+          "name": "VCRUNTIME140.dll",
+          "path": "vcruntime140.dll",
+          "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+        }
+      ]
+    },
+    {
+      "path": "vcruntime140.dll",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "original_import_table": "pe-2-imports.txt",
+      "original_import_table_sha256": "05a78ef3a155ee46a8927ab39032cad7ac73252e8824c0d24055caac1bef7362",
+      "imports": [
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-convert-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-heap-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-crt-string-l1-1-0.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "KERNEL32.dll"
+        }
+      ]
+    },
+    {
+      "path": "Godot_v4.7-stable_win64.exe",
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "original_import_table": "pe-3-imports.txt",
+      "original_import_table_sha256": "fea79f94078f2aac2425f7bd911dfcf5f57b1db6a741fdfb65e4067b065fd67b",
+      "imports": [
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "ADVAPI32.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-processthreads-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-registry-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-synch-l1-2-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-winrt-error-l1-1-1.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-winrt-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-security-base-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-security-lsalookup-l2-1-0.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "AVRT.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "bcrypt.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "CRYPT32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "dbghelp.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "dwmapi.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "DWrite.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "dxgi.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "GDI32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "HID.DLL"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "IMM32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "IPHLPAPI.DLL"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "kernel32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "KERNEL32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "msvcrt.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "ntdll.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "ole32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "OLEAUT32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "oleaut32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "SHCORE.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "SHELL32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "SHLWAPI.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "uiautomationcore.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "USER32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "user32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "WINMM.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "WS2_32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "WSOCK32.dll"
+        }
+      ]
+    },
+    {
+      "path": "Godot_v4.7-stable_win64_console.exe",
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "original_import_table": "pe-4-imports.txt",
+      "original_import_table_sha256": "20bee8d0644b4a3b047e73cb5469142e13c3991ae3b54f83f1781e73e6da5245",
+      "imports": [
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-version-l1-1-0.dll"
+        },
+        {
+          "kind": "named-Windows-API-set-contract",
+          "name": "api-ms-win-core-version-l1-1-1.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "KERNEL32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "msvcrt.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "SHELL32.dll"
+        },
+        {
+          "kind": "core-Windows-candidate-requires-concrete-review",
+          "name": "SHLWAPI.dll"
+        }
+      ]
+    }
+  ],
+  "packaged_non_os_dependency": {
+    "name": "vcruntime140.dll",
+    "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+    "finding": "Rapier directly imports VCRUNTIME140.dll. The exact package manifest contains that release redistributable, and independent ZIP inspection binds its bytes. No compiler-runtime-family import is classified as OS-provided merely because the hosted image installed it."
+  },
+  "concrete_windows_modules": [
+    {
+      "name": "advapi32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regopenkeyexw"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for RegOpenKeyExW.",
+      "actual_hosted_observation": {
+        "bytes": 757768,
+        "machine": "AMD64",
+        "name": "advapi32.dll",
+        "observed_path": "C:\\Windows\\System32\\advapi32.dll",
+        "optional_header": "PE32+",
+        "sha256": "cb059b6986e8bb6dea28c189c24be1f52435636e36d2616155b775d914e1a9b8"
+      }
+    },
+    {
+      "name": "avrt.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/avrt/nf-avrt-avsetmmthreadcharacteristicsw"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for AvSetMmThreadCharacteristicsW.",
+      "actual_hosted_observation": {
+        "bytes": 55184,
+        "machine": "AMD64",
+        "name": "avrt.dll",
+        "observed_path": "C:\\Windows\\System32\\avrt.dll",
+        "optional_header": "PE32+",
+        "sha256": "c525b4ba2a69437b89a4853218464df375017316f36a96c5a0f7a706d6b17fe9"
+      }
+    },
+    {
+      "name": "bcrypt.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for BCryptGenRandom.",
+      "actual_hosted_observation": {
+        "bytes": 182640,
+        "machine": "AMD64",
+        "name": "bcrypt.dll",
+        "observed_path": "C:\\Windows\\System32\\bcrypt.dll",
+        "optional_header": "PE32+",
+        "sha256": "0e326cfcb99600eedaa8ce4282f76b6b4c239b17726a8e55a821b0e875142e5b"
+      }
+    },
+    {
+      "name": "bcryptprimitives.dll",
+      "classification": "Windows cryptographic primitives module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/seccng/processprng",
+        "https://learn.microsoft.com/en-us/windows/security/security-foundations/certification/fips-140-validation"
+      ],
+      "finding": "The function Requirements explicitly names BCryptPrimitives.dll (Windows8 minimum client); Microsoft's FIPS documentation also explicitly identifies this module as a Windows11 and WindowsServer2022 operating-system component. No claim of application FIPS qualification follows.",
+      "actual_hosted_observation": {
+        "bytes": 549424,
+        "machine": "AMD64",
+        "name": "bcryptprimitives.dll",
+        "observed_path": "C:\\Windows\\System32\\bcryptprimitives.dll",
+        "optional_header": "PE32+",
+        "sha256": "d1367e86521a6688172bc12776c5a404d0f2e9b11e0f97f3c98240970e0a2b8e"
+      }
+    },
+    {
+      "name": "crypt32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for CryptProtectData.",
+      "actual_hosted_observation": {
+        "bytes": 1462168,
+        "machine": "AMD64",
+        "name": "crypt32.dll",
+        "observed_path": "C:\\Windows\\System32\\crypt32.dll",
+        "optional_header": "PE32+",
+        "sha256": "50cb56ab9e7f03714861beb45e5f1d18e61e115928d5c34158f1ad312a20f8f6"
+      }
+    },
+    {
+      "name": "dbghelp.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for MiniDumpWriteDump.",
+      "actual_hosted_observation": {
+        "bytes": 2170880,
+        "machine": "AMD64",
+        "name": "dbghelp.dll",
+        "observed_path": "C:\\Windows\\System32\\dbghelp.dll",
+        "optional_header": "PE32+",
+        "sha256": "ee437eaccfe4543ce2ba1dbc4e9b8225c88b48a6b359a4ea4b3553228902874e"
+      }
+    },
+    {
+      "name": "dwmapi.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmgetwindowattribute"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for DwmGetWindowAttribute.",
+      "actual_hosted_observation": {
+        "bytes": 187488,
+        "machine": "AMD64",
+        "name": "dwmapi.dll",
+        "observed_path": "C:\\Windows\\System32\\dwmapi.dll",
+        "optional_header": "PE32+",
+        "sha256": "5d5f7c5cd2b5da4744a7ff325726cc007616db258a093505813b9747e8ee9832"
+      }
+    },
+    {
+      "name": "dwrite.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-dwritecreatefactory"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for DWriteCreateFactory.",
+      "actual_hosted_observation": {
+        "bytes": 2457600,
+        "machine": "AMD64",
+        "name": "dwrite.dll",
+        "observed_path": "C:\\Windows\\System32\\dwrite.dll",
+        "optional_header": "PE32+",
+        "sha256": "2a1cd9ca5aa6a733a6d4b79936c13474abbc3c06db3fd880500e7b5b9a30d900"
+      }
+    },
+    {
+      "name": "dxgi.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-createdxgifactory1"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for CreateDXGIFactory1.",
+      "actual_hosted_observation": {
+        "bytes": 945328,
+        "machine": "AMD64",
+        "name": "dxgi.dll",
+        "observed_path": "C:\\Windows\\System32\\dxgi.dll",
+        "optional_header": "PE32+",
+        "sha256": "b9dc62b20546b3c2c2db9e8ef9a45996df6d0b5982d4d76eb18ee8e618781f86"
+      }
+    },
+    {
+      "name": "gdi32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createcompatibledc"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for CreateCompatibleDC.",
+      "actual_hosted_observation": {
+        "bytes": 191616,
+        "machine": "AMD64",
+        "name": "gdi32.dll",
+        "observed_path": "C:\\Windows\\System32\\gdi32.dll",
+        "optional_header": "PE32+",
+        "sha256": "7df03a110b456cacf2bd0365f758ae2ef9b7d532dcd64682d5e79ff5c223f987"
+      }
+    },
+    {
+      "name": "hid.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/hidsdi/nf-hidsdi-hidd_getattributes"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for HidD_GetAttributes.",
+      "actual_hosted_observation": {
+        "bytes": 53248,
+        "machine": "AMD64",
+        "name": "hid.dll",
+        "observed_path": "C:\\Windows\\System32\\hid.dll",
+        "optional_header": "PE32+",
+        "sha256": "f375690891498241d7e3e039ec449d6c4e3a6ddf7eba81e3c83d21c8d8a6c330"
+      }
+    },
+    {
+      "name": "imm32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetcontext"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for ImmGetContext.",
+      "actual_hosted_observation": {
+        "bytes": 212208,
+        "machine": "AMD64",
+        "name": "imm32.dll",
+        "observed_path": "C:\\Windows\\System32\\imm32.dll",
+        "optional_header": "PE32+",
+        "sha256": "32600c90650a6ddfe6f8cb6b81db37e592ecf35410ecbc62bd1bd40c04c1ed96"
+      }
+    },
+    {
+      "name": "iphlpapi.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-getadaptersaddresses"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for GetAdaptersAddresses.",
+      "actual_hosted_observation": {
+        "bytes": 195752,
+        "machine": "AMD64",
+        "name": "iphlpapi.dll",
+        "observed_path": "C:\\Windows\\System32\\iphlpapi.dll",
+        "optional_header": "PE32+",
+        "sha256": "9899ef581e313c241ec93a10e9b50ceeed682d4f7f7b72aebb03f9b3443b7fbe"
+      }
+    },
+    {
+      "name": "kernel32.dll",
+      "classification": "Windows core module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/libloaderapi/nf-libloaderapi-getmodulehandlew"
+      ],
+      "finding": "The Win32 Requirements explicitly names Kernel32.dll (WindowsXP minimum desktop client). The example identifies module scope, not an assertion that this exact example is every image's imported function.",
+      "actual_hosted_observation": {
+        "bytes": 807832,
+        "machine": "AMD64",
+        "name": "kernel32.dll",
+        "observed_path": "C:\\Windows\\System32\\kernel32.dll",
+        "optional_header": "PE32+",
+        "sha256": "0e4ee4797cf4cf19999be4ee4dd89c1fc928c8641c76db37a3340be57ebede00"
+      }
+    },
+    {
+      "name": "msvcrt.dll",
+      "classification": "Legacy Windows CRT operating-system module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows-hardware/drivers/develop/using-the-microsoft-c-runtime-with-user-mode-drivers-and-apps",
+        "https://devblogs.microsoft.com/oldnewthing/20140411-00/?p=1273"
+      ],
+      "finding": "Microsoft distinguishes the legacy Windows CRT msvcrt.dll from numbered VisualC++ redistributables and identifies msvcrt.dll as an operating-system DLL. Microsoft's platform guidance discourages new application reliance on its private behavior. This review classifies the exact approved pinned Godot imports; it does not redesign the engine or use that historical DLL as a general compiler-runtime substitute.",
+      "actual_hosted_observation": {
+        "bytes": 691128,
+        "machine": "AMD64",
+        "name": "msvcrt.dll",
+        "observed_path": "C:\\Windows\\System32\\msvcrt.dll",
+        "optional_header": "PE32+",
+        "sha256": "dde047f12a6b954773284e058631d9939ed1ef1d0f853d4343c320774129ab6e"
+      }
+    },
+    {
+      "name": "ntdll.dll",
+      "classification": "Windows native operating-system module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/winternl/nf-winternl-ntqueryinformationprocess"
+      ],
+      "finding": "Win32 Requirements names ntdll.dll. The source explicitly warns that internal process APIs may change; module presence is not a guarantee of all private ABI behavior or a claim that this example function is actually imported.",
+      "actual_hosted_observation": {
+        "bytes": 2141680,
+        "machine": "AMD64",
+        "name": "ntdll.dll",
+        "observed_path": "C:\\Windows\\System32\\ntdll.dll",
+        "optional_header": "PE32+",
+        "sha256": "a0e40b2c09fc47964f7802bebfcd0b2136bfb80b9f833a62b68651b44b003380"
+      }
+    },
+    {
+      "name": "ole32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coinitializeex"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for CoInitializeEx.",
+      "actual_hosted_observation": {
+        "bytes": 1308032,
+        "machine": "AMD64",
+        "name": "ole32.dll",
+        "observed_path": "C:\\Windows\\System32\\ole32.dll",
+        "optional_header": "PE32+",
+        "sha256": "4ba33351f679c8c9147b543b0eefac2a31b59bb9e4603f7c88ad0307c696017c"
+      }
+    },
+    {
+      "name": "oleaut32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-sysallocstring"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for SysAllocString.",
+      "actual_hosted_observation": {
+        "bytes": 920400,
+        "machine": "AMD64",
+        "name": "oleaut32.dll",
+        "observed_path": "C:\\Windows\\System32\\oleaut32.dll",
+        "optional_header": "PE32+",
+        "sha256": "47517ddb02758cd18d3fc37762203c1099426409251d89809b8129a65d65b949"
+      }
+    },
+    {
+      "name": "shcore.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/shellscalingapi/nf-shellscalingapi-getdpiformonitor"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for GetDpiForMonitor.",
+      "actual_hosted_observation": {
+        "bytes": 991264,
+        "machine": "AMD64",
+        "name": "shcore.dll",
+        "observed_path": "C:\\Windows\\System32\\shcore.dll",
+        "optional_header": "PE32+",
+        "sha256": "edca6b92e514601e494a542e7d1737be2396a76a855541ff09f8bb586158a3c6"
+      }
+    },
+    {
+      "name": "shell32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for SHGetKnownFolderPath.",
+      "actual_hosted_observation": {
+        "bytes": 7843440,
+        "machine": "AMD64",
+        "name": "shell32.dll",
+        "observed_path": "C:\\Windows\\System32\\shell32.dll",
+        "optional_header": "PE32+",
+        "sha256": "c834ed290aab76a0e3badda6d2206f7188205726ba71ac01dd83c69536c3fa05"
+      }
+    },
+    {
+      "name": "shlwapi.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathfileexistsw"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for PathFileExistsW.",
+      "actual_hosted_observation": {
+        "bytes": 411824,
+        "machine": "AMD64",
+        "name": "shlwapi.dll",
+        "observed_path": "C:\\Windows\\System32\\shlwapi.dll",
+        "optional_header": "PE32+",
+        "sha256": "04b82fdbdf4888cfbe152d7a865c30bd150ce96e487d0547b25f1791c42a82cc"
+      }
+    },
+    {
+      "name": "uiautomationcore.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/uiautomationcoreapi/nf-uiautomationcoreapi-uiareturnrawelementprovider"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for UiaReturnRawElementProvider.",
+      "actual_hosted_observation": {
+        "bytes": 4206592,
+        "machine": "AMD64",
+        "name": "uiautomationcore.dll",
+        "observed_path": "C:\\Windows\\System32\\uiautomationcore.dll",
+        "optional_header": "PE32+",
+        "sha256": "2b1ea113ebe23c8fda36926f912891a85cab28632cafe5d255905bf66cb149c8"
+      }
+    },
+    {
+      "name": "user32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for CreateWindowExW.",
+      "actual_hosted_observation": {
+        "bytes": 1774840,
+        "machine": "AMD64",
+        "name": "user32.dll",
+        "observed_path": "C:\\Windows\\System32\\user32.dll",
+        "optional_header": "PE32+",
+        "sha256": "355ab86c3ce68a093a2d85fbdd40e13dd2813dd63c6b278e543ac0f450aaf968"
+      }
+    },
+    {
+      "name": "winmm.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for timeGetTime.",
+      "actual_hosted_observation": {
+        "bytes": 166848,
+        "machine": "AMD64",
+        "name": "winmm.dll",
+        "observed_path": "C:\\Windows\\System32\\winmm.dll",
+        "optional_header": "PE32+",
+        "sha256": "c945ea3d731a1363058197ea2d3223f7dc1a96625e00ad8a0005168eb8b12c57"
+      }
+    },
+    {
+      "name": "ws2_32.dll",
+      "classification": "Documented Windows Win32 module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastartup"
+      ],
+      "finding": "Specialist B opened the primary Microsoft function reference and checked the Requirements DLL field for WSAStartup.",
+      "actual_hosted_observation": {
+        "bytes": 524416,
+        "machine": "AMD64",
+        "name": "ws2_32.dll",
+        "observed_path": "C:\\Windows\\System32\\ws2_32.dll",
+        "optional_header": "PE32+",
+        "sha256": "51b6bf808e617f9532459305bc958da43e5b4ce3c1b32ce3cabf7c37fb307ea4"
+      }
+    },
+    {
+      "name": "wsock32.dll",
+      "classification": "Windows Winsock1.1 compatibility module",
+      "references": [
+        "https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-compatibility-issues-2",
+        "https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-2-architecture-2"
+      ],
+      "finding": "Microsoft documents Wsock32.dll as retaining the Winsock1.1 compatibility interface; the architecture documentation classifies the stack interface and compatibility shims as operating-system components. This is legacy compatibility, not a new external networking runtime.",
+      "actual_hosted_observation": {
+        "bytes": 36864,
+        "machine": "AMD64",
+        "name": "wsock32.dll",
+        "observed_path": "C:\\Windows\\System32\\wsock32.dll",
+        "optional_header": "PE32+",
+        "sha256": "1801ec4e361f15421a1957ebdc891a18b4291632134261697e7e2e2e513615a4"
+      }
+    }
+  ],
+  "api_set_contracts": {
+    "names": [
+      "api-ms-win-core-processthreads-l1-1-0.dll",
+      "api-ms-win-core-registry-l1-1-0.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-version-l1-1-0.dll",
+      "api-ms-win-core-version-l1-1-1.dll",
+      "api-ms-win-core-winrt-error-l1-1-1.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-security-base-l1-1-0.dll",
+      "api-ms-win-security-lsalookup-l2-1-0.dll"
+    ],
+    "classification": "Named operating-system loader contracts; no requirement for a separate adjacent DLL file is inferred.",
+    "primary_urls": [
+      "https://learn.microsoft.com/en-us/windows/win32/apiindex/windows-apisets",
+      "https://learn.microsoft.com/en-us/windows/win32/api/synchapi/nf-synchapi-waitonaddress",
+      "https://learn.microsoft.com/en-us/cpp/windows/universal-crt-deployment?view=msvc-170"
+    ],
+    "findings": [
+      "Microsoft explains API-set resolution through the current OS schema, independent of the implementing host DLL filename.",
+      "WaitOnAddress Requirements explicitly names the observed api-ms-win-core-synch-l1-2-0.dll contract and Windows8 minimum client.",
+      "Microsoft documents UCRT as part of Windows10/later and WindowsServer2016/later, and APISet forwarding as part of its deployment. Windows10/11 use the system UCRT even if an application includes a local copy.",
+      "The exact recorded contracts loaded during the source-matched hosted Windows native/Workbench/CMD and fresh-package executions; no arbitrary additional API-set names are admitted by this review."
+    ]
+  },
+  "specific_qualifications": [
+    {
+      "dll": "dbghelp.dll",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/debug/dbghelp-versions",
+      "retrieval_ref": "turn463758167view3",
+      "finding": "Microsoft explicitly documents DbgHelp.dll as included in all supported Windows versions, while the Windows-supplied version lacks Symbol Server and Source Server features. The API reference also describes redistributable variants; do not confuse those optional tooling versions with a prerequisite installation."
+    },
+    {
+      "dll": "imm32.dll",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetcontext",
+      "finding": "The example function's XP minimum-client note qualifies East Asian language support. The DLL contract lookup alone is not a promise that every language/input configuration is installed; actual final hosted System32 file/hash and package execution observations remain separate."
+    }
+  ],
+  "scope_limits": [
+    "Finite direct PE imports from the exact five inspected images only; no generic Windows allowlist or loader policy change.",
+    "The module-reference examples establish OS ownership and deployment category, not exhaustive imported-symbol/forwarder/delay-load or dynamic-plugin coverage.",
+    "Observed System32 bytes alone were not used to infer Windows11 inbox availability; primary Microsoft references supplied the classification.",
+    "The approved pinned Godot engine's legacy msvcrt/ntdll dependencies retain Microsoft's compatibility cautions; no engine modification was attempted.",
+    "Windows11/NVIDIA physical interaction, GPU execution and monitor presentation remain HOLD for owner acceptance."
+  ],
+  "unaccounted_direct_dependencies": [],
+  "missing_compiler_runtime_imports": []
+}

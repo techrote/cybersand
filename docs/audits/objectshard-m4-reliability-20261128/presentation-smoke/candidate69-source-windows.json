@@ -1,0 +1,606 @@
+{
+  "cases": [
+    {
+      "capture_error": null,
+      "command": [
+        "D:\\a\\_temp\\godot\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--editor",
+        "--quit"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "presentation_import.log",
+      "log_sha256": "54a5c4763f1b608e79c5309b0836ad95c4feb47aba0858097e192482019c4a5f",
+      "name": "presentation_import",
+      "natural_completion": true,
+      "pid": 7828,
+      "requires_display": false,
+      "resource_samples": "presentation_import-resources.jsonl",
+      "resource_termination": {
+        "elapsed_seconds": 13.954000000000008,
+        "kind": "termination",
+        "minimum_host_mem_available_bytes": null,
+        "peak_rss_bytes": null,
+        "returncode": 0,
+        "samples": 14,
+        "status": "passed",
+        "termination_cause": "not established by these observations",
+        "timeout_kind": null
+      },
+      "resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "objectshard-presentation-only",
+      "seconds": 13.447,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "D:\\a\\_temp\\godot\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--script",
+        "res://tests/test_palette_shader_compile_bounds.gd"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_palette_shader_compile_bounds.log",
+      "log_sha256": "0434e0416ecc6cfa581a23eb8c5a6b3f90d88541c8b7b8cdd42d9e74a2e6bac0",
+      "name": "test_palette_shader_compile_bounds",
+      "natural_completion": true,
+      "pid": 6748,
+      "requires_display": false,
+      "resource_samples": "test_palette_shader_compile_bounds-resources.jsonl",
+      "resource_termination": {
+        "elapsed_seconds": 1.2180000000000177,
+        "kind": "termination",
+        "minimum_host_mem_available_bytes": null,
+        "peak_rss_bytes": null,
+        "returncode": 0,
+        "samples": 2,
+        "status": "passed",
+        "termination_cause": "not established by these observations",
+        "timeout_kind": null
+      },
+      "resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "objectshard-presentation-only",
+      "seconds": 1.204,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "D:\\a\\_temp\\godot\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_object_shard_m4_overlay_identity.gd",
+        "--",
+        "--output=D:\\a\\cybersand\\cybersand\\evidence\\presentation\\captures"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_object_shard_m4_overlay_identity.log",
+      "log_sha256": "a4fbba46adc39c9fe2c746e1eae15f79a231427509f44e24399e9784a4164b03",
+      "name": "test_object_shard_m4_overlay_identity",
+      "natural_completion": true,
+      "pid": 7584,
+      "receipt": {
+        "checks": 11,
+        "display_driver": "Windows",
+        "failures": [],
+        "schema": "objectshard-m4-overlay-identity-v1",
+        "scope": "actual graphical texture storage readback; synthetic native-style publications; no native or Rapier claims",
+        "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+      },
+      "requires_display": true,
+      "resource_samples": "test_object_shard_m4_overlay_identity-resources.jsonl",
+      "resource_termination": {
+        "elapsed_seconds": 3.7969999999999686,
+        "kind": "termination",
+        "minimum_host_mem_available_bytes": null,
+        "peak_rss_bytes": null,
+        "returncode": 0,
+        "samples": 4,
+        "status": "passed",
+        "termination_cause": "not established by these observations",
+        "timeout_kind": null
+      },
+      "resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "objectshard-presentation-only",
+      "seconds": 3.802,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "D:\\a\\_temp\\godot\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_object_shard_m4_material_preparation_render.gd",
+        "--",
+        "--output=D:\\a\\cybersand\\cybersand\\evidence\\presentation\\captures"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_object_shard_m4_material_preparation_render.log",
+      "log_sha256": "279375322a75fb9cabe8e154ad38785182b17b71aebac9ee2e664beb9fe5872d",
+      "name": "test_object_shard_m4_material_preparation_render",
+      "natural_completion": true,
+      "pid": 1180,
+      "receipt": {
+        "body_captures": [
+          {
+            "centre_rgba": [
+              0.168627455830574,
+              0.0784313753247261,
+              0.0588235296308994,
+              1.0
+            ],
+            "elapsed_usec": 1058362,
+            "empty_alpha": 0.0,
+            "label": "prepared-first-body",
+            "sha256": "6492a02882286a56f4f66c4b4d52d0545f628cfa564767c6c727d8d4be068036",
+            "size": "(64, 64)"
+          },
+          {
+            "centre_rgba": [
+              0.168627455830574,
+              0.0784313753247261,
+              0.0588235296308994,
+              1.0
+            ],
+            "elapsed_usec": 14710,
+            "empty_alpha": 0.0,
+            "label": "prepared-replacement-body",
+            "sha256": "6492a02882286a56f4f66c4b4d52d0545f628cfa564767c6c727d8d4be068036",
+            "size": "(64, 64)"
+          }
+        ],
+        "checks": 13,
+        "display_driver": "Windows",
+        "failures": [],
+        "preparation": {
+          "before_draw_usec": 2296,
+          "elapsed_usec": 50508685,
+          "empty_alpha": 0.0,
+          "first_draw_usec": 50420387,
+          "image_size": "(2, 2)",
+          "occupied_rgba": [
+            0.270588248968124,
+            0.200000002980232,
+            0.152941182255745,
+            1.0
+          ],
+          "rendered": true,
+          "runs": 1,
+          "scope": "opt-in process-local shared shader preparation; no native owner, body or simulation clock",
+          "shader_instance_id": -9223372006672562699,
+          "started_usec": 355216,
+          "state": "ready",
+          "status_frame_completed": true,
+          "target_size": "(2, 2)",
+          "temporary_viewport_retired": true
+        },
+        "schema": "objectshard-m4-material-preparation-v1",
+        "scope": "actual renderer; explicit opt-in preparation and same shared shader reuse after overlay replacement; synthetic material inputs; no native World/body/time or physical display performance claim",
+        "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+      },
+      "requires_display": true,
+      "resource_samples": "test_object_shard_m4_material_preparation_render-resources.jsonl",
+      "resource_termination": {
+        "elapsed_seconds": 52.093999999999994,
+        "kind": "termination",
+        "minimum_host_mem_available_bytes": null,
+        "peak_rss_bytes": null,
+        "returncode": 0,
+        "samples": 52,
+        "status": "passed",
+        "termination_cause": "not established by these observations",
+        "timeout_kind": null
+      },
+      "resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "objectshard-presentation-only",
+      "seconds": 52.087,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "D:\\a\\_temp\\godot\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_object_shard_m4_material_presentation_render.gd",
+        "--",
+        "--output=D:\\a\\cybersand\\cybersand\\evidence\\presentation\\captures"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_object_shard_m4_material_presentation_render.log",
+      "log_sha256": "16641d76aeb7c76257c0d49ca25334977bf34a990b7acee9103e1fe4f483f035",
+      "name": "test_object_shard_m4_material_presentation_render",
+      "natural_completion": true,
+      "pid": 1812,
+      "receipt": {
+        "captures": [
+          {
+            "elapsed_usec": 58459052,
+            "height": 128,
+            "name": "ordinary-materials",
+            "sha256": "9b85d16ecf8a2ef9d557597a1bb21f88efdcd3f83079d57976a98fc7fd17320d",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 1139323,
+            "height": 128,
+            "name": "detached-materials",
+            "sha256": "8ce92b90664f58dc3e0c05063cd3ad0b5255294d35ab47879edbd3e4b6b74285",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 15509,
+            "height": 128,
+            "name": "rotated-materials",
+            "sha256": "31f5a10a5adc7db8bd752683ae6e57bcbc87954bc29c57f144023f5a63d3d74f",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 10933,
+            "height": 128,
+            "name": "ordinary-edited",
+            "sha256": "1e171395cb44de12a38186955ef144e640ed29d3bfed05c2c6f9732c615e8b37",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 13905,
+            "height": 128,
+            "name": "detached-edited",
+            "sha256": "70630cab8c43a015640fac34cafd65cd1be396743d4f8ec462a287c9133e7edc",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 11087,
+            "height": 128,
+            "name": "ordinary-fragment-cut",
+            "sha256": "31e96e15a25c95e721b16075504da0911ec9948d450c3e2a882f81d1dc8493ee",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 13222,
+            "height": 128,
+            "name": "detached-fragment-cut",
+            "sha256": "e679753b997d826e2ddc0b47ffeb0f0ebcd224fa7c33ad0fbcac813ce3a16dbf",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 10199,
+            "height": 128,
+            "name": "rotated-fragment-cut",
+            "sha256": "cf860facd2e45856607c9b5c2e32507314a5117d679ec402b921c75fb12171a0",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 8436,
+            "height": 128,
+            "name": "retained-camera-letterbox",
+            "sha256": "3611b158bdf215a3ea36f41b4ead230e83336fdcea398e1f224cd163a996c1d3",
+            "width": 128
+          },
+          {
+            "elapsed_usec": 12720,
+            "height": 128,
+            "name": "retired-clear",
+            "sha256": "ff30c0a7268849427c5b6085bc05b348e70289a37c3f23be10cec8b29a26ee6d",
+            "width": 128
+          }
+        ],
+        "checks": 28,
+        "display_driver": "Windows",
+        "failures": [],
+        "first_use": {
+          "detached_first_capture_usec": 1139323,
+          "detached_setup_usec": 75382,
+          "ordinary_first_capture_usec": 58459052,
+          "ordinary_setup_usec": 70574
+        },
+        "rendering_driver": "opengl3_angle",
+        "schema": "objectshard-m4-material-presentation-v1",
+        "scope": "synthetic immutable RG8 publications; actual ordinary/shared-shader framebuffer parity, rotation, edit, child-origin recrop, view and retirement; not native or physical-motion qualification",
+        "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+        "timing_scope": "sequential ordinary-only then detached first use; setup and capture elapsed include frame wait/readback/PNG I/O; no steady-state or physical display claim"
+      },
+      "requires_display": true,
+      "resource_samples": "test_object_shard_m4_material_presentation_render-resources.jsonl",
+      "resource_termination": {
+        "elapsed_seconds": 60.422000000000025,
+        "kind": "termination",
+        "minimum_host_mem_available_bytes": null,
+        "peak_rss_bytes": null,
+        "returncode": 0,
+        "samples": 61,
+        "status": "passed",
+        "termination_cause": "not established by these observations",
+        "timeout_kind": null
+      },
+      "resources": {
+        "available": false,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "objectshard-presentation-only",
+      "seconds": 60.429,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200
+    }
+  ],
+  "engine": {
+    "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "failures": [],
+  "renderer": "opengl3_angle",
+  "retained_native": {
+    "build_commit": "efe3bc19c68a9b9e292821ef28b735caec538915",
+    "sha256": "78a5481193d6379ce8f36689aedc521f3b0d79fd17a2a88815f5c49e737bdce9"
+  },
+  "schema": "objectshard-m4-presentation-smoke-v1",
+  "scope": "synthetic immutable publications and actual rendered shader/framebuffer tests only; no new native or physical qualification",
+  "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+  "source_tree": "9e749e481b01218d421fbddb84d4a0874c1054e1",
+  "status": "passed"
+}

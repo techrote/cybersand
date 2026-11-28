@@ -1,0 +1,562 @@
+{
+  "schema": "objectshard-m3-final-evidence-custody-v1",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "workflow_run": 44995374918,
+  "scope": "Exact copied receipts and original rendered PNGs; full raw logs and traces remain in source-bound Actions artifacts. No product inputs changed by this evidence descendant.",
+  "files": [
+    {
+      "path": "final-interface-refresh.json",
+      "origin": "build/m3-platform/final-interface-refresh.json",
+      "bytes": 26439,
+      "sha256": "cbcba06bf5f583d7cab5dc8277fce136196c71a4c5b77a8ffeca8a7d06317a8d"
+    },
+    {
+      "path": "linux/abi-floor.log",
+      "origin": "build/m3-platform/linux/14744731008/abi-floor.log",
+      "bytes": 120,
+      "sha256": "4ffe4701650ea55c729c88d89ed92ef01dfb620c95d2c70bec295b457c2d2d3e"
+    },
+    {
+      "path": "linux/bindings/receipt.json",
+      "origin": "build/m3-platform/linux/14744731008/bindings/receipt.json",
+      "bytes": 2125,
+      "sha256": "0f09a5d3ee29c3c48761a93f69c8c13fface00f313320524c339d10c01dd2e3d"
+    },
+    {
+      "path": "linux/downloaded-artifact-custody.json",
+      "origin": "build/m3-platform/linux/14744731008-custody.json",
+      "bytes": 76929,
+      "sha256": "09a83f5bb2b08951ff29bbfcf0cf8e0909f991274dc1cdfc3da5eea64ea199ba"
+    },
+    {
+      "path": "linux/extension/receipt.json",
+      "origin": "build/m3-platform/linux/14744731008/extension/receipt.json",
+      "bytes": 2111,
+      "sha256": "37dfe91fb0948c593280be6e3f75b570428120f81f69a1ecd2045d88c189bc16"
+    },
+    {
+      "path": "linux/lab/qualification.json",
+      "origin": "build/m3-platform/linux/14744731008/lab/qualification.json",
+      "bytes": 563031,
+      "sha256": "1430b19940987b23809af802a87aa4de3605535943818521ffcb8dd27b087c29"
+    },
+    {
+      "path": "linux/linux-native-provenance.json",
+      "origin": "build/m3-platform/linux/14744731008/linux-native-provenance.json",
+      "bytes": 15178,
+      "sha256": "2a1642241607f420609875d08cfb717ae10c0425006a34e6c67ccbe4e880e757"
+    },
+    {
+      "path": "linux/native/summary.json",
+      "origin": "build/m3-platform/linux/14744731008/native/summary.json",
+      "bytes": 19117,
+      "sha256": "a6e6c51a0e2d94dc089db69e79bcb62a9b16256766533eb5e1a70e560f867b86"
+    },
+    {
+      "path": "navigation/maintained/input-identity-v1.json",
+      "origin": "build/c-navigation-repair/input-identity-v1.json",
+      "bytes": 1114,
+      "sha256": "895baef9996a67f8f4f5cfc35f0ebed93015660a90851248fd30b3599e4cb1c7"
+    },
+    {
+      "path": "navigation/maintained/input-identity-v2.json",
+      "origin": "build/c-navigation-repair/input-identity-v2.json",
+      "bytes": 1114,
+      "sha256": "c951e50ee335223e0f58e70c469d194662491fa4154d4110af7cebce7f083890"
+    },
+    {
+      "path": "navigation/maintained/input-identity.json",
+      "origin": "build/c-navigation-repair/input-identity.json",
+      "bytes": 541,
+      "sha256": "03fca7d154094cbb82e02d39c1ac957f6980f0809b00df0b054c01db78a1a980"
+    },
+    {
+      "path": "navigation/maintained/maintained-navigation-handoff.json",
+      "origin": "build/c-navigation-repair/maintained-navigation-handoff.json",
+      "bytes": 4182,
+      "sha256": "7ddd54f0e242de47afa03223dae7363becf5bc1997d54b488ba7f10a3c5616d5"
+    },
+    {
+      "path": "navigation/maintained/navigation-v1-disposition.json",
+      "origin": "build/c-navigation-repair/navigation-v1-disposition.json",
+      "bytes": 898,
+      "sha256": "3afefdfda26bfedbfb3aac34790c0e968bd2dd5643a375dc6e6c05f9004558cc"
+    },
+    {
+      "path": "navigation/maintained/navigation-v1.json",
+      "origin": "build/c-navigation-repair/navigation-v1.json",
+      "bytes": 68672,
+      "sha256": "1abbecedd5be7c4a8e4bd8e009e9cc0a379efafef1c6aca8524a67fee9c6e313"
+    },
+    {
+      "path": "navigation/maintained/navigation-v1.log",
+      "origin": "build/c-navigation-repair/navigation-v1.log",
+      "bytes": 46521,
+      "sha256": "51cf775bd6aa471b9a7439a6dee432e933cea03d39d096db6492b8f41a88e07e"
+    },
+    {
+      "path": "navigation/maintained/navigation-v2-quit-child.json",
+      "origin": "build/c-navigation-repair/navigation-v2-quit-child.json",
+      "bytes": 8570,
+      "sha256": "7bbca42201fd419b3eb6c7951af5648e36539c2483a10ab114bf57cd259ac14b"
+    },
+    {
+      "path": "navigation/maintained/navigation-v2-quit-child.json.log",
+      "origin": "build/c-navigation-repair/navigation-v2-quit-child.json.log",
+      "bytes": 303,
+      "sha256": "ddefc974fe444df2ec1b16e3787b412082e463e759cafa461ce0398197f63acf"
+    },
+    {
+      "path": "navigation/maintained/navigation-v2.json",
+      "origin": "build/c-navigation-repair/navigation-v2.json",
+      "bytes": 68531,
+      "sha256": "58a3dc53131a483e8b6e391e73bc37b05868c2850ec61c9cca4d5a8562c08b80"
+    },
+    {
+      "path": "navigation/maintained/navigation-v2.log",
+      "origin": "build/c-navigation-repair/navigation-v2.log",
+      "bytes": 45901,
+      "sha256": "08575a702a2ad74c3aa9d3391a03d337f3b2079ead4aff1f4d4c74a0ff3c67c0"
+    },
+    {
+      "path": "navigation/operator-navigation-contract.json",
+      "origin": "build/m3-platform/operator-navigation-contract.json",
+      "bytes": 8125,
+      "sha256": "86bea541f5f4d1c32eb9c7fa07132440e6b03c5fd7947c64dc215e2ccbca03b4"
+    },
+    {
+      "path": "navigation/operator-readiness.json",
+      "origin": "build/m3-platform/operator-readiness.json",
+      "bytes": 13827,
+      "sha256": "f0cf938d8f489c3dfe6c316be9a1303d2e27c87beb6331f874642ace82a76fb0"
+    },
+    {
+      "path": "navigation/original/finding.json",
+      "origin": "build/review-physics/navigation-68235b12/finding.json",
+      "bytes": 4780,
+      "sha256": "6f5043886b8dbf8b4cc44e23cd2cd565adf55a3fd92e5e4185a25f60e7292da1"
+    },
+    {
+      "path": "navigation/original/review-navigation-no-cleanup-verbose.log",
+      "origin": "build/review-physics/navigation-68235b12/review-navigation-no-cleanup-verbose.log",
+      "bytes": 10951,
+      "sha256": "1b43ef23cc5682caa02fbc54f5b48a8d8cfca3ebfe7cc9c40e604ce0aab341e9"
+    },
+    {
+      "path": "navigation/original/review-navigation-no-cleanup.log",
+      "origin": "build/review-physics/navigation-68235b12/review-navigation-no-cleanup.log",
+      "bytes": 4303,
+      "sha256": "77aae8466c22e284616344767ebb43eacb9a931f17849ffdec3bec0727710d4d"
+    },
+    {
+      "path": "navigation/original/review-navigation-result-no-cleanup.json",
+      "origin": "build/review-physics/navigation-68235b12/review-navigation-result-no-cleanup.json",
+      "bytes": 11467,
+      "sha256": "f3d936da648685544c39e78e80d4d1e68fe57e2cb1f428f43b64eb2c23102e0a"
+    },
+    {
+      "path": "navigation/original/review-navigation-result.json",
+      "origin": "build/review-physics/navigation-68235b12/review-navigation-result.json",
+      "bytes": 39724,
+      "sha256": "b3ad664797f7d4d30a4f88a10efbef8f472980a8db335c8634993767cd418ef6"
+    },
+    {
+      "path": "navigation/original/review-navigation.log",
+      "origin": "build/review-physics/navigation-68235b12/review-navigation.log",
+      "bytes": 12669,
+      "sha256": "b31bde77fb505fa9ec4e738c64dc51bc3ea9fc215f418c2dfb2f40ca894ed910"
+    },
+    {
+      "path": "navigation/original/source-identity.json",
+      "origin": "build/review-physics/navigation-68235b12/source-identity.json",
+      "bytes": 7174,
+      "sha256": "5eb42c00793f3bc5350551caaaea9c7189ffb545769cf4ed93e44760e33d59bb"
+    },
+    {
+      "path": "navigation/ownership-iteration-review.json",
+      "origin": "build/review-ownership/navigation-iteration-review.json",
+      "bytes": 6149,
+      "sha256": "52c77b75951bd49836388c5ce6d9dc5d5200f2ed96cea13ec5f9a393dec48955"
+    },
+    {
+      "path": "navigation/ownership-repair1/held-v2.log",
+      "origin": "build/review-ownership/navigation-repair1/held-v2.log",
+      "bytes": 718,
+      "sha256": "9a6e86c2d1a776b80a06398ce37c6c82e888f94089118d5ce325a45420ae4239"
+    },
+    {
+      "path": "navigation/ownership-repair1/held.log",
+      "origin": "build/review-ownership/navigation-repair1/held.log",
+      "bytes": 558,
+      "sha256": "8dc29525358063ff4090332c6460b91fa07327c867e8ee892116ef2c5226d303"
+    },
+    {
+      "path": "navigation/ownership-repair1/reentry-v2.log",
+      "origin": "build/review-ownership/navigation-repair1/reentry-v2.log",
+      "bytes": 1814,
+      "sha256": "3bab486b7553017e1b0caceead8abd972d4e07a63484d6dfd2705277464dd8d2"
+    },
+    {
+      "path": "navigation/ownership-repair1/reentry.log",
+      "origin": "build/review-ownership/navigation-repair1/reentry.log",
+      "bytes": 2683,
+      "sha256": "9b179801e130db73ffc53ccfa90cd987203dc6bae2616604f69c5e74ff5a56ad"
+    },
+    {
+      "path": "navigation/ownership-repair1/review-navigation-held-result.json",
+      "origin": "build/review-ownership/navigation-repair1/review-navigation-held-result.json",
+      "bytes": 4331,
+      "sha256": "33a280ec09fc3d86a69dd98b71f018bcad8c3aca52b30eff17d3776ed9f9b4bb"
+    },
+    {
+      "path": "navigation/ownership-repair1/review-navigation-reentry-result.json",
+      "origin": "build/review-ownership/navigation-repair1/review-navigation-reentry-result.json",
+      "bytes": 3367,
+      "sha256": "09e0be270bb94e045210449e78dcda8dbdc4f9cc1846f186fdc262b7923b9ea0"
+    },
+    {
+      "path": "navigation/ownership-repair1/source-binding.json",
+      "origin": "build/review-ownership/navigation-repair1/source-binding.json",
+      "bytes": 21989,
+      "sha256": "b822250996d7983efd126cdeb3b7af040d54cb04264065237e9065b22c4762de"
+    },
+    {
+      "path": "navigation/ownership-repair2/reentry.log",
+      "origin": "build/review-ownership/navigation-repair2/reentry.log",
+      "bytes": 293,
+      "sha256": "8ce47b3262d47771b366920dc6a5497873b499094221ac48e6f843483bf532c1"
+    },
+    {
+      "path": "navigation/ownership-repair2/review-navigation-reentry-result.json",
+      "origin": "build/review-ownership/navigation-repair2/review-navigation-reentry-result.json",
+      "bytes": 3338,
+      "sha256": "ef3be382154f334557daec67f1c3371eb6fc3cf63dcd2b00e1c436f522e52635"
+    },
+    {
+      "path": "navigation/ownership-repair2/source-binding.json",
+      "origin": "build/review-ownership/navigation-repair2/source-binding.json",
+      "bytes": 22224,
+      "sha256": "5272b58ccaf1c082d055379d4444ee5f89b91b31f5fca438f72a58705fbed557"
+    },
+    {
+      "path": "navigation/ownership-repair3/held.log",
+      "origin": "build/review-ownership/navigation-repair3/held.log",
+      "bytes": 289,
+      "sha256": "1caa1637eb380b08e9884ae3c383a201f9b96f769d2473719a815da31c0040ab"
+    },
+    {
+      "path": "navigation/ownership-repair3/reentry.log",
+      "origin": "build/review-ownership/navigation-repair3/reentry.log",
+      "bytes": 293,
+      "sha256": "8ce47b3262d47771b366920dc6a5497873b499094221ac48e6f843483bf532c1"
+    },
+    {
+      "path": "navigation/ownership-repair3/review-navigation-held-result.json",
+      "origin": "build/review-ownership/navigation-repair3/review-navigation-held-result.json",
+      "bytes": 4328,
+      "sha256": "f97d8da70b785188bee3cebb78ce27a3ab543a04fa772781c3f1744f62c91da9"
+    },
+    {
+      "path": "navigation/ownership-repair3/review-navigation-reentry-result.json",
+      "origin": "build/review-ownership/navigation-repair3/review-navigation-reentry-result.json",
+      "bytes": 3338,
+      "sha256": "be908e611c47b3f3d83ee6ddc9444fa7b859bb093a275646b185547235effe5f"
+    },
+    {
+      "path": "navigation/ownership-repair3/source-binding.json",
+      "origin": "build/review-ownership/navigation-repair3/source-binding.json",
+      "bytes": 22224,
+      "sha256": "a4fe88136301b7b1dce5d5204c7e221c07f8177b81c83eb35e0361822834422f"
+    },
+    {
+      "path": "navigation/physics-repair/execution-receipts.json",
+      "origin": "build/review-physics/navigation-repair-freeze/execution-receipts.json",
+      "bytes": 1895,
+      "sha256": "89397358aa4ad9add08f8fcc094389dfb4617ff6675c630c774b90423e88c15c"
+    },
+    {
+      "path": "navigation/physics-repair/import-receipts.json",
+      "origin": "build/review-physics/navigation-repair-freeze/import-receipts.json",
+      "bytes": 467,
+      "sha256": "b405fe057a08f28497bbe212ce17dfc37990cce38431ba4bc4b2e457ce428101"
+    },
+    {
+      "path": "navigation/physics-repair/import-repeat.log",
+      "origin": "build/review-physics/navigation-repair-freeze/import-repeat.log",
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+    },
+    {
+      "path": "navigation/physics-repair/import.log",
+      "origin": "build/review-physics/navigation-repair-freeze/import.log",
+      "bytes": 5250,
+      "sha256": "03e20d0fe3d18e0687dbfcf042e80a5ff506d71a56f23de1d36eaec3a4be41be"
+    },
+    {
+      "path": "navigation/physics-repair/review-navigation-fences-result.json",
+      "origin": "build/review-physics/navigation-repair-freeze/review-navigation-fences-result.json",
+      "bytes": 3959,
+      "sha256": "4795e2ab3fc4ed8f190628f14c88059118a82a4e97857e559176e033cd8f694d"
+    },
+    {
+      "path": "navigation/physics-repair/review-navigation-fences.log",
+      "origin": "build/review-physics/navigation-repair-freeze/review-navigation-fences.log",
+      "bytes": 303,
+      "sha256": "e26932e0cbbc430e008222eb79b3e421b4b791f0a4092950fa48b111757ae37e"
+    },
+    {
+      "path": "navigation/physics-repair/review-navigation-result.json",
+      "origin": "build/review-physics/navigation-repair-freeze/review-navigation-result.json",
+      "bytes": 18670,
+      "sha256": "b0e3f133c463b135530ecd3727b7deee4ee2f8b82f1ec14ecfa4774f66bcfef1"
+    },
+    {
+      "path": "navigation/physics-repair/review-navigation.log",
+      "origin": "build/review-physics/navigation-repair-freeze/review-navigation.log",
+      "bytes": 373,
+      "sha256": "59c990e31392410a6db1dae437dbd9488986a165351da980e35e5723b1624077"
+    },
+    {
+      "path": "navigation/physics-repair/review.json",
+      "origin": "build/review-physics/navigation-repair-freeze/review.json",
+      "bytes": 4914,
+      "sha256": "9de4ed86ae4aeebde0101dba1ed94eb60e94c7e8cf001d2a40e6bc0ab5a22b0e"
+    },
+    {
+      "path": "navigation/physics-repair/source-identity.json",
+      "origin": "build/review-physics/navigation-repair-freeze/source-identity.json",
+      "bytes": 7589,
+      "sha256": "5eda84868843981947ff61da67e97c5cb4f847ac057c19e3f49885ca0ff13d3a"
+    },
+    {
+      "path": "navigation/root-life008-navigation.log",
+      "origin": "build/root-life008-navigation.log",
+      "bytes": 2006,
+      "sha256": "da93f3db9b2b3ff58794ac71f6b483e90140f2a302ade703d78a9adc93240e34"
+    },
+    {
+      "path": "reviews/custody-final-source-inventory.json",
+      "origin": "build/review-custody/final-source-inventory.json",
+      "bytes": 149469,
+      "sha256": "f4504f8c3c7fc4141f7dead59dd6fbe0ae039132a0367245dedd91bcf4413809"
+    },
+    {
+      "path": "reviews/custody-final-source-review.json",
+      "origin": "build/review-custody/final-source-review.json",
+      "bytes": 3622,
+      "sha256": "3a0299b67cd501d33be655a09a94efb9c3c7ad4ec83bc25f3682219b218b3541"
+    },
+    {
+      "path": "reviews/custody-mergedown-gates.json",
+      "origin": "build/review-custody/mergedown-gates.json",
+      "bytes": 17229,
+      "sha256": "675013bab21887696d9c90e588b394ab0575b8735b30bc8f650b8da127e08318"
+    },
+    {
+      "path": "reviews/custody-repository-gate-current.json",
+      "origin": "build/review-custody/repository-gate-current.json",
+      "bytes": 3240,
+      "sha256": "257d369122154b12d969bb1b9010a2b38f04fb70848b969496683c1e64c92488"
+    },
+    {
+      "path": "reviews/linux-archive-members.json",
+      "origin": "build/review-custody/linux-archive-members.json",
+      "bytes": 61437,
+      "sha256": "60a7ec3b71112b1f2438c72cfde9b4ddfcd446aef3d3aa9d46e9f53cf544247d"
+    },
+    {
+      "path": "reviews/linux-baseline-review.json",
+      "origin": "build/review-custody/linux-baseline-review.json",
+      "bytes": 25995,
+      "sha256": "1d772e14e6c7c001112de643a1097c76e46bf736c40b949f573992cd86bc6de1"
+    },
+    {
+      "path": "reviews/narrative-scope-review.json",
+      "origin": "build/review-custody/narrative-scope-review.json",
+      "bytes": 5878,
+      "sha256": "43299755dca7c08e3ad81b68064f15006bec5c383e2f4756a1eacc9bc53ae510"
+    },
+    {
+      "path": "reviews/ownership-final-review-68235b12.json",
+      "origin": "build/review-ownership/final-review-68235b12.json",
+      "bytes": 15962,
+      "sha256": "fe53c234d42d9e0b3558a337d366c44f993e3bbaa962890ae20b88469d98c582"
+    },
+    {
+      "path": "reviews/ownership-final-source-binding.json",
+      "origin": "build/review-ownership/final-source-binding.json",
+      "bytes": 12409,
+      "sha256": "2775c0604babefdad83991f43a5e775702551d0fba763695e4f898b959720126"
+    },
+    {
+      "path": "reviews/physics-linux-baseline-review.json",
+      "origin": "build/review-physics/platform-linux-baseline-review.json",
+      "bytes": 81630,
+      "sha256": "44c6ec0bd586fedbc96d85d6990101575f301ed710f63d98876c5427912ae579"
+    },
+    {
+      "path": "reviews/physics-review-final.json",
+      "origin": "build/review-physics/final-68235b12/review-final.json",
+      "bytes": 7609,
+      "sha256": "c7e67ebcc66a902c12b4a530ca5f57669a5559103ad10bba9ce579a16d139f9b"
+    },
+    {
+      "path": "reviews/physics-review-live-admission-result.json",
+      "origin": "build/review-physics/final-68235b12/review-live-admission-result.json",
+      "bytes": 4222,
+      "sha256": "9d1f75448e432613cb36d5bef46e4817526fa68d806129a439528e6ab79c9d71"
+    },
+    {
+      "path": "reviews/physics-review-physics-adversary-result.json",
+      "origin": "build/review-physics/final-68235b12/review-physics-adversary-result.json",
+      "bytes": 103852,
+      "sha256": "445c5269c881fe6ba6e1da4ceeae01f4da31ace24f5f3ae8159cb6fdec12a78a"
+    },
+    {
+      "path": "reviews/physics-source-identity.json",
+      "origin": "build/review-physics/final-68235b12/source-identity.json",
+      "bytes": 43855,
+      "sha256": "bcefe56aec61c7801f5e84af3b9cf3430fae5a120795d3d96a87abe379dd0548"
+    },
+    {
+      "path": "reviews/physics-windows-review.json",
+      "origin": "build/review-physics/platform-windows-review.json",
+      "bytes": 77044,
+      "sha256": "87d85a272edcafa9a3ae1ddbd29997d0af4428d8f94c07dc42540dbad43f8ac5"
+    },
+    {
+      "path": "reviews/root-visual-review.json",
+      "origin": "build/m3-platform/root-visual-review.json",
+      "bytes": 3444,
+      "sha256": "3513d87efae05f7ac9f67ccc6f13d11a45e0d4c338e564bea085ee704a867df0"
+    },
+    {
+      "path": "reviews/windows-crossbuild-review.json",
+      "origin": "build/review-custody/windows-crossbuild-review.json",
+      "bytes": 4536,
+      "sha256": "e4b1dabcad207a90c16e3906d9b3d6dda59e9a6dd0cb3825e16d26b803c08e7b"
+    },
+    {
+      "path": "reviews/windows-delivered-archive-review.json",
+      "origin": "build/review-custody/windows-delivered-archive-review.json",
+      "bytes": 1286,
+      "sha256": "d34b0da6979e2fbf2e675ff0e2dc1ecc2ca55bbf9aa71c912de08b821dbba000"
+    },
+    {
+      "path": "reviews/windows-execution-review.json",
+      "origin": "build/review-custody/windows-execution-review.json",
+      "bytes": 29205,
+      "sha256": "3d477306add1564da36227413bbf701ab0c8a4d70c338e4ab4f242432e49b844"
+    },
+    {
+      "path": "reviews/windows-performance-review.json",
+      "origin": "build/review-custody/windows-performance-review.json",
+      "bytes": 29020,
+      "sha256": "c9929d060bc6da0d702afe4282f4f1d145ecc6da18cfc1449da5ce5717dad4ef"
+    },
+    {
+      "path": "reviews/windows-review-verdict.json",
+      "origin": "build/review-custody/windows-review-verdict.json",
+      "bytes": 4500,
+      "sha256": "0852a6d1d1a306404ad94f706b21d0b06418d2fd13b01a9a86cf28509d06d08d"
+    },
+    {
+      "path": "windows/candidate-provenance.json",
+      "origin": "build/m3-platform/windows/14743743167/candidate-provenance.json",
+      "bytes": 14442,
+      "sha256": "b1d9de1513d7c07509046e1d212d1054f5a8eed541b56fc54dbfce352069311e"
+    },
+    {
+      "path": "windows/final-artifact-custody.json",
+      "origin": "build/m3-platform/windows/final-artifact-custody.json",
+      "bytes": 3164,
+      "sha256": "bc711e96ae3ce566634a19c538747b47b6ac35398077e6eccb54cebbd9bed0ca"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-extended-320.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-extended-320.png",
+      "bytes": 141288,
+      "sha256": "fc52b4f724431cbce75f4e8340736ee5de6a25cdde1612c419e0ecbb2ca3d203"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-external-fire.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-external-fire.png",
+      "bytes": 114279,
+      "sha256": "2162ba0c094f0c494a5034af506e69a4c3f35474cf55dbe8cd951f4c23bb364c"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-falling.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-falling.png",
+      "bytes": 128557,
+      "sha256": "5740187e2ef1994fbdfaa502cfefb4f996590e2ae24a824be68331d1ac7a40f2"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-main-structure-priority.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-main-structure-priority.png",
+      "bytes": 143266,
+      "sha256": "a56fe308fd50606375be177e9a702588ee5d87752dd367235b12991a5aee7109"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-native-supported.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-native-supported.png",
+      "bytes": 106925,
+      "sha256": "91eda840c2b8e56fbe7df0f272e484ce51b97a4cd569fef584d58f1585ccbbea"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-settled-after-erosion.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png",
+      "bytes": 125869,
+      "sha256": "34e1b7c788df2a8cc8a61ca8ec6b833a681f81f180414d92d6cf1a17c5ec32ed"
+    },
+    {
+      "path": "windows/frames/objectshard-m3-water-sand-pocket.png",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png",
+      "bytes": 132590,
+      "sha256": "403f22f94e4dfa18a974e6ec62b55c56e89f2c7d7593c30094b3852e99c3c122"
+    },
+    {
+      "path": "windows/initial-artifact-custody.json",
+      "origin": "build/m3-platform/windows/initial-artifact-custody.json",
+      "bytes": 3007,
+      "sha256": "c6f35dc980e9de74ed3f3146020c3b30f6324467232957157af3f7d3873de52e"
+    },
+    {
+      "path": "windows/launcher-matrix/result.json",
+      "origin": "build/m3-platform/windows/14744390583/launcher-matrix/result.json",
+      "bytes": 11685,
+      "sha256": "458b9f4b94c944bd85a6555c5618699268d6457325a7cc44a2bf2605e2748f75"
+    },
+    {
+      "path": "windows/package-replay/qualification.json",
+      "origin": "build/m3-platform/windows/14744390583/package-replay/qualification.json",
+      "bytes": 525706,
+      "sha256": "16daeeccb5edb1d96fb2889139bad273f71cf6451b0aa0552259b64ada391d02"
+    },
+    {
+      "path": "windows/windows-delivery-assessment.json",
+      "origin": "build/m3-platform/windows/windows-delivery-assessment.json",
+      "bytes": 32302,
+      "sha256": "cd20a4253304196d765ed47c4ee6674c3e5544a53bf3d1cd545d668e29a6523f"
+    },
+    {
+      "path": "windows/windows-lab/qualification.json",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/qualification.json",
+      "bytes": 564556,
+      "sha256": "28733372c9235fe530abc04dcc33f594e0eba5d6a5be74476720edf96876a0c7"
+    }
+  ],
+  "updated_utc": "2026-11-22T07:35:41.938081+00:00",
+  "disposition": "Original platform pass superseded for final acceptance by subsequently confirmed OPERATOR01-03 lifecycle findings; baseline and repair iteration preserved without relabelling as final-source successor qualification.",
+  "external_raw_records": [
+    {
+      "path": "windows/windows-lab/frames-worker/render-campaign.json",
+      "origin": "build/m3-platform/windows/14744390583/windows-lab/frames-worker/render-campaign.json",
+      "bytes": 1991980,
+      "sha256": "96acba4a33473dc33cece1361c8e1504360126ea8170c0cccf22b0a905814599",
+      "artifact_id": 14744390583,
+      "artifact_member": "windows-lab/frames-worker/render-campaign.json",
+      "scope": "Full raw campaign retained in authenticated original Actions archive and local original extraction; compact custody and original PNGs retained in Git"
+    }
+  ]
+}

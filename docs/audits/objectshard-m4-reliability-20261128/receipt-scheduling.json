@@ -1,0 +1,307 @@
+{
+  "bridge_sha256": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+  "checks": 151,
+  "display_driver": "headless",
+  "evidence": {
+    "after": {
+      "acknowledgements": 4,
+      "actor_tick": 26,
+      "echoes": 4,
+      "native_tick": 27,
+      "physical_intervals": 26,
+      "physical_segments": 104
+    },
+    "before": {
+      "acknowledgements": 0,
+      "actor_tick": 25,
+      "echoes": 0,
+      "native_tick": 26,
+      "physical_intervals": 25,
+      "physical_segments": 100
+    },
+    "control_timing": {
+      "activated": {
+        "delivery": {
+          "calls": 1,
+          "max_usec": 1413,
+          "usec": 1413
+        },
+        "owner_service": {
+          "calls": 1,
+          "max_usec": 12,
+          "usec": 12
+        },
+        "publication_copy": {
+          "calls": 1,
+          "max_usec": 645,
+          "usec": 645
+        },
+        "queue": {
+          "calls": 1,
+          "max_usec": 319,
+          "usec": 319
+        }
+      },
+      "complete": {
+        "delivery": {
+          "calls": 27,
+          "max_usec": 2366,
+          "usec": 11354
+        },
+        "owner_service": {
+          "calls": 27,
+          "max_usec": 451,
+          "usec": 5527
+        },
+        "publication_copy": {
+          "calls": 27,
+          "max_usec": 957,
+          "usec": 9147
+        },
+        "queue": {
+          "calls": 27,
+          "max_usec": 479,
+          "usec": 6974
+        }
+      },
+      "motion": {
+        "delivery": {
+          "calls": 104,
+          "max_usec": 280009,
+          "usec": 301723
+        },
+        "owner_service": {
+          "calls": 104,
+          "max_usec": 2204,
+          "usec": 32524
+        },
+        "publication_copy": {
+          "calls": 104,
+          "max_usec": 1128,
+          "usec": 15457
+        },
+        "queue": {
+          "calls": 104,
+          "max_usec": 323,
+          "usec": 15125
+        }
+      },
+      "reserved": {
+        "delivery": {
+          "calls": 1,
+          "max_usec": 138,
+          "usec": 138
+        },
+        "owner_service": {
+          "calls": 1,
+          "max_usec": 3049,
+          "usec": 3049
+        },
+        "publication_copy": {
+          "calls": 1,
+          "max_usec": 646,
+          "usec": 646
+        },
+        "queue": {
+          "calls": 1,
+          "max_usec": 119,
+          "usec": 119
+        }
+      },
+      "terrain": {
+        "delivery": {
+          "calls": 1,
+          "max_usec": 222,
+          "usec": 222
+        },
+        "owner_service": {
+          "calls": 1,
+          "max_usec": 652,
+          "usec": 652
+        },
+        "publication_copy": {
+          "calls": 1,
+          "max_usec": 678,
+          "usec": 678
+        },
+        "queue": {
+          "calls": 1,
+          "max_usec": 266,
+          "usec": 266
+        }
+      }
+    },
+    "delayed_segment": {
+      "actual_rapier_poses": [
+        {
+          "angular_velocity": 0.0,
+          "body_generation": 1,
+          "generation": 1,
+          "geometry_digest": "10373625284739529515",
+          "geometry_revision": 1,
+          "id": 1,
+          "pose_serial": 101,
+          "rotation": 0.0,
+          "session": 1,
+          "sleeping": false,
+          "vx": 0.0,
+          "vy": 0.649729251861572,
+          "x": 119.000007629395,
+          "y": 243.001693725586
+        }
+      ],
+      "callbacks_without_consumption": 16,
+      "clocks": {
+        "acknowledgements": 0,
+        "actor_tick": 25,
+        "echoes": 0,
+        "native_tick": 26,
+        "physical_intervals": 25,
+        "physical_segments": 101
+      },
+      "native_receipt": {
+        "accepted_pose_serials": [
+          {
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 101,
+            "session": 1
+          }
+        ],
+        "applied": true,
+        "applied_pose_echoes": [
+          {
+            "angular_velocity": 0.0,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_revision": 1,
+            "has_body": true,
+            "id": 1,
+            "pose_serial": 101,
+            "position_x": 119.000007629395,
+            "position_y": 243.001693725586,
+            "rotation": 0.0,
+            "session": 1,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": 0.649729251861572
+          }
+        ],
+        "detail": "motion segment occupancy and contact applied; semantic tick unchanged",
+        "generation": 0,
+        "id": 0,
+        "native_instance_id": -9223371948489177475,
+        "ok": true,
+        "outcome": "Accepted",
+        "phase": "Active",
+        "pose_echo_complete": true,
+        "pose_echo_contract": "bounded-owner-readback-v1",
+        "semantic_tick": 26,
+        "session": 0,
+        "transaction": 0,
+        "workbench_epoch": 1,
+        "workbench_sample_applied": true,
+        "workbench_session": 1
+      },
+      "serial": 130
+    },
+    "display_coherence": {
+      "between_callback_observations": 196,
+      "draw_observations": 0,
+      "examples": [],
+      "foreign_draw_callbacks": 0,
+      "incoherent_observations": 0,
+      "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+    },
+    "failed_motion": {
+      "after": {
+        "acknowledgements": 8,
+        "actor_tick": 26,
+        "echoes": 8,
+        "native_tick": 28,
+        "physical_intervals": 27,
+        "physical_segments": 108
+      },
+      "before": {
+        "acknowledgements": 8,
+        "actor_tick": 26,
+        "echoes": 8,
+        "native_tick": 28,
+        "physical_intervals": 27,
+        "physical_segments": 108
+      },
+      "frame_sequence": 75,
+      "frame_shards": 1,
+      "outcome": {
+        "accepted_pose_serials": [],
+        "applied": false,
+        "detail": "actual motion segment refused; no semantic tick advanced",
+        "generation": 0,
+        "id": 0,
+        "native_instance_id": -9223371948489177475,
+        "ok": false,
+        "outcome": "Stale",
+        "phase": "Suspended",
+        "semantic_tick": 28,
+        "session": 0,
+        "transaction": 0,
+        "workbench_epoch": 1,
+        "workbench_sample_applied": true,
+        "workbench_session": 1
+      }
+    },
+    "pause_and_brush": {
+      "after": {
+        "acknowledgements": 8,
+        "actor_tick": 26,
+        "echoes": 8,
+        "native_tick": 28,
+        "physical_intervals": 27,
+        "physical_segments": 108
+      },
+      "before": {
+        "acknowledgements": 4,
+        "actor_tick": 26,
+        "echoes": 4,
+        "native_tick": 27,
+        "physical_intervals": 26,
+        "physical_segments": 104
+      },
+      "delayed": {
+        "acknowledgements": 4,
+        "actor_tick": 26,
+        "echoes": 4,
+        "native_tick": 27,
+        "physical_intervals": 26,
+        "physical_segments": 105
+      },
+      "sand_after": 29,
+      "sand_before": 0
+    },
+    "physics_callbacks_until_completion": 2,
+    "restored_generation": 4,
+    "segment_service_turns": 4,
+    "shutdown": {
+      "before": {
+        "acknowledgements": 8,
+        "actor_tick": 1,
+        "echoes": 8,
+        "native_tick": 1,
+        "physical_intervals": 27,
+        "physical_segments": 109
+      },
+      "thread_started": false,
+      "worker_running": false
+    }
+  },
+  "failures": [],
+  "fixture_source_commit": "b0b3d777c",
+  "native_input_commit": "062670c1e",
+  "native_sha256": "547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0",
+  "runtime_sha256": "f3b8c8a9c7904b44c5c81bf25b2010b54bf2581b9a32f35a7547dc38ba7ea176",
+  "schema": "objectshard-m4-receipt-scheduling-v1",
+  "source_commit": "a3b596e0a",
+  "source_label_note": "CLI label a3b596e0a identifies the tested runtime consumer; the test source and final bridge/native inputs are separately identified above."
+}

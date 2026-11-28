@@ -1,0 +1,32 @@
+# Independent final platform and Windows package addendum — 22 November 2026
+
+**Verdict: APPROVE the retained OBJECTSHARD-001R evaluator for Draft/HOLD owner evaluation.** No unresolved Class A/B package-integrity, launcher, or final-source custody finding remains in this review. This is an independent engineering and artifact review, not owner physical acceptance or merge authorization.
+
+The qualified package source is `28be5a4a8a023d466e642afaca767c0224de1ba3`, tree `d734a7acd6429fe1182d856a78f49efd36d99758`. Its complete `native` and `godot` Git subtrees are identical to the independently code-approved native checkpoint `514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c`. The subsequent changes only repair/qualify the Windows verifier and console reporting. The verifier uses streaming .NET SHA-256 without weakening manifest checks. Console JSON now survives CP1252 while the retained report keeps UTF-8 paths.
+
+## Delivered artifact and source verification
+
+The reviewer independently read the delivered ZIP, recomputed its SHA-256, verified all **1,073** manifest file hashes, rejected any unmanifested/duplicate/unsafe member paths, and compared all **116** declared native source files both with the packaged files and exact Git source. The build receipt, native DLL, package manifest, hosted runtime identity and delivered-package replay bind to the same candidate. All 26 Lab and 18 qualification-tool input hashes in the hosted reports also match that Git source.
+
+| Identity | Value |
+|---|---|
+| Delivered ZIP | `objectshard-windows-evaluator.zip` |
+| ZIP size | 93,056,059 bytes |
+| ZIP SHA-256 | `c6a4d79e95295e91228d161591554136dec6d73438f184ab1e48ebfc507e83d4` |
+| Native DLL SHA-256 | `bcf74222e97f4714f1c2ce4fbb083f577e5a5e1fac2b80ed662e9ec8a13489a2` |
+| Manifest SHA-256 | `a999a3354321d4f0d23a5fb84bd88f1535d5cbfab3b6f9b642e8da670c32bd10` |
+| Evidence archive SHA-256 | `9738a2dd8560e008d85f37b89bc758d90c9d5c3a6d9c87d6cd9e097d4c499ed2` |
+
+## Actual qualification reviewed
+
+Windows run `44987818314`, job `137103158209`, completed **19/19** source-built Lab cases and **15/15** tests executed from the delivered ZIP extraction. The reviewer verified every retained per-case log hash, natural zero exit, absence of skips, source identity and available completion receipt. The suite includes real Rapier, Materials Lab, ownership/exchange, motion segments, resting-body erosion/mass/shape cases, action replay and the retained D sequence through tick 3,600. The prepackage campaign additionally retains rendered output and both 719-check profiles.
+
+Both shipped CMD files executed successfully in all four actual Windows paths: spaces, an extraction folder ending `(1)`, a 124-character nested root, and Unicode. Each launcher produced a six-check real-engine receipt at tick 41. The deliberately shadowed `Get-FileHash` test passed. Deliberate README tampering failed for the specific changed hash, then exact byte restoration and complete inventory verification passed. The ZIP itself was never modified.
+
+Final checkpoint 514 also has retained hosted Linux qualification: 93,529 ASan/UBSan checks, 192 World cases and 19 actual Godot/Rapier cases, all passing. The prior independent source report remains authoritative for the detailed ownership, discovery, geometry and physics review.
+
+## Limits and preserved negatives
+
+The reviewer inspected hosted Windows evidence; this was not a physical Windows 11/NVIDIA playtest. Graphical qualification used ANGLE/Microsoft Basic Render Driver and establishes no NVIDIA performance claim. The nested-root test does not establish every Windows long-path configuration. Original M2 10/74 native timing failures, intermediate f11 memory-limit failures, and the f480 CP1252 console failure remain retained historical results. Final performance acceptance is separately supported by the final-source 74-limit matrix and independent performance audit.
+
+The reproducible reviewer script and machine-readable result are `review_final_windows_package.py` and `2026-11-22-final-platform-package-review.json` alongside this addendum. No merge, Ready promotion, production-default change, or M3 approval is implied.

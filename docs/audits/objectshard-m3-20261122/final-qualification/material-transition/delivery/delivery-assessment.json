@@ -1,0 +1,135 @@
+{
+  "schema": "objectshard-material-transition-delivery-assessment-v1",
+  "source_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "run_id": 45003383402,
+  "job_id": 137149569699,
+  "run_attempt": 1,
+  "actual_ci_checkout_commit": "bd8a9503507273c3348b2e711e6b3638860a9274",
+  "actual_ci_checkout_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "ci_checkout_tree_equals_published_transition_tree": true,
+  "ci_conclusion": "success",
+  "run_event": "pull_request",
+  "catalogue_tests": 231,
+  "catalogue_test_seconds": 438.57,
+  "catalogue_stage_observed_seconds": 446.055874,
+  "catalogue_commands_all_reached": true,
+  "compatibility_status": "PASS",
+  "compiler_check_scope": "Read-only generated shadow drift check; success established by same fail-fast shell reaching subsequent tests/parity and completing step16.",
+  "reviewed_transition": {
+    "from_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+    "issue": 281,
+    "path": "native/src/world.cpp",
+    "pr": 741,
+    "record": "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+    "source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+    "to_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1"
+  },
+  "protected_source_count": 27,
+  "metadata_native_parity_status": "PASS",
+  "metadata": {
+    "coverage_records": 10,
+    "descriptor_fields_per_slot": 15,
+    "granular_support_ids": 9,
+    "hard_surface_ids": 101,
+    "material_slots": 132,
+    "memberships": 33,
+    "pair_rules": 56,
+    "semantic_families": 7,
+    "specialized_mechanisms": 19,
+    "tuning_passes": 2,
+    "valid_ids": 131
+  },
+  "metadata_parity_costs": {
+    "candidate_compile_seconds": 1.646957,
+    "candidate_executable_bytes": 157640,
+    "candidate_snapshot_seconds": 0.005607,
+    "candidate_validation_seconds": 1.575006,
+    "native_compile_seconds": 1.126641,
+    "native_executable_bytes": 86736,
+    "native_snapshot_seconds": 0.004937
+  },
+  "compiled_queries": {
+    "appearance_projection_cases": 17170432,
+    "capability_byte_ids": 256,
+    "density_exchange_cases": 327680,
+    "descriptor_byte_ids": 256,
+    "family_membership_cases": 2048,
+    "lateral_rate_cases": 65536,
+    "layer_kind_byte_ids": 256,
+    "pair_roll_cases": 16777216,
+    "pair_wrapper_cases": 16777216,
+    "physics_qualification": false,
+    "status": "PASS",
+    "validity_uint16_inputs": 65536,
+    "viscosity_cases": 16777216,
+    "world_executed": false
+  },
+  "metadata_parity_snapshot_sha256": "58d22545a1f29e49a8c141cb1c5df84101e48ed457fbaaaec09937997c2ce802",
+  "parity_tool_and_input_facts_verified_against_commit": [
+    {
+      "bytes": 23316,
+      "path": "tools/material_catalogue/native_oracle.cpp",
+      "sha256": "a9ef69fedea104d8838360ba274cfcc28c6cd0131ce3f0e98988fd83754e4256"
+    },
+    {
+      "bytes": 22888,
+      "path": "tools/material_catalogue/check_native_parity.py",
+      "sha256": "bf7413ad46541e5e83bec474a4eb627fe3b81c63bee3c0a5a874e128afa69696"
+    },
+    {
+      "bytes": 52680,
+      "path": "tools/material_catalogue/compatibility.py",
+      "sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302"
+    },
+    {
+      "bytes": 195969,
+      "path": "materials/catalogue/catalogue.json",
+      "sha256": "3a5250a07912dc9530172cb2fccecd526606e242209d666cb2da202e1cfc9f14"
+    },
+    {
+      "bytes": 53002,
+      "path": "materials/catalogue/generated/catalogue.shadow.hpp",
+      "sha256": "03ef653ea391ae82e076e3f3940bbd173360e77ed0473dddd5f412ae99244c12"
+    },
+    {
+      "bytes": 180360,
+      "path": "materials/catalogue/generated/catalogue_shadow.gd",
+      "sha256": "f9823df9332307bc10e63082438d74b527cbd525786d702ac7057243e309caed"
+    },
+    {
+      "bytes": 215517,
+      "path": "materials/catalogue/generated/inspection.json",
+      "sha256": "0738c134c4d31c87292c03703df15a9eb49bb07d6bc9123be1a545c19a4c44c2"
+    },
+    {
+      "bytes": 15569,
+      "path": "materials/catalogue/compatibility-lock.json",
+      "sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc"
+    }
+  ],
+  "parity_receipt_source_commit_field_scope": "Historical compatibility baseline; actual new checkout/source custody is bound by GitHub head_sha, input hashes and the appended reviewed transition.",
+  "parity_scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
+  "aggregate_world_scope": "Nine native World tests each compile reference/candidate from current World and external generated adapters; no coordinator or Rapier execution in catalogue tests.",
+  "skipped_steps": [
+    {
+      "name": "Validate dependency pins and published runtime provenance",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 10
+    }
+  ],
+  "production_provenance_condition": "github.event_name != 'pull_request' || github.event.pull_request.draft == false",
+  "full_production_gate_passed": false,
+  "qualified_executable_source_unchanged": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "runtime_campaigns_dispatched": 0,
+  "reruns_dispatched": 0,
+  "log_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-material-transition/delivery/documentation-45003383402-137149569699.log",
+  "log_sha256": "4f86b4ca9e599d6255b9ce80f2dcc47faebb0f1fefeb78382f61627067a36b3c",
+  "native_parity_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-material-transition/delivery/14746754332/native-parity.json",
+  "native_parity_sha256": "0681d19649f98dd514d83f7aeae439438da59e09fc15f7e8bd867611b4093573",
+  "success_does_not_establish": [
+    "Production retained native runtime provenance",
+    "Ordinary production-default ObjectShard adoption",
+    "Windows11/NVIDIA physical owner acceptance"
+  ]
+}

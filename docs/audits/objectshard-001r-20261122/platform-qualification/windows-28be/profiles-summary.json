@@ -1,0 +1,2672 @@
+[
+  {
+    "source_member": "windows-lab/objectshard_profile_headless.json",
+    "source_member_sha256": "265688b549029c5cdea95a35852b1f66943af0d7ae96ec494baccdf32a2701ff",
+    "artifact_id": 14740069324,
+    "source_revision": "28be5a4a8a023d466e642afaca767c0224de1ba3",
+    "checks": 719,
+    "failures": 0,
+    "display": "headless",
+    "platform": "Windows",
+    "rendered": false,
+    "memory_scope": "Native counters are an accounted lower bound; separate native allocator experiment measures C++ construction/steady allocations. Godot/Rapier/GPU allocation churn is not measured here.",
+    "timing_scope": "Frame owner-thread elapsed time excludes presentation unless separately reported and includes host preemption. Occupancy includes contact/relocation. Upload and presentation measure submission elapsed time; frame_through_draw includes frame scheduling and actual draw completion, not GPU-only time.",
+    "cases": [
+      {
+        "name": "empty_lab",
+        "construction_usec": 3678,
+        "setup_edits_and_promotion_usec": 2,
+        "maximum_accounted_native_bytes": 5778504,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 0,
+        "promotion_max_usec": 0,
+        "timings": {
+          "copy_usec": {
+            "max": 2831.0,
+            "p50": 1502.0,
+            "p95": 1644.0,
+            "p99": 2198.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 36.0,
+            "p50": 8.0,
+            "p95": 10.0,
+            "p99": 14.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 15.0,
+            "p50": 3.0,
+            "p95": 4.0,
+            "p99": 4.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 3524.0,
+            "p50": 1929.0,
+            "p95": 2089.0,
+            "p99": 2745.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 0.2,
+            "p50": 0.1,
+            "p95": 0.2,
+            "p99": 0.2,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 4.3,
+            "p50": 1.3,
+            "p95": 1.5,
+            "p99": 1.9,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 3.6,
+            "p50": 0.4,
+            "p95": 0.5,
+            "p99": 0.6,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 0.3,
+            "p50": 0.1,
+            "p95": 0.1,
+            "p99": 0.1,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 94.7,
+            "p50": 49.6,
+            "p95": 61.6,
+            "p99": 79.8,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 91.4,
+            "p50": 47.0,
+            "p95": 58.7,
+            "p99": 76.6,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 459.3,
+            "p50": 219.7,
+            "p95": 258.6,
+            "p99": 334.1,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 261.8,
+            "p50": 136.5,
+            "p95": 166.4,
+            "p99": 238.5,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 373.0,
+            "p50": 197.0,
+            "p95": 229.0,
+            "p99": 337.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 22.0,
+            "p50": 1.7,
+            "p95": 2.0,
+            "p99": 2.8,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 40.0,
+            "p50": 1.0,
+            "p95": 2.0,
+            "p99": 2.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 118.0,
+            "p50": 61.0,
+            "p95": 75.0,
+            "p99": 84.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 187.0,
+            "p50": 97.0,
+            "p95": 121.0,
+            "p99": 159.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "inert_moving",
+        "construction_usec": 3221,
+        "setup_edits_and_promotion_usec": 50444,
+        "maximum_accounted_native_bytes": 5820006,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 6,
+        "promotion_max_usec": 2548,
+        "timings": {
+          "copy_usec": {
+            "max": 2182.0,
+            "p50": 1730.0,
+            "p95": 1837.0,
+            "p99": 1942.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 151.0,
+            "p50": 25.0,
+            "p95": 28.0,
+            "p99": 47.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 55.0,
+            "p50": 11.0,
+            "p95": 13.0,
+            "p99": 15.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 4104.0,
+            "p50": 3296.0,
+            "p95": 3463.0,
+            "p99": 3575.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 25.3,
+            "p50": 4.6,
+            "p95": 4.7,
+            "p99": 8.4,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 48.5,
+            "p50": 19.5,
+            "p95": 20.2,
+            "p99": 38.7,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 0.6,
+            "p50": 0.3,
+            "p95": 0.4,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 17.5,
+            "p50": 3.1,
+            "p95": 3.2,
+            "p99": 5.9,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 917.9,
+            "p50": 657.6,
+            "p95": 707.0,
+            "p99": 740.6,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 741.0,
+            "p50": 531.6,
+            "p95": 566.1,
+            "p99": 598.9,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 353.0,
+            "p50": 218.3,
+            "p95": 267.2,
+            "p99": 281.3,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 286.8,
+            "p50": 153.3,
+            "p95": 181.7,
+            "p99": 186.8,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 549.0,
+            "p50": 342.0,
+            "p95": 375.0,
+            "p99": 400.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 40.0,
+            "p50": 12.5,
+            "p95": 13.6,
+            "p99": 25.2,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 60.0,
+            "p50": 35.0,
+            "p95": 43.0,
+            "p99": 52.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 378.0,
+            "p50": 234.0,
+            "p95": 308.0,
+            "p99": 331.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 172.0,
+            "p50": 109.0,
+            "p95": 137.0,
+            "p99": 144.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "reacting_one",
+        "construction_usec": 3261,
+        "setup_edits_and_promotion_usec": 54352,
+        "maximum_accounted_native_bytes": 5820070,
+        "maximum_retained_products": 3,
+        "maximum_shapes_per_body": 10,
+        "promotion_max_usec": 2357,
+        "timings": {
+          "copy_usec": {
+            "max": 3111.0,
+            "p50": 1765.0,
+            "p95": 1871.0,
+            "p99": 1987.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 60.0,
+            "p50": 31.0,
+            "p95": 38.0,
+            "p99": 54.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 22.0,
+            "p50": 11.0,
+            "p95": 13.0,
+            "p99": 14.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 5512.0,
+            "p50": 3320.0,
+            "p95": 3474.0,
+            "p99": 3697.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 135.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 37.1,
+            "p50": 4.7,
+            "p95": 5.3,
+            "p99": 8.4,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 60.5,
+            "p50": 19.7,
+            "p95": 20.7,
+            "p99": 42.7,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 11.2,
+            "p50": 0.4,
+            "p95": 0.4,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 21.6,
+            "p50": 3.3,
+            "p95": 3.4,
+            "p99": 6.4,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 18.8,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 993.8,
+            "p50": 662.0,
+            "p95": 703.3,
+            "p99": 762.2,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 807.7,
+            "p50": 534.2,
+            "p95": 566.8,
+            "p99": 612.7,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 507.8,
+            "p50": 217.4,
+            "p95": 274.5,
+            "p99": 295.3,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 284.6,
+            "p50": 137.5,
+            "p95": 167.2,
+            "p99": 174.7,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 691.0,
+            "p50": 330.0,
+            "p95": 363.0,
+            "p99": 392.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 42.3,
+            "p50": 16.5,
+            "p95": 19.5,
+            "p99": 34.2,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 59.0,
+            "p50": 35.0,
+            "p95": 42.0,
+            "p99": 49.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 487.0,
+            "p50": 234.0,
+            "p95": 263.0,
+            "p99": 307.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 234.0,
+            "p50": 108.0,
+            "p95": 132.0,
+            "p99": 145.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "reacting_three",
+        "construction_usec": 3240,
+        "setup_edits_and_promotion_usec": 163165,
+        "maximum_accounted_native_bytes": 5903074,
+        "maximum_retained_products": 13,
+        "maximum_shapes_per_body": 12,
+        "promotion_max_usec": 3051,
+        "timings": {
+          "copy_usec": {
+            "max": 4129.0,
+            "p50": 2161.0,
+            "p95": 2257.0,
+            "p99": 2390.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 196.0,
+            "p50": 65.0,
+            "p95": 80.0,
+            "p99": 103.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 42.0,
+            "p50": 12.0,
+            "p95": 13.0,
+            "p99": 15.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 7474.0,
+            "p50": 4887.0,
+            "p95": 5041.0,
+            "p99": 5240.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 182.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 40.4,
+            "p50": 14.4,
+            "p95": 16.7,
+            "p99": 37.0,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 154.0,
+            "p50": 51.5,
+            "p95": 62.8,
+            "p99": 82.8,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 11.1,
+            "p50": 0.4,
+            "p95": 0.4,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 33.9,
+            "p50": 9.5,
+            "p95": 11.0,
+            "p99": 29.3,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 36.9,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 2217.8,
+            "p50": 1479.9,
+            "p95": 1550.4,
+            "p99": 1645.8,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 1764.9,
+            "p50": 1118.8,
+            "p95": 1185.1,
+            "p99": 1230.6,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 387.4,
+            "p50": 218.0,
+            "p95": 257.1,
+            "p99": 281.9,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 185.9,
+            "p50": 136.8,
+            "p95": 167.8,
+            "p99": 171.5,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 1022.0,
+            "p50": 586.0,
+            "p95": 610.0,
+            "p99": 631.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 81.1,
+            "p50": 41.9,
+            "p95": 53.8,
+            "p99": 71.8,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 127.0,
+            "p50": 75.0,
+            "p95": 93.0,
+            "p99": 102.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 382.0,
+            "p50": 247.0,
+            "p95": 298.0,
+            "p99": 324.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 283.0,
+            "p50": 110.0,
+            "p95": 135.0,
+            "p99": 144.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "perforated",
+        "construction_usec": 3318,
+        "setup_edits_and_promotion_usec": 96157,
+        "maximum_accounted_native_bytes": 5821206,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 81,
+        "promotion_max_usec": 2691,
+        "timings": {
+          "copy_usec": {
+            "max": 2507.0,
+            "p50": 1737.0,
+            "p95": 1836.0,
+            "p99": 1936.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 51.0,
+            "p50": 25.0,
+            "p95": 29.0,
+            "p99": 46.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 26.0,
+            "p50": 11.0,
+            "p95": 13.0,
+            "p99": 13.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 4607.0,
+            "p50": 3298.0,
+            "p95": 3516.0,
+            "p99": 3700.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 26.0,
+            "p50": 4.6,
+            "p95": 4.7,
+            "p99": 8.9,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 82.2,
+            "p50": 21.3,
+            "p95": 22.1,
+            "p99": 35.8,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 0.6,
+            "p50": 0.4,
+            "p95": 0.4,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 25.4,
+            "p50": 3.1,
+            "p95": 3.2,
+            "p99": 5.8,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 910.0,
+            "p50": 656.9,
+            "p95": 695.7,
+            "p99": 726.1,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 747.7,
+            "p50": 535.2,
+            "p95": 568.3,
+            "p99": 592.1,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 337.3,
+            "p50": 217.6,
+            "p95": 265.7,
+            "p99": 280.3,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 237.3,
+            "p50": 136.5,
+            "p95": 166.1,
+            "p99": 174.6,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 522.0,
+            "p50": 325.0,
+            "p95": 357.0,
+            "p99": 374.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 62.6,
+            "p50": 12.6,
+            "p95": 13.5,
+            "p99": 31.0,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 105.0,
+            "p50": 35.0,
+            "p95": 42.0,
+            "p99": 51.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 700.0,
+            "p50": 235.0,
+            "p95": 495.0,
+            "p99": 562.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 169.0,
+            "p50": 110.0,
+            "p95": 135.0,
+            "p99": 146.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "saturated_output",
+        "construction_usec": 3233,
+        "setup_edits_and_promotion_usec": 1337608,
+        "maximum_accounted_native_bytes": 5820070,
+        "maximum_retained_products": 3,
+        "maximum_shapes_per_body": 10,
+        "promotion_max_usec": 2519,
+        "timings": {
+          "copy_usec": {
+            "max": 2643.0,
+            "p50": 1745.0,
+            "p95": 1853.0,
+            "p99": 2001.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 105.0,
+            "p50": 35.0,
+            "p95": 42.0,
+            "p99": 57.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 23.0,
+            "p50": 11.0,
+            "p95": 13.0,
+            "p99": 14.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 4892.0,
+            "p50": 3372.0,
+            "p95": 3533.0,
+            "p99": 3790.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 103.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 24.4,
+            "p50": 4.8,
+            "p95": 5.4,
+            "p99": 9.1,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 48.8,
+            "p50": 19.6,
+            "p95": 20.5,
+            "p99": 40.8,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 46.8,
+            "p50": 0.4,
+            "p95": 0.4,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 17.8,
+            "p50": 3.3,
+            "p95": 3.4,
+            "p99": 6.3,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 19.1,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 1051.7,
+            "p50": 668.4,
+            "p95": 717.9,
+            "p99": 760.6,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 868.1,
+            "p50": 540.9,
+            "p95": 582.7,
+            "p99": 619.9,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 401.1,
+            "p50": 217.7,
+            "p95": 267.8,
+            "p99": 292.8,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 301.7,
+            "p50": 164.2,
+            "p95": 193.0,
+            "p99": 199.7,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 534.0,
+            "p50": 362.0,
+            "p95": 394.0,
+            "p99": 420.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 126.7,
+            "p50": 16.9,
+            "p95": 19.9,
+            "p99": 35.7,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 57.0,
+            "p50": 36.0,
+            "p95": 46.0,
+            "p99": 52.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 576.0,
+            "p50": 235.0,
+            "p95": 366.0,
+            "p99": 426.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 283.0,
+            "p50": 128.0,
+            "p95": 158.0,
+            "p99": 167.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "dormant_three",
+        "construction_usec": 3566,
+        "setup_edits_and_promotion_usec": 177241,
+        "maximum_accounted_native_bytes": 5902914,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 6,
+        "promotion_max_usec": 3026,
+        "timings": {
+          "copy_usec": {
+            "max": 2992.0,
+            "p50": 2150.0,
+            "p95": 2274.0,
+            "p99": 2387.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 435.0,
+            "p50": 44.0,
+            "p95": 54.0,
+            "p99": 74.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 26.0,
+            "p50": 12.0,
+            "p95": 13.0,
+            "p99": 14.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 6729.0,
+            "p50": 4834.0,
+            "p95": 5018.0,
+            "p99": 5203.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 38.3,
+            "p50": 13.5,
+            "p95": 13.7,
+            "p99": 24.1,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 105.1,
+            "p50": 50.9,
+            "p95": 61.7,
+            "p99": 81.4,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 1.3,
+            "p50": 0.4,
+            "p95": 0.4,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 39.2,
+            "p50": 9.0,
+            "p95": 9.1,
+            "p99": 20.2,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 2002.0,
+            "p50": 1488.6,
+            "p95": 1566.3,
+            "p99": 1604.7,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 1490.1,
+            "p50": 1131.8,
+            "p95": 1203.5,
+            "p99": 1233.6,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 327.1,
+            "p50": 217.9,
+            "p95": 263.2,
+            "p99": 284.4,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 240.3,
+            "p50": 137.9,
+            "p95": 166.0,
+            "p99": 169.9,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 1027.0,
+            "p50": 572.0,
+            "p95": 600.0,
+            "p99": 621.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 83.7,
+            "p50": 33.3,
+            "p95": 38.0,
+            "p99": 61.3,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 142.0,
+            "p50": 75.0,
+            "p95": 93.0,
+            "p99": 102.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 313.0,
+            "p50": 237.0,
+            "p95": 262.0,
+            "p99": 283.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 201.0,
+            "p50": 110.0,
+            "p95": 131.0,
+            "p99": 146.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "wake_burst_three",
+        "construction_usec": 3545,
+        "setup_edits_and_promotion_usec": 176306,
+        "maximum_accounted_native_bytes": 5902946,
+        "maximum_retained_products": 6,
+        "maximum_shapes_per_body": 7,
+        "promotion_max_usec": 3012,
+        "timings": {
+          "copy_usec": {
+            "max": 3462.0,
+            "p50": 2165.0,
+            "p95": 2298.0,
+            "p99": 2478.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 163.0,
+            "p50": 57.0,
+            "p95": 69.0,
+            "p99": 96.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 57.0,
+            "p50": 12.0,
+            "p95": 13.0,
+            "p99": 14.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 7472.0,
+            "p50": 4972.0,
+            "p95": 5230.0,
+            "p99": 5967.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 131.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 40.3,
+            "p50": 14.0,
+            "p95": 14.8,
+            "p99": 34.0,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 314.5,
+            "p50": 51.5,
+            "p95": 248.5,
+            "p99": 266.1,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 3.3,
+            "p50": 0.4,
+            "p95": 0.5,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 34.6,
+            "p50": 9.2,
+            "p95": 10.2,
+            "p99": 21.6,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 36.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 2366.3,
+            "p50": 1538.7,
+            "p95": 1755.8,
+            "p99": 1897.6,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 1816.3,
+            "p50": 1137.4,
+            "p95": 1225.0,
+            "p99": 1386.8,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 459.0,
+            "p50": 217.9,
+            "p95": 254.6,
+            "p99": 292.1,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 284.9,
+            "p50": 136.8,
+            "p95": 167.5,
+            "p99": 173.0,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 1183.0,
+            "p50": 617.0,
+            "p95": 662.0,
+            "p99": 706.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 114.1,
+            "p50": 52.4,
+            "p95": 70.4,
+            "p99": 89.5,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 130.0,
+            "p50": 76.0,
+            "p95": 95.0,
+            "p99": 107.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 386.0,
+            "p50": 248.0,
+            "p95": 286.0,
+            "p99": 325.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 217.0,
+            "p50": 110.0,
+            "p95": 137.0,
+            "p99": 148.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          }
+        }
+      }
+    ]
+  },
+  {
+    "source_member": "windows-lab/objectshard_profile_rendered.json",
+    "source_member_sha256": "3dc76c1a3a417ea0c89f9b294e05e18aae7080ae936ee09e97c9f243c6f6726f",
+    "artifact_id": 14740069324,
+    "source_revision": "28be5a4a8a023d466e642afaca767c0224de1ba3",
+    "checks": 719,
+    "failures": 0,
+    "display": "Windows",
+    "platform": "Windows",
+    "rendered": true,
+    "memory_scope": "Native counters are an accounted lower bound; separate native allocator experiment measures C++ construction/steady allocations. Godot/Rapier/GPU allocation churn is not measured here.",
+    "timing_scope": "Frame owner-thread elapsed time excludes presentation unless separately reported and includes host preemption. Occupancy includes contact/relocation. Upload and presentation measure submission elapsed time; frame_through_draw includes frame scheduling and actual draw completion, not GPU-only time.",
+    "cases": [
+      {
+        "name": "empty_lab",
+        "construction_usec": 4132,
+        "setup_edits_and_promotion_usec": 1,
+        "maximum_accounted_native_bytes": 5778504,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 0,
+        "promotion_max_usec": 0,
+        "timings": {
+          "copy_usec": {
+            "max": 2999.0,
+            "p50": 2812.0,
+            "p95": 2890.0,
+            "p99": 2950.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 48.0,
+            "p50": 16.0,
+            "p95": 21.0,
+            "p99": 43.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 13.0,
+            "p50": 4.0,
+            "p95": 5.0,
+            "p99": 6.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 39341.0,
+            "p50": 15915.0,
+            "p95": 16098.0,
+            "p99": 31693.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 4456.0,
+            "p50": 3705.0,
+            "p95": 4170.0,
+            "p99": 4292.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 0.7,
+            "p50": 0.3,
+            "p95": 0.4,
+            "p99": 0.6,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 10.4,
+            "p50": 4.0,
+            "p95": 4.5,
+            "p99": 4.7,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 2.7,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.3,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 0.5,
+            "p50": 0.2,
+            "p95": 0.2,
+            "p99": 0.5,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 111.9,
+            "p50": 82.1,
+            "p95": 83.3,
+            "p99": 87.4,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 104.3,
+            "p50": 74.7,
+            "p95": 75.5,
+            "p99": 78.3,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 503.1,
+            "p50": 436.6,
+            "p95": 452.6,
+            "p99": 458.3,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 282.9,
+            "p50": 251.5,
+            "p95": 254.1,
+            "p99": 264.2,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 408.0,
+            "p50": 368.0,
+            "p95": 374.0,
+            "p99": 398.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 49.4,
+            "p50": 9.5,
+            "p95": 10.7,
+            "p99": 11.4,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 4.0,
+            "p50": 3.0,
+            "p95": 3.0,
+            "p99": 4.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31856.0,
+            "p50": 16002.0,
+            "p95": 16191.0,
+            "p99": 31780.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 10367.0,
+            "p50": 551.0,
+            "p95": 596.0,
+            "p99": 650.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 830.0,
+            "p50": 86.0,
+            "p95": 618.0,
+            "p99": 785.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 9876.0,
+            "p50": 81.0,
+            "p95": 105.0,
+            "p99": 129.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 299.0,
+            "p50": 183.0,
+            "p95": 192.0,
+            "p99": 198.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 281.0,
+            "p50": 108.0,
+            "p95": 153.0,
+            "p99": 173.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "inert_moving",
+        "construction_usec": 7901,
+        "setup_edits_and_promotion_usec": 54500,
+        "maximum_accounted_native_bytes": 5820006,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 6,
+        "promotion_max_usec": 2593,
+        "timings": {
+          "copy_usec": {
+            "max": 3261.0,
+            "p50": 3029.0,
+            "p95": 3104.0,
+            "p99": 3140.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 103.0,
+            "p50": 42.0,
+            "p95": 56.0,
+            "p99": 72.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 34.0,
+            "p50": 10.0,
+            "p95": 13.0,
+            "p99": 19.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 37329.0,
+            "p50": 15927.0,
+            "p95": 16118.0,
+            "p99": 31674.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 10853.0,
+            "p50": 6559.0,
+            "p95": 7388.0,
+            "p99": 8093.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 52.2,
+            "p50": 8.5,
+            "p95": 9.4,
+            "p99": 10.2,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 55.1,
+            "p50": 31.2,
+            "p95": 32.1,
+            "p99": 34.7,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 24.9,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.3,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 46.5,
+            "p50": 5.1,
+            "p95": 5.3,
+            "p99": 6.0,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 1194.4,
+            "p50": 1069.3,
+            "p95": 1124.0,
+            "p99": 1153.5,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 952.3,
+            "p50": 849.9,
+            "p95": 893.7,
+            "p99": 912.8,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 493.4,
+            "p50": 411.8,
+            "p95": 449.1,
+            "p99": 462.1,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 306.1,
+            "p50": 248.8,
+            "p95": 279.8,
+            "p99": 282.6,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 666.0,
+            "p50": 586.0,
+            "p95": 636.0,
+            "p99": 647.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 65.0,
+            "p50": 25.7,
+            "p95": 31.4,
+            "p99": 39.7,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 78.0,
+            "p50": 52.0,
+            "p95": 60.0,
+            "p99": 68.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32307.0,
+            "p50": 16002.0,
+            "p95": 16209.0,
+            "p99": 31747.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 3647.0,
+            "p50": 485.0,
+            "p95": 634.0,
+            "p99": 756.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 5217.0,
+            "p50": 1802.0,
+            "p95": 2135.0,
+            "p99": 3076.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 2977.0,
+            "p50": 72.0,
+            "p95": 107.0,
+            "p99": 120.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 245.0,
+            "p50": 185.0,
+            "p95": 207.0,
+            "p99": 215.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 1226.0,
+            "p50": 160.0,
+            "p95": 226.0,
+            "p99": 283.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "reacting_one",
+        "construction_usec": 11574,
+        "setup_edits_and_promotion_usec": 58674,
+        "maximum_accounted_native_bytes": 5820070,
+        "maximum_retained_products": 3,
+        "maximum_shapes_per_body": 10,
+        "promotion_max_usec": 2566,
+        "timings": {
+          "copy_usec": {
+            "max": 3936.0,
+            "p50": 3022.0,
+            "p95": 3108.0,
+            "p99": 3151.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 111.0,
+            "p50": 55.0,
+            "p95": 82.0,
+            "p99": 98.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 25.0,
+            "p50": 10.0,
+            "p95": 12.0,
+            "p99": 19.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 35532.0,
+            "p50": 15924.0,
+            "p95": 16115.0,
+            "p99": 31651.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 10088.0,
+            "p50": 6556.0,
+            "p95": 7260.0,
+            "p99": 7987.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 185.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 41.6,
+            "p50": 8.8,
+            "p95": 10.5,
+            "p99": 11.1,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 61.4,
+            "p50": 31.4,
+            "p95": 32.3,
+            "p99": 34.9,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 1.5,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.4,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 19.0,
+            "p50": 5.4,
+            "p95": 5.7,
+            "p99": 6.1,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 27.7,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 1227.4,
+            "p50": 1082.1,
+            "p95": 1124.7,
+            "p99": 1143.7,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 987.3,
+            "p50": 860.8,
+            "p95": 899.8,
+            "p99": 920.0,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 497.6,
+            "p50": 404.1,
+            "p95": 444.2,
+            "p99": 457.6,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 329.3,
+            "p50": 249.3,
+            "p95": 280.6,
+            "p99": 283.0,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 716.0,
+            "p50": 599.0,
+            "p95": 648.0,
+            "p99": 656.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 72.2,
+            "p50": 33.9,
+            "p95": 39.5,
+            "p99": 43.3,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 95.0,
+            "p50": 53.0,
+            "p95": 62.0,
+            "p99": 76.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31822.0,
+            "p50": 16001.0,
+            "p95": 16205.0,
+            "p99": 31738.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 3434.0,
+            "p50": 506.0,
+            "p95": 691.0,
+            "p99": 800.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 5337.0,
+            "p50": 1780.0,
+            "p95": 1987.0,
+            "p99": 2651.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 2959.0,
+            "p50": 82.0,
+            "p95": 117.0,
+            "p99": 139.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 244.0,
+            "p50": 186.0,
+            "p95": 206.0,
+            "p99": 211.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 380.0,
+            "p50": 162.0,
+            "p95": 229.0,
+            "p99": 273.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "reacting_three",
+        "construction_usec": 11998,
+        "setup_edits_and_promotion_usec": 174974,
+        "maximum_accounted_native_bytes": 5903074,
+        "maximum_retained_products": 13,
+        "maximum_shapes_per_body": 12,
+        "promotion_max_usec": 3579,
+        "timings": {
+          "copy_usec": {
+            "max": 5310.0,
+            "p50": 3631.0,
+            "p95": 3726.0,
+            "p99": 3789.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 280.0,
+            "p50": 114.0,
+            "p95": 164.0,
+            "p99": 188.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 35.0,
+            "p50": 10.0,
+            "p95": 12.0,
+            "p99": 19.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 37751.0,
+            "p50": 16016.0,
+            "p95": 27679.0,
+            "p99": 31307.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 14841.0,
+            "p50": 10966.0,
+            "p95": 11471.0,
+            "p99": 11890.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 288.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 55.0,
+            "p50": 23.8,
+            "p95": 27.6,
+            "p99": 39.0,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 129.0,
+            "p50": 81.2,
+            "p95": 97.0,
+            "p99": 103.9,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 14.1,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.4,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 42.8,
+            "p50": 15.5,
+            "p95": 16.4,
+            "p99": 27.9,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 52.3,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 3913.6,
+            "p50": 2834.4,
+            "p95": 2945.6,
+            "p99": 2984.7,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 3071.2,
+            "p50": 2243.8,
+            "p95": 2334.7,
+            "p99": 2368.7,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 644.5,
+            "p50": 412.9,
+            "p95": 438.6,
+            "p99": 452.1,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 331.0,
+            "p50": 248.8,
+            "p95": 264.4,
+            "p99": 275.9,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 1120.0,
+            "p50": 1017.0,
+            "p95": 1078.0,
+            "p99": 1095.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 122.4,
+            "p50": 76.1,
+            "p95": 94.5,
+            "p99": 104.7,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 178.0,
+            "p50": 117.0,
+            "p95": 132.0,
+            "p99": 147.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32038.0,
+            "p50": 16094.0,
+            "p95": 27786.0,
+            "p99": 31378.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 4526.0,
+            "p50": 744.0,
+            "p95": 992.0,
+            "p99": 1072.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 4233.0,
+            "p50": 2636.0,
+            "p95": 3366.0,
+            "p99": 3528.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 3867.0,
+            "p50": 117.0,
+            "p95": 167.0,
+            "p99": 220.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 269.0,
+            "p50": 193.0,
+            "p95": 219.0,
+            "p99": 239.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 3752.0,
+            "p50": 273.0,
+            "p95": 376.0,
+            "p99": 437.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "perforated",
+        "construction_usec": 19000,
+        "setup_edits_and_promotion_usec": 105083,
+        "maximum_accounted_native_bytes": 5821206,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 81,
+        "promotion_max_usec": 2885,
+        "timings": {
+          "copy_usec": {
+            "max": 3252.0,
+            "p50": 2603.0,
+            "p95": 3135.0,
+            "p99": 3187.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 80.0,
+            "p50": 42.0,
+            "p95": 55.0,
+            "p99": 65.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 35.0,
+            "p50": 10.0,
+            "p95": 12.0,
+            "p99": 14.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 36206.0,
+            "p50": 15917.0,
+            "p95": 16147.0,
+            "p99": 31720.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 10336.0,
+            "p50": 6817.0,
+            "p95": 8283.0,
+            "p99": 9066.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 15.2,
+            "p50": 8.5,
+            "p95": 9.6,
+            "p99": 10.3,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 46.0,
+            "p50": 34.2,
+            "p95": 35.5,
+            "p99": 36.7,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 1.4,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.3,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 12.3,
+            "p50": 5.1,
+            "p95": 5.5,
+            "p99": 5.9,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 1222.4,
+            "p50": 1039.0,
+            "p95": 1121.4,
+            "p99": 1157.2,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 965.8,
+            "p50": 837.2,
+            "p95": 909.8,
+            "p99": 931.0,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 487.6,
+            "p50": 356.4,
+            "p95": 450.7,
+            "p99": 474.9,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 285.8,
+            "p50": 248.9,
+            "p95": 260.4,
+            "p99": 268.5,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 665.0,
+            "p50": 590.0,
+            "p95": 626.0,
+            "p99": 642.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 61.1,
+            "p50": 26.2,
+            "p95": 31.6,
+            "p99": 35.7,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 83.0,
+            "p50": 53.0,
+            "p95": 60.0,
+            "p99": 67.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31968.0,
+            "p50": 16002.0,
+            "p95": 16229.0,
+            "p99": 31799.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 4098.0,
+            "p50": 508.0,
+            "p95": 653.0,
+            "p99": 816.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 5341.0,
+            "p50": 2027.0,
+            "p95": 3369.0,
+            "p99": 4030.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 3437.0,
+            "p50": 79.0,
+            "p95": 117.0,
+            "p99": 136.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 286.0,
+            "p50": 198.0,
+            "p95": 215.0,
+            "p99": 224.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 1003.0,
+            "p50": 158.0,
+            "p95": 225.0,
+            "p99": 271.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "saturated_output",
+        "construction_usec": 13191,
+        "setup_edits_and_promotion_usec": 1467000,
+        "maximum_accounted_native_bytes": 5820070,
+        "maximum_retained_products": 3,
+        "maximum_shapes_per_body": 10,
+        "promotion_max_usec": 2488,
+        "timings": {
+          "copy_usec": {
+            "max": 4007.0,
+            "p50": 2567.0,
+            "p95": 3116.0,
+            "p99": 3143.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 187.0,
+            "p50": 55.0,
+            "p95": 74.0,
+            "p99": 85.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 26.0,
+            "p50": 9.0,
+            "p95": 12.0,
+            "p99": 15.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 36379.0,
+            "p50": 15917.0,
+            "p95": 16147.0,
+            "p99": 31684.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 10637.0,
+            "p50": 6862.0,
+            "p95": 7995.0,
+            "p99": 9099.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 151.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 23.3,
+            "p50": 9.4,
+            "p95": 11.0,
+            "p99": 11.6,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 56.1,
+            "p50": 31.9,
+            "p95": 33.1,
+            "p99": 34.5,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 48.1,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.4,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 9.6,
+            "p50": 5.5,
+            "p95": 5.9,
+            "p99": 6.2,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 27.8,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 1378.1,
+            "p50": 1170.3,
+            "p95": 1224.3,
+            "p99": 1240.4,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 1132.6,
+            "p50": 952.6,
+            "p95": 999.3,
+            "p99": 1016.3,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 555.3,
+            "p50": 346.2,
+            "p95": 453.5,
+            "p99": 472.8,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 383.6,
+            "p50": 249.3,
+            "p95": 265.2,
+            "p99": 268.1,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 755.0,
+            "p50": 604.0,
+            "p95": 637.0,
+            "p99": 646.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 71.6,
+            "p50": 33.6,
+            "p95": 39.5,
+            "p99": 42.5,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 87.0,
+            "p50": 52.0,
+            "p95": 59.0,
+            "p99": 71.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31944.0,
+            "p50": 16003.0,
+            "p95": 16242.0,
+            "p99": 31775.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 851.0,
+            "p50": 549.0,
+            "p95": 653.0,
+            "p99": 747.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 5539.0,
+            "p50": 1908.0,
+            "p95": 2640.0,
+            "p99": 3772.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 232.0,
+            "p50": 90.0,
+            "p95": 126.0,
+            "p99": 147.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 360.0,
+            "p50": 227.0,
+            "p95": 240.0,
+            "p99": 250.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 335.0,
+            "p50": 151.0,
+            "p95": 222.0,
+            "p99": 263.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "dormant_three",
+        "construction_usec": 17982,
+        "setup_edits_and_promotion_usec": 186812,
+        "maximum_accounted_native_bytes": 5902914,
+        "maximum_retained_products": 0,
+        "maximum_shapes_per_body": 6,
+        "promotion_max_usec": 3030,
+        "timings": {
+          "copy_usec": {
+            "max": 3991.0,
+            "p50": 3663.0,
+            "p95": 3755.0,
+            "p99": 3814.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 125.0,
+            "p50": 78.0,
+            "p95": 95.0,
+            "p99": 108.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 35.0,
+            "p50": 10.0,
+            "p95": 12.0,
+            "p99": 20.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 37858.0,
+            "p50": 15946.0,
+            "p95": 16997.0,
+            "p99": 31604.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 16951.0,
+            "p50": 10365.0,
+            "p95": 11191.0,
+            "p99": 11517.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 58.6,
+            "p50": 22.4,
+            "p95": 26.3,
+            "p99": 51.5,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 122.9,
+            "p50": 81.4,
+            "p95": 110.0,
+            "p99": 112.3,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 24.6,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.3,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 50.0,
+            "p50": 14.7,
+            "p95": 15.6,
+            "p99": 42.5,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 2618.0,
+            "p50": 2409.2,
+            "p95": 2523.1,
+            "p99": 2558.1,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 1987.8,
+            "p50": 1805.4,
+            "p95": 1902.3,
+            "p99": 1940.2,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 474.2,
+            "p50": 413.6,
+            "p95": 438.9,
+            "p99": 447.0,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 307.4,
+            "p50": 260.4,
+            "p95": 279.0,
+            "p99": 283.7,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 1140.0,
+            "p50": 1039.0,
+            "p95": 1078.0,
+            "p99": 1100.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 148.3,
+            "p50": 60.8,
+            "p95": 86.5,
+            "p99": 97.3,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 214.0,
+            "p50": 118.0,
+            "p95": 138.0,
+            "p99": 150.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 31895.0,
+            "p50": 16022.0,
+            "p95": 17078.0,
+            "p99": 31719.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 4311.0,
+            "p50": 713.0,
+            "p95": 1023.0,
+            "p99": 1081.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 4477.0,
+            "p50": 2374.0,
+            "p95": 3339.0,
+            "p99": 3858.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 3630.0,
+            "p50": 113.0,
+            "p95": 159.0,
+            "p99": 183.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 287.0,
+            "p50": 191.0,
+            "p95": 229.0,
+            "p99": 244.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 6867.0,
+            "p50": 324.0,
+            "p95": 400.0,
+            "p99": 446.0,
+            "samples": 1200
+          }
+        }
+      },
+      {
+        "name": "wake_burst_three",
+        "construction_usec": 19861,
+        "setup_edits_and_promotion_usec": 190807,
+        "maximum_accounted_native_bytes": 5902946,
+        "maximum_retained_products": 6,
+        "maximum_shapes_per_body": 7,
+        "promotion_max_usec": 3111,
+        "timings": {
+          "copy_usec": {
+            "max": 5020.0,
+            "p50": 3681.0,
+            "p95": 3757.0,
+            "p99": 3829.0,
+            "samples": 1200
+          },
+          "diagnostics_usec": {
+            "max": 242.0,
+            "p50": 105.0,
+            "p95": 139.0,
+            "p99": 154.0,
+            "samples": 1200
+          },
+          "flush_usec": {
+            "max": 33.0,
+            "p50": 10.0,
+            "p95": 12.0,
+            "p99": 19.0,
+            "samples": 1200
+          },
+          "frame_through_draw_usec": {
+            "max": 38226.0,
+            "p50": 16218.0,
+            "p95": 27977.0,
+            "p99": 31206.0,
+            "samples": 1200
+          },
+          "frame_usec": {
+            "max": 13170.0,
+            "p50": 10952.0,
+            "p95": 11429.0,
+            "p99": 12012.0,
+            "samples": 1200
+          },
+          "geometry_usec": {
+            "max": 221.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_chemistry_usec": {
+            "max": 55.1,
+            "p50": 24.3,
+            "p95": 28.1,
+            "p99": 41.1,
+            "samples": 1200
+          },
+          "native_contact_usec": {
+            "max": 451.3,
+            "p50": 84.5,
+            "p95": 405.2,
+            "p99": 422.4,
+            "samples": 1200
+          },
+          "native_discovery_usec": {
+            "max": 13.1,
+            "p50": 0.9,
+            "p95": 1.2,
+            "p99": 1.3,
+            "samples": 1200
+          },
+          "native_exchange_usec": {
+            "max": 44.2,
+            "p50": 15.2,
+            "p95": 16.4,
+            "p99": 28.7,
+            "samples": 1200
+          },
+          "native_geometry_usec": {
+            "max": 52.6,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "samples": 1200
+          },
+          "native_occupancy_usec": {
+            "max": 3521.2,
+            "p50": 2772.0,
+            "p95": 3138.2,
+            "p99": 3182.8,
+            "samples": 1200
+          },
+          "native_relocation_usec": {
+            "max": 2642.0,
+            "p50": 2123.1,
+            "p95": 2215.7,
+            "p99": 2245.4,
+            "samples": 1200
+          },
+          "native_snapshot_usec": {
+            "max": 562.2,
+            "p50": 406.2,
+            "p95": 433.7,
+            "p99": 451.9,
+            "samples": 1200
+          },
+          "native_terrain_usec": {
+            "max": 289.1,
+            "p50": 248.6,
+            "p95": 264.5,
+            "p99": 275.2,
+            "samples": 1200
+          },
+          "native_usec": {
+            "max": 1227.0,
+            "p50": 1068.0,
+            "p95": 1168.0,
+            "p99": 1189.0,
+            "samples": 1200
+          },
+          "native_world_usec": {
+            "max": 167.7,
+            "p50": 101.8,
+            "p95": 123.7,
+            "p99": 136.3,
+            "samples": 1200
+          },
+          "pose_copy_usec": {
+            "max": 185.0,
+            "p50": 119.0,
+            "p95": 133.0,
+            "p99": 148.0,
+            "samples": 1200
+          },
+          "present_interval_usec": {
+            "max": 32102.0,
+            "p50": 16309.0,
+            "p95": 28049.0,
+            "p99": 31295.0,
+            "samples": 1199
+          },
+          "presentation_submit_usec": {
+            "max": 3889.0,
+            "p50": 806.0,
+            "p95": 1012.0,
+            "p99": 1110.0,
+            "samples": 1200
+          },
+          "rapier_usec": {
+            "max": 6248.0,
+            "p50": 2494.0,
+            "p95": 3149.0,
+            "p99": 3739.0,
+            "samples": 1200
+          },
+          "render_upload_submit_usec": {
+            "max": 3171.0,
+            "p50": 137.0,
+            "p95": 191.0,
+            "p99": 263.0,
+            "samples": 1200
+          },
+          "terrain_usec": {
+            "max": 277.0,
+            "p50": 202.0,
+            "p95": 225.0,
+            "p99": 240.0,
+            "samples": 1200
+          },
+          "trace_io_usec": {
+            "max": 1301.0,
+            "p50": 282.0,
+            "p95": 387.0,
+            "p99": 453.0,
+            "samples": 1200
+          }
+        }
+      }
+    ]
+  }
+]

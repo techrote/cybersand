@@ -1,6 +1,7 @@
 #pragma once
 
 #include "cybersand/render_snapshot.hpp"
+#include "cyber_object_shard_lab.hpp"
 #include "cybersand/world.hpp"
 #include "cybersand/prepared_world.hpp"
 #include "cybersand/granular_contact_response.hpp"
@@ -16,10 +17,12 @@
 #include <godot_cpp/variant/string.hpp>
 #include <godot_cpp/variant/vector2.hpp>
 #include <godot_cpp/variant/vector2i.hpp>
+#include <godot_cpp/variant/rect2i.hpp>
 
 #include <array>
 #include <cstdint>
 #include <memory>
+#include <thread>
 #include <vector>
 
 namespace godot {
@@ -44,6 +47,25 @@ public:
     bool reset_demo_world(bool gameplay_water = false);
     [[nodiscard]] Dictionary get_default_demo_identity() const;
     [[nodiscard]] bool simulation_tick();
+    // Optional same-World native operations, worker exclusive and value-only.
+    [[nodiscard]] Dictionary object_shard_attach(Rect2i bounds);
+    [[nodiscard]] Dictionary object_shard_status() const;
+    [[nodiscard]] Dictionary object_shard_snapshot(bool include_world = true);
+    [[nodiscard]] Dictionary object_shard_workbench_action(const Dictionary& request);
+    // Worker-only native edits and exact payload inspections in this SAME World.
+    [[nodiscard]] Dictionary object_shard_edit_cell(Vector2i cell, std::int64_t material,
+        std::int64_t state_a, std::int64_t state_b, std::int64_t temperature);
+    [[nodiscard]] Dictionary object_shard_inspect_cell(Vector2i cell) const;
+    [[nodiscard]] Dictionary object_shard_prepare_next();
+    [[nodiscard]] Dictionary object_shard_acknowledge(const Dictionary& receipt);
+    [[nodiscard]] Dictionary object_shard_accept_motion(const Array& poses);
+    [[nodiscard]] Dictionary object_shard_accept_workbench_motion(const Array& poses,
+        const PackedFloat64Array& states, const PackedFloat64Array& geometry, const Array& bodies,
+        std::int64_t session, std::int64_t epoch);
+    [[nodiscard]] Dictionary object_shard_erase_shard(const Dictionary& receipt);
+    [[nodiscard]] Dictionary object_shard_ignite_shard(std::int64_t id,
+        std::int64_t generation, std::int64_t cell);
+    [[nodiscard]] bool object_shard_retire();
     [[nodiscard]] bool has_failed() const;
     [[nodiscard]] std::int64_t get_attempted_tick_index() const;
     void emit_disc(std::int64_t centre_x, std::int64_t centre_y,
@@ -226,6 +248,23 @@ private:
     [[nodiscard]] double water_push_scale(cybersand::Material material, std::int32_t x, std::int32_t y) const;
 
     std::unique_ptr<cybersand::World> world_;
+    // Destroy before any World replacement. Never owns or ticks another World.
+    Ref<CyberObjectShardLab> shard_lab_;
+    std::thread::id shard_owner_thread_{};
+    bool shard_quarantined_{};
+    std::vector<std::uint16_t> shard_gcr_mask_;
+    std::vector<cybersand::World::TransientCompositionCell> shard_gcr_cells_;
+    [[nodiscard]] bool shard_owner() const noexcept {
+        return world_ && shard_lab_.is_valid() && shard_lab_->coordinator_ &&
+            shard_lab_->coordinator_->same_world_attached(*world_) &&
+            std::this_thread::get_id() == shard_owner_thread_;
+    }
+    [[nodiscard]] bool shard_retains_inventory() const noexcept {
+        return shard_lab_.is_valid() && shard_lab_->coordinator_ &&
+            !shard_lab_->coordinator_->can_detach();
+    }
+    void retire_shard_for_world_replacement() noexcept;
+    [[nodiscard]] bool compose_shard_with_workbench_occupancy();
     std::unique_ptr<cybersand::RenderSnapshotExchange> render_exchange_;
     cybersand::TickStats last_stats_{};
     BodyStates current_bodies_{};
@@ -355,6 +394,7 @@ private:
         PackedFloat32Array initial_body_input;
         String initial_body_digest, workbench_initial_digest;
         std::uint64_t token = 0, retained_generation = 0, retained_revision = 0, retained_hash = 0;
+        bool retains_cells = false;
         Vector2i origin{}, size{};
         bool cadence = false, adhesion = true, window = true;
         bool reset_demo_coupling = false;
@@ -418,7 +458,8 @@ private:
     [[nodiscard]] PackedInt32Array diagnostic_full_hard_surface_chunk_rectangles() const;
     [[nodiscard]] Dictionary diagnostic_hard_surface_packet_stats() const;
     static void rasterize_transform_in(cybersand::World& world, Vector2i extent, std::vector<std::int32_t>* indices,
-        std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size);
+        std::uint16_t body_id, Vector2 center, double rotation, Vector2 half_size,
+        std::vector<std::uint16_t>* staging_mask = nullptr);
     void parse_body_states(const PackedFloat32Array& states);
     void rasterize_body(const BodyState& body);
     void rasterize_body_sweep(const BodyState& body, const BodyState& previous);

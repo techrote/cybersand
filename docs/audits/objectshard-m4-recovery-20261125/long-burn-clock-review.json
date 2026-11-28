@@ -1,0 +1,196 @@
+{
+  "corrective_change": {
+    "after_sha256": "787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad",
+    "before_sha256": "8741a45ba1aa03a67c6a93f20709d6e9c0f7c1ad9507ceef1c6bfb0c47b0ff13",
+    "displayed_delivery": "A separate displayed_sample records its own cell, native tick and publication sequence; after Pause the delivered Air cell must equal native cell with an identical publication sequence.",
+    "initial_join": "Paused ignition additionally requires native and displayed cells at the same exact tick.",
+    "lifetime_accounting": "Successful receipt separates lifetime_native_ticks (native exhaustion minus ignition) from post_exhaustion_native_ticks (final admitted/drained semantic intervals); native_ticks remains the compatible total.",
+    "native_cell_and_tick": "One immutable native_sample Dictionary supplies both cell state and native tick.",
+    "path": "godot/tests/test_object_shard_m4_long_burn.gd",
+    "scope": "Test fixture only. Native chemistry, actual Rapier stepping, publication authority, global displayed-source targeting helper and production runtime code are unchanged.",
+    "unchanged_semantic_limits": {
+      "maximum_native_ticks_after_ignition": 480,
+      "wood_opportunities": 240
+    }
+  },
+  "failed_original_execution": {
+    "artifact_id": 14980020675,
+    "attempt": 1,
+    "case": "test_object_shard_m4_long_burn",
+    "checks": 79,
+    "coherence": {
+      "between_callback_observations": 2084,
+      "draw_observations": 0,
+      "examples": [],
+      "foreign_draw_callbacks": 0,
+      "incoherent_observations": 0,
+      "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+    },
+    "failures": [
+      "exact moving Wood naturally exhausts all 240 period-two opportunities within 480 native ticks"
+    ],
+    "first_trace": {
+      "applied_physics_revision": 1,
+      "cell": {
+        "incarnation": 2,
+        "material": 7,
+        "state_a": 0,
+        "state_b": 240
+      },
+      "geometry_revision": 1,
+      "has_body": true,
+      "structural": 9,
+      "tick": 34
+    },
+    "historical_disposition": "FAIL; the failed case and aggregate Windows Workbench job are not retroactively passed",
+    "job_id": 138885301327,
+    "last_trace": [
+      {
+        "applied_physics_revision": 1,
+        "cell": {
+          "incarnation": 2,
+          "material": 7,
+          "state_a": 0,
+          "state_b": 1
+        },
+        "geometry_revision": 2,
+        "has_body": true,
+        "structural": 8,
+        "tick": 514
+      },
+      {
+        "applied_physics_revision": 2,
+        "cell": {
+          "incarnation": 3,
+          "material": 0,
+          "state_a": 0,
+          "state_b": 0
+        },
+        "geometry_revision": 2,
+        "has_body": true,
+        "structural": 8,
+        "tick": 515
+      }
+    ],
+    "log_bytes": 92015,
+    "log_sha256": "e9ca4a6d5fad4865daf5d2313b9f21d9ae41b73fcfa09041b93a212119800314",
+    "paused_pre_ignition_raw_inventory_source": {
+      "native_instance_id": -9223371957834086864,
+      "next_transaction": 2,
+      "owner_epoch": 4,
+      "publication_sequence": 101,
+      "session": 2,
+      "shard_session": 2,
+      "tick": 34,
+      "transport_generation": 4,
+      "world_generation": 4,
+      "world_incarnation": 2,
+      "world_revision": 20
+    },
+    "paused_pre_ignition_raw_scan": {
+      "content_hash": "8ab172260b64ce93",
+      "state_hash": "e0e620a792664bb",
+      "tick": 34,
+      "water_cells": 0,
+      "water_integer": 0,
+      "water_overfill": 0,
+      "water_visible": 0
+    },
+    "run_id": 45517975210
+  },
+  "frozen_application_source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+  "frozen_source_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+  "independent_local_positive": {
+    "before_tick": 34,
+    "checks": 233,
+    "elapsed_seconds": 32.275,
+    "exhaustion_tick": 514,
+    "failures": 0,
+    "fixture_sha256": "3c8ce13a53f99a753b3e43bceddf8afa6eff9e06ba443d8af8327c07356dc70f",
+    "lifetime_native_ticks": 480,
+    "log_sha256": "8cf2340668d6abd18fa8996c1ec1597ec577a50c3dae55e71057ce4e9a7c64a2",
+    "report_custody": "Specialist B commits exact runner, result, resource and raw inventory joins separately.",
+    "returncode": 0,
+    "scope": "Independent existing frozen-equivalent Linux application with corrected external fixture; successor adds only two derived lifetime/drain receipt fields. Does not qualify Windows or replace required successor hosted campaign.",
+    "specialist": "B / workbench_performance",
+    "status": "passed",
+    "terminal_retirement": "passed",
+    "total_after_pause_ticks": 481
+  },
+  "independent_review": {
+    "basis": "Strict480/240 unchanged; same-frame native cell/tick; separate displayed clock; added initial and final join assertions; no trace consumers depend on old ambiguous cell field.",
+    "specialist": "B / workbench_performance",
+    "verdict": "APPROVE"
+  },
+  "local_corrected_attempts": [
+    {
+      "application_source_bytes_unchanged": true,
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/agent/objectshard-recovery-20261125/native-gap-execution/godot",
+        "--script",
+        "/home/agent/objectshard-recovery-20261125/native/godot/tests/test_object_shard_m4_long_burn.gd"
+      ],
+      "elapsed_seconds": 60.489102414001536,
+      "fixture_sha256": "3c8ce13a53f99a753b3e43bceddf8afa6eff9e06ba443d8af8327c07356dc70f",
+      "log_bytes": 2245,
+      "log_sha256": "29cb1fc815df5a9ba2f30fd2b7ef405a73b17a58e11331c8f5c2009cccdf95b8",
+      "pid": 6,
+      "returncode": -9,
+      "scope": "Corrected external test fixture against frozen application source and verified input-equivalent Linux native runtime; not Windows qualification",
+      "status": "failed"
+    },
+    {
+      "application_source_bytes_unchanged": true,
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/agent/objectshard-recovery-20261125/native-gap-execution/godot",
+        "--script",
+        "/home/agent/objectshard-recovery-20261125/native/godot/tests/test_object_shard_m4_long_burn.gd",
+        "--",
+        "--objectshard-m4-workbench"
+      ],
+      "elapsed_seconds": 59.28391818000091,
+      "fixture_sha256": "3c8ce13a53f99a753b3e43bceddf8afa6eff9e06ba443d8af8327c07356dc70f",
+      "log_bytes": 5152,
+      "log_sha256": "4102d2d473ea30add7f032488429f8c3f939e7d31e7f240d14749d12a491f090",
+      "pid": 6,
+      "returncode": -9,
+      "scope": "Corrected external test fixture against frozen application source and verified input-equivalent Linux native runtime; not Windows qualification",
+      "status": "failed"
+    }
+  ],
+  "local_runner": {
+    "cause": "Unestablished. Shared memory pressure is plausible but no visible OOM event proves it. No blind repeat; independent specialistB uses its established application and observed-process runner.",
+    "diagnostic_access": {
+      "cgroup": "/sys/fs absent in this execution namespace; memory.events unavailable",
+      "kernel_log": "dmesg: read kernel buffer failed: Operation not permitted",
+      "memory_snapshot_kib": {
+        "MemAvailable": 1761832,
+        "MemTotal": 10206468,
+        "SwapCached": 0
+      },
+      "proc_self_cgroup": "0::/"
+    },
+    "launch": "subprocess.Popen, stdout and stderr captured to raw binary log",
+    "observed_outcome": "Both child return codes were -9, not124; the Python wrapper reached its normal receipt write. No60s limit exists in the wrapper.",
+    "timeout_cleanup": "terminate; wait10s; kill only if still running; timeout outcome is explicitly124",
+    "wait_timeout_seconds": 600
+  },
+  "local_validation": "Corrected GDScript parsed and began ordinary application execution; neither initial local attempt completed. Both ended with SIGKILL around60seconds during authored World installation/replacement and have no completion footer. Cause not established; no application PASS or semantic regression inferred.",
+  "reviewer": "Specialist A; independently corroborated by technical lead, Workbench specialist B, and delivery specialist C",
+  "schema": "objectshard-m4-long-burn-clock-review-v1",
+  "source_observation": {
+    "displayed_cell": "Fixture.owned_cell_state reads runtime.publication.shards",
+    "native_clock": "Fixture.tick reads runtime.frame.tick; _shard reads runtime.frame.shards",
+    "native_deletion_evidence": "At native tick514 current structural inventory is8 and geometry revision2; the same trace labels retained displayed Wood state_b1 by that new native tick. At515 the coherent displayed cell becomes Air after physical geometry revision2 is acknowledged.",
+    "native_elapsed_ticks": 480,
+    "presentation_policy": "The runtime intentionally retains prior coherent material publication until actual Rapier geometry installation acknowledgement; zero incoherent observations supports correct retention, not omission of the material change.",
+    "qualification_error": "The assertion times a deliberately retained displayed cell using the newer native frame clock. This is not evidence that native chemistry consumed an extra opportunity."
+  },
+  "status": "fixture-clock-mismatch-established; independent-local-corrected-pass; successor-hosted-required"
+}

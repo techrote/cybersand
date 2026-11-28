@@ -1,0 +1,21 @@
+{
+  "failed_attempts": [
+    {
+      "retained_directory": "build/objectshard-fulltree-probe",
+      "harness_sha256": "6e1ce0c70f83faf5a4817578e38d78d8d50581e5a23345a615378c186513ee8e",
+      "inputs_sha256": "3a8a8dfce76082109e0682a6f248c89f651d925f551d344d1015570c2781fa20",
+      "outcome": "failed_real_output_assertion",
+      "diagnostic": "ObjectShard native benchmark failed: comparison executes real Fire delivery and downstream World Smoke",
+      "cause": "The selected x110 Wood cell was interior and had no Empty emission neighbour."
+    },
+    {
+      "retained_directory": "build/objectshard-fulltree-probe-v2",
+      "harness_sha256": "9df2d8ed992a6364cb743ac1247fe73dc20198f20fc2bcb3ed596c2303a9942c",
+      "inputs_sha256": "b2df0096018973aae72a8ee0d08c7c949e7736b94a78850c1b03fdd89fc438ce",
+      "outcome": "failed_real_output_assertion",
+      "diagnostic": "ObjectShard native benchmark failed: comparison executes real Fire delivery and downstream World Smoke",
+      "cause": "The selected x110 Wood cell was interior and had no Empty emission neighbour."
+    }
+  ],
+  "repaired_fixture": "x111 is an exposed surface cell; this is asserted before chemistry. No native runtime change."
+}

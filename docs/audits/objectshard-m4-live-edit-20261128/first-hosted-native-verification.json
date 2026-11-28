@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T07:02:46.302136+00:00",
+  "source_commit": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "workflow_run": 46118132005,
+  "job_id": 140896428770,
+  "job_conclusion": "failure",
+  "job_failure": "Portable PowerShell package verifier retained five scenario IDs while Python/package entry expanded to nine; one of 85 downstream Python contract tests failed. All native sanitizer and retained budget executions passed. This job is not a green publication gate.",
+  "artifact_id": 15252444538,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46118132005/artifacts/15252444538",
+  "archive_sha256": "a67b9ed0f93661f3504c531fa74545220e1f1a8e0cc0fe0f0e22e3e3410af5d2",
+  "archive_bytes": 138700351,
+  "unique_git_blob_inputs_verified": 136,
+  "native_input_digest": "2e3708200d848634ca5c270c539746b17abaf4dacdb995cc762f448485d67d6f",
+  "native_checks": 138280,
+  "ordinary_world_test_cases": 192,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_sanitizer": false,
+  "suites": {
+    "admission": {
+      "status": "passed",
+      "checks": 28092,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "5a4658237bd9a829efaac2097adcb60c7a0266c8bdf847da09991367ac0be5ab",
+      "execution_seconds": 1.3180533949999926,
+      "log_sha256": "0c2146664d17b4b84bafc5991477b1ca0ba6d1b105078c4b9920bbc8b1bad4bb"
+    },
+    "chemistry": {
+      "status": "passed",
+      "checks": 4472,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "b5e00e7209a6415a93b822c2e9d803cd1e7fa5411fa2d593c82035e1f255d29a",
+      "execution_seconds": 1.2969235740000045,
+      "log_sha256": "06a8fc85daa6e3943d6b22f779c2e62bb84c745dcc8e0eeb0dd708fff3233bda"
+    },
+    "contact": {
+      "status": "passed",
+      "checks": 81255,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "9ab4666b21f708f68114e49888c9bd1500b4ec9b0c3e396579562c33c06b1403",
+      "execution_seconds": 0.016205495999997765,
+      "log_sha256": "51f393c131c2d1f86e6dfbe04fdcb5f941472d12c8ea781bcad3b582ae8a35d7"
+    },
+    "coordinator": {
+      "status": "passed",
+      "checks": 7100,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "c779376f61e4518f6348d68480c1e23b85357904e48116a50216588cd4a09bcf",
+      "execution_seconds": 14.012866209999999,
+      "log_sha256": "f4caefecfc184f64c5f30d0a4d1482bb03fe8e87b7bcd2e8dac2ec5df4f2696e"
+    },
+    "external_fire": {
+      "status": "passed",
+      "checks": 3689,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "e391445d4485debcc80ce839d9b5aa6868fe4e8d5904fe144555f2a566f542fc",
+      "execution_seconds": 0.838970900000021,
+      "log_sha256": "153d38884d50f76a4fe7adfb7c83d85245b591fa3a7936be4e0b5fbf6167139c"
+    },
+    "storage": {
+      "status": "passed",
+      "checks": 13672,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "5da4f071f3b728b424a380ed0d89a682102fc2bb4731e1e10abd4422e26e3430",
+      "execution_seconds": 0.12908938799998282,
+      "log_sha256": "6d0f2e8a0c47fd5b71aa605f506094e5e86f1d59d6cff54198a8e976f1fc74b8"
+    },
+    "world": {
+      "status": "passed",
+      "checks": 192,
+      "count_unit": "test_cases",
+      "failures": 0,
+      "binary_sha256": "4a981ad65274def13aeed0f94f901cab81b741e86445343f64b5d62b7b5748ff",
+      "execution_seconds": 439.72859031600007,
+      "log_sha256": "43921754457352b81706562e331b250816dd77d944828a1b2df3dabd8f072fce"
+    }
+  },
+  "budget_input_digest": "d9d819fb408afa13bd8219f26a379ea72799cc23159bc7057fb30c44a8e2d37a",
+  "budget_checks": 4276351,
+  "budget_limits_checked": 74,
+  "budget_status": "PASS",
+  "native_execution_status": "PASS",
+  "publication_gate_status": "FAILED"
+}

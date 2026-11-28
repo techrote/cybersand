@@ -1,0 +1,121 @@
+{
+  "schema": "objectshard-live-edit-final-source-review-v1",
+  "reviewed_utc": "2026-11-28T08:19:21.470291+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "parent_application_source": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "application_source_files_changed_from_parent": [],
+  "qualification_and_evidence_files_changed": [
+    ".github/workflows/objectshard-m4-completion.yml",
+    "docs/audits/objectshard-m4-live-edit-20261128/README.md",
+    "docs/audits/objectshard-m4-live-edit-20261128/first-windows-matrix-independent-audit.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/live-input-observer-independent-review.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/observer-ci-independent-review.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/rendered-observer-correction-review.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/second-hosted-native-verification.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/second-linux-failed-independent-audit.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/second-windows-render-review.json",
+    "docs/audits/objectshard-m4-live-edit-20261128/windows-ci-parallel-split-verification.json",
+    "docs/operations/objectshard-workbench-playtest.md",
+    "godot/tests/support/object_shard_m4_live_input_fixture.gd",
+    "godot/tests/test_object_shard_m4_live_stress.gd",
+    "godot/tests/test_object_shard_m4_live_tools.gd",
+    "tools/objectshard/production_runtime_request.json"
+  ],
+  "principal_review_continuity": {
+    "native/include/cybersand/object_shard.hpp": {
+      "initial_review_sha256": "6dce507e2a4d3bc94c747fc7128c95fdf7c3f930211ba41a19a5a08968629b33",
+      "final_sha256": "6dce507e2a4d3bc94c747fc7128c95fdf7c3f930211ba41a19a5a08968629b33",
+      "unchanged": true
+    },
+    "native/include/cybersand/object_shard_coordinator.hpp": {
+      "initial_review_sha256": "b8c8d49cc6ff4b19ae3067b306f7decd14e209e66ffe87e39d82a2dbf73f2134",
+      "final_sha256": "b8c8d49cc6ff4b19ae3067b306f7decd14e209e66ffe87e39d82a2dbf73f2134",
+      "unchanged": true
+    },
+    "native/include/cybersand/object_shard_mutation.hpp": {
+      "initial_review_sha256": "e73d1ffb38fd601f2b24f150fe38cdbb33ea480d94421373c516b6f8375ad679",
+      "final_sha256": "e73d1ffb38fd601f2b24f150fe38cdbb33ea480d94421373c516b6f8375ad679",
+      "unchanged": true
+    },
+    "native/src/object_shard.cpp": {
+      "initial_review_sha256": "34123096e28b665d4a8d20f2ee52393236d551c9818a103141025a9467525311",
+      "final_sha256": "34123096e28b665d4a8d20f2ee52393236d551c9818a103141025a9467525311",
+      "unchanged": true
+    },
+    "native/src/object_shard_coordinator.cpp": {
+      "initial_review_sha256": "fea358c03a0584aeaad2e1349e997a6f3080a1d6ae64f4d7805746258bc033f3",
+      "final_sha256": "fea358c03a0584aeaad2e1349e997a6f3080a1d6ae64f4d7805746258bc033f3",
+      "unchanged": true
+    },
+    "godot/native_extension/cyber_object_shard_lab.cpp": {
+      "initial_review_sha256": "839a51175e74072f86f05c61f517dc8615d2082f0f0e7d4a9b1ae3cd4cd2d698",
+      "final_sha256": "839a51175e74072f86f05c61f517dc8615d2082f0f0e7d4a9b1ae3cd4cd2d698",
+      "unchanged": true
+    },
+    "godot/native_extension/cyber_native_cell_world.cpp": {
+      "initial_review_sha256": "73f5230cc4d455fa957b4c78b6bfe3d71330f81b8c8df95d06ee6e21f3ff4930",
+      "final_sha256": "73f5230cc4d455fa957b4c78b6bfe3d71330f81b8c8df95d06ee6e21f3ff4930",
+      "unchanged": true
+    },
+    "godot/scripts/object_shard_m4_runtime.gd": {
+      "initial_review_sha256": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+      "final_sha256": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+      "unchanged": true
+    },
+    "godot/scripts/object_shard_m4_workbench_port.gd": {
+      "initial_review_sha256": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+      "final_sha256": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+      "unchanged": true
+    },
+    "godot/scripts/simulation_worker.gd": {
+      "initial_review_sha256": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+      "final_sha256": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+      "unchanged": true
+    },
+    "godot/scripts/shared_workbench.gd": {
+      "initial_review_sha256": "c91b0a0d1d05294f14935fcb4f6f12039d71fb3f2b8ad8457c4f92768fc5bb53",
+      "final_sha256": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+      "unchanged": false
+    },
+    "godot/scripts/object_shard_physics_bridge.gd": {
+      "initial_review_sha256": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+      "final_sha256": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+      "unchanged": true
+    },
+    "godot/scripts/object_shard_live_edit_diagnostics.gd": {
+      "initial_review_sha256": "fd3b8271d703ce337bb612e8361c5ba9ad00646f78a1aebd30e785b82bd9ff9f",
+      "final_sha256": "fd3b8271d703ce337bb612e8361c5ba9ad00646f78a1aebd30e785b82bd9ff9f",
+      "unchanged": true
+    },
+    ".github/workflows/objectshard-m4-completion.yml": {
+      "initial_review_sha256": "4e2213e84acc4b42b00f4c391931b9e4f49225ae0a765c5de79880b2145455ce",
+      "final_sha256": "1a7cba9324a8fee8c733aa16acb1563718028ed6fef47aa074ced4e79fef31da",
+      "unchanged": false
+    },
+    "tools/objectshard/qualify_workbench.py": {
+      "initial_review_sha256": "9265c51cc6401c0a0cb0873ef7fc5354f5fa3e01ea9c3e784cdb136fc215302a",
+      "final_sha256": "9265c51cc6401c0a0cb0873ef7fc5354f5fa3e01ea9c3e784cdb136fc215302a",
+      "unchanged": true
+    },
+    "tools/objectshard/verify_workbench_package.py": {
+      "initial_review_sha256": "8964904c150a2cbcdc9bbfcc38bc2c83f1ac59b5e298151ce7257de5fe7d98e4",
+      "final_sha256": "8964904c150a2cbcdc9bbfcc38bc2c83f1ac59b5e298151ce7257de5fe7d98e4",
+      "unchanged": true
+    }
+  },
+  "followup_reviews": [
+    "corrective-review.json",
+    "live-input-observer-independent-review.json",
+    "observer-ci-independent-review.json",
+    "windows-ci-parallel-split-verification.json"
+  ],
+  "decision": "Source freeze approved for exact-source qualification; qualification and physical owner disposition remain separate.",
+  "observed_contracts": [
+    "Final observer uses exact authenticated Applied action and owner/transport identity; durable presentation alone is insufficient without coherent frame and actual geometry revision.",
+    "Complete material removal validates Empty slots and actual body retirement; a Draining ownership capability is not material.",
+    "Slice test release requires a captured real physical or native-tick fence, not a Play-state substitute.",
+    "Every old headless/graphical invocation and exit gate remains required after Windows job parallelization.",
+    "The production runtime request has advanced to7 so all changed build inputs receive a newly source-bound producer and fresh guarded publication."
+  ]
+}

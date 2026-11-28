@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -13,6 +13,40 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 ## RAMCACHE and Strata owner-accepted integration — 2026-11-28
 
 **Approved integration / implemented candidate:** [RAMCACHE-STRATA-INTEGRATION-001](../operations/ramcache-strata-integration.md) integrates #745 and the complete #776/#785 Strata lineage with accepted main. The owner physically accepted both original evaluators and waived only the optional-optics 90% retention gate. Classic remains default, original failed measurements remain preserved, and persistent-area/Strata composition is explicitly refused. Current-source qualification, actual main merges and the definitive package retain separate evidence in the mission record. ObjectShard M4, PUBPRES development and deferred UX remain outside this mission.
+
+## ObjectShard M4 live structural editing — 2026-11-28
+
+The opt-in [M4 live-edit candidate](../research/objectshard-m4-workbench.md) is
+qualified at application `ba6d8de45bd4d38717d92bdece7153bff115c0f0`; PR #754 remains
+**Draft/HOLD**. The owner positively physically evaluated the frozen live-edit application; the reconciled mainline source is undergoing independent merge qualification.
+[Campaign 46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803)
+passes exact-source native and ordinary Workbench gates on Linux/Windows, plus
+a fresh Windows execution of the actual uploaded evaluator. Guarded publication
+`302f982943c0e03c30968368da8264cfb3c431ce` installs the two validated runtimes and provenance files only.
+The [delivery ledger](../audits/objectshard-m4-live-edit-20261128/README.md) binds
+all source, package, native, publication and independent review identities.
+
+Bounded one-owner native batches now power the unified eraser, swept radius
+controls, precision cutting, Slice, Drill, seeded Weathering and Area ignition.
+Visible material remains editable through ordinary supports, collapse and
+sleeping fragments, while native World/worker authority and Main Rapier ownership
+are retained. The [owner guide](../operations/objectshard-workbench-playtest.md)
+covers nine authored starts and the twelve-step evaluation route. Saving is
+construction reconstruction, not a live rigid-body checkpoint.
+
+Native batching avoids repeated reconstruction, but the matched inactive-edit
+moving-tower medians are 4.60%/6.45% lower in this short Linux campaign; the
+[performance finding](../audits/objectshard-m4-live-edit-20261128/performance-results.md)
+remains unresolved. The owner has positively evaluated this frozen live-edit archive; that observation is recorded separately from acceptance of the reconciled source.
+
+Accepted RAMCACHE, Strata Theatre and portable-package work are now the
+reconciliation baseline. Shared Workbench ownership boundaries are combined
+explicitly, including refusal of simultaneous layered-Strata and active
+ObjectShard structural ownership. PUBPRES remains independently owned.
+Combined-source qualification and Windows delivery remain required before
+merger. Impact, repair, welding, stress/fatigue, M5 debris demotion and live
+body saves remain outside this mission. No Ready or default promotion is
+conferred by the candidate.
 
 ## GEN-006 persistent authored areas
 

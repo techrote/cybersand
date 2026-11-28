@@ -1,0 +1,14 @@
+{
+  "schema": "objectshard-downloaded-package-custody-v1",
+  "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "source_tree": "a0e3478c293908247bc5cdaab9497fc290a374c6",
+  "verified_manifest_files": 1054,
+  "verified_native_inputs": 114,
+  "verified_lab_inputs": 13,
+  "native_sha256": "2e4a70c4c4eb80e451648deaeac0dea476aa6ad95231308ea6bb81fb445f2178",
+  "manifest_sha256": "893f11b3e9e40412a8023336766e83693bdabeb4f05d4435ef34ca64d4111149",
+  "package_artifact_id": 14735176557,
+  "archive_sha256": "bb231a6eed49f097db59b350294a6fa8ec4fb26888b41860b457c40bb8a473b0",
+  "status": "passed",
+  "physical_owner_acceptance": "unrecorded"
+}

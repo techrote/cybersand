@@ -1,0 +1,114 @@
+{
+  "schema": "objectshard-m3-local-review-custody-v1",
+  "scope": "Pre-freeze independent findings and repaired iteration; final source and Windows qualification remain separate",
+  "files": [
+    {
+      "path": "ownership-initial.json",
+      "source_path": "build/review-ownership/initial-review.json",
+      "sha256": "94fc9477387cd88d32c4a275dd63a73323457f5be0d3b103c9908acb86190a7c",
+      "bytes": 4338
+    },
+    {
+      "path": "ownership-repair.json",
+      "source_path": "build/review-ownership/repair3-review.json",
+      "sha256": "253dd0ed88c8993a4edeca9cd2adfb0149066e93d1ed32885b0a6cee4fa7a164",
+      "bytes": 8957
+    },
+    {
+      "path": "ownership-initial-binding.json",
+      "source_path": "build/review-ownership/initial-source-binding.json",
+      "sha256": "b4a9b8c06f336bb36171db9589c897c24e5b7e8ec6ca4b899ebafdd4908afd7d",
+      "bytes": 3009
+    },
+    {
+      "path": "ownership-repair-binding.json",
+      "source_path": "build/review-ownership/repair3-source-binding.json",
+      "sha256": "5d66d1613fd813a414fd9803b8ccc3a3e71ec9060cbdeaa30c0215928c16e166",
+      "bytes": 796
+    },
+    {
+      "path": "ownership-held-negative.txt",
+      "source_path": "build/review-ownership/initial-adversaries-v4.log",
+      "sha256": "7cda7bb71ce6dc5f0447d3f4e0773eba0f69e2433e9ffc40346fe8bcb1d41d33",
+      "bytes": 4317
+    },
+    {
+      "path": "ownership-reset-queue-negative.txt",
+      "source_path": "build/review-ownership/repair1-reset-queue-race-v2.log",
+      "sha256": "b2b7918f6b341c42e296171214363937fcc480681215a6d88f2080584d574a1c",
+      "bytes": 5547
+    },
+    {
+      "path": "ownership-startup-negative.txt",
+      "source_path": "build/review-ownership/repair3-invalid-open-identity.log",
+      "sha256": "a11c1c5b03ea31e8d0e3f3308b2a4bf45bb6b14f8fb0bfa8386d8d248a9e50ff",
+      "bytes": 605
+    },
+    {
+      "path": "physics-checkpoint.json",
+      "source_path": "build/review-physics/review-physics-checkpoint.json",
+      "sha256": "f9e6cb7806cca32eb6af78ed2895d26b37d60a6c85fcd268278866abf85ff7ae",
+      "bytes": 5412
+    },
+    {
+      "path": "custody-checkpoint.json",
+      "source_path": "build/review-custody/initial-contract-review.json",
+      "sha256": "1d3e85dc3024e8f2edc358cfcf566420151f87a2cad1aaa09cd75ca968f0e44e",
+      "bytes": 7220
+    },
+    {
+      "path": "package-discovery-negative.json",
+      "source_path": "build/review-custody/ordinary-discovery-negative.json",
+      "sha256": "91bc6b08dcc373dcccafdc08b96a213527ce707e596542c8660988e11567bf61",
+      "bytes": 2720
+    },
+    {
+      "path": "delivery-index.json",
+      "source_path": "build/c-ui-evidence/C-DELIVERY-EVIDENCE.json",
+      "sha256": "f889ffbdd71d67fdccd8d92c8961781967ac00a9eb7a12c8dfdfe2a5817d9e04",
+      "bytes": 5986
+    },
+    {
+      "path": "moving-cut-negative.txt",
+      "source_path": "build/c-ui-evidence/moving-live-before.log",
+      "sha256": "54e293e08d87fcc51dd1bd27d77e048a186a4135e0db000ede9575352b34fd24",
+      "bytes": 395
+    },
+    {
+      "path": "moving-cut-repaired.txt",
+      "source_path": "build/c-ui-evidence/moving-live-after.log",
+      "sha256": "5378f29d45426826e8eb63e05711b59823101ef044a752b0fc7eb5d215f40952",
+      "bytes": 397
+    },
+    {
+      "path": "continuous-ui.txt",
+      "source_path": "build/c-ui-evidence/continuous-v11.log",
+      "sha256": "ab4ad86eeeee0319f326097ddc56048b847d18a13740eac47da8be14c1c93447",
+      "bytes": 1918
+    },
+    {
+      "path": "continuous-ui-replay.json",
+      "source_path": "build/c-ui-evidence/continuous-replay-v11.json",
+      "sha256": "b93d821c5ac08c2fbe94a4ba35e5e4057bf5523388aaa835aac0a12641ac0023",
+      "bytes": 848
+    },
+    {
+      "path": "replay-admission.txt",
+      "source_path": "build/c-ui-evidence/replay-admission-v2.log",
+      "sha256": "d227460117de829914ccec0cbe82d3f20b0cc48a2fbfabfe501bf4643fcba7ff",
+      "bytes": 3167
+    },
+    {
+      "path": "mergedown-gates.json",
+      "source_path": "build/review-custody/mergedown-gates.json",
+      "sha256": "675013bab21887696d9c90e588b394ab0575b8735b30bc8f650b8da127e08318",
+      "bytes": 17229
+    },
+    {
+      "path": "world-completion-incomplete.json",
+      "source_path": "build/a-worker-evidence/world-sanitized-completion.json",
+      "sha256": "3bd16a5d49b0a676c519b00040fbb4bb1e76d42f2c8454b36f580da152235a24",
+      "bytes": 2830
+    }
+  ]
+}

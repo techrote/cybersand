@@ -1,0 +1,76 @@
+{
+  "schema": "objectshard-m4-recovered-windows-native-review-v1",
+  "reviewed_at_utc": "2026-11-25T00:08:03.292492+00:00",
+  "status": "PASS_STATIC_NATIVE_IDENTITY",
+  "artifact": {
+    "id": 14959065759,
+    "sha256": "467f34bcb7b2c3cfcfbf90d8e4e274c44a5b9817357fc3079e5503f65a104a70",
+    "bytes": 2265509
+  },
+  "original_run": 45473059187,
+  "original_job": 138725897873,
+  "provenance_sha256": "60f0844f3d7c26f78a1a0ad538a148a1df7a67a93fe4769d14d2860f633c590c",
+  "source_commit": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+  "source_tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+  "build_commit": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+  "native_source_inputs_count": 117,
+  "source_inputs_match_recovery_tree": true,
+  "dll": {
+    "sha256": "9c939287f21b8d5b580b50464271a16b6aa235b6e71183eb434d607cfd966b4a",
+    "bytes": 6196224,
+    "pe_offset": 120,
+    "coff_machine": "0x8664",
+    "optional_header": "0x20b",
+    "initialization_export_present": true,
+    "imports": [
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "KERNEL32.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll"
+    ]
+  },
+  "build_contract_inputs": [
+    {
+      "path": ".github/workflows/objectshard-m4-completion.yml",
+      "sha256": "ab096907cdedd7c5d3ad0f0697d95fee52ff8e96e83da98a2e9ba49c9be01a5f"
+    },
+    {
+      "path": "third_party/native-toolchain.lock.json",
+      "sha256": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414"
+    },
+    {
+      "path": "tools/requirements-build.txt",
+      "sha256": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409"
+    },
+    {
+      "path": "tools/build_native_extension_windows.sh",
+      "sha256": "fe592da436240d0dbbe550dc50a51dd8ffa1eb060550c8033bd16e57d93476c8"
+    },
+    {
+      "path": "tools/build_pinned_godot_cpp.sh",
+      "sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea"
+    },
+    {
+      "path": "tools/ci/native_candidate_identity.py",
+      "sha256": "51fdf546b8217935628e41b44e514fe757f48d62d4a15985334bf6f99c4e8720"
+    },
+    {
+      "path": "godot/addons/cybersand_native/cybersand_native.gdextension",
+      "sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7"
+    }
+  ],
+  "objdump_version": "GNU objdump (GNU Binutils for Debian) 2.44",
+  "objdump_output_sha256": "7309d8b8a87aaa227de04ec4d120ad8286cfb3fac4dd214271b5afc658068c94",
+  "limits": [
+    "Static PE/source review, not Windows DLL execution or owner GPU acceptance.",
+    "The recovered manifest covers 117 native inputs. Toolchain and build contract inputs are recorded separately.",
+    "A changed application/qualification source does not become qualified solely because these native inputs match."
+  ]
+}

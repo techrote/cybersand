@@ -117,6 +117,15 @@ func equipment_parts(actor_slot: int) -> Array:
 	return result
 
 
+func pack_material_motion_sample() -> Dictionary:
+	# Occupancy for an already completed shared-space material-body segment.
+	# Equipment, emitters and control effects remain owned by the final ordinary
+	# actor sample; this narrow observation never drains or repeats them.
+	var drives: Array[bool] = []
+	drives.resize(_members.size())
+	drives.fill(false)
+	return pack_sample(drives)
+
 func pack_sample(drives: Array[bool]) -> Dictionary:
 	if OS.get_thread_caller_id() != OS.get_main_thread_id() or not _initialized or _session == 0 or drives.size() != _members.size(): return {}
 	var serial: int = (_serial + 1) % SAMPLE_SERIAL_LIMIT

@@ -6,10 +6,26 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-28
 ---
 
 # Architectural and simulation invariants
+
+## Opt-in ObjectShard live structural editing
+
+The [M4 transaction contract](../research/objectshard-m4-workbench.md#bounded-native-structural-transactions)
+retains native material authority and Main Rapier installation. These claims
+apply only to the Draft/HOLD candidate, with dated execution in its evidence
+ledger.
+
+| ID | Current scoped invariant |
+| --- | --- |
+| M4-EDIT-001 | At most 4,096 exact targets enter one owner transaction; every witness is validated before deduplication and material debit. |
+| M4-EDIT-002 | Expected geometry/capacity refusal changes no material; unexpected post-debit failure quarantines and retains known partial accounting. |
+| M4-EDIT-003 | A changed structural owner has one parent geometry/connectivity rebuild per batch; no-op and ignition do not rebuild geometry. |
+| M4-EDIT-004 | Foreground occupied owned material blocks editing hidden owners or terrain; cross-owner gestures are explicitly sequential. |
+| M4-EDIT-005 | Mutation, physical installation and displayed publication are distinct acknowledgements; freehand release and scene retirement cancel future admission. |
+| M4-EDIT-006 | Intentional erasure is accounted separately; surviving material has one owner, and authored-start saving does not serialize detached live state. |
 
 ## Opt-in persistent authored areas
 

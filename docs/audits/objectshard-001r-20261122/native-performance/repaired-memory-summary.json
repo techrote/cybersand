@@ -1,0 +1,61 @@
+{
+  "binary_sha256": "81b9b06218a6030ad14de46e0643c985fb3133faa77fc7360156eb7fdd33ffd0",
+  "budget_qualification": {
+    "failures": [],
+    "limits_checked": 74,
+    "status": "passed"
+  },
+  "checks": 4237399,
+  "elapsed_seconds": 37.053266501003236,
+  "execution": {
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+    "elapsed_seconds": 6.264302634997875,
+    "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/logs/benchmark.log",
+    "returncode": 0,
+    "timed_out": false
+  },
+  "failures": 0,
+  "git_head": "f11be5aa55babad3fbabe0471ae47517322989b1",
+  "input_digest": "b9fc822657c0762fea847ef28f8e9a1e60d2233283612916be334b379e015690",
+  "link": {
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O3",
+      "-DNDEBUG",
+      "-pthread",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-I",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/source/native/include",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/source/native/tests/benchmark_object_shard.cpp",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/objects/world.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/objects/material_rules.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/objects/scheduler_geometry.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/objects/settled_world_discovery.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/objects/object_shard.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/objects/object_shard_coordinator.o",
+      "-o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark_object_shard"
+    ],
+    "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+    "elapsed_seconds": 3.923805086000357,
+    "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/logs/link.log",
+    "returncode": 0,
+    "timed_out": false
+  },
+  "qualification_scope": "Freeze, build and measure the actual native ObjectShard implementation.\n\nThis is a native cost experiment with synthetic pose/acknowledgement values.\nIt does not execute Rapier, render frames or establish Windows playability.\nThe comparison uses release optimisation without LTO, in one isolated process.\n",
+  "report": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0/benchmark.json",
+  "run_directory": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-fence-delta/20261122T043522.002939Z-b9fc822657c0",
+  "schema": 1,
+  "status": "qualified"
+}

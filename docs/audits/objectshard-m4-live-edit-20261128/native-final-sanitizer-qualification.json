@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "scope": "Final local native production sources, ASan+UBSan; leak detection disabled by retained harness. Hosted committed-source qualification remains separate.",
+  "input_digest": "9709a1aeab35e0e5e3469f705c35181d751fb0da7a3ed5c2d7600e7a07dcd774",
+  "base_git_head": "327afc58227b246390b19c275f58df77ae2dd734",
+  "status": "passed",
+  "checks_reported": 138280,
+  "suites": {
+    "admission": {
+      "binary_sha256": "e0017b65ef1c43e8cfd569ec79929c4b9c1b7e5280d50c747d87165b891b2cff",
+      "checks": 28092,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 1.7758965639986855,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "chemistry": {
+      "binary_sha256": "b1e1f33bbfc2a568f5b968fb740545dc3281b021f3b8f246a61670fb20295136",
+      "checks": 4472,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 1.6865236459998414,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "contact": {
+      "binary_sha256": "e311b9340f19ae6defc93de08296f55bb290ae781a4c72dd68dc08ed6331f994",
+      "checks": 81255,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 0.01776395200067782,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "coordinator": {
+      "binary_sha256": "4734ddcf86a1124c6d6d38745eda595493a850f99cf435526b2f1ca3489923d7",
+      "checks": 7100,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 17.416488474998914,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "external_fire": {
+      "binary_sha256": "fafcc08ce4408f603c60f96b5e6ff102ef5f7b23b3ac4cb985f2f08ad47552ca",
+      "checks": 3689,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 1.0271758809976745,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "storage": {
+      "binary_sha256": "b7722477aace848d5c18df62e1a3733ae8d3f3a5e88e6447351f67a6d76910d9",
+      "checks": 13672,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 0.061666895999223925,
+        "returncode": 0,
+        "timed_out": false
+      }
+    }
+  }
+}

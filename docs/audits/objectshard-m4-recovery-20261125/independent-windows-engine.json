@@ -1,0 +1,26 @@
+{
+  "schema": "objectshard-m4-independent-engine-archive-v1",
+  "source_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip",
+  "archive": {
+    "filename": "Godot_v4.7-stable_win64.exe.zip",
+    "bytes": 83764371,
+    "sha256": "02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71",
+    "sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "crc_integrity": "passed"
+  },
+  "binaries": {
+    "Godot_v4.7-stable_win64.exe": {
+      "bytes": 178485256,
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "machine": "AMD64",
+      "optional_header": "PE32+"
+    },
+    "Godot_v4.7-stable_win64_console.exe": {
+      "bytes": 198152,
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "machine": "AMD64",
+      "optional_header": "PE32+"
+    }
+  },
+  "scope": "Official pinned archive acquired independently on Linux; binary identity/format only, no Windows execution claim"
+}

@@ -114,6 +114,36 @@ runtime, interactive viewer and offline gallery, or use the
 Large/asymmetric art dimensions are independent of native playable World limits.
 This integration remains Draft/HOLD pending explicit owner acceptance.
 
+## Destructible Workbench structures — Draft/HOLD candidate
+
+The opt-in [ordinary Workbench candidate](docs/operations/objectshard-workbench-playtest.md)
+adds a Structures panel, nine authored demonstration starts and unified erasing
+through terrain, collapse and sleeping fragments. Bounded native batches support
+precision cuts, adjustable swept erasing, slices, drilling, seeded weathering and
+area ignition through the ordinary World, worker and Main Rapier space. Its
+[M4 integration contract](docs/research/objectshard-m4-workbench.md) defines
+same-World ownership, composed occupancy, bounded structural admission, scoped
+save/reopen and separate progression/render measurements. PR #754 remains
+Draft/HOLD. The owner positively evaluated the frozen live-edit Windows application;
+that physical acceptance does not transfer automatically to this reconciled source.
+Ordinary launch defaults are unchanged.
+
+### Retained ObjectShard laboratories
+
+The separate [M3 continuous-play preflight](docs/operations/objectshard-m3-preflight-playtest.md) adds an opt-in exclusive-worker/Rapier rehearsal with live edits, eleven fixtures and bounded bug capture. It retains its separate experimental World and original evidence; it does not qualify the M4 ordinary Workbench integration.
+Its [final qualification and Windows delivery](docs/audits/2026-11-22-objectshard-m3-final-qualification.md) bind repaired source `e034f229` to fresh Linux/Windows execution, the verified owner ZIP and independent reviews. PR #741 and the complete ObjectShard stack remain Draft/HOLD.
+
+The independent [ObjectShard Lab](docs/operations/objectshard-lab-playtest.md)
+evaluates genuine native Wood structures that detach into moving Rapier bodies,
+continue selected combustion, emit real material and admit bounded Sand/Water
+interactions. Its [M0–M2 implementation record](docs/research/objectshard-001.md)
+separates staged source, exact runtime evidence and owner physical acceptance.
+The [final delivery record](docs/audits/2026-11-22-objectshard-final-acceptance.md)
+links the verified Windows evaluator, passing Linux/Windows campaign and retained
+native timing failure. Physical owner acceptance remains outstanding.
+The historical M0–M2 Lab does not claim fracture, general liquid transfer or
+durable shard saves. Use the M4 contract for the current Workbench candidate.
+
 ## Reciprocal Workbench evaluation
 
 The consolidated **SWARM-004/005/006** evaluator provides existing Gentek

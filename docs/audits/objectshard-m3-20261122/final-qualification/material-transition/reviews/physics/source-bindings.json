@@ -1,0 +1,178 @@
+{
+  "schema": "independent-material-transition-source-binding-v1",
+  "reviewed_head": "10d191bbf9223b7fbb9ddd30ba12e158ff6d60b9",
+  "approved_world_source_commit": "5afe5643097c543f7d8a6840ced9afac58dd053e",
+  "first_new_world_source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+  "changed_protected_sources_since_approved": [
+    "native/src/world.cpp"
+  ],
+  "unchanged_identity_inputs": 12,
+  "unchanged_other_protected_inputs": 26,
+  "frozen_lock_unchanged": true,
+  "identity_digests": {
+    "catalogue_approved": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+    "catalogue_reviewed": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+    "capability_approved": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+    "capability_reviewed": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237"
+  },
+  "authenticated_preceding_target": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+  "source_chain_ancestry_verified": true,
+  "protected_source_hashes": {
+    "docs/reference/liquid-policy-wire-vectors.json": {
+      "approved_lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "reviewed_lf_sha256": "cac210f88ca96078d9920de80505e9e28c63a630df87fd1d5c16801bde5a8c31",
+      "identity_input": true
+    },
+    "docs/reference/liquid-run-receipt-vectors.json": {
+      "approved_lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "reviewed_lf_sha256": "5c07d0fe8d79bcbfbc76bfc3b7675926ebc3860cb3a062147559e4487cb6c0a8",
+      "identity_input": true
+    },
+    "docs/reference/liquid-solver-capability-matrix.json": {
+      "approved_lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "reviewed_lf_sha256": "3d7a471391ffa551d8580fd83625bdf3b40954adfa8f683045dd1e168abdcddb",
+      "identity_input": true
+    },
+    "docs/reference/water-normalization-vectors.json": {
+      "approved_lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "reviewed_lf_sha256": "ec6541c726b534a016dba5fd9d5eb22bf2a2ff07d9da9ed4ca802fbb9f1d8c17",
+      "identity_input": true
+    },
+    "godot/scripts/cell_world.gd": {
+      "approved_lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "reviewed_lf_sha256": "763f5047c2f028ec71109a3f44a420bab75122e3ce15cfbad9b6fb3787bee035",
+      "identity_input": true
+    },
+    "godot/scripts/interaction_policy.gd": {
+      "approved_lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "reviewed_lf_sha256": "ba4acd7587b044ca412caaa75c740a6487f59ed6cae09c4d9d271a7342d06742",
+      "identity_input": true
+    },
+    "godot/scripts/material_appearance_lut.gd": {
+      "approved_lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "reviewed_lf_sha256": "1033dbe5e61e330578aa8a3bb2d3d7c98a8b7b4c42775b91d50b5a87fd443b0a",
+      "identity_input": true
+    },
+    "godot/scripts/transport_profiles.gd": {
+      "approved_lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "reviewed_lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+      "identity_input": false
+    },
+    "godot/shaders/material_palette.gdshader": {
+      "approved_lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "reviewed_lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "identity_input": false
+    },
+    "materials/catalogue/compatibility-lock.json": {
+      "approved_lf_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+      "reviewed_lf_sha256": "8b4d3351cbe4380e976655d10dc34c4bf9e81d95442719a53770b62d219183dc",
+      "identity_input": false
+    },
+    "native/include/cybersand/interaction_rules.hpp": {
+      "approved_lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "reviewed_lf_sha256": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "identity_input": true
+    },
+    "native/include/cybersand/liquid_policy_catalogue.hpp": {
+      "approved_lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "reviewed_lf_sha256": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "identity_input": true
+    },
+    "native/include/cybersand/liquid_solver_policy.hpp": {
+      "approved_lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "reviewed_lf_sha256": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "identity_input": false
+    },
+    "native/include/cybersand/material.hpp": {
+      "approved_lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "reviewed_lf_sha256": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "identity_input": true
+    },
+    "native/include/cybersand/material_appearance.hpp": {
+      "approved_lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "reviewed_lf_sha256": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "identity_input": false
+    },
+    "native/include/cybersand/material_rules.hpp": {
+      "approved_lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "reviewed_lf_sha256": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "identity_input": false
+    },
+    "native/include/cybersand/precision_storage.hpp": {
+      "approved_lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "reviewed_lf_sha256": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "identity_input": false
+    },
+    "native/include/cybersand/quantity_ledger.hpp": {
+      "approved_lf_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+      "reviewed_lf_sha256": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+      "identity_input": false
+    },
+    "native/include/cybersand/transport_policy.hpp": {
+      "approved_lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "reviewed_lf_sha256": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "identity_input": false
+    },
+    "native/include/cybersand/water_experiment_policy.hpp": {
+      "approved_lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "reviewed_lf_sha256": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "identity_input": false
+    },
+    "native/src/material_rules.cpp": {
+      "approved_lf_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+      "reviewed_lf_sha256": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+      "identity_input": false
+    },
+    "native/src/world.cpp": {
+      "approved_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+      "reviewed_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+      "identity_input": false
+    },
+    "native/src/world_inertial.inc": {
+      "approved_lf_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+      "reviewed_lf_sha256": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+      "identity_input": false
+    },
+    "native/src/world_pressure.inc": {
+      "approved_lf_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+      "reviewed_lf_sha256": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+      "identity_input": false
+    },
+    "native/src/world_quantity.inc": {
+      "approved_lf_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+      "reviewed_lf_sha256": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+      "identity_input": false
+    },
+    "tools/lcb/derive_capability_matrix.py": {
+      "approved_lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "reviewed_lf_sha256": "8ccea6c3bca94116e1714fd4a2ae0b3bbef046e604c4ffe734bca46c54b5d5ea",
+      "identity_input": false
+    },
+    "tools/lcb/native_policy_artifacts.py": {
+      "approved_lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "reviewed_lf_sha256": "1eba32bb3e3e80a4d6cb62219287421abee454b32865cde183bd2d451523c230",
+      "identity_input": true
+    },
+    "tools/lcb/policy_contract.py": {
+      "approved_lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "reviewed_lf_sha256": "3b9d6634f884621a3506cea761af7500e484d513b0e5bb75e2a81361fe9a81b2",
+      "identity_input": true
+    }
+  },
+  "reviewed_git_source_sha256": {
+    "native/src/world.cpp": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+    "native/include/cybersand/world.hpp": "bb402502da561db59626131ee47a4f8c7ababa5029380d374a2fba43d3f0f1ce",
+    "native/include/cybersand/object_shard_mutation.hpp": "f2d94ba52bce97cfa939b08ded5a19cbcd2b4482ed8694ad3350108d3175ed46",
+    "native/src/object_shard_coordinator.cpp": "3643d0ae12eb77d4ea621cfae23232228c83d1e6d953140d6bf5f2dcabea4e4f",
+    "native/src/object_shard_fire.inc": "27b0aa89e5c6d8afbf6c5feb14ff2a1da269aee3116fb1d783d886f8d96cc175",
+    "native/tests/test_object_shard_external_fire.cpp": "b22770bd680bfdac7f096e6cb5f8ac05795aae440c925e1a54fad49f9595eabc",
+    "native/tests/test_object_shard_chemistry.cpp": "86714159645e816f7da07782127ca53958c18b8a03eb30645fe5c4271293dde4",
+    "tools/objectshard/run_native_tests.py": "c60fa0d33ade325af37d638d1ff8bfa35ad9deb2ff2fd80f16377af9bab5cdbb",
+    "Makefile": "463f8476fb057b481ee3c7c899166eb77341bd159a146fa02d2e3cf907a082f7",
+    "tools/material_catalogue/compatibility.py": "02e034f2572bac8893dad808383ee5ee49485e768bdc7163110dcfe66c4bf89a",
+    "tools/material_catalogue/test_compatibility.py": "98577ee4b97a0d840a9381c25c6d9071457b56fd1833797633860174839d57fd",
+    "docs/operations/material-catalogue-shadow.md": "0f8ed826d60d97f0d863556422559e720f6ac92f38157701b8015d43ea177a66",
+    "docs/audits/2026-11-22-objectshard-world-transition.md": "58c0d480b6220948fed151f2df93fc6c5c9bee07b4c9af6c8715dadf20c07e05"
+  },
+  "diff_sha256": "c3915cc0ab2142c2065a91096f008df765b645bae4f50f2d1699a7466e097265"
+}

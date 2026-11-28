@@ -1,0 +1,56 @@
+{
+  "schema": "independent-navigation-frozen-repair-review-v1",
+  "reviewer": "/root/review_physics",
+  "utc": "2026-11-22T07:33:10.476495+00:00",
+  "base_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "scope": "Stable author repair bytes over68235b12; final published commit and fresh CI qualification pending.",
+  "changed_source_sha256": {
+    "godot/scripts/feature_navigation.gd": "68d8774b767d0c13106892ff4449e701720e1a827c2b4c493a3d3803a3188441",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "7cdf71477b8a457d512801e6699ea0fd8ac1886c32a038c9af17e558d36e4383"
+  },
+  "checks": 49,
+  "failures": 0,
+  "status": "Original F2 Class B lifecycle finding resolved on captured frozen bytes within the supported controlled-navigation paths.",
+  "source_mismatch_after_execution": [],
+  "original_finding": "build/review-physics/navigation-68235b12/finding.json",
+  "independent_verified": [
+    "Actual F2 input/autoload retains scene through successful native disposal, worker join and RID shutdown.",
+    "Original active pending tick and naturally sleeping owner navigation cases22/0; actual launcher re-entry has no overlapping prior live owner.",
+    "Additional real F2 repeated/early-completion controls, late completion and deferred successor identity fencing, prior auto_accept_quit false/true restoration27/0.",
+    "Exact same original49 reviewer assertions rerun after OPERATOR02/03 UI repair freeze; no weakening.",
+    "Source reviewed centralized play-input gate, quit-priority preservation on ShutdownHeld retry and explicit Reset/new-owner clearing old exit destination."
+  ],
+  "separate_owner_evidence": "OWN independently reports OPERATOR02/03 tests17/17 and9/9; those counts are not included as this reviewer execution. Root reports ordinary LIFE00862/0; this reviewer did not execute that suite.",
+  "local_import_anomaly": {
+    "initial_import_exit_code": -6,
+    "initial_import_log": "import.log",
+    "repeat_import_exit_code": 0,
+    "repeat_log": "import-repeat.log",
+    "repeat_elapsed_seconds": 6.239707009997801,
+    "independent_runtime_suites_exit_codes": [
+      0,
+      0
+    ],
+    "scope": "Retained local first-import anomaly after successful import/class registration/layout; no log diagnostic identifies a cause. Exact-byte repeat import and actual runtime suites are distinct evidence."
+  },
+  "limits": [
+    "First isolated editor import SIGABRT after completed import/layout is retained without asserted cause; exact-byte repeat import0 and actual runtime suites0 do not erase it. Fresh CI import must pass.",
+    "Controlled F2/window-close navigation is covered. Unexpected external forced SceneTree replacement/free of a still-live owner remains unsupported; no universal _exit_tree cleanup is claimed.",
+    "Reused native runtime is identical in bytes to the completed fresh682 Linux artifact, but this repair snapshot is not a new source-built final candidate campaign.",
+    "No merge/Ready/default promotion, normal CyberSimulationWorker adoption, physical Windows11/NVIDIA owner acceptance, or display FPS claim."
+  ],
+  "input_sha256": {
+    "build/review-physics/navigation-repair-freeze/source-identity.json": "5eda84868843981947ff61da67e97c5cb4f847ac057c19e3f49885ca0ff13d3a",
+    "build/review-physics/navigation-repair-freeze/execution-receipts.json": "89397358aa4ad9add08f8fcc094389dfb4617ff6675c630c774b90423e88c15c",
+    "build/review-physics/navigation-repair-freeze/import-receipts.json": "b405fe057a08f28497bbe212ce17dfc37990cce38431ba4bc4b2e457ce428101",
+    "build/review-physics/navigation-repair-freeze/import.log": "03e20d0fe3d18e0687dbfcf042e80a5ff506d71a56f23de1d36eaec3a4be41be",
+    "build/review-physics/navigation-repair-freeze/import-repeat.log": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+    "build/review-physics/navigation-repair-freeze/review-navigation.log": "59c990e31392410a6db1dae437dbd9488986a165351da980e35e5723b1624077",
+    "build/review-physics/navigation-repair-freeze/review-navigation-result.json": "b0e3f133c463b135530ecd3727b7deee4ee2f8b82f1ec14ecfa4774f66bcfef1",
+    "build/review-physics/navigation-repair-freeze/review-navigation-fences.log": "e26932e0cbbc430e008222eb79b3e421b4b791f0a4092950fa48b111757ae37e",
+    "build/review-physics/navigation-repair-freeze/review-navigation-fences-result.json": "4795e2ab3fc4ed8f190628f14c88059118a82a4e97857e559176e033cd8f694d",
+    "build/review-physics/navigation-repair-freeze/project/tests/review_navigation_lifecycle.gd": "6dcbf922fe3e18e7f424c67d439937c3bbe9940ae2e9f996aa37a0e436393e2d",
+    "build/review-physics/navigation-repair-freeze/project/tests/review_navigation_fences.gd": "e870e2f02e7d496da6a36404bacc6aca1cd4674b89a81fddedbb388dc589e1f4",
+    "build/review-physics/navigation-repair-freeze/project/tests/review_navigation_successor.tscn": "2cbd9e5d501bff5f2bf6b6e30b991b5d6092ce8b96adab94ff420e974c2d91e8"
+  }
+}

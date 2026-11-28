@@ -1,0 +1,643 @@
+{
+  "actual_shipped_cmd_paths": [
+    "spaces",
+    "parentheses",
+    "unicode",
+    "nested"
+  ],
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "artifacts": {
+    "crossbuild": {
+      "bytes": 8810,
+      "id": 14984426850,
+      "name": "objectshard-m4-crossbuild-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "b40d49dec15665919de07f8ebdf33e9cc016d02447b549754dd207080f7ae4aa",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14984426850"
+    },
+    "dll": {
+      "bytes": 2265508,
+      "id": 14984556771,
+      "name": "objectshard-m4-dll-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "12563fa3c449963ad1adf04bc7dbb701c61777e18a823607d1e60b9815820a1c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14984556771"
+    },
+    "linux": {
+      "bytes": 14264606,
+      "id": 14986462220,
+      "name": "objectshard-m4-linux-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "3f745a25db44992edb8f2d2d889fff77d319f2273c583663c0b5c9c4eba94743",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986462220"
+    },
+    "native": {
+      "bytes": 135240202,
+      "id": 14985522687,
+      "name": "objectshard-m4-native-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "e4928403e5fd033768f50cfde4a576aef4475eae1d895d67f5156ed79e6ad7e7",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14985522687"
+    },
+    "windows": {
+      "bytes": 39179166,
+      "id": 14986123965,
+      "name": "objectshard-m4-windows-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "e9621d53c45fb649738c6b3c8572dc76c1a90fa4f020131967ff536d86e54468",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986123965"
+    },
+    "workbench-evaluator": {
+      "bytes": 93044387,
+      "id": 14986488170,
+      "name": "objectshard-m4-workbench-evaluator-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "5eee64f2147efe057a0768eb39476ec8730dae7dd133480c46ed4911a09f1f2a",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170"
+    }
+  },
+  "audit_attempt": 1,
+  "audit_run": 45537943367,
+  "audit_source": "21333f8a0eb15620ecf22ce4c1b3df09fa83fc51",
+  "case_counts": {
+    "linux": {
+      "graphical/qualification.json": 32,
+      "headless/qualification.json": 43
+    },
+    "windows": {
+      "graphical/qualification.json": 32,
+      "headless/qualification.json": 43,
+      "package-replay/qualification.json": 17
+    }
+  },
+  "driver_sha256": "7a42f82a6fcdb89cab829516ef3640ff28e57a910dbaf6efb643bac4c3abceee",
+  "inventory_sha256": "a7ac44da9d6915574dab0900449efe88acdcd29417e68795e2bfd8dac74ad100",
+  "material_parity": "passed-independent-eight-input-join",
+  "native_benchmark_checks": 4276351,
+  "native_budget_limits": 74,
+  "native_build_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "native_checks": 96500,
+  "native_dll_sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4",
+  "native_world_cases": 192,
+  "official_godot_archive_sha256": "02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71",
+  "original_captures": [
+    {
+      "artifact_id": 14986123965,
+      "bytes": 79523,
+      "case": "m4_workbench_tower_overview_render",
+      "member": "graphical/m4_workbench_tower_overview_render-artifacts/tower-overview.png",
+      "sha256": "f0206c397d7474501cafa17763927685846d57b6ed194fb27bfaaa99e5c98dab",
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+    },
+    {
+      "artifact_id": 14986123965,
+      "bytes": 88673,
+      "case": "m4_workbench_viaduct_overview_render",
+      "member": "graphical/m4_workbench_viaduct_overview_render-artifacts/viaduct-overview.png",
+      "sha256": "0ca6a1779c8b0466bf774568661998c64ef3ccfc6d85cf15e77a0e9189b96dc2",
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+    },
+    {
+      "artifact_id": 14986123965,
+      "bytes": 80047,
+      "case": "m4_workbench_timber_overview_render",
+      "member": "graphical/m4_workbench_timber_overview_render-artifacts/timber-overview.png",
+      "sha256": "068abb26c67ba8cbfddee0f5f33452556d72d6131d52f72c88160fcbe3d75d5e",
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+    },
+    {
+      "artifact_id": 14986123965,
+      "bytes": 90618,
+      "case": "m4_workbench_mixed_overview_render",
+      "member": "graphical/m4_workbench_mixed_overview_render-artifacts/mixed-overview.png",
+      "sha256": "d94fb7eb78610b4717d9ff3ce580a8cb8e32101053b92bc26a8d8a4f97484a9b",
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+    },
+    {
+      "artifact_id": 14986123965,
+      "bytes": 78655,
+      "case": "m4_workbench_stress_overview_render",
+      "member": "graphical/m4_workbench_stress_overview_render-artifacts/stress-overview.png",
+      "sha256": "d898a9ac28dde13789d6b5948e5f430cd60abbf4d43cf99dd725496f12db8bdd",
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+    }
+  ],
+  "original_job_logs": {
+    "linux-workbench": {
+      "bytes": 2778292,
+      "job_id": 138924056891,
+      "sha256": "2bccaf639ea94167a37aacb7707ddfa5cf3dbf6c4f80c35d71ca2616d9540658"
+    },
+    "native-sanitizers": {
+      "bytes": 201814,
+      "job_id": 138924057320,
+      "sha256": "3a70b4708c42a323c82740340a63d4f3ef70e11958cfc4b522d94a1b0e1da0b0"
+    },
+    "windows-native": {
+      "bytes": 25281,
+      "job_id": 138924057296,
+      "sha256": "d07894cadd6ca03699cfc786f6c2e9c09b811a70720f49797a950dc78a1a8a6d"
+    },
+    "windows-workbench": {
+      "bytes": 3453079,
+      "job_id": 138926161028,
+      "sha256": "757f32f8a9e4a57105488a4e7947505e3d3fa6246d904fbb766ccf390fd72a08"
+    }
+  },
+  "package_import_inventory": {
+    "api_set_contracts": [
+      "api-ms-win-core-processthreads-l1-1-0.dll",
+      "api-ms-win-core-registry-l1-1-0.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-version-l1-1-0.dll",
+      "api-ms-win-core-version-l1-1-1.dll",
+      "api-ms-win-core-winrt-error-l1-1-1.dll",
+      "api-ms-win-core-winrt-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-environment-l1-1-0.dll",
+      "api-ms-win-crt-filesystem-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-private-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "api-ms-win-security-base-l1-1-0.dll",
+      "api-ms-win-security-lsalookup-l2-1-0.dll"
+    ],
+    "core_windows_candidates": [
+      "advapi32.dll",
+      "avrt.dll",
+      "bcrypt.dll",
+      "bcryptprimitives.dll",
+      "crypt32.dll",
+      "dbghelp.dll",
+      "dwmapi.dll",
+      "dwrite.dll",
+      "dxgi.dll",
+      "gdi32.dll",
+      "hid.dll",
+      "imm32.dll",
+      "iphlpapi.dll",
+      "kernel32.dll",
+      "msvcrt.dll",
+      "ntdll.dll",
+      "ole32.dll",
+      "oleaut32.dll",
+      "shcore.dll",
+      "shell32.dll",
+      "shlwapi.dll",
+      "uiautomationcore.dll",
+      "user32.dll",
+      "winmm.dll",
+      "ws2_32.dll",
+      "wsock32.dll"
+    ],
+    "images": [
+      {
+        "imports": [
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-convert-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-environment-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-filesystem-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-heap-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-locale-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-math-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-private-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-string-l1-1-0.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "KERNEL32.dll"
+          }
+        ],
+        "member": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "original_import_table": "pe-0-imports.txt",
+        "original_import_table_sha256": "2c359f0b6e56232f606d996cac719c0e9c811b7bad122c42ce6476fe9eef14e1",
+        "sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4"
+      },
+      {
+        "imports": [
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-synch-l1-2-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-heap-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-math-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-string-l1-1-0.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "bcryptprimitives.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "KERNEL32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "ntdll.dll"
+          },
+          {
+            "kind": "manifest-declared-package-payload",
+            "name": "VCRUNTIME140.dll",
+            "path": "vcruntime140.dll",
+            "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+          }
+        ],
+        "member": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "original_import_table": "pe-1-imports.txt",
+        "original_import_table_sha256": "9bf4de112b9b49291a63e4ae6c1c53889b7a788527231a30efc8bb3b0062b774",
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      {
+        "imports": [
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-convert-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-heap-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-runtime-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-stdio-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-crt-string-l1-1-0.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "KERNEL32.dll"
+          }
+        ],
+        "member": "vcruntime140.dll",
+        "original_import_table": "pe-2-imports.txt",
+        "original_import_table_sha256": "05a78ef3a155ee46a8927ab39032cad7ac73252e8824c0d24055caac1bef7362",
+        "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+      },
+      {
+        "imports": [
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "ADVAPI32.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-processthreads-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-registry-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-synch-l1-2-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-winrt-error-l1-1-1.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-winrt-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-security-base-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-security-lsalookup-l2-1-0.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "AVRT.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "bcrypt.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "CRYPT32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "dbghelp.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "dwmapi.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "DWrite.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "dxgi.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "GDI32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "HID.DLL"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "IMM32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "IPHLPAPI.DLL"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "kernel32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "KERNEL32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "msvcrt.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "ntdll.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "ole32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "OLEAUT32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "oleaut32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "SHCORE.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "SHELL32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "SHLWAPI.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "uiautomationcore.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "USER32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "user32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "WINMM.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "WS2_32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "WSOCK32.dll"
+          }
+        ],
+        "member": "Godot_v4.7-stable_win64.exe",
+        "original_import_table": "pe-3-imports.txt",
+        "original_import_table_sha256": "fea79f94078f2aac2425f7bd911dfcf5f57b1db6a741fdfb65e4067b065fd67b",
+        "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+      },
+      {
+        "imports": [
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-version-l1-1-0.dll"
+          },
+          {
+            "kind": "named-Windows-API-set-contract",
+            "name": "api-ms-win-core-version-l1-1-1.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "KERNEL32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "msvcrt.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "SHELL32.dll"
+          },
+          {
+            "kind": "core-Windows-candidate-requires-concrete-review",
+            "name": "SHLWAPI.dll"
+          }
+        ],
+        "member": "Godot_v4.7-stable_win64_console.exe",
+        "original_import_table": "pe-4-imports.txt",
+        "original_import_table_sha256": "20bee8d0644b4a3b047e73cb5469142e13c3991ae3b54f83f1781e73e6da5245",
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+      }
+    ],
+    "scope": "Read-only exact-payload direct PE imports. Named API sets are OS loader contracts, not missing packaged files. System32 presence alone is not proof of Windows11 inbox availability. Omitted compiler runtime families are refused; remaining concrete names require independent documented OS review.",
+    "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "status": "captured-static-imports-core-OS-classification-pending"
+  },
+  "package_producing_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "physical_owner_acceptance": "HOLD",
+  "principal_evaluator": {
+    "bytes": 93388322,
+    "filename": "objectshard-workbench-evaluator.zip",
+    "sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387"
+  },
+  "producer_jobs": {
+    "linux-workbench": 138924056891,
+    "native-sanitizers": 138924057320,
+    "windows-native": 138924057296,
+    "windows-workbench": 138926161028
+  },
+  "provenance_refusals": 8,
+  "qualification_attempt": 1,
+  "qualification_run": 45530425519,
+  "report_identities": {
+    "linux-workbench-independent-review-inspector.log": {
+      "bytes": 98,
+      "sha256": "67de0470c888135fb471d8ccded5d5b9c697906604fcd604b70ea285ef96e423"
+    },
+    "linux-workbench-independent-review.json": {
+      "bytes": 42559,
+      "sha256": "169bc66a241f6bcf26a8afb33349111e6c99e543ad5afc9891f5018b24301df5"
+    },
+    "material-parity-independent-review.json": {
+      "bytes": 2340,
+      "sha256": "74e19c7efd64dc9c94a962212fed7f4f231c3f42e36198e822485bb267221703"
+    },
+    "mixed-overview.png": {
+      "bytes": 90618,
+      "sha256": "d94fb7eb78610b4717d9ff3ce580a8cb8e32101053b92bc26a8d8a4f97484a9b"
+    },
+    "native-independent-review-inspector.log": {
+      "bytes": 223,
+      "sha256": "a6164471de4d6ab5c1f8af4eb1ec4a7f106d3b9beac4faed5c17cb181b048fd5"
+    },
+    "native-independent-review.json": {
+      "bytes": 43509,
+      "sha256": "5dcb8f4c5a835de3b425414f752dfac6ad786163ffbdd5e2bf8599f7b0a4dd0b"
+    },
+    "package-pe-imports.json": {
+      "bytes": 11978,
+      "sha256": "1e5ab47c57d53dbf61c16e1896dc9850a0fc12453e93c4a66558b8cadf7ec172"
+    },
+    "pe-0-imports.txt": {
+      "bytes": 3537674,
+      "sha256": "2c359f0b6e56232f606d996cac719c0e9c811b7bad122c42ce6476fe9eef14e1"
+    },
+    "pe-1-imports.txt": {
+      "bytes": 10884085,
+      "sha256": "9bf4de112b9b49291a63e4ae6c1c53889b7a788527231a30efc8bb3b0062b774"
+    },
+    "pe-2-imports.txt": {
+      "bytes": 124840,
+      "sha256": "05a78ef3a155ee46a8927ab39032cad7ac73252e8824c0d24055caac1bef7362"
+    },
+    "pe-3-imports.txt": {
+      "bytes": 29155111,
+      "sha256": "fea79f94078f2aac2425f7bd911dfcf5f57b1db6a741fdfb65e4067b065fd67b"
+    },
+    "pe-4-imports.txt": {
+      "bytes": 38974,
+      "sha256": "20bee8d0644b4a3b047e73cb5469142e13c3991ae3b54f83f1781e73e6da5245"
+    },
+    "principal-evaluator-independent-review-inspector.log": {
+      "bytes": 5293,
+      "sha256": "6f86ec8e50d459d322c5970434b18b85a1de80b3b77c3cbb3b0724b4d099882d"
+    },
+    "principal-evaluator-independent-review.json": {
+      "bytes": 3483,
+      "sha256": "554840ed602f065f059514e44cf99c944cd85f54a0360a4a083dcb72cd3701a6"
+    },
+    "registered-workbench-inventory.json": {
+      "bytes": 4130,
+      "sha256": "a7ac44da9d6915574dab0900449efe88acdcd29417e68795e2bfd8dac74ad100"
+    },
+    "stress-overview.png": {
+      "bytes": 78655,
+      "sha256": "d898a9ac28dde13789d6b5948e5f430cd60abbf4d43cf99dd725496f12db8bdd"
+    },
+    "timber-overview.png": {
+      "bytes": 80047,
+      "sha256": "068abb26c67ba8cbfddee0f5f33452556d72d6131d52f72c88160fcbe3d75d5e"
+    },
+    "tower-overview.png": {
+      "bytes": 79523,
+      "sha256": "f0206c397d7474501cafa17763927685846d57b6ed194fb27bfaaa99e5c98dab"
+    },
+    "viaduct-overview.png": {
+      "bytes": 88673,
+      "sha256": "0ca6a1779c8b0466bf774568661998c64ef3ccfc6d85cf15e77a0e9189b96dc2"
+    },
+    "windows-native-independent-review-inspector.log": {
+      "bytes": 753,
+      "sha256": "6b98629a414af22829dd7380e1f307805f73c7599d2c9e1a62e4868ba27b4c9c"
+    },
+    "windows-native-independent-review.json": {
+      "bytes": 17175,
+      "sha256": "ebdc52df935d501f7392676b299af0084cc3ce7a1e54838e0c1205c696b2a802"
+    },
+    "windows-workbench-independent-review-inspector.log": {
+      "bytes": 98,
+      "sha256": "26570780907e4d269e8e0338cc57fd294b460aafae3e6822a019848770d6d20b"
+    },
+    "windows-workbench-independent-review.json": {
+      "bytes": 53189,
+      "sha256": "e8b1989d8648ff9b9c11c630828bd5999e8d8d9e7933249463c322751138cd82"
+    }
+  },
+  "reviewer_inputs": {
+    "inspect_windows_evaluator.py": {
+      "bytes": 15260,
+      "git_blob": "42c6bbdf8567929204604cec51c3d9c31e75a8c4",
+      "sha256": "8f2a0b9ded7afb1c1bdd65fb87c874173bea9ca114db192fca84ba163b8852a9"
+    },
+    "review_native_candidate.py": {
+      "bytes": 20277,
+      "git_blob": "901fb005072aaf29374277c31938b851488f7c4a",
+      "sha256": "75578c66675b6ad3a60e230f0b8bbee437ee46570f162cd2d458188a3f8b4844"
+    },
+    "review_windows_native.py": {
+      "bytes": 8304,
+      "git_blob": "60bbe74a9907f96085b2d7cdb6357825b23437d4",
+      "sha256": "ac942c38d16db2b8d1cc5f3d1af4c8f66c03f5681a2a72688216f2846ea1c8a1"
+    },
+    "review_workbench_evidence.py": {
+      "bytes": 17660,
+      "git_blob": "90eba97b9b297b24f28866470cd053db9d3f9de1",
+      "sha256": "8d55b6847dc13519d77c850ef763fc281e3f11993d07d0e0ea81cf830928cfe0"
+    }
+  },
+  "schema": "objectshard-m4-independent-delivery-45530425519-v1",
+  "scope": "Independent archival/source review; no new application or physical GPU execution",
+  "status": "passed"
+}

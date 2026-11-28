@@ -1,0 +1,712 @@
+{
+  "schema": "objectshard-larger-preset-native-probe-v1",
+  "cases": [
+    {
+      "id": 7,
+      "width": 192,
+      "height": 128,
+      "ordinary_edits": 1995,
+      "cut_y": 90,
+      "wood_cells_erased": 29,
+      "initial_components": 9,
+      "initial_eligible": 0,
+      "cut_eligible": 9,
+      "after_promotions_deferred": 6,
+      "after_promotions_reason": "BodySlots",
+      "promoted_cells": [
+        777,
+        48,
+        48
+      ],
+      "promoted_bbox_areas": [
+        1520,
+        126,
+        126
+      ],
+      "discovery_calls": 7,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 453939,
+      "construction_ns": 2778421,
+      "authoring_ns": 581984064,
+      "reported_retained_bytes": 5751028,
+      "registry_structural": 873,
+      "world_wood": 839,
+      "independent_oracle": {
+        "before_cut": [
+          {
+            "cells": 877,
+            "bounds": [
+              30,
+              52,
+              36,
+              58
+            ],
+            "bbox_area_with_ring": 2280,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "882ce54fc864a1692aaa14881808b9bd31364176538ecf6d028e1a0d0f8917e7"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              92,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "cc2132a477ea8a6953f536597c166a30cbaed3e7098fe03ac0c3a56203a8ba26"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              104,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "693f0bf49b34d73c0fa202e8dd661704c9da352a52ecf18219a434cb090cb5a0"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              116,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "d6a153e404dbe7bffb2b12be7edbca25ae9bd58b7b09fb52b900c764af98cda2"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              128,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "13912b90c027bd6118cb9fa6c4918a9f34c731a7f81d4005dae4a5ab47248053"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              140,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "b396626e6799f960e7eb342c4a31e50161bdfa40b87e7a99c89c0f729cbcaba5"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              152,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "8c19121d2591b8f4427b27e9dc681a188e2c785b637181d88ad57e4d5cb64ed2"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              164,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "05f73c8e88622b0002d709a513f9883650bce780fb25eaa306861d4ea946f646"
+          },
+          {
+            "cells": 108,
+            "bounds": [
+              176,
+              78,
+              7,
+              32
+            ],
+            "bbox_area_with_ring": 306,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "3386a8c701bb04684d2f55f38bd67924e43d6e9dbe8b6e28f88f558081900265"
+          }
+        ],
+        "after_cut": [
+          {
+            "cells": 777,
+            "bounds": [
+              30,
+              52,
+              36,
+              38
+            ],
+            "bbox_area_with_ring": 1520,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "d712dc74b70392e78cb5a88dd5cb630a496ea448db9aad7d0a0672d5b07f37ea"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              92,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "cda9938bfd4659718e85fbdf0df4e8b7b30b413ad8d21a73094d794bd035ce8b"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              104,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "9926692ceeb472e3edb40cb03f4cc438a41e3156ae02593814082484711dcabd"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              116,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "f2f5cf99f3e4925790a50895cb287a716752d89805ae57088a5a1e76e2c07f16"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              128,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "0c0874916f249b1bbf68e51a93b45bf915fbbd8d2280e2249fc7107e3ea87500"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              140,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "aee1c0612d84673d4dbe4676ebd83d09dc629c7635b241a1aefdd51d2a356c56"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              152,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "499ccd2d4e4ebcb31c91851b274af3100a4bbd79f8f2ee5e63b5fb1cc96de5f4"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              164,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "bd27f993ac99650b1fbdf8db688a6e434db0bbc9f2b682ca2f7a43f365429801"
+          },
+          {
+            "cells": 48,
+            "bounds": [
+              176,
+              78,
+              7,
+              12
+            ],
+            "bbox_area_with_ring": 126,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "cca2e64bcb3318bca383b81252054b626d5e18a05fc4f5423df7d97fb2b23566"
+          },
+          {
+            "cells": 95,
+            "bounds": [
+              46,
+              91,
+              5,
+              19
+            ],
+            "bbox_area_with_ring": 147,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "8d3e2bfa792e94c361cd73f7165f7bfe2614af1674a98fa198d0f944b2d1f90c"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              94,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "7b1ace165d558e1198c108f120f750c0fdd1fdfcde448c89b0c199cf8e672ec3"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              106,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "d4b3f811511c3976b48cac5c8d46f3f1b353aa84f0d54b3d3406f34dc98d9383"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              118,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "2b0841d27b41a0e0ba45792452ace94790c039518d25b9c9e5ee1a25eda06c86"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              130,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "f4e75cd5a046abaf7033d6fc8f6b4fed48cd3332e1b64926c7747c4040ac222c"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              142,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "526782d86fb51c5a62a51bcecf7c184e5359849436768d4387b87fe30d050d62"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              154,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "2120d8a34e2c5e0c36546dc099125c4541496d9688678f4a29d2debfdf8df39e"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              166,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "0d310b5647e3fb9319f1bfeea7ae2464793689a92558b6a2d54e137f9df67206"
+          },
+          {
+            "cells": 57,
+            "bounds": [
+              178,
+              91,
+              3,
+              19
+            ],
+            "bbox_area_with_ring": 105,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "c139327b069ed4d1f9bd082b4b1c43fc3d7ebc567adbbe7544cf5bd8cdcabf85"
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "width": 256,
+      "height": 160,
+      "ordinary_edits": 1535,
+      "cut_y": 130,
+      "wood_cells_erased": 5,
+      "initial_components": 1,
+      "initial_eligible": 0,
+      "cut_eligible": 1,
+      "after_promotions_deferred": 0,
+      "after_promotions_reason": "Anchored",
+      "promoted_cells": [
+        930
+      ],
+      "promoted_bbox_areas": [
+        2856
+      ],
+      "discovery_calls": 5,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 747877,
+      "construction_ns": 2857270,
+      "authoring_ns": 742784881,
+      "reported_retained_bytes": 7650896,
+      "registry_structural": 930,
+      "world_wood": 55,
+      "independent_oracle": {
+        "before_cut": [
+          {
+            "cells": 990,
+            "bounds": [
+              105,
+              76,
+              49,
+              66
+            ],
+            "bbox_area_with_ring": 3468,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "2dbd9dba324afb6fe0f512c500ae785b5562758e3d6a21cb9244a8f77ffea2ab"
+          }
+        ],
+        "after_cut": [
+          {
+            "cells": 930,
+            "bounds": [
+              105,
+              76,
+              49,
+              54
+            ],
+            "bbox_area_with_ring": 2856,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "d2387322f7c63f5a05961f4fba56a69875bd55af7ccc06fe05221624d9681b47"
+          },
+          {
+            "cells": 55,
+            "bounds": [
+              126,
+              131,
+              5,
+              11
+            ],
+            "bbox_area_with_ring": 91,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "bb5cd4f93861fbb3c4e7c8e5cf5607f2b01aa9bd7cbf9c4fc56260162b51842a"
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "width": 256,
+      "height": 160,
+      "ordinary_edits": 1370,
+      "cut_y": 130,
+      "wood_cells_erased": 10,
+      "initial_components": 1,
+      "initial_eligible": 0,
+      "cut_eligible": 1,
+      "after_promotions_deferred": 0,
+      "after_promotions_reason": "Anchored",
+      "promoted_cells": [
+        896
+      ],
+      "promoted_bbox_areas": [
+        2640
+      ],
+      "discovery_calls": 5,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 571538,
+      "construction_ns": 1782004,
+      "authoring_ns": 767185993,
+      "reported_retained_bytes": 7643264,
+      "registry_structural": 896,
+      "world_wood": 110,
+      "independent_oracle": {
+        "before_cut": [
+          {
+            "cells": 1016,
+            "bounds": [
+              99,
+              88,
+              58,
+              54
+            ],
+            "bbox_area_with_ring": 3360,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "eb4c9a21859404b2e5325b866c752f68f81a10e276c2fcbabb205268fcd8c976"
+          }
+        ],
+        "after_cut": [
+          {
+            "cells": 896,
+            "bounds": [
+              99,
+              88,
+              58,
+              42
+            ],
+            "bbox_area_with_ring": 2640,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "2efe30f228076ffe03a9b64d0eda482732cc3583161888b4812428998261c513"
+          },
+          {
+            "cells": 55,
+            "bounds": [
+              104,
+              131,
+              5,
+              11
+            ],
+            "bbox_area_with_ring": 91,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "d251b2880429524b9725c5be861fad46f38686bb5852d2c1cd941f16c2c544f1"
+          },
+          {
+            "cells": 55,
+            "bounds": [
+              146,
+              131,
+              5,
+              11
+            ],
+            "bbox_area_with_ring": 91,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "87c9d129ea198fa2b5c7bb231ceffaef281899d37d7ed7252c1ffb7c0e51e3d3"
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "width": 320,
+      "height": 192,
+      "ordinary_edits": 3028,
+      "cut_y": 162,
+      "wood_cells_erased": 15,
+      "initial_components": 3,
+      "initial_eligible": 0,
+      "cut_eligible": 3,
+      "after_promotions_deferred": 0,
+      "after_promotions_reason": "Anchored",
+      "promoted_cells": [
+        775,
+        775,
+        775
+      ],
+      "promoted_bbox_areas": [
+        1728,
+        1728,
+        1728
+      ],
+      "discovery_calls": 8,
+      "discovery_work_peak": 4096,
+      "discovery_call_max_ns": 583389,
+      "construction_ns": 3670346,
+      "authoring_ns": 2121867925,
+      "reported_retained_bytes": 9906048,
+      "registry_structural": 2325,
+      "world_wood": 159,
+      "independent_oracle": {
+        "before_cut": [
+          {
+            "cells": 835,
+            "bounds": [
+              59,
+              116,
+              34,
+              58
+            ],
+            "bbox_area_with_ring": 2160,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "470531fb199018e9d94e168861096de38157a4c26406f263eb97fce5c42d6ad1"
+          },
+          {
+            "cells": 835,
+            "bounds": [
+              143,
+              116,
+              34,
+              58
+            ],
+            "bbox_area_with_ring": 2160,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "2218d0873b33acef1a62e5335e52cbb74badf1413b824b98ec60ec542d649b29"
+          },
+          {
+            "cells": 829,
+            "bounds": [
+              227,
+              116,
+              34,
+              58
+            ],
+            "bbox_area_with_ring": 2160,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "7ce43ca4102c5f193143f1b4ddc13ff95eb5d9959b541ac78353ac3810bbc86a"
+          }
+        ],
+        "after_cut": [
+          {
+            "cells": 775,
+            "bounds": [
+              59,
+              116,
+              34,
+              46
+            ],
+            "bbox_area_with_ring": 1728,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "299a71a367c7abc4157a4e68757f1f928343e2f625562380183678752e941e54"
+          },
+          {
+            "cells": 775,
+            "bounds": [
+              143,
+              116,
+              34,
+              46
+            ],
+            "bbox_area_with_ring": 1728,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "aaf62e9c3039c074bf7d245f7be2694b0e58f3ff4435a83357fa77d5190920f3"
+          },
+          {
+            "cells": 775,
+            "bounds": [
+              227,
+              116,
+              34,
+              46
+            ],
+            "bbox_area_with_ring": 1728,
+            "anchored": false,
+            "unknown_boundary": false,
+            "membership_sha256": "97e384e48d194af0c375ab5f16221b2b7859320e401df6a93c70f011f836e051"
+          },
+          {
+            "cells": 55,
+            "bounds": [
+              74,
+              163,
+              5,
+              11
+            ],
+            "bbox_area_with_ring": 91,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "669f8c97488ebb594d529728a4b452548a2604ce7d6e8f359ff77937ce436d47"
+          },
+          {
+            "cells": 55,
+            "bounds": [
+              158,
+              163,
+              5,
+              11
+            ],
+            "bbox_area_with_ring": 91,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "9feffb346f527e7854e0b433a8e8341d750ec278df5be74624d1eac48a87167a"
+          },
+          {
+            "cells": 49,
+            "bounds": [
+              242,
+              163,
+              5,
+              11
+            ],
+            "bbox_area_with_ring": 91,
+            "anchored": true,
+            "unknown_boundary": false,
+            "membership_sha256": "b7fa40397ba85f7a73b797f64b44b2fda3e3db621147eb856b8549b43a1d2746"
+          }
+        ]
+      }
+    }
+  ],
+  "qualification_scope": "Native exact production-preset edits and synthetic handoff receipts; no Rapier, GUI or Windows claim",
+  "preset_manifest_sha256": "e5a322c384abce44a6f6799e4ae70fbdabd4157d92c99dcaeb1d7de82c0e174e",
+  "preset_source_sha256": "13c97dee2ded48aef1b830599261bfa0fd78c4f5acd357936c5360a0006f5118",
+  "native_frozen_input": "76f97638957c09ba3ba3551096c89945e5f3de1ee2c76667b37907ad64de71ca",
+  "probe_source_sha256": "ac8d052939d5e2e0ee9acddccbbce8f6306501f13a8cb0f0a079c38d1d629ae8",
+  "independent_oracle_scope": "Python deque flood fill of original production edits, fixed Lab perimeter and ordinary Wood-only cut; no production labels or candidate membership used.",
+  "failures": [],
+  "native_receipts_are_physics_execution": false
+}

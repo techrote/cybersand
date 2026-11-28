@@ -1,0 +1,73 @@
+{
+  "author_commits": {
+    "delivery": "9be12d85f3f7f949268035da42ee09b66b4360b0",
+    "optional_recording": "9ef6beb4412c651f658dda7a9480e6072130ec4b"
+  },
+  "changed_execution_input_sha256": {
+    ".github/workflows/objectshard-m4-completion.yml": "95fc3de98195a13e22e04005b3667dfe2d6522ee1186f0f0a3266f3226a56262",
+    "godot/scripts/main.gd": "d87eb1400151d5ef70114d34bef3c7bcca50f658a6529eb2fd22d5ae1d3f2bf3",
+    "godot/scripts/object_shard_m4_latency_probe.gd": "dc3c2f3aca3dacc48ec38ea26026a3e62378be1b76ea6040ad280965f5955990",
+    "godot/scripts/shared_workbench.gd": "c8405e32db3a81e9f48d6c94a05b35346b68203307be52721f69d9c6e1519a26",
+    "godot/tests/profile_object_shard_m4_render_control.gd": "e3db860921a4d87b670ee8e24dda6425c4f18402c6a054045528b11c79049c21",
+    "godot/tests/profile_object_shard_m4_workbench.gd": "a93f428a9fcdceb2b145cb6a9d339d92c15adbcd081252c18884cd41c49b3f5b",
+    "godot/tests/test_object_shard_m4_latency_probe.gd": "44e95f94d8e21175502afce112ec9d766bb6e078cf0adc1a9744e69df4e156a7",
+    "godot/tests/test_object_shard_m4_optional_diagnostics.gd": "8ed6a9571acf00fd2219dbb64009780fcbea29fed0a466775ebf10775acc29db",
+    "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd": "77692165235442be584773b2a0ef1fd3007b8d711dcdfcab7b621d61f80e9201",
+    "tools/objectshard/package_windows_workbench.py": "c474a1e64ba6e50cc87771df4f2f28f826535fbf1021b92baf157183ec2c2086",
+    "tools/objectshard/qualify_workbench.py": "fed08c4a3172688d711ec35bb3a0e82349e931213f6ef7f50809329317e1111c",
+    "tools/objectshard/qualify_workbench_zip.py": "025016ec763e527fb142fee0aa645cc8c08248ef78c2d7119573a6519fb78e58",
+    "tools/objectshard/test_workbench_provenance.py": "3686175bda7a03eb94621912a76be6f233cb5db5235109f5329e349ee718bf3c",
+    "tools/objectshard/verify_workbench_package.ps1": "c865afc46941a00a65ad12f14762cba552d9fe344de91223ba1c87c5e829ae89",
+    "tools/objectshard/verify_workbench_package.py": "f51dff570f0453af8ffdc684d8b387ed058bda9bb96f06ed196102ef3bf82ac8"
+  },
+  "delivery_boundary": {
+    "findings": [
+      "The explicit one-path mapping requires exact committed retained-ledger bytes; it does not treat the historical ledger as candidate runtime authority.",
+      "All other committed Godot source inputs keep exact paths and hashes; an active historical provenance filename in the package is rejected.",
+      "Replay requires the exact extracted console engine path, including its immutable hash, and cannot silently execute an external equal-byte engine.",
+      "Python and PowerShell validate candidate schema, kind, source/tree/build, full native input mapping, size and runtime digest; MZ is explicitly a header sanity check, not a complete PE parser.",
+      "Actual Windows negative fixtures rehash the outer manifest for incorrect/stale candidate ledgers, requiring inner provenance checks to refuse rather than succeeding solely on outer hashes.",
+      "Linux acquisition uses the official pinned archive with unchanged size, SHA-256 and engine version plus bounded retry; application qualification still must execute."
+    ],
+    "root_cause": "Historical runtime-provenance.json was deliberately packaged under retained-runtime-provenance.reference.json; blanket original-path source replay failed before executing cases."
+  },
+  "independent_execution": [
+    {
+      "cases": 12,
+      "command": "python3 -m unittest discover -s tools/objectshard -p test_workbench_provenance.py -v",
+      "cwd_lane": "delivery",
+      "result": "passed",
+      "scope": "Focused Python boundary tests; not Windows PowerShell or shipped CMD execution",
+      "source": "9be12d85f3f7f949268035da42ee09b66b4360b0"
+    }
+  ],
+  "integrated_commits": {
+    "delivery": "c2e35326ddd615af971019d5a0a357e8ee3e0280",
+    "optional_recording": "c34b8183af9f296ea6c781b0e4b717ebcd960f83"
+  },
+  "native_authority": {
+    "findings": [
+      "Recording controls call the diagnostic probe and renderer signal management only. They issue no native control, lease, body edit, or World replacement.",
+      "Main physics dispatch, Rapier stepping, native ACK admission and ordinary worker lifecycle are unchanged.",
+      "ObjectShard runtime _record_cost retains cumulative call/time accounting independently of optional diagnostic event recording.",
+      "Probe methods remain observational and return early when recording is disabled; no ownership or physics decision consumes these measurements.",
+      "The actual Structures CheckButton and independent CLI flag share Main.set_object_shard_diagnostics_enabled; enabling Structures alone no longer starts recording.",
+      "Stop disconnects deferred post-draw instrumentation and clears a pending upload receipt while preserving the completed recording; restart creates a fresh epoch and clears old samples.",
+      "Main._exit_tree disconnects active recording before retirement; disabled recording has already disconnected the callback. Actual runtime and worker cleanup remains unconditional."
+    ],
+    "native_implementation_changed": false
+  },
+  "required_followup": [
+    "Review the performance lane additional disabled control and explicit graphical diagnostics registration before final freeze.",
+    "Execute optional recording on/off/restart and CLI cases through ordinary Workbench on qualified platforms; headless execution alone does not establish post-draw cadence.",
+    "Run actual pristine extracted Windows package, shipped CMD, and provenance refusal fixtures.",
+    "Qualify changed application and workflow inputs; preserve source-exact native evidence reuse only for unchanged native inputs.",
+    "Physical Windows 11/NVIDIA responsiveness and owner acceptance remain HOLD without physical owner-machine evidence."
+  ],
+  "review_date": "2026-11-25",
+  "reviewed_source": "c2e35326ddd615af971019d5a0a357e8ee3e0280",
+  "reviewed_tree": "fc580e980f58422033d7ad5026043fb64b717e99",
+  "reviewer": "native-correctness-specialist",
+  "schema": "objectshard-m4-independent-combined-source-review-v1",
+  "verdict": "APPROVE source changes for qualification; hosted execution and physical acceptance remain separate gates"
+}

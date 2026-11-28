@@ -1,0 +1,2072 @@
+{
+  "actual_owner_zip_runtime_members": {
+    "Godot_v4.7-stable_win64.exe": {
+      "bytes": 178485256,
+      "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+    },
+    "Godot_v4.7-stable_win64_console.exe": {
+      "bytes": 198152,
+      "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+    },
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+      "bytes": 6075904,
+      "sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+      "bytes": 9987072,
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "objectshard-lab-manifest.json": {
+      "bytes": 148861,
+      "sha256": "0bc0c8a23f341e8a356c87f8247767b6ead72ce371f77dcf529502555e481910"
+    }
+  },
+  "authenticated_archives": [
+    {
+      "bytes": 10028066,
+      "path": "build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745662483.zip",
+      "sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb"
+    },
+    {
+      "bytes": 92828683,
+      "path": "build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745303779.zip",
+      "sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d"
+    },
+    {
+      "bytes": 93168827,
+      "path": "build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+      "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b"
+    }
+  ],
+  "checks": 598798,
+  "exact_git_source_sha256": {
+    "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+    "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+    "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+    "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+    "godot/native_extension/cyber_object_shard_lab.cpp": "2d83573283399755fd0dc3f5e07aebdd8561e437a8a71f6a98670f4620a58ea3",
+    "godot/native_extension/cyber_object_shard_lab.hpp": "d319b38dac94c0b4535ded429e465c39e9e6eb02edc889ff04eb58423c73a37b",
+    "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+    "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+    "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+    "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+    "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+    "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+    "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+    "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+    "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+    "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+    "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+    "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+    "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+    "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+    "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+    "godot/native_extension/register_types.cpp": "cb1012ae5d655b5e8bb661175f2e1f0638bffd60075304a27e45133120b6c9f7",
+    "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+    "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+    "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+    "godot/object_shard_lab.tscn": "6843972ab4fc43f9c195c0cd8ac3702be6baf58ad5af138020415f30b1249172",
+    "godot/object_shard_worker_rehearsal.tscn": "ca4b3c8fada4a69ba61b5b27c6c32d14a611c7e9b480bfd91d3c4ad95ee28a64",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    "godot/scripts/feature_launcher.gd": "bcb04de545ec429e6debac8a9f762a42aa9d9ac9c554d01bceff609b7c25de04",
+    "godot/scripts/feature_navigation.gd": "68d8774b767d0c13106892ff4449e701720e1a827c2b4c493a3d3803a3188441",
+    "godot/scripts/object_shard_capture.gd": "13b0ec2462fc6e676c6cf9afb6f9f5b717bc1839dca16ecca4914af33838ed85",
+    "godot/scripts/object_shard_lab.gd": "473e5fe36d79b88b555466611fc4e4239450563b1b54b2e4b5c33d4d030a9da1",
+    "godot/scripts/object_shard_lab_presets.gd": "13c97dee2ded48aef1b830599261bfa0fd78c4f5acd357936c5360a0006f5118",
+    "godot/scripts/object_shard_lab_session.gd": "9de3c25a5cd6d3b2f54a8b0d3ba138ad52d18129d7cd49dae125f1a2032517cb",
+    "godot/scripts/object_shard_lab_view.gd": "34947a3dde5757ab49a36465db1b776b8ece2ad387ef4e02b06ea7454ab8bb78",
+    "godot/scripts/object_shard_native_worker.gd": "29c45f0a9744f226ce604dcd6ddc36f1b059cc10d76a143c3d6d3bf175bca7bf",
+    "godot/scripts/object_shard_physics_bridge.gd": "3c0f1af7488746b4b80c9d72fb38fba0409dbc7eff2c66078a3d96726fc9d82b",
+    "godot/scripts/object_shard_worker_host.gd": "aa7ddb16b584937c3859ffe4e463f4773c4192c82bd326177971cb4ff42a31ba",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "7cdf71477b8a457d512801e6699ea0fd8ac1886c32a038c9af17e558d36e4383",
+    "godot/tests/capture_object_shard_finisher.gd": "81cbd5ceeaa1f1b84f3847133574c6d0be1b6aaef3d52b983b1fb68dcb53c916",
+    "godot/tests/capture_object_shard_lab.gd": "c13f7430148b5c80d9a5e2ff622b33dca84b38fcdc14967da66a4ef15519f321",
+    "godot/tests/capture_object_shard_worker.gd": "ee92636b23b5b8463bd716e5ad6ac1d3f1529fc233a080b81e450b1dd3746ca0",
+    "godot/tests/fixtures/objectshard_owner_d_retained_actions.json": "0b6baf1cfa74b6553478a9d04f1ba80830aaac9718b59dc7a9c0e3fe2a982698",
+    "godot/tests/probe_object_shard_package_boot.gd": "3be628e30b35ab57ea6f6ddec9dc06ebc0f9dfc38bbc67e0e10c6b423b794ff1",
+    "godot/tests/probe_object_shard_rest_stability.gd": "034ccbce5cab1e75f8af84c3d56b0fa066fff1a17c04db20ad1441f231373a99",
+    "godot/tests/probe_object_shard_retained_actions.gd": "58aec987035c37ad91ce2027fbb41c30bbb619f181e7ef9d4987c1392cbdd946",
+    "godot/tests/probe_object_shard_worker_package_boot.gd": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0",
+    "godot/tests/profile_object_shard_lab.gd": "d287b5cbb4323b4d1e45d2744eb75071be4ee27dbe2be5ee031174148f8cbde4",
+    "godot/tests/profile_object_shard_worker.gd": "e882f6cab48a2cf0be098390721c7bf216312481d5336106c4855a7687e24895",
+    "godot/tests/replay_object_shard_trace.gd": "519b539b090054166da014038e213183eb72422912b9900a5b8b8ccf3a607846",
+    "godot/tests/replay_object_shard_worker_trace.gd": "7db6ec9839e2652db8456e7a9548ae5389692dd30138d496101d69c40a420fa6",
+    "godot/tests/support/ci_execution_policy.json": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+    "godot/tests/test_material_lab_experiment.gd": "0f37450904eb4534436a13b6168a5aea60ac136bbc13e3e8aee83eee1576fe76",
+    "godot/tests/test_object_shard_boundary.gd": "07b9f8b6e41cef41db639b00154e8cb5a5d1d8c3684b5ca9bb1c588d1f6276ab",
+    "godot/tests/test_object_shard_capture.gd": "92c0d985b0f08f81a368be84ef348f08fbcfa1e6bdefa45b9cb83781815266bb",
+    "godot/tests/test_object_shard_continuous_physics.gd": "765546f2a4e60e69003fbc4d948cbdaf1f0dcd97fc1f4ade3308a82c65c6f6e6",
+    "godot/tests/test_object_shard_continuous_play.gd": "fcc416770e2343dc43ebbfe61c51d0ef562893af092f0ff27bd9e8ec21a6eee0",
+    "godot/tests/test_object_shard_incremental_motion.gd": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6",
+    "godot/tests/test_object_shard_lab.gd": "2ec5ce0345fb40f25eef039fcbfa241734bc9d3242ad4ea6977c67b5bc039a74",
+    "godot/tests/test_object_shard_motion_segments.gd": "41a726a4885c1c9aec9439a3ebe2ff26a28646cf14adb96adb54f8ced3679cf7",
+    "godot/tests/test_object_shard_native_worker.gd": "a78bac83e92145699411b00ec3ba2fb9fb19998225e8fe950c3c48bea9178a4a",
+    "godot/tests/test_object_shard_physics_bridge.gd": "1710969b699d9bcd2b946162ea816bbdbac0282f4849b08effa3ae6cae0daa15",
+    "godot/tests/test_object_shard_physics_identity.gd": "e5c73eedd1fb97106a9d988b8fc2890def9a12c91a2977bd62a84539686b91ad",
+    "godot/tests/test_object_shard_playability.gd": "4a9a963fd5a7204acbab864f137fd115b57b5116d67648fee7c59891ea4591ed",
+    "godot/tests/test_object_shard_rest_contacts.gd": "2a5e42396af93618f1e860eb1e4c3c58d456a921fb68b99ec7b351c6d44e3a7a",
+    "godot/tests/test_object_shard_workbench_contract.gd": "d751d277b0fd6a5952c4ee0ba92bfe35acc0383fb57897eb112bea0bb3fae9bf",
+    "godot/tests/test_object_shard_worker_adverse.gd": "490c6dc548d43f755de512cdb2f11891a52ba295ad27fa5a79b3619a4d3cbd25",
+    "godot/tests/test_object_shard_worker_commands.gd": "48341091e4099212cfc807bcebdc651f1c361e5ab12b87fbff489d69d6fa064e",
+    "godot/tests/test_object_shard_worker_input_fences.gd": "9a631fc5db20c15d2217f95a6b31699bb0fc100facf38a0de347cd1f95f30aa1",
+    "godot/tests/test_object_shard_worker_navigation.gd": "49a75b85e4730ccddc86d0cd25630d792cb12a56bea4c2dcf43a437d0e656f79",
+    "godot/tests/test_object_shard_worker_recovery.gd": "0dd50978f994f36186474d3f0074c5836eb69148adc15ffacb8bc52fe5eeedd7",
+    "godot/tests/test_object_shard_worker_rehearsal.gd": "e762d7c28611b618e76af15c9ae435e17924bcc5547ec37c69661e99a5fa8cac",
+    "godot/tests/test_object_shard_worker_replay_admission.gd": "b8cfe04933e653e6868cb98a53f4bb43a82538ed642d9986e386abf733d5e9d4",
+    "godot/tests/test_object_shard_worker_resources.gd": "413828fa22a997dc10f34876beac7ad1e06a7d68fa90c1cc9d070680c5ba5016",
+    "godot/tests/test_object_shard_worker_scene.gd": "810c5c5c41571c9e2c43ddd8b05a6aff9ca3958c189b49878a3569861ffc2691",
+    "godot/tests/test_rapier_manual_step.gd": "d05b0e2f2c477020019477da2a508311b9dd84ee32920d45e018063f558b27be",
+    "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+    "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+    "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+    "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+    "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+    "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+    "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+    "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+    "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+    "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+    "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+    "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+    "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+    "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+    "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+    "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+    "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+    "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+    "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+    "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+    "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+    "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+    "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+    "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+    "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+    "native/include/cybersand/material_lifecycle.hpp": "4375c14635875815cb2e2be407abfc579b76b4683e3efd3ba199bbd06b425de0",
+    "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+    "native/include/cybersand/object_shard.hpp": "abec4e3c60bd40ad0500878ab8d90775e951cea731ff9fea468b94130c96519e",
+    "native/include/cybersand/object_shard_contact.hpp": "0baf145a2d53bac817e0ede14904c39c21c8b956b7dc7b32e0c6568bab8f5f2a",
+    "native/include/cybersand/object_shard_coordinator.hpp": "1986ce7c2960974dc7b00040eec679f70ad7050bc81163ee42011d3aa71640e4",
+    "native/include/cybersand/object_shard_discovery.hpp": "2c1c8c62546f21d0659d223e17ae12d0a254e7e0d2ee86bb472477d06611d6ad",
+    "native/include/cybersand/object_shard_mutation.hpp": "f2d94ba52bce97cfa939b08ded5a19cbcd2b4482ed8694ad3350108d3175ed46",
+    "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+    "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+    "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+    "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+    "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+    "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+    "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+    "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+    "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+    "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+    "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+    "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+    "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+    "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+    "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+    "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+    "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+    "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+    "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+    "native/include/cybersand/world.hpp": "bb402502da561db59626131ee47a4f8c7ababa5029380d374a2fba43d3f0f1ce",
+    "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+    "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+    "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+    "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+    "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+    "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+    "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+    "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+    "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+    "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+    "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+    "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+    "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+    "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+    "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+    "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+    "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+    "native/src/object_shard.cpp": "a21c4b21b57356865ac64cc2533d7af5dbb0b5c1665f07a64189dfbb8c9de8d3",
+    "native/src/object_shard_coordinator.cpp": "3643d0ae12eb77d4ea621cfae23232228c83d1e6d953140d6bf5f2dcabea4e4f",
+    "native/src/object_shard_fire.inc": "27b0aa89e5c6d8afbf6c5feb14ff2a1da269aee3116fb1d783d886f8d96cc175",
+    "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+    "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+    "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+    "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+    "native/src/world.cpp": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+    "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+    "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+    "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+    "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+    "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+    "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+    "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+    "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+    "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+    "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+    "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81",
+    "tools/ci/execution_policy.py": "7bf7c89f51b8edc6c14e9b600a843c6b56f4806c902b09058912a32c881b63d6",
+    "tools/ci/native_candidate_identity.py": "51fdf546b8217935628e41b44e514fe757f48d62d4a15985334bf6f99c4e8720",
+    "tools/ci/run_godot_regressions.py": "e274262be6bcc70a7ad1b223a6c178caeb420394cc95165cc68dfcbca1037ee6",
+    "tools/objectshard/analyze_owner_evidence.py": "e259c05221f1797efe3b6b2d012d18fdece85b23775a3d35e2018d157a8afd07",
+    "tools/objectshard/check_preset_connectivity.py": "5880c3706eb9fa842ccc6dfcff536c2750abdc73fea9108535ebad8278aeba13",
+    "tools/objectshard/lab_budgets.json": "317ef316b7550dec04c794af209958c063ef0016aa2bd7f435aaca60f0be117a",
+    "tools/objectshard/lab_performance.py": "4e86251b220f356dfde86446f8392eff8195666a670226cb51941652352a43eb",
+    "tools/objectshard/native_receipt.py": "840a1b5766dec76db41ac72051edb367ee8df043a94e3e53f869f4867f74185f",
+    "tools/objectshard/package_windows_lab.py": "76d02ff7b32669a9e15cf0a9bd0495ac7ea1ceadef8f1932f18e009d34089c26",
+    "tools/objectshard/qualify_lab.py": "724fac38f88b13dc58ca9031fb6f04c85ec59ab16eb2377ae97b52622e79f463",
+    "tools/objectshard/qualify_windows_zip.py": "bc37a8e9817512bfe38f1ff3cff7351e92e301d10782ab09c47fce4ba005bee2",
+    "tools/objectshard/run_benchmarks.py": "a0138bbeb7c4ba652c47e9bcc9846a8bc8683a9bee9b56c73b893645b364c94b",
+    "tools/objectshard/run_native_tests.py": "c60fa0d33ade325af37d638d1ff8bfa35ad9deb2ff2fd80f16377af9bab5cdbb",
+    "tools/objectshard/test_lab_performance.py": "be6c26e8570f99566fd260d4186c5ee149aba2e20490103fa3f6acd6de1237f0",
+    "tools/objectshard/test_m3_package.py": "39d20590601a6ada03492051b95151144c1907cc23e974fb203dbe1f40b16f67",
+    "tools/objectshard/test_package_verifier.py": "c1eaf81ab91f2f6c710bae45df2b65085d2b7cbcfec761dd89618f117a23c5cf",
+    "tools/objectshard/test_qualification_receipts.py": "73582dccc3ce7872becd6713eca3d7d85b4a56efd29249980adbce1a5cccb5d3",
+    "tools/objectshard/test_windows_zip.py": "61bf65be36b0a17f075e149b30be560e247b2d03056e700a8c263a6397411ce9",
+    "tools/objectshard/verify_package.py": "5f612dcfb85b8533c6ad997c7ca83f166807afdfbab78387f0b04b7a7b64aad7"
+  },
+  "failures": [],
+  "fresh_native_hash": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+  "input_sha256": {
+    "build/m3-platform/repair-windows/14745122677-custody.json": "f407a2fc2f55d3bf421debacc6a3943007a7ccd2555310b0f5a115ed117a73eb",
+    "build/m3-platform/repair-windows/14745122677/candidate-provenance.json": "40f3439335f647785300e9af19fd6462b1ec7652ab26140bcd7c5efd4b1a1dc5",
+    "build/m3-platform/repair-windows/14745122677/cybersand_native.windows.x86_64.dll": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+    "build/m3-platform/repair-windows/14745236878-custody.json": "8f0762c0c617857e66232f36be891662133518dc2eb10ce0fc7a58a8a58a132b",
+    "build/m3-platform/repair-windows/14745303779-custody.json": "6f55a215eb363bc31c8222278c3ed3087814c405d5d9af2bb97fda66df923f79",
+    "build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "build/m3-platform/repair-windows/14745662483-custody.json": "bf5ef28065b3ab25e9281beafbc0b6eb459fb9941e4b8e4f49f2d4d228437120",
+    "build/m3-platform/repair-windows/14745662483/package-replay/continuous-physics-session-1.jsonl": "71c33b9953d4bb7412b4fa6b42f3b1d945e7c786edab88a49415b3be27154869",
+    "build/m3-platform/repair-windows/14745662483/package-replay/continuous-physics.json": "cbde78160f964c204bd1fd584910508e56c30627240240b3a7fcd5e3b20d660f",
+    "build/m3-platform/repair-windows/14745662483/package-replay/lab-result.json": "4e5cfdab69d6e26c2cdf5e1357a0db2ce2d895e6dc167a397815040f3b469b93",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_action_replay.log": "939899fd28d9a7371bc4e852ff84c43fff26bb4bfbabd17edda3fca2b20796fa",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_boundary.log": "8a46bf07d2ac097817e6cb71d249b0ad8696da3c4a80ffceaa33bf65eee06260",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_bridge.log": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_capture.log": "af07b42fc7db75183356ef511567c3b489e1245ae616b5f2351fad8ae055ae83",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_continuous_physics.log": "b8fbe1ecd8e624be9bfed7cf653f9dead1f76aa385e940f6e47c4b77f97284f0",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_continuous_play.log": "bed5e43f5c35f2ee967661a6064adccf4fd79712cdd3a23a2f10ec55779e738f",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_continuous_replay.log": "76a35ad55892fcca713a5d5958d340fe83e9cbe8028f891756688d923bd72449",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_import.log": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_incremental_motion.log": "ec453ab3d1d43f21c03634d61fe51992b58ef746cb03e7b29dc8d7bca2ae5e7d",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_lab.log": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_motion_segments.log": "3b7b7a5ac0cc95751cd371864b148b7ab9d76d514f432b3627cd4bb883ccacea",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_native_worker.log": "3265dfbf61e78ac8cf0804cc6dfe47326f54c3bc09035781a4e1af7b32170bd0",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_owner_d.log": "844b5ef5f13f362bf1c2b4d2b905684f521647c8ef538a037e30803e2eb3a31d",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_physics_identity.log": "22b9d3aed5e0061d98197c773e21671f6bf1b7dc8b696438cd0afbf66a58cffd",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_playability.log": "f8773c8aab33a0027fb16c348c2271cd1d580a5b76986e2dc01521cec193c2dd",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_rest_contacts.log": "08f0d08772731285081abe2a92c7c0fdffa28abea7d35ea15969780e9131aa7b",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_rest_erode.log": "4d43e7c951b78e1e1431d7397e023c8a036be44a89b8ccd60abf68f31ab3e2da",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_rest_mass_only.log": "55b8abcf47fb7df6ac79bb076d03737ab4a7c4d640ceaf139c19ff78a97a5b11",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_rest_replace_identical.log": "3445c816e3bef0a21a29de44c245d02db2e1f9ea31d6a0a45e27a8c59c6c4c62",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_workbench_contract.log": "069cdc10958b0980da7bec32aa04375098db008c44250ff08354f38cf84ced3d",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_adverse.log": "43c52f8b3db098128bce2e8fe941a99cef0671c94426466742c336c6961a22f4",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_commands.log": "1bb80918ee388a5534d696dd00f701a54283c909e233243aa2558761e42a364a",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_input_fences.log": "c6fb85287090a838ed11a30e3b60e24f8a6c9501f41168c288fbcf7aea6424e6",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_navigation.log": "f29fca534d42e2b227b6a44a9fc63fced27c17ca07459c2211118d02c6cd85cc",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_recovery.log": "6dd0ca532533ff21d281550996d277604dff374dee442de7fba46c2ed04e5fba",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_rehearsal.log": "7404355886c945b81bee64a85cf36f4d6f264fde7af1e19efd3011fe514f6073",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_replay.log": "82e137b4e79592979dac6fb64dc8407c26fd2df2079c1548b2d8addf1f733161",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_replay_admission.log": "d235c8e3a1399eed80ea34fc8383bf1b3754038b4d1d12d6560ffb2e52a3ea0d",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_resources.log": "8e43177a26f085d5947e82f2f2a13d470138ef4b5bb25a271b6d1b393c93fba7",
+    "build/m3-platform/repair-windows/14745662483/package-replay/objectshard_worker_scene.log": "0ac84e9935f9722d8713dea7f35514427b7b71bd48534bb608ed9d675e5d7718",
+    "build/m3-platform/repair-windows/14745662483/package-replay/qualification.json": "28122ce23131fbe8dfd85a4cf8c5a0d799dba1ac5b44bc7e5e8f6418be70d74c",
+    "build/m3-platform/repair-windows/14745662483/package-replay/test_material_lab_experiment.log": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+    "build/m3-platform/repair-windows/14745662483/package-replay/test_rapier_manual_step.log": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+    "build/m3-platform/repair-windows/14745662483/package-replay/worker-navigation-quit-child.json": "626f702ac95a4773391dec8b4ef9d90ce47ce3745e80bb6a6895e935967f8937",
+    "build/m3-platform/repair-windows/14745662483/package-replay/worker-navigation-quit-child.json.log": "ed3ec8cd4d5d88390f7c1292a9f3f54ce5afa59614a63c1041b06ac7c258e08a",
+    "build/m3-platform/repair-windows/14745662483/package-replay/worker-navigation.json": "7766f1be18c2ce1061a89d0ba8c0941ffc859580c81395079248cdc3415e173c",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/continuous-physics-session-1.jsonl": "47d32edd1220df83dd179df71a34414d986b7aa9934dfd289f532169fea0c6b7",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/continuous-physics.json": "79a272c3ecb946e1e1724405bbdb8342d2db6daf11bfc2518b761212bf12d8a6",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/continuous-play-rendered.json": "5270c51d40ab86ed852fb55c8b056047819504a89d7f425c868e97ebadf9b52b",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/continuous-play-rendered.json.jsonl": "c1cdfd547c5239455889e6a30465f448d6802f0802b0df311bc35f465eda883a",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/continuous-rendered-replay.json": "c953ab1210397bcea6fb93511594a7fc842b61cfd8a9b0ec1ea1ef74c671a8d3",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-extended-320.png": "82a0e78874c4daf8bc3763b82b729b04f6782032b7439efa9c4c1c404d5eca18",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-external-fire.png": "3917ce1bd90e621bcd3c5e926cdf855b3813f4088880e4a00fcd5f529ad01d18",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-falling.png": "b91b2a27f38f2fed771f05ce91948133c6859c851a43f1b83edfa19065d28407",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-main-structure-priority.png": "c56bd279568b889267bc576179cc4d3408d5010b7eba8bff9be483b021abf418",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-native-supported.png": "e1a1efba6b208fbe2fe050b60af37d4c3cc28e276840fb00274dda8691e1632f",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png": "b8c0c6521caa679989a1cf144163e72288d8197ab705d9b96be2b5c0da80f289",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png": "79c75d9d2dcf6263e715127471670f4607672f7cb40641fcf3d59f5513459439",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/frames-worker/render-campaign.json": "d589ca9c5cc3887fe1e35a1eb7fe07b355679692d6a777b5318c74308187d5e8",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/lab-result.json": "1939052cf3505d3af15dde9c659a8f0c74f0024ab0f7223accaa65610aa053a0",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_action_replay.log": "939899fd28d9a7371bc4e852ff84c43fff26bb4bfbabd17edda3fca2b20796fa",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_boundary.log": "8a46bf07d2ac097817e6cb71d249b0ad8696da3c4a80ffceaa33bf65eee06260",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_bridge.log": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_capture.log": "af07b42fc7db75183356ef511567c3b489e1245ae616b5f2351fad8ae055ae83",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_physics.log": "2e938a2c9acdf30dcad8026b6311cd7bd8cb4a04ed78fa42477f5728f52d5c83",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_play.log": "88cf3e0e4dcbf805679f9a072ea5cd708c0729630ef0e7753f9cc2102b99e6af",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_play_rendered.log": "03c8959e0610d61226a7a31cf30374eddbdbbdb4b628ef96333a4ee8f4495b56",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_rendered_replay.log": "b820b8101228cb97ca1baa7f7b91dd5d726df69f795975ad3e7515112654a150",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_replay.log": "8f3140165b1dc31566162df3757a382885df8e2f419abb3e045800b156d80d32",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_finisher_render.log": "324721c911a9e0023f452b75fc495d4499ddcdbd8c14138a936489fffda5e3f0",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_import.log": "77b5989425673cb0bfb64636d7111598d200fee490fa22800580c28f9eb7fdcf",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_incremental_motion.log": "ec453ab3d1d43f21c03634d61fe51992b58ef746cb03e7b29dc8d7bca2ae5e7d",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_lab.log": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_motion_segments.log": "3b7b7a5ac0cc95751cd371864b148b7ab9d76d514f432b3627cd4bb883ccacea",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_native_worker.log": "9d34e162df3f99e88ca07b6e051f2ac9ac16baf8a277687cfd4635257081e057",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_owner_d.log": "401cb4a4e5b4d6626cc447873db1e4e3ee013dd4458482d82f4f999b606f3bd7",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_physics_identity.log": "22b9d3aed5e0061d98197c773e21671f6bf1b7dc8b696438cd0afbf66a58cffd",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_playability.log": "f8773c8aab33a0027fb16c348c2271cd1d580a5b76986e2dc01521cec193c2dd",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_profile_headless.log": "766a450eaef1bf568ee86762ac02d5da8004705794638da238cb58526c61d7c2",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_profile_rendered.log": "7304ed23b9852012be9ab65d55395997ec73dc9d1b448002a0868ca4005d77c7",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_render.log": "9066c15ef09ba839869585bbb82212498bb195363b27fb5b8aa7c59d431a4b0f",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_rest_contacts.log": "08f0d08772731285081abe2a92c7c0fdffa28abea7d35ea15969780e9131aa7b",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_rest_erode.log": "34861f1415465b599de4c569f2a5491b2261682512ba729ec6e4c19aec281bdd",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_rest_mass_only.log": "3ad9d2cbd77c2f9a5f6bca5dbdbc45f58319222d8173fde13e8da01563ebb2d7",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_rest_replace_identical.log": "ada014fba07f8ceb8a2e8c2f6666043c98b6fc9d1f1b1d8e3ffe08c6180a7d20",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_workbench_contract.log": "069cdc10958b0980da7bec32aa04375098db008c44250ff08354f38cf84ced3d",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_adverse.log": "43c52f8b3db098128bce2e8fe941a99cef0671c94426466742c336c6961a22f4",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_commands.log": "77d2fe53bdec0aac39e40efe1dfa48c0336a8b77bb76b8710329d514aa48f752",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_input_fences.log": "9259f63212a3ebdfac2dccb6a426e9cd255bea12f64deba953d45d2110365c1b",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_navigation.log": "979ed6d775cdf9630f21fe8643a6ca10ff9b05f1086d26b673c6a4cfe098e8f3",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_profile_0.json": "543ffd2fc19668755e47b0b1b94906c15cd915136661efffb376253746b9af9c",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_profile_0.log": "15fa6a2ccac74109a908615c87d69c2fb80d1a9a27e6083a3acb0275e70ae247",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_profile_4000.json": "5f561eea0ebba655d038ac08202c08530e7fd7ef49ad9f46163043840f64087c",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_profile_4000.log": "bf696db2c0416ead59a5c5cd7b59a74a2706d7ce4811eb0969163d780ac95e45",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_recovery.log": "181fca8b036d5c870803264cfc857410ce278825249e588243f4f506aa7341fd",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_rehearsal.log": "3030cbcc0a08bbb9247e11c7af3f94fc7057d5dc5f0e25a92203ba4e280315ba",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_render.log": "6a3c487a2c0886db0010ebbadeae59fd4998dd7f11a035a31581a7c6ec48526e",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_replay.log": "82e137b4e79592979dac6fb64dc8407c26fd2df2079c1548b2d8addf1f733161",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_replay_admission.log": "d235c8e3a1399eed80ea34fc8383bf1b3754038b4d1d12d6560ffb2e52a3ea0d",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_resources.log": "9f705baa47c9e6b4e82e74b4982daf7d481512e3456333f022698aeff572017a",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_scene.log": "4f19fc73adee25b3fa8ffc24c0e9bf7c404385022fe2490be0237504a5297496",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/qualification.json": "64331b1a300151c783a79b96a982dab41eabd277c579ec3cb45d45ebb6370e76",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/test_material_lab_experiment.log": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/test_rapier_manual_step.log": "2543f4f43dac52aaabb314d376995262a03a2623753148ea8775d2e0c2dd4cf4",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/worker-navigation-quit-child.json": "493e946960b69966da86fcb030c9df35b1d795967d7cbc3acb727cc12f939fb6",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/worker-navigation-quit-child.json.log": "ed3ec8cd4d5d88390f7c1292a9f3f54ce5afa59614a63c1041b06ac7c258e08a",
+    "build/m3-platform/repair-windows/14745662483/windows-lab/worker-navigation.json": "b094252dd4973df701b5eeb2c6034ab3ba3928ef26b9df80fdd3d4fab3620929",
+    "build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745303779.zip": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d",
+    "build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745662483.zip": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb",
+    "build/review-physics/audit_final_platform.py": "ad12b2c2791f984f13f4c96331cbcd65de11b32f3b1dc3eb6574abc56d7ad60c",
+    "build/review-physics/audit_platform_physics.py": "3a3824de33590139972b2c42f96a89c2188f53b3e3d555672f32576d9c7359b7",
+    "build/review-physics/final-windows-audit-config.json": "36a5dda4c374c1d9777b408cfc4f82bf14e5d7dc7a721cc952debdc6e421d239"
+  },
+  "limits": [
+    "No cross-platform Rapier/float/replay bit-identity claim; within-platform paired workload equivalence is checked separately.",
+    "Endpoint native tick3600 starts at1:3599 actually completed intervals,14390 physical steps and14388 acknowledged nonempty segments.",
+    "Receipt pump4000us is a soft main-thread loop budget; a current handler can overrun. It grants no new native or physical time.",
+    "Scheduling profiles do not call mark_presented and do not measure display FPS. Actual rendered scene uses source-bound frame_post_draw instrumentation, not monitor scanout.",
+    "Stored presented evidence has counts/distributions, not a per-present raw timestamp ledger. Original result timestamps and scene queue samples are independently recomputed.",
+    "Rendered UI timings include intentional backlog, stale targets and held-receipt diagnostics; not a normal steady-play or target-GPU latency claim.",
+    "Navigation coverage is controlled F2/window-close paths. Unsupported direct externally forced scene replacement of a live owner is not universal destructor cleanup.",
+    "No physical Windows11/NVIDIA owner acceptance, ordinary CyberSimulationWorker adoption, Ready/merge/default promotion is established."
+  ],
+  "material_fixture_outcomes": {
+    "package-replay": {
+      "long_three_body_run": {
+        "authored_sand": 99,
+        "authored_water": 100,
+        "created_fire": 34,
+        "created_smoke": 10,
+        "destroyed_wood": 9,
+        "extinguished": 0,
+        "ingested_sand": 0,
+        "ingested_water": 0
+      },
+      "separate_fixtures": [
+        {
+          "evidence": {
+            "actual_sleep_observed": true,
+            "burn_after_sleep": 227,
+            "burn_before_sleep": 237,
+            "exchange_required": true,
+            "geometry_changed": true,
+            "retained_fire_seen": true,
+            "retained_smoke_seen": true,
+            "sleeping_burn_opportunities": 10,
+            "world_fire_seen": true,
+            "world_smoke_seen": true
+          },
+          "kind": "separate_native_lab_sleeping_chemistry",
+          "scenario": 2,
+          "tick": 586
+        },
+        {
+          "evidence": {
+            "cargo_after": 1,
+            "cargo_tuple": {
+              "incarnation": 2,
+              "material": 2,
+              "state_a": 0,
+              "state_b": 0,
+              "temperature": 200
+            },
+            "initial_world_sand": 5,
+            "same_cell_extinguished": true,
+            "water_contact": {
+              "burn_before": 224,
+              "cell": 331,
+              "id": 1,
+              "incarnation": 2,
+              "ok": true,
+              "whole_world_water_quanta": 255,
+              "world_position": "(83, 83)"
+            },
+            "world_sand_after": 4
+          },
+          "kind": "separate_native_lab_sand_water_fixture",
+          "scenario": 3,
+          "scope": "Separate maintained Lab fixture, not an ingestion/extinction claim for the long three-body M3 run. Outcome assertions are source-bound; a complete per-cell historical stream is not stored here.",
+          "tick": 34
+        }
+      ],
+      "separate_lab_fixture_checks": 379
+    },
+    "windows-lab": {
+      "long_three_body_run": {
+        "authored_sand": 99,
+        "authored_water": 100,
+        "created_fire": 34,
+        "created_smoke": 10,
+        "destroyed_wood": 9,
+        "extinguished": 0,
+        "ingested_sand": 0,
+        "ingested_water": 0
+      },
+      "separate_fixtures": [
+        {
+          "evidence": {
+            "actual_sleep_observed": true,
+            "burn_after_sleep": 227,
+            "burn_before_sleep": 237,
+            "exchange_required": true,
+            "geometry_changed": true,
+            "retained_fire_seen": true,
+            "retained_smoke_seen": true,
+            "sleeping_burn_opportunities": 10,
+            "world_fire_seen": true,
+            "world_smoke_seen": true
+          },
+          "kind": "separate_native_lab_sleeping_chemistry",
+          "scenario": 2,
+          "tick": 586
+        },
+        {
+          "evidence": {
+            "cargo_after": 1,
+            "cargo_tuple": {
+              "incarnation": 2,
+              "material": 2,
+              "state_a": 0,
+              "state_b": 0,
+              "temperature": 200
+            },
+            "initial_world_sand": 5,
+            "same_cell_extinguished": true,
+            "water_contact": {
+              "burn_before": 224,
+              "cell": 331,
+              "id": 1,
+              "incarnation": 2,
+              "ok": true,
+              "whole_world_water_quanta": 255,
+              "world_position": "(83, 83)"
+            },
+            "world_sand_after": 4
+          },
+          "kind": "separate_native_lab_sand_water_fixture",
+          "scenario": 3,
+          "scope": "Separate maintained Lab fixture, not an ingestion/extinction claim for the long three-body M3 run. Outcome assertions are source-bound; a complete per-cell historical stream is not stored here.",
+          "tick": 34
+        }
+      ],
+      "separate_lab_fixture_checks": 379
+    }
+  },
+  "navigation_lifecycle": {
+    "package-replay": {
+      "after_states_checked": 7,
+      "cases": [
+        "active_pending_repeated",
+        "naturally_sleeping",
+        "opening",
+        "reset_superseded",
+        "held_interval",
+        "stop_delivery_faults",
+        "already_closed_prior_policy",
+        "window_close_upgrade"
+      ],
+      "checks": 135,
+      "child_checks": 18,
+      "child_exit_code": 0,
+      "failures": 0
+    },
+    "windows-lab": {
+      "after_states_checked": 7,
+      "cases": [
+        "active_pending_repeated",
+        "naturally_sleeping",
+        "opening",
+        "reset_superseded",
+        "held_interval",
+        "stop_delivery_faults",
+        "already_closed_prior_policy",
+        "window_close_upgrade"
+      ],
+      "checks": 135,
+      "child_checks": 18,
+      "child_exit_code": 0,
+      "failures": 0
+    }
+  },
+  "paired_same_platform_publication_digest_and_ledger_equality": true,
+  "paired_semantic_progression_ratio": 2.0758334328896635,
+  "platform": "windows",
+  "pump_profiles": {
+    "0": {
+      "contact_owners": [
+        1,
+        2,
+        3
+      ],
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "count": 3,
+          "maximum": 148,
+          "p50": 83,
+          "p95": 148,
+          "p99": 148,
+          "session_maximum": 148,
+          "total_count": 3
+        },
+        "host_admission_to_dispatch_usec": {
+          "count": 60,
+          "maximum": 150106,
+          "p50": 100091,
+          "p95": 100155,
+          "p99": 150106,
+          "session_maximum": 150106,
+          "total_count": 60
+        },
+        "host_admission_to_publication_usec": {
+          "count": 60,
+          "maximum": 166718,
+          "p50": 116706,
+          "p95": 116757,
+          "p99": 166718,
+          "session_maximum": 166718,
+          "total_count": 60
+        },
+        "host_admission_to_result_usec": {
+          "count": 60,
+          "maximum": 166583,
+          "p50": 116570,
+          "p95": 116602,
+          "p99": 166583,
+          "session_maximum": 166583,
+          "total_count": 60
+        },
+        "input_to_dispatch_usec": {
+          "count": 60,
+          "maximum": 150103,
+          "p50": 100088,
+          "p95": 100152,
+          "p99": 150103,
+          "session_maximum": 150103,
+          "total_count": 60
+        },
+        "input_to_publication_usec": {
+          "count": 60,
+          "maximum": 166718,
+          "p50": 116706,
+          "p95": 116757,
+          "p99": 166718,
+          "session_maximum": 166718,
+          "total_count": 60
+        },
+        "input_to_result_usec": {
+          "count": 60,
+          "maximum": 166583,
+          "p50": 116570,
+          "p95": 116602,
+          "p99": 166583,
+          "session_maximum": 166583,
+          "total_count": 60
+        },
+        "native_execute_usec": {
+          "count": 1512,
+          "maximum": 4103,
+          "p50": 313,
+          "p95": 580,
+          "p99": 617,
+          "session_maximum": 4103,
+          "total_count": 1512
+        },
+        "physics_segment_usec": {
+          "count": 952,
+          "maximum": 550,
+          "p50": 131,
+          "p95": 190,
+          "p99": 236,
+          "session_maximum": 550,
+          "total_count": 952
+        },
+        "queue_wait_usec": {
+          "count": 1512,
+          "maximum": 271,
+          "p50": 21,
+          "p95": 36,
+          "p99": 48,
+          "session_maximum": 271,
+          "total_count": 1512
+        },
+        "receipt_delivery_usec": {
+          "count": 1512,
+          "maximum": 15497,
+          "p50": 14660,
+          "p95": 15220,
+          "p99": 15250,
+          "session_maximum": 15497,
+          "total_count": 1512
+        },
+        "receipt_roundtrip_usec": {
+          "count": 1512,
+          "maximum": 16636,
+          "p50": 16301,
+          "p95": 16541,
+          "p99": 16555,
+          "session_maximum": 16636,
+          "total_count": 1512
+        },
+        "receipt_value_accounting_usec": {
+          "count": 1512,
+          "maximum": 408,
+          "p50": 236,
+          "p95": 260,
+          "p99": 286,
+          "session_maximum": 408,
+          "total_count": 1512
+        },
+        "semantic_interval_usec": {
+          "count": 240,
+          "maximum": 150182,
+          "p50": 100202,
+          "p95": 100253,
+          "p99": 150162,
+          "session_maximum": 150182,
+          "total_count": 240
+        },
+        "snapshot_usec": {
+          "count": 1512,
+          "maximum": 1562,
+          "p50": 1080,
+          "p95": 1123,
+          "p99": 1196,
+          "session_maximum": 1562,
+          "total_count": 1512
+        },
+        "terrain_install_usec": {
+          "count": 552,
+          "maximum": 414,
+          "p50": 68,
+          "p95": 85,
+          "p99": 135,
+          "session_maximum": 414,
+          "total_count": 552
+        }
+      },
+      "maximum_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "play_elapsed_usec": 29069550,
+      "presentation": "Not measured by this headless scheduling profile; mark_presented is deliberately not invoked.",
+      "process_callback_interval_usec": {
+        "count": 1744,
+        "maximum": 16696,
+        "p50": 16666,
+        "p95": 16676,
+        "p99": 16682
+      },
+      "publication_comparison_observation_usec": {
+        "count": 240,
+        "maximum": 5764,
+        "p50": 3739,
+        "p95": 3919,
+        "p99": 4204
+      },
+      "pump_call_usec": {
+        "count": 0
+      },
+      "pump_call_while_pending_usec": {
+        "count": 0
+      },
+      "semantic_interval_and_input_usec": {
+        "count": 240,
+        "maximum": 178547,
+        "p50": 111588,
+        "p95": 128240,
+        "p99": 162415
+      },
+      "semantic_ticks_per_wall_second": 8.25606175534193,
+      "sleeping_owners": [
+        1,
+        2,
+        3
+      ]
+    },
+    "4000": {
+      "contact_owners": [
+        1,
+        2,
+        3
+      ],
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "count": 3,
+          "maximum": 135,
+          "p50": 75,
+          "p95": 135,
+          "p99": 135,
+          "session_maximum": 135,
+          "total_count": 3
+        },
+        "host_admission_to_dispatch_usec": {
+          "count": 60,
+          "maximum": 70864,
+          "p50": 37540,
+          "p95": 50103,
+          "p99": 70864,
+          "session_maximum": 70864,
+          "total_count": 60
+        },
+        "host_admission_to_publication_usec": {
+          "count": 60,
+          "maximum": 83408,
+          "p50": 50022,
+          "p95": 52399,
+          "p99": 83408,
+          "session_maximum": 83408,
+          "total_count": 60
+        },
+        "host_admission_to_result_usec": {
+          "count": 60,
+          "maximum": 83223,
+          "p50": 49906,
+          "p95": 52277,
+          "p99": 83223,
+          "session_maximum": 83223,
+          "total_count": 60
+        },
+        "input_to_dispatch_usec": {
+          "count": 60,
+          "maximum": 70860,
+          "p50": 37538,
+          "p95": 50100,
+          "p99": 70860,
+          "session_maximum": 70860,
+          "total_count": 60
+        },
+        "input_to_publication_usec": {
+          "count": 60,
+          "maximum": 83408,
+          "p50": 50022,
+          "p95": 52399,
+          "p99": 83408,
+          "session_maximum": 83408,
+          "total_count": 60
+        },
+        "input_to_result_usec": {
+          "count": 60,
+          "maximum": 83223,
+          "p50": 49906,
+          "p95": 52277,
+          "p99": 83223,
+          "session_maximum": 83223,
+          "total_count": 60
+        },
+        "main_receipt_pump_usec": {
+          "count": 852,
+          "maximum": 5986,
+          "p50": 5073,
+          "p95": 5787,
+          "p99": 5905,
+          "session_maximum": 5986,
+          "total_count": 852
+        },
+        "native_execute_usec": {
+          "count": 1512,
+          "maximum": 4173,
+          "p50": 302,
+          "p95": 563,
+          "p99": 604,
+          "session_maximum": 4173,
+          "total_count": 1512
+        },
+        "physics_segment_usec": {
+          "count": 952,
+          "maximum": 268,
+          "p50": 120,
+          "p95": 167,
+          "p99": 218,
+          "session_maximum": 268,
+          "total_count": 952
+        },
+        "queue_wait_usec": {
+          "count": 1512,
+          "maximum": 90,
+          "p50": 20,
+          "p95": 31,
+          "p99": 45,
+          "session_maximum": 90,
+          "total_count": 1512
+        },
+        "receipt_delivery_usec": {
+          "count": 1512,
+          "maximum": 14048,
+          "p50": 1829,
+          "p95": 11881,
+          "p99": 12449,
+          "session_maximum": 14048,
+          "total_count": 1512
+        },
+        "receipt_roundtrip_usec": {
+          "count": 1512,
+          "maximum": 16498,
+          "p50": 3546,
+          "p95": 13231,
+          "p99": 14224,
+          "session_maximum": 16498,
+          "total_count": 1512
+        },
+        "receipt_value_accounting_usec": {
+          "count": 1512,
+          "maximum": 415,
+          "p50": 236,
+          "p95": 262,
+          "p99": 285,
+          "session_maximum": 415,
+          "total_count": 1512
+        },
+        "semantic_interval_usec": {
+          "count": 240,
+          "maximum": 70977,
+          "p50": 37703,
+          "p95": 50221,
+          "p99": 53729,
+          "session_maximum": 70977,
+          "total_count": 240
+        },
+        "snapshot_usec": {
+          "count": 1512,
+          "maximum": 1807,
+          "p50": 1072,
+          "p95": 1108,
+          "p99": 1147,
+          "session_maximum": 1807,
+          "total_count": 1512
+        },
+        "terrain_install_usec": {
+          "count": 552,
+          "maximum": 416,
+          "p50": 59,
+          "p95": 76,
+          "p99": 136,
+          "session_maximum": 416,
+          "total_count": 552
+        }
+      },
+      "maximum_displacements": {
+        "1": 19.9768753051758,
+        "2": 19.9768753051758,
+        "3": 20.1384086608887
+      },
+      "play_elapsed_usec": 14003797,
+      "presentation": "Not measured by this headless scheduling profile; mark_presented is deliberately not invoked.",
+      "process_callback_interval_usec": {
+        "count": 840,
+        "maximum": 16695,
+        "p50": 16666,
+        "p95": 16674,
+        "p99": 16681
+      },
+      "publication_comparison_observation_usec": {
+        "count": 240,
+        "maximum": 4431,
+        "p50": 3786,
+        "p95": 3890,
+        "p99": 3957
+      },
+      "pump_call_usec": {
+        "count": 840,
+        "maximum": 5996,
+        "p50": 5089,
+        "p95": 5795,
+        "p99": 5914
+      },
+      "pump_call_while_pending_usec": {
+        "count": 730,
+        "maximum": 5996,
+        "p50": 5179,
+        "p95": 5816,
+        "p99": 5935
+      },
+      "semantic_interval_and_input_usec": {
+        "count": 240,
+        "maximum": 93344,
+        "p50": 49302,
+        "p95": 61659,
+        "p99": 64976
+      },
+      "semantic_ticks_per_wall_second": 17.1382090157405,
+      "sleeping_owners": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  "qualification_cases": {
+    "package-replay": 32,
+    "windows-lab": 41
+  },
+  "rendered_images": [
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 0,
+        "bridge_bodies": [],
+        "bridge_last_completed_semantic_tick": -1,
+        "bridge_motion_phase": "Idle",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 0,
+        "ingested_water": 0,
+        "native_created_fire": 0,
+        "native_created_smoke": 0,
+        "native_tick": 1,
+        "publication_sequence": 1,
+        "published_tick": 1,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1389,
+      "detail": {},
+      "image": "objectshard-m3-native-supported.png",
+      "sha256": "e1a1efba6b208fbe2fe050b60af37d4c3cc28e276840fb00274dda8691e1632f",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "native_tick": 1,
+        "published_tick": 1,
+        "slots": "0/3",
+        "status": "Paused between asynchronous operations"
+      },
+      "visual_review": "Actually opened and visually inspected: intact Wood support connects the crown to terrain, zero shard slots; actual native/published1/1 HUD. No active RID overlay is visible."
+    },
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 0,
+        "bridge_bodies": [
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": 0.0,
+            "body_generation": 1,
+            "com_x": 14.5380229949951,
+            "com_y": 13.2585554122925,
+            "generation": 1,
+            "geometry_digest": "14709829798384320201",
+            "geometry_revision": 1,
+            "id": 1,
+            "inertia": 61277.2421875,
+            "last_geometry_step": 1,
+            "mass": 526.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 3.17666854858398,
+            "reported_contacts": 2,
+            "rotation": 0.0,
+            "shape_count": 6,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": 49.3998870849609,
+            "x": 83.0,
+            "y": 67.8473892211914
+          }
+        ],
+        "bridge_last_completed_semantic_tick": 21,
+        "bridge_motion_phase": "Completed",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 0,
+        "ingested_water": 0,
+        "native_created_fire": 0,
+        "native_created_smoke": 0,
+        "native_tick": 21,
+        "publication_sequence": 65,
+        "published_tick": 21,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1321,
+      "detail": {},
+      "image": "objectshard-m3-falling.png",
+      "sha256": "b91b2a27f38f2fed771f05ce91948133c6859c851a43f1b83edfa19065d28407",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "mass": 526,
+        "native_tick": 21,
+        "published_tick": 21,
+        "shape_count": 6,
+        "sleeping": false,
+        "status": "Tick21 completed with applied worker receipts",
+        "structural_cells": 526
+      },
+      "visual_review": "Actually opened and visually inspected: severed lower support and separated falling crown, one active526-cell owner, mass526,6shapes. HUD native/published21/21. Geometry overlay and material silhouette agree visually."
+    },
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 0,
+        "bridge_bodies": [
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": 1.57080245018005,
+            "body_generation": 1,
+            "com_x": 14.5533332824707,
+            "com_y": 13.2809524536133,
+            "generation": 1,
+            "geometry_digest": "16562434555323017030",
+            "geometry_revision": 2,
+            "id": 1,
+            "inertia": 61073.81640625,
+            "last_geometry_step": 1397,
+            "mass": 525.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 4.0,
+            "reported_contacts": 0,
+            "rotation": 1.57080245018005,
+            "shape_count": 7,
+            "sleeping": true,
+            "vx": 0.0,
+            "vy": 0.0,
+            "x": 141.141723632813,
+            "y": 81.0001220703125
+          }
+        ],
+        "bridge_last_completed_semantic_tick": 471,
+        "bridge_motion_phase": "Completed",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 0,
+        "ingested_water": 0,
+        "native_created_fire": 0,
+        "native_created_smoke": 0,
+        "native_tick": 471,
+        "publication_sequence": 516,
+        "published_tick": 471,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1321,
+      "detail": {
+        "continued_semantic_ticks_after_edit": 120,
+        "natural_sleep_observed_before_edit": true
+      },
+      "image": "objectshard-m3-settled-after-erosion.png",
+      "sha256": "b8c0c6521caa679989a1cf144163e72288d8197ab705d9b96be2b5c0da80f289",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "mass": 525,
+        "native_tick": 471,
+        "published_tick": 471,
+        "shape_count": 7,
+        "sleeping": true,
+        "status": "Tick471 completed with applied worker receipts",
+        "structural_cells": 525
+      },
+      "visual_review": "Actually opened and visually inspected: rotated crown rests on terrain after the recorded erase and120continued semantic ticks, sleeping525-cell owner/mass525 and7shapes. Actual HUD native/published471/471; cyan geometry and yellow COM overlay present."
+    },
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 0,
+        "bridge_bodies": [
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": 0.0,
+            "body_generation": 1,
+            "com_x": 19.1450424194336,
+            "com_y": 15.4547119140625,
+            "generation": 1,
+            "geometry_digest": "12271810867054324108",
+            "geometry_revision": 1,
+            "id": 1,
+            "inertia": 157832.546875,
+            "last_geometry_step": 2,
+            "mass": 817.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 3.82666662534078,
+            "reported_contacts": 0,
+            "rotation": 0.0,
+            "shape_count": 5,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": 10.4000024795532,
+            "x": 29.0,
+            "y": 51.3520812988281
+          },
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": 0.0,
+            "body_generation": 1,
+            "com_x": 4.5,
+            "com_y": 9.58333301544189,
+            "generation": 1,
+            "geometry_digest": "3120172259258463757",
+            "geometry_revision": 1,
+            "id": 2,
+            "inertia": 2855.5,
+            "last_geometry_step": 6,
+            "mass": 72.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 3.87000005245209,
+            "reported_contacts": 0,
+            "rotation": 0.0,
+            "shape_count": 2,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": 7.79999685287476,
+            "x": 91.0,
+            "y": 77.1990585327148
+          },
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": 0.0,
+            "body_generation": 1,
+            "com_x": 4.5,
+            "com_y": 9.58333301544189,
+            "generation": 1,
+            "geometry_digest": "3120172259258463757",
+            "geometry_revision": 1,
+            "id": 3,
+            "inertia": 2855.5,
+            "last_geometry_step": 10,
+            "mass": 72.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 3.91333336035411,
+            "reported_contacts": 0,
+            "rotation": 0.0,
+            "shape_count": 2,
+            "sleeping": false,
+            "vx": 0.0,
+            "vy": 5.19999837875366,
+            "x": 103.0,
+            "y": 77.0893707275391
+          }
+        ],
+        "bridge_last_completed_semantic_tick": 7,
+        "bridge_motion_phase": "Completed",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 0,
+        "ingested_water": 0,
+        "native_created_fire": 0,
+        "native_created_smoke": 0,
+        "native_tick": 7,
+        "publication_sequence": 326,
+        "published_tick": 7,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1416,
+      "detail": {
+        "largest_admitted_structural_cells": 817
+      },
+      "image": "objectshard-m3-main-structure-priority.png",
+      "sha256": "c56bd279568b889267bc576179cc4d3408d5010b7eba8bff9be483b021abf418",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "main_mass": 817,
+        "main_structural_cells": 817,
+        "native_tick": 7,
+        "published_tick": 6,
+        "slots": "3/3",
+        "status": "Waiting for applied motion receipt: Rapier is not advancing"
+      },
+      "visual_review": "Actually opened and visually inspected: substantial crown admitted first,817structural/mass817, plus two72-cell owners and multiple still-native offcuts. Screenshot HUD says native7/published6 and waiting for applied motion, unlike later adjacent diagnostic7/7 Idle; backend snapshot is not claimed to be exact rendered pose."
+    },
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 0,
+        "bridge_bodies": [
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": 0.000153922548634,
+            "body_generation": 1,
+            "com_x": 14.161322593689,
+            "com_y": 13.5561122894287,
+            "generation": 1,
+            "geometry_digest": "12667990460216727156",
+            "geometry_revision": 2,
+            "id": 1,
+            "inertia": 58593.359375,
+            "last_geometry_step": 121,
+            "mass": 499.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 4.0,
+            "reported_contacts": 0,
+            "rotation": 0.000153922548634,
+            "shape_count": 6,
+            "sleeping": true,
+            "vx": 0.0,
+            "vy": 0.0,
+            "x": 83.002082824707,
+            "y": 71.9968566894531
+          }
+        ],
+        "bridge_last_completed_semantic_tick": 101,
+        "bridge_motion_phase": "Completed",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 1,
+        "ingested_water": 0,
+        "native_created_fire": 1,
+        "native_created_smoke": 0,
+        "native_tick": 101,
+        "publication_sequence": 149,
+        "published_tick": 101,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1338,
+      "detail": {},
+      "image": "objectshard-m3-water-sand-pocket.png",
+      "sha256": "79c75d9d2dcf6263e715127471670f4607672f7cb40641fcf3d59f5513459439",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "cargo_cells": 1,
+        "mass": 499,
+        "native_tick": 101,
+        "published_tick": 100,
+        "shape_count": 6,
+        "sleeping": true,
+        "status": "Waiting for applied prepare receipt: Rapier is not advancing",
+        "structural_cells": 498,
+        "water_extinctions": 0
+      },
+      "visual_review": "Actually opened and visually inspected: sleeping pocket body with498structural+1cargo, mass499,6shapes and visible Sand in the open green pocket. HUD Water extinctions0. Screenshot HUD native101/published100 awaiting prepare; adjacent diagnostic is101/101 Idle. This PNG establishes one Sand cargo cell, not Water extinction."
+    },
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 83,
+        "bridge_bodies": [],
+        "bridge_last_completed_semantic_tick": 21,
+        "bridge_motion_phase": "Completed",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 0,
+        "ingested_water": 0,
+        "native_created_fire": 0,
+        "native_created_smoke": 0,
+        "native_tick": 21,
+        "publication_sequence": 334,
+        "published_tick": 21,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1469,
+      "detail": {
+        "accepted_fixture_actions": 83,
+        "native_world_fire_cells": 83
+      },
+      "image": "objectshard-m3-external-fire.png",
+      "sha256": "3917ce1bd90e621bcd3c5e926cdf855b3813f4088880e4a00fcd5f529ad01d18",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "accepted_fixture_fire": 83,
+        "last_input": "FixtureCellOccupied",
+        "native_tick": 21,
+        "published_tick": 21,
+        "slots": "0/3",
+        "status": "Waiting for applied action receipt: Rapier is not advancing"
+      },
+      "visual_review": "Actually opened and visually inspected: visible orange external Fire band below anchored supported Wood. HUD accepted fixture83 and slots0/3, native/published21/21, action receipt wait and FixtureCellOccupied refusal visible. Adjacent retained fixture counters report83accepted and83native WorldFire cells. Authored flame is distinct from chemistry-created products."
+    },
+    {
+      "adjacent_post_draw_host_diagnostics": {
+        "authored_fire": 0,
+        "bridge_bodies": [
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": -2.95825466309907e-05,
+            "body_generation": 1,
+            "com_x": 18.1206455230713,
+            "com_y": 15.6690320968628,
+            "generation": 1,
+            "geometry_digest": "12530032798384484287",
+            "geometry_revision": 1,
+            "id": 1,
+            "inertia": 143486.5,
+            "last_geometry_step": 3,
+            "mass": 775.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 4.0,
+            "reported_contacts": 0,
+            "rotation": -2.95825466309907e-05,
+            "shape_count": 5,
+            "sleeping": true,
+            "vx": 0.0,
+            "vy": 0.0,
+            "x": 57.9995346069336,
+            "y": 127.000709533691
+          },
+          {
+            "active": true,
+            "angular_velocity": 0.0,
+            "backend_rotation": -2.95796999125741e-05,
+            "body_generation": 1,
+            "com_x": 18.1206455230713,
+            "com_y": 15.6690320968628,
+            "generation": 1,
+            "geometry_digest": "12530032798384484287",
+            "geometry_revision": 1,
+            "id": 2,
+            "inertia": 143486.5,
+            "last_geometry_step": 7,
+            "mass": 775.0,
+            "nominal_rotation_headroom": 0.2,
+            "nominal_translation_headroom": 4.0,
+            "reported_contacts": 0,
+            "rotation": -2.95796999125741e-05,
+            "shape_count": 5,
+            "sleeping": true,
+            "vx": 0.0,
+            "vy": 0.0,
+            "x": 141.999526977539,
+            "y": 127.000709533691
+          },
+          {
+            "active": true,
+            "angular_velocity": -0.145802661776543,
+            "backend_rotation": -0.0842830762267113,
+            "body_generation": 1,
+            "com_x": 18.1206455230713,
+            "com_y": 15.6690320968628,
+            "generation": 1,
+            "geometry_digest": "12530032798384484287",
+            "geometry_revision": 1,
+            "id": 3,
+            "inertia": 143486.5,
+            "last_geometry_step": 11,
+            "mass": 775.0,
+            "nominal_rotation_headroom": 0.197569955637058,
+            "nominal_translation_headroom": 3.92319939931234,
+            "reported_contacts": 2,
+            "rotation": -0.0842830762267113,
+            "shape_count": 5,
+            "sleeping": false,
+            "vx": -4.60618782043457,
+            "vy": 0.13049978017807,
+            "x": 222.06657409668,
+            "y": 125.76473236084
+          }
+        ],
+        "bridge_last_completed_semantic_tick": 81,
+        "bridge_motion_phase": "Completed",
+        "extinguished": 0,
+        "host_state": "Idle",
+        "ingested_sand": 0,
+        "ingested_water": 0,
+        "native_created_fire": 0,
+        "native_created_smoke": 0,
+        "native_tick": 81,
+        "publication_sequence": 350,
+        "published_tick": 81,
+        "scope": "The capture script saves the rendered image after frame_post_draw, then samples host.diagnostics. The PNG can show an earlier publication/HUD state than these adjacent diagnostics. Backend bodies are not substituted as exact displayed render poses; manually read PNG telemetry is retained separately."
+      },
+      "colors": 1337,
+      "detail": {},
+      "image": "objectshard-m3-extended-320.png",
+      "sha256": "82a0e78874c4daf8bc3763b82b729b04f6782032b7439efa9c4c1c404d5eca18",
+      "size": [
+        1280,
+        840
+      ],
+      "visible_png_telemetry": {
+        "canvas": "320x192",
+        "native_tick": 81,
+        "published_tick": 81,
+        "slots": "3/3",
+        "status": "Tick81 completed with applied worker receipts",
+        "visible_first_two_mass": 775,
+        "visible_first_two_sleeping": true,
+        "visible_first_two_structural_cells": 775
+      },
+      "visual_review": "Actually opened and visually inspected:320x192canvas with three substantial separated owners on terrain/asymmetric ledges, one visibly tilted. First two visible panels show775structural/mass775 and sleeping; third partly below scroll. Host records confirm all three. HUD native/published81/81."
+    }
+  ],
+  "rendered_trace_replay": {
+    "actions": 155,
+    "checks": 387,
+    "failures": 0,
+    "semantic_steps": 38
+  },
+  "rendered_ui": {
+    "pointer_input": {
+      "dispatched": 153,
+      "explicitly_cancelled_by_reset": 0,
+      "pending": 0,
+      "queued": 153,
+      "refused": 0,
+      "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+    },
+    "post_draw_input_count": 153,
+    "post_draw_publication_count": 120,
+    "raw_original_input_result_distributions_recomputed": true,
+    "scene_input_to_host_usec": {
+      "count": 153,
+      "maximum_usec": 1241508,
+      "p50_usec": 364059,
+      "p95_usec": 1049885,
+      "p99_usec": 1240791,
+      "total_observations": 153
+    },
+    "timings_usec": {
+      "geometry_install_usec": {
+        "count": 3,
+        "maximum": 141,
+        "p50": 127,
+        "p95": 141,
+        "p99": 141,
+        "session_maximum": 141,
+        "total_count": 3
+      },
+      "host_admission_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 688169,
+        "p50": 372316,
+        "p95": 660732,
+        "p99": 688131,
+        "session_maximum": 688169,
+        "total_count": 153
+      },
+      "host_admission_to_presented_usec": {
+        "count": 153,
+        "maximum": 704746,
+        "p50": 399139,
+        "p95": 688155,
+        "p99": 704288,
+        "session_maximum": 704746,
+        "total_count": 153
+      },
+      "host_admission_to_publication_usec": {
+        "count": 153,
+        "maximum": 692030,
+        "p50": 384457,
+        "p95": 673324,
+        "p99": 691847,
+        "session_maximum": 692030,
+        "total_count": 153
+      },
+      "host_admission_to_result_usec": {
+        "count": 153,
+        "maximum": 691811,
+        "p50": 384350,
+        "p95": 673137,
+        "p99": 691670,
+        "session_maximum": 691811,
+        "total_count": 153
+      },
+      "input_to_dispatch_usec": {
+        "count": 153,
+        "maximum": 1902116,
+        "p50": 736411,
+        "p95": 1738032,
+        "p99": 1898319,
+        "session_maximum": 1902116,
+        "total_count": 153
+      },
+      "input_to_presented_usec": {
+        "count": 153,
+        "maximum": 1929452,
+        "p50": 763739,
+        "p95": 1753913,
+        "p99": 1913506,
+        "session_maximum": 1929452,
+        "total_count": 153
+      },
+      "input_to_publication_usec": {
+        "count": 153,
+        "maximum": 1914809,
+        "p50": 748555,
+        "p95": 1741896,
+        "p99": 1902151,
+        "session_maximum": 1914809,
+        "total_count": 153
+      },
+      "input_to_result_usec": {
+        "count": 153,
+        "maximum": 1914622,
+        "p50": 748450,
+        "p95": 1741677,
+        "p99": 1901922,
+        "session_maximum": 1914622,
+        "total_count": 153
+      },
+      "main_receipt_pump_usec": {
+        "count": 151,
+        "maximum": 5975,
+        "p50": 5208,
+        "p95": 5714,
+        "p99": 5938,
+        "session_maximum": 5975,
+        "total_count": 151
+      },
+      "native_execute_usec": {
+        "count": 284,
+        "maximum": 595,
+        "p50": 231,
+        "p95": 371,
+        "p99": 573,
+        "session_maximum": 595,
+        "total_count": 284
+      },
+      "physics_segment_usec": {
+        "count": 52,
+        "maximum": 2143,
+        "p50": 132,
+        "p95": 2046,
+        "p99": 2143,
+        "session_maximum": 2143,
+        "total_count": 52
+      },
+      "publication_to_presented_usec": {
+        "count": 120,
+        "maximum": 27254,
+        "p50": 11466,
+        "p95": 15277,
+        "p99": 27229,
+        "session_maximum": 27254,
+        "total_count": 120
+      },
+      "queue_wait_usec": {
+        "count": 284,
+        "maximum": 651,
+        "p50": 21,
+        "p95": 48,
+        "p99": 429,
+        "session_maximum": 651,
+        "total_count": 284
+      },
+      "receipt_delivery_usec": {
+        "count": 284,
+        "maximum": 77527,
+        "p50": 1972,
+        "p95": 11841,
+        "p99": 23767,
+        "session_maximum": 77527,
+        "total_count": 284
+      },
+      "receipt_roundtrip_usec": {
+        "count": 284,
+        "maximum": 79835,
+        "p50": 3704,
+        "p95": 13625,
+        "p99": 25652,
+        "session_maximum": 79835,
+        "total_count": 284
+      },
+      "receipt_value_accounting_usec": {
+        "count": 284,
+        "maximum": 1695,
+        "p50": 226,
+        "p95": 302,
+        "p99": 337,
+        "session_maximum": 1695,
+        "total_count": 284
+      },
+      "semantic_interval_usec": {
+        "count": 38,
+        "maximum": 116063,
+        "p50": 15535,
+        "p95": 75647,
+        "p99": 116063,
+        "session_maximum": 116063,
+        "total_count": 38
+      },
+      "snapshot_usec": {
+        "count": 284,
+        "maximum": 2577,
+        "p50": 1371,
+        "p95": 1576,
+        "p99": 1603,
+        "session_maximum": 2577,
+        "total_count": 284
+      },
+      "terrain_install_usec": {
+        "count": 230,
+        "maximum": 366,
+        "p50": 90,
+        "p95": 206,
+        "p99": 227,
+        "session_maximum": 366,
+        "total_count": 230
+      }
+    }
+  },
+  "renderer_lines": [
+    "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+  ],
+  "reviewer": "/root/review_physics",
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "same_platform_source_vs_package_native_accounting_identical": true,
+  "same_platform_source_vs_package_nontiming_physics_identical": true,
+  "schema": "independent-final-platform-physics-review-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_input_counts": {
+    "lab": 51,
+    "native": 116,
+    "qualification_tools": 19,
+    "unique_git_blobs": 186
+  },
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "status": "passed",
+  "sustained_physics": {
+    "package-replay": {
+      "acknowledged_nonempty_segments": 14388,
+      "action_material_counts": {
+        "0": 241,
+        "2": 99,
+        "3": 100,
+        "6": 100
+      },
+      "capture": {
+        "action_window": 540,
+        "bytes": 26439257,
+        "complete_prefix": true,
+        "dropped_action_records": 0,
+        "io_usec": 2338829,
+        "max_bytes": 33554432,
+        "max_records": 100000,
+        "path": "D:\\a\\cybersand\\cybersand\\evidence\\package-replay\\continuous-physics-session-1.jsonl",
+        "reason": "Recording from session start",
+        "records": 44818,
+        "schema": "objectshard-action-trace-v1"
+      },
+      "checks_reported": 22513,
+      "completed_intervals": 3599,
+      "contacting_owners": [
+        1,
+        2,
+        3
+      ],
+      "event_kinds": {
+        "ActionApplied": 540,
+        "NativeReceipt": 22145,
+        "PhysicsReserved": 3,
+        "PhysicsSegmentAwaitingNative": 14388,
+        "PromotionActive": 3
+      },
+      "final_bodies": [
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.000214567335206084,
+          "body_generation": 1,
+          "com_x": 14.5961141586304,
+          "com_y": 11.9560327529907,
+          "generation": 1,
+          "geometry_digest": "16130270003340405817",
+          "geometry_revision": 6,
+          "id": 1,
+          "inertia": 45369.2890625,
+          "last_geometry_step": 9590,
+          "mass": 489.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.000214567335206084,
+          "shape_count": 13,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 35.0025444030762,
+          "y": 79.9976654052734
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.000217136883293279,
+          "body_generation": 1,
+          "com_x": 14.6361789703369,
+          "com_y": 11.9207315444946,
+          "generation": 1,
+          "geometry_digest": "7525709477722258194",
+          "geometry_revision": 3,
+          "id": 2,
+          "inertia": 45955.78515625,
+          "last_geometry_step": 3638,
+          "mass": 492.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.000217136883293279,
+          "shape_count": 10,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 83.0025634765625,
+          "y": 79.9975967407227
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.000223978568101302,
+          "body_generation": 1,
+          "com_x": 14.6079425811768,
+          "com_y": 11.9215888977051,
+          "generation": 1,
+          "geometry_digest": "18399199593745148698",
+          "geometry_revision": 4,
+          "id": 3,
+          "inertia": 45762.84375,
+          "last_geometry_step": 3754,
+          "mass": 491.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.000223978568101302,
+          "shape_count": 10,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 130.985275268555,
+          "y": 79.9978561401367
+        }
+      ],
+      "fire_smoke_and_quantity_ledger_scope": "Source-bound runtime assertions and positive native ledger; full material byte arrays are not retained in every trace row, so ledger recomputation from raw cells is not claimed.",
+      "moving_owners": [
+        1,
+        2,
+        3
+      ],
+      "native_endpoint": 3600,
+      "nonmutating_prepare_busy_outcomes": {
+        "Discovering: bounded complete-component census in progress": 2,
+        "no eligible detached component": 3594
+      },
+      "package_manifest_sha256": "0bc0c8a23f341e8a356c87f8247767b6ead72ce371f77dcf529502555e481910",
+      "physical_steps": 14390,
+      "post_edit_rotation": 3.588196705096012e-06,
+      "post_edit_translation": 6.791875392489659e-05,
+      "post_settle_edit": {
+        "detail": {
+          "action": "edit",
+          "parameters": {
+            "material": 0,
+            "position": [
+              41,
+              81
+            ],
+            "state_a": 0,
+            "state_b": 0,
+            "target": {
+              "applied_physics_revision": 5,
+              "body_generation": 1,
+              "cell": 36,
+              "expected": {
+                "material": 7,
+                "state_a": 0,
+                "state_b": 0,
+                "temperature": 200
+              },
+              "generation": 1,
+              "geometry_revision": 5,
+              "incarnation": 2,
+              "material_revision": 2926,
+              "owner": 1,
+              "pose_serial": 11987,
+              "position": [
+                41,
+                81
+              ],
+              "publication_sequence": 2839,
+              "session": 1,
+              "transport_generation": 8719
+            },
+            "temperature": 200
+          },
+          "result": {
+            "detail": "owned structural cell erased; exact geometry awaits physics acknowledgement",
+            "generation": 1,
+            "id": 1,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Active",
+            "session": 1,
+            "transaction": 29
+          },
+          "tick": 2400
+        },
+        "kind": "action",
+        "sequence": 30115,
+        "tick": 2400
+      },
+      "recomputed_maximum_displacements": {
+        "1": 19.976875306014964,
+        "2": 19.976875306014964,
+        "3": 20.138408363206583
+      },
+      "sleeping_owners": [
+        1,
+        2,
+        3
+      ],
+      "timing_usec": {
+        "count": 3599,
+        "maximum_usec": 27741,
+        "p50_usec": 21865,
+        "p95_usec": 24790,
+        "p99_usec": 25863,
+        "scope": "Unpaced actual-host tick plus queued input completion; no target-display FPS claim"
+      },
+      "trace_kinds": {
+        "action": 540,
+        "event": 37079,
+        "footer": 1,
+        "header": 1,
+        "step_completed": 3599,
+        "step_requested": 3599
+      },
+      "trace_rows": 44819,
+      "worker_owner_threads": [
+        16
+      ]
+    },
+    "windows-lab": {
+      "acknowledged_nonempty_segments": 14388,
+      "action_material_counts": {
+        "0": 241,
+        "2": 99,
+        "3": 100,
+        "6": 100
+      },
+      "capture": {
+        "action_window": 540,
+        "bytes": 26438996,
+        "complete_prefix": true,
+        "dropped_action_records": 0,
+        "io_usec": 2326287,
+        "max_bytes": 33554432,
+        "max_records": 100000,
+        "path": "D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\continuous-physics-session-1.jsonl",
+        "reason": "Recording from session start",
+        "records": 44818,
+        "schema": "objectshard-action-trace-v1"
+      },
+      "checks_reported": 22513,
+      "completed_intervals": 3599,
+      "contacting_owners": [
+        1,
+        2,
+        3
+      ],
+      "event_kinds": {
+        "ActionApplied": 540,
+        "NativeReceipt": 22145,
+        "PhysicsReserved": 3,
+        "PhysicsSegmentAwaitingNative": 14388,
+        "PromotionActive": 3
+      },
+      "final_bodies": [
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.000214567335206084,
+          "body_generation": 1,
+          "com_x": 14.5961141586304,
+          "com_y": 11.9560327529907,
+          "generation": 1,
+          "geometry_digest": "16130270003340405817",
+          "geometry_revision": 6,
+          "id": 1,
+          "inertia": 45369.2890625,
+          "last_geometry_step": 9590,
+          "mass": 489.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.000214567335206084,
+          "shape_count": 13,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 35.0025444030762,
+          "y": 79.9976654052734
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.000217136883293279,
+          "body_generation": 1,
+          "com_x": 14.6361789703369,
+          "com_y": 11.9207315444946,
+          "generation": 1,
+          "geometry_digest": "7525709477722258194",
+          "geometry_revision": 3,
+          "id": 2,
+          "inertia": 45955.78515625,
+          "last_geometry_step": 3638,
+          "mass": 492.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.000217136883293279,
+          "shape_count": 10,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 83.0025634765625,
+          "y": 79.9975967407227
+        },
+        {
+          "active": true,
+          "angular_velocity": 0.0,
+          "backend_rotation": 0.000223978568101302,
+          "body_generation": 1,
+          "com_x": 14.6079425811768,
+          "com_y": 11.9215888977051,
+          "generation": 1,
+          "geometry_digest": "18399199593745148698",
+          "geometry_revision": 4,
+          "id": 3,
+          "inertia": 45762.84375,
+          "last_geometry_step": 3754,
+          "mass": 491.0,
+          "nominal_rotation_headroom": 0.2,
+          "nominal_translation_headroom": 4.0,
+          "reported_contacts": 0,
+          "rotation": 0.000223978568101302,
+          "shape_count": 10,
+          "sleeping": true,
+          "vx": 0.0,
+          "vy": 0.0,
+          "x": 130.985275268555,
+          "y": 79.9978561401367
+        }
+      ],
+      "fire_smoke_and_quantity_ledger_scope": "Source-bound runtime assertions and positive native ledger; full material byte arrays are not retained in every trace row, so ledger recomputation from raw cells is not claimed.",
+      "moving_owners": [
+        1,
+        2,
+        3
+      ],
+      "native_endpoint": 3600,
+      "nonmutating_prepare_busy_outcomes": {
+        "Discovering: bounded complete-component census in progress": 2,
+        "no eligible detached component": 3594
+      },
+      "package_manifest_sha256": "",
+      "physical_steps": 14390,
+      "post_edit_rotation": 3.588196705096012e-06,
+      "post_edit_translation": 6.791875392489659e-05,
+      "post_settle_edit": {
+        "detail": {
+          "action": "edit",
+          "parameters": {
+            "material": 0,
+            "position": [
+              41,
+              81
+            ],
+            "state_a": 0,
+            "state_b": 0,
+            "target": {
+              "applied_physics_revision": 5,
+              "body_generation": 1,
+              "cell": 36,
+              "expected": {
+                "material": 7,
+                "state_a": 0,
+                "state_b": 0,
+                "temperature": 200
+              },
+              "generation": 1,
+              "geometry_revision": 5,
+              "incarnation": 2,
+              "material_revision": 2926,
+              "owner": 1,
+              "pose_serial": 11987,
+              "position": [
+                41,
+                81
+              ],
+              "publication_sequence": 2839,
+              "session": 1,
+              "transport_generation": 8719
+            },
+            "temperature": 200
+          },
+          "result": {
+            "detail": "owned structural cell erased; exact geometry awaits physics acknowledgement",
+            "generation": 1,
+            "id": 1,
+            "ok": true,
+            "outcome": "Accepted",
+            "phase": "Active",
+            "session": 1,
+            "transaction": 29
+          },
+          "tick": 2400
+        },
+        "kind": "action",
+        "sequence": 30115,
+        "tick": 2400
+      },
+      "recomputed_maximum_displacements": {
+        "1": 19.976875306014964,
+        "2": 19.976875306014964,
+        "3": 20.138408363206583
+      },
+      "sleeping_owners": [
+        1,
+        2,
+        3
+      ],
+      "timing_usec": {
+        "count": 3599,
+        "maximum_usec": 30979,
+        "p50_usec": 21864,
+        "p95_usec": 24657,
+        "p99_usec": 25813,
+        "scope": "Unpaced actual-host tick plus queued input completion; no target-display FPS claim"
+      },
+      "trace_kinds": {
+        "action": 540,
+        "event": 37079,
+        "footer": 1,
+        "header": 1,
+        "step_completed": 3599,
+        "step_requested": 3599
+      },
+      "trace_rows": 44819,
+      "worker_owner_threads": [
+        16
+      ]
+    }
+  }
+}

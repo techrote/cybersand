@@ -1,0 +1,48 @@
+{
+  "schema": "objectshard-m3-local-iteration-custody-v1",
+  "scope": "Local pre-freeze iteration on native514 with script hashes recorded per report; not final committed-source or Windows qualification",
+  "files": [
+    {
+      "name": "native-matrix-summary.json",
+      "source_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/summary.json",
+      "bytes": 3536,
+      "sha256": "75a1601b0d83b1837874e44810d10bc655ce763fa496f262079a8f355942e745"
+    },
+    {
+      "name": "native-matrix.json",
+      "source_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/benchmark.json",
+      "bytes": 42616,
+      "sha256": "c32d93f532a06f38b1b289a45cb1d3ccdf1388bb0195546358f38741323481db"
+    },
+    {
+      "name": "native-sanitizers-initial.json",
+      "source_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-sanitized/summary.json",
+      "bytes": 21924,
+      "sha256": "49eb6092de6500e80a8d3eb9a37cdce9e0dc90c9c85f60917e81955fe21529c1"
+    },
+    {
+      "name": "worker-local-tests.json",
+      "source_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-worker-evidence/a-sealed-local-tests.json",
+      "bytes": 5374,
+      "sha256": "078d13fdbce229f389504666f5d0f41a29faebe1c71196e49021e94903eb9dc3"
+    },
+    {
+      "name": "pump-comparison.json",
+      "source_path": "/workspace/scratch/9f4616747051/recovery-evidence/pump-comparison.json",
+      "bytes": 3835,
+      "sha256": "860ddb03719568b8a6d542841a942dfbb52ecfc5f781b3965fa4f68c457fcc5e"
+    },
+    {
+      "name": "notification-comparison.json",
+      "source_path": "/workspace/scratch/9f4616747051/recovery-evidence/notification-comparison.json",
+      "bytes": 3390,
+      "sha256": "fe8d021b6148201bd6d80123888021f8912181095edecd50e5aa89ad5de192f9"
+    },
+    {
+      "name": "continuous-fall20.json",
+      "source_path": "/workspace/scratch/9f4616747051/recovery-evidence/continuous-fall20.json",
+      "bytes": 341112,
+      "sha256": "c533c278c35d777087c40f58b2551a7da6ea67c393f3b9fef3f57b323471fe44"
+    }
+  ]
+}

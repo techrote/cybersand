@@ -1,0 +1,1654 @@
+{
+  "clock_contract": {
+    "clock": "Godot Time.get_ticks_usec monotonic process wall clock, shared by Main and its worker thread; elapsed spans include waiting and are not CPU time.",
+    "delivery": "Receipt-ready timestamp through Main result extraction, pending-identity checks and timing observation, before subsequent pose-echo processing.",
+    "maxima": "Counter deltas of cumulative lifetime maxima are not interval maxima and are intentionally not used.",
+    "non_additive": "Pump elapsed time includes waits and Main stages. Rapier, owner snapshots, frame copying and ordinary worker metrics can overlap the command spans; do not add them to the serial sum or infer a complete wall/CPU decomposition.",
+    "owner_service": "Worker handler entry through native owner command and handler completion; includes authorization/dispatch and any final coupling preparation, not all ordinary semantic World work.",
+    "probe_percentiles": "Optional recorded-stage percentiles are bounded recent probe samples after diagnostics are enabled immediately before sampling. Ordinary receipt_delivery measures snapshot-publication age, not the exact-control delivery stage. Latest worker metrics are one snapshot, not interval averages.",
+    "publication_copy": "Handler completion through optional full owner publication, receipt/result copies and receipt-ready timestamp.",
+    "queue": "Control admission timestamp to worker command-handler entry.",
+    "serial_sum": "The four stages partition each observed serial control. One pending Main control at a time establishes the ordered pipeline. Reported sums are normalized by native ticks within the same finite window; a window may end with one partially completed physical interval."
+  },
+  "evidence_artifact_id": 15247169371,
+  "profiles": [
+    {
+      "acknowledgements": 0,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "wall_usec": 6016525
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 0.0,
+        "owner_service": 0.0,
+        "publication_copy": 0.0,
+        "queue": 0.0
+      },
+      "control_stage_usec_totals": {
+        "delivery": 0,
+        "owner_service": 0,
+        "publication_copy": 0,
+        "queue": 0
+      },
+      "controls": {},
+      "elapsed_usec": 6016543,
+      "execution_mode": "headless",
+      "lane": "headless",
+      "main_stage_deltas": {},
+      "name": "m4_throughput_disabled_off_headless",
+      "native_ticks": 361,
+      "observed_wall_ms_per_native_tick": 16.666324099722992,
+      "pose_echo_checks": 0,
+      "process_callbacks": 362,
+      "process_callbacks_per_native_tick": 1.002770083102493,
+      "process_callbacks_per_second": 60.1674416687457,
+      "pump": {
+        "pump_budget_exhaustions": 0,
+        "pump_calls": 0,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 0,
+        "pump_waits": 0
+      },
+      "pump_wall_ms_per_native_tick": 0.0,
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "queue_plus_delivery_ms_per_native_tick": 0.0,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 0.0,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 0.0,
+      "snapshot_ms_per_native_tick": 0.0,
+      "snapshots_per_native_tick": 0.0,
+      "whole_window_ticks_per_second": 60.0012332663458,
+      "worker_profile": {
+        "compact_motion_receipts": 0,
+        "frame_copy_calls": 0,
+        "frame_copy_usec": 0,
+        "full_motion_publications": 0,
+        "segment_idle_polls": 0,
+        "segment_service_turns": 0,
+        "snapshot_calls": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "acknowledgements": 0,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 299,
+          "wall_usec": 6022544
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 8.192635451505016,
+        "owner_service": 0.8720334448160535,
+        "publication_copy": 0.5746488294314381,
+        "queue": 5.821331103678929
+      },
+      "control_stage_usec_totals": {
+        "delivery": 2449598,
+        "owner_service": 260738,
+        "publication_copy": 171820,
+        "queue": 1740578
+      },
+      "controls": {
+        "complete": {
+          "calls": 300,
+          "calls_per_native_tick": 1.0033444816053512,
+          "stage_mean_usec_per_call": {
+            "delivery": 2085.6,
+            "owner_service": 176.05333333333334,
+            "publication_copy": 288.44666666666666,
+            "queue": 1097.5466666666666
+          },
+          "stage_usec": {
+            "delivery": 625680,
+            "owner_service": 52816,
+            "publication_copy": 86534,
+            "queue": 329264
+          }
+        },
+        "motion": {
+          "calls": 1200,
+          "calls_per_native_tick": 4.013377926421405,
+          "stage_mean_usec_per_call": {
+            "delivery": 1519.9316666666666,
+            "owner_service": 173.26833333333335,
+            "publication_copy": 71.07166666666667,
+            "queue": 1176.095
+          },
+          "stage_usec": {
+            "delivery": 1823918,
+            "owner_service": 207922,
+            "publication_copy": 85286,
+            "queue": 1411314
+          }
+        }
+      },
+      "elapsed_usec": 6022571,
+      "execution_mode": "headless",
+      "lane": "headless",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 1500,
+          "ms_per_native_tick": 0.08906020066889632,
+          "usec": 26629
+        },
+        "pose_packet_capture": {
+          "calls": 1200,
+          "ms_per_native_tick": 0.13692642140468228,
+          "usec": 40941
+        },
+        "rapier_segment": {
+          "calls": 1200,
+          "ms_per_native_tick": 0.2882608695652174,
+          "usec": 86190
+        }
+      },
+      "name": "m4_throughput_empty_off_headless",
+      "native_ticks": 299,
+      "observed_wall_ms_per_native_tick": 20.142377926421403,
+      "pose_echo_checks": 0,
+      "process_callbacks": 362,
+      "process_callbacks_per_native_tick": 1.2107023411371238,
+      "process_callbacks_per_second": 60.1072199896024,
+      "pump": {
+        "pump_budget_exhaustions": 382,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 4402873,
+        "pump_waits": 2188
+      },
+      "pump_wall_ms_per_native_tick": 14.725327759197324,
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "queue_plus_delivery_ms_per_native_tick": 14.013966555183949,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 0.0,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 15.46064882943144,
+      "snapshot_ms_per_native_tick": 0.5233478260869565,
+      "snapshots_per_native_tick": 3.0100334448160537,
+      "whole_window_ticks_per_second": 49.6465712068816,
+      "worker_profile": {
+        "compact_motion_receipts": 900,
+        "frame_copy_calls": 299,
+        "frame_copy_usec": 25460,
+        "full_motion_publications": 300,
+        "segment_idle_polls": 1975,
+        "segment_service_turns": 1200,
+        "snapshot_calls": 900,
+        "snapshot_usec": 156481
+      },
+      "workload": "empty"
+    },
+    {
+      "acknowledgements": 716,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 179,
+          "wall_usec": 6001843
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 9.750217877094972,
+        "owner_service": 5.3138435754189945,
+        "publication_copy": 1.549977653631285,
+        "queue": 5.7551843575419
+      },
+      "control_stage_usec_totals": {
+        "delivery": 1745289,
+        "owner_service": 951178,
+        "publication_copy": 277446,
+        "queue": 1030178
+      },
+      "controls": {
+        "complete": {
+          "calls": 179,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 931.31843575419,
+            "owner_service": 203.8268156424581,
+            "publication_copy": 760.245810055866,
+            "queue": 1222.731843575419
+          },
+          "stage_usec": {
+            "delivery": 166706,
+            "owner_service": 36485,
+            "publication_copy": 136084,
+            "queue": 218869
+          }
+        },
+        "motion": {
+          "calls": 716,
+          "calls_per_native_tick": 4.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 2204.7248603351954,
+            "owner_service": 1277.5041899441342,
+            "publication_copy": 197.43296089385476,
+            "queue": 1133.11312849162
+          },
+          "stage_usec": {
+            "delivery": 1578583,
+            "owner_service": 914693,
+            "publication_copy": 141362,
+            "queue": 811309
+          }
+        }
+      },
+      "elapsed_usec": 6001865,
+      "execution_mode": "headless",
+      "lane": "headless",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 896,
+          "ms_per_native_tick": 0.1149050279329609,
+          "usec": 20568
+        },
+        "pose_packet_capture": {
+          "calls": 717,
+          "ms_per_native_tick": 0.2259832402234637,
+          "usec": 40451
+        },
+        "rapier_segment": {
+          "calls": 717,
+          "ms_per_native_tick": 0.42136871508379886,
+          "usec": 75425
+        }
+      },
+      "name": "m4_throughput_tower_off_headless",
+      "native_ticks": 179,
+      "observed_wall_ms_per_native_tick": 33.529972067039104,
+      "pose_echo_checks": 716,
+      "process_callbacks": 362,
+      "process_callbacks_per_native_tick": 2.022346368715084,
+      "process_callbacks_per_second": 60.3145855496583,
+      "pump": {
+        "pump_budget_exhaustions": 376,
+        "pump_calls": 723,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 3896214,
+        "pump_waits": 1953
+      },
+      "pump_wall_ms_per_native_tick": 21.76655865921788,
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "queue_plus_delivery_ms_per_native_tick": 15.505402234636872,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 0.0,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 22.36922346368715,
+      "snapshot_ms_per_native_tick": 1.7858715083798882,
+      "snapshots_per_native_tick": 3.0,
+      "whole_window_ticks_per_second": 29.8240630204112,
+      "worker_profile": {
+        "compact_motion_receipts": 537,
+        "frame_copy_calls": 179,
+        "frame_copy_usec": 20406,
+        "full_motion_publications": 179,
+        "segment_idle_polls": 1459,
+        "segment_service_turns": 716,
+        "snapshot_calls": 537,
+        "snapshot_usec": 319671
+      },
+      "workload": "tower"
+    },
+    {
+      "acknowledgements": 5720,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "8/3": {
+          "awake": 3,
+          "callbacks": 52,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "wall_usec": 855032
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 122,
+          "owned": 8,
+          "semantic_ticks": 60,
+          "wall_usec": 2036452
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 30409
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 37991
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 32002
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 180,
+          "owned": 8,
+          "semantic_ticks": 89,
+          "wall_usec": 3008132
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 6.006983146067415,
+        "owner_service": 11.016511235955056,
+        "publication_copy": 2.9472303370786515,
+        "queue": 5.0454887640449435
+      },
+      "control_stage_usec_totals": {
+        "delivery": 1069243,
+        "owner_service": 1960939,
+        "publication_copy": 524607,
+        "queue": 898097
+      },
+      "controls": {
+        "complete": {
+          "calls": 178,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1497.5842696629213,
+            "owner_service": 201.92134831460675,
+            "publication_copy": 1391.376404494382,
+            "queue": 956.8932584269663
+          },
+          "stage_usec": {
+            "delivery": 266570,
+            "owner_service": 35942,
+            "publication_copy": 247665,
+            "queue": 170327
+          }
+        },
+        "motion": {
+          "calls": 715,
+          "calls_per_native_tick": 4.01685393258427,
+          "stage_mean_usec_per_call": {
+            "delivery": 1122.6195804195804,
+            "owner_service": 2692.3034965034967,
+            "publication_copy": 387.33146853146854,
+            "queue": 1017.8601398601398
+          },
+          "stage_usec": {
+            "delivery": 802673,
+            "owner_service": 1924997,
+            "publication_copy": 276942,
+            "queue": 727770
+          }
+        }
+      },
+      "elapsed_usec": 6000049,
+      "execution_mode": "headless",
+      "lane": "headless",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 894,
+          "ms_per_native_tick": 0.2050955056179775,
+          "usec": 36507
+        },
+        "pose_packet_capture": {
+          "calls": 716,
+          "ms_per_native_tick": 0.4785449438202247,
+          "usec": 85181
+        },
+        "rapier_segment": {
+          "calls": 716,
+          "ms_per_native_tick": 0.5755449438202247,
+          "usec": 102447
+        }
+      },
+      "name": "m4_throughput_stress_off_headless",
+      "native_ticks": 178,
+      "observed_wall_ms_per_native_tick": 33.708140449438204,
+      "pose_echo_checks": 5720,
+      "process_callbacks": 360,
+      "process_callbacks_per_native_tick": 2.0224719101123596,
+      "process_callbacks_per_second": 59.9995100040016,
+      "pump": {
+        "pump_budget_exhaustions": 536,
+        "pump_calls": 721,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 5338425,
+        "pump_waits": 2659
+      },
+      "pump_wall_ms_per_native_tick": 29.99115168539326,
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "queue_plus_delivery_ms_per_native_tick": 11.05247191011236,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 0.0,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 25.01621348314607,
+      "snapshot_ms_per_native_tick": 3.5277752808988763,
+      "snapshots_per_native_tick": 3.00561797752809,
+      "whole_window_ticks_per_second": 29.6664243908675,
+      "worker_profile": {
+        "compact_motion_receipts": 537,
+        "frame_copy_calls": 178,
+        "frame_copy_usec": 31635,
+        "full_motion_publications": 179,
+        "segment_idle_polls": 1089,
+        "segment_service_turns": 715,
+        "snapshot_calls": 535,
+        "snapshot_usec": 627944
+      },
+      "workload": "stress"
+    },
+    {
+      "acknowledgements": 1036,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 1,
+          "semantic_ticks": 259,
+          "wall_usec": 6000924
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 8.065934362934364,
+        "owner_service": 1.4567837837837838,
+        "publication_copy": 0.7138957528957529,
+        "queue": 5.775571428571428
+      },
+      "control_stage_usec_totals": {
+        "delivery": 2089077,
+        "owner_service": 377307,
+        "publication_copy": 184899,
+        "queue": 1495873
+      },
+      "controls": {
+        "complete": {
+          "calls": 259,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 2339.5250965250966,
+            "owner_service": 186.9189189189189,
+            "publication_copy": 349.5019305019305,
+            "queue": 1094.2857142857142
+          },
+          "stage_usec": {
+            "delivery": 605937,
+            "owner_service": 48412,
+            "publication_copy": 90521,
+            "queue": 283420
+          }
+        },
+        "motion": {
+          "calls": 1036,
+          "calls_per_native_tick": 4.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1431.6023166023167,
+            "owner_service": 317.4662162162162,
+            "publication_copy": 91.0984555984556,
+            "queue": 1170.3214285714287
+          },
+          "stage_usec": {
+            "delivery": 1483140,
+            "owner_service": 328895,
+            "publication_copy": 94378,
+            "queue": 1212453
+          }
+        }
+      },
+      "elapsed_usec": 6000946,
+      "execution_mode": "headless",
+      "lane": "headless",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 1296,
+          "ms_per_native_tick": 0.10808880308880309,
+          "usec": 27995
+        },
+        "pose_packet_capture": {
+          "calls": 1037,
+          "ms_per_native_tick": 0.2089034749034749,
+          "usec": 54106
+        },
+        "rapier_segment": {
+          "calls": 1037,
+          "ms_per_native_tick": 0.27314671814671815,
+          "usec": 70745
+        }
+      },
+      "name": "m4_throughput_sleeping_off_headless",
+      "native_ticks": 259,
+      "observed_wall_ms_per_native_tick": 23.169675675675677,
+      "pose_echo_checks": 1036,
+      "process_callbacks": 361,
+      "process_callbacks_per_native_tick": 1.393822393822394,
+      "process_callbacks_per_second": 60.1571818843229,
+      "pump": {
+        "pump_budget_exhaustions": 378,
+        "pump_calls": 722,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 4058946,
+        "pump_waits": 2032
+      },
+      "pump_wall_ms_per_native_tick": 15.671606177606177,
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "queue_plus_delivery_ms_per_native_tick": 13.84150579150579,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 0.0,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 16.01218532818533,
+      "snapshot_ms_per_native_tick": 0.6295521235521235,
+      "snapshots_per_native_tick": 3.0,
+      "whole_window_ticks_per_second": 43.1598617951236,
+      "worker_profile": {
+        "compact_motion_receipts": 777,
+        "frame_copy_calls": 259,
+        "frame_copy_usec": 27466,
+        "full_motion_publications": 259,
+        "segment_idle_polls": 1768,
+        "segment_service_turns": 1036,
+        "snapshot_calls": 777,
+        "snapshot_usec": 163054
+      },
+      "workload": "sleeping"
+    },
+    {
+      "acknowledgements": 716,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "headless",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [
+          {
+            "elapsed_usec": 5916214,
+            "interval_count": 177,
+            "maximum_interval_usec": 53351,
+            "observed_units_per_second": 29.9177818787488,
+            "recent_interval_samples": 177,
+            "recent_p50_interval_usec": 33326,
+            "recent_p95_interval_usec": 34691,
+            "units": "native_semantic_ticks",
+            "units_observed": 177,
+            "workload": {
+              "camera": "free",
+              "owned_material_bodies": 1,
+              "paused": false
+            }
+          }
+        ],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "headless_callback_only"
+      },
+      "bounded_probe_stages": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 187,
+          "p50_usec": 101,
+          "p95_usec": 157
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 102,
+          "p50_usec": 57,
+          "p95_usec": 81
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 47,
+          "p50_usec": 24,
+          "p95_usec": 32
+        },
+        "receipt_delivery": {
+          "count": 184,
+          "maximum_usec": 15614,
+          "p50_usec": 5574,
+          "p95_usec": 8112
+        },
+        "scene_callback": {
+          "count": 256,
+          "maximum_usec": 10580,
+          "p50_usec": 8675,
+          "p95_usec": 10245
+        }
+      },
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 179,
+          "wall_usec": 6002365
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 10.001972067039107,
+        "owner_service": 5.436094972067039,
+        "publication_copy": 1.568564245810056,
+        "queue": 5.592675977653632
+      },
+      "control_stage_usec_totals": {
+        "delivery": 1790353,
+        "owner_service": 973061,
+        "publication_copy": 280773,
+        "queue": 1001089
+      },
+      "controls": {
+        "complete": {
+          "calls": 179,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1089.4581005586592,
+            "owner_service": 218.48603351955308,
+            "publication_copy": 774.4301675977654,
+            "queue": 1130.7932960893854
+          },
+          "stage_usec": {
+            "delivery": 195013,
+            "owner_service": 39109,
+            "publication_copy": 138623,
+            "queue": 202412
+          }
+        },
+        "motion": {
+          "calls": 716,
+          "calls_per_native_tick": 4.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 2228.1284916201116,
+            "owner_service": 1304.4022346368715,
+            "publication_copy": 198.53351955307264,
+            "queue": 1115.4706703910615
+          },
+          "stage_usec": {
+            "delivery": 1595340,
+            "owner_service": 933952,
+            "publication_copy": 142150,
+            "queue": 798677
+          }
+        }
+      },
+      "elapsed_usec": 6002388,
+      "execution_mode": "headless",
+      "lane": "headless",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 896,
+          "ms_per_native_tick": 0.1255139664804469,
+          "usec": 22467
+        },
+        "pose_packet_capture": {
+          "calls": 717,
+          "ms_per_native_tick": 0.24172067039106146,
+          "usec": 43268
+        },
+        "rapier_segment": {
+          "calls": 717,
+          "ms_per_native_tick": 0.44563687150837994,
+          "usec": 79769
+        }
+      },
+      "name": "m4_throughput_tower_on_headless",
+      "native_ticks": 179,
+      "observed_wall_ms_per_native_tick": 33.5328938547486,
+      "pose_echo_checks": 716,
+      "process_callbacks": 362,
+      "process_callbacks_per_native_tick": 2.022346368715084,
+      "process_callbacks_per_second": 60.3093302199058,
+      "pump": {
+        "pump_budget_exhaustions": 382,
+        "pump_calls": 723,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 3954481,
+        "pump_waits": 1980
+      },
+      "pump_wall_ms_per_native_tick": 22.092072625698325,
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "queue_plus_delivery_ms_per_native_tick": 15.594648044692738,
+      "recording_enabled": true,
+      "renderer_callbacks_per_second": 0.0,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 22.59930726256983,
+      "snapshot_ms_per_native_tick": 1.792290502793296,
+      "snapshots_per_native_tick": 3.0,
+      "whole_window_ticks_per_second": 29.8214643905059,
+      "worker_profile": {
+        "compact_motion_receipts": 537,
+        "frame_copy_calls": 179,
+        "frame_copy_usec": 23813,
+        "full_motion_publications": 179,
+        "segment_idle_polls": 1457,
+        "segment_service_turns": 716,
+        "snapshot_calls": 537,
+        "snapshot_usec": 320820
+      },
+      "workload": "tower"
+    },
+    {
+      "acknowledgements": 0,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "Windows",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "renderer_post_draw_callback"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 64,
+          "owned": 0,
+          "semantic_ticks": 118,
+          "wall_usec": 6064054
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 0.0,
+        "owner_service": 0.0,
+        "publication_copy": 0.0,
+        "queue": 0.0
+      },
+      "control_stage_usec_totals": {
+        "delivery": 0,
+        "owner_service": 0,
+        "publication_copy": 0,
+        "queue": 0
+      },
+      "controls": {},
+      "elapsed_usec": 6064086,
+      "execution_mode": "rendered",
+      "lane": "graphical",
+      "main_stage_deltas": {},
+      "name": "m4_throughput_disabled_off_render",
+      "native_ticks": 118,
+      "observed_wall_ms_per_native_tick": 51.3905593220339,
+      "pose_echo_checks": 0,
+      "process_callbacks": 64,
+      "process_callbacks_per_native_tick": 0.5423728813559322,
+      "process_callbacks_per_second": 10.5539400331724,
+      "pump": {
+        "pump_budget_exhaustions": 0,
+        "pump_calls": 0,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 0,
+        "pump_waits": 0
+      },
+      "pump_wall_ms_per_native_tick": 0.0,
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "queue_plus_delivery_ms_per_native_tick": 0.0,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 10.5539400331724,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 0.0,
+      "snapshot_ms_per_native_tick": 0.0,
+      "snapshots_per_native_tick": 0.0,
+      "whole_window_ticks_per_second": 19.4588269361615,
+      "worker_profile": {
+        "compact_motion_receipts": 0,
+        "frame_copy_calls": 0,
+        "frame_copy_usec": 0,
+        "full_motion_publications": 0,
+        "segment_idle_polls": 0,
+        "segment_service_turns": 0,
+        "snapshot_calls": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "acknowledgements": 0,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "Windows",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "renderer_post_draw_callback"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 53,
+          "owned": 0,
+          "semantic_ticks": 133,
+          "wall_usec": 6089668
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 11.32281954887218,
+        "owner_service": 1.1926015037593987,
+        "publication_copy": 0.8812105263157894,
+        "queue": 6.851563909774437
+      },
+      "control_stage_usec_totals": {
+        "delivery": 1505935,
+        "owner_service": 158616,
+        "publication_copy": 117201,
+        "queue": 911258
+      },
+      "controls": {
+        "complete": {
+          "calls": 133,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1442.6842105263158,
+            "owner_service": 222.31578947368422,
+            "publication_copy": 431.14285714285717,
+            "queue": 1555.6842105263158
+          },
+          "stage_usec": {
+            "delivery": 191877,
+            "owner_service": 29568,
+            "publication_copy": 57342,
+            "queue": 206906
+          }
+        },
+        "motion": {
+          "calls": 532,
+          "calls_per_native_tick": 4.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 2470.033834586466,
+            "owner_service": 242.57142857142858,
+            "publication_copy": 112.51691729323308,
+            "queue": 1323.96992481203
+          },
+          "stage_usec": {
+            "delivery": 1314058,
+            "owner_service": 129048,
+            "publication_copy": 59859,
+            "queue": 704352
+          }
+        }
+      },
+      "elapsed_usec": 6089696,
+      "execution_mode": "rendered",
+      "lane": "graphical",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 666,
+          "ms_per_native_tick": 0.12876691729323309,
+          "usec": 17126
+        },
+        "pose_packet_capture": {
+          "calls": 533,
+          "ms_per_native_tick": 0.1960827067669173,
+          "usec": 26079
+        },
+        "rapier_segment": {
+          "calls": 533,
+          "ms_per_native_tick": 12.230045112781955,
+          "usec": 1626596
+        }
+      },
+      "name": "m4_throughput_empty_off_render",
+      "native_ticks": 133,
+      "observed_wall_ms_per_native_tick": 45.78718796992481,
+      "pose_echo_checks": 0,
+      "process_callbacks": 53,
+      "process_callbacks_per_native_tick": 0.39849624060150374,
+      "process_callbacks_per_second": 8.70322590815699,
+      "pump": {
+        "pump_budget_exhaustions": 263,
+        "pump_calls": 415,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 3455371,
+        "pump_waits": 1222
+      },
+      "pump_wall_ms_per_native_tick": 25.980233082706768,
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "queue_plus_delivery_ms_per_native_tick": 18.174383458646616,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 8.70322590815699,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 20.248195488721805,
+      "snapshot_ms_per_native_tick": 0.793984962406015,
+      "snapshots_per_native_tick": 3.0,
+      "whole_window_ticks_per_second": 21.8401706751864,
+      "worker_profile": {
+        "compact_motion_receipts": 399,
+        "frame_copy_calls": 133,
+        "frame_copy_usec": 17777,
+        "full_motion_publications": 133,
+        "segment_idle_polls": 1849,
+        "segment_service_turns": 532,
+        "snapshot_calls": 399,
+        "snapshot_usec": 105600
+      },
+      "workload": "empty"
+    },
+    {
+      "acknowledgements": 401,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "Windows",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "renderer_post_draw_callback"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 45,
+          "owned": 1,
+          "semantic_ticks": 100,
+          "wall_usec": 6002856
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 8.78796,
+        "owner_service": 7.2507600000000005,
+        "publication_copy": 1.73845,
+        "queue": 6.98981
+      },
+      "control_stage_usec_totals": {
+        "delivery": 878796,
+        "owner_service": 725076,
+        "publication_copy": 173845,
+        "queue": 698981
+      },
+      "controls": {
+        "complete": {
+          "calls": 100,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1602.05,
+            "owner_service": 215.71,
+            "publication_copy": 842.01,
+            "queue": 1513.43
+          },
+          "stage_usec": {
+            "delivery": 160205,
+            "owner_service": 21571,
+            "publication_copy": 84201,
+            "queue": 151343
+          }
+        },
+        "motion": {
+          "calls": 401,
+          "calls_per_native_tick": 4.01,
+          "stage_mean_usec_per_call": {
+            "delivery": 1791.997506234414,
+            "owner_service": 1754.3765586034913,
+            "publication_copy": 223.5511221945137,
+            "queue": 1365.6807980049875
+          },
+          "stage_usec": {
+            "delivery": 718591,
+            "owner_service": 703505,
+            "publication_copy": 89644,
+            "queue": 547638
+          }
+        }
+      },
+      "elapsed_usec": 6002887,
+      "execution_mode": "rendered",
+      "lane": "graphical",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 502,
+          "ms_per_native_tick": 0.14994,
+          "usec": 14994
+        },
+        "pose_packet_capture": {
+          "calls": 402,
+          "ms_per_native_tick": 0.27202000000000004,
+          "usec": 27202
+        },
+        "rapier_segment": {
+          "calls": 402,
+          "ms_per_native_tick": 11.300920000000001,
+          "usec": 1130092
+        }
+      },
+      "name": "m4_throughput_tower_off_render",
+      "native_ticks": 100,
+      "observed_wall_ms_per_native_tick": 60.02887,
+      "pose_echo_checks": 401,
+      "process_callbacks": 45,
+      "process_callbacks_per_native_tick": 0.45,
+      "process_callbacks_per_second": 7.49639298557511,
+      "pump": {
+        "pump_budget_exhaustions": 264,
+        "pump_calls": 371,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 3219318,
+        "pump_waits": 1255
+      },
+      "pump_wall_ms_per_native_tick": 32.193180000000005,
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "queue_plus_delivery_ms_per_native_tick": 15.77777,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 7.49639298557511,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 24.76698,
+      "snapshot_ms_per_native_tick": 2.4720400000000002,
+      "snapshots_per_native_tick": 3.0,
+      "whole_window_ticks_per_second": 16.6586510790558,
+      "worker_profile": {
+        "compact_motion_receipts": 302,
+        "frame_copy_calls": 100,
+        "frame_copy_usec": 14923,
+        "full_motion_publications": 100,
+        "segment_idle_polls": 1177,
+        "segment_service_turns": 402,
+        "snapshot_calls": 300,
+        "snapshot_usec": 247204
+      },
+      "workload": "tower"
+    },
+    {
+      "acknowledgements": 2552,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "Windows",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "renderer_post_draw_callback"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "8/8": {
+          "awake": 8,
+          "callbacks": 41,
+          "owned": 8,
+          "semantic_ticks": 79,
+          "wall_usec": 6017646
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 9.59906329113924,
+        "owner_service": 13.485354430379747,
+        "publication_copy": 3.2757721518987344,
+        "queue": 7.13306329113924
+      },
+      "control_stage_usec_totals": {
+        "delivery": 758326,
+        "owner_service": 1065343,
+        "publication_copy": 258786,
+        "queue": 563512
+      },
+      "controls": {
+        "complete": {
+          "calls": 79,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1587.4303797468353,
+            "owner_service": 240.50632911392404,
+            "publication_copy": 1546.620253164557,
+            "queue": 2208.6962025316457
+          },
+          "stage_usec": {
+            "delivery": 125407,
+            "owner_service": 19000,
+            "publication_copy": 122183,
+            "queue": 174487
+          }
+        },
+        "motion": {
+          "calls": 319,
+          "calls_per_native_tick": 4.037974683544304,
+          "stage_mean_usec_per_call": {
+            "delivery": 1984.0721003134797,
+            "owner_service": 3280.0721003134795,
+            "publication_copy": 428.22257053291537,
+            "queue": 1219.5141065830721
+          },
+          "stage_usec": {
+            "delivery": 632919,
+            "owner_service": 1046343,
+            "publication_copy": 136603,
+            "queue": 389025
+          }
+        }
+      },
+      "elapsed_usec": 6017678,
+      "execution_mode": "rendered",
+      "lane": "graphical",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 399,
+          "ms_per_native_tick": 0.2698860759493671,
+          "usec": 21321
+        },
+        "pose_packet_capture": {
+          "calls": 320,
+          "ms_per_native_tick": 0.6348481012658228,
+          "usec": 50153
+        },
+        "rapier_segment": {
+          "calls": 320,
+          "ms_per_native_tick": 15.282101265822785,
+          "usec": 1207286
+        }
+      },
+      "name": "m4_throughput_stress_off_render",
+      "native_ticks": 79,
+      "observed_wall_ms_per_native_tick": 76.17313924050633,
+      "pose_echo_checks": 2552,
+      "process_callbacks": 41,
+      "process_callbacks_per_native_tick": 0.5189873417721519,
+      "process_callbacks_per_second": 6.81325920064184,
+      "pump": {
+        "pump_budget_exhaustions": 285,
+        "pump_calls": 364,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 3848288,
+        "pump_waits": 1315
+      },
+      "pump_wall_ms_per_native_tick": 48.71250632911392,
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "queue_plus_delivery_ms_per_native_tick": 16.73212658227848,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 6.81325920064184,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 33.49325316455696,
+      "snapshot_ms_per_native_tick": 3.8040506329113923,
+      "snapshots_per_native_tick": 3.0,
+      "whole_window_ticks_per_second": 13.1279872402611,
+      "worker_profile": {
+        "compact_motion_receipts": 240,
+        "frame_copy_calls": 79,
+        "frame_copy_usec": 19224,
+        "full_motion_publications": 79,
+        "segment_idle_polls": 1127,
+        "segment_service_turns": 319,
+        "snapshot_calls": 237,
+        "snapshot_usec": 300520
+      },
+      "workload": "stress"
+    },
+    {
+      "acknowledgements": 552,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "Windows",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "renderer_post_draw_callback"
+      },
+      "bounded_probe_stages": {},
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 53,
+          "owned": 1,
+          "semantic_ticks": 137,
+          "wall_usec": 6018371
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 12.287401459854015,
+        "owner_service": 1.696934306569343,
+        "publication_copy": 0.9638102189781022,
+        "queue": 5.660124087591241
+      },
+      "control_stage_usec_totals": {
+        "delivery": 1683374,
+        "owner_service": 232480,
+        "publication_copy": 132042,
+        "queue": 775437
+      },
+      "controls": {
+        "complete": {
+          "calls": 137,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 1754.094890510949,
+            "owner_service": 206.57664233576642,
+            "publication_copy": 457.9270072992701,
+            "queue": 1092.094890510949
+          },
+          "stage_usec": {
+            "delivery": 240311,
+            "owner_service": 28301,
+            "publication_copy": 62736,
+            "queue": 149617
+          }
+        },
+        "motion": {
+          "calls": 552,
+          "calls_per_native_tick": 4.029197080291971,
+          "stage_mean_usec_per_call": {
+            "delivery": 2614.2445652173915,
+            "owner_service": 369.8894927536232,
+            "publication_copy": 125.55434782608695,
+            "queue": 1133.731884057971
+          },
+          "stage_usec": {
+            "delivery": 1443063,
+            "owner_service": 204179,
+            "publication_copy": 69306,
+            "queue": 625820
+          }
+        }
+      },
+      "elapsed_usec": 6018409,
+      "execution_mode": "rendered",
+      "lane": "graphical",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 690,
+          "ms_per_native_tick": 0.15024087591240876,
+          "usec": 20583
+        },
+        "pose_packet_capture": {
+          "calls": 552,
+          "ms_per_native_tick": 0.282058394160584,
+          "usec": 38642
+        },
+        "rapier_segment": {
+          "calls": 552,
+          "ms_per_native_tick": 13.048116788321169,
+          "usec": 1787592
+        }
+      },
+      "name": "m4_throughput_sleeping_off_render",
+      "native_ticks": 137,
+      "observed_wall_ms_per_native_tick": 43.929992700729926,
+      "pose_echo_checks": 552,
+      "process_callbacks": 53,
+      "process_callbacks_per_native_tick": 0.38686131386861317,
+      "process_callbacks_per_second": 8.80631409397401,
+      "pump": {
+        "pump_budget_exhaustions": 255,
+        "pump_calls": 409,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 3278643,
+        "pump_waits": 1199
+      },
+      "pump_wall_ms_per_native_tick": 23.93170072992701,
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "queue_plus_delivery_ms_per_native_tick": 17.947525547445256,
+      "recording_enabled": false,
+      "renderer_callbacks_per_second": 8.80631409397401,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 20.608270072992703,
+      "snapshot_ms_per_native_tick": 0.8218759124087591,
+      "snapshots_per_native_tick": 3.0145985401459856,
+      "whole_window_ticks_per_second": 22.7634911485743,
+      "worker_profile": {
+        "compact_motion_receipts": 414,
+        "frame_copy_calls": 137,
+        "frame_copy_usec": 19753,
+        "full_motion_publications": 138,
+        "segment_idle_polls": 2031,
+        "segment_service_turns": 552,
+        "snapshot_calls": 413,
+        "snapshot_usec": 112597
+      },
+      "workload": "sleeping"
+    },
+    {
+      "acknowledgements": 376,
+      "bounded_probe_cadence": {
+        "body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+        "capacity_dropped_intervals": 0,
+        "cohort_capacity": 64,
+        "display_backend": "Windows",
+        "hardware_present_verified": false,
+        "native_progress_delivery": [
+          {
+            "elapsed_usec": 4991897,
+            "interval_count": 42,
+            "maximum_interval_usec": 138999,
+            "observed_units_per_second": 18.0292181509354,
+            "recent_interval_samples": 42,
+            "recent_p50_interval_usec": 119791,
+            "recent_p95_interval_usec": 132611,
+            "units": "native_semantic_ticks",
+            "units_observed": 90,
+            "workload": {
+              "camera": "free",
+              "owned_material_bodies": 1,
+              "paused": false
+            }
+          }
+        ],
+        "percentile_scope": "most_recent_bounded_intervals_per_workload",
+        "post_draw_intervals": [
+          {
+            "elapsed_usec": 5844735,
+            "interval_count": 44,
+            "maximum_interval_usec": 726941,
+            "observed_units_per_second": 7.52814284993246,
+            "recent_interval_samples": 44,
+            "recent_p50_interval_usec": 117021,
+            "recent_p95_interval_usec": 135142,
+            "units": "post_draw_callbacks",
+            "units_observed": 44,
+            "workload": {
+              "camera": "free",
+              "owned_material_bodies": 1,
+              "paused": false
+            }
+          }
+        ],
+        "progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+        "render_scope": "renderer_post_draw_callback"
+      },
+      "bounded_probe_stages": {
+        "physics_work": {
+          "count": 256,
+          "maximum_usec": 60345,
+          "p50_usec": 127,
+          "p95_usec": 7142
+        },
+        "publication_prepare": {
+          "count": 256,
+          "maximum_usec": 164,
+          "p50_usec": 72,
+          "p95_usec": 123
+        },
+        "queue_admission": {
+          "count": 256,
+          "maximum_usec": 66,
+          "p50_usec": 30,
+          "p95_usec": 50
+        },
+        "receipt_delivery": {
+          "count": 45,
+          "maximum_usec": 73617,
+          "p50_usec": 20411,
+          "p95_usec": 64475
+        },
+        "scene_callback": {
+          "count": 45,
+          "maximum_usec": 10739,
+          "p50_usec": 8742,
+          "p95_usec": 10390
+        }
+      },
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 45,
+          "owned": 1,
+          "semantic_ticks": 93,
+          "wall_usec": 6012046
+        }
+      },
+      "control_stage_ms_per_native_tick": {
+        "delivery": 8.275795698924732,
+        "owner_service": 7.309978494623656,
+        "publication_copy": 1.8255483870967744,
+        "queue": 5.735505376344086
+      },
+      "control_stage_usec_totals": {
+        "delivery": 769649,
+        "owner_service": 679828,
+        "publication_copy": 169776,
+        "queue": 533402
+      },
+      "controls": {
+        "complete": {
+          "calls": 93,
+          "calls_per_native_tick": 1.0,
+          "stage_mean_usec_per_call": {
+            "delivery": 2089.569892473118,
+            "owner_service": 233.59139784946237,
+            "publication_copy": 857.4408602150538,
+            "queue": 1044.3333333333333
+          },
+          "stage_usec": {
+            "delivery": 194330,
+            "owner_service": 21724,
+            "publication_copy": 79742,
+            "queue": 97123
+          }
+        },
+        "motion": {
+          "calls": 376,
+          "calls_per_native_tick": 4.043010752688172,
+          "stage_mean_usec_per_call": {
+            "delivery": 1530.1037234042553,
+            "owner_service": 1750.276595744681,
+            "publication_copy": 239.45212765957447,
+            "queue": 1160.3164893617022
+          },
+          "stage_usec": {
+            "delivery": 575319,
+            "owner_service": 658104,
+            "publication_copy": 90034,
+            "queue": 436279
+          }
+        }
+      },
+      "elapsed_usec": 6012072,
+      "execution_mode": "rendered",
+      "lane": "graphical",
+      "main_stage_deltas": {
+        "owner_control_admission": {
+          "calls": 469,
+          "ms_per_native_tick": 0.15976344086021507,
+          "usec": 14858
+        },
+        "pose_packet_capture": {
+          "calls": 376,
+          "ms_per_native_tick": 0.30334408602150537,
+          "usec": 28211
+        },
+        "rapier_segment": {
+          "calls": 376,
+          "ms_per_native_tick": 9.977075268817204,
+          "usec": 927868
+        }
+      },
+      "name": "m4_throughput_tower_on_render",
+      "native_ticks": 93,
+      "observed_wall_ms_per_native_tick": 64.64593548387097,
+      "pose_echo_checks": 376,
+      "process_callbacks": 45,
+      "process_callbacks_per_native_tick": 0.4838709677419355,
+      "process_callbacks_per_second": 7.48494030011617,
+      "pump": {
+        "pump_budget_exhaustions": 246,
+        "pump_calls": 365,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_total": 2975450,
+        "pump_waits": 1173
+      },
+      "pump_wall_ms_per_native_tick": 31.994086021505375,
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "queue_plus_delivery_ms_per_native_tick": 14.011301075268817,
+      "recording_enabled": true,
+      "renderer_callbacks_per_second": 7.48494030011617,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "serial_control_roundtrip_ms_per_native_tick": 23.14682795698925,
+      "snapshot_ms_per_native_tick": 2.0453333333333332,
+      "snapshots_per_native_tick": 3.010752688172043,
+      "whole_window_ticks_per_second": 15.4688766202401,
+      "worker_profile": {
+        "compact_motion_receipts": 282,
+        "frame_copy_calls": 93,
+        "frame_copy_usec": 16803,
+        "full_motion_publications": 94,
+        "segment_idle_polls": 960,
+        "segment_service_turns": 376,
+        "snapshot_calls": 280,
+        "snapshot_usec": 190216
+      },
+      "workload": "tower"
+    }
+  ],
+  "schema": "objectshard-m4-existing-windows-control-timing-review-v1",
+  "scope": "Analysis of existing hosted Windows profile receipts only; no new execution, causal cross-host comparison or physical-owner performance assertion.",
+  "source_commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+  "workflow_run": 46099370014
+}

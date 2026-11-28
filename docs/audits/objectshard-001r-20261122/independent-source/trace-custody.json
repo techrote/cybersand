@@ -1,0 +1,30 @@
+{
+  "schema": "objectshard-independent-trace-custody-v1",
+  "scope": "Lossless compression of original independent f11 actual-host traces; code delta514review is separate",
+  "traces": [
+    {
+      "source_name": "retained-owner-d.json",
+      "original_sha256": "6d41b0858a7d651056a6331427e55fd34c5af86501838d6a3bb4fa3f002a9786",
+      "original_bytes": 11883114,
+      "retained_name": "retained-owner-d.json.gz",
+      "gzip_sha256": "243dd882f0d709cb171fabc6c89db6e659c7879d33fdf1d5a1d360511e60a496",
+      "gzip_bytes": 268113
+    },
+    {
+      "source_name": "retained-owner-d.json.jsonl",
+      "original_sha256": "4b68d0b5e32c147a6df1144acf307b88062120d901ad761cbd30482089101a06",
+      "original_bytes": 7557612,
+      "retained_name": "retained-owner-d.json.jsonl.gz",
+      "gzip_sha256": "6341cc704dea4f6123cc0cd5733cea28a89378737cf5983b78c1f94295bbb08d",
+      "gzip_bytes": 143451
+    },
+    {
+      "source_name": "shape-only.json.jsonl",
+      "original_sha256": "95744c311c61851196342b9c26c87b4acbbf9fcfd7b07a83caaeb3f6c61c7803",
+      "original_bytes": 4861554,
+      "retained_name": "shape-only.json.jsonl.gz",
+      "gzip_sha256": "b26374408f4768eb720f29d4c306d1feb2f46987c549cbea70b40fcf6cc45491",
+      "gzip_bytes": 161300
+    }
+  ]
+}

@@ -144,6 +144,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
             throw std::invalid_argument("Workbench inventory conversion intent must be boolean");
         const bool convert = options.get("workbench_convert_liquid_inventory",false);
         const bool retain = options.get("workbench_retain_cells",false);
+        if (retain && adapter->shard_retains_inventory())
+            throw std::invalid_argument("Retaining live cells requires all physical material inventory to be settled into the same World first");
         const bool authoring_patch = options.has("workbench_authoring_patch");
         Dictionary authoring_patch_receipt;
         if (authoring_patch && (!workbench || !retain || convert || !adapter->workbench_ ||
@@ -766,6 +768,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         if (adapter->liquid_policy_session_generation_ == static_cast<std::uint64_t>(INT64_MAX))
             throw std::length_error("Construction generation space exhausted");
         auto pending = std::make_unique<CyberNativeCellWorld::PendingLiquidWorld>();
+        pending->retains_cells = retain;
         pending->world = prepared.take_world();
         pending->reset_demo_coupling = default_demo;
         pending->extent = extent;
@@ -1134,6 +1137,10 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         }
     }
     auto pending = std::move(adapter->pending_liquid_world_); // One use, also on refusal.
+    if (pending->retains_cells && adapter->shard_retains_inventory()) {
+        error_ = "Physical material inventory changed after retained-cell preparation";
+        return false;
+    }
     if (pending->receipt.has("workbench_authoring_patch")) {
         // The physical hash binds scheduling-core coverage, which can remain
         // unchanged when the exact simulation rectangle moves within a core.
@@ -1165,6 +1172,9 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
     catch (const std::exception& error) { error_=String(error.what()); return false; }
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
+    // Retire the exclusive attached material owner while its source World is
+    // still alive. Refused preparation/commit above leaves it untouched.
+    adapter->retire_shard_for_world_replacement();
     resident_take_active(*adapter.ptr(),std::move(resident_departure));
     adapter->world_.swap(pending->world);
     adapter->worker_threads_ = adapter->world_->config().worker_threads;

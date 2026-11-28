@@ -1,0 +1,22 @@
+{
+  "schema": "objectshard-m4-source54-to-b7-native-input-comparison-v1",
+  "reference_source": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+  "target_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "reference_runtime": {
+    "platform": "linux-x86_64",
+    "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+    "size": 6081432
+  },
+  "ledgers": {
+    "source_inputs": {
+      "count": 126,
+      "reference_canonical_sha256": "92a611767b86f9c96caa159730106089726a16049d82485bbb89635d594a538b",
+      "changed": []
+    },
+    "build_contract_inputs": {
+      "count": 5,
+      "reference_canonical_sha256": "334f71b939a72f1a8910f46a849f9dd13ea2cffee691f7f7bd1c55a5efcbec7d",
+      "changed": []
+    }
+  }
+}

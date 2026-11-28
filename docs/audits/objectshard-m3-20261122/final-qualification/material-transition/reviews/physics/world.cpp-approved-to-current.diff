@@ -1,0 +1,14 @@
+diff --git a/native/src/world.cpp b/native/src/world.cpp
+index 66c2e02ea..c7869c4e3 100644
+--- a/native/src/world.cpp
++++ b/native/src/world.cpp
+@@ -3882,7 +3882,8 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
+ 
+         case RuleKernel::Fire: {
+             bool changed = false;
+-            if (slow_interaction_due(10U)) {
++            if (slow_interaction_due(10U) && (object_shard_mutations_ == nullptr ||
++                !object_shard_mutations_->external_fire_claimed(x, y, tick_index_))) {
+                 const auto sample_index = deterministic_random(x, y, 10U);
+                 const auto [sample_x, sample_y] = neighbour(sample_index);
+                 changed = ignite(sample_x, sample_y, 240) || changed;

@@ -1,0 +1,934 @@
+{
+  "historical": {
+    "all_passed": true,
+    "candidate_recording_off_costs": [
+      {
+        "acknowledgements": 0,
+        "compact_motion_receipts": 0,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 0,
+              "mean_ms": null
+            },
+            "owner_service": {
+              "calls": 0,
+              "mean_ms": null
+            },
+            "publication_copy": {
+              "calls": 0,
+              "mean_ms": null
+            },
+            "queue": {
+              "calls": 0,
+              "mean_ms": null
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 0,
+              "mean_ms": null
+            },
+            "owner_service": {
+              "calls": 0,
+              "mean_ms": null
+            },
+            "publication_copy": {
+              "calls": 0,
+              "mean_ms": null
+            },
+            "queue": {
+              "calls": 0,
+              "mean_ms": null
+            }
+          }
+        },
+        "full_motion_publications": 0,
+        "pose_echo_checks": 0,
+        "pump_budget_exhaustions": 0,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.0,
+        "snapshot_calls": 0,
+        "snapshot_ms_per_tick": 0.0,
+        "snapshot_per_tick": 0.0,
+        "ticks": 714,
+        "workload": "disabled"
+      },
+      {
+        "acknowledgements": 0,
+        "compact_motion_receipts": 2157,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 719,
+              "mean_ms": 0.16489012517385257
+            },
+            "owner_service": {
+              "calls": 719,
+              "mean_ms": 0.18762308762169683
+            },
+            "publication_copy": {
+              "calls": 719,
+              "mean_ms": 0.26871905424200276
+            },
+            "queue": {
+              "calls": 719,
+              "mean_ms": 0.19832962447844227
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 2876,
+              "mean_ms": 0.11855250347705146
+            },
+            "owner_service": {
+              "calls": 2876,
+              "mean_ms": 0.2000333796940195
+            },
+            "publication_copy": {
+              "calls": 2876,
+              "mean_ms": 0.09206988873435328
+            },
+            "queue": {
+              "calls": 2876,
+              "mean_ms": 0.14095410292072325
+            }
+          }
+        },
+        "full_motion_publications": 719,
+        "pose_echo_checks": 0,
+        "pump_budget_exhaustions": 177,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.3387176634214187,
+        "snapshot_calls": 2157,
+        "snapshot_ms_per_tick": 0.6098553546592489,
+        "snapshot_per_tick": 3.0,
+        "ticks": 719,
+        "workload": "empty"
+      },
+      {
+        "acknowledgements": 2592,
+        "compact_motion_receipts": 1944,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 648,
+              "mean_ms": 1.6193148148148149
+            },
+            "owner_service": {
+              "calls": 648,
+              "mean_ms": 0.20009876543209876
+            },
+            "publication_copy": {
+              "calls": 648,
+              "mean_ms": 0.7434783950617284
+            },
+            "queue": {
+              "calls": 648,
+              "mean_ms": 0.23615895061728395
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 2592,
+              "mean_ms": 0.2210416666666667
+            },
+            "owner_service": {
+              "calls": 2592,
+              "mean_ms": 1.4340671296296297
+            },
+            "publication_copy": {
+              "calls": 2592,
+              "mean_ms": 0.22634645061728398
+            },
+            "queue": {
+              "calls": 2592,
+              "mean_ms": 0.13920408950617283
+            }
+          }
+        },
+        "full_motion_publications": 648,
+        "pose_echo_checks": 2592,
+        "pump_budget_exhaustions": 803,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.4652885802469136,
+        "snapshot_calls": 1944,
+        "snapshot_ms_per_tick": 1.9794182098765432,
+        "snapshot_per_tick": 3.0,
+        "ticks": 648,
+        "workload": "tower"
+      },
+      {
+        "acknowledgements": 11448,
+        "compact_motion_receipts": 1074,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 357,
+              "mean_ms": 0.21394957983193277
+            },
+            "owner_service": {
+              "calls": 357,
+              "mean_ms": 0.2197675070028011
+            },
+            "publication_copy": {
+              "calls": 357,
+              "mean_ms": 1.3859243697478991
+            },
+            "queue": {
+              "calls": 357,
+              "mean_ms": 0.21952661064425769
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 1431,
+              "mean_ms": 1.2012264150943395
+            },
+            "owner_service": {
+              "calls": 1431,
+              "mean_ms": 3.126856044723969
+            },
+            "publication_copy": {
+              "calls": 1431,
+              "mean_ms": 0.4215352900069881
+            },
+            "queue": {
+              "calls": 1431,
+              "mean_ms": 0.15469881201956673
+            }
+          }
+        },
+        "full_motion_publications": 357,
+        "pose_echo_checks": 11448,
+        "pump_budget_exhaustions": 864,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 1.0588623595505617,
+        "snapshot_calls": 1070,
+        "snapshot_ms_per_tick": 3.8247247191011238,
+        "snapshot_per_tick": 3.00561797752809,
+        "ticks": 356,
+        "workload": "stress"
+      },
+      {
+        "acknowledgements": 2868,
+        "compact_motion_receipts": 2151,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 717,
+              "mean_ms": 0.231534170153417
+            },
+            "owner_service": {
+              "calls": 717,
+              "mean_ms": 0.18669595536959552
+            },
+            "publication_copy": {
+              "calls": 717,
+              "mean_ms": 0.33944630404463044
+            },
+            "queue": {
+              "calls": 717,
+              "mean_ms": 0.2035020920502092
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 2868,
+              "mean_ms": 0.12122036262203627
+            },
+            "owner_service": {
+              "calls": 2868,
+              "mean_ms": 0.344081589958159
+            },
+            "publication_copy": {
+              "calls": 2868,
+              "mean_ms": 0.13173779637377964
+            },
+            "queue": {
+              "calls": 2868,
+              "mean_ms": 0.12410076708507671
+            }
+          }
+        },
+        "full_motion_publications": 717,
+        "pose_echo_checks": 2868,
+        "pump_budget_exhaustions": 473,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.33708647140864717,
+        "snapshot_calls": 2151,
+        "snapshot_ms_per_tick": 0.8599177126917713,
+        "snapshot_per_tick": 3.0,
+        "ticks": 717,
+        "workload": "sleeping"
+      }
+    ],
+    "rows": [
+      {
+        "baseline_cohort_median": 59.52270627931961,
+        "baseline_cohort_rates": [
+          59.47278129042942,
+          59.5726312682098
+        ],
+        "baseline_cohort_seconds": [
+          6.002746,
+          6.009471
+        ],
+        "baseline_cohort_ticks": [
+          357,
+          358
+        ],
+        "baseline_snapshot_calls_per_tick": 0.0,
+        "baseline_snapshot_ms_per_tick": 0.0,
+        "candidate_cohort_median": 59.386010020708824,
+        "candidate_cohort_rates": [
+          59.84707078512042,
+          58.92494925629723
+        ],
+        "candidate_cohort_seconds": [
+          6.015332,
+          6.007642
+        ],
+        "candidate_cohort_ticks": [
+          360,
+          354
+        ],
+        "candidate_snapshot_calls_per_tick": 0.0,
+        "candidate_snapshot_ms_per_tick": 0.0,
+        "cohort_speedup": 0.9977034602901065,
+        "recording": "off",
+        "target_cohort": "0/0",
+        "whole_window_baseline_median": 59.52031745215465,
+        "whole_window_candidate_median": 59.38582260734075,
+        "workload": "disabled"
+      },
+      {
+        "baseline_cohort_median": 39.005941711060586,
+        "baseline_cohort_rates": [
+          33.92915027935832,
+          44.08273314276285
+        ],
+        "baseline_cohort_seconds": [
+          6.012529,
+          6.011424
+        ],
+        "baseline_cohort_ticks": [
+          204,
+          265
+        ],
+        "baseline_snapshot_calls_per_tick": 6.0,
+        "baseline_snapshot_ms_per_tick": 1.154183368869936,
+        "candidate_cohort_median": 59.79765999688206,
+        "candidate_cohort_rates": [
+          59.54681876942341,
+          60.048501224340704
+        ],
+        "candidate_cohort_seconds": [
+          6.012076,
+          6.011807
+        ],
+        "candidate_cohort_ticks": [
+          358,
+          361
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 0.6098553546592489,
+        "cohort_speedup": 1.5330397722438718,
+        "recording": "off",
+        "target_cohort": "0/0",
+        "whole_window_baseline_median": 39.00581759218575,
+        "whole_window_candidate_median": 59.7973459926955,
+        "workload": "empty"
+      },
+      {
+        "baseline_cohort_median": 19.704809865322318,
+        "baseline_cohort_rates": [
+          19.78288039403508,
+          19.626739336609557
+        ],
+        "baseline_cohort_seconds": [
+          6.015302,
+          6.012206
+        ],
+        "baseline_cohort_ticks": [
+          119,
+          118
+        ],
+        "baseline_snapshot_calls_per_tick": 6.012658227848101,
+        "baseline_snapshot_ms_per_tick": 3.6187510548523205,
+        "candidate_cohort_median": 53.967457281768745,
+        "candidate_cohort_rates": [
+          50.657970381751134,
+          57.27694418178636
+        ],
+        "candidate_cohort_seconds": [
+          6.00103,
+          6.005907
+        ],
+        "candidate_cohort_ticks": [
+          304,
+          344
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 1.9794182098765432,
+        "cohort_speedup": 2.738796144221815,
+        "recording": "off",
+        "target_cohort": "1/1",
+        "whole_window_baseline_median": 19.7047394850064,
+        "whole_window_candidate_median": 53.9673314338618,
+        "workload": "tower"
+      },
+      {
+        "baseline_cohort_median": 13.468402844829804,
+        "baseline_cohort_rates": [
+          12.803641688258262,
+          14.133164001401346
+        ],
+        "baseline_cohort_seconds": [
+          6.013914,
+          6.014223
+        ],
+        "baseline_cohort_ticks": [
+          77,
+          85
+        ],
+        "baseline_snapshot_calls_per_tick": 6.0246913580246915,
+        "baseline_snapshot_ms_per_tick": 7.73779012345679,
+        "candidate_cohort_median": 29.62128364583033,
+        "candidate_cohort_rates": [
+          29.857945846311864,
+          29.384621445348802
+        ],
+        "candidate_cohort_seconds": [
+          3.014273,
+          3.096858
+        ],
+        "candidate_cohort_ticks": [
+          90,
+          91
+        ],
+        "candidate_snapshot_calls_per_tick": 3.00561797752809,
+        "candidate_snapshot_ms_per_tick": 3.8247247191011238,
+        "cohort_speedup": 2.1993167257542514,
+        "recording": "off",
+        "target_cohort": "8/8",
+        "whole_window_baseline_median": 13.468316971819949,
+        "whole_window_candidate_median": 29.62271514877315,
+        "workload": "stress"
+      },
+      {
+        "baseline_cohort_median": 21.370395254542576,
+        "baseline_cohort_rates": [
+          16.979502910070394,
+          25.761287599014757
+        ],
+        "baseline_cohort_seconds": [
+          6.007243,
+          6.01678
+        ],
+        "baseline_cohort_ticks": [
+          102,
+          155
+        ],
+        "baseline_snapshot_calls_per_tick": 6.0,
+        "baseline_snapshot_ms_per_tick": 1.4028443579766536,
+        "candidate_cohort_median": 59.67370423234688,
+        "candidate_cohort_rates": [
+          60.145946388135954,
+          59.2014620765578
+        ],
+        "candidate_cohort_seconds": [
+          6.002067,
+          6.013365
+        ],
+        "candidate_cohort_ticks": [
+          361,
+          356
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 0.8599177126917713,
+        "cohort_speedup": 2.7923537923175474,
+        "recording": "off",
+        "target_cohort": "1/0",
+        "whole_window_baseline_median": 21.37033410851315,
+        "whole_window_candidate_median": 59.67348632446215,
+        "workload": "sleeping"
+      },
+      {
+        "baseline_cohort_median": 59.30033648966796,
+        "baseline_cohort_rates": [
+          59.84577743155887,
+          58.75489554777705
+        ],
+        "baseline_cohort_seconds": [
+          6.015462,
+          6.00801
+        ],
+        "baseline_cohort_ticks": [
+          360,
+          353
+        ],
+        "baseline_snapshot_calls_per_tick": 0.0,
+        "baseline_snapshot_ms_per_tick": 0.0,
+        "candidate_cohort_median": 59.833323361486734,
+        "candidate_cohort_rates": [
+          59.83347294477021,
+          59.83317377820326
+        ],
+        "candidate_cohort_seconds": [
+          5.999986,
+          6.000016
+        ],
+        "candidate_cohort_ticks": [
+          359,
+          359
+        ],
+        "candidate_snapshot_calls_per_tick": 0.0,
+        "candidate_snapshot_ms_per_tick": 0.0,
+        "cohort_speedup": 1.0089879232289287,
+        "recording": "on",
+        "target_cohort": "0/0",
+        "whole_window_baseline_median": 59.300169139901996,
+        "whole_window_candidate_median": 59.83314884814045,
+        "workload": "disabled"
+      },
+      {
+        "baseline_cohort_median": 43.56545700906162,
+        "baseline_cohort_rates": [
+          45.72148334457805,
+          41.40943067354518
+        ],
+        "baseline_cohort_seconds": [
+          6.014678,
+          6.013123
+        ],
+        "baseline_cohort_ticks": [
+          275,
+          249
+        ],
+        "baseline_snapshot_calls_per_tick": 6.0,
+        "baseline_snapshot_ms_per_tick": 1.1288759541984732,
+        "candidate_cohort_median": 59.94374941386711,
+        "candidate_cohort_rates": [
+          59.87323837548603,
+          60.01426045224818
+        ],
+        "candidate_cohort_seconds": [
+          6.012703,
+          6.015237
+        ],
+        "candidate_cohort_ticks": [
+          360,
+          361
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 0.6130416088765603,
+        "cohort_speedup": 1.3759467598698392,
+        "recording": "on",
+        "target_cohort": "0/0",
+        "whole_window_baseline_median": 43.5653490632685,
+        "whole_window_candidate_median": 59.94356998168425,
+        "workload": "empty"
+      },
+      {
+        "baseline_cohort_median": 19.799888536870142,
+        "baseline_cohort_rates": [
+          19.465818023550646,
+          20.133959050189635
+        ],
+        "baseline_cohort_seconds": [
+          6.010536,
+          6.009747
+        ],
+        "baseline_cohort_ticks": [
+          117,
+          121
+        ],
+        "baseline_snapshot_calls_per_tick": 6.050420168067227,
+        "baseline_snapshot_ms_per_tick": 3.9841092436974788,
+        "candidate_cohort_median": 51.23401682933337,
+        "candidate_cohort_rates": [
+          51.228306766411066,
+          51.23972689225567
+        ],
+        "candidate_cohort_seconds": [
+          6.012301,
+          6.010961
+        ],
+        "candidate_cohort_ticks": [
+          308,
+          308
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 2.0104967532467533,
+        "cohort_speedup": 2.5875911742598205,
+        "recording": "on",
+        "target_cohort": "1/1",
+        "whole_window_baseline_median": 19.79980131891395,
+        "whole_window_candidate_median": 51.233859166750804,
+        "workload": "tower"
+      },
+      {
+        "baseline_cohort_median": 14.13240634617905,
+        "baseline_cohort_rates": [
+          15.131388910188067,
+          13.13342378217003
+        ],
+        "baseline_cohort_seconds": [
+          5.881813,
+          6.015187
+        ],
+        "baseline_cohort_ticks": [
+          89,
+          79
+        ],
+        "baseline_snapshot_calls_per_tick": 6.023529411764706,
+        "baseline_snapshot_ms_per_tick": 7.4122529411764715,
+        "candidate_cohort_median": 29.921469232198902,
+        "candidate_cohort_rates": [
+          30.00008241780884,
+          29.842856046588963
+        ],
+        "candidate_cohort_seconds": [
+          3.033325,
+          3.049306
+        ],
+        "candidate_cohort_ticks": [
+          91,
+          91
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0055710306406684,
+        "candidate_snapshot_ms_per_tick": 4.005220055710306,
+        "cohort_speedup": 2.117223953179687,
+        "recording": "on",
+        "target_cohort": "8/8",
+        "whole_window_baseline_median": 14.1321114002878,
+        "whole_window_candidate_median": 29.9007280753829,
+        "workload": "stress"
+      },
+      {
+        "baseline_cohort_median": 31.367087433220174,
+        "baseline_cohort_rates": [
+          28.99672337025916,
+          33.73745149618119
+        ],
+        "baseline_cohort_seconds": [
+          6.000678,
+          6.017052
+        ],
+        "baseline_cohort_ticks": [
+          174,
+          203
+        ],
+        "baseline_snapshot_calls_per_tick": 6.0,
+        "baseline_snapshot_ms_per_tick": 1.3754880636604774,
+        "candidate_cohort_median": 59.86433144773997,
+        "candidate_cohort_rates": [
+          59.97515029606067,
+          59.753512599419274
+        ],
+        "candidate_cohort_seconds": [
+          6.002486,
+          6.008015
+        ],
+        "candidate_cohort_ticks": [
+          360,
+          359
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 0.695712100139082,
+        "cohort_speedup": 1.9085078133310844,
+        "recording": "on",
+        "target_cohort": "1/0",
+        "whole_window_baseline_median": 31.366981879336947,
+        "whole_window_candidate_median": 59.8641420434996,
+        "workload": "sleeping"
+      }
+    ],
+    "run_count": 40,
+    "schema": "objectshard-m4-throughput-analysis-v1",
+    "source_summary_sha256": "d73a23af1dd6e2acf2258e34cf9ed80a8aab4ecafd14faa1f6e3e127608af588"
+  },
+  "identical_native": {
+    "all_passed": true,
+    "candidate_recording_off_costs": [
+      {
+        "acknowledgements": 0,
+        "compact_motion_receipts": 2163,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 721,
+              "mean_ms": 0.25411927877947293
+            },
+            "owner_service": {
+              "calls": 721,
+              "mean_ms": 0.1875866851595007
+            },
+            "publication_copy": {
+              "calls": 721,
+              "mean_ms": 0.28113176144244106
+            },
+            "queue": {
+              "calls": 721,
+              "mean_ms": 0.22152843273231623
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 2884,
+              "mean_ms": 0.1299511095700416
+            },
+            "owner_service": {
+              "calls": 2884,
+              "mean_ms": 0.20219382801664354
+            },
+            "publication_copy": {
+              "calls": 2884,
+              "mean_ms": 0.09727600554785021
+            },
+            "queue": {
+              "calls": 2884,
+              "mean_ms": 0.14160263522884883
+            }
+          }
+        },
+        "full_motion_publications": 721,
+        "pose_echo_checks": 0,
+        "pump_budget_exhaustions": 180,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.34481830790568657,
+        "snapshot_calls": 2163,
+        "snapshot_ms_per_tick": 0.6427226074895979,
+        "snapshot_per_tick": 3.0,
+        "ticks": 721,
+        "workload": "empty"
+      },
+      {
+        "acknowledgements": 2712,
+        "compact_motion_receipts": 2034,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 678,
+              "mean_ms": 2.247061946902655
+            },
+            "owner_service": {
+              "calls": 678,
+              "mean_ms": 0.19777138643067846
+            },
+            "publication_copy": {
+              "calls": 678,
+              "mean_ms": 0.7237920353982301
+            },
+            "queue": {
+              "calls": 678,
+              "mean_ms": 0.24753097345132744
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 2712,
+              "mean_ms": 0.20188532448377583
+            },
+            "owner_service": {
+              "calls": 2712,
+              "mean_ms": 1.438792772861357
+            },
+            "publication_copy": {
+              "calls": 2712,
+              "mean_ms": 0.21686135693215342
+            },
+            "queue": {
+              "calls": 2712,
+              "mean_ms": 0.133242994100295
+            }
+          }
+        },
+        "full_motion_publications": 678,
+        "pose_echo_checks": 2712,
+        "pump_budget_exhaustions": 806,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.4696706056129985,
+        "snapshot_calls": 2033,
+        "snapshot_ms_per_tick": 1.9178596750369277,
+        "snapshot_per_tick": 3.0029542097488924,
+        "ticks": 677,
+        "workload": "tower"
+      },
+      {
+        "acknowledgements": 11488,
+        "compact_motion_receipts": 1077,
+        "control_ms_per_call": {
+          "complete": {
+            "delivery": {
+              "calls": 359,
+              "mean_ms": 0.29617270194986073
+            },
+            "owner_service": {
+              "calls": 359,
+              "mean_ms": 0.25697214484679665
+            },
+            "publication_copy": {
+              "calls": 359,
+              "mean_ms": 1.4291086350974929
+            },
+            "queue": {
+              "calls": 359,
+              "mean_ms": 0.213949860724234
+            }
+          },
+          "motion": {
+            "delivery": {
+              "calls": 1436,
+              "mean_ms": 1.185493036211699
+            },
+            "owner_service": {
+              "calls": 1436,
+              "mean_ms": 3.01517061281337
+            },
+            "publication_copy": {
+              "calls": 1436,
+              "mean_ms": 0.4328022284122563
+            },
+            "queue": {
+              "calls": 1436,
+              "mean_ms": 0.1602116991643454
+            }
+          }
+        },
+        "full_motion_publications": 359,
+        "pose_echo_checks": 11488,
+        "pump_budget_exhaustions": 868,
+        "pump_operation_exhaustions": 0,
+        "rapier_ms_per_tick": 0.9740112044817927,
+        "snapshot_calls": 1075,
+        "snapshot_ms_per_tick": 3.936263305322129,
+        "snapshot_per_tick": 3.011204481792717,
+        "ticks": 357,
+        "workload": "stress"
+      }
+    ],
+    "rows": [
+      {
+        "baseline_cohort_median": 37.49210521823807,
+        "baseline_cohort_rates": [
+          42.55548337377213,
+          32.42872706270402
+        ],
+        "baseline_cohort_seconds": [
+          6.015676,
+          6.013187
+        ],
+        "baseline_cohort_ticks": [
+          256,
+          195
+        ],
+        "baseline_snapshot_calls_per_tick": 6.0,
+        "baseline_snapshot_ms_per_tick": 1.1309512195121951,
+        "candidate_cohort_median": 59.94072301834524,
+        "candidate_cohort_rates": [
+          60.00356697104487,
+          59.877879065645615
+        ],
+        "candidate_cohort_seconds": [
+          6.016309,
+          6.012237
+        ],
+        "candidate_cohort_ticks": [
+          361,
+          360
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0,
+        "candidate_snapshot_ms_per_tick": 0.6427226074895979,
+        "cohort_speedup": 1.5987558625858922,
+        "recording": "off",
+        "target_cohort": "0/0",
+        "whole_window_baseline_median": 37.49200278578365,
+        "whole_window_candidate_median": 59.94055856949955,
+        "workload": "empty"
+      },
+      {
+        "baseline_cohort_median": 21.215904225222545,
+        "baseline_cohort_rates": [
+          23.77078052438342,
+          18.661027926061674
+        ],
+        "baseline_cohort_seconds": [
+          6.015789,
+          6.001813
+        ],
+        "baseline_cohort_ticks": [
+          143,
+          112
+        ],
+        "baseline_snapshot_calls_per_tick": 6.047058823529412,
+        "baseline_snapshot_ms_per_tick": 3.670129411764706,
+        "candidate_cohort_median": 56.37290391139319,
+        "candidate_cohort_rates": [
+          56.46559363161381,
+          56.28021419117257
+        ],
+        "candidate_cohort_seconds": [
+          6.003656,
+          6.005663
+        ],
+        "candidate_cohort_ticks": [
+          339,
+          338
+        ],
+        "candidate_snapshot_calls_per_tick": 3.0029542097488924,
+        "candidate_snapshot_ms_per_tick": 1.9178596750369277,
+        "cohort_speedup": 2.657105882122819,
+        "recording": "off",
+        "target_cohort": "1/1",
+        "whole_window_baseline_median": 21.215791417419602,
+        "whole_window_candidate_median": 56.3727021424542,
+        "workload": "tower"
+      },
+      {
+        "baseline_cohort_median": 15.795659275624352,
+        "baseline_cohort_rates": [
+          14.6336823466573,
+          16.957636204591402
+        ],
+        "baseline_cohort_seconds": [
+          6.013524,
+          5.248373
+        ],
+        "baseline_cohort_ticks": [
+          88,
+          89
+        ],
+        "baseline_snapshot_calls_per_tick": 6.031413612565445,
+        "baseline_snapshot_ms_per_tick": 7.598486910994764,
+        "candidate_cohort_median": 29.743323592822144,
+        "candidate_cohort_rates": [
+          29.781414237545068,
+          29.70523294809922
+        ],
+        "candidate_cohort_seconds": [
+          3.055597,
+          2.962441
+        ],
+        "candidate_cohort_ticks": [
+          91,
+          88
+        ],
+        "candidate_snapshot_calls_per_tick": 3.011204481792717,
+        "candidate_snapshot_ms_per_tick": 3.936263305322129,
+        "cohort_speedup": 1.8830061521219084,
+        "recording": "off",
+        "target_cohort": "8/8",
+        "whole_window_baseline_median": 15.8798818382936,
+        "whole_window_candidate_median": 29.678918864108248,
+        "workload": "stress"
+      }
+    ],
+    "run_count": 12,
+    "schema": "objectshard-m4-throughput-analysis-v1",
+    "source_summary_sha256": "af8c05bba5301b38782c7d624bb09e7fecd4473ac4ba77048397975e9c2feb63"
+  },
+  "schema": "objectshard-m4-throughput-final-analysis-v1",
+  "scope": "All rates describe actual native/Rapier work on the local headless shared host; no physical monitor FPS or owner-machine acceptance is claimed."
+}

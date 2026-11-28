@@ -1,0 +1,112 @@
+{
+  "schema": "objectshard-m3-final-windows-renderer-launch-scope-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "owner_zip_sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+  "reviewed_utc": "2026-11-22T08:07:33.420248+00:00",
+  "hosted_rendered_cases": [
+    {
+      "case": "objectshard_continuous_play_rendered",
+      "command": [
+        "D:\\a\\_temp\\objectshard-godot\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/test_object_shard_continuous_play.gd",
+        "--",
+        "--report-copy=D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\continuous-play-rendered.json"
+      ],
+      "requires_display": true,
+      "status": "passed",
+      "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_continuous_play_rendered.log",
+      "log_sha256": "03c8959e0610d61226a7a31cf30374eddbdbbdb4b628ef96333a4ee8f4495b56",
+      "actual_backend_lines": [
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ]
+    },
+    {
+      "case": "objectshard_worker_render",
+      "command": [
+        "D:\\a\\_temp\\objectshard-godot\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/capture_object_shard_worker.gd",
+        "--",
+        "--objectshard-capture=D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\frames-worker"
+      ],
+      "requires_display": true,
+      "status": "passed",
+      "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_worker_render.log",
+      "log_sha256": "6a3c487a2c0886db0010ebbadeae59fd4998dd7f11a035a31581a7c6ec48526e",
+      "actual_backend_lines": [
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ]
+    },
+    {
+      "case": "objectshard_profile_rendered",
+      "command": [
+        "D:\\a\\_temp\\objectshard-godot\\Godot_v4.7-stable_win64_console.exe",
+        "--rendering-method",
+        "gl_compatibility",
+        "--audio-driver",
+        "Dummy",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--rendering-driver",
+        "opengl3_angle",
+        "--script",
+        "res://tests/profile_object_shard_lab.gd",
+        "--",
+        "--objectshard-profile=D:\\a\\cybersand\\cybersand\\evidence\\windows-lab\\objectshard_profile_rendered.json",
+        "--objectshard-profile-rendered"
+      ],
+      "requires_display": true,
+      "status": "passed",
+      "log": "build/m3-platform/repair-windows/14745662483/windows-lab/objectshard_profile_rendered.log",
+      "log_sha256": "7304ed23b9852012be9ab65d55395997ec73dc9d1b448002a0868ca4005d77c7",
+      "actual_backend_lines": [
+        "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      ]
+    }
+  ],
+  "normal_owner_route": {
+    "launcher": "Open ObjectShard M3 Preflight.cmd",
+    "launcher_sha256": "e8c5e6f9d237a9ece256b505ff6acb37f29b68ac0118b7db98d7b5edcbcec808",
+    "startup": "Strict streaming manifest verification, source/manifest environment, headless editor import, then GUI Godot4.7 directly opens res://object_shard_worker_rehearsal.tscn.",
+    "rendering_method": "gl_compatibility from the shipped project",
+    "rendering_driver_override": false,
+    "source_and_scene_path_review": "passed",
+    "hosted_normal_driver_gameplay_claim": false,
+    "scope": "The normal owner driver-selection/hardware path is not the same as the explicit ANGLE hosted test branch. Owner Windows11/NVIDIA/default-driver gameplay remains physical evaluation."
+  },
+  "shipped_self_test_route": {
+    "flag": "--self-test",
+    "gui_engine": "Godot_v4.7-stable_win64.exe",
+    "rendering_driver": "opengl3_angle",
+    "probe": "res://tests/probe_object_shard_worker_package_boot.gd",
+    "same_common_verification_import_and_source_environment": true,
+    "actual_extracted_zip_path_tests": [
+      "spaces",
+      "parentheses",
+      "nested",
+      "unicode"
+    ],
+    "scope": "Actual shipped launcher execution with explicit test branch and actual native/Rapier playable-scene probe. It does not establish normal-driver or owner-GPU acceptance."
+  },
+  "latency_scope": "153 original scene-intent timestamps through observed draw/presentation callbacks, including96-input burst. CPU submission and callback timing are not GPU completion or physical monitor scanout. Do not sum nested stage quantiles.",
+  "screenshot_scope": "Seven actual PNGs, independently viewed. A capture can retain the prior completed publication while host diagnostics already show a newer state: priority PNG tick7/6waiting and pocket101/100waiting versus adjacent diagnostics7/7 and101/101Idle. Preserve the captured state distinction.",
+  "physical_owner_acceptance": "unrecorded"
+}

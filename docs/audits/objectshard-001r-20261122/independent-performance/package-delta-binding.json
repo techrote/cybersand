@@ -1,0 +1,17 @@
+{
+  "head": "f4801ac6675631fcecad5926fc0cac5cce5fe778",
+  "tree": "0a44828f23d6d879c6079a7826fea34eeb3b751f",
+  "scope": "Package verifier/negative probes/Windows-only explicit trigger; native and Godot Git trees unchanged from 514d.",
+  "files": {
+    ".github/workflows/objectshard-lab.yml": "56a03222a22547e1fa70807b5456559f495cb08ad14ba4eefeab28afaf96ca2b",
+    "tools/objectshard/qualify_windows_zip.py": "19937c9c47de6159eb0e704459f30619cec21c9318eb4b507a295b7ca6920d0d",
+    "tools/objectshard/test_windows_zip.py": "23fe91753806e56b15e60a2d83f2c5837452d4b9b935cbd89b1780b3ff8a7742",
+    "tools/objectshard/verify_package.ps1": "d0ae4f13afd2ed7d384e3cd517fc5fe0d95638596172d3bbe986021b7271c882"
+  },
+  "python_tests": {
+    "command": "python3 -m unittest discover -s tools/objectshard -p 'test_*.py'",
+    "tests": 36,
+    "failures": 0
+  },
+  "actual_windows_delivered_zip": "pending"
+}

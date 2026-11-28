@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T08:22:58.929789+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "workflow_attempt": 1,
+  "job_id": 140917627477,
+  "job_conclusion": "success",
+  "artifact_id": 15255840239,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15255840239",
+  "job_log_sha256": "9b55f21e6176145bc21ca81e9b2ea4918199422533f0d7962f7ccf9f326b6beb",
+  "archive_sha256": "04f97682ba2a59ff992f404b7c4677b12b73b59a39eb136428e9da33bbd9ce27",
+  "archive_bytes": 2742555,
+  "members": {
+    "candidate-provenance.json": {
+      "sha256": "b1e8ab56cedebbfb0021e7e7931bb9f184742ef6a054e2e544a9fc5c1aeb64fc",
+      "bytes": 15728
+    },
+    "cybersand_native.windows.x86_64.dll": {
+      "sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+      "bytes": 7346176
+    },
+    "runtime-provenance.json": {
+      "sha256": "d2770ee85ba196d562684336edadf340b25a3172a5ae7be111ebe08c80997f8e",
+      "bytes": 184400
+    }
+  },
+  "source_inputs_verified": 126,
+  "build_inputs_verified": 1392,
+  "native_input_inventory_exact": true,
+  "canonical_build_input_inventory_exact": true,
+  "unique_git_blob_inputs_verified": 1518,
+  "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+  "native_bytes": 7346176,
+  "pe_machine": "AMD64 PE32+ DLL",
+  "toolchain": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\n101ae38034304346a46ea9ea84ae156d3e860496",
+  "llvm_mingw_archive_sha256_verified_by_job": "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65",
+  "scope": "Independent downloaded producer archive and all recorded canonical Git source/build inputs verified. Crossbuilt DLL is built-not-executed here; actual Windows execution and extracted evaluator are distinct mandatory gates.",
+  "status": "PASS"
+}

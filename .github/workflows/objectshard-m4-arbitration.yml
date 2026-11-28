@@ -1,0 +1,51 @@
+name: ObjectShard M4 source-bound native arbitration
+on:
+  push:
+    branches:
+      - integration/objectshard-m4-mainline-*
+    paths:
+      - native/include/cybersand/world.hpp
+      - native/src/world.cpp
+      - native/tests/test_object_shard_coordinator.cpp
+      - .github/workflows/objectshard-m4-arbitration.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: objectshard-m4-arbitration-${{ github.run_id }}
+  cancel-in-progress: false
+jobs:
+  native-source:
+    name: Exact-source ObjectShard and existing World ASan/UBSan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Preserve source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          g++-13 --version > evidence/compiler.txt
+      - name: Execute all ObjectShard native suites and existing World regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/objectshard/run_native_tests.py \
+            --output evidence/native --compiler g++-13 --sanitize \
+            --suite all --suite world --jobs 2 \
+            --timeout "$(python3 tools/ci/execution_policy.py seconds native_case_seconds)" \
+            --build-timeout "$(python3 tools/ci/execution_policy.py seconds native_compile_seconds)"
+      - name: Preserve failures and runtime provenance
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-m4-arbitration-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90

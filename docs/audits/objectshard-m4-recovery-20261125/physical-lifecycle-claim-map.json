@@ -1,0 +1,474 @@
+{
+  "application_source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+  "claims": [
+    {
+      "assertions": [
+        "Actual native Wood/Brick geometry on boundary-rooted Wall supports; ordinary brush removes supports including retained caps.",
+        "World generation, native instance and exclusive worker remain identical after material debit and real Rapier detachment.",
+        "Viaduct produces at least3 owners; stress produces at least8; geometry limits remain registered."
+      ],
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "m4_workbench_tower_*",
+        "m4_workbench_viaduct_*",
+        "native:m4_rooted_mixed_architecture_keeps_severed_wall_caps_and_atomic_masks"
+      ],
+      "claim": "Boundary-rooted construction, coherent support-loss detachment and same native ownership",
+      "coverage": "registered-native-and-ordinary",
+      "id": "construction",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "Actual Rapier transforms move and rotate after120native ticks and asymmetric footing contact.",
+        "Independently recomputed unit-cell mass, centroid and cell-area moments match actual Rapier body metadata; shape count positive.",
+        "Native accepted pose and actual backend transform match."
+      ],
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "test_object_shard_m4_shared_main_rapier",
+        "support:object_shard_m4_workbench_fixture.validate_physics"
+      ],
+      "claim": "Real falling, toppling, contacts, mass, centre of mass and inertia",
+      "coverage": "registered-native-and-ordinary",
+      "id": "physical_mass",
+      "qualification_limit": "Natural stationary sleeping timing is separately witnessed by SpecialistB external observer; no physical monitor acceptance is inferred."
+    },
+    {
+      "assertions": [
+        "After genuine motion, ordinary action carries displayed source state/incarnation and native transaction identity; exactly one Wood is debited.",
+        "Actual mounted world_view mouse events cut two neck cells; pending receipt blocks subsequent pointer advance; release/tool change cancels held intent.",
+        "Old publication/World/incarnation target is refused without time or material mutation."
+      ],
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "test_object_shard_m4_fragment_reabsorption",
+        "test_object_shard_m4_lifecycle_adverse",
+        "external:live-cut-frozen/observe_live_cut.gd"
+      ],
+      "claim": "Exact displayed moving-cell Cut and stale-target refusal",
+      "coverage": "registered-ordinary",
+      "id": "moving_cut",
+      "qualification_limit": "Original519 exact-cell fixtures mostly paused after motion. The frozen5f-tree external witness now proves one mounted Cut during actual translation and rotation; continuous held two-cell editing is separately registered with the delayed-Main delivery fence. Physical owner input/display acceptance remains separate.",
+      "successor_witness": {
+        "checks": 138,
+        "evidence": "live-cut-independent-review.json",
+        "executed_tree_equivalent_source": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+        "published_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "scope": "one mounted press/release during Play, exact source cell, same-step geometry and material-point velocity, complete raw debit"
+      },
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/live-cut-receipt.json"
+      }
+    },
+    {
+      "assertions": [
+        "Two actual physical child bodies activate only through native staged transfer and exact parent acknowledgement.",
+        "World-plus-owned Wood loses exactly the two authored neck cells.",
+        "Native rigid point-velocity formula and angular preservation are asserted; ordinary survivor angular velocity and rotational energy bounds checked in completion case.",
+        "Frozen5f-tree live Cut successor independently preserves a surviving material point across one actual geometry replacement at identical physical step364, same RID and zero pose jump."
+      ],
+      "cases": [
+        "test_object_shard_m4_fragment_reabsorption",
+        "native:m4_fragmentation_is_exact_staged_and_conserves_rigid_velocity"
+      ],
+      "claim": "Fragmentation, geometry revision and surviving material-point velocity",
+      "coverage": "registered-native-and-ordinary",
+      "id": "fragmentation",
+      "qualification_limit": "",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/live-cut-receipt.json"
+      }
+    },
+    {
+      "assertions": [
+        "Real exposed Wood ignition advances native countdown and emits supported Fire/Smoke products.",
+        "Enclosed original Wood incarnation starts240opportunities, monotonically consumes them in at most480native ticks, consumes exactly1Wood, preserves8Brick, installs reduced geometry/mass.",
+        "Correction1d494c36 separates native cell/tick from retained displayed publication; delivered Air separately requires completed geometry and display acknowledgement."
+      ],
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "test_object_shard_m4_long_burn",
+        "m4_workbench_timber_*",
+        "native:burning_world_capture_continues_while_sleeping_and_moving"
+      ],
+      "claim": "Ignition, supported chemistry and finite original-cell burn lifetime",
+      "coverage": "registered-ordinary-with-test-clock-correction",
+      "id": "ignition",
+      "qualification_limit": "Recovery Windows source51903088 long_burn is FAIL and remains so. Corrected assertion-equivalent external Linux replay passed233checks through SpecialistB; successor hosted source still requires qualification. No bounded whole-building burnout claim.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/delivery-audit-summary.json"
+      }
+    },
+    {
+      "assertions": [
+        "Before final Cut, one-cell body completes exactly4real acknowledged segments through ordinary Step and is found by actual Rapier intersect_point.",
+        "After final explicit Cut the actual RID disappears and the independent point query no longer sees it; no zero-mass body is created.",
+        "After4further native ticks no owning inventory, no body and no Wood remain;4authored debits stay separate from chemical destruction."
+      ],
+      "cases": [
+        "test_object_shard_m4_long_burn"
+      ],
+      "claim": "Final collider, native inventory and physical owner retirement",
+      "coverage": "registered-ordinary",
+      "id": "terminal_retirement",
+      "qualification_limit": "This terminal witness is authored last-cell erasure, not natural exhaustion of a whole wooden building.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/delivery-audit-summary.json"
+      }
+    },
+    {
+      "assertions": [
+        "Real fall and floor contact produce quiet near-grid body; actual backend floor-normal witness retained.",
+        "Exact freeze, complete native credit, physical RID retirement and terrain acknowledgement finish one bounded handoff; no duplicate material or invisible residual body.",
+        "Moving, off-grid and occupied-destination refusals preserve inventory; duplicate terminal acknowledgement does not double-credit."
+      ],
+      "cases": [
+        "test_object_shard_m4_fragment_reabsorption",
+        "native:m4_settled_reabsorption_preserves_world_and_waits_for_physical_retirement"
+      ],
+      "claim": "Explicit native material credit and physical RID removal on settlement",
+      "coverage": "registered-native-and-ordinary-core",
+      "id": "settlement",
+      "qualification_limit": "At the original519 registration the ordinary fixture used runtime.request_reabsorption. The source successor b9cb38d33748fc2d4a585199e28645fc594b49ee adds an actual mounted mode7 press/release; local Linux headless source7095a2358e3db51e9b175f44c3686bfef4d60909 passes all132checks, including genuine sleeping contact, exact native credit and physical/native retirement. Hosted and physical owner acceptance remain separate.",
+      "successor_witness": {
+        "equivalence_limit": "Current frozen5f registration has identical product/native and executed fragment fixture bytes. Actual local132-check execution remains attributed to7095; full hosted5f qualification is separate.",
+        "evidence": "mounted-settle-local.json",
+        "fixture_commit": "b9cb38d33748fc2d4a585199e28645fc594b49ee",
+        "fixture_sha256": "31bbcebf0b30354ff139d8c8048f99a92d3499d2094714829c3107205c7fee96",
+        "frozen_fixture_sha256": "31bbcebf0b30354ff139d8c8048f99a92d3499d2094714829c3107205c7fee96",
+        "frozen_registration_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "log_sha256": "3f32d4f3f46ec9d876b4a861eac7596ada9bd0655457f9cc1daafe958a56fe82",
+        "only_changed_godot_native_paths_vs_executed_source": [
+          "godot/tests/profile_object_shard_m4_disabled_control.gd",
+          "godot/tests/test_object_shard_m4_edit_delivery_fence.gd"
+        ],
+        "product_and_executed_fixture_equivalent": true,
+        "source_commit": "7095a2358e3db51e9b175f44c3686bfef4d60909",
+        "source_registration_preserved": true
+      },
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/delivery-audit-summary.json"
+      }
+    },
+    {
+      "assertions": [
+        "Native relocation counters positive on ordinary mixed/viaduct motion; no owned Water or illegal overlap.",
+        "Paused one-shot inspection copies all512²stored materials and every bounded parcel; independent material census and parcel quantities match native ledger.",
+        "Stored visible Water, pressure overfill, ballistic parcel quantity and rendered parcel pixels are recorded separately.",
+        "Raw grid, owner material, float64 parcel rows and rendered bytes retain hashes; inspection advances no chemistry or physical time."
+      ],
+      "cases": [
+        "m4_workbench_mixed_*",
+        "m4_workbench_viaduct_*",
+        "support:object_shard_m4_workbench_fixture.validate_quantity_ledger",
+        "native:m4_attached_displacement_crosses_original_mixed_pool_with_exact_inventory"
+      ],
+      "claim": "Water quantity, exclusion and displacement with independent inventory",
+      "coverage": "registered-native-and-ordinary",
+      "id": "water_inventory",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "Ordinary mixed profile requires positive Sand relocation and exact raw quantity ledger.",
+        "Native tests admit real falling Sand into valid rotated pockets and refuse ABA/destroyed-pocket history laundering."
+      ],
+      "cases": [
+        "m4_workbench_mixed_*",
+        "native:real_falling_sand_ingress_aba_and_destroyed_pocket",
+        "native:wide_rotated_pocket_admits_real_falling_sand"
+      ],
+      "claim": "Sand displacement and native lodging",
+      "coverage": "registered-native-plus-ordinary-displacement",
+      "id": "sand_lodging",
+      "qualification_limit": "Ordinary mixed profile records sand_ingested but does not require a positive lodging count; positive lodging is a native fixture assertion, not a demonstrated ordinary-profile event.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-sand/summary.json"
+      }
+    },
+    {
+      "assertions": [
+        "Ordinary Step grants a real lease and exactly4Rapier segments, exact native pose echoes and one actor tick.",
+        "Delayed Main callbacks consume no additional time; later Main packet serial cannot replace the captured final sample.",
+        "One completed permit admits exactly one native tick; replayed completion refuses and does not add physical time."
+      ],
+      "cases": [
+        "test_object_shard_m4_completed_sample"
+      ],
+      "claim": "Final GCR packet pinning and exact native tick admission",
+      "coverage": "registered-ordinary",
+      "id": "final_packet_pin",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "A late second real actor request is excluded from the first captured request-ID set and executes exactly in the next interval.",
+        "TimerAirburst payload fires exactly once; actual Rocketjumper blast effects wait for the admitted native interval and do not duplicate."
+      ],
+      "cases": [
+        "test_object_shard_m4_equipment_completion"
+      ],
+      "claim": "Actor request pinning, delayed effects and usables",
+      "coverage": "registered-ordinary",
+      "id": "actor_pin",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "Internal lease wait freezes clocks but preserves queued equipment edge and does not manufacture a suspended receipt.",
+        "Explicit user Pause cancels pending alternate input/usable intent immediately and cannot resurrect it at completion.",
+        "After receipts drain Pause holds semantic and physical clocks; Step advances exactly one actor/native/physical interval."
+      ],
+      "cases": [
+        "test_object_shard_m4_equipment_completion",
+        "test_object_shard_m4_workbench_completion"
+      ],
+      "claim": "User Pause cancellation versus internal lease wait",
+      "coverage": "registered-ordinary",
+      "id": "pause_lease",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "Actual segment count joins native pose echoes and acknowledgements; missing final completion cannot become an extra successful interval.",
+        "Runtime held paths retain actual physical pose; no report claims refused motion rewinds Rapier."
+      ],
+      "cases": [
+        "test_object_shard_m4_completed_sample",
+        "test_object_shard_m4_same_world_physical_chain",
+        "native:m4_same_world_promotion_and_exact_motion"
+      ],
+      "claim": "Rapier segment acknowledgement and refused motion authority",
+      "coverage": "registered-native-plus-ordinary-and-source",
+      "id": "ack_authority",
+      "qualification_limit": "Dedicated ordinary injection that drops a single segment acknowledgement is not clearly registered; malformed/stale acknowledgements and completion gating are covered in native/source and delayed-ordinary witnesses."
+    },
+    {
+      "assertions": [
+        "Real pending edit races Restore; old inspection/read/target tokens retire and a fresh World generation restores authored inventory.",
+        "Three fixed seeds each execute24stateful ordinary operations through stable owner boundaries.",
+        "Partial physical commit retains exclusive debited material while quarantined; unsafe release is refused; explicit reset destroys ownership exactly once."
+      ],
+      "cases": [
+        "test_object_shard_m4_lifecycle_adverse",
+        "test_object_shard_m4_lifecycle_fuzz",
+        "native:m4_partial_physics_commit_is_still_exclusive_material",
+        "native:m4_attached_replacement_destroys_coordinator_before_world"
+      ],
+      "claim": "World replacement, stale identities and partial transaction quarantine",
+      "coverage": "registered-native-and-ordinary",
+      "id": "replacement_quarantine",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "GCR IDs1–48 and mutable IDs49–64 remain separate; overlap, duplicate IDs and stale composition receipts refuse."
+      ],
+      "cases": [
+        "native:m4_composed_transient_collision_is_atomic"
+      ],
+      "claim": "GCR and mutable ObjectShard ID domain preservation",
+      "coverage": "registered-native",
+      "id": "id_domains",
+      "qualification_limit": ""
+    },
+    {
+      "assertions": [
+        "Every observed callback and actual renderer submission joins World generation/revision/render identity with the shard publication.",
+        "Actual uploaded texture pixels are compared to source-bound owned material; geometry delivery waits for actual physical acknowledgement."
+      ],
+      "cases": [
+        "test_object_shard_m4_overlay_identity",
+        "test_object_shard_m4_lifecycle_adverse",
+        "m4_workbench_*",
+        "support:object_shard_m4_workbench_fixture.validate_display"
+      ],
+      "claim": "Coherent World texture and owned-material overlay",
+      "coverage": "registered-ordinary-and-graphical",
+      "id": "coherent_publication",
+      "qualification_limit": "frame_post_draw measures renderer submissions, not physical monitor presentation; ordinary coherent retention may be older than current native frame while physical acknowledgement drains."
+    },
+    {
+      "assertions": [
+        "Registered M4 Save/Load and repeated scene replacement reconstruct authored arrangements and exclude live shard inventory/poses.",
+        "New exact frozen Linux ordinary author process passes199checks; independent fresh process with CYBERSAND_WORKBENCH_REOPEN=1 passes23checks, saved bytes unchanged.",
+        "Frozen5f authored observer passes136author+79reopen checks in two completed subprocesses: exact named-file hashes, every canonical authored field, intact800supports/body0, cut6supports/naturalbody1, raw Wood2184/Brick2232 and zero incoherence."
+      ],
+      "cases": [
+        "test_object_shard_m4_workbench_completion",
+        "test_workbench_canvas",
+        "external:run_fresh_process_reopen.py",
+        "external:authored-frozen/observe_authored_v2.gd"
+      ],
+      "claim": "Ordinary Save/Load, Restore and fresh-process reopening",
+      "coverage": "registered-ordinary-plus-source-exact-local-linux-fresh-process",
+      "id": "authored_persistence",
+      "qualification_limit": "M4-specific named recipes and explicit fresh-process opt-in are positive in the external frozen5f Linux witness. Headless mounted signals are not physical input acceptance. Evolved moving-body poses/cuts/chemistry remain outside authored-start persistence.",
+      "successor_witness": {
+        "checks": 215,
+        "evidence": "authored-frozen/summary.json",
+        "prior_lost_local_supplement_reused": false,
+        "raw_receipts_retained": true,
+        "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a"
+      },
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/summary.json"
+      }
+    },
+    {
+      "assertions": [
+        "UI refuses enabling on installed extent above1024 with visible guidance; native attach independently bounds64..1024per side and total1048576.",
+        "Actual ordinary Structures profiles use512native arrangements.",
+        "Frozen5f mounted Enable refuses2048 without changing ordinary World, generation, revision, tick, worker or authored setup; mounted New blank1024 attaches actual same-World/Rapier with zero bodies; mounted Tower uses512."
+      ],
+      "cases": [
+        "source:shared_workbench.enable_object_shard",
+        "source:CyberNativeCellWorld::object_shard_attach",
+        "external:authored-frozen/observe_authored_v2.gd"
+      ],
+      "claim": "Convenient512/1024starts and explicit ordinary2048refusal",
+      "coverage": "source-plus-actual-frozen-linux-mounted-ui",
+      "id": "canvas_extents",
+      "qualification_limit": "The obsolete scene_refusal seam fixture is not counted. New positive512/1024/2048 evidence is external Linux headless, not physical display acceptance;1024 witness is blank attachment and512 supplies the moving construction.",
+      "final_source_disposition": {
+        "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+        "status": "passed",
+        "review": "final-native-correctness-review.json",
+        "supplement": "independent-hosted/windows-owner/summary.json"
+      }
+    },
+    {
+      "assertions": [
+        "Portable evaluator and optional low-overhead diagnostics support owner acceptance."
+      ],
+      "cases": [],
+      "claim": "Windows11NVIDIA physical responsiveness and monitor presentation",
+      "coverage": "environment-unsupported-owner-HOLD",
+      "id": "owner_hardware",
+      "qualification_limit": "Hosted Windows, Linux headless and software-renderer evidence do not establish physical NVIDIA FPS, input feel or monitor presentation."
+    }
+  ],
+  "fixture_successor": {
+    "commit": "1d494c36b119219db3cd812e7bff45358a3a6c87",
+    "new_hosted_result": "Final5fregistered long-burn PASS, with exact corrected fixture SHA787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad; original519failure remains retained.",
+    "only_changed_case": "test_object_shard_m4_long_burn",
+    "purpose": "native/display clock correction without lifetime bound change"
+  },
+  "important_boundary": "A registered source assertion is coverage, not automatic PASS. Runtime outcomes must join the exact case report, source and artifact. Original failures remain failures; physical hardware remains owner-HOLD.",
+  "registration": {
+    "graphical_report_cases": 31,
+    "headless_cases": 42,
+    "inventory": "registered-workbench-inventory.json",
+    "package_replay_cases": 16,
+    "scope": "Graphical report contains mixed headless and display-required cases;31is not a count of31graphical processes."
+  },
+  "reviewer": "SpecialistA",
+  "schema": "objectshard-m4-physical-claim-case-map-v1",
+  "source_file_sha256": {
+    "godot/native_extension/cyber_native_cell_world.cpp": "37929c261dccfd79e24589bec99b4cbd3767c4ad269b48e5f15602f502ec7051",
+    "godot/scripts/object_shard_m4_runtime.gd": "8d6da4727a85f6b52f619e349882ffa5f31bea34c2d92e97a2900f569a588918",
+    "godot/scripts/shared_workbench.gd": "c8405e32db3a81e9f48d6c94a05b35346b68203307be52721f69d9c6e1519a26",
+    "godot/tests/profile_object_shard_m4_workbench.gd": "824006412e6941bb1a3503d2ca51f7437cffcbd8a724ce87f0fbd13b3ca00b53",
+    "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+    "godot/tests/test_object_shard_m4_completed_sample.gd": "43e88ce4002e98dbcfa1450b02ebce3073212bc26c1163aba225bf1de50d1272",
+    "godot/tests/test_object_shard_m4_equipment_completion.gd": "478b81a238afeece67b320091770e71748ccb786ac10125b9278dd0bfaf9b8d6",
+    "godot/tests/test_object_shard_m4_fragment_reabsorption.gd": "ff5dd71c012b0accf0a26731cc69e13769509844fb3b92932a00a5db4679426f",
+    "godot/tests/test_object_shard_m4_lifecycle_adverse.gd": "9255d9ca3614f4199b8feee41ac365e5a6d739e636dc17f9210f1ec339171054",
+    "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd": "5acaa6242f73fbb1fef4a9826c6b9c07dddb719ff474cf8ad914d83e67a69b8e",
+    "godot/tests/test_object_shard_m4_long_burn.gd": "8741a45ba1aa03a67c6a93f20709d6e9c0f7c1ad9507ceef1c6bfb0c47b0ff13",
+    "godot/tests/test_object_shard_m4_material_only_workbench.gd": "1570f56d4088c09d97a1f81c2d659235977fa61ac7ca04aa20fe3ed41fdedb2d",
+    "godot/tests/test_object_shard_m4_overlay_identity.gd": "c827ea7e406be82b00e843e3bbeab405385cd3d6dab4546a59b34c686c06767c",
+    "godot/tests/test_object_shard_m4_same_world_extension.gd": "7c29fa9bb4465e9df7d7dc6bae6f2737c04a4bfaf390b9fc02a8cd846b206632",
+    "godot/tests/test_object_shard_m4_same_world_physical_chain.gd": "6221cb7f0a41cda8eea4fe0dc06a12b326f16cc9b3055b8d5b2398dc04d0e8c1",
+    "godot/tests/test_object_shard_m4_shared_main_rapier.gd": "07e5f0d610fe4f559be1c76ae5320ea6daffe10afa755b0bc6f001a5f73b0567",
+    "godot/tests/test_object_shard_m4_workbench_completion.gd": "961dd98a7fbed21ccde036e5b248356c86148b3baf795c08e9f416fe93dc2c1e",
+    "godot/tests/test_workbench_canvas.gd": "327eb1d04f327721c3795b22f75afa997262e28f55a8d2f2824fa5c0400078aa",
+    "native/tests/test_object_shard_chemistry.cpp": "86714159645e816f7da07782127ca53958c18b8a03eb30645fe5c4271293dde4",
+    "native/tests/test_object_shard_coordinator.cpp": "821611198fc65e063e665232dec5621fe6ecd36b9cb82c192b55d56c9553036b",
+    "native/tests/test_object_shard_storage.cpp": "1661a45e90cf0a645c29d8944bcf3286738133ac1a4c2ce3070d7307ec08f8cf",
+    "tools/objectshard/qualify_workbench.py": "fab4ff0df15c8404ba2661e19d483ef057d4c3ac3f5f9d5bc73f0bc7dc8b7b03"
+  },
+  "source_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+  "status": "independent-source-coverage-map-with-explicit-runtime-evidence-boundaries",
+  "successor_registrations": [
+    {
+      "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "graphical_report_cases": 32,
+      "headless_cases": 43,
+      "inventory": "registered-workbench-inventory.json",
+      "inventory_sha256": "a7ac44da9d6915574dab0900449efe88acdcd29417e68795e2bfd8dac74ad100",
+      "package_replay_cases": 17,
+      "qualification_attempt": 1,
+      "qualification_run": 45530425519,
+      "qualification_status": "passed-original-report-log-and-source-independent-join",
+      "scope": "Full registered final5fmatrix PASS plus separately identified Windows fresh-process/live-Cut/Sand originals; physical monitor acceptance HOLD.",
+      "source_file_sha256": {
+        "godot/native_extension/cyber_native_cell_world.cpp": "37929c261dccfd79e24589bec99b4cbd3767c4ad269b48e5f15602f502ec7051",
+        "godot/scripts/object_shard_m4_runtime.gd": "8d6da4727a85f6b52f619e349882ffa5f31bea34c2d92e97a2900f569a588918",
+        "godot/scripts/shared_workbench.gd": "308eca97913df3fcd91630b95596d6b4dac205a4b23fae66d92ba51b340eee85",
+        "godot/tests/profile_object_shard_m4_workbench.gd": "824006412e6941bb1a3503d2ca51f7437cffcbd8a724ce87f0fbd13b3ca00b53",
+        "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+        "godot/tests/test_object_shard_m4_completed_sample.gd": "43e88ce4002e98dbcfa1450b02ebce3073212bc26c1163aba225bf1de50d1272",
+        "godot/tests/test_object_shard_m4_equipment_completion.gd": "478b81a238afeece67b320091770e71748ccb786ac10125b9278dd0bfaf9b8d6",
+        "godot/tests/test_object_shard_m4_fragment_reabsorption.gd": "31bbcebf0b30354ff139d8c8048f99a92d3499d2094714829c3107205c7fee96",
+        "godot/tests/test_object_shard_m4_lifecycle_adverse.gd": "9255d9ca3614f4199b8feee41ac365e5a6d739e636dc17f9210f1ec339171054",
+        "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd": "5acaa6242f73fbb1fef4a9826c6b9c07dddb719ff474cf8ad914d83e67a69b8e",
+        "godot/tests/test_object_shard_m4_long_burn.gd": "787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad",
+        "godot/tests/test_object_shard_m4_material_only_workbench.gd": "1570f56d4088c09d97a1f81c2d659235977fa61ac7ca04aa20fe3ed41fdedb2d",
+        "godot/tests/test_object_shard_m4_overlay_identity.gd": "c827ea7e406be82b00e843e3bbeab405385cd3d6dab4546a59b34c686c06767c",
+        "godot/tests/test_object_shard_m4_same_world_extension.gd": "7c29fa9bb4465e9df7d7dc6bae6f2737c04a4bfaf390b9fc02a8cd846b206632",
+        "godot/tests/test_object_shard_m4_same_world_physical_chain.gd": "6221cb7f0a41cda8eea4fe0dc06a12b326f16cc9b3055b8d5b2398dc04d0e8c1",
+        "godot/tests/test_object_shard_m4_shared_main_rapier.gd": "07e5f0d610fe4f559be1c76ae5320ea6daffe10afa755b0bc6f001a5f73b0567",
+        "godot/tests/test_object_shard_m4_workbench_completion.gd": "961dd98a7fbed21ccde036e5b248356c86148b3baf795c08e9f416fe93dc2c1e",
+        "godot/tests/test_workbench_canvas.gd": "327eb1d04f327721c3795b22f75afa997262e28f55a8d2f2824fa5c0400078aa",
+        "native/tests/test_object_shard_chemistry.cpp": "86714159645e816f7da07782127ca53958c18b8a03eb30645fe5c4271293dde4",
+        "native/tests/test_object_shard_coordinator.cpp": "821611198fc65e063e665232dec5621fe6ecd36b9cb82c192b55d56c9553036b",
+        "native/tests/test_object_shard_storage.cpp": "1661a45e90cf0a645c29d8944bcf3286738133ac1a4c2ce3070d7307ec08f8cf",
+        "tools/objectshard/qualify_workbench.py": "595a93788a76a2f97d97a5fe392f99bf0af64307426e7e36162aa73bffbb6bc2"
+      },
+      "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78"
+    }
+  ],
+  "final_adjudication": {
+    "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "status": "passed-native-and-ordinary-current-source; physical-owner-HOLD",
+    "primary_run": 45530425519,
+    "independent_audit_run": 45537943367,
+    "sand_run": 45540808667,
+    "canonical_final_review": "final-native-correctness-review.json",
+    "current_results": {
+      "headless_per_platform": 43,
+      "graphical_report_per_platform": 32,
+      "actual_graphical_processes_per_platform": 18,
+      "windows_package_replay": 17,
+      "windows_author": 136,
+      "windows_reopen": 79,
+      "windows_live_cut": 154,
+      "windows_sand": 168
+    },
+    "scope": "This final result supersedes readiness for the separately qualified5finputs. Original519source rows, original failures and source hashes remain historical; they are not retrospectively promoted."
+  }
+}

@@ -1,0 +1,259 @@
+{
+  "actual_flagged_replay": {
+    "after": {
+      "actor_tick": 326,
+      "bench_busy": false,
+      "coherent": true,
+      "display_tuple": [
+        3,
+        54,
+        21,
+        658
+      ],
+      "displayed_inventory_request": {},
+      "frame_tuple": [
+        3,
+        54,
+        658,
+        329
+      ],
+      "held_reason": "",
+      "legacy_busy": false,
+      "native_tuple": [
+        3,
+        54,
+        658,
+        329
+      ],
+      "newer_owner_frame": false,
+      "pending_count": 0,
+      "phase": "Ready",
+      "physical_intervals": 328,
+      "physics_ready": true,
+      "runtime_frame_sequence": 658,
+      "runtime_publication_sequence": 658,
+      "snapshot_tuple": [
+        3,
+        54,
+        21,
+        54
+      ],
+      "upload_tuple": [
+        3,
+        54,
+        21
+      ],
+      "workbench_error": ""
+    },
+    "before": {
+      "actor_tick": 326,
+      "bench_busy": false,
+      "coherent": true,
+      "display_tuple": [
+        3,
+        54,
+        21,
+        658
+      ],
+      "displayed_inventory_request": {},
+      "frame_tuple": [
+        3,
+        54,
+        658,
+        329
+      ],
+      "held_reason": "",
+      "legacy_busy": false,
+      "native_tuple": [
+        3,
+        54,
+        658,
+        329
+      ],
+      "newer_owner_frame": false,
+      "pending_count": 0,
+      "phase": "Ready",
+      "physical_intervals": 328,
+      "physics_ready": true,
+      "runtime_frame_sequence": 658,
+      "runtime_publication_sequence": 658,
+      "snapshot_tuple": [
+        3,
+        54,
+        21,
+        54
+      ],
+      "upload_tuple": [
+        3,
+        54,
+        21
+      ],
+      "workbench_error": ""
+    },
+    "checks": 154,
+    "condition_control": {
+      "after": {
+        "material": 7,
+        "material_name": "wood",
+        "ok": true,
+        "owner": "World",
+        "position": "(30, 30)",
+        "state_a": 0,
+        "state_b": 0,
+        "temperature": 371
+      },
+      "before": {
+        "material": 7,
+        "material_name": "wood",
+        "ok": true,
+        "owner": "World",
+        "position": "(30, 30)",
+        "state_a": 173,
+        "state_b": 91,
+        "temperature": 371
+      },
+      "before_revision": 3,
+      "changed_revision": 4,
+      "native_tick": 1,
+      "unchanged_revision": 4
+    },
+    "display_coherence": {
+      "between_callback_observations": 677,
+      "draw_observations": 0,
+      "examples": [],
+      "foreign_draw_callbacks": 0,
+      "incoherent_observations": 0,
+      "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+    },
+    "failures": [],
+    "fixture_sha256": "fe4bd1fc375077eda83048e13c872cf5893cbfd14544e13fea259578acc9b38a",
+    "flags": [
+      "--headless",
+      "--path",
+      "godot",
+      "--script",
+      "tests/test_object_shard_m4_brush_revision.gd",
+      "--",
+      "--objectshard-m4-workbench"
+    ],
+    "log_sha256": "1c77282abe373ae381a5b5c9525d27eba7accf49d5deef958b3b7253b6cb1769",
+    "native_sha256": "656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18",
+    "schema": "objectshard-m4-brush-revision-v1",
+    "source": "e977a6e69a709ff0a104c5c8d21d2e9afa6347f1"
+  },
+  "failed_hosted_gate": {
+    "artifact": 15245482935,
+    "artifact_size": 137520417,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46101473408/artifacts/15245482935",
+    "artifact_zip_sha256": "7045bf40bb87b22d518130fb0d4a215e361c9f533928f3d1b4e3c2001ab50596",
+    "job": 140844659548,
+    "native_retained_benchmark": {
+      "binary_sha256": "b2f4fec48d448a02cbde55278a9607405819cf32a93b3a0968557dc7470b9012",
+      "budget_qualification": {
+        "failures": [],
+        "limits_checked": 74,
+        "status": "passed"
+      },
+      "checks": 4276351,
+      "failures": 0,
+      "input_digest": "40beeb48b1a501687c524b41daebddc91cede26c5bb9c594aa9f868b0137db96",
+      "status": "qualified"
+    },
+    "native_sanitizer_summary": {
+      "checks_reported": 131759,
+      "failures_reported": 0,
+      "input_digest": "b505bff03fe79fcad8d740d2c275fdb8e6b5558c9aedf5e036efe7d08b563e81",
+      "leak_sanitizer": false,
+      "sanitizers": true,
+      "status": "passed",
+      "test_cases_reported": 192
+    },
+    "native_suites": {
+      "admission": {
+        "binary_sha256": "c28ee8419fcada81a6ab8929c939b026b8a6bc0d195962b7fe839e30ff4fbbd6",
+        "checks": 28092,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "chemistry": {
+        "binary_sha256": "393c8d227da24aec093f87b3993abe0e365320cc046f50470c6008cd34038652",
+        "checks": 4472,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "contact": {
+        "binary_sha256": "07c21b2ed36176af22aba864cc665b3b682aebe58cd1fa26a1752c93ce08cea5",
+        "checks": 81255,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "coordinator": {
+        "binary_sha256": "b19f86ef74506172b33deaf80fe2c17153617a523b0fb5c87bc4a9b2a1176116",
+        "checks": 5980,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "external_fire": {
+        "binary_sha256": "f4784952438bb84fe16c2834be24d4a43afbf05e0bc0594f0b2c4f7bc119a9bc",
+        "checks": 3689,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "storage": {
+        "binary_sha256": "96fa8b6e426787e599370c94a91e26b5f11511c3aebc063c6baff1aba6c37e3a",
+        "checks": 8271,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "world": {
+        "binary_sha256": "11c9f5033159dba00b015262bd5be3be7f20aa199a49808c6c34d990bd32d5b2",
+        "checks": 192,
+        "count_unit": "test_cases",
+        "failures": 0,
+        "status": "passed"
+      }
+    },
+    "not_executed_after_failure": [
+      "full material unittest discovery",
+      "native material parity",
+      "CI provider policy"
+    ],
+    "qualification_contracts": {
+      "exact_failure_excerpt": "FAIL: test_ordinary_discovery_admits_only_mounted_workbench_fixtures (test_production_runtime.ObjectShardPublicationTests.test_ordinary_discovery_admits_only_mounted_workbench_fixtures)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/home/runner/work/cybersand/cybersand/workspace/source/tools/objectshard/test_production_runtime.py\", line 29, in test_ordinary_discovery_admits_only_mounted_workbench_fixtures\n    self.assertEqual(aimed, mounted | {\"test_object_shard_m4_workbench_scene_refusal\",\nAssertionError: Items in the second set but not the first:\n'test_object_shard_m4_brush_revision'\n\n----------------------------------------------------------------------\nRan 85 tests in 10.165s\n\nFAILED (failures=1)\n",
+      "failed_test": "test_production_runtime.ObjectShardPublicationTests.test_ordinary_discovery_admits_only_mounted_workbench_fixtures",
+      "failure": "test_object_shard_m4_brush_revision was mounted but absent from ordinary runner OBJECTSHARD_WORKBENCH_CASES",
+      "failures": 1,
+      "log_sha256": "c2786fee6cedb0d7ad26d4530a040fcc388f231e7b3ef774b67a614bac029c1b",
+      "ran": 85
+    },
+    "run": 46101473408,
+    "source": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+    "source_tree": "9e749e481b01218d421fbddb84d4a0874c1054e1"
+  },
+  "local_python_discovery": {
+    "failures": 0,
+    "log_sha256": "3ca4eed0c8ae70f3fa2d8e5ad8e88a3509d87b2605353ef2dd24f688b60b5a05",
+    "passed": 84,
+    "ran": 85,
+    "skip_reason": "test_portable_verifier_binds_the_generator_even_after_a_generic_inventory_rehash requires a PowerShell runtime, absent on this local executor. That unchanged case passed on the failed hosted69cea gate.",
+    "skipped": 1
+  },
+  "qualification_boundary": "The original69cea complete native job remains failed at the Python contract. Local repaired Python/actual Godot results do not substitute for complete repaired-source hosted material, platform, extracted-package and publication gates.",
+  "repair": {
+    "changed_file": "tools/ci/run_godot_regressions.py",
+    "commit": "e977a6e69a709ff0a104c5c8d21d2e9afa6347f1",
+    "cross_review": "Throughput specialist approved the registry repair and the actual flagged fixture replay.",
+    "description": "Register the already mounted brush-revision fixture with the existing opt-in ordinary runner flag. The original discovery set-equality assertion is unchanged. Fresh-barrel remains flag-free because its first control requires Structures disabled. No application, native input, publication rule or test assertion changes.",
+    "fixture_sha256": "fe4bd1fc375077eda83048e13c872cf5893cbfd14544e13fea259578acc9b38a",
+    "production_native_input_count": 126,
+    "production_native_inputs_canonical_sha256": "92a611767b86f9c96caa159730106089726a16049d82485bbb89635d594a538b",
+    "tree": "550df5408fac4c964ba5b168384905e91d19561c"
+  },
+  "schema": "objectshard-m4-mounted-discovery-repair-v1"
+}

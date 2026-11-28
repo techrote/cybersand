@@ -1,0 +1,1543 @@
+{
+  "artifact_id": 15245949136,
+  "artifact_sha256": "9f09e307e07d0b1265c5234bce4c20930562ce699a13f46e09e22afc4eed8df0",
+  "artifact_size": 25334124,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46101473408/artifacts/15245949136",
+  "interpretation": {
+    "between_run_limit": "Production-identical source54 and69 show substantial short-window variation on hosted infrastructure. There is no matched historical graphical baseline or controlled causal decomposition. A single source69 headless8/8 observation of30.05 ticks/s over2.995seconds does not replace the local matched comparison or establish a robust>=30physical objective pass.",
+    "causal_limit": "No matched before/after graphical baseline was collected on this hosted environment. Differences from local experiments cannot be attributed to one code, compiler, scheduling or rendering factor.",
+    "graphical_scope": "Xvfb/software OpenGL with LIBGL_ALWAYS_SOFTWARE=1, LP_NUM_THREADS=2, GALLIVM_PERF=nopt; roughly4renderer callbacks/s is not physical monitor FPS",
+    "local_identical_native_eight_realtime_fraction": 0.49572205988036905,
+    "local_identical_native_tower_realtime_fraction": 0.93954503570757,
+    "nominal_m4_interval_seconds": 0.016666666666666666,
+    "sleep_scope": "one naturally sleeping plank, acknowledged1owned/0awake and real Rapier sleep witness; no fully sleeping eight-body benchmark was performed"
+  },
+  "job_id": 140844659296,
+  "lanes": {
+    "graphical": {
+      "case_count": 52,
+      "case_statuses": [
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_import",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 2.707,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_lab",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 3.908,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_fragment_motion",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.265,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_remote_barrel",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 12.192,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 6.878,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 4.625,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_fresh_barrel",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 21.411,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_brush_revision",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 51.514,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_camera_lifecycle",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 41.824,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_receipt_scheduling",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 7.817,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_latency_probe",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.165,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_edit_delivery_fence",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 1.203,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_optional_diagnostics",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 11.486,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_same_world_extension",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.365,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_shared_main_rapier",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.265,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_same_world_physical_chain",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.465,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_compact_motion_packets",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.165,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_workbench_scene_refusal",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 4.374,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_workbench_completion",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 11.988,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_fresh_authored_reopen",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 5.412,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_material_only_workbench",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 7.816,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 9.22,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 7.431,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_completed_sample",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 6.716,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_equipment_completion",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 7.247,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_actor_clock",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 8.381,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 24.657,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_optional_diagnostics_cli",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 10.284,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_overlay_identity",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 0.502,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_material_preparation_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 0.633,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "test_object_shard_m4_material_presentation_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 2.168,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_throughput_disabled_off_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 13.825,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_throughput_empty_off_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 14.14,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_throughput_tower_off_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 22.805,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_throughput_stress_off_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 39.964,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_throughput_sleeping_off_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 20.636,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_throughput_tower_on_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 22.135,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_disabled_controls",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 32.156,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_render_controls",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 64.338,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_tower_overview_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 26.209,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_tower_zoom_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 25.249,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_viaduct_overview_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 34.727,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_viaduct_zoom_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 32.017,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_timber_overview_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 29.851,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_timber_zoom_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 29.116,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_mixed_overview_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 28.449,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_mixed_zoom_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 27.28,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_stress_overview_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 49.953,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_stress_zoom_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 45.94,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_tower_overview_light_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 26.049,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_tower_overview_light_recording_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 26.084,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "rendered",
+          "name": "m4_workbench_stress_overview_light_render",
+          "requires_display": true,
+          "returncode": 0,
+          "seconds": 50.598,
+          "status": "passed"
+        }
+      ],
+      "execution_mode_counts": {
+        "headless": 24,
+        "rendered": 28
+      },
+      "failures": [],
+      "focused": [
+        {
+          "checks": 159,
+          "failures": [],
+          "name": "test_object_shard_m4_brush_revision",
+          "schema": "objectshard-m4-brush-revision-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 155,
+          "failures": [],
+          "name": "test_object_shard_m4_receipt_scheduling",
+          "schema": "objectshard-m4-receipt-scheduling-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 192,
+          "failures": [],
+          "name": "test_object_shard_m4_workbench_completion",
+          "schema": "objectshard-m4-workbench-completion-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 137,
+          "failures": [],
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "schema": "objectshard-m4-fragment-reabsorption-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 122,
+          "failures": [],
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "schema": "objectshard-m4-lifecycle-adverse-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "name": "test_object_shard_m4_completed_sample",
+          "schema": "objectshard-m4-completed-sample-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "name": "test_object_shard_m4_equipment_completion",
+          "schema": "objectshard-m4-equipment-completion-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "name": "test_object_shard_m4_actor_clock",
+          "schema": "objectshard-m4-actor-clock-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 1019,
+          "failures": [],
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "schema": "objectshard-m4-lifecycle-fuzz-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        }
+      ],
+      "native_build_receipt_sha256": "c07b965b8625acc91f220e60e81ac8e72b18c365d21eccdaad9bf2758f75067f",
+      "profiles": [
+        {
+          "acknowledgements": 0,
+          "case": "m4_throughput_disabled_off_render",
+          "checks": 14,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 43,
+              "owned": 0,
+              "semantic_ticks": 42,
+              "wall_usec": 6152172
+            }
+          },
+          "display_driver": "X11",
+          "elapsed_usec": 6152204,
+          "failures": [],
+          "pose_echo_checks": 0,
+          "recording": false,
+          "renderer_callbacks": 43,
+          "renderer_callbacks_per_second": 6.98936511208016,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 42,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 6.826857246513914,
+          "whole_window_ticks_per_second": 6.82682173738062,
+          "workload": "disabled"
+        },
+        {
+          "acknowledgements": 0,
+          "case": "m4_throughput_empty_off_render",
+          "checks": 45,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 33,
+              "owned": 0,
+              "semantic_ticks": 177,
+              "wall_usec": 6178488
+            }
+          },
+          "display_driver": "X11",
+          "elapsed_usec": 6178509,
+          "failures": [],
+          "pose_echo_checks": 0,
+          "recording": false,
+          "renderer_callbacks": 33,
+          "renderer_callbacks_per_second": 5.34109442909284,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 177,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 28.647785671834274,
+          "whole_window_ticks_per_second": 28.647688301498,
+          "workload": "empty"
+        },
+        {
+          "acknowledgements": 456,
+          "case": "m4_throughput_tower_off_render",
+          "checks": 112,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 29,
+              "owned": 1,
+              "semantic_ticks": 113,
+              "wall_usec": 6021511
+            }
+          },
+          "display_driver": "X11",
+          "elapsed_usec": 6021536,
+          "failures": [],
+          "pose_echo_checks": 456,
+          "recording": false,
+          "renderer_callbacks": 29,
+          "renderer_callbacks_per_second": 4.81604693553273,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 113,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 18.766053902417514,
+          "whole_window_ticks_per_second": 18.7659759901792,
+          "workload": "tower"
+        },
+        {
+          "acknowledgements": 2400,
+          "case": "m4_throughput_stress_off_render",
+          "checks": 345,
+          "cohorts": {
+            "8/8": {
+              "awake": 8,
+              "callbacks": 28,
+              "owned": 8,
+              "semantic_ticks": 75,
+              "wall_usec": 6033003
+            }
+          },
+          "display_driver": "X11",
+          "elapsed_usec": 6033029,
+          "failures": [],
+          "pose_echo_checks": 2400,
+          "recording": false,
+          "renderer_callbacks": 28,
+          "renderer_callbacks_per_second": 4.64111808512772,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 75,
+          "target_cohort": "8/8",
+          "target_cohort_ticks_per_second": 12.431619874878232,
+          "whole_window_ticks_per_second": 12.4315662994492,
+          "workload": "stress"
+        },
+        {
+          "acknowledgements": 800,
+          "case": "m4_throughput_sleeping_off_render",
+          "checks": 81,
+          "cohorts": {
+            "1/0": {
+              "awake": 0,
+              "callbacks": 31,
+              "owned": 1,
+              "semantic_ticks": 200,
+              "wall_usec": 6079936
+            }
+          },
+          "display_driver": "X11",
+          "elapsed_usec": 6079959,
+          "failures": [],
+          "pose_echo_checks": 800,
+          "recording": false,
+          "renderer_callbacks": 31,
+          "renderer_callbacks_per_second": 5.09871859333262,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 200,
+          "target_cohort": "1/0",
+          "target_cohort_ticks_per_second": 32.89508310613796,
+          "whole_window_ticks_per_second": 32.8949586666621,
+          "workload": "sleeping"
+        },
+        {
+          "acknowledgements": 480,
+          "case": "m4_throughput_tower_on_render",
+          "checks": 112,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 30,
+              "owned": 1,
+              "semantic_ticks": 119,
+              "wall_usec": 6094616
+            }
+          },
+          "display_driver": "X11",
+          "elapsed_usec": 6094637,
+          "failures": [],
+          "pose_echo_checks": 480,
+          "recording": true,
+          "renderer_callbacks": 30,
+          "renderer_callbacks_per_second": 4.9223604293414,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 119,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 19.525430314231446,
+          "whole_window_ticks_per_second": 19.5253630363876,
+          "workload": "tower"
+        }
+      ],
+      "qualification_sha256": "647c485da1c75db3647128ce0c765a28e5062e42237fad84c81bc183dfe26616",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "status": "passed"
+    },
+    "headless": {
+      "case_count": 65,
+      "case_statuses": [
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_import",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 7.949,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_liquid_desktop_default_host",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 15.146,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_liquid_trial_body",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 24.716,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_persistent_area_owner_adversarial",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 3.239,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_lab",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 3.808,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_fragment_motion",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 0.265,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_remote_barrel",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 11.989,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 6.877,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 4.624,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_fresh_barrel",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 21.107,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_brush_revision",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 11.926,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_camera_lifecycle",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 12.288,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_receipt_scheduling",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 7.714,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_latency_probe",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 0.165,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_edit_delivery_fence",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 1.203,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_optional_diagnostics",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 5.875,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_same_world_extension",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 0.365,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_shared_main_rapier",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 0.265,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_same_world_physical_chain",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 0.465,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_compact_motion_packets",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 0.165,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_workbench_scene_refusal",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 4.373,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_workbench_completion",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 11.923,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_fresh_authored_reopen",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 5.477,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_material_only_workbench",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 6.979,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 9.118,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 7.347,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_completed_sample",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 6.878,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_equipment_completion",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 7.279,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_actor_clock",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 8.281,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_long_burn",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 17.033,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "requires_display": null,
+          "returncode": 0,
+          "seconds": 24.355,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_object_shard_m4_optional_diagnostics_cli",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 5.943,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_canvas",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 43.7,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_wave",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 46.759,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_wave_spill",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 11.339,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_failure_containment",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 6.217,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_failure_recovery",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 6.616,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_liquid_equipment",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 21.109,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_physical_actor_session",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.734,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_actor_usables_integration",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 2.507,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_physical_usable_equipment",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.734,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_actor_composition_native",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 2.607,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_workbench_actor_composition_session",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 0.818,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "test_persistent_area_residency_native",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 7.15,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "retained_lab_profile",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 42.391,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_throughput_disabled_off_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 11.626,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_throughput_empty_off_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 11.726,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_throughput_tower_off_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 12.93,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_throughput_stress_off_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 15.335,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_throughput_sleeping_off_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 14.132,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_throughput_tower_on_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 12.929,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_disabled_controls",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 29.764,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_tower_overview_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 9.787,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_tower_zoom_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 9.686,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_viaduct_overview_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 10.525,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_viaduct_zoom_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 10.524,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_timber_overview_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 10.426,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_timber_zoom_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 10.691,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_mixed_overview_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 10.426,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_mixed_zoom_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 10.425,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_stress_overview_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 13.031,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_stress_zoom_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 13.03,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_tower_overview_light_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 9.686,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_tower_overview_light_recording_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 9.686,
+          "status": "passed"
+        },
+        {
+          "execution_mode": "headless",
+          "name": "m4_workbench_stress_overview_light_headless",
+          "requires_display": false,
+          "returncode": 0,
+          "seconds": 12.833,
+          "status": "passed"
+        }
+      ],
+      "execution_mode_counts": {
+        "headless": 65
+      },
+      "failures": [],
+      "focused": [
+        {
+          "checks": 158,
+          "failures": [],
+          "name": "test_object_shard_m4_brush_revision",
+          "schema": "objectshard-m4-brush-revision-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 155,
+          "failures": [],
+          "name": "test_object_shard_m4_receipt_scheduling",
+          "schema": "objectshard-m4-receipt-scheduling-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 192,
+          "failures": [],
+          "name": "test_object_shard_m4_workbench_completion",
+          "schema": "objectshard-m4-workbench-completion-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 137,
+          "failures": [],
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "schema": "objectshard-m4-fragment-reabsorption-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 122,
+          "failures": [],
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "schema": "objectshard-m4-lifecycle-adverse-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "name": "test_object_shard_m4_completed_sample",
+          "schema": "objectshard-m4-completed-sample-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "name": "test_object_shard_m4_equipment_completion",
+          "schema": "objectshard-m4-equipment-completion-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "name": "test_object_shard_m4_actor_clock",
+          "schema": "objectshard-m4-actor-clock-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        },
+        {
+          "checks": 1019,
+          "failures": [],
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "schema": "objectshard-m4-lifecycle-fuzz-v1",
+          "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f"
+        }
+      ],
+      "native_build_receipt_sha256": "c07b965b8625acc91f220e60e81ac8e72b18c365d21eccdaad9bf2758f75067f",
+      "profiles": [
+        {
+          "acknowledgements": 0,
+          "case": "m4_throughput_disabled_off_headless",
+          "checks": 13,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 361,
+              "owned": 0,
+              "semantic_ticks": 359,
+              "wall_usec": 6004902
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6004925,
+          "failures": [],
+          "pose_echo_checks": 0,
+          "recording": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 359,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 59.78448940548905,
+          "whole_window_ticks_per_second": 59.7842604195723,
+          "workload": "disabled"
+        },
+        {
+          "acknowledgements": 0,
+          "case": "m4_throughput_empty_off_headless",
+          "checks": 44,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 361,
+              "owned": 0,
+              "semantic_ticks": 360,
+              "wall_usec": 6000317
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6000334,
+          "failures": [],
+          "pose_echo_checks": 0,
+          "recording": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 360,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 59.996830167472815,
+          "whole_window_ticks_per_second": 59.9966601859163,
+          "workload": "empty"
+        },
+        {
+          "acknowledgements": 1416,
+          "case": "m4_throughput_tower_off_headless",
+          "checks": 111,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 359,
+              "owned": 1,
+              "semantic_ticks": 354,
+              "wall_usec": 6015610
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6015630,
+          "failures": [],
+          "pose_echo_checks": 1416,
+          "recording": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 354,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 58.846899981880476,
+          "whole_window_ticks_per_second": 58.8467043352068,
+          "workload": "tower"
+        },
+        {
+          "acknowledgements": 5792,
+          "case": "m4_throughput_stress_off_headless",
+          "checks": 344,
+          "cohorts": {
+            "8/6": {
+              "awake": 6,
+              "callbacks": 58,
+              "owned": 8,
+              "semantic_ticks": 29,
+              "wall_usec": 963101
+            },
+            "8/7": {
+              "awake": 7,
+              "callbacks": 123,
+              "owned": 8,
+              "semantic_ticks": 61,
+              "wall_usec": 2057872
+            },
+            "8/8": {
+              "awake": 8,
+              "callbacks": 181,
+              "owned": 8,
+              "semantic_ticks": 90,
+              "wall_usec": 2994968
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6015976,
+          "failures": [],
+          "pose_echo_checks": 5792,
+          "recording": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 180,
+          "target_cohort": "8/8",
+          "target_cohort_ticks_per_second": 30.050404545223856,
+          "whole_window_ticks_per_second": 29.9203321289846,
+          "workload": "stress"
+        },
+        {
+          "acknowledgements": 1440,
+          "case": "m4_throughput_sleeping_off_headless",
+          "checks": 80,
+          "cohorts": {
+            "1/0": {
+              "awake": 0,
+              "callbacks": 362,
+              "owned": 1,
+              "semantic_ticks": 360,
+              "wall_usec": 6006109
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6006129,
+          "failures": [],
+          "pose_echo_checks": 1440,
+          "recording": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 360,
+          "target_cohort": "1/0",
+          "target_cohort_ticks_per_second": 59.938972136536314,
+          "whole_window_ticks_per_second": 59.9387725438465,
+          "workload": "sleeping"
+        },
+        {
+          "acknowledgements": 1392,
+          "case": "m4_throughput_tower_on_headless",
+          "checks": 111,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 358,
+              "owned": 1,
+              "semantic_ticks": 348,
+              "wall_usec": 6004281
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6004302,
+          "failures": [],
+          "pose_echo_checks": 1392,
+          "recording": true,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 348,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 57.95864650571817,
+          "whole_window_ticks_per_second": 57.9584437957984,
+          "workload": "tower"
+        }
+      ],
+      "qualification_sha256": "0f444f79134908c05293ed2e12a72d466ec16d5508486d037732b9e41f49b7cf",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "status": "passed"
+    }
+  },
+  "member_count": 1116,
+  "overall_campaign_disposition": "Not an overall campaign pass: native sanitizer, ordinary World and benchmark execution passed, but later Python qualification-contract discovery failed one missing ordinary opt-in registry entry. That registration repair is source b7. The source69 Linux job itself succeeded with all65 headless/52 graphical cases passing.",
+  "production_bundle": {
+    "artifact_id": 15246995227,
+    "artifact_sha256": "15783371680ec053eb02352d6ee6e0805294349e1ece2728b279862d06a7fa4e",
+    "build_input_count": 1378,
+    "cases": [
+      {
+        "checks": null,
+        "log_sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+        "name": "import",
+        "status": "passed"
+      },
+      {
+        "checks": 28,
+        "log_sha256": "876694ddbdbc96fa0390f9ea0065cf7aa9a5eb994dbdce46646ad3b7b782cf22",
+        "name": "test_object_shard_m4_same_world_extension",
+        "status": "passed"
+      },
+      {
+        "checks": 18,
+        "log_sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f",
+        "name": "test_object_shard_m4_shared_main_rapier",
+        "status": "passed"
+      },
+      {
+        "checks": 9,
+        "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e",
+        "name": "test_object_shard_m4_compact_motion_packets",
+        "status": "passed"
+      }
+    ],
+    "godot": {
+      "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+      "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "version": "4.7.stable.official.5b4e0cb0f"
+    },
+    "manifest_sha256": "000a5d6f901ca0510cccf68abc445b2220a985b7c43a965687ab732849589eb9",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "runtime": {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+      "size": 6081432
+    },
+    "schema": "objectshard-m4-linux-independent-producer-review-v1",
+    "scope": "Independent artifact byte and exact-Git-input reconciliation of the producer's actual hosted Linux helper execution; no additional local execution or physical performance acceptance is claimed.",
+    "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+    "source_input_count": 126,
+    "source_tree": "9e749e481b01218d421fbddb84d4a0874c1054e1",
+    "status": "passed",
+    "validation_sha256": "0ffe3e8f692a227dd1cc626e1699dae6f8b01a58c2b3ce57a1374c7c4199a3c7",
+    "workflow_attempt": 1,
+    "workflow_run": 46101473408
+  },
+  "production_equivalence": {
+    "checked_paths": [
+      "godot/scripts",
+      "godot/native_extension",
+      "native/src",
+      "native/include",
+      "godot/shaders",
+      "godot/project.godot",
+      "godot/main.tscn",
+      "godot/feature_launcher.tscn"
+    ],
+    "compared_to": [
+      "54a7719e55be313820ebeb8d36efe6c230c1348c",
+      "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73"
+    ],
+    "differing_production_paths": [],
+    "scope": "No application/native/shader production changes; exact pinned native binary also matches source54. Later differences are tests, CI and documentation. No acceptance is transferred across actual workflow identities."
+  },
+  "schema": "objectshard-m4-linux-independent-receipt-review-v1",
+  "scope": "Hosted Linux source-bound qualification. Graphical lane uses Xvfb and software rendering. Native semantic ticks, real Rapier operations and renderer callbacks are separate; this is not physical monitor FPS or owner hardware acceptance. The graphical-profile lane contains28 actual-rendered cases and24 repeated headless helpers; lane naming is not a rendered-execution assertion.",
+  "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+  "source_tree": "9e749e481b01218d421fbddb84d4a0874c1054e1",
+  "workflow_run": 46101473408,
+  "workflow_url": "https://github.com/techrote/cybersand/actions/runs/46101473408"
+}

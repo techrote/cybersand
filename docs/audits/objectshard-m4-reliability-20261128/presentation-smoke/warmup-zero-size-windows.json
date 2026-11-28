@@ -1,0 +1,53 @@
+{
+  "archive_bytes": 53211,
+  "archive_sha256": "7d3c0d323d301cdb32554da982c424686468c71f6d6bf141e1c2d98320540c91",
+  "artifact_id": 15242843829,
+  "preparation_receipt": {
+    "body_captures": [
+      {
+        "elapsed_usec": 31386,
+        "label": "prepared-first-body",
+        "sha256": "1c044d225b66329ec488ed710d4d11ab3b6a8f9d311fe7b1ad4ba42022e16bf8"
+      },
+      {
+        "elapsed_usec": 12544,
+        "label": "prepared-replacement-body",
+        "sha256": "1c044d225b66329ec488ed710d4d11ab3b6a8f9d311fe7b1ad4ba42022e16bf8"
+      }
+    ],
+    "checks": 13,
+    "display_driver": "Windows",
+    "failures": [
+      "first detached material draws opaque occupied cells and transparent empty ring"
+    ],
+    "preparation": {
+      "before_draw_usec": 1993,
+      "elapsed_usec": 37628990,
+      "empty_alpha": 0.0,
+      "first_draw_usec": 37534342,
+      "image_size": "(2, 2)",
+      "occupied_rgba": [
+        0.270588248968124,
+        0.200000002980232,
+        0.152941182255745,
+        1.0
+      ],
+      "rendered": true,
+      "runs": 1,
+      "scope": "opt-in process-local shared shader preparation; no native owner, body or simulation clock",
+      "shader_instance_id": -9223372006672562699,
+      "started_usec": 340131,
+      "state": "ready",
+      "status_frame_completed": true,
+      "target_size": "(2, 2)",
+      "temporary_viewport_retired": true
+    },
+    "schema": "objectshard-m4-material-preparation-v1",
+    "scope": "actual renderer; explicit opt-in preparation and same shared shader reuse after overlay replacement; synthetic material inputs; no native World/body/time or physical display performance claim",
+    "source_commit": "19485bbb5e474f0d4d90c40617a36b3120552f5b"
+  },
+  "run_id": 46096628357,
+  "source_commit": "19485bbb5e474f0d4d90c40617a36b3120552f5b",
+  "source_tree": "1b421ec0aa61ff4a8f034bd31424ebd9e9507599",
+  "status": "failed subsequent zero-size synthetic overlay fixture; positive preparation passed"
+}

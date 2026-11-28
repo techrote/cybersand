@@ -1,0 +1,15 @@
+{
+  "schema": "objectshard-live-edit-final-staged-integrity-v1",
+  "status": "passed",
+  "checked_utc": "2026-11-28T09:54:30.434594+00:00",
+  "parent": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "all_staged_paths_within_docs": true,
+  "checked_path_count_before_this_receipt": 131,
+  "exact_specialist_c_index_copies": 27,
+  "exact_delivery_record_evidence_files": 28,
+  "independent_reviews": 3,
+  "raw_performance_subtree": "4adefc51163decc41503025f8374307cc3ed068d",
+  "csv_bytes_preserved": true,
+  "git_diff_cached_check": "passed",
+  "scope": "Checks staged Git blobs rather than working-file hashes. Adding this receipt does not change verified payloads. Qualified application and guarded runtime paths are untouched."
+}

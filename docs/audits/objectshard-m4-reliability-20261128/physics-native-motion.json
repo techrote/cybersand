@@ -1,0 +1,104 @@
+{
+  "checks_reported": 53159,
+  "counts_complete": true,
+  "elapsed_seconds": 23.69983925700035,
+  "failures_reported": 0,
+  "git_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "input_digest": "600e448609bf5a22bf3f5a0c4e656eba8530468472980aad08c56491ab696994",
+  "leak_sanitizer": false,
+  "qualification_scope": "Native C++ only; no rendered, Rapier or owner physical acceptance claim.",
+  "run_directory": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf",
+  "sanitizers": false,
+  "schema": 1,
+  "status": "passed",
+  "suites": {
+    "contact": {
+      "binary_sha256": "f0f884bfd0a781d7c40587b08c5875ba68de58d90a4a6fccb772dc3a9cc272b2",
+      "checks": 47179,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/test_object_shard_contact"
+        ],
+        "cwd": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/source",
+        "elapsed_seconds": 0.0035109730001749995,
+        "log": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/logs/test-contact.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-I",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/source/native/include",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/source/native/tests/test_object_shard_contact.cpp",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/object_shard.o",
+          "-o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/test_object_shard_contact"
+        ],
+        "cwd": "/workspace/scratch/9b78ce6eff8d/physics",
+        "elapsed_seconds": 0.8085142350000751,
+        "log": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/logs/link-contact.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "coordinator": {
+      "binary_sha256": "72a0e1705e9c97baec3551398cddaeb85c9b397006aa17def850fa9ea6ba4452",
+      "checks": 5980,
+      "count_unit": "checks",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/test_object_shard_coordinator"
+        ],
+        "cwd": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/source",
+        "elapsed_seconds": 0.5132691250000789,
+        "log": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/logs/test-coordinator.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "command": [
+          "g++",
+          "-std=c++20",
+          "-O1",
+          "-g",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Werror",
+          "-I",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/source/native/include",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/source/native/tests/test_object_shard_coordinator.cpp",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/world.o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/material_rules.o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/scheduler_geometry.o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/settled_world_discovery.o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/object_shard.o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/objects/object_shard_coordinator.o",
+          "-o",
+          "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/test_object_shard_coordinator"
+        ],
+        "cwd": "/workspace/scratch/9b78ce6eff8d/physics",
+        "elapsed_seconds": 5.153571727000326,
+        "log": "/workspace/scratch/9b78ce6eff8d/physics-evidence/native-motion/20261128T010559.178167Z-600e448609bf/logs/link-coordinator.log",
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    }
+  },
+  "test_cases_reported": 0
+}

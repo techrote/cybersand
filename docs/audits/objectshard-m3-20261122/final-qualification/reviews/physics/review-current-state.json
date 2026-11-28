@@ -1,0 +1,66 @@
+{
+  "schema": "independent-review-current-state-v1",
+  "utc": "2026-11-22T08:11:20.615158+00:00",
+  "reviewer": "/root/review_physics",
+  "original_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "original_commit_status": "Blocked by subsequently discovered and independently reproduced Class B F2 ownership lifecycle/quit-policy defect; earlier tested-path no-finding report is superseded on that route.",
+  "platform_baselines": "Fresh exact682 Linux40,Windows40 and delivered owner-ZIP31 campaign datasets independently audited, including raw physical intervals, original pointer times, matched pump modes and7 PNGs per platform. These do not qualify the repair source.",
+  "local_repair": "Exact publishede034 passes first import0,10 parent test suites651 assertions plus actual quit child18,669/0. Four independent probes and all57 source/dependency files unchanged after execution. Original Class B F2 defect resolved in supported controlled navigation.",
+  "pending": "No remaining reviewer B source/platform audit gate. Physical Windows11/NVIDIA owner acceptance and any product adoption/promotion remain outside this review and are not established.",
+  "local_anomalies_retained": "Two new isolated editor imports endedSIGABRT after completed import/layout with no error text; each exact-byte repeat passed. Both real navigation suites passed on each. Do not call initial import successful.",
+  "refs": {
+    "original_source_review": {
+      "path": "build/review-physics/final-68235b12/review-final.json",
+      "sha256": "c7e67ebcc66a902c12b4a530ca5f57669a5559103ad10bba9ce579a16d139f9b"
+    },
+    "windows_baseline_audit": {
+      "path": "build/review-physics/platform-windows-review.json",
+      "sha256": "87d85a272edcafa9a3ae1ddbd29997d0af4428d8f94c07dc42540dbad43f8ac5"
+    },
+    "linux_baseline_audit": {
+      "path": "build/review-physics/platform-linux-baseline-review.json",
+      "sha256": "44c6ec0bd586fedbc96d85d6990101575f301ed710f63d98876c5427912ae579"
+    },
+    "confirmed_f2_finding": {
+      "path": "build/review-physics/navigation-68235b12/finding.json",
+      "sha256": "6f5043886b8dbf8b4cc44e23cd2cd565adf55a3fd92e5e4185a25f60e7292da1"
+    },
+    "frozen_local_repair_review": {
+      "path": "build/review-physics/navigation-repair-freeze/review.json",
+      "sha256": "9de4ed86ae4aeebde0101dba1ed94eb60e94c7e8cf001d2a40e6bc0ab5a22b0e"
+    },
+    "exact_published_final_review": {
+      "path": "build/review-physics/final-e034f229/review-final.json",
+      "sha256": "092718bdf8f8e84d4255d75f36e208c96b46251ebb351be740b2c1707f4b0d8d"
+    },
+    "probe_retention_manifest": {
+      "path": "build/review-physics/probe-retention-manifest.json",
+      "sha256": "2f3453b809a19d60f03ba38491b7b478839027c419160513366f01e6c6b65ecd"
+    },
+    "final_windows_platform_audit": {
+      "path": "build/review-physics/platform-windows-final-e034-review.json",
+      "sha256": "44dfd53ae642084864a5c24bdcd73ebbf4d42cfaa3e9f51156a8323c0f093166"
+    },
+    "final_publication_source_recheck": {
+      "path": "build/review-physics/final-publication-source-review.json",
+      "sha256": "7f323e30e63f6ce1f4eb94d0cc489f9f2af45e921f52a8e7031b2a44cd235593"
+    },
+    "final_linux_platform_audit": {
+      "path": "build/review-physics/platform-linux-final-e034-review.json",
+      "sha256": "7574e581ead459d245f6428e14e8eee507795b445bc4dc00002851060e514eda"
+    },
+    "final_source_platform_addendum": {
+      "path": "build/review-physics/final-source-platform-addendum.json",
+      "sha256": "2af91e1875eb79cd96895252f81e3489f1eae03c5f0e4976424a3bd9e90fbfc9"
+    },
+    "final_source_platform_comparison": {
+      "path": "build/review-physics/final-source-platform-addendum.md",
+      "sha256": "9d06b08048792bfe3c9784f76af5600586fe847c383bcbaa0786c9156e4e9400"
+    }
+  },
+  "final_reviewed_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "final_reviewed_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "final_windows_platform": "Exacte034 fresh Windows source-builtDLL05cc1f55, source41+delivered32 natural cases and actual135+18 navigation each; independent raw physics/material/presentation/PNG audit passes with no new Class A/B finding.",
+  "final_linux_platform": "Exact e034 fresh Linux build/compile receipt,41 naturally completed qualification cases,135+18 actual navigation, all raw physical/input/material/renderer evidence and7 PNGs independently audited; no new Class A/B finding.",
+  "final_disposition": "Final exact-source669 local assertion executions plus fresh e034 Windows41/source+32/delivered and Linux41 platform evidence reviewed. No unresolved Class A/B finding within supported separate-World rehearsal paths. Original adverse evidence preserved. Draft/HOLD remains."
+}

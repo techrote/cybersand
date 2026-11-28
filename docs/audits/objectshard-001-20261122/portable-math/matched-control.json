@@ -1,0 +1,290 @@
+{
+  "schema": 1,
+  "scope": "One bounded matched control cohort; no changed workload, thresholds, binary, or production setting. Does not supersede the recorded full-matrix budget failure.",
+  "old_source_commit": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "new_source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "binary_sha256": {
+    "old": "f9b9927c056bf83d166c1090e6cdf0ce899bd9b0989e32593760cbf2c52aa58d",
+    "new": "6697001acedb6e7ee66609f9ce21f7298020eaa247bfa85bc8fc00bb84b4a375"
+  },
+  "execution_order": [
+    "old-empty",
+    "new-empty",
+    "new-three",
+    "old-three"
+  ],
+  "observations": [
+    {
+      "binary": "old",
+      "case": "empty_lab",
+      "command": [
+        "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/benchmark_object_shard",
+        "--case",
+        "empty_lab",
+        "--ticks",
+        "480",
+        "--repetitions",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.45753300900105387,
+      "cpu_user_seconds": 0.451186,
+      "cpu_system_seconds": 0.003805,
+      "pressure_before": {
+        "time_utc": "2026-11-22T02:07:32Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.11 6.45 5.19 6/456 5\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "pressure_after": {
+        "time_utc": "2026-11-22T02:07:33Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.11 6.45 5.19 7/460 6\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "result_sha256": "78b71dd7f49c29e2add81883ca369caf244b78dbb4a13a76054de14787e2150c",
+      "native_frame": {
+        "samples": 1440,
+        "mean_us": 304.691,
+        "p50_us": 278.566,
+        "p95_us": 424.128,
+        "p99_us": 621.848,
+        "max_us": 1727.819
+      },
+      "checks": 2887,
+      "failures": 0
+    },
+    {
+      "binary": "new",
+      "case": "empty_lab",
+      "command": [
+        "build/objectshard-benchmarks-portable-math/20261122T020237.281138Z-ceb176f8b88b/benchmark_object_shard",
+        "--case",
+        "empty_lab",
+        "--ticks",
+        "480",
+        "--repetitions",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 0.44447204199968837,
+      "cpu_user_seconds": 0.435932,
+      "cpu_system_seconds": 0.00822,
+      "pressure_before": {
+        "time_utc": "2026-11-22T02:07:33Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.11 6.45 5.19 7/460 6\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "pressure_after": {
+        "time_utc": "2026-11-22T02:07:33Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.11 6.45 5.19 6/456 7\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "result_sha256": "98b36011180d44923d4b134ab2f4c04e74faaedd15c8e010321f12ba80b3aafb",
+      "native_frame": {
+        "samples": 1440,
+        "mean_us": 295.811,
+        "p50_us": 274.401,
+        "p95_us": 386.557,
+        "p99_us": 603.861,
+        "max_us": 2271.692
+      },
+      "checks": 2887,
+      "failures": 0
+    },
+    {
+      "binary": "new",
+      "case": "reacting_three",
+      "command": [
+        "build/objectshard-benchmarks-portable-math/20261122T020237.281138Z-ceb176f8b88b/benchmark_object_shard",
+        "--case",
+        "reacting_three",
+        "--ticks",
+        "480",
+        "--repetitions",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 1.0470424349987297,
+      "cpu_user_seconds": 1.0466829999999998,
+      "cpu_system_seconds": 0.0,
+      "pressure_before": {
+        "time_utc": "2026-11-22T02:07:33Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.11 6.45 5.19 8/456 7\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "pressure_after": {
+        "time_utc": "2026-11-22T02:07:34Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.19 6.45 5.20 6/456 8\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "result_sha256": "d2e768da014f67697d9b3213ba41e3b0bb1f125ae97c8b861574d3ef24e8f58e",
+      "native_frame": {
+        "samples": 1440,
+        "mean_us": 710.869,
+        "p50_us": 666.508,
+        "p95_us": 848.155,
+        "p99_us": 1188.798,
+        "max_us": 12105.87
+      },
+      "checks": 3033,
+      "failures": 0
+    },
+    {
+      "binary": "old",
+      "case": "reacting_three",
+      "command": [
+        "build/objectshard-benchmarks-final/20261122T014005.798855Z-5977462b93e0/benchmark_object_shard",
+        "--case",
+        "reacting_three",
+        "--ticks",
+        "480",
+        "--repetitions",
+        "3"
+      ],
+      "returncode": 0,
+      "wall_seconds": 1.1600688279941096,
+      "cpu_user_seconds": 1.134868,
+      "cpu_system_seconds": 0.008696999999999998,
+      "pressure_before": {
+        "time_utc": "2026-11-22T02:07:34Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.19 6.45 5.20 7/456 8\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "pressure_after": {
+        "time_utc": "2026-11-22T02:07:35Z",
+        "logical_cpus": 9,
+        "cpu_affinity": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "/proc/loadavg": "5.19 6.45 5.20 8/481 9\n",
+        "/proc/pressure/cpu": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.max": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.stat": "unavailable in this execution environment",
+        "/sys/fs/cgroup/cpu.pressure": "unavailable in this execution environment"
+      },
+      "result_sha256": "7c4bb7d6a572ba3c1e9aaecb73b69e07b7b638757b6aeeeaac67d1831264d837",
+      "native_frame": {
+        "samples": 1440,
+        "mean_us": 788.892,
+        "p50_us": 674.91,
+        "p95_us": 1230.521,
+        "p99_us": 1944.502,
+        "max_us": 13468.673
+      },
+      "checks": 3033,
+      "failures": 0
+    }
+  ]
+}

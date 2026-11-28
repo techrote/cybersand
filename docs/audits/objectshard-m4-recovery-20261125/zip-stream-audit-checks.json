@@ -1,0 +1,87 @@
+{
+  "schema": "objectshard-m4-independent-zip-stream-review-v1",
+  "status": "passed",
+  "audit_script_sha256": "8f2a0b9ded7afb1c1bdd65fb87c874173bea9ca114db192fca84ba163b8852a9",
+  "challenge_script_sha256": "4a799a41f1876ac0e3accfc45bc54c46eec91aec7af28c0bc2f38727bcd9f357",
+  "source_scope": "Audit-only bounded reads with actual decompressed-length validation; no product or workflow changes.",
+  "case_count": 10,
+  "cases": [
+    {
+      "case": "official-Godot_v4.7-stable_win64.exe",
+      "status": "passed",
+      "result": {
+        "bytes": 178485256,
+        "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+        "machine": "AMD64",
+        "optional_header": "PE32+"
+      }
+    },
+    {
+      "case": "official-Godot_v4.7-stable_win64_console.exe",
+      "status": "passed",
+      "result": {
+        "bytes": 198152,
+        "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "machine": "AMD64",
+        "optional_header": "PE32+"
+      }
+    },
+    {
+      "case": "missing-dos-magic",
+      "status": "refused",
+      "reason": "Missing MZ header: image.exe",
+      "fixture_sha256": "9f094615ee553788460ce5df12cc1adedde9a51303e63bf346e1f3dd614eb9e0"
+    },
+    {
+      "case": "pe-outside-file",
+      "status": "refused",
+      "reason": "Missing PE AMD64 signature: image.exe",
+      "fixture_sha256": "ed0b1bf0570ff5879383058a2d08b1fcfc75c06936c9bd07fda386ca070f7173"
+    },
+    {
+      "case": "wrong-machine",
+      "status": "refused",
+      "reason": "Missing PE AMD64 signature: image.exe",
+      "fixture_sha256": "2a30671492918990b7c323b904665693a1edd2fd692c3aef07b6b81938117470"
+    },
+    {
+      "case": "empty-optional-header",
+      "status": "refused",
+      "reason": "Invalid optional header bounds: image.exe",
+      "fixture_sha256": "7bc73ef67fa9ed3b125aed8a1d41aaafafcb765a6ca4a7f248fda081ac631233"
+    },
+    {
+      "case": "oversize-optional-header",
+      "status": "refused",
+      "reason": "Invalid optional header bounds: image.exe",
+      "fixture_sha256": "46515aa7b7ff3ceb7242235e7f6f5894f4be187f4e1a876e3fef63545ad1b24b"
+    },
+    {
+      "case": "wrong-optional-format",
+      "status": "refused",
+      "reason": "Expected PE32+ image: image.exe",
+      "fixture_sha256": "95f58b7e3068e9e2289df40461c14c1e674488a44c5f879566e5ec17360d985c"
+    },
+    {
+      "case": "overreported-member-size-member_sha",
+      "status": "refused",
+      "reason": "ZIP member length differs: image.exe",
+      "fixture_sha256": "264f801f8e990315c7bc252fa044eeb34d1ec7040de6aac63f6eeddefcc0f795",
+      "actual_decompressed_bytes": 90,
+      "declared_member_bytes": 200,
+      "required_optional_header_end": 188,
+      "crc": "valid"
+    },
+    {
+      "case": "overreported-member-size-pe_amd64",
+      "status": "refused",
+      "reason": "ZIP member length differs: image.exe",
+      "fixture_sha256": "264f801f8e990315c7bc252fa044eeb34d1ec7040de6aac63f6eeddefcc0f795",
+      "actual_decompressed_bytes": 90,
+      "declared_member_bytes": 200,
+      "required_optional_header_end": 188,
+      "crc": "valid"
+    }
+  ],
+  "retained_negative": "Independent review found that the first stream draft trusted forged ZIP central length. No evaluator was inspected with that draft. Both corrected helpers refuse the concrete witness."
+}

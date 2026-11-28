@@ -1,0 +1,108 @@
+{
+  "schema": "objectshard-m4-recovery-second-executor-continuity-v1",
+  "status": "QUALIFICATION_IN_PROGRESS_LOCAL_EXECUTOR_UNAVAILABLE",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "reviewed_local_application": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+  "unpublished_local_documentation_checkpoint": {
+    "commit": "1c504492de2603dca7f0e637fc10ae5bab9e5551",
+    "tree": "4fbbd196458eb9e294cfe97e6d680e72321a3ac0",
+    "files": 52,
+    "prepared_payload_characters": 1724355,
+    "status": "Prepared and locally committed; payload read failed at executor disconnect before cloud publication"
+  },
+  "source_changes_after_freeze": [],
+  "hosted_qualification": {
+    "run": 45530425519,
+    "attempt": 1,
+    "native_job": 138924057320,
+    "native_status": "success",
+    "windows_native_job": 138924057296,
+    "windows_native_status": "success",
+    "linux_job": 138924056891,
+    "linux_status": "primary step success; graphical running; final raw review pending",
+    "windows_job": 138926161028,
+    "windows_status": "combined ordinary/graphical matrix running",
+    "evaluator": "not yet produced"
+  },
+  "native_artifact": {
+    "id": 14985522687,
+    "bytes": 135240202,
+    "sha256": "e4928403e5fd033768f50cfde4a576aef4475eae1d895d67f5156ed79e6ad7e7",
+    "observed_independent_review": "Completed naturally before outage:129 native and95 benchmark source maps,96500 checks,192 World cases,4276351 benchmark checks,74 budgets. Full resulting review file is not yet published; original archive is durable and re-reviewable.",
+    "material_parity_binding": "Eight input joins were not confirmed before disconnect; do not infer completion."
+  },
+  "windows_native_artifact": {
+    "id": 14984556771,
+    "bytes": 2265508,
+    "sha256": "12563fa3c449963ad1adf04bc7dbb701c61777e18a823607d1e60b9815820a1c",
+    "dll_bytes": 6196224,
+    "dll_sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4",
+    "published_review": "windows-native-5f0722ae-independent-review.json"
+  },
+  "preserved_native_tree": "246506aacf96a1eb6df67403cbea731c4f3911b5",
+  "authored_pair": {
+    "checks": [
+      136,
+      79
+    ],
+    "status": "Actual completed frozen-product witness; independently reviewed before outage",
+    "retained_files": [
+      "authored-frozen/summary.json",
+      "authored-frozen/observe_authored_v2.gd",
+      "authored-frozen/run_pair.py",
+      "authored-frozen/attempt-2-custody.json",
+      "authored-frozen/attempt-2-author-receipt.json",
+      "authored-frozen/attempt-2-reopen-receipt.json"
+    ],
+    "not_yet_remotely_retained": [
+      "full1023-file map",
+      "original process logs and raw material bins",
+      "original first77-check failed observer receipts"
+    ],
+    "observed_results": "Two sequential completed child lifetimes and unique launch nonces; exact saved intact800 supports/0bodies and cut6 supports/natural1body; Wood2184/Brick2232 conserved;2048 visible refusal preserves World;1024 attaches.",
+    "failure_scope": "Prior external observer77-check failure used invalid namespace-PID inequality and mismatched JSON numeric types. Only external proof plumbing changed."
+  },
+  "live_cut": {
+    "checks": 138,
+    "status": "Completed and independently source/raw reviewed before outage; full raw receipt and observer currently inaccessible",
+    "retained_review": "live-cut-independent-review.json",
+    "original_log_sha256": "2e730208632d498c2f8a13d898af36dbfe06ea3e276c872d5e97581e04bad8c2",
+    "original_receipt_sha256": "9df743f48a28c34f7b0b46cc838e29738e8b4f41d147a8ee3ec39e71bf714e8b",
+    "observer_sha256": "0827847d7cc74f1b89a31832c60dbb7a874e89d19d00d65c7580fca196f3014c",
+    "observed_results": "One mounted press/release during actual Play; translating48.145878cells/s and rotating-0.747927rad/s; source883 Appliedtx2; geometry1to2 sameRID/physicalstep364; survivor884 point velocity error7.62939453125e-6cells/s; Wood2184to2183/Brick2232; continued8ticks;732coherent observations,0mismatch.",
+    "limit": "Headless programmatic GUI input, not physical mouse/monitor/NVIDIA qualification."
+  },
+  "performance_experiment": {
+    "status": "INCOMPLETE_NO_COMPARISON_NO_ADMISSION",
+    "experimental_commit": "fc9025fc6fa7d88612c178e1cfb6df1315935757",
+    "experimental_tree": "ef655fa8411e15fe0f268bf16c80a7221281a555",
+    "change": "Only OS.delay_usec(100) to OS.delay_usec(0) in ObjectShard runtime.poll",
+    "actual_experimental_executions": 0,
+    "baseline_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "baseline_returncode": -9,
+    "baseline_seconds": 6.287,
+    "baseline_log_sha256": "a9595161bd5537ac20ee7f50d5b308254f7d8b91122dbe0be0019059fd71621e",
+    "completed_profile": false,
+    "watchdog_timeout": false,
+    "observed_cpu_seconds": 6.2,
+    "sampled_peak_rss_bytes": 520642560,
+    "minimum_host_available_bytes": 1285591040,
+    "termination_cause": "Not established by available observations",
+    "comparison": "Planned ABBA stopped after first unchanged baseline; no throughput conclusion or candidate change."
+  },
+  "ordinary_sand_supplement": {
+    "status": "INTERRUPTED_NO_TERMINAL_RECEIPT_NOT_PASS",
+    "session": 71346,
+    "scope": "Prepared ordinary authored pocket, support erase and Sand brush; no native ingest call or forced pose. Original positive native lodging qualification remains separate."
+  },
+  "physical_owner_acceptance": "HOLD",
+  "production_runtime_gate": "Existing retained-production16stale-input errors remain FAIL/OPEN preReady/merge; candidate evaluation does not rewrite production manifests",
+  "next_actions": [
+    "Restore local access without assuming files survived",
+    "Recover full frozen application artifacts from third hosted run and strictly re-review",
+    "Use bounded read-only hosted independent archive audit only if local access remains unavailable",
+    "Require shipped CMD and pristine extracted replay before evaluator qualification",
+    "Recover missing supplemental raw files or label the evidence gaps; never invent a pass"
+  ]
+}

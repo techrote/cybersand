@@ -1,0 +1,119 @@
+{
+  "checks_reported": 138145,
+  "counts_complete": true,
+  "elapsed_seconds": 35.7282537659994,
+  "failures_reported": 0,
+  "git_head": "327afc58227b246390b19c275f58df77ae2dd734",
+  "input_digest": "8417d596267c643d553e0f57770c5cf7f8849106dd17ef0d179c01b3f1700df2",
+  "leak_sanitizer": false,
+  "qualification_scope": "Native C++ only; no rendered, Rapier or owner physical acceptance claim.",
+  "run_directory": "local ephemeral execution; source inputs identified by digest",
+  "sanitizers": false,
+  "schema": 1,
+  "status": "passed",
+  "suites": {
+    "admission": {
+      "binary_sha256": "d7c0df4344068f7d0b55caa82c9b0dff467961dd3e72af787513661ab7de16e2",
+      "checks": 28092,
+      "count_unit": "checks",
+      "execution": {
+        "elapsed_seconds": 0.1607833460002439,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "elapsed_seconds": 2.693035788000998,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "chemistry": {
+      "binary_sha256": "474b697bab92123aaa82128b3a1f1f6045f256047bb7a13bdf56030adcacb941",
+      "checks": 4472,
+      "count_unit": "checks",
+      "execution": {
+        "elapsed_seconds": 0.25006236099943635,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "elapsed_seconds": 1.6857633069994336,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "contact": {
+      "binary_sha256": "ef4240362f60b6a0bce4a21cbbaec8e1fcd78e0213b727b52fabd00299df2a6b",
+      "checks": 81255,
+      "count_unit": "checks",
+      "execution": {
+        "elapsed_seconds": 0.006260422997002024,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "elapsed_seconds": 1.0537386149990198,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "coordinator": {
+      "binary_sha256": "401511cca63545bf0af098e1f9eea0fd65e7c3029ca4185a0d5a51ac61135c96",
+      "checks": 6965,
+      "count_unit": "checks",
+      "execution": {
+        "elapsed_seconds": 2.275853242001176,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "elapsed_seconds": 7.181728785999439,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "external_fire": {
+      "binary_sha256": "957f2b7b302585abc99a6140db58976ad8700659aa13cd225aa58e69ad7c1108",
+      "checks": 3689,
+      "count_unit": "checks",
+      "execution": {
+        "elapsed_seconds": 0.11991951399977552,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "elapsed_seconds": 2.1696505340005388,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    },
+    "storage": {
+      "binary_sha256": "bee3ffa4a4f0508184acc52480642e417f762be04a7ff1a65165676180b11120",
+      "checks": 13672,
+      "count_unit": "checks",
+      "execution": {
+        "elapsed_seconds": 0.009058048999577295,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "failures": 0,
+      "link": {
+        "elapsed_seconds": 0.8249144809997233,
+        "returncode": 0,
+        "timed_out": false
+      },
+      "status": "passed"
+    }
+  },
+  "test_cases_reported": 0
+}

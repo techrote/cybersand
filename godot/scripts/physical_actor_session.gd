@@ -78,7 +78,7 @@ var _ambient_perception = AmbientPerception.new()
 var _ambient_sensor_active := false
 var _ambient_refresh_requested := false
 var _completed_time_seconds := 0.0
-var _ambient_completed_physics_step := 0
+var _ambient_completed_physics_seconds := 0.0
 var _ambient_sensor_cost_usec := PackedInt64Array()
 var _ambient_world_generation := -1
 var _ambient_world_serial := -1
@@ -209,7 +209,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	epoch = new_epoch
 	tick = 0
 	_completed_time_seconds = 0.0
-	_ambient_completed_physics_step = 0
+	_ambient_completed_physics_seconds = 0.0
 	_ambient_world_generation = -1
 	_ambient_world_serial = -1
 	_ambient_peer_tick = -1
@@ -318,7 +318,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_generations.resize(_rigs.size())
 	_generations.fill(0)
 	_flight_completed_step = bridge.manual_step_count()
-	_ambient_completed_physics_step = bridge.manual_step_count()
+	_ambient_completed_physics_seconds = bridge.manual_step_seconds()
 	_flight_pause_step = _flight_completed_step
 	_active = true
 	return true
@@ -1055,7 +1055,7 @@ func set_suspended(value: bool) -> void:
 				cancel_input(index, epoch, StringName(str(_definitions[index].producer)), true)
 				_fallback_reasons[index] = "resumed"
 	_suspended = value
-	_ambient_completed_physics_step = bridge.manual_step_count()
+	_ambient_completed_physics_seconds = bridge.manual_step_seconds()
 	if value:
 		_flight_pause_step = bridge.manual_step_count()
 		_effects.clear()
@@ -1208,10 +1208,11 @@ func complete_step() -> void:
 		return
 	if _active:
 		tick += 1
-		var completed_physics_step: int = bridge.manual_step_count()
-		# Actual completed fixed Rapier steps, never requested delta or wall time.
-		_completed_time_seconds += maxi(0, completed_physics_step - _ambient_completed_physics_step) * bridge.fixed_delta()
-		_ambient_completed_physics_step = completed_physics_step
+		# Captured structural intervals may use several shorter steps in the
+		# same Rapier space. Count their accepted durations once.
+		var completed_seconds: float = bridge.manual_step_seconds()
+		_completed_time_seconds += maxf(0.0, completed_seconds - _ambient_completed_physics_seconds)
+		_ambient_completed_physics_seconds = completed_seconds
 		for index: int in range(_rigs.size()):
 			_capture_flight_step(index)
 			_rigs[index].complete_step()
@@ -1229,6 +1230,14 @@ func complete_step() -> void:
 		if _has_flight:
 			_flight_completed_step = bridge.manual_step_count()
 			_flight_prepared = false
+
+
+func refresh_paused_material_poses() -> void:
+	# An already admitted segmented Rapier interval can finish after Pause.
+	# Refresh physical observations while commands, leases and actor time stay suspended.
+	if _active and _suspended and bridge is WorkbenchBridge:
+		for rig in _rigs:
+			rig.refresh_observation()
 
 
 func drain_effects() -> Array:
@@ -1346,7 +1355,7 @@ func close() -> void:
 	_ambient_sensor_cost_usec.clear()
 	_ambient_slots.clear()
 	_completed_time_seconds = 0.0
-	_ambient_completed_physics_step = 0
+	_ambient_completed_physics_seconds = 0.0
 	_ambient_world_generation = -1
 	_ambient_world_serial = -1
 	_ambient_peer_tick = -1

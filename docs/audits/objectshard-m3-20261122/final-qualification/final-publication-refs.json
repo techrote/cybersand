@@ -1,0 +1,61 @@
+{
+  "checked_utc": "2026-11-22T08:22:42.129736+00:00",
+  "scope": "Final read-only API refresh before documentation/evidence publication. No dependency branch modified. PR741 is still at the qualified runtime commit before its evidence descendant.",
+  "refs": [
+    {
+      "key": "main",
+      "url": "https://api.github.com/repos/techrote/cybersand/branches/main",
+      "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed"
+    },
+    {
+      "key": "740",
+      "url": "https://api.github.com/repos/techrote/cybersand/pulls/740",
+      "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+      "base": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "updated_at": "2026-11-22T06:23:36Z"
+    },
+    {
+      "key": "719",
+      "url": "https://api.github.com/repos/techrote/cybersand/pulls/719",
+      "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "base": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "updated_at": "2026-11-22T03:20:24Z"
+    },
+    {
+      "key": "682",
+      "url": "https://api.github.com/repos/techrote/cybersand/pulls/682",
+      "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "base": "main",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "updated_at": "2026-11-21T10:40:55Z"
+    },
+    {
+      "key": "734",
+      "url": "https://api.github.com/repos/techrote/cybersand/pulls/734",
+      "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+      "base": "exp/gen006-persistent-areas-001-20261121",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "updated_at": "2026-11-22T07:23:51Z"
+    },
+    {
+      "key": "741",
+      "url": "https://api.github.com/repos/techrote/cybersand/pulls/741",
+      "head": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "base": "experiment/objectshard-001r-20261122",
+      "draft": true,
+      "state": "open",
+      "merged": false,
+      "updated_at": "2026-11-22T07:39:33Z"
+    }
+  ]
+}

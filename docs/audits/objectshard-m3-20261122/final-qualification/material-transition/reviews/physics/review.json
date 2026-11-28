@@ -1,0 +1,65 @@
+{
+  "schema": "independent-published-material-guard-review-v1",
+  "reviewer": "/root/review_physics",
+  "utc": "2026-11-22T08:37:00.945448+00:00",
+  "reviewed_guard_commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "reviewed_guard_tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "runtime_execution_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "new_transition": {
+    "path": "native/src/world.cpp",
+    "from_lf_sha256": "bc24ccd2e7457f61c75abdc13d20c2ccd82863fdf427f0c13ccaa1a05ad9d214",
+    "to_lf_sha256": "5bb8ccded21bb73077ea86086d6fb25b9cbca67bda84013e67fa87d96b1c8cd1",
+    "source_commit": "c06550371ac5448642bff7e4ecb64fe9cd1df728",
+    "record": "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+    "issue": 281,
+    "pr": 741
+  },
+  "only_ast_change_is_one_appended_transition": true,
+  "published_tool_sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302",
+  "published_record_sha256": "e4f42f007899f1f711c50db56676e75d725aedffd5e7f36fb3bc981ca51da204",
+  "corrected_working_record_sha256": "6e1c288a58c73aa7224a54f9b8490079ccf4d0330d5618eba53fa2203fd2ad5e",
+  "record_correction_scope": "Published 730 admission record remains the guard input. Two prose-only wording refinements are present in the working record for a later documentation commit: claimed contact rather than already applied/spent burn; watched coordinate bounds rather than a fresh residency query. They do not alter transition facts or any executable input.",
+  "guard_check": {
+    "path": "build/review-physics/material-transition/published-guard-check.json",
+    "bytes": 22988,
+    "sha256": "073b52b62a8ca4ec387e46dbcddde61356fb937360f52d11195f109fc7bbba7f"
+  },
+  "existing_native_evidence": {
+    "path": "build/review-physics/material-transition/existing-native-evidence.json",
+    "bytes": 9488,
+    "sha256": "27b0857b005540f3bc015d6e4537c3bf45ab48c1f4045f54efe7f959533388d6"
+  },
+  "source_bindings": {
+    "path": "build/review-physics/material-transition/source-bindings.json",
+    "bytes": 10461,
+    "sha256": "cbc50803927d37001b4fea9ce919ec89190030d131cc445bef4c9668412a2eaa"
+  },
+  "world_diff": {
+    "path": "build/review-physics/material-transition/world.cpp-approved-to-current.diff",
+    "bytes": 756,
+    "sha256": "c3915cc0ab2142c2065a91096f008df765b645bae4f50f2d1699a7466e097265"
+  },
+  "status": "No semantic or guard-integrity blocker found. Normal append-only per-file transition is substantively supported; ordinary workflow negative-control execution remains separately owned and pending its final result.",
+  "class_a_findings": [],
+  "class_b_findings": [],
+  "functional_conclusions": [
+    "The complete protected World delta from admitted 5afe is one additional short-circuit guard around the existing Fire ignition call. In an ordinary null-journal World it is logically true, and no claim query or extra random sampling occurs. World headers, shared lifecycle header and other 26 protected consumers are unchanged.",
+    "When opt-in contact captures a selected Fire opportunity against shard Wood, the high claim bit prevents the same source inventory from performing its sampled World ignite() call in the next World tick. That call can target Dust, Seed, Gunpowder and other combustible materials; the suppression is not restricted to World Wood.",
+    "The correction intentionally changes enabled ObjectShard behavior. The claim records a contact for later same-incarnation chemistry; it does not advance the burn clock during motion. Fire lifetime and drift remain after the conditional and still execute.",
+    "Claim storage is fixed and coordinator-owned; tokens are keyed to completed_tick+1, preserve the cadence anchor and claim through mechanical relocation, and newly captured claims roll back when motion is refused. Authored replacement clears the source token; same-Fire state edits retain it.",
+    "A bounded const span is lent to the journal only around the synchronous World::tick. Query requires exact tick, nonempty span, watched-coordinate coverage and the high claim bit. It is cleared after success and in the exception handler. Session reset clears tokens/tick and replaces the World.",
+    "All 12 identity inputs, other 26 protected files and immutable compatibility lock are unchanged from the prior admitted source. Existing catalogue and capability digests remain unchanged. The final source commit is a retained descendant of the previous source in the required ancestry chain."
+  ],
+  "existing_regression_assessment": "Sufficient for this narrow ordinary-World-preserving per-file transition: null-journal equivalence by direct source reasoning, exact unchanged 16-record chemistry oracle executed on fresh final source, targeted 3,683-check external-Fire regressions, and unfiltered 192-case ordinary World suite with ASan/UBSan. No new native/runtime run is warranted by this guard-only descendant.",
+  "limits": [
+    "No universal equivalence for enabled ObjectShard contact behavior; preventing duplicate ignition is the intended difference.",
+    "The frozen chemistry oracle covers eight named fixtures in serial and phased modes with one worker. It is not an exhaustive proof over every material state, timing, worker count or possible scene; the wider 192-case suite supplies additional bounded coverage.",
+    "The external-Fire regression specifically uses World Wood for the double-spend case. Suppression of other normally supported ignite targets follows from the single shared conditional, not a separately retained per-target adversary.",
+    "No claim of zero performance overhead: a pointer/claim condition was added when Fire ignition is due. Material behavior equivalence does not make binaries or execution cost identical.",
+    "ASan/UBSan ran on the fresh Linux native suites. LeakSanitizer was disabled; this is not ThreadSanitizer, exhaustive fault injection, or physical Windows-owner acceptance.",
+    "The original four extra independently regenerated M2 oracle fixtures are historical 5afe evidence, not newly rerun by this reviewer for c065/e034. Current 4,472 assertions and 16 frozen oracle records are the new-source execution evidence.",
+    "This review does not replace required ordinary material-compatibility negative-control CI, change the frozen lock, authorize a runtime publication, or authorize Ready/merge/default promotion."
+  ],
+  "product_or_gate_changes_by_reviewer": [],
+  "review_harness_note": "An inline reviewer Python readback emitted a nonfatal SyntaxWarning for a missing space before a for token, then completed exit0 with all assertions satisfied. This was review-harness syntax only; no native candidate code or product tests ran in that command."
+}

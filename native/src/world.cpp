@@ -4,6 +4,8 @@
 #include <exception>
 
 #include "cybersand/material_rules.hpp"
+#include "cybersand/material_lifecycle.hpp"
+#include "cybersand/object_shard_mutation.hpp"
 #include "cybersand/interaction_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/render_snapshot.hpp"
@@ -83,9 +85,7 @@ constexpr auto kPairPartners = cybersand::InteractionRules::build_partner_sets()
 [[nodiscard]] constexpr std::uint64_t temporal_lane_phase(
     std::int64_t x, std::int64_t y, std::uint64_t period,
     std::uint32_t stream) noexcept {
-    return mix64(static_cast<std::uint64_t>(x) * 0x9e3779b185ebca87ULL ^
-                 std::rotl(static_cast<std::uint64_t>(y), 23) ^
-                 static_cast<std::uint64_t>(stream) * 0xa0761d6478bd642fULL) % period;
+    return material_lifecycle::lane_phase(x, y, period, stream);
 }
 
 void hash_byte(std::uint64_t& hash, std::uint8_t byte) noexcept {
@@ -315,6 +315,8 @@ struct World::PressureChunk {
 
 struct World::Chunk {
     using Cell = detail::PrecisionStorage;
+    // Owner metadata for the optional bounded mutation observer; not cell state.
+    ChunkCoord coordinate{};
 
     struct ActivityBlock {
         std::uint64_t next_interaction_tick = 0;
@@ -726,9 +728,20 @@ struct World::ParallelState {
 };
 
 struct World::TransientObstacleState {
+    // Immutable lifetime token shared by moves of this World, never derived
+    // from an address that may be recycled by a later World replacement.
+    TransientObstacleState() noexcept {
+        static std::atomic<std::uint64_t> next_token{1};
+        world_token = next_token.fetch_add(1, std::memory_order_relaxed);
+    }
+    std::uint64_t world_token{};
     RectI64 region{};
     std::vector<std::uint16_t> body_ids;
     std::vector<std::size_t> occupied_indices;
+    // A successfully composed mask is one source-bound occupancy publication.
+    // Legacy clear/set calls deliberately do not impersonate this receipt.
+    std::uint64_t composition_revision{};
+    bool composition_live{}, composing{};
     std::uint16_t body_high_water = 0;
     std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> contacts{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_x{};
@@ -955,6 +968,24 @@ World::World(WorldConfig config)
 World::~World() = default;
 World::World(World&&) noexcept = default;
 World& World::operator=(World&&) noexcept = default;
+
+void World::enable_object_shard_mutation_watch(RectI64 bounds) {
+    require_healthy();
+    if (tick_in_progress_ || object_shard_mutations_ != nullptr ||
+        bounds.width <= 0 || bounds.height <= 0 || bounds.width > 1024 || bounds.height > 1024 ||
+        bounds.x < std::numeric_limits<std::int64_t>::min() + 1024 ||
+        bounds.y < std::numeric_limits<std::int64_t>::min() + 1024 ||
+        bounds.x > std::numeric_limits<std::int64_t>::max() - bounds.width - 1024 ||
+        bounds.y > std::numeric_limits<std::int64_t>::max() - bounds.height - 1024)
+        throw std::invalid_argument("invalid ObjectShard mutation-watch admission");
+    auto journal = std::make_unique<object_shard::MutationJournal>(bounds.x, bounds.y,
+        static_cast<std::uint32_t>(bounds.width), static_cast<std::uint32_t>(bounds.height));
+    for (auto& [coordinate, chunk] : chunks_) chunk->coordinate = coordinate;
+    for (auto y = bounds.y; y < bounds.y + bounds.height; ++y)
+        for (auto x = bounds.x; x < bounds.x + bounds.width; ++x)
+            journal->observe(x, y, stored_material(x, y));
+    object_shard_mutations_ = std::move(journal);
+}
 
 void World::initialize_settled_discovery() {
     // Replacement is retire-first: construction below may allocate or exhaust the
@@ -1764,6 +1795,7 @@ World::Chunk& World::ensure_chunk(ChunkCoord coord) {
         throw std::runtime_error("maximum chunk capacity exhausted");
     }
     auto chunk = std::make_unique<Chunk>(config_.chunk_size, config_.activity_block_size);
+    chunk->coordinate = coord;
     if (pressure_ != nullptr) {
         chunk->pressure = std::make_unique<PressureChunk>(chunk->cells.size(), pressure_->cache != nullptr,
             pressure_->cache != nullptr && pressure_->cache->dormant);
@@ -1979,12 +2011,7 @@ std::uint8_t World::state_b(std::int64_t x, std::int64_t y) const noexcept {
 
 std::uint8_t World::deterministic_random(std::int64_t x, std::int64_t y,
                                          std::uint32_t stream) const noexcept {
-    return static_cast<std::uint8_t>(
-        mix64(static_cast<std::uint64_t>(x) * 0x9e3779b185ebca87ULL ^
-              std::rotl(static_cast<std::uint64_t>(y), 23) ^
-              tick_index_ * 0xd6e8feb86659fd93ULL ^
-              static_cast<std::uint64_t>(stream) * 0xa0761d6478bd642fULL) &
-        0xffU);
+    return material_lifecycle::random(tick_index_, x, y, stream);
 }
 
 bool World::rule_is_active(Material material, std::uint16_t state_a_value,
@@ -2152,6 +2179,13 @@ void World::mark_hard_surface_dirty(const Address& target) noexcept {
 }
 
 void World::mark_cell_dirty(Chunk& chunk, std::int32_t local_x, std::int32_t local_y) {
+    if (object_shard_mutations_ != nullptr) {
+        const auto x = chunk.coordinate.x * config_.chunk_size + local_x;
+        const auto y = chunk.coordinate.y * config_.chunk_size + local_y;
+        const auto at = static_cast<std::size_t>(local_y) * static_cast<std::size_t>(config_.chunk_size) +
+            static_cast<std::size_t>(local_x);
+        object_shard_mutations_->observe(x, y, chunk.cells[at].material_value());
+    }
     wake_wave_chunk(chunk);
     if (chunk.pressure != nullptr)
         invalidate_pressure_input(chunk.pressure->coordinate, local_x, local_y, local_x, local_y, false);
@@ -2451,9 +2485,123 @@ void World::configure_transient_obstacles(RectI64 region, bool reserve_full_occu
         region, soliding::ProducerReason::TransientMask, 0);
 }
 
+World::TransientCompositionReceipt World::compose_transient_obstacles(
+    std::span<const TransientCompositionCell> immutable_gcr,
+    std::span<const TransientCompositionCell> mutable_shards,
+    std::uint16_t first_shard_body_id) {
+    TransientCompositionReceipt receipt{};
+    // The one World owner must call this only between ticks, after collecting
+    // *both* sources. Nothing is written during admission, including on overlap.
+    auto& state = *transient_obstacles_;
+    receipt.world_token = state.world_token;
+    receipt.revision = state.composition_revision;
+    receipt.completed_tick = completed_tick_index();
+    if (tick_failed_ || tick_in_progress_) {
+        receipt.outcome = TransientCompositionOutcome::Held;
+        return receipt;
+    }
+    // A rejected attempted update is not a licence to consume an old contact
+    // mask. Leave its cells untouched, but fence the prior successful receipt.
+    state.composition_live = false;
+    if (state.world_token == 0 || first_shard_body_id < 2 || first_shard_body_id > kMaximumTransientBodies ||
+        state.region.width <= 0 || state.region.height <= 0 ||
+        state.composition_revision == std::numeric_limits<std::uint64_t>::max())
+        return receipt;
+    const auto count = immutable_gcr.size() + mutable_shards.size();
+    if (count < immutable_gcr.size() || count > state.occupied_indices.capacity()) {
+        receipt.outcome = TransientCompositionOutcome::Capacity;
+        return receipt;
+    }
+    // Every input is row-major strictly increasing. This admits a streaming
+    // merge and detects cross-domain overlap with no heap allocation or full
+    // canvas scan on the ordinary owner thread.
+    const auto index_of = [&](const TransientCompositionCell& cell) -> std::size_t {
+        return (static_cast<std::size_t>(static_cast<std::uint64_t>(cell.y) -
+                static_cast<std::uint64_t>(state.region.y)) *
+                static_cast<std::size_t>(state.region.width)) +
+               static_cast<std::size_t>(static_cast<std::uint64_t>(cell.x) -
+                static_cast<std::uint64_t>(state.region.x));
+    };
+    const auto valid_cell = [&](const TransientCompositionCell& cell, bool shard) {
+        if (cell.body_id == 0 || cell.body_id > kMaximumTransientBodies ||
+            (shard ? cell.body_id < first_shard_body_id
+                   : cell.body_id >= first_shard_body_id) ||
+            cell.x < state.region.x || cell.y < state.region.y) return false;
+        const auto dx = static_cast<std::uint64_t>(cell.x) - static_cast<std::uint64_t>(state.region.x);
+        const auto dy = static_cast<std::uint64_t>(cell.y) - static_cast<std::uint64_t>(state.region.y);
+        return dx < static_cast<std::uint64_t>(state.region.width) &&
+               dy < static_cast<std::uint64_t>(state.region.height);
+    };
+    const auto valid_list = [&](std::span<const TransientCompositionCell> cells, bool shard) {
+        std::size_t previous{};
+        bool first = true;
+        for (const auto& cell : cells) {
+            if (!valid_cell(cell, shard)) return false;
+            const auto index = index_of(cell);
+            if (!first && index <= previous) return false;
+            previous = index;
+            first = false;
+        }
+        return true;
+    };
+    if (!valid_list(immutable_gcr, false) || !valid_list(mutable_shards, true))
+        return receipt;
+    std::size_t g = 0, s = 0;
+    while (g < immutable_gcr.size() && s < mutable_shards.size()) {
+        const auto gi = index_of(immutable_gcr[g]);
+        const auto si = index_of(mutable_shards[s]);
+        if (gi == si) {
+            receipt.outcome = TransientCompositionOutcome::Overlap;
+            return receipt;
+        }
+        gi < si ? ++g : ++s;
+    }
+    state.composing = true;
+    try {
+        clear_transient_obstacles();
+        for (const auto& cell : immutable_gcr)
+            if (!set_transient_obstacle(cell.x, cell.y, cell.body_id)) {
+                state.composing = false;
+                quarantine_external_coupling();
+                receipt.outcome = TransientCompositionOutcome::Quarantined;
+                return receipt;
+            }
+        for (const auto& cell : mutable_shards)
+            if (!set_transient_obstacle(cell.x, cell.y, cell.body_id)) {
+                state.composing = false;
+                quarantine_external_coupling();
+                receipt.outcome = TransientCompositionOutcome::Quarantined;
+                return receipt;
+            }
+    } catch (...) {
+        state.composing = false;
+        quarantine_external_coupling();
+        receipt.outcome = TransientCompositionOutcome::Quarantined;
+        return receipt;
+    }
+    state.composing = false;
+    state.composition_live = true;
+    receipt.revision = ++state.composition_revision;
+    receipt.gcr_cells = immutable_gcr.size();
+    receipt.shard_cells = mutable_shards.size();
+    receipt.outcome = TransientCompositionOutcome::Applied;
+    return receipt;
+}
+
+bool World::transient_composition_current(
+    const TransientCompositionReceipt& receipt) const noexcept {
+    const auto& state = *transient_obstacles_;
+    return !tick_failed_ && state.composition_live &&
+        receipt.outcome == TransientCompositionOutcome::Applied &&
+        receipt.world_token != 0 && receipt.world_token == state.world_token &&
+        receipt.completed_tick == completed_tick_index() && receipt.revision != 0 &&
+        receipt.revision == state.composition_revision;
+}
+
 void World::clear_transient_obstacles() {
     require_healthy();
     auto& state = *transient_obstacles_;
+    state.composition_live = false;
     const auto width = state.region.width;
     if (width > 0) {
         for (const auto index : state.occupied_indices) {
@@ -2498,6 +2646,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
                                    std::uint16_t body_id) {
     if (tick_failed_) return false;
     auto& state = *transient_obstacles_;
+    if (!state.composing) state.composition_live = false;
     if (body_id == 0U || body_id > kMaximumTransientBodies ||
         state.region.width <= 0 || state.region.height <= 0 ||
         x < state.region.x || y < state.region.y) {
@@ -3101,6 +3250,7 @@ void World::clear() {
     material_audition_.reset();
     material_audition_revision_ = 0;
     material_audition_world_id_.value = new_material_world_id;
+    if (object_shard_mutations_ != nullptr) object_shard_mutations_->reset_empty();
 
     // Retire every observation before destructive World reset begins. reset() is
     // allocation-free; if replacement construction later throws, discovery stays
@@ -3843,25 +3993,20 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
         case RuleKernel::Gas: {
             bool changed = false;
             if (slow_lifecycle_due) {
-                auto lifetime = state_a(x, y);
-                if (lifetime == 0U) {
-                    lifetime = MaterialRules::descriptor(material).initial_state_a;
-                }
+                const auto lifetime = state_a(x, y);
                 std::uint8_t smoke_neighbours = 0;
                 for (const auto offset : kMooreNeighbours) {
                     smoke_neighbours += static_cast<std::uint8_t>(
                         cursor.visible(x + offset.x, y + offset.y) == Material::Smoke);
                 }
-                // Dense clouds thin from within twice as quickly, producing a
-                // slow collapsing-bubble texture without a separate gas field.
-                const auto decay = static_cast<std::uint8_t>(
-                    smoke_neighbours >= 5U ? 2U : 1U);
-                if (lifetime <= decay) {
-                    return write_kernel_cell(x, y, Material::Empty, 0, 0, effects);
+                const auto step = material_lifecycle::smoke_lifetime(
+                    material, lifetime, smoke_neighbours, true);
+                if (step.material == Material::Empty) {
+                    return write_kernel_cell(x, y, step.material, step.state_a,
+                                             step.state_b, effects);
                 }
-                changed = write_kernel_cell(
-                    x, y, material, static_cast<std::uint8_t>(lifetime - decay), 0,
-                    effects);
+                changed = write_kernel_cell(x, y, step.material, step.state_a,
+                                             step.state_b, effects);
             }
             if (try_move(material, x, y, x, y - 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y - 1, true, effects)) return true;
@@ -3873,22 +4018,20 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
 
         case RuleKernel::Fire: {
             bool changed = false;
-            if (slow_interaction_due(10U)) {
+            if (slow_interaction_due(10U) && (object_shard_mutations_ == nullptr ||
+                !object_shard_mutations_->external_fire_claimed(x, y, tick_index_))) {
                 const auto sample_index = deterministic_random(x, y, 10U);
                 const auto [sample_x, sample_y] = neighbour(sample_index);
                 changed = ignite(sample_x, sample_y, 240) || changed;
             }
 
-            const auto lifetime = state_a(x, y);
-            if (lifetime <= 1U) {
-                const auto& smoke = MaterialRules::descriptor(Material::Smoke);
-                return write_kernel_cell(x, y, Material::Smoke, smoke.initial_state_a,
-                                  smoke.initial_state_b, effects) ||
-                       changed;
+            const auto step = material_lifecycle::fire_lifetime(state_a(x, y));
+            if (step.material == Material::Smoke) {
+                return write_kernel_cell(x, y, step.material, step.state_a,
+                                         step.state_b, effects) || changed;
             }
-            changed = write_kernel_cell(x, y, Material::Fire,
-                                 static_cast<std::uint8_t>(lifetime - 1U), 0, effects) ||
-                      changed;
+            changed = write_kernel_cell(x, y, step.material, step.state_a,
+                                         step.state_b, effects) || changed;
 
             const auto drift = kMooreNeighbours[static_cast<std::size_t>(
                 deterministic_random(x, y, 11U) % kMooreNeighbours.size())];
@@ -3906,20 +4049,18 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
                 keep_cell_active(x, y, effects);
                 return false;
             }
-            if (find_neighbour([](Material candidate, auto, auto) {
-                    return candidate == Material::Water;
-                })) {
-                return write_kernel_cell(x, y, material, state_a(x, y), 0, effects);
-            }
-            if (burn <= 1U) return write_kernel_cell(x, y, Material::Empty, 0, 0, effects);
-
-            bool changed = write_kernel_cell(x, y, material, state_a(x, y),
-                                      static_cast<std::uint8_t>(burn - 1U), effects);
-            if ((burn & 7U) == 0U) {
+            const bool water_neighbour = find_neighbour([](Material candidate, auto, auto) {
+                return candidate == Material::Water;
+            }).has_value();
+            const auto step = material_lifecycle::combustible(
+                material, state_a(x, y), burn, true, water_neighbour);
+            bool changed = write_kernel_cell(x, y, step.material, step.state_a,
+                                             step.state_b, effects);
+            if (step.sample_fire_emission) {
                 const auto [target_x, target_y] = neighbour(deterministic_random(x, y, 12U));
                 if (cursor.visible(target_x, target_y) == Material::Empty) {
-                    changed = write_kernel_cell(target_x, target_y, Material::Fire, 32, 0, effects) ||
-                              changed;
+                    changed = write_kernel_cell(target_x, target_y, Material::Fire,
+                        material_lifecycle::kWoodFireLifetime, 0, effects) || changed;
                 }
             }
             return changed;
@@ -4944,6 +5085,15 @@ void World::merge_job_effects(const JobEffects& effects) {
         auto* chunk = find_chunk(effect.chunk);
         if (chunk == nullptr) {
             throw std::logic_error("job effect references missing chunk");
+        }
+        if (object_shard_mutations_ != nullptr) {
+            for (auto y = effect.minimum_y; y <= effect.maximum_y; ++y)
+                for (auto x = effect.minimum_x; x <= effect.maximum_x; ++x) {
+                    const auto at = static_cast<std::size_t>(y) * static_cast<std::size_t>(config_.chunk_size) +
+                        static_cast<std::size_t>(x);
+                    object_shard_mutations_->observe(effect.chunk.x * config_.chunk_size + x,
+                        effect.chunk.y * config_.chunk_size + y, chunk->cells[at].material_value());
+                }
         }
         wake_wave_chunk(*chunk);
         if (!hard_surface_full_refresh_required_) {

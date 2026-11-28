@@ -1,0 +1,325 @@
+{
+  "finished_utc": "2026-11-28T02:33:09.827290+00:00",
+  "fixture_sha256": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "independent_brush_revision": {
+    "after_brush_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5",
+    "after_brush_world_revision": 54,
+    "before_brush_material_sha256": "455d38958389df018a389d7f6b197d4aa9c4e5380b3d3c5fc79e3087e7b8e0d5",
+    "before_brush_world_revision": 54,
+    "checks": 154,
+    "condition_control": {
+      "after": {
+        "material": 7,
+        "material_name": "wood",
+        "ok": true,
+        "owner": "World",
+        "position": "(30, 30)",
+        "state_a": 0,
+        "state_b": 0,
+        "temperature": 371
+      },
+      "before": {
+        "material": 7,
+        "material_name": "wood",
+        "ok": true,
+        "owner": "World",
+        "position": "(30, 30)",
+        "state_a": 173,
+        "state_b": 91,
+        "temperature": 371
+      },
+      "before_revision": 3,
+      "changed_revision": 4,
+      "native_tick": 1,
+      "unchanged_revision": 4
+    },
+    "display_coherence": {
+      "between_callback_observations": 471,
+      "draw_observations": 0,
+      "examples": [],
+      "foreign_draw_callbacks": 0,
+      "incoherent_observations": 0,
+      "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+    },
+    "failures": [],
+    "final_predicates": {
+      "actor_tick": 325,
+      "bench_busy": false,
+      "coherent": true,
+      "display_tuple": [
+        3,
+        54,
+        38,
+        684
+      ],
+      "displayed_inventory_request": {},
+      "frame_tuple": [
+        3,
+        54,
+        684,
+        329
+      ],
+      "held_reason": "",
+      "legacy_busy": false,
+      "native_tuple": [
+        3,
+        54,
+        684,
+        329
+      ],
+      "newer_owner_frame": false,
+      "pending_count": 0,
+      "phase": "Ready",
+      "physical_intervals": 328,
+      "physics_ready": true,
+      "runtime_frame_sequence": 684,
+      "runtime_publication_sequence": 684,
+      "snapshot_tuple": [
+        3,
+        54,
+        38,
+        54
+      ],
+      "upload_tuple": [
+        3,
+        54,
+        38
+      ],
+      "workbench_error": ""
+    },
+    "fixture_commit": "05777c2336a050398b85bf50746cd8a7a234d313",
+    "fixture_sha256": "56dcbfe8bc8dbc656a852e86b8563b522b7c9799a3c56cb0bdef827fba1362ab",
+    "log_sha256": "421a954cbeb127c1a2b0c1d96003de8950945583b49eda29d979a679a1d521be",
+    "returncode": 0,
+    "scope": "Independent B replay of A committed fixture on the complete post-fix application with copied fixture at the exact recorded hash; no refresh workaround or timing/ownership assertion relaxation.",
+    "source_commit": "44db8378f9cb6b7be587fbd7b4905baae75baf8b"
+  },
+  "native_sha256": "656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18",
+  "native_source_commit": "c3d6580e48b19fe5e2184397eba19531afbfbcfa",
+  "profiles": [
+    {
+      "checks": 41,
+      "cohort_ticks_per_second": 59.84257413497559,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "wall_usec": 6015784
+        }
+      },
+      "failures": [],
+      "log_sha256": "506b1a65694c707bd0f181e9ded43f5def0552a2d2ad8a34d7ce9d822ae0efa0",
+      "passed": true,
+      "result_sha256": "1fbc93163ca3ee792628aadce7d1d602235d5d254e73a42f53053c5384ec15c9",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1800,
+        "deferred_world_uploads": 0,
+        "motion_lease": 362,
+        "motion_permit_waits_recovered": 13,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 360,
+        "owner_replacements": 0,
+        "pending_serial": 1807,
+        "physical_intervals": 360,
+        "physical_steps": 1441,
+        "publication_sequence": 360,
+        "pump_budget_exhaustions": 80,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1680,
+        "pump_usec_total": 2266807,
+        "pump_waits": 9348,
+        "redundant_readiness_receipts_suppressed": 360,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8424448165389,
+      "target_cohort": "0/0",
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1080,
+        "frame_copy_calls": 360,
+        "frame_copy_max_usec": 411,
+        "frame_copy_usec": 50033,
+        "full_motion_publications": 360,
+        "segment_idle_polls": 1778,
+        "segment_service_turns": 1440,
+        "snapshot_calls": 1080,
+        "snapshot_max_usec": 35,
+        "snapshot_usec": 207459
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 107,
+      "cohort_ticks_per_second": 55.80833120095531,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 360,
+          "owned": 1,
+          "semantic_ticks": 335,
+          "wall_usec": 6002688
+        }
+      },
+      "failures": [],
+      "log_sha256": "d998824483a6d6482b10c9bc93a4a584dfbb6feb01fbd204516aa5d5c31d0bfa",
+      "passed": true,
+      "result_sha256": "15312d28eed4e794388b5b54c4d3109e16f3f95f71d776dc474d173a811107e2",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1675,
+        "deferred_world_uploads": 0,
+        "motion_lease": 361,
+        "motion_permit_waits_recovered": 10,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1340,
+        "native_pose_echo_checks": 1340,
+        "native_tick": 335,
+        "owner_replacements": 0,
+        "pending_serial": 1805,
+        "physical_intervals": 335,
+        "physical_steps": 1341,
+        "publication_sequence": 670,
+        "pump_budget_exhaustions": 382,
+        "pump_calls": 721,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 845,
+        "pump_usec_total": 4222017,
+        "pump_waits": 20478,
+        "redundant_readiness_receipts_suppressed": 335,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 335,
+      "semantic_ticks_per_second": 55.8081824457778,
+      "target_cohort": "1/1",
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1005,
+        "frame_copy_calls": 335,
+        "frame_copy_max_usec": 287,
+        "frame_copy_usec": 56108,
+        "full_motion_publications": 335,
+        "segment_idle_polls": 2663,
+        "segment_service_turns": 1340,
+        "snapshot_calls": 1005,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 622986
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 333,
+      "cohort_ticks_per_second": 29.496168977917975,
+      "cohorts": {
+        "8/3": {
+          "awake": 3,
+          "callbacks": 51,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "wall_usec": 843107
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 123,
+          "owned": 8,
+          "semantic_ticks": 60,
+          "wall_usec": 2064353
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 32092
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 32291
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 29358
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 182,
+          "owned": 8,
+          "semantic_ticks": 89,
+          "wall_usec": 3017341
+        }
+      },
+      "failures": [],
+      "log_sha256": "e60d7acf92d8551ed25d3089c7c7891b4edfd5c7fc2ba80e94af6f8784303b67",
+      "passed": true,
+      "result_sha256": "e1b04f5035d1e29dce3add0b8f34db34b02f65c6a3ff627dc7df3b705d54e066",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 895,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permit_waits_recovered": 3,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 5728,
+        "native_pose_echo_checks": 5728,
+        "native_tick": 178,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 179,
+        "physical_steps": 716,
+        "publication_sequence": 357,
+        "pump_budget_exhaustions": 433,
+        "pump_calls": 725,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 2236,
+        "pump_usec_total": 4344926,
+        "pump_waits": 21202,
+        "redundant_readiness_receipts_suppressed": 178,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 178,
+      "semantic_ticks_per_second": 29.5751414622216,
+      "target_cohort": "8/8",
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 537,
+        "frame_copy_calls": 178,
+        "frame_copy_max_usec": 962,
+        "frame_copy_usec": 50310,
+        "full_motion_publications": 179,
+        "segment_idle_polls": 4131,
+        "segment_service_turns": 716,
+        "snapshot_calls": 536,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 695244
+      },
+      "workload": "stress"
+    }
+  ],
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "review": "c3d6580e4 was independently reviewed: attached emit_disc uses the same authoritative world_material_revision delta as object_shard_edit_cell. Accepted unchanged cells no longer fabricate facade revisions; real state/material writes still dirty native render and mutation witnesses. Non-M4, hard-surface, lease, ACK and time contracts remain intact.",
+  "schema": "objectshard-m4-post-noop-confirmation-v1",
+  "scope": "Bounded final-binary confirmation after emit_disc no-op revision correction, outside the timed steady-state code. One run per cohort, not a replacement matched comparison or a physical-display performance claim. Earlier52 interleaved profiles retain their distinct COM measurement binary547c identity.",
+  "source_commit": "44db8378f9cb6b7be587fbd7b4905baae75baf8b",
+  "source_scope": "Local integration44db8378f and e33a0a22f differ in documentation only; final production/native input equivalence is independently verified by the integration owner.",
+  "source_tree": "6d6b5e698b484ac669fef994f101a437950f0e5b",
+  "started_utc": "2026-11-28T02:32:26.281591+00:00"
+}

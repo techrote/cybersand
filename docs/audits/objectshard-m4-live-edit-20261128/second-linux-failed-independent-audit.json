@@ -1,0 +1,67 @@
+{
+  "schema": "objectshard-live-edit-linux-corrective-failed-independent-audit-v1",
+  "reviewer": "Specialist C",
+  "source_commit": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "source_tree": "c50aa8aa932a0840eb77ba4d055128ad13aed830",
+  "workflow_run": 46120081906,
+  "artifact_id": 15254602484,
+  "outer_bytes": 32546092,
+  "outer_sha256": "b5ce645ff3985abcd44cb6ad082b3c7e3c74cbfc85b4621d85339a24f64665a4",
+  "lanes": {
+    "headless": {
+      "status": "passed",
+      "case_count": 77,
+      "passed": 77,
+      "failed": [],
+      "qualification_sha256": "91a5904b0dbdd5eae364af18629c9b528400555965a0323bd698e80474a1464b",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "all_case_log_hashes_verified": true
+    },
+    "graphical": {
+      "status": "failed",
+      "case_count": 65,
+      "passed": 63,
+      "failed": [
+        {
+          "name": "test_object_shard_m4_live_tools",
+          "checks": 49,
+          "seconds": 314.309,
+          "returncode": 1,
+          "failure_prefixes": [
+            "slice release is exercised during an actual in-flight physical interval / { \"enabled\": true, \"phase\": \"AwaitingCompletedNativeTick\", \"held_reason\": \"\", \"attached\": true, \"material_preparation\": { \"state\": \"ready\", \"rendered\": true, \"runs\": "
+          ],
+          "log_sha256": "3a0b33d7d3283a1ca94dd48e4c7c431f67291898ecf3820de283131960413106"
+        },
+        {
+          "name": "test_object_shard_m4_live_stress",
+          "checks": 23,
+          "seconds": 329.286,
+          "returncode": 1,
+          "failure_prefixes": [
+            "native edit receipt, physical geometry and authoritative material publication finish together / { \"enabled\": true, \"phase\": \"AwaitingCompletedNativeTick\", \"held_reason\": \"\", \"attached\": true, \"material_preparation\": { \"state\": \"ready\", \"ren"
+          ],
+          "log_sha256": "eda047895047bcbf7ae7afd81858463da4839b02fb4eff9ad0afc15b50736af0"
+        }
+      ],
+      "qualification_sha256": "21ce8f4ac8e29e5d629c7db18f295852d9f68cc99c7ab96fd6de3caa758b3d7a",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "all_case_log_hashes_verified": true
+    }
+  },
+  "git_input_hashes_independently_verified": 1609,
+  "final_disposition": "failed campaign; native/application functionality is not promoted from this evidence; two test-observer premises corrected in next source",
+  "physical_owner_acceptance": "not established",
+  "outer_archive_independently_hashed": true
+}

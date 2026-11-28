@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-28T08:16:59.570118+00:00",
+  "benchmark_execution_application_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "current_application_candidate_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "current_application_candidate_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "benchmark_report_sha256": "60be0222b7d684952c0acc08296dac24f4db84999da20a83c42569d5b24bec41",
+  "benchmark_input_digest": "cc1bf3e0f0052041ab893b19b51ff1df4f111b5f90b7348aacca6a509c530fcf",
+  "verified_input_count": 96,
+  "native_inputs_identical": true,
+  "method": "All recorded benchmark source-input bytes hashed from exact final candidate Git blobs; no source-input hash changed. Original execution identity and timings remain unchanged. This is source equivalence, not an additional execution.",
+  "status": "PASS"
+}

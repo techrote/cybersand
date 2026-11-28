@@ -4,7 +4,7 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -35,6 +35,42 @@ application. Art #773 remains Play-only and no model-provider permission is
 extended. PUBPRES, AMBIENT and all other active programmes remain independently
 owned and unimported. Keep Draft/HOLD: no Ready, merge, default activation or
 physical Windows/NVIDIA acceptance is implied.
+
+## ObjectShard M4 live structural editing — 2026-11-28
+
+The qualified live-edit application is `ba6d8de45bd4d38717d92bdece7153bff115c0f0`,
+with guarded runtime publication `302f982943c0e03c30968368da8264cfb3c431ce`.
+[Campaign 46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803)
+passed the exact-source native, Linux, Windows and fresh extracted-package gates.
+The [complete evaluator](https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748)
+launches the ordinary Workbench at the tower with all six required editing tools.
+PR #754 remains **Draft/HOLD**, open and unmerged. The owner positively physically evaluated this frozen live-edit application; the reconciled mainline source still requires independent qualification.
+
+Start with the [M4 contract](../research/objectshard-m4-workbench.md),
+[owner guide](objectshard-workbench-playtest.md),
+[definitive delivery record](../audits/objectshard-m4-live-edit-20261128/delivery-record.json)
+and [integration handover](../audits/objectshard-m4-live-edit-20261128/integration-handover.md).
+The actual uploaded archive, its native DLL and both clean Windows replay scopes
+are independently bound. Final repository guide clarifications do not modify
+the qualified archive or its bundled guide. The positively evaluated physical
+predecessor remains `b7d889b9` / evidence `327afc58`; acceptance of that source
+does not transfer to this new evaluator.
+
+The native batch comparison removes per-cell reconstruction amplification.
+Forty matched pinned Linux windows preserve workload invariants, but the moving
+tower medians are 4.60%/6.45% lower with recording off/on; this descriptive decline
+remains unresolved. Do not claim zero inactive-edit overhead or TITAN RTX
+performance from hosted results. Source, local, hosted, package and physical
+owner claims remain distinct. Saved starts remain construction recipes.
+
+Merge preparation now reconciles ObjectShard M4 against accepted main
+`50e3bcb839211eac2abe1e065750cbcba4d36f8c`, including accepted RAMCACHE,
+Strata Theatre and portable-evaluator work. Shared Workbench semantics are
+explicitly combined rather than selected wholesale. PUBPRES remains excluded
+from the integration candidate. Combined-source qualification, guarded native
+publication when required and a fresh extracted Windows evaluator remain merge
+gates; M5 debris demotion remains a separate successor. Preserve failed
+campaigns and every source-bound evidence identity.
 
 ## Persistent authored areas
 

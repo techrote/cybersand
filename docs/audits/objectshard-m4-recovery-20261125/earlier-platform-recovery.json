@@ -1,0 +1,1816 @@
+{
+  "artifacts": [
+    {
+      "bytes": 11738809,
+      "id": 14954007570,
+      "original_archive_verified": true,
+      "reports": [
+        {
+          "bytes": 1362257,
+          "cases": [
+            {
+              "log": "m4_workbench_import.log",
+              "log_sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+              "name": "m4_workbench_import",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 2.607,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_latency_probe.log",
+              "log_sha256": "bbbff5a145ee913afb449ade47388ee19bd6071796c1aac33007595eb9c3a120",
+              "name": "test_object_shard_m4_latency_probe",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.164,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_extension.log",
+              "log_sha256": "780e3430b52c6b8e3865250783d3278e157f6f6ded0ab71e97a97a180064349b",
+              "name": "test_object_shard_m4_same_world_extension",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.365,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_shared_main_rapier.log",
+              "log_sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f",
+              "name": "test_object_shard_m4_shared_main_rapier",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.265,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_physical_chain.log",
+              "log_sha256": "10502ade11695f0a109adb0fa1c80fbfebf5be067212286766980745f7007917",
+              "name": "test_object_shard_m4_same_world_physical_chain",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.465,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_compact_motion_packets.log",
+              "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e",
+              "name": "test_object_shard_m4_compact_motion_packets",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.165,
+              "status": "passed"
+            },
+            {
+              "failure_assertions": [
+                "coherent facade with residual offcut detaches"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "bc2e9e192ee3d28f8d82157c9e073ae7b023485b114e0f041aad96b121688eb2",
+                "status": "passed"
+              },
+              "log": "test_object_shard_m4_workbench_completion.log",
+              "log_sha256": "2bd57fd397a1c533be2131df61b55b84f49d82c3b044f8bf32b3e25a383da4f2",
+              "name": "test_object_shard_m4_workbench_completion",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [
+                "AwaitingCompletedNativeTick"
+              ],
+              "returncode": 1,
+              "seconds": 304.507,
+              "status": "failed"
+            },
+            {
+              "log": "test_object_shard_m4_material_only_workbench.log",
+              "log_sha256": "b982d467d85b73b0790f5ad75c5e9b36df257cade6da6c71337613c2810c8819",
+              "name": "test_object_shard_m4_material_only_workbench",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 5.841,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_fragment_reabsorption.log",
+              "log_sha256": "988ecf2250d7a574510fcce8d5b63c393a0a4fb6d64c59ff9799e4b2320c51d6",
+              "name": "test_object_shard_m4_fragment_reabsorption",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 7.613,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_lifecycle_adverse.log",
+              "log_sha256": "02361b7a318de490cf8a3479396089da32e8e070d5bb6ae9e770a8d8a09b0f52",
+              "name": "test_object_shard_m4_lifecycle_adverse",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 7.243,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_lifecycle_fuzz.log",
+              "log_sha256": "884c1667c486936fe359f49abed4b522a76fdc8b18b114327f65d5f851e47ba5",
+              "name": "test_object_shard_m4_lifecycle_fuzz",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 36.824,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_overlay_identity.log",
+              "log_sha256": "a5e39037f36a3402a41248484ed2b8bb161ef9f0d0d56a516a707af5e73c39d6",
+              "name": "test_object_shard_m4_overlay_identity",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 4.04,
+              "status": "passed"
+            },
+            {
+              "log": "m4_render_controls.log",
+              "log_sha256": "b1fcd459f6c91e148f36c51f6aa473adf6055aa6046101f38ea58683f950cc70",
+              "name": "m4_render_controls",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 70.524,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_render.log",
+              "log_sha256": "1a9272b02e04e1010c41f02aa9ef4cc5cfb5e899a7eb96c77f897768441c68e5",
+              "name": "m4_workbench_tower_overview_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 105.624,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_zoom_render.log",
+              "log_sha256": "a81dc253e5213d2a85ef7790226a929fe7adad042c578f6d1e98425adb046be4",
+              "name": "m4_workbench_tower_zoom_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 94.128,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_viaduct_overview_render.log",
+              "log_sha256": "6ae25c4040ed3c6915598fb4392fa76dc1c8d73fccdd7dd88027f77a0202c8d7",
+              "name": "m4_workbench_viaduct_overview_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 116.706,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_viaduct_zoom_render.log",
+              "log_sha256": "5e3ab1df67849bb3ea8dd6e3886c3655988c8747fcf517875078c3f9556f3b9f",
+              "name": "m4_workbench_viaduct_zoom_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 108.786,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_timber_overview_render.log",
+              "log_sha256": "b2c446be3d8222e0acd2aefc0a6e1e57def1cfa731ce1481ef4863dedf22b2f8",
+              "name": "m4_workbench_timber_overview_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 109.733,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_timber_zoom_render.log",
+              "log_sha256": "780eff14106a962f0e4f08bc5f228751592a07749f36247809ef3df3789734ef",
+              "name": "m4_workbench_timber_zoom_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 102.21,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_mixed_overview_render.log",
+              "log_sha256": "14d6366975883f506894b69e4c246b25a26ccc47dc81ec0b772f7a60ea4fc154",
+              "name": "m4_workbench_mixed_overview_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 104.967,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_mixed_zoom_render.log",
+              "log_sha256": "d4781cc4dfadbaa138a15da4dc9689d73e1424fd7ca1d76f42e3a773ff63ba62",
+              "name": "m4_workbench_mixed_zoom_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 102.61,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_render.log",
+              "log_sha256": "4072cbaee71bb149088dc9af30cdd0adec966a1f654805dedd948981c8c82a15",
+              "name": "m4_workbench_stress_overview_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 155.728,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_zoom_render.log",
+              "log_sha256": "30ab3d2e9037c105113e12d40731f0dbdd9f5c48a15a3b2074eeb4a87deed916",
+              "name": "m4_workbench_stress_zoom_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 149.823,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_light_render.log",
+              "log_sha256": "50fc2a8eccb84e24876cf725efdb699661c4ca5efac659114f3ef9b519d2d0ab",
+              "name": "m4_workbench_tower_overview_light_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 109.001,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_light_render.log",
+              "log_sha256": "aae0243f2605be752e7665147f37e7c18253656eae1186e49787a3fc3ba492c8",
+              "name": "m4_workbench_stress_overview_light_render",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": true,
+              "returncode": 0,
+              "seconds": 163.003,
+              "status": "passed"
+            }
+          ],
+          "cases_passed": 24,
+          "cases_requires_display": 14,
+          "cases_total": 25,
+          "failures": [
+            "test_object_shard_m4_workbench_completion"
+          ],
+          "input_applicability": {
+            "executed_script_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": [
+                "godot/scripts/object_shard_m4_runtime.gd",
+                "godot/scripts/simulation_worker.gd",
+                "godot/tests/probe_object_shard_workbench_package.gd",
+                "godot/tests/support/object_shard_m4_workbench_fixture.gd",
+                "godot/tests/test_object_shard_m4_completed_sample.gd",
+                "godot/tests/test_object_shard_m4_equipment_completion.gd",
+                "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+                "godot/tests/test_object_shard_m4_long_burn.gd",
+                "tools/objectshard/package_windows_workbench.py",
+                "tools/objectshard/qualify_workbench.py",
+                "tools/objectshard/qualify_workbench_zip.py",
+                "tools/objectshard/test_workbench_package_inputs.py",
+                "tools/objectshard/verify_workbench_package.py"
+              ]
+            },
+            "native_source_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": []
+            }
+          },
+          "path": "graphical/qualification.json",
+          "runtime": {
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "native_sha256": "09098674d07b11fcf8a2eaa8baa792d672c8ff7a7025c013b7b3bb4196499a43",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "sha256": "5065bddb2208d345f175e3a46174fffb0daa1ab9540a2e47a0cebaa200571b80",
+          "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+          "source_tree": "1695c93a79413c4e0f8fb84c7224002d78a2ff00",
+          "status": "failed"
+        },
+        {
+          "bytes": 1378282,
+          "cases": [
+            {
+              "log": "m4_workbench_import.log",
+              "log_sha256": "b0cb8a33065de28b1fbec96830d4005cee2915443069350e737f471ac1ecb88c",
+              "name": "m4_workbench_import",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 8.95,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_latency_probe.log",
+              "log_sha256": "bbbff5a145ee913afb449ade47388ee19bd6071796c1aac33007595eb9c3a120",
+              "name": "test_object_shard_m4_latency_probe",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.164,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_extension.log",
+              "log_sha256": "780e3430b52c6b8e3865250783d3278e157f6f6ded0ab71e97a97a180064349b",
+              "name": "test_object_shard_m4_same_world_extension",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.365,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_shared_main_rapier.log",
+              "log_sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f",
+              "name": "test_object_shard_m4_shared_main_rapier",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.265,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_physical_chain.log",
+              "log_sha256": "10502ade11695f0a109adb0fa1c80fbfebf5be067212286766980745f7007917",
+              "name": "test_object_shard_m4_same_world_physical_chain",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.465,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_compact_motion_packets.log",
+              "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e",
+              "name": "test_object_shard_m4_compact_motion_packets",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.164,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_workbench_completion.log",
+              "log_sha256": "9148a228b613f6da36616c1234021dc6ddc1489337fd69a3ad28f4bcaf1e9252",
+              "name": "test_object_shard_m4_workbench_completion",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 17.297,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_material_only_workbench.log",
+              "log_sha256": "2b8f83d7ac05fef96bcc726b20eb20962206d14225c2f20e09beac3f18fd0bd1",
+              "name": "test_object_shard_m4_material_only_workbench",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 5.942,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_fragment_reabsorption.log",
+              "log_sha256": "183bb138ffc26a1b7f4c6b92e199e5862cccd588d569d2d2e5dbd9d895a54b40",
+              "name": "test_object_shard_m4_fragment_reabsorption",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 7.715,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_lifecycle_adverse.log",
+              "log_sha256": "244c0a82723de4ed4625e34d3f9ec454e7929f350791596ae444805905aff538",
+              "name": "test_object_shard_m4_lifecycle_adverse",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 6.412,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_lifecycle_fuzz.log",
+              "log_sha256": "57a81e8a6d38e623e12f80a9bcb5d96f8c1fbcc574536b97bdbdaaf1af053abe",
+              "name": "test_object_shard_m4_lifecycle_fuzz",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 37.762,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_canvas.log",
+              "log_sha256": "6017a5823973c15d2266294341f4c1249e771e40fe59bd12029deb2839d6da5a",
+              "name": "test_workbench_canvas",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 38.409,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_wave.log",
+              "log_sha256": "6a1ed13d5b752fbd16132271f2d114c170693b403c9321dfb057834f6e7a47ec",
+              "name": "test_workbench_wave",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 41.081,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_wave_spill.log",
+              "log_sha256": "b6b12a8acd651a2ef1630a1bcbd85407e7b35ca8fdc864580f8a8ac450e12fb8",
+              "name": "test_workbench_wave_spill",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 9.38,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_failure_containment.log",
+              "log_sha256": "28ad5410601f2c8d4bd82d947ebecb426795abbbd7836eba9a07c4bf3219e1c3",
+              "name": "test_workbench_failure_containment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 4.825,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_failure_recovery.log",
+              "log_sha256": "08e6c5e6fb7d8555647e13fa884c3beb069ab479dea751f1476517ff772ce093",
+              "name": "test_workbench_failure_recovery",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 5.11,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_liquid_equipment.log",
+              "log_sha256": "18a2600b857bcbd3623c4da4924d27065b15f3db74994d8dd0a96e48570b8971",
+              "name": "test_workbench_liquid_equipment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 19.333,
+              "status": "passed"
+            },
+            {
+              "log": "test_physical_actor_session.log",
+              "log_sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+              "name": "test_physical_actor_session",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.533,
+              "status": "passed"
+            },
+            {
+              "log": "test_actor_usables_integration.log",
+              "log_sha256": "9b19bf7130602b30c1a48fc23256a0ee5010fe4633a18df81370992fbfd61a24",
+              "name": "test_actor_usables_integration",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 2.12,
+              "status": "passed"
+            },
+            {
+              "log": "test_physical_usable_equipment.log",
+              "log_sha256": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc",
+              "name": "test_physical_usable_equipment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.633,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_actor_composition_native.log",
+              "log_sha256": "85cee1d547ad70bb372a3dadd2bdb05922000aa1703bc0f62926c5aac485b114",
+              "name": "test_workbench_actor_composition_native",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 2.02,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_actor_composition_session.log",
+              "log_sha256": "7242641274cbcad0ed555f14bd832ff04e45925237689576b8312eef0bc4e25e",
+              "name": "test_workbench_actor_composition_session",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.633,
+              "status": "passed"
+            },
+            {
+              "log": "retained_lab_profile.log",
+              "log_sha256": "b7d116428f030a5fe1a75f1044a4be7fe4035a064299a7faa3dbdde9b713e3b6",
+              "name": "retained_lab_profile",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 39.97,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_headless.log",
+              "log_sha256": "de12a312716a3aebefeadcc0433cb481971984d1552feaec848b93b81427c271",
+              "name": "m4_workbench_tower_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 9.935,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_zoom_headless.log",
+              "log_sha256": "f74bcc25cf8a598ae345d5487b14e4169dcac81638d678da1fa78672bb947501",
+              "name": "m4_workbench_tower_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 11.053,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_viaduct_overview_headless.log",
+              "log_sha256": "02079718c3cd320fd76e798379a36199ba6a8396427e8eadbbe72eac754020b7",
+              "name": "m4_workbench_viaduct_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 11.823,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_viaduct_zoom_headless.log",
+              "log_sha256": "3f4d4d1c2f2a9b5c9f620d2dd32f548644fe3ca2d17fc91350cb28494f967787",
+              "name": "m4_workbench_viaduct_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 11.423,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_timber_overview_headless.log",
+              "log_sha256": "39db085fde1375eecd271e7abaad109d228722c8be9bc07030c5b51130f7bc18",
+              "name": "m4_workbench_timber_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 11.054,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_timber_zoom_headless.log",
+              "log_sha256": "fcd43fb43211237db0018ff553747197f432dd3fdb6a3dd29cfd881c10b86075",
+              "name": "m4_workbench_timber_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 10.991,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_mixed_overview_headless.log",
+              "log_sha256": "9221da781b0457bcc61bb3c423b1f942edbc0354afd611a14b8dffc8ed8e996c",
+              "name": "m4_workbench_mixed_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 10.89,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_mixed_zoom_headless.log",
+              "log_sha256": "6e1481d196a856496459614ec5880c98fc57d6b2b9a6cf685494e01737d1dc72",
+              "name": "m4_workbench_mixed_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 12.259,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_headless.log",
+              "log_sha256": "37057a9ce26328adf91eef9d8890eab53958524d380605fdd50591be01ab0fa7",
+              "name": "m4_workbench_stress_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 16.442,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_zoom_headless.log",
+              "log_sha256": "07f7238c46f7c70e5d07866961b473b767673ba16db8939a92d4dd93e9bf0f5b",
+              "name": "m4_workbench_stress_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 13.129,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_light_headless.log",
+              "log_sha256": "f76cd3f69177524c682ec877ecdfa45fdc4e87f8c109721e62386a82418b30d3",
+              "name": "m4_workbench_tower_overview_light_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 12.727,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_light_headless.log",
+              "log_sha256": "424923fc3da8f00fb42a7ec0f4c5ae4443d2c60cf8a313f6074119d67619cb59",
+              "name": "m4_workbench_stress_overview_light_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 14.962,
+              "status": "passed"
+            }
+          ],
+          "cases_passed": 35,
+          "cases_requires_display": 0,
+          "cases_total": 35,
+          "failures": [],
+          "input_applicability": {
+            "executed_script_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": [
+                "godot/scripts/object_shard_m4_runtime.gd",
+                "godot/scripts/simulation_worker.gd",
+                "godot/tests/probe_object_shard_workbench_package.gd",
+                "godot/tests/support/object_shard_m4_workbench_fixture.gd",
+                "godot/tests/test_object_shard_m4_completed_sample.gd",
+                "godot/tests/test_object_shard_m4_equipment_completion.gd",
+                "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+                "godot/tests/test_object_shard_m4_long_burn.gd",
+                "tools/objectshard/package_windows_workbench.py",
+                "tools/objectshard/qualify_workbench.py",
+                "tools/objectshard/qualify_workbench_zip.py",
+                "tools/objectshard/test_workbench_package_inputs.py",
+                "tools/objectshard/verify_workbench_package.py"
+              ]
+            },
+            "native_source_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": []
+            }
+          },
+          "path": "headless/qualification.json",
+          "runtime": {
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "native_sha256": "09098674d07b11fcf8a2eaa8baa792d672c8ff7a7025c013b7b3bb4196499a43",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "sha256": "5ec802da1c4b9f226c0907ce53e86de6a54550298534e14e3140fbd75ac2ac2d",
+          "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+          "source_tree": "1695c93a79413c4e0f8fb84c7224002d78a2ff00",
+          "status": "passed"
+        }
+      ],
+      "run": 45457037610,
+      "sha256": "8d11121e8448a656b307b4f82d87014bf6b4f66ce45d7dfbaa01726e6c8f1520",
+      "source": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45457037610/artifacts/14954007570"
+    },
+    {
+      "bytes": 5107876,
+      "id": 14952377334,
+      "original_archive_verified": true,
+      "reports": [
+        {
+          "bytes": 1373589,
+          "cases": [
+            {
+              "log": "m4_workbench_import.log",
+              "log_sha256": "7fac3802ad26fa1b3f71855dc3f65a38cb0274620627f00805d460f18fc96432",
+              "name": "m4_workbench_import",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 10.476,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_latency_probe.log",
+              "log_sha256": "e19d744717709795ec64fdc023eb4774b2adab9b2b2043019de9016af5509300",
+              "name": "test_object_shard_m4_latency_probe",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.31,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_extension.log",
+              "log_sha256": "ec1059cdb99344257812eb62f84a70ab864d3f832b388e07f2f51703de33d3c5",
+              "name": "test_object_shard_m4_same_world_extension",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.581,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_shared_main_rapier.log",
+              "log_sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608",
+              "name": "test_object_shard_m4_shared_main_rapier",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.396,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_physical_chain.log",
+              "log_sha256": "85fd852645a0284cd59513f207fe2f653afb0b916d6ef349f3f67d573b1940f4",
+              "name": "test_object_shard_m4_same_world_physical_chain",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.689,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_compact_motion_packets.log",
+              "log_sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a",
+              "name": "test_object_shard_m4_compact_motion_packets",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.299,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_workbench_completion.log",
+              "log_sha256": "181d8ca58c4421c508d250e8de93bff51e6db29b2303fffb1bf7d075c378e01e",
+              "name": "test_object_shard_m4_workbench_completion",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 18.53,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_material_only_workbench.log",
+              "log_sha256": "33a4b731caa6e6af595c32c0bece193e77f2eb276c7e4cb1b8979365b0ab2977",
+              "name": "test_object_shard_m4_material_only_workbench",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 8.75,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_fragment_reabsorption.log",
+              "log_sha256": "19bb62b44afa5485575696ccea6355fa4a86c7cdda9cc42d9fa3b4409a110376",
+              "name": "test_object_shard_m4_fragment_reabsorption",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 11.816,
+              "status": "passed"
+            },
+            {
+              "failure_assertions": [
+                "idle exclusive owner explicitly refuses the exact stale installed publication"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "b6c9d75644d66cf45428f2dc7d0b08df6c24e36b5e160bd1c0f01a8b3f2607fd",
+                "status": "passed"
+              },
+              "log": "test_object_shard_m4_lifecycle_adverse.log",
+              "log_sha256": "623148307abde7f589a28fb654072a03f1135818e4bd60ce4a8ba309ffbe6910",
+              "name": "test_object_shard_m4_lifecycle_adverse",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [],
+              "returncode": 1,
+              "seconds": 12.287,
+              "status": "failed"
+            },
+            {
+              "log": "test_object_shard_m4_lifecycle_fuzz.log",
+              "log_sha256": "629347722adb3c1000c5a70ee68468e58c97ae73900a9bdebb03210e388e8f4f",
+              "name": "test_object_shard_m4_lifecycle_fuzz",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 62.656,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_canvas.log",
+              "log_sha256": "bb82430a5d8da0ba80c3017031d133f6eb6e98ce3a4b2921ca2427b8dab420a2",
+              "name": "test_workbench_canvas",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 58.329,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_wave.log",
+              "log_sha256": "c568efcbfd904847631ab5a9561186e13eee2131e9774632aab74393329ac93d",
+              "name": "test_workbench_wave",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 65.71,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_wave_spill.log",
+              "log_sha256": "51ff3f62bb87a1aa0e3a37ea3905b834b579c3f44c6e09659e967a63f0c06d1b",
+              "name": "test_workbench_wave_spill",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 14.79,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_failure_containment.log",
+              "log_sha256": "9eb9b8c7a403977d4386cd3070a313a7b33fcdf4daf17489e5b803e882d5139c",
+              "name": "test_workbench_failure_containment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 7.633,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_failure_recovery.log",
+              "log_sha256": "092338f404816f7596a3d9d8b518d179c4f8bb54f1f65c4e2d450b91bb9911fa",
+              "name": "test_workbench_failure_recovery",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 8.564,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_liquid_equipment.log",
+              "log_sha256": "e77fc67d405c41f435b2c87e9ebaea1e71766685334b765a4d3d057ce0f3623c",
+              "name": "test_workbench_liquid_equipment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 22.948,
+              "status": "passed"
+            },
+            {
+              "log": "test_physical_actor_session.log",
+              "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+              "name": "test_physical_actor_session",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.945,
+              "status": "passed"
+            },
+            {
+              "log": "test_actor_usables_integration.log",
+              "log_sha256": "2bfb794122172a1e8705b1a6e721a50d7c4d6cbcedcaa8b6b0b10dbd3bfec0a7",
+              "name": "test_actor_usables_integration",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 3.274,
+              "status": "passed"
+            },
+            {
+              "log": "test_physical_usable_equipment.log",
+              "log_sha256": "94e16781920d418f726714d38136df7087520a51727f3865899762618f558fc5",
+              "name": "test_physical_usable_equipment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.945,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_actor_composition_native.log",
+              "log_sha256": "bec9939742cfdfe9bc396cfc8668d6c396e84cb1d3d735cd1156b26cd8a4ee3a",
+              "name": "test_workbench_actor_composition_native",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 2.897,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_actor_composition_session.log",
+              "log_sha256": "d384e20fac6d6090022a4f39e214d960231d1237c1c9a74aa9583b7b967da8f9",
+              "name": "test_workbench_actor_composition_session",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 1.043,
+              "status": "passed"
+            },
+            {
+              "log": "retained_lab_profile.log",
+              "log_sha256": "a56c53f1e132c46ebbe92e371cc70bc45d397b3b444fbcef6bced07529e1555e",
+              "name": "retained_lab_profile",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 43.507,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_headless.log",
+              "log_sha256": "33fdea9a63b0682b88eec3604bf6386ff0215b6f8a63aeca6ca765779c75b859",
+              "name": "m4_workbench_tower_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 17.782,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_zoom_headless.log",
+              "log_sha256": "b205618395d99c0f7b140efc4f2f907a745dc742cf04a672f03f3a7eaaca42c2",
+              "name": "m4_workbench_tower_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 17.595,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_viaduct_overview_headless.log",
+              "log_sha256": "01ca8a18a7a4a8d3f78cc30e5f67f48154f54c19361f842a92338a43cd76097b",
+              "name": "m4_workbench_viaduct_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 20.751,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_viaduct_zoom_headless.log",
+              "log_sha256": "b300468317621e3c1f97fff83c3e8ec9911cb51a30280c5e5dba0b15d6b31154",
+              "name": "m4_workbench_viaduct_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 16.482,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_timber_overview_headless.log",
+              "log_sha256": "2a84e3ed275bac8f28b87d65438535da4f508f02cf67dbf662b6d8d68463236e",
+              "name": "m4_workbench_timber_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 17.506,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_timber_zoom_headless.log",
+              "log_sha256": "c2d4db199a920b53040f22eb57c27f44f73d2397255d2d4fcbf6a22735c9f4aa",
+              "name": "m4_workbench_timber_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 15.927,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_mixed_overview_headless.log",
+              "log_sha256": "d09c2fad1fc07dede8031fe64361ed19213803e22d2e10c16de7d5bdff258018",
+              "name": "m4_workbench_mixed_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 15.462,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_mixed_zoom_headless.log",
+              "log_sha256": "75e6e9e1ea1c8a3ec8d8d38d8abaae3cd51e2cfd302861c047f6b821bf0943eb",
+              "name": "m4_workbench_mixed_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 16.019,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_headless.log",
+              "log_sha256": "b1a99df0241bb05bcfb4982815155926de1f603542b1d7eb26b8b830eabcfd92",
+              "name": "m4_workbench_stress_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 20.564,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_zoom_headless.log",
+              "log_sha256": "59039caf06b811754e89d8502a0c32993975d80253041082a209dfc862126d2a",
+              "name": "m4_workbench_stress_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 21.969,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_light_headless.log",
+              "log_sha256": "d5403c56b6f2d48f3b5514c53b6c828c777f09a6ca217424e57422756d564484",
+              "name": "m4_workbench_tower_overview_light_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 17.22,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_light_headless.log",
+              "log_sha256": "bbdd912747cfe0357e9e445f6cba7614f6541d61ec27f02a982aba92ca1d8b0e",
+              "name": "m4_workbench_stress_overview_light_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 23.84,
+              "status": "passed"
+            }
+          ],
+          "cases_passed": 34,
+          "cases_requires_display": 0,
+          "cases_total": 35,
+          "failures": [
+            "test_object_shard_m4_lifecycle_adverse"
+          ],
+          "input_applicability": {
+            "executed_script_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": [
+                "godot/scripts/object_shard_m4_runtime.gd",
+                "godot/scripts/simulation_worker.gd",
+                "godot/tests/probe_object_shard_workbench_package.gd",
+                "godot/tests/support/object_shard_m4_workbench_fixture.gd",
+                "godot/tests/test_object_shard_m4_completed_sample.gd",
+                "godot/tests/test_object_shard_m4_equipment_completion.gd",
+                "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+                "godot/tests/test_object_shard_m4_long_burn.gd",
+                "tools/objectshard/package_windows_workbench.py",
+                "tools/objectshard/qualify_workbench.py",
+                "tools/objectshard/qualify_workbench_zip.py",
+                "tools/objectshard/test_workbench_package_inputs.py",
+                "tools/objectshard/verify_workbench_package.py"
+              ]
+            },
+            "native_source_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": []
+            }
+          },
+          "path": "headless/qualification.json",
+          "runtime": {
+            "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "native_sha256": "0c6d6ae114d5d4157416cc3c2eb049fbb22e1ecc0ff081054d568b09a81ae00e",
+            "platform": "win32",
+            "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          },
+          "sha256": "e72acae8eeda1e7e9f779a7d011a549ed888e105b27eaf996d85e319c57b2762",
+          "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+          "source_tree": "1695c93a79413c4e0f8fb84c7224002d78a2ff00",
+          "status": "failed"
+        }
+      ],
+      "run": 45457037610,
+      "sha256": "c4e8cc308b25a75072ab53d51aa17699cb6d25753ec653dfc3f2e8f2015e3b00",
+      "source": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45457037610/artifacts/14952377334"
+    },
+    {
+      "bytes": 1523204,
+      "id": 14943033574,
+      "original_archive_verified": true,
+      "reports": [
+        {
+          "bytes": 396977,
+          "cases": [
+            {
+              "log": "m4_workbench_import.log",
+              "log_sha256": "a5d30513a541380000c3df2435369fabd13e7cf909b9e8d4e4321b278303e240",
+              "name": "m4_workbench_import",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 7.797,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_latency_probe.log",
+              "log_sha256": "bbbff5a145ee913afb449ade47388ee19bd6071796c1aac33007595eb9c3a120",
+              "name": "test_object_shard_m4_latency_probe",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.165,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_same_world_extension.log",
+              "log_sha256": "780e3430b52c6b8e3865250783d3278e157f6f6ded0ab71e97a97a180064349b",
+              "name": "test_object_shard_m4_same_world_extension",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.366,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_shared_main_rapier.log",
+              "log_sha256": "e919856c669e905e0179a610be4e49d87a84b33634f4ce01e85ef967185c56b1",
+              "name": "test_object_shard_m4_shared_main_rapier",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.265,
+              "status": "passed"
+            },
+            {
+              "failure_assertions": [
+                "worker-owned attached Coordinator explicitly retires"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "85fd852645a0284cd59513f207fe2f653afb0b916d6ef349f3f67d573b1940f4",
+                "status": "passed"
+              },
+              "log": "test_object_shard_m4_same_world_physical_chain.log",
+              "log_sha256": "63a14215a3e352bff8c13e70b277ae31cc1b5ac1bc3a39469af501b1c4a37ea7",
+              "name": "test_object_shard_m4_same_world_physical_chain",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [],
+              "returncode": 1,
+              "seconds": 0.466,
+              "status": "failed"
+            },
+            {
+              "log": "test_object_shard_m4_compact_motion_packets.log",
+              "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e",
+              "name": "test_object_shard_m4_compact_motion_packets",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.165,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_workbench_completion.log",
+              "log_sha256": "273879fb0beef08685247c26f732f27e4689fde698dd9e63338180b74275c583",
+              "name": "test_object_shard_m4_workbench_completion",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 16.371,
+              "status": "passed"
+            },
+            {
+              "log": "test_object_shard_m4_material_only_workbench.log",
+              "log_sha256": "55df8f1f4e1868ac281e2b82bc7bc432a15613887aa7675484f4c48c298d09e2",
+              "name": "test_object_shard_m4_material_only_workbench",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 5.891,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_canvas.log",
+              "log_sha256": "fcf08c8d24f82ac329f8a799cd28a3dc75778dfd3f6ac8269fc0efdeef60afb9",
+              "name": "test_workbench_canvas",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 40.946,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_wave.log",
+              "log_sha256": "3507c09f7b738703f1667894979687dcf69aee945283e5a7cf7c10464cac9a2b",
+              "name": "test_workbench_wave",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 42.979,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_wave_spill.log",
+              "log_sha256": "b6b12a8acd651a2ef1630a1bcbd85407e7b35ca8fdc864580f8a8ac450e12fb8",
+              "name": "test_workbench_wave_spill",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 9.857,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_failure_containment.log",
+              "log_sha256": "28ad5410601f2c8d4bd82d947ebecb426795abbbd7836eba9a07c4bf3219e1c3",
+              "name": "test_workbench_failure_containment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 4.929,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_failure_recovery.log",
+              "log_sha256": "08e6c5e6fb7d8555647e13fa884c3beb069ab479dea751f1476517ff772ce093",
+              "name": "test_workbench_failure_recovery",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 5.222,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_liquid_equipment.log",
+              "log_sha256": "a73b59a8bd1822739f1fdbc424c1977ce86a4c7c4f6903fdbc07f2b2037ba128",
+              "name": "test_workbench_liquid_equipment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 19.542,
+              "status": "passed"
+            },
+            {
+              "log": "test_physical_actor_session.log",
+              "log_sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84",
+              "name": "test_physical_actor_session",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.566,
+              "status": "passed"
+            },
+            {
+              "log": "test_actor_usables_integration.log",
+              "log_sha256": "9b19bf7130602b30c1a48fc23256a0ee5010fe4633a18df81370992fbfd61a24",
+              "name": "test_actor_usables_integration",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 2.218,
+              "status": "passed"
+            },
+            {
+              "log": "test_physical_usable_equipment.log",
+              "log_sha256": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc",
+              "name": "test_physical_usable_equipment",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.635,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_actor_composition_native.log",
+              "log_sha256": "85cee1d547ad70bb372a3dadd2bdb05922000aa1703bc0f62926c5aac485b114",
+              "name": "test_workbench_actor_composition_native",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 1.94,
+              "status": "passed"
+            },
+            {
+              "log": "test_workbench_actor_composition_session.log",
+              "log_sha256": "7242641274cbcad0ed555f14bd832ff04e45925237689576b8312eef0bc4e25e",
+              "name": "test_workbench_actor_composition_session",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 0.635,
+              "status": "passed"
+            },
+            {
+              "log": "retained_lab_profile.log",
+              "log_sha256": "58d1e0b098c8e246e0894477d866101c776ba6c84b84eef23525de8e3ac8677c",
+              "name": "retained_lab_profile",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 42.393,
+              "status": "passed"
+            },
+            {
+              "log": "m4_workbench_tower_overview_headless.log",
+              "log_sha256": "939638cf6f4a2203d40d7c1463ced859f0104404afe2387df10782a766e37c35",
+              "name": "m4_workbench_tower_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 11.165,
+              "status": "passed"
+            },
+            {
+              "failure_assertions": [
+                "profile overview refresh supplies new whole canvas material+pose publication"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "82a6b02ab41431365e54ad6c2a72dfd9d87be7a0ec88707fb50c0f775053ddb7",
+                "status": "passed"
+              },
+              "log": "m4_workbench_tower_zoom_headless.log",
+              "log_sha256": "5758d0ab3d44fde7d457036bff9c21509c6872fedcbd7382ef7ef67391aa7e91",
+              "name": "m4_workbench_tower_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [],
+              "returncode": 1,
+              "seconds": 313.175,
+              "status": "failed"
+            },
+            {
+              "failure_assertions": [
+                "profile completes 180 actual native semantic ticks",
+                "no native or physical hold during profile",
+                "in-flight physical interval acknowledged before pause witness",
+                "ordinary image agrees with independent World ledger for material 3"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "13a6479e4a1b9140b2c937db8f9b2e1d494d91cd91545789dbb80daab191db4a",
+                "status": "passed"
+              },
+              "log": "m4_workbench_viaduct_overview_headless.log",
+              "log_sha256": "67ab4304061b4b6c1d424e5837dd70c5d6de28609e03079644a65471afb2845d",
+              "name": "m4_workbench_viaduct_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [
+                "DestinationUnavailable",
+                "NativeControlRefused:motion"
+              ],
+              "returncode": 1,
+              "seconds": 6.33,
+              "status": "failed"
+            },
+            {
+              "failure_assertions": [
+                "profile completes 180 actual native semantic ticks",
+                "no native or physical hold during profile",
+                "in-flight physical interval acknowledged before pause witness",
+                "profile overview refresh supplies new whole canvas material+pose publication",
+                "ordinary image agrees with independent World ledger for material 3"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "8ce13459482a3af2b67765eea83ca8b1272cb42e0f831d69b0c7817c73065056",
+                "status": "passed"
+              },
+              "log": "m4_workbench_viaduct_zoom_headless.log",
+              "log_sha256": "0872b4d0ff46612927171b163eedc8ab87598d7cdf0a0443f5c6a8880c8b5120",
+              "name": "m4_workbench_viaduct_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [
+                "DestinationUnavailable",
+                "NativeControlRefused:motion"
+              ],
+              "returncode": 1,
+              "seconds": 6.629,
+              "status": "failed"
+            },
+            {
+              "log": "m4_workbench_timber_overview_headless.log",
+              "log_sha256": "901dcad0c36b63f2d4a2f811c4bd57b6a8a2b0d0c6c838e0d7294eea3c0ddb10",
+              "name": "m4_workbench_timber_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 12.462,
+              "status": "passed"
+            },
+            {
+              "failure_assertions": [
+                "profile overview refresh supplies new whole canvas material+pose publication"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "60b32a35335b40df241372ecdde3ba673d192fd5260896dffd24ce133305cc58",
+                "status": "passed"
+              },
+              "log": "m4_workbench_timber_zoom_headless.log",
+              "log_sha256": "e8e4f095f94ed59e132ad97a78ef1962d945cc17000346fa597bb08fc16d004c",
+              "name": "m4_workbench_timber_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [
+                "AwaitingCompletedNativeTick"
+              ],
+              "returncode": 1,
+              "seconds": 314.845,
+              "status": "failed"
+            },
+            {
+              "failure_assertions": [
+                "profile completes 180 actual native semantic ticks",
+                "no native or physical hold during profile",
+                "in-flight physical interval acknowledged before pause witness",
+                "ordinary image agrees with independent World ledger for material 3"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "a2c77bbae65d8eab4dbf922d567cd1d81a1e270801825a7bfae3d4e5a35e6009",
+                "status": "passed"
+              },
+              "log": "m4_workbench_mixed_overview_headless.log",
+              "log_sha256": "4ab40c389ec4ce1eb42b36f523a0c1eec9f100d607091a168617984babba1ef3",
+              "name": "m4_workbench_mixed_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [
+                "DestinationUnavailable",
+                "NativeControlRefused:motion"
+              ],
+              "returncode": 1,
+              "seconds": 7.635,
+              "status": "failed"
+            },
+            {
+              "failure_assertions": [
+                "profile completes 180 actual native semantic ticks",
+                "no native or physical hold during profile",
+                "in-flight physical interval acknowledged before pause witness",
+                "profile overview refresh supplies new whole canvas material+pose publication",
+                "ordinary image agrees with independent World ledger for material 3"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "14e00ccbc3ef6dd3014fc15a08e1210951a72a7c0b93c5db17914c4a25124a74",
+                "status": "passed"
+              },
+              "log": "m4_workbench_mixed_zoom_headless.log",
+              "log_sha256": "51a3dc301448e5aefe4fc63aede85427cda1d280b6e584c5e4e6abf1e6c33a82",
+              "name": "m4_workbench_mixed_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [
+                "DestinationUnavailable",
+                "NativeControlRefused:motion"
+              ],
+              "returncode": 1,
+              "seconds": 6.63,
+              "status": "failed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_headless.log",
+              "log_sha256": "930e635f2b113691047a971750e5fd537bc12c5c671358dc6c4cfc50b21f402a",
+              "name": "m4_workbench_stress_overview_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 16.181,
+              "status": "passed"
+            },
+            {
+              "failure_assertions": [
+                "profile overview refresh supplies new whole canvas material+pose publication"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "40faceae0618a3d716df6b4c2eaffd70bcd344758be704e4284a16ab70c1ad67",
+                "status": "passed"
+              },
+              "log": "m4_workbench_stress_zoom_headless.log",
+              "log_sha256": "64424f198f8f66d0a2f2cfed671c1284b7c50204da948783a9428557ae9a1f2a",
+              "name": "m4_workbench_stress_zoom_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [],
+              "returncode": 1,
+              "seconds": 315.143,
+              "status": "failed"
+            },
+            {
+              "failure_assertions": [
+                "profile actually observes awake Rapier bodies"
+              ],
+              "later_windows_case_at_f5b7": {
+                "log_sha256": "d0d9c3b614049d549bc1111792e089c86614e819de774510f940abf07d77c6c3",
+                "status": "passed"
+              },
+              "log": "m4_workbench_tower_overview_light_headless.log",
+              "log_sha256": "0c04c8408e14c49b26c1fd24950bc124a09a170e8943484af83b8680243ad269",
+              "name": "m4_workbench_tower_overview_light_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "retained_diagnostic_markers": [],
+              "returncode": 1,
+              "seconds": 11.257,
+              "status": "failed"
+            },
+            {
+              "log": "m4_workbench_stress_overview_light_headless.log",
+              "log_sha256": "7575e9e18438a9edb60e87bc316b899d6ae1cc83cb77bafcfae567eae45e845b",
+              "name": "m4_workbench_stress_overview_light_headless",
+              "natural_completion": true,
+              "original_log_sha256_verified": true,
+              "requires_display": false,
+              "returncode": 0,
+              "seconds": 15.633,
+              "status": "passed"
+            }
+          ],
+          "cases_passed": 23,
+          "cases_requires_display": 0,
+          "cases_total": 32,
+          "failures": [
+            "test_object_shard_m4_same_world_physical_chain",
+            "m4_workbench_tower_zoom_headless",
+            "m4_workbench_viaduct_overview_headless",
+            "m4_workbench_viaduct_zoom_headless",
+            "m4_workbench_timber_zoom_headless",
+            "m4_workbench_mixed_overview_headless",
+            "m4_workbench_mixed_zoom_headless",
+            "m4_workbench_stress_zoom_headless",
+            "m4_workbench_tower_overview_light_headless"
+          ],
+          "input_applicability": {
+            "executed_script_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": [
+                "godot/scripts/object_shard_m4_runtime.gd",
+                "godot/scripts/object_shard_physics_bridge.gd",
+                "godot/scripts/object_shard_workbench_overlay.gd",
+                "godot/scripts/object_shard_workbench_scenes.gd",
+                "godot/scripts/shared_workbench.gd",
+                "godot/scripts/simulation_worker.gd",
+                "godot/tests/probe_object_shard_workbench_package.gd",
+                "godot/tests/profile_object_shard_m4_render_control.gd",
+                "godot/tests/profile_object_shard_m4_workbench.gd",
+                "godot/tests/support/object_shard_m4_workbench_fixture.gd",
+                "godot/tests/test_object_shard_m4_completed_sample.gd",
+                "godot/tests/test_object_shard_m4_equipment_completion.gd",
+                "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
+                "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+                "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd",
+                "godot/tests/test_object_shard_m4_long_burn.gd",
+                "godot/tests/test_object_shard_m4_material_only_workbench.gd",
+                "godot/tests/test_object_shard_m4_overlay_identity.gd",
+                "godot/tests/test_object_shard_m4_same_world_physical_chain.gd",
+                "godot/tests/test_object_shard_m4_shared_main_rapier.gd",
+                "godot/tests/test_object_shard_m4_workbench_completion.gd",
+                "tools/objectshard/package_windows_workbench.py",
+                "tools/objectshard/process_resources.py",
+                "tools/objectshard/qualify_workbench.py",
+                "tools/objectshard/qualify_workbench_zip.py",
+                "tools/objectshard/test_process_resources.py",
+                "tools/objectshard/test_workbench_package_inputs.py",
+                "tools/objectshard/test_workbench_qualification.py",
+                "tools/objectshard/verify_workbench_package.py"
+              ]
+            },
+            "native_source_inputs": {
+              "captured": true,
+              "changed_paths_to_f5b7": [
+                "godot/native_extension/cyber_native_cell_world.cpp",
+                "godot/native_extension/cyber_object_shard_lab.cpp",
+                "native/include/cybersand/object_shard_coordinator.hpp",
+                "native/src/object_shard_coordinator.cpp"
+              ]
+            }
+          },
+          "path": "headless/qualification.json",
+          "runtime": {
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "native_sha256": "7fc1689c5287f56d4f0a620d4c3cf6a37716dcd279b3152740bd453ad5aa88da",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          "sha256": "98d2ae4030f6474188f4f30185d104809d33fdbf767a0b21dc76acafc412dba5",
+          "source_commit": "f4a2176f1f7688273956c2f25821488c227e90f3",
+          "source_tree": "874a76b43b6c740ce38dccd1b6b5044d5ebf4789",
+          "status": "failed"
+        }
+      ],
+      "run": 45435990124,
+      "sha256": "df6d6171274846cd8498a55e96b7c537957e0cbd123cfa1227bf0bfbadd9eabf",
+      "source": "f4a2176f1f7688273956c2f25821488c227e90f3",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45435990124/artifacts/14943033574"
+    },
+    {
+      "bytes": 442,
+      "id": 14942530356,
+      "original_archive_verified": true,
+      "reports": [
+        {
+          "bytes": 368,
+          "cases": [],
+          "cases_passed": 0,
+          "cases_requires_display": 0,
+          "cases_total": 0,
+          "failures": [
+            "[WinError 206] The filename or extension is too long"
+          ],
+          "input_applicability": {
+            "executed_script_inputs": {
+              "captured": false,
+              "changed_paths_to_f5b7": null
+            },
+            "native_source_inputs": {
+              "captured": false,
+              "changed_paths_to_f5b7": null
+            }
+          },
+          "path": "headless/qualification.json",
+          "runtime": null,
+          "sha256": "3f9b17d0d29c146ed38033a1a43fd1f10714a799108c15c8534695f42f2b2ffc",
+          "source_commit": "f4a2176f1f7688273956c2f25821488c227e90f3",
+          "source_tree": null,
+          "status": "failed"
+        }
+      ],
+      "run": 45435990124,
+      "sha256": "7274db896aedf863a8361164736f44b539ddcade9a63270f938c474ac6cd504b",
+      "source": "f4a2176f1f7688273956c2f25821488c227e90f3",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45435990124/artifacts/14942530356"
+    }
+  ],
+  "classification": {
+    "45435990124": "Original failed predecessor; Windows command-line length stopped all execution, Linux physical/receipt/profile defects remained. Both execution and native input maps differ from f5b7.",
+    "45457037610": "Original partial results: Linux headless pass, repeated headless Workbench completion failure during report requested with graphical profiles, and Windows stale-publication assertion failure. Native inputs match f5b7 but 13 script/tool inputs differ.",
+    "physical_gpu": "No physical owner performance acceptance. Hosted submissions and semantic progression are separate observations.",
+    "successor_applicability": "Matching named cases later passed on f5b7 Windows, but f5b7 Linux stopped during engine acquisition, so current Linux execution is still required."
+  },
+  "comparison_source": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+  "comparison_tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+  "review_date": "2026-11-25",
+  "schema": "objectshard-m4-earlier-platform-recovery-v1",
+  "scope": "Independent original platform archive/report/log recovery; native jobs separately reviewed. Later Windows success does not requalify changed Linux execution inputs.",
+  "total_log_hashes_verified": 127
+}

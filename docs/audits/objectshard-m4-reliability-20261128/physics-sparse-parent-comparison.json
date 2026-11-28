@@ -1,0 +1,200 @@
+{
+  "after": {
+    "actual_physical_segments": 1440,
+    "cases": [
+      {
+        "completed_native_intervals": 120,
+        "healthy": true,
+        "initial_domain": {
+          "com_x": 1.5,
+          "com_y": 1.5,
+          "height": 3,
+          "inertia": 0.166666666666667,
+          "mass": 1.0,
+          "motion_radius": 2.12132034355964,
+          "origin_x": 26.0,
+          "origin_y": 3.0,
+          "rectangles": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "rotation_radius": 4.24264068711929,
+          "width": 3
+        },
+        "initial_horizontal_velocity": 0.5,
+        "maximum_com_motion": 0.971254706382751,
+        "maximum_reference_error": 0.0,
+        "maximum_segment_rotation": 0.232285737991333,
+        "maximum_storage_origin_motion": 0.971254706382751,
+        "native_instance_id": -9223372008014739994,
+        "peak_angular_velocity": 55.8112716674805,
+        "storage_case": "tight"
+      },
+      {
+        "completed_native_intervals": 120,
+        "healthy": true,
+        "initial_domain": {
+          "com_x": 1.5,
+          "com_y": 1.5,
+          "height": 3,
+          "inertia": 0.166666666666667,
+          "mass": 1.0,
+          "motion_radius": 2.12132034355964,
+          "origin_x": 26.0,
+          "origin_y": 3.0,
+          "rectangles": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "rotation_radius": 4.24264068711929,
+          "width": 28
+        },
+        "initial_horizontal_velocity": 0.5,
+        "maximum_com_motion": 0.971254706382751,
+        "maximum_reference_error": 0.0,
+        "maximum_segment_rotation": 0.232285737991333,
+        "maximum_storage_origin_motion": 0.971254706382751,
+        "native_instance_id": -9223372007930853912,
+        "peak_angular_velocity": 55.8112716674805,
+        "storage_case": "eroded_near"
+      },
+      {
+        "completed_native_intervals": 120,
+        "healthy": true,
+        "initial_domain": {
+          "com_x": 26.5,
+          "com_y": 1.5,
+          "height": 3,
+          "inertia": 0.166666666666667,
+          "mass": 1.0,
+          "motion_radius": 2.12132034355964,
+          "origin_x": 1.0,
+          "origin_y": 3.0,
+          "rectangles": [
+            26,
+            1,
+            1,
+            1
+          ],
+          "rotation_radius": 4.24264068711929,
+          "width": 28
+        },
+        "initial_horizontal_velocity": 0.5,
+        "maximum_com_motion": 0.971254706382751,
+        "maximum_reference_error": 6.1154249124229e-05,
+        "maximum_segment_rotation": 0.232285737991333,
+        "maximum_storage_origin_motion": 6.49791097640991,
+        "native_instance_id": -9223372007846967834,
+        "peak_angular_velocity": 55.8112716674805,
+        "storage_case": "eroded_far"
+      }
+    ],
+    "checks": 6223,
+    "engine": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "failures": [],
+    "native_pose_acknowledgements": 1440,
+    "native_sha256": "547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0",
+    "platform": "Linux",
+    "schema": "objectshard-m4-sparse-parent-motion-v1",
+    "scope": "tight storage and two ordinary endpoint-eroded parents share one occupied-cell world trajectory; actual same-World promotion, geometry ownership, natural Rapier collision, every native ACK and single semantic clock"
+  },
+  "before": {
+    "completion": {
+      "actual_physical_segments": 361,
+      "cases": [
+        {
+          "completed_native_intervals": 90,
+          "healthy": false,
+          "initial_horizontal_velocity": 0.5,
+          "maximum_segment_rotation": 0.0326615013182163,
+          "native_instance_id": -9223372008014739994,
+          "peak_angular_velocity": 55.8112716674805
+        }
+      ],
+      "checks": 1350,
+      "engine": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "failures": [
+        "natural collision must yield bounded actual pose: { \"ok\": false, \"outcome\": \"SegmentMotionEnvelopeExceeded\", \"session\": 1, \"motion\": { \"reason\": \"SegmentMotionEnvelopeExceeded\", \"detail\": { \"id\": 1, \"delta\": 0.00416666666667, \"translation\": 6.29238796234131, \"rotation\": 0.23228553310037, \"corner_motion\": 12.8336079076359 } } }",
+        "gravity fall, ledge impact and post-impact motion complete 120 native intervals",
+        "native acknowledgements cover genuine collision-induced rotation beyond old ceiling"
+      ],
+      "native_pose_acknowledgements": 360,
+      "platform": "Linux",
+      "schema": "objectshard-m4-sparse-parent-erosion-probe-v1",
+      "scope": "real same-World material debit, real gravity/ledge collision, every actual Rapier pose natively acknowledged, exact material inventory and single semantic clock"
+    },
+    "native_sha256": "aa015a895c091f67d6d07a7f6dab6b18d6e1e55247ff880c10fcef7425a2149b",
+    "source_commit": "93cbd09f8725fc019ef038ea8982e676209cddc2",
+    "sparse_parent": {
+      "com_x": 26.5,
+      "com_y": 1.5,
+      "height": 3,
+      "inertia": 0.166666666666667,
+      "mass": 1.0,
+      "origin_x": 1.0,
+      "origin_y": 3.0,
+      "rectangles": [
+        26,
+        1,
+        1,
+        1
+      ],
+      "width": 28
+    },
+    "sparse_refusal": {
+      "angular": 55.8112716674805,
+      "com_translation": 0.287658751010895,
+      "motion": {
+        "motion": {
+          "detail": {
+            "corner_motion": 12.8336079076359,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.232285533100367,
+            "translation": 6.29238796234131
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1
+      },
+      "origin_translation": 6.29238796234131,
+      "rotation": 0.232285533100367,
+      "step": 360
+    }
+  },
+  "final_fixture": "godot/tests/test_object_shard_m4_sparse_parent_motion.gd",
+  "original_probe": "physics-sparse-parent-original-probe.gd",
+  "raw_logs_sha256": {
+    "sparse-parent-erosion-before.log": "8ca340583733be1abecc7b3cc9cd1ad424e4c8183c58a18cad63e84db0cac376",
+    "sparse-parent-motion-final.log": "e3ab5ae3be5e68bd5a53b9c34108b32c831df96e2142f58e4059ea2c5c35dbdc"
+  },
+  "schema": "objectshard-sparse-parent-comparison-v1",
+  "scope": "Local Linux/headless actual native/Rapier; representative ordinary endpoint erosion, not owner pointer-trace reproduction",
+  "source_commit": "062670c1e75c43a0e72fc3727fbe0f62bb3736f6"
+}

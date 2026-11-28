@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "native_source": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "package_delta": "f4801ac6675631fcecad5926fc0cac5cce5fe778",
+  "sha256": {
+    "hosted-f11-recomputed.json": "99feaad46ca83dbb7bb048ac312e330382d5e151dd201e446ed452b48d27b91e",
+    "independent-performance-review.md": "574dc7750d3d92bf37af31a1a3019e6acec2ef28ce62ea011efe57e55b0999d3",
+    "package-delta-binding.json": "e3551fb2f83ba569b444b6aa011befa16d94652621a6fba60efa284755aeb944",
+    "recompute.py": "f83ff6e4f3ed660ab840d58944a4870ae942422b3522b92a448f1f4503af4938",
+    "recomputed-evidence.json": "ee319c5dddd14cd0f62874fc21a5a23a4c3d701be701248d7b01902a9254968f",
+    "targeted-timing/01-dormant_twelve-pre_timer.json": "c66f536d2700676b5c3fc861d0494c53420ce10b35ab6415184a659347d60358",
+    "targeted-timing/01-dormant_twelve-pre_timer.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/02-dormant_twelve-final.json": "bddcce4c6f6a139378a3716ccba38b2079ccb1854ad9e0551b28abc96922eb0e",
+    "targeted-timing/02-dormant_twelve-final.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/03-wake_burst_twelve-final.json": "e054a924ca3f9b191c573ef2c331c5043a6493da464d1c89c76d483433242e52",
+    "targeted-timing/03-wake_burst_twelve-final.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/04-wake_burst_twelve-pre_timer.json": "163d02c2652764464e5b72ab6b82852796f74ca8bb0190fc9d7707ac03eef3bc",
+    "targeted-timing/04-wake_burst_twelve-pre_timer.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/05-dormant_twelve-final.json": "8f7302b0177f666fbed659697cf1897adcebaf3d154a93d52793d016390661d6",
+    "targeted-timing/05-dormant_twelve-final.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/06-dormant_twelve-pre_timer.json": "14decd5bca3d20f7338fbc37787f1619692fa582741bbc538a3255886e7478ed",
+    "targeted-timing/06-dormant_twelve-pre_timer.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/07-wake_burst_twelve-pre_timer.json": "f3aa13353299e42963980678fba2fca1cc1398afc1b4994efea83d1b9f54d55d",
+    "targeted-timing/07-wake_burst_twelve-pre_timer.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/08-wake_burst_twelve-final.json": "ebb024f37fb0bb679cca9f1a861d28c82a268e36297dc80ec4ca9bc17052ccb6",
+    "targeted-timing/08-wake_burst_twelve-final.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "targeted-timing/plan.json": "a3d8d7d46bbf9eae861789b5b243963033e372c30cb79a04a3847efed734fc01",
+    "targeted-timing/results.json": "4aac088fcfaa2fe3ac57682afacf0b2404677cbe9440708f0a26dcaa87f7a805"
+  }
+}

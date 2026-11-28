@@ -1,0 +1,70 @@
+{
+  "schema": "objectshard-independent-review-c-windows-verdict-v1",
+  "utc": "2026-11-22T07:10:46.211178+00:00",
+  "reviewer": "review_custody, separate from implementation and artifact retrieval",
+  "review_scope": "Performance methodology, source/runtime custody, immutable Windows delivery and mergedown gates",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "source_tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "status": "Windows experimental delivery independently verified; overall Linux/source/native qualification audit pending",
+  "no_confirmed_unrepaired_class_a_b_within_reviewed_scope": true,
+  "findings": [
+    {
+      "id": "CUST-01",
+      "severity": "B before repair",
+      "status": "closed on committed source and actual rendered Windows evidence",
+      "repair": "Original scene-intent timestamp preserved through host admission; 153 ordered actual action rows and input/admission completion distributions independently recomputed; actual input-to-frame_post_draw observations retained."
+    },
+    {
+      "id": "CUST-02",
+      "severity": "B before repair",
+      "status": "closed on committed source and actual delivered Windows launcher evidence",
+      "repair": "Strict package-only probes renamed into probe_ scope; ordinary 359-case discovery unchanged; both delivered launchers pass in all four extraction path cases."
+    }
+  ],
+  "windows_owner_zip": {
+    "artifact_id": 14743829036,
+    "filename": "objectshard-windows-evaluator.zip",
+    "bytes": 93159740,
+    "sha256": "47c55fecfe27272c157c9c7bdbdb864bb78166415c61ea2d8ccc74f502df9015",
+    "url": "https://github.com/techrote/cybersand/actions/runs/44995374918/artifacts/14743829036"
+  },
+  "verified_evidence": {
+    "native_inputs": 116,
+    "delivered_manifest_files": 1098,
+    "exact_committed_source_members": 1083,
+    "source_process_cases": 40,
+    "delivered_package_process_cases": 31,
+    "path_cases": 4,
+    "shipped_commands": 12,
+    "headless_lab_budget_checks": 56,
+    "rendered_lab_budget_checks": 80,
+    "distinct_rendered_images": 22,
+    "visually_inspected_m3_images": [
+      "falling",
+      "settled-after-erosion",
+      "external-fire"
+    ]
+  },
+  "limits_requiring_final_handover": [
+    "Actual 153-action adversarial rendered input-to-frame_post_draw p99/max: 1.531200/1.547133 s. Main callback p99 of 8.251 ms is a different measure and cannot conceal backlog.",
+    "Same-source Windows worker pair: 19.5306 semantic ticks/sec with the 4 ms soft pump versus 8.25621 control; ratio 2.36557. No target GPU frame-rate or universal speedup claim.",
+    "Four-millisecond receipt pump actual measured maximum: 5.783 ms. The current receipt may exceed the loop budget.",
+    "Long evidence reaches native tick 3600 with 3599 completed host intervals, 540 queued actions and 14,390 actual Rapier steps. Report both clocks accurately.",
+    "Native matrix has a 6,277,280-byte accounted C++ peak and a 14,176-byte margin below 6 MiB; excludes Godot/Rapier/GPU/mailboxes and is not universal canvas scalability.",
+    "Selected Windows renderer is ANGLE Microsoft Basic Render Driver, not owner NVIDIA hardware.",
+    "Ordinary production provenance remains six source mismatches; Draft green skips the full provenance step. No mergedown or retained runtime publication authorized.",
+    "Rehearsal uses its own exclusive worker and one native World; ordinary Workbench attachment and PUBPRES reconciliation remain separate."
+  ],
+  "physical_owner_acceptance": "Not established",
+  "report_files_sha256": {
+    "final-source-review.json": "3a0299b67cd501d33be655a09a94efb9c3c7ad4ec83bc25f3682219b218b3541",
+    "final-source-inventory.json": "f4504f8c3c7fc4141f7dead59dd6fbe0ae039132a0367245dedd91bcf4413809",
+    "windows-crossbuild-review.json": "e4b1dabcad207a90c16e3906d9b3d6dda59e9a6dd0cb3825e16d26b803c08e7b",
+    "windows-crossbuild-remote.json": "6da09e91cbc8e597fc5c928d07f81fbc7daa487141dca89865d40e5b8f0a8ce5",
+    "windows-delivered-archive-review.json": "d34b0da6979e2fbf2e675ff0e2dc1ecc2ca55bbf9aa71c912de08b821dbba000",
+    "windows-execution-review.json": "3d477306add1564da36227413bbf701ab0c8a4d70c338e4ab4f242432e49b844",
+    "windows-performance-review.json": "c9929d060bc6da0d702afe4282f4f1d145ecc6da18cfc1449da5ce5717dad4ef",
+    "windows-delivery-remote.json": "677e8b9d385ed35b16c50a5040482f353911f16566251935e3361294020aa71f",
+    "mergedown-gates.json": "675013bab21887696d9c90e588b394ab0575b8735b30bc8f650b8da127e08318"
+  }
+}

@@ -1,0 +1,363 @@
+{
+  "schema": "independent-final-published-physics-review-v2",
+  "reviewer": "/root/review_physics; reviewer B; no implementation ownership",
+  "utc": "2026-11-22T07:41:56.533253+00:00",
+  "reviewed_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "reviewed_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "status": "Exact published-source review and all required local actual-runtime reruns complete; no unresolved Class A/B finding in the reviewed supported paths. Fresh final platform campaign pending.",
+  "class_a_findings": [],
+  "class_b_findings": [],
+  "resolved_findings": [
+    {
+      "original_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+      "classification": "Class B",
+      "finding": "F2 bypassed native disposal, worker join and RID teardown; re-entry overlapped old/new Worlds, and launcher inherited disabled default close handling.",
+      "adverse_evidence": "build/review-physics/navigation-68235b12/finding.json",
+      "resolution": "Exacte034 optional navigation handshake retains current scene until successful disposal and join, restores prior quit policy, then fences async completion by current scene identity. Original unchanged weak-reference reproduction22/0 and additional completion controls27/0 pass."
+    }
+  ],
+  "totals": {
+    "parent_test_suites": 10,
+    "parent_assertions": 651,
+    "child_assertions": 18,
+    "failures": 0,
+    "assertion_executions_including_child": 669
+  },
+  "groups": {
+    "original_seven_physics_input_recovery_scene_suites": {
+      "checks": 467,
+      "failures": 0
+    },
+    "independent_navigation_lifecycle_and_fences": {
+      "checks": 49,
+      "failures": 0
+    },
+    "maintained_navigation_parent": {
+      "checks": 135,
+      "failures": 0
+    },
+    "maintained_actual_quit_child": {
+      "checks": 18,
+      "failures": 0
+    }
+  },
+  "execution": [
+    {
+      "name": "import",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--editor",
+        "--quit"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 7.69273777899798,
+      "log": "build/review-physics/final-e034f229/import.log",
+      "log_sha256": "6e65402d956ff664255f3a95040dd69e7b63417075dea00f8875816896ab6e28",
+      "natural_completion_footers": []
+    },
+    {
+      "name": "review_physics_adversary",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/review_physics_adversary.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.6687961889983853,
+      "log": "build/review-physics/final-e034f229/review_physics_adversary.log",
+      "log_sha256": "f0d40672c33ed6f8cb8f3d30b550399827fdaf25216aba56a5f1fd32e101d8da",
+      "natural_completion_footers": [
+        {
+          "schema": "review-physics-adversary-v1",
+          "checks": 52,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "review_live_admission",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/review_live_admission.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.9671934869984398,
+      "log": "build/review-physics/final-e034f229/review_live_admission.log",
+      "log_sha256": "7c5c14f8e272a39237619d7ea99d168910125255c32f5cf702cc8ac904f153e5",
+      "natural_completion_footers": [
+        {
+          "schema": "independent-live-admission-review-v1",
+          "checks": 24,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "test_object_shard_physics_identity",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/test_object_shard_physics_identity.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.4192705140012549,
+      "log": "build/review-physics/final-e034f229/test_object_shard_physics_identity.log",
+      "log_sha256": "f6b79cf9c7af79d1420b15afa09addd89b5630fbb349e0e725f059c7fd022b58",
+      "natural_completion_footers": [
+        {
+          "schema": "objectshard-physics-identity-test-v1",
+          "checks": 70,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "test_object_shard_incremental_motion",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/test_object_shard_incremental_motion.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.5183516550023342,
+      "log": "build/review-physics/final-e034f229/test_object_shard_incremental_motion.log",
+      "log_sha256": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39",
+      "natural_completion_footers": [
+        {
+          "schema": "objectshard-incremental-motion-test-v1",
+          "checks": 137,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "test_object_shard_worker_input_fences",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/test_object_shard_worker_input_fences.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.9710474550083745,
+      "log": "build/review-physics/final-e034f229/test_object_shard_worker_input_fences.log",
+      "log_sha256": "5818f6fea75558d5f92c20eab7720ff256400d198953b8433fcc49d9d19da06b",
+      "natural_completion_footers": [
+        {
+          "schema": "objectshard-worker-input-fences-v1",
+          "checks": 46,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "test_object_shard_worker_recovery",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/test_object_shard_worker_recovery.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.0755853440059582,
+      "log": "build/review-physics/final-e034f229/test_object_shard_worker_recovery.log",
+      "log_sha256": "ae84ed58a172df30fc9494460d74bd058d6b690b204e33771089cd02f0da8780",
+      "natural_completion_footers": [
+        {
+          "schema": "objectshard-worker-recovery-test-v1",
+          "checks": 63,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "test_object_shard_continuous_play",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/test_object_shard_continuous_play.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.004992752001272,
+      "log": "build/review-physics/final-e034f229/test_object_shard_continuous_play.log",
+      "log_sha256": "552509b0d57fa803615768573527c872b6dde5d3f47a89e8acbc3b5006300cd8",
+      "natural_completion_footers": [
+        {
+          "schema": "objectshard-continuous-play-test-v1",
+          "checks": 75,
+          "failures": 0,
+          "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+        }
+      ]
+    },
+    {
+      "name": "review_navigation_lifecycle",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/review_navigation_lifecycle.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 10.353025132004404,
+      "log": "build/review-physics/final-e034f229/review_navigation_lifecycle.log",
+      "log_sha256": "265a7d586908a0fdd297ca7944917b613085befdf06639a651f7e18e6b2b6a10",
+      "natural_completion_footers": [
+        {
+          "schema": "independent-f2-navigation-lifecycle-v1",
+          "checks": 22,
+          "failures": 0,
+          "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+        }
+      ]
+    },
+    {
+      "name": "review_navigation_fences",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/review_navigation_fences.gd"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.8705912650038954,
+      "log": "build/review-physics/final-e034f229/review_navigation_fences.log",
+      "log_sha256": "e26932e0cbbc430e008222eb79b3e421b4b791f0a4092950fa48b111757ae37e",
+      "natural_completion_footers": [
+        {
+          "schema": "independent-navigation-completion-fences-v1",
+          "checks": 27,
+          "failures": 0
+        }
+      ]
+    },
+    {
+      "name": "test_object_shard_worker_navigation",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/project",
+        "--script",
+        "res://tests/test_object_shard_worker_navigation.gd",
+        "--",
+        "--output=/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-physics/final-e034f229/maintained-navigation.json"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 12.302302773008705,
+      "log": "build/review-physics/final-e034f229/test_object_shard_worker_navigation.log",
+      "log_sha256": "7de9827b814186787d3bea73fd64b0b3a0a9779aa478831bb1824238529458d1",
+      "natural_completion_footers": [
+        {
+          "schema": "objectshard-worker-navigation-test-v1",
+          "checks": 135,
+          "failures": 0,
+          "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+        }
+      ]
+    }
+  ],
+  "child_receipt": {
+    "path": "build/review-physics/final-e034f229/maintained-navigation-quit-child.json",
+    "sha256": "1ae144758019d2333ddacd5b7dc9b446529c277d98fb7d96cc325f2ce1cb91f8",
+    "schema": "objectshard-worker-navigation-quit-child-v1",
+    "checks": 18,
+    "failures": 0,
+    "source_revision": "e034f2294663e0485cfb9adcc8ada46a6e977cee"
+  },
+  "source_binding": {
+    "file": "build/review-physics/final-e034f229/source-identity.json",
+    "sha256": "b2c1031770fc8355861c1ec3f0eea1fbadeed965e55a9c5ce9910e59146aa7bb",
+    "candidate_files": 57,
+    "source_mismatches_after_execution": [],
+    "independent_probe_mismatches_after_execution": [],
+    "native": {
+      "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+      "copy_source": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/linux/14744731008/libcybersand_native.linux.x86_64.so",
+      "provenance": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/linux/14744731008/linux-native-provenance.json",
+      "provenance_sha256": "2a1642241607f420609875d08cfb717ae10c0425006a34e6c67ccbe4e880e757",
+      "built_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+      "native_input_count": 116,
+      "build_contract_count": 5,
+      "input_mismatches_against_final": [],
+      "scope": "Actual fresh682 artifact reused with all116 native compilation inputs+5 build contracts equal to finale034. This local run does not claim a newe034 native rebuild; final CI remains separate."
+    },
+    "engine": {
+      "path": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "key_conclusions": [
+    "Actual native custody, terrain, activation and exact geometry barriers retain their original physics52 evidence on exacte034.",
+    "Applied segment receipts, exclusive main-thread RIDs, native semantic clock and physical intervals remain paired; duplicates/retired identities do not grant extra solver steps.",
+    "Rotating destructive edits preserve stable lattice origin and point velocity within declared floating-point tolerance while native mass,COM,inertia and backend readback agree.",
+    "Visible material and accepted pose remain coherent, and an input witness captured from the old view cannot retarget unseen newer ownership.",
+    "Independent live24 verifies actual main-loop moving owned-cell cuts with pump0/4000, original timestamp retention through bounded UI backpressure, and no fabricated headless presented timing.",
+    "Actual autoload F2 closes active pending and naturally sleeping owners before launcher entry/re-entry; old native ownership and RIDs no longer remain live.",
+    "Independent fences prove repeated F2 remains one closing owner, early/stale completion refuses, deferred old completion cannot replace its successor, and both prior quit policies restore exactly.",
+    "Maintained navigation135+18 actual child passes opening/reset/held/delivery-fault/window-close paths; injected terminal-delivery faults are explicitly distinguished from native material-law failures.",
+    "The first import on exact published source passed directly with no error/warning lines in any completed local test log. Earlier two local repair-first-importSIGABRT incidents and their successful exact-byte repeat imports remain retained as negative history."
+  ],
+  "limits": [
+    "This actual local runtime copies the fresh682 Linux native artifact and proves all116 compilation inputs+5 build contracts equal toe034. It is not a newly compiled e034 runtime; new final source-built platform CI remains required.",
+    "Fresh baseline682 Linux/Windows campaign audits remain historical baseline evidence and include the original F2 blocker. They do not qualify repaired sourcee034.",
+    "Unexpected externally forced SceneTree replacement/free of a still-live owner remains unsupported; this review does not claim universal destructor/_exit_tree cleanup.",
+    "Headless tests do not establish monitor scanout, target display FPS, physical Windows11/NVIDIA owner acceptance, ordinary CyberSimulationWorker adoption, merge/Ready/default promotion."
+  ],
+  "fresh_platform_evidence": {
+    "run_id": 44999117090,
+    "status": "pending; parent/C provide completed artifacts later"
+  },
+  "input_sha256": {
+    "build/review-physics/final-e034f229/review-navigation-fences-result.json": "8ba0d86d7f983a5e460687ec09f9063f1361781ebda4670302e907aa98f3b3d2",
+    "build/review-physics/final-e034f229/review_live_admission.log": "7c5c14f8e272a39237619d7ea99d168910125255c32f5cf702cc8ac904f153e5",
+    "build/review-physics/final-e034f229/review_navigation_fences.log": "e26932e0cbbc430e008222eb79b3e421b4b791f0a4092950fa48b111757ae37e",
+    "build/review-physics/final-e034f229/test_object_shard_physics_identity.log": "f6b79cf9c7af79d1420b15afa09addd89b5630fbb349e0e725f059c7fd022b58",
+    "build/review-physics/final-e034f229/maintained-navigation.json": "1a43665e444873ede4b872a000bea33dcaff8ff89fb04e3510162dac0d9e6e94",
+    "build/review-physics/final-e034f229/execution-receipts.json": "84fdf9feab423a5a6f46c8c06b2c70af87f483020bf1c97ad8731d27a2aa05c3",
+    "build/review-physics/final-e034f229/import.log": "6e65402d956ff664255f3a95040dd69e7b63417075dea00f8875816896ab6e28",
+    "build/review-physics/final-e034f229/review-live-admission-result.json": "0bf125bcc64dc118671a23c76a134c632c885c2e2b8a96436b83bf2b107f8252",
+    "build/review-physics/final-e034f229/test_object_shard_continuous_play.log": "552509b0d57fa803615768573527c872b6dde5d3f47a89e8acbc3b5006300cd8",
+    "build/review-physics/final-e034f229/test_object_shard_worker_navigation.log": "7de9827b814186787d3bea73fd64b0b3a0a9779aa478831bb1824238529458d1",
+    "build/review-physics/final-e034f229/test_object_shard_incremental_motion.log": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39",
+    "build/review-physics/final-e034f229/test_object_shard_worker_recovery.log": "ae84ed58a172df30fc9494460d74bd058d6b690b204e33771089cd02f0da8780",
+    "build/review-physics/final-e034f229/maintained-navigation-quit-child.json.log": "ddefc974fe444df2ec1b16e3787b412082e463e759cafa461ce0398197f63acf",
+    "build/review-physics/final-e034f229/review-navigation-result.json": "7dfaaf57b6210ece4d79baf1b0404c647400f9dd976ec11375a8122f1eca3e06",
+    "build/review-physics/final-e034f229/review_navigation_lifecycle.log": "265a7d586908a0fdd297ca7944917b613085befdf06639a651f7e18e6b2b6a10",
+    "build/review-physics/final-e034f229/review-physics-adversary-result.json": "078e6f6157bf674261120388a10c3068180008a6766f35446c2eaee0a91f2232",
+    "build/review-physics/final-e034f229/test_object_shard_worker_input_fences.log": "5818f6fea75558d5f92c20eab7720ff256400d198953b8433fcc49d9d19da06b",
+    "build/review-physics/final-e034f229/source-identity.json": "b2c1031770fc8355861c1ec3f0eea1fbadeed965e55a9c5ce9910e59146aa7bb",
+    "build/review-physics/final-e034f229/review_physics_adversary.log": "f0d40672c33ed6f8cb8f3d30b550399827fdaf25216aba56a5f1fd32e101d8da",
+    "build/review-physics/final-e034f229/maintained-navigation-quit-child.json": "1ae144758019d2333ddacd5b7dc9b446529c277d98fb7d96cc325f2ce1cb91f8",
+    "build/review-physics/run_final_e034_review.py": "8fc3471f0fb48692683293f25739a132027fa8b86d351da3587e170b5530b45d"
+  },
+  "product_files_changed_by_reviewer": []
+}

@@ -1,0 +1,103 @@
+name: ObjectShard M4 focused physical Godot acceptance
+on:
+  push:
+    branches: [experiment/objectshard-m4-fps-edit-repair-20261123]
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+jobs:
+  exact-source-linux-physics:
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-fast]') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Authenticate source and pinned Rapier
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+      - name: Build actual GDExtension at exact HEAD
+        shell: bash
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          python tools/objectshard/native_receipt.py snapshot --receipt evidence/native-source.json --expected-source-sha "${{ github.sha }}"
+          tools/build_pinned_godot_cpp.sh linux > evidence/godot-cpp.log 2>&1
+          tools/build_native_extension.sh > evidence/native-extension.log 2>&1
+          test -s "$CYBERSAND_NATIVE_OUTPUT"
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          sha256sum "$CYBERSAND_NATIVE_OUTPUT" > evidence/native-library-sha256.txt
+          tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
+      - name: Install pinned Godot 4.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" 'https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh > evidence/display.log 2>&1
+      - name: Actual Godot 4.7 same-World and Rapier physical matrix
+        shell: bash
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -uo pipefail
+          engine="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          xvfb-run --auto-servernum timeout 120s "$engine" --headless --editor --path godot --quit > evidence/import.log 2>&1 || true
+          failed=0
+          for test in \
+             test_object_shard_m4_same_world_extension.gd \
+             test_object_shard_m4_shared_main_rapier.gd \
+             test_object_shard_m4_compact_motion_packets.gd \
+             test_object_shard_m4_same_world_physical_chain.gd \
+             test_object_shard_m4_workbench_port.gd \
+             test_object_shard_workbench_contract.gd; do
+            name="${test%.gd}"
+            xvfb-run --auto-servernum timeout 300s "$engine" --headless --path godot --script "res://tests/$test" > "evidence/$name.log" 2>&1
+            status=$?
+            echo "$name $status" | tee -a evidence/test-results.txt
+            tail -n 40 "evidence/$name.log" || true
+            if (( status != 0 )); then failed=1; fi
+          done
+          echo 'Running the same 240-tick, 3-Rapier-body native worker workload under the pinned engine'
+          xvfb-run --auto-servernum timeout 300s "$engine" --headless --path godot --script res://tests/profile_object_shard_worker.gd -- --notifications=off --pump-usec=0 --output="$PWD/evidence/active-body-profile.json" > evidence/active-body-profile.log 2>&1
+          profile_status=$?
+          grep 'objectshard-worker-scheduling-profile-v1' evidence/active-body-profile.log | tail -n 1 || true
+          echo "active_body_performance $profile_status" >> evidence/test-results.txt
+          if (( profile_status != 0 )); then failed=1; fi
+          exit "$failed"
+      - name: Retain exact-source original logs including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: objectshard-m4-physical-fast-${{ github.sha }}-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 30

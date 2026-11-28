@@ -1,0 +1,211 @@
+{
+  "schema": "objectshard-m4-live-edit-specialist-b-review-v1",
+  "reviewer": "Specialist B \u2014 Workbench interaction and scheduling",
+  "recorded_utc": "2026-11-28T06:25:21.359312+00:00",
+  "scope": "Local uncommitted implementation-delta qualification. Exact-source hosted and extracted-package qualification are separate and supersede these development runs.",
+  "base_commit": "327afc58227b246390b19c275f58df77ae2dd734",
+  "source_inputs_at_review": {
+    "godot/scripts/object_shard_live_edit_footprint.gd": "4febd5f13dcde78ee6debd317d633f40ac02bf36ca5cc3cdd3ba670c2b605061",
+    "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+    "godot/scripts/object_shard_m4_workbench_port.gd": "0c6fc2f1d95f1fe05d44c7a61654b106c6aa73f6fa06104e2c796506552a430c",
+    "godot/scripts/object_shard_workbench_overlay.gd": "ddb7a3bc79810818ffe703644e9d4066c26a1289a519ac6ec8a91c4b6e7fa23d",
+    "godot/scripts/shared_workbench.gd": "90a6f63bfdb5c0754091064d7bed486414ac78782d580b369e73f24510a70f40",
+    "godot/scripts/simulation_worker.gd": "e04f7d5012c98dc447a7a13332475e2422d893df9881a45c81ec18f2f156d66b",
+    "godot/scripts/workbench_paint_editor_controller.gd": "4b4e5137d987ad78db3c550aa5032d9728d3b1ec6a02668b95d9957ffae3b5c7",
+    "godot/tests/test_object_shard_live_edit_contract.gd": "f0a3cf01934dff64f7368b8fd3a3765ae1b3f52f482869604193babf3d7ab3d2",
+    "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd": "4b38614d2f61803668b92665b983d2b8828f423bde205701214370a3739877ee"
+  },
+  "local_results": [
+    {
+      "log": "interaction-port-smoke.log",
+      "log_sha256": "42285227409ccee4b37b19c291565769e4fa3dc4bdeef8ec52aaf3b0bca2247b",
+      "phase": "retained native-delivery gate before full integration",
+      "schema": "objectshard-m4-edit-delivery-fence-v1",
+      "checks": 36,
+      "failures": [],
+      "declared_source": ""
+    },
+    {
+      "log": "interaction-workbench-port-smoke.log",
+      "log_sha256": "3206782feeb2496c17e86620210bb620366f3558e08ee1c40907a77d34e8f7b7",
+      "phase": "retained Workbench transport gate before full integration",
+      "schema": "objectshard-m4-workbench-contract-v1",
+      "checks": 34,
+      "failures": 0,
+      "declared_source": "not claimed by this value-only or initial smoke test"
+    },
+    {
+      "log": "interaction-completion-smoke.log",
+      "log_sha256": "b74d51cceae7103a4fc8327acbddd8323c14e5719927a32e5e5d236a6a973feb",
+      "phase": "retained ordinary Workbench completion with baseline native library",
+      "schema": "objectshard-m4-workbench-completion-v1",
+      "checks": 185,
+      "failures": [],
+      "declared_source": ""
+    },
+    {
+      "log": "interaction-fragment-retained-bound.log",
+      "log_sha256": "6117a039572992396dee173944cb9cbfa3e5936fb7748b6293b176031f23d7dd",
+      "phase": "real new-native fragment/reabsorption retained regression",
+      "schema": "objectshard-m4-fragment-reabsorption-v1",
+      "checks": 134,
+      "failures": [],
+      "declared_source": "327afc58227b246390b19c275f58df77ae2dd734+live-edit-local-delta"
+    },
+    {
+      "log": "interaction-fuzz-strict.log",
+      "log_sha256": "74c8c348bb10a1fc73533fbcfa17d99d8be94f60ef81f2e238d9b6d5b2ce30cb",
+      "phase": "real new-native seeded lifecycle fuzz with expanded tool premise",
+      "schema": "objectshard-m4-lifecycle-fuzz-v1",
+      "checks": 1007,
+      "failures": [],
+      "declared_source": "327afc58227b246390b19c275f58df77ae2dd734+live-edit-local-delta"
+    },
+    {
+      "log": "interaction-batch-contract-strict.log",
+      "log_sha256": "f16bc5f0bf6c11855a8430e1fef9f06592aa142939a802852db2680972091e96",
+      "phase": "final bounded hostile transport contract, value-only",
+      "schema": "objectshard-live-edit-transport-contract-v1",
+      "checks": 60,
+      "failures": [],
+      "declared_source": "not claimed by this value-only or initial smoke test"
+    },
+    {
+      "log": "interaction-live-input-strict.log",
+      "log_sha256": "ae82326feba8d30685cf3dfc9690e7f8d0c216e5f4fa9d09451cf6f7be8e842f",
+      "phase": "new-native actual production mouse input after strict transport and terminal-loop fixes",
+      "schema": "objectshard-m4-live-input-v1",
+      "checks": 100,
+      "failures": [],
+      "declared_source": "327afc58227b246390b19c275f58df77ae2dd734+live-edit-local-delta"
+    },
+    {
+      "log": "interaction-live-input-v5.log",
+      "log_sha256": "eb68e208994b4318a6ca042fed528d8788c3baadbcf0c57b90c9041d708eefe6",
+      "phase": "frozen v5 native production input path",
+      "schema": "objectshard-m4-live-input-v1",
+      "checks": 100,
+      "failures": [],
+      "declared_source": "327afc58227b246390b19c275f58df77ae2dd734+live-edit-local-delta"
+    },
+    {
+      "log": "interaction-fragment-v5.log",
+      "log_sha256": "037115dd69828261dd1f7789b14f0c046dae785ff46892baf224b7c17c42f185",
+      "phase": "frozen v5 native retained fragment/reabsorption regression",
+      "schema": "objectshard-m4-fragment-reabsorption-v1",
+      "checks": 134,
+      "failures": [],
+      "declared_source": "327afc58227b246390b19c275f58df77ae2dd734+live-edit-local-delta"
+    },
+    {
+      "log": "interaction-batch-contract-v5.log",
+      "log_sha256": "8d18d7031e9faafd6e4b7ffdc9ae56886c5f9dd350e0160800b94b14e2d8ae69",
+      "phase": "final strict hostile receipt and payload contract, value-only",
+      "schema": "objectshard-live-edit-transport-contract-v1",
+      "checks": 65,
+      "failures": [],
+      "declared_source": "value-only: no native execution claim"
+    }
+  ],
+  "native_independent_review": {
+    "author": "Specialist A",
+    "reviewer": "Specialist B",
+    "verified_contracts": [
+      "Every moving target is validated against current owner, body generation, installed geometry, pose serial, material revision, exact payload and incarnation before selection or debit.",
+      "Duplicate target cells debit once; shape-cover capacity and cell-write counters preflight before debit; one coherent geometry rebuild follows a changed owner batch.",
+      "Highest visible owner wins; every occupied role occludes lower material, while only Structural payload is eligible for structural erasure.",
+      "Terrain facade authenticates visible World revision and native instance; coordinator checks all coordinates, exact witnesses and transient/visible owned occupancy before writes.",
+      "Complete removal and sleeping-body edits retain established geometry acknowledgement and retirement contracts; removal preserves surviving point velocity, not closed-system momentum.",
+      "World and moving ignition skip nonzero combustion countdowns; no-op changes perform zero geometry rebuilds.",
+      "Unexpected changed-prefix failures become uncertain held results; pending receipt identity and prefix evidence remain available."
+    ],
+    "findings_addressed_by_author": [
+      {
+        "finding": "Direct native batch parser permitted mismatched outer position and unused nested terrain target; worker and port already rejected these.",
+        "resolution": "Author added empty terrain-target and first-position equality plus bounded nested target checks; implemented and present in frozen v5 native used by the final local integration reruns."
+      },
+      {
+        "finding": "Terrain batch lacked preflight of theoretical UINT64 World mutation-journal revision/topology exhaustion.",
+        "resolution": "Author accepted narrow conservative journal headroom/exhausted guard before any selected terrain debit; implemented and present in frozen v5 native used by the final local integration reruns."
+      }
+    ]
+  },
+  "independent_review_of_b": {
+    "native_specialist_findings_closed": [
+      "Worker rejects unused terrain arrays in moving domain and nonempty/nested target in terrain domain.",
+      "Worker repeats first-target/first-position and same-owner revision consistency before native queue copying.",
+      "Port authenticates resulting owner/cell/body/pose against first witness and exact erase/ignite/no-op debit/rebuild semantics."
+    ],
+    "creative_specialist_findings_closed": [
+      "Cargo and Product foreground occlude ordinary terrain and lower owners.",
+      "Structural radius zero remains usable while authored-start brush schema remains valid at its prior minimum of two.",
+      "World replacement and explicit seed changes reset the visible weathering pass; effective admitted seed is recorded."
+    ],
+    "principal_findings_closed": [
+      "Slice release commits one bounded intent that resolves fresh witnesses at a safe opportunity, expires visibly after two seconds and remains cancellable before admission.",
+      "Freehand release, camera changes, tool/material changes, Escape, scene replacement and canvas exit retire future pointer admission.",
+      "Monotonic owner IDs map to bounded sorted sprite ranks instead of unbounded z_index values.",
+      "Terrain authored-history capacity is reserved before native removal and exact changed coordinates are recorded only after an authenticated receipt.",
+      "Capture timestamps originate at actual input-handler arrival; transport clocks distinguish admission, worker queue, native owner service and Main delivery.",
+      "All current-generation terminal results are observed in order; all authenticated applied pending diagnostics retire only behind real physics/publication fence.",
+      "Refused native actions retain bounded specific outcome/detail and admitted footprint/domain/operation/selection fields without retaining nested target payload or falsely granting application authority.",
+      "Current-generation terminal processing has an O(1) newest-result fastpath while publication delivery remains independently polled.",
+      "Material-filter control changes cancel gestures; actual published completion replaces the corresponding pending UI message.",
+      "Full owner/transport/session identity resets editing diagnostics; malformed optional timing fields cannot crash valid receipt processing."
+    ]
+  },
+  "documented_limits": {
+    "max_raw_targets_per_transaction": 4096,
+    "max_brush_radius_cells": 24,
+    "max_pointer_transactions_per_second": 30,
+    "max_footprint_candidate_probes": 65536,
+    "slice_commit_deadline_usec": 2000000,
+    "display_publication_wait_deadline_usec": 250000,
+    "atomicity": "One owner per native transaction; cross-owner freehand gestures are ordered fresh transactions, not atomic.",
+    "placements": "Slice and Drill choose one owner per placement. Other intersecting domains remain unchanged and are explicitly reported as remaining.",
+    "weathering": "Effective seed advances once per admitted owner transaction, including admitted no-ops; reset by scene replacement or seed edit.",
+    "authored_saves": "Save start remains an authored recipe, not a detached live-state checkpoint. Structural terrain erase records require authenticated native changed coordinates.",
+    "hardware_scope": "Local Linux development host. No physical TITAN RTX, Windows extraction or owner-evaluation claim."
+  },
+  "retained_development_failures": [
+    "The first value-only transport fixture inserted new keys via GDScript dot syntax, yielding StringName keys rejected by strict String-key transport. Fixture corrected to bracket insertion; production request builder already used bracket/literal keys.",
+    "The first retained fragment run omitted CYBERSAND_SOURCE_REVISION and failed only source metadata equality; explicit local-delta rerun passed 134 checks.",
+    "The first retained lifecycle run loaded the prior premise that ignition radius is disabled. The expanded mandatory area-ignition tool requires editable radius. Test now covers all structural tools and retains pointer cancellation and inventory assertions; rerun passed 1007 checks."
+  ],
+  "single_local_input_latency_observation": {
+    "scope": "One local development production-input event; instrumentation demonstration, not a stable performance benchmark or owner-hardware claim",
+    "native": {
+      "requested_cells": 186,
+      "changed_cells": 186,
+      "geometry_rebuilds": 1,
+      "target_ns": 11257,
+      "mutation_ns": 8332,
+      "geometry_ns": 187207,
+      "native_edit_ns": 206796
+    },
+    "transport": {
+      "input_admission_usec": 19625,
+      "input_to_receipt_usec": 35478,
+      "main_receipt_delivery_usec": 10285,
+      "native_owner_service_usec": 2368,
+      "worker_queue_usec": 3200
+    },
+    "physics_install": "Separately fenced and measured by existing runtime/bridge diagnostics; not included in native_edit_ns"
+  },
+  "final_local_review_utc": "2026-11-28T06:37:58.681680+00:00",
+  "final_source_input_manifest": "workbench-interaction-freeze-inputs.json",
+  "final_local_runtime": {
+    "sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+    "bytes": 6027152,
+    "identity": "Specialist A frozen local v5; hosted guarded production runtime is a separate gate"
+  },
+  "render_preview": {
+    "test": "godot/tests/test_object_shard_m4_edit_preview_render.gd",
+    "schema": "objectshard-m4-edit-preview-render-v1",
+    "local_validation": "Godot 4.7 --check-only passed; actual graphical execution intentionally deferred to hosted renderer because local display sockets are unavailable",
+    "independent_reviewer": "Specialist C",
+    "review_result": "Production GUI dispatch, actual mouse warping, independent projection oracle, per-draw framebuffer visibility control, camera/resize cancellation and Structures layout structurally sound",
+    "captures_planned": 12,
+    "hosted_specific_risks": "Actual OS mouse reachability and native/embedded Window framebuffer are asserted rather than skipped. Window centres in recorded usable desktop, including negative origin for oversized 1920x1080 framebuffer."
+  }
+}

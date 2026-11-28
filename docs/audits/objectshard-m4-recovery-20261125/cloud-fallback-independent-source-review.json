@@ -1,0 +1,105 @@
+{
+  "schema": "objectshard-m4-cloud-fallback-independent-source-review-v1",
+  "reviewer": "Specialist A / native correctness",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "application_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "disposition": "source-approved; supplemental execution and complete archival readback pending",
+  "audit_driver": {
+    "git_blob": "3cc6a1ba9b6fcd78b65a8ba1ed031d5907ee1299",
+    "sha256": "7a42f82a6fcdb89cab829516ef3640ff28e57a910dbaf6efb643bac4c3abceee",
+    "verdict": "approved-native-DLL-material-and-custody-source",
+    "reviewed": [
+      "Exact original run, attempt, repository, source, four job identities and terminal outcomes are required.",
+      "Original artifacts are freshly downloaded without authenticated redirect following; token remains at api.github.com.",
+      "The fixed native and Windows-native inspector blobs receive their complete required CLI arguments and their exact passed status is required.",
+      "The new Windows-native DLL remains source-built at frozen application source and is bound to independently observed exact payload SHA256/size.",
+      "Material parity requires complete eight unique source/tool paths, exact frozen Git bytes and digests, native compiled facts equality, and the declared non-World/non-Godot/non-physics scope.",
+      "Material parity source_commit 0fd4af5987e77db4da3e37c757cf2c0917ae9e15 remains the historical compatibility baseline.",
+      "Final package hash must equal the actual shipped launcher/replay ZIP receipt and every actual Windows process group must name matching native/Godot/Rapier identities."
+    ],
+    "qualifications": [
+      "Crossbuild archive receives external digest/CRC and terminal job custody; this driver does not separately parse its report semantics.",
+      "This is source review. The new driver had not executed when this approval was recorded.",
+      "Parent independently reviewed orchestration/helper output schema; this specialist additionally compared required native inspector arguments and statuses with the pinned script sources."
+    ],
+    "successor_review": [
+      "All six original artifact ID/size/SHA256 tuples are now fixed and agree with independent fresh metadata readback.",
+      "Bounded original PNG and JSON transport emits byte-identical source archives/receipts with explicit original member and hash identities; it does not synthesize images or alter qualification.",
+      "Exact native/material parity code is unchanged from the approved predecessor; pinned package inspector is the corrected actual-decompressed-length streaming version SHA256 8f2a0b9ded7afb1c1bdd65fb87c874173bea9ca114db192fca84ba163b8852a9.",
+      "Five exact manifest PE inputs receive read-only objdump import inspection. Required compiler runtime families absent from the package are refused. Remaining finite core-OS names are retained for independent documented review; no broad OS allowlist is invented."
+    ],
+    "previous_reviewed_git_blobs": [
+      "9ffcb70df2a0e99d2a8723c72fd0d6740023ec48",
+      "91095a3d608660c99ae44813ee28f10fe8ab07f6"
+    ]
+  },
+  "live_cut_observer": {
+    "git_blob": "9c9dc34d66db7752fe681901123f95feb6b551ed",
+    "bytes": 19379,
+    "sha256": "452b314cdd861428fcfaf5b8baac125a30c0a59f7d071cc188f4d4d435604d32",
+    "verdict": "approved-unexecuted-source",
+    "reviewed": [
+      "Single actual mounted Cut press/release uses ordinary Workbench routing during Play and genuine translating/rotating actual Rapier motion.",
+      "Complete native source target equals the dispatched displayed target.",
+      "Before/after geometry samples share actual and bridge step and RID, and geometry installation step is recorded.",
+      "Dispatched target geometry joins actual old revision, native Applied geometry joins actual new revision, and native owner/body generations remain identical.",
+      "Surviving material point keeps source dimensions and incarnation; independent velocity calculation uses actual COM, actual linear/angular velocity, rotation and local material point.",
+      "A later eight-native-tick observation requires genuine continuing translation and rotation.",
+      "Paused before/after raw World-plus-carrier material census requires exactly one Wood debit, with no other nonempty material change.",
+      "Frozen bridge source confirms generation, body_generation and last_geometry_step fields used by the observer."
+    ],
+    "qualifications": [
+      "External observer remains new source, not a reconstruction of the former 0827847d observer.",
+      "Actual Windows process completion, sole footer/full receipt join, immutable package rehashes and independent raw inventory readback remain required.",
+      "Headless mounted events do not qualify physical owner input or monitor presentation."
+    ]
+  },
+  "authored_observer": {
+    "git_blob": "5f417187baf36490bfb2954d33ece5e8c34b09ec",
+    "bytes": 14132,
+    "sha256": "46b9344c7cae0f3d47b7dc142b193ce258dc138444070cdd93801309ad316186",
+    "scope": "New Windows-capable supplemental source changes only actual OS readback and scope text from independently reviewed Linux v2 behavior; parent independently approved this exact source.",
+    "requires": [
+      "Distinct sequential naturally completed subprocess lifetimes under one external parent and unique per-launch nonce.",
+      "Record console-wrapper PID separately from actual reported Godot engine PID; do not require numeric equality.",
+      "Exact immutable package and packaged engine/native/Rapier identities; original process logs, both full receipts, named authored save files and all raw .bin inventory files retained.",
+      "Default 2048 attach refusal preserves actual World; supported 1024 existing-World attachment and 512 ordinary recipe Save/Load are exercised.",
+      "Authored-start persistence only; no evolved pose/chemistry/full checkpoint claim."
+    ]
+  },
+  "physical_owner_acceptance": "HOLD",
+  "execution_environment": "Local executor unavailable during this source review; no new native or application process was run.",
+  "windows_runner": {
+    "git_blob": "6731c1b513481ae94c77e7453c586b36bb004ea4",
+    "bytes": 46390,
+    "sha256": "082025a0f7fc206cc65a04aa5bdbfb0c4aacfe4f62f5817e0d26027938469c29",
+    "verdict": "approved-unexecuted-source",
+    "concrete_review_correction": "Native carrier IDs belong to the native Registry namespace (actual preserved Tower owner ID1). The mistaken requirement49..64 was removed; shared physics reservation slots remain a separate authority. Positive unique native IDs with at most16 carriers and exact dispatched owner/incarnation joins are now required.",
+    "reviewed": [
+      "Pointer-width HANDLE/size_t/PROCESSENTRY32W and PROCESS_MEMORY_COUNTERS_EX layouts and declared Win32 function signatures are appropriate.",
+      "Read/query rights used by GetProcessTimes, GetExitCodeProcess and GetProcessMemoryInfo match Microsoft Win32 API requirements.",
+      "Actual reported Godot engine is joined to a retained observed process handle, exact executable inside the verified package and natural exit0; console wrapper PID is recorded separately.",
+      "Two authored subprocess lifetimes are sequential under one external parent with unique nonces; both original receipts, exact author receipt SHA, saved JSON file bytes and full canonical authored recipes are joined.",
+      "The default-off author process, explicit-opt-in reopen process and real packaged editor import remain separately recorded.",
+      "Exact original observer bytes are staged using git show and write_bytes, preserving reviewed UTF-8/LF identities.",
+      "Raw512x512 material arrays, every native carrier byte, all255 nonempty material totals, zero stored/pressure/parcel Water and RG8 projection are independently scanned.",
+      "The live Cut point is independently reconstructed from stable survivor index and source dimensions; before/after body identity, actual RID, geometry, material-point velocity and continuing motion are joined.",
+      "Manifest, full immutable payload and exact engine/native/Rapier digests are checked before and after; only generated Godot cache additions are permitted.",
+      "Error, missing footer, missing engine lifetime, forced cleanup, changed source bytes or any failed observer leaves supplemental status failed.",
+      "Generated-file boundary now rejects symlink/reparse roots and descendants before traversal; only noncode engine cache, committed-source-paired UID files and committed-asset-paired import files may be added.",
+      "Finite retained OS import names are read from actual System32 as AMD64 PE32+ files with path/size/hash custody. No LoadLibrary is used and no Windows11 inbox assertion is inferred from hosted presence alone."
+    ],
+    "api_sources": [
+      "https://learn.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-getprocessmemoryinfo",
+      "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getexitcodeprocess",
+      "https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes"
+    ],
+    "qualifications": [
+      "This is independent source review; no execution of this runner was possible in the unavailable local executor.",
+      "Hosted original process logs, full receipts, saved files, raw inventory bytes and complete process records remain required for a new Windows supplemental PASS.",
+      "The main43/32/17 qualification is separate, and physical Windows11/NVIDIA acceptance remains HOLD.",
+      "Final portable dependency disposition awaits independent documented classification of the actual finite OS import names emitted by the audit."
+    ],
+    "previous_reviewed_git_blob": "46db1fdecb0400a6b11da34f22b2fcf02521afef"
+  }
+}

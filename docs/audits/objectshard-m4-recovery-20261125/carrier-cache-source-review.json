@@ -1,0 +1,65 @@
+{
+  "cached_fields": [
+    "materials",
+    "rgba",
+    "states_a",
+    "states_b",
+    "temperature",
+    "roles",
+    "incarnations"
+  ],
+  "disposition": "No concrete existing cache invalidation defect found in reviewed carrier fields; no application change proposed.",
+  "findings": [
+    {
+      "observation": "Each snapshot rebuilds lifecycle, ownership, body/pose/velocity, physics and geometry readiness, geometry revision/mass/rectangles and payload_digest. Only seven packed immutable carrier arrays are reused.",
+      "path": "godot/native_extension/cyber_object_shard_lab.cpp"
+    },
+    {
+      "observation": "Every admitted set_cell payload, role or replacement-identity mutation increments material_revision; changed material/role or explicit identity replacement increments incarnation in the same operation. Identity/revision exhaustion refuses before ordinary writes.",
+      "path": "native/src/object_shard.cpp"
+    },
+    {
+      "observation": "set_due only mutates next_due_tick. It does not change any cached field. payload_digest includes incarnation/birth/due scheduling and is recomputed outside the carrier cache.",
+      "path": "native/src/object_shard.cpp"
+    },
+    {
+      "observation": "Fragment schedule copying changes the fresh child only within exclusive prepare_fragment before its first snapshot. The child has a newly assigned id/generation. Retired/empty slots are omitted; any slot reuse gets a new full handle.",
+      "path": "native/src/object_shard.cpp"
+    },
+    {
+      "observation": "Partial-commit quarantine clears undebited carrier payloads and advances material/topology revision when representable. An artificially exhausted revision remains quarantined; it cannot supply an accepted ordinary publication.",
+      "path": "native/src/object_shard.cpp"
+    },
+    {
+      "observation": "Standalone reset allocates a new monotonically checked session. configure/attach refuse replacing an existing coordinator in one adapter.",
+      "path": "native/src/object_shard_coordinator.cpp"
+    },
+    {
+      "observation": "Ordinary World replacement unrefs the prior shard adapter, discarding its cache; a fresh attachment allocates a new CyberObjectShardLab. No stale cache crosses World replacement.",
+      "path": "godot/native_extension/cyber_native_cell_world.cpp"
+    },
+    {
+      "observation": "RGBA uses the fixed material palette and Wood state_b only; no native tick, scheduling deadline, camera or pose enters cached color generation.",
+      "path": "godot/native_extension/cyber_object_shard_lab.cpp"
+    }
+  ],
+  "key": [
+    "full native Handle(session,id,generation)",
+    "material_revision"
+  ],
+  "limits": [
+    "This is an independent source audit, not a new cache or a full-snapshot material-only cache proposal.",
+    "No new runtime assertion or performance claim follows from this audit alone."
+  ],
+  "schema": "objectshard-m4-carrier-cache-source-review-v1",
+  "source_commit": "422d131048db573c0abd08bcca25f6b3999e8703",
+  "source_files": {
+    "godot/native_extension/cyber_native_cell_world.cpp": "37929c261dccfd79e24589bec99b4cbd3767c4ad269b48e5f15602f502ec7051",
+    "godot/native_extension/cyber_object_shard_lab.cpp": "57095b29b0939aa79908b2eade7ae3da6ffbb9001011266eab5aec5896a76387",
+    "godot/native_extension/cyber_object_shard_lab.hpp": "2899da95d4a3d69dabcae4a8cf1e4ce03c44e598f88a5e45e36c04e907b9d612",
+    "native/include/cybersand/object_shard.hpp": "db7dcbaa2ff76ee22dd14319b36cfab02b7d35a0423bb30fdbb0282b81043b17",
+    "native/src/object_shard.cpp": "7b2aa44190f0169929aed2adb97fdcd944dc976aeb88a5f8cc404bba23143f55",
+    "native/src/object_shard_coordinator.cpp": "871311b8d73fcb4717ac341b9d7e811ef25c5f0e64321818b2fcaf6f4d42e683"
+  },
+  "source_tree": "0077add3ad68ccaa782b28beb62b19552f48a124"
+}

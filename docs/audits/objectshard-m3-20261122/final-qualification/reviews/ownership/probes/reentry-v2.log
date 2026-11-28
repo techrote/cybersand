@@ -1,0 +1,18 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: support-cut button cannot admit unaccounted intents after explicit navigation {"closing":true,"host_state":"Closing","newly_admitted":44,"queued_intents":44,"ui_message":"Lower support: 44 requested, 44 admitted ordinary erases. Refused cells remain visible; repeat after pending input drains."}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:92)
+       [2] _launch (res://tests/review_navigation_reentry.gd:43)
+       [3] _idle (res://tests/review_navigation_reentry.gd:38)
+ERROR: navigation destroys scene with no silently discarded post-exit intent {"explicitly_cancelled":1,"unresolved_intents":44,"worker_terminal":{"cancelled_control":0,"cancelled_data":0,"disposal":{"detail":"accepted","generation":0,"id":0,"ok":true,"outcome":"Accepted","phase":"Empty","session":0,"transaction":0},"disposed_session":1,"ok":true,"outcome":"Stopped","owner_thread":26,"scope":"Explicit whole-session shutdown: prior inventory accounted by reset; the fresh scenario-0 fixture is released with the owner","transport_generation":610877}}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_reentry.gd:20)
+       [1] _run (res://tests/review_navigation_reentry.gd:105)
+       [2] _await_scene (res://tests/review_navigation_reentry.gd:27)
+{"checks":17,"failures":2,"schema":"independent-navigation-reentry-v1"}

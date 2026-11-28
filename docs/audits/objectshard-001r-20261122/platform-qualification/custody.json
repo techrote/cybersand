@@ -1,0 +1,262 @@
+{
+  "schema": "objectshard-finisher-platform-custody-v1",
+  "native_qualified_commit": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "delivered_commit": "28be5a4a8a023d466e642afaca767c0224de1ba3",
+  "delivered_tree": "d734a7acd6429fe1182d856a78f49efd36d99758",
+  "native_source_inputs_identical": true,
+  "lab_source_inputs_identical": true,
+  "native_source_input_count": 116,
+  "lab_source_input_count": 26,
+  "zip_sha256": "c6a4d79e95295e91228d161591554136dec6d73438f184ab1e48ebfc507e83d4",
+  "zip_bytes": 93056059,
+  "package_artifact": {
+    "id": 14740363854,
+    "sha256": "44a16df9822ede1a2fa76552afba7194790d9f39c73de3a1d32b5fb4293ab63d",
+    "url": "https://github.com/techrote/cybersand/actions/runs/44987818314/artifacts/14740363854"
+  },
+  "windows_evidence": {
+    "id": 14740069324,
+    "sha256": "9738a2dd8560e008d85f37b89bc758d90c9d5c3a6d9c87d6cd9e097d4c499ed2",
+    "url": "https://github.com/techrote/cybersand/actions/runs/44987818314/artifacts/14740069324"
+  },
+  "linux_evidence": {
+    "id": 14740547762,
+    "sha256": "2cea005fb1983ccc690741bbb6937a2036423af43df062a826a3d363c06e3332",
+    "url": "https://github.com/techrote/cybersand/actions/runs/44985942694/artifacts/14740547762"
+  },
+  "retained_files": [
+    {
+      "source": "build/hosted-514d-linux/lab/qualification.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/linux-514d/lab/qualification.json",
+      "sha256": "c8e10e3583c52f5e52a89eed2851a12709a51d4ae7ab5480d685de46b558bb9f",
+      "bytes": 92538,
+      "retained_git_sha256": "c8e10e3583c52f5e52a89eed2851a12709a51d4ae7ab5480d685de46b558bb9f",
+      "retained_git_bytes": 92538
+    },
+    {
+      "source": "build/hosted-514d-linux/native/summary.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/linux-514d/native/summary.json",
+      "sha256": "472c5ed18cd4eccf4b07553a5923f7a809f23b4cf11c6806c17ab57040887676",
+      "bytes": 19122,
+      "retained_git_sha256": "472c5ed18cd4eccf4b07553a5923f7a809f23b4cf11c6806c17ab57040887676",
+      "retained_git_bytes": 19122
+    },
+    {
+      "source": "build/hosted-514d-linux/linux-native-provenance.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/linux-514d/linux-native-provenance.json",
+      "sha256": "a81d892bb7eb243b89c2478697bd23f85d0944624a43bbcb64162b4dc3e41480",
+      "bytes": 15178,
+      "retained_git_sha256": "a81d892bb7eb243b89c2478697bd23f85d0944624a43bbcb64162b4dc3e41480",
+      "retained_git_bytes": 15178
+    },
+    {
+      "source": "build/hosted-28be-windows/objectshard-lab-manifest.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/objectshard-lab-manifest.json",
+      "sha256": "75b77a208f8ffb9259e0caed064c92495357f049ad6f016e34c817190e3cc59b",
+      "bytes": 144079,
+      "retained_git_sha256": "75b77a208f8ffb9259e0caed064c92495357f049ad6f016e34c817190e3cc59b",
+      "retained_git_bytes": 144079
+    },
+    {
+      "source": "build/hosted-28be-windows/launcher-matrix/result.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/result.json",
+      "sha256": "04b4d2a16e6adf359c525b2a45df91eb573ea964f053257bfd96830e8ed78d48",
+      "bytes": 7360,
+      "retained_git_sha256": "0234fbd20a80b312449dfc63b0a9493d522a79fa474669b33441f56fb22999b3",
+      "retained_git_bytes": 7154,
+      "raw_archive_path": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/result.json.raw.gz",
+      "raw_archive_sha256": "200442fd0cbc2f4bffe51387cd0b7547b90149a67b0ee08805c8c3346c94aa41"
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/qualification.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/qualification.json",
+      "sha256": "f38382ca5aad46cf31e75bf2eb6288ba80725d4612a718cf879f7e2e806944a3",
+      "bytes": 77548,
+      "retained_git_sha256": "070b5cbf1aa8d158e55f58a7662084671508866a3ad4542febb403708c1f7eff",
+      "retained_git_bytes": 75795,
+      "raw_archive_path": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/qualification.json.raw.gz",
+      "raw_archive_sha256": "ea4249556308a8ecc1212479e3f7cd5cb4b50d14106a2d397a8ad5de0e82feaa"
+    },
+    {
+      "source": "build/hosted-28be-windows/package-replay/qualification.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/package-replay/qualification.json",
+      "sha256": "8e4780e01c869d727c155a8a36b746ee050cbd7181ff1df17970c5a4a022a549",
+      "bytes": 63841,
+      "retained_git_sha256": "e7c7cc61f6fc49e89098b4c97c2d0d8a67d4250a7798421cbe1e547310e00122",
+      "retained_git_bytes": 62454,
+      "raw_archive_path": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/package-replay/qualification.json.raw.gz",
+      "raw_archive_sha256": "53e560d61058b7d5bcdcd08d08ea2a2e93c1205bc46083f0b925c4eab3ea89fb"
+    },
+    {
+      "source": "build/hosted-28be-windows/download-custody.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/download-custody.json",
+      "sha256": "aba0b40434c9c4e0c282ab786c2aaebb6d30379f4600cb8340930b6e796f4281",
+      "bytes": 314,
+      "retained_git_sha256": "aba0b40434c9c4e0c282ab786c2aaebb6d30379f4600cb8340930b6e796f4281",
+      "retained_git_bytes": 314
+    },
+    {
+      "source": "build/hosted-28be-windows/launcher-matrix/nested-launch.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/nested-launch.json",
+      "sha256": "10976a50f2075cca4e9567e4aa3c6f12a63ffa47cbf65aa3a135d3d3fbae2339",
+      "bytes": 867,
+      "retained_git_sha256": "10976a50f2075cca4e9567e4aa3c6f12a63ffa47cbf65aa3a135d3d3fbae2339",
+      "retained_git_bytes": 867
+    },
+    {
+      "source": "build/hosted-28be-windows/launcher-matrix/parentheses-launch.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/parentheses-launch.json",
+      "sha256": "4a79edface378d0ebd98f18e2464e564febd3d25e1b0b2be733ae6c12c844eb5",
+      "bytes": 795,
+      "retained_git_sha256": "4a79edface378d0ebd98f18e2464e564febd3d25e1b0b2be733ae6c12c844eb5",
+      "retained_git_bytes": 795
+    },
+    {
+      "source": "build/hosted-28be-windows/launcher-matrix/spaces-launch.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/spaces-launch.json",
+      "sha256": "71b9b0a7391e439d1f24d94356b1510879d8d3d0cfc541a560507abaf8341d8d",
+      "bytes": 809,
+      "retained_git_sha256": "71b9b0a7391e439d1f24d94356b1510879d8d3d0cfc541a560507abaf8341d8d",
+      "retained_git_bytes": 809
+    },
+    {
+      "source": "build/hosted-28be-windows/launcher-matrix/unicode-launch.json",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/unicode-launch.json",
+      "sha256": "cd4817c96a0ac832932e3e60f3e30b402183d4ae5192016587123bf29c83091e",
+      "bytes": 800,
+      "retained_git_sha256": "cd4817c96a0ac832932e3e60f3e30b402183d4ae5192016587123bf29c83091e",
+      "retained_git_bytes": 800
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-a-exact-shapes.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-a-exact-shapes.png",
+      "sha256": "73465c2bc75a7efaf3fa2d8435b3551118e6022804008d5b2ea68f85c4b3ede8",
+      "bytes": 119894,
+      "retained_git_sha256": "73465c2bc75a7efaf3fa2d8435b3551118e6022804008d5b2ea68f85c4b3ede8",
+      "retained_git_bytes": 119894
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-a-impact.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-a-impact.png",
+      "sha256": "1612fb33c37f3cee2f2813e1024ed55b1a033757c4f21dd296346564f643bb5b",
+      "bytes": 119399,
+      "retained_git_sha256": "1612fb33c37f3cee2f2813e1024ed55b1a033757c4f21dd296346564f643bb5b",
+      "retained_git_bytes": 119399
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-a-native-supported.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-a-native-supported.png",
+      "sha256": "194d8c4854bede02d1ba287b08f70c8f0edf1e22a365e8909f0493ede5a2943f",
+      "bytes": 120884,
+      "retained_git_sha256": "194d8c4854bede02d1ba287b08f70c8f0edf1e22a365e8909f0493ede5a2943f",
+      "retained_git_bytes": 120884
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-a-transferred-falling.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-a-transferred-falling.png",
+      "sha256": "1053d86dab6f2677c21db23c9bec3fc758aa8ef9355fe4f87967ddce4bd4336f",
+      "bytes": 118603,
+      "retained_git_sha256": "1053d86dab6f2677c21db23c9bec3fc758aa8ef9355fe4f87967ddce4bd4336f",
+      "retained_git_bytes": 118603
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-b-consumed-geometry.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-b-consumed-geometry.png",
+      "sha256": "d7acf5b28bf5c0b6fda767948911442219f54d0a3282c224758c9e1f7a4d6688",
+      "bytes": 120551,
+      "retained_git_sha256": "d7acf5b28bf5c0b6fda767948911442219f54d0a3282c224758c9e1f7a4d6688",
+      "retained_git_bytes": 120551
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-b-real-combustion.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-b-real-combustion.png",
+      "sha256": "c06b120d67182f029f9131b9610f43292608812bc5a9640f6d4caab3edfc1c3d",
+      "bytes": 120188,
+      "retained_git_sha256": "c06b120d67182f029f9131b9610f43292608812bc5a9640f6d4caab3edfc1c3d",
+      "retained_git_bytes": 120188
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-c-carried-sand.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-c-carried-sand.png",
+      "sha256": "62c0563c8be37e29894109e125efd68eeac7db315c8d6b96edd89869cefc8984",
+      "bytes": 125328,
+      "retained_git_sha256": "62c0563c8be37e29894109e125efd68eeac7db315c8d6b96edd89869cefc8984",
+      "retained_git_bytes": 125328
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-c-water-extinction.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-c-water-extinction.png",
+      "sha256": "e4913b0c5b414e56a99154bd421e0214d3f2d90a1c16170f6eef480e97dcca1d",
+      "bytes": 125533,
+      "retained_git_sha256": "e4913b0c5b414e56a99154bd421e0214d3f2d90a1c16170f6eef480e97dcca1d",
+      "retained_git_bytes": 125533
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-d-three-owners.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-d-three-owners.png",
+      "sha256": "85b7131653ade70d920b9ca137614403b2e395d11f99c73f640b804a79ac43ab",
+      "bytes": 118445,
+      "retained_git_sha256": "85b7131653ade70d920b9ca137614403b2e395d11f99c73f640b804a79ac43ab",
+      "retained_git_bytes": 118445
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames/objectshard-retired-material-anchor.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames/objectshard-retired-material-anchor.png",
+      "sha256": "5febf90ee493b0275c87521fe68ed85239dad3a5380480c63875ff4cc04e36fb",
+      "bytes": 124785,
+      "retained_git_sha256": "5febf90ee493b0275c87521fe68ed85239dad3a5380480c63875ff4cc04e36fb",
+      "retained_git_bytes": 124785
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames-finisher/objectshard-001r-extended-320.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames-finisher/objectshard-001r-extended-320.png",
+      "sha256": "66ba0313e108238f5fd4e923a7056d65bbba368e2e6cfd578ac6822043b1e8a9",
+      "bytes": 120316,
+      "retained_git_sha256": "66ba0313e108238f5fd4e923a7056d65bbba368e2e6cfd578ac6822043b1e8a9",
+      "retained_git_bytes": 120316
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames-finisher/objectshard-001r-external-fire.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames-finisher/objectshard-001r-external-fire.png",
+      "sha256": "182464e10e4ec9a2061547e4d5b79729a9c5b4ce5ff796cbce360f8218fe0b66",
+      "bytes": 121780,
+      "retained_git_sha256": "182464e10e4ec9a2061547e4d5b79729a9c5b4ce5ff796cbce360f8218fe0b66",
+      "retained_git_bytes": 121780
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames-finisher/objectshard-001r-irregular-256.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames-finisher/objectshard-001r-irregular-256.png",
+      "sha256": "996db6f765685dfb8a595ebf7814ee9b8332cdfdd05b8f29f02d50319bdb6f49",
+      "bytes": 122156,
+      "retained_git_sha256": "996db6f765685dfb8a595ebf7814ee9b8332cdfdd05b8f29f02d50319bdb6f49",
+      "retained_git_bytes": 122156
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames-finisher/objectshard-001r-main-priority.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames-finisher/objectshard-001r-main-priority.png",
+      "sha256": "06ff42a20a9c76b59cd3cdce820186f73eacd85fdb9535f13a0e7fc9fbb1a4b6",
+      "bytes": 131571,
+      "retained_git_sha256": "06ff42a20a9c76b59cd3cdce820186f73eacd85fdb9535f13a0e7fc9fbb1a4b6",
+      "retained_git_bytes": 131571
+    },
+    {
+      "source": "build/hosted-28be-windows/windows-lab/frames-finisher/objectshard-001r-resting-erosion.png",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/windows-lab/frames-finisher/objectshard-001r-resting-erosion.png",
+      "sha256": "234455593f5b16a08e5269efe0e37520cc8598b9bf859f986c7d6bee7d21a0ac",
+      "bytes": 123464,
+      "retained_git_sha256": "234455593f5b16a08e5269efe0e37520cc8598b9bf859f986c7d6bee7d21a0ac",
+      "retained_git_bytes": 123464
+    },
+    {
+      "source": "build/hosted-28be-windows/evidence-artifact.zip!launcher-matrix/verifier-tamper-refusal.log",
+      "retained": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/verifier-tamper-refusal.txt",
+      "sha256": "1dbe64ee68f16bf85aed666730dcb7a9db56b17e6aa4271f103ca0c7760f627d",
+      "bytes": 491,
+      "retained_git_sha256": "98e40f8ed783a91141735b0803c6f32b5bef9dcee00d659178dd7d55131292c2",
+      "retained_git_bytes": 483,
+      "raw_archive_path": "docs/audits/objectshard-001r-20261122/platform-qualification/windows-28be/launcher-matrix/verifier-tamper-refusal.txt.raw.gz",
+      "raw_archive_sha256": "4cfebbcadf9b79e887fdeb4aa87a68dbcf533538336b1a2ccf08a89887353de7"
+    }
+  ],
+  "text_custody": "Source and raw SHA-256 refer to original artifact bytes. Git normalizes four Windows text receipts to LF; retained_git_sha256 names Git presentation bytes, and each changed receipt has a verified lossless .raw.gz companion. PNG and independent Linux review bytes are unchanged."
+}

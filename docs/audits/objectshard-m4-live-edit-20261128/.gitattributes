@@ -1,0 +1,3 @@
+# Preserve exact generated CSV evidence, including the original CRLF bytes.
+timings-final-*.csv -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+windows-headless-editing-stage-timings.csv -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

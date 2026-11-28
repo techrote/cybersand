@@ -1,0 +1,508 @@
+{
+  "schema": "objectshard-m4-workbench-specialist-continuity-v1",
+  "date": "2026-11-25",
+  "purpose": "Preserve previously observed specialist-B evidence across the second local executor outage; this reconstruction does not pretend to be the inaccessible original full receipts.",
+  "candidate": {
+    "published_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "local_equivalent": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+    "tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "campaign": 45530425519,
+    "attempt": 1,
+    "product_frozen": true,
+    "physical_owner_acceptance": "HOLD"
+  },
+  "custody": {
+    "status": "Original post-freeze B commits were integrated locally by root; full publication payload was not confirmed before executor outage.",
+    "post_freeze_commits": [
+      {
+        "commit": "5899ab4618094b2ca9f018b021a60e277a3dcea1",
+        "scope": "Five Linux519 capture observations and hashes"
+      },
+      {
+        "commit": "915743ca55712838b2bf9b431befda731ccce5b5",
+        "scope": "138-check frozen-source live Cut observer, receipt and complete source/runtime custody"
+      },
+      {
+        "commit": "4e60be4db8f4a652b8dfc9b00d383df2cd03d747",
+        "scope": "Windows422 26-profile readout, 13 comparison rows and five capture observations"
+      },
+      {
+        "commit": "7077e83c90a9dc703d2954b80621eac9baa1ad7c",
+        "scope": "Phase/cost source review,52 profile boundary summaries and independent authored215 review"
+      }
+    ],
+    "current_raw_access": "Unknown/unavailable until executor is restored. Do not claim present local availability of live138 raw bytes or these full unpushed documents.",
+    "recoverable_remote_archives": "Historical hosted519/422 archives and frozen5f source remain available through GitHub; these can be re-extracted exactly.",
+    "reconstruction_scope": "The fields below were read and verified before the outage, or independently retrieved through GitHub afterwards. Values are not inferred from an inaccessible process outcome."
+  },
+  "live_cut": {
+    "result": "OBSERVED PASS; original full raw bytes currently inaccessible",
+    "checks": 138,
+    "exit_code": 0,
+    "case_wall_seconds": 12.44,
+    "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "local_equivalent": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+    "tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "application_inputs_checked": 1023,
+    "native_source_inputs_checked": 117,
+    "native_build_contract_inputs_checked": 5,
+    "native_build_source": "ccdfde97c279d809eafbb6e74b880d14cfb2f60e",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "observer_sha256": "0827847d7cc74f1b89a31832c60dbb7a874e89d19d00d65c7580fca196f3014c",
+    "runner_sha256": "6878830b032fb1da62e2d5f6473ad4e37b965a6c49aaf252fdaae89ca62116e7",
+    "receipt_sha256": "9df743f48a28c34f7b0b46cc838e29738e8b4f41d147a8ee3ec39e71bf714e8b",
+    "log_sha256": "2e730208632d498c2f8a13d898af36dbfe06ea3e276c872d5e97581e04bad8c2",
+    "input_route": "Mounted Cut mode5, gui_input press and release while Play; no paused edit, forced body pose or forced velocity.",
+    "dispatch": {
+      "native_tick": 92,
+      "speed_cells_per_second": 48.145878,
+      "angular_velocity": -0.7479266524,
+      "awake": true,
+      "owner": 1,
+      "source_cell": 883,
+      "material": "Wood",
+      "display_position": [
+        119,
+        342
+      ],
+      "geometry_revision": 1,
+      "pose_serial": 364,
+      "publication_sequence": 404
+    },
+    "receipt": {
+      "result": "Applied",
+      "transaction_id": 2,
+      "source_cell": 883
+    },
+    "survivor": {
+      "source_cell": 884,
+      "local_point": [
+        2.5,
+        9.5
+      ],
+      "same_physical_step": 364,
+      "rid": 19441,
+      "geometry_before": 1,
+      "geometry_after": 2,
+      "mass_before": 4438,
+      "mass_after": 4437,
+      "shape_count_before": 23,
+      "shape_count_after": 24,
+      "pose_jump": 0,
+      "angular_velocity_jump": 0,
+      "godot_float_point_velocity_error_cells_per_second": 0.00000762939453125,
+      "independent_python_double_residual_approx": 0.00000152
+    },
+    "continued_motion": {
+      "native_tick": 100,
+      "physical_steps": 396,
+      "changed_position_and_rotation": true,
+      "awake": true
+    },
+    "final": {
+      "native_geometry_ack": 2,
+      "actual_geometry_revision": 2,
+      "next_transaction": 3,
+      "pending_geometry": false
+    },
+    "material_census": {
+      "scope": "Independent raw World plus owned-carrier counts across all255 material indices",
+      "wood_before": 2184,
+      "wood_after": 2183,
+      "brick_before": 2232,
+      "brick_after": 2232
+    },
+    "coherence": {
+      "callback_observations": 732,
+      "incoherent": 0,
+      "rendered_observations": 0
+    },
+    "independent_review": "A independently checked observer/source/log/receipt, all1023 application inputs and117 native map, raw material bytes and point velocity; APPROVE.",
+    "limits": "Headless event injection is not physical mouse or monitor acceptance. Same-step velocity proof must not be confused with unchanged velocity across subsequent physical motion."
+  },
+  "windows422": {
+    "source": "422d131048db573c0abd08bcca25f6b3999e8703",
+    "tree": "0077add3ad68ccaa782b28beb62b19552f48a124",
+    "run": 45522534938,
+    "attempt": 1,
+    "job": 138900602654,
+    "artifact": 14983638684,
+    "archive_bytes": 20338022,
+    "archive_sha256": "a64fcd88a39cb4e8cb3bfe0f16d373b6799181c4543335d772899c31c560826b",
+    "headless_cases_passed": 42,
+    "headless_cases_total": 42,
+    "graphical_cases_passed": 30,
+    "graphical_cases_total": 31,
+    "aggregate": "FAIL; disabled paused control included1 late native tick; package not reached.",
+    "render_backend": "Microsoft Basic Render Driver via ANGLE/D3D11; not physical NVIDIA.",
+    "native_sha256": "174460dc4402e2bb419ab95bd14b8b11539bccf28e01781d48a5e727ba10a29f",
+    "console_engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+    "independently_verified": {
+      "original_case_logs": 73,
+      "profile_jsons": 26,
+      "comparison_rows": 13,
+      "rendered_optional_recording_tests": 2,
+      "checks_each_optional_recording_test": 38
+    },
+    "overview_rows": [
+      {
+        "scene": "tower",
+        "render_submissions_per_second": 10.916,
+        "native_ticks_per_second": 3.435,
+        "headless_native_ticks_per_second": 30.068
+      },
+      {
+        "scene": "viaduct",
+        "render_submissions_per_second": 10.655,
+        "native_ticks_per_second": 3.134,
+        "headless_native_ticks_per_second": 31.573
+      },
+      {
+        "scene": "timber",
+        "render_submissions_per_second": 10.514,
+        "native_ticks_per_second": 3.192,
+        "headless_native_ticks_per_second": 26.47
+      },
+      {
+        "scene": "mixed",
+        "render_submissions_per_second": 10.558,
+        "native_ticks_per_second": 3.065,
+        "headless_native_ticks_per_second": 30.54
+      },
+      {
+        "scene": "stress",
+        "render_submissions_per_second": 10.691,
+        "native_ticks_per_second": 2.076,
+        "headless_native_ticks_per_second": 25.822
+      }
+    ],
+    "controls": [
+      {
+        "label": "enabled intact paused",
+        "submissions_per_second": 8.797,
+        "native_ticks": 0,
+        "actual_physics_steps": 0
+      },
+      {
+        "label": "enabled detached paused",
+        "submissions_per_second": 11.262,
+        "native_ticks": 0,
+        "actual_physics_steps": 0
+      },
+      {
+        "label": "enabled intact running",
+        "submissions_per_second": 10.7,
+        "native_ticks_per_second": 3.567
+      },
+      {
+        "label": "enabled detached running",
+        "submissions_per_second": 10.874,
+        "native_ticks_per_second": 3.32
+      },
+      {
+        "label": "disabled paused INVALID",
+        "submissions_per_second": 10.18,
+        "native_ticks": 1,
+        "actual_physics_steps": 0
+      },
+      {
+        "label": "disabled running",
+        "submissions_per_second": 10.388,
+        "native_ticks_per_second": 19.529
+      },
+      {
+        "label": "disabled running headless",
+        "native_ticks_per_second": 59.976249
+      }
+    ],
+    "light_comparison": {
+      "graphical_ticks_per_second_off": 3.207,
+      "graphical_ticks_per_second_on": 3.245,
+      "headless_ticks_per_second_off": 30.956,
+      "headless_ticks_per_second_on": 32.167,
+      "conclusion": "No consistent improvement from disabling diagnostic recording."
+    },
+    "upload_sample_scope": {
+      "scene": "tower",
+      "sample_count": 49,
+      "p50_ms": 87.531,
+      "p95_ms": 91.904,
+      "max_ms": 205.167,
+      "headless_p50_ms": 0.025,
+      "headless_p95_ms": 0.049,
+      "meaning": "Bounded recent setup-inclusive stage; includes patch/image/update/binding/synchronization, not isolated GPU time."
+    },
+    "capture_dimensions": [
+      1028,
+      578
+    ],
+    "capture_review": "Five images individually inspected before outage. Recognizable native shapes, ordinary controls/actor, no obvious missing overlay or displaced duplicate silhouette. Compact cells/toolbars and considerable empty overview space; zoom/pan guidance matters. Stills cannot establish temporal coherence or physical playfeel.",
+    "captures": [
+      {
+        "scene": "tower",
+        "bytes": 79593,
+        "sha256": "e73addf48659e9dda83032333978844be0cbcb7125133b2b58931a27f44adf14"
+      },
+      {
+        "scene": "viaduct",
+        "bytes": 88546,
+        "sha256": "7ea179eabcc46d4899aa74be024f7c73ce87cf0937ee61efbb136db76880e11f"
+      },
+      {
+        "scene": "timber",
+        "bytes": 79952,
+        "sha256": "cd4f720a0b18661520df36af9e1ee94f4900830f6b5229a6aba9e2c2d305b2d8"
+      },
+      {
+        "scene": "mixed",
+        "bytes": 90685,
+        "sha256": "246f74d5736885c59886224cc01e88c7631c4eafe98a48b5760d5a0693c713fb"
+      },
+      {
+        "scene": "stress",
+        "bytes": 78655,
+        "sha256": "d898a9ac28dde13789d6b5948e5f430cd60abbf4d43cf99dd725496f12db8bdd"
+      }
+    ]
+  },
+  "linux519": {
+    "source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+    "tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+    "run": 45517975210,
+    "attempt": 1,
+    "job": 138882242425,
+    "artifact": 14980723384,
+    "archive_bytes": 14231265,
+    "archive_sha256": "d3a1793f8e1f27cd8a3194a4fa15db1851b655d1c08ddad1aba86338d6c56f4d",
+    "headless_cases_passed": 42,
+    "headless_cases_total": 42,
+    "graphical_cases_passed": 30,
+    "graphical_cases_total": 31,
+    "aggregate": "FAIL; disabled paused control included2 late native ticks and0 actual Rapier steps.",
+    "render_backend": "Mesa25.2.8 llvmpipe LLVM20.1.2 256bits",
+    "native_sha256": "09098674d07b11fcf8a2eaa8baa792d672c8ff7a7025c013b7b3bb4196499a43",
+    "overview_rows": [
+      {
+        "scene": "tower",
+        "submissions_per_second": 6.6965,
+        "native_ticks_per_second": 2.2446
+      },
+      {
+        "scene": "viaduct",
+        "submissions_per_second": 6.6488,
+        "native_ticks_per_second": 2.2623
+      },
+      {
+        "scene": "timber",
+        "submissions_per_second": 6.6491,
+        "native_ticks_per_second": 2.2041
+      },
+      {
+        "scene": "mixed",
+        "submissions_per_second": 6.7282,
+        "native_ticks_per_second": 2.2262
+      },
+      {
+        "scene": "stress",
+        "submissions_per_second": 6.7975,
+        "native_ticks_per_second": 1.7233
+      }
+    ],
+    "controls": {
+      "disabled_running_submissions_per_second": 6.7337,
+      "disabled_running_native_ticks_per_second": 6.6506,
+      "enabled_intact_paused_submissions_per_second": 6.274,
+      "enabled_detached_paused_submissions_per_second": 7.022,
+      "enabled_paused_native_ticks": 0
+    },
+    "light_comparison": {
+      "off_submissions_per_second": 6.808,
+      "off_native_ticks_per_second": 2.308,
+      "on_submissions_per_second": 6.801,
+      "on_native_ticks_per_second": 2.267
+    },
+    "capture_dimensions": [
+      1920,
+      1080
+    ],
+    "capture_review": "Five individual overview images inspected; coherent recognisable tower/viaduct/timber/mixed/eight-body shapes, native floor and ordinary actor; large empty upper overview area. No claim of motion quality from stills."
+  },
+  "phase_cost_review": {
+    "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "scheduling": "Main _physics_process admits the actual1/60 interval only after exact native lease; baseline4 segments of1/240. Each real Rapier segment requires native accept-motion ACK/pose echo. Main _process continues receipts with8000us between-operation budget,48operations,100us pending wait. Worker polls pending controls every250us. Full completed interval pins finalGCR/actor effects, then exactly one due native tick; no next lease before that tick. Slow Main callback delivery can therefore limit semantic progression without dropping steps.",
+    "rows": [
+      {
+        "scope": "headless tower",
+        "wall_seconds": 5.986468,
+        "ticks_per_second": 30.067813,
+        "pump_seconds_including_waits": 4.277939,
+        "worker_snapshot_seconds": 0.58969,
+        "native_occupancy_seconds_including_relocation": 0.674101,
+        "rapier_stage_seconds": 0.07313
+      },
+      {
+        "scope": "headless stress",
+        "wall_seconds": 6.970684,
+        "ticks_per_second": 25.82243,
+        "pump_seconds_including_waits": 5.45147,
+        "worker_snapshot_seconds": 1.175438,
+        "native_occupancy_seconds_including_relocation": 1.637657,
+        "rapier_stage_seconds": 0.09523
+      },
+      {
+        "scope": "graphical tower",
+        "wall_seconds": 52.401404,
+        "ticks_per_second": 3.435022,
+        "pump_seconds_including_waits": 4.231851,
+        "worker_snapshot_seconds": 1.055491,
+        "native_occupancy_seconds_including_relocation": 1.20927,
+        "rapier_stage_seconds": 0.691973
+      },
+      {
+        "scope": "graphical stress",
+        "wall_seconds": 86.705613,
+        "ticks_per_second": 2.07599,
+        "pump_seconds_including_waits": 7.563437,
+        "worker_snapshot_seconds": 2.052949,
+        "native_occupancy_seconds_including_relocation": 3.496661,
+        "rapier_stage_seconds": 1.488801
+      }
+    ],
+    "common": {
+      "semantic_ticks": 180,
+      "completed_physical_intervals": 180,
+      "simulated_physical_seconds": 3,
+      "actual_segments": 721,
+      "one_body_segment_acks": 720,
+      "eight_body_segment_acks": 5760,
+      "owner_controls": 901,
+      "copied_frames": 180,
+      "snapshots": 1080,
+      "graphical_tower_snapshots": 1081,
+      "geometry_rebuild_ns": 0,
+      "terrain_rebuild_ns": 0
+    },
+    "boundary_example": {
+      "scope": "graphical Tower422",
+      "native_tick": 206,
+      "phase": "RealRapierInterval",
+      "pending": "motion",
+      "physics_ready": false,
+      "total_actual_segments": 821,
+      "total_complete_intervals": 205,
+      "window_actual_segments": 721,
+      "window_complete_intervals": 180,
+      "window_native_pose_acks": 720,
+      "later_pause_native_and_display_tick": 207,
+      "later_pause_publication": 982,
+      "later_pause_pose_serial": 824
+    },
+    "interpretation": "721st actual segment is in flight at window edge;720 acknowledged segments cover180 complete physical intervals. The later Pause drains the separate boundary. No missed ACK is counted as completed.",
+    "cost_limits": "Stage times overlap and must not be summed. Pump includes waiting/nested work; worker parallel work overlaps. Native occupancy includes relocation. Worker snapshot combines native+Godot marshalling. Rapier stage includes space_step, transform reads/query flush/state refresh. Upload stage is not an isolated GPU timer.",
+    "control_confound": "Enabled fixture has extra callback/draw coherence observers absent from disabled fixture, so their difference is not isolated product CPU overhead.",
+    "not_measured": [
+      "physical monitor FPS",
+      "input-to-monitor latency",
+      "isolated GPU execution time",
+      "per-operation allocation cost"
+    ],
+    "camera_scope": "Fixed overview and fixed zoom profiles; later capture resets overview. No continuous-pan latency claim.",
+    "relevant_filenames_equal_to_measured422": [
+      "main.gd",
+      "object_shard_m4_runtime.gd",
+      "simulation_worker.gd",
+      "rapier_physics_bridge.gd",
+      "object_shard_physics_bridge.gd",
+      "profile_object_shard_m4_workbench.gd"
+    ]
+  },
+  "independent_authored_review": {
+    "result": "APPROVE; observed215checks before outage, A retained full original payload independently",
+    "author_checks": 136,
+    "reopen_checks": 79,
+    "process_proof": "Two sequential naturally completed independent child lifetimes under one parent: childPIDs7 and185, parent2, pidnamespace4026532586; not cross-tool PID comparison.",
+    "pair_receipt_sha256": "e81f8e7a39a4af31cc7c97782ee211b97f39b0124b0e6aa8a658de0d244c7381",
+    "observer_sha256": "342eda9d9e5cc439e7a1a3f1fbc033bdfdef5b80753bfed940cdf0d34c5298b0",
+    "intact_recipe": {
+      "bytes": 949,
+      "edits": 14,
+      "supports": 800,
+      "bodies": 0,
+      "sha256": "0b68dafb7c4761dfb14178c08465a2151b6698f1de862866bfeb07ac8da7774e"
+    },
+    "cut_recipe": {
+      "bytes": 1621,
+      "edits": 62,
+      "support_caps": 6,
+      "bodies": 1,
+      "sha256": "549c11a122e41b25b289dd51a6e97f111a69506a25cc4d7b78a637f693edee29"
+    },
+    "material_counts": {
+      "wood": 2184,
+      "brick": 2232
+    },
+    "source_inputs_checked": 1023,
+    "boundaries": "Mounted2048Enable refusal preserves existing owner;1024New blank+Enable attaches;512Tower intact/cut Save and fresh Load reconstruct exact authored recipes. Ordinary brush/support cuts; no serialized evolved poses/body cuts/live chemistry claim.",
+    "retained_negative": "First author136PASS/reopen77aggregateFAIL preserved; external proof mistakenly compared cross-namespace numericPIDs and strict int/JSON-float dictionaries. Corrected observer uses one parent and canonical Setup.read_named content; no app source change."
+  },
+  "owner_guide_review": {
+    "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "guide_blob": "394fa9176d4a302607aa217249e3110a93a838ee",
+    "packager_blob": "6d35b62fd167b75e4a6c045b03010b3427726cf8",
+    "result": "Source review APPROVE; actual final package still pending.",
+    "scope": "Frozen guide and launcher source agree on complete extraction/CMD/ANGLE/Tower; five editable starts; ordinary Paint/Eraser vs Cut/Ignite; camera orientation; quiet near-grid Pause+Settle;512/1024 supported vs2048refusal; authored-only Save; off-by-default checkbox recording, stop retention/start clearing/manual Save diagnostics; direct-engine CLI flag separate from fixed CMD arguments."
+  },
+  "pump_wait_experiment": {
+    "schema": "objectshard-m4-pump-wait-experiment-review-v1",
+    "disposition": "NOT COMPLETED; no comparative conclusion and no candidate admission",
+    "baseline_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "baseline_local_equivalent": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+    "baseline_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "experimental_source": "fc9025fc6fa7d88612c178e1cfb6df1315935757",
+    "experimental_tree": "ef655fa8411e15fe0f268bf16c80a7221281a555",
+    "changed_path": "godot/scripts/object_shard_m4_runtime.gd",
+    "change": "Within poll's pending already-admitted receipt branch, OS.delay_usec(100) became OS.delay_usec(0); no other committed difference.",
+    "planned_order": [
+      "baseline",
+      "experimental",
+      "experimental",
+      "baseline"
+    ],
+    "executed_order": [
+      "baseline"
+    ],
+    "experimental_processes_executed": 0,
+    "native_build_source": "ccdfde97c279d809eafbb6e74b880d14cfb2f60e",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "baseline_files_checked_before_and_after": 1023,
+    "baseline_inputs_unchanged": true,
+    "case": {
+      "name": "tower_light_1_baseline",
+      "status": "failed",
+      "returncode": -9,
+      "timeout_kind": null,
+      "watchdog_seconds": 1200,
+      "seconds": 6.287,
+      "observed_cpu_seconds": 6.2,
+      "peak_sampled_rss_bytes": 520642560,
+      "minimum_host_mem_available_bytes": 1285591040,
+      "resource_samples": 7,
+      "log_sha256": "a9595161bd5537ac20ee7f50d5b308254f7d8b91122dbe0be0019059fd71621e",
+      "completion_receipt_present": false,
+      "last_lines": [
+        "M4_WORKBENCH PASS: profile sampling and recording options are explicitly valid",
+        "M4_WORKBENCH PASS: ordinary Workbench installed",
+        "M4_WORKBENCH PASS: load ordinary authored tower"
+      ]
+    },
+    "scope": "Unchanged baseline received SIGKILL before a complete profile, before either experimental run. CPU/resource observations cover direct child process; signal cause is not established. No complete 180-tick window, comparative throughput/callback/CPU result or zero-wait execution exists.",
+    "custody": "Original report and raw log were read before executor became unavailable; log identity and exact case observations preserved here. Attempted docs-copy/commit was not confirmed. Original full input maps and raw files require executor recovery before claiming present availability.",
+    "candidate_unchanged": true,
+    "retry_performed": false
+  }
+}

@@ -1,0 +1,644 @@
+{
+  "schema": "objectshard-m3-source-ownership-v2",
+  "refreshed_at": "2026-11-22T06:24:24.794425+00:00",
+  "scope": "Read-only current Git objects and GitHub PR metadata; concurrent source is not merged or runtime-qualified by this rehearsal",
+  "sources": [
+    {
+      "name": "accepted_main",
+      "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+      "paths": {
+        "godot/scripts/main.gd": {
+          "git_blob": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1",
+          "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84"
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+        }
+      },
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "qualified_001r_native",
+      "head": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+      "tree": "e2b0753b82650734b5738ff000be62a2c7db2abe",
+      "paths": {
+        "godot/scripts/main.gd": {
+          "git_blob": "56b8e685f4f4c9eb4219c6ba02c2eca69e9c7bf1",
+          "sha256": "333b26eed7e47c3f943f0eb6f9b36ed4c63c9563d767b21a1a0d36f314f3bc84"
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+          "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+        }
+      },
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr726",
+      "pr": 726,
+      "url": "https://github.com/techrote/cybersand/pull/726",
+      "head": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "branch": "experiment/objectshard-001-m0-20261122",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T03:50:27Z",
+      "tree": "cd16f098a6efc294b69044f7b38e785841e965f3",
+      "paths": {},
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr728",
+      "pr": 728,
+      "url": "https://github.com/techrote/cybersand/pull/728",
+      "head": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "branch": "experiment/objectshard-001-m1-20261122",
+      "base": "experiment/objectshard-001-m0-20261122",
+      "base_sha": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T03:50:28Z",
+      "tree": "a0d064ac6ac7116cee358ebcc5b4b180f3f679e0",
+      "paths": {},
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr730",
+      "pr": 730,
+      "url": "https://github.com/techrote/cybersand/pull/730",
+      "head": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "branch": "experiment/objectshard-001-m2-20261122",
+      "base": "experiment/objectshard-001-m1-20261122",
+      "base_sha": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T03:50:30Z",
+      "tree": "1c41db043867755252b7c7540e160ec65b2e044b",
+      "paths": {},
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr738",
+      "pr": 738,
+      "url": "https://github.com/techrote/cybersand/pull/738",
+      "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "branch": "experiment/objectshard-001r-20261122",
+      "base": "experiment/objectshard-001-m2-20261122",
+      "base_sha": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T05:30:09Z",
+      "tree": "0b5d1b0bebb33ee63d4b2e5247b4b29d17313287",
+      "paths": {},
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr740",
+      "pr": 740,
+      "url": "https://github.com/techrote/cybersand/pull/740",
+      "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+      "branch": "experiment/pubpres-playability-003",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T06:23:36Z",
+      "tree": "3eb5c0490aa29b4569ceebef48ccd338079b63b6",
+      "paths": {
+        "godot/scripts/main.gd": {
+          "git_blob": "b439e43dfcf94efa139f9aee1b62dc34abbc05a6",
+          "sha256": "8b9aca823d4fedd32d08a8ec636e6e0bf3d15df798c47d59e835ea9ba790d8be"
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "039eeb8723d20330ac6ca5300ec9416cc49bd649",
+          "sha256": "b336001c6ad19b00200a1028a1b4b6c5bd620a37d6b287fde35112e41ffcf328"
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "git_blob": "0b449cc5e7d976fdb4c8a78cc55ddba2d8d8fbcf",
+          "sha256": "b3d5755ddcb9aa16c17502f4d04066c5578eb1603be6cb0df9197953e89f500f"
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+        },
+        "godot/scripts/workbench_native_rendezvous.gd": {
+          "git_blob": "c4a17de3f46fe039de051daf3e7e1cc82e68f62d",
+          "sha256": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385"
+        },
+        "godot/scripts/workbench_same_frame_continuation.gd": {
+          "git_blob": "0ded61b7c9a70c3b232d71f647f593fe5745dc1e",
+          "sha256": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879"
+        },
+        "godot/scripts/workbench_presentation_coherence.gd": {
+          "git_blob": "2e8b0eecd11ad1873c81770e2edaf4b8fd7a7402",
+          "sha256": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d"
+        }
+      },
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr719",
+      "pr": 719,
+      "url": "https://github.com/techrote/cybersand/pull/719",
+      "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "branch": "experiment/pubpres-playability-001",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T03:20:24Z",
+      "tree": "7a57dc0873dd161abe165f3a60e14e64886d04a8",
+      "paths": {
+        "godot/scripts/main.gd": {
+          "git_blob": "9438a50e83d1f7b12d4f198a33af9f50acca487c",
+          "sha256": "32c93b22850a002667ffc0ae204b90d9b312267156c462ae37806a3232a7801b"
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "bbea54883dd17fbdd2388fe6410a4d783549cbbe",
+          "sha256": "e5b5d5915e1fbbf752b7d75dd0d0078198b829cda3a7b66fe9a85ec6e662e6a5"
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "git_blob": "0b449cc5e7d976fdb4c8a78cc55ddba2d8d8fbcf",
+          "sha256": "b3d5755ddcb9aa16c17502f4d04066c5578eb1603be6cb0df9197953e89f500f"
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+        },
+        "godot/scripts/workbench_native_rendezvous.gd": {
+          "git_blob": "c4a17de3f46fe039de051daf3e7e1cc82e68f62d",
+          "sha256": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385"
+        },
+        "godot/scripts/workbench_same_frame_continuation.gd": {
+          "git_blob": "0ded61b7c9a70c3b232d71f647f593fe5745dc1e",
+          "sha256": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879"
+        },
+        "godot/scripts/workbench_presentation_coherence.gd": {
+          "git_blob": "2e8b0eecd11ad1873c81770e2edaf4b8fd7a7402",
+          "sha256": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d"
+        }
+      },
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr682",
+      "pr": 682,
+      "url": "https://github.com/techrote/cybersand/pull/682",
+      "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "branch": "codex/pubpres-integration-001",
+      "base": "main",
+      "base_sha": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-21T10:40:55Z",
+      "tree": "bf6c1c73279a7dde0a3f26f36c73983c1d3abab4",
+      "paths": {
+        "godot/scripts/main.gd": {
+          "git_blob": "3441b9f0a288f9254a3b044b14526a73404b9730",
+          "sha256": "ae3da77f9e9337e8ae40243eb53901aa5d5bfad54f5ba6963bafdfe5686f890e"
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "bbea54883dd17fbdd2388fe6410a4d783549cbbe",
+          "sha256": "e5b5d5915e1fbbf752b7d75dd0d0078198b829cda3a7b66fe9a85ec6e662e6a5"
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "git_blob": "8ad42c0a4c7a7394a51129577d8ae060447ce642",
+          "sha256": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b"
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+        },
+        "godot/scripts/workbench_native_rendezvous.gd": {
+          "git_blob": "c4a17de3f46fe039de051daf3e7e1cc82e68f62d",
+          "sha256": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385"
+        },
+        "godot/scripts/workbench_presentation_coherence.gd": {
+          "git_blob": "2e8b0eecd11ad1873c81770e2edaf4b8fd7a7402",
+          "sha256": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d"
+        }
+      },
+      "runtime_executed_by_objectshard": false
+    },
+    {
+      "name": "pr734",
+      "pr": 734,
+      "url": "https://github.com/techrote/cybersand/pull/734",
+      "head": "34606231677d4287e3f1ae595b6e2ce93cc6fa75",
+      "branch": "exp/gen006-ramcache-001-20261122",
+      "base": "exp/gen006-persistent-areas-001-20261121",
+      "base_sha": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+      "draft": true,
+      "merged": false,
+      "updated_at": "2026-11-22T06:19:25Z",
+      "tree": "9c72800df054a9c6a9d6b7bd5482185c5201398e",
+      "paths": {
+        "godot/scripts/main.gd": {
+          "git_blob": "70275ac6f38c4e52fb71b4bc299aaad666dcb38d",
+          "sha256": "6373156db275bea3c1a53d4da17f0ad8cfcf4e07979ec703a2361ca74bbfadfa"
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+          "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08"
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+        },
+        "godot/native_extension/cyber_native_cell_world.cpp": {
+          "git_blob": "240387a0ec78bbb4ecd64ab64311ac7f0d688448",
+          "sha256": "38618d8f57ef538ce40d12e9eea73389943a7c0e86c68ae74f965e0618006b2b"
+        },
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+        },
+        "godot/scripts/persistent_areas_controller.gd": {
+          "git_blob": "21190ba3baddcaa41103bd94083fd7fc2f4dc1cd",
+          "sha256": "58c1252807995dcbf743e280c56a8067944ed8226d36aea6e8c05b52fe165b99"
+        },
+        "godot/scripts/persistent_area_worker_protocol.gd": {
+          "git_blob": "26fe9e8aefa6c7f5128570883cb6f957fbe218c5",
+          "sha256": "784c919ff312a999bf2bfc22a3bfafa87816d2dd7e39272557767e8ddab77ca3"
+        }
+      },
+      "runtime_executed_by_objectshard": false
+    }
+  ],
+  "boundary": "Immutable native GCR and no ObjectShard attach_world API require separate opt-in one-World rehearsal. Future integration must borrow the existing Workbench World under its worker owner and add a revisioned mutable geometry adapter.",
+  "qualification_start_refresh": {
+    "utc": "2026-11-22T06:46:37.400683+00:00",
+    "sources": [
+      {
+        "name": "main",
+        "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "paths": {
+          "godot/native_extension/workbench_granular_coupling.inc": {
+            "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+            "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+          },
+          "godot/scripts/workbench_physics_bridge.gd": {
+            "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+            "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+          },
+          "godot/scripts/simulation_worker.gd": {
+            "git_blob": "522e55d4d2e4a42d6b2a6f628a791fa768821e03",
+            "sha256": "c011c325629f54c097c9a0a2b929e7125011aa26aab1fc928d06f2cc66468f8f"
+          }
+        }
+      },
+      {
+        "name": "pr740",
+        "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+        "paths": {
+          "godot/native_extension/workbench_granular_coupling.inc": {
+            "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+            "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+          },
+          "godot/scripts/workbench_physics_bridge.gd": {
+            "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+            "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+          },
+          "godot/scripts/simulation_worker.gd": {
+            "git_blob": "039eeb8723d20330ac6ca5300ec9416cc49bd649",
+            "sha256": "b336001c6ad19b00200a1028a1b4b6c5bd620a37d6b287fde35112e41ffcf328"
+          }
+        },
+        "draft": true,
+        "merged": false,
+        "branch": "experiment/pubpres-playability-003"
+      },
+      {
+        "name": "pr734",
+        "head": "34606231677d4287e3f1ae595b6e2ce93cc6fa75",
+        "paths": {
+          "godot/native_extension/workbench_granular_coupling.inc": {
+            "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+            "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247"
+          },
+          "godot/scripts/workbench_physics_bridge.gd": {
+            "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+            "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b"
+          },
+          "godot/scripts/simulation_worker.gd": {
+            "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+            "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08"
+          }
+        },
+        "draft": true,
+        "merged": false,
+        "branch": "exp/gen006-ramcache-001-20261122"
+      }
+    ],
+    "scope": "Read-only current source identities; no concurrent branch imported"
+  },
+  "delivery_refresh": {
+    "utc": "2026-11-22T07:51:04Z",
+    "evidence": "../audits/objectshard-m3-20261122/final-qualification/delivery-interface-refresh.json",
+    "main": {
+      "sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed"
+    },
+    "prs": [
+      {
+        "pr": 726,
+        "url": "https://github.com/techrote/cybersand/pull/726",
+        "head": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+        "branch": "experiment/objectshard-001-m0-20261122",
+        "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "base_ref": "main",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T03:50:27Z"
+      },
+      {
+        "pr": 728,
+        "url": "https://github.com/techrote/cybersand/pull/728",
+        "head": "1b85782a15565bad7e4dae28755b17d630daaf46",
+        "branch": "experiment/objectshard-001-m1-20261122",
+        "base": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+        "base_ref": "experiment/objectshard-001-m0-20261122",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T03:50:28Z"
+      },
+      {
+        "pr": 730,
+        "url": "https://github.com/techrote/cybersand/pull/730",
+        "head": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+        "branch": "experiment/objectshard-001-m2-20261122",
+        "base": "1b85782a15565bad7e4dae28755b17d630daaf46",
+        "base_ref": "experiment/objectshard-001-m1-20261122",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T03:50:30Z"
+      },
+      {
+        "pr": 738,
+        "url": "https://github.com/techrote/cybersand/pull/738",
+        "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+        "branch": "experiment/objectshard-001r-20261122",
+        "base": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+        "base_ref": "experiment/objectshard-001-m2-20261122",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T05:30:09Z"
+      },
+      {
+        "pr": 740,
+        "url": "https://github.com/techrote/cybersand/pull/740",
+        "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+        "branch": "experiment/pubpres-playability-003",
+        "base": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+        "base_ref": "main",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T06:23:36Z"
+      },
+      {
+        "pr": 719,
+        "url": "https://github.com/techrote/cybersand/pull/719",
+        "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+        "branch": "experiment/pubpres-playability-001",
+        "base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+        "base_ref": "main",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T03:20:24Z"
+      },
+      {
+        "pr": 682,
+        "url": "https://github.com/techrote/cybersand/pull/682",
+        "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+        "branch": "codex/pubpres-integration-001",
+        "base": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+        "base_ref": "main",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-21T10:40:55Z"
+      },
+      {
+        "pr": 734,
+        "url": "https://github.com/techrote/cybersand/pull/734",
+        "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+        "branch": "exp/gen006-ramcache-001-20261122",
+        "base": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+        "base_ref": "exp/gen006-persistent-areas-001-20261121",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T07:23:51Z"
+      },
+      {
+        "pr": 741,
+        "url": "https://github.com/techrote/cybersand/pull/741",
+        "head": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "branch": "experiment/objectshard-m3-preflight-continuous-20261122",
+        "base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+        "base_ref": "experiment/objectshard-001r-20261122",
+        "draft": true,
+        "state": "open",
+        "merged": false,
+        "owner": "techrote",
+        "updated_at": "2026-11-22T07:39:33Z"
+      }
+    ],
+    "gen734_delta": {
+      "prior_head": "34606231677d4287e3f1ae595b6e2ce93cc6fa75",
+      "head": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+      "parents": [
+        "34606231677d4287e3f1ae595b6e2ce93cc6fa75"
+      ],
+      "files": [
+        ".github/workflows/gen006-ramcache-process-retirement.yml",
+        ".github/workflows/gen006-ramcache-qualification.yml",
+        "docs/audits/2026-11-22-gen006-ramcache.md",
+        "docs/operations/cybersand-codex-development-handover.md",
+        "tools/ci/bounded_campaign_process.py",
+        "tools/ci/gen006_persistent_runtime_publication.py",
+        "tools/ci/gen006_ramcache_publish_request.json",
+        "tools/ci/gen006_ramcache_runtime_publication.py",
+        "tools/ci/run_persistent_area_residency_memory.py",
+        "tools/ci/test_bounded_campaign_process.py",
+        "tools/ci/test_gen006_ramcache_runtime_publication.py"
+      ],
+      "native_and_godot_delta_empty": true,
+      "scope": "Read-only CI/evidence changes only; no product interface changes or incorporation into ObjectShard.",
+      "verified_interfaces": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+          "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/persistent_areas_controller.gd": {
+          "git_blob": "21190ba3baddcaa41103bd94083fd7fc2f4dc1cd",
+          "sha256": "58c1252807995dcbf743e280c56a8067944ed8226d36aea6e8c05b52fe165b99",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/persistent_area_worker_protocol.gd": {
+          "git_blob": "26fe9e8aefa6c7f5128570883cb6f957fbe218c5",
+          "sha256": "784c919ff312a999bf2bfc22a3bfafa87816d2dd7e39272557767e8ddab77ca3",
+          "unchanged_since_prior_refresh": true
+        }
+      }
+    },
+    "scope": "Read-only delivery refresh; latest GEN change is CI/evidence only and native/Godot interfaces remain byte-identical. No sibling code incorporated or runtime-qualified by this M3 rehearsal."
+  },
+  "closeout_refresh": {
+    "checked_utc": "2026-11-22T08:52:26.861821+00:00",
+    "read_only": true,
+    "refs": [
+      {
+        "name": "main",
+        "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed"
+      },
+      {
+        "name": 738,
+        "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+        "draft": true,
+        "merged": false,
+        "base": "experiment/objectshard-001-m2-20261122"
+      },
+      {
+        "name": 740,
+        "head": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+        "draft": true,
+        "merged": false,
+        "base": "main"
+      },
+      {
+        "name": 719,
+        "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+        "draft": true,
+        "merged": false,
+        "base": "main"
+      },
+      {
+        "name": 682,
+        "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+        "draft": true,
+        "merged": false,
+        "base": "main"
+      },
+      {
+        "name": 734,
+        "head": "41208bb1ec0f2d56a9a375983f5d5c7c5193b36a",
+        "draft": true,
+        "merged": false,
+        "base": "exp/gen006-persistent-areas-001-20261121"
+      },
+      {
+        "name": 741,
+        "head": "73018218092e79fbe935aa60890e33bd9f4859ac",
+        "draft": true,
+        "merged": false,
+        "base": "experiment/objectshard-001r-20261122"
+      }
+    ],
+    "gen734_delta": {
+      "from": "a3b9ea9606900e3faed989ab0f1c33400cad3b95",
+      "to": "41208bb1ec0f2d56a9a375983f5d5c7c5193b36a",
+      "tree": "88ed452bfb2e6fb1c78020b7ee8863a1fcabe85e",
+      "files": [
+        ".github/workflows/gen006-ramcache-qualification.yml",
+        "docs/audits/2026-11-22-gen006-ramcache.md",
+        "tools/ci/gen006_ramcache_publish_request.json",
+        "tools/ci/run_persistent_area_recovery.py",
+        "tools/ci/test_gen006_source_custody.py"
+      ],
+      "native_and_godot_delta_empty": true,
+      "verified_interfaces": {
+        "godot/native_extension/workbench_granular_coupling.inc": {
+          "git_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f",
+          "sha256": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/workbench_physics_bridge.gd": {
+          "git_blob": "d82d511f112ebd37f18061bb9c9e21a88f662857",
+          "sha256": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/simulation_worker.gd": {
+          "git_blob": "be74d21c762a04593db3aa1eb8b0e532ac80283c",
+          "sha256": "2179f45f54f1bef8298b6fc771d41a7054fbf41f0d5a2e99dd0c3e25a41d4a08",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/persistent_areas_controller.gd": {
+          "git_blob": "21190ba3baddcaa41103bd94083fd7fc2f4dc1cd",
+          "sha256": "58c1252807995dcbf743e280c56a8067944ed8226d36aea6e8c05b52fe165b99",
+          "unchanged_since_prior_refresh": true
+        },
+        "godot/scripts/persistent_area_worker_protocol.gd": {
+          "git_blob": "26fe9e8aefa6c7f5128570883cb6f957fbe218c5",
+          "sha256": "784c919ff312a999bf2bfc22a3bfafa87816d2dd7e39272557767e8ddab77ca3",
+          "unchanged_since_prior_refresh": true
+        }
+      }
+    },
+    "scope": "Final closeout dependency refresh before evidence publication. New GEN delta is CI/evidence only; no external branch incorporated or modified."
+  }
+}

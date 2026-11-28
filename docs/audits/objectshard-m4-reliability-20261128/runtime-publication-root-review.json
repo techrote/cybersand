@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "application_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "application_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+  "publication_commit": "d5bb74cdc8b3350ea85ba7899e46d6d0038074b8",
+  "publication_tree": "3b74f65f08290813c582309116376b907b5b4ee1",
+  "publication_parent_matches_application_source": true,
+  "changed_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "producer_manifests_equal_published_manifests": true,
+  "package_dll_matches_published_windows_dll": true,
+  "native_runtimes": [
+    {
+      "platform": "linux",
+      "binary": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "bytes": 6081432,
+      "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+      "manifest_sha256": "14857902133f346b04f26832b91ab28798a904b8026fef8a0d76b0b99a5fa9e1",
+      "status": "validated-development-runtime",
+      "native_inputs": 126,
+      "build_inputs": 1378
+    },
+    {
+      "platform": "windows",
+      "binary": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "bytes": 7271424,
+      "sha256": "a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503",
+      "manifest_sha256": "ea4ebfd086f660789545867691ff346ab484639a76dfede0f4382547f92df530",
+      "status": "validated-development-runtime",
+      "native_inputs": 126,
+      "build_inputs": 1378
+    }
+  ],
+  "root_package_verifier": "PASS1484 payload files; exact sourceb7; Windows execution remains attested by original hosted receipts, not performed locally"
+}

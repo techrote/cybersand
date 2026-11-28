@@ -1,0 +1,65 @@
+{
+  "schema": "objectshard-live-edit-independent-corrective-review-v1",
+  "reviewed_utc": "2026-11-28T07:07:45.455350+00:00",
+  "reviewer": "Specialist C, independent of A/B implementation authors",
+  "source_base": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "source_disposition": "uncommitted narrow corrections; final application identity pending",
+  "reviewed_inputs": {
+    "tools/objectshard/verify_workbench_package.ps1": "938835e6f956a0a06cad66c2d0bae4b788c6ac958726bc8eb553d01710c758c4",
+    "tools/objectshard/test_workbench_package_inputs.py": "f81ca56b8e91f192833ff7856c7ef31767a9f8f9630a4947ab7e78beff9b8b3a",
+    "godot/scripts/object_shard_workbench_overlay.gd": "0dcc05fb0b6a24730f5ff9df2284f8003d588abddd5d7a6de9de709f8740f154",
+    "godot/tests/test_object_shard_m4_camera_lifecycle.gd": "3c89237077671cd90c913ec7fb538330f869c9489d17bab79d8cf526cad0c322",
+    "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+    "godot/tests/test_object_shard_m4_live_input.gd": "3d7ae014fcea09ab68d27b8216a7ca0fff0d28cd5f36c65eb83608f65f5de989",
+    "godot/tests/test_object_shard_m4_edit_preview_render.gd": "c6c5c2e29e76f0669c8a8c10552ac74a4f16274d4b533fefa3a61ad8a8d598c4"
+  },
+  "portable_verifier": {
+    "outcome": "review_pass",
+    "entry_scenarios": 9,
+    "required_inputs": 54,
+    "unchanged_guards": [
+      "native runtime provenance",
+      "reciprocal generator binding",
+      "every inventory file digest",
+      "unexpected loadable file refusal"
+    ],
+    "added_regression": [
+      "mirrored exact scene and required-input inventories without needing PowerShell",
+      "actual PowerShell missing-scene rejection"
+    ],
+    "independent_execution": {
+      "command": "PATH=/tmp/cybersand-live-edit/powershell-7.4.6:$PATH python3 -m unittest test_workbench_package_inputs -v",
+      "cwd": "tools/objectshard",
+      "runtime": "official PowerShell7.4.6",
+      "tests": 6,
+      "failures": 0,
+      "skips": 0,
+      "exit_code": 0
+    }
+  },
+  "late_layout": {
+    "outcome": "review_pass",
+    "change": "Synchronous actual world_view.resized -> retained overlay camera/clip refresh; cleanup disconnects signal. No native or physical state is modified.",
+    "regression": "Immediate one-pixel Control resize after normal presentation sync, before any additional process callback; retains held native publication and semantic clock.",
+    "before": {
+      "checks": 214,
+      "failures": 3,
+      "failure_scope": "exactly the three new view/clip/transform equalities"
+    },
+    "after": {
+      "checks": 214,
+      "failures": 0
+    },
+    "hosted_status": "corrected render execution pending"
+  },
+  "pending": [
+    "Exact-source corrected full campaign and extracted package must pass before delivery."
+  ],
+  "input_cancellation": {
+    "outcome": "review_pass",
+    "escape": "Only an active structural pointer/committed intent consumes Escape; ordinary no-intent Escape still reaches Main Pause. Actual viewport dispatch test preserves pause and prevents admission.",
+    "resize": "Owning Window.size_changed cancels structural input even when canvas_items retains logical Control size. Disabled ObjectShard returns immediately; exit disconnects the signal.",
+    "render_premise": "Assert actual Window size, framebuffer extent and screen transform change, and independently assert cancellation; preserve all camera/pixel preview comparisons.",
+    "hosted_status": "corrected graphical execution pending"
+  }
+}

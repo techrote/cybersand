@@ -477,6 +477,56 @@ var _workbench_consumed_sample: Dictionary = {}
 var _workbench_display: Dictionary = {}
 var _workbench_refusal: String = ""
 var _workbench_prepared_sample: int = -1
+# OBJECTSHARD-M4: exclusively the EXISTING Worker; no additional World, tick
+# or independent worker. Mutex holds copied transport values, never native refs.
+const M4_OWNER_QUEUE_LIMIT: int = 16
+const M4_INVENTORY_INSPECTION_USEC: int = 15000000
+const M4_INVENTORY_MAX_PARCELS: int = 65536
+var _m4_attach_requested: bool = false
+var _m4_live: bool = false # worker-owned
+var _m4_world_generation: int = -1 # worker-owned
+var _m4_capabilities: Dictionary = {} # mutex owned
+var _m4_last_frame: Dictionary = {} # mutex owned, immutable deep copy
+var _m4_control_queue: Array[Dictionary] = [] # mutex owned
+var _m4_control_results: Array[Dictionary] = [] # mutex owned
+var _m4_serial: int = 0
+var _m4_transport_generation: int = 1
+var _m4_epoch: int = 1
+var _m4_physics_ready: bool = false
+var _m4_motion_barrier: bool = false
+var _m4_held: String = ""
+var _m4_action_queue: Array[Dictionary] = [] # mutex owned
+var _m4_action_results: Array[Dictionary] = [] # mutex owned
+var _m4_publication_sequence: int = 0 # worker exclusive
+var _m4_frame_identity: Array = [] # worker exclusive
+var _m4_last_action_id: int = 0 # mutex-owned admission fence
+var _m4_last_port_generation: int = 0 # mutex-owned admission fence
+var _m4_owner_busy: bool = false # mutex-owned; excludes a physics permit during native work
+var _m4_motion_lease: int = 0 # mutex-owned exact-frame permit; zero means no Main interval
+var _m4_motion_lease_serial: int = 0
+var _m4_interval_tick_due: bool = false # a completed physical interval still awaits its owner tick
+var _m4_interval_step_serial: int = 0
+var _m4_interval_sample: Dictionary = {} # exact ordinary publication pinned by a completed lease
+var _m4_interval_usables: Array = [] # bounded copied set admitted with that final publication
+var _m4_interval_effects: Array = []
+var _m4_reused_prepared_samples: int = 0
+var _m4_emissions_inflight: int = 0 # mutex-owned; included in bounded brush admission
+var _m4_cells_inflight: int = 0
+var _m4_snapshot_calls: int = 0
+var _m4_snapshot_usec: int = 0
+var _m4_snapshot_max_usec: int = 0
+var _m4_frame_copy_calls: int = 0
+var _m4_frame_copy_usec: int = 0
+var _m4_frame_copy_max_usec: int = 0
+var _m4_inventory_serial: int = 0
+var _m4_inventory_request: Dictionary = {} # one mutex-owned on-demand read request
+var _m4_inventory_result: Dictionary = {} # one immutable copied result, consumed once
+var _m4_inventory_inflight: bool = false
+var _m4_segment_service_turns: int = 0
+var _m4_segment_idle_polls: int = 0
+var _m4_compact_motion_receipts: int = 0
+var _m4_full_motion_publications: int = 0
+
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
 var _water_exit_request_serial: int = 0
@@ -1415,6 +1465,677 @@ func _activate_sampled_character(
 	)
 
 
+func object_shard_request_same_world() -> Dictionary:
+	# Main requests attachment once the ordinary Workbench has been prepared.
+	_mutex.lock()
+	var ok: bool = _running and not _m4_attach_requested and not bool(_m4_capabilities.get("native_attached",false))
+	if ok:
+		_m4_attach_requested = true
+		_m4_transport_generation += 1
+	var ticket: Dictionary = {"ok":ok,"outcome":"AttachQueued" if ok else "AlreadyAttachedOrClosed",
+		"transport_generation":_m4_transport_generation}
+	_mutex.unlock()
+	return ticket
+
+func object_shard_same_world_capabilities() -> Dictionary:
+	_mutex.lock()
+	var value: Dictionary = _m4_capabilities.duplicate(true)
+	value["held_reason"] = _m4_held
+	_mutex.unlock()
+	return value
+
+static func _m4_target_payload_valid(target: Dictionary) -> bool:
+	if target.size()>24 or not target.get("expected") is Dictionary or target.expected.size()!=4: return false
+	for key: Variant in target:
+		if not key is String: return false
+		if key=="expected": continue
+		if not target[key] is int and not target[key] is Vector2i: return false
+	for key: Variant in target.expected:
+		if key not in ["material","state_a","state_b","temperature"] or not target.expected[key] is int: return false
+	return true
+
+static func _m4_action_payload_valid(request: Dictionary) -> bool:
+	if request.size()>28 or request.get("operation","") not in ["erase","ignite","inspect","reabsorb"] \
+		or not request.get("position") is Vector2i or not request.get("target") is Dictionary \
+		or not request.get("observation") is Dictionary: return false
+	for key: Variant in request:
+		if not key is String: return false
+		if key in ["target","targets","terrain_cells","observation"]: continue
+		if not request[key] is int and not request[key] is String and not request[key] is Vector2i: return false
+	var terrain: bool = request.get("domain","")=="terrain"
+	if request.get("domain","") not in ["","terrain"] or request.has("terrain_cells")!=terrain: return false
+	if terrain:
+		if request.get("operation") not in ["erase","ignite"] or request.has("targets") \
+				or not request.target.is_empty() or not request.get("terrain_cells") is Array \
+				or request.terrain_cells.is_empty() or request.terrain_cells.size()>4096: return false
+		for cell: Variant in request.terrain_cells:
+			if not cell is Vector2i: return false
+		if request.terrain_cells[0]!=request.position: return false
+	elif not _m4_target_payload_valid(request.target): return false
+	if request.has("targets"):
+		if not request.targets is Array or request.targets.is_empty() or request.targets.size()>4096 \
+				or request.get("operation") not in ["erase","ignite"]: return false
+		if request.targets[0]!=request.target or request.target.get("position")!=request.position: return false
+		for target: Variant in request.targets:
+			if not target is Dictionary or not _m4_target_payload_valid(target): return false
+			for key: String in ["owner","generation","body_generation","geometry_revision","applied_physics_revision","pose_serial","material_revision"]:
+				if not target.get(key) is int or target.get(key)!=request.target.get(key): return false
+			for key: String in ["session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+				if target.get(key)!=request.get(key): return false
+			if target.get("publication_sequence")!=request.observation.get("publication_sequence"): return false
+	if request.observation.size()>16: return false
+	for key: Variant in request.observation:
+		if not key is String or not request.observation[key] is int: return false
+	for key: String in ["probability_ppm","seed","material_filter","captured_usec","admitted_usec"]:
+		if request.has(key) and not request[key] is int: return false
+	return int(request.get("probability_ppm",1000000))>=0 and int(request.get("probability_ppm",1000000))<=1000000 \
+		and int(request.get("seed",0))>=0 and int(request.get("material_filter",-1))>=-1
+
+func object_shard_queue_workbench_action(request: Dictionary) -> Dictionary:
+	_mutex.lock()
+	var reason: String = ""
+	if not _running or not _m4_physics_ready or not _m4_held.is_empty() or not bool(_m4_capabilities.get("attached",false)):
+		reason = "MainPhysicsNotBound"
+	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty():
+		reason = "WorldReplacementPending"
+	elif _m4_action_queue.size()+_m4_action_results.size() >= M4_OWNER_QUEUE_LIMIT:
+		reason = "ActionCapacity"
+	elif not _m4_action_payload_valid(request):
+		reason = "InvalidMovingAction"
+	elif request.get("operation") not in ["erase","ignite","inspect"]:
+		reason = "TransactionalReabsorptionControlRequired"
+	else:
+		for key: String in ["native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+			if request.get(key) != _m4_capabilities.get(key): reason = "WorldIdentityChanged"
+	var action: int = int(request.get("action_id",0))
+	var generation: int = int(request.get("port_generation",0))
+	if reason.is_empty() and (action <= 0 or generation <= 0 or generation < _m4_last_port_generation \
+		or (generation == _m4_last_port_generation and action <= _m4_last_action_id)):
+		reason = "RepeatedOrRetiredAction"
+	if reason.is_empty():
+		_m4_action_queue.append(request.duplicate(true))
+		_m4_last_action_id = action
+		_m4_last_port_generation = generation
+	var result: Dictionary = {"ok":reason.is_empty(),"outcome":"QueuedOnOrdinaryWorker" if reason.is_empty() else reason,
+		"action_id":action,"port_generation":generation}
+	_mutex.unlock()
+	return result
+
+func object_shard_take_workbench_results(maximum: int = 16) -> Array:
+	if maximum < 1 or maximum > M4_OWNER_QUEUE_LIMIT: return []
+	_mutex.lock()
+	var count: int = mini(maximum,_m4_action_results.size())
+	var result: Array = _m4_action_results.slice(0,count).duplicate(true)
+	_m4_action_results = _m4_action_results.slice(count)
+	_mutex.unlock()
+	return result
+
+func _m4_drain_actions() -> void:
+	if not _m4_live or _m4_motion_lease != 0: return
+	_mutex.lock()
+	var pending: Array[Dictionary] = _m4_action_queue.duplicate(true)
+	_m4_action_queue.clear()
+	_mutex.unlock()
+	for request: Dictionary in pending:
+		var service_started_usec: int = Time.get_ticks_usec()
+		var raw: Dictionary = {"ok":false,"outcome":"TargetChanged"}
+		if request.get("world_generation") == _world_generation and _m4_held.is_empty():
+			raw = _world.object_shard_workbench_action(request)
+		var service_completed_usec: int = Time.get_ticks_usec()
+		var accepted: bool = bool(raw.get("ok",false)) and bool(raw.get("accepted",false)) and bool(raw.get("same_world",false))
+		var terminal: Dictionary = {"outcome":"Applied" if accepted else \
+			("Capacity" if str(raw.get("outcome","")) == "Capacity" else "TargetChanged" if str(raw.get("outcome","")) in ["Stale","TargetChanged"] else "Refused")}
+		for key: String in ["action_id","port_generation","native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+			terminal[key] = request.get(key)
+		terminal["transport_timing"] = {"captured_usec":request.get("captured_usec",0),
+			"admitted_usec":request.get("admitted_usec",0),"worker_started_usec":service_started_usec,
+			"worker_completed_usec":service_completed_usec}
+		if bool(raw.get("partial",false)) or str(raw.get("outcome",""))=="Quarantined":
+			# A failed native call can have crossed its write boundary. Preserve
+			# the bounded receipt and enter an uncertain terminal transport state;
+			# never classify that as a proven no-write refusal.
+			terminal["outcome"] = "Uncertain"
+			terminal["may_have_executed"] = true
+			terminal["native_receipt"] = raw.duplicate(true)
+		elif accepted:
+			var receipt: Dictionary = raw.duplicate(true)
+			# Native minted the mutation and exact source/result witnesses. Only
+			# worker-owned transport domains are added here, after validation.
+			for key: String in ["action_id","port_generation","world_generation","owner_epoch","transport_generation"]:
+				receipt[key] = request.get(key)
+			terminal["native_receipt"] = receipt
+		else:
+			terminal["refusal"] = raw
+		_m4_publish_owner()
+		if accepted and request.operation != "inspect": _m4_motion_barrier = true
+		_mutex.lock()
+		_m4_action_results.append(terminal)
+		_mutex.unlock()
+
+func object_shard_owner_frame(after_sequence: int = -1) -> Dictionary:
+	var started: int = Time.get_ticks_usec()
+	_mutex.lock()
+	if int(_m4_last_frame.get("publication_sequence",-1))<=after_sequence:
+		_mutex.unlock()
+		return {}
+	var value: Dictionary = _m4_last_frame.duplicate(true)
+	var elapsed: int = Time.get_ticks_usec()-started
+	_m4_frame_copy_calls += 1
+	_m4_frame_copy_usec += elapsed
+	_m4_frame_copy_max_usec = maxi(_m4_frame_copy_max_usec,elapsed)
+	_mutex.unlock()
+	return value
+
+func object_shard_owner_profile() -> Dictionary:
+	_mutex.lock()
+	var current_states: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
+	var due_states: PackedFloat64Array = _m4_interval_sample.get("states",PackedFloat64Array())
+	var result := {"snapshot_calls":_m4_snapshot_calls,"snapshot_usec":_m4_snapshot_usec,
+		"snapshot_max_usec":_m4_snapshot_max_usec,"frame_copy_calls":_m4_frame_copy_calls,
+		"frame_copy_usec":_m4_frame_copy_usec,"frame_copy_max_usec":_m4_frame_copy_max_usec,
+		"segment_service_turns":_m4_segment_service_turns,"segment_idle_polls":_m4_segment_idle_polls,
+		"compact_motion_receipts":_m4_compact_motion_receipts,"full_motion_publications":_m4_full_motion_publications,
+		"snapshot_scope":"native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+		"frame_copy_scope":"Main copied publication including mutex wait; excludes control receipt copy",
+		"counter_scope":"cumulative ordinary worker lifetime",
+		"motion_fence":{"lease":_m4_motion_lease,"tick_due":_m4_interval_tick_due,
+			"current_sample":int(current_states[10]) if current_states.size()>10 else -1,
+			"due_sample":int(due_states[10]) if due_states.size()>10 else -1,
+			"prepared_sample":_workbench_prepared_sample,"completed_sample":_workbench_completed_sample,
+			"reused_prepared_samples":_m4_reused_prepared_samples,"owner_busy":_m4_owner_busy,
+			"ordinary_refusal":_workbench_refusal},
+		"actor_work":{"pending_usables":_pending_physical_usables.size(),
+			"pending_effects":_pending_physical_effects.size(),
+			"due_usables":_m4_interval_usables.size(),"due_effects":_m4_interval_effects.size()}}
+	_mutex.unlock()
+	return result
+
+func _m4_inventory_error_locked(source: Dictionary, consuming: bool = false) -> String:
+	# Exactly the eleven integer identity fields below, never caller payloads.
+	if source.size()!=11: return "InvalidInventorySource"
+	if not _running or _simulation_failed or not _m4_capabilities.get("attached",false): return "InventoryOwnerUnavailable"
+	if not _paused: return "PauseOwnerBeforeInventoryInspection"
+	if not consuming and _m4_owner_busy: return "OwnerBusy"
+	if _m4_motion_lease!=0 or _m4_interval_tick_due or not _m4_physics_ready: return "InventoryMotionPending"
+	if not _m4_held.is_empty() or _m4_last_frame.get("quarantined",true): return "InventoryOwnerHeld"
+	if _m4_last_frame.get("paused",true) or _m4_last_frame.get("promotion",{}).get("present",false) \
+		or _m4_last_frame.get("reabsorption",{}).get("present",false): return "InventoryOwnershipPending"
+	for shard: Dictionary in _m4_last_frame.get("shards",[]):
+		if shard.get("geometry_pending",false): return "InventoryGeometryPending"
+	if not _m4_control_queue.is_empty() or not _m4_control_results.is_empty() \
+		or not _m4_action_queue.is_empty() or not _m4_action_results.is_empty() \
+		or _legacy_edits_pending_locked() or _paint_holds_slot_locked() or _art_holds_slot_locked() \
+		or _material_capture_holds_slot_locked(): return "InventoryEditsPending"
+	if _world_change_inflight or _reset_requested or not _lab_request.is_empty() \
+		or not _prepared_physical_publication.is_empty(): return "InventoryWorldReplacementPending"
+	for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","world_revision","next_transaction"]:
+		if typeof(source.get(key))!=TYPE_INT or source[key]!=_m4_last_frame.get(key): return "InventorySourceChanged"
+	for key: String in ["native_instance_id","transport_generation","owner_epoch","shard_session"]:
+		if typeof(source.get(key))!=TYPE_INT or source[key]!=_m4_capabilities.get(key): return "InventoryOwnerChanged"
+	return ""
+
+func object_shard_request_inventory_inspection(source: Dictionary) -> Dictionary:
+	_mutex.lock()
+	var error: String = _m4_inventory_error_locked(source)
+	if error.is_empty() and (not _m4_inventory_request.is_empty() or not _m4_inventory_result.is_empty() or _m4_inventory_inflight):
+		error = "InventoryInspectionSlotOccupied"
+	if error.is_empty():
+		_m4_inventory_serial += 1
+		_m4_inventory_request = {"token":_m4_inventory_serial,"source":source.duplicate(true),
+			"deadline":Time.get_ticks_usec()+M4_INVENTORY_INSPECTION_USEC}
+	var result: Dictionary = {"ok":error.is_empty(),"outcome":"InventoryInspectionQueued" if error.is_empty() else error,
+		"token":_m4_inventory_serial if error.is_empty() else 0}
+	_mutex.unlock()
+	return result
+
+func object_shard_take_inventory_inspection(token: int) -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = {}
+	if token<=0:
+		result = {"ok":false,"outcome":"InvalidInventoryInspectionToken","token":token}
+	elif not _m4_inventory_result.is_empty() and int(_m4_inventory_result.get("token",0))==token:
+		result = _m4_inventory_result.duplicate(true)
+		_m4_inventory_result.clear()
+	elif int(_m4_inventory_request.get("token",0))!=token:
+		result = {"ok":false,"outcome":"InventoryInspectionRetired","token":token}
+	_mutex.unlock()
+	return result
+
+func _m4_native_inventory_identity() -> Dictionary:
+	var status: Dictionary = _world.object_shard_status()
+	return {"native_instance_id":_world.get_instance_id(),"session":status.get("session",-1),
+		"world_incarnation":status.get("world_incarnation",-1),"tick":int(_world.get_tick_index()),
+		"world_revision":int(_world.revision)}
+
+func _m4_consume_inventory_inspection() -> void:
+	# Exclusive worker only, after ordinary writes/publication in this turn.
+	# No full-grid rasterization occurs unless this bounded read was requested.
+	_mutex.lock()
+	if _m4_inventory_request.is_empty() or _m4_inventory_inflight:
+		_mutex.unlock()
+		return
+	var request: Dictionary = _m4_inventory_request.duplicate(true)
+	_m4_inventory_inflight = true
+	var error: String = _m4_inventory_error_locked(request.source,true)
+	if Time.get_ticks_usec()>int(request.deadline): error = "InventoryInspectionDeadline"
+	_mutex.unlock()
+	var result: Dictionary = {"schema":"objectshard-m4-inventory-inspection-v1","token":request.token,
+		"ok":false,"source":request.source,"extent":_workbench_extent,
+		"bounded_maximum_parcels":M4_INVENTORY_MAX_PARCELS,
+		"scope":"one paused exclusive-owner raw-grid and parcel inspection; no tick, edit, or per-frame raster"}
+	if error.is_empty():
+		var before: Dictionary = _m4_native_inventory_identity()
+		for key: String in before:
+			if before[key]!=request.source.get(key): error = "InventoryNativeSourceChanged"
+		if error.is_empty():
+			var captured: Dictionary = _world.object_shard_snapshot(true)
+			var water: Dictionary = _world.water_experiment_observation(Vector2i.ZERO,_workbench_extent)
+			var parcels: PackedFloat64Array = _world.inspect_ballistic_parcels(M4_INVENTORY_MAX_PARCELS)
+			var spray: Dictionary = _world.get_water_spray()
+			var after: Dictionary = _m4_native_inventory_identity()
+			result["native_before"] = before
+			result["native_after"] = after
+			if before!=after: error = "InventoryNativeSourceChanged"
+			elif not captured.get("ok",false) or not spray.get("healthy",false) or _world.has_failed(): error = "InventoryNativeReadRefused"
+			elif int(captured.get("tick",-1))!=int(request.source.tick) or int(water.get("tick",-1))!=int(request.source.tick): error = "InventoryNativeTickChanged"
+			elif int(captured.get("session",-1))!=int(request.source.session) \
+				or int(captured.get("world_incarnation",-1))!=int(request.source.world_incarnation): error = "InventoryNativeOwnerChanged"
+			elif int(captured.get("width",0))!=_workbench_extent.x or int(captured.get("height",0))!=_workbench_extent.y \
+				or captured.get("world_materials",PackedByteArray()).size()!=_workbench_extent.x*_workbench_extent.y: error = "InventoryGridIncomplete"
+			elif parcels.size()%5!=0 or parcels.size()/5!=int(spray.get("live",-1)): error = "InventoryParcelsIncomplete"
+			if error.is_empty():
+				captured.erase("world_rgba") # Raw material bytes are the independent witness; do not transfer redundant display pixels.
+				result["raw_snapshot"] = captured
+				result["water_observation"] = water
+				result["ballistic_parcels"] = parcels
+				result["water_spray"] = spray
+	_mutex.lock()
+	var final_error: String = _m4_inventory_error_locked(request.source,true)
+	if not final_error.is_empty(): error = final_error
+	if Time.get_ticks_usec()>int(request.deadline): error = "InventoryInspectionDeadline"
+	result["ok"] = error.is_empty()
+	result["outcome"] = "InventoryInspected" if error.is_empty() else error
+	if not error.is_empty():
+		for key: String in ["raw_snapshot","water_observation","ballistic_parcels","water_spray"]: result.erase(key)
+	_m4_inventory_result = result
+	_m4_inventory_request.clear()
+	_m4_inventory_inflight = false
+	_mutex.unlock()
+
+func object_shard_acquire_motion(expected: Dictionary) -> Dictionary:
+	# This is transport admission only. The exclusive native owner publishes
+	# immutable proof before becoming idle; Main never calls or borrows World.
+	_mutex.lock()
+	var reason: String = ""
+	if not _running or _m4_owner_busy: reason = "OwnerBusy"
+	elif _m4_motion_lease != 0 or not _m4_physics_ready or not _m4_held.is_empty(): reason = "MotionAlreadyHeld"
+	elif _m4_interval_tick_due: reason = "CompletedMotionAwaitingNativeTick"
+	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty(): reason = "WorldReplacementPending"
+	elif not _m4_control_queue.is_empty() or not _m4_action_queue.is_empty(): reason = "OwnerCommandPending"
+	elif not _m4_inventory_request.is_empty() or _m4_inventory_inflight: reason = "InventoryInspectionPending"
+	else:
+		for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","next_transaction"]:
+			if expected.get(key) != _m4_last_frame.get(key): reason = "InstalledFrameChanged"
+		if _m4_last_frame.get("paused",true) or _m4_last_frame.get("quarantined",true) \
+			or _m4_last_frame.get("promotion",{}).get("present",false) \
+			or _m4_last_frame.get("reabsorption",{}).get("present",false): reason = "NativeBarrierPending"
+		for shard: Dictionary in _m4_last_frame.get("shards",[]):
+			if shard.get("geometry_pending",false): reason = "NativeGeometryPending"
+	if reason.is_empty():
+		_m4_motion_lease_serial += 1
+		_m4_motion_lease = _m4_motion_lease_serial
+	var result := {"ok":reason.is_empty(),"outcome":"MotionReserved" if reason.is_empty() else reason,
+		"lease":_m4_motion_lease if reason.is_empty() else 0}
+	_mutex.unlock()
+	return result
+
+func object_shard_submit_owner_control(command: String, values: Dictionary) -> Dictionary:
+	if command not in ["prepare","acknowledge","accept_motion","retire","complete_motion","prepare_reabsorb"]:
+		return {"ok":false,"outcome":"UnsupportedM4Control"}
+	_mutex.lock()
+	var valid: bool = bool(_m4_capabilities.get("native_attached",false)) and _m4_held.is_empty() and _m4_control_queue.size() < M4_OWNER_QUEUE_LIMIT and _m4_control_results.size() < M4_OWNER_QUEUE_LIMIT and values.get("world_generation") == _m4_capabilities.get("world_generation") and values.get("shard_session") == _m4_capabilities.get("shard_session") and values.get("world_incarnation") == _m4_capabilities.get("world_incarnation")
+	if valid and _m4_motion_lease > 0:
+		valid = command in ["accept_motion","complete_motion"] and int(values.get("motion_lease",0))==_m4_motion_lease
+	var completion_sample: Dictionary = {}
+	var completion_usables: Array = []
+	var completion_effects: Array = []
+	if valid and command == "complete_motion" and _m4_motion_lease > 0:
+		# Main publishes its real final actor/equipment sample before completing
+		# a material interval. Bind that exact copied packet under the same
+		# mutex; the worker may already have captured an older turn's sample.
+		var states: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
+		var serial: int = int(states[10]) if states.size()>10 else -1
+		valid = not _m4_interval_tick_due and values.get("workbench_sample_serial") == serial \
+			and not _workbench_sample.is_empty() \
+			and (serial>=0 or _workbench_sample.get("bodies",[]).is_empty())
+		if valid:
+			completion_sample = _workbench_sample.duplicate(true)
+			# This private envelope owns the cutoff, without adding fields to
+			# the existing strict equipment/effect request schemas. Later Main
+			# observations cannot contribute work to this completed interval.
+			completion_usables = _pending_physical_usables.duplicate(true)
+			completion_effects = _pending_physical_effects.duplicate(true)
+	if valid and command == "prepare_reabsorb":
+		var request: Dictionary = values.get("request",{})
+		valid = _m4_motion_lease == 0 and _m4_action_payload_valid(request) and request.get("operation")=="reabsorb"
+		for key: String in ["native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+			if request.get(key) != _m4_capabilities.get(key): valid = false
+	if valid:
+		_m4_serial += 1
+		_m4_control_queue.append({"serial":_m4_serial,"command":command,"values":values.duplicate(true),
+			"world_generation":_m4_capabilities.world_generation,"shard_session":_m4_capabilities.shard_session,
+			"completion_sample":completion_sample,"completion_usables":completion_usables,
+			"completion_effects":completion_effects,"admitted_usec":Time.get_ticks_usec()})
+	var ticket: Dictionary = {"ok":valid,"outcome":"M4ControlQueued" if valid else "M4OwnerOrCapacityRefused",
+		"serial":_m4_serial if valid else 0}
+	if not valid:
+		var state: PackedFloat64Array = _workbench_sample.get("states",PackedFloat64Array())
+		ticket["command"] = command
+		ticket["requested_lease"] = values.get("motion_lease",-1)
+		ticket["owner_lease"] = _m4_motion_lease
+		ticket["requested_sample"] = values.get("workbench_sample_serial",-1)
+		ticket["installed_sample"] = int(state[10]) if state.size()>10 else -1
+		ticket["tick_due"] = _m4_interval_tick_due
+		ticket["owner_hold"] = _m4_held
+		ticket["queued_or_unread"] = [_m4_control_queue.size(),_m4_control_results.size()]
+	_mutex.unlock()
+	return ticket
+
+func object_shard_take_owner_results(maximum: int = 8) -> Array:
+	if maximum < 1 or maximum > M4_OWNER_QUEUE_LIMIT:
+		return []
+	_mutex.lock()
+	var n: int = mini(maximum,_m4_control_results.size())
+	# Each queued frame and result is already a private deep copy. Transfer
+	# the removed rows while the mutex still excludes the producer.
+	var value: Array = _m4_control_results.slice(0,n)
+	_m4_control_results = _m4_control_results.slice(n)
+	_mutex.unlock()
+	return value
+
+func _m4_retire_owner(reason: String) -> void:
+	# Worker-only. C++ also retires BEFORE any authoritative World swap.
+	if _m4_live and _world.has_method(&"object_shard_retire"):
+		var retired: bool = _world.object_shard_retire()
+		if not retired and reason == "ExplicitM4Retirement":
+			_mutex.lock()
+			_m4_held = "LiveInventoryRetirementRefused"
+			_mutex.unlock()
+			return
+	_m4_live = false
+	_m4_world_generation = -1
+	_mutex.lock()
+	_m4_attach_requested = false
+	_m4_capabilities = {"attached":false,"outcome":reason}
+	_m4_last_frame.clear()
+	_m4_control_queue.clear()
+	_m4_control_results.clear()
+	_m4_action_queue.clear()
+	_m4_action_results.clear()
+	_m4_inventory_request.clear()
+	_m4_inventory_result.clear()
+	_m4_inventory_inflight = false
+	_m4_frame_identity.clear()
+	_m4_last_action_id = 0
+	_m4_last_port_generation = 0
+	_m4_held = ""
+	_m4_physics_ready = false
+	_m4_motion_barrier = false
+	_m4_motion_lease = 0
+	_m4_interval_tick_due = false
+	_m4_interval_step_serial = 0
+	_m4_interval_sample.clear()
+	_m4_interval_usables.clear()
+	_m4_interval_effects.clear()
+	_m4_emissions_inflight = 0
+	_m4_cells_inflight = 0
+	_m4_transport_generation += 1
+	_m4_epoch += 1
+	_mutex.unlock()
+
+func _m4_attach_on_owner() -> void:
+	_mutex.lock()
+	var requested: bool = _m4_attach_requested
+	_mutex.unlock()
+	if not requested or _m4_live or _workbench_extent == Vector2i.ZERO or _simulation_failed or not _workbench_refusal.is_empty():
+		return
+	if not _world.has_method(&"object_shard_attach") or _world.get_tick_index() < 1:
+		return
+	var dimensions: Vector2i = _workbench_extent
+	if dimensions.x < 64 or dimensions.y < 64 or dimensions.x > 1024 or dimensions.y > 1024:
+		_mutex.lock()
+		_m4_held = "M4BoundedCanvasRequired"
+		_m4_attach_requested = false
+		_mutex.unlock()
+		return
+	var receipt: Dictionary = _world.object_shard_attach(Rect2i(Vector2i.ZERO, dimensions))
+	var proof: Dictionary = _world.object_shard_status()
+	if not receipt.get("ok",false) or not proof.get("attached",false) or int(proof.get("native_instance_id",-1)) != _world.get_instance_id():
+		_mutex.lock()
+		_m4_held = "M4NativeAttachmentRefused"
+		_m4_attach_requested = false
+		_mutex.unlock()
+		return
+	_m4_live = true
+	_m4_motion_barrier = true
+	_m4_world_generation = _world_generation
+	_mutex.lock()
+	_m4_epoch += 1
+	_m4_capabilities = {"host":"ordinary-workbench","owner":"simulation-worker","mode":"same-world",
+		"attached":false,"native_attached":true,"worker_exclusive":true,
+		"worker_instance_id":get_instance_id(),"native_instance_id":_world.get_instance_id(),
+		"world_generation":_world_generation,"session":int(proof.session),
+		"owner_epoch":_m4_epoch,"shard_session":int(proof.shard_session),
+		"world_incarnation":int(proof.world_incarnation),
+		"transport_generation":_m4_transport_generation,
+		"operations":["erase","ignite","inspect"],"outcome":"NativeBoundPhysicsHeld"}
+	for key: String in ["max_bodies","max_body_area","max_total_area","physical_fragmentation","settled_reabsorption",
+		"relocation_radius","relocation_probe_budget"]:
+		if proof.has(key): _m4_capabilities[key] = proof[key]
+	_m4_attach_requested = false
+	_mutex.unlock()
+	_m4_publish_owner()
+
+func _m4_publish_owner() -> void:
+	if not _m4_live: return
+	var snapshot_started: int = Time.get_ticks_usec()
+	var frame: Dictionary = _world.object_shard_snapshot(false)
+	var snapshot_elapsed: int = Time.get_ticks_usec()-snapshot_started
+	if not frame.get("ok",false):
+		_mutex.lock()
+		_m4_held = "NativeSnapshotRefused"
+		_mutex.unlock()
+		return
+	var identity: Array = [int(_world.revision),frame.get("tick",0),frame.get("next_transaction",0),
+		frame.get("paused",true),frame.get("promotion",{}).duplicate(true),frame.get("reabsorption",{}).duplicate(true)]
+	for shard: Dictionary in frame.get("shards",[]):
+		identity.append([shard.id,shard.generation,shard.body_generation,shard.material_revision,
+			shard.geometry_revision,shard.applied_physics_revision,shard.pose_serial,
+			shard.get("lifecycle",""),shard.get("owns_inventory",false)])
+	if identity != _m4_frame_identity:
+		_m4_publication_sequence += 1
+		_m4_frame_identity = identity
+	frame["publication_sequence"] = _m4_publication_sequence
+	frame["m4_world_generation"] = _world_generation
+	frame["world_generation"] = _world_generation
+	frame["world_revision"] = int(_world.revision)
+	_mutex.lock()
+	_m4_snapshot_calls += 1
+	_m4_snapshot_usec += snapshot_elapsed
+	_m4_snapshot_max_usec = maxi(_m4_snapshot_max_usec,snapshot_elapsed)
+	_m4_last_frame = frame
+	_mutex.unlock()
+
+func _m4_drain_controls(segment_only: bool = false) -> void:
+	if not _m4_live:
+		return
+	if _m4_world_generation != _world_generation:
+		_m4_retire_owner("WorldGenerationChanged")
+		return
+	_mutex.lock()
+	var pending: Array[Dictionary] = []
+	if segment_only:
+		# Transfer just the ordered segment prefix. Completion remains on the
+		# full ordinary worker path that consumes its pinned actor work/tick.
+		while not _m4_control_queue.is_empty() and _m4_control_queue[0].command == "accept_motion":
+			pending.append(_m4_control_queue.pop_front())
+	else:
+		pending = _m4_control_queue.duplicate(true)
+		_m4_control_queue.clear()
+	var current_workbench_session: int = int(_workbench_sample.get("session",-1))
+	var current_workbench_epoch: int = int(_workbench_sample.get("epoch",-1))
+	_mutex.unlock()
+	for row: Dictionary in pending:
+		var execution_started_usec: int = Time.get_ticks_usec()
+		var command: String = str(row.command)
+		var values: Dictionary = row.values
+		var result: Dictionary = {"ok":false,"outcome":"M4ControlRefused"}
+		if _m4_motion_lease > 0 and (command not in ["accept_motion","complete_motion"] \
+			or int(values.get("motion_lease",0))!=_m4_motion_lease):
+			result = {"ok":false,"outcome":"MotionLeaseOwnsNativeFrame"}
+		elif command == "prepare":
+			result = _world.object_shard_prepare_next()
+		elif command == "prepare_reabsorb":
+			if _m4_motion_lease == 0:
+				result = _world.object_shard_workbench_action(values.get("request",{}))
+				if result.get("ok",false): _m4_motion_barrier = true
+		elif command == "acknowledge":
+			result = _world.object_shard_acknowledge(values.get("receipt",{}))
+		elif command == "accept_motion":
+			if _m4_motion_lease > 0 and int(values.get("motion_lease",0)) == _m4_motion_lease:
+				var sample: Dictionary = values.get("workbench_sample",{})
+				if sample.is_empty() and _workbench_sample.get("bodies",[]).is_empty():
+					sample = _workbench_sample
+				if sample.get("session") == _workbench_sample.get("session") and sample.get("epoch") == _workbench_sample.get("epoch") \
+					and sample.has("states") and sample.has("geometry") and sample.has("bodies") \
+					and _world.has_method(&"object_shard_accept_workbench_motion"):
+					result = _world.object_shard_accept_workbench_motion(values.get("poses",[]),
+						sample.states,sample.geometry,sample.bodies,sample.session,sample.epoch)
+		elif command == "retire":
+			_m4_retire_owner("ExplicitM4Retirement")
+			result = {"ok":not _m4_live,"outcome":"M4OwnerRetired" if not _m4_live else "LiveInventoryRetirementRefused"}
+		elif command == "complete_motion":
+			# Do not unfreeze a promotion or geometry installation solely on
+			# Main's assertion. The native snapshot must prove no barrier.
+			var proof: Dictionary = _world.object_shard_status()
+			if proof.get("attached",false) and not proof.get("paused",true) and not proof.get("quarantined",true) \
+				and int(values.get("main_space_id",0)) > 0 and int(values.get("motion_lease",0)) == _m4_motion_lease \
+				and (_m4_motion_lease==0 or (not row.completion_sample.is_empty() \
+					and row.completion_sample.get("session")==current_workbench_session \
+					and row.completion_sample.get("epoch")==current_workbench_epoch)):
+				# Geometry/attachment acknowledgement is not physical time. An
+				# actorless canvas has no GCR sample serial to provide this fence.
+				# Only finishing a real leased interval releases one owner tick.
+				var completed_interval: bool = _m4_motion_lease > 0
+				var prepared: bool = true
+				var tick_before: int = int(_world.get_tick_index())
+				var final_serial: int = -1
+				if completed_interval:
+					# This is the one ordinary final coupling preparation. Perform
+					# it under the still-live interval lease, after every real
+					# segment ACK. Native requires a newer serial than its last
+					# segment, so a repeated or older packet refuses safely.
+					_mutex.lock()
+					_m4_interval_sample = row.completion_sample
+					_m4_interval_usables = row.completion_usables
+					_m4_interval_effects = row.completion_effects
+					_mutex.unlock()
+					var sample: Dictionary = row.completion_sample
+					final_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
+					prepared = _workbench_sample_inside(sample.states,_workbench_extent) \
+						and _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
+							sample.session,sample.epoch,true)
+					if prepared:
+						_workbench_prepared_sample = final_serial
+						_workbench_consumed_sample = sample
+				if prepared:
+					_mutex.lock()
+					_m4_motion_lease = 0
+					if completed_interval:
+						_m4_motion_barrier = false
+						_m4_interval_tick_due = true
+						_m4_interval_step_serial = int(values.get("workbench_step_serial",0))
+					_m4_physics_ready = true
+					_m4_capabilities.attached = true
+					_m4_capabilities.outcome = "AttachedToOrdinaryMainPhysics"
+					_mutex.unlock()
+				result = {"ok":prepared,"outcome":"NativeBarrierReleased" if prepared else "FinalWorkbenchPreparationRefused",
+					"completed_interval":completed_interval,"workbench_sample_serial":final_serial,
+					"native_tick_before_prepare":tick_before,"native_tick_after_prepare":int(_world.get_tick_index()),
+					"captured_equipment_request_ids":row.completion_usables.map(func(request: Dictionary) -> String: return str(request.request_id)),
+					"captured_effect_count":row.completion_effects.size()}
+		var execution_finished_usec: int = Time.get_ticks_usec()
+		var compact_motion: bool = _m4_compact_motion_eligible(command,values,result)
+		if _m4_live and not compact_motion:
+			_m4_publish_owner()
+		_mutex.lock()
+		if command == "accept_motion":
+			if compact_motion: _m4_compact_motion_receipts += 1
+			else: _m4_full_motion_publications += 1
+		if _m4_control_results.size() == M4_OWNER_QUEUE_LIMIT:
+			_m4_held = "UnconsumedNativeControlResults"
+		else:
+			_m4_control_results.append({"serial":row.serial,"command":command,"result":result.duplicate(true),
+				"frame":{} if compact_motion else _m4_last_frame.duplicate(true),
+				"compact_motion":compact_motion,"world_generation":row.world_generation,
+				"shard_session":row.shard_session,"timing":{"admitted_usec":row.admitted_usec,
+					"execution_started_usec":execution_started_usec,"execution_finished_usec":execution_finished_usec,
+					"receipt_ready_usec":Time.get_ticks_usec()}})
+		_mutex.unlock()
+
+static func _m4_compact_motion_eligible(command: String, values: Dictionary, result: Dictionary) -> bool:
+	# Final segments, failed/unapplied receipts, legacy packets and incomplete
+	# native readbacks always retain their full presentation/diagnostic frame.
+	return command == "accept_motion" and values.get("final_segment") is bool \
+		and values.final_segment == false and result.get("ok") == true and result.get("applied") == true \
+		and result.get("pose_echo_contract") == "bounded-owner-readback-v1" \
+		and result.get("pose_echo_complete") == true and result.get("applied_pose_echoes") is Array
+
+func _m4_service_leased_segments() -> bool:
+	# The active physical lease already forbids cellular ticks, edits and
+	# geometry changes. Service only its exact pose acknowledgements while
+	# that fence holds, without rebuilding an ordinary render/actor snapshot
+	# for each intermediate segment. Final completion, Pause acknowledgement,
+	# replacement and failure still enter the unchanged full owner turn.
+	if not _m4_live: return false
+	_mutex.lock()
+	var eligible: bool = _running and not _simulation_failed and _m4_held.is_empty() \
+		and _m4_motion_lease > 0 and not _m4_interval_tick_due \
+		and not _world_change_inflight and not _reset_requested and _lab_request.is_empty() \
+		and not _persistent_lease and _pending_physical_liquid.is_empty()
+	var has_segments: bool = eligible and not _m4_control_queue.is_empty() \
+		and _m4_control_queue[0].command == "accept_motion"
+	if eligible and not _m4_control_queue.is_empty() and not has_segments: eligible = false
+	if eligible and has_segments: _m4_owner_busy = true
+	if eligible and not has_segments: _m4_segment_idle_polls += 1
+	_mutex.unlock()
+	if not eligible: return false
+	if not has_segments:
+		OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+		return true
+	_m4_drain_controls(true)
+	_mutex.lock()
+	_m4_segment_service_turns += 1
+	_m4_owner_busy = false
+	_mutex.unlock()
+	return true
+
+func _m4_take_interval_actor_work() -> Dictionary:
+	# Exclusive worker, only after successful final preparation. Remove exactly
+	# the pinned set; a newer publication's queued work stays for its own lease.
+	# Actual Pause/cancellation still wins in the existing inflight/generation
+	# checks immediately before native application, even after this extraction.
+	_mutex.lock()
+	var result := {"usables":_m4_interval_usables,"effects":_m4_interval_effects}
+	for request: Dictionary in _m4_interval_usables:
+		_pending_physical_usables.erase(request)
+	for packet: Dictionary in _m4_interval_effects:
+		_pending_physical_effects.erase(packet)
+	_m4_interval_usables = []
+	_m4_interval_effects = []
+	_mutex.unlock()
+	return result
+
 func start_worker(spawn_position: Vector2) -> Error:
 	if _thread.is_started():
 		return OK
@@ -1637,6 +2358,10 @@ func _workbench_sample_pending() -> bool:
 	_mutex.lock()
 	var states: Variant = _workbench_sample.get("states",null)
 	var pending: bool = states != null and states.size() > 10 and int(states[10]) >= 0 		and int(states[10]) != _workbench_prepared_sample
+	# Main's exact-pose receipts have no reason to wait for the next cellular
+	# timer deadline. Servicing one still creates no additional native tick.
+	pending = pending or not _m4_control_queue.is_empty() or not _m4_action_queue.is_empty()
+	pending = pending or not _m4_inventory_request.is_empty()
 	_mutex.unlock()
 	return pending
 
@@ -2731,7 +3456,7 @@ func queue_emit_disc(
 		_mutex.unlock()
 		return false
 	if _pending_emissions.is_empty() or _pending_emissions.back() != emission_command:
-		if _pending_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
+		if _pending_emissions.size()+_m4_emissions_inflight >= MAX_PENDING_BRUSH_COMMANDS:
 			_mutex.unlock()
 			return false
 		_pending_emissions.append(emission_command)
@@ -2803,6 +3528,7 @@ func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected
 		"refused":points.size()/2,"confirmed":0,"retryable":retryable}
 
 func _consume_art() -> void:
+	if _m4_edits_fenced() and not _simulation_failed: return
 	_mutex.lock()
 	var command: Dictionary = _art_pending
 	_art_pending = {}
@@ -2935,7 +3661,7 @@ func queue_emit_cells(
 		):
 			_mutex.unlock()
 			return true
-	if _pending_cell_emissions.size() >= MAX_PENDING_BRUSH_COMMANDS:
+	if _pending_cell_emissions.size()+_m4_cells_inflight >= MAX_PENDING_BRUSH_COMMANDS:
 		_mutex.unlock()
 		return false
 	_pending_cell_emissions.append(command)
@@ -3023,6 +3749,7 @@ func paint_stop() -> Dictionary:
 func _consume_paint(local_paused: bool) -> void:
 	# This method runs only on the existing exclusive simulation thread, after
 	# ordinary emissions/ticks. No caller can read or own the mutable World.
+	if _m4_edits_fenced() and not _simulation_failed: return
 	_mutex.lock()
 	var context := {"epoch":_paint_epoch,"generation":_world_generation,
 		"revision":int(_world.revision),"tick":int(_world.tick_index),
@@ -3188,7 +3915,24 @@ func request_render_full_refresh() -> void:
 	_mutex.unlock()
 
 
+func _m4_edits_fenced() -> bool:
+	return _m4_live and (_m4_motion_lease != 0 or bool(_m4_last_frame.get("paused",true)) or not _m4_held.is_empty())
+
 func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> void:
+	if _m4_edits_fenced():
+		# Ownership barriers are normal while bodies are moving. Keep already
+		# admitted brush work in order; native void setters cannot report Fence.
+		# In-flight counts made admission include these entries, so this cannot
+		# grow either ordinary queue past its existing capacity.
+		_mutex.lock()
+		local_emissions.append_array(_pending_emissions)
+		_pending_emissions.assign(local_emissions)
+		local_cell_emissions.append_array(_pending_cell_emissions)
+		_pending_cell_emissions.assign(local_cell_emissions)
+		_m4_emissions_inflight = 0
+		_m4_cells_inflight = 0
+		_mutex.unlock()
+		return
 	for emission_command: Vector4i in local_emissions:
 		_world.emit_disc(
 			emission_command.x,
@@ -3210,6 +3954,8 @@ func _apply_emissions(local_emissions: Array, local_cell_emissions: Array) -> vo
 			)
 
 	_consume_art()
+	if _m4_live and (not local_emissions.is_empty() or not local_cell_emissions.is_empty()):
+		_m4_publish_owner()
 
 func _worker_loop() -> void:
 	var next_tick_usec: int = Time.get_ticks_usec()
@@ -3251,6 +3997,7 @@ func _worker_loop() -> void:
 			_mutex.unlock()
 			lockstep_hold_start_usec = -1
 			lockstep_hold_timed_out = false
+		if _m4_service_leased_segments(): continue
 		var local_body_publication: int = 0
 		var lockstep_ticked: bool = false
 		var local_running: bool = false
@@ -3274,6 +4021,7 @@ func _worker_loop() -> void:
 		var local_physical_effects: Array = []
 		var local_physical_usables: Array = []
 		var local_physical_usable_frame: Dictionary = {}
+		var local_m4_completed_interval: bool = false
 		var local_workbench_sample: Dictionary = {}
 		var local_emissions: Array[Vector4i] = []
 		var local_cell_emissions: Array[Dictionary] = []
@@ -3289,6 +4037,7 @@ func _worker_loop() -> void:
 		var workbench_serial: int = -1
 
 		_mutex.lock()
+		_m4_owner_busy = true
 		local_running = _running
 		local_paused = _paused
 		pause_requested_at_entry = _frame_command_paused and _paused
@@ -3306,23 +4055,29 @@ func _worker_loop() -> void:
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
 		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
+		# An internal M4 segment/geometry wait is not the user's Pause. Actor
+		# requests remain in their existing bounded queues until the exact
+		# completed interval selects them, including attachment in this turn.
+		var m4_actor_wait: bool = _m4_live or _m4_attach_requested
 		local_rigid_body_states = _rigid_body_states
 		local_rigid_body_epoch = _rigid_body_epoch
 		local_body_publication = _rigid_body_publication
-		if not physical_wait:
+		if not physical_wait and not m4_actor_wait:
 			local_physical_effects = _pending_physical_effects
 			_pending_physical_effects = []
 		local_physical_usable_frame = _physical_usable_frame.duplicate(true)
 		local_workbench_sample = _workbench_sample
-		if not physical_wait:
+		if not physical_wait and not m4_actor_wait:
 			local_physical_usables = _pending_physical_usables
 			_pending_physical_usables = []
 		var retain_cells: bool = _workbench_extent != Vector2i.ZERO and _lab_request.get("controlled_liquid_setup",{}).get("workbench_retain_cells",false)
-		if not physical_wait or retain_cells:
+		if (not physical_wait or retain_cells) and not _m4_edits_fenced():
 			local_emissions = _pending_emissions
 			_pending_emissions = []
 			local_cell_emissions = _pending_cell_emissions
 			_pending_cell_emissions = []
+			_m4_emissions_inflight = local_emissions.size() if _m4_live or _m4_attach_requested else 0
+			_m4_cells_inflight = local_cell_emissions.size() if _m4_live or _m4_attach_requested else 0
 		local_reset_requested = _reset_requested
 		local_reset_spawn = _reset_spawn
 		local_reset_sampled_character_enabled = _reset_sampled_character_enabled
@@ -3345,6 +4100,7 @@ func _worker_loop() -> void:
 		_mutex.unlock()
 
 		if not local_running:
+			if _m4_live: _m4_retire_owner("WorkerStopped")
 			_retire_prepared_physical_liquid()
 			return
 
@@ -3536,11 +4292,34 @@ func _worker_loop() -> void:
 			if _workbench_extent != Vector2i.ZERO:
 				# This worker is the only writer to native World. Serial and body
 				# identity are checked again by the native adapter and Rapier bridge.
-				var sample: Dictionary = local_workbench_sample
+				_m4_attach_on_owner()
+				_m4_drain_actions()
+				_m4_drain_controls()
+				# Finish only the native tick already admitted with Main's real
+				# interval, including a pause that arrived during its substeps.
+				if _m4_live and _m4_interval_tick_due and not _m4_motion_barrier and _m4_held.is_empty(): local_paused = false
+				if _m4_live and (_m4_motion_barrier or _m4_motion_lease != 0 or not _m4_held.is_empty()): local_paused = true
+				var completed_m4_interval: bool = _m4_live and _m4_interval_tick_due \
+					and not _m4_motion_barrier and _m4_held.is_empty() and not _m4_interval_sample.is_empty()
+				local_m4_completed_interval = completed_m4_interval
+				# A real completed interval owns one native tick. Its ordinary
+				# final sample was prepared before releasing the physical lease.
+				# Use the pinned final packet, never this turn's possibly older
+				# capture or a later unrelated Main publication. Ordinary duplicate
+				# samples and zero-lease binding retain their existing fence.
+				var sample: Dictionary = _m4_interval_sample if completed_m4_interval else local_workbench_sample
 				workbench_serial = int(sample.states[10]) if not sample.states.is_empty() else -1
-				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
+				if completed_m4_interval:
+					_m4_reused_prepared_samples += 1
+					local_physical_usable_frame = sample.get("equipment_frame",{}).duplicate(true)
+					local_rigid_body_epoch = int(sample.epoch)
+				elif workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
-				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+				# Combined native motion owns GCR poses during the lease. Never
+				# overwrite its newer actual segment with a turn-local old sample,
+				# and never submit the already prepared final packet a second time.
+				if not completed_m4_interval and not (_m4_live and _m4_motion_lease!=0) \
+					and _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
 					if not _workbench_sample_inside(sample.states,_workbench_extent):
 						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
@@ -3568,9 +4347,17 @@ func _worker_loop() -> void:
 				and (not _lab_active or (_micro_active
 					and CyberMicroScenarioCatalogue.exploratory_actor_map(_scenario_host.definition())
 					and not _scenario_host.fixed_execution())))
+			if local_m4_completed_interval and not local_paused:
+				var actor_work: Dictionary = _m4_take_interval_actor_work()
+				local_physical_usables = actor_work.usables
+				local_physical_effects = actor_work.effects
 			if physical_effects_allowed and not local_physical_effects.is_empty():
 				_consume_physical_effects(local_physical_effects, local_rigid_body_epoch)
-			_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
+			# Skip even an empty suspended adapter step during an internal wait:
+			# its frame, cooldowns and autonomous devices belong to the due tick.
+			# A genuine user Pause keeps the ordinary suspended-frame behavior.
+			if not (_m4_live or _m4_attach_requested) or local_m4_completed_interval or pause_requested_at_entry:
+				_consume_physical_usables(local_physical_usables, local_rigid_body_epoch, physical_effects_allowed, local_physical_usable_frame)
 			_apply_emissions(local_emissions,local_cell_emissions)
 			if _world.has_method(&"has_failed") and _world.has_failed():
 				_simulation_failed = true
@@ -3595,6 +4382,23 @@ func _worker_loop() -> void:
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				if not _simulation_failed and _m4_live:
+					# Exactly one native owner tick happened in simulation_tick.
+					# Neither this worker nor the main-thread port may tick again.
+					if _m4_interval_step_serial > 0:
+						_workbench_step_serial = _m4_interval_step_serial
+						_m4_interval_step_serial = 0
+					var preparation: Dictionary = _world.object_shard_prepare_next()
+					_m4_publish_owner()
+					# Even before the first detached body, discovery and native
+					# chemistry must not race Main's next ownership installation.
+					_mutex.lock()
+					_m4_motion_barrier = true
+					_mutex.unlock()
+					if str(preparation.get("outcome","")) not in ["Accepted","Busy","Anchored","Capacity","UnknownBoundary","Unsupported","PendingEvent","Stale"]:
+						_mutex.lock()
+						_m4_held = "M4DiscoveryRefused"
+						_mutex.unlock()
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
 					_capture_workbench_result()
 					if _world.has_failed():
@@ -3616,10 +4420,14 @@ func _worker_loop() -> void:
 		# Failure must still retire a queued author operation with a receipt.
 		if _simulation_failed: _consume_art()
 		_consume_paint(local_paused)
+		if _m4_live and int(_world.revision) != int(_m4_last_frame.get("world_revision",-1)):
+			_m4_publish_owner()
 		if _world.has_method(&"has_failed") and _world.has_failed():
 			_simulation_failed = true
 		_mutex.lock()
 		_legacy_edit_inflight = false
+		_m4_emissions_inflight = 0
+		_m4_cells_inflight = 0
 		_world_change_inflight = false
 		if _material_audition.enabled:
 			_material_audition.consume(_world,_world_generation,_material_audition_error_locked())
@@ -3641,6 +4449,13 @@ func _worker_loop() -> void:
 			local_rigid_body_states,
 			local_rigid_body_epoch
 		)
+		_m4_consume_inventory_inspection()
+		_mutex.lock()
+		if native_ticked_this_turn and not _simulation_failed and _m4_live:
+			_m4_interval_tick_due = false
+			_m4_interval_sample.clear()
+		_m4_owner_busy = false
+		_mutex.unlock()
 
 		if lockstep_ticked:
 			# Main's publications pace a fenced owner; no wall-clock deadline.
@@ -3953,6 +4768,7 @@ func _publish_snapshot(
 	}
 	if _workbench_extent != Vector2i.ZERO:
 		snapshot.lab_context["workbench_gcr"] = _workbench_result
+		if _m4_live: snapshot.lab_context["object_shard_m4"] = _m4_last_frame
 		snapshot.lab_context["workbench_display"] = _workbench_display
 		# The immutable geometry packet is throttled; this revision identifies
 		# edits already present at the same completion as the body response.

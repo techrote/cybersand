@@ -1,0 +1,61 @@
+{
+  "binary_sha256": "7d1ddcf453349b2458031fe66bb641f80c1617931e053a302bc11fa98dddcac0",
+  "budget_qualification": {
+    "failures": [],
+    "limits_checked": 74,
+    "status": "passed"
+  },
+  "checks": 4237399,
+  "elapsed_seconds": 43.99189740300062,
+  "execution": {
+    "command": [
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "cwd": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3",
+    "elapsed_seconds": 6.726474755007075,
+    "log": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/logs/benchmark.log",
+    "returncode": 0,
+    "timed_out": false
+  },
+  "failures": 0,
+  "git_head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "input_digest": "1aab8c0f4ca49e4981697571e108e3bbf86ff2b0156416a5b737322702628ece",
+  "link": {
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O3",
+      "-DNDEBUG",
+      "-pthread",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-I",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/source/native/include",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/source/native/tests/benchmark_object_shard.cpp",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/objects/world.o",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/objects/material_rules.o",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/objects/scheduler_geometry.o",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/objects/settled_world_discovery.o",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/objects/object_shard.o",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/objects/object_shard_coordinator.o",
+      "-o",
+      "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/benchmark_object_shard"
+    ],
+    "cwd": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3",
+    "elapsed_seconds": 4.2573996749997605,
+    "log": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/logs/link.log",
+    "returncode": 0,
+    "timed_out": false
+  },
+  "qualification_scope": "Freeze, build and measure the actual native ObjectShard implementation.\n\nThis is a native cost experiment with synthetic pose/acknowledgement values.\nIt does not execute Rapier, render frames or establish Windows playability.\nThe comparison uses release optimisation without LTO, in one isolated process.\n",
+  "report": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4/benchmark.json",
+  "run_directory": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-native-matrix/20261122T060322.285660Z-1aab8c0f4ca4",
+  "schema": 1,
+  "status": "qualified"
+}

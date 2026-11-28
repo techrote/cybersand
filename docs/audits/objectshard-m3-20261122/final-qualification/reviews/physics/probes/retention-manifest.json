@@ -1,0 +1,35 @@
+{
+  "schema": "independent-review-probe-retention-v1",
+  "source_files": [
+    {
+      "path": "build/review-physics/navigation-68235b12/project/tests/review_navigation_lifecycle.gd",
+      "sha256": "6dcbf922fe3e18e7f424c67d439937c3bbe9940ae2e9f996aa37a0e436393e2d"
+    },
+    {
+      "path": "build/review-physics/navigation-repair-freeze/project/tests/review_navigation_fences.gd",
+      "sha256": "e870e2f02e7d496da6a36404bacc6aca1cd4674b89a81fddedbb388dc589e1f4"
+    },
+    {
+      "path": "build/review-physics/navigation-repair-freeze/project/tests/review_navigation_successor.tscn",
+      "sha256": "2cbd9e5d501bff5f2bf6b6e30b991b5d6092ce8b96adab94ff420e974c2d91e8"
+    },
+    {
+      "path": "build/review-physics/final-68235b12/project/tests/review_physics_adversary.gd",
+      "sha256": "40ca9faa337776e6932ae9080c4e98bb5b7d79467959384b0d777a5c99879e2f"
+    },
+    {
+      "path": "build/review-physics/final-68235b12/project/tests/review_live_admission.gd",
+      "sha256": "db24b5d9d9f149b55db422fdbf68cc27b7e3fd30f473cc263dc8084694136904"
+    }
+  ],
+  "original_f2_reproduction": {
+    "candidate": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+    "product_patch_required": false,
+    "instructions": "Use exact candidate godot/project.godot with real FeatureNavigation autoload, supply pinned4.7 and source-input-equivalent native/Rapier binaries, add only review_navigation_lifecycle.gd under project tests. Run --headless --path PROJECT --script res://tests/review_navigation_lifecycle.gd. Expected22 checks/8 lifecycle failures. Add user flag --leave-orphan for10 checks/3 lifecycle failures plus actual exit leak warning; --verbose identifies orphan worker/native class names.",
+    "source_dependencies": "build/review-physics/navigation-68235b12/source-identity.json",
+    "negative_reports": "build/review-physics/navigation-68235b12/",
+    "independent_fence_harness_negative": "build/review-physics/navigation-repair-local/fences-buffered-input-harness-negative.*"
+  },
+  "baseline_physics_harness_negative": "build/review-physics/review-physics-adversary-strict-basis-negative.*",
+  "baseline_live_admission_harness_negative": "build/review-physics/final-68235b12/review-live-admission-harness-negative.*"
+}

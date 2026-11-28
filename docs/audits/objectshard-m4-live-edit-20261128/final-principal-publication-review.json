@@ -1,0 +1,45 @@
+{
+  "schema": "objectshard-live-edit-principal-publication-review-v1",
+  "reviewer": "Astra principal",
+  "reviewed_utc": "2026-11-28T09:46:39.899762+00:00",
+  "status": "PASS",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "publication_commit": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "publication_tree": "7bdfa95b7f30770512a2a448d8cccb789e997885",
+  "exact_single_parent": [
+    "ba6d8de45bd4d38717d92bdece7153bff115c0f0"
+  ],
+  "changed_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "runtime_manifests_and_lfs": [
+    {
+      "platform": "windows",
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+      "bytes": 7346176,
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.json",
+      "manifest_sha256": "00f3e750d8e1d7fd4bce2f00f168ffed41accb11c260571d34ca47d2b05e31b7",
+      "validated_bundle_bytes_equal": true,
+      "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46125028803",
+      "workflow_attempt": "1"
+    },
+    {
+      "platform": "linux",
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+      "bytes": 6149752,
+      "manifest": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "manifest_sha256": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+      "validated_bundle_bytes_equal": true,
+      "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46125028803",
+      "workflow_attempt": "1"
+    }
+  ],
+  "scope": "Independent direct Git object comparison to downloaded and target-validated native bundles. Separate specialist review binds complete job/source lease evidence. No application code changed."
+}

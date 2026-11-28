@@ -1,0 +1,543 @@
+{
+  "checks": 208,
+  "development_custody": {
+    "application_base_commit": "8a4ddcefd5bdebd859a7e57af6362b56a9f62af9",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "modified_inputs": {
+      "godot/tests/test_object_shard_m4_camera_lifecycle.gd": "31a490b303115b4d2c53d9f7b3ed429520fcc79cd861a60685cfc62e56157f3d"
+    },
+    "native_binary_sha256": "aa015a895c091f67d6d07a7f6dab6b18d6e1e55247ff880c10fcef7425a2149b",
+    "native_build_scope": "local combined A+B+C development extension; GCC14.2/binutils2.44 drift; not guarded release publication",
+    "native_build_source": "3479c621c",
+    "qualification_scope": "headless native/camera transform and retained full-image checks; actual renderer/source-bound release replay remains required",
+    "raw_log_sha256": "f88497f3c3c28343b7f6c199bdc34a7650d1e9990ed3ca0d2e42e921ddfad921"
+  },
+  "display": {
+    "between_callback_observations": 747,
+    "draw_observations": 0,
+    "examples": [],
+    "foreign_draw_callbacks": 0,
+    "incoherent_observations": 0,
+    "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+  },
+  "display_driver": "headless",
+  "failures": [],
+  "observations": [
+    {
+      "label": "active-overview",
+      "phase": "RealRapierInterval",
+      "publication": {
+        "owner_epoch": 2,
+        "publication_sequence": 119,
+        "render_serial": 24,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "requested_origin": [
+        0.0,
+        0.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 47,
+      "user_status": "Running",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 119,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(0.0, 0.0)",
+          "(512.0, 512.0)",
+          "[P: (513.5, 0.0), S: (853.0, 853.0)]"
+        ],
+        "view_updates": 2
+      },
+      "window_size": [
+        64,
+        64
+      ]
+    },
+    {
+      "label": "active-pan-zoom",
+      "phase": "RealRapierInterval",
+      "publication": {
+        "owner_epoch": 2,
+        "publication_sequence": 121,
+        "render_serial": 24,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "requested_origin": [
+        120.0,
+        180.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 48,
+      "user_status": "Running",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 121,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(120.0, 180.0)",
+          "(256.0, 144.0)",
+          "[P: (181.7778, 0.0), S: (1516.444, 853.0)]"
+        ],
+        "view_updates": 3
+      },
+      "window_size": [
+        64,
+        64
+      ]
+    },
+    {
+      "label": "paused-pan-zoom",
+      "phase": "Ready",
+      "publication": {
+        "owner_epoch": 2,
+        "publication_sequence": 123,
+        "render_serial": 24,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "requested_origin": [
+        160.0,
+        240.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 49,
+      "user_status": "Paused",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 123,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(160.0, 240.0)",
+          "(320.0, 180.0)",
+          "[P: (181.7778, 0.0), S: (1516.444, 853.0)]"
+        ],
+        "view_updates": 4
+      },
+      "window_size": [
+        64,
+        64
+      ]
+    },
+    {
+      "label": "paused-resize",
+      "phase": "Ready",
+      "publication": {
+        "owner_epoch": 2,
+        "publication_sequence": 123,
+        "render_serial": 24,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "requested_origin": [
+        110.0,
+        160.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 49,
+      "user_status": "Paused",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 123,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(110.0, 160.0)",
+          "(256.0, 144.0)",
+          "[P: (181.7778, 0.0), S: (1516.444, 853.0)]"
+        ],
+        "view_updates": 5
+      },
+      "window_size": [
+        1024,
+        768
+      ]
+    },
+    {
+      "label": "held-pan-zoom",
+      "phase": "Held",
+      "publication": {
+        "owner_epoch": 2,
+        "publication_sequence": 123,
+        "render_serial": 24,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "requested_origin": [
+        120.0,
+        220.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 49,
+      "user_status": "Held: PresentationFixtureHold \u00b7 Structures \u2192 Save diagnostics; Restore start to recover",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 123,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(120.0, 220.0)",
+          "(320.0, 180.0)",
+          "[P: (181.7778, 0.0), S: (1516.444, 853.0)]"
+        ],
+        "view_updates": 6
+      },
+      "window_size": [
+        1024,
+        768
+      ]
+    },
+    {
+      "label": "held-resize",
+      "phase": "Held",
+      "publication": {
+        "owner_epoch": 2,
+        "publication_sequence": 123,
+        "render_serial": 24,
+        "session": 1,
+        "shard_session": 1,
+        "transport_generation": 2,
+        "world_generation": 3,
+        "world_incarnation": 1,
+        "world_revision": 52
+      },
+      "requested_origin": [
+        0.0,
+        0.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 49,
+      "user_status": "Held: PresentationFixtureHold \u00b7 Structures \u2192 Save diagnostics; Restore start to recover",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 123,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(0.0, 0.0)",
+          "(512.0, 512.0)",
+          "[P: (513.5, 0.0), S: (853.0, 853.0)]"
+        ],
+        "view_updates": 7
+      },
+      "window_size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "label": "restored-paused-before-play",
+      "phase": "AwaitingFirstNativeTick",
+      "publication": {},
+      "requested_origin": [
+        120.0,
+        180.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 0,
+      "user_status": "Paused \u00b7 Play to start structures",
+      "view": {
+        "body_count": 0,
+        "content_clipped": true,
+        "publication_sequence": -1,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(120.0, 180.0)",
+          "(320.0, 180.0)",
+          "[P: (181.7778, 0.0), S: (1516.444, 853.0)]"
+        ],
+        "view_updates": 2
+      },
+      "window_size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "label": "restored-start",
+      "phase": "Ready",
+      "publication": {
+        "owner_epoch": 4,
+        "publication_sequence": 125,
+        "render_serial": 25,
+        "session": 2,
+        "shard_session": 2,
+        "transport_generation": 4,
+        "world_generation": 4,
+        "world_incarnation": 2,
+        "world_revision": 53
+      },
+      "requested_origin": [
+        0.0,
+        0.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 2,
+      "user_status": "Paused",
+      "view": {
+        "body_count": 0,
+        "content_clipped": true,
+        "publication_sequence": 125,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(0.0, 0.0)",
+          "(512.0, 512.0)",
+          "[P: (513.5, 0.0), S: (853.0, 853.0)]"
+        ],
+        "view_updates": 3
+      },
+      "window_size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "label": "lease-cropped-before-play",
+      "phase": "AwaitingFirstNativeTick",
+      "publication": {},
+      "requested_origin": [
+        112.0,
+        220.0
+      ],
+      "terrain_image_extent": [
+        1024,
+        1024
+      ],
+      "tick": 0,
+      "user_status": "Paused \u00b7 Play to start structures",
+      "view": {
+        "body_count": 0,
+        "content_clipped": true,
+        "publication_sequence": -1,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(112.0, 220.0)",
+          "(160.0, 128.0)",
+          "[P: (406.875, 0.0), S: (1066.25, 853.0)]"
+        ],
+        "view_updates": 2
+      },
+      "window_size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "label": "lease-cropped-active",
+      "phase": "AwaitingCompletedNativeTick",
+      "publication": {
+        "owner_epoch": 6,
+        "publication_sequence": 195,
+        "render_serial": 42,
+        "session": 3,
+        "shard_session": 3,
+        "transport_generation": 6,
+        "world_generation": 5,
+        "world_incarnation": 3,
+        "world_revision": 103
+      },
+      "requested_origin": [
+        112.0,
+        220.0
+      ],
+      "terrain_image_extent": [
+        1024,
+        1024
+      ],
+      "tick": 36,
+      "user_status": "Running",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 195,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(112.0, 220.0)",
+          "(160.0, 128.0)",
+          "[P: (406.875, 0.0), S: (1066.25, 853.0)]"
+        ],
+        "view_updates": 2
+      },
+      "window_size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "label": "held-lease-far-pan",
+      "phase": "Held",
+      "publication": {
+        "owner_epoch": 6,
+        "publication_sequence": 197,
+        "render_serial": 42,
+        "session": 3,
+        "shard_session": 3,
+        "transport_generation": 6,
+        "world_generation": 5,
+        "world_incarnation": 3,
+        "world_revision": 103
+      },
+      "requested_origin": [
+        720.0,
+        720.0
+      ],
+      "terrain_image_extent": [
+        1024,
+        1024
+      ],
+      "tick": 37,
+      "user_status": "Held: LeasedPresentationFixtureHold \u00b7 Structures \u2192 Save diagnostics; Restore start to recover",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 197,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(720.0, 720.0)",
+          "(256.0, 192.0)",
+          "[P: (371.3333, 0.0), S: (1137.333, 853.0)]"
+        ],
+        "view_updates": 3
+      },
+      "window_size": [
+        1280,
+        720
+      ]
+    },
+    {
+      "label": "held-lease-resize",
+      "phase": "Held",
+      "publication": {
+        "owner_epoch": 6,
+        "publication_sequence": 197,
+        "render_serial": 42,
+        "session": 3,
+        "shard_session": 3,
+        "transport_generation": 6,
+        "world_generation": 5,
+        "world_incarnation": 3,
+        "world_revision": 103
+      },
+      "requested_origin": [
+        736.0,
+        736.0
+      ],
+      "terrain_image_extent": [
+        1024,
+        1024
+      ],
+      "tick": 37,
+      "user_status": "Held: LeasedPresentationFixtureHold \u00b7 Structures \u2192 Save diagnostics; Restore start to recover",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 197,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(736.0, 736.0)",
+          "(192.0, 192.0)",
+          "[P: (513.5, 0.0), S: (853.0, 853.0)]"
+        ],
+        "view_updates": 4
+      },
+      "window_size": [
+        1080,
+        820
+      ]
+    },
+    {
+      "label": "scene-replacement",
+      "phase": "Ready",
+      "publication": {
+        "owner_epoch": 8,
+        "publication_sequence": 199,
+        "render_serial": 44,
+        "session": 4,
+        "shard_session": 4,
+        "transport_generation": 8,
+        "world_generation": 7,
+        "world_incarnation": 4,
+        "world_revision": 105
+      },
+      "requested_origin": [
+        0.0,
+        0.0
+      ],
+      "terrain_image_extent": [
+        512,
+        512
+      ],
+      "tick": 2,
+      "user_status": "Paused",
+      "view": {
+        "body_count": 0,
+        "content_clipped": true,
+        "publication_sequence": 199,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(0.0, 0.0)",
+          "(512.0, 512.0)",
+          "[P: (513.5, 0.0), S: (853.0, 853.0)]"
+        ],
+        "view_updates": 2
+      },
+      "window_size": [
+        1080,
+        820
+      ]
+    }
+  ],
+  "schema": "objectshard-m4-camera-lifecycle-v1",
+  "scope": "actual ordinary native/Rapier Workbench; camera/zoom/resize in active, paused and deliberately injected Held state; Restore and scene replacement; no claim to reproduce original owner cut order",
+  "source_commit": "8a4ddcefd-with-camera-followup"
+}

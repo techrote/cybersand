@@ -1,0 +1,1307 @@
+{
+  "schema": "objectshard-m4-final-linux-independent-review-v1",
+  "reviewer": "Specialist B, Workbench interaction and independent artifact custody audit",
+  "verified_at": "2026-11-28T08:58:03.953965+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "root": "/tmp/cybersand-live-edit-b/linux-final-matrix",
+  "lanes": [
+    {
+      "lane": "headless",
+      "qualification_sha256": "e8fffc3da2dc73a444f43678fd157e9a69b77293cff22245490ccf87e2901434",
+      "status": "passed",
+      "case_count": 77,
+      "input_hash_count": 1609,
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "cases": [
+        {
+          "name": "m4_workbench_import",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 7.818,
+          "log_sha256": "644c0b445bdeea0d0250d6906736eb12097d2f8193a69d180528a1741f9040ab"
+        },
+        {
+          "name": "test_liquid_desktop_default_host",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 15.06,
+          "log_sha256": "154c04b7c06bb02667b6930ac6721c4c8798ef006a9401fbe9791357a15c10bc"
+        },
+        {
+          "name": "test_liquid_trial_body",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 24.079,
+          "log_sha256": "2ad8bc9577caaf046f26c366b96be9143a964b6078137f716d5f981024d45e98"
+        },
+        {
+          "name": "test_persistent_area_owner_adversarial",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 3.239,
+          "log_sha256": "072073bb0f82534cc176b0a781a376c170c780a1d88b0c18fdfe3fe1cf5ca54f"
+        },
+        {
+          "name": "test_object_shard_lab",
+          "status": "passed",
+          "checks": 379,
+          "schema": "objectshard-lab-integration-test-v1",
+          "seconds": 3.808,
+          "log_sha256": "f1f7bef10be1ab1171122b10753cb119b69bfa723bc4d24fec64c6486a995ecf"
+        },
+        {
+          "name": "test_object_shard_fragment_motion",
+          "status": "passed",
+          "checks": 386,
+          "schema": "objectshard-fragment-motion-v1",
+          "seconds": 0.265,
+          "log_sha256": "9576a29f05a626553b61537bc36ec528c0d8db22007997db2228450739bdec6f"
+        },
+        {
+          "name": "test_object_shard_physics_bridge",
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84"
+        },
+        {
+          "name": "test_object_shard_rest_contacts",
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "59c06736643160bf3c16592c3202855066e431b9826d8fee2401614e4d0d2cc3"
+        },
+        {
+          "name": "test_object_shard_m4_remote_barrel",
+          "status": "passed",
+          "checks": 118,
+          "schema": "objectshard-m4-remote-barrel-v1",
+          "seconds": 12.087,
+          "log_sha256": "897430356341311ca289946a6bffc56bcf2a388348696f686607fb2f584e1439"
+        },
+        {
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "status": "passed",
+          "checks": 8471,
+          "schema": "objectshard-m4-small-fragment-native-chain-v1",
+          "seconds": 6.977,
+          "log_sha256": "771b4dee1f44bba9805fb77600a4229f4255f30d4258d454a798521f45fe3be8"
+        },
+        {
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "status": "passed",
+          "checks": 6223,
+          "schema": "objectshard-m4-sparse-parent-motion-v1",
+          "seconds": 4.624,
+          "log_sha256": "bed05b2e103e7b3baebf1e51e6f70dda408124cee4fc0ac55f2fac011d0e767a"
+        },
+        {
+          "name": "test_object_shard_m4_fresh_barrel",
+          "status": "passed",
+          "checks": 212,
+          "schema": "objectshard-m4-fresh-barrel-v1",
+          "seconds": 21.004,
+          "log_sha256": "6705a391b712e1587ec719ac1d887377602a1e7e50dae76844e92021ec084159"
+        },
+        {
+          "name": "test_object_shard_m4_brush_revision",
+          "status": "passed",
+          "checks": 173,
+          "schema": "objectshard-m4-brush-revision-v1",
+          "seconds": 11.721,
+          "log_sha256": "a34bcacf8719fda8f3a08f33c06ab5d22ae0cc60fc7df58ff7bc26c3c203de86"
+        },
+        {
+          "name": "test_object_shard_m4_camera_lifecycle",
+          "status": "passed",
+          "checks": 214,
+          "schema": "objectshard-m4-camera-lifecycle-v1",
+          "seconds": 12.188,
+          "log_sha256": "e5690faaa8fc004a0352b960c59ebf86d42dc4a7d9bfaf011a2a5ca66d3610bc"
+        },
+        {
+          "name": "test_object_shard_m4_receipt_scheduling",
+          "status": "passed",
+          "checks": 155,
+          "schema": "objectshard-m4-receipt-scheduling-v1",
+          "seconds": 7.618,
+          "log_sha256": "34bbe577e36b12fde056e6dbad45eb83118a6c18cb7e4b6658810d12502ad9d5"
+        },
+        {
+          "name": "test_object_shard_m4_latency_probe",
+          "status": "passed",
+          "checks": 31,
+          "schema": "objectshard-m4-workbench-probe-test-v1",
+          "seconds": 0.165,
+          "log_sha256": "7abb26a395a234811588b69059121c89c2643c30292ad37f2e9f4bce3be8e4c6"
+        },
+        {
+          "name": "test_object_shard_live_edit_diagnostics",
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.165,
+          "log_sha256": "20d4d3f266b73948b00ce7ea8fc6ee848932095845ff34f17e0339a68400c85e"
+        },
+        {
+          "name": "test_object_shard_live_edit_contract",
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 1.203,
+          "log_sha256": "8d18d7031e9faafd6e4b7ffdc9ae56886c5f9dd350e0160800b94b14e2d8ae69"
+        },
+        {
+          "name": "test_object_shard_m4_creative_scenes",
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 0.717,
+          "log_sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d"
+        },
+        {
+          "name": "test_object_shard_m4_creative_constructions",
+          "status": "passed",
+          "checks": 224,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 11.622,
+          "log_sha256": "b4a9a4e0841f6875f179155d29f786ee144fdabb3448fa60b2bbda37b3612c48"
+        },
+        {
+          "name": "test_object_shard_m4_disabled_input",
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 5.009,
+          "log_sha256": "8493586af3c24ce5dbb8179061b8fffec0554fcae7bbf4a92c9f7dcd188f4ade"
+        },
+        {
+          "name": "test_object_shard_m4_live_input",
+          "status": "passed",
+          "checks": 109,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 7.713,
+          "log_sha256": "c654ffd98d60b0ec646552615400e2e229a700753cd2818914cd9a6b32debe79"
+        },
+        {
+          "name": "test_object_shard_m4_live_tools",
+          "status": "passed",
+          "checks": 215,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 13.022,
+          "log_sha256": "fe29a15645849071e4d790d96c03126b3a24a3d85b60a6e0747679344b83898e"
+        },
+        {
+          "name": "test_object_shard_m4_live_stress",
+          "status": "passed",
+          "checks": 224,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 14.788,
+          "log_sha256": "01f04f2a399068562ca9f7b4007c26ed5edc826db6365363238c10f698fc986c"
+        },
+        {
+          "name": "test_object_shard_m4_owner_authored",
+          "status": "passed",
+          "checks": 147,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 7.243,
+          "log_sha256": "71d7583842e925381082e2bdefd9d744f42c76cc5352001dddb0818d95727c94"
+        },
+        {
+          "name": "test_object_shard_m4_visible_footprints",
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 1.303,
+          "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40"
+        },
+        {
+          "name": "test_object_shard_m4_edit_delivery_fence",
+          "status": "passed",
+          "checks": 36,
+          "schema": "objectshard-m4-edit-delivery-fence-v1",
+          "seconds": 1.203,
+          "log_sha256": "9c488c3c85524afc25accb2e4e22761dfbdef3df675211078e0e8080436ca7ba"
+        },
+        {
+          "name": "test_object_shard_m4_optional_diagnostics",
+          "status": "passed",
+          "checks": 36,
+          "schema": "objectshard-m4-optional-diagnostics-v1",
+          "seconds": 5.773,
+          "log_sha256": "c1cd536e557b09640bd10b0c90d2ac76c8863e9d086ed08deb50d5c130dc843e"
+        },
+        {
+          "name": "test_object_shard_m4_same_world_extension",
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.365,
+          "log_sha256": "d7c0adf8b92d5bf07b20e5466bfbf804814c7cc64a20c963ac3eb68f87b5b8d3"
+        },
+        {
+          "name": "test_object_shard_m4_shared_main_rapier",
+          "status": "passed",
+          "checks": 18,
+          "schema": "objectshard-m4-existing-main-rapier-v1",
+          "seconds": 0.265,
+          "log_sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f"
+        },
+        {
+          "name": "test_object_shard_m4_same_world_physical_chain",
+          "status": "passed",
+          "checks": 49,
+          "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+          "seconds": 0.465,
+          "log_sha256": "10502ade11695f0a109adb0fa1c80fbfebf5be067212286766980745f7007917"
+        },
+        {
+          "name": "test_object_shard_m4_compact_motion_packets",
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-compact-motion-packet-v1",
+          "seconds": 0.165,
+          "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e"
+        },
+        {
+          "name": "test_object_shard_m4_workbench_scene_refusal",
+          "status": "passed",
+          "checks": 36,
+          "schema": "objectshard-m4-ordinary-scene-refusal-v1",
+          "seconds": 4.172,
+          "log_sha256": "343797332c5620f4ffd5d5190e04e10ff86135506c8785988c218e32093c5ab9"
+        },
+        {
+          "name": "test_object_shard_m4_workbench_completion",
+          "status": "passed",
+          "checks": 192,
+          "schema": "objectshard-m4-workbench-completion-v1",
+          "seconds": 11.618,
+          "log_sha256": "af27bbb2da9812e83cbc63eeb52a68cd5ecd950db6e51c805c8a9f845374f1d2"
+        },
+        {
+          "name": "m4_fresh_authored_reopen",
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-fresh-authored-reopen-v1",
+          "seconds": 5.309,
+          "log_sha256": "5dad0a0d6d8db2f1e4195aa3c1221ccb520cfaa0afafd8a596e5a279fb5c61d5"
+        },
+        {
+          "name": "test_object_shard_m4_material_only_workbench",
+          "status": "passed",
+          "checks": 71,
+          "schema": "objectshard-m4-material-only-workbench-v1",
+          "seconds": 6.812,
+          "log_sha256": "ad2dc92bb31579f45c3219246ad1b07fd317682c0c4fff7e809d3d8b6716d7ac"
+        },
+        {
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "status": "passed",
+          "checks": 137,
+          "schema": "objectshard-m4-fragment-reabsorption-v1",
+          "seconds": 9.014,
+          "log_sha256": "86ec99b282eca67a466834488946fa3527ef870fc3fa107dfd6512c4550b288b"
+        },
+        {
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "status": "passed",
+          "checks": 122,
+          "schema": "objectshard-m4-lifecycle-adverse-v1",
+          "seconds": 7.344,
+          "log_sha256": "b3a5fe0f7aee60b6ac2b5cf47bdd6a9a4e77562a308c1f17433b067d142a98b9"
+        },
+        {
+          "name": "test_object_shard_m4_completed_sample",
+          "status": "passed",
+          "checks": 108,
+          "schema": "objectshard-m4-completed-sample-v1",
+          "seconds": 6.51,
+          "log_sha256": "c46d97b29464f0636cd16585a2c150c86ad96de96dbd0e4023826acabba0076c"
+        },
+        {
+          "name": "test_object_shard_m4_equipment_completion",
+          "status": "passed",
+          "checks": 99,
+          "schema": "objectshard-m4-equipment-completion-v1",
+          "seconds": 7.075,
+          "log_sha256": "5a701c2d63fe138483d3891009bc8d2bcc28310ce148f7b53b85466ba53e859f"
+        },
+        {
+          "name": "test_object_shard_m4_actor_clock",
+          "status": "passed",
+          "checks": 96,
+          "schema": "objectshard-m4-actor-clock-v1",
+          "seconds": 8.177,
+          "log_sha256": "bdf99f8a1d5f1f9f19fc3b8400d142476b6578c2905aa18224888ee7638c3890"
+        },
+        {
+          "name": "test_object_shard_m4_long_burn",
+          "status": "passed",
+          "checks": 233,
+          "schema": "objectshard-m4-long-burn-v1",
+          "seconds": 16.928,
+          "log_sha256": "8779372879394ff61c7c84226251195c6d32d9c3d96a8fbea6e1976bf0a12b20"
+        },
+        {
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "status": "passed",
+          "checks": 1019,
+          "schema": "objectshard-m4-lifecycle-fuzz-v1",
+          "seconds": 24.275,
+          "log_sha256": "b642934317b34907653ac2ecf6ef8d4a6eef14fa8673468c287ccd766ec985dd"
+        },
+        {
+          "name": "test_object_shard_m4_optional_diagnostics_cli",
+          "status": "passed",
+          "checks": 36,
+          "schema": "objectshard-m4-optional-diagnostics-v1",
+          "seconds": 5.944,
+          "log_sha256": "b18daa0744d3b6bd5f265d64c5e7c83f193ea029227b4bd92c5d61fade3f6bd3"
+        },
+        {
+          "name": "test_workbench_canvas",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 42.597,
+          "log_sha256": "44d2d9566180b7c57e4643aa7b2fc5e7b6cafe4c6c9e1a3cd9c3efa6fb7f5e1f"
+        },
+        {
+          "name": "test_workbench_wave",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 46.386,
+          "log_sha256": "a9f54f6b866032e985966f14c2422ad2eaaaede79a10c0ce9492273a27c0fb4c"
+        },
+        {
+          "name": "test_workbench_wave_spill",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 10.781,
+          "log_sha256": "b6b12a8acd651a2ef1630a1bcbd85407e7b35ca8fdc864580f8a8ac450e12fb8"
+        },
+        {
+          "name": "test_workbench_failure_containment",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 6.041,
+          "log_sha256": "28ad5410601f2c8d4bd82d947ebecb426795abbbd7836eba9a07c4bf3219e1c3"
+        },
+        {
+          "name": "test_workbench_failure_recovery",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 6.411,
+          "log_sha256": "08e6c5e6fb7d8555647e13fa884c3beb069ab479dea751f1476517ff772ce093"
+        },
+        {
+          "name": "test_workbench_liquid_equipment",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 20.733,
+          "log_sha256": "052c2ac5b7fbba2c1dd311fce1b0128f36ee069d546012b68ea282f46ecc6219"
+        },
+        {
+          "name": "test_physical_actor_session",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 0.717,
+          "log_sha256": "9d8f422c231aca0af0e647c18285cb07554afca1de70b00c02c2561d7d28dd84"
+        },
+        {
+          "name": "test_actor_usables_integration",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 2.405,
+          "log_sha256": "9b19bf7130602b30c1a48fc23256a0ee5010fe4633a18df81370992fbfd61a24"
+        },
+        {
+          "name": "test_physical_usable_equipment",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 0.717,
+          "log_sha256": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc"
+        },
+        {
+          "name": "test_workbench_actor_composition_native",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 2.405,
+          "log_sha256": "44d09501986f5ac1c1b14de494cb5b1a5daf26f185ec6f74aec0636596f9e283"
+        },
+        {
+          "name": "test_workbench_actor_composition_session",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 0.717,
+          "log_sha256": "7242641274cbcad0ed555f14bd832ff04e45925237689576b8312eef0bc4e25e"
+        },
+        {
+          "name": "test_persistent_area_residency_native",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 6.778,
+          "log_sha256": "582704663d6ddc5eb8cb8813cf09d7e550d16260060f7024cc078cb4bcf895f9"
+        },
+        {
+          "name": "retained_lab_profile",
+          "status": "passed",
+          "checks": 719,
+          "schema": "objectshard-lab-profile-v1",
+          "seconds": 41.365,
+          "log_sha256": "44ce4d027d5abaa5b7abb8f63fc729efcb2305d27eb007f5dcc6221b0b34a50d"
+        },
+        {
+          "name": "m4_throughput_disabled_off_headless",
+          "status": "passed",
+          "checks": 13,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 11.325,
+          "log_sha256": "6f828c5296d7eb74429968d024df8bbe1ae3b275c2d56ab89197ed71d2e3729c"
+        },
+        {
+          "name": "m4_throughput_empty_off_headless",
+          "status": "passed",
+          "checks": 44,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 11.421,
+          "log_sha256": "814150d9b2791451abbdf46df9a1443e0b8f96cb6172882c9c4285bb595c3eed"
+        },
+        {
+          "name": "m4_throughput_tower_off_headless",
+          "status": "passed",
+          "checks": 111,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 12.727,
+          "log_sha256": "c0caaa6e7bd333fb28b15168de588d6e0d47c99550a8f90958976b795aeb2ecb"
+        },
+        {
+          "name": "m4_throughput_stress_off_headless",
+          "status": "passed",
+          "checks": 344,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 15.156,
+          "log_sha256": "f8a32cfe135d2a8414789958db7f153c77803b6ad2ed0d9b8667736a29d2a104"
+        },
+        {
+          "name": "m4_throughput_sleeping_off_headless",
+          "status": "passed",
+          "checks": 80,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 13.938,
+          "log_sha256": "0b47bc58be2443afb3660cdc16546fc01c592ad4bca45ad421544aa2dfec7d9e"
+        },
+        {
+          "name": "m4_throughput_tower_on_headless",
+          "status": "passed",
+          "checks": 111,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 12.822,
+          "log_sha256": "30a2f8b39888d7c3ca30f3193e41beb463833a2adc4d4a17c3dbedbe3fa0a4f2"
+        },
+        {
+          "name": "m4_disabled_controls",
+          "status": "passed",
+          "checks": 25,
+          "schema": "objectshard-m4-disabled-control-v1",
+          "seconds": 29.455,
+          "log_sha256": "3d80be0ff80fd376ec8469054d1ad02435edcc64a141ae1c560f1605aafea3b0"
+        },
+        {
+          "name": "m4_workbench_tower_overview_headless",
+          "status": "passed",
+          "checks": 150,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 9.783,
+          "log_sha256": "668e21776c0b9184cbe9259aaed545aa6092467ef4581bb1194d35d8c534946b"
+        },
+        {
+          "name": "m4_workbench_tower_zoom_headless",
+          "status": "passed",
+          "checks": 150,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 9.483,
+          "log_sha256": "604034b5239885b6e163b4f1c2eb92b8460276804843e28782d9e37551df0148"
+        },
+        {
+          "name": "m4_workbench_viaduct_overview_headless",
+          "status": "passed",
+          "checks": 227,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 10.321,
+          "log_sha256": "80c45ffd906203cb1fc40f7bf68edb6acf7946b3e693e53b7b28836664019cd7"
+        },
+        {
+          "name": "m4_workbench_viaduct_zoom_headless",
+          "status": "passed",
+          "checks": 227,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 10.128,
+          "log_sha256": "c8e24cab51168ea2ba9e71c3bc0e491c01162f57045dd3bbee4ea677ade26e15"
+        },
+        {
+          "name": "m4_workbench_timber_overview_headless",
+          "status": "passed",
+          "checks": 171,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 9.951,
+          "log_sha256": "257bdebf834ccb9e1cb7f69d49834d7ae6b96d4eaef6db3f77a3c7e18cc8b696"
+        },
+        {
+          "name": "m4_workbench_timber_zoom_headless",
+          "status": "passed",
+          "checks": 171,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 10.039,
+          "log_sha256": "02ebdb0e038927354c7c12173ece5fc75c77000e4b1812bc2b43c73ebe00bcf5"
+        },
+        {
+          "name": "m4_workbench_mixed_overview_headless",
+          "status": "passed",
+          "checks": 152,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 10.039,
+          "log_sha256": "63d9bc436b82aa22566f8006c574b75e59a9ad32a844b53a1dac9193203ce374"
+        },
+        {
+          "name": "m4_workbench_mixed_zoom_headless",
+          "status": "passed",
+          "checks": 152,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 10.224,
+          "log_sha256": "35829dfc1987740f6f1466efd1e6ebc4f1528cf5f3b2926f2b3bbb56305a7557"
+        },
+        {
+          "name": "m4_workbench_stress_overview_headless",
+          "status": "passed",
+          "checks": 383,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 13.027,
+          "log_sha256": "8d52ca92bf7eccc69a051d8ad514837c2658659c50d9ee341b9316675f5d2c0d"
+        },
+        {
+          "name": "m4_workbench_stress_zoom_headless",
+          "status": "passed",
+          "checks": 383,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 12.828,
+          "log_sha256": "4e6312313256528d75ee0d10b6cb27929e450c640d6fc1565641971aae1d46e1"
+        },
+        {
+          "name": "m4_workbench_tower_overview_light_headless",
+          "status": "passed",
+          "checks": 149,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 9.585,
+          "log_sha256": "2caa77088bb2ceaae22aae36499b3f4ac83e052fc090510fe94ef02e8c184f63"
+        },
+        {
+          "name": "m4_workbench_tower_overview_light_recording_headless",
+          "status": "passed",
+          "checks": 150,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 9.585,
+          "log_sha256": "b92250b2cf8d8faa86b8241618dfda9f7834cd6ea08177680be9133b4c835188"
+        },
+        {
+          "name": "m4_workbench_stress_overview_light_headless",
+          "status": "passed",
+          "checks": 382,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 12.455,
+          "log_sha256": "ed49db5173445b3be67e155df995e55c48337de4abb2d9a24398acb613b48e2e"
+        }
+      ]
+    },
+    {
+      "lane": "graphical",
+      "qualification_sha256": "1ace89746d1d1e5e3e25a6eb3d5714e8d6ad8e6912fa19cf1f78c7b7ec56428c",
+      "status": "passed",
+      "case_count": 65,
+      "input_hash_count": 1609,
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "cases": [
+        {
+          "name": "m4_workbench_import",
+          "status": "passed",
+          "checks": null,
+          "schema": null,
+          "seconds": 2.707,
+          "log_sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+        },
+        {
+          "name": "test_object_shard_lab",
+          "status": "passed",
+          "checks": 379,
+          "schema": "objectshard-lab-integration-test-v1",
+          "seconds": 3.807,
+          "log_sha256": "f1f7bef10be1ab1171122b10753cb119b69bfa723bc4d24fec64c6486a995ecf"
+        },
+        {
+          "name": "test_object_shard_fragment_motion",
+          "status": "passed",
+          "checks": 386,
+          "schema": "objectshard-fragment-motion-v1",
+          "seconds": 0.265,
+          "log_sha256": "9576a29f05a626553b61537bc36ec528c0d8db22007997db2228450739bdec6f"
+        },
+        {
+          "name": "test_object_shard_physics_bridge",
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84"
+        },
+        {
+          "name": "test_object_shard_rest_contacts",
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "59c06736643160bf3c16592c3202855066e431b9826d8fee2401614e4d0d2cc3"
+        },
+        {
+          "name": "test_object_shard_m4_remote_barrel",
+          "status": "passed",
+          "checks": 118,
+          "schema": "objectshard-m4-remote-barrel-v1",
+          "seconds": 11.986,
+          "log_sha256": "897430356341311ca289946a6bffc56bcf2a388348696f686607fb2f584e1439"
+        },
+        {
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "status": "passed",
+          "checks": 8471,
+          "schema": "objectshard-m4-small-fragment-native-chain-v1",
+          "seconds": 6.876,
+          "log_sha256": "771b4dee1f44bba9805fb77600a4229f4255f30d4258d454a798521f45fe3be8"
+        },
+        {
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "status": "passed",
+          "checks": 6223,
+          "schema": "objectshard-m4-sparse-parent-motion-v1",
+          "seconds": 4.54,
+          "log_sha256": "bed05b2e103e7b3baebf1e51e6f70dda408124cee4fc0ac55f2fac011d0e767a"
+        },
+        {
+          "name": "test_object_shard_m4_fresh_barrel",
+          "status": "passed",
+          "checks": 212,
+          "schema": "objectshard-m4-fresh-barrel-v1",
+          "seconds": 20.942,
+          "log_sha256": "5ea14a9c9499127c58484689403c2be94d9204c31a093e08aa873370d90ae917"
+        },
+        {
+          "name": "test_object_shard_m4_brush_revision",
+          "status": "passed",
+          "checks": 159,
+          "schema": "objectshard-m4-brush-revision-v1",
+          "seconds": 44.019,
+          "log_sha256": "638f0e047cea263e7f9ce4fd759e3709c0e04aad67c8efc369d82f8248126075"
+        },
+        {
+          "name": "test_object_shard_m4_camera_lifecycle",
+          "status": "passed",
+          "checks": 230,
+          "schema": "objectshard-m4-camera-lifecycle-v1",
+          "seconds": 40.885,
+          "log_sha256": "132b3e98991ad6d2be55337f67347fa205208092b459f4c016c5f0f5405314f0"
+        },
+        {
+          "name": "test_object_shard_m4_receipt_scheduling",
+          "status": "passed",
+          "checks": 155,
+          "schema": "objectshard-m4-receipt-scheduling-v1",
+          "seconds": 7.717,
+          "log_sha256": "0171f4f7bc661600af04b49664ba67f1773fd1e5722a3c171fb80308fec95731"
+        },
+        {
+          "name": "test_object_shard_m4_latency_probe",
+          "status": "passed",
+          "checks": 31,
+          "schema": "objectshard-m4-workbench-probe-test-v1",
+          "seconds": 0.165,
+          "log_sha256": "7abb26a395a234811588b69059121c89c2643c30292ad37f2e9f4bce3be8e4c6"
+        },
+        {
+          "name": "test_object_shard_live_edit_diagnostics",
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.165,
+          "log_sha256": "20d4d3f266b73948b00ce7ea8fc6ee848932095845ff34f17e0339a68400c85e"
+        },
+        {
+          "name": "test_object_shard_live_edit_contract",
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 1.203,
+          "log_sha256": "8d18d7031e9faafd6e4b7ffdc9ae56886c5f9dd350e0160800b94b14e2d8ae69"
+        },
+        {
+          "name": "test_object_shard_m4_creative_scenes",
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 0.717,
+          "log_sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d"
+        },
+        {
+          "name": "test_object_shard_m4_creative_constructions",
+          "status": "passed",
+          "checks": 228,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 29.426,
+          "log_sha256": "70aaaefb70021a89e4533b664d24a87a637dec8bae91c8078bacece0c04ff587"
+        },
+        {
+          "name": "test_object_shard_m4_disabled_input",
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 7.215,
+          "log_sha256": "063bccd249d8227571c3bbb343b49c87dc7a21d2316a700c1577a7ff7839bdd8"
+        },
+        {
+          "name": "test_object_shard_m4_live_input",
+          "status": "passed",
+          "checks": 125,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 23.251,
+          "log_sha256": "f3c9536917822379d78fce606a8695b34c47b58c7ff07e2d2c70c5f7f5f341e4"
+        },
+        {
+          "name": "test_object_shard_m4_live_tools",
+          "status": "passed",
+          "checks": 221,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 30.173,
+          "log_sha256": "b5ac2c707effbc442c2501f38fa3ce2661e55b07d06cad5601b799f7d5e53dfa"
+        },
+        {
+          "name": "test_object_shard_m4_live_stress",
+          "status": "passed",
+          "checks": 226,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 45.697,
+          "log_sha256": "8e87321d5195e9ac00a425ac0e1a4a6ba4d6b21d07f57fb297e73e0067db2b58"
+        },
+        {
+          "name": "test_object_shard_m4_owner_authored",
+          "status": "passed",
+          "checks": 148,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 15.131,
+          "log_sha256": "abbad602019ed2ec88f33fca1572bc23adac6492a4d65d97eb4291aaec00c0e9"
+        },
+        {
+          "name": "test_object_shard_m4_visible_footprints",
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 1.304,
+          "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40"
+        },
+        {
+          "name": "test_object_shard_m4_edit_delivery_fence",
+          "status": "passed",
+          "checks": 36,
+          "schema": "objectshard-m4-edit-delivery-fence-v1",
+          "seconds": 1.203,
+          "log_sha256": "9c488c3c85524afc25accb2e4e22761dfbdef3df675211078e0e8080436ca7ba"
+        },
+        {
+          "name": "test_object_shard_m4_optional_diagnostics",
+          "status": "passed",
+          "checks": 38,
+          "schema": "objectshard-m4-optional-diagnostics-v1",
+          "seconds": 10.537,
+          "log_sha256": "d1938f401c577610c216955a315591690498222b39de30450e65a621430716a0"
+        },
+        {
+          "name": "test_object_shard_m4_same_world_extension",
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.365,
+          "log_sha256": "d7c0adf8b92d5bf07b20e5466bfbf804814c7cc64a20c963ac3eb68f87b5b8d3"
+        },
+        {
+          "name": "test_object_shard_m4_shared_main_rapier",
+          "status": "passed",
+          "checks": 18,
+          "schema": "objectshard-m4-existing-main-rapier-v1",
+          "seconds": 0.265,
+          "log_sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f"
+        },
+        {
+          "name": "test_object_shard_m4_same_world_physical_chain",
+          "status": "passed",
+          "checks": 49,
+          "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+          "seconds": 0.465,
+          "log_sha256": "10502ade11695f0a109adb0fa1c80fbfebf5be067212286766980745f7007917"
+        },
+        {
+          "name": "test_object_shard_m4_compact_motion_packets",
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-compact-motion-packet-v1",
+          "seconds": 0.165,
+          "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e"
+        },
+        {
+          "name": "test_object_shard_m4_workbench_scene_refusal",
+          "status": "passed",
+          "checks": 36,
+          "schema": "objectshard-m4-ordinary-scene-refusal-v1",
+          "seconds": 4.474,
+          "log_sha256": "343797332c5620f4ffd5d5190e04e10ff86135506c8785988c218e32093c5ab9"
+        },
+        {
+          "name": "test_object_shard_m4_workbench_completion",
+          "status": "passed",
+          "checks": 192,
+          "schema": "objectshard-m4-workbench-completion-v1",
+          "seconds": 11.99,
+          "log_sha256": "f57698f1c15d7eedda30460cbbbd34d227ac2d6723c0a647e6b10c0e251129df"
+        },
+        {
+          "name": "m4_fresh_authored_reopen",
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-fresh-authored-reopen-v1",
+          "seconds": 5.414,
+          "log_sha256": "f53fc78ad417d88fe0a4ce5289070865ede9c2a811c716eeb8faccf13c3ddcef"
+        },
+        {
+          "name": "test_object_shard_m4_material_only_workbench",
+          "status": "passed",
+          "checks": 71,
+          "schema": "objectshard-m4-material-only-workbench-v1",
+          "seconds": 7.526,
+          "log_sha256": "100ee338032140dc1ee22a7640dc8d0021a0479987e60305ca989a01a322eb1e"
+        },
+        {
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "status": "passed",
+          "checks": 137,
+          "schema": "objectshard-m4-fragment-reabsorption-v1",
+          "seconds": 9.12,
+          "log_sha256": "d979f75da1b286ecd0b2eb03a6095c0ebd25442b3d56330c93de991277cf9703"
+        },
+        {
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "status": "passed",
+          "checks": 122,
+          "schema": "objectshard-m4-lifecycle-adverse-v1",
+          "seconds": 7.431,
+          "log_sha256": "58eddc1f316392f5e751f1053bba25c694f0119dc6bc1bca91672a8999c08e48"
+        },
+        {
+          "name": "test_object_shard_m4_completed_sample",
+          "status": "passed",
+          "checks": 108,
+          "schema": "objectshard-m4-completed-sample-v1",
+          "seconds": 6.713,
+          "log_sha256": "5222032cf3741adc72bed7769926f28fdbaea9a15927dbcf290c3d45e76a8bbe"
+        },
+        {
+          "name": "test_object_shard_m4_equipment_completion",
+          "status": "passed",
+          "checks": 99,
+          "schema": "objectshard-m4-equipment-completion-v1",
+          "seconds": 7.247,
+          "log_sha256": "f2e7692f0bf2b9bca0f2ffc74e125858f3674aa39bbc90ed2b82630537584fd8"
+        },
+        {
+          "name": "test_object_shard_m4_actor_clock",
+          "status": "passed",
+          "checks": 96,
+          "schema": "objectshard-m4-actor-clock-v1",
+          "seconds": 8.382,
+          "log_sha256": "c8cce0fe45e2508c8e4c1fa60905cfb27f11832a4d684cf0935b152bcfd475be"
+        },
+        {
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "status": "passed",
+          "checks": 1019,
+          "schema": "objectshard-m4-lifecycle-fuzz-v1",
+          "seconds": 24.65,
+          "log_sha256": "3b423ff77997a26db30b8c4e0492bece8d04f0e05195d971a00b8320f67d8783"
+        },
+        {
+          "name": "test_object_shard_m4_optional_diagnostics_cli",
+          "status": "passed",
+          "checks": 38,
+          "schema": "objectshard-m4-optional-diagnostics-v1",
+          "seconds": 10.338,
+          "log_sha256": "d9c862aeda3a6bd3e3f8735a88d3596f0486e979df90aff7918aba2a11fc109d"
+        },
+        {
+          "name": "test_object_shard_m4_overlay_identity",
+          "status": "passed",
+          "checks": 11,
+          "schema": "objectshard-m4-overlay-identity-v1",
+          "seconds": 0.502,
+          "log_sha256": "0c0fcdd1332eba06002714735a83206168d49beb3efb176e7c063a1ca59e8033"
+        },
+        {
+          "name": "test_object_shard_m4_material_preparation_render",
+          "status": "passed",
+          "checks": 13,
+          "schema": "objectshard-m4-material-preparation-v1",
+          "seconds": 0.666,
+          "log_sha256": "5774addbcc5e03e54bb127d25218d65690e59919de548af3fc583e15b7894f38"
+        },
+        {
+          "name": "test_object_shard_m4_edit_preview_render",
+          "status": "passed",
+          "checks": 102,
+          "schema": "objectshard-m4-edit-preview-render-v1",
+          "seconds": 25.513,
+          "log_sha256": "2685054977df5aa40d1df03f8476e148882c1dfc2df0cc8def69eb1c5f1d5029",
+          "previews": {
+            "captures": [
+              {
+                "label": "structural-eraser",
+                "sha256": "5a11bb2cff4b9bc3c902873a75ee742e0fa5e181734b2c3a914096ffcdfc1f83",
+                "path": "graphical/material-presentation-captures/structural-eraser.png"
+              },
+              {
+                "label": "precision-cell",
+                "sha256": "ccfe0cfbf7bd519d9cc45ecfc619991248133e4e962b7a0118c82997591fe732",
+                "path": "graphical/material-presentation-captures/precision-cell.png"
+              },
+              {
+                "label": "drill-opening",
+                "sha256": "29bf2553bb410b05d35717da16399e175dc8b1807a18ec3326dfd4815c5cf75f",
+                "path": "graphical/material-presentation-captures/drill-opening.png"
+              },
+              {
+                "label": "weathering-extent",
+                "sha256": "f38c20e9da7526eadf8f2ecf2b44de0958faaaf489b5c731d9d252eced10807c",
+                "path": "graphical/material-presentation-captures/weathering-extent.png"
+              },
+              {
+                "label": "area-ignition",
+                "sha256": "39c5e922131d39bd440726bea97132338f3e210b983f62816709d7b7c7231cb6",
+                "path": "graphical/material-presentation-captures/area-ignition.png"
+              },
+              {
+                "label": "ordinary-unified-eraser",
+                "sha256": "724593ebf2e52ed79e389a1604fc116d517a80043a6f83743dda4b1b2a22350e",
+                "path": "graphical/material-presentation-captures/ordinary-unified-eraser.png"
+              },
+              {
+                "label": "slice-preview",
+                "sha256": "2bfc4ec9abab803027f0d31f898ec8ab17cbdd5ec1e4822a3b197cd897509da9",
+                "path": "graphical/material-presentation-captures/slice-preview.png"
+              },
+              {
+                "label": "zoomed-eraser",
+                "sha256": "ebd7cf437284500ce5122071c3d35371e04dd3c06842e60d3746b3d2645fbefe",
+                "path": "graphical/material-presentation-captures/zoomed-eraser.png"
+              },
+              {
+                "label": "panned-drill",
+                "sha256": "67df87b6abb6a3aa771cf81f15bde61471d10f233877d0662693a43f6eb8ec36",
+                "path": "graphical/material-presentation-captures/panned-drill.png"
+              },
+              {
+                "label": "resized-weathering",
+                "sha256": "9cca8ae89f4fd5330ffc40ee1192d45b208f0baaf189fff4dddfa18ad993f073",
+                "path": "graphical/material-presentation-captures/resized-weathering.png"
+              },
+              {
+                "label": "structures-controls-top",
+                "sha256": "c61f694a56ccf70a06586df283ba54e50fbc285639c2b9c5c9c38932794c5c61",
+                "path": "graphical/material-presentation-captures/structures-controls-top.png"
+              },
+              {
+                "label": "structures-weathering-controls",
+                "sha256": "c61f694a56ccf70a06586df283ba54e50fbc285639c2b9c5c9c38932794c5c61",
+                "path": "graphical/material-presentation-captures/structures-weathering-controls.png"
+              }
+            ],
+            "outlines": 10,
+            "maximum_error_cells": 2.6702880859375e-05,
+            "navigation": [
+              {
+                "kind": "escape",
+                "native_action_serial": 0,
+                "paused_after": true,
+                "paused_before": true,
+                "pointer_tool": -1
+              },
+              {
+                "kind": "window_resize",
+                "new_framebuffer": "(1360, 765)",
+                "new_logical_view": "(1880.0, 853.0)",
+                "new_screen_transform": "[X: (0.708333, 0.0), Y: (0.0, 0.708333), O: (0.0, 48.0)]",
+                "new_window": "(1360, 860)",
+                "old_framebuffer": "(1920, 1080)",
+                "old_logical_view": "(1880.0, 853.0)",
+                "old_screen_transform": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (0.0, 0.0)]",
+                "old_window": "(1920, 1080)",
+                "pointer_tool": -1
+              }
+            ],
+            "final_owner": {
+              "held_reason": "",
+              "paused": true,
+              "phase": "Ready",
+              "pointer_tool": -1,
+              "slice_committing": false
+            }
+          }
+        },
+        {
+          "name": "test_object_shard_m4_material_presentation_render",
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-m4-material-presentation-v1",
+          "seconds": 2.168,
+          "log_sha256": "4447c24e207863f63d102bda80a5829537e7204e667bb09118fb924b6ed7e4b2"
+        },
+        {
+          "name": "m4_throughput_disabled_off_render",
+          "status": "passed",
+          "checks": 14,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 13.527,
+          "log_sha256": "9f3328222b142fe51462956ffb2b9741c403b76774f005c47a101f0fc67cf76b"
+        },
+        {
+          "name": "m4_throughput_empty_off_render",
+          "status": "passed",
+          "checks": 45,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 14.393,
+          "log_sha256": "2b6505c4add7fc59a262d2e5d38f8a26e4c1c177626adf2ef3cdff4f4a3f50ca"
+        },
+        {
+          "name": "m4_throughput_tower_off_render",
+          "status": "passed",
+          "checks": 112,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 22.71,
+          "log_sha256": "01ef85f36fb618b1aea37aeb3f78ddc6200e9b6a13bad027e9ad78a76135e824"
+        },
+        {
+          "name": "m4_throughput_stress_off_render",
+          "status": "passed",
+          "checks": 345,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 41.898,
+          "log_sha256": "c619b3d043734d20ffc6966dc0743cfecf5f30d6734041fb36e80b745bd38385"
+        },
+        {
+          "name": "m4_throughput_sleeping_off_render",
+          "status": "passed",
+          "checks": 81,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 20.969,
+          "log_sha256": "8ca3615d9dbc8e4ae4d71fab54401143e89f8abccfc0f339b4d5b52d370ea0f3"
+        },
+        {
+          "name": "m4_throughput_tower_on_render",
+          "status": "passed",
+          "checks": 112,
+          "schema": "objectshard-m4-throughput-v1",
+          "seconds": 22.356,
+          "log_sha256": "b9a1b1a35dbec19337c356644394674a19a829df91794745646ed57a7cd180ad"
+        },
+        {
+          "name": "m4_disabled_controls",
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-m4-disabled-control-v1",
+          "seconds": 32.059,
+          "log_sha256": "46b4f5a374d70fe93f446ecbff074fa34cd1e005fb4070ea5969db52d2c906f9"
+        },
+        {
+          "name": "m4_render_controls",
+          "status": "passed",
+          "checks": 136,
+          "schema": "objectshard-m4-render-control-v1",
+          "seconds": 63.918,
+          "log_sha256": "78d3f9d12719c3502104a1cc87d0063e1b9567a128c4ce0376ed3d4f078f1850"
+        },
+        {
+          "name": "m4_workbench_tower_overview_render",
+          "status": "passed",
+          "checks": 153,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 25.876,
+          "log_sha256": "a6a73d2e2afe020fe4f168b84b2415979219bf27495c9cdbdd9c05b6a77f6678"
+        },
+        {
+          "name": "m4_workbench_tower_zoom_render",
+          "status": "passed",
+          "checks": 153,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 25.411,
+          "log_sha256": "2b77da2d2ea8e7df458dcef3f9cad3813a6fa0f07e32f14dffdb8bb2fdcbae5c"
+        },
+        {
+          "name": "m4_workbench_viaduct_overview_render",
+          "status": "passed",
+          "checks": 230,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 34.36,
+          "log_sha256": "089571276090dc27af211979f267197ebdc2e51284c2bc3f9df259d83c0e02d2"
+        },
+        {
+          "name": "m4_workbench_viaduct_zoom_render",
+          "status": "passed",
+          "checks": 230,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 32.664,
+          "log_sha256": "7adaed166721b98856e5ec5db8b4669c1880d998a1014b241a96fbebd0983805"
+        },
+        {
+          "name": "m4_workbench_timber_overview_render",
+          "status": "passed",
+          "checks": 174,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 29.045,
+          "log_sha256": "766904127c05a2118ede570e5113e8732926bff192b0bb9dd25f220de1726142"
+        },
+        {
+          "name": "m4_workbench_timber_zoom_render",
+          "status": "passed",
+          "checks": 174,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 28.446,
+          "log_sha256": "6a44694962a8797bc4b610dad70fb948bbf00134f41791101a0631dd58cc8d36"
+        },
+        {
+          "name": "m4_workbench_mixed_overview_render",
+          "status": "passed",
+          "checks": 155,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 28.779,
+          "log_sha256": "a23e4ee08307648a49eb8718f63684081404b6e8b0952050cc4ee08c18d314e9"
+        },
+        {
+          "name": "m4_workbench_mixed_zoom_render",
+          "status": "passed",
+          "checks": 155,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 27.851,
+          "log_sha256": "1762f8c4477897c5f797d0e904e3f20e1887450966e7df978b7815048758b458"
+        },
+        {
+          "name": "m4_workbench_stress_overview_render",
+          "status": "passed",
+          "checks": 386,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 50.048,
+          "log_sha256": "47755df40763abbbd43f560f0f9bdc62424ced58e995dee7971f519231e10f06"
+        },
+        {
+          "name": "m4_workbench_stress_zoom_render",
+          "status": "passed",
+          "checks": 386,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 47.486,
+          "log_sha256": "1f40069ce7251808389de62f3d640bc0b1a7199b13a9e79de6b18ba3db079e58"
+        },
+        {
+          "name": "m4_workbench_tower_overview_light_render",
+          "status": "passed",
+          "checks": 152,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 26.512,
+          "log_sha256": "6e25134d4514628137009e0f29199c6b278f046023b4e644c1ea4f33a052bff3"
+        },
+        {
+          "name": "m4_workbench_tower_overview_light_recording_render",
+          "status": "passed",
+          "checks": 153,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 26.949,
+          "log_sha256": "4b0afaebe4b09ab5e529532b5f3417eff60b7c822c4958753e4e5860290481f9"
+        },
+        {
+          "name": "m4_workbench_stress_overview_light_render",
+          "status": "passed",
+          "checks": 385,
+          "schema": "objectshard-m4-workbench-profile-v1",
+          "seconds": 50.053,
+          "log_sha256": "7894a5228fdc0929d44c7cd5f77294aac23bd48583f37a28891c1f40ba802220"
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "status": "passed",
+  "scope": "Exact source/blob, case log hashes, native receipt status, new GUI preview capture hashes and controls. Outer archive custody is separately bound by the download extraction receipt. This does not qualify the Windows package or physical owner hardware.",
+  "artifact": {
+    "id": 15257075058,
+    "run_id": 46125028803,
+    "bytes": 33018461,
+    "sha256": "15c43923bae4f371edc7ccd7723e53e16022c4b6eaa3e81c9175fce368b26341",
+    "safe_zip_entries": 1366,
+    "uncompressed_bytes": 234074518
+  },
+  "visually_inspected": [
+    {
+      "path": "graphical/material-presentation-captures/slice-preview.png",
+      "sha256": "2bfc4ec9abab803027f0d31f898ec8ab17cbdd5ec1e4822a3b197cd897509da9",
+      "bytes": 125044
+    },
+    {
+      "path": "graphical/test_object_shard_m4_live_tools-artifacts/drilled-panel.png",
+      "sha256": "a5adb230f21e57b6d5d9f66fc990de909f5f7522f222584a0263901cb2a8c000",
+      "bytes": 145662
+    },
+    {
+      "path": "graphical/test_object_shard_m4_live_tools-artifacts/sliced-panel.png",
+      "sha256": "9df3689762e7be0445d3e9bb8ea9579e302f33251e3897fe4f814fa237b8bb0f",
+      "bytes": 144112
+    }
+  ],
+  "visual_findings": [
+    "The final production Slice preview shows a legible narrow capsule aligned across the actual panel under the active camera.",
+    "The separate real Drill interaction capture shows a circular hole in the owned panel and an applied/presented status for 49 changed cells.",
+    "The separate real Slice capture shows an applied/presented status for 169 changed cells and two physical bodies; the overview and settled contact make the seam small, so body separation/connectivity claims rely on the native and installed-body assertions rather than this image alone.",
+    "Authored openings in the preview scene are not presented as proof of a new Drill mutation."
+  ],
+  "audit_note": "The initial external auditor used a global basename lookup and found two legitimate area-ignition.png files (preview and actual tool fixture). Its path resolution was corrected to the receipt-declared capture directory; this was an analysis-script correction, with no candidate source or qualification change."
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "objectshard-m4-hosted-audit-evidence-v1",
+  "scope": "Independent native pass and failed Linux/Windows Workbench aggregate campaigns at their original source; all successful subcases keep their actual headless or rendered scope. Not qualification of later worker or evaluator changes.",
+  "files": [
+    {
+      "path": "hosted-0f013-native-review.json",
+      "bytes": 11024,
+      "sha256": "7483347cf550c406060d256fa2a659cdca4bd9e68e3e3157c64f7e4807d121e8",
+      "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+      "run_id": 45457037610
+    },
+    {
+      "path": "hosted-0f013-windows-review.json",
+      "bytes": 23401,
+      "sha256": "76d474186eaf8f83652c379b94922817793a3efd0cbc1d5154d0a58dd8c5812f",
+      "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+      "run_id": 45457037610
+    },
+    {
+      "path": "hosted-0f013-linux-review.json",
+      "bytes": 62559,
+      "sha256": "bf5aad586d6898eb358ca3613731c5f2a88273642eea6c1e5f2d744d52ed177b",
+      "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+      "run_id": 45457037610
+    }
+  ]
+}

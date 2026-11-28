@@ -2,6 +2,7 @@ extends SceneTree
 ## Actual Workbench, existing complete audit and real value-worker lifecycle.
 ## Draft values are deterministic fixtures; no HTTP/model or fake native writes.
 const Setup = preload("res://scripts/workbench_setup.gd")
+const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const Provider = preload("res://scripts/art_provider.gd")
 const CANARY := "ART-APPLY-PRIVATE-2026-11-25"
 const SIZE := 1024*1024
@@ -142,7 +143,7 @@ func stale_checks() -> void:
 	await seed_conversation_fixture()
 	before = apply()
 	check(wb.new_canvas(),"actual World replacement admitted during preparation")
-	await until(ready,"replacement native World is ready")
+	await until(ready,"replacement native World is ready",Watchdogs.milliseconds("operation_seconds"))
 	await drain()
 	check(host.simulation_worker.art_state().epoch!=int(before.identity.world_epoch),
 		"the native World epoch actually changes")
@@ -316,10 +317,10 @@ func run() -> void:
 	root.add_child(host)
 	wb=host.shared_workbench
 	panel=wb._ensure_art_batches()
-	if not await until(ready,"ordinary native Workbench ready"): quit(1); return
+	if not await until(ready,"ordinary native Workbench ready",Watchdogs.milliseconds("operation_seconds")): quit(1); return
 	var fresh: Dictionary=Setup.fresh(PackedInt32Array(wb.applied.liquid_policy),Vector2i(512,512))
 	check(wb.apply(fresh),"fresh 512-cell World is admitted")
-	if not await until(ready,"fresh native World installed"): quit(1); return
+	if not await until(ready,"fresh native World installed",Watchdogs.milliseconds("operation_seconds")): quit(1); return
 	wb.open_art_batches()
 	await collaboration_fence_checks()
 	await cancellation_checks()

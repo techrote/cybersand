@@ -1,0 +1,76 @@
+{
+  "binary_sha256": "1d65aabf98a2ec77b578f20f6c792784680fa8eeafd77e799bb914e00f6b5081",
+  "budget_qualification": {
+    "failures": [
+      "empty_lab.cpp_live_max_bytes: observed 6521468, registered maximum 6291456",
+      "empty_lab.cpp_peak_max_bytes: observed 6521534, registered maximum 6291456",
+      "inert_stationary.cpp_live_max_bytes: observed 6570844, registered maximum 6291456",
+      "inert_stationary.cpp_peak_max_bytes: observed 6570844, registered maximum 6291456",
+      "inert_moving.cpp_live_max_bytes: observed 6570844, registered maximum 6291456",
+      "inert_moving.cpp_peak_max_bytes: observed 6570844, registered maximum 6291456",
+      "reacting_one.cpp_live_max_bytes: observed 6570844, registered maximum 6291456",
+      "reacting_one.cpp_peak_max_bytes: observed 6570844, registered maximum 6291456",
+      "reacting_three.cpp_live_max_bytes: observed 6670496, registered maximum 6291456",
+      "reacting_three.cpp_peak_max_bytes: observed 6670496, registered maximum 6291456",
+      "perforated_reacting.cpp_live_max_bytes: observed 6570844, registered maximum 6291456",
+      "perforated_reacting.cpp_peak_max_bytes: observed 6570844, registered maximum 6291456",
+      "saturated_world_destinations.cpp_live_max_bytes: observed 6570844, registered maximum 6291456",
+      "saturated_world_destinations.cpp_peak_max_bytes: observed 6570844, registered maximum 6291456"
+    ],
+    "limits_checked": 74,
+    "status": "failed"
+  },
+  "checks": 4237399,
+  "elapsed_seconds": 45.35699776600086,
+  "execution": {
+    "command": [
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/benchmark_object_shard",
+      "--ticks",
+      "480",
+      "--repetitions",
+      "3"
+    ],
+    "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+    "elapsed_seconds": 10.662841439007025,
+    "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/logs/benchmark.log",
+    "returncode": 0,
+    "timed_out": false
+  },
+  "failures": 0,
+  "git_head": "f11be5aa55babad3fbabe0471ae47517322989b1",
+  "input_digest": "fe83505a6cabf34257a0a114b828f57735d8b12a2ee3a6dcccc296f30a49c717",
+  "link": {
+    "command": [
+      "g++",
+      "-std=c++20",
+      "-O3",
+      "-DNDEBUG",
+      "-pthread",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-Werror",
+      "-I",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/source/native/include",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/source/native/tests/benchmark_object_shard.cpp",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/objects/world.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/objects/material_rules.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/objects/scheduler_geometry.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/objects/settled_world_discovery.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/objects/object_shard.o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/objects/object_shard_coordinator.o",
+      "-o",
+      "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/benchmark_object_shard"
+    ],
+    "cwd": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r",
+    "elapsed_seconds": 4.263388719999057,
+    "log": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/logs/link.log",
+    "returncode": 0,
+    "timed_out": false
+  },
+  "qualification_scope": "Freeze, build and measure the actual native ObjectShard implementation.\n\nThis is a native cost experiment with synthetic pose/acknowledgement values.\nIt does not execute Rapier, render frames or establish Windows playability.\nThe comparison uses release optimisation without LTO, in one isolated process.\n",
+  "report": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab/benchmark.json",
+  "run_directory": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/objectshard-001r-matrix-candidate-f11/20261122T042857.058051Z-fe83505a6cab",
+  "schema": 1,
+  "status": "budget_failed"
+}

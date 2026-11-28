@@ -1,0 +1,29 @@
+{
+  "after": [
+    {
+      "check": "member_sha",
+      "reason": "ZIP member length differs: image.exe",
+      "refused": true
+    },
+    {
+      "check": "pe_amd64",
+      "reason": "ZIP member length differs: image.exe",
+      "refused": true
+    }
+  ],
+  "before": {
+    "actual_member_bytes": 90,
+    "central_directory_claimed_bytes": 200,
+    "initial_streaming_helper_incorrectly_passed": true,
+    "old_full_byte_bounds_refused": true,
+    "optional_header_bytes": 100,
+    "pe_header_offset": 64,
+    "required_file_bytes": 188,
+    "source_commit": "f905c13156b914ac204344c91a809c5f545d8f16"
+  },
+  "reviewed_commit": "7a1b345d4b74f6259e820b737d9c80034602b474",
+  "reviewed_script_sha256": "8f2a0b9ded7afb1c1bdd65fb87c874173bea9ca114db192fca84ba163b8852a9",
+  "schema": "objectshard-m4-independent-streaming-pe-review-v1",
+  "scope": "Independent small malformed ZIP header replay plus source review; no product change or expensive application replay.",
+  "status": "APPROVE_AFTER_CORRECTION"
+}

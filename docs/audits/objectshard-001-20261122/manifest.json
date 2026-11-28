@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "runtime_source_commit": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "qualified_native_input_digest": "5977462b93e0589aefbdc6b6d2e94d3f61c804e921a80e40dcf9a6cf1e3bd5f6",
+  "base_benchmark_sha256": "bf47f6c0755f2bed5a3603b325bb247f7ef4c2a23bd628354606b87a13acac98",
+  "patched_fulltree_benchmark_sha256": "03ee85efeac3a5b35a5c37a5f5dfddab9fadfb7c808f7f0a5c0f716cdaab8c6f",
+  "files": {
+    "README.md": "db6dd61eb9019d00fe009a9075ed23877c8daab85df28ae986e5e64a5281fa4b",
+    "fulltree-comparison.patch": "a6eafcd741511ae26a77d7e319e96cd9e33fcae08770f615bd48464f0230d0dc",
+    "fulltree-fixture-history.json": "e41812d921abf8a6a3a55b31362e234459964d40aca54530bed0774cda6aa659",
+    "fulltree-inputs.json": "334861f93651d2d0bfce253330b8717387325af953c08100e2df2b71a2c9afb2",
+    "fulltree-result.json": "26ff232e15fb7d83e0a5536aae52ae4d2fadc83ed49fbc37799c0b4194298827",
+    "fulltree-shape-inputs.json": "a7b24e7ca45f22987c72e5f567929e89f78636a3027e84a8cdaa8c5f7964a6c3",
+    "fulltree-shape-readback.json": "271d5d5ca521bc6e53388d520ea2203a096176e24f4fd8b3fb39f343d3e52cdf",
+    "fulltree-summary.json": "9134bd798f75b2dd7803c119187f42a36ee37832bd4534cc07ff4f63c2672492",
+    "native-benchmark-inputs.json": "985b06e03d2e7666781c8d2f1c424ded6fffe9ae6c14273bc4f4844e402ea64b",
+    "native-benchmark-result.json": "e74a442c681e570de9b402eb18189a872be4723fc0d0a673120c0335463c5b7d",
+    "native-benchmark-summary.json": "cee7ab6a49fc798715cbeb61962a9866f6c2c186131507cc5bc5aef091e914dd",
+    "native-commit-binding.json": "7d3786552f6eaa04fb05f7f32a3f3744e8fc60a7d2f7cd9fa5a486de8fcf98fb",
+    "patch-replay.json": "77e7033682e2fefe9df07032700b00ee5581d13f6ae1f7061f846c950bbded65"
+  },
+  "scope": "Evidence-only retention. No native implementation, GDExtension, Godot runtime or qualifier source was changed.",
+  "report_sha256": "483f2a47edee9a51bc41073e81ed78c8f94a6cf586183e8d3c3e08c2075cc0de"
+}

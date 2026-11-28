@@ -1,0 +1,30 @@
+{
+  "schema": "objectshard-m3-independent-ownership-source-v1",
+  "time": "2026-11-22T06:15:16.447531+00:00",
+  "head": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "scope": "Fresh script copy; existing qualified514 native runtime reused for local iteration only; not final-source qualification",
+  "files": {
+    "godot/scripts/object_shard_physics_bridge.gd": "3c0f1af7488746b4b80c9d72fb38fba0409dbc7eff2c66078a3d96726fc9d82b",
+    "godot/scripts/object_shard_lab_view.gd": "34947a3dde5757ab49a36465db1b776b8ece2ad387ef4e02b06ea7454ab8bb78",
+    "godot/scripts/object_shard_lab.gd": "473e5fe36d79b88b555466611fc4e4239450563b1b54b2e4b5c33d4d030a9da1",
+    "godot/scripts/object_shard_worker_host.gd": "1fb831bdcbfdcdb57ef48712a7e22e9643084071432c2f8eadc1861f520f9e58",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "2ee648dc28599f50ec73814ff0a1edac3075ee2b5adfd48cde0c8f03e68c7051",
+    "godot/scripts/object_shard_capture.gd": "13b0ec2462fc6e676c6cf9afb6f9f5b717bc1839dca16ecca4914af33838ed85",
+    "godot/scripts/object_shard_lab_presets.gd": "13c97dee2ded48aef1b830599261bfa0fd78c4f5acd357936c5360a0006f5118",
+    "godot/scripts/object_shard_native_worker.gd": "ba8363e2d09d35a01b1a368e96ac0ae1d555683800af0e9111dc3fb42da8578f",
+    "godot/scripts/object_shard_lab_session.gd": "9de3c25a5cd6d3b2f54a8b0d3ba138ad52d18129d7cd49dae125f1a2032517cb",
+    "godot/tests/test_object_shard_worker_adverse.gd": "490c6dc548d43f755de512cdb2f11891a52ba295ad27fa5a79b3619a4d3cbd25",
+    "godot/tests/test_object_shard_worker_package_boot.gd": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0",
+    "godot/tests/test_object_shard_worker_resources.gd": "413828fa22a997dc10f34876beac7ad1e06a7d68fa90c1cc9d070680c5ba5016",
+    "godot/tests/test_object_shard_worker_commands.gd": "48341091e4099212cfc807bcebdc651f1c361e5ab12b87fbff489d69d6fa064e",
+    "godot/tests/test_object_shard_worker_rehearsal.gd": "e762d7c28611b618e76af15c9ae435e17924bcc5547ec37c69661e99a5fa8cac",
+    "godot/tests/test_object_shard_worker_input_fences.gd": "9a631fc5db20c15d2217f95a6b31699bb0fc100facf38a0de347cd1f95f30aa1",
+    "godot/tests/replay_object_shard_worker_trace.gd": "8be0472afb91e4b578bc32cf482a2f94a4c8b9b2ef9b6518bfa7dce9dcd294d8",
+    "godot/tests/test_object_shard_worker_scene.gd": "810c5c5c41571c9e2c43ddd8b05a6aff9ca3958c189b49878a3569861ffc2691",
+    "godot/tests/capture_object_shard_worker.gd": "ee92636b23b5b8463bd716e5ad6ac1d3f1529fc233a080b81e450b1dd3746ca0",
+    "godot/tests/profile_object_shard_worker.gd": "e882f6cab48a2cf0be098390721c7bf216312481d5336106c4855a7687e24895",
+    "godot/tests/test_object_shard_native_worker.gd": "a78bac83e92145699411b00ec3ba2fb9fb19998225e8fe950c3c48bea9178a4a",
+    "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+    "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "objectshard-m3-repair-windows-delivery-index-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "run_id": 44999117090,
+  "windows_job_id": 137137548583,
+  "artifacts": [
+    {
+      "artifact_id": 14745122677,
+      "name": "objectshard-dll-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44999117090/artifacts/14745122677",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745122677.zip",
+      "archive_bytes": 2217474,
+      "archive_sha256": "5c32e97f40acd278a6fc871fbe22b22684dcbfdd978774afab9afe580acba9d6",
+      "custody_path": "build/m3-platform/repair-windows/14745122677-custody.json",
+      "custody_sha256": "f407a2fc2f55d3bf421debacc6a3943007a7ccd2555310b0f5a115ed117a73eb",
+      "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745122677"
+    },
+    {
+      "artifact_id": 14745236878,
+      "name": "objectshard-crossbuild-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44999117090/artifacts/14745236878",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745236878.zip",
+      "archive_bytes": 13861,
+      "archive_sha256": "a641552a46f7b6db770732ca8293eb45b70dd53c6c2daedcaeb633c146ca7e0b",
+      "custody_path": "build/m3-platform/repair-windows/14745236878-custody.json",
+      "custody_sha256": "8f0762c0c617857e66232f36be891662133518dc2eb10ce0fc7a58a8a58a132b",
+      "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745236878"
+    },
+    {
+      "artifact_id": 14745303779,
+      "name": "objectshard-windows-lab-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44999117090/artifacts/14745303779",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745303779.zip",
+      "archive_bytes": 92828683,
+      "archive_sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d",
+      "custody_path": "build/m3-platform/repair-windows/14745303779-custody.json",
+      "custody_sha256": "6f55a215eb363bc31c8222278c3ed3087814c405d5d9af2bb97fda66df923f79",
+      "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745303779"
+    },
+    {
+      "artifact_id": 14745662483,
+      "name": "objectshard-windows-evidence-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+      "url": "https://github.com/techrote/cybersand/actions/runs/44999117090/artifacts/14745662483",
+      "archive_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745662483.zip",
+      "archive_bytes": 10028066,
+      "archive_sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb",
+      "custody_path": "build/m3-platform/repair-windows/14745662483-custody.json",
+      "custody_sha256": "bf5ef28065b3ab25e9281beafbc0b6eb459fb9941e4b8e4f49f2d4d228437120",
+      "extracted_path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745662483"
+    }
+  ],
+  "reports": {
+    "crossbuild-assessment.json": {
+      "path": "build/m3-platform/repair-windows/crossbuild-assessment.json",
+      "bytes": 2550,
+      "sha256": "1f1ff101a67f3f78617aa87da9add4687215509f915c6b20133c9e52f9d894f8"
+    },
+    "windows-delivery-assessment.json": {
+      "path": "build/m3-platform/repair-windows/windows-delivery-assessment.json",
+      "bytes": 34776,
+      "sha256": "b8878f71154a827af4978d03f354f9cf3ebe0f895ad1d24a5f18ad3e1467025b"
+    },
+    "baseline-repair-timing-comparison.json": {
+      "path": "build/m3-platform/repair-windows/baseline-repair-timing-comparison.json",
+      "bytes": 79920,
+      "sha256": "d8db70e1e619b214f2359b5728e3047c0ac4e9cdfb15aa326a6c200f72be6467"
+    },
+    "operator-readiness.json": {
+      "path": "build/m3-platform/repair-windows/operator-readiness.json",
+      "bytes": 14743,
+      "sha256": "74f8109fd966529a5f31b9acf855ea3ee6fc6486be1dd737cf32f6a17020ee2a"
+    },
+    "owner-zip-identity.json": {
+      "path": "build/m3-platform/repair-windows/owner-zip-identity.json",
+      "bytes": 888,
+      "sha256": "a6a886a5e418b1da56af72ef6c69c72b939cdf955d2180781e3b16952126bf47"
+    },
+    "final-job-status.json": {
+      "path": "build/m3-platform/repair-windows/final-job-status.json",
+      "bytes": 4669,
+      "sha256": "acf851c2d10a9a3691c3819b0ca5d8782b5c69a910f45a92e92e827043d390e9"
+    }
+  },
+  "owner_zip": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+    "bytes": 93168827,
+    "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b",
+    "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+    "run_id": 44999117090,
+    "owner_artifact_id": 14745303779,
+    "evidence_artifact_id": 14745662483,
+    "evidence_directory": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/14745662483",
+    "owner_archive_sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d",
+    "evidence_archive_sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb",
+    "scope": "Downloaded immutable archive custody; report and independent reviews pending"
+  },
+  "status": "delivery_assessment_passed_independent_final_custody_review_pending",
+  "physical_owner_acceptance": "unrecorded",
+  "preserved_performance_negative": "Fresh pump4000 progression17.1382Hz versus prior19.5306Hz; rendered burst p951753.913ms versus1403.323ms. Full stages and exact-work equality retained; no environmental causality claim or threshold change."
+}

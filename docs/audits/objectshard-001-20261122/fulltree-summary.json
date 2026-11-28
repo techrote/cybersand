@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "status": "measured",
+  "classification": "Supplementary source-matched native experiment; not part of the separately registered 74-limit full-matrix qualification.",
+  "git_head": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "native_implementation_input_digest": "5977462b93e0589aefbdc6b6d2e94d3f61c804e921a80e40dcf9a6cf1e3bd5f6",
+  "harness_sha256": "03ee85efeac3a5b35a5c37a5f5dfddab9fadfb7c808f7f0a5c0f716cdaab8c6f",
+  "binary_sha256": "4244091a79e6c28ee93787f400a38d95b7650852750ae15a2b8b64a68eed0290",
+  "report_sha256": "26ff232e15fb7d83e0a5536aae52ae4d2fadc83ed49fbc37799c0b4194298827",
+  "checks": 53120612,
+  "failures": 0,
+  "fixture": "Actual scenario1 Wood tree, bounded full inventory, one exposed Wood cell burning, direct real Fire output into identical external Worlds, full local/external tuple comparison each tick.",
+  "comparison_limitations": [
+    "No internal gas transport is required in this immediate-output fixture.",
+    "Alternative output scans only known emitter ports, not its entire bounding box.",
+    "The miniature World includes real production kernels and tight serial/chunk capacities; its boundary harness is not a second fully qualified Lab or transaction protocol.",
+    "Sparse chemistry makes the miniature World scheduler faster; no universal compact speedup is claimed.",
+    "Construction samples and steady-state samples are separate.",
+    "C++ allocation bytes exclude malloc overhead, C allocations, stacks and mappings; not RSS."
+  ],
+  "retained_failed_attempts": [
+    "build/objectshard-fulltree-probe",
+    "build/objectshard-fulltree-probe-v2"
+  ],
+  "failure_explanation": "First fixtures ignited an interior Wood cell with no Empty product neighbor; their required real-output assertion correctly failed. The repaired fixture requires an exposed surface cell.",
+  "tracked_source_modified": false
+}

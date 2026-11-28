@@ -1,0 +1,226 @@
+{
+  "source_commit": "f11be5aa55babad3fbabe0471ae47517322989b1",
+  "source_tree": "bbde088be65bf503123644e0712a95300611b461",
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "d37b532c237b37099d4ee3be675042949a62f7f7d0f7da36d091f8ad36770139",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "checks": 454,
+  "errors": [],
+  "bindings": {
+    "lab_source_inputs": {
+      "files": 26,
+      "mismatches": []
+    },
+    "native_source_inputs": {
+      "files": 116,
+      "mismatches": []
+    },
+    "qualification_tool_inputs": {
+      "files": 18,
+      "mismatches": []
+    }
+  },
+  "profiles": {
+    "headless": {
+      "limits_checked": 56,
+      "cases": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 1633,
+            "p99": 1752,
+            "max": 2286
+          }
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 2691,
+            "p99": 2911,
+            "max": 3940
+          }
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 2659,
+            "p99": 2731,
+            "max": 3663
+          }
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 3932,
+            "p99": 4137,
+            "max": 5624
+          }
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 2772,
+            "p99": 2900,
+            "max": 3638
+          }
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 2732,
+            "p99": 2847,
+            "max": 3993
+          }
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 3903,
+            "p99": 4000,
+            "max": 4252
+          }
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 4029,
+            "p99": 4136,
+            "max": 5642
+          }
+        }
+      ],
+      "file_sha256": "6dba456cb26bf2dcb8e02d4269ca00c3337e59ad64283c9bc7e698956ecd216b"
+    },
+    "rendered": {
+      "limits_checked": 80,
+      "cases": [
+        {
+          "name": "empty_lab",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 3623,
+            "p99": 3758,
+            "max": 3832
+          },
+          "present_interval_usec": {
+            "p95": 16102,
+            "p99": 16575,
+            "max": 31993
+          }
+        },
+        {
+          "name": "inert_moving",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 6133,
+            "p99": 6195,
+            "max": 8715
+          },
+          "present_interval_usec": {
+            "p95": 16111,
+            "p99": 16618,
+            "max": 31901
+          }
+        },
+        {
+          "name": "reacting_one",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 6122,
+            "p99": 6217,
+            "max": 11353
+          },
+          "present_interval_usec": {
+            "p95": 16118,
+            "p99": 31297,
+            "max": 31917
+          }
+        },
+        {
+          "name": "reacting_three",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 7130,
+            "p99": 7447,
+            "max": 10336
+          },
+          "present_interval_usec": {
+            "p95": 16092,
+            "p99": 31838,
+            "max": 31947
+          }
+        },
+        {
+          "name": "perforated",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 6369,
+            "p99": 6479,
+            "max": 13582
+          },
+          "present_interval_usec": {
+            "p95": 16114,
+            "p99": 31851,
+            "max": 32023
+          }
+        },
+        {
+          "name": "saturated_output",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 6313,
+            "p99": 6430,
+            "max": 9611
+          },
+          "present_interval_usec": {
+            "p95": 16102,
+            "p99": 17137,
+            "max": 31931
+          }
+        },
+        {
+          "name": "dormant_three",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 7124,
+            "p99": 7388,
+            "max": 10733
+          },
+          "present_interval_usec": {
+            "p95": 16096,
+            "p99": 16639,
+            "max": 31935
+          }
+        },
+        {
+          "name": "wake_burst_three",
+          "samples": 1200,
+          "frame_usec": {
+            "p95": 7157,
+            "p99": 7369,
+            "max": 8453
+          },
+          "present_interval_usec": {
+            "p95": 16116,
+            "p99": 31913,
+            "max": 31974
+          }
+        }
+      ],
+      "file_sha256": "cc7e45ef8c651dcfdfaa7764b24fd8b1fdae8299a4fb13356d9abf1bb54d0ca7"
+    }
+  },
+  "scope": "Actual hosted Windows f11 supplemental evidence, predating final native timer/compaction delta. No delivered ZIP pass; shipped launcher-verifier failure remains open."
+}

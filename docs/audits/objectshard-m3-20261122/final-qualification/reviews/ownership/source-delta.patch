@@ -1,0 +1,870 @@
+diff --git a/godot/scripts/feature_navigation.gd b/godot/scripts/feature_navigation.gd
+index 63629f7e3..439d4c7bb 100644
+--- a/godot/scripts/feature_navigation.gd
++++ b/godot/scripts/feature_navigation.gd
+@@ -19,9 +19,47 @@ func return_to_launcher() -> void:
+ 	# its replacement. Navigation must cancel that pending recovery as well.
+ 	if (scene != null and scene.scene_file_path != "res://feature_launcher.tscn") \
+ 		or tree.has_meta("cybersand_playable_recovery"):
+-		if scene != null and scene.has_method("cancel_playable_session_recovery"):
+-			scene.cancel_playable_session_recovery()
+-		if tree.has_meta("cybersand_playable_recovery"):
+-			tree.remove_meta("cybersand_playable_recovery")
+-		if tree.has_meta("cybersand_feature"): tree.remove_meta("cybersand_feature")
++		# An asynchronous owner must remain in the tree until its worker has
++		# disposed native inventory and main has released its physics RIDs.
++		# Other scenes retain their existing navigation path.
++		if scene != null and scene.has_method("request_feature_launcher_navigation"):
++			scene.request_feature_launcher_navigation()
++			return
++		_queue_return_to_launcher(tree, scene)
++
++
++func complete_feature_launcher_navigation(expected_scene: Node) -> bool:
++	if OS.has_feature("web") or bool(ProjectSettings.get_setting("cybersand/web_demo", false)):
++		return false
++	var tree: SceneTree = get_tree()
++	# A late completion from a retired scene cannot replace its successor.
++	if not is_instance_valid(expected_scene) or tree.current_scene != expected_scene:
++		return false
++	if not expected_scene.has_method("feature_launcher_navigation_ready") \
++		or not expected_scene.feature_launcher_navigation_ready():
++		return false
++	_queue_return_to_launcher(tree, expected_scene, true)
++	return true
++
++
++func _queue_return_to_launcher(tree: SceneTree, scene: Node, fence_completion: bool = false) -> void:
++	if scene != null and scene.has_method("cancel_playable_session_recovery"):
++		scene.cancel_playable_session_recovery()
++	if tree.has_meta("cybersand_playable_recovery"):
++		tree.remove_meta("cybersand_playable_recovery")
++	if tree.has_meta("cybersand_feature"): tree.remove_meta("cybersand_feature")
++	if fence_completion:
++		_finish_return_if_current.call_deferred(scene.get_instance_id() if scene != null else 0)
++	else:
++		# Preserve ordinary recovery/navigation ordering. The new current-scene
++		# fence belongs only to the asynchronous owner's completion callback.
+ 		tree.change_scene_to_file.call_deferred("res://feature_launcher.tscn")
++
++
++func _finish_return_if_current(expected_scene_id: int) -> void:
++	var tree: SceneTree = get_tree()
++	var scene: Node = tree.current_scene
++	var current_id: int = scene.get_instance_id() if scene != null else 0
++	if current_id != expected_scene_id:
++		return
++	tree.change_scene_to_file("res://feature_launcher.tscn")
+diff --git a/godot/scripts/object_shard_worker_rehearsal.gd b/godot/scripts/object_shard_worker_rehearsal.gd
+index 8db6bfdff..13a8862a4 100644
+--- a/godot/scripts/object_shard_worker_rehearsal.gd
++++ b/godot/scripts/object_shard_worker_rehearsal.gd
+@@ -30,6 +30,9 @@ var pump_selector: OptionButton
+ var receipt_pump_usec: int = 4000
+ var running: bool = false
+ var closing: bool = false
++var close_destination: String = ""
++var close_dispatched: bool = false
++var previous_auto_accept_quit: bool = true
+ var queued_cuts: Array[Dictionary] = []
+ var last_publication: int = -1
+ var opened_usec: int = 0
+@@ -62,6 +65,7 @@ var ui_sample_totals: Dictionary = {}
+ 
+ 
+ func _ready() -> void:
++	previous_auto_accept_quit = get_tree().auto_accept_quit
+ 	get_tree().auto_accept_quit = false
+ 	get_window().title = "CyberSand · ObjectShard continuous play · Draft / HOLD"
+ 	get_window().size = Vector2i(1280, 840)
+@@ -232,6 +236,8 @@ func _begin_owner(preset: Dictionary) -> void:
+ 	var previous_generation: int = int(host.generation)
+ 	if host.state == "Closed":
+ 		host = Host.new()
++	close_destination = ""
++	close_dispatched = false
+ 	selected_preset = preset.duplicate(true)
+ 	opened_usec = Time.get_ticks_usec()
+ 	last_publication = -1
+@@ -269,10 +275,10 @@ func _process(_delta: float) -> void:
+ 	host.poll(not delay_box.button_pressed or closing or replacing_owner or loading or host.state == "Resetting")
+ 	if closing:
+ 		if host.state == "Closed":
+-			get_tree().quit()
++			_finish_exit()
+ 		elif host.state == "ShutdownHeld":
+ 			closing = false
+-			report_label.text = host.status + " · Export evidence before retrying shutdown."
++			report_label.text = host.status + " · Owner retained. Export evidence, then retry F2 or window close."
+ 		return
+ 	if replacing_owner:
+ 		if host.state == "Closed":
+@@ -430,6 +436,8 @@ func _reset() -> void:
+ 		return
+ 	running = false
+ 	run_button.text = "Resume"
++	# An explicit Reset is a new owner decision after a held shutdown.
++	close_destination = ""
+ 	delay_box.set_pressed_no_signal(false)
+ 	pointer_cancelled += queued_cuts.size()
+ 	host.capture.write("event", int(host.frame.get("tick", 0)), {"kind": "ExplicitUIReset", "cancelled_pointer_intents": queued_cuts.size()})
+@@ -470,6 +478,10 @@ func _stroke(cells: Array[Vector2i], button: int) -> void:
+ 
+ 
+ func _queue_intent(position: Vector2i, action: String, material: int, fixture: bool = false) -> bool:
++	if not _accepting_play_input():
++		pointer_refused += 1
++		_refuse_unavailable_input(action)
++		return false
+ 	# Pointer intent belongs to the material snapshot the view actually observed.
+ 	# Deferred host receipts may already have published a newer, unseen pose.
+ 	var observed: Dictionary = host.publication if fixture else view.frame
+@@ -494,7 +506,10 @@ func _queue_intent(position: Vector2i, action: String, material: int, fixture: b
+ 
+ 
+ func _cut_support() -> void:
+-	if loading or host.publication.is_empty():
++	if not _accepting_play_input():
++		_refuse_unavailable_input("cut_support")
++		return
++	if host.publication.is_empty():
+ 		return
+ 	var source: Dictionary = host.publication
+ 	var lowest: int = -1
+@@ -513,7 +528,10 @@ func _cut_support() -> void:
+ 
+ 
+ func _erode_resting_cell() -> void:
+-	if loading or host.bridge == null:
++	if not _accepting_play_input():
++		_refuse_unavailable_input("erode_resting_cell")
++		return
++	if host.bridge == null:
+ 		return
+ 	var physical: Dictionary = host.bridge.diagnostics()
+ 	for body: Dictionary in physical.get("bodies", []):
+@@ -536,6 +554,17 @@ func _erode_resting_cell() -> void:
+ 	report_label.text = "No sleeping structural body yet. Let a detached structure settle naturally."
+ 
+ 
++func _accepting_play_input() -> bool:
++	return not loading and not replacing_owner and not closing and not close_dispatched \
++		and not host.failed and host.state not in ["Closing", "Closed", "ShutdownHeld"]
++
++
++func _refuse_unavailable_input(action: String) -> void:
++	report_label.text = "Input refused: owner is loading, replacing, closing or held. No new material command was admitted."
++	host.capture.write("event", int(host.frame.get("tick", 0)), {"kind": "UIInputUnavailable", "action": action,
++		"state": host.state, "closing": closing, "replacing_owner": replacing_owner, "loading": loading, "failed": host.failed})
++
++
+ func _feed_burner() -> void:
+ 	if not running or not burner_box.button_pressed or host.publication.is_empty():
+ 		return
+@@ -682,7 +711,62 @@ func _export_and_open() -> void:
+ 
+ 
+ func _notification(what: int) -> void:
+-	if what == NOTIFICATION_WM_CLOSE_REQUEST and not closing:
+-		closing = true
+-		running = false
+-		host.close()
++	if what == NOTIFICATION_WM_CLOSE_REQUEST:
++		_request_exit("quit")
++
++
++func request_feature_launcher_navigation() -> void:
++	_request_exit("launcher")
++
++
++func feature_launcher_navigation_ready() -> bool:
++	return closing and close_destination == "launcher" and host.state == "Closed" and not close_dispatched
++
++
++func _request_exit(destination: String) -> void:
++	if close_dispatched:
++		return
++	if closing:
++		# Process exit takes precedence over an already-requested launcher handoff.
++		if destination == "quit":
++			close_destination = "quit"
++		return
++	# A retry after a held shutdown must not downgrade a window-close request.
++	if close_destination != "quit" or host.state != "ShutdownHeld":
++		close_destination = destination
++	closing = true
++	running = false
++	run_button.text = "Resume"
++	# Navigation supersedes a pending reset. Never open an intermediate owner
++	# after the user has asked to leave this scene.
++	replacing_owner = false
++	pending_preset.clear()
++	delay_box.set_pressed_no_signal(false)
++	pointer_cancelled += queued_cuts.size()
++	host.capture.write("event", int(host.frame.get("tick", 0)),
++		{"kind": "ExplicitUIExit", "destination": close_destination, "cancelled_pointer_intents": queued_cuts.size()})
++	queued_cuts.clear()
++	host.close()
++	report_label.text = "Disposing the native owner before " + ("returning to the launcher." if close_destination == "launcher" else "closing the window.")
++
++
++func _finish_exit() -> void:
++	if close_dispatched or host.state != "Closed":
++		return
++	if close_destination == "launcher":
++		var navigation: Node = get_node_or_null("/root/FeatureNavigation")
++		if navigation == null or get_tree().current_scene != self:
++			closing = false
++			report_label.text = "Owner disposed; launcher handoff refused because this is no longer the current scene."
++			return
++		if not navigation.complete_feature_launcher_navigation(self):
++			closing = false
++			report_label.text = "Owner disposed; launcher handoff refused. Retry F2."
++			return
++		close_dispatched = true
++		get_tree().auto_accept_quit = previous_auto_accept_quit
++		set_process(false)
++	else:
++		close_dispatched = true
++		get_tree().auto_accept_quit = previous_auto_accept_quit
++		get_tree().quit()
+diff --git a/godot/tests/test_object_shard_worker_navigation.gd b/godot/tests/test_object_shard_worker_navigation.gd
+new file mode 100644
+index 000000000..70ff7be87
+--- /dev/null
++++ b/godot/tests/test_object_shard_worker_navigation.gd
+@@ -0,0 +1,500 @@
++extends SceneTree
++
++# Real project autoload, F2 input and launcher re-entry. Strong host/worker/bridge
++# witnesses observe completed disposal without keeping the scene alive. Faults
++# below alter only delivered stop status after the actual native thread exits;
++# they do not claim that a synthetic refusal came from the native material law.
++const OWNER_SCENE: String = "res://object_shard_worker_rehearsal.tscn"
++const LAUNCHER_SCENE: String = "res://feature_launcher.tscn"
++const SCHEMA: String = "objectshard-worker-navigation-test-v1"
++const CHILD_SCHEMA: String = "objectshard-worker-navigation-quit-child-v1"
++var checks: int = 0
++var failures: int = 0
++var observations: Array[Dictionary] = []
++var cases: Array[String] = []
++var witnesses: Array[Dictionary] = []
++var baseline_auto_accept: bool = true
++var freeze_next_owner: bool = false
++var child_mode: bool = false
++var child_written: bool = false
++var output_path: String = ""
++
++
++func _init() -> void:
++	Engine.max_fps = 240
++	for argument: String in OS.get_cmdline_user_args():
++		if argument == "--navigation-quit-child":
++			child_mode = true
++		elif argument.begins_with("--output="):
++			output_path = argument.trim_prefix("--output=")
++	node_added.connect(_node_added)
++	call_deferred("_run")
++
++
++func _expect(value: bool, label: String) -> void:
++	checks += 1
++	observations.append({"check": label, "passed": value})
++	if not value:
++		failures += 1
++		push_error(label)
++
++
++func _node_added(node: Node) -> void:
++	if freeze_next_owner and node.name == "ObjectShardWorkerRehearsal":
++		# Keep the actual native startup receipt pending until F2 owns shutdown.
++		node.ready.connect(_freeze_ready.bind(node), CONNECT_ONE_SHOT)
++		freeze_next_owner = false
++
++
++func _freeze_ready(node: Node) -> void:
++	# Script process enablement occurs during tree entry; freeze after _ready.
++	node.set_process(false)
++
++
++func _await_scene(path: String) -> bool:
++	var deadline: int = Time.get_ticks_msec() + 10000
++	while Time.get_ticks_msec() < deadline:
++		if current_scene != null and current_scene.scene_file_path == path:
++			return true
++		await process_frame
++	return false
++
++
++func _idle() -> bool:
++	var deadline: int = Time.get_ticks_msec() + 10000
++	while Time.get_ticks_msec() < deadline:
++		var scene = current_scene
++		if scene == null or scene.scene_file_path != OWNER_SCENE or scene.host.failed:
++			return false
++		if not scene.loading and not scene.replacing_owner and scene.host.state == "Idle" \
++			and scene.queued_cuts.is_empty() and scene.host.actions.is_empty() \
++			and scene.host.pending.is_empty() and not scene.host._tick_requested:
++			return true
++		await process_frame
++	return false
++
++
++func _launch(wait_ready: bool = true) -> bool:
++	if current_scene == null or current_scene.scene_file_path != LAUNCHER_SCENE:
++		return false
++	for witness: Dictionary in witnesses:
++		if not witness.worker.diagnostics().stopped or witness.worker._thread.is_started():
++			_expect(false, "No new launcher entry may overlap a previous live or unjoined native owner")
++			return false
++	current_scene.launch("objectshard_m3")
++	if not await _await_scene(OWNER_SCENE):
++		return false
++	return await _idle() if wait_ready else true
++
++
++func _step() -> bool:
++	var before: int = int(current_scene.host.frame.tick)
++	if not current_scene.host.request_tick().get("ok", false):
++		return false
++	return await _idle() and int(current_scene.host.frame.tick) == before + 1
++
++
++func _promote() -> bool:
++	current_scene._cut_support()
++	if not await _idle():
++		return false
++	for index: int in range(20):
++		if not current_scene.host.bridge.bodies.is_empty():
++			return true
++		if not await _step():
++			return false
++	return false
++
++
++func _press_f2() -> void:
++	var event := InputEventKey.new()
++	event.keycode = KEY_F2
++	event.pressed = true
++	Input.parse_input_event(event)
++	var release := InputEventKey.new()
++	release.keycode = KEY_F2
++	release.pressed = false
++	Input.parse_input_event(release)
++	Input.flush_buffered_events()
++
++
++func _button(scene: Node, label: String) -> Button:
++	for node: Node in scene.find_children("*", "Button", true, false):
++		if node is Button and node.text == label:
++			return node
++	return null
++
++
++func _witness(label: String) -> Dictionary:
++	var scene = current_scene
++	var host = scene.host
++	var witness: Dictionary = {"label": label, "scene": weakref(scene), "scene_id": scene.get_instance_id(),
++		"host": host, "worker": host.worker, "bridge": host.bridge,
++		"previous_quit_policy": scene.previous_auto_accept_quit,
++		"before": {"host_state": host.state, "session": host.session, "generation": host.generation,
++			"pending": host.pending.duplicate(true), "worker": host.worker.diagnostics(),
++			"physics": host.bridge.diagnostics(), "capture": host.capture.metadata()}}
++	witnesses.append(witness)
++	return witness
++
++
++func _closed_checks(witness: Dictionary) -> void:
++	var label: String = witness.label
++	var worker = witness.worker
++	var bridge = witness.bridge
++	_expect(witness.host.state == "Closed", label + ": host reaches Closed before handoff")
++	_expect(worker.diagnostics().stopped, label + ": actual exclusive worker reports stopped")
++	_expect(not worker._thread.is_started(), label + ": stopped worker was joined by the production host")
++	_expect(worker.diagnostics().terminal.get("outcome") == "Stopped", label + ": terminal receipt confirms native disposal")
++	_expect(bridge.bodies.is_empty() and bridge.terrain.is_empty(), label + ": body and terrain RID registries are empty")
++	_expect(not bridge.space.is_valid(), label + ": main physics space was released")
++	_expect(witness.host.capture.stream == null, label + ": prospective trace is closed")
++	_expect(auto_accept_quit == bool(witness.previous_quit_policy), label + ": prior SceneTree quit policy is restored")
++	observations.append({"case": label, "before": witness.before,
++		"after": {"state": witness.host.state, "worker": worker.diagnostics(),
++			"body_count": bridge.bodies.size(), "terrain_count": bridge.terrain.size(),
++			"space_valid": bridge.space.is_valid(), "thread_started": worker._thread.is_started(),
++			"auto_accept_quit": auto_accept_quit}})
++
++
++func _navigate(witness: Dictionary, repeats: int = 1) -> bool:
++	var scene = current_scene
++	for index: int in range(repeats):
++		_press_f2()
++	_expect(current_scene == scene and scene.closing, str(witness.label) + ": F2 retains the scene while disposal is pending")
++	_expect(scene.close_destination == "launcher" and not scene.running, str(witness.label) + ": navigation has an explicit paused launcher destination")
++	var before_inputs: int = scene.pointer_queued
++	var cut: Button = _button(scene, "Cut lower support")
++	var erode: Button = _button(scene, "Erode resting cell")
++	_expect(cut != null and erode != null, str(witness.label) + ": actual support and erosion controls are present")
++	if cut != null:
++		cut.pressed.emit()
++	if erode != null:
++		erode.pressed.emit()
++	var cells: Array[Vector2i] = [Vector2i(20, 20)]
++	scene._stroke(cells, MOUSE_BUTTON_LEFT)
++	scene._cell(Vector2i(20, 20), MOUSE_BUTTON_RIGHT)
++	_expect(scene.queued_cuts.is_empty() and scene.pointer_queued == before_inputs,
++		str(witness.label) + ": post-exit button and pointer input cannot enter a queue that navigation will discard")
++	scene.set_process(true)
++	var reached: bool = await _await_scene(LAUNCHER_SCENE)
++	_expect(reached, str(witness.label) + ": actual autoload completes the real launcher handoff")
++	if not reached:
++		return false
++	await process_frame
++	_expect(witness.scene.get_ref() == null, str(witness.label) + ": old scene is removed after shutdown")
++	_closed_checks(witness)
++	cases.append(str(witness.label))
++	return true
++
++
++func _active_pending() -> bool:
++	_expect(await _launch(), "Actual feature launcher opens the native rehearsal")
++	if current_scene == null or current_scene.scene_file_path != OWNER_SCENE:
++		return false
++	var scene = current_scene
++	_expect(await _promote(), "Actual support removal promotes native Wood before active navigation")
++	if scene.host.bridge.bodies.is_empty():
++		return false
++	_expect(not bool(scene.host.bridge.diagnostics().bodies[0].sleeping), "F2 active fixture contains an awake real Rapier body")
++	var navigation: Node = root.get_node("FeatureNavigation")
++	_expect(not navigation.complete_feature_launcher_navigation(scene), "An open owner cannot complete navigation without disposal")
++	var foreign := Node.new()
++	_expect(not navigation.complete_feature_launcher_navigation(foreign), "A foreign scene cannot authorize current-owner replacement")
++	foreign.free()
++	scene.delay_box.button_pressed = true
++	_expect(scene.host.request_tick().get("ok", false), "Actual native tick is admitted before navigation")
++	scene.host.poll(false)
++	_expect(not scene.host.pending.is_empty(), "F2 begins with a real native receipt outstanding")
++	var witness: Dictionary = _witness("active_pending_repeated")
++	if not await _navigate(witness, 3):
++		return false
++	_expect(await _launch(), "Re-entry starts a new owner after active-body disposal")
++	_expect(current_scene.host.worker != witness.worker and witness.worker.diagnostics().stopped,
++		"New entry has a different worker and does not overlap the stopped old owner")
++	var current_id: int = current_scene.get_instance_id()
++	navigation._finish_return_if_current(int(witness.scene_id))
++	await process_frame
++	_expect(current_scene != null and current_scene.get_instance_id() == current_id,
++		"A stale deferred navigation completion cannot replace the new scene")
++	return true
++
++
++func _sleeping() -> bool:
++	_expect(await _promote(), "Re-entered scene promotes its own genuine component")
++	var sleeping: bool = false
++	for index: int in range(600):
++		if not await _step():
++			break
++		var bodies: Array = current_scene.host.bridge.diagnostics().bodies
++		if not bodies.is_empty() and bool(bodies[0].sleeping):
++			sleeping = true
++			break
++	_expect(sleeping, "Second body reaches natural Rapier sleep without forcing sleep")
++	return await _navigate(_witness("naturally_sleeping"))
++
++
++func _opening() -> bool:
++	freeze_next_owner = true
++	_expect(await _launch(false), "Actual launcher constructs the opening owner")
++	var scene = current_scene
++	_expect(not scene.is_processing() and scene.host.state == "Opening", "Startup receipt remains genuinely unconsumed at F2")
++	return await _navigate(_witness("opening"))
++
++
++func _reset_pending() -> bool:
++	_expect(await _launch(), "Reset-navigation fixture opens normally")
++	var scene = current_scene
++	scene.set_process(false)
++	var witness: Dictionary = _witness("reset_superseded")
++	scene._reset()
++	_expect(scene.replacing_owner and not scene.pending_preset.is_empty(), "Real UI reset has an outstanding replacement preset")
++	_press_f2()
++	_expect(not scene.replacing_owner and scene.pending_preset.is_empty(), "F2 cancels the pending replacement before any new World can open")
++	_expect(scene.host == witness.host, "Navigation keeps the original owner while reset disposal is outstanding")
++	return await _navigate(witness, 2)
++
++
++func _held_interval() -> bool:
++	_expect(await _launch() and await _promote(), "Held-interval fixture contains an actual native and Rapier body")
++	var scene = current_scene
++	scene.delay_box.button_pressed = true
++	scene.host.request_tick()
++	scene.host.poll(false)
++	_expect(not scene.host.pending.is_empty(), "Held fixture starts from a real pending native operation")
++	if scene.host.pending.is_empty():
++		return false
++	scene.host.pending.sent_usec = Time.get_ticks_usec() - scene.host.RECEIPT_DEADLINE_USEC - 1
++	scene.host.poll(false)
++	_expect(scene.host.state == "Held" and scene.host.failed, "An expired real pending receipt enters the production Held state")
++	return await _navigate(_witness("held_interval"))
++
++
++func _stop_delivery_faults() -> bool:
++	_expect(await _launch() and await _promote(), "Stop-delivery fixture retains actual body RIDs until acknowledgement")
++	var scene = current_scene
++	scene.set_process(false)
++	var witness: Dictionary = _witness("stop_delivery_faults")
++	_press_f2()
++	var worker = witness.worker
++	var deadline: int = Time.get_ticks_msec() + 10000
++	while (not worker.diagnostics().stopped or worker._thread.is_alive()) and Time.get_ticks_msec() < deadline:
++		await process_frame
++	_expect(worker.diagnostics().stopped and not worker._thread.is_alive(), "Native stop actually completes before controlled delivery faults are injected")
++	if not worker.diagnostics().stopped or worker._thread.is_alive():
++		return false
++	var real_terminal: Dictionary = worker.diagnostics().terminal.duplicate(true)
++	worker._mutex.lock()
++	worker._terminal = {"ok": false, "outcome": "StopDisposalRefused", "disposal": {"outcome": "InjectedStopDeliveryRefusal"}}
++	worker._mutex.unlock()
++	scene.set_process(true)
++	for index: int in range(4):
++		await process_frame
++	_expect(current_scene == scene and scene.host.state == "ShutdownHeld" and not scene.closing,
++		"A refused stop receipt retains the scene and offers explicit retry")
++	_expect(not witness.bridge.bodies.is_empty() and witness.bridge.space.is_valid() and worker._thread.is_started(),
++		"Unaccepted terminal status retains main RIDs and the unjoined thread handle")
++	_expect(not root.get_node("FeatureNavigation").complete_feature_launcher_navigation(scene),
++		"ShutdownHeld cannot bypass the final navigation gate")
++	scene._export()
++	_expect(not scene.last_export.is_empty() and FileAccess.file_exists(scene.last_export),
++		"Export remains usable while navigation is held")
++	# The actual worker is already finished. Mask only its delivered stopped flag
++	# to exercise the existing deadline path without blocking/sleeping15seconds.
++	scene.set_process(false)
++	worker._mutex.lock()
++	worker._terminal = real_terminal.duplicate(true)
++	worker._stopped = false
++	worker._mutex.unlock()
++	_press_f2()
++	scene.host._closing_started_usec = Time.get_ticks_usec() - scene.host.RECEIPT_DEADLINE_USEC - 1
++	scene.set_process(true)
++	for index: int in range(4):
++		await process_frame
++	_expect(current_scene == scene and scene.host.state == "ShutdownHeld" and not scene.closing,
++		"Missing stopped-status delivery reaches the bounded shutdown hold without replacing the scene")
++	_expect(witness.bridge.space.is_valid() and not witness.bridge.bodies.is_empty(),
++		"Deadline expiry does not release unacknowledged body resources")
++	worker._mutex.lock()
++	worker._stopped = true
++	worker._terminal = real_terminal.duplicate(true)
++	worker._mutex.unlock()
++	observations.append({"fault_scope": "Real native stop completed first. Only terminal/stopped delivery status was injected under its mutex; native disposal refusal is not claimed.",
++		"actual_terminal": real_terminal})
++	return await _navigate(witness)
++
++
++func _already_closed_policy() -> bool:
++	auto_accept_quit = false
++	_expect(await _launch(), "An alternate prior quit policy enters the actual scene")
++	var scene = current_scene
++	scene.set_process(false)
++	var witness: Dictionary = _witness("already_closed_prior_policy")
++	scene.host.close()
++	var deadline: int = Time.get_ticks_msec() + 10000
++	while scene.host.state != "Closed" and Time.get_ticks_msec() < deadline:
++		scene.host.poll()
++		await process_frame
++	_expect(scene.host.state == "Closed", "Already-closed navigation fixture has completed real disposal")
++	var result: bool = await _navigate(witness)
++	_expect(not auto_accept_quit, "Navigation restores the captured false policy instead of hardcoding true")
++	auto_accept_quit = baseline_auto_accept
++	return result
++
++
++func _child_exit(witness: Dictionary) -> void:
++	if child_written:
++		return
++	_closed_checks(witness)
++	_expect(witness.host.state == "Closed" and auto_accept_quit == baseline_auto_accept,
++		"Actual process exit occurs only after disposal and policy restoration")
++	_write_child()
++
++
++func _write_child() -> void:
++	if child_written:
++		return
++	child_written = true
++	var report: Dictionary = {"schema": CHILD_SCHEMA, "checks": checks, "failures": failures,
++		"source_revision": OS.get_environment("CYBERSAND_SOURCE_REVISION"), "observations": observations}
++	var file := FileAccess.open(output_path, FileAccess.WRITE)
++	if file != null:
++		file.store_string(JSON.stringify(report, "  ") + "\n")
++		file.close()
++	print(JSON.stringify({"schema": CHILD_SCHEMA, "checks": checks, "failures": failures}))
++
++
++func _run_child() -> void:
++	_expect(await _launch() and await _promote(), "Quit child opens a real moving-owner fixture")
++	if current_scene == null or current_scene.scene_file_path != OWNER_SCENE:
++		_write_child()
++		quit(1)
++		return
++	var scene = current_scene
++	scene.set_process(false)
++	var witness: Dictionary = _witness("window_close_upgrade")
++	_press_f2()
++	_expect(scene.closing and scene.close_destination == "launcher", "F2 begins asynchronous launcher disposal in child")
++	scene.notification(Node.NOTIFICATION_WM_CLOSE_REQUEST)
++	_expect(scene.close_destination == "quit", "Window close upgrades pending navigation to process exit")
++	_press_f2()
++	_expect(scene.close_destination == "quit", "Repeated F2 cannot downgrade process exit")
++	var worker = witness.worker
++	var stopped_deadline: int = Time.get_ticks_msec() + 10000
++	while (not worker.diagnostics().stopped or worker._thread.is_alive()) and Time.get_ticks_msec() < stopped_deadline:
++		await process_frame
++	_expect(worker.diagnostics().stopped and not worker._thread.is_alive(), "Child native owner actually stops before delayed terminal delivery")
++	if not worker.diagnostics().stopped or worker._thread.is_alive():
++		await _cleanup()
++		_write_child()
++		quit(1)
++		return
++	worker._mutex.lock()
++	worker._stopped = false
++	worker._mutex.unlock()
++	scene.host._closing_started_usec = Time.get_ticks_usec() - scene.host.RECEIPT_DEADLINE_USEC - 1
++	scene.set_process(true)
++	for index: int in range(4):
++		await process_frame
++	_expect(current_scene == scene and scene.host.state == "ShutdownHeld" and not scene.closing,
++		"Child holds the scene when stopped-status delivery misses its deadline")
++	scene.set_process(false)
++	worker._mutex.lock()
++	worker._stopped = true
++	worker._mutex.unlock()
++	_press_f2()
++	_expect(scene.closing and scene.close_destination == "quit", "F2 retry after ShutdownHeld preserves the earlier window-close intent")
++	scene.tree_exiting.connect(_child_exit.bind(witness))
++	scene.set_process(true)
++	var deadline: int = Time.get_ticks_msec() + 20000
++	while Time.get_ticks_msec() < deadline:
++		await process_frame
++	_expect(false, "Actual child window-close path must terminate its process")
++	await _cleanup()
++	_write_child()
++	quit(1)
++
++
++func _quit_subprocess() -> void:
++	var result_path: String = ProjectSettings.globalize_path("user://objectshard-navigation-quit-%d.json" % Time.get_ticks_usec())
++	if not output_path.is_empty():
++		result_path = output_path.get_basename() + "-quit-child.json"
++	var output: Array = []
++	var arguments := PackedStringArray(["--headless", "--path", ProjectSettings.globalize_path("res://"),
++		"--script", "res://tests/test_object_shard_worker_navigation.gd", "--", "--navigation-quit-child", "--output=" + result_path])
++	var exit_code: int = OS.execute(OS.get_executable_path(), arguments, output, true)
++	_expect(exit_code == 0, "Actual window-close upgrade child exits successfully")
++	var report: Variant = JSON.parse_string(FileAccess.get_file_as_string(result_path)) if FileAccess.file_exists(result_path) else null
++	var child_ok: bool = report is Dictionary and report.get("schema") == CHILD_SCHEMA \
++		and typeof(report.get("failures")) in [TYPE_INT, TYPE_FLOAT] and report.failures == 0 \
++		and typeof(report.get("checks")) in [TYPE_INT, TYPE_FLOAT] and is_finite(float(report.checks)) \
++		and float(report.checks) == floorf(float(report.checks)) and int(report.checks) >= 18
++	_expect(child_ok, "Child receipt proves native/RID shutdown before actual process exit")
++	if child_ok:
++		# JSON parsing restores numbers as floats. Preserve typed assertion counts
++		# only after validating their exact integral domain, including zero failures.
++		report.checks = int(report.checks)
++		report.failures = int(report.failures)
++	var child_log: String = result_path + ".log"
++	var file := FileAccess.open(child_log, FileAccess.WRITE)
++	if file != null:
++		for line: String in output:
++			file.store_string(line)
++		file.close()
++	observations.append({"case": "window_close_upgrade", "child_exit_code": exit_code, "child_report": report,
++		"child_output_log": child_log, "child_output_sha256": FileAccess.get_sha256(child_log)})
++	cases.append("window_close_upgrade")
++
++
++func _cleanup() -> void:
++	# Failure cleanup follows assertions; it never manufactures a passing owner
++	# disposition. Kept witnesses let a failing navigation case stop safely.
++	for witness: Dictionary in witnesses:
++		var host = witness.host
++		if host.state == "Closed":
++			continue
++		host.close()
++		var deadline: int = Time.get_ticks_msec() + 10000
++		while host.state != "Closed" and Time.get_ticks_msec() < deadline:
++			host.poll()
++			await process_frame
++	if current_scene != null and current_scene.scene_file_path == OWNER_SCENE:
++		var scene = current_scene
++		scene.set_process(false)
++		scene.host.close()
++		var deadline: int = Time.get_ticks_msec() + 10000
++		while scene.host.state != "Closed" and Time.get_ticks_msec() < deadline:
++			scene.host.poll()
++			await process_frame
++	auto_accept_quit = baseline_auto_accept
++
++
++func _run() -> void:
++	baseline_auto_accept = auto_accept_quit
++	_expect(root.has_node("FeatureNavigation"), "Actual project FeatureNavigation autoload exists")
++	_expect(change_scene_to_file(LAUNCHER_SCENE) == OK and await _await_scene(LAUNCHER_SCENE),
++		"Actual feature launcher is the current scene")
++	if child_mode:
++		await _run_child()
++		return
++	var continuing: bool = await _active_pending()
++	if continuing: continuing = await _sleeping()
++	if continuing: continuing = await _opening()
++	if continuing: continuing = await _reset_pending()
++	if continuing: continuing = await _held_interval()
++	if continuing: continuing = await _stop_delivery_faults()
++	if continuing: continuing = await _already_closed_policy()
++	if continuing: _quit_subprocess()
++	_expect(continuing and cases.size() == 8, "Every required navigation lifecycle scenario completes")
++	await _cleanup()
++	var report: Dictionary = {"schema": SCHEMA, "checks": checks, "failures": failures,
++		"source_revision": OS.get_environment("CYBERSAND_SOURCE_REVISION"), "cases": cases,
++		"scope": "Actual autoload F2, real native/Rapier ownership, scene re-entry and child-process window close. Controlled stop-delivery faults are explicitly distinguished from native failures.",
++		"observations": observations}
++	if not output_path.is_empty():
++		var file := FileAccess.open(output_path, FileAccess.WRITE)
++		if file != null:
++			file.store_string(JSON.stringify(report, "  ") + "\n")
++			file.close()
++	print(JSON.stringify(report))
++	quit(0 if failures == 0 else 1)
+diff --git a/tools/objectshard/qualify_lab.py b/tools/objectshard/qualify_lab.py
+index 7ab884360..3f4abc674 100644
+--- a/tools/objectshard/qualify_lab.py
++++ b/tools/objectshard/qualify_lab.py
+@@ -100,6 +100,32 @@ def compare_worker_profiles(control: dict, candidate: dict, source_commit: str)
+             "scope": "Same source/runtime and 240 per-interval material/pose publication digests. Timing is a paired hosted observation, not a new pass threshold or target GPU frame-rate claim."}
+ 
+ 
++def validate_navigation_receipt(receipt: dict, source_commit: str) -> dict:
++    expected_cases = ["active_pending_repeated", "naturally_sleeping", "opening", "reset_superseded",
++                      "held_interval", "stop_delivery_faults", "already_closed_prior_policy", "window_close_upgrade"]
++    if (receipt.get("schema") != "objectshard-worker-navigation-test-v1"
++            or receipt.get("source_revision") != source_commit
++            or type(receipt.get("checks")) is not int or receipt["checks"] < 100
++            or type(receipt.get("failures")) is not int or receipt["failures"] != 0
++            or receipt.get("cases") != expected_cases):
++        raise ValueError("Incomplete or unbound actual navigation lifecycle qualification")
++    children = [row for row in receipt.get("observations", []) if isinstance(row, dict)
++                and row.get("case") == "window_close_upgrade"]
++    if len(children) != 1:
++        raise ValueError("Missing or duplicate actual window-close child receipt")
++    row = children[0]
++    child = row.get("child_report", {})
++    if (type(row.get("child_exit_code")) is not int or row["child_exit_code"] != 0
++            or not isinstance(child, dict) or child.get("schema") != "objectshard-worker-navigation-quit-child-v1"
++            or child.get("source_revision") != source_commit
++            or type(child.get("checks")) is not int or child["checks"] < 18
++            or type(child.get("failures")) is not int or child["failures"] != 0):
++        raise ValueError("Unsuccessful or incomplete actual window-close child")
++    return {"status": "passed", "cases": expected_cases, "checks": receipt["checks"],
++            "child_checks": child["checks"], "child_exit_code": row["child_exit_code"],
++            "scope": "Actual F2/autoload navigation and real owner disposal; window-close process exit executes in a separate source-matched child. Stop-delivery fault injection is explicitly labelled."}
++
++
+ def qualify(args: argparse.Namespace) -> dict:
+     output = args.output.resolve()
+     output.mkdir(parents=True, exist_ok=False)
+@@ -114,7 +140,7 @@ def qualify(args: argparse.Namespace) -> dict:
+         if commit != args.expected_source_sha:
+             raise ValueError("Checked-out source differs from requested source")
+         report.update(source_tree=tree, native_source_inputs=inputs)
+-        lab_sources = ["godot/project.godot", "godot/scripts/feature_launcher.gd"]
++        lab_sources = ["godot/project.godot", "godot/scripts/feature_launcher.gd", "godot/scripts/feature_navigation.gd"]
+         lab_sources += [p.relative_to(ROOT).as_posix() for p in sorted((ROOT / "godot").glob("object_shard_*.tscn"))]
+         preflight = (ROOT / "godot/object_shard_worker_rehearsal.tscn").is_file()
+         report["m3_preflight"] = preflight
+@@ -214,6 +240,7 @@ def qualify(args: argparse.Namespace) -> dict:
+                     ("worker_rehearsal", "objectshard-worker-rehearsal-test-v1"),
+                     ("worker_adverse", "objectshard-worker-adverse-test-v1"),
+                     ("worker_recovery", "objectshard-worker-recovery-test-v1"),
++                    ("worker_navigation", "objectshard-worker-navigation-test-v1"),
+                     ("worker_replay_admission", "objectshard-worker-replay-admission-test-v1"),
+                     ("worker_resources", "objectshard-worker-resource-test-v1"),
+                     ("worker_commands", "objectshard-worker-command-test-v1"),
+@@ -225,6 +252,8 @@ def qualify(args: argparse.Namespace) -> dict:
+                     command += ("--", "--report-copy=" + str(output / "continuous-play.json"))
+                 elif name == "worker_replay_admission":
+                     command += ("--", "--output-dir=" + str(output / "worker-replay-admission"))
++                elif name == "worker_navigation":
++                    command += ("--", "--output=" + str(output / "worker-navigation.json"))
+                 cases.append((runner.Case("objectshard_" + name, command,
+                     int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), schema))
+             cases.append((runner.Case("objectshard_continuous_replay",
+@@ -297,6 +326,7 @@ def qualify(args: argparse.Namespace) -> dict:
+                 receipt = footer(output / record["log"], schema)
+                 minimum_checks = {"objectshard-worker-adverse-test-v1": 23,
+                                   "objectshard-worker-recovery-test-v1": 63,
++                                  "objectshard-worker-navigation-test-v1": 100,
+                                   "objectshard-worker-replay-admission-test-v1": 57,
+                                   "objectshard-worker-input-fences-v1": 34,
+                                   "objectshard-worker-resource-test-v1": 19,
+@@ -307,6 +337,8 @@ def qualify(args: argparse.Namespace) -> dict:
+                 if (schema.endswith("test-v1") or schema == "objectshard-worker-input-fences-v1") and (type(receipt.get("checks")) is not int or receipt["checks"] < minimum_checks):
+                     raise ValueError("Incomplete assertion inventory: " + case.name)
+                 record["completion_receipt"] = receipt
++                if schema == "objectshard-worker-navigation-test-v1":
++                    record["navigation_lifecycle"] = validate_navigation_receipt(receipt, args.expected_source_sha)
+                 if case.name == "objectshard_continuous_play_rendered":
+                     live = json.loads((output / "continuous-play-rendered.json").read_text(encoding="utf-8"))
+                     stages = live.get("timings_usec", {})
+diff --git a/tools/objectshard/test_qualification_receipts.py b/tools/objectshard/test_qualification_receipts.py
+index aac2aa190..e2451e05c 100644
+--- a/tools/objectshard/test_qualification_receipts.py
++++ b/tools/objectshard/test_qualification_receipts.py
+@@ -141,6 +141,49 @@ class ExecutedSourceCustody(unittest.TestCase):
+ 
+ 
+ 
++class NavigationCompletionReceipts(unittest.TestCase):
++    def receipt(self) -> dict:
++        return {"schema": "objectshard-worker-navigation-test-v1", "source_revision": "a" * 40,
++                "checks": 100, "failures": 0,
++                "cases": ["active_pending_repeated", "naturally_sleeping", "opening", "reset_superseded",
++                          "held_interval", "stop_delivery_faults", "already_closed_prior_policy", "window_close_upgrade"],
++                "observations": [{"case": "window_close_upgrade", "child_exit_code": 0,
++                                  "child_report": {"schema": "objectshard-worker-navigation-quit-child-v1",
++                                                   "source_revision": "a" * 40, "checks": 18, "failures": 0}}]}
++
++    def test_complete_source_bound_parent_and_child_are_required(self) -> None:
++        result = qualify_lab.validate_navigation_receipt(self.receipt(), "a" * 40)
++        self.assertEqual(result["status"], "passed")
++        self.assertEqual(result["child_checks"], 18)
++
++    def test_incomplete_case_inventory_or_changed_source_is_refused(self) -> None:
++        for delta in ({"cases": []}, {"source_revision": "b" * 40}, {"checks": 99},
++                      {"checks": True}, {"failures": False}, {"observations": []}):
++            value = self.receipt()
++            value.update(delta)
++            with self.subTest(delta=delta), self.assertRaises(ValueError):
++                qualify_lab.validate_navigation_receipt(value, "a" * 40)
++
++    def test_child_exit_failure_short_checks_and_wrong_identity_are_refused(self) -> None:
++        for delta in ({"checks": 17}, {"failures": 1}, {"source_revision": "b" * 40},
++                      {"schema": "wrong"}, {"failures": False}):
++            value = self.receipt()
++            value["observations"][0]["child_report"].update(delta)
++            with self.subTest(delta=delta), self.assertRaises(ValueError):
++                qualify_lab.validate_navigation_receipt(value, "a" * 40)
++        for exit_code in (1, False):
++            value = self.receipt()
++            value["observations"][0]["child_exit_code"] = exit_code
++            with self.subTest(exit_code=exit_code), self.assertRaises(ValueError):
++                qualify_lab.validate_navigation_receipt(value, "a" * 40)
++
++    def test_duplicate_window_close_child_is_refused(self) -> None:
++        value = self.receipt()
++        value["observations"].append(copy.deepcopy(value["observations"][0]))
++        with self.assertRaises(ValueError):
++            qualify_lab.validate_navigation_receipt(value, "a" * 40)
++
++
+ class WorkerSchedulingComparison(unittest.TestCase):
+     def profiles(self) -> tuple[dict, dict]:
+         control = {"schema": "objectshard-worker-scheduling-profile-v1", "failures": 0,

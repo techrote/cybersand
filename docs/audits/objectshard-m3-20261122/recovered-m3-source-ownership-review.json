@@ -1,0 +1,44 @@
+{
+  "schema": "objectshard-independent-source-ownership-review-v1",
+  "review_date": "2026-11-22",
+  "input_sha256": "ec56e5afc600f8c9df3e61f46c8ded7ef169388312756addedae4f981657228b",
+  "sources": [
+    {
+      "name": "accepted_main",
+      "head": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "paths_verified": 5,
+      "workbench_gcr_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f"
+    },
+    {
+      "name": "pubpres719",
+      "head": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "paths_verified": 8,
+      "workbench_gcr_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f"
+    },
+    {
+      "name": "pubpres682",
+      "head": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "paths_verified": 7,
+      "workbench_gcr_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f"
+    },
+    {
+      "name": "gen006734_previous",
+      "head": "d46ab4b1e883bf79099dd7afb267faae03af6b2d",
+      "paths_verified": 8,
+      "workbench_gcr_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f"
+    },
+    {
+      "name": "qualified_native",
+      "head": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+      "paths_verified": 6,
+      "workbench_gcr_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f"
+    },
+    {
+      "name": "gen006734_latest_read_only",
+      "head": "6fefcac725fd7316e4c8e62ada17c1b781399c90",
+      "paths_verified": 9,
+      "workbench_gcr_blob": "c0c8a8f2f927471cc57bd238ba37f7d9137cda9f"
+    }
+  ],
+  "limitations": "Local exact Git object verification and source inspection. Remote refresh belongs to root's dated receipt. No runtime qualification of PUBPRES or GEN006 is implied."
+}

@@ -1,0 +1,150 @@
+{
+  "schema": "objectshard-m3-independent-ownership-repair3-review-v1",
+  "status": "startup_admission_finding_pending_repair_and_exact_frozen_source_review",
+  "source_binding": "repair3-source-binding.json",
+  "findings": [
+    {
+      "id": "OWN-01",
+      "severity": "P1",
+      "status": "repaired_on_local_repair2",
+      "repair": "Failed/Held admission and idle continuation gates prevent cancellation from resuming physics or queued edits. Real active body, native observation and frozen publication assertions pass.",
+      "negative": "initial-adversaries-v4.log"
+    },
+    {
+      "id": "OWN-02",
+      "severity": "P2",
+      "status": "repaired_on_local_repair2",
+      "repair": "Recovery reset authorizes explicit disposal against observed worker session only; host adopts no unseen publication before exact newer-session receipt. Real lost-reset case recovers session4->unseen5->accepted6, disposes Wood1 once.",
+      "negative": "initial-adversaries-v4.log"
+    },
+    {
+      "id": "OWN-03",
+      "severity": "P2",
+      "status": "repaired_on_local_repair2",
+      "repair": "Bounded retired_action_results distinguish queued CancelledByReset/Stop from inflight OutcomeUnknown with may_have_executed=true; source session retained, duplicate close does not duplicate disposition, old actual trace footer incomplete.",
+      "negative": "initial-adversaries-v4.log"
+    },
+    {
+      "id": "OWN-04",
+      "severity": "P2",
+      "status": "repaired_on_local_repair2",
+      "title": "Recovery reset could queue behind earlier timed-out queued reset and become stale",
+      "negative": "repair1-reset-queue-race-v2.log",
+      "repair": "Worker checks queued and inflight reset atomically under admission mutex; real8-control-reply saturation returns PreviousResetStillRunning and later explicit recovery succeeds."
+    },
+    {
+      "id": "OWN-05",
+      "severity": "P2",
+      "status": "repaired_on_local_repair3",
+      "title": "Worker replay ignores explicit incomplete action-retirement trace and returns clean success",
+      "source": "godot/tests/replay_object_shard_worker_trace.gd",
+      "source_sha256": "8be0472afb91e4b578bc32cf482a2f94a4c8b9b2ef9b6518bfa7dce9dcd294d8",
+      "lines": [
+        117,
+        121
+      ],
+      "repro": "Run real lost-native-edit/explicit-reset trace from recovery regression; old trace has ActionRetired may_have_executed=true and complete_prefix=false footer; replay with exact original header source tag.",
+      "observed": "Exit0/actions0/checks4/failures0/incomplete_barrier=false despite original native Wood edit applied with no terminal action record.",
+      "evidence": "repair2-uncertain-action-replay.json",
+      "trace": "project/tests/review-recovery-actions-session-12.jsonl",
+      "repair": "Replayer preflights unknown/retired mutation evidence and false/incomplete footer before native owner construction; actual original unknown-applied-edit trace now returns UnknownMutationOutcomeRequiresAdversarialSchedule with replay_admitted=false."
+    },
+    {
+      "id": "OWN-06",
+      "severity": "P2",
+      "status": "resolved_by_explicit_supported_replay_scope",
+      "title": "Captured noninitial native sessions could not replay valid moving input in a fresh process",
+      "negative": "repair2-reset-session-replay.json",
+      "repair": "Source-produced fresh-native-registry declaration permits only current header session aliasing; other recorded sessions map to invalid sentinel and all body/cell/material/pose witnesses remain unchanged. Host.reset inherited registry/pose counters are explicitly observation-only and refused before native startup; UI close/recreate traces qualify as fresh registries.",
+      "positive": "repair3-moving-recreate-replay.json",
+      "scope_negative": "repair3-inherited-moving-replay.json"
+    },
+    {
+      "id": "OWN-07",
+      "severity": "P2",
+      "status": "remaining_startup_admission_guard",
+      "title": "Rejected out-of-range startup consumes an unrecoverable transport generation",
+      "source": "godot/scripts/object_shard_worker_host.gd",
+      "source_sha256": "afa35781ff1be0a28326292408fa6e9a450b52fc8f60cc012411f35c5de0145e",
+      "repro": "Host.open(validconfig,MAX_EXACT_SEQUENCE+1) returns InvalidTransportStart only after storing invalid generation; subsequent permitted generation1 cannot satisfy strict monotonic gate. Separate fresh-host control opens actual native/Rapier with same valid config/generation.",
+      "observed": "Closed host retains generation9007199254740992; retry1 returns FreshTransportGenerationRequired. No native material corruption; ordinary UI uses small positive generations.",
+      "negative": "repair3-invalid-open-identity.log",
+      "additional_negative": "repair3-startup-recovery-regression.log",
+      "repair_request": "Preflight bounded copied configuration and complete transport identity before allocating/copying/mutating host state; retain valid retry after rejection."
+    }
+  ],
+  "regression_candidate": {
+    "path": "project/tests/test_object_shard_worker_recovery.gd",
+    "checks": 59,
+    "failures": 0,
+    "negative_control": "repair1-recovery-regression.log:59checks1failure queued-reset race",
+    "passing_result": "repair2-recovery-regression.log"
+  },
+  "native_resource_control": {
+    "path": "worker-resources.log",
+    "checks": 43,
+    "failures": 0
+  },
+  "scope": "Independent Linux reviewer local probes only; qualified514 native reused; published/frozen source review and final-source platform qualification still required",
+  "hashes": {
+    "repair2-recovery-regression.log": "824f4dcb437bb4db3dc705740e60733c6dc84bd149370a30e78755c99a6847d6",
+    "repair1-recovery-regression.log": "0833acdb9f899d1789dfa9ac1705075858953d617a502255119725bb72ad4ec7",
+    "repair1-reset-queue-race-v2.log": "b2b7918f6b341c42e296171214363937fcc480681215a6d88f2080584d574a1c",
+    "repair2-uncertain-action-replay.json": "d2e3a3247d351726ef980889db134a326201c31d613d762713301b4a7f5ca80b",
+    "project/tests/test_object_shard_worker_recovery.gd": "b043643e3d5eab9ea66f68ac44e6c34426f47cf4c20eef126d412fb4436f68ee",
+    "project/tests/review-recovery-actions-session-12.jsonl": "1ecd9a840bb8dc073727ffe3e5a77c2d7c4583a4efa36f2dafa885f48ba7f6a5",
+    "repair3-moving-recreate-replay.json": "24f219a8f5c42ade053dd944d95e582716511cf67ac11bb6a7475a330e467b95",
+    "repair3-inherited-moving-replay.json": "f12296a876bcfe559cab27d00a4aa8e6ff58965cce13d89b10e49fb9fea0f073",
+    "repair3-uncertain-action-replay.json": "9f456f13067c432b015dcde574b02c27c8e95504170d8532c719a8d8ec9f1cc4",
+    "repair2-uncertain-action-trace.jsonl": "1ecd9a840bb8dc073727ffe3e5a77c2d7c4583a4efa36f2dafa885f48ba7f6a5",
+    "repair2-inherited-moving-trace.jsonl": "a3cc8c6da467eaba8750854b18147794ccaccc3448c5f04888e496bd84ad37a0",
+    "repair2-reset-world-trace.jsonl": "58de8c8cf8cbbddc6643f646da88d4b05797c67a13eb0445b6b18d9761224235",
+    "project/tests/review-moving-recreate-session-3.jsonl": "7b93922e6ad1cad2b86336d2950d12687620d012808e54b8096617c84e39ed05",
+    "repair3-invalid-open-identity.log": "a11c1c5b03ea31e8d0e3f3308b2a4bf45bb6b14f8fb0bfa8386d8d248a9e50ff",
+    "repair3-startup-recovery-regression.log": "80d6d6040922d62c3a04cb45abe7d8dafc506958d40fa99d00d2e9703323a5b3"
+  },
+  "replay_controls": [
+    {
+      "trace": "project/tests/review-moving-recreate-session-3.jsonl",
+      "report": "repair3-moving-recreate-replay.json",
+      "checks": 47,
+      "failures": 0,
+      "actions": 19,
+      "ticks": 2,
+      "recorded_session": 3,
+      "replay_session": 1,
+      "semantic_cases": [
+        "actual prior-session target otherwise matching current identity refused InvalidInputTarget",
+        "actual stale same-session pose refused TargetChanged",
+        "fresh moving material cut Accepted; structural16->15"
+      ]
+    },
+    {
+      "trace": "project/tests/review-moving-reset-session-2.jsonl",
+      "report": "repair3-inherited-moving-replay.json",
+      "expected_exit": 1,
+      "replay_admitted": false,
+      "reason": "InheritedRegistryHistoryRequiresPriorSessionReplay"
+    },
+    {
+      "trace": "repair2-uncertain-action-trace.jsonl",
+      "report": "repair3-uncertain-action-replay.json",
+      "expected_exit": 1,
+      "replay_admitted": false,
+      "reason": "UnknownMutationOutcomeRequiresAdversarialSchedule"
+    }
+  ],
+  "preserved_negative_traces": [
+    "repair2-uncertain-action-trace.jsonl",
+    "repair2-inherited-moving-trace.jsonl",
+    "repair2-reset-world-trace.jsonl"
+  ],
+  "startup_regression_candidate": {
+    "path": "project/tests/test_object_shard_worker_recovery.gd",
+    "sha256": "0dd50978f994f36186474d3f0074c5836eb69148adc15ffacb8bc52fe5eeedd7",
+    "checks": 63,
+    "negative_failures": 3,
+    "log": "repair3-startup-recovery-regression.log",
+    "explanation": "Original59 recovery checks still pass;3 new startup assertions fail on existing host; safe close fourthcheck passes."
+  }
+}

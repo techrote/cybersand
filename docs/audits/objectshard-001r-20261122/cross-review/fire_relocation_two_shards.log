@@ -1,0 +1,6 @@
+FAIL 13: ignition_events(c)==1
+FAIL 16: c.accounting().external_ignitions==1
+event source=(48,12) tick=213 shard=1 cell=4
+event source=(47,11) tick=213 shard=2 cell=4
+external_ignitions=2 burnA=239 burnB=239
+493 checks, 2 failures

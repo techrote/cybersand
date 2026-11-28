@@ -1,0 +1,174 @@
+{
+  "schema": "objectshard-m4-common-windows-import-primary-references-v1",
+  "review_date": "2026-11-25",
+  "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "scope": "Finite primary-source module contract lookup requested by native reviewer for the actual principal package import inventory. Each Microsoft API page was opened and its Requirements DLL field inspected. An example API identifies the module contract; it does not prove every actual imported export or imply all Microsoft-named DLLs are OS-provided.",
+  "references": [
+    {
+      "dll": "advapi32.dll",
+      "example_api": "RegOpenKeyExW",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/winreg/nf-winreg-regopenkeyexw",
+      "retrieval_ref": "turn931938845view0",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "avrt.dll",
+      "example_api": "AvSetMmThreadCharacteristicsW",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/avrt/nf-avrt-avsetmmthreadcharacteristicsw",
+      "retrieval_ref": "turn233240755view1",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "bcrypt.dll",
+      "example_api": "BCryptGenRandom",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/bcrypt/nf-bcrypt-bcryptgenrandom",
+      "retrieval_ref": "turn931938845view1",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "crypt32.dll",
+      "example_api": "CryptProtectData",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/dpapi/nf-dpapi-cryptprotectdata",
+      "retrieval_ref": "turn931938845view2",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "dbghelp.dll",
+      "example_api": "MiniDumpWriteDump",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/minidumpapiset/nf-minidumpapiset-minidumpwritedump",
+      "retrieval_ref": "turn931938845view3",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "dwmapi.dll",
+      "example_api": "DwmGetWindowAttribute",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/dwmapi/nf-dwmapi-dwmgetwindowattribute",
+      "retrieval_ref": "turn233240755view5",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "dwrite.dll",
+      "example_api": "DWriteCreateFactory",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/dwrite/nf-dwrite-dwritecreatefactory",
+      "retrieval_ref": "turn233240755view6",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "dxgi.dll",
+      "example_api": "CreateDXGIFactory1",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/dxgi/nf-dxgi-createdxgifactory1",
+      "retrieval_ref": "turn844872684view0",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "gdi32.dll",
+      "example_api": "CreateCompatibleDC",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-createcompatibledc",
+      "retrieval_ref": "turn844872684view1",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "hid.dll",
+      "example_api": "HidD_GetAttributes",
+      "primary_url": "https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/hidsdi/nf-hidsdi-hidd_getattributes",
+      "retrieval_ref": "turn844872684view2",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "imm32.dll",
+      "example_api": "ImmGetContext",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetcontext",
+      "retrieval_ref": "turn844872684view3",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "iphlpapi.dll",
+      "example_api": "GetAdaptersAddresses",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/iphlpapi/nf-iphlpapi-getadaptersaddresses",
+      "retrieval_ref": "turn463758167view0",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "ole32.dll",
+      "example_api": "CoInitializeEx",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/combaseapi/nf-combaseapi-coinitializeex",
+      "retrieval_ref": "turn844872684view5",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "oleaut32.dll",
+      "example_api": "SysAllocString",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/oleauto/nf-oleauto-sysallocstring",
+      "retrieval_ref": "turn844872684view6",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "shcore.dll",
+      "example_api": "GetDpiForMonitor",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/shellscalingapi/nf-shellscalingapi-getdpiformonitor",
+      "retrieval_ref": "turn987130986view0",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "shell32.dll",
+      "example_api": "SHGetKnownFolderPath",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath",
+      "retrieval_ref": "turn987130986view1",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "shlwapi.dll",
+      "example_api": "PathFileExistsW",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/nf-shlwapi-pathfileexistsw",
+      "retrieval_ref": "turn987130986view2",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "uiautomationcore.dll",
+      "example_api": "UiaReturnRawElementProvider",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/uiautomationcoreapi/nf-uiautomationcoreapi-uiareturnrawelementprovider",
+      "retrieval_ref": "turn987130986view3",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "user32.dll",
+      "example_api": "CreateWindowExW",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-createwindowexw",
+      "retrieval_ref": "turn463758167view1",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "winmm.dll",
+      "example_api": "timeGetTime",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/timeapi/nf-timeapi-timegettime",
+      "retrieval_ref": "turn987130986view5",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    },
+    {
+      "dll": "ws2_32.dll",
+      "example_api": "WSAStartup",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsastartup",
+      "retrieval_ref": "turn463758167view2",
+      "observed_requirement": "Requirements explicitly names this DLL."
+    }
+  ],
+  "specific_qualifications": [
+    {
+      "dll": "dbghelp.dll",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/debug/dbghelp-versions",
+      "retrieval_ref": "turn463758167view3",
+      "finding": "Microsoft explicitly documents DbgHelp.dll as included in all supported Windows versions, while the Windows-supplied version lacks Symbol Server and Source Server features. The API reference also describes redistributable variants; do not confuse those optional tooling versions with a prerequisite installation."
+    },
+    {
+      "dll": "imm32.dll",
+      "primary_url": "https://learn.microsoft.com/en-us/windows/win32/api/imm/nf-imm-immgetcontext",
+      "finding": "The example function's XP minimum-client note qualifies East Asian language support. The DLL contract lookup alone is not a promise that every language/input configuration is installed; actual final hosted System32 file/hash and package execution observations remain separate."
+    }
+  ],
+  "exclusions": [
+    "No OS allowlist broadening or runtime-loader change.",
+    "No third-party redistributable licence determination.",
+    "No claim of comprehensive dynamic LoadLibrary or export-use coverage.",
+    "Native reviewer separately handles kernel32, bcryptprimitives, ntdll, msvcrt, wsock32 and API-set scope."
+  ]
+}

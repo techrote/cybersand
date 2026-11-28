@@ -1,0 +1,16 @@
+{
+  "schema": "objectshard-m4-independent-linux-acquisition-v1",
+  "source_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip",
+  "archive": {
+    "bytes": 75664355,
+    "sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "locked_identity_match": true,
+    "crc_integrity": "passed"
+  },
+  "engine": {
+    "bytes": 144186224,
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "actual_version_readback": "4.7.stable.official.5b4e0cb0f"
+  },
+  "scope": "Independent local approved-route acquisition and actual engine version; hosted qualification remains separate"
+}

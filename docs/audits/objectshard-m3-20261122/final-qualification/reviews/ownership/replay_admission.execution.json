@@ -1,0 +1,25 @@
+{
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "script": "test_object_shard_worker_replay_admission.gd",
+  "script_sha256": "b8cfe04933e653e6868cb98a53f4bb43a82538ed642d9986e386abf733d5e9d4",
+  "argv": [
+    "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-ownership/navigation-final-e034f229/project",
+    "--script",
+    "res://tests/test_object_shard_worker_replay_admission.gd",
+    "--",
+    "--output-dir=/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-ownership/navigation-final-e034f229/replay-admission"
+  ],
+  "environment_overrides": {
+    "CYBERSAND_SOURCE_REVISION": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+    "XDG_DATA_HOME": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-ownership/navigation-final-e034f229/replay_admission-data"
+  },
+  "started_utc": "2026-11-22T07:41:24.118459+00:00",
+  "elapsed_seconds": 2.573917,
+  "timeout_seconds": 180,
+  "timed_out": false,
+  "exit_code": 0,
+  "log_sha256": "190c5e2eb343739a56c736ad82e4796d110195abd294686a04c150aedfd0ac57"
+}

@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "scope": "Local ASan+UBSan; leak detection disabled by retained harness. All six shard suites pass; ordinary World first hit a 300-second timeout and then passed as the same frozen binary within 900 seconds.",
+  "input_digest": "8b2c07ede62590d84eba4134412e8a0fae9ba8f399bd79d71492debcf4d48af3",
+  "base_git_head": "327afc58227b246390b19c275f58df77ae2dd734",
+  "status": "passed_after_same_binary_world_replay",
+  "checks_reported": 138145,
+  "test_cases_reported": 192,
+  "suites": {
+    "admission": {
+      "binary_sha256": "f6be0f80c8188f13f877af01ca11d989c5d94a196d8b6768ebfa1710bfd95c26",
+      "checks": 28092,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 1.651724910003395,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "chemistry": {
+      "binary_sha256": "5d92807fd82deef9b3e9ff613bad6ade265a9f0834db234d07f812a1aab08301",
+      "checks": 4472,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 1.4656029539983138,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "contact": {
+      "binary_sha256": "160ae68c9eacb3a0ccc17cfafb38c89c612eb7aa80bbc1defddcbef1f871eec1",
+      "checks": 81255,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 0.033280464998824755,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "coordinator": {
+      "binary_sha256": "a6a024d7c4c6676cdc2d7def39ce6aff12dd13489d9a7265ec21f8cda1f742a8",
+      "checks": 6965,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 16.51608354599739,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "external_fire": {
+      "binary_sha256": "bd79ec47221f9b1ca72fc2beb8969afc02dc1a49b06063543aa2e92e61a2b16d",
+      "checks": 3689,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 1.0106907289991796,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "storage": {
+      "binary_sha256": "1c807cc1078df4367cff2ac3761ad0c5c7669eada422afd99ccbdbf6cb27c765",
+      "checks": 13672,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 0.06816212199919391,
+        "returncode": 0,
+        "timed_out": false
+      }
+    },
+    "world": {
+      "binary_sha256": "d5d35de7b6b20359bba8953706aad07635a0a8dd4be1d325bc3e61eeabc43ce5",
+      "checks": null,
+      "count_status": "no complete explicit count record; not a qualifying PASS",
+      "count_unit": "test_cases",
+      "failures": null,
+      "name_filter": null,
+      "status": "failed",
+      "execution": {
+        "elapsed_seconds": 300.06349496299663,
+        "returncode": null,
+        "timed_out": true
+      }
+    }
+  },
+  "initial_status": "failed",
+  "world_replay": {
+    "binary_sha256": "d5d35de7b6b20359bba8953706aad07635a0a8dd4be1d325bc3e61eeabc43ce5",
+    "input_digest": "8b2c07ede62590d84eba4134412e8a0fae9ba8f399bd79d71492debcf4d48af3",
+    "previous_attempt": "300 second timeout; same frozen binary replayed without modifying tests",
+    "returncode": 0,
+    "timed_out": false,
+    "elapsed_seconds": 482.8756027499985,
+    "reported_count": [
+      192,
+      0
+    ],
+    "status": "passed"
+  }
+}

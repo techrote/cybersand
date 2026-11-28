@@ -1,0 +1,74 @@
+{
+  "schema": "objectshard-live-edit-windows-corrective-failed-independent-audit-v1",
+  "reviewer": "Specialist C",
+  "source_commit": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "workflow_run": 46120081906,
+  "job_id": 140903574281,
+  "artifact_id": 15255973012,
+  "outer_bytes": 40245840,
+  "outer_sha256": "5e50a703ff25972afdece3df71a5b91bdd2dc46241a77c97aa389b7093747e83",
+  "status": "failed campaign retained",
+  "lanes": {
+    "headless": {
+      "status": "passed",
+      "case_count": 77,
+      "passed": 77,
+      "failures": [],
+      "all_log_hashes_verified": true,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "bc9cdf8173cbe2039e64d6267b480d6769578c3fe2a4011d45fba1525673a732",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      }
+    },
+    "graphical": {
+      "status": "failed",
+      "case_count": 65,
+      "passed": 64,
+      "failures": [
+        {
+          "case": "test_object_shard_m4_live_stress",
+          "checks": 23,
+          "seconds": 408.44,
+          "log_sha256": "c1c3fa197c13213213c186d682625882058f8d49420abf91454d3e1f03bb995f",
+          "failure_prefixes": [
+            "native edit receipt, physical geometry and authoritative material publication finish together / { \"enabled\": true, \"phase\": \"RealRapierInterval\", \"held_reason\": \"\", \"attached\": true, \"material_preparation\": { \"state\": \"r"
+          ],
+          "final_phase": "RealRapierInterval",
+          "native_tick": 4391,
+          "body_count": 8,
+          "held_reason": "",
+          "pending_serial": 21977,
+          "installed_geometry_events": [
+            {
+              "detail": {
+                "geometry_revision": 2,
+                "install_usec": 186,
+                "mass_changed": true,
+                "shape_replacement": true,
+                "wake_for_changed_physics": true,
+                "was_sleeping": true
+              },
+              "id": 1,
+              "kind": "GeometryInstalled",
+              "physics_step": 872
+            }
+          ]
+        }
+      ],
+      "all_log_hashes_verified": true,
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "bc9cdf8173cbe2039e64d6267b480d6769578c3fe2a4011d45fba1525673a732",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      }
+    }
+  },
+  "git_source_hashes_verified": 1609,
+  "causal_scope": "The sole Windows graphical failure is the same transient global Ready completion observer corrected in final ba6 source; all other graphical cases passed. No application source change was needed for this observer correction.",
+  "physical_owner_acceptance": "not established"
+}

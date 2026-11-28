@@ -1,0 +1,31 @@
+{
+  "schema": "objectshard-live-edit-baseline-v1",
+  "branch": "integration/objectshard-m4-mainline-20261122",
+  "branch_head": "327afc58227b246390b19c275f58df77ae2dd734",
+  "qualified_predecessor_application": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "qualified_predecessor_native_sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+  "main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "merge_base": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+  "branch_only_commits": 189,
+  "main_only_commits": 48,
+  "merge_preview_exit": 1,
+  "conflicts": [
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md",
+    "godot/scripts/feature_launcher.gd",
+    "godot/scripts/shared_workbench.gd"
+  ],
+  "main_compatibility": "RAMCACHE ancestry is retained through accepted 9920e7a7; latest Strata and portable evaluator package repairs are mainline-only. No merge performed.",
+  "anticipated_reconciliation": [
+    "Shared Workbench controls/input and feature launcher integration with accepted Strata require focused reconciliation and combined qualification.",
+    "Canonical handover, retrieval index and roadmap need claim-by-claim reconciliation.",
+    "No PUBPRES or M5 implementation imported."
+  ],
+  "baseline_observation_scope": "Read-only Git tree preview before live-edit commits; no merge acceptance or combined-evaluator claim.",
+  "inspection_date_utc": "2026-11-28",
+  "main_compatibility_details": [
+    "Accepted Strata Theatre integration is main commit18e3725967; its shared Workbench/feature launcher changes remain a subsequent reconciliation task.",
+    "Main portable package fixes746f955126/5cfc06472d/6a07ca01d1 affect tools/package_ramcache_strata.py and its own integration pipeline. ObjectShard retains its separate verified package pipeline; its PowerShell verifier already uses built-in streaming SHA-256 and does not depend on Get-FileHash resolution."
+  ]
+}

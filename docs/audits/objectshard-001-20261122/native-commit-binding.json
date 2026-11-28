@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "git_head": "1bb6185be05f5ef838543a0e13c81428b751d969",
+  "tested_input_digest": "5977462b93e0589aefbdc6b6d2e94d3f61c804e921a80e40dcf9a6cf1e3bd5f6",
+  "capture_git_head": "1b85782a15565bad7e4dae28755b17d630daaf46",
+  "source_files_checked": 92,
+  "mismatches": [],
+  "status": "bound",
+  "inputs_sha256": "985b06e03d2e7666781c8d2f1c424ded6fffe9ae6c14273bc4f4844e402ea64b",
+  "benchmark_sha256": "e74a442c681e570de9b402eb18189a872be4723fc0d0a673120c0335463c5b7d",
+  "scope": "Every frozen native benchmark source byte matches this commit; no additional Windows or Rapier acceptance implied."
+}

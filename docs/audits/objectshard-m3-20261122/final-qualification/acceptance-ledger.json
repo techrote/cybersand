@@ -1,0 +1,91 @@
+{
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "pr": 741,
+  "base": 738,
+  "qualification_run": 44999117090,
+  "required_final_records": [
+    "exact Linux native/sanitizer192World receipts",
+    "actual Linux Godot/Rapier/capture/replay/render/profiles",
+    "actual Windows native DLL/compiler/platform receipts",
+    "actual Windows Godot/Rapier/capture/replay/render/profiles",
+    "four extracted ZIP paths and specific tamper refusal",
+    "owner ZIP independent complete Git/manifest custody",
+    "three independent exact-source review reports",
+    "production provenance6errors unchanged",
+    "dependency-ordered owner mergedown plan",
+    "owner playtest plan and separate Windows11/NVIDIA acceptance"
+  ],
+  "superseded_source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "superseded_run": 44995374918,
+  "navigation_findings": "OPERATOR01-03 original negatives retained; repaired e034 source passed independent review and fresh Linux, Windows and extracted-package qualification.",
+  "updated_utc": "2026-11-22T08:21:57.551804+00:00",
+  "current_gate_status": {
+    "independent_ownership": {
+      "status": "passed_scoped",
+      "source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+      "parent_checks": 341,
+      "quit_child_checks": 18,
+      "fresh_replay_child_checks": 47,
+      "failures": 0
+    },
+    "independent_physics": {
+      "status": "passed_scoped",
+      "parent_checks": 651,
+      "actual_quit_child_checks": 18,
+      "failures": 0
+    },
+    "independent_custody": {
+      "status": "passed_scoped",
+      "reviewer": "review_custody",
+      "verdict_sha256": "ee050aa9e7e38b713492695bc8e9cfef639b40dbf2640d72640a402c63200432"
+    },
+    "linux_native_and_package_tests": {
+      "status": "passed_and_raw_artifacts_audited",
+      "asan_ubsan_checks": 93529,
+      "world_cases": 192,
+      "leak_sanitizer": false
+    },
+    "linux_extension_and_hosted_runtime": {
+      "status": "passed_and_raw_artifacts_audited",
+      "cases": 41,
+      "fresh_compile": true
+    },
+    "windows_crossbuild": {
+      "status": "passed_and_receipts_checked",
+      "dll_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+    },
+    "windows_source_godot": {
+      "status": "passed_and_raw_artifacts_audited",
+      "cases": 41
+    },
+    "windows_extracted_zip": {
+      "status": "passed_and_raw_artifacts_audited",
+      "cases": 32,
+      "path_classes": 4,
+      "commands": 12,
+      "manifest_members": 1099,
+      "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b"
+    },
+    "production_provenance": {
+      "status": "unpassed",
+      "known_errors": 6,
+      "gate_weakened": false
+    },
+    "ordinary_workbench_world_attachment": {
+      "status": "not_implemented",
+      "delivered_scope": "Separate one-World real native worker and main-thread Rapier rehearsal; immutable GCR and no facade attachment API remain the precise successor seam"
+    },
+    "owner_physical_acceptance": {
+      "status": "unrecorded"
+    },
+    "documentation": {
+      "status": "passed",
+      "objectshard_queries": 9,
+      "canonical_hit_at_k": 9,
+      "canonical_rank_1": 7,
+      "runtime_input_continuity": "passed"
+    }
+  },
+  "latest_interface_refresh": "build/m3-platform/delivery-interface-refresh.json"
+}

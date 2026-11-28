@@ -1,0 +1,56 @@
+{
+  "source_commit": "28be5a4a8a023d466e642afaca767c0224de1ba3",
+  "platform": "Windows Actions runner",
+  "source_member": "windows-lab/owner-d-result.json",
+  "source_member_sha256": "c32bcd69aee89aae46b17cbcde593a0f6d12d8f7bb05ad784b625bce8fc0c6d8",
+  "artifact_id": 14740069324,
+  "checks": 17,
+  "failures": 0,
+  "first_tick": 754,
+  "last_tick": 3600,
+  "recorded_samples": 3599,
+  "window_samples": 2847,
+  "retained_actions": 198,
+  "rows": [
+    {
+      "id": 1,
+      "maximum_rotation_degrees_since_754": [
+        0.0003824905938133251,
+        835
+      ],
+      "maximum_translation_cells_since_754": [
+        0.0002121191219185772,
+        1049
+      ],
+      "initial_sleeping": true,
+      "final_sleeping": true
+    },
+    {
+      "id": 2,
+      "maximum_rotation_degrees_since_754": [
+        0.004357660690849802,
+        932
+      ],
+      "maximum_translation_cells_since_754": [
+        0.0016270656489443924,
+        931
+      ],
+      "initial_sleeping": true,
+      "final_sleeping": true
+    },
+    {
+      "id": 3,
+      "maximum_rotation_degrees_since_754": [
+        0.00099037742937196,
+        960
+      ],
+      "maximum_translation_cells_since_754": [
+        0.0003459406753109838,
+        959
+      ],
+      "initial_sleeping": true,
+      "final_sleeping": true
+    }
+  ],
+  "scope": "Excursions relative to tick754; retained198actions only, not complete originalowner replay."
+}

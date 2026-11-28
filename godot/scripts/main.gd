@@ -10,6 +10,7 @@ const PlayerCourse = preload("res://scripts/player_playground_course.gd")
 const PlayableCourseLap = preload("res://scripts/playable_course_lap.gd")
 const PlayableCourseOverlay = preload("res://scripts/playable_course_overlay.gd")
 const SnapshotPublicationCounter = preload("res://scripts/snapshot_publication_counter.gd")
+const ObjectShardM4LatencyProbe = preload("res://scripts/object_shard_m4_latency_probe.gd")
 const FACE_TUNING := ["workbench_face_budget","workbench_face_speed","workbench_face_period","workbench_face_min_height"]
 const WAVE_TUNING := [
 	"workbench_wave_substeps","workbench_wave_active_rows","workbench_wave_gain",
@@ -57,6 +58,10 @@ var _workbench_wait_sample: int = -1
 var _workbench_frame_error: String = ""
 var _workbench_collider_frame: int = -1
 var shared_workbench: Control
+# Optional measurement only; never owns native World, RIDs or publication state.
+var object_shard_m4_probe = ObjectShardM4LatencyProbe.new()
+var object_shard_m4_runtime = preload("res://scripts/object_shard_m4_runtime.gd").new()
+var _object_shard_launch_scene: String = ""
 # Experimental Water settings staged for explicit Apply/Load. Unrelated
 # lifecycle rebuilds reuse the last acknowledged native construction options.
 # Empty keeps every default.
@@ -790,6 +795,9 @@ func workbench_apply(candidate: Dictionary, actors: Array, rectangles: Array, ex
 		generated_packet: Dictionary = {}, material_baseline: Dictionary = {},
 		apply_staged_water: bool = true, authoring_patch: Dictionary = {}, persistent_options: Dictionary = {}) -> bool:
 	if shared_workbench == null: return false
+	if preserve_cells and not object_shard_m4_runtime.can_preserve_world():
+		microscenario_error = "Moving structures own native material. Restore or Load a starting setup before rebuilding actors or the canvas; live shard state cannot be omitted."
+		return false
 	if persistent_options.is_empty() and has_method(&"persistent_operation_allowed"):
 		var refused: String = call(&"persistent_operation_allowed","replace_world",candidate)
 		if not refused.is_empty():
@@ -1161,6 +1169,9 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 	return true
 
 func _microscenario_installed(definition: Dictionary) -> void:
+	# Native acceptance is already source-bound by consume_worker_snapshot.
+	# Release old material RIDs before any adopted graph closes its space.
+	if object_shard_m4_runtime.enabled: object_shard_m4_runtime.world_replaced()
 	_liquid_tower_active = false
 	_liquid_water_active = false
 	microscenario_error = ""
@@ -1992,6 +2003,10 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	set_object_shard_diagnostics_enabled("--objectshard-diagnostics" in OS.get_cmdline_user_args())
+	for argument: String in OS.get_cmdline_user_args():
+		if argument.begins_with("--object-shard-scene="):
+			_object_shard_launch_scene = argument.trim_prefix("--object-shard-scene=")
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
@@ -2167,6 +2182,23 @@ func _ready() -> void:
 		showcase_presentation.launch.call_deferred()
 
 
+func _object_shard_m4_post_draw() -> void:
+	# Never mutate the probe from a foreign renderer thread.
+	if object_shard_m4_probe.enabled and shared_workbench != null \
+			and OS.get_thread_caller_id() == OS.get_main_thread_id():
+		object_shard_m4_probe.observe_post_draw(Time.get_ticks_usec())
+
+
+func set_object_shard_diagnostics_enabled(recording: bool) -> void:
+	# Recording is independent of structure ownership, native time and Rapier.
+	# Disconnect the callback as well as making the bounded probe inert.
+	object_shard_m4_probe.configure(recording)
+	if recording and not RenderingServer.frame_post_draw.is_connected(_object_shard_m4_post_draw):
+		RenderingServer.frame_post_draw.connect(_object_shard_m4_post_draw, CONNECT_DEFERRED)
+	elif not recording and RenderingServer.frame_post_draw.is_connected(_object_shard_m4_post_draw):
+		RenderingServer.frame_post_draw.disconnect(_object_shard_m4_post_draw)
+
+
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_WINDOW_FOCUS_OUT:
 		# A loss/regain between physics callbacks must still retire old edges.
@@ -2174,6 +2206,11 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	object_shard_m4_runtime.shutdown()
+	if object_shard_m4_probe.enabled:
+		if RenderingServer.frame_post_draw.is_connected(_object_shard_m4_post_draw):
+			RenderingServer.frame_post_draw.disconnect(_object_shard_m4_post_draw)
+		object_shard_m4_probe.retire("SceneExit")
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -2185,6 +2222,7 @@ func _exit_tree() -> void:
 
 
 func _process(delta: float) -> void:
+	var m4_callback_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
 	if shared_workbench == null:
 		tower_panel.refresh(tower_active,tower_floor,tower_context)
 		_refresh_microscenario_controls()
@@ -2192,6 +2230,21 @@ func _process(delta: float) -> void:
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
 	consume_worker_snapshot()
 	_advance_prepared_physical_candidate()
+	if shared_workbench != null and not shared_workbench.applied.is_empty() and not shared_workbench.busy():
+		if not _object_shard_launch_scene.is_empty():
+			var requested: String = _object_shard_launch_scene
+			_object_shard_launch_scene = ""
+			shared_workbench.load_object_shard_scene(requested)
+		elif shared_workbench.object_shard_m4_port.enabled and not object_shard_m4_runtime.enabled:
+			object_shard_m4_runtime.enable(self)
+	object_shard_m4_runtime.poll(self)
+	if object_shard_m4_runtime.owns_terrain() and latest_snapshot != null:
+		# Runtime may finish the native/physical handoff in this callback.
+		# Retry the retained ordinary patch and commit both owners before draw.
+		consume_render_snapshot(latest_snapshot)
+	if object_shard_m4_probe.enabled and shared_workbench != null:
+		object_shard_m4_probe.observe_workload(object_shard_m4_runtime.bridge.bodies.size(),paused,
+			"follow" if camera_follow_enabled else "free")
 	if shared_workbench != null and physical_actor_session != null:
 		physical_actor_session.ingest_ambient_snapshot(latest_snapshot)
 		if physical_actor_session.take_ambient_refresh_request(): simulation_worker.request_render_full_refresh()
@@ -2239,9 +2292,18 @@ func _process(delta: float) -> void:
 		refresh_actor_prototypes()
 		maximum_frame_time_ms = frame_time_ms
 		maximum_collider_time_ms = 0.0
+	if m4_callback_started_usec >= 0:
+		object_shard_m4_probe.record_duration("scene_callback", m4_callback_started_usec,
+			Time.get_ticks_usec(), {"scope":"complete_Main_process_callback_includes_nested_upload"})
 
 
 func _physics_process(_delta: float) -> void:
+	# Consume already admitted material/pose work before deciding whether this
+	# fixed callback can start its one new interval. Waiting only in _process
+	# makes a completed worker receipt miss another complete physics frame.
+	if object_shard_m4_runtime.enabled: object_shard_m4_runtime.poll(self)
+	if object_shard_m4_runtime.enabled and (not object_shard_m4_runtime.materials_ready() \
+		or (object_shard_m4_runtime.owns_terrain() and not object_shard_m4_runtime.physics_ready())): return
 	if shared_workbench != null and not _workbench_frame_error.is_empty(): return
 	if _pending_physical_candidate != null:
 		# The retained manually stepped space stays at its actual prior pose.
@@ -2269,7 +2331,11 @@ func _physics_process(_delta: float) -> void:
 			_workbench_wait_sample = -1
 			return
 		# A single step can restart a previously unpublished paused frame.
-		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		# Material motion has its own exact native-frame lease. A Resume may
+		# publish a fresh unchanged GCR pose before its first real interval;
+		# requiring that sample's tick here would deadlock the material owner.
+		if not object_shard_m4_runtime.owns_terrain() and _workbench_wait_sample >= 0 \
+			and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -2296,12 +2362,23 @@ func _physics_process(_delta: float) -> void:
 				return # Skip this physics frame: no step and no new publication.
 			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot
+		if object_shard_m4_runtime.enabled and object_shard_m4_runtime.owns_terrain():
+			if not object_shard_m4_runtime.acquire_interval(): return
 		apply_latest_rigid_body_results(physics_snapshot)
 		if physical_actor_session != null:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
 		else:
 			apply_barrel_player_control(_delta)
+		var m4_physics_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
+		if object_shard_m4_runtime.enabled and object_shard_m4_runtime.owns_terrain():
+			# Control advances once above. The material adapter executes bounded
+			# shared-space segments; final native ACK completes this interval.
+			object_shard_m4_runtime.begin_interval(single_step)
+			return
 		rapier_bridge.step()
+		if m4_physics_started_usec >= 0:
+			object_shard_m4_probe.record_duration("physics_work", m4_physics_started_usec,
+				Time.get_ticks_usec(), {"scope":"actual_main_thread_Rapier_step"})
 		if physical_actor_session != null:
 			var before_completed_tick: int = physical_actor_session.tick
 			physical_actor_session.complete_step()
@@ -2313,6 +2390,20 @@ func _physics_process(_delta: float) -> void:
 	if single_step and pending_microscenario_apply.is_empty() and worker_start_error == OK and (physical_actor_session == null or _physical_terrain_ready):
 		shared_workbench.step_requested = false
 		tower_command({"step":true,"workbench_step_serial":shared_workbench.step_serial})
+		if physical_actor_session != null: physical_actor_session.set_suspended(true)
+
+func _object_shard_m4_complete_interval(single_step: bool) -> void:
+	if physical_actor_session != null:
+		var before: int = physical_actor_session.tick
+		physical_actor_session.complete_step()
+		if paused and not single_step:
+			physical_actor_session.refresh_paused_material_poses()
+		if physical_actor_session.tick > before: _record_completed_playable_course_step()
+	_publish_physical_body_state()
+	if single_step and shared_workbench != null and pending_microscenario_apply.is_empty():
+		shared_workbench.step_requested = false
+		# The M4 complete-motion receipt carries this step serial. A second
+		# generic lab Step could arrive after its already admitted native tick.
 		if physical_actor_session != null: physical_actor_session.set_suspended(true)
 
 func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
@@ -3088,6 +3179,8 @@ func sync_player_presentation_position() -> void:
 
 func reset_world() -> void:
 	if water_controlled_run_active(): return
+	if object_shard_m4_probe.enabled and shared_workbench != null:
+		object_shard_m4_probe.retire("ResetRequested")
 	if _liquid_default_active:
 		_apply_prepared_liquid_default(microscenario_liquid_policy,
 			microscenario_liquid_setup.get("normalization","") == "water-normalize-v1",
@@ -3263,6 +3356,8 @@ func consume_worker_snapshot() -> void:
 	if not worker_publication_counter.observe(snapshot.serial):
 		return
 	latest_snapshot = snapshot
+	if object_shard_m4_probe.enabled and shared_workbench != null:
+		object_shard_m4_probe.observe_snapshot(snapshot, Time.get_ticks_usec())
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if shared_workbench != null and not str(tower_context.get("workbench_refusal","")).is_empty():
@@ -3377,6 +3472,10 @@ func consume_worker_snapshot() -> void:
 	gameplay_recorder.ingest_snapshot(snapshot)
 
 
+func object_shard_m4_latency_report() -> Dictionary:
+	return object_shard_m4_probe.summary()
+
+
 func workbench_display_frame() -> Dictionary:
 	if shared_workbench == null or latest_snapshot == null: return {}
 	# Static material bytes can span multiple native ticks. Prefer the most
@@ -3392,13 +3491,18 @@ func workbench_display_frame() -> Dictionary:
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
+		if not object_shard_m4_runtime.can_upload_world(snapshot): return
 		record_render_payload(snapshot)
+		var m4_upload_started_usec: int = Time.get_ticks_usec() if object_shard_m4_probe.enabled and shared_workbench != null else -1
 		var render_uploaded: bool = upload_texture_patches(
 			snapshot.render_patch_rectangles,
 			snapshot.render_patch_cells,
 			snapshot.world_revision,
 			snapshot.render_channels
 		)
+		if m4_upload_started_usec >= 0:
+			object_shard_m4_probe.mark_upload(snapshot, m4_upload_started_usec,
+				Time.get_ticks_usec(), render_uploaded)
 		if render_uploaded:
 			# Only an accepted World replacement invalidates presentation history.
 			# Full refreshes also occur during resync and every fallback frame.
@@ -3407,6 +3511,7 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
+			object_shard_m4_runtime.present_uploaded_world()
 			simulation_worker.acknowledge_render_snapshot(
 				snapshot.render_snapshot_serial
 			)
@@ -3432,6 +3537,9 @@ func record_render_payload(snapshot: CyberSimulationSnapshot) -> void:
 
 
 func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
+	if object_shard_m4_runtime.owns_terrain():
+		_physical_terrain_ready = object_shard_m4_runtime.held_reason.is_empty()
+		return _physical_terrain_ready
 	if _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty() or not rapier_bridge.is_initialized():
 		return false
 	var required: int = snapshot.lab_context.get("workbench_hard_surface_revision",-1)
@@ -3449,6 +3557,7 @@ func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
 
 
 func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> void:
+	if object_shard_m4_runtime.owns_terrain(): return
 	if snapshot == null: snapshot = latest_snapshot
 	if (
 		snapshot == null

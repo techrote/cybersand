@@ -126,6 +126,9 @@ bool CyberNativeCellWorld::prepare_workbench_coupling(const PackedFloat64Array& 
         next.owners.fill({}); next.owner_of.fill(0);
         next.session = next.epoch = 0;
         if (!parse_workbench_sample(next,*workbench_,states,geometry,owners,session,epoch)) return false;
+        if (shard_owner()) for (const auto& proxy:next.proxies)
+            if (proxy.valid && proxy.id>=cybersand::object_shard::Coordinator::kFirstMutableBodyId)
+                return false; // Explicit opt-in partition; old mask and inventories remain intact.
         workbench_->sample = next;
         current_bodies_ = next.proxies;
         for (auto& bins : workbench_->bins) bins.fill({});

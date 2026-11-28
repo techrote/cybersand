@@ -1,0 +1,156 @@
+{
+	"checks": 116,
+	"display_coherence": {
+		"between_callback_observations": 822,
+		"draw_observations": 822,
+		"examples": [],
+		"foreign_draw_callbacks": 0,
+		"incoherent_observations": 0,
+		"scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+	},
+	"display_driver": "X11",
+	"failures": [],
+	"rendering_method": "gl_compatibility",
+	"schema": "objectshard-m4-render-control-v1",
+	"scope": "ordinary renderer submissions and actual native progression; awake counts observed only at window boundaries; physical seconds count completed 1/60 intervals; no per-callback full diagnostics, latency probe disabled; physical monitor presentation OWNER-PENDING",
+	"seconds_per_window": 12.0,
+	"source_commit": "d089df853e5bb1f3236a93e2b048082e8e5169c4",
+	"windows": [
+		{
+			"actual_physics_steps": 0,
+			"awake_bodies_after": 0,
+			"awake_bodies_before": 0,
+			"body_count_after": 0,
+			"body_count_before": 0,
+			"callback_intervals": {
+				"count": 114,
+				"maximum_usec": 201367,
+				"p50_usec": 100378,
+				"p95_usec": 141956
+			},
+			"completed_physical_intervals": 0,
+			"elapsed_usec": 12030378,
+			"label": "intact_paused",
+			"native_pose_acknowledgements": 0,
+			"native_pose_echo_checks": 0,
+			"paused": true,
+			"process_callbacks": 115,
+			"receipt_pump_usec": 7704,
+			"render_intervals": {
+				"count": 114,
+				"maximum_usec": 196689,
+				"p50_usec": 101356,
+				"p95_usec": 138540
+			},
+			"render_submissions": 115,
+			"render_submissions_per_second": 9.55913438463862,
+			"semantic_ticks": 0,
+			"semantic_ticks_per_second": 0.0,
+			"simulated_physical_seconds": 0.0,
+			"worker_snapshot_calls": 0,
+			"worker_snapshot_usec": 0
+		},
+		{
+			"actual_physics_steps": 145,
+			"awake_bodies_after": 0,
+			"awake_bodies_before": 0,
+			"body_count_after": 0,
+			"body_count_before": 0,
+			"callback_intervals": {
+				"count": 109,
+				"maximum_usec": 216938,
+				"p50_usec": 106688,
+				"p95_usec": 135287
+			},
+			"completed_physical_intervals": 36,
+			"elapsed_usec": 12081741,
+			"label": "intact_playing",
+			"native_pose_acknowledgements": 0,
+			"native_pose_echo_checks": 0,
+			"paused": false,
+			"process_callbacks": 110,
+			"receipt_pump_usec": 792054,
+			"render_intervals": {
+				"count": 109,
+				"maximum_usec": 212354,
+				"p50_usec": 106590,
+				"p95_usec": 140844
+			},
+			"render_submissions": 110,
+			"render_submissions_per_second": 9.104648080107,
+			"semantic_ticks": 36,
+			"semantic_ticks_per_second": 2.97970300803502,
+			"simulated_physical_seconds": 0.6,
+			"worker_snapshot_calls": 216,
+			"worker_snapshot_usec": 112565
+		},
+		{
+			"actual_physics_steps": 0,
+			"awake_bodies_after": 1,
+			"awake_bodies_before": 1,
+			"body_count_after": 1,
+			"body_count_before": 1,
+			"callback_intervals": {
+				"count": 104,
+				"maximum_usec": 239155,
+				"p50_usec": 107529,
+				"p95_usec": 165561
+			},
+			"completed_physical_intervals": 0,
+			"elapsed_usec": 12058095,
+			"label": "detached_paused",
+			"native_pose_acknowledgements": 0,
+			"native_pose_echo_checks": 0,
+			"paused": true,
+			"process_callbacks": 105,
+			"receipt_pump_usec": 5741,
+			"render_intervals": {
+				"count": 104,
+				"maximum_usec": 252962,
+				"p50_usec": 107495,
+				"p95_usec": 156370
+			},
+			"render_submissions": 105,
+			"render_submissions_per_second": 8.7078431543291,
+			"semantic_ticks": 0,
+			"semantic_ticks_per_second": 0.0,
+			"simulated_physical_seconds": 0.0,
+			"worker_snapshot_calls": 0,
+			"worker_snapshot_usec": 0
+		},
+		{
+			"actual_physics_steps": 80,
+			"awake_bodies_after": 1,
+			"awake_bodies_before": 1,
+			"body_count_after": 1,
+			"body_count_before": 1,
+			"callback_intervals": {
+				"count": 91,
+				"maximum_usec": 240403,
+				"p50_usec": 127643,
+				"p95_usec": 195328
+			},
+			"completed_physical_intervals": 20,
+			"elapsed_usec": 12055128,
+			"label": "detached_playing",
+			"native_pose_acknowledgements": 80,
+			"native_pose_echo_checks": 80,
+			"paused": false,
+			"process_callbacks": 92,
+			"receipt_pump_usec": 680266,
+			"render_intervals": {
+				"count": 91,
+				"maximum_usec": 249383,
+				"p50_usec": 127244,
+				"p95_usec": 183546
+			},
+			"render_submissions": 92,
+			"render_submissions_per_second": 7.6316070638155,
+			"semantic_ticks": 19,
+			"semantic_ticks_per_second": 1.57609276317929,
+			"simulated_physical_seconds": 0.333333333333333,
+			"worker_snapshot_calls": 120,
+			"worker_snapshot_usec": 175247
+		}
+	]
+}

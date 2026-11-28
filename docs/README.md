@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
@@ -744,6 +744,47 @@ but current-authoritative where kinetic separation is not clean. Later tuning is
 separate bounded/versioned work. Kinetic/contact anomalies are captured/reduced
 and routed to their real physics owner instead of being hidden in interaction rules.
 
+
+## ObjectShard ordinary Workbench candidate and retained laboratories
+
+The [M4 ordinary Workbench contract](research/objectshard-m4-workbench.md) owns
+the Draft/HOLD same-World integration, Main-space physics, occupancy composition,
+structural material bounds, exact and bounded multi-cell editing, visible-owner
+selection and separate performance evidence rules. Use the [ordinary Workbench evaluator guide](operations/objectshard-workbench-playtest.md)
+for nine authored demonstration starts, creative editing, pause/reset, scoped
+authored saves and the
+reconciled-source Windows/NVIDIA confirmation; the owner positively evaluated the frozen live-edit application. The
+[24 November source recovery](audits/2026-11-24-objectshard-m4-source-recovery.md)
+preserves all donor identities and historical negative evidence. The
+[completion negative-result record](audits/2026-11-24-objectshard-m4-completion-negative-results.md)
+retains failed ordinary runs and the superseded first hosted campaign. The
+[rendered performance decision](audits/2026-11-24-objectshard-m4-render-decision.md)
+retains actual paused/playing controls and the unresolved physical display HOLD. The
+[additive M4 retrieval questions](reference/retrieval-questions-objectshard-m4.json)
+are separate from the frozen M0–M3 fixtures. No Ready, merge, default activation
+or production runtime publication is implied.
+
+The [M3 worker/physics contract](research/objectshard-m3-preflight.md), [continuous-play guide](operations/objectshard-m3-preflight-playtest.md) and [recovery ledger](audits/2026-11-22-objectshard-m3-recovery.md) cover the executable successor. The [final M3 qualification](audits/2026-11-22-objectshard-m3-final-qualification.md) records fresh Linux/Windows execution, the repaired delivered ZIP, independent reviews, timing tails and outstanding gates. No ordinary Workbench adoption or physical owner acceptance is implied.
+
+The [001R final qualification](audits/2026-11-22-objectshard-001r-final-qualification.md)
+binds repaired component admission and Rapier rest stability to source-matched
+Linux/Windows tests and the corrected delivered ZIP. Its
+[forensic checkpoint](audits/2026-11-22-objectshard-001r-forensics.md) and
+[full native performance record](audits/2026-11-22-objectshard-001r-native-performance.md)
+preserve original failures and scope measured results. M3 preflight remains a
+separate Draft/HOLD integration-preparation gate.
+
+The [compact native ObjectShard implementation](research/objectshard-001.md)
+is a separate Draft/HOLD branch candidate: exact material ownership, shared
+combustion, revisioned Rapier geometry, real Fire output, physical Sand lodging
+and historical Water exposure. The [Lab owner procedure](operations/objectshard-lab-playtest.md)
+explains the source-bound Windows package and explicit physical acceptance.
+The [final delivery and acceptance record](audits/2026-11-22-objectshard-final-acceptance.md)
+records exact runtime identities, final platform passes and the separately
+retained native performance failure.
+This does not promote the older soliding programme, change ordinary defaults,
+or establish fracture/persistence. [Focused retrieval questions](reference/retrieval-questions-objectshard.json)
+keep this candidate's capabilities and evidence limits explicit.
 
 ## Scalable reversible soliding
 

@@ -1,0 +1,181 @@
+{
+  "schema": "objectshard-m4-replacement-linux-recovery-v1",
+  "status": "original_failures_retained",
+  "campaigns": [
+    {
+      "run": 45517975210,
+      "job": 138882242425,
+      "run_attempt": 1,
+      "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+      "source_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+      "artifact": {
+        "id": 14980723384,
+        "bytes": 14231265,
+        "sha256": "d3a1793f8e1f27cd8a3194a4fa15db1851b655d1c08ddad1aba86338d6c56f4d",
+        "url": "https://github.com/techrote/cybersand/actions/runs/45517975210/artifacts/14980723384"
+      },
+      "aggregate_job_conclusion": "failure",
+      "independent_archive_integrity": "passed",
+      "independent_review_sha256": "b56346cb6059956cd8274efe0141c617af6b9eff2d4d8d3c955e95f1893ce421",
+      "registered_inventory_verified": true,
+      "reports": [
+        {
+          "path": "headless/qualification.json",
+          "sha256": "067791c02f2213309b8ed7a5b8d7a078edbee27e7caff4e4836095d53629caac",
+          "status": "passed",
+          "case_count": 42,
+          "passed_cases": 42,
+          "failed_case_names": [],
+          "rendered_cases": 0,
+          "failures": []
+        },
+        {
+          "path": "graphical/qualification.json",
+          "sha256": "6f545090dba57b7422b60642d6c8d40e475481d4730dfab362d6334519256760",
+          "status": "failed",
+          "case_count": 31,
+          "passed_cases": 30,
+          "failed_case_names": [
+            "m4_disabled_controls"
+          ],
+          "rendered_cases": 18,
+          "failures": [
+            {
+              "case": "m4_disabled_controls",
+              "returncode": 1,
+              "natural_completion": true,
+              "seconds": 31.122,
+              "timeout_kind": null,
+              "launch_error": null,
+              "original_log_sha256": "353a6b25ff71d132af4bdc879181edaf7b9c8d994223cddcca99ada44d6d83df",
+              "process_footer": {
+                "schema": "objectshard-m4-disabled-control-v1",
+                "source_commit": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+                "checks": 23,
+                "failures": [
+                  "disabled_intact_paused consumes no native or Rapier time"
+                ],
+                "windows": [
+                  {
+                    "actual_physics_steps": 0,
+                    "callback_intervals": {
+                      "count": 84,
+                      "maximum_usec": 187132,
+                      "p50_usec": 139102,
+                      "p95_usec": 155014
+                    },
+                    "elapsed_usec": 12109461,
+                    "label": "disabled_intact_paused",
+                    "material_body_count": 0,
+                    "objectshard_enabled": false,
+                    "objectshard_native_attached": false,
+                    "ordinary_actor_count": 1,
+                    "paused": true,
+                    "process_callbacks": 85,
+                    "render_intervals": {
+                      "count": 84,
+                      "maximum_usec": 187026,
+                      "p50_usec": 139149,
+                      "p95_usec": 155086
+                    },
+                    "render_submissions": 85,
+                    "render_submissions_per_second": 7.01930498805851,
+                    "semantic_ticks": 2,
+                    "semantic_ticks_per_second": 0.165160117366083,
+                    "worker_snapshot_calls": 0,
+                    "worker_snapshot_usec": 0
+                  },
+                  {
+                    "actual_physics_steps": 81,
+                    "callback_intervals": {
+                      "count": 80,
+                      "maximum_usec": 193452,
+                      "p50_usec": 143306,
+                      "p95_usec": 181775
+                    },
+                    "elapsed_usec": 12028969,
+                    "label": "disabled_intact_playing",
+                    "material_body_count": 0,
+                    "objectshard_enabled": false,
+                    "objectshard_native_attached": false,
+                    "ordinary_actor_count": 1,
+                    "paused": false,
+                    "process_callbacks": 81,
+                    "render_intervals": {
+                      "count": 80,
+                      "maximum_usec": 191581,
+                      "p50_usec": 143400,
+                      "p95_usec": 180423
+                    },
+                    "render_submissions": 81,
+                    "render_submissions_per_second": 6.73374418040316,
+                    "semantic_ticks": 80,
+                    "semantic_ticks_per_second": 6.65061153620065,
+                    "worker_snapshot_calls": 0,
+                    "worker_snapshot_usec": 0
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "run": 45522534938,
+      "job": 138897718846,
+      "run_attempt": 1,
+      "source_commit": "422d131048db573c0abd08bcca25f6b3999e8703",
+      "source_tree": "0077add3ad68ccaa782b28beb62b19552f48a124",
+      "artifact": {
+        "id": 14981832745,
+        "bytes": 2153391,
+        "sha256": "fb17e5444456b1495f899fcaef28751d40da90372ce18ec7c78d33c0bce13f90",
+        "url": "https://github.com/techrote/cybersand/actions/runs/45522534938/artifacts/14981832745"
+      },
+      "aggregate_job_conclusion": "failure",
+      "independent_archive_integrity": "passed",
+      "independent_review_sha256": "e057365eb306512f696d832801e6032c476b60439a716284fb4d804a88c1a105",
+      "registered_inventory_verified": true,
+      "reports": [
+        {
+          "path": "headless/qualification.json",
+          "sha256": "e38c6168a3c1c65650bc4f9fc87622350dba67b5645a40d6e8c44edb2bfda418",
+          "status": "failed",
+          "case_count": 42,
+          "passed_cases": 41,
+          "failed_case_names": [
+            "test_object_shard_m4_fragment_reabsorption"
+          ],
+          "rendered_cases": 0,
+          "failures": [
+            {
+              "case": "test_object_shard_m4_fragment_reabsorption",
+              "returncode": 1,
+              "natural_completion": true,
+              "seconds": 7.915,
+              "timeout_kind": null,
+              "launch_error": null,
+              "original_log_sha256": "080b4c58229ad5763cd98808d21b0783f593f3fc2f78080f13a50ab24f37d5ba",
+              "process_footer": {
+                "schema": "objectshard-m4-fragment-reabsorption-v1",
+                "source_commit": "422d131048db573c0abd08bcca25f6b3999e8703",
+                "checks": 107,
+                "failures": [
+                  "actual pointer cut has its exact native source cell receipt 1",
+                  "pointer release does not replay held or prior stroke positions"
+                ],
+                "windows": null
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "recovery_scope": "Original artifact byte digests, all report input sets, original process log hashes and registered inventories independently reverified after executor restart. Failed reports remain failures. No subsequent repair is qualified by these old execution results.",
+  "findings": {
+    "519": "All 42 headless cases passed. Only the graphical disabled control failed: two delayed ordinary native ticks and zero Rapier steps occurred inside the nominal paused window. The test did not await the existing exact Pause acknowledgement. The production behavior and proposed fixture repair are reviewed separately; this execution remains FAIL.",
+    "422": "Only fragment_reabsorption failed headless: the exact second held Cut receipt and the post-release result-count assertions. The process reported 107 checks and two failures, with natural exit 1. All later fragmentation, conservation, mass and settlement checks passed. The product/test cause remains under independent investigation at this checkpoint; the graphical stage was not executed."
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "objectshard-m4-b-independent-native-presentation-review-v1",
+  "status": "passed",
+  "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+  "summary_sha256": "8691f7b3474841dd3946fa94b47a33d29d7b7107fd21017976925f47b8372487",
+  "native_input_count": 126,
+  "executed_script_input_count": 1468,
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "cases": [
+    {
+      "name": "native_presentation_import",
+      "mode": "headless",
+      "checks": null
+    },
+    {
+      "name": "test_object_shard_m4_camera_lifecycle",
+      "mode": "ANGLE rendered",
+      "checks": 226
+    },
+    {
+      "name": "test_object_shard_m4_brush_revision",
+      "mode": "ANGLE rendered",
+      "checks": 159
+    }
+  ],
+  "camera_callback_observations": 248,
+  "camera_renderer_observations": 246,
+  "camera_incoherent_observations": 0,
+  "material_preparation_elapsed_usec": 48759324,
+  "material_preparation_scope": "Cold process-local shader preparation only; not a semantic throughput or physical-display performance measurement. The producer logs identify hosted ANGLE/Microsoft Basic Render Driver."
+}

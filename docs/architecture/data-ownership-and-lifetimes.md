@@ -6,10 +6,25 @@ status: Current
 scope: Current resource owners, mutation windows, publication retirement and allocation limits; proposed resources are explicitly separated
 keywords: [ownership, lifetime, chunks, immutable lease, render handoff, body mask, queue]
 related-documents: [simulation-tick-and-threading.md, rendering-and-gameplay-bridges.md, ../reference/interfaces-and-message-contracts.md, ../reference/invariants.md]
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 ---
 
 # Data ownership and lifetimes
+
+The opt-in [ObjectShard M4 Workbench owner](../research/objectshard-m4-workbench.md#same-native-world-ordinary-worker-and-existing-rapier-space)
+attaches its coordinator inside the ordinary native facade. The existing worker
+owns World and all material mutations; Main owns real Rapier objects in its
+existing space. Only copied publications, commands and receipts cross threads.
+Every accepted World replacement must dispose the attached coordinator before
+the old World dies. Refused replacement retains the old owner. Exact motion
+permits fence native ticks and brush work until installed geometry and real pose
+acknowledgements complete. This is a Draft/HOLD integration contract, not an
+import of the separately owned PUBPRES or actor programmes.
+Bounded structural edit transactions retain up to 4,096 copied targets for one
+owner, preflight before debit and install one resulting geometry through those
+same owners. Cross-owner gestures are sequential and explicitly non-atomic.
+Fresh admission between physical intervals never bypasses a motion lease;
+scene replacement and input cancellation retire unadmitted work.
 
 The opt-in [persistent-area prototype](../systems/persistent-authored-areas.md) retains one exclusive native gameplay owner. Its [RAM residency extension](../systems/persistent-area-residency.md) retains inactive Worlds in unique-owned native bundles and worker-exclusive host companions. A validated native move and one-use Main ticket transfer active authority; cache values never contain World pointers. One separately owned private preparation may run while the active area progresses, and joins before native import. A nonreusable capture boundary freezes mutations only while complete continuation is captured; deferred immutable publication then runs on one serialized I/O owner holding the OS profile lock. Strict/cache-disabled operation retains conservative durability waits. Late saves, unsupported live dependencies and uncertain publication cannot discard or resume an older authoritative incarnation. Ordinary scene ownership is unchanged.
 

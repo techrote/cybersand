@@ -2,6 +2,7 @@
 #include "cyber_demo_bridge.hpp"
 #include "cyber_world_generator.hpp"
 #include "cyber_native_paint_planner.hpp"
+#include "cyber_object_shard_lab.hpp"
 #include "persistent_area_storage.hpp"
 
 #include <gdextension_interface.h>
@@ -17,6 +18,7 @@ void initialize_cybersand_native(ModuleInitializationLevel level) {
     GDREGISTER_CLASS(CyberDemoBridge);
     GDREGISTER_CLASS(CyberWorldGenerator);
     GDREGISTER_CLASS(CyberNativePaintPlanner);
+    GDREGISTER_CLASS(CyberObjectShardLab);
     GDREGISTER_CLASS(CyberPersistentAreaStorage);
 }
 

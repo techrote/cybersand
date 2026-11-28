@@ -1,0 +1,131 @@
+{
+  "after": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "projects": {
+      "baseline": {
+        "files": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+          "godot/scripts/object_shard_m4_runtime.gd": "35971ec27c284ce718e563f631c5e22ea4c8357822cab14f303455f495207b40",
+          "godot/scripts/object_shard_m4_workbench_port.gd": "35887a6285d262d494303da6ab5caf92e926869151c10487ff039b82ae895ea3",
+          "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+          "godot/scripts/object_shard_workbench_overlay.gd": "f3917d37ecbf3026a30f3ed35d6e06a503185b605358b094147a55a2c7f64bfa",
+          "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+          "godot/scripts/shared_workbench.gd": "f596830d9b3a885af0527a74977a05e3b544f17d7c5339870c802b54273e76f7",
+          "godot/scripts/simulation_worker.gd": "269363d9cb66f5e466cd2fc2a1f9c5135401a669266eb47046cf8edcfb71f5d6",
+          "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+          "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+          "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+          "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+        },
+        "head": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+        "native_bytes": 6081432,
+        "tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c"
+      },
+      "candidate": {
+        "files": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+          "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+          "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+          "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+          "godot/scripts/object_shard_workbench_overlay.gd": "0dcc05fb0b6a24730f5ff9df2284f8003d588abddd5d7a6de9de709f8740f154",
+          "godot/scripts/object_shard_workbench_scenes.gd": "e21a96b4b3e63ebf3475d2b804bfa6ce0eb159369eed10ca2bf61aaf1cb950e1",
+          "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+          "godot/scripts/simulation_worker.gd": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+          "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+          "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+          "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+          "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+        },
+        "head": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+        "native_bytes": 6149752,
+        "tree": "33fa2aab1433fc1fece80cb38a413816cc845603"
+      }
+    }
+  },
+  "before": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "projects": {
+      "baseline": {
+        "files": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+          "godot/scripts/object_shard_m4_runtime.gd": "35971ec27c284ce718e563f631c5e22ea4c8357822cab14f303455f495207b40",
+          "godot/scripts/object_shard_m4_workbench_port.gd": "35887a6285d262d494303da6ab5caf92e926869151c10487ff039b82ae895ea3",
+          "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+          "godot/scripts/object_shard_workbench_overlay.gd": "f3917d37ecbf3026a30f3ed35d6e06a503185b605358b094147a55a2c7f64bfa",
+          "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+          "godot/scripts/shared_workbench.gd": "f596830d9b3a885af0527a74977a05e3b544f17d7c5339870c802b54273e76f7",
+          "godot/scripts/simulation_worker.gd": "269363d9cb66f5e466cd2fc2a1f9c5135401a669266eb47046cf8edcfb71f5d6",
+          "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+          "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+          "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+          "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+        },
+        "head": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+        "native_bytes": 6081432,
+        "tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c"
+      },
+      "candidate": {
+        "files": {
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+          "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+          "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+          "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+          "godot/scripts/object_shard_workbench_overlay.gd": "0dcc05fb0b6a24730f5ff9df2284f8003d588abddd5d7a6de9de709f8740f154",
+          "godot/scripts/object_shard_workbench_scenes.gd": "e21a96b4b3e63ebf3475d2b804bfa6ce0eb159369eed10ca2bf61aaf1cb950e1",
+          "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+          "godot/scripts/simulation_worker.gd": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+          "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+          "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+          "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+          "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+        },
+        "head": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+        "native_bytes": 6149752,
+        "tree": "33fa2aab1433fc1fece80cb38a413816cc845603"
+      }
+    }
+  },
+  "verified_runtime_provenance": {
+    "baseline": {
+      "build_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+      "guarded_publication": "d5bb74cdc8b3350ea85ba7899e46d6d0038074b8",
+      "platform": "linux",
+      "provenance_git_blob_sha256": "14857902133f346b04f26832b91ab28798a904b8026fef8a0d76b0b99a5fa9e1",
+      "provenance_path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "provenance_verified_against_git": true,
+      "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+      "size": 6081432,
+      "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+      "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+      "status": "validated-development-runtime",
+      "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n101ae38034304346a46ea9ea84ae156d3e860496",
+      "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
+      "workflow_attempt": "1",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46103413203"
+    },
+    "candidate": {
+      "artifact_id": 15256875803,
+      "build_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "independent_verification": "final-linux-production-runtime-review.json",
+      "platform": "linux",
+      "provenance_sha256": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+      "sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+      "size": 6149752,
+      "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "status": "validated-development-runtime",
+      "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n101ae38034304346a46ea9ea84ae156d3e860496",
+      "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
+      "workflow_attempt": "1",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46125028803"
+    }
+  }
+}

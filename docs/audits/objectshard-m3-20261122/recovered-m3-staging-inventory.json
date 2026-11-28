@@ -1,0 +1,856 @@
+{
+  "source_root": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/m3-preflight-staging",
+  "base": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "files": [
+    {
+      "path": "HANDOFF-FILES.json",
+      "bytes": 8749,
+      "sha256": "104ea4c16f84974ae10af4b61e944a5562cafa3971a88de44234bd9ee0629c27"
+    },
+    {
+      "path": "PHYSICS_HANDSHAKE.md",
+      "bytes": 6744,
+      "sha256": "0dc822e3b4b393a063aac793822351e8acf41b81ced3176cade6e0a1b648d20c"
+    },
+    {
+      "path": "STAGING-QUALIFICATION.json",
+      "bytes": 19672,
+      "sha256": "dec089295bb704edc936c5e173b254d309303d46540ec23d71416344ac25dffc"
+    },
+    {
+      "path": "cancel-clock-negative-inputs.json",
+      "bytes": 16088,
+      "sha256": "bfddce94f01dc3102f47c3ddbd6856308b91cbf5c12fb99f392a682c389e4279"
+    },
+    {
+      "path": "cancel-clock-negative.log",
+      "bytes": 1244,
+      "sha256": "e0c635b01a05446b2c5ad523d546b945326d1ce41236766bb09cbf67ac23ba73"
+    },
+    {
+      "path": "cancel-clock-repaired-inputs.json",
+      "bytes": 16088,
+      "sha256": "909c02a0f04d2f8ef9120c7c261adfefc29538004ae42a06abdd4970932234c0"
+    },
+    {
+      "path": "capture_object_shard_worker.gd",
+      "bytes": 3500,
+      "sha256": "84f18b992101ab520d64b6e59d3ffd69e0c4eb88befae9efc7397436ebae9d0a"
+    },
+    {
+      "path": "docs/operations/objectshard-m3-preflight-playtest.md",
+      "bytes": 6419,
+      "sha256": "171d5ef48c80688d728280bb50e187d504c1ffe0d9af642fd6ac8e2c486f6b7b"
+    },
+    {
+      "path": "docs/research/objectshard-m3-preflight.md",
+      "bytes": 13229,
+      "sha256": "a1a688b4a9b12f415ca56704a0958eef08a34abb7b4aa934ad07fbd3e6835920"
+    },
+    {
+      "path": "docs/research/objectshard-m3-source-ownership.json",
+      "bytes": 11425,
+      "sha256": "ec56e5afc600f8c9df3e61f46c8ded7ef169388312756addedae4f981657228b"
+    },
+    {
+      "path": "host-514-iteration-inputs.json",
+      "bytes": 1961,
+      "sha256": "4b1f59b406b9fa8d80ba7fe036561a00a7e10576448b77291fa057579014654b"
+    },
+    {
+      "path": "host-iteration-inputs.json",
+      "bytes": 1725,
+      "sha256": "286a2e205cc4a352d1aa95217df6eb0a758617308d0c600d3dd6efd04277dd40"
+    },
+    {
+      "path": "host-parse.log",
+      "bytes": 312,
+      "sha256": "3a535ed30ff532d5e80c4b998542f92258396360e86316fda85158a674ee2fbc"
+    },
+    {
+      "path": "incremental-clock-negative.log",
+      "bytes": 1167,
+      "sha256": "2c8fb051646de2aa412402d34aaa0b0b694f6cd2c8e0033a0116aad3adca4b03"
+    },
+    {
+      "path": "incremental-motion.log",
+      "bytes": 506,
+      "sha256": "f89ac3eb352e0ee73d49cd6db85fbb448581dee3adc24a6b00005a385b59843b"
+    },
+    {
+      "path": "iteration-inputs.json",
+      "bytes": 736,
+      "sha256": "0aa3ca09f0c59e98a17eca8dba6a8c08adbe97d9cd35cad0769719ae2016b0bb"
+    },
+    {
+      "path": "local-boot-fixture.json",
+      "bytes": 239,
+      "sha256": "14e69539eb7249850483a02c33d8b8be26c2110275e5ad56eaaf16ac7a479bcb"
+    },
+    {
+      "path": "local-m3-boot-receipt.json",
+      "bytes": 741,
+      "sha256": "73194161c6fd6d2bded82d28b0fa0db2a8ee6f90be007c736ad354c5535378af"
+    },
+    {
+      "path": "m3-package-tests-missing-staged-budget.log",
+      "bytes": 12946,
+      "sha256": "d3a4cb5be7e8b9e89ea8f59836b73c11bf9cd0d5d7bebf70f56977454bd1a4ed"
+    },
+    {
+      "path": "m3-package-tests.log",
+      "bytes": 6277,
+      "sha256": "3bf125dc9bc2c9831228d76bb7e69a5c9aac2d82b285ab199b82e421cbbc82f9"
+    },
+    {
+      "path": "object_shard_native_worker.gd",
+      "bytes": 16450,
+      "sha256": "9fccd356847071ea5428aa417d60cf7909f057fc1fe9f183559f04100aa50908"
+    },
+    {
+      "path": "object_shard_worker_host.gd",
+      "bytes": 28294,
+      "sha256": "9828d57e3bffa56504697c1aa606a7fef39f210b72c697806ff385a54cb775e6"
+    },
+    {
+      "path": "object_shard_worker_rehearsal.gd",
+      "bytes": 9816,
+      "sha256": "c127c78ba517bd8b3bd7a0d24a5f55251cb0246f057fb4fe41839ba5750f2b3b"
+    },
+    {
+      "path": "object_shard_worker_rehearsal.tscn",
+      "bytes": 320,
+      "sha256": "ca4b3c8fada4a69ba61b5b27c6c32d14a611c7e9b480bfd91d3c4ad95ee28a64"
+    },
+    {
+      "path": "operation-identity-negative.log",
+      "bytes": 876,
+      "sha256": "552f012ecf850d77bdb3e1c7f682a41971ac5882b9c75e6883f8f01737050598"
+    },
+    {
+      "path": "operation-identity-repaired.log",
+      "bytes": 449,
+      "sha256": "18ceb4a944ef8fd606940c126679e5af6fa58a61e8d2ec2e6d94d79c90766605"
+    },
+    {
+      "path": "owner-scene-final514.json",
+      "bytes": 105972,
+      "sha256": "2b879c020f5e31a72007d14ce3ad19f6fecf6136322817b8afe3f8152d408894"
+    },
+    {
+      "path": "owner-scene-final514.json.jsonl",
+      "bytes": 111376,
+      "sha256": "9dffef421d596d557cc1da9166211e4413e633cb131383d30c916ac5170fb084"
+    },
+    {
+      "path": "owner-scene-report-invalid-source-label.json",
+      "bytes": 105423,
+      "sha256": "d013be33f8fef68a46152e00d9780748bc898c46416f9db54d2a9e9e1a3a9faa"
+    },
+    {
+      "path": "owner-scene-report-invalid-source-label.json.jsonl",
+      "bytes": 110332,
+      "sha256": "950486035fb17020f60b230a2c1e95c22ce2357d7bc87deb4290b2fa33578b64"
+    },
+    {
+      "path": "owner-scene-report.json",
+      "bytes": 105422,
+      "sha256": "5354a19c9a544f612f10d68a4738650d2b5076ebb5a2e5b70c1e8b652798e626"
+    },
+    {
+      "path": "owner-scene-report.json.jsonl",
+      "bytes": 110331,
+      "sha256": "6ace9402ebb836fef1bc060d69a757d227e499fabfd588f517aa233dcf9f0bd6"
+    },
+    {
+      "path": "physics-class-import.log",
+      "bytes": 2293,
+      "sha256": "929c68850da54c81782f07d880d548de5bd3aae9faded767072c9775159e146d"
+    },
+    {
+      "path": "physics-final514-qualification.json",
+      "bytes": 3374,
+      "sha256": "f63628b1fa2b0848726b6797032f9ae81ad8a948a83c94300b74f2910c834ecb"
+    },
+    {
+      "path": "physics-handoff-manifest.json",
+      "bytes": 2917,
+      "sha256": "80dd1df23e728f22bf27a3440598841610336a811932050815e3b2684015e6be"
+    },
+    {
+      "path": "physics-staging-qualification.json",
+      "bytes": 4471,
+      "sha256": "88e6cd75c256470053423f06258e8c2b999620d37d38a7f42a7262f19460ee07"
+    },
+    {
+      "path": "project/.godot/.gdignore",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "project/.godot/editor/filesystem_cache10",
+      "bytes": 2651,
+      "sha256": "c5e6ee5299f23540d055fa4c97f5a82679fedaa3ea8181386f4572369c52d293"
+    },
+    {
+      "path": "project/.godot/editor/project_metadata.cfg",
+      "bytes": 177,
+      "sha256": "8d4173842bf9512decc54fc10ddf10d732a233f7379f9a7aff7c0de24a2c9bf7"
+    },
+    {
+      "path": "project/.godot/extension_list.cfg",
+      "bytes": 114,
+      "sha256": "74559a1fa37f0cc3ec8cdd83901f0ff4a1c98deff995b88509ff252dca7c1f4a"
+    },
+    {
+      "path": "project/.godot/global_script_class_cache.cfg",
+      "bytes": 1181,
+      "sha256": "249a60b8d8b84ce7734b780fb6ebf2ef3fb32a94fa03bcc92627a9ff6753c2f9"
+    },
+    {
+      "path": "project/.godot/uid_cache.bin",
+      "bytes": 920,
+      "sha256": "0fd9d96e45cc50e9e3afb6c1c6cd1c93cd59706e4456b4c982a0ecae79b40772"
+    },
+    {
+      "path": "project/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "bytes": 5573096,
+      "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd"
+    },
+    {
+      "path": "project/addons/cybersand_native/cybersand_native.gdextension",
+      "bytes": 899,
+      "sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7"
+    },
+    {
+      "path": "project/addons/cybersand_native/cybersand_native.gdextension.uid",
+      "bytes": 20,
+      "sha256": "98fabb6e9504efd9face7de7918a8b5a7bf00b2a2338eee67da0ded59274e2ce"
+    },
+    {
+      "path": "project/addons/cybersand_native/runtime-provenance.json",
+      "bytes": 135020,
+      "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+    },
+    {
+      "path": "project/addons/cybersand_native/runtime-provenance.linux.json",
+      "bytes": 134860,
+      "sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1"
+    },
+    {
+      "path": "project/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "bytes": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    {
+      "path": "project/addons/godot-rapier2d/godot-rapier2d.gdextension",
+      "bytes": 2486,
+      "sha256": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14"
+    },
+    {
+      "path": "project/addons/godot-rapier2d/godot-rapier2d.gdextension.uid",
+      "bytes": 19,
+      "sha256": "5279c8839684a1ee92c8d5d82a9e78c8efcc8c50d63cddb594f265a9a5c25d45"
+    },
+    {
+      "path": "project/addons/godot-rapier2d/runtime-provenance.linux.json",
+      "bytes": 4095,
+      "sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b"
+    },
+    {
+      "path": "project/addons/godot-rapier2d/runtime-provenance.windows.json",
+      "bytes": 4193,
+      "sha256": "9c850d36f67aa47964f8e714f2f7bbd39eff7ea6c8849d1a48712b49db8bb2a0"
+    },
+    {
+      "path": "project/object_shard_worker_rehearsal.tscn",
+      "bytes": 320,
+      "sha256": "ca4b3c8fada4a69ba61b5b27c6c32d14a611c7e9b480bfd91d3c4ad95ee28a64"
+    },
+    {
+      "path": "project/project.godot",
+      "bytes": 227,
+      "sha256": "d68f3e9b935148262cba2af0ed0437d8b197257e63f0434d85e32923432c812e"
+    },
+    {
+      "path": "project/scripts/object_shard_capture.gd",
+      "bytes": 8005,
+      "sha256": "4078a37fb99b550f50a5dea5cd155371de3e1de67faae1d2abcb7e8ba8ca9e4f"
+    },
+    {
+      "path": "project/scripts/object_shard_capture.gd.uid",
+      "bytes": 20,
+      "sha256": "547bb131b4503e9117a5e5ed412e692272c19c549eb9ade1431034b92fb7d042"
+    },
+    {
+      "path": "project/scripts/object_shard_lab_session.gd",
+      "bytes": 28399,
+      "sha256": "9de3c25a5cd6d3b2f54a8b0d3ba138ad52d18129d7cd49dae125f1a2032517cb"
+    },
+    {
+      "path": "project/scripts/object_shard_lab_session.gd.uid",
+      "bytes": 19,
+      "sha256": "4225d90a49679df6c3f72e7399def176a54d68b3db5951f524f1c2349b039012"
+    },
+    {
+      "path": "project/scripts/object_shard_lab_view.gd",
+      "bytes": 6211,
+      "sha256": "34947a3dde5757ab49a36465db1b776b8ece2ad387ef4e02b06ea7454ab8bb78"
+    },
+    {
+      "path": "project/scripts/object_shard_native_worker.gd",
+      "bytes": 16450,
+      "sha256": "9fccd356847071ea5428aa417d60cf7909f057fc1fe9f183559f04100aa50908"
+    },
+    {
+      "path": "project/scripts/object_shard_native_worker.gd.uid",
+      "bytes": 20,
+      "sha256": "d9e694824d943f2e0c1db8ad1142d1497c78b1f797251c938a6350d7ce66acb3"
+    },
+    {
+      "path": "project/scripts/object_shard_physics_bridge.gd",
+      "bytes": 37370,
+      "sha256": "8341084d8dfc76d9ee5ace7ffc2f39c338d284cbe8b029ca67b4cb81144d293a"
+    },
+    {
+      "path": "project/scripts/object_shard_physics_bridge.gd.uid",
+      "bytes": 19,
+      "sha256": "70a209e48364ba6ea259f91a91e8448050b681845a8ab701516a713e3bde7435"
+    },
+    {
+      "path": "project/scripts/object_shard_worker_host.gd",
+      "bytes": 28294,
+      "sha256": "9828d57e3bffa56504697c1aa606a7fef39f210b72c697806ff385a54cb775e6"
+    },
+    {
+      "path": "project/scripts/object_shard_worker_host.gd.uid",
+      "bytes": 20,
+      "sha256": "8f0abf4d59e66f71b7b1c60845bf853c1ea96773ceecd65ede72328fb2afb9fa"
+    },
+    {
+      "path": "project/scripts/object_shard_worker_rehearsal.gd",
+      "bytes": 9816,
+      "sha256": "c127c78ba517bd8b3bd7a0d24a5f55251cb0246f057fb4fe41839ba5750f2b3b"
+    },
+    {
+      "path": "project/scripts/transport_profiles.gd",
+      "bytes": 6774,
+      "sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0"
+    },
+    {
+      "path": "project/scripts/transport_profiles.gd.uid",
+      "bytes": 20,
+      "sha256": "5a4ce902b831b964bbef5af31c5c99f37a270fcb90d9cee6ed875e896a029831"
+    },
+    {
+      "path": "project/tests/capture_object_shard_worker.gd",
+      "bytes": 3500,
+      "sha256": "84f18b992101ab520d64b6e59d3ffd69e0c4eb88befae9efc7397436ebae9d0a"
+    },
+    {
+      "path": "project/tests/check_host_script.gd",
+      "bytes": 204,
+      "sha256": "426c3b17c1d1c155d498e79e928cc6696d494071742060f3b4fd58bc0907fbef"
+    },
+    {
+      "path": "project/tests/check_host_script.gd.uid",
+      "bytes": 20,
+      "sha256": "de512437a21a2d0701236e6d7b861a32b5d26828da1fec3765ea9dac3283b93a"
+    },
+    {
+      "path": "project/tests/fixtures/objectshard_owner_d_retained_actions.json",
+      "bytes": 76948,
+      "sha256": "0b6baf1cfa74b6553478a9d04f1ba80830aaac9718b59dc7a9c0e3fe2a982698"
+    },
+    {
+      "path": "project/tests/probe_object_shard_retained_actions.gd",
+      "bytes": 7731,
+      "sha256": "58aec987035c37ad91ce2027fbb41c30bbb619f181e7ef9d4987c1392cbdd946"
+    },
+    {
+      "path": "project/tests/probe_object_shard_retained_actions.gd.uid",
+      "bytes": 19,
+      "sha256": "cf7a734f166c627f4977915ef5dc9887cdd04c238670dd3b015f61eb89fee571"
+    },
+    {
+      "path": "project/tests/probe_worker_operation_identity.gd",
+      "bytes": 2217,
+      "sha256": "69a7f22167c013053ee04c5c2f6b7918f62bc537e0e03b0ddfa9b2c46dce0673"
+    },
+    {
+      "path": "project/tests/replay_object_shard_trace.gd",
+      "bytes": 4763,
+      "sha256": "519b539b090054166da014038e213183eb72422912b9900a5b8b8ccf3a607846"
+    },
+    {
+      "path": "project/tests/replay_object_shard_worker_trace.gd",
+      "bytes": 5882,
+      "sha256": "63ecccd601038ed2ab8de399352ce4ff2b7f6014ec7432e40f683c75745f5389"
+    },
+    {
+      "path": "project/tests/test_object_shard_incremental_motion.gd",
+      "bytes": 11761,
+      "sha256": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6"
+    },
+    {
+      "path": "project/tests/test_object_shard_incremental_motion.gd.uid",
+      "bytes": 20,
+      "sha256": "760a6387728e375aea94831d6174772d5411e02397b3552147437142f14ff652"
+    },
+    {
+      "path": "project/tests/test_object_shard_motion_segments.gd",
+      "bytes": 7770,
+      "sha256": "41a726a4885c1c9aec9439a3ebe2ff26a28646cf14adb96adb54f8ced3679cf7"
+    },
+    {
+      "path": "project/tests/test_object_shard_motion_segments.gd.uid",
+      "bytes": 20,
+      "sha256": "b4ccfcd3509a177df66e22aebd387a6cc0a9d724f8861125b7219e5a0f33edfd"
+    },
+    {
+      "path": "project/tests/test_object_shard_native_worker.gd",
+      "bytes": 7765,
+      "sha256": "a78bac83e92145699411b00ec3ba2fb9fb19998225e8fe950c3c48bea9178a4a"
+    },
+    {
+      "path": "project/tests/test_object_shard_native_worker.gd.uid",
+      "bytes": 19,
+      "sha256": "8ed42c72aa75efaff2c8f66be883984a55347becbc1534804f440f61ca654d52"
+    },
+    {
+      "path": "project/tests/test_object_shard_physics_bridge.gd",
+      "bytes": 8344,
+      "sha256": "1710969b699d9bcd2b946162ea816bbdbac0282f4849b08effa3ae6cae0daa15"
+    },
+    {
+      "path": "project/tests/test_object_shard_physics_bridge.gd.uid",
+      "bytes": 19,
+      "sha256": "58fc13329beb2f65cf903054b126a6438b0c0f968f5d93b280664edfc62b7b49"
+    },
+    {
+      "path": "project/tests/test_object_shard_rest_contacts.gd",
+      "bytes": 7812,
+      "sha256": "2a5e42396af93618f1e860eb1e4c3c58d456a921fb68b99ec7b351c6d44e3a7a"
+    },
+    {
+      "path": "project/tests/test_object_shard_rest_contacts.gd.uid",
+      "bytes": 20,
+      "sha256": "6411210240d8eaf388037d6ecf6028259ac5f23101997b5f1826703c33168398"
+    },
+    {
+      "path": "project/tests/test_object_shard_workbench_contract.gd",
+      "bytes": 5477,
+      "sha256": "d751d277b0fd6a5952c4ee0ba92bfe35acc0383fb57897eb112bea0bb3fae9bf"
+    },
+    {
+      "path": "project/tests/test_object_shard_workbench_contract.gd.uid",
+      "bytes": 20,
+      "sha256": "085ca7dd1938da5ccfb2fdf11d876a7e928f0b51752349b201674d9bb12449fb"
+    },
+    {
+      "path": "project/tests/test_object_shard_worker_adverse.gd",
+      "bytes": 7150,
+      "sha256": "490c6dc548d43f755de512cdb2f11891a52ba295ad27fa5a79b3619a4d3cbd25"
+    },
+    {
+      "path": "project/tests/test_object_shard_worker_package_boot.gd",
+      "bytes": 1785,
+      "sha256": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0"
+    },
+    {
+      "path": "project/tests/test_object_shard_worker_rehearsal.gd",
+      "bytes": 12174,
+      "sha256": "e762d7c28611b618e76af15c9ae435e17924bcc5547ec37c69661e99a5fa8cac"
+    },
+    {
+      "path": "project/tests/test_object_shard_worker_resources.gd",
+      "bytes": 5245,
+      "sha256": "6da18fe3134e51755ff0696ecf1f43ffeedaf420e800898d05d13309f3cbb619"
+    },
+    {
+      "path": "project/tests/test_object_shard_worker_scene.gd",
+      "bytes": 5383,
+      "sha256": "810c5c5c41571c9e2c43ddd8b05a6aff9ca3958c189b49878a3569861ffc2691"
+    },
+    {
+      "path": "replay_object_shard_trace-preflight-local.log",
+      "bytes": 298,
+      "sha256": "eb13e5497e65a9699502ad5770db63c8c415fed64f8119430dc74c7bfa9f9a7a"
+    },
+    {
+      "path": "replay_object_shard_trace.gd",
+      "bytes": 4763,
+      "sha256": "519b539b090054166da014038e213183eb72422912b9900a5b8b8ccf3a607846"
+    },
+    {
+      "path": "replay_object_shard_worker_trace-final514.log",
+      "bytes": 770,
+      "sha256": "7cb9dafa1bbc57828773a134857fad0ac9ef9d341876791f51f487092685fba5"
+    },
+    {
+      "path": "replay_object_shard_worker_trace.gd",
+      "bytes": 5882,
+      "sha256": "63ecccd601038ed2ab8de399352ce4ff2b7f6014ec7432e40f683c75745f5389"
+    },
+    {
+      "path": "scripts/object_shard_physics_bridge.gd",
+      "bytes": 37370,
+      "sha256": "8341084d8dfc76d9ee5ace7ffc2f39c338d284cbe8b029ca67b4cb81144d293a"
+    },
+    {
+      "path": "sync-replayer-wrong-host.json",
+      "bytes": 570,
+      "sha256": "e99ff0c772b3eccafab30e2b57b352669a5bcea7aba7de7fcfff2d19c97cf6a8"
+    },
+    {
+      "path": "test_object_shard_incremental_motion-clock-final514.log",
+      "bytes": 506,
+      "sha256": "d8a88da712cbf017e3fbbb6a4909557988b737b4c09d5a0d7e7c4841e0e2ee39"
+    },
+    {
+      "path": "test_object_shard_incremental_motion.gd",
+      "bytes": 11761,
+      "sha256": "de7505ee3b21896229cba7f28fb347cfb7f4245f33deecd205a12f1c719ea8d6"
+    },
+    {
+      "path": "test_object_shard_incremental_motion_clock_negative.gd",
+      "bytes": 11722,
+      "sha256": "edd1b991a22f860e1fafdc308b8bcc3e56d9757d6d087002a645683442e2726e"
+    },
+    {
+      "path": "test_object_shard_motion_segments-clock-final514.log",
+      "bytes": 501,
+      "sha256": "0f7ff2d4eeca689e76ca1cfbb355334c8bd1bf0192751f7424d028d9d45028fb"
+    },
+    {
+      "path": "test_object_shard_motion_segments-imported.log",
+      "bytes": 501,
+      "sha256": "0f7ff2d4eeca689e76ca1cfbb355334c8bd1bf0192751f7424d028d9d45028fb"
+    },
+    {
+      "path": "test_object_shard_motion_segments.gd",
+      "bytes": 7770,
+      "sha256": "41a726a4885c1c9aec9439a3ebe2ff26a28646cf14adb96adb54f8ced3679cf7"
+    },
+    {
+      "path": "test_object_shard_motion_segments.log",
+      "bytes": 575,
+      "sha256": "c014b38eb91c4c9cb3a2c73e3d524c3aea27ece42421cace7bcd920e991c62fe"
+    },
+    {
+      "path": "test_object_shard_native_worker-final514.log",
+      "bytes": 1695,
+      "sha256": "7d0c1604efc32f919a3995a6e2c40e88b040a21b3d05f1e50c22381f7a2b14f9"
+    },
+    {
+      "path": "test_object_shard_native_worker.gd",
+      "bytes": 7765,
+      "sha256": "a78bac83e92145699411b00ec3ba2fb9fb19998225e8fe950c3c48bea9178a4a"
+    },
+    {
+      "path": "test_object_shard_physics_bridge-clock-final514.log",
+      "bytes": 501,
+      "sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84"
+    },
+    {
+      "path": "test_object_shard_physics_bridge-imported.log",
+      "bytes": 501,
+      "sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84"
+    },
+    {
+      "path": "test_object_shard_physics_bridge.log",
+      "bytes": 575,
+      "sha256": "6c160a32b26560d74b9573eb6d7c9aec68ea5adaa898060a4029af30d9e5b97c"
+    },
+    {
+      "path": "test_object_shard_rest_contacts-clock-final514.log",
+      "bytes": 642,
+      "sha256": "657d3f9a84104b69c73bbda18236314f559b34915d7cadfae2febfc7b3e2c698"
+    },
+    {
+      "path": "test_object_shard_rest_contacts-imported.log",
+      "bytes": 642,
+      "sha256": "657d3f9a84104b69c73bbda18236314f559b34915d7cadfae2febfc7b3e2c698"
+    },
+    {
+      "path": "test_object_shard_rest_contacts.log",
+      "bytes": 571,
+      "sha256": "fe4bf143f44252611fa7e3963973ccb89269d6d197faf12abd938511c3a9c23c"
+    },
+    {
+      "path": "test_object_shard_workbench_contract-final514.log",
+      "bytes": 408,
+      "sha256": "aff0531921f4df0aa53daf46233d5c94cefb12933c4af91872646db76439d7a7"
+    },
+    {
+      "path": "test_object_shard_workbench_contract.gd",
+      "bytes": 5477,
+      "sha256": "d751d277b0fd6a5952c4ee0ba92bfe35acc0383fb57897eb112bea0bb3fae9bf"
+    },
+    {
+      "path": "test_object_shard_worker_adverse-final514.log",
+      "bytes": 860,
+      "sha256": "0cc191f4a83067a9fac91e8179790d98c41904975434e421e8afdee365c1c0ee"
+    },
+    {
+      "path": "test_object_shard_worker_adverse.gd",
+      "bytes": 7150,
+      "sha256": "490c6dc548d43f755de512cdb2f11891a52ba295ad27fa5a79b3619a4d3cbd25"
+    },
+    {
+      "path": "test_object_shard_worker_package_boot-preflight-local.log",
+      "bytes": 860,
+      "sha256": "cfe5ad304959429f9538c67e361b0b965a415cd3724a20c62c6e88dd98ab9472"
+    },
+    {
+      "path": "test_object_shard_worker_package_boot.gd",
+      "bytes": 1785,
+      "sha256": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0"
+    },
+    {
+      "path": "test_object_shard_worker_rehearsal-final514.log",
+      "bytes": 34724,
+      "sha256": "3be1bbbcc3d818ac68037ebeae5e2d43a588a4896083097c1cf91bb46bc8a3ea"
+    },
+    {
+      "path": "test_object_shard_worker_rehearsal.gd",
+      "bytes": 12174,
+      "sha256": "e762d7c28611b618e76af15c9ae435e17924bcc5547ec37c69661e99a5fa8cac"
+    },
+    {
+      "path": "test_object_shard_worker_resources-final514.log",
+      "bytes": 4535,
+      "sha256": "81960301856d1d0d58e0396a056068359b8f3abed3e0d9164a940c0ae80c9860"
+    },
+    {
+      "path": "test_object_shard_worker_resources.gd",
+      "bytes": 5245,
+      "sha256": "6da18fe3134e51755ff0696ecf1f43ffeedaf420e800898d05d13309f3cbb619"
+    },
+    {
+      "path": "test_object_shard_worker_scene-final514.log",
+      "bytes": 47504,
+      "sha256": "650288e835a10a803a0d59c4e20705ae11550828d1829276eb627eb40e46460a"
+    },
+    {
+      "path": "test_object_shard_worker_scene.gd",
+      "bytes": 5383,
+      "sha256": "810c5c5c41571c9e2c43ddd8b05a6aff9ca3958c189b49878a3569861ffc2691"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/analyze_owner_evidence.cpython-312.pyc",
+      "bytes": 9326,
+      "sha256": "68fa42f4e96bf7b4e5e90408551a094ed1bc36c5d5e38eca040493e6d3f310a2"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/check_preset_connectivity.cpython-312.pyc",
+      "bytes": 8612,
+      "sha256": "35e9d05d7fff1af4734c9284a23fab3c83d589c7dc4868f155b341349f7a8d70"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/lab_performance.cpython-312.pyc",
+      "bytes": 5825,
+      "sha256": "50273ff434d22d1ac1844c2aa783465ec75be196a4df8871248767d92886fd08"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/native_receipt.cpython-312.pyc",
+      "bytes": 5802,
+      "sha256": "2be8f5e02d7789c8b47ba2c1d7b0c5f4ed85ecde06e9ff1ec76437ee422eea76"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/package_windows_lab.cpython-312.pyc",
+      "bytes": 14199,
+      "sha256": "30a26a0afc235326e027745566996dd433a9506dbe6ac365cf37310f8b6ff404"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/qualify_lab.cpython-312.pyc",
+      "bytes": 27633,
+      "sha256": "506c672de742fc6a84cbfcef75cafe53937653391aeb383bcec397c60b8adb42"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/qualify_windows_zip.cpython-312.pyc",
+      "bytes": 13568,
+      "sha256": "2274f73f7e7723ba8143bb77b9df1d4c0966660cc5e140c6e5689fc4ed0b7ce6"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/run_benchmarks.cpython-312.pyc",
+      "bytes": 16823,
+      "sha256": "934c5d4e8fd7299571d1863b06e0f61dfcd95293fb6cd2a2c7db9534b1ba61a7"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/run_native_tests.cpython-312.pyc",
+      "bytes": 24709,
+      "sha256": "afb62f1a6b81251661d5083acf0a38c6ddef930c387b3d067b90ae490c184cf4"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/test_lab_performance.cpython-312.pyc",
+      "bytes": 4846,
+      "sha256": "21dc7bbb9a1b2a733996088ec2a08474f2006b9a5c177e1cb531d7c11b11e912"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/test_m3_package.cpython-312.pyc",
+      "bytes": 6440,
+      "sha256": "4f39d75851d8f18d705c6e1b18489bc78326372fc7ccb5620508582fafb23590"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/test_package_verifier.cpython-312.pyc",
+      "bytes": 8692,
+      "sha256": "7b35bf3708632eadb0102a957710fa03427ff5200fcfe2670803b0281c358e4f"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/test_qualification_receipts.cpython-312.pyc",
+      "bytes": 14344,
+      "sha256": "ddabea2abc9717811c06e63856eda60b7b7fb789c79da6385396982dcba3f9df"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/test_windows_zip.cpython-312.pyc",
+      "bytes": 11721,
+      "sha256": "234e1c5fbd51b9a53186896c5100f14795431d36a4eb0f01d12b979042c10b5e"
+    },
+    {
+      "path": "tools/objectshard/__pycache__/verify_package.cpython-312.pyc",
+      "bytes": 7880,
+      "sha256": "ed394e216c97872dd281d2a4991dd1722332e50d48adacf35907d1e792488440"
+    },
+    {
+      "path": "tools/objectshard/analyze_owner_evidence.py",
+      "bytes": 6777,
+      "sha256": "e259c05221f1797efe3b6b2d012d18fdece85b23775a3d35e2018d157a8afd07"
+    },
+    {
+      "path": "tools/objectshard/check_preset_connectivity.py",
+      "bytes": 5609,
+      "sha256": "5880c3706eb9fa842ccc6dfcff536c2750abdc73fea9108535ebad8278aeba13"
+    },
+    {
+      "path": "tools/objectshard/lab_budgets.json",
+      "bytes": 2882,
+      "sha256": "317ef316b7550dec04c794af209958c063ef0016aa2bd7f435aaca60f0be117a"
+    },
+    {
+      "path": "tools/objectshard/lab_performance.py",
+      "bytes": 3939,
+      "sha256": "4e86251b220f356dfde86446f8392eff8195666a670226cb51941652352a43eb"
+    },
+    {
+      "path": "tools/objectshard/native_receipt.py",
+      "bytes": 3411,
+      "sha256": "840a1b5766dec76db41ac72051edb367ee8df043a94e3e53f869f4867f74185f"
+    },
+    {
+      "path": "tools/objectshard/package_windows_lab.py",
+      "bytes": 10170,
+      "sha256": "b3e193a43d0f6851475be23cb4428147716bce89d395a964339d9ea795e50ff4"
+    },
+    {
+      "path": "tools/objectshard/qualify_lab.py",
+      "bytes": 22144,
+      "sha256": "db2a4b6076b44327c96f4f7d0f0d1a02dcca7cf0086379f0cf43905f928f1877"
+    },
+    {
+      "path": "tools/objectshard/qualify_windows_zip.py",
+      "bytes": 9844,
+      "sha256": "bc37a8e9817512bfe38f1ff3cff7351e92e301d10782ab09c47fce4ba005bee2"
+    },
+    {
+      "path": "tools/objectshard/run_benchmarks.py",
+      "bytes": 10490,
+      "sha256": "a0138bbeb7c4ba652c47e9bcc9846a8bc8683a9bee9b56c73b893645b364c94b"
+    },
+    {
+      "path": "tools/objectshard/run_native_tests.py",
+      "bytes": 16483,
+      "sha256": "c60fa0d33ade325af37d638d1ff8bfa35ad9deb2ff2fd80f16377af9bab5cdbb"
+    },
+    {
+      "path": "tools/objectshard/test_lab_performance.py",
+      "bytes": 2424,
+      "sha256": "be6c26e8570f99566fd260d4186c5ee149aba2e20490103fa3f6acd6de1237f0"
+    },
+    {
+      "path": "tools/objectshard/test_m3_package.py",
+      "bytes": 3633,
+      "sha256": "b6499db830ff467a47097f2b3e70469a8b656dfb9ed2dc8f9834e89926e89345"
+    },
+    {
+      "path": "tools/objectshard/test_package_verifier.py",
+      "bytes": 4185,
+      "sha256": "c1eaf81ab91f2f6c710bae45df2b65085d2b7cbcfec761dd89618f117a23c5cf"
+    },
+    {
+      "path": "tools/objectshard/test_qualification_receipts.py",
+      "bytes": 6546,
+      "sha256": "c3d254d82f8562a804e34c11706ca0d5e9301ce10d216c877c3511b1ff57fb38"
+    },
+    {
+      "path": "tools/objectshard/test_windows_zip.py",
+      "bytes": 5785,
+      "sha256": "61bf65be36b0a17f075e149b30be560e247b2d03056e700a8c263a6397411ce9"
+    },
+    {
+      "path": "tools/objectshard/verify_package.ps1",
+      "bytes": 6449,
+      "sha256": "2d0127102160756d8a55a7a5cbf632b609af7176209a145ec09cee0fc14b755c"
+    },
+    {
+      "path": "tools/objectshard/verify_package.py",
+      "bytes": 5863,
+      "sha256": "24a87feee32851fdcf60930c6e9a72233a49b9eb2013a2526dc11a867ac18713"
+    },
+    {
+      "path": "workbench-contract.log",
+      "bytes": 408,
+      "sha256": "aff0531921f4df0aa53daf46233d5c94cefb12933c4af91872646db76439d7a7"
+    },
+    {
+      "path": "worker-rehearsal-v1.log",
+      "bytes": 51536,
+      "sha256": "d3f9712f6270e0d86c1fc7dc7d01d2948c0e4141e0752304c900a19ecead6e65"
+    },
+    {
+      "path": "worker-rehearsal-v2.log",
+      "bytes": 51006,
+      "sha256": "fc49b783050ae849c69ab0df9acaf18be558437a2b0c9ee83d2c1f3f0a7ed151"
+    },
+    {
+      "path": "worker-replay-final514.json",
+      "bytes": 590,
+      "sha256": "cddeef4d39aa5df5939749445b9aa49512ab8b1b0882dda9e087c2c895669b9f"
+    },
+    {
+      "path": "worker-scene-v1-invalid-source-label.txt",
+      "bytes": 339,
+      "sha256": "5c36f9617fc9aa71fbf8cca140288ab0a25ee28055ce9c4d29ff1e51da1c9f28"
+    },
+    {
+      "path": "worker-scene-v1.log",
+      "bytes": 47011,
+      "sha256": "42bb32ba16935c63eb53259b8ddd4def2d8e70a3e63b0d6cb66bef373268b7cb"
+    },
+    {
+      "path": "worker-scene-v2.log",
+      "bytes": 47010,
+      "sha256": "15f360f4df43916d7e9c9806b4eb66072bcb09fd37d55e448f75e798e1ad2554"
+    },
+    {
+      "path": "worker-test-diagnostic.log",
+      "bytes": 2424,
+      "sha256": "a6de2056d9243a56cd8b35521d17761889b92b08be73707c1c9e759ce3560a9d"
+    },
+    {
+      "path": "worker-test-v2.log",
+      "bytes": 1042,
+      "sha256": "747c441b840e8afad2280a0b75ac2d020da7b073f8a82cc17df9141b6bcd8c55"
+    },
+    {
+      "path": "worker-test-v3.log",
+      "bytes": 1695,
+      "sha256": "4362332e683efd2cade5cca731b02f0e377736f273f521f515a2588d7057560c"
+    },
+    {
+      "path": "worker-test.log",
+      "bytes": 2204,
+      "sha256": "8228a6a6c752a53e6285242e48b53c2c9c7bf60091279930d5872c3b74724724"
+    }
+  ]
+}

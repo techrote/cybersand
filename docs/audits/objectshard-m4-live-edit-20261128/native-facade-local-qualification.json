@@ -1,0 +1,29 @@
+{
+  "scope": "Actual Linux Godot4.7 GDExtension facade; local GCC14.2 development build, not production publication or Windows/Rapier movement qualification",
+  "runtime": {
+    "kind": "local-development-only",
+    "source_files": {
+      "native/include/cybersand/object_shard.hpp": "6dce507e2a4d3bc94c747fc7128c95fdf7c3f930211ba41a19a5a08968629b33",
+      "native/include/cybersand/object_shard_coordinator.hpp": "b8c8d49cc6ff4b19ae3067b306f7decd14e209e66ffe87e39d82a2dbf73f2134",
+      "native/include/cybersand/object_shard_mutation.hpp": "e73d1ffb38fd601f2b24f150fe38cdbb33ea480d94421373c516b6f8375ad679",
+      "native/src/object_shard.cpp": "34123096e28b665d4a8d20f2ee52393236d551c9818a103141025a9467525311",
+      "native/src/object_shard_coordinator.cpp": "fea358c03a0584aeaad2e1349e997a6f3080a1d6ae64f4d7805746258bc033f3",
+      "godot/native_extension/cyber_native_cell_world.cpp": "73f5230cc4d455fa957b4c78b6bfe3d71330f81b8c8df95d06ee6e21f3ff4930",
+      "godot/native_extension/cyber_object_shard_lab.cpp": "839a51175e74072f86f05c61f517dc8615d2082f0f0e7d4a9b1ae3cd4cd2d698",
+      "godot/native_extension/cyber_object_shard_lab.hpp": "ec4bc2bf445ddfdf32c2ddb6e6390fd580ac070c312f73ccf0043bf466ca7f22"
+    },
+    "sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+    "bytes": 6027152,
+    "compiler": "GCC14.2 explicit CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1",
+    "godot_cpp_revision": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "installed_atomically": true
+  },
+  "test_file": "godot/tests/test_object_shard_m4_same_world_extension.gd",
+  "test_sha256": "8eda5c200803e4efee435a585c478ab5e8bed047fe7cac9f85b81824c1b5bbda",
+  "result": {
+    "checks": 59,
+    "failures": [],
+    "schema": "objectshard-m4-actual-godot-sameworld-v1",
+    "scope": "actual Godot 4.7 native Workbench World owner-local attachment/GCR/native tick; NOT Rapier movement"
+  }
+}

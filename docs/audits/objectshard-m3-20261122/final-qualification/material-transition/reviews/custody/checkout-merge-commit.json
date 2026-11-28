@@ -1,0 +1,40 @@
+{
+  "sha": "bd8a9503507273c3348b2e711e6b3638860a9274",
+  "node_id": "C_kwDOUHiL-9oAKGJkOGE5NTAzNTA3MjczYzMzNDhiMmU3MTFlNmIzNjM4ODYwYTkyNzQ",
+  "url": "https://api.github.com/repos/techrote/cybersand/git/commits/bd8a9503507273c3348b2e711e6b3638860a9274",
+  "html_url": "https://github.com/techrote/cybersand/commit/bd8a9503507273c3348b2e711e6b3638860a9274",
+  "author": {
+    "name": "tom",
+    "email": "261801702+techrote@users.noreply.github.com",
+    "date": "2026-11-22T08:33:41Z"
+  },
+  "committer": {
+    "name": "GitHub",
+    "email": "noreply@github.com",
+    "date": "2026-11-22T08:33:41Z"
+  },
+  "tree": {
+    "sha": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+    "url": "https://api.github.com/repos/techrote/cybersand/git/trees/ede95a3ad7102f4059f8b425167c7fa6c1948663"
+  },
+  "message": "Merge 73018218092e79fbe935aa60890e33bd9f4859ac into 44abd754d014a44078a41792d2d46967a9b8cf30",
+  "parents": [
+    {
+      "sha": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "url": "https://api.github.com/repos/techrote/cybersand/git/commits/44abd754d014a44078a41792d2d46967a9b8cf30",
+      "html_url": "https://github.com/techrote/cybersand/commit/44abd754d014a44078a41792d2d46967a9b8cf30"
+    },
+    {
+      "sha": "73018218092e79fbe935aa60890e33bd9f4859ac",
+      "url": "https://api.github.com/repos/techrote/cybersand/git/commits/73018218092e79fbe935aa60890e33bd9f4859ac",
+      "html_url": "https://github.com/techrote/cybersand/commit/73018218092e79fbe935aa60890e33bd9f4859ac"
+    }
+  ],
+  "verification": {
+    "verified": true,
+    "reason": "valid",
+    "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJrAqjlCRC1aQ7uu5UhlAAA/VwQAJmMq4Yow+KyHNVD/EybpJeP\ndbCqBZOp4ZabAGxiLfYXq+Tm1D1QWFagJ8cYypnVHzbHGZWn8sI68DQkN2mlCTJ2\n/y4U78x1TA1kNPNYsDalzt5UNSjc6ELFStuYgX8z161eTqxOiJzac437taUYd9xi\nd3z+TGrVD9LktZavGvXqNzOTXokU/pTB2lm9VGlZhffOsZqgcQKIrE6I3FYCvmO9\nL4Xdu5yBoTDJInbPwqft944ZBGAOG0lCmnP4s7mtDiTBJFyuvYak79tAgspvpRp0\na8HFEELBYXS2wWmiccG5W1K/LgpyRWLeXH8GsYP0I3Wwo8YPxb80WjPQ33qZPQHz\nyTqP6tK2HjgHEWKDRUKzwzkEsGGMK5pxJZ78bd0PZUDyAMXtUDiPhI1T3zfmL9JV\nH3+85o/OK5WkAWdtKpLAQT77YBmi0vAC6UB0no85uQp9Cu1CWv9VQWIZoX4OWaGA\nUksn0516jDG019CQSMXXxMxBw8VLZyu9ocL+RClesBs5tdHOb5tRpNt3y0Vm+5WD\nvgUz/xs39hHgfvgMDsJjBRTKILFWQ7luLSWuJNB1DnCrCjHGyxgWGafjnZWduADD\n5fnymrw2JQP3/ujZOubq6D3tJudkdaGSxqtOwwt5NQBWN6LRKEd54a+iWOPXvaGt\naXCc4epsbOX3RWJEtzh0\n=Fx8s\n-----END PGP SIGNATURE-----\n",
+    "payload": "tree ede95a3ad7102f4059f8b425167c7fa6c1948663\nparent 44abd754d014a44078a41792d2d46967a9b8cf30\nparent 73018218092e79fbe935aa60890e33bd9f4859ac\nauthor tom <261801702+techrote@users.noreply.github.com> 1795336421 +0000\ncommitter GitHub <noreply@github.com> 1795336421 +0000\n\nMerge 73018218092e79fbe935aa60890e33bd9f4859ac into 44abd754d014a44078a41792d2d46967a9b8cf30\n",
+    "verified_at": "2026-11-22T08:33:41Z"
+  }
+}

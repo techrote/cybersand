@@ -1,0 +1,56 @@
+{
+  "schema": "objectshard-m4-live-edit-specialist-b-freeze-inputs-v1",
+  "scope": "Initial candidate Workbench source inputs; exact committed source and hosted artifacts follow principal qualification",
+  "files": [
+    {
+      "path": "godot/scripts/object_shard_live_edit_footprint.gd",
+      "sha256": "4febd5f13dcde78ee6debd317d633f40ac02bf36ca5cc3cdd3ba670c2b605061",
+      "bytes": 3018
+    },
+    {
+      "path": "godot/scripts/object_shard_m4_runtime.gd",
+      "sha256": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+      "bytes": 39608
+    },
+    {
+      "path": "godot/scripts/object_shard_m4_workbench_port.gd",
+      "sha256": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+      "bytes": 26496
+    },
+    {
+      "path": "godot/scripts/object_shard_workbench_overlay.gd",
+      "sha256": "ddb7a3bc79810818ffe703644e9d4066c26a1289a519ac6ec8a91c4b6e7fa23d",
+      "bytes": 14072
+    },
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "c91b0a0d1d05294f14935fcb4f6f12039d71fb3f2b8ad8457c4f92768fc5bb53",
+      "bytes": 151686
+    },
+    {
+      "path": "godot/scripts/simulation_worker.gd",
+      "sha256": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+      "bytes": 250136
+    },
+    {
+      "path": "godot/scripts/workbench_paint_editor_controller.gd",
+      "sha256": "4b4e5137d987ad78db3c550aa5032d9728d3b1ec6a02668b95d9957ffae3b5c7",
+      "bytes": 44462
+    },
+    {
+      "path": "godot/tests/test_object_shard_live_edit_contract.gd",
+      "sha256": "9b49002c171be5f222851825910f712de060967eea3186e38c9ba9b348a5f833",
+      "bytes": 11711
+    },
+    {
+      "path": "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd",
+      "sha256": "4b38614d2f61803668b92665b983d2b8828f423bde205701214370a3739877ee",
+      "bytes": 12299
+    },
+    {
+      "path": "godot/tests/test_object_shard_m4_edit_preview_render.gd",
+      "sha256": "9745b3b889ab36d721c5317263b301aa335f5a0ed19a6e262c40fe1719cc4bc3",
+      "bytes": 14743
+    }
+  ]
+}

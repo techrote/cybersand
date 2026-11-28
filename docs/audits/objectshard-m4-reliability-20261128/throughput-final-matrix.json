@@ -1,0 +1,4153 @@
+{
+  "assertion_checks": 4560,
+  "cohort_scope": "Awake/owned cohorts are acknowledged native snapshots observed at callback ends. Eight-awake cohort rates use their own ticks and wall duration; global six-second rates include later natural sleeping. Sleeping fixture additionally queries real Rapier sleep.",
+  "comparison_kind": "Historical source-qualified application/native versus integrated candidate with explicit local native toolchain drift",
+  "comparisons": [
+    {
+      "baseline_median": 59.52031745215465,
+      "baseline_rates": [
+        59.4725633241198,
+        59.5680715801895
+      ],
+      "candidate_median": 59.38582260734075,
+      "candidate_over_baseline": 0.9977403540409203,
+      "candidate_rates": [
+        59.8469215491642,
+        58.9247236655173
+      ],
+      "recording": "off",
+      "workload": "disabled"
+    },
+    {
+      "baseline_median": 39.00581759218575,
+      "baseline_rates": [
+        33.9290487043178,
+        44.0825864800537
+      ],
+      "candidate_median": 59.7973459926955,
+      "candidate_over_baseline": 1.5330366002807496,
+      "candidate_rates": [
+        59.5466702017651,
+        60.0480217836259
+      ],
+      "recording": "off",
+      "workload": "empty"
+    },
+    {
+      "baseline_median": 19.7047394850064,
+      "baseline_rates": [
+        19.7828277740262,
+        19.6266511959866
+      ],
+      "candidate_median": 53.9673314338618,
+      "candidate_over_baseline": 2.7387995398227045,
+      "candidate_rates": [
+        50.6578522003838,
+        57.2768106673398
+      ],
+      "recording": "off",
+      "workload": "tower"
+    },
+    {
+      "baseline_median": 13.468316971819949,
+      "baseline_rates": [
+        12.8035756895016,
+        14.1330582541383
+      ],
+      "candidate_median": 29.62271514877315,
+      "candidate_over_baseline": 2.19943703513612,
+      "candidate_rates": [
+        29.8096346737677,
+        29.4357956237786
+      ],
+      "recording": "off",
+      "workload": "stress"
+    },
+    {
+      "baseline_median": 21.37033410851315,
+      "baseline_rates": [
+        16.9794576861094,
+        25.7612105309169
+      ],
+      "candidate_median": 59.67348632446215,
+      "candidate_over_baseline": 2.792351585214124,
+      "candidate_rates": [
+        60.1457960754285,
+        59.2011765734958
+      ],
+      "recording": "off",
+      "workload": "sleeping"
+    },
+    {
+      "baseline_median": 59.300169139901996,
+      "baseline_rates": [
+        59.8456480992773,
+        58.7546901805267
+      ],
+      "candidate_median": 59.83314884814045,
+      "candidate_over_baseline": 1.008987827791537,
+      "candidate_rates": [
+        59.833293444471,
+        59.8330042518099
+      ],
+      "recording": "on",
+      "workload": "disabled"
+    },
+    {
+      "baseline_median": 43.5653490632685,
+      "baseline_rates": [
+        45.721384523328,
+        41.409313603209
+      ],
+      "candidate_median": 59.94356998168425,
+      "candidate_over_baseline": 1.3759460504868264,
+      "candidate_rates": [
+        59.8730790512578,
+        60.0140609121107
+      ],
+      "recording": "on",
+      "workload": "empty"
+    },
+    {
+      "baseline_median": 19.79980131891395,
+      "baseline_rates": [
+        19.4657273427252,
+        20.1338752951027
+      ],
+      "candidate_median": 51.233859166750804,
+      "candidate_over_baseline": 2.5875946097403095,
+      "candidate_rates": [
+        51.2281363553277,
+        51.2395819781739
+      ],
+      "recording": "on",
+      "workload": "tower"
+    },
+    {
+      "baseline_median": 14.1321114002878,
+      "baseline_rates": [
+        15.130864519403,
+        13.1333582811726
+      ],
+      "candidate_median": 29.9007280753829,
+      "candidate_over_baseline": 2.115800479380171,
+      "candidate_rates": [
+        29.9834741085205,
+        29.8179820422453
+      ],
+      "recording": "on",
+      "workload": "stress"
+    },
+    {
+      "baseline_median": 31.366981879336947,
+      "baseline_rates": [
+        28.9966412223917,
+        33.7373225362822
+      ],
+      "candidate_median": 59.8641420434996,
+      "candidate_over_baseline": 1.9085081973709177,
+      "candidate_rates": [
+        59.9749604540104,
+        59.7533236329888
+      ],
+      "recording": "on",
+      "workload": "sleeping"
+    }
+  ],
+  "display_driver": "headless",
+  "execution_scope": {
+    "cpu_model": "AMD EPYC 9V74",
+    "display": "headless",
+    "max_fps": 60,
+    "quiet_window": "All three specialists and root confirmed no concurrent local builds or Godot tests during02:10\u201302:23 UTC. External shared-host activity is not controlled.",
+    "replicates_note": "Two interleaved pairs per workload/recording setting; descriptive engineering comparison, not a confidence interval.",
+    "visible_cpu_affinity_count": 9
+  },
+  "finished_utc": "2026-11-28T02:19:25.773616+00:00",
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "identities": {
+    "baseline": {
+      "head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+      "input_sha256": {
+        "godot/scripts/main.gd": "58f73a8ef57ddbaa97c547a08cb30c64f4c95de43bcb92fb75fbc1c7afcbff12",
+        "godot/scripts/object_shard_m4_runtime.gd": "79f0e572a6faf374a181d5079a0070a2c86f176fdd098296bf758c8a46baefa6",
+        "godot/scripts/object_shard_physics_bridge.gd": "1aaf4ca8a781f83f75a70940e839c85270876a561018e519ec9a1029c69ac81c",
+        "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+        "godot/scripts/simulation_worker.gd": "8ccec961ca41b3598c58b6d54edc322b35ed95d0c11ccadd5230b98ac6e951fb",
+        "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5"
+      },
+      "native_build_source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+      "native_sha256": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20",
+      "project": "/workspace/scratch/9b78ce6eff8d/throughput-baseline",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "tracked_changes": []
+    },
+    "candidate": {
+      "head": "19485bbb5e474f0d4d90c40617a36b3120552f5b",
+      "input_sha256": {
+        "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+        "godot/scripts/object_shard_m4_runtime.gd": "35971ec27c284ce718e563f631c5e22ea4c8357822cab14f303455f495207b40",
+        "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+        "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+        "godot/scripts/simulation_worker.gd": "269363d9cb66f5e466cd2fc2a1f9c5135401a669266eb47046cf8edcfb71f5d6",
+        "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5"
+      },
+      "native_build_source": "062670c1e",
+      "native_sha256": "547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0",
+      "project": "/workspace/scratch/9b78ce6eff8d/throughput-final",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "tracked_changes": [
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so"
+      ]
+    }
+  },
+  "max_fps": 60,
+  "native_toolchain_scope": {
+    "baseline": "Pinned published GCC13.3/binutils2.42 runtime from efe3bc19; SHA5fdf1e8f...",
+    "candidate": "Exact integrated native source inputs, test-only local GCC14.2/binutils2.44 build under CYBERSAND_ALLOW_TOOLCHAIN_DRIFT; SHA547c8f6f...",
+    "causal_control": "matched-identical-native-v1 holds candidate native bytes fixed for both old and new script paths"
+  },
+  "replicates": 2,
+  "runs": [
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 0,
+          "semantic_ticks": 357,
+          "wall_usec": 6002746
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "cd2fdbcb6ed23f76960082785ca0d43eb4ab16fcd4674131ca2b691d2b894189",
+      "name": "disabled-off-1-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "7f4eb556504c7c74c199febaa3b4c3bcfa1876070d3b0e8775597b9159ba0aed",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 357,
+      "semantic_ticks_per_second": 59.4725633241198,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "wall_usec": 6015332
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "3058ab6db027293a73aee4e946146ba6a11fb6898abca836cdc95a2d36e341e6",
+      "name": "disabled-off-1-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "0486bee05e35e83c5de41750ab1a07a391b2e6e57725adc535ac8f74c8a9bc3f",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permit_waits_recovered": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_budget_exhaustions": 0,
+        "pump_calls": 0,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "pump_waits": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8469215491642,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 0,
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "full_motion_publications": 0,
+        "segment_idle_polls": 0,
+        "segment_service_turns": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 360,
+          "owned": 0,
+          "semantic_ticks": 354,
+          "wall_usec": 6007642
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "558209650b365ac3caddd57d0a40a68eeba771733cbd7d21631bade80088ede8",
+      "name": "disabled-off-2-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "621aacb1379bcaf4aac0f636399cdd66b7d52ab5e6d3f35b14ea4a3b05daab36",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permit_waits_recovered": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_budget_exhaustions": 0,
+        "pump_calls": 0,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "pump_waits": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 354,
+      "semantic_ticks_per_second": 58.9247236655173,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 0,
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "full_motion_publications": 0,
+        "segment_idle_polls": 0,
+        "segment_service_turns": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 358,
+          "wall_usec": 6009471
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "854b4baa3f2cff7e62d39da18f637b786b13fe7f5b2eeddbe64a54e285144042",
+      "name": "disabled-off-2-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "f19a9c4789b92f9a708920d34adf1d778b69e6a6e486ab141894c3ec2cddd5a6",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 358,
+      "semantic_ticks_per_second": 59.5680715801895,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 204,
+          "wall_usec": 6012529
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "850b60d2fd778d518f8998c20853d223645d700edcf8167ad9c4144b1a90025a",
+      "name": "empty-off-1-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "dd7fcfd6282c1f9cbddac2ca32c27e64166940d182fd2b3279fdae48dc3373fa",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1020,
+        "deferred_world_uploads": 0,
+        "motion_lease": 205,
+        "motion_permits_refused": 41,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 204,
+        "owner_replacements": 0,
+        "pending_serial": 1022,
+        "physical_intervals": 204,
+        "physical_steps": 817,
+        "publication_sequence": 204,
+        "pump_usec_max": 6876,
+        "pump_usec_total": 1704687,
+        "redundant_readiness_receipts_suppressed": 204,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 204,
+      "semantic_ticks_per_second": 33.9290487043178,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 204,
+        "frame_copy_max_usec": 222,
+        "frame_copy_usec": 30925,
+        "snapshot_calls": 1224,
+        "snapshot_max_usec": 761,
+        "snapshot_usec": 248241
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 358,
+          "wall_usec": 6012076
+        }
+      },
+      "control_timing_deltas": {
+        "complete": {
+          "delivery": {
+            "calls": 358,
+            "max_usec": 1192,
+            "usec": 60918
+          },
+          "owner_service": {
+            "calls": 358,
+            "max_usec": 367,
+            "usec": 68294
+          },
+          "publication_copy": {
+            "calls": 358,
+            "max_usec": 350,
+            "usec": 98089
+          },
+          "queue": {
+            "calls": 358,
+            "max_usec": 374,
+            "usec": 69885
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1432,
+            "max_usec": 765,
+            "usec": 164380
+          },
+          "owner_service": {
+            "calls": 1432,
+            "max_usec": 2360,
+            "usec": 295150
+          },
+          "publication_copy": {
+            "calls": 1432,
+            "max_usec": 891,
+            "usec": 140683
+          },
+          "queue": {
+            "calls": 1432,
+            "max_usec": 2033,
+            "usec": 199100
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "ba7db6d33bb1b8cd028c4725db5b66c6718fb2a8047d614794a9cc3c9bec94d8",
+      "name": "empty-off-1-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "2aa0898680fb88577dd0d72f11411d8b5376596fedc63beef0139c35105324d4",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1790,
+        "deferred_world_uploads": 0,
+        "motion_lease": 359,
+        "motion_permit_waits_recovered": 6,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 358,
+        "owner_replacements": 0,
+        "pending_serial": 1792,
+        "physical_intervals": 358,
+        "physical_steps": 1433,
+        "publication_sequence": 358,
+        "pump_budget_exhaustions": 98,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 6643,
+        "pump_usec_total": 2426701,
+        "pump_waits": 10188,
+        "redundant_readiness_receipts_suppressed": 358,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 358,
+      "semantic_ticks_per_second": 59.5466702017651,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1074,
+        "frame_copy_calls": 358,
+        "frame_copy_max_usec": 1019,
+        "frame_copy_usec": 58612,
+        "full_motion_publications": 358,
+        "segment_idle_polls": 1698,
+        "segment_service_turns": 1432,
+        "snapshot_calls": 1074,
+        "snapshot_max_usec": 1266,
+        "snapshot_usec": 230707
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "wall_usec": 6011807
+        }
+      },
+      "control_timing_deltas": {
+        "complete": {
+          "delivery": {
+            "calls": 361,
+            "max_usec": 2146,
+            "usec": 57638
+          },
+          "owner_service": {
+            "calls": 361,
+            "max_usec": 152,
+            "usec": 66607
+          },
+          "publication_copy": {
+            "calls": 361,
+            "max_usec": 1319,
+            "usec": 95120
+          },
+          "queue": {
+            "calls": 361,
+            "max_usec": 2463,
+            "usec": 72714
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1444,
+            "max_usec": 2906,
+            "usec": 176577
+          },
+          "owner_service": {
+            "calls": 1444,
+            "max_usec": 1426,
+            "usec": 280146
+          },
+          "publication_copy": {
+            "calls": 1444,
+            "max_usec": 756,
+            "usec": 124110
+          },
+          "queue": {
+            "calls": 1444,
+            "max_usec": 1377,
+            "usec": 206284
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "c434693667f225df9af317981724802c3924f32451531ce0f1e8554e3c595135",
+      "name": "empty-off-2-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "1fd8ccc62db9c3e3b1ee1a060ff9aeb828ce2d647d453524a6a119c7c5777b24",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1805,
+        "deferred_world_uploads": 0,
+        "motion_lease": 363,
+        "motion_permit_waits_recovered": 7,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 361,
+        "owner_replacements": 0,
+        "pending_serial": 1812,
+        "physical_intervals": 361,
+        "physical_steps": 1445,
+        "publication_sequence": 361,
+        "pump_budget_exhaustions": 79,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1105,
+        "pump_usec_total": 2292285,
+        "pump_waits": 9358,
+        "redundant_readiness_receipts_suppressed": 361,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0480217836259,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1083,
+        "frame_copy_calls": 361,
+        "frame_copy_max_usec": 1129,
+        "frame_copy_usec": 52853,
+        "full_motion_publications": 361,
+        "segment_idle_polls": 1760,
+        "segment_service_turns": 1444,
+        "snapshot_calls": 1083,
+        "snapshot_max_usec": 824,
+        "snapshot_usec": 207779
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 0,
+          "semantic_ticks": 265,
+          "wall_usec": 6011424
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "4bb928d055ad46f5d5a903cf79734c285a621c571af7b0a5bed2c471e476ed98",
+      "name": "empty-off-2-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "4124537db0f2fdf176f6e49a08567f1f607ae525dc51a8700f2b7406c5ee2d90",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1325,
+        "deferred_world_uploads": 0,
+        "motion_lease": 266,
+        "motion_permits_refused": 8,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 265,
+        "owner_replacements": 0,
+        "pending_serial": 1327,
+        "physical_intervals": 265,
+        "physical_steps": 1061,
+        "publication_sequence": 265,
+        "pump_usec_max": 24225,
+        "pump_usec_total": 2012250,
+        "redundant_readiness_receipts_suppressed": 265,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 265,
+      "semantic_ticks_per_second": 44.0825864800537,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 265,
+        "frame_copy_max_usec": 906,
+        "frame_copy_usec": 36850,
+        "snapshot_calls": 1590,
+        "snapshot_max_usec": 820,
+        "snapshot_usec": 293071
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 119,
+          "wall_usec": 6015302
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "a2b5926315b8f691c219a88d5ea60993ba356d0cd919f1b2bf393b2f11d5a954",
+      "name": "tower-off-1-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "860ac52808cba2b77f8df81c45b135f812608fac83b48a32b0a2727271c29a28",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 595,
+        "deferred_world_uploads": 0,
+        "motion_lease": 145,
+        "motion_permits_refused": 47,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 476,
+        "native_pose_echo_checks": 476,
+        "native_tick": 119,
+        "owner_replacements": 0,
+        "pending_serial": 725,
+        "physical_intervals": 119,
+        "physical_steps": 477,
+        "publication_sequence": 595,
+        "pump_usec_max": 485,
+        "pump_usec_total": 1954131,
+        "redundant_readiness_receipts_suppressed": 119,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 119,
+      "semantic_ticks_per_second": 19.7828277740262,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 119,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 22125,
+        "snapshot_calls": 714,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 429293
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 354,
+          "owned": 1,
+          "semantic_ticks": 304,
+          "wall_usec": 6001030
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 304,
+            "max_usec": 7889,
+            "usec": 330538
+          },
+          "owner_service": {
+            "calls": 304,
+            "max_usec": 1243,
+            "usec": 65414
+          },
+          "publication_copy": {
+            "calls": 304,
+            "max_usec": 834,
+            "usec": 229602
+          },
+          "queue": {
+            "calls": 304,
+            "max_usec": 1269,
+            "usec": 85147
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1216,
+            "max_usec": 8816,
+            "usec": 341396
+          },
+          "owner_service": {
+            "calls": 1216,
+            "max_usec": 17145,
+            "usec": 1821972
+          },
+          "publication_copy": {
+            "calls": 1216,
+            "max_usec": 4741,
+            "usec": 286777
+          },
+          "queue": {
+            "calls": 1216,
+            "max_usec": 8956,
+            "usec": 183237
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "72ceb889ead8094c6cb1ad4596bf84b66ca4756c8e3ddf77d940dfa9556e1161",
+      "name": "tower-off-1-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "ee294bf0ee0245a0c15f91dc2b9fe38ae965abfe3c19ede665193e842dbb69d4",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1520,
+        "deferred_world_uploads": 0,
+        "motion_lease": 330,
+        "motion_permit_waits_recovered": 24,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1216,
+        "native_pose_echo_checks": 1216,
+        "native_tick": 304,
+        "owner_replacements": 0,
+        "pending_serial": 1650,
+        "physical_intervals": 304,
+        "physical_steps": 1217,
+        "publication_sequence": 608,
+        "pump_budget_exhaustions": 415,
+        "pump_calls": 715,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 10777,
+        "pump_usec_total": 4600263,
+        "pump_waits": 21754,
+        "redundant_readiness_receipts_suppressed": 304,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 304,
+      "semantic_ticks_per_second": 50.6578522003838,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 912,
+        "frame_copy_calls": 304,
+        "frame_copy_max_usec": 219,
+        "frame_copy_usec": 61153,
+        "full_motion_publications": 304,
+        "segment_idle_polls": 2836,
+        "segment_service_turns": 1216,
+        "snapshot_calls": 912,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 619476
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 357,
+          "owned": 1,
+          "semantic_ticks": 344,
+          "wall_usec": 6005907
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 344,
+            "max_usec": 6809,
+            "usec": 718778
+          },
+          "owner_service": {
+            "calls": 344,
+            "max_usec": 104,
+            "usec": 64250
+          },
+          "publication_copy": {
+            "calls": 344,
+            "max_usec": 2186,
+            "usec": 252172
+          },
+          "queue": {
+            "calls": 344,
+            "max_usec": 90,
+            "usec": 67884
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1376,
+            "max_usec": 5576,
+            "usec": 231544
+          },
+          "owner_service": {
+            "calls": 1376,
+            "max_usec": 4184,
+            "usec": 1895130
+          },
+          "publication_copy": {
+            "calls": 1376,
+            "max_usec": 963,
+            "usec": 299913
+          },
+          "queue": {
+            "calls": 1376,
+            "max_usec": 2052,
+            "usec": 177580
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "c9bedc8e95bae7088a19e16a54902dc8df70664bd014e030c83655dff14c2dae",
+      "name": "tower-off-2-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "e6a5a03b36c24053402ef3beadb03220f9db04471e57fe82420a202660308eec",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1720,
+        "deferred_world_uploads": 0,
+        "motion_lease": 371,
+        "motion_permit_waits_recovered": 31,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1376,
+        "native_pose_echo_checks": 1376,
+        "native_tick": 344,
+        "owner_replacements": 0,
+        "pending_serial": 1855,
+        "physical_intervals": 344,
+        "physical_steps": 1377,
+        "publication_sequence": 688,
+        "pump_budget_exhaustions": 388,
+        "pump_calls": 720,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1539,
+        "pump_usec_total": 4414561,
+        "pump_waits": 21448,
+        "redundant_readiness_receipts_suppressed": 344,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 344,
+      "semantic_ticks_per_second": 57.2768106673398,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1032,
+        "frame_copy_calls": 344,
+        "frame_copy_max_usec": 10,
+        "frame_copy_usec": 60871,
+        "full_motion_publications": 344,
+        "segment_idle_polls": 2338,
+        "segment_service_turns": 1376,
+        "snapshot_calls": 1032,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 663187
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 118,
+          "wall_usec": 6012206
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "88c17bf0fbe6f476be48d721141d63ccb576d6f8ff28c6f7452f916cbd8f37eb",
+      "name": "tower-off-2-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "d9879e36a302db1f3b8e6fe83346216f257293e946d3f3c19909684f21669a29",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 592,
+        "deferred_world_uploads": 0,
+        "motion_lease": 144,
+        "motion_permits_refused": 69,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 474,
+        "native_pose_echo_checks": 474,
+        "native_tick": 118,
+        "owner_replacements": 0,
+        "pending_serial": 722,
+        "physical_intervals": 118,
+        "physical_steps": 475,
+        "publication_sequence": 592,
+        "pump_usec_max": 3104,
+        "pump_usec_total": 1931787,
+        "redundant_readiness_receipts_suppressed": 118,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 118,
+      "semantic_ticks_per_second": 19.6266511959866,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 118,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 23127,
+        "snapshot_calls": 711,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 428351
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/8": {
+          "awake": 8,
+          "callbacks": 362,
+          "owned": 8,
+          "semantic_ticks": 77,
+          "wall_usec": 6013914
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "7d2c249ab493fd6a4c6fe2693d657bf870ce3efb61b15392be5740d7a2601806",
+      "name": "stress-off-1-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "766a2f583c35f6625153a72d115625acee38ee3f8b2a72642692a0ffc821d853",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 386,
+        "deferred_world_uploads": 0,
+        "motion_lease": 115,
+        "motion_permits_refused": 65,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 2472,
+        "native_pose_echo_checks": 2472,
+        "native_tick": 77,
+        "owner_replacements": 0,
+        "pending_serial": 597,
+        "physical_intervals": 77,
+        "physical_steps": 310,
+        "publication_sequence": 386,
+        "pump_usec_max": 158,
+        "pump_usec_total": 1961102,
+        "redundant_readiness_receipts_suppressed": 77,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 77,
+      "semantic_ticks_per_second": 12.8035756895016,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 77,
+        "frame_copy_max_usec": 86,
+        "frame_copy_usec": 21965,
+        "snapshot_calls": 464,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 610944
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/6": {
+          "awake": 6,
+          "callbacks": 58,
+          "owned": 8,
+          "semantic_ticks": 29,
+          "wall_usec": 966810
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 121,
+          "owned": 8,
+          "semantic_ticks": 60,
+          "wall_usec": 2023652
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 182,
+          "owned": 8,
+          "semantic_ticks": 90,
+          "wall_usec": 3014273
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 179,
+            "max_usec": 0,
+            "usec": 35028
+          },
+          "owner_service": {
+            "calls": 179,
+            "max_usec": 688,
+            "usec": 37624
+          },
+          "publication_copy": {
+            "calls": 179,
+            "max_usec": 609,
+            "usec": 242631
+          },
+          "queue": {
+            "calls": 179,
+            "max_usec": 59,
+            "usec": 39138
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 719,
+            "max_usec": 5331,
+            "usec": 913242
+          },
+          "owner_service": {
+            "calls": 719,
+            "max_usec": 3801,
+            "usec": 2219721
+          },
+          "publication_copy": {
+            "calls": 719,
+            "max_usec": 2652,
+            "usec": 295669
+          },
+          "queue": {
+            "calls": 719,
+            "max_usec": 0,
+            "usec": 107985
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "f1b0a4d5ec4ccbc94c31996d965d8e28ff18ddffcceebfab0291e80b45b52d05",
+      "name": "stress-off-1-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "853a7fe41ebd3227d4bea5c2159cd0a7faed69874641f356409b8207c04e95cd",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 898,
+        "deferred_world_uploads": 0,
+        "motion_lease": 218,
+        "motion_permit_waits_recovered": 3,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 5752,
+        "native_pose_echo_checks": 5752,
+        "native_tick": 179,
+        "owner_replacements": 0,
+        "pending_serial": 1114,
+        "physical_intervals": 179,
+        "physical_steps": 720,
+        "publication_sequence": 358,
+        "pump_budget_exhaustions": 422,
+        "pump_calls": 722,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1494,
+        "pump_usec_total": 4198006,
+        "pump_waits": 20917,
+        "redundant_readiness_receipts_suppressed": 179,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 179,
+      "semantic_ticks_per_second": 29.8096346737677,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 540,
+        "frame_copy_calls": 179,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 37583,
+        "full_motion_publications": 179,
+        "segment_idle_polls": 4253,
+        "segment_service_turns": 719,
+        "snapshot_calls": 537,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 664922
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/6": {
+          "awake": 6,
+          "callbacks": 52,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "wall_usec": 859294
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 123,
+          "owned": 8,
+          "semantic_ticks": 60,
+          "wall_usec": 2056913
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 187,
+          "owned": 8,
+          "semantic_ticks": 91,
+          "wall_usec": 3096858
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 178,
+            "max_usec": 1824,
+            "usec": 41352
+          },
+          "owner_service": {
+            "calls": 178,
+            "max_usec": 317,
+            "usec": 40833
+          },
+          "publication_copy": {
+            "calls": 178,
+            "max_usec": 3846,
+            "usec": 252144
+          },
+          "queue": {
+            "calls": 178,
+            "max_usec": 0,
+            "usec": 39233
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 712,
+            "max_usec": 6897,
+            "usec": 805713
+          },
+          "owner_service": {
+            "calls": 712,
+            "max_usec": 8002,
+            "usec": 2254810
+          },
+          "publication_copy": {
+            "calls": 712,
+            "max_usec": 7547,
+            "usec": 307548
+          },
+          "queue": {
+            "calls": 712,
+            "max_usec": 1500,
+            "usec": 113389
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "a8981c9f9d6b0c7f91ad901ff086a270f883a61d232e8619c5190471e002ebd4",
+      "name": "stress-off-2-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "0ff1cf5868cb3f94c74809ab6ba3f7e03927238233363da95b56d8b8d2f31212",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 890,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permit_waits_recovered": 5,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 5696,
+        "native_pose_echo_checks": 5696,
+        "native_tick": 177,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 178,
+        "physical_steps": 712,
+        "publication_sequence": 355,
+        "pump_budget_exhaustions": 442,
+        "pump_calls": 723,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1313,
+        "pump_usec_total": 4339397,
+        "pump_waits": 21330,
+        "redundant_readiness_receipts_suppressed": 177,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 177,
+      "semantic_ticks_per_second": 29.4357956237786,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 534,
+        "frame_copy_calls": 177,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 43377,
+        "full_motion_publications": 178,
+        "segment_idle_polls": 3885,
+        "segment_service_turns": 712,
+        "snapshot_calls": 533,
+        "snapshot_max_usec": 6934,
+        "snapshot_usec": 696680
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/8": {
+          "awake": 8,
+          "callbacks": 362,
+          "owned": 8,
+          "semantic_ticks": 85,
+          "wall_usec": 6014223
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "62c21ea229b0e81f80ad9c3eb7ae93e2e84891949b9094097a16e7e95c46d614",
+      "name": "stress-off-2-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "705eb6c2e8d681a730f4224365c610285b390bbc37c59c364e05d027c5febc81",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 426,
+        "deferred_world_uploads": 0,
+        "motion_lease": 123,
+        "motion_permits_refused": 31,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 2728,
+        "native_pose_echo_checks": 2728,
+        "native_tick": 85,
+        "owner_replacements": 0,
+        "pending_serial": 637,
+        "physical_intervals": 85,
+        "physical_steps": 342,
+        "publication_sequence": 426,
+        "pump_usec_max": 2231,
+        "pump_usec_total": 2219507,
+        "redundant_readiness_receipts_suppressed": 85,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 85,
+      "semantic_ticks_per_second": 14.1330582541383,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 85,
+        "frame_copy_max_usec": 451,
+        "frame_copy_usec": 26714,
+        "snapshot_calls": 512,
+        "snapshot_max_usec": 462,
+        "snapshot_usec": 642578
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 360,
+          "owned": 1,
+          "semantic_ticks": 102,
+          "wall_usec": 6007243
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "82cac57ecaa905bc8859292189dc986d392f58e636f9217ac2d1bbdb381d12ed",
+      "name": "sleeping-off-1-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "138a10338cc02fe23957e2cc86636029191dfa1341d0b92bf5d8b8f4927e7314",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 510,
+        "deferred_world_uploads": 0,
+        "motion_lease": 182,
+        "motion_permits_refused": 156,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 408,
+        "native_pose_echo_checks": 408,
+        "native_tick": 102,
+        "owner_replacements": 0,
+        "pending_serial": 911,
+        "physical_intervals": 102,
+        "physical_steps": 409,
+        "publication_sequence": 510,
+        "pump_usec_max": 6646,
+        "pump_usec_total": 955771,
+        "redundant_readiness_receipts_suppressed": 102,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 102,
+      "semantic_ticks_per_second": 16.9794576861094,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 102,
+        "frame_copy_max_usec": 7149,
+        "frame_copy_usec": 27057,
+        "snapshot_calls": 612,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 144610
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 361,
+          "wall_usec": 6002067
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 361,
+            "max_usec": 0,
+            "usec": 85607
+          },
+          "owner_service": {
+            "calls": 361,
+            "max_usec": 169,
+            "usec": 66726
+          },
+          "publication_copy": {
+            "calls": 361,
+            "max_usec": 63,
+            "usec": 122031
+          },
+          "queue": {
+            "calls": 361,
+            "max_usec": 1024,
+            "usec": 69415
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1444,
+            "max_usec": 11447,
+            "usec": 185853
+          },
+          "owner_service": {
+            "calls": 1444,
+            "max_usec": 0,
+            "usec": 482167
+          },
+          "publication_copy": {
+            "calls": 1444,
+            "max_usec": 395,
+            "usec": 193126
+          },
+          "queue": {
+            "calls": 1444,
+            "max_usec": 93,
+            "usec": 179836
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "30633fe8a89cdea6ed971f76c0a9a4984d9cc9de1356403c85987186e9c51e78",
+      "name": "sleeping-off-1-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 1,
+      "result_sha256": "ba2f62e510a99922d70519f738dba9d98c868f4dda71d0c3798c21ae8d8ca1d7",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1805,
+        "deferred_world_uploads": 0,
+        "motion_lease": 443,
+        "motion_permit_waits_recovered": 8,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1444,
+        "native_pose_echo_checks": 1444,
+        "native_tick": 361,
+        "owner_replacements": 0,
+        "pending_serial": 2216,
+        "physical_intervals": 361,
+        "physical_steps": 1445,
+        "publication_sequence": 722,
+        "pump_budget_exhaustions": 241,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 2057,
+        "pump_usec_total": 3050351,
+        "pump_waits": 12605,
+        "redundant_readiness_receipts_suppressed": 361,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.1457960754285,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1083,
+        "frame_copy_calls": 361,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 82662,
+        "full_motion_publications": 361,
+        "segment_idle_polls": 1791,
+        "segment_service_turns": 1444,
+        "snapshot_calls": 1083,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 315105
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 354,
+          "owned": 1,
+          "semantic_ticks": 356,
+          "wall_usec": 6013365
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 356,
+            "max_usec": 954,
+            "usec": 80403
+          },
+          "owner_service": {
+            "calls": 356,
+            "max_usec": 162,
+            "usec": 67135
+          },
+          "publication_copy": {
+            "calls": 356,
+            "max_usec": 293,
+            "usec": 121352
+          },
+          "queue": {
+            "calls": 356,
+            "max_usec": 639,
+            "usec": 76496
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1424,
+            "max_usec": 5075,
+            "usec": 161807
+          },
+          "owner_service": {
+            "calls": 1424,
+            "max_usec": 4271,
+            "usec": 504659
+          },
+          "publication_copy": {
+            "calls": 1424,
+            "max_usec": 1284,
+            "usec": 184698
+          },
+          "queue": {
+            "calls": 1424,
+            "max_usec": 539,
+            "usec": 176085
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "98910912253320ac1b8a11cae2ff8bee89e18b29e2e166b6e9b36aadbff1a7d6",
+      "name": "sleeping-off-2-candidate",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "d08e6ddf196f3aec9b68caace22cc7bc9de8ebbc4e28471aa4d01a2b75ea800e",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1780,
+        "deferred_world_uploads": 0,
+        "motion_lease": 438,
+        "motion_permit_waits_recovered": 11,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1424,
+        "native_pose_echo_checks": 1424,
+        "native_tick": 356,
+        "owner_replacements": 0,
+        "pending_serial": 2191,
+        "physical_intervals": 356,
+        "physical_steps": 1425,
+        "publication_sequence": 712,
+        "pump_budget_exhaustions": 232,
+        "pump_calls": 715,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 18072,
+        "pump_usec_total": 3045284,
+        "pump_waits": 12482,
+        "redundant_readiness_receipts_suppressed": 356,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 356,
+      "semantic_ticks_per_second": 59.2011765734958,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1068,
+        "frame_copy_calls": 356,
+        "frame_copy_max_usec": 206,
+        "frame_copy_usec": 76048,
+        "full_motion_publications": 356,
+        "segment_idle_polls": 1816,
+        "segment_service_turns": 1424,
+        "snapshot_calls": 1068,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 301456
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 155,
+          "wall_usec": 6016780
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "54bec79d20f0c96d8073bfbbc370ef2bfbf73bda84a6b8703bafb9c161f432a9",
+      "name": "sleeping-off-2-baseline",
+      "passed": true,
+      "recording": "off",
+      "replicate": 2,
+      "result_sha256": "8cb7e3a8e6ece04ed7d1cb1bd8d23365a58fc1237cdc11e0bb0da6d07baf429b",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 775,
+        "deferred_world_uploads": 0,
+        "motion_lease": 235,
+        "motion_permits_refused": 51,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 620,
+        "native_pose_echo_checks": 620,
+        "native_tick": 155,
+        "owner_replacements": 0,
+        "pending_serial": 1176,
+        "physical_intervals": 155,
+        "physical_steps": 621,
+        "publication_sequence": 775,
+        "pump_usec_max": 0,
+        "pump_usec_total": 1400678,
+        "redundant_readiness_receipts_suppressed": 155,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 155,
+      "semantic_ticks_per_second": 25.7612105309169,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 155,
+        "frame_copy_max_usec": 154,
+        "frame_copy_usec": 27541,
+        "snapshot_calls": 930,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 215921
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "wall_usec": 6015462
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "3df2d63d51ea049bd8ae49c76d8059fe3b4a49768121fd0f0fdfac3402e63f2f",
+      "name": "disabled-on-1-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "71c4554a5b543c1b4946f28f29e9e25a27f5ed0843de151c1c6a8d25564b1103",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8456480992773,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 0,
+          "semantic_ticks": 359,
+          "wall_usec": 5999986
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "c12f747a5c4006344609ec8d035e2ae60a9848844bd2d4d3c6a5d2843a01181c",
+      "name": "disabled-on-1-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "541ec1e6098bbf75aaa50a063afcb77569f692e8f12fc2f2e09e7607f5989d76",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permit_waits_recovered": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_budget_exhaustions": 0,
+        "pump_calls": 0,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "pump_waits": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.833293444471,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 0,
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "full_motion_publications": 0,
+        "segment_idle_polls": 0,
+        "segment_service_turns": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 0,
+          "semantic_ticks": 359,
+          "wall_usec": 6000016
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "3e15389bb46d7a1c8199f426f51b51344bb9c4c10d82aa8d570219de90ada135",
+      "name": "disabled-on-2-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "421958e0af869a5e2a55999e07078e0dc274793da86abdc86e8fb9ccad899ead",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permit_waits_recovered": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_budget_exhaustions": 0,
+        "pump_calls": 0,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "pump_waits": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.8330042518099,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 0,
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "full_motion_publications": 0,
+        "segment_idle_polls": 0,
+        "segment_service_turns": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 13,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 358,
+          "owned": 0,
+          "semantic_ticks": 353,
+          "wall_usec": 6008010
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "4209c656eacefcc721bde4e2fa9604289c4696df5930868102e80b34b4e65f90",
+      "name": "disabled-on-2-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "7df7051bac54e8160249dd0c0edb154f948bdf007b7423962fcb883d00cf28b1",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 0,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 0,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 0,
+        "physical_steps": 0,
+        "publication_sequence": 0,
+        "pump_usec_max": 0,
+        "pump_usec_total": 0,
+        "redundant_readiness_receipts_suppressed": 0,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 353,
+      "semantic_ticks_per_second": 58.7546901805267,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 0,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 0,
+        "snapshot_calls": 0,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 0
+      },
+      "workload": "disabled"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 275,
+          "wall_usec": 6014678
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "14f3a4bd2c69f8887286a7fbaa6127030430aa3ff95e0a7bf178873035ba7231",
+      "name": "empty-on-1-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "71eab8d2d8a06ca111c7fa518e01a1a2f003aa45d090f2170247e3d7885e6cf9",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1375,
+        "deferred_world_uploads": 0,
+        "motion_lease": 276,
+        "motion_permits_refused": 17,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 275,
+        "owner_replacements": 0,
+        "pending_serial": 1377,
+        "physical_intervals": 275,
+        "physical_steps": 1101,
+        "publication_sequence": 275,
+        "pump_usec_max": 6362,
+        "pump_usec_total": 2002971,
+        "redundant_readiness_receipts_suppressed": 275,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 275,
+      "semantic_ticks_per_second": 45.721384523328,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 275,
+        "frame_copy_max_usec": 55,
+        "frame_copy_usec": 30674,
+        "snapshot_calls": 1650,
+        "snapshot_max_usec": 482,
+        "snapshot_usec": 300162
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "wall_usec": 6012703
+        }
+      },
+      "control_timing_deltas": {
+        "complete": {
+          "delivery": {
+            "calls": 360,
+            "max_usec": 263,
+            "usec": 57074
+          },
+          "owner_service": {
+            "calls": 360,
+            "max_usec": 286,
+            "usec": 67660
+          },
+          "publication_copy": {
+            "calls": 360,
+            "max_usec": 452,
+            "usec": 96502
+          },
+          "queue": {
+            "calls": 360,
+            "max_usec": 1749,
+            "usec": 69832
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1440,
+            "max_usec": 916,
+            "usec": 158800
+          },
+          "owner_service": {
+            "calls": 1440,
+            "max_usec": 1809,
+            "usec": 291596
+          },
+          "publication_copy": {
+            "calls": 1440,
+            "max_usec": 1507,
+            "usec": 133345
+          },
+          "queue": {
+            "calls": 1440,
+            "max_usec": 746,
+            "usec": 194305
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "5a82d950b4aab5b65ffcb0355c1ea8591c1b6d10aabff1bf4f2d97e0dc6f80b5",
+      "name": "empty-on-1-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "60ba088d1965886b899f03562e2213c577a2cda2645595852c692d63a6a4769d",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1800,
+        "deferred_world_uploads": 0,
+        "motion_lease": 362,
+        "motion_permit_waits_recovered": 8,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 360,
+        "owner_replacements": 0,
+        "pending_serial": 1807,
+        "physical_intervals": 360,
+        "physical_steps": 1441,
+        "publication_sequence": 360,
+        "pump_budget_exhaustions": 99,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1635,
+        "pump_usec_total": 2367530,
+        "pump_waits": 9757,
+        "redundant_readiness_receipts_suppressed": 360,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8730790512578,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1080,
+        "frame_copy_calls": 360,
+        "frame_copy_max_usec": 56,
+        "frame_copy_usec": 49227,
+        "full_motion_publications": 360,
+        "segment_idle_polls": 1710,
+        "segment_service_turns": 1440,
+        "snapshot_calls": 1080,
+        "snapshot_max_usec": 639,
+        "snapshot_usec": 218730
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "wall_usec": 6015237
+        }
+      },
+      "control_timing_deltas": {
+        "complete": {
+          "delivery": {
+            "calls": 361,
+            "max_usec": 1080,
+            "usec": 59199
+          },
+          "owner_service": {
+            "calls": 361,
+            "max_usec": 553,
+            "usec": 66073
+          },
+          "publication_copy": {
+            "calls": 361,
+            "max_usec": 1251,
+            "usec": 97099
+          },
+          "queue": {
+            "calls": 361,
+            "max_usec": 0,
+            "usec": 63925
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1444,
+            "max_usec": 3010,
+            "usec": 167275
+          },
+          "owner_service": {
+            "calls": 1444,
+            "max_usec": 1388,
+            "usec": 281769
+          },
+          "publication_copy": {
+            "calls": 1444,
+            "max_usec": 2402,
+            "usec": 135637
+          },
+          "queue": {
+            "calls": 1444,
+            "max_usec": 1636,
+            "usec": 195766
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "50c14f0787dc3c78d602093b20712dcbfcadc4cb8888b36c202579f57048f8e0",
+      "name": "empty-on-2-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "adca7d40bb5e72b69a2cd8b1c89a9dfaadfb1420a1e987f4849d8a1eaeb9718b",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1805,
+        "deferred_world_uploads": 0,
+        "motion_lease": 363,
+        "motion_permit_waits_recovered": 10,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 361,
+        "owner_replacements": 0,
+        "pending_serial": 1812,
+        "physical_intervals": 361,
+        "physical_steps": 1445,
+        "publication_sequence": 361,
+        "pump_budget_exhaustions": 97,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 752,
+        "pump_usec_total": 2371145,
+        "pump_waits": 9791,
+        "redundant_readiness_receipts_suppressed": 361,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0140609121107,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1083,
+        "frame_copy_calls": 361,
+        "frame_copy_max_usec": 148,
+        "frame_copy_usec": 49819,
+        "full_motion_publications": 361,
+        "segment_idle_polls": 1702,
+        "segment_service_turns": 1444,
+        "snapshot_calls": 1083,
+        "snapshot_max_usec": 986,
+        "snapshot_usec": 223273
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 41,
+      "cohorts": {
+        "0/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 249,
+          "wall_usec": 6013123
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "9111e353c56483f445e258498016537435de9bb33bef177de960562e09e12967",
+      "name": "empty-on-2-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "f379b52fb3bab9d0ace362c89afc79375f0ca664b52729952cf2feb910c39531",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1245,
+        "deferred_world_uploads": 0,
+        "motion_lease": 250,
+        "motion_permits_refused": 9,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 0,
+        "native_pose_echo_checks": 0,
+        "native_tick": 249,
+        "owner_replacements": 0,
+        "pending_serial": 1247,
+        "physical_intervals": 249,
+        "physical_steps": 997,
+        "publication_sequence": 249,
+        "pump_usec_max": 9106,
+        "pump_usec_total": 1941920,
+        "redundant_readiness_receipts_suppressed": 249,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 249,
+      "semantic_ticks_per_second": 41.409313603209,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 249,
+        "frame_copy_max_usec": 322,
+        "frame_copy_usec": 31509,
+        "snapshot_calls": 1494,
+        "snapshot_max_usec": 1730,
+        "snapshot_usec": 291369
+      },
+      "workload": "empty"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 117,
+          "wall_usec": 6010536
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "d830c1609217b34aaa2ba8078ce5c74a94d4157ac69823c6e2921175b393c7ba",
+      "name": "tower-on-1-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "2ce9dc8a88225b0e90948fa209fcfdf738335640980909ff0d696f0b320ff674",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 590,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permits_refused": 8,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 472,
+        "native_pose_echo_checks": 472,
+        "native_tick": 117,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 118,
+        "physical_steps": 472,
+        "publication_sequence": 589,
+        "pump_usec_max": 417,
+        "pump_usec_total": 2028107,
+        "redundant_readiness_receipts_suppressed": 117,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 117,
+      "semantic_ticks_per_second": 19.4657273427252,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 117,
+        "frame_copy_max_usec": 286,
+        "frame_copy_usec": 22420,
+        "snapshot_calls": 708,
+        "snapshot_max_usec": 1486,
+        "snapshot_usec": 496518
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 361,
+          "owned": 1,
+          "semantic_ticks": 308,
+          "wall_usec": 6012301
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 308,
+            "max_usec": 12206,
+            "usec": 281627
+          },
+          "owner_service": {
+            "calls": 308,
+            "max_usec": 841,
+            "usec": 73382
+          },
+          "publication_copy": {
+            "calls": 308,
+            "max_usec": 875,
+            "usec": 226271
+          },
+          "queue": {
+            "calls": 308,
+            "max_usec": 50,
+            "usec": 84504
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1232,
+            "max_usec": 6902,
+            "usec": 416675
+          },
+          "owner_service": {
+            "calls": 1232,
+            "max_usec": 3584,
+            "usec": 1926724
+          },
+          "publication_copy": {
+            "calls": 1232,
+            "max_usec": 1890,
+            "usec": 271628
+          },
+          "queue": {
+            "calls": 1232,
+            "max_usec": 1689,
+            "usec": 188689
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "a2c9bc011036828dd38f2c2710f0f4fc180d08c1ad7109a21dc87f868b084f69",
+      "name": "tower-on-1-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "1395be2f3b9f814582413eed4f3962c2624582691ddb76c4bc88981f571e76ff",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1540,
+        "deferred_world_uploads": 0,
+        "motion_lease": 334,
+        "motion_permit_waits_recovered": 17,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1232,
+        "native_pose_echo_checks": 1232,
+        "native_tick": 308,
+        "owner_replacements": 0,
+        "pending_serial": 1670,
+        "physical_intervals": 308,
+        "physical_steps": 1233,
+        "publication_sequence": 616,
+        "pump_budget_exhaustions": 396,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 3002,
+        "pump_usec_total": 4534033,
+        "pump_waits": 21861,
+        "redundant_readiness_receipts_suppressed": 308,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 308,
+      "semantic_ticks_per_second": 51.2281363553277,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 924,
+        "frame_copy_calls": 308,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 53403,
+        "full_motion_publications": 308,
+        "segment_idle_polls": 3218,
+        "segment_service_turns": 1232,
+        "snapshot_calls": 924,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 602326
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 344,
+          "owned": 1,
+          "semantic_ticks": 308,
+          "wall_usec": 6010961
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 308,
+            "max_usec": 49304,
+            "usec": 347381
+          },
+          "owner_service": {
+            "calls": 308,
+            "max_usec": 1343,
+            "usec": 67663
+          },
+          "publication_copy": {
+            "calls": 308,
+            "max_usec": 1160,
+            "usec": 234956
+          },
+          "queue": {
+            "calls": 308,
+            "max_usec": 1044,
+            "usec": 81226
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1232,
+            "max_usec": 6060,
+            "usec": 300578
+          },
+          "owner_service": {
+            "calls": 1232,
+            "max_usec": 5354,
+            "usec": 1829146
+          },
+          "publication_copy": {
+            "calls": 1232,
+            "max_usec": 6748,
+            "usec": 296542
+          },
+          "queue": {
+            "calls": 1232,
+            "max_usec": 1973,
+            "usec": 194841
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "57f2047e84648de8827df20f676b87d92fcb3cde89cd077964f501a66d928eea",
+      "name": "tower-on-2-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "4f1ea6cae4b11f24458a75bca9eed79807f65e47165d38669ea4609f6f55ce73",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1540,
+        "deferred_world_uploads": 0,
+        "motion_lease": 334,
+        "motion_permit_waits_recovered": 26,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1232,
+        "native_pose_echo_checks": 1232,
+        "native_tick": 308,
+        "owner_replacements": 0,
+        "pending_serial": 1670,
+        "physical_intervals": 308,
+        "physical_steps": 1233,
+        "publication_sequence": 616,
+        "pump_budget_exhaustions": 429,
+        "pump_calls": 706,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 3687,
+        "pump_usec_total": 4606635,
+        "pump_waits": 21860,
+        "redundant_readiness_receipts_suppressed": 308,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 308,
+      "semantic_ticks_per_second": 51.2395819781739,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 924,
+        "frame_copy_calls": 308,
+        "frame_copy_max_usec": 1785,
+        "frame_copy_usec": 62437,
+        "full_motion_publications": 308,
+        "segment_idle_polls": 2679,
+        "segment_service_turns": 1232,
+        "snapshot_calls": 924,
+        "snapshot_max_usec": 3620,
+        "snapshot_usec": 636140
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 107,
+      "cohorts": {
+        "1/1": {
+          "awake": 1,
+          "callbacks": 360,
+          "owned": 1,
+          "semantic_ticks": 121,
+          "wall_usec": 6009747
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "c59da3db8bdb1c182034514c52cca67379069bf13b13af91e1de1dfa9314d4cd",
+      "name": "tower-on-2-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "cf0dab588dd9d6931e5e47d55da207600c931de54527f958d387d6a1bedef979",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 610,
+        "deferred_world_uploads": 0,
+        "motion_lease": 0,
+        "motion_permits_refused": 9,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 488,
+        "native_pose_echo_checks": 488,
+        "native_tick": 121,
+        "owner_replacements": 0,
+        "pending_serial": 0,
+        "physical_intervals": 122,
+        "physical_steps": 488,
+        "publication_sequence": 609,
+        "pump_usec_max": 3414,
+        "pump_usec_total": 2073599,
+        "redundant_readiness_receipts_suppressed": 121,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 121,
+      "semantic_ticks_per_second": 20.1338752951027,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 121,
+        "frame_copy_max_usec": 181,
+        "frame_copy_usec": 20524,
+        "snapshot_calls": 732,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 451700
+      },
+      "workload": "tower"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/5": {
+          "awake": 5,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 0,
+          "wall_usec": 32537
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 3,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 49810
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 3,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 50009
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 354,
+          "owned": 8,
+          "semantic_ticks": 89,
+          "wall_usec": 5881813
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "4098067843f709950ef10fc0b7c3a470f0e73b70315a4828ec772ba705630d09",
+      "name": "stress-on-1-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "0ed4897943e1492e7fcabeb9a70c65a19df96b3ea12e95562d20faaef944a0c4",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 458,
+        "deferred_world_uploads": 0,
+        "motion_lease": 129,
+        "motion_permits_refused": 23,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 2936,
+        "native_pose_echo_checks": 2936,
+        "native_tick": 91,
+        "owner_replacements": 0,
+        "pending_serial": 669,
+        "physical_intervals": 91,
+        "physical_steps": 368,
+        "publication_sequence": 458,
+        "pump_usec_max": 1927,
+        "pump_usec_total": 2291784,
+        "redundant_readiness_receipts_suppressed": 91,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 91,
+      "semantic_ticks_per_second": 15.130864519403,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 91,
+        "frame_copy_max_usec": 36,
+        "frame_copy_usec": 18339,
+        "snapshot_calls": 550,
+        "snapshot_max_usec": 632,
+        "snapshot_usec": 660754
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/5": {
+          "awake": 5,
+          "callbacks": 51,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "wall_usec": 844143
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 125,
+          "owned": 8,
+          "semantic_ticks": 62,
+          "wall_usec": 2092363
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "wall_usec": 33451
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 183,
+          "owned": 8,
+          "semantic_ticks": 91,
+          "wall_usec": 3033325
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 180,
+            "max_usec": 198,
+            "usec": 46517
+          },
+          "owner_service": {
+            "calls": 180,
+            "max_usec": 258,
+            "usec": 38985
+          },
+          "publication_copy": {
+            "calls": 180,
+            "max_usec": 3646,
+            "usec": 256890
+          },
+          "queue": {
+            "calls": 180,
+            "max_usec": 469,
+            "usec": 39742
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 720,
+            "max_usec": 6021,
+            "usec": 769913
+          },
+          "owner_service": {
+            "calls": 720,
+            "max_usec": 4108,
+            "usec": 2179268
+          },
+          "publication_copy": {
+            "calls": 720,
+            "max_usec": 1280,
+            "usec": 305345
+          },
+          "queue": {
+            "calls": 720,
+            "max_usec": 254,
+            "usec": 114320
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "6008998e6aab0a39f17ce997fcabbf10038f4c1ad575c84e0ca3a0a4c8590c1d",
+      "name": "stress-on-1-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "4e62b4175a107894ae30574aec80f28f64b2705362548691ebf4417596711f66",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 900,
+        "deferred_world_uploads": 0,
+        "motion_lease": 218,
+        "motion_permit_waits_recovered": 7,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 5760,
+        "native_pose_echo_checks": 5760,
+        "native_tick": 180,
+        "owner_replacements": 0,
+        "pending_serial": 1111,
+        "physical_intervals": 180,
+        "physical_steps": 721,
+        "publication_sequence": 360,
+        "pump_budget_exhaustions": 457,
+        "pump_calls": 722,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1834,
+        "pump_usec_total": 4428791,
+        "pump_waits": 21610,
+        "redundant_readiness_receipts_suppressed": 180,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 180,
+      "semantic_ticks_per_second": 29.9834741085205,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 540,
+        "frame_copy_calls": 180,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 45160,
+        "full_motion_publications": 180,
+        "segment_idle_polls": 3977,
+        "segment_service_turns": 720,
+        "snapshot_calls": 540,
+        "snapshot_max_usec": 999,
+        "snapshot_usec": 694221
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/6": {
+          "awake": 6,
+          "callbacks": 57,
+          "owned": 8,
+          "semantic_ticks": 29,
+          "wall_usec": 944530
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 120,
+          "owned": 8,
+          "semantic_ticks": 59,
+          "wall_usec": 2009223
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 184,
+          "owned": 8,
+          "semantic_ticks": 91,
+          "wall_usec": 3049306
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 179,
+            "max_usec": 1136,
+            "usec": 66572
+          },
+          "owner_service": {
+            "calls": 179,
+            "max_usec": 1077,
+            "usec": 41290
+          },
+          "publication_copy": {
+            "calls": 179,
+            "max_usec": 962,
+            "usec": 270130
+          },
+          "queue": {
+            "calls": 179,
+            "max_usec": 2812,
+            "usec": 45041
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 720,
+            "max_usec": 6579,
+            "usec": 666293
+          },
+          "owner_service": {
+            "calls": 720,
+            "max_usec": 5159,
+            "usec": 2196020
+          },
+          "publication_copy": {
+            "calls": 720,
+            "max_usec": 1094,
+            "usec": 334018
+          },
+          "queue": {
+            "calls": 720,
+            "max_usec": 0,
+            "usec": 106026
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "dab18823b162b6c6864d544dd5b38bdb44b5b4ef9f2dc8c3f235e5a595c5ac44",
+      "name": "stress-on-2-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "e1b6cd8e3de4f97b943222c1aa67e4a12d9e981076af3758aadd11a1af10c9c2",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 899,
+        "deferred_world_uploads": 0,
+        "motion_lease": 217,
+        "motion_permit_waits_recovered": 14,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 5760,
+        "native_pose_echo_checks": 5760,
+        "native_tick": 179,
+        "owner_replacements": 0,
+        "pending_serial": 1110,
+        "physical_intervals": 180,
+        "physical_steps": 720,
+        "publication_sequence": 359,
+        "pump_budget_exhaustions": 467,
+        "pump_calls": 723,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 1107,
+        "pump_usec_total": 4504265,
+        "pump_waits": 20994,
+        "redundant_readiness_receipts_suppressed": 179,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 179,
+      "semantic_ticks_per_second": 29.8179820422453,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 540,
+        "frame_copy_calls": 179,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 60487,
+        "full_motion_publications": 180,
+        "segment_idle_polls": 3597,
+        "segment_service_turns": 720,
+        "snapshot_calls": 539,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 743653
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 333,
+      "cohorts": {
+        "8/8": {
+          "awake": 8,
+          "callbacks": 362,
+          "owned": 8,
+          "semantic_ticks": 79,
+          "wall_usec": 6015187
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "29c1dbca95cee4bebe96246fb61f01b5b221f5148db560dd5d9e237808c7a12c",
+      "name": "stress-on-2-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "8739f5bd247ae21f1425926d6cf6c29bc5ab4495f55eb238367c638afcba092f",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 395,
+        "deferred_world_uploads": 0,
+        "motion_lease": 117,
+        "motion_permits_refused": 66,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 2528,
+        "native_pose_echo_checks": 2528,
+        "native_tick": 79,
+        "owner_replacements": 0,
+        "pending_serial": 606,
+        "physical_intervals": 79,
+        "physical_steps": 317,
+        "publication_sequence": 395,
+        "pump_usec_max": 475,
+        "pump_usec_total": 2014045,
+        "redundant_readiness_receipts_suppressed": 79,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 79,
+      "semantic_ticks_per_second": 13.1333582811726,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 79,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 18658,
+        "snapshot_calls": 474,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 599329
+      },
+      "workload": "stress"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 1,
+          "semantic_ticks": 174,
+          "wall_usec": 6000678
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "f248c83ddae9a9a11e8e629c3493c49905734331fbd2a4b2e02eb2e93cd35ec2",
+      "name": "sleeping-on-1-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "2e80b4b3c962e57f04cc92159815918a1bf6900cd2a13dfe27e729c0d0158dfe",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 870,
+        "deferred_world_uploads": 0,
+        "motion_lease": 254,
+        "motion_permits_refused": 23,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 696,
+        "native_pose_echo_checks": 696,
+        "native_tick": 174,
+        "owner_replacements": 0,
+        "pending_serial": 1271,
+        "physical_intervals": 174,
+        "physical_steps": 697,
+        "publication_sequence": 870,
+        "pump_usec_max": 152,
+        "pump_usec_total": 1560649,
+        "redundant_readiness_receipts_suppressed": 174,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 174,
+      "semantic_ticks_per_second": 28.9966412223917,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 174,
+        "frame_copy_max_usec": 0,
+        "frame_copy_usec": 27141,
+        "snapshot_calls": 1044,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 249409
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 360,
+          "wall_usec": 6002486
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 360,
+            "max_usec": 190,
+            "usec": 66599
+          },
+          "owner_service": {
+            "calls": 360,
+            "max_usec": 0,
+            "usec": 67665
+          },
+          "publication_copy": {
+            "calls": 360,
+            "max_usec": 0,
+            "usec": 111002
+          },
+          "queue": {
+            "calls": 360,
+            "max_usec": 878,
+            "usec": 73102
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1440,
+            "max_usec": 12414,
+            "usec": 169627
+          },
+          "owner_service": {
+            "calls": 1440,
+            "max_usec": 1060,
+            "usec": 489500
+          },
+          "publication_copy": {
+            "calls": 1440,
+            "max_usec": 0,
+            "usec": 161528
+          },
+          "queue": {
+            "calls": 1440,
+            "max_usec": 1025,
+            "usec": 191384
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "ab51de365a730499f0f5a88147fa18e30beb78f7a8b40ef10dc4116f2f0ed1e2",
+      "name": "sleeping-on-1-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 1,
+      "result_sha256": "86f8a50da3c9c59ed7643714a0d412a23ad79cc79cf569d93de9fd289798c47c",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1800,
+        "deferred_world_uploads": 0,
+        "motion_lease": 442,
+        "motion_permit_waits_recovered": 7,
+        "motion_permits_refused": 0,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1440,
+        "native_pose_echo_checks": 1440,
+        "native_tick": 360,
+        "owner_replacements": 0,
+        "pending_serial": 2211,
+        "physical_intervals": 360,
+        "physical_steps": 1441,
+        "publication_sequence": 720,
+        "pump_budget_exhaustions": 130,
+        "pump_calls": 724,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 9259,
+        "pump_usec_total": 2847102,
+        "pump_waits": 11841,
+        "redundant_readiness_receipts_suppressed": 360,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.9749604540104,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1080,
+        "frame_copy_calls": 360,
+        "frame_copy_max_usec": 708,
+        "frame_copy_usec": 67815,
+        "full_motion_publications": 360,
+        "segment_idle_polls": 1863,
+        "segment_service_turns": 1440,
+        "snapshot_calls": 1080,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 263572
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 357,
+          "owned": 1,
+          "semantic_ticks": 359,
+          "wall_usec": 6008015
+        }
+      },
+      "control_timing_deltas": {
+        "activated": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "complete": {
+          "delivery": {
+            "calls": 359,
+            "max_usec": 30595,
+            "usec": 77982
+          },
+          "owner_service": {
+            "calls": 359,
+            "max_usec": 309,
+            "usec": 68390
+          },
+          "publication_copy": {
+            "calls": 359,
+            "max_usec": 5,
+            "usec": 107570
+          },
+          "queue": {
+            "calls": 359,
+            "max_usec": 42,
+            "usec": 75916
+          }
+        },
+        "motion": {
+          "delivery": {
+            "calls": 1436,
+            "max_usec": 0,
+            "usec": 154888
+          },
+          "owner_service": {
+            "calls": 1436,
+            "max_usec": 1028,
+            "usec": 491273
+          },
+          "publication_copy": {
+            "calls": 1436,
+            "max_usec": 720,
+            "usec": 142970
+          },
+          "queue": {
+            "calls": 1436,
+            "max_usec": 78,
+            "usec": 196690
+          }
+        },
+        "reserved": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        },
+        "terrain": {
+          "delivery": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "owner_service": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "publication_copy": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          },
+          "queue": {
+            "calls": 0,
+            "max_usec": 0,
+            "usec": 0
+          }
+        }
+      },
+      "failures": [],
+      "label": "candidate",
+      "log_sha256": "92890f4e5b82d87951a6060713f19bdc075b65ec56a506e907d14c9f670e9aac",
+      "name": "sleeping-on-2-candidate",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "588160c0217957dbb83a24239838e3c2e073b4778d76b2cf8365b68e181e234f",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1795,
+        "deferred_world_uploads": 0,
+        "motion_lease": 440,
+        "motion_permit_waits_recovered": 8,
+        "motion_permits_refused": 1,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 1436,
+        "native_pose_echo_checks": 1436,
+        "native_tick": 359,
+        "owner_replacements": 0,
+        "pending_serial": 2201,
+        "physical_intervals": 359,
+        "physical_steps": 1437,
+        "publication_sequence": 718,
+        "pump_budget_exhaustions": 64,
+        "pump_calls": 718,
+        "pump_operation_exhaustions": 0,
+        "pump_usec_max": 15159,
+        "pump_usec_total": 2700286,
+        "pump_waits": 11244,
+        "redundant_readiness_receipts_suppressed": 359,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.7533236329888,
+      "worker_counter_deltas": {
+        "compact_motion_receipts": 1077,
+        "frame_copy_calls": 359,
+        "frame_copy_max_usec": 7655,
+        "frame_copy_usec": 64622,
+        "full_motion_publications": 359,
+        "segment_idle_polls": 1862,
+        "segment_service_turns": 1436,
+        "snapshot_calls": 1077,
+        "snapshot_max_usec": 157,
+        "snapshot_usec": 236645
+      },
+      "workload": "sleeping"
+    },
+    {
+      "checks": 76,
+      "cohorts": {
+        "1/0": {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 203,
+          "wall_usec": 6017052
+        }
+      },
+      "control_timing_deltas": {},
+      "failures": [],
+      "label": "baseline",
+      "log_sha256": "92e9a5b279b0f29b44f4adc0a44b6e2af84f4d3b17423f420756c85b84928a1b",
+      "name": "sleeping-on-2-baseline",
+      "passed": true,
+      "recording": "on",
+      "replicate": 2,
+      "result_sha256": "8edab57c09f4af6ce132148b76e21cf14135e69c1975e1e90e410b77e6bec4e3",
+      "returncode": 0,
+      "runtime_counter_deltas": {
+        "body_count": 0,
+        "controls_completed": 1015,
+        "deferred_world_uploads": 0,
+        "motion_lease": 283,
+        "motion_permits_refused": 13,
+        "native_instance_id": 0,
+        "native_pose_acknowledgements": 812,
+        "native_pose_echo_checks": 812,
+        "native_tick": 203,
+        "owner_replacements": 0,
+        "pending_serial": 1416,
+        "physical_intervals": 203,
+        "physical_steps": 813,
+        "publication_sequence": 1015,
+        "pump_usec_max": 683,
+        "pump_usec_total": 1802407,
+        "redundant_readiness_receipts_suppressed": 203,
+        "shared_main_space_id": 0,
+        "world_generation": 0
+      },
+      "semantic_ticks": 203,
+      "semantic_ticks_per_second": 33.7373225362822,
+      "worker_counter_deltas": {
+        "frame_copy_calls": 203,
+        "frame_copy_max_usec": 15,
+        "frame_copy_usec": 31774,
+        "snapshot_calls": 1218,
+        "snapshot_max_usec": 0,
+        "snapshot_usec": 269150
+      },
+      "workload": "sleeping"
+    }
+  ],
+  "schema": "objectshard-m4-matched-throughput-v1",
+  "scope": "Interleaved same-host actual native/Rapier workloads. Headless timing is not physical display FPS or owner hardware acceptance. Historical and candidate native identities/toolchains are reported explicitly.",
+  "seconds_per_window": 6,
+  "started_utc": "2026-11-28T02:10:01.190084+00:00"
+}

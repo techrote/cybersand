@@ -1,0 +1,129 @@
+{
+  "schema": "objectshard-independent-windows-crossbuild-review-v1",
+  "utc": "2026-11-22T07:54:35.910152+00:00",
+  "reviewer": "review_custody independent of implementation and download workstream",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44999117090",
+  "build_job": 137136516082,
+  "remote_readback_sha256": "baf962d4dd03128dd22a6acb0424db372ecdd04fe38315bf2fdd4dff7970e405",
+  "failures": [],
+  "artifacts": [
+    {
+      "id": 14745122677,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745122677",
+      "name": "objectshard-dll-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+      "archive_sha256": "5c32e97f40acd278a6fc871fbe22b22684dcbfdd978774afab9afe580acba9d6",
+      "archive_bytes": 2217474,
+      "members": [
+        {
+          "path": "candidate-provenance.json",
+          "bytes": 14442,
+          "sha256": "40f3439335f647785300e9af19fd6462b1ec7652ab26140bcd7c5efd4b1a1dc5"
+        },
+        {
+          "path": "cybersand_native.windows.x86_64.dll",
+          "bytes": 6075904,
+          "sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+        }
+      ]
+    },
+    {
+      "id": 14745236878,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14745236878",
+      "name": "objectshard-crossbuild-e034f2294663e0485cfb9adcc8ada46a6e977cee-44999117090-1",
+      "archive_sha256": "a641552a46f7b6db770732ca8293eb45b70dd53c6c2daedcaeb633c146ca7e0b",
+      "archive_bytes": 13861,
+      "members": [
+        {
+          "path": "bindings/performance.jsonl",
+          "bytes": 2733,
+          "sha256": "da80e553d607ae24709608b79145f66e330c1cf8d72a3bbe7e19d52d4c5777c4"
+        },
+        {
+          "path": "bindings/command.log",
+          "bytes": 60046,
+          "sha256": "eab4cee8aa6149d4e7cd7e8115239372ba4711534517235359bd1c0349ff9c27"
+        },
+        {
+          "path": "bindings/receipt.json",
+          "bytes": 2129,
+          "sha256": "7b3d81bdc4d92e3d0c617be3d1af4d88a35b9a4ddb01bfa6a56267839e53dc71"
+        },
+        {
+          "path": "extension/command.log",
+          "bytes": 2096,
+          "sha256": "818dfd12abf6901e113609fa6d4959ccfe1ad66588c55e450271e1f3a4520650"
+        },
+        {
+          "path": "extension/performance.jsonl",
+          "bytes": 2739,
+          "sha256": "254cfa964c9fe5aa4e2ae78fa1587854b904cf50b074cd14eb199cb175d48e03"
+        },
+        {
+          "path": "extension/receipt.json",
+          "bytes": 2129,
+          "sha256": "44df70cf300dd5810442618811761e66a1e6719dcdacbec05b455f346e4e15ff"
+        },
+        {
+          "path": "scons.log",
+          "bytes": 358,
+          "sha256": "c4c365baca74b128f2106c73b21d5aa5b4a1dd86b50069ce6891a3d9726907e8"
+        },
+        {
+          "path": "source-commit.txt",
+          "bytes": 41,
+          "sha256": "639f6b488488ab1dbd730bb99072617a500fbe97330b3abef571361105f9316b"
+        }
+      ]
+    }
+  ],
+  "candidate_provenance_sha256": "40f3439335f647785300e9af19fd6462b1ec7652ab26140bcd7c5efd4b1a1dc5",
+  "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+  "native_bytes": 6075904,
+  "native_inputs_verified": 116,
+  "native_pe": {
+    "machine": "0x8664",
+    "optional_magic": "0x20b",
+    "dll_flag": true
+  },
+  "build_receipts": [
+    {
+      "stage": "bindings",
+      "source": {
+        "commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "job": "windows-build",
+        "run_attempt": "1",
+        "run_id": "44999117090",
+        "runner_name_sha256": "15c0808974b87f0b817161f6a751d875be96d394e0dabadd0881a79f5cd4c3dc",
+        "tracked_delta_sha256": null,
+        "tree": "246e7324ca618d98c43a0ed54fe19bc86a155877"
+      },
+      "elapsed_seconds": 184.276491205,
+      "receipt_sha256": "7b3d81bdc4d92e3d0c617be3d1af4d88a35b9a4ddb01bfa6a56267839e53dc71",
+      "log_sha256": "eab4cee8aa6149d4e7cd7e8115239372ba4711534517235359bd1c0349ff9c27",
+      "build_complete": true,
+      "resource_scope": "direct_process_only"
+    },
+    {
+      "stage": "extension",
+      "source": {
+        "commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+        "job": "windows-build",
+        "run_attempt": "1",
+        "run_id": "44999117090",
+        "runner_name_sha256": "15c0808974b87f0b817161f6a751d875be96d394e0dabadd0881a79f5cd4c3dc",
+        "tracked_delta_sha256": null,
+        "tree": "246e7324ca618d98c43a0ed54fe19bc86a155877"
+      },
+      "elapsed_seconds": 54.240185139000005,
+      "receipt_sha256": "44df70cf300dd5810442618811761e66a1e6719dcdacbec05b455f346e4e15ff",
+      "log_sha256": "818dfd12abf6901e113609fa6d4959ccfe1ad66588c55e450271e1f3a4520650",
+      "build_complete": true,
+      "resource_scope": "direct_process_only"
+    }
+  ],
+  "status": "passed",
+  "scope": "Fresh e034 Windows cross-compilation and immutable candidate custody only; actual final Windows launched ZIP and Linux qualification remain separate mandatory evidence.",
+  "measurement_caveat": "Compiler resource observations are direct_process_only; no total compiler child or gameplay resource claim."
+}

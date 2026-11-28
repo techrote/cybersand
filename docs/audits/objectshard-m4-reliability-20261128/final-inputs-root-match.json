@@ -1,0 +1,12 @@
+{
+  "schema": "root-final-native-and-application-input-match-v1",
+  "integration_source": "1f8fb727e449517e052846a9e194b868c64cc7c7",
+  "native_input_count": 126,
+  "native_mismatches": [],
+  "native_manifest_source": "c3d6580e48b19fe5e2184397eba19531afbfbcfa",
+  "binary_sha256": "656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18",
+  "binary_bytes": 5963312,
+  "paired_profile_application_source": "19485bbb5e474f0d4d90c40617a36b3120552f5b",
+  "application_script_shader_scene_changes": [],
+  "qualification_scope": "Local GCC14.2 input identity and unchanged measured script path; pinned release binaries require guarded CI publication."
+}

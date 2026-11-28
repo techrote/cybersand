@@ -1,0 +1,103 @@
+{
+  "schema": "objectshard-live-edit-final-native-renderer-independent-audit-v1",
+  "reviewer": "Specialist C",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "artifact_id": 15255911361,
+  "outer_bytes": 7872940,
+  "outer_sha256": "49f4e41f25c0c8a19032a827df608d2aa3b8a021b01a31cf308b8549c351f891",
+  "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+  "status": "passed",
+  "git_input_hashes_verified": 1609,
+  "cases": [
+    {
+      "name": "native_presentation_import",
+      "checks": null,
+      "log_sha256": "bb43fc5cc38797cace0c801284fc410a49c582bcf61b80dc45d3c89dc2f366b1",
+      "status": "passed"
+    },
+    {
+      "name": "test_object_shard_m4_camera_lifecycle",
+      "checks": 230,
+      "log_sha256": "185669c22be87e894c21d9de5885435a6396dc977dd9d2547336b2c532c38df0",
+      "status": "passed"
+    },
+    {
+      "name": "test_object_shard_m4_brush_revision",
+      "checks": 159,
+      "log_sha256": "78ccb34a9247aa1c7685b485ea81f225af8d30b38aeeb2e664e843a51f4935a0",
+      "status": "passed"
+    },
+    {
+      "name": "test_object_shard_m4_edit_preview_render",
+      "checks": 102,
+      "log_sha256": "1ee01a4fad967047d195ffe3263437540825e83ac352b0d3a3e492fdbc9750eb",
+      "status": "passed"
+    }
+  ],
+  "preview_captures": [
+    {
+      "path": "edit-preview-captures/weathering-extent.png",
+      "sha256": "19582ed5ccf443f60aa4dd851e48a5b6f6cd628a74eae5f752b8d4464e803d34",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/zoomed-eraser.png",
+      "sha256": "6fc8ac94bdecc835c12d3ccf7695bb2b51cf22db4217143c8617ca8dfbb97ddc",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/structures-weathering-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/structures-controls-top.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/structural-eraser.png",
+      "sha256": "1e05d5c6f2adfe6b519e2c6acdca53c5a8c22636550a4d63352a94de77d51a14",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/slice-preview.png",
+      "sha256": "113fdd1548334e2bc70dc1f6edb831633a963a1f75e6e6105e8e86f28466f22d",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/resized-weathering.png",
+      "sha256": "6a049c1ccd4e5cc6cd57a0403789cc79c2ee40626ae7bf478964e8b0c5776fc2",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/precision-cell.png",
+      "sha256": "565397464be1811ccab7370215f1b32ea2ab8a5b1e4b48df0bfddd4c69aad907",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/panned-drill.png",
+      "sha256": "046e4d87e039933095fedcb46077525367e5f3a309698c689294954c8014515b",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/ordinary-unified-eraser.png",
+      "sha256": "ae57d028199ac0e4d7a3dc5992876da790e723822c4adeb98a843e9e0532f0a0",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/drill-opening.png",
+      "sha256": "c1aa3e555e019107110fd42e154935fcc83c2a6ce2c8a5ff367dab8e9d10ffeb",
+      "identical_to_independently_reviewed_corrective_capture": true
+    },
+    {
+      "path": "edit-preview-captures/area-ignition.png",
+      "sha256": "33be33ad8004af2c9703aa02b7dfd4dd5f2827b8356825adb95956f07afcd06f",
+      "identical_to_independently_reviewed_corrective_capture": true
+    }
+  ],
+  "scope": "Fresh exact-source Windows native execution receipts independently checked;12preview capture bytes compared to images C previously visually inspected; actual final delivered package remains a separate pending gate",
+  "physical_owner_acceptance": "pending"
+}

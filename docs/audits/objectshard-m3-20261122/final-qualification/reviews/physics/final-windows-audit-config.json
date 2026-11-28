@@ -1,0 +1,104 @@
+{
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "platform": "windows",
+  "evidence_directory": "build/m3-platform/repair-windows/14745662483",
+  "source_lab": "windows-lab",
+  "package_lab": "package-replay",
+  "provenance": "build/m3-platform/repair-windows/14745122677/candidate-provenance.json",
+  "native_runtime": "build/m3-platform/repair-windows/14745122677/cybersand_native.windows.x86_64.dll",
+  "output_report": "build/review-physics/platform-windows-final-e034-review.json",
+  "owner_zip": "build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+  "archives": [
+    {
+      "path": "build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745662483.zip",
+      "sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb"
+    },
+    {
+      "path": "build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745303779.zip",
+      "sha256": "add03a105121ae4d6c25c403464ce1dddcc0b85eaab3a8f3f93920fc2b290e1d"
+    },
+    {
+      "path": "build/m3-platform/repair-windows/14745303779/objectshard-windows-evaluator.zip",
+      "sha256": "61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b"
+    }
+  ],
+  "custody_files": [
+    "build/m3-platform/repair-windows/14745122677-custody.json",
+    "build/m3-platform/repair-windows/14745236878-custody.json",
+    "build/m3-platform/repair-windows/14745303779-custody.json",
+    "build/m3-platform/repair-windows/14745662483-custody.json"
+  ],
+  "visual_review": {
+    "objectshard-m3-native-supported.png": "Actually opened and visually inspected: intact Wood support connects the crown to terrain, zero shard slots; actual native/published1/1 HUD. No active RID overlay is visible.",
+    "objectshard-m3-falling.png": "Actually opened and visually inspected: severed lower support and separated falling crown, one active526-cell owner, mass526,6shapes. HUD native/published21/21. Geometry overlay and material silhouette agree visually.",
+    "objectshard-m3-settled-after-erosion.png": "Actually opened and visually inspected: rotated crown rests on terrain after the recorded erase and120continued semantic ticks, sleeping525-cell owner/mass525 and7shapes. Actual HUD native/published471/471; cyan geometry and yellow COM overlay present.",
+    "objectshard-m3-main-structure-priority.png": "Actually opened and visually inspected: substantial crown admitted first,817structural/mass817, plus two72-cell owners and multiple still-native offcuts. Screenshot HUD says native7/published6 and waiting for applied motion, unlike later adjacent diagnostic7/7 Idle; backend snapshot is not claimed to be exact rendered pose.",
+    "objectshard-m3-water-sand-pocket.png": "Actually opened and visually inspected: sleeping pocket body with498structural+1cargo, mass499,6shapes and visible Sand in the open green pocket. HUD Water extinctions0. Screenshot HUD native101/published100 awaiting prepare; adjacent diagnostic is101/101 Idle. This PNG establishes one Sand cargo cell, not Water extinction.",
+    "objectshard-m3-external-fire.png": "Actually opened and visually inspected: visible orange external Fire band below anchored supported Wood. HUD accepted fixture83 and slots0/3, native/published21/21, action receipt wait and FixtureCellOccupied refusal visible. Adjacent retained fixture counters report83accepted and83native WorldFire cells. Authored flame is distinct from chemistry-created products.",
+    "objectshard-m3-extended-320.png": "Actually opened and visually inspected:320x192canvas with three substantial separated owners on terrain/asymmetric ledges, one visibly tilted. First two visible panels show775structural/mass775 and sleeping; third partly below scroll. Host records confirm all three. HUD native/published81/81."
+  },
+  "visual_telemetry": {
+    "objectshard-m3-native-supported.png": {
+      "native_tick": 1,
+      "published_tick": 1,
+      "slots": "0/3",
+      "status": "Paused between asynchronous operations"
+    },
+    "objectshard-m3-falling.png": {
+      "native_tick": 21,
+      "published_tick": 21,
+      "structural_cells": 526,
+      "mass": 526,
+      "shape_count": 6,
+      "sleeping": false,
+      "status": "Tick21 completed with applied worker receipts"
+    },
+    "objectshard-m3-settled-after-erosion.png": {
+      "native_tick": 471,
+      "published_tick": 471,
+      "structural_cells": 525,
+      "mass": 525,
+      "shape_count": 7,
+      "sleeping": true,
+      "status": "Tick471 completed with applied worker receipts"
+    },
+    "objectshard-m3-main-structure-priority.png": {
+      "native_tick": 7,
+      "published_tick": 6,
+      "main_structural_cells": 817,
+      "main_mass": 817,
+      "slots": "3/3",
+      "status": "Waiting for applied motion receipt: Rapier is not advancing"
+    },
+    "objectshard-m3-water-sand-pocket.png": {
+      "native_tick": 101,
+      "published_tick": 100,
+      "structural_cells": 498,
+      "cargo_cells": 1,
+      "mass": 499,
+      "shape_count": 6,
+      "sleeping": true,
+      "water_extinctions": 0,
+      "status": "Waiting for applied prepare receipt: Rapier is not advancing"
+    },
+    "objectshard-m3-external-fire.png": {
+      "native_tick": 21,
+      "published_tick": 21,
+      "accepted_fixture_fire": 83,
+      "slots": "0/3",
+      "last_input": "FixtureCellOccupied",
+      "status": "Waiting for applied action receipt: Rapier is not advancing"
+    },
+    "objectshard-m3-extended-320.png": {
+      "native_tick": 81,
+      "published_tick": 81,
+      "canvas": "320x192",
+      "slots": "3/3",
+      "visible_first_two_structural_cells": 775,
+      "visible_first_two_mass": 775,
+      "visible_first_two_sleeping": true,
+      "status": "Tick81 completed with applied worker receipts"
+    }
+  }
+}

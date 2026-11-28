@@ -1,0 +1,47 @@
+{
+  "schema": "independent-objectshard-navigation-finding-v1",
+  "reviewer": "/root/review_physics",
+  "utc": "2026-11-22T07:23:36.170269+00:00",
+  "commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "tree": "f533105e41b33e75c07c93aa0c8c40438e7bc112",
+  "classification": "Class B",
+  "severity": "high; blocks candidate lifecycle/ownership signoff",
+  "status": "confirmed; author repair pending",
+  "title": "Actual F2 scene replacement bypasses native disposal, worker join and RID release",
+  "source_locations": {
+    "godot/scripts/feature_navigation.gd": "return_to_launcher directly defers change_scene_to_file after only the unrelated playable-recovery hook",
+    "godot/scripts/object_shard_worker_rehearsal.gd": "_ready sets auto_accept_quit=false; only reset and WM_CLOSE_REQUEST call host.close; no feature-navigation shutdown barrier or exit cleanup",
+    "godot/scripts/object_shard_worker_host.gd": "close requests stop; poll must receive successful native disposal and join before bridge shutdown",
+    "godot/scripts/object_shard_native_worker.gd": "_run keeps the native RefCounted and blocks on Semaphore until explicit stop; no autonomous owner disposal on scene replacement"
+  },
+  "reproduction": [
+    "Use exact project.godot real FeatureNavigation autoload and actual feature launcher to open M3.",
+    "Perform ordinary support cut and manual progression until one active awake Rapier body exists.",
+    "Queue one native tick and retain the unconsumed actual receipt using the existing delayed-receipt UI control.",
+    "Send Input.parse_input_event(KEY_F2); wait for deferred actual launcher scene entry.",
+    "Observe old scene, host and bridge destroyed through WeakRef; old worker still started, not stopped, stop_requested=false; old body RID remains in same valid space with six shapes.",
+    "Re-enter M3 through real launcher: a second independent worker/World starts while the previous native owner remains alive.",
+    "Submit observe to the orphan after evidence capture: it answers with 526 owned Wood cells at native tick4.",
+    "After reviewer cleanup, repeat from a naturally sleeping body at tick324: same orphan worker, owned cells, live sleeping RID and re-entry overlap.",
+    "Run a separate no-cleanup exit variant: engine logs nine leaked ObjectDB instances, one still-used resource, Thread/Mutex/Semaphore and orphan CyberObjectShardLab/CyberObjectShardNativeWorker names."
+  ],
+  "independent_harness_checks": 22,
+  "independent_harness_failures": 8,
+  "secondary_failure": "SceneTree.auto_accept_quit remains false in the launcher, contrary to original true value; launcher no longer has its default close handling.",
+  "observation_control": "Only WeakRef witnesses were retained before scene replacement. Saved RIDs are handles, not ownership references. Old host and bridge actually became null. Reviewer cleanup happens only after orphan evidence and re-entry overlap are recorded.",
+  "runtime_scope": "Reused sealed514 native inputs identical to candidate; approved narrow iteration reproduction, not fresh candidate source build",
+  "native_sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "input_hashes": {
+    "build/review-physics/navigation-68235b12/source-identity.json": "5eb42c00793f3bc5350551caaaea9c7189ffb545769cf4ed93e44760e33d59bb",
+    "build/review-physics/navigation-68235b12/project/tests/review_navigation_lifecycle.gd": "6dcbf922fe3e18e7f424c67d439937c3bbe9940ae2e9f996aa37a0e436393e2d",
+    "build/review-physics/navigation-68235b12/review-navigation-result.json": "b3ad664797f7d4d30a4f88a10efbef8f472980a8db335c8634993767cd418ef6",
+    "build/review-physics/navigation-68235b12/review-navigation.log": "b31bde77fb505fa9ec4e738c64dc51bc3ea9fc215f418c2dfb2f40ca894ed910",
+    "build/review-physics/navigation-68235b12/review-navigation-result-no-cleanup.json": "f3d936da648685544c39e78e80d4d1e68fe57e2cb1f428f43b64eb2c23102e0a",
+    "build/review-physics/navigation-68235b12/review-navigation-no-cleanup.log": "77aae8466c22e284616344767ebb43eacb9a931f17849ffdec3bec0727710d4d",
+    "build/review-physics/navigation-68235b12/review-navigation-no-cleanup-verbose.log": "1b43ef23cc5682caa02fbc54f5b48a8d8cfca3ebfe7cc9c40e604ce0aab341e9"
+  },
+  "source_hashes_rechecked_after_execution": true,
+  "source_mismatches": [],
+  "resolution_required": "Guard feature navigation until explicit native disposal is acknowledged, worker joined and RIDs released; retain the scene on shutdown failure and restore prior global close handling on successful exit. Re-run active pending and naturally sleeping F2/re-entry paths against the exact repaired source. No product changes by reviewer."
+}

@@ -1,0 +1,434 @@
+[
+  {
+    "index": 1,
+    "case": "dormant_twelve",
+    "source": "pre_timer",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 1.0161593410011847,
+    "load_before": [
+      1.86669921875,
+      1.263671875,
+      2.16943359375
+    ],
+    "load_after": [
+      1.86669921875,
+      1.263671875,
+      2.16943359375
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 561.873,
+      "p50_us": 604.255,
+      "p95_us": 722.595,
+      "p99_us": 814.186,
+      "max_us": 3082.714
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 3.609,
+      "p50_us": 3.623,
+      "p95_us": 4.189,
+      "p99_us": 4.479,
+      "max_us": 218.303
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 64.484,
+      "p50_us": 67.232,
+      "p95_us": 95.755,
+      "p99_us": 135.225,
+      "max_us": 1308.122
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "c66f536d2700676b5c3fc861d0494c53420ce10b35ab6415184a659347d60358"
+  },
+  {
+    "index": 2,
+    "case": "dormant_twelve",
+    "source": "final",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 1.0119981129973894,
+    "load_before": [
+      1.86669921875,
+      1.263671875,
+      2.16943359375
+    ],
+    "load_after": [
+      1.86669921875,
+      1.263671875,
+      2.16943359375
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 574.822,
+      "p50_us": 620.912,
+      "p95_us": 723.325,
+      "p99_us": 795.265,
+      "max_us": 1135.679
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 4.718,
+      "p50_us": 4.566,
+      "p95_us": 5.249,
+      "p99_us": 6.487,
+      "max_us": 339.481
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 66.361,
+      "p50_us": 69.552,
+      "p95_us": 98.157,
+      "p99_us": 128.506,
+      "max_us": 725.413
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "bddcce4c6f6a139378a3716ccba38b2079ccb1854ad9e0551b28abc96922eb0e"
+  },
+  {
+    "index": 3,
+    "case": "wake_burst_twelve",
+    "source": "final",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 1.0327854710048996,
+    "load_before": [
+      1.86669921875,
+      1.263671875,
+      2.16943359375
+    ],
+    "load_after": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 584.916,
+      "p50_us": 630.729,
+      "p95_us": 762.915,
+      "p99_us": 848.97,
+      "max_us": 2592.254
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 11.164,
+      "p50_us": 9.864,
+      "p95_us": 22.413,
+      "p99_us": 40.549,
+      "max_us": 85.872
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 76.043,
+      "p50_us": 75.19,
+      "p95_us": 124.586,
+      "p99_us": 162.892,
+      "max_us": 507.242
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "e054a924ca3f9b191c573ef2c331c5043a6493da464d1c89c76d483433242e52"
+  },
+  {
+    "index": 4,
+    "case": "wake_burst_twelve",
+    "source": "pre_timer",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 1.0532493969949428,
+    "load_before": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "load_after": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 612.563,
+      "p50_us": 648.553,
+      "p95_us": 765.404,
+      "p99_us": 877.003,
+      "max_us": 3528.512
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 10.694,
+      "p50_us": 4.64,
+      "p95_us": 21.387,
+      "p99_us": 41.184,
+      "max_us": 66.816
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 81.2,
+      "p50_us": 77.979,
+      "p95_us": 126.173,
+      "p99_us": 184.479,
+      "max_us": 1808.666
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "163d02c2652764464e5b72ab6b82852796f74ca8bb0190fc9d7707ac03eef3bc"
+  },
+  {
+    "index": 5,
+    "case": "dormant_twelve",
+    "source": "final",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 0.9612745000049472,
+    "load_before": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "load_after": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 546.936,
+      "p50_us": 592.876,
+      "p95_us": 718.109,
+      "p99_us": 777.852,
+      "max_us": 1453.113
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 4.922,
+      "p50_us": 4.353,
+      "p95_us": 5.177,
+      "p99_us": 6.253,
+      "max_us": 839.066
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 62.964,
+      "p50_us": 65.673,
+      "p95_us": 95.518,
+      "p99_us": 119.305,
+      "max_us": 438.568
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "8f7302b0177f666fbed659697cf1897adcebaf3d154a93d52793d016390661d6"
+  },
+  {
+    "index": 6,
+    "case": "dormant_twelve",
+    "source": "pre_timer",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 0.9629766310099512,
+    "load_before": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "load_after": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 549.819,
+      "p50_us": 596.196,
+      "p95_us": 718.17,
+      "p99_us": 784.885,
+      "max_us": 1062.034
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 3.482,
+      "p50_us": 3.587,
+      "p95_us": 4.224,
+      "p99_us": 4.444,
+      "max_us": 46.413
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 62.626,
+      "p50_us": 65.898,
+      "p95_us": 96.595,
+      "p99_us": 126.352,
+      "max_us": 285.64
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "14decd5bca3d20f7338fbc37787f1619692fa582741bbc538a3255886e7478ed"
+  },
+  {
+    "index": 7,
+    "case": "wake_burst_twelve",
+    "source": "pre_timer",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 1.0011706050136127,
+    "load_before": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "load_after": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 579.177,
+      "p50_us": 627.423,
+      "p95_us": 755.888,
+      "p99_us": 833.65,
+      "max_us": 1160.45
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 10.15,
+      "p50_us": 9.288,
+      "p95_us": 21.155,
+      "p99_us": 26.059,
+      "max_us": 45.572
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 75.205,
+      "p50_us": 75.004,
+      "p95_us": 121.568,
+      "p99_us": 142.573,
+      "max_us": 548.663
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "f3aa13353299e42963980678fba2fca1cc1398afc1b4994efea83d1b9f54d55d"
+  },
+  {
+    "index": 8,
+    "case": "wake_burst_twelve",
+    "source": "final",
+    "returncode": 0,
+    "failures": 0,
+    "elapsed_seconds": 1.3196395520062651,
+    "load_before": [
+      2.67822265625,
+      1.4423828125,
+      2.22265625
+    ],
+    "load_after": [
+      3.4248046875,
+      1.61767578125,
+      2.275390625
+    ],
+    "frame": {
+      "samples": 1440,
+      "mean_us": 731.336,
+      "p50_us": 658.646,
+      "p95_us": 840.546,
+      "p99_us": 4697.555,
+      "max_us": 13721.177
+    },
+    "contact": {
+      "samples": 1440,
+      "mean_us": 12.361,
+      "p50_us": 9.817,
+      "p95_us": 22.019,
+      "p99_us": 40.932,
+      "max_us": 335.803
+    },
+    "world": {
+      "samples": 1440,
+      "mean_us": 91.012,
+      "p50_us": 77.02,
+      "p95_us": 131.348,
+      "p99_us": 206.937,
+      "max_us": 5396.443
+    },
+    "memory": {
+      "cpp_live_max_bytes": 3742880,
+      "cpp_peak_max_bytes": 3742880,
+      "native_reported_retained_max_bytes": 3395180,
+      "registry_retained_max_bytes": 22940,
+      "world_cell_storage_max_bytes": 494592,
+      "construction_allocations": 1453,
+      "construction_requested_bytes": 11238331,
+      "steady_allocations": 0,
+      "steady_requested_bytes": 0
+    },
+    "report_sha256": "ebb024f37fb0bb679cca9f1a861d28c82a268e36297dc80ec4ca9bc17052ccb6"
+  }
+]

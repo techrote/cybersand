@@ -1,0 +1,36 @@
+{
+  "native_binary": {
+    "filename": "libcybersand_native.abc_motion.linux.x86_64.so",
+    "sha256": "aa015a895c091f67d6d07a7f6dab6b18d6e1e55247ff880c10fcef7425a2149b",
+    "size": 5950712
+  },
+  "native_source_commit": "3479c621cbf5ba771b94c063bea0c3a36e769374",
+  "native_source_composition": "A 047c89f19 + accepted-main/presentation merge + B supplied authoritative native pose-echo patch; private composition, not integration ref",
+  "qualification_scope": "Local Linux x86_64 source-matched focused test only; not Windows production publication or physical monitor acceptance",
+  "raw_logs_sha256": {
+    "abc-native-build.log": "cb9cb6ae86c07359cf0cb76378996dfd949c6072c2df2a98989bc290e81ad225",
+    "fragment-motion-final.log": "1a5dd6c7d55f0ae2f35084ce37c56b6939456bdf36fa079dd8e7373b124bbc06",
+    "fresh-barrel.log": "89ba0601e56cf052655f9c3d4487e48250409ea0a882bab9ef1ae91f79b8cf52",
+    "small-fragment-native-chain-probe4.log": "2ffcc5bfa89c18169ce256e7c5f84bb801b3b5e91a56e88277432c8eed97d767"
+  },
+  "runtime_manifest": "physics-inputs.json",
+  "schema": "objectshard-physics-combined-local-inputs-v1",
+  "source_sha256": {
+    "godot/native_extension/cyber_object_shard_lab.cpp": "2d8c5956c6d253abd64b5cfa801f3fd8496fa325bfc4371c07d57bbdead5f885",
+    "godot/scripts/object_shard_physics_bridge.gd": "780265c5b3be9f78316ae943ee5aa29b3fdc8bb29b66fc0992c8f6615e1cc3ad",
+    "godot/tests/test_object_shard_m4_fresh_barrel.gd": "7fd7ed2857b980ac0d8f3e266684d8072b123a191d2fb193e6a1fb749fa0c225",
+    "godot/tests/test_object_shard_m4_small_fragment_chain.gd": "5c5716689acc3c88af81f38936bc6c6d663be0d08f0da9c0a312094206925ef9",
+    "native/include/cybersand/object_shard_contact.hpp": "9eaaeb1453068e50afb35ccc308957aa2cbd25680b366f7f3a04ad258563e3d3",
+    "native/include/cybersand/object_shard_coordinator.hpp": "f451e30f4d342f556bf5c4b9779305da0f147801b690abf37f4b8855f156d15b",
+    "native/src/object_shard_coordinator.cpp": "283715eefbd14a1a5b62294cb8e18227d2b08065a5912630077a15f12cf7d28d",
+    "native/tests/test_object_shard_contact.cpp": "93453fbc6a1214872365a6d2ad71218862649dd37e2065aa5a3b478331d853c8",
+    "native/tests/test_object_shard_coordinator.cpp": "a553dc262cb8bbc23c0408f09b815924ef1ece236de5a1da81465d7b6ffd9a0e"
+  },
+  "toolchain": {
+    "binutils": "2.44",
+    "compiler": "GCC 14.2.0",
+    "drift": "explicit CYBERSAND_ALLOW_TOOLCHAIN_DRIFT=1 for local testing",
+    "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "release_pin": "GCC 13.3.0/binutils 2.42"
+  }
+}

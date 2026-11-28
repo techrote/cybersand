@@ -1,0 +1,246 @@
+{
+  "bounded_related_scan": "No other stale small-body 0.201/0.21 angular-refusal expectation found. Explicit old-envelope historical rejection, independent numerical geometry bounds and large/slender 0.20 rejection remain. The passing 30rad/s Godot subdivision fixture observes less than 0.20 per segment without asserting a global refusal policy.",
+  "correction": "For the existing single-cell moving Wood fixture, retain Unsupported plus unchanged rejected pose and pose serial at the actual occupied-geometry angular limit plus 0.001. Add an independent fixed 0.201-radian Accepted control, exact accepted angle and pose_serial, and no native time. Existing duplicate receipt remains Stale; no Fire opportunity, lifecycle, relocation or accounting assertions removed.",
+  "cross_review": "Throughput specialist independently approved the fixture correction and requested the explicit positive accepted pose_serial assertion included in f5bd3aec4.",
+  "failed_hosted_gate": {
+    "artifact_id": 15245207072,
+    "artifact_size": 135648066,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46099370014/artifacts/15245207072",
+    "artifact_zip_sha256": "810d489852b459c3d96e1d2746c2a871e2a420202600cca04a089180c30a0592",
+    "checks_reported": 131753,
+    "counts_complete": true,
+    "elapsed_seconds": 610.439249028,
+    "exact_failure_log": "FAIL 180: moving.accept_motion(sample).outcome==Outcome::Unsupported\nFAIL 181: moving.snapshot().bodies[0].pose.rotation==original.rotation\n3683 checks, 2 failures\n",
+    "failures_reported": 2,
+    "git_head": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+    "input_digest": "7108597df3352b931848f9d109a0187b60db3a3c39693b706bcdd2cf2a8d7c12",
+    "job_id": 140838073352,
+    "leak_sanitizer": false,
+    "run_id": 46099370014,
+    "sanitizers": true,
+    "schema": 1,
+    "source_tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+    "status": "failed",
+    "suites": {
+      "admission": {
+        "binary_sha256": "ab7da314184cbc3d8050b304b3217fdca31e9a9d442d0f10ea5a1d223a81b9af",
+        "checks": 28092,
+        "count_unit": "checks",
+        "failures": 0,
+        "returncode": 0,
+        "status": "passed",
+        "timed_out": false
+      },
+      "chemistry": {
+        "binary_sha256": "3e03ae746feaf36049d260b0c96a5b26e1bd92a843233151a8e5dfec9982ccad",
+        "checks": 4472,
+        "count_unit": "checks",
+        "failures": 0,
+        "returncode": 0,
+        "status": "passed",
+        "timed_out": false
+      },
+      "contact": {
+        "binary_sha256": "eae647038cc7e98b224d87387b963113c8c0eb3f0ffa4a0195ea00169edcbc34",
+        "checks": 81255,
+        "count_unit": "checks",
+        "failures": 0,
+        "returncode": 0,
+        "status": "passed",
+        "timed_out": false
+      },
+      "coordinator": {
+        "binary_sha256": "824dc90e440221368c56bb916e105fcc91d062ca8b0e2be8db6579ab40b134eb",
+        "checks": 5980,
+        "count_unit": "checks",
+        "failures": 0,
+        "returncode": 0,
+        "status": "passed",
+        "timed_out": false
+      },
+      "external_fire": {
+        "binary_sha256": "d9ae0714ee8e1bcd1c31099f9abfadaeab101f56cfdb371f6e6b089ae5f8b8b9",
+        "checks": 3683,
+        "count_unit": "checks",
+        "failures": 2,
+        "returncode": 1,
+        "status": "failed",
+        "timed_out": false
+      },
+      "storage": {
+        "binary_sha256": "bc2091dfc2127ae4f45d1541282509a5d1f08c2ba58ecf248098b88dfee267b8",
+        "checks": 8271,
+        "count_unit": "checks",
+        "failures": 0,
+        "returncode": 0,
+        "status": "passed",
+        "timed_out": false
+      },
+      "world": {
+        "binary_sha256": "780d05caabd169070326d25235cacec2eec46cf769e0862fdae97ff1511acc5c",
+        "checks": 192,
+        "count_unit": "test_cases",
+        "failures": 0,
+        "returncode": 0,
+        "status": "passed",
+        "timed_out": false
+      }
+    },
+    "test_cases_reported": 192,
+    "unexecuted_after_failure": [
+      "retained native Lab benchmark budgets",
+      "ObjectShard Python qualification contracts",
+      "full material catalogue unittest discovery",
+      "native material parity",
+      "CI provider policy"
+    ]
+  },
+  "identity_note": "The first local repair was tested as a dirty test-only input with exact captured source hashes before commit ae90072ad. Final explicit-ACK replay captures committed f5bd3aec4. Contact/coordinator consistency captures ae90072ad; all its selected inputs and all 126 production native inputs remain unchanged in f5bd3aec4. Final hosted source and complete remaining gates must be requalified separately.",
+  "local_repair_receipts": [
+    {
+      "checks_reported": 3688,
+      "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0",
+      "counts_complete": true,
+      "elapsed_seconds": 83.06135394199919,
+      "evidence_directory": "final-external-fire-repair",
+      "failures_reported": 0,
+      "flags": [
+        "-std=c++20",
+        "-O1",
+        "-g",
+        "-pthread",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer"
+      ],
+      "git_head": "67389b173e74c203d9df9ae8f7b1416afd4c3ac5",
+      "input_digest": "86de2bd3e3be0447357a4dfd7b2fbfcdef36d11ed55f6408dfa726e043b5c556",
+      "leak_sanitizer": false,
+      "sanitizers": true,
+      "schema": 1,
+      "status": "passed",
+      "suites": {
+        "external_fire": {
+          "binary_sha256": "1f1639f8d32f006b72de175d80aee453f6600ca26edd799b9a179ddbe15c9d91",
+          "checks": 3688,
+          "count_unit": "checks",
+          "failures": 0,
+          "returncode": 0,
+          "status": "passed",
+          "timed_out": false
+        }
+      },
+      "summary_sha256": "c81049b692de395c46460162db29c0ed457edf086a352c5929ff8cae303f49eb",
+      "test_cases_reported": 0,
+      "test_sources": {
+        "native/tests/test_object_shard_external_fire.cpp": "ae78c6c50e3532ddd7fe527e0fd59a0869c6ef56b1c75735e57533010a64c1cc"
+      }
+    },
+    {
+      "checks_reported": 3689,
+      "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0",
+      "counts_complete": true,
+      "elapsed_seconds": 82.6879553710005,
+      "evidence_directory": "final-external-fire-ack",
+      "failures_reported": 0,
+      "flags": [
+        "-std=c++20",
+        "-O1",
+        "-g",
+        "-pthread",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer"
+      ],
+      "git_head": "f5bd3aec4456308e1a60255ec7db96dbb93e89bf",
+      "input_digest": "0faf54dd35e49b1f8b36059a9b3ee4d418824d6f6b1553d99c49502d326a1812",
+      "leak_sanitizer": false,
+      "sanitizers": true,
+      "schema": 1,
+      "status": "passed",
+      "suites": {
+        "external_fire": {
+          "binary_sha256": "fd3b09cfe431cebadfa5bbbdfc5cc067d0a540acc91efd4efa0af378b62e52ba",
+          "checks": 3689,
+          "count_unit": "checks",
+          "failures": 0,
+          "returncode": 0,
+          "status": "passed",
+          "timed_out": false
+        }
+      },
+      "summary_sha256": "e0a9abb37894e5d075e9cf032439f6fa5778699dd9221c3673a28f9a74e29f34",
+      "test_cases_reported": 0,
+      "test_sources": {
+        "native/tests/test_object_shard_external_fire.cpp": "7c1a82ac7736aeaf6e64836bec829b474452eaf951b85ae36fe102544c5a9734"
+      }
+    },
+    {
+      "checks_reported": 87235,
+      "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0",
+      "counts_complete": true,
+      "elapsed_seconds": 97.81863162700029,
+      "evidence_directory": "final-motion-consistency",
+      "failures_reported": 0,
+      "flags": [
+        "-std=c++20",
+        "-O1",
+        "-g",
+        "-pthread",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-Werror",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer"
+      ],
+      "git_head": "ae90072ad1f41d5a4aabf7bb99581fc7d259aca4",
+      "input_digest": "5e382a472f695d9d0f96c313c0e6412ed46b109e79be240a3460c821564df3ac",
+      "leak_sanitizer": false,
+      "sanitizers": true,
+      "schema": 1,
+      "status": "passed",
+      "suites": {
+        "contact": {
+          "binary_sha256": "54cfee5e6fb3e6013b21be700b62176da33879fda0583363390009369d74ecb2",
+          "checks": 81255,
+          "count_unit": "checks",
+          "failures": 0,
+          "returncode": 0,
+          "status": "passed",
+          "timed_out": false
+        },
+        "coordinator": {
+          "binary_sha256": "10a74a065118998fad8f71dabe80dcbc62cec6c41f2da6800d6afaa2bde31007",
+          "checks": 5980,
+          "count_unit": "checks",
+          "failures": 0,
+          "returncode": 0,
+          "status": "passed",
+          "timed_out": false
+        }
+      },
+      "summary_sha256": "8c7ceaf177946bc25773b0e2501baae2637610075ee1bdc51c259efb5d267c17",
+      "test_cases_reported": 0,
+      "test_sources": {
+        "native/tests/test_object_shard_contact.cpp": "16fe2d3b7883884013bade728542686ec4ae72d7622823351d6aca6393c450c0",
+        "native/tests/test_object_shard_coordinator.cpp": "a553dc262cb8bbc23c0408f09b815924ef1ece236de5a1da81465d7b6ffd9a0e"
+      }
+    }
+  ],
+  "production_native_input_count": 126,
+  "production_native_inputs_canonical_sha256": "92a611767b86f9c96caa159730106089726a16049d82485bbb89635d594a538b",
+  "production_native_inputs_unchanged_from_failed_source": true,
+  "repair_commits": [
+    "ae90072ad",
+    "f5bd3aec4"
+  ],
+  "schema": "objectshard-m4-external-fire-angular-fixture-repair-v1",
+  "scope": "A demonstrated obsolete singleton angular-refusal test premise; no production change or discarded Fire contract."
+}

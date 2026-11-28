@@ -1,0 +1,226 @@
+{
+  "schema": "objectshard-final-observation-extract-v1",
+  "source_commit": "8f55a4e61b7cbb34a594f5e07e7d81d49aa58945",
+  "source_tree": "a0e3478c293908247bc5cdaab9497fc290a374c6",
+  "checks": 379,
+  "failures": 0,
+  "original_file": "windows-lab/lab-result.json",
+  "original_sha256": "8f77bd71799f00a5c1b9dccc3a5d2724e10f93deaedc2f6e338f13238b87fb48",
+  "artifact_id": 14734604007,
+  "note": "Selected complete evidence dictionaries and owner identities; full raw inventory and event snapshots remain in artifact. This extract is not an additional test run.",
+  "observations": [
+    {
+      "scenario": 1,
+      "tick": 122,
+      "status": "Tick 122 \u00b7 1 moving owners \u00b7 paused",
+      "evidence": {
+        "checkpoint": "before controlled reset",
+        "deepest_geometry_y": 109.993156433105,
+        "first_pose": {
+          "angular_velocity": 0.0,
+          "body_generation": 1,
+          "generation": 1,
+          "geometry_digest": "14709829798384320201",
+          "geometry_revision": 1,
+          "id": 1,
+          "pose_serial": 2,
+          "rotation": 0.0,
+          "session": 1,
+          "sleeping": false,
+          "vx": 0.0,
+          "vy": 2.60000014305115,
+          "x": 83.0,
+          "y": 60.0270805358887
+        },
+        "later_poses": [
+          {
+            "angular_velocity": 1.08523082733154,
+            "body_generation": 1,
+            "generation": 1,
+            "geometry_digest": "14709829798384320201",
+            "geometry_revision": 1,
+            "id": 1,
+            "pose_serial": 123,
+            "rotation": 1.68451869487762,
+            "session": 1,
+            "sleeping": false,
+            "vx": 16.3335132598877,
+            "vy": -7.56510305404663,
+            "x": 144.960876464844,
+            "y": 81.7478637695313
+          }
+        ],
+        "ordinary_erased_wood": 44,
+        "phase_order": [
+          "CommittedInactive",
+          "MaskApplied",
+          "Active"
+        ],
+        "promoted_wood": 526,
+        "starting_wood": 570
+      },
+      "owners": [
+        {
+          "id": 1,
+          "lifecycle": "Active",
+          "material_revision": 527,
+          "geometry_revision": 1,
+          "split_pending": false
+        }
+      ]
+    },
+    {
+      "scenario": 1,
+      "tick": 1,
+      "status": "Paused \u00b7 native World owns the starting structure",
+      "evidence": {
+        "checkpoint": "after controlled reset",
+        "obsolete_ack_refused": true,
+        "previous_session": 1
+      },
+      "owners": []
+    },
+    {
+      "scenario": 2,
+      "tick": 586,
+      "status": "Tick 586 \u00b7 1 moving owners \u00b7 paused",
+      "evidence": {
+        "actual_sleep_observed": true,
+        "burn_after_sleep": 227,
+        "burn_before_sleep": 237,
+        "exchange_required": true,
+        "geometry_changed": true,
+        "retained_fire_seen": true,
+        "retained_smoke_seen": true,
+        "sleeping_burn_opportunities": 10,
+        "world_fire_seen": true,
+        "world_smoke_seen": true
+      },
+      "owners": [
+        {
+          "id": 1,
+          "lifecycle": "Active",
+          "material_revision": 1037,
+          "geometry_revision": 2,
+          "split_pending": false
+        }
+      ]
+    },
+    {
+      "scenario": 1,
+      "tick": 2,
+      "status": "Tick 2 \u00b7 1 moving owners \u00b7 paused",
+      "evidence": {
+        "actual_shape_count": 81,
+        "fixture": "ordinary native perforation",
+        "holes": 51
+      },
+      "owners": [
+        {
+          "id": 1,
+          "lifecycle": "Active",
+          "material_revision": 479,
+          "geometry_revision": 1,
+          "split_pending": false
+        }
+      ]
+    },
+    {
+      "scenario": 3,
+      "tick": 34,
+      "status": "Tick 34 \u00b7 1 moving owners \u00b7 paused",
+      "evidence": {
+        "cargo_after": 1,
+        "cargo_tuple": {
+          "incarnation": 2,
+          "material": 2,
+          "state_a": 0,
+          "state_b": 0,
+          "temperature": 200
+        },
+        "initial_world_sand": 5,
+        "same_cell_extinguished": true,
+        "water_contact": {
+          "burn_before": 224,
+          "cell": 331,
+          "id": 1,
+          "incarnation": 2,
+          "ok": true,
+          "whole_world_water_quanta": 255,
+          "world_position": "(83, 83)"
+        },
+        "world_sand_after": 4
+      },
+      "owners": [
+        {
+          "id": 1,
+          "lifecycle": "Active",
+          "material_revision": 516,
+          "geometry_revision": 2,
+          "split_pending": false
+        }
+      ]
+    },
+    {
+      "scenario": 4,
+      "tick": 94,
+      "status": "Tick 94 \u00b7 3 moving owners \u00b7 paused",
+      "evidence": null,
+      "owners": [
+        {
+          "id": 1,
+          "lifecycle": "Active",
+          "material_revision": 621,
+          "geometry_revision": 2,
+          "split_pending": false
+        },
+        {
+          "id": 2,
+          "lifecycle": "Active",
+          "material_revision": 657,
+          "geometry_revision": 2,
+          "split_pending": false
+        },
+        {
+          "id": 3,
+          "lifecycle": "Active",
+          "material_revision": 625,
+          "geometry_revision": 2,
+          "split_pending": false
+        }
+      ]
+    },
+    {
+      "scenario": 0,
+      "tick": 48,
+      "status": "Tick 48 \u00b7 0 moving owners \u00b7 paused",
+      "evidence": {
+        "fixture": "moved body retired with zero transfer capacity and retained products",
+        "inspected_product": {
+          "cell": 5,
+          "generation": 1,
+          "id": 1,
+          "incarnation": 2,
+          "material": 6,
+          "ok": true,
+          "owner": "ObjectShard",
+          "role": 2,
+          "state_a": 18,
+          "state_b": 0,
+          "temperature": 200
+        },
+        "last_physical_pose": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (79.0, 95.09591)]",
+        "retained_domain": true
+      },
+      "owners": [
+        {
+          "id": 1,
+          "lifecycle": "Draining",
+          "material_revision": 71,
+          "geometry_revision": 2,
+          "split_pending": false
+        }
+      ]
+    }
+  ]
+}

@@ -82,6 +82,8 @@ func verify_demo_admission(demo_id: String) -> bool:
 			and not bench.set_actor_tuning(303,bench.actor(bench.applied,303).options)
 			and art.active and not art.stopping and host.pending_microscenario_apply.is_empty(),
 			"Actor scene, capacity and tuning preserve the Art writer before acknowledgement"): return false
+	if not check(not bench.load_object_shard_scene("tower") and art.active and not art.stopping
+			and host.pending_microscenario_apply.is_empty(), "Structures preserves the active Art writer"): return false
 	if not await until(func() -> bool: return not art.active,"Art owner settles after refused demo"): return false
 	if not check(art.result.status == "completed" and int(art.result.changed) == 1,
 			"the Art owner receives the original native write acknowledgement"): return false

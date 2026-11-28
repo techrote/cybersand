@@ -1,0 +1,2565 @@
+{
+  "schema": "objectshard-independent-existing-linux-performance-drift-v1",
+  "utc": "2026-11-22T08:08:41.812152+00:00",
+  "baseline_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "repair_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "evidence_sha256": {
+    "baseline/qualification.json": "1430b19940987b23809af802a87aa4de3605535943818521ffcb8dd27b087c29",
+    "repair/qualification.json": "e4df9dd01245272659ff528123f6d0d1b56b963cc9319d6c44fadad75ed059fd",
+    "baseline/objectshard_worker_profile_0.json": "71ec75a1f5dc3ce0f9309f605bfe96f9182935cc4f8dcfef6502d79502afee02",
+    "repair/objectshard_worker_profile_0.json": "911898917c0ea48b990414c48eb2308cb41ffe9f32e74b4563422914d4550b2d",
+    "baseline/objectshard_worker_profile_4000.json": "ec2100aa03dfad70b3d7e1b72283181c0fb909fda00bdcdb77ebd89b6ad1d878",
+    "repair/objectshard_worker_profile_4000.json": "8929e782943e35e2a1869602e7eb2345e09c8e69c2f8a3c1812cdd1e1938965f",
+    "baseline/continuous-play-rendered.json": "20b215e84772223372199dcb591ab9902d083da52b805a8f04573e754aae7e9c",
+    "repair/continuous-play-rendered.json": "18547cd25a9ac7424abca3f3c2882606cdeb2bc0c2d221447702d9bf0846306a",
+    "baseline/objectshard_profile_headless.json": "d42e4b812a92183a03194b0557374f039440c5df55ff1dec420b76c3a7219409",
+    "repair/objectshard_profile_headless.json": "5255109e7d46f5891c110c561656390988720283a5ecd9aa5b62660c00143dce",
+    "baseline/objectshard_profile_rendered.json": "43476e73cd736380ed8c97f7ab2d6cca3cf238f9f0dfa480df4c6dd7a367f859",
+    "repair/objectshard_profile_rendered.json": "f0c7fef701850d73a2c68f7fe1d4e7f3d0d715ec49eac93465d12e51e96d3f1a"
+  },
+  "scheduling_modes": {
+    "0": {
+      "workload_equal": {
+        "engine": true,
+        "platform": true,
+        "notifications": true,
+        "pump_budget_usec": true,
+        "requested_process_hz": true,
+        "completed_intervals": true,
+        "actual_live_inputs": true,
+        "actual_physics_steps": true,
+        "initial_tick": true,
+        "final_tick": true,
+        "publication_digests": true,
+        "native_accounting": true,
+        "maximum_displacements": true,
+        "contact_owners": true,
+        "sleeping_owners": true
+      },
+      "all_runtime_profile_input_hashes_identical": true,
+      "wall_usec": {
+        "baseline": 29067814,
+        "repair": 29068255,
+        "delta": 441,
+        "percent": 0.0015171419495115799
+      },
+      "semantic_rate": {
+        "baseline": 8.25655482727391,
+        "repair": 8.25642956551743,
+        "delta": -0.00012526175648019944,
+        "percent": -0.0015171189327832207
+      },
+      "callback_cadence": {
+        "p50": {
+          "baseline": 16666,
+          "repair": 16667,
+          "delta": 1,
+          "percent": 0.006000240009600384
+        },
+        "p95": {
+          "baseline": 16708,
+          "repair": 16738,
+          "delta": 30,
+          "percent": 0.17955470433325352
+        },
+        "p99": {
+          "baseline": 16739,
+          "repair": 16779,
+          "delta": 40,
+          "percent": 0.23896290100961826
+        },
+        "maximum": {
+          "baseline": 16795,
+          "repair": 16931,
+          "delta": 136,
+          "percent": 0.8097648109556415
+        },
+        "count": {
+          "baseline": 1744,
+          "repair": 1744,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "extra_callbacks": 0,
+      "extra_callbacks_times_repair_median_usec": 0,
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "p50": {
+            "baseline": 77,
+            "repair": 116,
+            "delta": 39,
+            "percent": 50.649350649350644
+          },
+          "p95": {
+            "baseline": 112,
+            "repair": 124,
+            "delta": 12,
+            "percent": 10.714285714285714
+          },
+          "p99": {
+            "baseline": 112,
+            "repair": 124,
+            "delta": 12,
+            "percent": 10.714285714285714
+          },
+          "maximum": {
+            "baseline": 112,
+            "repair": 124,
+            "delta": 12,
+            "percent": 10.714285714285714
+          },
+          "count": {
+            "baseline": 3,
+            "repair": 3,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_dispatch_usec": {
+          "p50": {
+            "baseline": 100092,
+            "repair": 100162,
+            "delta": 70,
+            "percent": 0.06993565919354194
+          },
+          "p95": {
+            "baseline": 100175,
+            "repair": 100262,
+            "delta": 87,
+            "percent": 0.08684801597204891
+          },
+          "p99": {
+            "baseline": 150088,
+            "repair": 150104,
+            "delta": 16,
+            "percent": 0.010660412557965994
+          },
+          "maximum": {
+            "baseline": 150088,
+            "repair": 150104,
+            "delta": 16,
+            "percent": 0.010660412557965994
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_publication_usec": {
+          "p50": {
+            "baseline": 116712,
+            "repair": 116738,
+            "delta": 26,
+            "percent": 0.022277058057440537
+          },
+          "p95": {
+            "baseline": 116781,
+            "repair": 116823,
+            "delta": 42,
+            "percent": 0.03596475454055026
+          },
+          "p99": {
+            "baseline": 166716,
+            "repair": 166714,
+            "delta": -2,
+            "percent": -0.001199644905108088
+          },
+          "maximum": {
+            "baseline": 166716,
+            "repair": 166714,
+            "delta": -2,
+            "percent": -0.001199644905108088
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_result_usec": {
+          "p50": {
+            "baseline": 116591,
+            "repair": 116589,
+            "delta": -2,
+            "percent": -0.0017153982725939395
+          },
+          "p95": {
+            "baseline": 116644,
+            "repair": 116644,
+            "delta": 0,
+            "percent": 0.0
+          },
+          "p99": {
+            "baseline": 166614,
+            "repair": 166601,
+            "delta": -13,
+            "percent": -0.007802465579123004
+          },
+          "maximum": {
+            "baseline": 166614,
+            "repair": 166601,
+            "delta": -13,
+            "percent": -0.007802465579123004
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_dispatch_usec": {
+          "p50": {
+            "baseline": 100086,
+            "repair": 100158,
+            "delta": 72,
+            "percent": 0.07193813320544332
+          },
+          "p95": {
+            "baseline": 100170,
+            "repair": 100258,
+            "delta": 88,
+            "percent": 0.08785065388838974
+          },
+          "p99": {
+            "baseline": 150085,
+            "repair": 150101,
+            "delta": 16,
+            "percent": 0.010660625645467568
+          },
+          "maximum": {
+            "baseline": 150085,
+            "repair": 150101,
+            "delta": 16,
+            "percent": 0.010660625645467568
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_publication_usec": {
+          "p50": {
+            "baseline": 116712,
+            "repair": 116738,
+            "delta": 26,
+            "percent": 0.022277058057440537
+          },
+          "p95": {
+            "baseline": 116781,
+            "repair": 116823,
+            "delta": 42,
+            "percent": 0.03596475454055026
+          },
+          "p99": {
+            "baseline": 166716,
+            "repair": 166714,
+            "delta": -2,
+            "percent": -0.001199644905108088
+          },
+          "maximum": {
+            "baseline": 166716,
+            "repair": 166714,
+            "delta": -2,
+            "percent": -0.001199644905108088
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_result_usec": {
+          "p50": {
+            "baseline": 116591,
+            "repair": 116589,
+            "delta": -2,
+            "percent": -0.0017153982725939395
+          },
+          "p95": {
+            "baseline": 116644,
+            "repair": 116644,
+            "delta": 0,
+            "percent": 0.0
+          },
+          "p99": {
+            "baseline": 166614,
+            "repair": 166601,
+            "delta": -13,
+            "percent": -0.007802465579123004
+          },
+          "maximum": {
+            "baseline": 166614,
+            "repair": 166601,
+            "delta": -13,
+            "percent": -0.007802465579123004
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "native_execute_usec": {
+          "p50": {
+            "baseline": 356,
+            "repair": 365,
+            "delta": 9,
+            "percent": 2.528089887640449
+          },
+          "p95": {
+            "baseline": 686,
+            "repair": 718,
+            "delta": 32,
+            "percent": 4.664723032069971
+          },
+          "p99": {
+            "baseline": 711,
+            "repair": 762,
+            "delta": 51,
+            "percent": 7.172995780590717
+          },
+          "maximum": {
+            "baseline": 6265,
+            "repair": 6292,
+            "delta": 27,
+            "percent": 0.43096568236233046
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "physics_segment_usec": {
+          "p50": {
+            "baseline": 118,
+            "repair": 147,
+            "delta": 29,
+            "percent": 24.576271186440678
+          },
+          "p95": {
+            "baseline": 446,
+            "repair": 369,
+            "delta": -77,
+            "percent": -17.26457399103139
+          },
+          "p99": {
+            "baseline": 520,
+            "repair": 485,
+            "delta": -35,
+            "percent": -6.730769230769231
+          },
+          "maximum": {
+            "baseline": 558,
+            "repair": 638,
+            "delta": 80,
+            "percent": 14.336917562724013
+          },
+          "count": {
+            "baseline": 952,
+            "repair": 952,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "queue_wait_usec": {
+          "p50": {
+            "baseline": 22,
+            "repair": 19,
+            "delta": -3,
+            "percent": -13.636363636363635
+          },
+          "p95": {
+            "baseline": 164,
+            "repair": 176,
+            "delta": 12,
+            "percent": 7.317073170731707
+          },
+          "p99": {
+            "baseline": 221,
+            "repair": 302,
+            "delta": 81,
+            "percent": 36.65158371040724
+          },
+          "maximum": {
+            "baseline": 340,
+            "repair": 502,
+            "delta": 162,
+            "percent": 47.647058823529406
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_delivery_usec": {
+          "p50": {
+            "baseline": 14484,
+            "repair": 14389,
+            "delta": -95,
+            "percent": -0.655896161281414
+          },
+          "p95": {
+            "baseline": 15079,
+            "repair": 15043,
+            "delta": -36,
+            "percent": -0.23874262218980036
+          },
+          "p99": {
+            "baseline": 15127,
+            "repair": 15124,
+            "delta": -3,
+            "percent": -0.01983208831889998
+          },
+          "maximum": {
+            "baseline": 15328,
+            "repair": 15276,
+            "delta": -52,
+            "percent": -0.33924843423799583
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_roundtrip_usec": {
+          "p50": {
+            "baseline": 16336,
+            "repair": 16287,
+            "delta": -49,
+            "percent": -0.29995102840352594
+          },
+          "p95": {
+            "baseline": 16573,
+            "repair": 16577,
+            "delta": 4,
+            "percent": 0.02413564230978097
+          },
+          "p99": {
+            "baseline": 16613,
+            "repair": 16641,
+            "delta": 28,
+            "percent": 0.16854270751820863
+          },
+          "maximum": {
+            "baseline": 16694,
+            "repair": 16782,
+            "delta": 88,
+            "percent": 0.5271354977836348
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_value_accounting_usec": {
+          "p50": {
+            "baseline": 188,
+            "repair": 185,
+            "delta": -3,
+            "percent": -1.5957446808510638
+          },
+          "p95": {
+            "baseline": 208,
+            "repair": 203,
+            "delta": -5,
+            "percent": -2.403846153846154
+          },
+          "p99": {
+            "baseline": 217,
+            "repair": 218,
+            "delta": 1,
+            "percent": 0.4608294930875576
+          },
+          "maximum": {
+            "baseline": 322,
+            "repair": 318,
+            "delta": -4,
+            "percent": -1.2422360248447204
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "semantic_interval_usec": {
+          "p50": {
+            "baseline": 100179,
+            "repair": 100240,
+            "delta": 61,
+            "percent": 0.060891005100869436
+          },
+          "p95": {
+            "baseline": 100253,
+            "repair": 100350,
+            "delta": 97,
+            "percent": 0.09675520932041934
+          },
+          "p99": {
+            "baseline": 150140,
+            "repair": 150163,
+            "delta": 23,
+            "percent": 0.015319035566804315
+          },
+          "maximum": {
+            "baseline": 150203,
+            "repair": 150292,
+            "delta": 89,
+            "percent": 0.05925314407834731
+          },
+          "count": {
+            "baseline": 240,
+            "repair": 240,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "snapshot_usec": {
+          "p50": {
+            "baseline": 1275,
+            "repair": 1293,
+            "delta": 18,
+            "percent": 1.411764705882353
+          },
+          "p95": {
+            "baseline": 1326,
+            "repair": 1363,
+            "delta": 37,
+            "percent": 2.790346907993967
+          },
+          "p99": {
+            "baseline": 1369,
+            "repair": 1405,
+            "delta": 36,
+            "percent": 2.6296566837107376
+          },
+          "maximum": {
+            "baseline": 1545,
+            "repair": 1645,
+            "delta": 100,
+            "percent": 6.472491909385113
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "terrain_install_usec": {
+          "p50": {
+            "baseline": 59,
+            "repair": 72,
+            "delta": 13,
+            "percent": 22.033898305084744
+          },
+          "p95": {
+            "baseline": 85,
+            "repair": 105,
+            "delta": 20,
+            "percent": 23.52941176470588
+          },
+          "p99": {
+            "baseline": 123,
+            "repair": 128,
+            "delta": 5,
+            "percent": 4.0650406504065035
+          },
+          "maximum": {
+            "baseline": 271,
+            "repair": 277,
+            "delta": 6,
+            "percent": 2.214022140221402
+          },
+          "count": {
+            "baseline": 552,
+            "repair": 552,
+            "delta": 0,
+            "percent": 0.0
+          }
+        }
+      }
+    },
+    "4000": {
+      "workload_equal": {
+        "engine": true,
+        "platform": true,
+        "notifications": true,
+        "pump_budget_usec": true,
+        "requested_process_hz": true,
+        "completed_intervals": true,
+        "actual_live_inputs": true,
+        "actual_physics_steps": true,
+        "initial_tick": true,
+        "final_tick": true,
+        "publication_digests": true,
+        "native_accounting": true,
+        "maximum_displacements": true,
+        "contact_owners": true,
+        "sleeping_owners": true
+      },
+      "all_runtime_profile_input_hashes_identical": true,
+      "wall_usec": {
+        "baseline": 12887478,
+        "repair": 14451926,
+        "delta": 1564448,
+        "percent": 12.139287454069757
+      },
+      "semantic_rate": {
+        "baseline": 18.6227282017475,
+        "repair": 16.6067830682222,
+        "delta": -2.0159451335252996,
+        "percent": -10.825186898964297
+      },
+      "callback_cadence": {
+        "p50": {
+          "baseline": 16666,
+          "repair": 16663,
+          "delta": -3,
+          "percent": -0.018000720028801154
+        },
+        "p95": {
+          "baseline": 16702,
+          "repair": 16750,
+          "delta": 48,
+          "percent": 0.28739073164890433
+        },
+        "p99": {
+          "baseline": 16728,
+          "repair": 16787,
+          "delta": 59,
+          "percent": 0.35270205643232905
+        },
+        "maximum": {
+          "baseline": 16762,
+          "repair": 16895,
+          "delta": 133,
+          "percent": 0.7934614007874955
+        },
+        "count": {
+          "baseline": 773,
+          "repair": 867,
+          "delta": 94,
+          "percent": 12.160413971539457
+        }
+      },
+      "extra_callbacks": 94,
+      "extra_callbacks_times_repair_median_usec": 1566322,
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "p50": {
+            "baseline": 81,
+            "repair": 83,
+            "delta": 2,
+            "percent": 2.4691358024691357
+          },
+          "p95": {
+            "baseline": 115,
+            "repair": 109,
+            "delta": -6,
+            "percent": -5.217391304347826
+          },
+          "p99": {
+            "baseline": 115,
+            "repair": 109,
+            "delta": -6,
+            "percent": -5.217391304347826
+          },
+          "maximum": {
+            "baseline": 115,
+            "repair": 109,
+            "delta": -6,
+            "percent": -5.217391304347826
+          },
+          "count": {
+            "baseline": 3,
+            "repair": 3,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_dispatch_usec": {
+          "p50": {
+            "baseline": 35694,
+            "repair": 35943,
+            "delta": 249,
+            "percent": 0.6975962346612876
+          },
+          "p95": {
+            "baseline": 36272,
+            "repair": 50186,
+            "delta": 13914,
+            "percent": 38.36016762240847
+          },
+          "p99": {
+            "baseline": 52368,
+            "repair": 52580,
+            "delta": 212,
+            "percent": 0.4048273754964864
+          },
+          "maximum": {
+            "baseline": 52368,
+            "repair": 52580,
+            "delta": 212,
+            "percent": 0.4048273754964864
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_publication_usec": {
+          "p50": {
+            "baseline": 37730,
+            "repair": 50065,
+            "delta": 12335,
+            "percent": 32.69281738669494
+          },
+          "p95": {
+            "baseline": 50072,
+            "repair": 52443,
+            "delta": 2371,
+            "percent": 4.7351813388720245
+          },
+          "p99": {
+            "baseline": 54377,
+            "repair": 66526,
+            "delta": 12149,
+            "percent": 22.342166724902075
+          },
+          "maximum": {
+            "baseline": 54377,
+            "repair": 66526,
+            "delta": 12149,
+            "percent": 22.342166724902075
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_result_usec": {
+          "p50": {
+            "baseline": 37606,
+            "repair": 49929,
+            "delta": 12323,
+            "percent": 32.768707121204066
+          },
+          "p95": {
+            "baseline": 49948,
+            "repair": 52306,
+            "delta": 2358,
+            "percent": 4.720909746135982
+          },
+          "p99": {
+            "baseline": 54265,
+            "repair": 66411,
+            "delta": 12146,
+            "percent": 22.382751313001016
+          },
+          "maximum": {
+            "baseline": 54265,
+            "repair": 66411,
+            "delta": 12146,
+            "percent": 22.382751313001016
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_dispatch_usec": {
+          "p50": {
+            "baseline": 35690,
+            "repair": 35940,
+            "delta": 250,
+            "percent": 0.7004763239002522
+          },
+          "p95": {
+            "baseline": 36269,
+            "repair": 50182,
+            "delta": 13913,
+            "percent": 38.360583418346245
+          },
+          "p99": {
+            "baseline": 52366,
+            "repair": 52578,
+            "delta": 212,
+            "percent": 0.40484283695527634
+          },
+          "maximum": {
+            "baseline": 52366,
+            "repair": 52578,
+            "delta": 212,
+            "percent": 0.40484283695527634
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_publication_usec": {
+          "p50": {
+            "baseline": 37730,
+            "repair": 50065,
+            "delta": 12335,
+            "percent": 32.69281738669494
+          },
+          "p95": {
+            "baseline": 50072,
+            "repair": 52443,
+            "delta": 2371,
+            "percent": 4.7351813388720245
+          },
+          "p99": {
+            "baseline": 54377,
+            "repair": 66526,
+            "delta": 12149,
+            "percent": 22.342166724902075
+          },
+          "maximum": {
+            "baseline": 54377,
+            "repair": 66526,
+            "delta": 12149,
+            "percent": 22.342166724902075
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_result_usec": {
+          "p50": {
+            "baseline": 37606,
+            "repair": 49929,
+            "delta": 12323,
+            "percent": 32.768707121204066
+          },
+          "p95": {
+            "baseline": 49948,
+            "repair": 52306,
+            "delta": 2358,
+            "percent": 4.720909746135982
+          },
+          "p99": {
+            "baseline": 54265,
+            "repair": 66411,
+            "delta": 12146,
+            "percent": 22.382751313001016
+          },
+          "maximum": {
+            "baseline": 54265,
+            "repair": 66411,
+            "delta": 12146,
+            "percent": 22.382751313001016
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "main_receipt_pump_usec": {
+          "p50": {
+            "baseline": 4052,
+            "repair": 4039,
+            "delta": -13,
+            "percent": -0.32082922013820336
+          },
+          "p95": {
+            "baseline": 4318,
+            "repair": 4349,
+            "delta": 31,
+            "percent": 0.7179249652616952
+          },
+          "p99": {
+            "baseline": 4392,
+            "repair": 4450,
+            "delta": 58,
+            "percent": 1.3205828779599271
+          },
+          "maximum": {
+            "baseline": 4466,
+            "repair": 4512,
+            "delta": 46,
+            "percent": 1.0300044782803404
+          },
+          "count": {
+            "baseline": 785,
+            "repair": 879,
+            "delta": 94,
+            "percent": 11.974522292993631
+          }
+        },
+        "native_execute_usec": {
+          "p50": {
+            "baseline": 354,
+            "repair": 366,
+            "delta": 12,
+            "percent": 3.389830508474576
+          },
+          "p95": {
+            "baseline": 703,
+            "repair": 718,
+            "delta": 15,
+            "percent": 2.1337126600284493
+          },
+          "p99": {
+            "baseline": 723,
+            "repair": 751,
+            "delta": 28,
+            "percent": 3.872752420470263
+          },
+          "maximum": {
+            "baseline": 6261,
+            "repair": 6444,
+            "delta": 183,
+            "percent": 2.922855773838045
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "physics_segment_usec": {
+          "p50": {
+            "baseline": 108,
+            "repair": 121,
+            "delta": 13,
+            "percent": 12.037037037037036
+          },
+          "p95": {
+            "baseline": 379,
+            "repair": 465,
+            "delta": 86,
+            "percent": 22.691292875989447
+          },
+          "p99": {
+            "baseline": 459,
+            "repair": 556,
+            "delta": 97,
+            "percent": 21.13289760348584
+          },
+          "maximum": {
+            "baseline": 499,
+            "repair": 626,
+            "delta": 127,
+            "percent": 25.450901803607213
+          },
+          "count": {
+            "baseline": 952,
+            "repair": 952,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "queue_wait_usec": {
+          "p50": {
+            "baseline": 14,
+            "repair": 20,
+            "delta": 6,
+            "percent": 42.857142857142854
+          },
+          "p95": {
+            "baseline": 136,
+            "repair": 186,
+            "delta": 50,
+            "percent": 36.76470588235294
+          },
+          "p99": {
+            "baseline": 177,
+            "repair": 270,
+            "delta": 93,
+            "percent": 52.54237288135594
+          },
+          "maximum": {
+            "baseline": 266,
+            "repair": 474,
+            "delta": 208,
+            "percent": 78.19548872180451
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_delivery_usec": {
+          "p50": {
+            "baseline": 113,
+            "repair": 122,
+            "delta": 9,
+            "percent": 7.964601769911504
+          },
+          "p95": {
+            "baseline": 12291,
+            "repair": 12447,
+            "delta": 156,
+            "percent": 1.2692213814986575
+          },
+          "p99": {
+            "baseline": 12569,
+            "repair": 12586,
+            "delta": 17,
+            "percent": 0.13525340122523669
+          },
+          "maximum": {
+            "baseline": 12693,
+            "repair": 12721,
+            "delta": 28,
+            "percent": 0.22059402820452217
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_roundtrip_usec": {
+          "p50": {
+            "baseline": 2231,
+            "repair": 2352,
+            "delta": 121,
+            "percent": 5.423576871358135
+          },
+          "p95": {
+            "baseline": 14119,
+            "repair": 14056,
+            "delta": -63,
+            "percent": -0.44620723847297966
+          },
+          "p99": {
+            "baseline": 14194,
+            "repair": 14160,
+            "delta": -34,
+            "percent": -0.23953783288713543
+          },
+          "maximum": {
+            "baseline": 15586,
+            "repair": 15668,
+            "delta": 82,
+            "percent": 0.5261131784935198
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_value_accounting_usec": {
+          "p50": {
+            "baseline": 189,
+            "repair": 189,
+            "delta": 0,
+            "percent": 0.0
+          },
+          "p95": {
+            "baseline": 210,
+            "repair": 211,
+            "delta": 1,
+            "percent": 0.4761904761904762
+          },
+          "p99": {
+            "baseline": 222,
+            "repair": 222,
+            "delta": 0,
+            "percent": 0.0
+          },
+          "maximum": {
+            "baseline": 334,
+            "repair": 315,
+            "delta": -19,
+            "percent": -5.688622754491018
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "semantic_interval_usec": {
+          "p50": {
+            "baseline": 35809,
+            "repair": 36282,
+            "delta": 473,
+            "percent": 1.3208969812058422
+          },
+          "p95": {
+            "baseline": 50181,
+            "repair": 50280,
+            "delta": 99,
+            "percent": 0.1972858253123692
+          },
+          "p99": {
+            "baseline": 50228,
+            "repair": 50324,
+            "delta": 96,
+            "percent": 0.19112845424862626
+          },
+          "maximum": {
+            "baseline": 66815,
+            "repair": 66942,
+            "delta": 127,
+            "percent": 0.19007707850033673
+          },
+          "count": {
+            "baseline": 240,
+            "repair": 240,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "snapshot_usec": {
+          "p50": {
+            "baseline": 1300,
+            "repair": 1304,
+            "delta": 4,
+            "percent": 0.3076923076923077
+          },
+          "p95": {
+            "baseline": 1333,
+            "repair": 1362,
+            "delta": 29,
+            "percent": 2.175543885971493
+          },
+          "p99": {
+            "baseline": 1360,
+            "repair": 1399,
+            "delta": 39,
+            "percent": 2.8676470588235294
+          },
+          "maximum": {
+            "baseline": 1489,
+            "repair": 1596,
+            "delta": 107,
+            "percent": 7.186030893216924
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "terrain_install_usec": {
+          "p50": {
+            "baseline": 49,
+            "repair": 61,
+            "delta": 12,
+            "percent": 24.489795918367346
+          },
+          "p95": {
+            "baseline": 68,
+            "repair": 84,
+            "delta": 16,
+            "percent": 23.52941176470588
+          },
+          "p99": {
+            "baseline": 122,
+            "repair": 126,
+            "delta": 4,
+            "percent": 3.278688524590164
+          },
+          "maximum": {
+            "baseline": 283,
+            "repair": 250,
+            "delta": -33,
+            "percent": -11.66077738515901
+          },
+          "count": {
+            "baseline": 552,
+            "repair": 552,
+            "delta": 0,
+            "percent": 0.0
+          }
+        }
+      }
+    }
+  },
+  "identical_actual_runtimes": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+    "platform": "linux",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "rendered_burst": {
+    "actions_baseline": 153,
+    "actions_repair": 153,
+    "pointer_counts": {
+      "baseline": {
+        "dispatched": 153,
+        "explicitly_cancelled_by_reset": 0,
+        "pending": 0,
+        "queued": 153,
+        "refused": 0,
+        "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+      },
+      "repair": {
+        "dispatched": 153,
+        "explicitly_cancelled_by_reset": 0,
+        "pending": 0,
+        "queued": 153,
+        "refused": 0,
+        "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+      }
+    },
+    "accounting_equal": true,
+    "completed_ticks": {
+      "baseline": 39,
+      "repair": 39
+    },
+    "host_stages_usec": {
+      "geometry_install_usec": {
+        "p50": {
+          "baseline": 107,
+          "repair": 150,
+          "delta": 43,
+          "percent": 40.18691588785047
+        },
+        "p95": {
+          "baseline": 112,
+          "repair": 151,
+          "delta": 39,
+          "percent": 34.82142857142857
+        },
+        "p99": {
+          "baseline": 112,
+          "repair": 151,
+          "delta": 39,
+          "percent": 34.82142857142857
+        },
+        "maximum": {
+          "baseline": 112,
+          "repair": 151,
+          "delta": 39,
+          "percent": 34.82142857142857
+        },
+        "count": {
+          "baseline": 3,
+          "repair": 3,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_dispatch_usec": {
+        "p50": {
+          "baseline": 357064,
+          "repair": 376209,
+          "delta": 19145,
+          "percent": 5.361783881881119
+        },
+        "p95": {
+          "baseline": 625504,
+          "repair": 578769,
+          "delta": -46735,
+          "percent": -7.471574921982913
+        },
+        "p99": {
+          "baseline": 642300,
+          "repair": 600112,
+          "delta": -42188,
+          "percent": -6.568270278685972
+        },
+        "maximum": {
+          "baseline": 643756,
+          "repair": 601510,
+          "delta": -42246,
+          "percent": -6.562424272550469
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_presented_usec": {
+        "p50": {
+          "baseline": 386704,
+          "repair": 406497,
+          "delta": 19793,
+          "percent": 5.1183851214365506
+        },
+        "p95": {
+          "baseline": 653431,
+          "repair": 602563,
+          "delta": -50868,
+          "percent": -7.784754625966627
+        },
+        "p99": {
+          "baseline": 680505,
+          "repair": 638313,
+          "delta": -42192,
+          "percent": -6.200101395287323
+        },
+        "maximum": {
+          "baseline": 690224,
+          "repair": 638975,
+          "delta": -51249,
+          "percent": -7.424980875773662
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_publication_usec": {
+        "p50": {
+          "baseline": 364365,
+          "repair": 383399,
+          "delta": 19034,
+          "percent": 5.223882645149781
+        },
+        "p95": {
+          "baseline": 628100,
+          "repair": 584611,
+          "delta": -43489,
+          "percent": -6.923897468555962
+        },
+        "p99": {
+          "baseline": 653590,
+          "repair": 618218,
+          "delta": -35372,
+          "percent": -5.411955507275203
+        },
+        "maximum": {
+          "baseline": 665465,
+          "repair": 618467,
+          "delta": -46998,
+          "percent": -7.062430030129308
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_result_usec": {
+        "p50": {
+          "baseline": 364225,
+          "repair": 383326,
+          "delta": 19101,
+          "percent": 5.244285812341273
+        },
+        "p95": {
+          "baseline": 627922,
+          "repair": 584462,
+          "delta": -43460,
+          "percent": -6.92124181028854
+        },
+        "p99": {
+          "baseline": 653414,
+          "repair": 618018,
+          "delta": -35396,
+          "percent": -5.41708625771716
+        },
+        "maximum": {
+          "baseline": 665320,
+          "repair": 618244,
+          "delta": -47076,
+          "percent": -7.075692899657307
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_dispatch_usec": {
+        "p50": {
+          "baseline": 701848,
+          "repair": 739205,
+          "delta": 37357,
+          "percent": 5.322662456828259
+        },
+        "p95": {
+          "baseline": 1638030,
+          "repair": 1665507,
+          "delta": 27477,
+          "percent": 1.6774418050951447
+        },
+        "p99": {
+          "baseline": 1801326,
+          "repair": 1793457,
+          "delta": -7869,
+          "percent": -0.4368448576215521
+        },
+        "maximum": {
+          "baseline": 1823009,
+          "repair": 1818009,
+          "delta": -5000,
+          "percent": -0.2742718220261118
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_presented_usec": {
+        "p50": {
+          "baseline": 748166,
+          "repair": 786486,
+          "delta": 38320,
+          "percent": 5.121857983388713
+        },
+        "p95": {
+          "baseline": 1689005,
+          "repair": 1702973,
+          "delta": 13968,
+          "percent": 0.8269957756193735
+        },
+        "p99": {
+          "baseline": 1847758,
+          "repair": 1838450,
+          "delta": -9308,
+          "percent": -0.5037456203680352
+        },
+        "maximum": {
+          "baseline": 1847797,
+          "repair": 1838490,
+          "delta": -9307,
+          "percent": -0.5036808697059255
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_publication_usec": {
+        "p50": {
+          "baseline": 723798,
+          "repair": 761932,
+          "delta": 38134,
+          "percent": 5.268597039505497
+        },
+        "p95": {
+          "baseline": 1662090,
+          "repair": 1682465,
+          "delta": 20375,
+          "percent": 1.2258662286639113
+        },
+        "p99": {
+          "baseline": 1823038,
+          "repair": 1818036,
+          "delta": -5002,
+          "percent": -0.27437716602725776
+        },
+        "maximum": {
+          "baseline": 1824943,
+          "repair": 1820090,
+          "delta": -4853,
+          "percent": -0.2659261138567068
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_result_usec": {
+        "p50": {
+          "baseline": 723723,
+          "repair": 761853,
+          "delta": 38130,
+          "percent": 5.268590330830994
+        },
+        "p95": {
+          "baseline": 1661914,
+          "repair": 1682242,
+          "delta": 20328,
+          "percent": 1.2231679858283881
+        },
+        "p99": {
+          "baseline": 1822893,
+          "repair": 1817820,
+          "delta": -5073,
+          "percent": -0.2782938987642171
+        },
+        "maximum": {
+          "baseline": 1824811,
+          "repair": 1819934,
+          "delta": -4877,
+          "percent": -0.2672605546547012
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "main_receipt_pump_usec": {
+        "p50": {
+          "baseline": 4041,
+          "repair": 4047,
+          "delta": 6,
+          "percent": 0.14847809948032664
+        },
+        "p95": {
+          "baseline": 4105,
+          "repair": 4107,
+          "delta": 2,
+          "percent": 0.048721071863581
+        },
+        "p99": {
+          "baseline": 4113,
+          "repair": 4172,
+          "delta": 59,
+          "percent": 1.4344760515438852
+        },
+        "maximum": {
+          "baseline": 4116,
+          "repair": 4289,
+          "delta": 173,
+          "percent": 4.203109815354714
+        },
+        "count": {
+          "baseline": 107,
+          "repair": 107,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "native_execute_usec": {
+        "p50": {
+          "baseline": 202,
+          "repair": 207,
+          "delta": 5,
+          "percent": 2.4752475247524752
+        },
+        "p95": {
+          "baseline": 328,
+          "repair": 321,
+          "delta": -7,
+          "percent": -2.1341463414634148
+        },
+        "p99": {
+          "baseline": 478,
+          "repair": 495,
+          "delta": 17,
+          "percent": 3.556485355648536
+        },
+        "maximum": {
+          "baseline": 502,
+          "repair": 683,
+          "delta": 181,
+          "percent": 36.05577689243028
+        },
+        "count": {
+          "baseline": 290,
+          "repair": 290,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "physics_segment_usec": {
+        "p50": {
+          "baseline": 102,
+          "repair": 121,
+          "delta": 19,
+          "percent": 18.627450980392158
+        },
+        "p95": {
+          "baseline": 188,
+          "repair": 233,
+          "delta": 45,
+          "percent": 23.93617021276596
+        },
+        "p99": {
+          "baseline": 211,
+          "repair": 259,
+          "delta": 48,
+          "percent": 22.748815165876778
+        },
+        "maximum": {
+          "baseline": 211,
+          "repair": 259,
+          "delta": 48,
+          "percent": 22.748815165876778
+        },
+        "count": {
+          "baseline": 56,
+          "repair": 56,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "publication_to_presented_usec": {
+        "p50": {
+          "baseline": 17959,
+          "repair": 19161,
+          "delta": 1202,
+          "percent": 6.6930229968261035
+        },
+        "p95": {
+          "baseline": 24484,
+          "repair": 25004,
+          "delta": 520,
+          "percent": 2.1238359745139683
+        },
+        "p99": {
+          "baseline": 61832,
+          "repair": 68162,
+          "delta": 6330,
+          "percent": 10.237417518437056
+        },
+        "maximum": {
+          "baseline": 61832,
+          "repair": 68162,
+          "delta": 6330,
+          "percent": 10.237417518437056
+        },
+        "count": {
+          "baseline": 90,
+          "repair": 90,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "queue_wait_usec": {
+        "p50": {
+          "baseline": 16,
+          "repair": 15,
+          "delta": -1,
+          "percent": -6.25
+        },
+        "p95": {
+          "baseline": 22,
+          "repair": 26,
+          "delta": 4,
+          "percent": 18.181818181818183
+        },
+        "p99": {
+          "baseline": 38,
+          "repair": 38,
+          "delta": 0,
+          "percent": 0.0
+        },
+        "maximum": {
+          "baseline": 123,
+          "repair": 128,
+          "delta": 5,
+          "percent": 4.0650406504065035
+        },
+        "count": {
+          "baseline": 290,
+          "repair": 290,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "receipt_delivery_usec": {
+        "p50": {
+          "baseline": 114,
+          "repair": 111,
+          "delta": -3,
+          "percent": -2.631578947368421
+        },
+        "p95": {
+          "baseline": 21355,
+          "repair": 21670,
+          "delta": 315,
+          "percent": 1.4750643877312106
+        },
+        "p99": {
+          "baseline": 22532,
+          "repair": 23890,
+          "delta": 1358,
+          "percent": 6.0269838451979405
+        },
+        "maximum": {
+          "baseline": 75950,
+          "repair": 89205,
+          "delta": 13255,
+          "percent": 17.452271231073073
+        },
+        "count": {
+          "baseline": 290,
+          "repair": 290,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "receipt_roundtrip_usec": {
+        "p50": {
+          "baseline": 1532,
+          "repair": 1547,
+          "delta": 15,
+          "percent": 0.97911227154047
+        },
+        "p95": {
+          "baseline": 23052,
+          "repair": 23183,
+          "delta": 131,
+          "percent": 0.5682804095089363
+        },
+        "p99": {
+          "baseline": 24110,
+          "repair": 25740,
+          "delta": 1630,
+          "percent": 6.760680215678142
+        },
+        "maximum": {
+          "baseline": 77942,
+          "repair": 91486,
+          "delta": 13544,
+          "percent": 17.377023940879116
+        },
+        "count": {
+          "baseline": 290,
+          "repair": 290,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "receipt_value_accounting_usec": {
+        "p50": {
+          "baseline": 132,
+          "repair": 134,
+          "delta": 2,
+          "percent": 1.5151515151515151
+        },
+        "p95": {
+          "baseline": 187,
+          "repair": 185,
+          "delta": -2,
+          "percent": -1.06951871657754
+        },
+        "p99": {
+          "baseline": 211,
+          "repair": 199,
+          "delta": -12,
+          "percent": -5.687203791469194
+        },
+        "maximum": {
+          "baseline": 217,
+          "repair": 220,
+          "delta": 3,
+          "percent": 1.3824884792626728
+        },
+        "count": {
+          "baseline": 290,
+          "repair": 290,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "semantic_interval_usec": {
+        "p50": {
+          "baseline": 24546,
+          "repair": 24907,
+          "delta": 361,
+          "percent": 1.4707080583394443
+        },
+        "p95": {
+          "baseline": 65083,
+          "repair": 66851,
+          "delta": 1768,
+          "percent": 2.7165311986232963
+        },
+        "p99": {
+          "baseline": 102888,
+          "repair": 120652,
+          "delta": 17764,
+          "percent": 17.265375942772724
+        },
+        "maximum": {
+          "baseline": 102888,
+          "repair": 120652,
+          "delta": 17764,
+          "percent": 17.265375942772724
+        },
+        "count": {
+          "baseline": 39,
+          "repair": 39,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "snapshot_usec": {
+        "p50": {
+          "baseline": 1074,
+          "repair": 1106,
+          "delta": 32,
+          "percent": 2.97951582867784
+        },
+        "p95": {
+          "baseline": 1497,
+          "repair": 1339,
+          "delta": -158,
+          "percent": -10.554442217768871
+        },
+        "p99": {
+          "baseline": 1599,
+          "repair": 1606,
+          "delta": 7,
+          "percent": 0.4377736085053158
+        },
+        "maximum": {
+          "baseline": 1613,
+          "repair": 1643,
+          "delta": 30,
+          "percent": 1.8598884066955983
+        },
+        "count": {
+          "baseline": 290,
+          "repair": 290,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "terrain_install_usec": {
+        "p50": {
+          "baseline": 59,
+          "repair": 62,
+          "delta": 3,
+          "percent": 5.084745762711865
+        },
+        "p95": {
+          "baseline": 153,
+          "repair": 171,
+          "delta": 18,
+          "percent": 11.76470588235294
+        },
+        "p99": {
+          "baseline": 190,
+          "repair": 204,
+          "delta": 14,
+          "percent": 7.368421052631578
+        },
+        "maximum": {
+          "baseline": 219,
+          "repair": 230,
+          "delta": 11,
+          "percent": 5.0228310502283104
+        },
+        "count": {
+          "baseline": 232,
+          "repair": 232,
+          "delta": 0,
+          "percent": 0.0
+        }
+      }
+    },
+    "ui_stages_usec": {
+      "frame_callback_usec": {
+        "p50": {
+          "baseline": 4736,
+          "repair": 4807,
+          "delta": 71,
+          "percent": 1.4991554054054053
+        },
+        "p95": {
+          "baseline": 5256,
+          "repair": 5309,
+          "delta": 53,
+          "percent": 1.0083713850837137
+        },
+        "p99": {
+          "baseline": 5367,
+          "repair": 5541,
+          "delta": 174,
+          "percent": 3.242034656232532
+        },
+        "maximum": {
+          "baseline": 5476,
+          "repair": 6097,
+          "delta": 621,
+          "percent": 11.340394448502558
+        },
+        "count": {
+          "baseline": 112,
+          "repair": 112,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_host_usec": {
+        "p50": {
+          "baseline": 369314,
+          "repair": 390047,
+          "delta": 20733,
+          "percent": 5.613922028409429
+        },
+        "p95": {
+          "baseline": 1008510,
+          "repair": 1064010,
+          "delta": 55500,
+          "percent": 5.503168039979772
+        },
+        "p99": {
+          "baseline": 1157585,
+          "repair": 1241080,
+          "delta": 83495,
+          "percent": 7.212861258568486
+        },
+        "maximum": {
+          "baseline": 1184585,
+          "repair": 1261158,
+          "delta": 76573,
+          "percent": 6.464120345943939
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "publication_interval_usec": {
+        "p50": {
+          "baseline": 24345,
+          "repair": 25662,
+          "delta": 1317,
+          "percent": 5.409735058533579
+        },
+        "p95": {
+          "baseline": 55725,
+          "repair": 52654,
+          "delta": -3071,
+          "percent": -5.510991475998205
+        },
+        "p99": {
+          "baseline": 118647,
+          "repair": 136849,
+          "delta": 18202,
+          "percent": 15.341306564852038
+        },
+        "maximum": {
+          "baseline": 118647,
+          "repair": 136849,
+          "delta": 18202,
+          "percent": 15.341306564852038
+        },
+        "count": {
+          "baseline": 89,
+          "repair": 89,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "publication_upload_usec": {
+        "p50": {
+          "baseline": 168,
+          "repair": 160,
+          "delta": -8,
+          "percent": -4.761904761904762
+        },
+        "p95": {
+          "baseline": 279,
+          "repair": 232,
+          "delta": -47,
+          "percent": -16.845878136200717
+        },
+        "p99": {
+          "baseline": 507,
+          "repair": 1700,
+          "delta": 1193,
+          "percent": 235.30571992110453
+        },
+        "maximum": {
+          "baseline": 507,
+          "repair": 1700,
+          "delta": 1193,
+          "percent": 235.30571992110453
+        },
+        "count": {
+          "baseline": 90,
+          "repair": 90,
+          "delta": 0,
+          "percent": 0.0
+        }
+      }
+    }
+  },
+  "lab_frame_drift": {
+    "headless": [
+      {
+        "name": "empty_lab",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2136.0,
+            "repair": 2079.0,
+            "delta": -57.0,
+            "percent": -2.6685393258426964
+          },
+          "p95": {
+            "baseline": 2344.0,
+            "repair": 2334.0,
+            "delta": -10.0,
+            "percent": -0.42662116040955633
+          },
+          "p99": {
+            "baseline": 2473.0,
+            "repair": 2511.0,
+            "delta": 38.0,
+            "percent": 1.5365952284674484
+          },
+          "maximum": {
+            "baseline": 2540.0,
+            "repair": 2666.0,
+            "delta": 126.0,
+            "percent": 4.960629921259843
+          }
+        }
+      },
+      {
+        "name": "inert_moving",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3225.0,
+            "repair": 3241.0,
+            "delta": 16.0,
+            "percent": 0.496124031007752
+          },
+          "p95": {
+            "baseline": 3728.0,
+            "repair": 3899.0,
+            "delta": 171.0,
+            "percent": 4.586909871244635
+          },
+          "p99": {
+            "baseline": 4092.0,
+            "repair": 4170.0,
+            "delta": 78.0,
+            "percent": 1.906158357771261
+          },
+          "maximum": {
+            "baseline": 5433.0,
+            "repair": 4996.0,
+            "delta": -437.0,
+            "percent": -8.04343824774526
+          }
+        }
+      },
+      {
+        "name": "reacting_one",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3231.0,
+            "repair": 3255.0,
+            "delta": 24.0,
+            "percent": 0.7428040854224698
+          },
+          "p95": {
+            "baseline": 3781.0,
+            "repair": 3821.0,
+            "delta": 40.0,
+            "percent": 1.057921184871727
+          },
+          "p99": {
+            "baseline": 4106.0,
+            "repair": 4213.0,
+            "delta": 107.0,
+            "percent": 2.605942523136873
+          },
+          "maximum": {
+            "baseline": 5897.0,
+            "repair": 6469.0,
+            "delta": 572.0,
+            "percent": 9.69984738002374
+          }
+        }
+      },
+      {
+        "name": "reacting_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4619.0,
+            "repair": 4755.0,
+            "delta": 136.0,
+            "percent": 2.94436025113661
+          },
+          "p95": {
+            "baseline": 5326.0,
+            "repair": 5317.0,
+            "delta": -9.0,
+            "percent": -0.16898235073225684
+          },
+          "p99": {
+            "baseline": 5500.0,
+            "repair": 5661.0,
+            "delta": 161.0,
+            "percent": 2.9272727272727272
+          },
+          "maximum": {
+            "baseline": 7710.0,
+            "repair": 7266.0,
+            "delta": -444.0,
+            "percent": -5.7587548638132295
+          }
+        }
+      },
+      {
+        "name": "perforated",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3385.0,
+            "repair": 3263.0,
+            "delta": -122.0,
+            "percent": -3.604135893648449
+          },
+          "p95": {
+            "baseline": 3790.0,
+            "repair": 4132.0,
+            "delta": 342.0,
+            "percent": 9.023746701846965
+          },
+          "p99": {
+            "baseline": 4176.0,
+            "repair": 4359.0,
+            "delta": 183.0,
+            "percent": 4.3821839080459775
+          },
+          "maximum": {
+            "baseline": 7136.0,
+            "repair": 8631.0,
+            "delta": 1495.0,
+            "percent": 20.950112107623315
+          }
+        }
+      },
+      {
+        "name": "saturated_output",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3393.0,
+            "repair": 3326.0,
+            "delta": -67.0,
+            "percent": -1.9746536987916299
+          },
+          "p95": {
+            "baseline": 3894.0,
+            "repair": 3952.0,
+            "delta": 58.0,
+            "percent": 1.4894709809964048
+          },
+          "p99": {
+            "baseline": 4146.0,
+            "repair": 4202.0,
+            "delta": 56.0,
+            "percent": 1.3506994693680656
+          },
+          "maximum": {
+            "baseline": 6861.0,
+            "repair": 7205.0,
+            "delta": 344.0,
+            "percent": 5.0138463780789975
+          }
+        }
+      },
+      {
+        "name": "dormant_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4595.0,
+            "repair": 4587.0,
+            "delta": -8.0,
+            "percent": -0.17410228509249184
+          },
+          "p95": {
+            "baseline": 5193.0,
+            "repair": 5340.0,
+            "delta": 147.0,
+            "percent": 2.8307336799537843
+          },
+          "p99": {
+            "baseline": 5366.0,
+            "repair": 5634.0,
+            "delta": 268.0,
+            "percent": 4.994409243384271
+          },
+          "maximum": {
+            "baseline": 8189.0,
+            "repair": 8436.0,
+            "delta": 247.0,
+            "percent": 3.0162412993039442
+          }
+        }
+      },
+      {
+        "name": "wake_burst_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4880.0,
+            "repair": 4759.0,
+            "delta": -121.0,
+            "percent": -2.4795081967213117
+          },
+          "p95": {
+            "baseline": 5447.0,
+            "repair": 5479.0,
+            "delta": 32.0,
+            "percent": 0.5874793464292271
+          },
+          "p99": {
+            "baseline": 5615.0,
+            "repair": 5797.0,
+            "delta": 182.0,
+            "percent": 3.241317898486198
+          },
+          "maximum": {
+            "baseline": 9370.0,
+            "repair": 8919.0,
+            "delta": -451.0,
+            "percent": -4.813233724653148
+          }
+        }
+      }
+    ],
+    "rendered": [
+      {
+        "name": "empty_lab",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2269.0,
+            "repair": 2283.0,
+            "delta": 14.0,
+            "percent": 0.617011899515205
+          },
+          "p95": {
+            "baseline": 2366.0,
+            "repair": 2404.0,
+            "delta": 38.0,
+            "percent": 1.6060862214708367
+          },
+          "p99": {
+            "baseline": 2442.0,
+            "repair": 2490.0,
+            "delta": 48.0,
+            "percent": 1.9656019656019657
+          },
+          "maximum": {
+            "baseline": 2531.0,
+            "repair": 2548.0,
+            "delta": 17.0,
+            "percent": 0.6716712761754247
+          }
+        }
+      },
+      {
+        "name": "inert_moving",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3343.0,
+            "repair": 3353.0,
+            "delta": 10.0,
+            "percent": 0.2991325157044571
+          },
+          "p95": {
+            "baseline": 3587.0,
+            "repair": 3558.0,
+            "delta": -29.0,
+            "percent": -0.8084750487872874
+          },
+          "p99": {
+            "baseline": 3724.0,
+            "repair": 3794.0,
+            "delta": 70.0,
+            "percent": 1.8796992481203008
+          },
+          "maximum": {
+            "baseline": 4254.0,
+            "repair": 4049.0,
+            "delta": -205.0,
+            "percent": -4.818993888105313
+          }
+        }
+      },
+      {
+        "name": "reacting_one",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3374.0,
+            "repair": 3417.0,
+            "delta": 43.0,
+            "percent": 1.2744516893894486
+          },
+          "p95": {
+            "baseline": 3550.0,
+            "repair": 3605.0,
+            "delta": 55.0,
+            "percent": 1.5492957746478873
+          },
+          "p99": {
+            "baseline": 3707.0,
+            "repair": 3854.0,
+            "delta": 147.0,
+            "percent": 3.965470731049366
+          },
+          "maximum": {
+            "baseline": 4810.0,
+            "repair": 4965.0,
+            "delta": 155.0,
+            "percent": 3.2224532224532227
+          }
+        }
+      },
+      {
+        "name": "reacting_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4870.0,
+            "repair": 4959.0,
+            "delta": 89.0,
+            "percent": 1.8275154004106775
+          },
+          "p95": {
+            "baseline": 5101.0,
+            "repair": 5289.0,
+            "delta": 188.0,
+            "percent": 3.685551852577926
+          },
+          "p99": {
+            "baseline": 5377.0,
+            "repair": 5614.0,
+            "delta": 237.0,
+            "percent": 4.407662265203645
+          },
+          "maximum": {
+            "baseline": 7699.0,
+            "repair": 7879.0,
+            "delta": 180.0,
+            "percent": 2.3379659696064428
+          }
+        }
+      },
+      {
+        "name": "perforated",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3372.0,
+            "repair": 3482.0,
+            "delta": 110.0,
+            "percent": 3.262158956109134
+          },
+          "p95": {
+            "baseline": 3770.0,
+            "repair": 3918.0,
+            "delta": 148.0,
+            "percent": 3.9257294429708227
+          },
+          "p99": {
+            "baseline": 3876.0,
+            "repair": 4052.0,
+            "delta": 176.0,
+            "percent": 4.540763673890609
+          },
+          "maximum": {
+            "baseline": 4231.0,
+            "repair": 4441.0,
+            "delta": 210.0,
+            "percent": 4.963365634601749
+          }
+        }
+      },
+      {
+        "name": "saturated_output",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3384.0,
+            "repair": 3419.0,
+            "delta": 35.0,
+            "percent": 1.0342789598108746
+          },
+          "p95": {
+            "baseline": 3544.0,
+            "repair": 3610.0,
+            "delta": 66.0,
+            "percent": 1.8623024830699775
+          },
+          "p99": {
+            "baseline": 3641.0,
+            "repair": 3875.0,
+            "delta": 234.0,
+            "percent": 6.426805822576215
+          },
+          "maximum": {
+            "baseline": 5159.0,
+            "repair": 5198.0,
+            "delta": 39.0,
+            "percent": 0.7559604574529948
+          }
+        }
+      },
+      {
+        "name": "dormant_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4813.0,
+            "repair": 4870.0,
+            "delta": 57.0,
+            "percent": 1.1842925410346978
+          },
+          "p95": {
+            "baseline": 5116.0,
+            "repair": 5293.0,
+            "delta": 177.0,
+            "percent": 3.459734167318217
+          },
+          "p99": {
+            "baseline": 5289.0,
+            "repair": 5498.0,
+            "delta": 209.0,
+            "percent": 3.9515976555114385
+          },
+          "maximum": {
+            "baseline": 6626.0,
+            "repair": 6376.0,
+            "delta": -250.0,
+            "percent": -3.7730153939028073
+          }
+        }
+      },
+      {
+        "name": "wake_burst_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4937.0,
+            "repair": 4993.0,
+            "delta": 56.0,
+            "percent": 1.1342920802106542
+          },
+          "p95": {
+            "baseline": 5336.0,
+            "repair": 5493.0,
+            "delta": 157.0,
+            "percent": 2.942278860569715
+          },
+          "p99": {
+            "baseline": 5570.0,
+            "repair": 5717.0,
+            "delta": 147.0,
+            "percent": 2.6391382405745065
+          },
+          "maximum": {
+            "baseline": 7340.0,
+            "repair": 7644.0,
+            "delta": 304.0,
+            "percent": 4.141689373297003
+          }
+        }
+      }
+    ]
+  },
+  "environment_evidence": {
+    "process_resources": {
+      "baseline": {
+        "objectshard_worker_profile_0": {
+          "available": true,
+          "cpu_seconds": 5.36,
+          "peak_rss_bytes": 141647872,
+          "scope": "direct_process_only"
+        },
+        "objectshard_worker_profile_4000": {
+          "available": true,
+          "cpu_seconds": 5.48,
+          "peak_rss_bytes": 142802944,
+          "scope": "direct_process_only"
+        },
+        "objectshard_continuous_play_rendered": {
+          "available": true,
+          "cpu_seconds": 21.98,
+          "peak_rss_bytes": 418537472,
+          "scope": "direct_process_only"
+        }
+      },
+      "repair": {
+        "objectshard_worker_profile_0": {
+          "available": true,
+          "cpu_seconds": 5.54,
+          "peak_rss_bytes": 143806464,
+          "scope": "direct_process_only"
+        },
+        "objectshard_worker_profile_4000": {
+          "available": true,
+          "cpu_seconds": 5.59,
+          "peak_rss_bytes": 144052224,
+          "scope": "direct_process_only"
+        },
+        "objectshard_continuous_play_rendered": {
+          "available": true,
+          "cpu_seconds": 22.86,
+          "peak_rss_bytes": 412229632,
+          "scope": "direct_process_only"
+        }
+      }
+    },
+    "baseline_renderer_lines": [
+      "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+    ],
+    "repair_renderer_lines": [
+      "OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.4 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)"
+    ]
+  },
+  "status": "investigated; timing drift retained; underlying causal attribution unresolved",
+  "interpretation": [
+    "The repaired Linux pump workload is slower despite identical executed native, Rapier, engine, worker, host, bridge and profile bytes. All 240 published material/pose digests and material accounting match the old same-platform observation.",
+    "The difference is visible as 94 additional process callbacks at the same approximately 16.67 ms cadence. Their duration accounts for approximately the whole 1.564-second extra wall interval; the underlying reason more callbacks were needed is not proved by these summaries.",
+    "Native-execute median rose from 354 to 366 microseconds, snapshot from 1300 to 1304, physics segment from 108 to 121, and queue-wait from 14 to 20. These are retained observations, not an identified root cause or a changed workload.",
+    "Linux process resource sampling is available: the candidate profile CPU observation rose from 5.48 to 5.59 seconds, with direct-process RSS observations retained. It does not establish external contention or hardware equivalence.",
+    "The rendered 153-action burst p95 is slightly higher while p99 and maximum are slightly lower. Both runs retain approximately 1.8-second tails; neither is a proof of uniformly fast interaction.",
+    "No threshold changed and no replacement timing campaign was commissioned. Final registered Lab budgets pass; negative cross-campaign throughput drift remains part of the owner decision."
+  ]
+}

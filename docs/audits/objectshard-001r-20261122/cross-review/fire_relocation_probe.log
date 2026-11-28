@@ -1,0 +1,7 @@
+FAIL 15: ignition_events(c)==1
+first exposures=1
+after relocation exposures=1 fire(47,11)=6
+after second opportunity exposures=2
+event source=(48,12) tick=213 cell=4
+event source=(47,11) tick=213 cell=4
+225 checks, 1 failures

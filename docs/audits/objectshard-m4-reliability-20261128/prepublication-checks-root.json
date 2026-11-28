@@ -1,0 +1,30 @@
+{
+  "schema": "root-prepublication-checks-v1",
+  "recorded_utc": "2026-11-28T02:40:59Z",
+  "docs": "PASS",
+  "historical_m11_consistency": "PASS",
+  "ci_provider_policy": "PASS",
+  "repository": "FAIL: retained Linux/Windows native source inputs stale; guarded publication is a required pending gate",
+  "repository_errors": [
+    "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+    "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_object_shard_lab.cpp",
+    "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/include/cybersand/object_shard_contact.hpp",
+    "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/include/cybersand/object_shard_coordinator.hpp",
+    "Windows x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/src/object_shard_coordinator.cpp",
+    "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+    "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: godot/native_extension/cyber_object_shard_lab.cpp",
+    "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/include/cybersand/object_shard_contact.hpp",
+    "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/include/cybersand/object_shard_coordinator.hpp",
+    "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution) requires rebuild for source input: native/src/object_shard_coordinator.cpp"
+  ],
+  "objectshard_retrieval": {
+    "questions": 9,
+    "canonical_hit_at_1": 7,
+    "canonical_hit_at_k": 9,
+    "mrr_at_k": 0.8889,
+    "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+  },
+  "retrieval_fixture_sha256": "560e31bf80eaaaaa1d1762f15c33f1abac95f03fe919a685bba908cae6f91764",
+  "retrieval_evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+  "retrieval_scope": "Lexical ranking only; no semantic correctness claim"
+}

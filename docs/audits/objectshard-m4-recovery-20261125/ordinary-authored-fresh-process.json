@@ -1,0 +1,124 @@
+{
+  "application_source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+  "engine": {
+    "bytes": 144186224,
+    "path": "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "local_equivalent": "537ddef6e88eca2a59b8a02816a149601504dc7e",
+  "native_build_source": "ccdfde97c279d809eafbb6e74b880d14cfb2f60e",
+  "processes": [
+    {
+      "checks": 199,
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/agent/objectshard-recovery-20261125/native-gap-execution/godot",
+        "--script",
+        "res://tests/test_workbench_canvas.gd"
+      ],
+      "elapsed_seconds": 62.09432195700356,
+      "failures": 0,
+      "log": "author.log",
+      "log_sha256": "6ad822923b8b4631583369023da05c9c258f573fa503aba48954838e51a717f5",
+      "native_readbacks": [
+        {
+          "arrival_bytes": 42467328,
+          "bodies": 3,
+          "elapsed_ms": 61388,
+          "extent": "(2048, 2048)",
+          "response": "LA-SELECTIVE",
+          "source": {
+            "armed": true,
+            "attempted": 0,
+            "blocked": 0,
+            "burst_queued": false,
+            "inserted": 0,
+            "material": 14,
+            "max_stream_ticks": 600,
+            "origin": "(1525, 1370)",
+            "stream_enabled": false,
+            "stream_ticks": 0
+          },
+          "tick_ms": 0.7124
+        }
+      ],
+      "natural_completion": true,
+      "passed": true,
+      "phase": "author",
+      "pid": 5,
+      "reopen_environment": null,
+      "returncode": 0,
+      "saved_files": {
+        "godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-m4-recovery-fresh-process.json": "cbc5d07bd8b62a4c3220770e3846867c15d87f2d1509788061542b3cd9123f60"
+      }
+    },
+    {
+      "checks": 23,
+      "command": [
+        "/workspace/scratch/b5ff5c354306/crash-check/engine/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/home/agent/objectshard-recovery-20261125/native-gap-execution/godot",
+        "--script",
+        "res://tests/test_workbench_canvas.gd"
+      ],
+      "elapsed_seconds": 8.012926336996316,
+      "failures": 0,
+      "log": "reopen.log",
+      "log_sha256": "ed90fbfb13198bb50b63dc97619102932cfc5caf1410a97ea512e6035b8f8b10",
+      "native_readbacks": [
+        {
+          "arrival_bytes": 42467328,
+          "bodies": 3,
+          "elapsed_ms": 7300,
+          "extent": "(2048, 2048)",
+          "response": "LA-SELECTIVE",
+          "source": {
+            "armed": true,
+            "attempted": 0,
+            "blocked": 0,
+            "burst_queued": false,
+            "inserted": 0,
+            "material": 14,
+            "max_stream_ticks": 600,
+            "origin": "(1525, 1370)",
+            "stream_enabled": false,
+            "stream_ticks": 0
+          },
+          "tick_ms": 0.729971
+        }
+      ],
+      "natural_completion": true,
+      "passed": true,
+      "phase": "reopen",
+      "pid": 699,
+      "reopen_environment": "1",
+      "returncode": 0,
+      "saved_files": {
+        "godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-m4-recovery-fresh-process.json": "cbc5d07bd8b62a4c3220770e3846867c15d87f2d1509788061542b3cd9123f60"
+      }
+    }
+  ],
+  "runner_sha256": "9ebe3deaf163bfb964eb745375dfe8e2eebae50699aaac848b7b31fc07c3312a",
+  "runtime": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "bytes": 5592272,
+      "sha256": "0dfe2a63e69062a44a4b7eb01ea65a4aa9c210f096f2413344482b7b051a68ae"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "bytes": 117275416,
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  },
+  "runtime_custody_sha256": "1dacaf06813463d321568f3e4844077639a37f6ec679393b19d4bf67c0fcb1a1",
+  "saved_bytes_unchanged": true,
+  "schema": "objectshard-m4-ordinary-authored-fresh-process-v1",
+  "scope": "Existing frozen ordinary test_workbench_canvas author plus its separate-process reopen branch; Linux headless only; authored state, not evolved moving-body serialization",
+  "separate_processes": true,
+  "source_bytes_unchanged": true,
+  "source_tree": "a3f3e166f474d8c2a0d882cc9f7bb2adf21d8919",
+  "status": "passed"
+}

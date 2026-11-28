@@ -1,0 +1,324 @@
+{
+  "schema": "objectshard-m4-independent-native-review-v1",
+  "status": "PASS_NATIVE_SCOPE_ONLY",
+  "source_commit": "0f013ba4826730cce64bd37cf9ca95f7dcaab603",
+  "source_tree": "1695c93a79413c4e0f8fb84c7224002d78a2ff00",
+  "current_root_head_observed": "c171f23705b45534b09a0d3c3676168bd601b427",
+  "run_id": 45457037610,
+  "job": {
+    "id": 138669186612,
+    "name": "native-sanitizers",
+    "status": "completed",
+    "conclusion": "success",
+    "started_at": "2026-11-24T18:12:53Z",
+    "completed_at": "2026-11-24T18:32:22Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-24T18:12:53Z",
+        "completed_at": "2026-11-24T18:12:54Z"
+      },
+      {
+        "name": "Pinned read-only companion documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-24T18:12:54Z",
+        "completed_at": "2026-11-24T18:12:55Z"
+      },
+      {
+        "name": "Exact source and authenticated compatibility history",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-24T18:12:55Z",
+        "completed_at": "2026-11-24T18:13:11Z"
+      },
+      {
+        "name": "Exact native source, ASan UBSan and ordinary World",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-24T18:13:11Z",
+        "completed_at": "2026-11-24T18:32:06Z"
+      },
+      {
+        "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-24T18:32:06Z",
+        "completed_at": "2026-11-24T18:32:19Z"
+      },
+      {
+        "name": "Post Exact source and authenticated compatibility history",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 9,
+        "started_at": "2026-11-24T18:32:19Z",
+        "completed_at": "2026-11-24T18:32:19Z"
+      },
+      {
+        "name": "Post Pinned read-only companion documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 10,
+        "started_at": "2026-11-24T18:32:19Z",
+        "completed_at": "2026-11-24T18:32:20Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 11,
+        "started_at": "2026-11-24T18:32:20Z",
+        "completed_at": "2026-11-24T18:32:20Z"
+      }
+    ]
+  },
+  "artifact": {
+    "id": 14952831471,
+    "bytes": 135239486,
+    "sha256": "0a9f3f5a6246a91f08ce7dd9b2316f42115bba0dea7924add72073ddab9851c1",
+    "archive_retained": "primary-native-artifact.zip"
+  },
+  "native": {
+    "checks": 96500,
+    "ordinary_world_test_cases": 192,
+    "failures": 0,
+    "suites": {
+      "admission": {
+        "binary_sha256": "35a042f03b316218dfa6ebbab5ad40a0b3d76ccc0d48383b68836976f4147872",
+        "checks": 28092,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "chemistry": {
+        "binary_sha256": "68e099acf0453db4a4deb054ecb1a54167952e0d0ad6f23939f66fc9b9fb2b91",
+        "checks": 4472,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "contact": {
+        "binary_sha256": "2c27c03b2e77c88584f4831f32549d79826cc203c78193665359291987e80a77",
+        "checks": 46037,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "coordinator": {
+        "binary_sha256": "99dfc540793791365b35082acad98d3f9ff8998f3c1948493fbbf0ce2e20cf6c",
+        "checks": 5945,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "external_fire": {
+        "binary_sha256": "6f9e46dc557c448d98d9d8f8f459da7152b06f8021f0f67e5af46ef89e37d44d",
+        "checks": 3683,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "storage": {
+        "binary_sha256": "af58c6beabf516d88e99c63a1163a04de53410c36e3f1851735fb6335a2c19f8",
+        "checks": 8271,
+        "count_unit": "checks",
+        "failures": 0,
+        "status": "passed"
+      },
+      "world": {
+        "binary_sha256": "1e57f5b6cb526339863245747ca6ea10e0e58c34b08bebb932fd8d73041b0780",
+        "checks": 192,
+        "count_unit": "test_cases",
+        "failures": 0,
+        "status": "passed"
+      }
+    },
+    "input_digest": "6d223427a17041550e9755408f9e1249f715058f6eeda67ca0c2de550be11e32",
+    "sources_independently_hashed": 129,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_sanitizer": false,
+    "compiler": "g++-13 13.3.0",
+    "flags": [
+      "-O1",
+      "-g",
+      "-fsanitize=address,undefined",
+      "-fno-omit-frame-pointer"
+    ],
+    "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1:print_stacktrace=1"
+  },
+  "retained_standalone_budgets": {
+    "limits_checked": 74,
+    "failures": [],
+    "integrated_cases": 9,
+    "comparison_cases": 1,
+    "samples_per_integrated_case": 3600,
+    "ticks_per_repetition": 1200,
+    "repetitions": 3,
+    "maxima": {
+      "native_frame_p95_us": {
+        "case": "reacting_three",
+        "metric": "native_frame_p95_us",
+        "actual": 466.062,
+        "limit": 2000,
+        "margin": 1533.938
+      },
+      "native_frame_p99_us": {
+        "case": "reacting_three",
+        "metric": "native_frame_p99_us",
+        "actual": 534.506,
+        "limit": 10000,
+        "margin": 9465.494
+      },
+      "native_frame_max_us": {
+        "case": "reacting_three",
+        "metric": "native_frame_max_us",
+        "actual": 1207.179,
+        "limit": 50000,
+        "margin": 48792.820999999996
+      },
+      "cpp_live_max_bytes": {
+        "case": "reacting_three",
+        "metric": "cpp_live_max_bytes",
+        "actual": 6280328,
+        "limit": 6291456,
+        "margin": 11128
+      },
+      "cpp_peak_max_bytes": {
+        "case": "reacting_three",
+        "metric": "cpp_peak_max_bytes",
+        "actual": 6280328,
+        "limit": 6291456,
+        "margin": 11128
+      },
+      "registry_retained_max_bytes": {
+        "case": "reacting_three",
+        "metric": "registry_retained_max_bytes",
+        "actual": 173462,
+        "limit": 262144,
+        "margin": 88682
+      },
+      "steady_cpp_allocations": {
+        "case": "empty_lab",
+        "metric": "steady_cpp_allocations",
+        "actual": 0,
+        "limit": 0,
+        "margin": 0
+      },
+      "geometry_age_max_ticks": {
+        "case": "empty_lab",
+        "metric": "geometry_age_max_ticks",
+        "actual": 0,
+        "limit": 1,
+        "margin": 1
+      },
+      "compact_steady_allocations": {
+        "case": "compact_vs_tuned_serial_miniature",
+        "metric": "compact_steady_allocations",
+        "actual": 0,
+        "limit": 0,
+        "margin": 0
+      },
+      "miniature_steady_allocations": {
+        "case": "compact_vs_tuned_serial_miniature",
+        "metric": "miniature_steady_allocations",
+        "actual": 0,
+        "limit": 0,
+        "margin": 0
+      }
+    },
+    "checks": 4276351,
+    "input_digest": "84271fe423bac300817f6a4eda2195eb031af4a0420dfb7d7b14e179f8942c52",
+    "binary_sha256": "93866b3dd576112ee8f1463284595d89674e4ae8a19799bc85f2b82c7dda40ec",
+    "sources_independently_hashed": 95,
+    "scope": "Native C++ cost experiment with synthetic pose/ACK; not Rapier or displayed FPS"
+  },
+  "compatibility": {
+    "gate_status": "PASS",
+    "protected_sources": 27,
+    "baseline": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "reviewed_transition_count": 55,
+    "catalogue_digest": "82b5ab9a6e87ae817072390105052f8a5ac6d0ee22b3301cd973efdfc7fdbad3",
+    "capability_digest": "33c608f875e3d8b5730f1d3b81a54dbeff9579b433e061535610a8bfa276e237",
+    "native_parity_status": "PASS",
+    "native_authored_compiled_shadow_facts_equal": true,
+    "parity_runtime_scope": "compiled metadata/policy queries only; World/Godot not executed by this parity tool",
+    "material_catalogue_tests": 231,
+    "qualification_contract_tests": 63,
+    "provider_policy": "passed"
+  },
+  "verification": {
+    "all_frozen_and_current_source_hashes_match": true,
+    "both_input_digests_recomputed": true,
+    "all_eight_executable_hashes_match": true,
+    "all_74_limits_independently_recomputed": true,
+    "archive_sha_matches_github": true
+  },
+  "limits": [
+    "No leak-sanitizer qualification.",
+    "No displayed frame rate, GPU, Rapier or physical owner acceptance follows from this native job.",
+    "This is source 0f013ba4; subsequent worker scheduling repair requires its own full candidate qualification.",
+    "At the observed job state, Windows Workbench failed and Linux graphical qualification was still running; this is not an overall campaign PASS.",
+    "The most memory-intensive standalone workload has only 11,128 bytes of remaining margin below the retained 6,291,456-byte requested C++ allocation limit; RSS is a distinct measurement."
+  ],
+  "evidence": {
+    "primary-native-artifact.zip": {
+      "bytes": 135239486,
+      "sha256": "0a9f3f5a6246a91f08ce7dd9b2316f42115bba0dea7924add72073ddab9851c1"
+    },
+    "primary-native-job.log": {
+      "bytes": 200102,
+      "sha256": "a8f16c12c2188bcd0c510af7c888945e1e0130859eb7f06dea63e17fcb13de89"
+    },
+    "independent-input-verification.json": {
+      "bytes": 1717,
+      "sha256": "69f2589b08a848751df6b7e4c6975222007f4327f97aa8548bdb567c0b15df5e"
+    },
+    "independent-budget-verification.json": {
+      "bytes": 11987,
+      "sha256": "a74db52276288a5ac78b12403bad0cf3ce4adc3dc7d057c3aee610dd66bd9b33"
+    },
+    "final-jobs-observation.json": {
+      "bytes": 11574,
+      "sha256": "bc3698ad6d8b864374e151152f804820f06e37f29c95481dc987ad4869265de1"
+    },
+    "selected/native/summary.json": {
+      "bytes": 20811,
+      "sha256": "793231eae051ec156581431fca95d162ea81409e7b33c7a1c8ef6965198dcc87"
+    },
+    "selected/retained-lab-native-budgets/summary.json": {
+      "bytes": 3718,
+      "sha256": "f2a36c0b65d3353c3a0608d0957537a7caa0d5772a7a1985861d602a57229143"
+    },
+    "selected/material-compatibility-gate.json": {
+      "bytes": 23401,
+      "sha256": "3bdf306fa8f47ec38435eadf9989ffb0ba11a1d622756b638fb7c3648af15a3a"
+    },
+    "selected/material-native-parity.json": {
+      "bytes": 35545,
+      "sha256": "56c2920150280ecd0feaa1244b37ae8ab4a4aa162d73a21bdbbcec89d84612fd"
+    },
+    "selected/qualification-contracts.log": {
+      "bytes": 9912,
+      "sha256": "5dbb21487b2bbcb0fb75d2023021fa196f087711e347e4492eb43dfd4f3e0bf6"
+    },
+    "selected/material-compatibility.log": {
+      "bytes": 37355,
+      "sha256": "7cb64673468b251ba6b6041ca4adb58cc7a105e3d8da82ef08828dbe721f6dc0"
+    },
+    "selected/provider-policy.log": {
+      "bytes": 280,
+      "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f"
+    }
+  }
+}

@@ -1,0 +1,556 @@
+{
+  "schema": "objectshard-live-edit-independent-windows-package-execution-v1",
+  "reviewer": "Specialist C",
+  "status": "passed",
+  "role": "fresh",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "evidence_artifact_id": 15257314868,
+  "evidence_artifact_sha256": "6988b349c03c17633e0fc9885cabc4ee5b53b23d1749a8c732329dacf770f58b",
+  "evidence_artifact_bytes": 31220573,
+  "actual_evaluator_artifact_id": 15256411748,
+  "inner_archive_sha256": "cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+  "inner_archive_bytes": 96795210,
+  "package_manifest_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "case_count": 45,
+  "rendered_case_count": 12,
+  "cases": [
+    {
+      "name": "m4_workbench_import",
+      "checks": null,
+      "schema": null,
+      "seconds": 5.269,
+      "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_lab",
+      "checks": 379,
+      "schema": "objectshard-lab-integration-test-v1",
+      "seconds": 4.293,
+      "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_fragment_motion",
+      "checks": 386,
+      "schema": "objectshard-fragment-motion-v1",
+      "seconds": 0.573,
+      "log_sha256": "844de5041017cab0c02035858bc184470ebc6bf28de7078d0c3a8d79c007da07",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_physics_bridge",
+      "checks": 28,
+      "schema": "objectshard-physics-bridge-test-v1",
+      "seconds": 0.387,
+      "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_rest_contacts",
+      "checks": 37,
+      "schema": "objectshard-rest-contact-test-v1",
+      "seconds": 0.666,
+      "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_remote_barrel",
+      "checks": 118,
+      "schema": "objectshard-m4-remote-barrel-v1",
+      "seconds": 17.303,
+      "log_sha256": "2eefdf2633d3e65cdc595486594f37f06df8ce54480c98d9d20b8e4e7e8542e7",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_small_fragment_chain",
+      "checks": 8471,
+      "schema": "objectshard-m4-small-fragment-native-chain-v1",
+      "seconds": 6.794,
+      "log_sha256": "c470acee0aa215914f733283f9ea1aebd5e2e2e23fe0de021ea7b30935cd6788",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_sparse_parent_motion",
+      "checks": 6223,
+      "schema": "objectshard-m4-sparse-parent-motion-v1",
+      "seconds": 4.563,
+      "log_sha256": "9efdac4b272b9d1f52f95a03507c4116dcd60447130338b5acb2b84350de4c3f",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_fresh_barrel",
+      "checks": 212,
+      "schema": "objectshard-m4-fresh-barrel-v1",
+      "seconds": 28.348,
+      "log_sha256": "5628ab652a23f590e0fbd5b36df87227e2063e209f15c0491bdc7ba199eeba01",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_brush_revision",
+      "checks": 159,
+      "schema": "objectshard-m4-brush-revision-v1",
+      "seconds": 123.858,
+      "log_sha256": "b33e426c1c908071d5079f2a16a3f2f1059703e251717432819012baaa9879eb",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_camera_lifecycle",
+      "checks": 230,
+      "schema": "objectshard-m4-camera-lifecycle-v1",
+      "seconds": 141.257,
+      "log_sha256": "190cb2f1341677125c5ffbdc5c3fb24285c51ba0e533886014bc44754ef10cb8",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_receipt_scheduling",
+      "checks": 155,
+      "schema": "objectshard-m4-receipt-scheduling-v1",
+      "seconds": 10.52,
+      "log_sha256": "aa8b91e4be188a9f9e85ad8e75ac4145419e4d7dcb69af6c0a9b6388c09bc452",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_latency_probe",
+      "checks": 31,
+      "schema": "objectshard-m4-workbench-probe-test-v1",
+      "seconds": 0.291,
+      "log_sha256": "a30c96a2bc9c6864dade2d16d419bdf258ae75bfca81f28f2abf2e2ce645163d",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_live_edit_diagnostics",
+      "checks": 27,
+      "schema": "objectshard-live-edit-diagnostics-test-v1",
+      "seconds": 0.29,
+      "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_live_edit_contract",
+      "checks": 65,
+      "schema": "objectshard-live-edit-transport-contract-v1",
+      "seconds": 2.056,
+      "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_creative_scenes",
+      "checks": 61,
+      "schema": "objectshard-m4-creative-scenes-v1",
+      "seconds": 1.316,
+      "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_creative_constructions",
+      "checks": 228,
+      "schema": "objectshard-m4-creative-constructions-v1",
+      "seconds": 131.629,
+      "log_sha256": "bc965d78b9b75e9a70b1413649974d399df78520bc7a7398fd4e30f7553bcab7",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_disabled_input",
+      "checks": 9,
+      "schema": "objectshard-m4-disabled-input-v1",
+      "seconds": 78.06,
+      "log_sha256": "68986b622845bf05844ed6b6712639ae914b229a3d293c8e3ee4706217b8ba8b",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_live_input",
+      "checks": 125,
+      "schema": "objectshard-m4-live-input-v1",
+      "seconds": 156.432,
+      "log_sha256": "d1edb3d2434ee0208202f037d725612d41d541c1569fcff64509ea54a9e9860a",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_live_tools",
+      "checks": 221,
+      "schema": "objectshard-m4-live-tools-v1",
+      "seconds": 172.454,
+      "log_sha256": "18b1dc837ce91f195bafbb1722d9078d9f7e8a3f0e69c8b8491971441419b0e6",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_live_stress",
+      "checks": 226,
+      "schema": "objectshard-m4-live-stress-v1",
+      "seconds": 164.671,
+      "log_sha256": "e80a3130d753595a0829a722ae9b50cd7a0509877e3de3ba5edfa3233d5e73ca",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_owner_authored",
+      "checks": 148,
+      "schema": "objectshard-m4-owner-authored-v1",
+      "seconds": 131.384,
+      "log_sha256": "f05ef3e13aa386e3f7a8725a0b293447bcee52bab757b0b1536b53e03ebdd728",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_visible_footprints",
+      "checks": 19,
+      "schema": "objectshard-m4-visible-footprints-v1",
+      "seconds": 2.249,
+      "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_edit_delivery_fence",
+      "checks": 36,
+      "schema": "objectshard-m4-edit-delivery-fence-v1",
+      "seconds": 2.158,
+      "log_sha256": "d6f8724d3b354ff47dee62b98fef524f54b85413f3957b42a12bfeba77b7aacc",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics",
+      "checks": 36,
+      "schema": "objectshard-m4-optional-diagnostics-v1",
+      "seconds": 8.937,
+      "log_sha256": "535d0bf45aa0a8551537cf0a34b01b183a107dfda2e794edea2618bb0826317a",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_same_world_extension",
+      "checks": 59,
+      "schema": "objectshard-m4-actual-godot-sameworld-v1",
+      "seconds": 0.478,
+      "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_shared_main_rapier",
+      "checks": 18,
+      "schema": "objectshard-m4-existing-main-rapier-v1",
+      "seconds": 0.388,
+      "log_sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_same_world_physical_chain",
+      "checks": 49,
+      "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+      "seconds": 0.668,
+      "log_sha256": "85fd852645a0284cd59513f207fe2f653afb0b916d6ef349f3f67d573b1940f4",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_compact_motion_packets",
+      "checks": 9,
+      "schema": "objectshard-m4-compact-motion-packet-v1",
+      "seconds": 0.295,
+      "log_sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_workbench_scene_refusal",
+      "checks": 36,
+      "schema": "objectshard-m4-ordinary-scene-refusal-v1",
+      "seconds": 7.028,
+      "log_sha256": "b44edc954c581fefb831a35e8b9983e29afc6a1d0d75f72956dfc71e97f60693",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_workbench_completion",
+      "checks": 192,
+      "schema": "objectshard-m4-workbench-completion-v1",
+      "seconds": 18.815,
+      "log_sha256": "5174eb89412995b48d1dfb370b87f7bbfd2f0f87f6945c20f7d0a6c86ff75092",
+      "actual_render_execution": false
+    },
+    {
+      "name": "m4_fresh_authored_reopen",
+      "checks": 9,
+      "schema": "objectshard-m4-fresh-authored-reopen-v1",
+      "seconds": 8.114,
+      "log_sha256": "9f06e9c924559fcb685c2fad5418a143fe597e03f53cb8a8d2e9435d9bd587fc",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_material_only_workbench",
+      "checks": 71,
+      "schema": "objectshard-m4-material-only-workbench-v1",
+      "seconds": 10.716,
+      "log_sha256": "d2ce1ceaf9880e90cbf2b6a493b7fc6a0937b606bb048a881d5601bb7ee71378",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_fragment_reabsorption",
+      "checks": 137,
+      "schema": "objectshard-m4-fragment-reabsorption-v1",
+      "seconds": 13.038,
+      "log_sha256": "4687b7dbb988e60ff7c5d4495b5e6675f986096419da09a6295061312d9bc766",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_adverse",
+      "checks": 122,
+      "schema": "objectshard-m4-lifecycle-adverse-v1",
+      "seconds": 10.726,
+      "log_sha256": "e4b5088c60cb87acfbd6c9e2da505fd43386370c33b9fa0bf943fd251b009be9",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_completed_sample",
+      "checks": 108,
+      "schema": "objectshard-m4-completed-sample-v1",
+      "seconds": 10.075,
+      "log_sha256": "34f3e681a6dd6ec3f4d32e8bb55ae3bdb217f3c1b4dc99cf13a1b2f00fc65e8f",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_equipment_completion",
+      "checks": 99,
+      "schema": "objectshard-m4-equipment-completion-v1",
+      "seconds": 10.344,
+      "log_sha256": "da5b11f752b3e2ee6004ecc5400f478c0521d67ec77c912a0e0425bade5eb402",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_actor_clock",
+      "checks": 96,
+      "schema": "objectshard-m4-actor-clock-v1",
+      "seconds": 11.466,
+      "log_sha256": "d5e2ce99dd63fe76ec7e97431037807ba05a4bb6524f3431b9f6e9ad440560d9",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_long_burn",
+      "checks": 233,
+      "schema": "objectshard-m4-long-burn-v1",
+      "seconds": 23.083,
+      "log_sha256": "4dd017ecf9cef2a7c8ce9760dbcbf2ebd046c79a261ace9c190769921258485a",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_fuzz",
+      "checks": 1019,
+      "schema": "objectshard-m4-lifecycle-fuzz-v1",
+      "seconds": 33.14,
+      "log_sha256": "444e6fd518fb5cb807a8e560c8874f321e4d846532a421f31864a912a88b7498",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics_cli",
+      "checks": 36,
+      "schema": "objectshard-m4-optional-diagnostics-v1",
+      "seconds": 9.419,
+      "log_sha256": "b5f7ce0fd2637f4ce0c3b822cb35112d1e64634518b1e87c70281e47669f9de3",
+      "actual_render_execution": false
+    },
+    {
+      "name": "test_object_shard_m4_overlay_identity",
+      "checks": 11,
+      "schema": "objectshard-m4-overlay-identity-v1",
+      "seconds": 4.088,
+      "log_sha256": "51b30e11a545a0888814317a5464328806ee2da170a1a2833115ff970a333718",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_material_preparation_render",
+      "checks": 13,
+      "schema": "objectshard-m4-material-preparation-v1",
+      "seconds": 78.159,
+      "log_sha256": "bf04b19ce3835cba84c3c37367b7c73099f8a3243a4f47c68ddf05dfa5493a63",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_edit_preview_render",
+      "checks": 102,
+      "schema": "objectshard-m4-edit-preview-render-v1",
+      "seconds": 208.102,
+      "log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+      "actual_render_execution": true
+    },
+    {
+      "name": "test_object_shard_m4_material_presentation_render",
+      "checks": 28,
+      "schema": "objectshard-m4-material-presentation-v1",
+      "seconds": 150.058,
+      "log_sha256": "1c7d0d8570f8506a661436d2a8e9b5be4abe2f1e6327739819f9d0959db5d8ab",
+      "actual_render_execution": true
+    }
+  ],
+  "all_case_log_hashes_verified": true,
+  "all_application_commands_use_extracted_engine_and_project": true,
+  "git_source_hashes_verified": 1609,
+  "packaged_godot_source_locations_verified_against_downloaded_evaluator": 1194,
+  "launcher_paths": [
+    {
+      "case": "spaces",
+      "checks": 73,
+      "commands": [
+        {
+          "script": "Verify Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 5.078000000000031
+        },
+        {
+          "script": "Open Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 120.20299999999997
+        }
+      ],
+      "display_driver": "Windows",
+      "rendering_driver": "opengl3_angle"
+    },
+    {
+      "case": "parentheses",
+      "checks": 73,
+      "commands": [
+        {
+          "script": "Verify Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 1.656000000000006
+        },
+        {
+          "script": "Open Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 116.57900000000001
+        }
+      ],
+      "display_driver": "Windows",
+      "rendering_driver": "opengl3_angle"
+    },
+    {
+      "case": "unicode",
+      "checks": 73,
+      "commands": [
+        {
+          "script": "Verify Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 1.6720000000000255
+        },
+        {
+          "script": "Open Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 124.61000000000001
+        }
+      ],
+      "display_driver": "Windows",
+      "rendering_driver": "opengl3_angle"
+    },
+    {
+      "case": "nested",
+      "checks": 73,
+      "commands": [
+        {
+          "script": "Verify Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 1.7029999999999745
+        },
+        {
+          "script": "Open Workbench.cmd",
+          "exit_code": 0,
+          "seconds": 116.04700000000003
+        }
+      ],
+      "display_driver": "Windows",
+      "rendering_driver": "opengl3_angle"
+    }
+  ],
+  "negative_checks": {
+    "tamper": true,
+    "unlisted_input": true,
+    "provenance": [
+      {
+        "case": "missing-candidate",
+        "exit_code": 1,
+        "expected_refusal": "Missing package file:",
+        "log": "provenance-missing-candidate-refusal.log"
+      },
+      {
+        "case": "tampered-candidate",
+        "exit_code": 1,
+        "expected_refusal": "Package file changed:",
+        "log": "provenance-tampered-candidate-refusal.log"
+      },
+      {
+        "case": "incorrect-candidate-kind",
+        "exit_code": 1,
+        "expected_refusal": "Native candidate provenance contract mismatch",
+        "log": "provenance-incorrect-candidate-kind-refusal.log"
+      },
+      {
+        "case": "stale-candidate-source",
+        "exit_code": 1,
+        "expected_refusal": "Candidate source identity mismatch",
+        "log": "provenance-stale-candidate-source-refusal.log"
+      },
+      {
+        "case": "stale-candidate-build",
+        "exit_code": 1,
+        "expected_refusal": "Candidate build identity mismatch",
+        "log": "provenance-stale-candidate-build-refusal.log"
+      },
+      {
+        "case": "wrong-candidate-runtime",
+        "exit_code": 1,
+        "expected_refusal": "Candidate source identity mismatch",
+        "log": "provenance-wrong-candidate-runtime-refusal.log"
+      },
+      {
+        "case": "missing-retained-reference",
+        "exit_code": 1,
+        "expected_refusal": "Missing package file:",
+        "log": "provenance-missing-retained-reference-refusal.log"
+      },
+      {
+        "case": "active-retained-provenance",
+        "exit_code": 1,
+        "expected_refusal": "Active retained runtime provenance is forbidden",
+        "log": "provenance-active-retained-provenance-refusal.log"
+      }
+    ]
+  },
+  "launcher_log_sha256": {
+    "launcher/unlisted-input-refusal.log": "71a72d823a26bc5ea4eadd7f5bdefb622983378592da9762f85f92c39445fab6",
+    "launcher/unicode-verify.log": "aa56d1d34ef4ce9f801a478a8153266167a9ac04b53bcc9dc8f6360e8c2b8d07",
+    "launcher/unicode-launch.log": "780d1ff0084189de11b979d4accd69815db06ee586829a9c5cb360c6761ea20c",
+    "launcher/tamper-refusal.log": "080a4183a57f56cc4b62ab0123d2dd780b04fae809c531fcfef8e316d5d93468",
+    "launcher/spaces-verify.log": "aa56d1d34ef4ce9f801a478a8153266167a9ac04b53bcc9dc8f6360e8c2b8d07",
+    "launcher/spaces-launch.log": "780d1ff0084189de11b979d4accd69815db06ee586829a9c5cb360c6761ea20c",
+    "launcher/provenance-wrong-candidate-runtime-refusal.log": "354e6ca48745f33df6c3e419433108a67efab564c5a2a5d446a14dec3c2740d4",
+    "launcher/provenance-tampered-candidate-refusal.log": "98a9927f7ab9c59dbe3d5ef32572dc8ff218326877f0a74f15df73b38db582e4",
+    "launcher/provenance-stale-candidate-source-refusal.log": "354e6ca48745f33df6c3e419433108a67efab564c5a2a5d446a14dec3c2740d4",
+    "launcher/provenance-stale-candidate-build-refusal.log": "975c46cdfde624f51faa3f553797c9a34bcce7fd28b4a6e54f03a41866a094a1",
+    "launcher/provenance-missing-retained-reference-refusal.log": "a157addf18a888c277531984f43191c57a9f62e9548e9632cc1c3b57843883eb",
+    "launcher/provenance-missing-candidate-refusal.log": "6cb9789f2434ed62f633326818a01eb47b496f9a6048ceb28a0483575db5e781",
+    "launcher/provenance-incorrect-candidate-kind-refusal.log": "2108209edffc54d99b454d1912f448a734b905ebca43ee70117edf648fcb0e37",
+    "launcher/provenance-active-retained-provenance-refusal.log": "febae2d52727762b1a6fefa14424003d0c75093104747596fe5dc8d637baeede",
+    "launcher/parentheses-verify.log": "aa56d1d34ef4ce9f801a478a8153266167a9ac04b53bcc9dc8f6360e8c2b8d07",
+    "launcher/parentheses-launch.log": "780d1ff0084189de11b979d4accd69815db06ee586829a9c5cb360c6761ea20c",
+    "launcher/nested-verify.log": "aa56d1d34ef4ce9f801a478a8153266167a9ac04b53bcc9dc8f6360e8c2b8d07",
+    "launcher/nested-launch.log": "780d1ff0084189de11b979d4accd69815db06ee586829a9c5cb360c6761ea20c"
+  },
+  "qualification_sha256": "fcd8352307d87d066c981823e7c6f6ebd48ed9f226859ea626c04e8617c958e8",
+  "launcher_result_sha256": "18d30682f6f40713533474fbbd2174d0a9a361b2b30b33cb43d13b1fa37282c7",
+  "fresh_independent_identity": {
+    "schema": "objectshard-m4-independent-package-v1",
+    "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+    "workflow_run": "46125028803",
+    "workflow_attempt": "1",
+    "artifact_id": "15256411748",
+    "archive_sha256": "cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+    "archive_bytes": 96795210,
+    "status": "passed",
+    "application": "unchanged uploaded evaluator",
+    "observer": "exact source checkout; independent fresh hosted Windows job",
+    "physical_owner_acceptance": "not established"
+  },
+  "scope": "Actual downloaded evaluator identity is bound to these Windows extraction, shipped CMD and package-only engine/script execution receipts. A fresh independent job is distinguished from the producer replay.",
+  "physical_owner_acceptance": "pending"
+}

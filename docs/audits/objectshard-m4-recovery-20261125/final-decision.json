@@ -1,0 +1,763 @@
+{
+  "schema": "objectshard-m4-completion-recovery-final-decision-v1",
+  "mission": "OBJECTSHARD-M4-COMPLETION-RECOVERY-001",
+  "status": "ENGINEERING_COMPLETE_QUALIFIED_DRAFT_HOLD_PHYSICAL_OWNER_ACCEPTANCE",
+  "repository": "https://github.com/techrote/cybersand",
+  "pull_request": "https://github.com/techrote/cybersand/pull/754",
+  "branch": "integration/objectshard-m4-mainline-20261122",
+  "source": {
+    "application": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+    "reviewed_local_equivalent": "b9bbf27465b79739abfd85f4c886e95a9a403523",
+    "native_build": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "package_producer": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "independent_auditor": "21333f8a0eb15620ecf22ce4c1b3df09fa83fc51",
+    "independent_auditor_tree": "3057e81019bde737b9c9ff9a304200af29859ae6",
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "docs_continuity": [
+      "05308c605358d464e7e8869da80adc4b809aa5b2",
+      "aace2e93b0e5634a84e973747cb2bd753f4f540f"
+    ],
+    "production_runtime_publication_commit": null,
+    "publication_scope": "Source-built native candidate is published only inside exact-source qualification artifacts and portable evaluator. Accepted production binaries and runtime ledgers are unchanged.",
+    "source_preservation": {
+      "native_inputs_unchanged_from_original": 117,
+      "map": "docs/audits/objectshard-m4-recovery-20261125/native-source-preservation-117.json",
+      "map_sha256": "682564641e7e7f0de9380715ddeec413b6eea3a0a5215a9c922730084ffe56b3"
+    },
+    "sand_observer_orchestrator": {
+      "source": "2b15c37e934f07117e297a38e8c3100104c9637d",
+      "tree": "c9a600a0fed704b778c199ab1fbca36d146c125a",
+      "application_changed": false,
+      "previous_archive_helper_git_blob": "3cc6a1ba9b6fcd78b65a8ba1ed031d5907ee1299",
+      "previous_process_inventory_helper_git_blob": "6731c1b513481ae94c77e7453c586b36bb004ea4"
+    }
+  },
+  "qualification": {
+    "run": 45530425519,
+    "attempt": 1,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45530425519",
+    "status": "success",
+    "jobs": [
+      {
+        "id": 138924057320,
+        "name": "native-sanitizers",
+        "status": "success"
+      },
+      {
+        "id": 138924057296,
+        "name": "windows-native",
+        "status": "success"
+      },
+      {
+        "id": 138924056891,
+        "name": "linux-workbench",
+        "status": "success"
+      },
+      {
+        "id": 138926161028,
+        "name": "windows-workbench",
+        "status": "success"
+      }
+    ],
+    "inventory": {
+      "path": "docs/audits/objectshard-m4-recovery-20261125/registered-workbench-inventory.json",
+      "sha256": "a7ac44da9d6915574dab0900449efe88acdcd29417e68795e2bfd8dac74ad100",
+      "primary_per_platform": 43,
+      "graphical_lane_per_platform": 32,
+      "actually_rendered_per_graphical_lane": 18,
+      "pristine_windows_package_replay": 17,
+      "previous_cases_removed": 0
+    },
+    "native": {
+      "checks": 96500,
+      "world_cases": 192,
+      "benchmark_checks": 4276351,
+      "registered_budget_limits": 74,
+      "source_inputs": 129,
+      "benchmark_inputs": 95,
+      "windows_native_inputs": 117,
+      "windows_build_inputs": 7,
+      "material_parity_inputs": 8,
+      "status": "passed"
+    },
+    "platforms": {
+      "linux": {
+        "primary": 43,
+        "graphical_lane": 32,
+        "actually_rendered": 18,
+        "status": "passed"
+      },
+      "windows": {
+        "primary": 43,
+        "graphical_lane": 32,
+        "actually_rendered": 18,
+        "pristine_package": 17,
+        "status": "passed"
+      }
+    },
+    "delivery": {
+      "payload_files": 1140,
+      "actual_shipped_cmd_paths": [
+        "spaces",
+        "parentheses",
+        "unicode",
+        "nested"
+      ],
+      "focused_python_provenance_cases": 12,
+      "actual_windows_provenance_refusals": 8,
+      "additional_payload_tamper_controls": 2,
+      "original_artifact_archives_rehashed": 6,
+      "status": "passed"
+    }
+  },
+  "recovered_campaigns": [
+    {
+      "run": 45473059187,
+      "source": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+      "tree": "fcbb55a7c80a9d1a887e4e0336491e07c3ae01db",
+      "status": "failure",
+      "native": "passed",
+      "windows_native": "passed",
+      "linux": "Pinned engine acquisition HTTP403/curl22 before application",
+      "windows": "38/38 primary,27/27 subsequent,actual launcher passed; pristine replay0cases failed active provenance filename requirement",
+      "evaluator_uploaded": false,
+      "windows_evidence": {
+        "id": 14961723648,
+        "bytes": 33235453,
+        "sha256": "3f35d18a7e54ce8327d0b6f63dc57cf3e035380e7b87714c612dd0370f3650d7"
+      }
+    },
+    {
+      "run": 45517975210,
+      "source": "51903088118d2a04f2dc79dd6fff7c25b226970c",
+      "status": "failure",
+      "native": "passed",
+      "windows_native": "passed",
+      "linux": "42/42 primary;30/31 graphical,paused-control fixture admitted measurement before exact user-Pause ACK",
+      "windows": "41/42 primary; long-burn fixture compared native and displayed clocks",
+      "evaluator_uploaded": false
+    },
+    {
+      "run": 45522534938,
+      "source": "422d131048db573c0abd08bcca25f6b3999e8703",
+      "tree": "0077add3ad68ccaa782b28beb62b19552f48a124",
+      "status": "failure",
+      "native": "passed",
+      "windows_native": "passed",
+      "linux": "41/42primary; actual held-Cut publication race",
+      "windows": "42/42primary;30/31graphical,paused-control fixture admitted one late tick",
+      "evaluator_uploaded": false
+    }
+  ],
+  "earlier_lineage": {
+    "runs": [
+      45457037610,
+      45435990124
+    ],
+    "pull_requests": [
+      726,
+      728,
+      730,
+      738,
+      741,
+      751,
+      752
+    ],
+    "principal_checkpoint": "a12636c2",
+    "requested_experiment": "0d9cbdf2",
+    "ci_cost_followup": "ceb6c0d9",
+    "disposition": "Recovered into intake and predecessor records; failed/superseded results retain their original scopes."
+  },
+  "fixes": [
+    {
+      "kind": "delivery",
+      "description": "Authenticate deliberate exact-byte relocation of retained production ledger to retained-runtime-provenance.reference.json; require source-built-candidate-provenance.json, refuse active old ledger and external runtime fallbacks."
+    },
+    {
+      "kind": "infrastructure",
+      "description": "Restore approved pinned official Godot release-asset acquisition with unchanged4.7 byte/version/integrity pins and bounded retry."
+    },
+    {
+      "kind": "application",
+      "description": "Fence held moving-cell edits on latest successful transaction delivered through same-owner/session/incarnation native publication; preserve geometry and physics readiness."
+    },
+    {
+      "kind": "observability",
+      "description": "Make bounded owner diagnostic recording explicitly optional/off by default. No consistent speedup claimed."
+    },
+    {
+      "kind": "qualification",
+      "description": "Long-burn fixture reads material and native tick from one frame, preserving240 opportunities/480tick bound; paused baseline requires exact existing Pause serial ACK before opening zero-progression window."
+    },
+    {
+      "kind": "independent-review",
+      "description": "External archive/Windows observer orchestration recovers complete raw receipts after executor outage. Prepared-only namespace and generated-cache defects repaired before publication."
+    }
+  ],
+  "runtime": {
+    "engine": "Godot4.7.stable.official.5b4e0cb0f",
+    "renderer": "ANGLE / opengl3_angle; production defaults unchanged",
+    "native_dll": {
+      "bytes": 6196224,
+      "sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4"
+    },
+    "godot_gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "godot_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "rapier_windows_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "principal_evaluator": {
+    "artifact_id": 14986488170,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170",
+    "outer_bytes": 93044387,
+    "outer_sha256": "5eee64f2147efe057a0768eb39476ec8730dae7dd133480c46ed4911a09f1f2a",
+    "filename": "objectshard-workbench-evaluator.zip",
+    "producer_reported_inner_sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387",
+    "independently_verified_inner_bytes": 93388322,
+    "independently_verified_inner_sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387",
+    "launcher": "Open Workbench.cmd"
+  },
+  "limits": {
+    "canvas_minimum": 64,
+    "canvas_maximum": 1024,
+    "ordinary_default2048": "Visible attachment refusal; use512/1024newblank or packaged scenes.",
+    "active_material_bodies": 16,
+    "bounding_cells_per_body": 16384,
+    "aggregate_bounding_cells": 65536,
+    "rectangles_per_body": 512,
+    "shared_physics_ids": {
+      "gcr": [
+        1,
+        48
+      ],
+      "mutable": [
+        49,
+        64
+      ]
+    },
+    "native_registry_ids": "Distinct positive native owner identifiers, not shared-space slots.",
+    "persistence": "Authored-start recipe and ordinary paint/erase edits; no full serialization of evolved body poses, moving cuts, live chemistry or inventories.",
+    "settlement": "Explicit paused quiet near-grid conversion with full native material credit before actual RID removal.",
+    "fluid_laws": "Existing Water displacement/exclusion, Sand lodging and supported chemistry only; no new buoyancy/drag/impact feedback."
+  },
+  "retained_negatives": {
+    "physical_nvidia_acceptance": "HOLD",
+    "production_provenance": "FAIL/OPEN pre-Ready/merge;16stale-input errors remain real and accepted production provenance is untouched.",
+    "ordinary_sand_lodging_supplement": "Earlier local attempt was interrupted and remains NOT PASS. The new exact-package hosted positive witness separately passes168checks. All eight ordinary mixed profiles still show zero ingestion and positive conservative displacement; their historical scope is unchanged.",
+    "wait_pump_experiment": {
+      "admitted": false,
+      "variant_executed": false,
+      "unchanged_baseline": "SIGKILL-9 after6.287s, no completion profile, watchdog not fired; cause not established."
+    },
+    "local_executor_outages": 2,
+    "original_conversation": "Full original conversation/local session inaccessible; durable repository, original archives and available handovers reconstructed. Missing bytes are identified in continuity packets.",
+    "earliest_archive_gap": "Run45435990124 original terminal logs were recovered, but its134MB native artifact was not independently downloaded. The guarded output-path failure remains FAIL. Final5f native archive was completely independently verified."
+  },
+  "independent_review": {
+    "run": 45537943367,
+    "attempt": 1,
+    "source": "21333f8a0eb15620ecf22ce4c1b3df09fa83fc51",
+    "tree": "3057e81019bde737b9c9ff9a304200af29859ae6",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45537943367",
+    "status": "passed",
+    "archive_job": 138949086415,
+    "original_four_application_jobs": "skipped as marker-selected; original mainqualification remains45530425519",
+    "archive_status": "passed",
+    "summary": {
+      "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/delivery-audit-summary.json",
+      "bytes": 23812,
+      "sha256": "d77dcbc86157b4d5eea39817c2edbb4d7f5f73662becbeef5e0fca3d66d2b499"
+    },
+    "artifact": {
+      "id": 14987388844,
+      "bytes": 7605662,
+      "sha256": "7eca28564f0b8eaf30cef2b4d2e2c62f59a30c7a1e7187470c960c83984e491a",
+      "digest_scope": "GitHub-reported newly uploaded outer audit archive; six original producer artifact archives were independently downloaded and hashed."
+    },
+    "windows_job": 138949746878,
+    "windows_owner_witnesses": {
+      "status": "passed",
+      "author_checks": 136,
+      "reopen_checks": 79,
+      "moving_cut_checks": 154,
+      "artifact": {
+        "id": 14987841929,
+        "bytes": 232405,
+        "sha256": "553d128b6ad63a668b4582fc1c47e1f043cb500a053c5926129bd96b1ca98cd8",
+        "digest_scope": "GitHub-reported new evidence artifact; original individual receipt bridge bytes independently rehashed by root and specialists."
+      },
+      "receipt_files": [
+        {
+          "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-owner/summary.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "5977b07334559f8d48e4e8079caa07d934592559",
+          "bytes": 96948,
+          "sha256": "a8ed080cd637cb84754ad5f04ba3260d9ea8f29b166acf4dbf4249bb49fd038c"
+        },
+        {
+          "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-owner/author-receipt.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "4212b62ec1c7285c9638b060a4ad6ceb6002ec8c",
+          "bytes": 26119,
+          "sha256": "5a863d3efb92c0ccdcfe981cefa0f870a39e85e56eaaced9f4525f71bba6b978"
+        },
+        {
+          "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-owner/reopen-receipt.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "9edee5c100465437741c0e8cfc9b095728c14e2e",
+          "bytes": 30204,
+          "sha256": "b429397a282940ffc0ad09ca4e425e96571c70dab9a05a42c77342bb578dd3d7"
+        },
+        {
+          "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-owner/live-cut-receipt.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "d063f313fa9b9d1878a914b2b18d2da479d6928d",
+          "bytes": 19410,
+          "sha256": "ec0340d7d380c90e8f22f5d85e07dd4d6bc555a891780142bb2a7bb7bdffe0b2"
+        }
+      ],
+      "material_point_velocity_residual": 0.0000015181563088673194,
+      "continued_native_ticks": 8,
+      "natural_actual_engine_and_wrapper_exit": true,
+      "package_unchanged": true
+    },
+    "sand_witness": {
+      "run": 45540808667,
+      "attempt": 1,
+      "job": 138958566611,
+      "source": "2b15c37e934f07117e297a38e8c3100104c9637d",
+      "tree": "c9a600a0fed704b778c199ab1fbca36d146c125a",
+      "status": "passed",
+      "unchanged_package": true,
+      "prior_six_jobs": "skipped",
+      "checks": 168,
+      "artifact": {
+        "id": 14989400911,
+        "url": "https://github.com/techrote/cybersand/actions/runs/45540808667/artifacts/14989400911",
+        "bytes": 201292,
+        "sha256": "020ff289e971e281b2bd0030c230116726df49510f77fd50fb8d8d8ab0da916b",
+        "digest_scope": "GitHub-reported new outer evidence archive; original receipts independently decoded and SHA-256 verified, raw grids/carriers independently reconstructed."
+      },
+      "summary": {
+        "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-sand/summary.json",
+        "git_blob": "31d4ec85e9d3d6a9119e547d473f0e5b40366fe0",
+        "bytes": 46395,
+        "sha256": "5ae0fe6fe281637b0f69b6ad0ca8bbc425bca00cfb2bcb20b351c68f92e2f7bf"
+      },
+      "receipt": {
+        "path": "docs/audits/objectshard-m4-recovery-20261125/independent-hosted/windows-sand/sand-receipt.json",
+        "git_blob": "a91eb816b0e6b904d892853efd8742cddc9115d8",
+        "bytes": 37543,
+        "sha256": "3f049d42e3491069bd998f3ee821b4f29f39d80d046342f0894c62a45b66acff"
+      },
+      "log": {
+        "bytes": 138459,
+        "sha256": "fc1839dcdfbd14ac9169c79f6be1e7514a282779dd509b635ab034918c86513c",
+        "scope": "Complete original GitHub Actions job log, including setup, execution and evidence bridge lines; not the Sand process stdout log."
+      },
+      "ordinary_actions": [
+        "Mounted authored Load",
+        "45 exact Wall support cells erased at brush radius zero",
+        "Unforced actual Rapier fall and natural sleep",
+        "One ordinary Sand pixel painted while paused",
+        "Resume and automatic World-to-Cargo transfer"
+      ],
+      "natural_fall": {
+        "native_ticks": 56,
+        "actual_physics_steps": 228
+      },
+      "ingress": {
+        "native_ticks": 6,
+        "actual_physics_steps": 24,
+        "cargo_cell": 71,
+        "cargo_role": 3,
+        "cargo_incarnation": 2,
+        "native_owner": 1,
+        "body_generation": 1,
+        "owner_generation": 1,
+        "rid": 18901
+      },
+      "mass": {
+        "before": 63,
+        "after": 64,
+        "native_and_actual_physics": true,
+        "geometry_revision_before": 1,
+        "geometry_revision_after": 2,
+        "final_native_acknowledged": true,
+        "intake_native_geometry_revision": 2,
+        "intake_applied_physics_revision": 1,
+        "final_applied_physics_revision": 2
+      },
+      "raw_inventory_witnesses": 4,
+      "all_255_materials_reconciled": true,
+      "natural_actual_engine_and_wrapper_exit": true,
+      "no_forced_cleanup": true,
+      "immutable_package_unchanged": true,
+      "process_log": {
+        "bytes": 52708,
+        "sha256": "86f6818f24f61e5e8d7d402c69338e65417098311947167242889b0fd5ea77c1",
+        "scope": "Actual unchanged-package Sand observer process stdout/stderr log."
+      }
+    },
+    "direct_dependencies": {
+      "status": "passed finite direct-import accounting",
+      "images": 5,
+      "documented_windows_modules": 26,
+      "api_set_contracts": 19,
+      "packaged_vcruntime_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "review_json_sha256": "39a0c646fa03da542a7dfcb04f3fcbcf0bafdb50030739b31bcb98cf30b91ea7",
+      "scope": "Actual Windows Server2022 byte/PE observations and documented finite module contracts; no exhaustive delay-load/export/dynamic-plugin/driver or physicalWin11 qualification."
+    },
+    "reviewers": {
+      "inspect_windows_evaluator.py": {
+        "bytes": 15260,
+        "git_blob": "42c6bbdf8567929204604cec51c3d9c31e75a8c4",
+        "sha256": "8f2a0b9ded7afb1c1bdd65fb87c874173bea9ca114db192fca84ba163b8852a9"
+      },
+      "review_native_candidate.py": {
+        "bytes": 20277,
+        "git_blob": "901fb005072aaf29374277c31938b851488f7c4a",
+        "sha256": "75578c66675b6ad3a60e230f0b8bbee437ee46570f162cd2d458188a3f8b4844"
+      },
+      "review_windows_native.py": {
+        "bytes": 8304,
+        "git_blob": "60bbe74a9907f96085b2d7cdb6357825b23437d4",
+        "sha256": "ac942c38d16db2b8d1cc5f3d1af4c8f66c03f5681a2a72688216f2846ea1c8a1"
+      },
+      "review_workbench_evidence.py": {
+        "bytes": 17660,
+        "git_blob": "90eba97b9b297b24f28866470cd053db9d3f9de1",
+        "sha256": "8d55b6847dc13519d77c850ef763fc281e3f11993d07d0e0ea81cf830928cfe0"
+      }
+    },
+    "verdicts": {
+      "native": "PASS for exact-source candidate correctness and finite runtime dependency accounting; physical owner acceptance HOLD; retained production publication OPEN.",
+      "workbench_performance": "PASS for source-bound measurement, graphical still inspection, live Cut and positive Sand evidence; physical presentation/latency acceptance HOLD.",
+      "delivery": "PASS for original archive, package, source/runtime custody, shipped launcher, pristine replay and new actual Windows owner witnesses.",
+      "technical_lead": "Admit engineering-qualified immutable evaluator and durable final packet; keep Draft and physical owner acceptance HOLD."
+    }
+  },
+  "performance": {
+    "status": "hosted investigation complete; physical performance HOLD",
+    "application_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+    "profile_count": 52,
+    "headless_and_rendered": true,
+    "original_log_sha256": {
+      "windows": "757f32f8a9e4a57105488a4e7947505e3d3fa6246d904fbb766ccf390fd72a08",
+      "linux": "2bccaf639ea94167a37aacb7707ddfa5cf3dbf6c4f80c35d71ca2616d9540658"
+    },
+    "report_sha256": {
+      "markdown": "42716c99f676204994198ad9690f0768dfdeab5b71a3a3dcfc0fcaee47d47061",
+      "json": "012912396451076bb7cbd76b4a1255f424af3e3b0f6dd99f08852c34c8e152a9"
+    },
+    "windows_renderer": "Microsoft Basic Render Driver via ANGLE/D3D11",
+    "linux_renderer": "Mesa llvmpipe",
+    "windows_overview": [
+      {
+        "scene": "Tower",
+        "bodies": 1,
+        "render_submissions_per_second": 15.746,
+        "native_ticks_per_second": 4.964
+      },
+      {
+        "scene": "Viaduct",
+        "bodies": 3,
+        "render_submissions_per_second": 15.194,
+        "native_ticks_per_second": 4.683
+      },
+      {
+        "scene": "Timber",
+        "bodies": 1,
+        "render_submissions_per_second": 15.264,
+        "native_ticks_per_second": 4.633
+      },
+      {
+        "scene": "Mixed",
+        "bodies": 1,
+        "render_submissions_per_second": 15.365,
+        "native_ticks_per_second": 4.818
+      },
+      {
+        "scene": "Stress",
+        "bodies": 8,
+        "render_submissions_per_second": 15.367,
+        "native_ticks_per_second": 3.678
+      }
+    ],
+    "windows_headless_native_ticks": {
+      "tower": 31.986,
+      "stress": 29.639,
+      "disabled": 60.061
+    },
+    "linux_headless_native_ticks": {
+      "tower": 33.993,
+      "stress": 22.021,
+      "disabled": 59.971
+    },
+    "all_profiles": {
+      "native_ticks": 180,
+      "completed_physical_intervals": 180,
+      "acknowledgements_per_body": 720,
+      "incoherent_observations": 0
+    },
+    "paused_controls": {
+      "native_ticks": 0,
+      "actual_rapier_steps": 0
+    },
+    "optimizations_admitted_in_recovery": "No unsupported cache or pacing change. Existing sparse/receipt/geometry/readiness reuse retained; optional diagnostic recording off by default.",
+    "unproven": [
+      "Physical monitor FPS and ownerNVIDIA execution",
+      "Continuous-camera comparative performance",
+      "Full-window material-delivery-age distribution",
+      "Causal input-to-monitor latency",
+      "Consistent speedup from recording-off",
+      "Any wait-pump experiment speedup"
+    ],
+    "comparison_scope": "Enabled and disabled fixtures have different coherence-observer instrumentation, so their full throughput difference is not an isolated measurement of ObjectShard overhead."
+  },
+  "final_boundaries": {
+    "draft": true,
+    "merged": false,
+    "ready": false,
+    "auto_merge": false,
+    "production_default_enabled": false,
+    "physical_owner_acceptance": "HOLD"
+  },
+  "artifacts": {
+    "crossbuild": {
+      "bytes": 8810,
+      "id": 14984426850,
+      "name": "objectshard-m4-crossbuild-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "b40d49dec15665919de07f8ebdf33e9cc016d02447b549754dd207080f7ae4aa",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14984426850"
+    },
+    "dll": {
+      "bytes": 2265508,
+      "id": 14984556771,
+      "name": "objectshard-m4-dll-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "12563fa3c449963ad1adf04bc7dbb701c61777e18a823607d1e60b9815820a1c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14984556771"
+    },
+    "linux": {
+      "bytes": 14264606,
+      "id": 14986462220,
+      "name": "objectshard-m4-linux-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "3f745a25db44992edb8f2d2d889fff77d319f2273c583663c0b5c9c4eba94743",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986462220"
+    },
+    "native": {
+      "bytes": 135240202,
+      "id": 14985522687,
+      "name": "objectshard-m4-native-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "e4928403e5fd033768f50cfde4a576aef4475eae1d895d67f5156ed79e6ad7e7",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14985522687"
+    },
+    "windows": {
+      "bytes": 39179166,
+      "id": 14986123965,
+      "name": "objectshard-m4-windows-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "e9621d53c45fb649738c6b3c8572dc76c1a90fa4f020131967ff536d86e54468",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986123965"
+    },
+    "workbench-evaluator": {
+      "bytes": 93044387,
+      "id": 14986488170,
+      "name": "objectshard-m4-workbench-evaluator-5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a-45530425519",
+      "sha256": "5eee64f2147efe057a0768eb39476ec8730dae7dd133480c46ed4911a09f1f2a",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170"
+    }
+  },
+  "original_report_identities": {
+    "linux-workbench-independent-review-inspector.log": {
+      "bytes": 98,
+      "sha256": "67de0470c888135fb471d8ccded5d5b9c697906604fcd604b70ea285ef96e423"
+    },
+    "linux-workbench-independent-review.json": {
+      "bytes": 42559,
+      "sha256": "169bc66a241f6bcf26a8afb33349111e6c99e543ad5afc9891f5018b24301df5"
+    },
+    "material-parity-independent-review.json": {
+      "bytes": 2340,
+      "sha256": "74e19c7efd64dc9c94a962212fed7f4f231c3f42e36198e822485bb267221703"
+    },
+    "mixed-overview.png": {
+      "bytes": 90618,
+      "sha256": "d94fb7eb78610b4717d9ff3ce580a8cb8e32101053b92bc26a8d8a4f97484a9b"
+    },
+    "native-independent-review-inspector.log": {
+      "bytes": 223,
+      "sha256": "a6164471de4d6ab5c1f8af4eb1ec4a7f106d3b9beac4faed5c17cb181b048fd5"
+    },
+    "native-independent-review.json": {
+      "bytes": 43509,
+      "sha256": "5dcb8f4c5a835de3b425414f752dfac6ad786163ffbdd5e2bf8599f7b0a4dd0b"
+    },
+    "package-pe-imports.json": {
+      "bytes": 11978,
+      "sha256": "1e5ab47c57d53dbf61c16e1896dc9850a0fc12453e93c4a66558b8cadf7ec172"
+    },
+    "pe-0-imports.txt": {
+      "bytes": 3537674,
+      "sha256": "2c359f0b6e56232f606d996cac719c0e9c811b7bad122c42ce6476fe9eef14e1"
+    },
+    "pe-1-imports.txt": {
+      "bytes": 10884085,
+      "sha256": "9bf4de112b9b49291a63e4ae6c1c53889b7a788527231a30efc8bb3b0062b774"
+    },
+    "pe-2-imports.txt": {
+      "bytes": 124840,
+      "sha256": "05a78ef3a155ee46a8927ab39032cad7ac73252e8824c0d24055caac1bef7362"
+    },
+    "pe-3-imports.txt": {
+      "bytes": 29155111,
+      "sha256": "fea79f94078f2aac2425f7bd911dfcf5f57b1db6a741fdfb65e4067b065fd67b"
+    },
+    "pe-4-imports.txt": {
+      "bytes": 38974,
+      "sha256": "20bee8d0644b4a3b047e73cb5469142e13c3991ae3b54f83f1781e73e6da5245"
+    },
+    "principal-evaluator-independent-review-inspector.log": {
+      "bytes": 5293,
+      "sha256": "6f86ec8e50d459d322c5970434b18b85a1de80b3b77c3cbb3b0724b4d099882d"
+    },
+    "principal-evaluator-independent-review.json": {
+      "bytes": 3483,
+      "sha256": "554840ed602f065f059514e44cf99c944cd85f54a0360a4a083dcb72cd3701a6"
+    },
+    "registered-workbench-inventory.json": {
+      "bytes": 4130,
+      "sha256": "a7ac44da9d6915574dab0900449efe88acdcd29417e68795e2bfd8dac74ad100"
+    },
+    "stress-overview.png": {
+      "bytes": 78655,
+      "sha256": "d898a9ac28dde13789d6b5948e5f430cd60abbf4d43cf99dd725496f12db8bdd"
+    },
+    "timber-overview.png": {
+      "bytes": 80047,
+      "sha256": "068abb26c67ba8cbfddee0f5f33452556d72d6131d52f72c88160fcbe3d75d5e"
+    },
+    "tower-overview.png": {
+      "bytes": 79523,
+      "sha256": "f0206c397d7474501cafa17763927685846d57b6ed194fb27bfaaa99e5c98dab"
+    },
+    "viaduct-overview.png": {
+      "bytes": 88673,
+      "sha256": "0ca6a1779c8b0466bf774568661998c64ef3ccfc6d85cf15e77a0e9189b96dc2"
+    },
+    "windows-native-independent-review-inspector.log": {
+      "bytes": 753,
+      "sha256": "6b98629a414af22829dd7380e1f307805f73c7599d2c9e1a62e4868ba27b4c9c"
+    },
+    "windows-native-independent-review.json": {
+      "bytes": 17175,
+      "sha256": "ebdc52df935d501f7392676b299af0084cc3ce7a1e54838e0c1205c696b2a802"
+    },
+    "windows-workbench-independent-review-inspector.log": {
+      "bytes": 98,
+      "sha256": "26570780907e4d269e8e0338cc57fd294b460aafae3e6822a019848770d6d20b"
+    },
+    "windows-workbench-independent-review.json": {
+      "bytes": 53189,
+      "sha256": "e8b1989d8648ff9b9c11c630828bd5999e8d8d9e7933249463c322751138cd82"
+    }
+  },
+  "original_job_logs": {
+    "linux-workbench": {
+      "bytes": 2778292,
+      "job_id": 138924056891,
+      "sha256": "2bccaf639ea94167a37aacb7707ddfa5cf3dbf6c4f80c35d71ca2616d9540658"
+    },
+    "native-sanitizers": {
+      "bytes": 201814,
+      "job_id": 138924057320,
+      "sha256": "3a70b4708c42a323c82740340a63d4f3ef70e11958cfc4b522d94a1b0e1da0b0"
+    },
+    "windows-native": {
+      "bytes": 25281,
+      "job_id": 138924057296,
+      "sha256": "d07894cadd6ca03699cfc786f6c2e9c09b811a70720f49797a950dc78a1a8a6d"
+    },
+    "windows-workbench": {
+      "bytes": 3453079,
+      "job_id": 138926161028,
+      "sha256": "757f32f8a9e4a57105488a4e7947505e3d3fa6246d904fbb766ccf390fd72a08"
+    }
+  },
+  "disposition": "OBJECTSHARD M4 — ENGINEERING COMPLETE / QUALIFIED / DRAFT-HOLD FOR PHYSICAL OWNER ACCEPTANCE",
+  "decision_time_utc": "2026-11-25 03:39:56 UTC",
+  "physical_capabilities": {
+    "ordinary_world_and_exclusive_worker": true,
+    "actual_rapier_authority": true,
+    "supported_construction_and_detachment": true,
+    "moving_cut_and_ignition": true,
+    "stale_target_refusal": true,
+    "fragmentation_and_material_point_velocity": true,
+    "water_displacement_and_separate_inventory": true,
+    "positive_ordinary_sand_cargo": true,
+    "supported_chemistry_and_retirement": true,
+    "ordinary_actor_and_equipment_regressions": true,
+    "authored_start_save_reopen": true,
+    "full_evolved_state_checkpoint": false,
+    "explicit_settlement_native_credit_and_rid_removal": true
+  },
+  "owner_acceptance": {
+    "status": "HOLD",
+    "required_machine": "Owner's physical Windows11 NVIDIA machine",
+    "launch": "Extract outer GitHub artifact, extract complete objectshard-workbench-evaluator.zip, run Open Workbench.cmd.",
+    "checklist": [
+      "Confirm package/source identity and NVIDIA renderer/adapter/driver.",
+      "Release Tower supports with ordinary Eraser; observe coherent falling, impact and rest.",
+      "Cut and ignite genuinely moving bodies; check target correctness, rotation, fragmentation and retirement.",
+      "Try all five scenes, ordinary tools/actors, camera movement, Pause/Step and repeated replacements.",
+      "Save authored start and reopen in a fresh process; settle a quiet near-grid body and edit returned material.",
+      "Compare fixed-camera15second paused, playing, falling and detached-paused intervals; repeat with8bodies if usable.",
+      "Assess ordinary play with recording off; optionally record one interval, stop and explicitly save diagnostics.",
+      "Record physical display rate/stalls and native progression separately; retain GPU/driver, window/camera/body settings and package identity."
+    ],
+    "does_not_authorize": [
+      "Ready",
+      "merge",
+      "auto-merge",
+      "production-default activation",
+      "accepted production runtime overwrite"
+    ]
+  },
+  "packet_files": {
+    "markdown": "docs/audits/2026-11-25-objectshard-m4-final-decision.md",
+    "json": "docs/audits/objectshard-m4-recovery-20261125/final-decision.json",
+    "canonical_contract": "docs/research/objectshard-m4-workbench.md",
+    "owner_guide": "docs/operations/objectshard-workbench-playtest.md",
+    "mission_ledger": "docs/audits/2026-11-25-objectshard-m4-recovery.md"
+  },
+  "owner_copy_byte_verification": {
+    "status": "passed",
+    "method": "Restored local executor independently downloaded the original GitHub artifact, checked full streamed SHA-256/size and ZIP CRC/member list, and extracted the unchanged inner ZIP without recompression.",
+    "original_artifact": 14986488170,
+    "outer_bytes": 93044387,
+    "outer_sha256": "5eee64f2147efe057a0768eb39476ec8730dae7dd133480c46ed4911a09f1f2a",
+    "inner_bytes": 93388322,
+    "inner_sha256": "1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387",
+    "direct_owner_copy_saved": true,
+    "private_download_location": "Delivered in owner chat; canonical public custody remains the original GitHub artifact.",
+    "new_application_execution": false
+  },
+  "final_packet_review": {
+    "reviewed_draft_markdown_blob": "4909e9bb5c801d98949639a525f92be1841bc218",
+    "reviewed_draft_json_blob": "a091de4a2d08fd2c77ec121bf42e55df8450a046",
+    "specialist_A": "APPROVE with documentation precision corrections applied",
+    "specialist_B": "APPROVE with instrumentation comparison caveat applied",
+    "specialist_C": "APPROVE with producer-artifact terminology corrected",
+    "applied_corrections": [
+      "Child Workbench consumed Applied after Main polled the old publication.",
+      "Native Sand geometry revision is already2 at intake; final ACK advances applied_physics_revision1to2 and actual mass.",
+      "Enabled/disabled coherence-observer instrumentation differs; throughput gap is not isolated product overhead.",
+      "Sand job-log and process-log identities have separate scopes.",
+      "Original source artifacts are producer artifacts, distinct from accepted production runtimes."
+    ],
+    "application_changes": 0
+  }
+}

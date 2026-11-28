@@ -1,0 +1,180 @@
+{
+  "schema": "objectshard-independent-final-review-retention-v1",
+  "source_commit": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "source_tree": "246e7324ca618d98c43a0ed54fe19bc86a155877",
+  "utc": "2026-11-22T08:17:28.143955+00:00",
+  "scope": "Authoritative closeout hashes for this independent review directory. The index excludes itself; original platform ZIP hashes and member inventories are bound by the reports. Product and downloaded evidence were read only.",
+  "files": [
+    {
+      "path": "audit_crossbuild.py",
+      "bytes": 7564,
+      "sha256": "c5b8ec587e910bc1b49ed260004fb95d4dd95e16873d94e19a69c1fd0bddbf90"
+    },
+    {
+      "path": "audit_linux.py",
+      "bytes": 14939,
+      "sha256": "5832c55a0e803835f27d9ed033f13c527f08f4736ad0ae96f111147b22f171ca"
+    },
+    {
+      "path": "audit_navigation.py",
+      "bytes": 4472,
+      "sha256": "24a767116dc627dc70463251ba1b5d7d2cfde1d6f98e5eac4a5db5148f77e8a7"
+    },
+    {
+      "path": "audit_performance.py",
+      "bytes": 14989,
+      "sha256": "3a8cdc519380da507f9bb1acbd2cbaf0cee6d0b7f258fe1b06fe281e718e3009"
+    },
+    {
+      "path": "audit_source.py",
+      "bytes": 9870,
+      "sha256": "e644a1e3396907846df2cbdf80d1b287c5cbd0f3f97d4d7d505cb4064a964e68"
+    },
+    {
+      "path": "audit_windows_execution.py",
+      "bytes": 9908,
+      "sha256": "8a44ea9ca89b2b457d7a7b091dba8b48860aea2d8535d910b48e83085b34ca88"
+    },
+    {
+      "path": "continuous-trace-review.json",
+      "bytes": 1610,
+      "sha256": "c399013835eade8bc6f5cf3cf1d3c148ad7b06de3b16170b9bcd839cf0c89c9f"
+    },
+    {
+      "path": "final-review-verdict.json",
+      "bytes": 13983,
+      "sha256": "ee050aa9e7e38b713492695bc8e9cfef639b40dbf2640d72640a402c63200432"
+    },
+    {
+      "path": "finalize_review.py",
+      "bytes": 20450,
+      "sha256": "dbe184357a8b41ac397906404bb21db04f0ea02bbf44fabbbbfa4216771cae50"
+    },
+    {
+      "path": "investigate_linux_drift.py",
+      "bytes": 6972,
+      "sha256": "0fa63b71c295ed1d36dda4bfb371e1ceecbb07dd981be9aabcce216aef804768"
+    },
+    {
+      "path": "investigate_windows_drift.py",
+      "bytes": 11240,
+      "sha256": "09e388492326e93d2c8abd0fbcbf6beb140d122bb524076b0558280320ff5391"
+    },
+    {
+      "path": "linux-archive-members.json",
+      "bytes": 59276,
+      "sha256": "8065ffc8b36ce281603c66cef0de5d1978d5de7aaebbed352fe8d8c0872ca550"
+    },
+    {
+      "path": "linux-execution-review.json",
+      "bytes": 11368,
+      "sha256": "fae80b86b90ee523fef98b791d8bb4924d593427b81a8003df40d88183d53ff4"
+    },
+    {
+      "path": "linux-performance-drift-investigation.json",
+      "bytes": 67723,
+      "sha256": "5d51f06fcf4823991ecc4021619698cb2985f977b7c1b0fa4174bf55d41c44cc"
+    },
+    {
+      "path": "linux-performance-review.json",
+      "bytes": 20262,
+      "sha256": "8ac2cc6993ae79382fd99876d06e48252049c427feadf71e3fa513f3f4d0a6f4"
+    },
+    {
+      "path": "mergedown-gates.json",
+      "bytes": 26650,
+      "sha256": "e2c56ad269386b2f59c3d9150fae5cc472574d2638aff65e51d5c29930116eda"
+    },
+    {
+      "path": "narrative-scope-review.json",
+      "bytes": 3018,
+      "sha256": "5bb39e9f53979f0e4b0d6ebcb8fbecc558c59fa46b45e56bf93feceb65bbdc09"
+    },
+    {
+      "path": "package-contracts.log",
+      "bytes": 7533,
+      "sha256": "459f7aee5ae557c73007641f41955cf5efc4e7c0e5aa6287ad496ecac9a150a1"
+    },
+    {
+      "path": "production-provenance.log",
+      "bytes": 3240,
+      "sha256": "257d369122154b12d969bb1b9010a2b38f04fb70848b969496683c1e64c92488"
+    },
+    {
+      "path": "remote-crossbuild-readback.json",
+      "bytes": 8368,
+      "sha256": "baf962d4dd03128dd22a6acb0424db372ecdd04fe38315bf2fdd4dff7970e405"
+    },
+    {
+      "path": "remote-linux-readback.json",
+      "bytes": 11441,
+      "sha256": "44dd84ccba13564600fdbb298a234f1865de6c57af2992d014b416a82d31f3f4"
+    },
+    {
+      "path": "remote-windows-delivery-readback.json",
+      "bytes": 10364,
+      "sha256": "1897f10cdb89d3b0192e23d4ac2eedf3b22378a91db94ee80f187740a07e954e"
+    },
+    {
+      "path": "retained-native-matrix-review.json",
+      "bytes": 1862,
+      "sha256": "2b2fab0234025458c00a2db75bd98d5d0b8bedba063c3bc1c651887e15131156"
+    },
+    {
+      "path": "source-inventory.json",
+      "bytes": 150271,
+      "sha256": "5cc5accccb47cde97fcf90c8134d306dfc514152dbfe8667748af2188282511d"
+    },
+    {
+      "path": "source-review.json",
+      "bytes": 4479,
+      "sha256": "1df77d5df2d2b5b74bba06c5fba0b9a660bd57a3a93ef8b64ec9d35d5e067efa"
+    },
+    {
+      "path": "verify_delivered_archive.py",
+      "bytes": 11556,
+      "sha256": "27e0468deab6baf95805d1fc92773621e4b93bd8d27a83e4670cb917f0c126a0"
+    },
+    {
+      "path": "windows-artifact-inventory.json",
+      "bytes": 40317,
+      "sha256": "61f10ab7f91f5cb193ba8b7c679926ddf6ddd1bcbeba7b5335af9abaf66392c4"
+    },
+    {
+      "path": "windows-crossbuild-review.json",
+      "bytes": 5239,
+      "sha256": "02e542d83267b9cb5e644001840dc1621604c68de8bd035530cd2654cdd1103a"
+    },
+    {
+      "path": "windows-delivered-archive-review.json",
+      "bytes": 1293,
+      "sha256": "dcbeba51783c76eaab9ae31000fe81ba8a977988a223382a5ba07fb3e1e38b0a"
+    },
+    {
+      "path": "windows-execution-review.json",
+      "bytes": 32057,
+      "sha256": "b27dbf774ac1e047c464a157820a7a2a90cc04ed06495a6c83deab23af6da623"
+    },
+    {
+      "path": "windows-performance-drift-investigation.json",
+      "bytes": 78822,
+      "sha256": "2c492d470e2a0cd753d2e9b509635c80e9b249c306a9f04e4de65732891b34b5"
+    },
+    {
+      "path": "windows-performance-review.json",
+      "bytes": 20271,
+      "sha256": "89b55ab2fda28b8dd781384f9c8742db3c3f9db6ea364aca25940afafb7249bf"
+    },
+    {
+      "path": "windows-render-review.json",
+      "bytes": 7697,
+      "sha256": "a530dbc520f2bd67167d97040eb1d59f007c4c76a46e418a360f696cdf2acaf8"
+    },
+    {
+      "path": "windows-review-verdict.json",
+      "bytes": 6210,
+      "sha256": "199ce9e969511dca5c03893bc1d74fc73429d05f0ddd7f10d4f54ed86f35a116"
+    }
+  ],
+  "archive_only_retention": "Native compiler objects and test binaries remain inside the authenticated Linux archive; no duplicate extraction is required. Baseline raw profiles and JSONL remain inside their authenticated historical archives after verified duplicate-copy reclamation."
+}

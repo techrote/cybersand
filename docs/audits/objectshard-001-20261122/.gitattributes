@@ -1,0 +1,4 @@
+# Retained machine receipts are byte evidence, including Windows CRLF endings.
+*.json -text -eol whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+# A blank unified-diff context line consists of one required space.
+fulltree-comparison.patch whitespace=-blank-at-eol

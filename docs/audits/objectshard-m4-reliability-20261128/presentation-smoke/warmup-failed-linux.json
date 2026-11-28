@@ -1,0 +1,44 @@
+{
+  "archive_sha256": "fc98f615aa9dc68e9ecf05f495efadd60aedc4c1ed66625f73244846edf7f7f1",
+  "artifact_id": 15243552307,
+  "platform": "linux",
+  "preparation_receipt": {
+    "body_captures": [],
+    "checks": 3,
+    "display_driver": "X11",
+    "failures": [
+      "positive material and transparent Empty shader draw complete before readiness"
+    ],
+    "preparation": {
+      "before_draw_usec": 7487,
+      "elapsed_usec": 1813287,
+      "first_draw_usec": 1765232,
+      "rendered": false,
+      "runs": 1,
+      "scope": "opt-in process-local shared shader preparation; no native owner, body or simulation clock",
+      "shader_instance_id": -9223372006655785484,
+      "started_usec": 306758,
+      "state": "failed",
+      "status_frame_completed": true,
+      "temporary_viewport_retired": true
+    },
+    "schema": "objectshard-m4-material-preparation-v1",
+    "scope": "actual renderer; explicit opt-in preparation and same shared shader reuse after overlay replacement; synthetic material inputs; no native World/body/time or physical display performance claim",
+    "source_commit": "bd97c2599eb86958ee8e8d9c8e6ee5c6935edb9b"
+  },
+  "run_id": 46096195855,
+  "runtime": {
+    "engine": {
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "version": "4.7.stable.official.5b4e0cb0f"
+    },
+    "renderer": "opengl3",
+    "retained_native": {
+      "build_commit": "efe3bc19c68a9b9e292821ef28b735caec538915",
+      "sha256": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20"
+    }
+  },
+  "source_commit": "bd97c2599eb86958ee8e8d9c8e6ee5c6935edb9b",
+  "source_tree": "6c523c991e80fc92246db6f44de841adf5f6f354",
+  "status": "failed"
+}

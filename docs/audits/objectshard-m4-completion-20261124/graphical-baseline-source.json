@@ -1,0 +1,12 @@
+{
+  "source_commit": "e39c423872c9e1682a1fc67d0fedde2313068756",
+  "tree": "cc8504900919e82f6daee1a5fa195527645d3652",
+  "native_build_source": "0503c12de85b0ece1a873cedd212e4bc7d5874c2",
+  "native_source_inputs_verified": 117,
+  "native_runtime": {
+    "platform": "linux-x86_64",
+    "sha256": "5eba15b16979dd3b0fc69002e7fa31f4135cb90a3ad7de51043506064126836a",
+    "size": 5588024
+  },
+  "runtime_scope": "development GCC14.2/binutils2.44, not pinned CI publication"
+}

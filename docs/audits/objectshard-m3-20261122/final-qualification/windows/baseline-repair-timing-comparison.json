@@ -1,0 +1,2963 @@
+{
+  "schema": "objectshard-m3-hosted-baseline-repair-timing-comparison-v1",
+  "observed_utc": "2026-11-22T08:03:20.078790+00:00",
+  "baseline_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "repair_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "baseline_archive": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/objectshard-m3-artifact-14744390583.zip",
+    "sha256": "e2b10d5f114ebffd923f908972e2e4ccc4dd882bcc08f365f5d63d9e3375c9d7"
+  },
+  "repair_archive": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/repair-windows/objectshard-m3-repair-artifact-14745662483.zip",
+    "sha256": "f3c51e40774429a88294c2218724368534dc811c32e0f7869b2d065246cf38eb"
+  },
+  "native_source_inputs_identical": true,
+  "new_campaigns_executed_for_this_analysis": 0,
+  "scope": "Two retained hosted Windows campaigns, not a same-machine randomized timing experiment. Baseline has superseded lifecycle defects. Timing distributions are observations and their quantiles must not be added across nested stages.",
+  "profiles": {
+    "0": {
+      "baseline_receipt_sha256": "b3cfdaac3d9d3edb1faba6993d076a6091be675890ec721bc58a5c248d8f494f",
+      "repair_receipt_sha256": "543ffd2fc19668755e47b0b1b94906c15cd915136661efffb376253746b9af9c",
+      "workload_equal_fields": {
+        "publication_digests": true,
+        "native_accounting": true,
+        "completed_intervals": true,
+        "actual_live_inputs": true,
+        "actual_physics_steps": true,
+        "maximum_displacements": true,
+        "contact_owners": true,
+        "sleeping_owners": true
+      },
+      "publication_count": 240,
+      "publication_digest_list_sha256": "7cd281ccded475f2591d2aad000ec3ad312602b812b239945f80219c0347ac32",
+      "observed_input_and_solver_counts": {
+        "completed_intervals": 240,
+        "actual_live_inputs": 60,
+        "actual_physics_steps": 954
+      },
+      "changed_execution_input_hashes": {
+        "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+          "baseline": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+          "repair": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+        }
+      },
+      "engine_hash_identical": true,
+      "semantic_hz": {
+        "baseline": 8.25621285177229,
+        "repair": 8.25606175534193,
+        "delta": -0.0001510964303594875,
+        "ratio": 0.999981699063109
+      },
+      "play_elapsed_usec": {
+        "baseline": 29069018,
+        "repair": 29069550,
+        "delta": 532,
+        "ratio": 1.0000183012718213
+      },
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "baseline": {
+            "count": 3,
+            "p50": 58,
+            "p95": 147,
+            "p99": 147,
+            "maximum": 147
+          },
+          "repair": {
+            "count": 3,
+            "p50": 83,
+            "p95": 148,
+            "p99": 148,
+            "maximum": 148
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 58,
+              "repair": 83,
+              "delta": 25,
+              "ratio": 1.4310344827586208
+            },
+            "p95": {
+              "baseline": 147,
+              "repair": 148,
+              "delta": 1,
+              "ratio": 1.0068027210884354
+            },
+            "p99": {
+              "baseline": 147,
+              "repair": 148,
+              "delta": 1,
+              "ratio": 1.0068027210884354
+            },
+            "maximum": {
+              "baseline": 147,
+              "repair": 148,
+              "delta": 1,
+              "ratio": 1.0068027210884354
+            }
+          }
+        },
+        "host_admission_to_dispatch_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 100098,
+            "p95": 100224,
+            "p99": 150117,
+            "maximum": 150117
+          },
+          "repair": {
+            "count": 60,
+            "p50": 100091,
+            "p95": 100155,
+            "p99": 150106,
+            "maximum": 150106
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 100098,
+              "repair": 100091,
+              "delta": -7,
+              "ratio": 0.9999300685328378
+            },
+            "p95": {
+              "baseline": 100224,
+              "repair": 100155,
+              "delta": -69,
+              "ratio": 0.9993115421455939
+            },
+            "p99": {
+              "baseline": 150117,
+              "repair": 150106,
+              "delta": -11,
+              "ratio": 0.9999267238220855
+            },
+            "maximum": {
+              "baseline": 150117,
+              "repair": 150106,
+              "delta": -11,
+              "ratio": 0.9999267238220855
+            }
+          }
+        },
+        "host_admission_to_publication_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 116702,
+            "p95": 116817,
+            "p99": 166864,
+            "maximum": 166864
+          },
+          "repair": {
+            "count": 60,
+            "p50": 116706,
+            "p95": 116757,
+            "p99": 166718,
+            "maximum": 166718
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 116702,
+              "repair": 116706,
+              "delta": 4,
+              "ratio": 1.000034275333756
+            },
+            "p95": {
+              "baseline": 116817,
+              "repair": 116757,
+              "delta": -60,
+              "ratio": 0.9994863761267624
+            },
+            "p99": {
+              "baseline": 166864,
+              "repair": 166718,
+              "delta": -146,
+              "ratio": 0.9991250359574264
+            },
+            "maximum": {
+              "baseline": 166864,
+              "repair": 166718,
+              "delta": -146,
+              "ratio": 0.9991250359574264
+            }
+          }
+        },
+        "host_admission_to_result_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 116594,
+            "p95": 116645,
+            "p99": 166687,
+            "maximum": 166687
+          },
+          "repair": {
+            "count": 60,
+            "p50": 116570,
+            "p95": 116602,
+            "p99": 166583,
+            "maximum": 166583
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 116594,
+              "repair": 116570,
+              "delta": -24,
+              "ratio": 0.9997941575038166
+            },
+            "p95": {
+              "baseline": 116645,
+              "repair": 116602,
+              "delta": -43,
+              "ratio": 0.9996313601097346
+            },
+            "p99": {
+              "baseline": 166687,
+              "repair": 166583,
+              "delta": -104,
+              "ratio": 0.9993760761187135
+            },
+            "maximum": {
+              "baseline": 166687,
+              "repair": 166583,
+              "delta": -104,
+              "ratio": 0.9993760761187135
+            }
+          }
+        },
+        "input_to_dispatch_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 100095,
+            "p95": 100221,
+            "p99": 150114,
+            "maximum": 150114
+          },
+          "repair": {
+            "count": 60,
+            "p50": 100088,
+            "p95": 100152,
+            "p99": 150103,
+            "maximum": 150103
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 100095,
+              "repair": 100088,
+              "delta": -7,
+              "ratio": 0.999930066436885
+            },
+            "p95": {
+              "baseline": 100221,
+              "repair": 100152,
+              "delta": -69,
+              "ratio": 0.9993115215374023
+            },
+            "p99": {
+              "baseline": 150114,
+              "repair": 150103,
+              "delta": -11,
+              "ratio": 0.9999267223576749
+            },
+            "maximum": {
+              "baseline": 150114,
+              "repair": 150103,
+              "delta": -11,
+              "ratio": 0.9999267223576749
+            }
+          }
+        },
+        "input_to_publication_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 116702,
+            "p95": 116817,
+            "p99": 166864,
+            "maximum": 166864
+          },
+          "repair": {
+            "count": 60,
+            "p50": 116706,
+            "p95": 116757,
+            "p99": 166718,
+            "maximum": 166718
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 116702,
+              "repair": 116706,
+              "delta": 4,
+              "ratio": 1.000034275333756
+            },
+            "p95": {
+              "baseline": 116817,
+              "repair": 116757,
+              "delta": -60,
+              "ratio": 0.9994863761267624
+            },
+            "p99": {
+              "baseline": 166864,
+              "repair": 166718,
+              "delta": -146,
+              "ratio": 0.9991250359574264
+            },
+            "maximum": {
+              "baseline": 166864,
+              "repair": 166718,
+              "delta": -146,
+              "ratio": 0.9991250359574264
+            }
+          }
+        },
+        "input_to_result_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 116594,
+            "p95": 116645,
+            "p99": 166687,
+            "maximum": 166687
+          },
+          "repair": {
+            "count": 60,
+            "p50": 116570,
+            "p95": 116602,
+            "p99": 166583,
+            "maximum": 166583
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 116594,
+              "repair": 116570,
+              "delta": -24,
+              "ratio": 0.9997941575038166
+            },
+            "p95": {
+              "baseline": 116645,
+              "repair": 116602,
+              "delta": -43,
+              "ratio": 0.9996313601097346
+            },
+            "p99": {
+              "baseline": 166687,
+              "repair": 166583,
+              "delta": -104,
+              "ratio": 0.9993760761187135
+            },
+            "maximum": {
+              "baseline": 166687,
+              "repair": 166583,
+              "delta": -104,
+              "ratio": 0.9993760761187135
+            }
+          }
+        },
+        "native_execute_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 237,
+            "p95": 457,
+            "p99": 494,
+            "maximum": 2937
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 313,
+            "p95": 580,
+            "p99": 617,
+            "maximum": 4103
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 237,
+              "repair": 313,
+              "delta": 76,
+              "ratio": 1.3206751054852321
+            },
+            "p95": {
+              "baseline": 457,
+              "repair": 580,
+              "delta": 123,
+              "ratio": 1.2691466083150984
+            },
+            "p99": {
+              "baseline": 494,
+              "repair": 617,
+              "delta": 123,
+              "ratio": 1.2489878542510122
+            },
+            "maximum": {
+              "baseline": 2937,
+              "repair": 4103,
+              "delta": 1166,
+              "ratio": 1.3970037453183521
+            }
+          }
+        },
+        "physics_segment_usec": {
+          "baseline": {
+            "count": 952,
+            "p50": 107,
+            "p95": 180,
+            "p99": 221,
+            "maximum": 289
+          },
+          "repair": {
+            "count": 952,
+            "p50": 131,
+            "p95": 190,
+            "p99": 236,
+            "maximum": 550
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 107,
+              "repair": 131,
+              "delta": 24,
+              "ratio": 1.2242990654205608
+            },
+            "p95": {
+              "baseline": 180,
+              "repair": 190,
+              "delta": 10,
+              "ratio": 1.0555555555555556
+            },
+            "p99": {
+              "baseline": 221,
+              "repair": 236,
+              "delta": 15,
+              "ratio": 1.0678733031674208
+            },
+            "maximum": {
+              "baseline": 289,
+              "repair": 550,
+              "delta": 261,
+              "ratio": 1.9031141868512111
+            }
+          }
+        },
+        "queue_wait_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 14,
+            "p95": 27,
+            "p99": 34,
+            "maximum": 95
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 21,
+            "p95": 36,
+            "p99": 48,
+            "maximum": 271
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 14,
+              "repair": 21,
+              "delta": 7,
+              "ratio": 1.5
+            },
+            "p95": {
+              "baseline": 27,
+              "repair": 36,
+              "delta": 9,
+              "ratio": 1.3333333333333333
+            },
+            "p99": {
+              "baseline": 34,
+              "repair": 48,
+              "delta": 14,
+              "ratio": 1.411764705882353
+            },
+            "maximum": {
+              "baseline": 95,
+              "repair": 271,
+              "delta": 176,
+              "ratio": 2.8526315789473684
+            }
+          }
+        },
+        "receipt_delivery_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 15116,
+            "p95": 15546,
+            "p99": 15614,
+            "maximum": 15770
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 14660,
+            "p95": 15220,
+            "p99": 15250,
+            "maximum": 15497
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 15116,
+              "repair": 14660,
+              "delta": -456,
+              "ratio": 0.969833289229955
+            },
+            "p95": {
+              "baseline": 15546,
+              "repair": 15220,
+              "delta": -326,
+              "ratio": 0.9790299755564132
+            },
+            "p99": {
+              "baseline": 15614,
+              "repair": 15250,
+              "delta": -364,
+              "ratio": 0.9766875880619956
+            },
+            "maximum": {
+              "baseline": 15770,
+              "repair": 15497,
+              "delta": -273,
+              "ratio": 0.9826886493341788
+            }
+          }
+        },
+        "receipt_roundtrip_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 16396,
+            "p95": 16575,
+            "p99": 16589,
+            "maximum": 16640
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 16301,
+            "p95": 16541,
+            "p99": 16555,
+            "maximum": 16636
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 16396,
+              "repair": 16301,
+              "delta": -95,
+              "ratio": 0.9942059038789949
+            },
+            "p95": {
+              "baseline": 16575,
+              "repair": 16541,
+              "delta": -34,
+              "ratio": 0.997948717948718
+            },
+            "p99": {
+              "baseline": 16589,
+              "repair": 16555,
+              "delta": -34,
+              "ratio": 0.9979504490927723
+            },
+            "maximum": {
+              "baseline": 16640,
+              "repair": 16636,
+              "delta": -4,
+              "ratio": 0.9997596153846153
+            }
+          }
+        },
+        "receipt_value_accounting_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 193,
+            "p95": 214,
+            "p99": 233,
+            "maximum": 296
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 236,
+            "p95": 260,
+            "p99": 286,
+            "maximum": 408
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 193,
+              "repair": 236,
+              "delta": 43,
+              "ratio": 1.2227979274611398
+            },
+            "p95": {
+              "baseline": 214,
+              "repair": 260,
+              "delta": 46,
+              "ratio": 1.2149532710280373
+            },
+            "p99": {
+              "baseline": 233,
+              "repair": 286,
+              "delta": 53,
+              "ratio": 1.2274678111587982
+            },
+            "maximum": {
+              "baseline": 296,
+              "repair": 408,
+              "delta": 112,
+              "ratio": 1.3783783783783783
+            }
+          }
+        },
+        "semantic_interval_usec": {
+          "baseline": {
+            "count": 240,
+            "p50": 100167,
+            "p95": 100288,
+            "p99": 150125,
+            "maximum": 150153
+          },
+          "repair": {
+            "count": 240,
+            "p50": 100202,
+            "p95": 100253,
+            "p99": 150162,
+            "maximum": 150182
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 100167,
+              "repair": 100202,
+              "delta": 35,
+              "ratio": 1.0003494164744875
+            },
+            "p95": {
+              "baseline": 100288,
+              "repair": 100253,
+              "delta": -35,
+              "ratio": 0.9996510051052967
+            },
+            "p99": {
+              "baseline": 150125,
+              "repair": 150162,
+              "delta": 37,
+              "ratio": 1.0002464612822648
+            },
+            "maximum": {
+              "baseline": 150153,
+              "repair": 150182,
+              "delta": 29,
+              "ratio": 1.0001931363342724
+            }
+          }
+        },
+        "snapshot_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 847,
+            "p95": 923,
+            "p99": 960,
+            "maximum": 1013
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 1080,
+            "p95": 1123,
+            "p99": 1196,
+            "maximum": 1562
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 847,
+              "repair": 1080,
+              "delta": 233,
+              "ratio": 1.2750885478158205
+            },
+            "p95": {
+              "baseline": 923,
+              "repair": 1123,
+              "delta": 200,
+              "ratio": 1.2166847237269773
+            },
+            "p99": {
+              "baseline": 960,
+              "repair": 1196,
+              "delta": 236,
+              "ratio": 1.2458333333333333
+            },
+            "maximum": {
+              "baseline": 1013,
+              "repair": 1562,
+              "delta": 549,
+              "ratio": 1.541954590325765
+            }
+          }
+        },
+        "terrain_install_usec": {
+          "baseline": {
+            "count": 552,
+            "p50": 51,
+            "p95": 81,
+            "p99": 134,
+            "maximum": 375
+          },
+          "repair": {
+            "count": 552,
+            "p50": 68,
+            "p95": 85,
+            "p99": 135,
+            "maximum": 414
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 51,
+              "repair": 68,
+              "delta": 17,
+              "ratio": 1.3333333333333333
+            },
+            "p95": {
+              "baseline": 81,
+              "repair": 85,
+              "delta": 4,
+              "ratio": 1.0493827160493827
+            },
+            "p99": {
+              "baseline": 134,
+              "repair": 135,
+              "delta": 1,
+              "ratio": 1.007462686567164
+            },
+            "maximum": {
+              "baseline": 375,
+              "repair": 414,
+              "delta": 39,
+              "ratio": 1.104
+            }
+          }
+        }
+      },
+      "outer_measurements_usec": {
+        "process_callback_interval_usec": {
+          "baseline": {
+            "count": 1744,
+            "p50": 16666,
+            "p95": 16676,
+            "p99": 16687,
+            "maximum": 16700
+          },
+          "repair": {
+            "count": 1744,
+            "p50": 16666,
+            "p95": 16676,
+            "p99": 16682,
+            "maximum": 16696
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 16666,
+              "repair": 16666,
+              "delta": 0,
+              "ratio": 1.0
+            },
+            "p95": {
+              "baseline": 16676,
+              "repair": 16676,
+              "delta": 0,
+              "ratio": 1.0
+            },
+            "p99": {
+              "baseline": 16687,
+              "repair": 16682,
+              "delta": -5,
+              "ratio": 0.9997003655540241
+            },
+            "maximum": {
+              "baseline": 16700,
+              "repair": 16696,
+              "delta": -4,
+              "ratio": 0.9997604790419161
+            }
+          }
+        },
+        "pump_call_usec": {
+          "baseline": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "maximum": null
+          },
+          "repair": {
+            "count": 0,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "maximum": null
+          },
+          "deltas": {}
+        },
+        "semantic_interval_and_input_usec": {
+          "baseline": {
+            "count": 240,
+            "p50": 112711,
+            "p95": 129406,
+            "p99": 163378,
+            "maximum": 179651
+          },
+          "repair": {
+            "count": 240,
+            "p50": 111588,
+            "p95": 128240,
+            "p99": 162415,
+            "maximum": 178547
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 112711,
+              "repair": 111588,
+              "delta": -1123,
+              "ratio": 0.99003646494131
+            },
+            "p95": {
+              "baseline": 129406,
+              "repair": 128240,
+              "delta": -1166,
+              "ratio": 0.9909895986275752
+            },
+            "p99": {
+              "baseline": 163378,
+              "repair": 162415,
+              "delta": -963,
+              "ratio": 0.9941056935450305
+            },
+            "maximum": {
+              "baseline": 179651,
+              "repair": 178547,
+              "delta": -1104,
+              "ratio": 0.9938547517130436
+            }
+          }
+        }
+      }
+    },
+    "4000": {
+      "baseline_receipt_sha256": "a180202f4f03b898f332bf1b7ec7abc47f58d1f6324d70ac81ac2822c6c242bf",
+      "repair_receipt_sha256": "5f561eea0ebba655d038ac08202c08530e7fd7ef49ad9f46163043840f64087c",
+      "workload_equal_fields": {
+        "publication_digests": true,
+        "native_accounting": true,
+        "completed_intervals": true,
+        "actual_live_inputs": true,
+        "actual_physics_steps": true,
+        "maximum_displacements": true,
+        "contact_owners": true,
+        "sleeping_owners": true
+      },
+      "publication_count": 240,
+      "publication_digest_list_sha256": "7cd281ccded475f2591d2aad000ec3ad312602b812b239945f80219c0347ac32",
+      "observed_input_and_solver_counts": {
+        "completed_intervals": 240,
+        "actual_live_inputs": 60,
+        "actual_physics_steps": 954
+      },
+      "changed_execution_input_hashes": {
+        "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+          "baseline": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+          "repair": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+        }
+      },
+      "engine_hash_identical": true,
+      "semantic_hz": {
+        "baseline": 19.530634899438,
+        "repair": 17.1382090157405,
+        "delta": -2.3924258836974985,
+        "ratio": 0.8775039369679507
+      },
+      "play_elapsed_usec": {
+        "baseline": 12288387,
+        "repair": 14003797,
+        "delta": 1715410,
+        "ratio": 1.1395960267201872
+      },
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "baseline": {
+            "count": 3,
+            "p50": 77,
+            "p95": 145,
+            "p99": 145,
+            "maximum": 145
+          },
+          "repair": {
+            "count": 3,
+            "p50": 75,
+            "p95": 135,
+            "p99": 135,
+            "maximum": 135
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 77,
+              "repair": 75,
+              "delta": -2,
+              "ratio": 0.974025974025974
+            },
+            "p95": {
+              "baseline": 145,
+              "repair": 135,
+              "delta": -10,
+              "ratio": 0.9310344827586207
+            },
+            "p99": {
+              "baseline": 145,
+              "repair": 135,
+              "delta": -10,
+              "ratio": 0.9310344827586207
+            },
+            "maximum": {
+              "baseline": 145,
+              "repair": 135,
+              "delta": -10,
+              "ratio": 0.9310344827586207
+            }
+          }
+        },
+        "host_admission_to_dispatch_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 35177,
+            "p95": 37536,
+            "p99": 53529,
+            "maximum": 53529
+          },
+          "repair": {
+            "count": 60,
+            "p50": 37540,
+            "p95": 50103,
+            "p99": 70864,
+            "maximum": 70864
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 35177,
+              "repair": 37540,
+              "delta": 2363,
+              "ratio": 1.0671745742957046
+            },
+            "p95": {
+              "baseline": 37536,
+              "repair": 50103,
+              "delta": 12567,
+              "ratio": 1.3347985933503836
+            },
+            "p99": {
+              "baseline": 53529,
+              "repair": 70864,
+              "delta": 17335,
+              "ratio": 1.3238431504418167
+            },
+            "maximum": {
+              "baseline": 53529,
+              "repair": 70864,
+              "delta": 17335,
+              "ratio": 1.3238431504418167
+            }
+          }
+        },
+        "host_admission_to_publication_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 37089,
+            "p95": 50052,
+            "p99": 66702,
+            "maximum": 66702
+          },
+          "repair": {
+            "count": 60,
+            "p50": 50022,
+            "p95": 52399,
+            "p99": 83408,
+            "maximum": 83408
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 37089,
+              "repair": 50022,
+              "delta": 12933,
+              "ratio": 1.3487017714147052
+            },
+            "p95": {
+              "baseline": 50052,
+              "repair": 52399,
+              "delta": 2347,
+              "ratio": 1.0468912331175577
+            },
+            "p99": {
+              "baseline": 66702,
+              "repair": 83408,
+              "delta": 16706,
+              "ratio": 1.2504572576534436
+            },
+            "maximum": {
+              "baseline": 66702,
+              "repair": 83408,
+              "delta": 16706,
+              "ratio": 1.2504572576534436
+            }
+          }
+        },
+        "host_admission_to_result_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 36999,
+            "p95": 49932,
+            "p99": 66550,
+            "maximum": 66550
+          },
+          "repair": {
+            "count": 60,
+            "p50": 49906,
+            "p95": 52277,
+            "p99": 83223,
+            "maximum": 83223
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 36999,
+              "repair": 49906,
+              "delta": 12907,
+              "ratio": 1.348847266142328
+            },
+            "p95": {
+              "baseline": 49932,
+              "repair": 52277,
+              "delta": 2345,
+              "ratio": 1.0469638708643756
+            },
+            "p99": {
+              "baseline": 66550,
+              "repair": 83223,
+              "delta": 16673,
+              "ratio": 1.2505334335086402
+            },
+            "maximum": {
+              "baseline": 66550,
+              "repair": 83223,
+              "delta": 16673,
+              "ratio": 1.2505334335086402
+            }
+          }
+        },
+        "input_to_dispatch_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 35174,
+            "p95": 37533,
+            "p99": 53526,
+            "maximum": 53526
+          },
+          "repair": {
+            "count": 60,
+            "p50": 37538,
+            "p95": 50100,
+            "p99": 70860,
+            "maximum": 70860
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 35174,
+              "repair": 37538,
+              "delta": 2364,
+              "ratio": 1.0672087337237732
+            },
+            "p95": {
+              "baseline": 37533,
+              "repair": 50100,
+              "delta": 12567,
+              "ratio": 1.334825353688754
+            },
+            "p99": {
+              "baseline": 53526,
+              "repair": 70860,
+              "delta": 17334,
+              "ratio": 1.3238426185405223
+            },
+            "maximum": {
+              "baseline": 53526,
+              "repair": 70860,
+              "delta": 17334,
+              "ratio": 1.3238426185405223
+            }
+          }
+        },
+        "input_to_publication_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 37089,
+            "p95": 50052,
+            "p99": 66702,
+            "maximum": 66702
+          },
+          "repair": {
+            "count": 60,
+            "p50": 50022,
+            "p95": 52399,
+            "p99": 83408,
+            "maximum": 83408
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 37089,
+              "repair": 50022,
+              "delta": 12933,
+              "ratio": 1.3487017714147052
+            },
+            "p95": {
+              "baseline": 50052,
+              "repair": 52399,
+              "delta": 2347,
+              "ratio": 1.0468912331175577
+            },
+            "p99": {
+              "baseline": 66702,
+              "repair": 83408,
+              "delta": 16706,
+              "ratio": 1.2504572576534436
+            },
+            "maximum": {
+              "baseline": 66702,
+              "repair": 83408,
+              "delta": 16706,
+              "ratio": 1.2504572576534436
+            }
+          }
+        },
+        "input_to_result_usec": {
+          "baseline": {
+            "count": 60,
+            "p50": 36999,
+            "p95": 49932,
+            "p99": 66550,
+            "maximum": 66550
+          },
+          "repair": {
+            "count": 60,
+            "p50": 49906,
+            "p95": 52277,
+            "p99": 83223,
+            "maximum": 83223
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 36999,
+              "repair": 49906,
+              "delta": 12907,
+              "ratio": 1.348847266142328
+            },
+            "p95": {
+              "baseline": 49932,
+              "repair": 52277,
+              "delta": 2345,
+              "ratio": 1.0469638708643756
+            },
+            "p99": {
+              "baseline": 66550,
+              "repair": 83223,
+              "delta": 16673,
+              "ratio": 1.2505334335086402
+            },
+            "maximum": {
+              "baseline": 66550,
+              "repair": 83223,
+              "delta": 16673,
+              "ratio": 1.2505334335086402
+            }
+          }
+        },
+        "main_receipt_pump_usec": {
+          "baseline": {
+            "count": 749,
+            "p50": 4233,
+            "p95": 5571,
+            "p99": 5707,
+            "maximum": 5778
+          },
+          "repair": {
+            "count": 852,
+            "p50": 5073,
+            "p95": 5787,
+            "p99": 5905,
+            "maximum": 5986
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 4233,
+              "repair": 5073,
+              "delta": 840,
+              "ratio": 1.1984408221119773
+            },
+            "p95": {
+              "baseline": 5571,
+              "repair": 5787,
+              "delta": 216,
+              "ratio": 1.0387722132471728
+            },
+            "p99": {
+              "baseline": 5707,
+              "repair": 5905,
+              "delta": 198,
+              "ratio": 1.034694235149816
+            },
+            "maximum": {
+              "baseline": 5778,
+              "repair": 5986,
+              "delta": 208,
+              "ratio": 1.0359986154378678
+            }
+          }
+        },
+        "native_execute_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 229,
+            "p95": 460,
+            "p99": 505,
+            "maximum": 2890
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 302,
+            "p95": 563,
+            "p99": 604,
+            "maximum": 4173
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 229,
+              "repair": 302,
+              "delta": 73,
+              "ratio": 1.3187772925764192
+            },
+            "p95": {
+              "baseline": 460,
+              "repair": 563,
+              "delta": 103,
+              "ratio": 1.2239130434782608
+            },
+            "p99": {
+              "baseline": 505,
+              "repair": 604,
+              "delta": 99,
+              "ratio": 1.196039603960396
+            },
+            "maximum": {
+              "baseline": 2890,
+              "repair": 4173,
+              "delta": 1283,
+              "ratio": 1.4439446366782007
+            }
+          }
+        },
+        "physics_segment_usec": {
+          "baseline": {
+            "count": 952,
+            "p50": 100,
+            "p95": 174,
+            "p99": 209,
+            "maximum": 281
+          },
+          "repair": {
+            "count": 952,
+            "p50": 120,
+            "p95": 167,
+            "p99": 218,
+            "maximum": 268
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 100,
+              "repair": 120,
+              "delta": 20,
+              "ratio": 1.2
+            },
+            "p95": {
+              "baseline": 174,
+              "repair": 167,
+              "delta": -7,
+              "ratio": 0.9597701149425287
+            },
+            "p99": {
+              "baseline": 209,
+              "repair": 218,
+              "delta": 9,
+              "ratio": 1.0430622009569377
+            },
+            "maximum": {
+              "baseline": 281,
+              "repair": 268,
+              "delta": -13,
+              "ratio": 0.9537366548042705
+            }
+          }
+        },
+        "queue_wait_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 14,
+            "p95": 26,
+            "p99": 34,
+            "maximum": 70
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 20,
+            "p95": 31,
+            "p99": 45,
+            "maximum": 90
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 14,
+              "repair": 20,
+              "delta": 6,
+              "ratio": 1.4285714285714286
+            },
+            "p95": {
+              "baseline": 26,
+              "repair": 31,
+              "delta": 5,
+              "ratio": 1.1923076923076923
+            },
+            "p99": {
+              "baseline": 34,
+              "repair": 45,
+              "delta": 11,
+              "ratio": 1.3235294117647058
+            },
+            "maximum": {
+              "baseline": 70,
+              "repair": 90,
+              "delta": 20,
+              "ratio": 1.2857142857142858
+            }
+          }
+        },
+        "receipt_delivery_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 913,
+            "p95": 12063,
+            "p99": 12514,
+            "maximum": 13489
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 1829,
+            "p95": 11881,
+            "p99": 12449,
+            "maximum": 14048
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 913,
+              "repair": 1829,
+              "delta": 916,
+              "ratio": 2.00328587075575
+            },
+            "p95": {
+              "baseline": 12063,
+              "repair": 11881,
+              "delta": -182,
+              "ratio": 0.9849125424852856
+            },
+            "p99": {
+              "baseline": 12514,
+              "repair": 12449,
+              "delta": -65,
+              "ratio": 0.9948058174844174
+            },
+            "maximum": {
+              "baseline": 13489,
+              "repair": 14048,
+              "delta": 559,
+              "ratio": 1.0414411742901624
+            }
+          }
+        },
+        "receipt_roundtrip_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 2003,
+            "p95": 13122,
+            "p99": 14142,
+            "maximum": 15587
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 3546,
+            "p95": 13231,
+            "p99": 14224,
+            "maximum": 16498
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 2003,
+              "repair": 3546,
+              "delta": 1543,
+              "ratio": 1.7703444832750874
+            },
+            "p95": {
+              "baseline": 13122,
+              "repair": 13231,
+              "delta": 109,
+              "ratio": 1.008306660570035
+            },
+            "p99": {
+              "baseline": 14142,
+              "repair": 14224,
+              "delta": 82,
+              "ratio": 1.0057983312119927
+            },
+            "maximum": {
+              "baseline": 15587,
+              "repair": 16498,
+              "delta": 911,
+              "ratio": 1.0584461410149484
+            }
+          }
+        },
+        "receipt_value_accounting_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 191,
+            "p95": 208,
+            "p99": 240,
+            "maximum": 317
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 236,
+            "p95": 262,
+            "p99": 285,
+            "maximum": 415
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 191,
+              "repair": 236,
+              "delta": 45,
+              "ratio": 1.2356020942408377
+            },
+            "p95": {
+              "baseline": 208,
+              "repair": 262,
+              "delta": 54,
+              "ratio": 1.2596153846153846
+            },
+            "p99": {
+              "baseline": 240,
+              "repair": 285,
+              "delta": 45,
+              "ratio": 1.1875
+            },
+            "maximum": {
+              "baseline": 317,
+              "repair": 415,
+              "delta": 98,
+              "ratio": 1.3091482649842272
+            }
+          }
+        },
+        "semantic_interval_usec": {
+          "baseline": {
+            "count": 240,
+            "p50": 35449,
+            "p95": 37734,
+            "p99": 50338,
+            "maximum": 54144
+          },
+          "repair": {
+            "count": 240,
+            "p50": 37703,
+            "p95": 50221,
+            "p99": 53729,
+            "maximum": 70977
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 35449,
+              "repair": 37703,
+              "delta": 2254,
+              "ratio": 1.0635843042116844
+            },
+            "p95": {
+              "baseline": 37734,
+              "repair": 50221,
+              "delta": 12487,
+              "ratio": 1.3309217151640431
+            },
+            "p99": {
+              "baseline": 50338,
+              "repair": 53729,
+              "delta": 3391,
+              "ratio": 1.0673646152012397
+            },
+            "maximum": {
+              "baseline": 54144,
+              "repair": 70977,
+              "delta": 16833,
+              "ratio": 1.3108931737588652
+            }
+          }
+        },
+        "snapshot_usec": {
+          "baseline": {
+            "count": 1512,
+            "p50": 835,
+            "p95": 902,
+            "p99": 952,
+            "maximum": 1242
+          },
+          "repair": {
+            "count": 1512,
+            "p50": 1072,
+            "p95": 1108,
+            "p99": 1147,
+            "maximum": 1807
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 835,
+              "repair": 1072,
+              "delta": 237,
+              "ratio": 1.2838323353293413
+            },
+            "p95": {
+              "baseline": 902,
+              "repair": 1108,
+              "delta": 206,
+              "ratio": 1.228381374722838
+            },
+            "p99": {
+              "baseline": 952,
+              "repair": 1147,
+              "delta": 195,
+              "ratio": 1.2048319327731092
+            },
+            "maximum": {
+              "baseline": 1242,
+              "repair": 1807,
+              "delta": 565,
+              "ratio": 1.4549114331723028
+            }
+          }
+        },
+        "terrain_install_usec": {
+          "baseline": {
+            "count": 552,
+            "p50": 52,
+            "p95": 76,
+            "p99": 153,
+            "maximum": 403
+          },
+          "repair": {
+            "count": 552,
+            "p50": 59,
+            "p95": 76,
+            "p99": 136,
+            "maximum": 416
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 52,
+              "repair": 59,
+              "delta": 7,
+              "ratio": 1.1346153846153846
+            },
+            "p95": {
+              "baseline": 76,
+              "repair": 76,
+              "delta": 0,
+              "ratio": 1.0
+            },
+            "p99": {
+              "baseline": 153,
+              "repair": 136,
+              "delta": -17,
+              "ratio": 0.8888888888888888
+            },
+            "maximum": {
+              "baseline": 403,
+              "repair": 416,
+              "delta": 13,
+              "ratio": 1.032258064516129
+            }
+          }
+        }
+      },
+      "outer_measurements_usec": {
+        "process_callback_interval_usec": {
+          "baseline": {
+            "count": 737,
+            "p50": 16666,
+            "p95": 16680,
+            "p99": 16690,
+            "maximum": 16712
+          },
+          "repair": {
+            "count": 840,
+            "p50": 16666,
+            "p95": 16674,
+            "p99": 16681,
+            "maximum": 16695
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 16666,
+              "repair": 16666,
+              "delta": 0,
+              "ratio": 1.0
+            },
+            "p95": {
+              "baseline": 16680,
+              "repair": 16674,
+              "delta": -6,
+              "ratio": 0.9996402877697842
+            },
+            "p99": {
+              "baseline": 16690,
+              "repair": 16681,
+              "delta": -9,
+              "ratio": 0.9994607549430797
+            },
+            "maximum": {
+              "baseline": 16712,
+              "repair": 16695,
+              "delta": -17,
+              "ratio": 0.9989827668741025
+            }
+          }
+        },
+        "pump_call_usec": {
+          "baseline": {
+            "count": 737,
+            "p50": 4255,
+            "p95": 5578,
+            "p99": 5712,
+            "maximum": 5783
+          },
+          "repair": {
+            "count": 840,
+            "p50": 5089,
+            "p95": 5795,
+            "p99": 5914,
+            "maximum": 5996
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 4255,
+              "repair": 5089,
+              "delta": 834,
+              "ratio": 1.1960047003525265
+            },
+            "p95": {
+              "baseline": 5578,
+              "repair": 5795,
+              "delta": 217,
+              "ratio": 1.0389028325564718
+            },
+            "p99": {
+              "baseline": 5712,
+              "repair": 5914,
+              "delta": 202,
+              "ratio": 1.0353641456582634
+            },
+            "maximum": {
+              "baseline": 5783,
+              "repair": 5996,
+              "delta": 213,
+              "ratio": 1.0368320940688225
+            }
+          }
+        },
+        "semantic_interval_and_input_usec": {
+          "baseline": {
+            "count": 240,
+            "p50": 46055,
+            "p95": 60159,
+            "p99": 64120,
+            "maximum": 79458
+          },
+          "repair": {
+            "count": 240,
+            "p50": 49302,
+            "p95": 61659,
+            "p99": 64976,
+            "maximum": 93344
+          },
+          "deltas": {
+            "p50": {
+              "baseline": 46055,
+              "repair": 49302,
+              "delta": 3247,
+              "ratio": 1.070502659863207
+            },
+            "p95": {
+              "baseline": 60159,
+              "repair": 61659,
+              "delta": 1500,
+              "ratio": 1.024933925098489
+            },
+            "p99": {
+              "baseline": 64120,
+              "repair": 64976,
+              "delta": 856,
+              "ratio": 1.0133499688084842
+            },
+            "maximum": {
+              "baseline": 79458,
+              "repair": 93344,
+              "delta": 13886,
+              "ratio": 1.174758992171965
+            }
+          }
+        }
+      }
+    }
+  },
+  "long_physics": {
+    "intervals": 3599,
+    "mismatches": 0,
+    "only_excluded_field": "step_completed.detail.physics.bodies[].last_geometry_usec",
+    "baseline_physical_records_sha256": "ae1b4a283bc1cb75b05f02676502d1831ba3d64288eebcc4ea6408a394005b9f",
+    "repair_physical_records_sha256": "ae1b4a283bc1cb75b05f02676502d1831ba3d64288eebcc4ea6408a394005b9f",
+    "native_accounting_identical": true,
+    "work_equal_fields": {
+      "checks": true,
+      "tick": true,
+      "completed_ticks": true,
+      "actions_queued": true,
+      "moving_owners": true,
+      "sleeping_owners": true,
+      "physics_steps": true,
+      "maximum_displacements": true,
+      "post_settle_edit_tick": true,
+      "post_erosion_maximum_rotation": true,
+      "post_erosion_maximum_translation": true
+    },
+    "interval_timing_usec": {
+      "interval": {
+        "baseline": {
+          "count": 3599,
+          "p50": 13865,
+          "p95": 17137,
+          "p99": 20268,
+          "maximum": 25314
+        },
+        "repair": {
+          "count": 3599,
+          "p50": 21864,
+          "p95": 24657,
+          "p99": 25813,
+          "maximum": 30979
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 13865,
+            "repair": 21864,
+            "delta": 7999,
+            "ratio": 1.5769203029210241
+          },
+          "p95": {
+            "baseline": 17137,
+            "repair": 24657,
+            "delta": 7520,
+            "ratio": 1.4388165956701873
+          },
+          "p99": {
+            "baseline": 20268,
+            "repair": 25813,
+            "delta": 5545,
+            "ratio": 1.273583974738504
+          },
+          "maximum": {
+            "baseline": 25314,
+            "repair": 30979,
+            "delta": 5665,
+            "ratio": 1.2237892075531327
+          }
+        }
+      }
+    }
+  },
+  "rendered": {
+    "baseline_receipt_sha256": "0a25eb439b83322c52f1fb3798e26bf1ee35d768882cbc6754bcaf6354be1fd0",
+    "repair_receipt_sha256": "5270c51d40ab86ed852fb55c8b056047819504a89d7f425c868e97ebadf9b52b",
+    "pointer_work": {
+      "dispatched": 153,
+      "explicitly_cancelled_by_reset": 0,
+      "pending": 0,
+      "queued": 153,
+      "refused": 0,
+      "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+    },
+    "pointer_work_identical": true,
+    "native_accounting_identical": true,
+    "tick": {
+      "baseline": 39,
+      "repair": 39
+    },
+    "action_results_identical_except_observer_timestamps": true,
+    "host_stages_usec": {
+      "geometry_install_usec": {
+        "baseline": {
+          "count": 3,
+          "p50": 113,
+          "p95": 140,
+          "p99": 140,
+          "maximum": 140
+        },
+        "repair": {
+          "count": 3,
+          "p50": 127,
+          "p95": 141,
+          "p99": 141,
+          "maximum": 141
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 113,
+            "repair": 127,
+            "delta": 14,
+            "ratio": 1.1238938053097345
+          },
+          "p95": {
+            "baseline": 140,
+            "repair": 141,
+            "delta": 1,
+            "ratio": 1.0071428571428571
+          },
+          "p99": {
+            "baseline": 140,
+            "repair": 141,
+            "delta": 1,
+            "ratio": 1.0071428571428571
+          },
+          "maximum": {
+            "baseline": 140,
+            "repair": 141,
+            "delta": 1,
+            "ratio": 1.0071428571428571
+          }
+        }
+      },
+      "host_admission_to_dispatch_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 294182,
+          "p95": 516090,
+          "p99": 532250,
+          "maximum": 543617
+        },
+        "repair": {
+          "count": 153,
+          "p50": 372316,
+          "p95": 660732,
+          "p99": 688131,
+          "maximum": 688169
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 294182,
+            "repair": 372316,
+            "delta": 78134,
+            "ratio": 1.2655974872697853
+          },
+          "p95": {
+            "baseline": 516090,
+            "repair": 660732,
+            "delta": 144642,
+            "ratio": 1.2802650700459222
+          },
+          "p99": {
+            "baseline": 532250,
+            "repair": 688131,
+            "delta": 155881,
+            "ratio": 1.2928717707844057
+          },
+          "maximum": {
+            "baseline": 543617,
+            "repair": 688169,
+            "delta": 144552,
+            "ratio": 1.2659077990570566
+          }
+        }
+      },
+      "host_admission_to_presented_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 319407,
+          "p95": 541872,
+          "p99": 559058,
+          "maximum": 559617
+        },
+        "repair": {
+          "count": 153,
+          "p50": 399139,
+          "p95": 688155,
+          "p99": 704288,
+          "maximum": 704746
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 319407,
+            "repair": 399139,
+            "delta": 79732,
+            "ratio": 1.2496250864883989
+          },
+          "p95": {
+            "baseline": 541872,
+            "repair": 688155,
+            "delta": 146283,
+            "ratio": 1.2699585880060236
+          },
+          "p99": {
+            "baseline": 559058,
+            "repair": 704288,
+            "delta": 145230,
+            "ratio": 1.259776266505443
+          },
+          "maximum": {
+            "baseline": 559617,
+            "repair": 704746,
+            "delta": 145129,
+            "ratio": 1.259336296073922
+          }
+        }
+      },
+      "host_admission_to_publication_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 304951,
+          "p95": 528859,
+          "p99": 544162,
+          "maximum": 545662
+        },
+        "repair": {
+          "count": 153,
+          "p50": 384457,
+          "p95": 673324,
+          "p99": 691847,
+          "maximum": 692030
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 304951,
+            "repair": 384457,
+            "delta": 79506,
+            "ratio": 1.260717295565517
+          },
+          "p95": {
+            "baseline": 528859,
+            "repair": 673324,
+            "delta": 144465,
+            "ratio": 1.2731635464273086
+          },
+          "p99": {
+            "baseline": 544162,
+            "repair": 691847,
+            "delta": 147685,
+            "ratio": 1.2713989583984182
+          },
+          "maximum": {
+            "baseline": 545662,
+            "repair": 692030,
+            "delta": 146368,
+            "ratio": 1.268239312981296
+          }
+        }
+      },
+      "host_admission_to_result_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 304870,
+          "p95": 528609,
+          "p99": 544004,
+          "maximum": 545526
+        },
+        "repair": {
+          "count": 153,
+          "p50": 384350,
+          "p95": 673137,
+          "p99": 691670,
+          "maximum": 691811
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 304870,
+            "repair": 384350,
+            "delta": 79480,
+            "ratio": 1.2607012825138584
+          },
+          "p95": {
+            "baseline": 528609,
+            "repair": 673137,
+            "delta": 144528,
+            "ratio": 1.273411916936715
+          },
+          "p99": {
+            "baseline": 544004,
+            "repair": 691670,
+            "delta": 147666,
+            "ratio": 1.2714428570378158
+          },
+          "maximum": {
+            "baseline": 545526,
+            "repair": 691811,
+            "delta": 146285,
+            "ratio": 1.2681540384876249
+          }
+        }
+      },
+      "input_to_dispatch_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 597560,
+          "p95": 1389820,
+          "p99": 1518161,
+          "maximum": 1522473
+        },
+        "repair": {
+          "count": 153,
+          "p50": 736411,
+          "p95": 1738032,
+          "p99": 1898319,
+          "maximum": 1902116
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 597560,
+            "repair": 736411,
+            "delta": 138851,
+            "ratio": 1.2323632773277997
+          },
+          "p95": {
+            "baseline": 1389820,
+            "repair": 1738032,
+            "delta": 348212,
+            "ratio": 1.2505446748499807
+          },
+          "p99": {
+            "baseline": 1518161,
+            "repair": 1898319,
+            "delta": 380158,
+            "ratio": 1.2504069067773445
+          },
+          "maximum": {
+            "baseline": 1522473,
+            "repair": 1902116,
+            "delta": 379643,
+            "ratio": 1.2493594303478617
+          }
+        }
+      },
+      "input_to_presented_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 621226,
+          "p95": 1403323,
+          "p99": 1531200,
+          "maximum": 1547133
+        },
+        "repair": {
+          "count": 153,
+          "p50": 763739,
+          "p95": 1753913,
+          "p99": 1913506,
+          "maximum": 1929452
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 621226,
+            "repair": 763739,
+            "delta": 142513,
+            "ratio": 1.2294060454649354
+          },
+          "p95": {
+            "baseline": 1403323,
+            "repair": 1753913,
+            "delta": 350590,
+            "ratio": 1.2498284429172757
+          },
+          "p99": {
+            "baseline": 1531200,
+            "repair": 1913506,
+            "delta": 382306,
+            "ratio": 1.2496773772204808
+          },
+          "maximum": {
+            "baseline": 1547133,
+            "repair": 1929452,
+            "delta": 382319,
+            "ratio": 1.2471145014681995
+          }
+        }
+      },
+      "input_to_publication_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 608084,
+          "p95": 1391774,
+          "p99": 1522504,
+          "maximum": 1534770
+        },
+        "repair": {
+          "count": 153,
+          "p50": 748555,
+          "p95": 1741896,
+          "p99": 1902151,
+          "maximum": 1914809
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 608084,
+            "repair": 748555,
+            "delta": 140471,
+            "ratio": 1.2310059136566658
+          },
+          "p95": {
+            "baseline": 1391774,
+            "repair": 1741896,
+            "delta": 350122,
+            "ratio": 1.2515652684990524
+          },
+          "p99": {
+            "baseline": 1522504,
+            "repair": 1902151,
+            "delta": 379647,
+            "ratio": 1.2493569803429088
+          },
+          "maximum": {
+            "baseline": 1534770,
+            "repair": 1914809,
+            "delta": 380039,
+            "ratio": 1.247619513021495
+          }
+        }
+      },
+      "input_to_result_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 608004,
+          "p95": 1391625,
+          "p99": 1522297,
+          "maximum": 1534567
+        },
+        "repair": {
+          "count": 153,
+          "p50": 748450,
+          "p95": 1741677,
+          "p99": 1901922,
+          "maximum": 1914622
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 608004,
+            "repair": 748450,
+            "delta": 140446,
+            "ratio": 1.230995190821113
+          },
+          "p95": {
+            "baseline": 1391625,
+            "repair": 1741677,
+            "delta": 350052,
+            "ratio": 1.2515419024521692
+          },
+          "p99": {
+            "baseline": 1522297,
+            "repair": 1901922,
+            "delta": 379625,
+            "ratio": 1.2493764357415142
+          },
+          "maximum": {
+            "baseline": 1534567,
+            "repair": 1914622,
+            "delta": 380055,
+            "ratio": 1.2476626957311086
+          }
+        }
+      },
+      "main_receipt_pump_usec": {
+        "baseline": {
+          "count": 126,
+          "p50": 5209,
+          "p95": 5526,
+          "p99": 5651,
+          "maximum": 5676
+        },
+        "repair": {
+          "count": 151,
+          "p50": 5208,
+          "p95": 5714,
+          "p99": 5938,
+          "maximum": 5975
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 5209,
+            "repair": 5208,
+            "delta": -1,
+            "ratio": 0.9998080245728547
+          },
+          "p95": {
+            "baseline": 5526,
+            "repair": 5714,
+            "delta": 188,
+            "ratio": 1.0340209916757148
+          },
+          "p99": {
+            "baseline": 5651,
+            "repair": 5938,
+            "delta": 287,
+            "ratio": 1.0507874712440277
+          },
+          "maximum": {
+            "baseline": 5676,
+            "repair": 5975,
+            "delta": 299,
+            "ratio": 1.0526779422128258
+          }
+        }
+      },
+      "native_execute_usec": {
+        "baseline": {
+          "count": 284,
+          "p50": 148,
+          "p95": 262,
+          "p99": 390,
+          "maximum": 416
+        },
+        "repair": {
+          "count": 284,
+          "p50": 231,
+          "p95": 371,
+          "p99": 573,
+          "maximum": 595
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 148,
+            "repair": 231,
+            "delta": 83,
+            "ratio": 1.5608108108108107
+          },
+          "p95": {
+            "baseline": 262,
+            "repair": 371,
+            "delta": 109,
+            "ratio": 1.416030534351145
+          },
+          "p99": {
+            "baseline": 390,
+            "repair": 573,
+            "delta": 183,
+            "ratio": 1.4692307692307693
+          },
+          "maximum": {
+            "baseline": 416,
+            "repair": 595,
+            "delta": 179,
+            "ratio": 1.4302884615384615
+          }
+        }
+      },
+      "physics_segment_usec": {
+        "baseline": {
+          "count": 52,
+          "p50": 118,
+          "p95": 1404,
+          "p99": 2247,
+          "maximum": 2247
+        },
+        "repair": {
+          "count": 52,
+          "p50": 132,
+          "p95": 2046,
+          "p99": 2143,
+          "maximum": 2143
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 118,
+            "repair": 132,
+            "delta": 14,
+            "ratio": 1.11864406779661
+          },
+          "p95": {
+            "baseline": 1404,
+            "repair": 2046,
+            "delta": 642,
+            "ratio": 1.4572649572649572
+          },
+          "p99": {
+            "baseline": 2247,
+            "repair": 2143,
+            "delta": -104,
+            "ratio": 0.9537160658655985
+          },
+          "maximum": {
+            "baseline": 2247,
+            "repair": 2143,
+            "delta": -104,
+            "ratio": 0.9537160658655985
+          }
+        }
+      },
+      "publication_to_presented_usec": {
+        "baseline": {
+          "count": 105,
+          "p50": 11584,
+          "p95": 15375,
+          "p99": 15505,
+          "maximum": 21423
+        },
+        "repair": {
+          "count": 120,
+          "p50": 11466,
+          "p95": 15277,
+          "p99": 27229,
+          "maximum": 27254
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 11584,
+            "repair": 11466,
+            "delta": -118,
+            "ratio": 0.9898135359116023
+          },
+          "p95": {
+            "baseline": 15375,
+            "repair": 15277,
+            "delta": -98,
+            "ratio": 0.9936260162601626
+          },
+          "p99": {
+            "baseline": 15505,
+            "repair": 27229,
+            "delta": 11724,
+            "ratio": 1.7561431796194775
+          },
+          "maximum": {
+            "baseline": 21423,
+            "repair": 27254,
+            "delta": 5831,
+            "ratio": 1.2721841011996453
+          }
+        }
+      },
+      "queue_wait_usec": {
+        "baseline": {
+          "count": 284,
+          "p50": 17,
+          "p95": 979,
+          "p99": 1741,
+          "maximum": 1988
+        },
+        "repair": {
+          "count": 284,
+          "p50": 21,
+          "p95": 48,
+          "p99": 429,
+          "maximum": 651
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 17,
+            "repair": 21,
+            "delta": 4,
+            "ratio": 1.2352941176470589
+          },
+          "p95": {
+            "baseline": 979,
+            "repair": 48,
+            "delta": -931,
+            "ratio": 0.049029622063329927
+          },
+          "p99": {
+            "baseline": 1741,
+            "repair": 429,
+            "delta": -1312,
+            "ratio": 0.24641010913268235
+          },
+          "maximum": {
+            "baseline": 1988,
+            "repair": 651,
+            "delta": -1337,
+            "ratio": 0.3274647887323944
+          }
+        }
+      },
+      "receipt_delivery_usec": {
+        "baseline": {
+          "count": 284,
+          "p50": 1792,
+          "p95": 11496,
+          "p99": 13917,
+          "maximum": 77680
+        },
+        "repair": {
+          "count": 284,
+          "p50": 1972,
+          "p95": 11841,
+          "p99": 23767,
+          "maximum": 77527
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 1792,
+            "repair": 1972,
+            "delta": 180,
+            "ratio": 1.1004464285714286
+          },
+          "p95": {
+            "baseline": 11496,
+            "repair": 11841,
+            "delta": 345,
+            "ratio": 1.0300104384133613
+          },
+          "p99": {
+            "baseline": 13917,
+            "repair": 23767,
+            "delta": 9850,
+            "ratio": 1.7077674786232666
+          },
+          "maximum": {
+            "baseline": 77680,
+            "repair": 77527,
+            "delta": -153,
+            "ratio": 0.9980303810504635
+          }
+        }
+      },
+      "receipt_roundtrip_usec": {
+        "baseline": {
+          "count": 284,
+          "p50": 3329,
+          "p95": 12318,
+          "p99": 15225,
+          "maximum": 80268
+        },
+        "repair": {
+          "count": 284,
+          "p50": 3704,
+          "p95": 13625,
+          "p99": 25652,
+          "maximum": 79835
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 3329,
+            "repair": 3704,
+            "delta": 375,
+            "ratio": 1.1126464403724843
+          },
+          "p95": {
+            "baseline": 12318,
+            "repair": 13625,
+            "delta": 1307,
+            "ratio": 1.106104887157006
+          },
+          "p99": {
+            "baseline": 15225,
+            "repair": 25652,
+            "delta": 10427,
+            "ratio": 1.6848604269293925
+          },
+          "maximum": {
+            "baseline": 80268,
+            "repair": 79835,
+            "delta": -433,
+            "ratio": 0.9946055713360243
+          }
+        }
+      },
+      "receipt_value_accounting_usec": {
+        "baseline": {
+          "count": 284,
+          "p50": 159,
+          "p95": 230,
+          "p99": 252,
+          "maximum": 1337
+        },
+        "repair": {
+          "count": 284,
+          "p50": 226,
+          "p95": 302,
+          "p99": 337,
+          "maximum": 1695
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 159,
+            "repair": 226,
+            "delta": 67,
+            "ratio": 1.421383647798742
+          },
+          "p95": {
+            "baseline": 230,
+            "repair": 302,
+            "delta": 72,
+            "ratio": 1.3130434782608695
+          },
+          "p99": {
+            "baseline": 252,
+            "repair": 337,
+            "delta": 85,
+            "ratio": 1.3373015873015872
+          },
+          "maximum": {
+            "baseline": 1337,
+            "repair": 1695,
+            "delta": 358,
+            "ratio": 1.2677636499626028
+          }
+        }
+      },
+      "semantic_interval_usec": {
+        "baseline": {
+          "count": 38,
+          "p50": 15728,
+          "p95": 52600,
+          "p99": 116225,
+          "maximum": 116225
+        },
+        "repair": {
+          "count": 38,
+          "p50": 15535,
+          "p95": 75647,
+          "p99": 116063,
+          "maximum": 116063
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 15728,
+            "repair": 15535,
+            "delta": -193,
+            "ratio": 0.9877288911495422
+          },
+          "p95": {
+            "baseline": 52600,
+            "repair": 75647,
+            "delta": 23047,
+            "ratio": 1.4381558935361216
+          },
+          "p99": {
+            "baseline": 116225,
+            "repair": 116063,
+            "delta": -162,
+            "ratio": 0.9986061518606152
+          },
+          "maximum": {
+            "baseline": 116225,
+            "repair": 116063,
+            "delta": -162,
+            "ratio": 0.9986061518606152
+          }
+        }
+      },
+      "snapshot_usec": {
+        "baseline": {
+          "count": 284,
+          "p50": 874,
+          "p95": 1079,
+          "p99": 1139,
+          "maximum": 1179
+        },
+        "repair": {
+          "count": 284,
+          "p50": 1371,
+          "p95": 1576,
+          "p99": 1603,
+          "maximum": 2577
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 874,
+            "repair": 1371,
+            "delta": 497,
+            "ratio": 1.568649885583524
+          },
+          "p95": {
+            "baseline": 1079,
+            "repair": 1576,
+            "delta": 497,
+            "ratio": 1.4606116774791473
+          },
+          "p99": {
+            "baseline": 1139,
+            "repair": 1603,
+            "delta": 464,
+            "ratio": 1.4073748902546093
+          },
+          "maximum": {
+            "baseline": 1179,
+            "repair": 2577,
+            "delta": 1398,
+            "ratio": 2.1857506361323153
+          }
+        }
+      },
+      "terrain_install_usec": {
+        "baseline": {
+          "count": 230,
+          "p50": 70,
+          "p95": 169,
+          "p99": 223,
+          "maximum": 342
+        },
+        "repair": {
+          "count": 230,
+          "p50": 90,
+          "p95": 206,
+          "p99": 227,
+          "maximum": 366
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 70,
+            "repair": 90,
+            "delta": 20,
+            "ratio": 1.2857142857142858
+          },
+          "p95": {
+            "baseline": 169,
+            "repair": 206,
+            "delta": 37,
+            "ratio": 1.2189349112426036
+          },
+          "p99": {
+            "baseline": 223,
+            "repair": 227,
+            "delta": 4,
+            "ratio": 1.0179372197309418
+          },
+          "maximum": {
+            "baseline": 342,
+            "repair": 366,
+            "delta": 24,
+            "ratio": 1.0701754385964912
+          }
+        }
+      }
+    },
+    "presentation_stages_usec": {
+      "frame_callback_usec": {
+        "baseline": {
+          "count": 131,
+          "p50": 5938,
+          "p95": 7117,
+          "p99": 8251,
+          "maximum": 9535
+        },
+        "repair": {
+          "count": 156,
+          "p50": 6087,
+          "p95": 7245,
+          "p99": 9729,
+          "maximum": 9774
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 5938,
+            "repair": 6087,
+            "delta": 149,
+            "ratio": 1.02509262377905
+          },
+          "p95": {
+            "baseline": 7117,
+            "repair": 7245,
+            "delta": 128,
+            "ratio": 1.0179851060840241
+          },
+          "p99": {
+            "baseline": 8251,
+            "repair": 9729,
+            "delta": 1478,
+            "ratio": 1.179129802448188
+          },
+          "maximum": {
+            "baseline": 9535,
+            "repair": 9774,
+            "delta": 239,
+            "ratio": 1.0250655479811221
+          }
+        }
+      },
+      "input_to_host_usec": {
+        "baseline": {
+          "count": 153,
+          "p50": 301923,
+          "p95": 859562,
+          "p99": 989913,
+          "maximum": 1003052
+        },
+        "repair": {
+          "count": 153,
+          "p50": 364059,
+          "p95": 1049885,
+          "p99": 1240791,
+          "maximum": 1241508
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 301923,
+            "repair": 364059,
+            "delta": 62136,
+            "ratio": 1.2058008167645393
+          },
+          "p95": {
+            "baseline": 859562,
+            "repair": 1049885,
+            "delta": 190323,
+            "ratio": 1.221418582952713
+          },
+          "p99": {
+            "baseline": 989913,
+            "repair": 1240791,
+            "delta": 250878,
+            "ratio": 1.25343439271936
+          },
+          "maximum": {
+            "baseline": 1003052,
+            "repair": 1241508,
+            "delta": 238456,
+            "ratio": 1.2377304466767425
+          }
+        }
+      },
+      "publication_interval_usec": {
+        "baseline": {
+          "count": 104,
+          "p50": 16001,
+          "p95": 46523,
+          "p99": 50985,
+          "maximum": 124248
+        },
+        "repair": {
+          "count": 119,
+          "p50": 16005,
+          "p95": 48007,
+          "p99": 78703,
+          "maximum": 123242
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 16001,
+            "repair": 16005,
+            "delta": 4,
+            "ratio": 1.0002499843759765
+          },
+          "p95": {
+            "baseline": 46523,
+            "repair": 48007,
+            "delta": 1484,
+            "ratio": 1.0318982008898825
+          },
+          "p99": {
+            "baseline": 50985,
+            "repair": 78703,
+            "delta": 27718,
+            "ratio": 1.5436500931646562
+          },
+          "maximum": {
+            "baseline": 124248,
+            "repair": 123242,
+            "delta": -1006,
+            "ratio": 0.991903290193806
+          }
+        }
+      },
+      "publication_upload_usec": {
+        "baseline": {
+          "count": 105,
+          "p50": 86,
+          "p95": 1653,
+          "p99": 2531,
+          "maximum": 7110
+        },
+        "repair": {
+          "count": 120,
+          "p50": 99,
+          "p95": 3984,
+          "p99": 4364,
+          "maximum": 6105
+        },
+        "deltas": {
+          "p50": {
+            "baseline": 86,
+            "repair": 99,
+            "delta": 13,
+            "ratio": 1.1511627906976745
+          },
+          "p95": {
+            "baseline": 1653,
+            "repair": 3984,
+            "delta": 2331,
+            "ratio": 2.4101633393829403
+          },
+          "p99": {
+            "baseline": 2531,
+            "repair": 4364,
+            "delta": 1833,
+            "ratio": 1.7242196760173845
+          },
+          "maximum": {
+            "baseline": 7110,
+            "repair": 6105,
+            "delta": -1005,
+            "ratio": 0.8586497890295358
+          }
+        }
+      }
+    },
+    "scope": "Same153 scene intents including96-input burst;38 completed ticks after initial tick1. Scene queue and host stages include the full original timestamp. Presentation callback is observed, not monitor scanout; hosted renderer is not owner NVIDIA performance."
+  },
+  "fresh_binary_comparison": {
+    "baseline_sha256": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+    "repair_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+    "sizes": [
+      6075904,
+      6075904
+    ],
+    "different_bytes": 14,
+    "ranges": [
+      [
+        4131197,
+        4131203
+      ],
+      [
+        4493344,
+        4493352
+      ]
+    ],
+    "sections": [
+      {
+        "name": ".text",
+        "offset": 1024,
+        "bytes": 3759616,
+        "identical": true,
+        "baseline_sha256": "e5a05758120fbd9173141aef7417fa4544f5425d36d80c3a89b1647ea503ee37",
+        "repair_sha256": "e5a05758120fbd9173141aef7417fa4544f5425d36d80c3a89b1647ea503ee37"
+      },
+      {
+        "name": ".rdata",
+        "offset": 3760640,
+        "bytes": 732672,
+        "identical": false,
+        "baseline_sha256": "dc4b251f5b0b301cecc8ae0dbdcef9af07a6d0cd31d06efab8a4c94077036657",
+        "repair_sha256": "978e2f88c22b4b0f498cb4929c7841bc03633579c3f06e8a8d3c6212d2272804"
+      },
+      {
+        "name": ".buildid",
+        "offset": 4493312,
+        "bytes": 512,
+        "identical": false,
+        "baseline_sha256": "6c7a9044dd2abb13c462a6d1db332f4c7c4fcc80aaba439d8811cd9d6bb78ac9",
+        "repair_sha256": "24737e1585f7f7534478af44a530c66d899bccb69b7ffc705dfc15dcfa51171f"
+      },
+      {
+        "name": ".data",
+        "offset": 4493824,
+        "bytes": 1024,
+        "identical": true,
+        "baseline_sha256": "3877dafa820c04f9cb3feef9a4362b29b8c468bbfd50ec89f4baa1c8f35e6852",
+        "repair_sha256": "3877dafa820c04f9cb3feef9a4362b29b8c468bbfd50ec89f4baa1c8f35e6852"
+      },
+      {
+        "name": ".pdata",
+        "offset": 4494848,
+        "bytes": 70144,
+        "identical": true,
+        "baseline_sha256": "120357ee2cb6f3b1a2b4da50daca7628659ffe52d22dedbb6aab55cdad21a96f",
+        "repair_sha256": "120357ee2cb6f3b1a2b4da50daca7628659ffe52d22dedbb6aab55cdad21a96f"
+      },
+      {
+        "name": ".tls",
+        "offset": 4564992,
+        "bytes": 512,
+        "identical": true,
+        "baseline_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560",
+        "repair_sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      {
+        "name": ".reloc",
+        "offset": 4565504,
+        "bytes": 16384,
+        "identical": true,
+        "baseline_sha256": "bc2ac13889f0f04e5c414d0ebc73cc3a9f5990f972657cf0960b955b04e5b159",
+        "repair_sha256": "bc2ac13889f0f04e5c414d0ebc73cc3a9f5990f972657cf0960b955b04e5b159"
+      },
+      {
+        "name": "/4",
+        "offset": 4581888,
+        "bytes": 14336,
+        "identical": true,
+        "baseline_sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1",
+        "repair_sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+      },
+      {
+        "name": "/18",
+        "offset": 4596224,
+        "bytes": 512,
+        "identical": true,
+        "baseline_sha256": "938083405ea94361785394d2c78417fcd6defc27afcc1aee1ca3a89ab8134725",
+        "repair_sha256": "938083405ea94361785394d2c78417fcd6defc27afcc1aee1ca3a89ab8134725"
+      },
+      {
+        "name": "/58",
+        "offset": 4596736,
+        "bytes": 59392,
+        "identical": true,
+        "baseline_sha256": "e0fb8aaed4a546f7589c2d0854b143df63a1d2089f3c60a4fa0fe0458f8061c6",
+        "repair_sha256": "e0fb8aaed4a546f7589c2d0854b143df63a1d2089f3c60a4fa0fe0458f8061c6"
+      },
+      {
+        "name": "/70",
+        "offset": 4656128,
+        "bytes": 46080,
+        "identical": true,
+        "baseline_sha256": "e526df028307a04d289b2e73b1a13d77dc80116f34b79fff158e787f061e10bd",
+        "repair_sha256": "e526df028307a04d289b2e73b1a13d77dc80116f34b79fff158e787f061e10bd"
+      },
+      {
+        "name": "/82",
+        "offset": 4702208,
+        "bytes": 92672,
+        "identical": true,
+        "baseline_sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3",
+        "repair_sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+      },
+      {
+        "name": "/33",
+        "offset": 4794880,
+        "bytes": 7168,
+        "identical": true,
+        "baseline_sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a",
+        "repair_sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+      },
+      {
+        "name": "/47",
+        "offset": 4802048,
+        "bytes": 31744,
+        "identical": true,
+        "baseline_sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6",
+        "repair_sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+      }
+    ],
+    "difference_observations": [
+      "Six randomized atomic linker output basename characters in .rdata: partial.2kcN6P versus partial.Vzaadq.",
+      "Eight bytes in RSDS/LLD PDB identifier within .buildid."
+    ],
+    "scope": "Read-only comparison of independently fresh source-built binaries. No byte normalization, substitution, reused qualification, or package mutation. Executable .text and all other section bytes outside the two identified metadata ranges are identical."
+  },
+  "interpretation": [
+    "Fresh candidate observed slower pump4000 progression and longer burst input-to-presentation latency than the superseded candidate. Preserve these negative comparisons.",
+    "The unpumped control retains virtually the same cadence while native, snapshot and value-accounting durations increase. The pump can therefore fit fewer completed receipts into its unchanged soft budget; more delivery waits and callbacks are observed.",
+    "This is consistent with broader hosted execution throughput variation. It does not prove the host caused every difference, and the rendered UI has a real navigation/input guard source delta. Do not label the regression repaired or purely environmental.",
+    "The same-source fresh pump4000 versus pump0 comparison remains the direct scheduling evidence: identical workload/state,17.1382 versus8.2561semanticHz. These are hosted observations, not production responsiveness or target GPU acceptance.",
+    "All existing qualification limits remain unchanged. This report adds no new threshold and executes no rerun. Independent review and owner physical playtesting remain separate gates."
+  ],
+  "status": "observed_slowdown_investigated_and_retained"
+}

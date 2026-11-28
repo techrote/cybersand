@@ -1,0 +1,277 @@
+{
+  "schema": "objectshard-live-edit-owner-evidence-v1",
+  "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "captured_utc": "2026-11-28T05:48:46Z",
+  "attachments": [
+    {
+      "uploaded_name": "image(20261128-055848).png",
+      "sha256": "72ce4c82df46385fea2fca18c3a7020f397a46e6b8dbeba9a0bf24d4e13aca49",
+      "bytes": 72909
+    },
+    {
+      "uploaded_name": "objectshard-2026-11-28-05-48-46-291080581(1).json",
+      "sha256": "4ebe8248430244dc1d13edcd8df654da9b79ae441256427c834b1f909c0cf459",
+      "bytes": 24305
+    },
+    {
+      "uploaded_name": "setup-structures-tower2(1).json",
+      "sha256": "ad00c753b10c0a1372f2a12ef0e81300ad335ca6d5cdb81290586e13f1dad19a",
+      "bytes": 4207
+    }
+  ],
+  "platform": {
+    "adapter": "ANGLE (NVIDIA, NVIDIA TITAN RTX (0x00001E02) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.15.8180)",
+    "adapter_vendor": "Google Inc. (NVIDIA)",
+    "display_backend": "Windows",
+    "godot": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "logical_processors": 12,
+    "os": "Windows",
+    "os_version": "10.0.26300",
+    "processor": "AMD Ryzen 5 5600X 6-Core Processor",
+    "rendering_driver": "opengl3_angle",
+    "rendering_method": "gl_compatibility",
+    "vsync_mode": 1,
+    "window_mode": 0,
+    "window_size": [
+      1920,
+      1080
+    ]
+  },
+  "native_progress_delivery": [
+    {
+      "elapsed_usec": 515999,
+      "interval_count": 25,
+      "maximum_interval_usec": 39561,
+      "observed_units_per_second": 48.4497062978804,
+      "recent_interval_samples": 25,
+      "recent_p50_interval_usec": 19899,
+      "recent_p95_interval_usec": 28054,
+      "units": "native_semantic_ticks",
+      "units_observed": 25,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 0,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 47230,
+      "interval_count": 2,
+      "maximum_interval_usec": 27494,
+      "observed_units_per_second": 42.3459665466864,
+      "recent_interval_samples": 2,
+      "recent_p50_interval_usec": 19736,
+      "recent_p95_interval_usec": 27494,
+      "units": "native_semantic_ticks",
+      "units_observed": 2,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 1,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 13548413,
+      "interval_count": 408,
+      "maximum_interval_usec": 47057,
+      "observed_units_per_second": 30.1142281387495,
+      "recent_interval_samples": 256,
+      "recent_p50_interval_usec": 33340,
+      "recent_p95_interval_usec": 42387,
+      "units": "native_semantic_ticks",
+      "units_observed": 408,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 7,
+        "paused": false
+      }
+    }
+  ],
+  "post_draw_intervals": [
+    {
+      "elapsed_usec": 6975516,
+      "interval_count": 420,
+      "maximum_interval_usec": 18478,
+      "observed_units_per_second": 60.2105994739314,
+      "recent_interval_samples": 256,
+      "recent_p50_interval_usec": 16663,
+      "recent_p95_interval_usec": 17425,
+      "units": "post_draw_callbacks",
+      "units_observed": 420,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 7,
+        "paused": true
+      }
+    },
+    {
+      "elapsed_usec": 2636161,
+      "interval_count": 158,
+      "maximum_interval_usec": 17904,
+      "observed_units_per_second": 59.9356412601507,
+      "recent_interval_samples": 158,
+      "recent_p50_interval_usec": 16673,
+      "recent_p95_interval_usec": 17378,
+      "units": "post_draw_callbacks",
+      "units_observed": 158,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 0,
+        "paused": true
+      }
+    },
+    {
+      "elapsed_usec": 536932,
+      "interval_count": 31,
+      "maximum_interval_usec": 23503,
+      "observed_units_per_second": 57.7354301848279,
+      "recent_interval_samples": 31,
+      "recent_p50_interval_usec": 18934,
+      "recent_p95_interval_usec": 22037,
+      "units": "post_draw_callbacks",
+      "units_observed": 31,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 0,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 77477,
+      "interval_count": 5,
+      "maximum_interval_usec": 25393,
+      "observed_units_per_second": 64.5352814383623,
+      "recent_interval_samples": 5,
+      "recent_p50_interval_usec": 19741,
+      "recent_p95_interval_usec": 25393,
+      "units": "post_draw_callbacks",
+      "units_observed": 5,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 1,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 20537,
+      "interval_count": 1,
+      "maximum_interval_usec": 20537,
+      "observed_units_per_second": 48.6926035935141,
+      "recent_interval_samples": 1,
+      "recent_p50_interval_usec": 20537,
+      "recent_p95_interval_usec": 20537,
+      "units": "post_draw_callbacks",
+      "units_observed": 1,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 2,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 19550,
+      "interval_count": 1,
+      "maximum_interval_usec": 19550,
+      "observed_units_per_second": 51.150895140665,
+      "recent_interval_samples": 1,
+      "recent_p50_interval_usec": 19550,
+      "recent_p95_interval_usec": 19550,
+      "units": "post_draw_callbacks",
+      "units_observed": 1,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 3,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 20771,
+      "interval_count": 1,
+      "maximum_interval_usec": 20771,
+      "observed_units_per_second": 48.1440469885899,
+      "recent_interval_samples": 1,
+      "recent_p50_interval_usec": 20771,
+      "recent_p95_interval_usec": 20771,
+      "units": "post_draw_callbacks",
+      "units_observed": 1,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 4,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 20405,
+      "interval_count": 1,
+      "maximum_interval_usec": 20405,
+      "observed_units_per_second": 49.0075961774075,
+      "recent_interval_samples": 1,
+      "recent_p50_interval_usec": 20405,
+      "recent_p95_interval_usec": 20405,
+      "units": "post_draw_callbacks",
+      "units_observed": 1,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 5,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 21164,
+      "interval_count": 1,
+      "maximum_interval_usec": 21164,
+      "observed_units_per_second": 47.2500472500473,
+      "recent_interval_samples": 1,
+      "recent_p50_interval_usec": 21164,
+      "recent_p95_interval_usec": 21164,
+      "units": "post_draw_callbacks",
+      "units_observed": 1,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 6,
+        "paused": false
+      }
+    },
+    {
+      "elapsed_usec": 13616184,
+      "interval_count": 816,
+      "maximum_interval_usec": 26727,
+      "observed_units_per_second": 59.9286848650106,
+      "recent_interval_samples": 256,
+      "recent_p50_interval_usec": 19813,
+      "recent_p95_interval_usec": 25743,
+      "units": "post_draw_callbacks",
+      "units_observed": 816,
+      "workload": {
+        "camera": "free",
+        "owned_material_bodies": 7,
+        "paused": false
+      }
+    }
+  ],
+  "final_phase": "Ready",
+  "final_held_reason": "",
+  "native_pose_acknowledgements": 113299,
+  "native_pose_echo_checks": 113299,
+  "owned_bodies": 7,
+  "sleeping_bodies": 7,
+  "owner_qualitative_observation": "Owner reports reliability evaluator looks and acts great; precision Cut moving works and yields appealing erosion, but its tiny fixed footprint makes substantial cuts difficult.",
+  "limitations": [
+    "Body cohorts count owned material, including sleepers, not simultaneously awake bodies.",
+    "One-body sample has only two observed intervals and is not a robust benchmark.",
+    "Post-draw callback cadence is not physical monitor presentation verification.",
+    "Authored-start recipe is not a live rigid-body checkpoint.",
+    "Attached screenshot filename is image(20261128-055848).png, differing from the prompt label 055316; the supplied bytes are the actual image evidence.",
+    "Historical diagnostic lacks complete failed/unadmitted pointer attempt history."
+  ]
+}

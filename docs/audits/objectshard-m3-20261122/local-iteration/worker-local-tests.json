@@ -1,0 +1,124 @@
+{
+  "scope": "Local source-hash-bound iteration; final committed/platform qualification separate",
+  "source_inputs": "a-sealed-local-inputs.json",
+  "tests": [
+    {
+      "name": "native_worker",
+      "returncode": 0,
+      "elapsed_seconds": 0.5176520950044505,
+      "checks": 31,
+      "failures": 0,
+      "log": "build/a-worker-evidence/a-sealed-native_worker.log",
+      "log_sha256": "2fb9991e9b66cd62740e7d2d90a9b5260e0825b3a29487ffa533b60c1a289f3e"
+    },
+    {
+      "name": "worker_commands",
+      "returncode": 0,
+      "elapsed_seconds": 0.46884554300049786,
+      "checks": 29,
+      "failures": 0,
+      "log": "build/a-worker-evidence/a-sealed-worker_commands.log",
+      "log_sha256": "76f8a406614a9b8dc87349f5eb15a886327a449c1a813a6ca8e9eadb6fc6c0e0"
+    },
+    {
+      "name": "worker_resources",
+      "returncode": 0,
+      "elapsed_seconds": 3.1264938220119802,
+      "checks": 43,
+      "failures": 0,
+      "log": "build/a-worker-evidence/a-sealed-worker_resources.log",
+      "log_sha256": "d6bbcb888cc41c8c79d7cad61a2b804be069199a04c492c3f487ee11ce1ed79d"
+    },
+    {
+      "name": "workbench_contract",
+      "returncode": 0,
+      "elapsed_seconds": 0.5175306890014326,
+      "checks": 29,
+      "failures": 0,
+      "log": "build/a-worker-evidence/a-sealed-workbench_contract.log",
+      "log_sha256": "aff0531921f4df0aa53daf46233d5c94cefb12933c4af91872646db76439d7a7"
+    },
+    {
+      "name": "worker_input_fences",
+      "returncode": 0,
+      "checks": 46,
+      "failures": 0,
+      "log": "build/a-worker-evidence/input-fences-delivery.log",
+      "log_sha256": "d2b8a9c339e4824a645dd385d4c9b66a9bdd0e832c5219ab5b5ee919a09caa4b",
+      "source_inputs": "input-fences-delivery-inputs.json"
+    }
+  ],
+  "schema": "objectshard-m3-A-local-seal-v1",
+  "utc": "2026-11-22T06:11:06.075943+00:00",
+  "git_head_at_evidence_seal": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "checks": 178,
+  "failures": 0,
+  "engine": {
+    "path": "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "identity": "Godot4.7 stable5b4e0cb0f"
+  },
+  "native_runtime": {
+    "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/a-worker-project/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "qualified_source": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+    "sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+    "source_equivalence": "All116 existing source_inputs compared unchanged at#738; no native file edited by A. This local integration reuse is not a fresh final-package build qualification."
+  },
+  "resource_scope": "Actual native copy-capacity and quarantine/shutdown evidence; value-byte counts exclude allocator overhead",
+  "resource_rows": [
+    {
+      "width": 128,
+      "height": 128,
+      "native_accounted_bytes": 4813568,
+      "maximum_snapshot_value_bytes": 116044,
+      "reply_backlog_value_bytes": 3747712,
+      "maximum_process_godot_static_bytes": 30595487
+    },
+    {
+      "width": 192,
+      "height": 128,
+      "native_accounted_bytes": 5756592,
+      "maximum_snapshot_value_bytes": 157500,
+      "reply_backlog_value_bytes": 5074304,
+      "maximum_process_godot_static_bytes": 32225199
+    },
+    {
+      "width": 256,
+      "height": 160,
+      "native_accounted_bytes": 7687744,
+      "maximum_snapshot_value_bytes": 240888,
+      "reply_backlog_value_bytes": 7742720,
+      "maximum_process_godot_static_bytes": 35309499
+    },
+    {
+      "width": 320,
+      "height": 192,
+      "native_accounted_bytes": 9938376,
+      "maximum_snapshot_value_bytes": 344008,
+      "reply_backlog_value_bytes": 11042560,
+      "maximum_process_godot_static_bytes": 39013019
+    },
+    {
+      "width": 512,
+      "height": 512,
+      "native_accounted_bytes": 32362400,
+      "maximum_snapshot_value_bytes": 1359172,
+      "reply_backlog_value_bytes": 43527808,
+      "maximum_process_godot_static_bytes": 75299035
+    }
+  ],
+  "native_matrix": "native-matrix-comparison.json",
+  "source_boundary_refresh": "source-boundary-refresh.json",
+  "retained_negative": {
+    "baseline_import_log": "baseline-import.log",
+    "outcome": "Isolated recovered minimal project editor import exited134 after class registration/layout; actual runtime tests completed. Not a clean import result and not the full final project import."
+  },
+  "remaining_gate": "Root must freeze/commit composition, run source-bound Linux/Windows campaigns, package replay and independent final reviews. World sanitizer completion attempt session58894 writes final JSON+log without rebuild; monitor its report.",
+  "native_sanitizers": {
+    "summary": "build/a-native-sanitized/summary.json",
+    "six_objectshard_suites": "93,529 checks; all six pass ASan/UBSan; leak sanitizer disabled explicitly",
+    "whole_world_first_attempt": "FAILED/incomplete: operational timeout600s after185 named passes; no final count, no assertion/sanitizer error observed",
+    "whole_world_completion_attempt": "build/a-worker-evidence/world-sanitized-completion.json",
+    "completion_scope": "Same source-bound World binary and complete unchanged test inventory;1800s operational timeout, separately retained negative. Running when A handoff sealed."
+  }
+}

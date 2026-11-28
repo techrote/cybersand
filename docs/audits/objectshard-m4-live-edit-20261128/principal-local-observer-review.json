@@ -1,0 +1,48 @@
+{
+  "schema": "objectshard-m4-principal-local-observer-review-v1",
+  "scope": "Local headless actual production input path; development runtime; execution before third commit froze identical helper bytes. Not hosted or extracted-Windows qualification.",
+  "final_source_inputs": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "checks": 105,
+  "failures": [],
+  "log_sha256": "15903c775b03d8db0c89294a1a6a82696f1f148fd2ece4dfc585425edd3cf60a",
+  "log_bytes": 87118,
+  "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+  "helper_sha256": "7965f56522aa1de47bba69b8e9dda0961e0bd5b3e5e293679edb100f70b23af8",
+  "assertions": [
+    "actual ordinary eraser support removal and continued detached cutting",
+    "batched 186-cell collapse edit with one geometry rebuild",
+    "release and scene replacement stop future admission",
+    "coherent displayed World and shard identities",
+    "bounded diagnostic history"
+  ],
+  "selected_observations": {
+    "collapse_edit": {
+      "action_id": 5,
+      "ok": true,
+      "operation": "erase",
+      "requested_cells": 186,
+      "changed_cells": 186,
+      "removed_cells": 186,
+      "changed_owners": 1,
+      "geometry_rebuilds": 1,
+      "geometry_revision": 2,
+      "atomicity": "one_owner",
+      "partial": false
+    },
+    "edit_diagnostics": {
+      "schema": "objectshard-live-edit-diagnostics-v1",
+      "max_events": 256,
+      "counts": {},
+      "events_dropped": 0,
+      "identity": {
+        "owner_epoch": 0,
+        "port_generation": 5,
+        "session": 0,
+        "shard_session": 0,
+        "transport_generation": 0,
+        "world_generation": 0,
+        "world_incarnation": 0
+      }
+    }
+  }
+}

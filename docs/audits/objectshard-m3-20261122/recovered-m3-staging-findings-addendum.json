@@ -1,0 +1,132 @@
+{
+  "schema": "objectshard-m3-independent-staging-addendum-v1",
+  "reviewed_utc": "2026-11-22T05:28:26.665902+00:00",
+  "source_scope": "Isolated script snapshots on sealed native514; final committed-source and M3 Windows package qualification are separate gates.",
+  "native_source_commit": "514d76fbf4df30eb05353bc14b6a4ec3ea9bf61c",
+  "native_runtime_sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+  "fixed_host_sha256": "9828d57e3bffa56504697c1aa606a7fef39f210b72c697806ff385a54cb775e6",
+  "bridge_sha256": "8341084d8dfc76d9ee5ace7ffc2f39c338d284cbe8b029ca67b4cb81144d293a",
+  "findings": [
+    {
+      "id": "M3-R3",
+      "classification": "Class B cancellation/clock continuity",
+      "discovery": "Independent code review; author executed and retained the actual negative.",
+      "mechanism": "Cancelling a prepared component after a native tick returned Idle without completing that tick's Rapier interval for an already active body.",
+      "negative": {
+        "native_before": 2,
+        "native_after": 3,
+        "completed_before": 1,
+        "completed_after": 1,
+        "physics_before": 4,
+        "physics_after": 4,
+        "suite_checks": 18,
+        "suite_failures": 1
+      },
+      "repair": "Cancellation retains World inventory and completes the already-started physical interval through the normal applied-ACK state machine.",
+      "disposition": "Code reviewed; maintained author regression passed; independent final committed-suite run pending."
+    },
+    {
+      "id": "M3-R4",
+      "classification": "Class B shutdown control sequencing",
+      "discovery": "Independent actual worker/native/Rapier probe.",
+      "mechanism": "After close on a genuine prepared component, cancel_prepared submitted to the stopped transport and converted its expected refusal into Held, preventing ordinary shutdown polling.",
+      "negative": {
+        "checks": 5,
+        "failures": 1,
+        "state": "Held",
+        "failed": true,
+        "outcome": "WorkerAdmissionRefused"
+      },
+      "positive": {
+        "checks": 5,
+        "failures": 0,
+        "state": "Closing",
+        "failed": false,
+        "outcome": "TransportClosingOrClosed"
+      },
+      "repair": "Public cancel refuses Closing/Closed/ShutdownHeld without mutation before attempting transport submission.",
+      "disposition": "Fixed and independently delta-tested with unchanged probe; final commit binding pending."
+    }
+  ],
+  "independent_controls": [
+    {
+      "name": "Semantic tick/session watermark attacks",
+      "checks": 11,
+      "failures": 0,
+      "claims": [
+        "Duplicate, older and unknown clocks do not step or mutate the real owner",
+        "Same-session initialize refuses before disposing current RIDs",
+        "The next legitimate native interval remains executable",
+        "Disposed session cannot recreate the physics host"
+      ]
+    },
+    {
+      "name": "Contributor-authored paired wrapper control independently recomputed",
+      "actual_input_files_verified_each": 40,
+      "only_changed_input": "scripts/object_shard_physics_bridge.gd",
+      "pose_records_equal": 3599,
+      "native_accounting_equal": true,
+      "canonical_sha256": "4b279dbb07364ae9560785fd22d9eac46460493de272fced098fd1ba2e47bdee",
+      "limits": "Both runs use the synchronous wrapper. Actual asynchronous tests are separate; this is no performance claim."
+    }
+  ],
+  "artifacts": {
+    "build/osr-final-review/m3-staging-findings.json": {
+      "bytes": 8287,
+      "sha256": "51e166e3118da5eaa48c8431dccd9344a8bf7566210a53cdc82cadd19ad34c90"
+    },
+    "build/osr-final-review/m3-cancel-close-negative/inputs.json": {
+      "bytes": 2702,
+      "sha256": "143837638ef9d10c241e3e9e229f391cb7f71c9d118cab99281b08259d7f3f13"
+    },
+    "build/osr-final-review/m3-cancel-close-negative/cancel-after-close.log": {
+      "bytes": 818,
+      "sha256": "f7cb92a9f746799e3b70de1cf2f94b2e6eff041183915199f28cb218856736fa"
+    },
+    "build/osr-final-review/m3-cancel-close-negative/project/tests/probe_cancel_after_close.gd": {
+      "bytes": 1981,
+      "sha256": "b6edef1c6d01c62b9460437a57d97e55191b66cb5661dc23813bf5160a85286b"
+    },
+    "build/osr-final-review/m3-cancel-close-positive/inputs.json": {
+      "bytes": 2702,
+      "sha256": "201a35dab44941324cea8cb1bc0a66e7b94ed892f649d7c528db65036d653e03"
+    },
+    "build/osr-final-review/m3-cancel-close-positive/cancel-after-close.log": {
+      "bytes": 439,
+      "sha256": "b65a31f302dbfcdd32c51c696c061aeb91b07b3d6e129eba89bd9ec78b035a14"
+    },
+    "build/osr-final-review/m3-cancel-close-positive/project/tests/probe_cancel_after_close.gd": {
+      "bytes": 1981,
+      "sha256": "b6edef1c6d01c62b9460437a57d97e55191b66cb5661dc23813bf5160a85286b"
+    },
+    "build/osr-final-review/m3-clock-review/inputs.json": {
+      "bytes": 472,
+      "sha256": "18cb22491239031deb1322d2dfab738007b15032e720d50dda560c444cabd4b9"
+    },
+    "build/osr-final-review/m3-clock-review/clock-watermarks.log": {
+      "bytes": 303,
+      "sha256": "8b40e40327d567e3722b2bdefe11182bd7ec848a16a3f1df9e0d4b1a49f9909c"
+    },
+    "build/osr-final-review/m3-clock-review/project/tests/probe_clock_watermarks.gd": {
+      "bytes": 3027,
+      "sha256": "b681c47115247af44bca6e84dd30097bf9181a8b974f811f9fac23ea5cfa5f91"
+    },
+    "build/osr-final-review/m3-wrapper-equivalence-review.json": {
+      "bytes": 601,
+      "sha256": "d08f5011cc2942314944b877276cf320c3c16c5585b2b8b0d15eb5a637373e43"
+    },
+    "build/m3-preflight-staging/cancel-clock-negative.log": {
+      "bytes": 1244,
+      "sha256": "e0c635b01a05446b2c5ad523d546b945326d1ce41236766bb09cbf67ac23ba73"
+    },
+    "build/m3-preflight-staging/cancel-clock-negative-inputs.json": {
+      "bytes": 16088,
+      "sha256": "bfddce94f01dc3102f47c3ddbd6856308b91cbf5c12fb99f392a682c389e4279"
+    },
+    "build/m3-preflight-staging/cancel-clock-repaired-inputs.json": {
+      "bytes": 16088,
+      "sha256": "909c02a0f04d2f8ef9120c7c261adfefc29538004ae42a06abdd4970932234c0"
+    }
+  },
+  "remaining_confirmed_class_a_b_findings": []
+}

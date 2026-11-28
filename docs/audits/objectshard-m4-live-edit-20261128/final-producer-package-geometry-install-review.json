@@ -1,0 +1,67 @@
+{
+  "schema": "objectshard-m4-independent-producer-package-geometry-install-join-v1",
+  "reviewer": "Specialist B, independent of C stage timing extractor",
+  "verified_at": "2026-11-28T09:07:32.649831+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "run_id": 46125028803,
+  "lane": "windows_producer_extracted_package",
+  "qualification_sha256": "1ded7d312a4977f82efb7318dc57449d913fca3f851d68d93f49b747db7755c8",
+  "creative_log_sha256": "6100825fd925af3485bf1be021dcd50d9a1d6e001fbb17bf25c0ecb8bab3095a",
+  "extractor_output_sha256": "76946e0b2146028dd68bdec71ea4af6f4ffc2963bf1f4458700332f6b1157ad3",
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "witness": {
+    "fixture_log_sha256": "6100825fd925af3485bf1be021dcd50d9a1d6e001fbb17bf25c0ecb8bab3095a",
+    "owner": 1,
+    "world_generation": 5,
+    "native_instance_id": -9223371949210597829,
+    "native_session": 3,
+    "world_incarnation": 3,
+    "physics_session": 3,
+    "body_generation": 1,
+    "geometry_revision": 2,
+    "requested_cells": 6,
+    "removed_cells": 6,
+    "native_geometry_rebuilds": 1,
+    "native_combined_geometry_ns": 217500,
+    "main_rapier_install_usec": 641,
+    "shape_count": 44,
+    "physics_step": 300,
+    "installed_mass": 6142.0,
+    "installed_inertia": 7264435.0,
+    "install_flags": {
+      "geometry_revision": 2,
+      "install_usec": 641,
+      "mass_changed": true,
+      "shape_replacement": true,
+      "wake_for_changed_physics": true,
+      "was_sleeping": false
+    },
+    "native_action_id": 15,
+    "native_transaction_id": 6,
+    "port_generation": 5,
+    "owner_epoch": 6,
+    "transport_generation": 6
+  },
+  "independent_checks": [
+    "Original successful package replay qualification and creative log hashes verified.",
+    "Native source identity and runtime SHA match the final candidate.",
+    "Exact native batch owner/body generation/geometry revision join to one actual installed body and GeometryInstalled event.",
+    "World generation/native instance and native session/incarnation agree with final runtime/physics session.",
+    "Actual installed body last_geometry_step and last_geometry_usec equal event step/install_usec.",
+    "Six cells removed in one rebuild with 44 installed shapes; extracted timing fields agree with originals."
+  ],
+  "scope": [
+    "One witnessed actual producer-package replay batch, not a timing distribution.",
+    "Native combined connectivity/geometry217,500ns and Main actual installation641us are separate observed stages.",
+    "Producer extracted-package replay is separate from the pending fresh independent Windows VM replay.",
+    "No physical owner hardware or monitor presentation claim."
+  ],
+  "status": "passed"
+}

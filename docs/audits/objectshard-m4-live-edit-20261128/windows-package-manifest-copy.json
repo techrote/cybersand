@@ -1,0 +1,12 @@
+{
+  "schema": "objectshard-delivered-manifest-copy-v1",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "archive_file": "objectshard-workbench-manifest.json",
+  "archive_manifest_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+  "archive_manifest_bytes": 199198,
+  "audit_copy": "windows-package-manifest.canonical.json",
+  "audit_copy_sha256": "65fabcbce5c124805a3ab4c7bbf6241b5f25b4fa87a1fa013d79296a53d970e5",
+  "audit_copy_bytes": 197526,
+  "transform": "Exact CRLF-to-LF text representation for the repository JSON eol=lf policy; JSON content and all1499 raw delivered-file hashes are unchanged. The original exact manifest remains inside the qualified evaluator archive.",
+  "content_equal": true
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "objectshard-independent-published-transition-review-v1",
+  "utc": "2026-11-22T08:34:53.064093+00:00",
+  "commit": "73018218092e79fbe935aa60890e33bd9f4859ac",
+  "tree": "ede95a3ad7102f4059f8b425167c7fa6c1948663",
+  "status": "published exact-source review passed; full ordinary workflow outcome pending",
+  "confirmed_source_review_sha256": "de1e48125bb56fe5117e900fae6b5095855b333b2e651c671f3f236d45132682",
+  "exact_changed_paths_from_previous_publication": [
+    "docs/audits/2026-11-22-objectshard-external-fire-world-transition.md",
+    "tools/material_catalogue/compatibility.py"
+  ],
+  "tool_sha256": "a6a8fd873c3a81d6de433870fc6981665ae41fda510ed40b1d2466d1ff5cc302",
+  "committed_audit_record_sha256": "e4f42f007899f1f711c50db56676e75d725aedffd5e7f36fb3bc981ca51da204",
+  "committed_record_matches_reviewed_candidate": true,
+  "complete_reviewed_source_ancestry_retained": true,
+  "qualified_runtime_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "unique_native_runtime_test_qualifier_package_and_protected_inputs_compared": 1123,
+  "input_byte_differences": [],
+  "ordinary_workflow": 45003383402,
+  "full_catalogue_result": "pending; read actual job outcome before acceptance",
+  "production_runtime_provenance": "six existing mismatches remain separate and unpassed",
+  "merge_authority": "none"
+}

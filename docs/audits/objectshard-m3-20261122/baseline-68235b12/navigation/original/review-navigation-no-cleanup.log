@@ -1,0 +1,24 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: active_pending navigation stops and joins the previous native worker {"auto_accept_quit":false,"current_scene":"res://feature_launcher.tscn","live_body_readbacks":[{"same_space":true,"shape_count":6,"sleeping":false,"space_live":true,"transform":"[X: (1.0, 0.0), Y: (0.0, 1.0), O: (83.0, 60.02301)]"}],"old_bridge_destroyed":true,"old_host_destroyed":true,"old_scene_destroyed":true,"worker":{"byte_scope":"Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.","control_results":0,"data_results":1,"inflight_sequence":0,"last_native_call_usec":2353,"limits":{"command_value_bytes":65536,"control":8,"control_results":8,"data":32,"data_results":32,"edit_batch":32,"native_total_shard_bbox_area":12288,"native_world_area":262144},"maximum_godot_static_bytes":35299244,"maximum_native_execute_usec":733,"maximum_pending":1,"maximum_queue_wait_usec":298,"maximum_reply_age_usec":4701,"maximum_reply_value_bytes":321756,"maximum_snapshot_usec":1923,"maximum_snapshot_value_bytes":190194,"owner_thread":26,"pending_control":0,"pending_data":0,"pending_reset_sequence":0,"retained_reply_value_bytes":190754,"session":1,"snapshot_copies":57,"started":true,"stop_requested":false,"stopped":false,"terminal":{},"transport_generation":660209},"worker_alive":true}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_lifecycle.gd:22)
+       [1] _navigate (res://tests/review_navigation_lifecycle.gd:114)
+ERROR: active_pending navigation releases old active or sleeping RIDs {"auto_accept_quit":false,"current_scene":"res://feature_launcher.tscn","live_body_readbacks":[{"same_space":true,"shape_count":6,"sleeping":false,"space_live":true,"transform":"[X: (1.0, 0.0), Y: (0.0, 1.0), O: (83.0, 60.02301)]"}],"old_bridge_destroyed":true,"old_host_destroyed":true,"old_scene_destroyed":true,"worker":{"byte_scope":"Value payload sizes include packed buffers, scalar fields and UTF-32 strings; exclude container/allocator overhead and shared-copy deduplication. Godot static bytes are process-wide and exclude native std allocations.","control_results":0,"data_results":1,"inflight_sequence":0,"last_native_call_usec":2353,"limits":{"command_value_bytes":65536,"control":8,"control_results":8,"data":32,"data_results":32,"edit_batch":32,"native_total_shard_bbox_area":12288,"native_world_area":262144},"maximum_godot_static_bytes":35299244,"maximum_native_execute_usec":733,"maximum_pending":1,"maximum_queue_wait_usec":298,"maximum_reply_age_usec":4701,"maximum_reply_value_bytes":321756,"maximum_snapshot_usec":1923,"maximum_snapshot_value_bytes":190194,"owner_thread":26,"pending_control":0,"pending_data":0,"pending_reset_sequence":0,"retained_reply_value_bytes":190754,"session":1,"snapshot_copies":57,"started":true,"stop_requested":false,"stopped":false,"terminal":{},"transport_generation":660209},"worker_alive":true}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_lifecycle.gd:22)
+       [1] _navigate (res://tests/review_navigation_lifecycle.gd:115)
+ERROR: active_pending navigation restores prior SceneTree close handling {"actual":false,"baseline":true}
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] _expect (res://tests/review_navigation_lifecycle.gd:22)
+       [1] _navigate (res://tests/review_navigation_lifecycle.gd:116)
+{"checks":10,"failures":3,"leave_orphan":true,"schema":"independent-f2-navigation-lifecycle-v1","source_revision":"68235b12d7f41f7b590456971f21dfc3f5c6d701"}
+WARNING: 9 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2535)
+ERROR: 1 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

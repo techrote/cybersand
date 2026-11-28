@@ -1,0 +1,70 @@
+{
+  "schema": "objectshard-m4-timing-ledger-metadata-rebind-independent-review-v1",
+  "reviewer": "Specialist B",
+  "verified_at": "2026-11-28T09:41:47.073089+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "records": [
+    {
+      "lane": "windows_source_headless",
+      "timing_path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-source-headless.json",
+      "previous_output_sha256": "1a4de77671d54f9ebcd085175e125ab244e980b11ca220d2051d8c7366944238",
+      "updated_output_sha256": "c49a32b51cb06ddeb098af66f421d936573a8f75d28efb26023d420ec7bfd95a",
+      "original_independent_review": "/tmp/cybersand-live-edit-b/final-windows-source-geometry-install-review.json",
+      "original_review_sha256": "757c8d23a4b5cba80cfe1cae5e02ab61009f17d680b29c67bb7a22d941a44526",
+      "qualification_sha256": "679115f589c34b855ed1384331f81e210f35790ea078f11c31014d54827a5166",
+      "stress_log_sha256": "9c111338f7750d0e077fa012aa02019c255f4d10712df7cb06258fc7b0c77fab",
+      "complete_action_count": 12,
+      "censored_action_count": 0,
+      "geometry_join_unchanged": true,
+      "current_rows_rechecked_against_original_events": true,
+      "new_metadata_matches_original_cumulative_and_pending_state": true
+    },
+    {
+      "lane": "linux_source_headless",
+      "timing_path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-linux-source-headless.json",
+      "previous_output_sha256": "8e2ac3d5a6b2fbfa36ee88aaad50b1ba2c9e102670d677f74c9b4cf9ca934055",
+      "updated_output_sha256": "47e3c75a392abba20a85246192f13f13a0926f4f1d4cb622972b876e78087a8a",
+      "original_independent_review": "/tmp/cybersand-live-edit-b/final-linux-geometry-install-review.json",
+      "original_review_sha256": "1f753615e1defa5461264b1b2cecce1bbef767d6ba6aed661662301f34c01c19",
+      "qualification_sha256": "e8fffc3da2dc73a444f43678fd157e9a69b77293cff22245490ccf87e2901434",
+      "stress_log_sha256": "01f04f2a399068562ca9f7b4007c26ed5edc826db6365363238c10f698fc986c",
+      "complete_action_count": 12,
+      "censored_action_count": 0,
+      "geometry_join_unchanged": true,
+      "current_rows_rechecked_against_original_events": true,
+      "new_metadata_matches_original_cumulative_and_pending_state": true
+    },
+    {
+      "lane": "linux_source_graphical",
+      "timing_path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-linux-source-graphical.json",
+      "previous_output_sha256": "0cd2952d26ecefa0634d8280a1517e46af1f507681c2bad14eef74ff998a9331",
+      "updated_output_sha256": "b88e9d64ce80ad6f0687913c1b91deaa458e20ee4c7ce19d37a091d9e3f334df",
+      "original_independent_review": "/tmp/cybersand-live-edit-b/final-linux-geometry-install-review.json",
+      "original_review_sha256": "1f753615e1defa5461264b1b2cecce1bbef767d6ba6aed661662301f34c01c19",
+      "qualification_sha256": "1ace89746d1d1e5e3e25a6eb3d5714e8d6ad8e6912fa19cf1f78c7b7ec56428c",
+      "stress_log_sha256": "8e87321d5195e9ac00a425ac0e1a4a6ba4d6b21d07f57fb297e73e0067db2b58",
+      "complete_action_count": 12,
+      "censored_action_count": 0,
+      "geometry_join_unchanged": true,
+      "current_rows_rechecked_against_original_events": true,
+      "new_metadata_matches_original_cumulative_and_pending_state": true
+    },
+    {
+      "lane": "windows_producer_package",
+      "timing_path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-producer-package.json",
+      "previous_output_sha256": "76946e0b2146028dd68bdec71ea4af6f4ffc2963bf1f4458700332f6b1157ad3",
+      "updated_output_sha256": "8a599da23e223cd7617f987c12bcaad5154e9f14b1bc8f05864dc38a6261f991",
+      "original_independent_review": "/tmp/cybersand-live-edit-b/final-windows-producer-package-geometry-review.json",
+      "original_review_sha256": "5fc14f294bf818649cbf5f761f901696fdcb08656e6aad0564ffd8505bcf2027",
+      "qualification_sha256": "1ded7d312a4977f82efb7318dc57449d913fca3f851d68d93f49b747db7755c8",
+      "stress_log_sha256": "eb33403001761f9b7affb92aa9d17af5b37469c672f43c8d2ab83a7dfa1a7602",
+      "complete_action_count": 12,
+      "censored_action_count": 0,
+      "geometry_join_unchanged": true,
+      "current_rows_rechecked_against_original_events": true,
+      "new_metadata_matches_original_cumulative_and_pending_state": true
+    }
+  ],
+  "scope": "Metadata-only binding update to existing C timing ledgers. The earlier independent reviews retain their original extractor-output hashes; this addendum binds those unchanged raw qualification/log/geometry results to the expanded JSON schema. Every current numeric row was rechecked against original action events. No qualification execution or application source changed.",
+  "status": "passed"
+}

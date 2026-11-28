@@ -1,0 +1,40 @@
+{
+  "schema": "objectshard-m4-final-owner-guide-independent-review-v1",
+  "reviewer": "Specialist B / Workbench interaction author",
+  "verified_at": "2026-11-28T09:19:03.135732+00:00",
+  "qualified_application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "reviewed_documents": [
+    {
+      "path": "docs/operations/objectshard-workbench-playtest.md",
+      "qualified_source_document_sha256": "56bc1b67549863706d5c418281e53a9591ff83aaf4febe8655680753d447258d",
+      "reviewed_repository_addendum_sha256": "b8d32480ef24f3e12608e1102e8707361ade1c25c6db8eb17468a4c6da9c7c6f",
+      "changed": true
+    },
+    {
+      "path": "docs/research/objectshard-m4-workbench.md",
+      "qualified_source_document_sha256": "fbf4942572698c24dbe796b4636d83e233e72d26e570e703e04464c73925be1d",
+      "reviewed_repository_addendum_sha256": "0e4f4645e059d3a442b80522f11a49d2317ff7e78263ae4c6f57e96f19b21a3a",
+      "changed": true
+    }
+  ],
+  "contracts_verified": [
+    "Slice and Drill select one visible owner per placement; endpoint/center owner is preferred when it belongs to the visible groups, and other intersected owners remain for subsequent placements.",
+    "A freehand gesture may service multiple owners sequentially; it is not cross-owner atomic.",
+    "The 33,333us gate applies to continued service (pressed=false); fresh presses and the explicit Slice release request immediate service through the same one-outstanding-transaction guard.",
+    "Save start stores authored recipe and acknowledged terrain erasure. It waits for unresolved edit fences and does not checkpoint moving damage, poses, combustion or inventories.",
+    "Freehand and unadmitted Drill release cancels pending intent. Slice release commits one bounded immutable line intent with a two-second deadline.",
+    "Input cancellation does not roll back already admitted work; the port tracks authoritative refusal/applied/uncertain outcomes. Applied edits have a separate coherent publication fence.",
+    "World replacement retires the old port generation and never replays previous intent into the new scene.",
+    "Changing seed or loading a fresh authored scene resets the weathering pass; re-entering the same unchanged SpinBox value does not."
+  ],
+  "corrections_verified": [
+    "Owner route and tool table now say to hold Drill until admission during live simulation, or pause for precise single clicks.",
+    "The previous unconditional promise that admitted work always completes receipt/publication is replaced with tracked receipt, conditional applied publication and old-generation retirement wording.",
+    "The research document now qualifies ~30 admissions/s as continued-stroke throttling and explicitly covers immediate press/Slice requests.",
+    "The weathering seed reset wording now requires an actual value change."
+  ],
+  "source_edits_by_reviewer": false,
+  "application_sources_unchanged_against_qualified_commit": true,
+  "scope": "Repository documentation addendum reviewed against the exact frozen application source. The shipped evaluator and its original bundled guide remain immutable; the final delivery notes must supply these clarifications without claiming the archive was rewritten.",
+  "status": "passed"
+}

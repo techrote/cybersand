@@ -1,0 +1,516 @@
+{
+  "schema": "objectshard-m4-reliability-mission-ledger-v1",
+  "mission": "OBJECTSHARD-M4-RELIABILITY-CONVERGENCE-001",
+  "started_utc": "2026-11-28T00:59:30Z",
+  "target_close_utc": "2026-11-28T05:14:30Z",
+  "hard_close_utc": "2026-11-28T05:29:30Z",
+  "disposition": "ENGINEERING-QUALIFIED WINDOWS EVALUATOR DELIVERED; Draft/HOLD for physical owner evaluation; performance and later-main acceptance conditions remain",
+  "principal_pr": 754,
+  "integration_branch": "integration/objectshard-m4-mainline-20261122",
+  "initial_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "owner_evaluator_source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "owner_evaluator_run": 45944204842,
+  "owner_evaluator_artifact": 15176676582,
+  "accepted_main_observed": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+  "accepted_main_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
+  "baseline_note": "Accepted RAMCACHE main9920 retained; later merged Strata/main d414 requires separate reconciliation and complete qualification.",
+  "owners": {
+    "root": "scope, mainline reconciliation, integration ref, review and final decision",
+    "physics": "physics bridge, native motion contract, collision/fragment regressions",
+    "throughput": "runtime/port/worker transaction pacing and matched measurements",
+    "presentation_delivery": "overlay/camera/status, graphical tests, CI, packaging, provenance, owner guide"
+  },
+  "gates": {
+    "03:29:30": "stop speculative enhancements; mandatory defects and operational packaging only",
+    "03:59:30": "freeze substantive architecture; combined qualification underway",
+    "04:59:30": "verified delivery and closure priority"
+  },
+  "findings": [
+    {
+      "area": "motion",
+      "finding": "Fixed 0.20-radian bound duplicated in bridge and native coordinator. Geometry-sensitive correction must preserve sweep budgets and exact native acknowledgement."
+    },
+    {
+      "area": "performance",
+      "finding": "Pre-physics receipt pump removes unnecessary callback gate; ordered intermediate segments reuse lease and compact actual pose echoes, while every ACK and full final/failure publication remains. Exact serial transport timing separates queue, service, copy and delivery."
+    },
+    {
+      "area": "delivery",
+      "finding": "Historical full campaign approximately 66 minutes; initiate stable combined source early."
+    },
+    {
+      "area": "barrel",
+      "finding": "Representative independent tower support-cut/detachment witness passes114 checks with unchanged barrel RID,zero displacement and upward velocity.Original owner jump not reproduced;same-compound geometry replacement control also unchanged."
+    },
+    {
+      "area": "motion",
+      "finding": "Natural gravity high-spin impact disproved initial2-cell rotational arc. Final proposed4-cell arc derived from8corner\u22124translation;quarter-turn ceiling and actual corner/sample bounds retained. Both failed2cell and passing4cell evidence preserved."
+    },
+    {
+      "area": "camera",
+      "finding": "Held early-return prevented overlay camera invalidation; fixed independent presentation sync with actual terrain camera uniforms and content clipping."
+    },
+    {
+      "area": "sparse-parent motion",
+      "status": "CORRECTED; final native and Linux/Windows source plus extracted regression PASS",
+      "finding": "26-cell Wood strip eroded through25 exact moving-cell cuts leaves mass1/inertia1/6 at COM(26.5,1.5) in28x3storage. Natural impact angular55.8113, rotation.232286;COMtranslation.287659cells but storage-origin translation6.29239/corner12.8336 triggersHeld. Bounded COM-reference/sweep correction implemented and qualified; carrier coordinates remain unchanged.",
+      "correction": "Measure translation at the physical COM, active occupied-carrier extent plus contact ring, and matching COM interpolation for native occupancy/Water/Sand sweeps. Storage and cell identities unchanged.",
+      "evidence": "Three equivalent tight/eroded-near/eroded-far fragments: 6,223 checks, 1,440 segments and ACKs, 360 semantic intervals; peak natural impact 55.8113 rad/s and 0.232286 rad; occupied trajectory difference <=0.0000612 cell. Native contact/coordinator suites 87,235 checks."
+    },
+    {
+      "area": "paused no-op brush publication",
+      "status": "CORRECTED; final source and extracted actual-renderer brush witnesses PASS (159 checks each)",
+      "finding": "Partially protected Erase changed zero World cells but advanced facade revision55 to56, leaving paused display55 with all queues empty and Ready. Native emission now follows actual coordinator world_material_revision, retaining protected-cell refusal.",
+      "regression": "154 checks: exact protected/empty brush, real paint/erase, same-material state reset and identical repaint, no native/physical time advancement. B observed471 callbacks without incoherence.",
+      "native_binary_sha256": "656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18"
+    },
+    {
+      "area": "stationary tower",
+      "status": "REPRESENTATIVE SUPPORTED REST PROVEN; ORIGINAL POINTER SEQUENCE UNKNOWN",
+      "finding": "Owned facade falls about5cells, contacts installed native stump terrain and naturally sleeps while semantic ticks continue. Exact contact-row edits retain explicit transient-occupancy refusal; renewed fall after erasing those protected cells is not claimed. Other complete-support-removal fixtures prove free collapse."
+    }
+  ],
+  "qualification": [
+    {
+      "kind": "early synthetic immutable RG8 actual-renderer smoke",
+      "source": "60a71358de549877d65d0bcac08ef6e8bb1573c0",
+      "tree": "570492828ca43c8be38a9bce91eeda015cd25c88",
+      "run": 46091912379,
+      "linux": "PASS:27 shader guards,11 texture identity,19 material/camera/clip checks",
+      "windows": "PASS:27 shader guards,11 texture identity,19 material/camera/clip checks; actual ANGLE Microsoft Basic Render Driver",
+      "native_qualification": false
+    },
+    {
+      "kind": "first combined intermediate campaign",
+      "source": "0acc8a8b82b0fbaf14631277c309943988410062",
+      "tree": "d6bc2b20975f94780e5f99bae3a0adc44ea36c5e",
+      "run": 46094371247,
+      "status": "COMPLETED FAILURE",
+      "known_failure": "native-sanitizers stopped at protected shader source compatibility gate before native tests. Append-only reviewed transition added and guard now PASS; ordinary shader variants independently byte-identical. Original failed outcome preserved.",
+      "known_passes": [
+        "Windows native build",
+        "Linux renderer 28 material/crop/rotation, 11 identity, 27 shader checks",
+        "Windows ANGLE renderer same checks"
+      ],
+      "runtime_publication": "not requested for intermediate source",
+      "linux_windows_headless": "Each 62-case campaign failed only fragment_reabsorption and equipment_completion: obsolete fixture delivery premises independently corrected without weakening physical/cutoff assertions.",
+      "graphical_and_package": "Skipped after headless failure; no qualification claim."
+    },
+    {
+      "kind": "final production presentation code actual-renderer preparation and reuse",
+      "source": "e6fe40cacb57cb170057f46d9287b365a01495ee",
+      "run": 46096895793,
+      "status": "PASS Linux and Windows",
+      "checks_each": {
+        "preparation_and_reuse": 13,
+        "material_parity_crop_rotation": 28,
+        "texture_identity": 11,
+        "shader_guards": 27
+      },
+      "windows_adapter": "ANGLE Microsoft Basic Render Driver",
+      "cold_preparation_seconds": 43.458,
+      "first_subsequent_capture_ms": 820.9,
+      "timing_scope": "Frame wait/readback included; not pure compilation or physical owner hardware."
+    },
+    {
+      "kind": "frozen source release campaign",
+      "source": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+      "run": 46099370014,
+      "status": "FAILED native gate; independent platform lanes continue",
+      "presentation_linux": "PASS",
+      "presentation_windows": "PASS",
+      "linux_workbench": "headless physical/regression/profile matrix PASS; graphical running",
+      "windows_native": "PASS source-matched build; DLL execution qualification ongoing",
+      "native_sanitizers": "FAIL: two obsolete single-cell .201-radian refusal assertions in external_fire; chemistry checks did not fail",
+      "package": "not yet available",
+      "publication": "hard-blocked by failed native dependency; exact-ref lease revoked when next source is published"
+    },
+    {
+      "kind": "repaired final campaign",
+      "source": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+      "run": 46101473408,
+      "status": "Native Python qualification-contract gate FAILED; independent platform lanes continue",
+      "production_input_changes_from_54a": 0,
+      "presentation_linux": "PASS",
+      "windows_native": "PASS",
+      "native_sanitizers": "ASan/UBSan131759 checks plus192World cases PASS; benchmark4276351 checks/74 limits PASS; Python contracts84/85 pass, missing brush_revision ordinary-runner registration fails exact-set assertion. Test registration repair underway, no application/native change.",
+      "linux_workbench": "headless physical/regression matrix PASS; actual graphical profile running",
+      "windows_workbench": "headless matrix running",
+      "windows_native_presentation": "PASS actual native Windows camera and brush witnesses",
+      "package": "not yet available",
+      "publication": "Hard-blocked by failed native dependency; request4 unconsumed",
+      "presentation_windows": "PASS"
+    },
+    {
+      "kind": "complete ordinary registry final campaign",
+      "source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+      "tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+      "run": 46103413203,
+      "status": "COMPLETED SUCCESS; all applicable jobs passed; recovery-only jobs skipped",
+      "production_input_changes_from_54a": 0,
+      "delta_from_69": "One existing opt-in runner registry entry plus ledger; no assertions or gates changed.",
+      "package": {
+        "artifact": 15249152001,
+        "artifact_bytes": 96312417,
+        "artifact_sha256": "6018f737aa107bec2bd58f4c146f39fbfc3d176556fb62e962e7d80d0f012c42",
+        "status": "PASS independent archive,1484 payload hashes, source/input provenance and shipped CMD/extracted replay verification"
+      },
+      "publication": "SUCCESS; commit d5bb74cdc8b3350ea85ba7899e46d6d0038074b8; exact source/runtime/input ledgers independently verified",
+      "presentation_linux": "PASS",
+      "presentation_windows": "PASS",
+      "windows_native": "PASS build; independent source ledger and candidate/production manifest match",
+      "windows_dll_sha256": "a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503",
+      "windows_dll_bytes": 7271424,
+      "windows_workbench": {
+        "status": "SUCCESS",
+        "job": 140851846332,
+        "source_and_extracted_status": "PASS; A/B/C independently reviewed exact final receipts and producer/archive identities",
+        "evidence_artifact": 15249057392,
+        "validated_runtime_artifact": 15248578505
+      },
+      "windows_native_presentation": {
+        "status": "PASS",
+        "job": 140851846350,
+        "artifact": 15246911075,
+        "camera_checks": 226,
+        "camera_renderer_callbacks": 246,
+        "brush_checks": 159,
+        "brush_renderer_callbacks": 233,
+        "incoherent_or_foreign_observations": 0,
+        "structural_material_preparation_seconds": 48.759,
+        "preparation_scope": "Hosted software ANGLE after separate65.862s process startup; not physical GPU performance",
+        "independent_visual_review": "C inspected seven final captures; root inspected active-pan-zoom, scene-replacement and restored-paused-before-play with coherent patterns, clip, replacement and authored state."
+      },
+      "native_sanitizers": {
+        "status": "SUCCESS",
+        "job": 140850716159,
+        "artifact": 15246848488,
+        "artifact_bytes": 137535679,
+        "artifact_sha256": "1fd24bbb5cbe3293c09581921887a19eb983d1364516e326136c85bf03b65f35",
+        "independent_receipt_review": "PASS; physics specialist verified artifact bytes/hash and original per-suite records",
+        "asan_ubsan_checks": 131759,
+        "world_cases": 192,
+        "qualification_contracts": 85,
+        "material_tests": 231,
+        "material_suite_seconds": 590.809,
+        "native_benchmark_checks": 4276351,
+        "native_benchmark_limits": 74,
+        "native_material_parity": "PASS compiled metadata; separate executed World cases recorded",
+        "leak_sanitizer": "disabled",
+        "compatibility_compiler_provider": "PASS"
+      },
+      "linux_workbench": {
+        "status": "SUCCESS",
+        "job": 140850716133,
+        "independent_receipt_review": "PASS; final source and production artifact hashes, manifests and receipts independently verified by B"
+      }
+    }
+  ],
+  "delivery": {
+    "status": "VERIFIED",
+    "download": "https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001",
+    "artifact": 15249152001,
+    "inner_archive": "objectshard-workbench-evaluator.zip",
+    "inner_bytes": 96694450,
+    "inner_sha256": "04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7",
+    "manifest_sha256": "1b3eb2e9c2612c2d6af8f87d7e8cfb08f484cecd349347d9642f19c5bf9a05c0",
+    "publication_commit": "d5bb74cdc8b3350ea85ba7899e46d6d0038074b8",
+    "publication_tree": "3b74f65f08290813c582309116376b907b5b4ee1",
+    "independent_payload_files": 1484,
+    "source_headless_cases_per_platform": 65,
+    "source_graphical_profile_cases_per_platform": 52,
+    "actually_rendered_per_platform": 28,
+    "extracted_cases": 32,
+    "extracted_rendered_cases": 5,
+    "clean_cmd_paths": 4,
+    "tamper_refusals": 8,
+    "evidence": "delivery-record.json"
+  },
+  "remaining": [
+    "Physical owner evaluation on declared Windows hardware; original barrel event remains unreproduced.",
+    "Windows practical performance remains below one-body objective; eight-awake30ticks/s objective remains unmet. No acceptance waiver.",
+    "Reconcile newer accepted Strata/main and qualify combined Workbench/launcher/presentation; frozen evaluator remains on9920 baseline."
+  ],
+  "main_reconciliation": {
+    "baseline": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+    "source_conflicts": 0,
+    "runtime_choice": "Source-matched b7 Linux/Windows runtimes published by guarded workflow at d5bb74; root independently verified manifests, hashes and all1504unique source inputs.",
+    "strata": "Closure main d414774ddc582cbc03d74e119937665368dc3476 retained as subsequent reconciliation requirement; neither its candidate code nor unfinished PUBPRES was imported.",
+    "read_only_preview": {
+      "method": "git merge-tree --write-tree --name-only; no branch/worktree merge",
+      "later_main": "18e37259678fbf5097470fff030f5f7f16f52ae6",
+      "conflicts": [
+        "docs/operations/cybersand-codex-development-handover.md",
+        "docs/reference/retrieval-index.md",
+        "docs/reference/status-and-roadmap.md",
+        "godot/scripts/feature_launcher.gd",
+        "godot/scripts/shared_workbench.gd"
+      ],
+      "decision": "Requires explicit shared Workbench/launcher integration and combined qualification; cannot silently substitute new main into the frozen evaluator."
+    }
+  },
+  "early_checkpoint": {
+    "commit": "a77b61f754ee44a648d99dac1f8292d8fc52a0ff",
+    "tree": "23e5b6d7a0b1387c2246c36f0954c96c9724f95b"
+  },
+  "local_checkpoints": {
+    "physics_initial": "10d23d43abdd5c1dd82888cb8b6553cf8ca3f6f0",
+    "physics_natural_fall_correction": "047c89f19b4181fd031cd1114ffba65b4a05ce29",
+    "presentation_initial": "e702b6029de3387cc83d0c4f5c0efd9bb95bd895"
+  },
+  "baseline_checks": {
+    "source": "a77b61f754ee44a648d99dac1f8292d8fc52a0ff",
+    "docs": "PASS after materializing pinned companion docs6a583119; initial missing-companion failure retained outside source",
+    "repository": "PASS after same companion restoration",
+    "historical_m11": "PASS",
+    "retrieval": {
+      "questions": 33,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 31,
+      "mrr_at_k": 0.7146,
+      "scope": "retrieval ranking,not semantic answer correctness"
+    }
+  },
+  "baseline_recheck": {
+    "at_utc": "2026-11-28T01:21:30Z",
+    "strata_pr": 785,
+    "merged": true,
+    "candidate_not_adopted": "9dd0bb5923e5cdabe58ee3a61d9629515a2e12d4",
+    "accepted_main_retained": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+    "last_main_observed_utc": "2026-11-28T03:33:00Z",
+    "last_main_observed": "18e37259678fbf5097470fff030f5f7f16f52ae6",
+    "merged_at_utc": "2026-11-28T03:06:02Z",
+    "final_main_qualification": {
+      "ramcache_strata_run": 46101219741,
+      "ramcache_strata_status": "in_progress",
+      "native_run": 46101219746,
+      "native_status": "in_progress",
+      "gdextension_run": 46101219807,
+      "gdextension_status": "queued"
+    },
+    "closure_observation": {
+      "observed_utc": "2026-11-28T04:54:38Z",
+      "main_sha": "d414774ddc582cbc03d74e119937665368dc3476",
+      "main_tree": "7b947640ef8133b8af627782edc15464f6b3e383",
+      "parent_strata_merge": "18e37259678fbf5097470fff030f5f7f16f52ae6",
+      "change_scope": "PR793 packaging/compiler-cache staging correction; application/native inputs unchanged from18e372 according to merged commit and six-file diff",
+      "original_main_integration_run": 46101219741,
+      "original_main_integration_outcome": "FAILURE; Native and GDExtension gates passed separately",
+      "decision": "Retain9920 qualified baseline for this frozen M4 evaluator. Later Strata/main reconciliation and its complete qualification remain explicit; no unrelated integration adopted.",
+      "latest_main_integration_run": 46105901845,
+      "latest_main_integration_outcome": "FAILURE; separate Native/GDExtension gates PASS"
+    }
+  },
+  "phase": "Final evidence publication and owner handover",
+  "current_source_note": "Exact b7 full source campaign SUCCESS; clean extracted Windows archive independently verified; source-leased Linux/Windows runtimes published and independently matched. Post-publication changes are documentation/evidence only.",
+  "throughput_exploratory": {
+    "tower_clean_pairs": "17.96/19.47 ->53.30/55.15 semantic ticks/s; full6s1/1awake cohort",
+    "eight_clean_pairs": "15.76/14.96 ->29.36/29.75 semantic ticks/s in actual8/8awake cohorts; candidate active portions~3s, not fullwindow",
+    "limitation": "Historical exploratory local shared execution host/headless60callbackcap; superseded by final local matched matrix and final Linux/Windows results. Physical owner performance remains unmeasured."
+  },
+  "last_updated_utc": "2026-11-28T05:09:53.213892Z",
+  "performance_final_local": {
+    "paired_runs": 52,
+    "measurement_source": "19485bbb5e474f0d4d90c40617a36b3120552f5b",
+    "scope": "Headless shared AMD EPYC9V74 host,9 visible CPUs, Godot4.7,60 callback cap; not physical Windows performance",
+    "identical_native_off_ticks_per_second": {
+      "enabled_zero": [
+        37.49,
+        59.94
+      ],
+      "one_awake": [
+        21.22,
+        56.37
+      ],
+      "eight_awake": [
+        15.8,
+        29.74
+      ]
+    },
+    "eight_active_30_objective": "Narrowly unmet; no waiver or rounded-up pass",
+    "final_noop_binary_confirmation": "Three additional workloads481 checks plus independent154-check no-op regression PASS; distinct from paired measurement binary"
+  },
+  "release_request": {
+    "sequence": 4,
+    "mode": "guarded source-leased Linux/Windows publication",
+    "ref_rule": "Hold integration ref unchanged after triggering until publisher terminal",
+    "status": "CONSUMED SUCCESS; guarded publisher terminal; documentation-only final ref update permitted"
+  },
+  "frozen_source": {
+    "commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+    "tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+    "run": 46103413203,
+    "url": "https://github.com/techrote/cybersand/actions/runs/46103413203",
+    "ref_frozen": false,
+    "production_source_frozen": true
+  },
+  "publication_lease_decision": {
+    "previous_source": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+    "previous_run": 46099370014,
+    "reason": "Native dependency failed; publish-runtime requires its success with no always bypass. Existing exact-source guard and force-with-lease(ref:54a) additionally reject any stale write. Root may safely advance to repaired test source without waiting for unrelated running lanes.",
+    "review": "Release specialist verified workflow and producer lease; source/runtime protections unchanged."
+  },
+  "test_contract_repair": {
+    "production_changes": [],
+    "test": "native/tests/test_object_shard_external_fire.cpp",
+    "correction": "Retain Unsupported and unchanged pose/serial assertions above actual geometry-specific angular limit; add fixed .201 accepted pose/serial and unchanged semantic time controls.",
+    "local_sanitizer_results": {
+      "external_fire_checks": 3689,
+      "contact_coordinator_checks": 87235,
+      "failures": 0
+    },
+    "review": "Independent physics, throughput and integration review; original failed run retained."
+  },
+  "next_campaign": {
+    "scope": "Complete pinned native, Linux/Windows Workbench, source/extracted graphical/package qualification and guarded publication",
+    "early_gui_lane": "Additional parallel exact-source Windows native camera/brush lane; full matrices remain mandatory; publisher also requires early lane success",
+    "request_sequence": 4,
+    "reason": "One-line ordinary-runner test registration repair after fully passing native sanitizer/benchmark and actual early Windows GUI; complete full gates unchanged."
+  },
+  "gate_decisions": [
+    {
+      "at_utc": "2026-11-28T03:29:30Z",
+      "elapsed_minutes": 150,
+      "decision": "Stop speculative enhancements. Production changes frozen except demonstrated correctness defects. Complete qualification-contract repair, pinned publication and extracted evaluator verification."
+    },
+    {
+      "at_utc": "2026-11-28T03:59:30Z",
+      "elapsed_minutes": 180,
+      "decision": "Architecture and production source remain frozen at b7d889. Final native gate and early actual Windows native GUI have passed. Only concrete correctness, regression or delivery repairs may change source. Full platform campaign and package verification remain mandatory."
+    },
+    {
+      "at_utc": "2026-11-28T04:59:30Z",
+      "elapsed_minutes": 240,
+      "decision": "All final source gates PASS. Windows clean package, shipped launcher and extracted replay active without reported failure. Prior package tails19m10/19m20 support continuing finalb7; no fallback switch yet. Prioritize verified delivery, provenance and closure; no new development."
+    }
+  ],
+  "test_registry_repair": {
+    "commit": "e977a6e69a709ff0a104c5c8d21d2e9afa6347f1",
+    "file": "tools/ci/run_godot_regressions.py",
+    "change": "Register mounted brush_revision in the existing ObjectShard opt-in case set; exact-set qualification assertion retained. No application/native change.",
+    "contracts": "85 tests:84PASS,1unchanged local PowerShell skip; skipped test passed hosted69.",
+    "actual_flagged_godot": "154checks/0failures,677callbacks,0coherence mismatch, source e977a6e69, native656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18",
+    "review": "Independent B approval: standard feature flag, unchanged assertions/timeouts/fresh-barrel and ordinary-default exclusions."
+  },
+  "evidence_integration_rule": "Guarded publisher completed before all final documentation/evidence integration; application/native production inputs unchanged.",
+  "publication_main_advance_review": {
+    "reviewer": "presentation_delivery",
+    "source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+    "result": "No latest-main ancestry requirement. Publisher binds exact checkout/source/tree, repository/event/ref/workflow/run, complete native/build ledgers, actual producer/target receipts and integration-branch force-with-lease. No main lookup or merge-base test; no guard modified.",
+    "implication": "New Strata main does not itself block the frozen baseline publication. Later Strata reconciliation remains an explicit acceptance condition."
+  },
+  "graphical_lane_scope": {
+    "source_54_and_69_linux": {
+      "headless_matrix_cases": 65,
+      "graphical_profile_lane_cases": 52,
+      "actual_X11_rendered_cases_in_graphical_lane": 28,
+      "headless_helpers_in_graphical_lane": 24
+    },
+    "rule": "Use actual command receipt modes; a graphical-profile lane name does not establish that every case rendered frames."
+  },
+  "supporting_windows54_delivery": {
+    "overall_campaign": "FAILED native fixture gate; not relabelled passed",
+    "windows_source": "65 headless-matrix and52 graphical-profile cases PASS;28 actual rendered in graphical lane",
+    "extracted": "32 cases PASS;5 rendered",
+    "clean_shipped_launch_paths": 4,
+    "provenance_refusals": 8,
+    "artifact": 15247204406,
+    "inner_archive": "objectshard-workbench-evaluator.zip",
+    "inner_bytes": 96692126,
+    "inner_sha256": "726508bd20669db35844d76ccc32a077303bd6152e4c66148facb007878afa9c",
+    "role": "Verified owner-launchable fallback; finalb7 remains intended qualified delivery",
+    "headless_tower_ticks_per_second": 29.82,
+    "headless_eight_awake_ticks_per_second": 29.59,
+    "actual_ANGLE_tower_ticks_per_second": 16.66,
+    "actual_ANGLE_eight_awake_ticks_per_second": 13.13,
+    "performance_scope": "Hosted Windows software ANGLE; not physical owner performance or a matched old/new platform comparison"
+  },
+  "supporting_windows54_coordination": {
+    "scope": "Existing recorded source54 headless tower window; no new experiment or physical-machine claim",
+    "native_ticks": 179,
+    "window_seconds": 6.001865,
+    "process_callbacks_per_second": 60.31,
+    "callbacks_per_tick": 2.022,
+    "serialized_controls_per_tick": 5,
+    "control_round_trip_ms_per_tick": 22.369,
+    "queue_ms_per_tick": 5.755,
+    "native_owner_service_ms_per_tick": 5.314,
+    "publication_copy_ms_per_tick": 1.55,
+    "main_delivery_ms_per_tick": 9.75,
+    "rapier_step_ms_per_tick": 0.421,
+    "pose_capture_ms_per_tick": 0.226,
+    "pump_time_budget_exhausted": 376,
+    "pump_polls": 723,
+    "pump_operation_cap_exhausted": 0,
+    "finding": "Queue plus Main delivery dominates recorded control round trips; no OS timer cause inferred and no8ms budget change authorized at freeze."
+  },
+  "root_followup_doc_edits": [
+    "integration-review.md",
+    "mission-ledger.json",
+    "m5-handover.md (Windows coordination guidance by B)",
+    "final-producer-inputs-root.json",
+    "strata-later-reconciliation-preview.json"
+  ],
+  "observed_windows_campaign_timing": {
+    "source54": {
+      "source_matrix_seconds": 3936,
+      "package_launcher_replay_seconds": 1150,
+      "source_started_utc": "2026-11-28T02:47:25Z",
+      "source_completed_utc": "2026-11-28T03:53:01Z",
+      "package_completed_utc": "2026-11-28T04:12:11Z"
+    },
+    "source69": {
+      "source_started_utc": "2026-11-28T03:17:50Z",
+      "source_completed_utc": "2026-11-28T04:31:39Z",
+      "source_matrix_seconds": 4429,
+      "package_status": "Historical supporting package completed; not final delivery"
+    },
+    "final_b7": "COMPLETED SUCCESS; final package, independent audit and runtime publication complete before target closure"
+  },
+  "closure_contingency": {
+    "hard_deadline_utc": "2026-11-28T05:29:30Z",
+    "ref_rule": "Preserve b7 lease while publisher can run",
+    "fallback": "Verified source54 package with its failed native gate explicit; do not claim full final qualification",
+    "evidence_rule": "If final publication is still active at deadline, preserve consolidated documentation on a separate audit-only branch without changing the leased integration ref.",
+    "status": "Not invoked; final b7 delivery and publication completed"
+  },
+  "integrated_evidence_commits": {
+    "physics_registry_repair": "1a79606a7",
+    "presentation_custody_checkpoint": "b2defe4cb",
+    "throughput_linux54_custody": "7a2314ed2",
+    "throughput_linux69_custody_followup": "6a2bb2ef2",
+    "throughput_execution_mode_followup": "0f0d953c6",
+    "presentation_final_gui_followup": "3b0d6bdbc",
+    "physics_final_native_review": "6d39a05c4",
+    "throughput_final_linux": "02fd19ddd",
+    "physics_windows54_support": "c8226acf0",
+    "throughput_windows54_support": "e17042695",
+    "presentation_full_fallback_custody": "619013f7b",
+    "throughput_windows54_timing": "a3d43f8b2",
+    "presentation_closure_baseline_followup": "b9cc2916a4",
+    "physics_final_windows": "316d23dfacc4d5d34465f23ed11453426dd7fb8b",
+    "throughput_final_windows": "40115215ab",
+    "presentation_final_delivery": "af199b857e"
+  },
+  "pending_evidence_commits": {},
+  "performance_final_windows": {
+    "scope": "Hosted headless and ANGLE Microsoft Basic Render Driver; not physical owner hardware",
+    "headless_tower_off_on": [
+      29.66,
+      30.47
+    ],
+    "headless_eight_awake": 29.12,
+    "rendered_tower_off_on": [
+      15.53,
+      15.62
+    ],
+    "rendered_eight_awake": 13.08,
+    "controls_ms_per_tick": 22.373,
+    "queue_and_main_delivery_ms_per_tick": 15.629,
+    "rapier_ms_per_tick": 0.397,
+    "process_callbacks_per_second": 60.32,
+    "cause_limit": "Measured coordination cost; no OS-timer cause claimed",
+    "evidence": "windows-final-b7-control-timing.json",
+    "timing_scope": "Final Windows headless tower, recording-off sample; serial controls partition queue, native service, publication/copy and Main delivery; Rapier separately measured, not additive."
+  }
+}

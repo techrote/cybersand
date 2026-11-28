@@ -1,0 +1,8 @@
+{
+  "schema": "objectshard-m4-production-request-v1",
+  "family": "objectshard-m4",
+  "variant": "ordinary-workbench",
+  "scope": "linux-windows-source-matched-native-runtime",
+  "intent": "publish-source-matched-runtimes",
+  "request_sequence": 7
+}

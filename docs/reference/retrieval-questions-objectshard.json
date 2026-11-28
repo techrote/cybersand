@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "purpose": "Additive questions for Draft/HOLD ObjectShard M0-M3 candidates; no current-main or owner-acceptance implication.",
+  "questions": [
+    {
+      "id": "OBJECTSHARD01",
+      "query": "How does ObjectShard promotion transfer native material ownership and activate Rapier without duplicate collision?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "One exclusive Lab owner preflights and transfers exact inventory while both clocks are paused.",
+        "Actual terrain installation and occupancy application precede BodyActivated; queued receipts are insufficient.",
+        "This is a Draft/HOLD candidate, not ordinary production behavior."
+      ],
+      "sources": [
+        "../../native/src/object_shard_coordinator.cpp",
+        "../../godot/scripts/object_shard_physics_bridge.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD02",
+      "query": "Does a burning ObjectShard emit real Fire, and can external Water extinguish Wood after contact has ended?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "Wood uses its shared two-tick state_b lifecycle and creates Fire32 in a sole occupied product carrier.",
+        "Exact output transfers into World, where ordinary Fire becomes Smoke.",
+        "Historical non-consuming Water exposure is incarnation-bound, expiring and consumed once; Water remains World-owned."
+      ],
+      "sources": [
+        "../../native/include/cybersand/material_lifecycle.hpp",
+        "../../native/src/object_shard_coordinator.cpp"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD03",
+      "query": "What makes ObjectShard Sand lodging physical and prevents side entry or overlap relocation from laundering a transfer?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "Whole-cell Sand requires an open one-to-three-cell pocket and valid bounded pose sweep.",
+        "Invalid ingress history survives budget exhaustion and stationary frames until the aperture clears.",
+        "Mechanical relocation excludes pocket columns; cargo retains exact state and temperature separately from structural bonds."
+      ],
+      "sources": [
+        "../../native/include/cybersand/object_shard_contact.hpp",
+        "../../native/src/object_shard_coordinator.cpp"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD04",
+      "query": "How do I launch and verify the ObjectShard Windows Lab and record scenarios A through D?",
+      "canonical": [
+        "operations/objectshard-lab-playtest.md"
+      ],
+      "facts": [
+        "Extract the complete source-bound evaluator and use Open ObjectShard Lab.cmd.",
+        "The manifest binds source, DLL, pinned engine, selected Rapier and complete file inventory.",
+        "Windows automation and rendered evidence do not establish the owner's physical Windows11/NVIDIA acceptance."
+      ],
+      "sources": [
+        "../../tools/objectshard/package_windows_lab.py",
+        "../../tools/objectshard/qualify_lab.py"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD05",
+      "query": "Does ObjectShard M2 implement fracture, arbitrary fluid solver transfer, internal transport or durable persistence?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "These capabilities are unsupported; advanced solver sidecars remain World-owned.",
+        "Disconnected islands continue chemistry in one declared split_pending compound.",
+        "Products and cargo retain a draining owner after the last rigid cell disappears; reset disposal is explicit."
+      ],
+      "sources": [
+        "../../native/include/cybersand/object_shard.hpp",
+        "../../native/src/object_shard_coordinator.cpp"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD06",
+      "query": "Which final ObjectShard M2 Linux and Windows checks passed, and which performance and acceptance gaps keep it on HOLD?",
+      "canonical": [
+        "research/objectshard-001.md"
+      ],
+      "facts": [
+        "The exact 8f55a4e runtime source passed the Linux and Windows Lab campaign and delivered-package replay.",
+        "The final native matrix retains ten of 74 timing-limit failures; the bounded matched control does not replace that failed result.",
+        "Windows 11/NVIDIA physical acceptance and production runtime publication remain outstanding; all PRs remain Draft/HOLD."
+      ],
+      "sources": [
+        "../audits/2026-11-22-objectshard-final-acceptance.md",
+        "../audits/2026-11-22-objectshard-portable-math-performance-delta.md"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD07",
+      "query": "Does ObjectShard M3 attach to the ordinary Workbench World and its existing physics roster?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "The executable rehearsal owns one real native World on one exclusive worker and real Rapier on main.",
+        "The ordinary GCR roster fixes geometry and mass; no attach_world API exists.",
+        "The feature launcher opens a separate experimental scene; production Workbench adoption is not claimed."
+      ],
+      "sources": [
+        "../../godot/scripts/object_shard_native_worker.gd",
+        "../../godot/scripts/object_shard_worker_host.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD08",
+      "query": "How does continuous ObjectShard editing prevent stale moving cuts and simulation starvation?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "Input retains session, body generation, local cell, incarnation, pose and material revisions.",
+        "Changed targets receive an explicit TargetChanged refusal; an old input is never re-hit on another cell.",
+        "At most four queued actions precede a requested semantic tick; bounded queues expose backpressure."
+      ],
+      "sources": [
+        "../../godot/scripts/object_shard_worker_host.gd",
+        "../../godot/tests/test_object_shard_worker_input_fences.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARD09",
+      "query": "Which repaired ObjectShard M3 Windows evaluator is qualified after the F2 shutdown fix, and what remains outside acceptance?",
+      "canonical": [
+        "research/objectshard-m3-preflight.md"
+      ],
+      "facts": [
+        "Qualified source e034f229 and campaign 44999117090 pass 41 Linux, 41 Windows and 32 extracted-package cases; the 68235b12 package is superseded.",
+        "The repaired owner ZIP is 93168827 bytes, SHA-256 61678a8c8ae3ab8e3b05cbb624fe15b4b259710fd879aa209542583a78b74a0b.",
+        "F2 retains the owner until disposal and join; repeated navigation, close priority and stale completion are tested.",
+        "The separate-World rehearsal does not establish ordinary Workbench attachment, production provenance, physical Windows11/NVIDIA acceptance or uniform low-latency play; final rendered burst maximum is 1.929452 seconds."
+      ],
+      "sources": [
+        "../audits/2026-11-22-objectshard-m3-final-qualification.md",
+        "../../godot/tests/test_object_shard_worker_navigation.gd"
+      ]
+    }
+  ]
+}

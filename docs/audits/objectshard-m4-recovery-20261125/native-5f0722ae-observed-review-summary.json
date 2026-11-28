@@ -1,0 +1,64 @@
+{
+  "schema": "objectshard-m4-final-native-review-observed-v1",
+  "status": "passed-independent-native-archive-before-executor-loss",
+  "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+  "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78",
+  "workflow_run": 45530425519,
+  "workflow_attempt": 1,
+  "native_job": 138924057320,
+  "native_job_terminal_result": "success",
+  "artifact": {
+    "id": 14985522687,
+    "bytes": 135240202,
+    "sha256": "e4928403e5fd033768f50cfde4a576aef4475eae1d895d67f5156ed79e6ad7e7"
+  },
+  "inspector": {
+    "path": "docs/audits/objectshard-m4-recovery-20261125/review_native_candidate.py",
+    "sha256": "75578c66675b6ad3a60e230f0b8bbee437ee46570f162cd2d458188a3f8b4844",
+    "source_review": "Independently approved by Specialist C; six adversarial archive controls previously refused.",
+    "observed_process_exit": 0,
+    "observed_stdout": {
+      "status": "passed-independent-native-archive",
+      "source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "input_counts": [
+        129,
+        95
+      ],
+      "native_checks": 96500,
+      "world_cases": 192,
+      "benchmark_checks": 4276351,
+      "budget_limits": 74
+    }
+  },
+  "input_specifications": [
+    {
+      "kind": "native",
+      "count": 129,
+      "input_digest": "6d223427a17041550e9755408f9e1249f715058f6eeda67ca0c2de550be11e32",
+      "member": "native/20261125T020547.167977Z-6d223427a170/inputs.json",
+      "sha256": "79c01bacc2877d1a869d5ffbd006066f0417fb5a368e774280ad5bb4ff167ff3"
+    },
+    {
+      "kind": "benchmark",
+      "count": 95,
+      "input_digest": "869e271b76504c9bca324f612fd732fc9e893e6398ef1e6b1eeb5ee722e37da3",
+      "member": "retained-lab-native-budgets/20261125T021556.045531Z-869e271b7650/inputs.json",
+      "sha256": "3d8a9abbab187c416c768e52023a84a41a177e3f052b68089511b14bdfe85136"
+    }
+  ],
+  "benchmark": {
+    "cpu_model": "Intel(R) Xeon(R) 6975P-C",
+    "platform": "Linux-7.0.0-1014-aws-x86_64-with-glibc2.39",
+    "ticks": 1200,
+    "repetitions": 3,
+    "checks": 4276351,
+    "limits_passed": 74,
+    "binary_sha256": "93866b3dd576112ee8f1463284595d89674e4ae8a19799bc85f2b82c7dda40ec",
+    "log_sha256": "dfbac13405c4a2ffc30f90037014fd762c6ef64d69176ebc6b89e3867bcb67d3",
+    "report_sha256": "4ba575e4fcc2234ea4075c0073825da9075c535d190e9b6df3efb225f96da689"
+  },
+  "full_report_disposition": "The inspector emitted native-5f0722ae-independent-review.json successfully and the complete positive footer was observed. The full report was not stored in cloud session state before the next executor disconnect; it must be recovered or regenerated from the same pinned original archive and inspector, not reconstructed from this summary.",
+  "material_parity_disposition": "material-native-parity.json was extracted and its PASS/schema/compiled-query fields observed. The follow-up eight-input Git binding command could not start because executor transport disconnected; that independent final parity binding is not claimed here.",
+  "sand_pocket_disposition": "One external ordinary Sand-pocket process had been launched, but no natural completion or terminal receipt was observed before executor loss. No positive ordinary lodging claim is made.",
+  "scope": "Retained native artifact review, not a new native execution, actual Rapier benchmark, Workbench aggregate, package or physical NVIDIA qualification. Overall hosted application campaign was still running at capture."
+}

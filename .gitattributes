@@ -29,6 +29,9 @@
 # Retained raw campaign reports preserve their original target-host bytes.
 docs/audits/play-auto002-2026-10-28/windows-campaign.json -text whitespace=cr-at-eol
 docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
+# Preserve exact target-host receipt/log bytes and their audited SHA-256 values.
+docs/audits/objectshard-m3-20261122/baseline-68235b12/** -text whitespace=cr-at-eol
+docs/audits/objectshard-m3-20261122/final-qualification/** -text whitespace=cr-at-eol
 tools/swarm45/fixtures/ui_process_q5/* -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yml text eol=lf

@@ -1,0 +1,192 @@
+{
+  "schema": "objectshard-cross-review-custody-v1",
+  "scope": "Frozen negative and repaired Fire/Sand boundary experiments; original source identities are in review-ledger.json. Executables remain local and their hashes are in original execution receipts.",
+  "files": [
+    {
+      "retained": "final-delta-results.json",
+      "original_name": "final-delta-results.json",
+      "sha256": "28c2e64f7e314a007949e9b4fd602131c79257f22424385516442035874a4d28",
+      "bytes": 2113
+    },
+    {
+      "retained": "fire_crossdomain_probe.cpp",
+      "original_name": "fire_crossdomain_probe.cpp",
+      "sha256": "29e105e6bdb57945ce34c514632acece232680f463e6a99f55d21c642dbc9dff",
+      "bytes": 1248
+    },
+    {
+      "retained": "fire_crossdomain_probe.log",
+      "original_name": "fire_crossdomain_probe.log",
+      "sha256": "4820fca4a11a27e580c138e2a2af81f2ddb41b4fca365f783026752e8cde21de",
+      "bytes": 130
+    },
+    {
+      "retained": "fire_crossdomain_probe_finaldelta.cpp",
+      "original_name": "fire_crossdomain_probe_finaldelta.cpp",
+      "sha256": "fcc3286444fb792e68fdbf08b4416e202cc9ca3ec07e5937a35276a3f5fb10bc",
+      "bytes": 1260
+    },
+    {
+      "retained": "fire_crossdomain_probe_finaldelta.log",
+      "original_name": "fire_crossdomain_probe_finaldelta.log",
+      "sha256": "4a81b1c74c4623fca7c89a68af62385c13815b139e93d368af5cf6f2f2b4f73b",
+      "bytes": 85
+    },
+    {
+      "retained": "fire_refusal_retry_probe.cpp",
+      "original_name": "fire_refusal_retry_probe.cpp",
+      "sha256": "602bed50ff83e0a4d29f7a6df846b13f9db3cfab9475f04fc655823f5c8a35a2",
+      "bytes": 1287
+    },
+    {
+      "retained": "fire_refusal_retry_probe.log",
+      "original_name": "fire_refusal_retry_probe.log",
+      "sha256": "6209046e69b5c9dd98884aef3bd150e12eff0e2cd96531d7580d2fadb0023e29",
+      "bytes": 23
+    },
+    {
+      "retained": "fire_relocation_probe.cpp",
+      "original_name": "fire_relocation_probe.cpp",
+      "sha256": "090b81672abb6788c53b80fed2dab6a3085a861ae2ea499d4d9ba53211c874ef",
+      "bytes": 1245
+    },
+    {
+      "retained": "fire_relocation_probe.log",
+      "original_name": "fire_relocation_probe.log",
+      "sha256": "be5207ee4237afac35741364dc52557d0600528e1609419e2d1c689b803ce5bf",
+      "bytes": 226
+    },
+    {
+      "retained": "fire_relocation_probe_repaired.cpp",
+      "original_name": "fire_relocation_probe_repaired.cpp",
+      "sha256": "92f5d573cd978843000374577859684378873dd92826ea1bc112f95f59dfce23",
+      "bytes": 1255
+    },
+    {
+      "retained": "fire_relocation_probe_repaired.log",
+      "original_name": "fire_relocation_probe_repaired.log",
+      "sha256": "f945169d62d7b98ba58e7b44227dddef88a6776b26cf593e9be166402a84f788",
+      "bytes": 158
+    },
+    {
+      "retained": "fire_relocation_probe_repaired_finaldelta.cpp",
+      "original_name": "fire_relocation_probe_repaired_finaldelta.cpp",
+      "sha256": "ae00d0f2d6b37789ad6580c5d3e09fc3d659b5925bae9f57e8eb670241efcf9a",
+      "bytes": 1267
+    },
+    {
+      "retained": "fire_relocation_probe_repaired_finaldelta.log",
+      "original_name": "fire_relocation_probe_repaired_finaldelta.log",
+      "sha256": "f945169d62d7b98ba58e7b44227dddef88a6776b26cf593e9be166402a84f788",
+      "bytes": 158
+    },
+    {
+      "retained": "fire_relocation_two_shards.cpp",
+      "original_name": "fire_relocation_two_shards.cpp",
+      "sha256": "068a9a9e1709949a54b3034c0a45f26c8b3b4af56a3536e1aab7ff0ef8f19b2e",
+      "bytes": 1484
+    },
+    {
+      "retained": "fire_relocation_two_shards.log",
+      "original_name": "fire_relocation_two_shards.log",
+      "sha256": "74956991bc014e2bf27684aef945ddf0969b9f866d93d452faf5016c79ee7b1d",
+      "bytes": 231
+    },
+    {
+      "retained": "fire_relocation_two_shards_repaired.cpp",
+      "original_name": "fire_relocation_two_shards_repaired.cpp",
+      "sha256": "a96aecc7a41691044df851f6d744faa2539967860c7f0c9153077f90fee4e27a",
+      "bytes": 1494
+    },
+    {
+      "retained": "fire_relocation_two_shards_repaired.log",
+      "original_name": "fire_relocation_two_shards_repaired.log",
+      "sha256": "ab73dad536039bd2ff697e5513a73124bba109edfef9ab8350feff353cc51d40",
+      "bytes": 107
+    },
+    {
+      "retained": "fire_relocation_two_shards_repaired_finaldelta.cpp",
+      "original_name": "fire_relocation_two_shards_repaired_finaldelta.cpp",
+      "sha256": "2523bcf2b63eb892fcf4a9c95cd5409a862375ec8354dd926f3a8bcb931e86d1",
+      "bytes": 1506
+    },
+    {
+      "retained": "fire_relocation_two_shards_repaired_finaldelta.log",
+      "original_name": "fire_relocation_two_shards_repaired_finaldelta.log",
+      "sha256": "ab73dad536039bd2ff697e5513a73124bba109edfef9ab8350feff353cc51d40",
+      "bytes": 107
+    },
+    {
+      "retained": "review-ledger.json",
+      "original_name": "review-ledger.json",
+      "sha256": "9b4325ab6b98c41bc219c76cd1eb40cbe63f3cf8e99adf71fda7501ab30cfb34",
+      "bytes": 3855
+    },
+    {
+      "retained": "review-ledger.txt",
+      "original_name": "review-ledger.md",
+      "sha256": "1ad61e9eb943bd85ba6dc1bd9db99c9be5611ec0180c8183b203595c2d96a406",
+      "bytes": 3803
+    },
+    {
+      "retained": "sand_refusal_probe.cpp",
+      "original_name": "sand_refusal_probe.cpp",
+      "sha256": "c32b455217c918b68500e1d5bee4358f1d8b7107513011a9b8fb63b68c883a02",
+      "bytes": 1586
+    },
+    {
+      "retained": "sand_refusal_probe.log",
+      "original_name": "sand_refusal_probe.log",
+      "sha256": "17d1a0c0a42fa08b1662ecfc588d5f5d5c13091cbad8058b0dd5c2ac763e4370",
+      "bytes": 314
+    },
+    {
+      "retained": "sand_refusal_probe_v2.cpp",
+      "original_name": "sand_refusal_probe_v2.cpp",
+      "sha256": "d022eefed614450415ecf544ec209da8de0fa07fa560d13218f115bea6f8853a",
+      "bytes": 1586
+    },
+    {
+      "retained": "sand_refusal_probe_v2.log",
+      "original_name": "sand_refusal_probe_v2.log",
+      "sha256": "f484075e02b94d582dd2d96ba56e4fff4ae317656fe1d9aa3102c3e99238adc0",
+      "bytes": 199
+    },
+    {
+      "retained": "sand_refusal_probe_v2_repaired.cpp",
+      "original_name": "sand_refusal_probe_v2_repaired.cpp",
+      "sha256": "833dfcd615d24fbfc1faedf073bd9d0766fecf0b44713f831ae576f5620e9f23",
+      "bytes": 1590
+    },
+    {
+      "retained": "sand_refusal_probe_v2_repaired.log",
+      "original_name": "sand_refusal_probe_v2_repaired.log",
+      "sha256": "cee6885b73bf40af2eaa9ed11bdb4b1d92957ffafa130b788a3bfcaf60bbb067",
+      "bytes": 97
+    },
+    {
+      "retained": "sand_refusal_probe_v2_repaired_finaldelta.cpp",
+      "original_name": "sand_refusal_probe_v2_repaired_finaldelta.cpp",
+      "sha256": "74f7738f769acdd39290da8c0cf39146d2bcfcdb5f30c8ddc8c867d06402df43",
+      "bytes": 1602
+    },
+    {
+      "retained": "sand_refusal_probe_v2_repaired_finaldelta.log",
+      "original_name": "sand_refusal_probe_v2_repaired_finaldelta.log",
+      "sha256": "cee6885b73bf40af2eaa9ed11bdb4b1d92957ffafa130b788a3bfcaf60bbb067",
+      "bytes": 97
+    },
+    {
+      "retained": "water_fastpath_probe.cpp",
+      "original_name": "water_fastpath_probe.cpp",
+      "sha256": "71604059a7fc488a756dda3aefcdbeb8863263ad8bec4c48b58ce273e58352de",
+      "bytes": 1258
+    },
+    {
+      "retained": "water_fastpath_probe.log",
+      "original_name": "water_fastpath_probe.log",
+      "sha256": "e78fc63851d18e61121f567f069056ecd6eee3bb0619ffb3d07affc66ae67887",
+      "bytes": 23
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema": "objectshard-independent-ordinary-discovery-negative-v1",
+  "qualification": "Local pinned4.7 and source-equivalent sealed514 runtime; real negative outside package environment, not a full ordinary CI run",
+  "source": "44abd754d014a44078a41792d2d46967a9b8cf30",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "64e67fc021a202f245fb5bdd49a21eb5394ea557147b68cf21053aa3432040dd",
+  "missing_environment": [
+    "CYBERSAND_PACKAGE_MANIFEST",
+    "OBJECTSHARD_LAUNCH_RECEIPT"
+  ],
+  "rows": [
+    {
+      "name": "test_object_shard_package_boot",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-custody/ordinary-probe-project",
+        "--script",
+        "res://tests/test_object_shard_package_boot.gd"
+      ],
+      "elapsed_seconds": 1.8586159230035264,
+      "returncode": 1,
+      "log": "test_object_shard_package_boot-ordinary-negative.log",
+      "log_sha256": "d23d591fb7e06d112c7c2410b5e4cf966c8183b988736c953ec10ea2abcb09df",
+      "test_sha256": "3be628e30b35ab57ea6f6ddec9dc06ebc0f9dfc38bbc67e0e10c6b423b794ff1",
+      "diagnostic_lines": [
+        "ERROR: Parse JSON failed. Error at line 0: Unknown error getting token",
+        "ERROR: Launcher supplies the verified package source identity",
+        "ERROR: Unable to retain package launch receipt"
+      ]
+    },
+    {
+      "name": "test_object_shard_worker_package_boot",
+      "command": [
+        "/workspace/scratch/4dc696b25568/cybersand-objectshard-001r/build/godot-4.7-linux/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/review-custody/ordinary-probe-project",
+        "--script",
+        "res://tests/test_object_shard_worker_package_boot.gd"
+      ],
+      "elapsed_seconds": 0.9739975200063782,
+      "returncode": 1,
+      "log": "test_object_shard_worker_package_boot-ordinary-negative.log",
+      "log_sha256": "01e9deab80cd0390754a484801c4035f3947e1db441087524572e5af8e1677b1",
+      "test_sha256": "e6c864141b31fc9ef4386e756215ef2226d66df6bff9212c389c3471d73721e0",
+      "diagnostic_lines": [
+        "ERROR: Parse JSON failed. Error at line 0: Unknown error getting token",
+        "ERROR: Preflight launcher supplies its verified exact package source",
+        "ERROR: Delivered manifest identifies the standalone host without claiming production Workbench integration",
+        "ERROR: Unable to retain M3 package launch receipt"
+      ]
+    }
+  ]
+}

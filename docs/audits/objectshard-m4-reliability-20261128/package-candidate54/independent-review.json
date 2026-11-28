@@ -1,0 +1,136 @@
+{
+  "entry": {
+    "host": "ordinary-workbench",
+    "launcher": "Open Workbench.cmd",
+    "opt_in": true,
+    "rendering_driver": "opengl3_angle",
+    "scenario_ids": [
+      "tower",
+      "viaduct",
+      "timber",
+      "mixed",
+      "stress"
+    ],
+    "scene": "godot/main.tscn",
+    "startup_scene": "godot/feature_launcher.tscn"
+  },
+  "execution_inputs_verified": 1467,
+  "godot": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "archive_size": 83764371,
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "independent_extraction": "/workspace/scratch/9b78ce6eff8d/evidence/candidate54-independent-extraction/Workbench independent extraction",
+  "inner_archive_bytes": 96692126,
+  "inner_archive_filename": "objectshard-workbench-evaluator.zip",
+  "inner_archive_sha256": "726508bd20669db35844d76ccc32a077303bd6152e4c66148facb007878afa9c",
+  "lanes": {
+    "graphical": {
+      "cases": 52,
+      "headless_cases": 24,
+      "receipt_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "rendered_cases": 28,
+      "status": "passed"
+    },
+    "headless": {
+      "cases": 65,
+      "headless_cases": 65,
+      "receipt_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "rendered_cases": 0,
+      "status": "passed"
+    },
+    "package-replay": {
+      "cases": 32,
+      "headless_cases": 27,
+      "receipt_sha256": "ff223650bf2547217a8d90db9c5f8cd8464e5cfbcb69edfab83f070575dd2759",
+      "rendered_cases": 5,
+      "status": "passed"
+    }
+  },
+  "launcher_cases": [
+    {
+      "case": "spaces",
+      "checks": 73,
+      "commands": [
+        {
+          "exit_code": 0,
+          "script": "Verify Workbench.cmd",
+          "seconds": 5.875
+        },
+        {
+          "exit_code": 0,
+          "script": "Open Workbench.cmd",
+          "seconds": 117.3130000000001
+        }
+      ]
+    },
+    {
+      "case": "parentheses",
+      "checks": 73,
+      "commands": [
+        {
+          "exit_code": 0,
+          "script": "Verify Workbench.cmd",
+          "seconds": 1.280999999999949
+        },
+        {
+          "exit_code": 0,
+          "script": "Open Workbench.cmd",
+          "seconds": 116.79699999999957
+        }
+      ]
+    },
+    {
+      "case": "unicode",
+      "checks": 73,
+      "commands": [
+        {
+          "exit_code": 0,
+          "script": "Verify Workbench.cmd",
+          "seconds": 1.2650000000003274
+        },
+        {
+          "exit_code": 0,
+          "script": "Open Workbench.cmd",
+          "seconds": 122.3130000000001
+        }
+      ]
+    },
+    {
+      "case": "nested",
+      "checks": 73,
+      "commands": [
+        {
+          "exit_code": 0,
+          "script": "Verify Workbench.cmd",
+          "seconds": 1.344000000000051
+        },
+        {
+          "exit_code": 0,
+          "script": "Open Workbench.cmd",
+          "seconds": 116.09400000000005
+        }
+      ]
+    }
+  ],
+  "launcher_receipt_sha256": "eeecad76542c6dcc5de6c3cd0b5b40299b2c9c7c2406264de907c40c54620145",
+  "manifest_sha256": "7ffe2f536c0f7b5787c153dc78de8ad968af742401a79bfe6f0722ea49076885",
+  "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+  "outer_archive_bytes": 96310377,
+  "outer_archive_sha256": "61de96bff6eda5680846b2635ee1284e0e1ddcb945f6734e0bf7d5cccfc286d9",
+  "packaged_input_locations_verified": 1179,
+  "provenance_refusal_cases": 8,
+  "rapier": {
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "schema": "objectshard-m4-independent-delivery-review-v1",
+  "scope": "Independent Linux archive/source/hash audit joined to actual Windows source and clean shipped-CMD execution receipts; does not execute Windows locally or establish physical owner acceptance",
+  "source_commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+  "source_inputs_verified": 126,
+  "source_tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+  "status": "passed",
+  "verified_files": 1483
+}

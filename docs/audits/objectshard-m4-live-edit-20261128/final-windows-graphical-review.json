@@ -1,0 +1,612 @@
+{
+  "schema": "objectshard-live-edit-independent-final-windows-matrix-v1",
+  "status": "passed",
+  "reviewer": "Specialist C",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "artifact_id": 15258426798,
+  "artifact_sha256": "0f749d26daf1eb0507e898ea5efacd3339851102261c355e67f9bb9b14fbc75c",
+  "artifact_bytes": 34397811,
+  "qualification_sha256": "56d9bae450ab3ed5a35fe0e394e0d0372c5ded1396806f92623d4ecaff855866",
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "case_count": 65,
+  "cases": [
+    {
+      "name": "m4_workbench_import",
+      "seconds": 16.357,
+      "checks": null,
+      "schema": null,
+      "log_sha256": "bb43fc5cc38797cace0c801284fc410a49c582bcf61b80dc45d3c89dc2f366b1",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_lab",
+      "seconds": 4.961,
+      "checks": 379,
+      "schema": "objectshard-lab-integration-test-v1",
+      "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_fragment_motion",
+      "seconds": 0.583,
+      "checks": 386,
+      "schema": "objectshard-fragment-motion-v1",
+      "log_sha256": "844de5041017cab0c02035858bc184470ebc6bf28de7078d0c3a8d79c007da07",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_physics_bridge",
+      "seconds": 0.404,
+      "checks": 28,
+      "schema": "objectshard-physics-bridge-test-v1",
+      "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_rest_contacts",
+      "seconds": 0.678,
+      "checks": 37,
+      "schema": "objectshard-rest-contact-test-v1",
+      "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_remote_barrel",
+      "seconds": 19.555,
+      "checks": 118,
+      "schema": "objectshard-m4-remote-barrel-v1",
+      "log_sha256": "2eefdf2633d3e65cdc595486594f37f06df8ce54480c98d9d20b8e4e7e8542e7",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_small_fragment_chain",
+      "seconds": 6.998,
+      "checks": 8471,
+      "schema": "objectshard-m4-small-fragment-native-chain-v1",
+      "log_sha256": "c470acee0aa215914f733283f9ea1aebd5e2e2e23fe0de021ea7b30935cd6788",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_sparse_parent_motion",
+      "seconds": 4.673,
+      "checks": 6223,
+      "schema": "objectshard-m4-sparse-parent-motion-v1",
+      "log_sha256": "9efdac4b272b9d1f52f95a03507c4116dcd60447130338b5acb2b84350de4c3f",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_fresh_barrel",
+      "seconds": 34.691,
+      "checks": 212,
+      "schema": "objectshard-m4-fresh-barrel-v1",
+      "log_sha256": "f9fcb60c9f80d977bba02a1820bc763fb9f97d95f08cd0228e27f853958752d1",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_brush_revision",
+      "seconds": 162.703,
+      "checks": 159,
+      "schema": "objectshard-m4-brush-revision-v1",
+      "log_sha256": "da1d1c06b019e0b8dbe375dc50fb08886d5d5df589142a53a8829b7ba0a0f8b6",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_camera_lifecycle",
+      "seconds": 175.412,
+      "checks": 230,
+      "schema": "objectshard-m4-camera-lifecycle-v1",
+      "log_sha256": "941b40193b054d2612b92a2c1d275837f5e990a8e62d4a5fa77992cbda8cf95d",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_receipt_scheduling",
+      "seconds": 14.74,
+      "checks": 155,
+      "schema": "objectshard-m4-receipt-scheduling-v1",
+      "log_sha256": "492e2d07fde562078ab60674c46d16dbdabc2e8d10b74c4aff01f8f26a73dfd5",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_latency_probe",
+      "seconds": 0.303,
+      "checks": 31,
+      "schema": "objectshard-m4-workbench-probe-test-v1",
+      "log_sha256": "a30c96a2bc9c6864dade2d16d419bdf258ae75bfca81f28f2abf2e2ce645163d",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_live_edit_diagnostics",
+      "seconds": 0.299,
+      "checks": 27,
+      "schema": "objectshard-live-edit-diagnostics-test-v1",
+      "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_live_edit_contract",
+      "seconds": 2.258,
+      "checks": 65,
+      "schema": "objectshard-live-edit-transport-contract-v1",
+      "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_creative_scenes",
+      "seconds": 1.422,
+      "checks": 61,
+      "schema": "objectshard-m4-creative-scenes-v1",
+      "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_creative_constructions",
+      "seconds": 152.442,
+      "checks": 228,
+      "schema": "objectshard-m4-creative-constructions-v1",
+      "log_sha256": "4f77c9d6e860196be647eb7a43747ea1047c4ffe828acd22fdfc677921eac9b3",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_disabled_input",
+      "seconds": 76.31,
+      "checks": 9,
+      "schema": "objectshard-m4-disabled-input-v1",
+      "log_sha256": "68986b622845bf05844ed6b6712639ae914b229a3d293c8e3ee4706217b8ba8b",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_live_input",
+      "seconds": 155.024,
+      "checks": 125,
+      "schema": "objectshard-m4-live-input-v1",
+      "log_sha256": "971786138c59d5324acdb0c8662e51b2c63c72156e3a314990e0fcee4fca6638",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_live_tools",
+      "seconds": 163.959,
+      "checks": 221,
+      "schema": "objectshard-m4-live-tools-v1",
+      "log_sha256": "c45d45006baf5803a78b35faa5af68ac2c551a0cc89844148c1800d9513a543c",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_live_stress",
+      "seconds": 160.155,
+      "checks": 226,
+      "schema": "objectshard-m4-live-stress-v1",
+      "log_sha256": "794ccf1fa0579efc3dad2abb6d0c74ddf440d1ff9ed717daf898bee13df51b86",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_owner_authored",
+      "seconds": 128.931,
+      "checks": 148,
+      "schema": "objectshard-m4-owner-authored-v1",
+      "log_sha256": "5a5f22fcf6f3bdeddcc7320c6ce6102331dad06e5726e4960900be38029a9e1c",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_visible_footprints",
+      "seconds": 2.352,
+      "checks": 19,
+      "schema": "objectshard-m4-visible-footprints-v1",
+      "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_edit_delivery_fence",
+      "seconds": 2.263,
+      "checks": 36,
+      "schema": "objectshard-m4-edit-delivery-fence-v1",
+      "log_sha256": "d6f8724d3b354ff47dee62b98fef524f54b85413f3957b42a12bfeba77b7aacc",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics",
+      "seconds": 126.776,
+      "checks": 38,
+      "schema": "objectshard-m4-optional-diagnostics-v1",
+      "log_sha256": "3655b2c83fca2c3371295e681782746c59eca64050ff1f1064b22133d0b293c4",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_same_world_extension",
+      "seconds": 0.587,
+      "checks": 59,
+      "schema": "objectshard-m4-actual-godot-sameworld-v1",
+      "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_shared_main_rapier",
+      "seconds": 0.402,
+      "checks": 18,
+      "schema": "objectshard-m4-existing-main-rapier-v1",
+      "log_sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_same_world_physical_chain",
+      "seconds": 0.679,
+      "checks": 49,
+      "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+      "log_sha256": "85fd852645a0284cd59513f207fe2f653afb0b916d6ef349f3f67d573b1940f4",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_compact_motion_packets",
+      "seconds": 0.305,
+      "checks": 9,
+      "schema": "objectshard-m4-compact-motion-packet-v1",
+      "log_sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_workbench_scene_refusal",
+      "seconds": 7.87,
+      "checks": 36,
+      "schema": "objectshard-m4-ordinary-scene-refusal-v1",
+      "log_sha256": "b44edc954c581fefb831a35e8b9983e29afc6a1d0d75f72956dfc71e97f60693",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_workbench_completion",
+      "seconds": 21.142,
+      "checks": 192,
+      "schema": "objectshard-m4-workbench-completion-v1",
+      "log_sha256": "8d0622613ecc91a2fb3ed0e94d369c9942e7bae87f9ff742e780cffaeb6b5db9",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "m4_fresh_authored_reopen",
+      "seconds": 9.789,
+      "checks": 9,
+      "schema": "objectshard-m4-fresh-authored-reopen-v1",
+      "log_sha256": "f7adfbbc1595e95b7f3574ef24213a90c49489787b5f4b14e63cc7583d288798",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_material_only_workbench",
+      "seconds": 12.49,
+      "checks": 71,
+      "schema": "objectshard-m4-material-only-workbench-v1",
+      "log_sha256": "34510d19e349432625b6caebfc844fdb333dd98c9bbe907feb04581c599ab55a",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_fragment_reabsorption",
+      "seconds": 15.462,
+      "checks": 137,
+      "schema": "objectshard-m4-fragment-reabsorption-v1",
+      "log_sha256": "fdd820264ffafa544f318a9ef10e254a7a37fd637bd365fdba39c0755505e474",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_adverse",
+      "seconds": 12.861,
+      "checks": 122,
+      "schema": "objectshard-m4-lifecycle-adverse-v1",
+      "log_sha256": "50876123c33af2bd116fb206e90d2dc50026a2b5927f4daa4972a7347b54dadb",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_completed_sample",
+      "seconds": 11.468,
+      "checks": 108,
+      "schema": "objectshard-m4-completed-sample-v1",
+      "log_sha256": "5a1d9f905d486458800eba0e8968890ed3f89cadc06ead2ee13bdbf79b248b25",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_equipment_completion",
+      "seconds": 12.027,
+      "checks": 99,
+      "schema": "objectshard-m4-equipment-completion-v1",
+      "log_sha256": "11f8a596f01efdeae74c85a1bdf117c72c8a5c4022ba617443c0d215a7f196c8",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_actor_clock",
+      "seconds": 14.723,
+      "checks": 96,
+      "schema": "objectshard-m4-actor-clock-v1",
+      "log_sha256": "d3d3d431b7450d8ea4d8543eeb3c49a0e45d2ee43af6b129848e8d188a2857dd",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_fuzz",
+      "seconds": 44.561,
+      "checks": 1019,
+      "schema": "objectshard-m4-lifecycle-fuzz-v1",
+      "log_sha256": "2ea357eca5966b1366090f3352d58f47d4f4dcf07f90745278e55b555f3f7e47",
+      "requires_display": false,
+      "actual_render_command": false
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics_cli",
+      "seconds": 125.958,
+      "checks": 38,
+      "schema": "objectshard-m4-optional-diagnostics-v1",
+      "log_sha256": "6cb8651525bf84ddbe2570c54cadf16e4e04869a46a19bba1efde0364ae900e6",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_overlay_identity",
+      "seconds": 3.75,
+      "checks": 11,
+      "schema": "objectshard-m4-overlay-identity-v1",
+      "log_sha256": "51b30e11a545a0888814317a5464328806ee2da170a1a2833115ff970a333718",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_material_preparation_render",
+      "seconds": 50.326,
+      "checks": 13,
+      "schema": "objectshard-m4-material-preparation-v1",
+      "log_sha256": "adb31fbad03053c44bf14aacfbaa802a873ad8daf7ae7be79216e2aa8f61932d",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_edit_preview_render",
+      "seconds": 162.027,
+      "checks": 102,
+      "schema": "objectshard-m4-edit-preview-render-v1",
+      "log_sha256": "a1a07d84de5c8b5dcffd55391f8ca150af28115ff210a08882c025ca272b209d",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "test_object_shard_m4_material_presentation_render",
+      "seconds": 104.883,
+      "checks": 28,
+      "schema": "objectshard-m4-material-presentation-v1",
+      "log_sha256": "dc219a8f343840a6307061b155db552a4600cf44023a43ceaf4335ecd2da3a56",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_throughput_disabled_off_render",
+      "seconds": 82.612,
+      "checks": 14,
+      "schema": "objectshard-m4-throughput-v1",
+      "log_sha256": "034b26a7e28b9dfff6b6099293526309f50c52404ccdba8c9e3c7b5bb3bfd4bd",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_throughput_empty_off_render",
+      "seconds": 139.416,
+      "checks": 45,
+      "schema": "objectshard-m4-throughput-v1",
+      "log_sha256": "8f5787b0144a50b6993df4b29a35059b8f612e4401d689ba4b87ac5fab23edab",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_throughput_tower_off_render",
+      "seconds": 141.811,
+      "checks": 112,
+      "schema": "objectshard-m4-throughput-v1",
+      "log_sha256": "dc34c9e49b6560bd290b2e0e32d488a9868a2e112706103c34ac97431d03a342",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_throughput_stress_off_render",
+      "seconds": 149.514,
+      "checks": 345,
+      "schema": "objectshard-m4-throughput-v1",
+      "log_sha256": "daef8a331866b8147823aee93a2a8bd8235c79141cbc45e4f771671f57740a4b",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_throughput_sleeping_off_render",
+      "seconds": 129.286,
+      "checks": 81,
+      "schema": "objectshard-m4-throughput-v1",
+      "log_sha256": "e2c42c5b1717ea0834f977b75ca7a58c1fda178e954d44d54f0412b204656095",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_throughput_tower_on_render",
+      "seconds": 139.839,
+      "checks": 112,
+      "schema": "objectshard-m4-throughput-v1",
+      "log_sha256": "3863298e1179a5f554758424ba35593cfdb96ee9461ccfec20a26cb7d0ec53fb",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_disabled_controls",
+      "seconds": 97.124,
+      "checks": 27,
+      "schema": "objectshard-m4-disabled-control-v1",
+      "log_sha256": "b477dbf9ff737bc6a5c88cfcf1a5f541119c7adb104f1a1e9876d00ff86200de",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_render_controls",
+      "seconds": 182.556,
+      "checks": 136,
+      "schema": "objectshard-m4-render-control-v1",
+      "log_sha256": "2509667701423eb0f9183773b671982367b73fca200f73d524ff0fe30b8aab6c",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_tower_overview_render",
+      "seconds": 137.84,
+      "checks": 153,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "880aa5b5b95c151f7460b6aba9567c624f033b108e6941b9435957235349b7bd",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_tower_zoom_render",
+      "seconds": 137.757,
+      "checks": 153,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "5027fe26f772daf7e93c2d7f2447f0a30fd67802a63f332ca33ba51bfb517986",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_viaduct_overview_render",
+      "seconds": 151.306,
+      "checks": 230,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "5c0eb3f62e2608962ab4827e66adca8fa45188f4c8c498a977b0ecd7f46ea2a1",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_viaduct_zoom_render",
+      "seconds": 148.876,
+      "checks": 230,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "27fff5f300a57ad8d05d48446c3497e972d868ea3a5aa79a10ad59592c1811c9",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_timber_overview_render",
+      "seconds": 142.786,
+      "checks": 174,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "7da6df999023dd6550a4559012e86176cc0872caabb34f7d889d6edfb0437cc7",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_timber_zoom_render",
+      "seconds": 142.267,
+      "checks": 174,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "88051f6e8f6684c6d77923bd77df1e5ac813f6e97e1dab97f71dbb880c919051",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_mixed_overview_render",
+      "seconds": 143.071,
+      "checks": 155,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "9d5551a3976f8ee43600cc31ef7130df7b51d2cad6e18d5e1af850b05579174e",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_mixed_zoom_render",
+      "seconds": 142.442,
+      "checks": 155,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "2db6663dbcbf43113ee2a1abc6b000ca2cf4c7eb1c816ce9223cffce9bbb6979",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_stress_overview_render",
+      "seconds": 156.93,
+      "checks": 386,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "83e0d5acbd0a7b3174792891fdadf9e3c93cd81c7832ade0925414bd77553c1d",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_stress_zoom_render",
+      "seconds": 149.84,
+      "checks": 386,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "a151c1e926f9bd4cb3e17c710d811536fa510ac1f69977c27e76b8d144535973",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_tower_overview_light_render",
+      "seconds": 132.658,
+      "checks": 152,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "8b106e8d3558b695b74d6799090a49e5d2b99a41b68d82bcbbd6fb7f0420b1a1",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_tower_overview_light_recording_render",
+      "seconds": 136.704,
+      "checks": 153,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "7001465d61395a0d47feba2aa8168092b7068b8c47f397f74123a17a83ccafe2",
+      "requires_display": true,
+      "actual_render_command": true
+    },
+    {
+      "name": "m4_workbench_stress_overview_light_render",
+      "seconds": 152.703,
+      "checks": 385,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "log_sha256": "e780f79bcc00015dc5624f91bcd6895a7c16b18cff1513a78a42ec4f8cf1ecbe",
+      "requires_display": true,
+      "actual_render_command": true
+    }
+  ],
+  "all_case_log_hashes_verified": true,
+  "all_canonical_git_input_hashes_verified": 1609,
+  "complete_case_inventory_equals_final_linux_graphical": true,
+  "scope": "Exact-source Windows source checkout graphical matrix; actual delivered evaluator and fresh independent extraction are separately qualified. Hosted Windows rendering is not physical TITAN RTX evaluation.",
+  "physical_owner_acceptance": "pending"
+}

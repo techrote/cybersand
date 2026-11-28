@@ -1,0 +1,47 @@
+{
+  "schema": "objectshard-m3-root-rendered-review-v1",
+  "source_commit": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "workflow_run": 44995374918,
+  "artifact_id": 14744390583,
+  "reviewed_utc": "2026-11-22T07:08:34.183041+00:00",
+  "reviewer": "root visual inspection of all seven originalPNG bytes using view_image",
+  "status": "passed",
+  "limits": "Rendered automated snapshots, not physicalWindows11/NVIDIA owner acceptance or proof of every interveningframe; complete protocol/timing traces qualify separately.",
+  "images": [
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-native-supported.png",
+      "sha256": "91eda840c2b8e56fbe7df0f272e484ce51b97a4cd569fef584d58f1585ccbbea",
+      "observation": "Supported World-owned Wood tree; zero shard slots; normal owner controls and diagnostics visible."
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-falling.png",
+      "sha256": "5740187e2ef1994fbdfaa502cfefb4f996590e2ae24a824be68331d1ac7a40f2",
+      "observation": "Tree separated from World support; one awake526-cell owner, installed geometryr1; coherent pending native receipt displayed."
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-settled-after-erosion.png",
+      "sha256": "34e1b7c788df2a8cc8a61ca8ec6b833a681f81f180414d92d6cf1a17c5ec32ed",
+      "observation": "Rotated settled525-cell owner, geometryr2 and natural Sleeping state; post-edit material and collider overlay aligned."
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-main-structure-priority.png",
+      "sha256": "a56fe308fd50606375be177e9a702588ee5d87752dd367235b12991a5aee7109",
+      "observation": "817-cell large structure admitted ahead of smaller fragments; three slots occupied, remaining BodySlots refusals explicitly shown."
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-water-sand-pocket.png",
+      "sha256": "403f22f94e4dfa18a974e6ec62b55c56e89f2c7d7593c30094b3852e99c3c122",
+      "observation": "Water/Sand scenario with cargo1 and world material still visible; screenshot alone does not demonstrate extinction(counter0)."
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-external-fire.png",
+      "sha256": "2162ba0c094f0c494a5034af506e69a4c3f35474cf55dbe8cd951f4c23bb364c",
+      "observation": "Visible realFire band,84accepted fixture actions; FixtureCellOccupied refusal visible instead of occupied-cell overwrite."
+    },
+    {
+      "path": "/workspace/scratch/9f4616747051/cybersand-objectshard-m3/build/m3-platform/windows/14744390583/windows-lab/frames-worker/objectshard-m3-extended-320.png",
+      "sha256": "fc52b4f724431cbce75f4e8340736ee5de6a25cdde1612c419e0ecbb2ca3d203",
+      "observation": "320x192case with three separate775-cell bodies and asymmetric rotated thirdbody; bounded slots and geometry overlays visible."
+    }
+  ]
+}

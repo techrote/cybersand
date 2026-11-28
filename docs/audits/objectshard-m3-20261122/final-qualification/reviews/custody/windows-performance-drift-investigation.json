@@ -1,0 +1,2897 @@
+{
+  "schema": "objectshard-independent-existing-windows-performance-drift-v1",
+  "utc": "2026-11-22T08:02:01.065263+00:00",
+  "baseline_source": "68235b12d7f41f7b590456971f21dfc3f5c6d701",
+  "repair_source": "e034f2294663e0485cfb9adcc8ada46a6e977cee",
+  "scope": "Existing immutable hosted trials only; old682 is superseded functional/package evidence, not final acceptance. No rerun or threshold change.",
+  "evidence_sha256": {
+    "baseline/qualification.json": "28733372c9235fe530abc04dcc33f594e0eba5d6a5be74476720edf96876a0c7",
+    "repair/qualification.json": "64331b1a300151c783a79b96a982dab41eabd277c579ec3cb45d45ebb6370e76",
+    "baseline/objectshard_worker_profile_0.json": "b3cfdaac3d9d3edb1faba6993d076a6091be675890ec721bc58a5c248d8f494f",
+    "repair/objectshard_worker_profile_0.json": "543ffd2fc19668755e47b0b1b94906c15cd915136661efffb376253746b9af9c",
+    "baseline/objectshard_worker_profile_4000.json": "a180202f4f03b898f332bf1b7ec7abc47f58d1f6324d70ac81ac2822c6c242bf",
+    "repair/objectshard_worker_profile_4000.json": "5f561eea0ebba655d038ac08202c08530e7fd7ef49ad9f46163043840f64087c",
+    "baseline/continuous-play-rendered.json": "0a25eb439b83322c52f1fb3798e26bf1ee35d768882cbc6754bcaf6354be1fd0",
+    "repair/continuous-play-rendered.json": "5270c51d40ab86ed852fb55c8b056047819504a89d7f425c868e97ebadf9b52b",
+    "baseline/objectshard_profile_headless.json": "030966c1ebe018e49da7f4bda52a93d2eddbb3b10b511678b9177cac03f9fe81",
+    "repair/objectshard_profile_headless.json": "8c73a941c410f6a00a05f1a96ee6a884923d22851e09afb0d969fef58d54948d",
+    "baseline/objectshard_profile_rendered.json": "fd51db4f6d1fcd24b38d891b42b7fa312037a1a96c827a8bd0a0bb1ff2cee2a2",
+    "repair/objectshard_profile_rendered.json": "2dea0262bf7a82fd7030f45aceded1fcc15ccf8a98935a1b4b6a33bfe3856490"
+  },
+  "runtimes": {
+    "baseline": {
+      "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "native_sha256": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+      "platform": "win32",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "repair": {
+      "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "native_sha256": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651",
+      "platform": "win32",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "scheduling_modes": {
+    "0": {
+      "workload_equal": {
+        "engine": true,
+        "platform": true,
+        "notifications": true,
+        "pump_budget_usec": true,
+        "requested_process_hz": true,
+        "completed_intervals": true,
+        "actual_live_inputs": true,
+        "actual_physics_steps": true,
+        "initial_tick": true,
+        "final_tick": true,
+        "publication_digests": true,
+        "native_accounting": true,
+        "maximum_displacements": true,
+        "contact_owners": true,
+        "sleeping_owners": true
+      },
+      "identity_file_differences": {
+        "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+          "baseline": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+          "repair": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+        }
+      },
+      "wall_usec": {
+        "baseline": 29069018,
+        "repair": 29069550,
+        "delta": 532,
+        "percent": 0.0018301271821428576
+      },
+      "semantic_rate": {
+        "baseline": 8.25621285177229,
+        "repair": 8.25606175534193,
+        "delta": -0.0001510964303594875,
+        "percent": -0.0018300936891065367
+      },
+      "poll_count": {
+        "baseline": 1756,
+        "repair": 1756,
+        "delta": 0,
+        "percent": 0.0
+      },
+      "callback_cadence": {
+        "p50": {
+          "baseline": 16666,
+          "repair": 16666,
+          "delta": 0,
+          "percent": 0.0
+        },
+        "p95": {
+          "baseline": 16676,
+          "repair": 16676,
+          "delta": 0,
+          "percent": 0.0
+        },
+        "p99": {
+          "baseline": 16687,
+          "repair": 16682,
+          "delta": -5,
+          "percent": -0.029963444597590937
+        },
+        "maximum": {
+          "baseline": 16700,
+          "repair": 16696,
+          "delta": -4,
+          "percent": -0.023952095808383235
+        },
+        "count": {
+          "baseline": 1744,
+          "repair": 1744,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "pump_call": {
+        "count": {
+          "baseline": 0,
+          "repair": 0,
+          "delta": 0,
+          "percent": null
+        }
+      },
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "p50": {
+            "baseline": 58,
+            "repair": 83,
+            "delta": 25,
+            "percent": 43.103448275862064
+          },
+          "p95": {
+            "baseline": 147,
+            "repair": 148,
+            "delta": 1,
+            "percent": 0.6802721088435374
+          },
+          "p99": {
+            "baseline": 147,
+            "repair": 148,
+            "delta": 1,
+            "percent": 0.6802721088435374
+          },
+          "maximum": {
+            "baseline": 147,
+            "repair": 148,
+            "delta": 1,
+            "percent": 0.6802721088435374
+          },
+          "count": {
+            "baseline": 3,
+            "repair": 3,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_dispatch_usec": {
+          "p50": {
+            "baseline": 100098,
+            "repair": 100091,
+            "delta": -7,
+            "percent": -0.006993146716218107
+          },
+          "p95": {
+            "baseline": 100224,
+            "repair": 100155,
+            "delta": -69,
+            "percent": -0.06884578544061302
+          },
+          "p99": {
+            "baseline": 150117,
+            "repair": 150106,
+            "delta": -11,
+            "percent": -0.007327617791455998
+          },
+          "maximum": {
+            "baseline": 150117,
+            "repair": 150106,
+            "delta": -11,
+            "percent": -0.007327617791455998
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_publication_usec": {
+          "p50": {
+            "baseline": 116702,
+            "repair": 116706,
+            "delta": 4,
+            "percent": 0.0034275333756062453
+          },
+          "p95": {
+            "baseline": 116817,
+            "repair": 116757,
+            "delta": -60,
+            "percent": -0.05136238732376281
+          },
+          "p99": {
+            "baseline": 166864,
+            "repair": 166718,
+            "delta": -146,
+            "percent": -0.08749640425735929
+          },
+          "maximum": {
+            "baseline": 166864,
+            "repair": 166718,
+            "delta": -146,
+            "percent": -0.08749640425735929
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_result_usec": {
+          "p50": {
+            "baseline": 116594,
+            "repair": 116570,
+            "delta": -24,
+            "percent": -0.020584249618333703
+          },
+          "p95": {
+            "baseline": 116645,
+            "repair": 116602,
+            "delta": -43,
+            "percent": -0.0368639890265335
+          },
+          "p99": {
+            "baseline": 166687,
+            "repair": 166583,
+            "delta": -104,
+            "percent": -0.0623923881286483
+          },
+          "maximum": {
+            "baseline": 166687,
+            "repair": 166583,
+            "delta": -104,
+            "percent": -0.0623923881286483
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_dispatch_usec": {
+          "p50": {
+            "baseline": 100095,
+            "repair": 100088,
+            "delta": -7,
+            "percent": -0.006993356311504072
+          },
+          "p95": {
+            "baseline": 100221,
+            "repair": 100152,
+            "delta": -69,
+            "percent": -0.06884784625976592
+          },
+          "p99": {
+            "baseline": 150114,
+            "repair": 150103,
+            "delta": -11,
+            "percent": -0.007327764232516621
+          },
+          "maximum": {
+            "baseline": 150114,
+            "repair": 150103,
+            "delta": -11,
+            "percent": -0.007327764232516621
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_publication_usec": {
+          "p50": {
+            "baseline": 116702,
+            "repair": 116706,
+            "delta": 4,
+            "percent": 0.0034275333756062453
+          },
+          "p95": {
+            "baseline": 116817,
+            "repair": 116757,
+            "delta": -60,
+            "percent": -0.05136238732376281
+          },
+          "p99": {
+            "baseline": 166864,
+            "repair": 166718,
+            "delta": -146,
+            "percent": -0.08749640425735929
+          },
+          "maximum": {
+            "baseline": 166864,
+            "repair": 166718,
+            "delta": -146,
+            "percent": -0.08749640425735929
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_result_usec": {
+          "p50": {
+            "baseline": 116594,
+            "repair": 116570,
+            "delta": -24,
+            "percent": -0.020584249618333703
+          },
+          "p95": {
+            "baseline": 116645,
+            "repair": 116602,
+            "delta": -43,
+            "percent": -0.0368639890265335
+          },
+          "p99": {
+            "baseline": 166687,
+            "repair": 166583,
+            "delta": -104,
+            "percent": -0.0623923881286483
+          },
+          "maximum": {
+            "baseline": 166687,
+            "repair": 166583,
+            "delta": -104,
+            "percent": -0.0623923881286483
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "native_execute_usec": {
+          "p50": {
+            "baseline": 237,
+            "repair": 313,
+            "delta": 76,
+            "percent": 32.06751054852321
+          },
+          "p95": {
+            "baseline": 457,
+            "repair": 580,
+            "delta": 123,
+            "percent": 26.914660831509845
+          },
+          "p99": {
+            "baseline": 494,
+            "repair": 617,
+            "delta": 123,
+            "percent": 24.898785425101213
+          },
+          "maximum": {
+            "baseline": 2937,
+            "repair": 4103,
+            "delta": 1166,
+            "percent": 39.70037453183521
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "physics_segment_usec": {
+          "p50": {
+            "baseline": 107,
+            "repair": 131,
+            "delta": 24,
+            "percent": 22.429906542056074
+          },
+          "p95": {
+            "baseline": 180,
+            "repair": 190,
+            "delta": 10,
+            "percent": 5.555555555555555
+          },
+          "p99": {
+            "baseline": 221,
+            "repair": 236,
+            "delta": 15,
+            "percent": 6.787330316742081
+          },
+          "maximum": {
+            "baseline": 289,
+            "repair": 550,
+            "delta": 261,
+            "percent": 90.3114186851211
+          },
+          "count": {
+            "baseline": 952,
+            "repair": 952,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "queue_wait_usec": {
+          "p50": {
+            "baseline": 14,
+            "repair": 21,
+            "delta": 7,
+            "percent": 50.0
+          },
+          "p95": {
+            "baseline": 27,
+            "repair": 36,
+            "delta": 9,
+            "percent": 33.33333333333333
+          },
+          "p99": {
+            "baseline": 34,
+            "repair": 48,
+            "delta": 14,
+            "percent": 41.17647058823529
+          },
+          "maximum": {
+            "baseline": 95,
+            "repair": 271,
+            "delta": 176,
+            "percent": 185.26315789473685
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_delivery_usec": {
+          "p50": {
+            "baseline": 15116,
+            "repair": 14660,
+            "delta": -456,
+            "percent": -3.0166710770044984
+          },
+          "p95": {
+            "baseline": 15546,
+            "repair": 15220,
+            "delta": -326,
+            "percent": -2.0970024443586777
+          },
+          "p99": {
+            "baseline": 15614,
+            "repair": 15250,
+            "delta": -364,
+            "percent": -2.3312411938004356
+          },
+          "maximum": {
+            "baseline": 15770,
+            "repair": 15497,
+            "delta": -273,
+            "percent": -1.731135066582118
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_roundtrip_usec": {
+          "p50": {
+            "baseline": 16396,
+            "repair": 16301,
+            "delta": -95,
+            "percent": -0.5794096121005123
+          },
+          "p95": {
+            "baseline": 16575,
+            "repair": 16541,
+            "delta": -34,
+            "percent": -0.20512820512820512
+          },
+          "p99": {
+            "baseline": 16589,
+            "repair": 16555,
+            "delta": -34,
+            "percent": -0.20495509072276807
+          },
+          "maximum": {
+            "baseline": 16640,
+            "repair": 16636,
+            "delta": -4,
+            "percent": -0.02403846153846154
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_value_accounting_usec": {
+          "p50": {
+            "baseline": 193,
+            "repair": 236,
+            "delta": 43,
+            "percent": 22.279792746113987
+          },
+          "p95": {
+            "baseline": 214,
+            "repair": 260,
+            "delta": 46,
+            "percent": 21.49532710280374
+          },
+          "p99": {
+            "baseline": 233,
+            "repair": 286,
+            "delta": 53,
+            "percent": 22.746781115879827
+          },
+          "maximum": {
+            "baseline": 296,
+            "repair": 408,
+            "delta": 112,
+            "percent": 37.83783783783784
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "semantic_interval_usec": {
+          "p50": {
+            "baseline": 100167,
+            "repair": 100202,
+            "delta": 35,
+            "percent": 0.03494164744876057
+          },
+          "p95": {
+            "baseline": 100288,
+            "repair": 100253,
+            "delta": -35,
+            "percent": -0.03489948947032546
+          },
+          "p99": {
+            "baseline": 150125,
+            "repair": 150162,
+            "delta": 37,
+            "percent": 0.024646128226477937
+          },
+          "maximum": {
+            "baseline": 150153,
+            "repair": 150182,
+            "delta": 29,
+            "percent": 0.01931363342723755
+          },
+          "count": {
+            "baseline": 240,
+            "repair": 240,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "snapshot_usec": {
+          "p50": {
+            "baseline": 847,
+            "repair": 1080,
+            "delta": 233,
+            "percent": 27.508854781582055
+          },
+          "p95": {
+            "baseline": 923,
+            "repair": 1123,
+            "delta": 200,
+            "percent": 21.668472372697725
+          },
+          "p99": {
+            "baseline": 960,
+            "repair": 1196,
+            "delta": 236,
+            "percent": 24.583333333333332
+          },
+          "maximum": {
+            "baseline": 1013,
+            "repair": 1562,
+            "delta": 549,
+            "percent": 54.19545903257651
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "terrain_install_usec": {
+          "p50": {
+            "baseline": 51,
+            "repair": 68,
+            "delta": 17,
+            "percent": 33.33333333333333
+          },
+          "p95": {
+            "baseline": 81,
+            "repair": 85,
+            "delta": 4,
+            "percent": 4.938271604938271
+          },
+          "p99": {
+            "baseline": 134,
+            "repair": 135,
+            "delta": 1,
+            "percent": 0.7462686567164178
+          },
+          "maximum": {
+            "baseline": 375,
+            "repair": 414,
+            "delta": 39,
+            "percent": 10.4
+          },
+          "count": {
+            "baseline": 552,
+            "repair": 552,
+            "delta": 0,
+            "percent": 0.0
+          }
+        }
+      },
+      "native_value_sizes": {
+        "maximum_snapshot_value_bytes": {
+          "baseline": 235570,
+          "repair": 235570
+        },
+        "maximum_reply_value_bytes": {
+          "baseline": 322260,
+          "repair": 322260
+        },
+        "snapshot_copies": {
+          "baseline": 1513,
+          "repair": 1513
+        }
+      }
+    },
+    "4000": {
+      "workload_equal": {
+        "engine": true,
+        "platform": true,
+        "notifications": true,
+        "pump_budget_usec": true,
+        "requested_process_hz": true,
+        "completed_intervals": true,
+        "actual_live_inputs": true,
+        "actual_physics_steps": true,
+        "initial_tick": true,
+        "final_tick": true,
+        "publication_digests": true,
+        "native_accounting": true,
+        "maximum_displacements": true,
+        "contact_owners": true,
+        "sleeping_owners": true
+      },
+      "identity_file_differences": {
+        "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+          "baseline": "6858f326f31c8c26adaf08a83f4c99d127cdc9d33d5bc71afcd2c324afca5d1f",
+          "repair": "05cc1f55d812b93462e73e7bc79f82d3f892d9f5b8fececc6a4753b705b3c651"
+        }
+      },
+      "wall_usec": {
+        "baseline": 12288387,
+        "repair": 14003797,
+        "delta": 1715410,
+        "percent": 13.959602672018711
+      },
+      "semantic_rate": {
+        "baseline": 19.530634899438,
+        "repair": 17.1382090157405,
+        "delta": -2.3924258836974985,
+        "percent": -12.249606303204928
+      },
+      "poll_count": {
+        "baseline": 749,
+        "repair": 852,
+        "delta": 103,
+        "percent": 13.75166889185581
+      },
+      "callback_cadence": {
+        "p50": {
+          "baseline": 16666,
+          "repair": 16666,
+          "delta": 0,
+          "percent": 0.0
+        },
+        "p95": {
+          "baseline": 16680,
+          "repair": 16674,
+          "delta": -6,
+          "percent": -0.03597122302158273
+        },
+        "p99": {
+          "baseline": 16690,
+          "repair": 16681,
+          "delta": -9,
+          "percent": -0.05392450569203116
+        },
+        "maximum": {
+          "baseline": 16712,
+          "repair": 16695,
+          "delta": -17,
+          "percent": -0.10172331258975587
+        },
+        "count": {
+          "baseline": 737,
+          "repair": 840,
+          "delta": 103,
+          "percent": 13.975576662143826
+        }
+      },
+      "pump_call": {
+        "p50": {
+          "baseline": 4255,
+          "repair": 5089,
+          "delta": 834,
+          "percent": 19.60047003525264
+        },
+        "p95": {
+          "baseline": 5578,
+          "repair": 5795,
+          "delta": 217,
+          "percent": 3.8902832556471854
+        },
+        "p99": {
+          "baseline": 5712,
+          "repair": 5914,
+          "delta": 202,
+          "percent": 3.5364145658263304
+        },
+        "maximum": {
+          "baseline": 5783,
+          "repair": 5996,
+          "delta": 213,
+          "percent": 3.683209406882241
+        },
+        "count": {
+          "baseline": 737,
+          "repair": 840,
+          "delta": 103,
+          "percent": 13.975576662143826
+        }
+      },
+      "host_stages_usec": {
+        "geometry_install_usec": {
+          "p50": {
+            "baseline": 77,
+            "repair": 75,
+            "delta": -2,
+            "percent": -2.5974025974025974
+          },
+          "p95": {
+            "baseline": 145,
+            "repair": 135,
+            "delta": -10,
+            "percent": -6.896551724137931
+          },
+          "p99": {
+            "baseline": 145,
+            "repair": 135,
+            "delta": -10,
+            "percent": -6.896551724137931
+          },
+          "maximum": {
+            "baseline": 145,
+            "repair": 135,
+            "delta": -10,
+            "percent": -6.896551724137931
+          },
+          "count": {
+            "baseline": 3,
+            "repair": 3,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_dispatch_usec": {
+          "p50": {
+            "baseline": 35177,
+            "repair": 37540,
+            "delta": 2363,
+            "percent": 6.717457429570459
+          },
+          "p95": {
+            "baseline": 37536,
+            "repair": 50103,
+            "delta": 12567,
+            "percent": 33.47985933503836
+          },
+          "p99": {
+            "baseline": 53529,
+            "repair": 70864,
+            "delta": 17335,
+            "percent": 32.38431504418166
+          },
+          "maximum": {
+            "baseline": 53529,
+            "repair": 70864,
+            "delta": 17335,
+            "percent": 32.38431504418166
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_publication_usec": {
+          "p50": {
+            "baseline": 37089,
+            "repair": 50022,
+            "delta": 12933,
+            "percent": 34.87017714147051
+          },
+          "p95": {
+            "baseline": 50052,
+            "repair": 52399,
+            "delta": 2347,
+            "percent": 4.689123311755774
+          },
+          "p99": {
+            "baseline": 66702,
+            "repair": 83408,
+            "delta": 16706,
+            "percent": 25.04572576534437
+          },
+          "maximum": {
+            "baseline": 66702,
+            "repair": 83408,
+            "delta": 16706,
+            "percent": 25.04572576534437
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "host_admission_to_result_usec": {
+          "p50": {
+            "baseline": 36999,
+            "repair": 49906,
+            "delta": 12907,
+            "percent": 34.88472661423282
+          },
+          "p95": {
+            "baseline": 49932,
+            "repair": 52277,
+            "delta": 2345,
+            "percent": 4.6963870864375545
+          },
+          "p99": {
+            "baseline": 66550,
+            "repair": 83223,
+            "delta": 16673,
+            "percent": 25.05334335086401
+          },
+          "maximum": {
+            "baseline": 66550,
+            "repair": 83223,
+            "delta": 16673,
+            "percent": 25.05334335086401
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_dispatch_usec": {
+          "p50": {
+            "baseline": 35174,
+            "repair": 37538,
+            "delta": 2364,
+            "percent": 6.720873372377325
+          },
+          "p95": {
+            "baseline": 37533,
+            "repair": 50100,
+            "delta": 12567,
+            "percent": 33.48253536887539
+          },
+          "p99": {
+            "baseline": 53526,
+            "repair": 70860,
+            "delta": 17334,
+            "percent": 32.38426185405224
+          },
+          "maximum": {
+            "baseline": 53526,
+            "repair": 70860,
+            "delta": 17334,
+            "percent": 32.38426185405224
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_publication_usec": {
+          "p50": {
+            "baseline": 37089,
+            "repair": 50022,
+            "delta": 12933,
+            "percent": 34.87017714147051
+          },
+          "p95": {
+            "baseline": 50052,
+            "repair": 52399,
+            "delta": 2347,
+            "percent": 4.689123311755774
+          },
+          "p99": {
+            "baseline": 66702,
+            "repair": 83408,
+            "delta": 16706,
+            "percent": 25.04572576534437
+          },
+          "maximum": {
+            "baseline": 66702,
+            "repair": 83408,
+            "delta": 16706,
+            "percent": 25.04572576534437
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "input_to_result_usec": {
+          "p50": {
+            "baseline": 36999,
+            "repair": 49906,
+            "delta": 12907,
+            "percent": 34.88472661423282
+          },
+          "p95": {
+            "baseline": 49932,
+            "repair": 52277,
+            "delta": 2345,
+            "percent": 4.6963870864375545
+          },
+          "p99": {
+            "baseline": 66550,
+            "repair": 83223,
+            "delta": 16673,
+            "percent": 25.05334335086401
+          },
+          "maximum": {
+            "baseline": 66550,
+            "repair": 83223,
+            "delta": 16673,
+            "percent": 25.05334335086401
+          },
+          "count": {
+            "baseline": 60,
+            "repair": 60,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "main_receipt_pump_usec": {
+          "p50": {
+            "baseline": 4233,
+            "repair": 5073,
+            "delta": 840,
+            "percent": 19.844082211197733
+          },
+          "p95": {
+            "baseline": 5571,
+            "repair": 5787,
+            "delta": 216,
+            "percent": 3.877221324717286
+          },
+          "p99": {
+            "baseline": 5707,
+            "repair": 5905,
+            "delta": 198,
+            "percent": 3.4694235149816017
+          },
+          "maximum": {
+            "baseline": 5778,
+            "repair": 5986,
+            "delta": 208,
+            "percent": 3.5998615437867776
+          },
+          "count": {
+            "baseline": 749,
+            "repair": 852,
+            "delta": 103,
+            "percent": 13.75166889185581
+          }
+        },
+        "native_execute_usec": {
+          "p50": {
+            "baseline": 229,
+            "repair": 302,
+            "delta": 73,
+            "percent": 31.877729257641924
+          },
+          "p95": {
+            "baseline": 460,
+            "repair": 563,
+            "delta": 103,
+            "percent": 22.39130434782609
+          },
+          "p99": {
+            "baseline": 505,
+            "repair": 604,
+            "delta": 99,
+            "percent": 19.603960396039604
+          },
+          "maximum": {
+            "baseline": 2890,
+            "repair": 4173,
+            "delta": 1283,
+            "percent": 44.39446366782007
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "physics_segment_usec": {
+          "p50": {
+            "baseline": 100,
+            "repair": 120,
+            "delta": 20,
+            "percent": 20.0
+          },
+          "p95": {
+            "baseline": 174,
+            "repair": 167,
+            "delta": -7,
+            "percent": -4.022988505747127
+          },
+          "p99": {
+            "baseline": 209,
+            "repair": 218,
+            "delta": 9,
+            "percent": 4.30622009569378
+          },
+          "maximum": {
+            "baseline": 281,
+            "repair": 268,
+            "delta": -13,
+            "percent": -4.6263345195729535
+          },
+          "count": {
+            "baseline": 952,
+            "repair": 952,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "queue_wait_usec": {
+          "p50": {
+            "baseline": 14,
+            "repair": 20,
+            "delta": 6,
+            "percent": 42.857142857142854
+          },
+          "p95": {
+            "baseline": 26,
+            "repair": 31,
+            "delta": 5,
+            "percent": 19.230769230769234
+          },
+          "p99": {
+            "baseline": 34,
+            "repair": 45,
+            "delta": 11,
+            "percent": 32.35294117647059
+          },
+          "maximum": {
+            "baseline": 70,
+            "repair": 90,
+            "delta": 20,
+            "percent": 28.57142857142857
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_delivery_usec": {
+          "p50": {
+            "baseline": 913,
+            "repair": 1829,
+            "delta": 916,
+            "percent": 100.32858707557504
+          },
+          "p95": {
+            "baseline": 12063,
+            "repair": 11881,
+            "delta": -182,
+            "percent": -1.5087457514714415
+          },
+          "p99": {
+            "baseline": 12514,
+            "repair": 12449,
+            "delta": -65,
+            "percent": -0.5194182515582547
+          },
+          "maximum": {
+            "baseline": 13489,
+            "repair": 14048,
+            "delta": 559,
+            "percent": 4.1441174290162355
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_roundtrip_usec": {
+          "p50": {
+            "baseline": 2003,
+            "repair": 3546,
+            "delta": 1543,
+            "percent": 77.03444832750874
+          },
+          "p95": {
+            "baseline": 13122,
+            "repair": 13231,
+            "delta": 109,
+            "percent": 0.8306660570035056
+          },
+          "p99": {
+            "baseline": 14142,
+            "repair": 14224,
+            "delta": 82,
+            "percent": 0.5798331211992646
+          },
+          "maximum": {
+            "baseline": 15587,
+            "repair": 16498,
+            "delta": 911,
+            "percent": 5.844614101494836
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "receipt_value_accounting_usec": {
+          "p50": {
+            "baseline": 191,
+            "repair": 236,
+            "delta": 45,
+            "percent": 23.56020942408377
+          },
+          "p95": {
+            "baseline": 208,
+            "repair": 262,
+            "delta": 54,
+            "percent": 25.961538461538463
+          },
+          "p99": {
+            "baseline": 240,
+            "repair": 285,
+            "delta": 45,
+            "percent": 18.75
+          },
+          "maximum": {
+            "baseline": 317,
+            "repair": 415,
+            "delta": 98,
+            "percent": 30.914826498422716
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "semantic_interval_usec": {
+          "p50": {
+            "baseline": 35449,
+            "repair": 37703,
+            "delta": 2254,
+            "percent": 6.358430421168439
+          },
+          "p95": {
+            "baseline": 37734,
+            "repair": 50221,
+            "delta": 12487,
+            "percent": 33.092171516404306
+          },
+          "p99": {
+            "baseline": 50338,
+            "repair": 53729,
+            "delta": 3391,
+            "percent": 6.736461520123963
+          },
+          "maximum": {
+            "baseline": 54144,
+            "repair": 70977,
+            "delta": 16833,
+            "percent": 31.089317375886527
+          },
+          "count": {
+            "baseline": 240,
+            "repair": 240,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "snapshot_usec": {
+          "p50": {
+            "baseline": 835,
+            "repair": 1072,
+            "delta": 237,
+            "percent": 28.38323353293413
+          },
+          "p95": {
+            "baseline": 902,
+            "repair": 1108,
+            "delta": 206,
+            "percent": 22.838137472283815
+          },
+          "p99": {
+            "baseline": 952,
+            "repair": 1147,
+            "delta": 195,
+            "percent": 20.483193277310924
+          },
+          "maximum": {
+            "baseline": 1242,
+            "repair": 1807,
+            "delta": 565,
+            "percent": 45.491143317230275
+          },
+          "count": {
+            "baseline": 1512,
+            "repair": 1512,
+            "delta": 0,
+            "percent": 0.0
+          }
+        },
+        "terrain_install_usec": {
+          "p50": {
+            "baseline": 52,
+            "repair": 59,
+            "delta": 7,
+            "percent": 13.461538461538462
+          },
+          "p95": {
+            "baseline": 76,
+            "repair": 76,
+            "delta": 0,
+            "percent": 0.0
+          },
+          "p99": {
+            "baseline": 153,
+            "repair": 136,
+            "delta": -17,
+            "percent": -11.11111111111111
+          },
+          "maximum": {
+            "baseline": 403,
+            "repair": 416,
+            "delta": 13,
+            "percent": 3.225806451612903
+          },
+          "count": {
+            "baseline": 552,
+            "repair": 552,
+            "delta": 0,
+            "percent": 0.0
+          }
+        }
+      },
+      "native_value_sizes": {
+        "maximum_snapshot_value_bytes": {
+          "baseline": 235570,
+          "repair": 235570
+        },
+        "maximum_reply_value_bytes": {
+          "baseline": 322260,
+          "repair": 322260
+        },
+        "snapshot_copies": {
+          "baseline": 1513,
+          "repair": 1513
+        }
+      }
+    }
+  },
+  "rendered_burst": {
+    "action_counts": {
+      "baseline": 153,
+      "repair": 153
+    },
+    "pointer_counts": {
+      "baseline": {
+        "dispatched": 153,
+        "explicitly_cancelled_by_reset": 0,
+        "pending": 0,
+        "queued": 153,
+        "refused": 0,
+        "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+      },
+      "repair": {
+        "dispatched": 153,
+        "explicitly_cancelled_by_reset": 0,
+        "pending": 0,
+        "queued": 153,
+        "refused": 0,
+        "scope": "UI lifetime across explicit resets; native counters remain session-scoped"
+      }
+    },
+    "outcomes": {
+      "baseline": {
+        "Accepted": 148,
+        "": 1,
+        "TargetChanged": 3,
+        "Observed": 1
+      },
+      "repair": {
+        "Accepted": 148,
+        "": 1,
+        "TargetChanged": 3,
+        "Observed": 1
+      }
+    },
+    "host_stages_usec": {
+      "geometry_install_usec": {
+        "p50": {
+          "baseline": 113,
+          "repair": 127,
+          "delta": 14,
+          "percent": 12.389380530973451
+        },
+        "p95": {
+          "baseline": 140,
+          "repair": 141,
+          "delta": 1,
+          "percent": 0.7142857142857143
+        },
+        "p99": {
+          "baseline": 140,
+          "repair": 141,
+          "delta": 1,
+          "percent": 0.7142857142857143
+        },
+        "maximum": {
+          "baseline": 140,
+          "repair": 141,
+          "delta": 1,
+          "percent": 0.7142857142857143
+        },
+        "count": {
+          "baseline": 3,
+          "repair": 3,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_dispatch_usec": {
+        "p50": {
+          "baseline": 294182,
+          "repair": 372316,
+          "delta": 78134,
+          "percent": 26.559748726978537
+        },
+        "p95": {
+          "baseline": 516090,
+          "repair": 660732,
+          "delta": 144642,
+          "percent": 28.026507004592222
+        },
+        "p99": {
+          "baseline": 532250,
+          "repair": 688131,
+          "delta": 155881,
+          "percent": 29.287177078440585
+        },
+        "maximum": {
+          "baseline": 543617,
+          "repair": 688169,
+          "delta": 144552,
+          "percent": 26.59077990570567
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_presented_usec": {
+        "p50": {
+          "baseline": 319407,
+          "repair": 399139,
+          "delta": 79732,
+          "percent": 24.962508648839883
+        },
+        "p95": {
+          "baseline": 541872,
+          "repair": 688155,
+          "delta": 146283,
+          "percent": 26.995858800602356
+        },
+        "p99": {
+          "baseline": 559058,
+          "repair": 704288,
+          "delta": 145230,
+          "percent": 25.977626650544313
+        },
+        "maximum": {
+          "baseline": 559617,
+          "repair": 704746,
+          "delta": 145129,
+          "percent": 25.9336296073922
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_publication_usec": {
+        "p50": {
+          "baseline": 304951,
+          "repair": 384457,
+          "delta": 79506,
+          "percent": 26.07172955655171
+        },
+        "p95": {
+          "baseline": 528859,
+          "repair": 673324,
+          "delta": 144465,
+          "percent": 27.31635464273086
+        },
+        "p99": {
+          "baseline": 544162,
+          "repair": 691847,
+          "delta": 147685,
+          "percent": 27.13989583984181
+        },
+        "maximum": {
+          "baseline": 545662,
+          "repair": 692030,
+          "delta": 146368,
+          "percent": 26.82393129812961
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "host_admission_to_result_usec": {
+        "p50": {
+          "baseline": 304870,
+          "repair": 384350,
+          "delta": 79480,
+          "percent": 26.07012825138584
+        },
+        "p95": {
+          "baseline": 528609,
+          "repair": 673137,
+          "delta": 144528,
+          "percent": 27.3411916936715
+        },
+        "p99": {
+          "baseline": 544004,
+          "repair": 691670,
+          "delta": 147666,
+          "percent": 27.14428570378159
+        },
+        "maximum": {
+          "baseline": 545526,
+          "repair": 691811,
+          "delta": 146285,
+          "percent": 26.815403848762482
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_dispatch_usec": {
+        "p50": {
+          "baseline": 597560,
+          "repair": 736411,
+          "delta": 138851,
+          "percent": 23.23632773277997
+        },
+        "p95": {
+          "baseline": 1389820,
+          "repair": 1738032,
+          "delta": 348212,
+          "percent": 25.054467484998057
+        },
+        "p99": {
+          "baseline": 1518161,
+          "repair": 1898319,
+          "delta": 380158,
+          "percent": 25.040690677734446
+        },
+        "maximum": {
+          "baseline": 1522473,
+          "repair": 1902116,
+          "delta": 379643,
+          "percent": 24.935943034786167
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_presented_usec": {
+        "p50": {
+          "baseline": 621226,
+          "repair": 763739,
+          "delta": 142513,
+          "percent": 22.940604546493546
+        },
+        "p95": {
+          "baseline": 1403323,
+          "repair": 1753913,
+          "delta": 350590,
+          "percent": 24.982844291727563
+        },
+        "p99": {
+          "baseline": 1531200,
+          "repair": 1913506,
+          "delta": 382306,
+          "percent": 24.967737722048067
+        },
+        "maximum": {
+          "baseline": 1547133,
+          "repair": 1929452,
+          "delta": 382319,
+          "percent": 24.711450146819956
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_publication_usec": {
+        "p50": {
+          "baseline": 608084,
+          "repair": 748555,
+          "delta": 140471,
+          "percent": 23.100591365666588
+        },
+        "p95": {
+          "baseline": 1391774,
+          "repair": 1741896,
+          "delta": 350122,
+          "percent": 25.15652684990523
+        },
+        "p99": {
+          "baseline": 1522504,
+          "repair": 1902151,
+          "delta": 379647,
+          "percent": 24.93569803429088
+        },
+        "maximum": {
+          "baseline": 1534770,
+          "repair": 1914809,
+          "delta": 380039,
+          "percent": 24.761951302149505
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "input_to_result_usec": {
+        "p50": {
+          "baseline": 608004,
+          "repair": 748450,
+          "delta": 140446,
+          "percent": 23.099519082111303
+        },
+        "p95": {
+          "baseline": 1391625,
+          "repair": 1741677,
+          "delta": 350052,
+          "percent": 25.154190245216924
+        },
+        "p99": {
+          "baseline": 1522297,
+          "repair": 1901922,
+          "delta": 379625,
+          "percent": 24.93764357415143
+        },
+        "maximum": {
+          "baseline": 1534567,
+          "repair": 1914622,
+          "delta": 380055,
+          "percent": 24.76626957311085
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "main_receipt_pump_usec": {
+        "p50": {
+          "baseline": 5209,
+          "repair": 5208,
+          "delta": -1,
+          "percent": -0.01919754271453254
+        },
+        "p95": {
+          "baseline": 5526,
+          "repair": 5714,
+          "delta": 188,
+          "percent": 3.4020991675714805
+        },
+        "p99": {
+          "baseline": 5651,
+          "repair": 5938,
+          "delta": 287,
+          "percent": 5.07874712440276
+        },
+        "maximum": {
+          "baseline": 5676,
+          "repair": 5975,
+          "delta": 299,
+          "percent": 5.2677942212825934
+        },
+        "count": {
+          "baseline": 126,
+          "repair": 151,
+          "delta": 25,
+          "percent": 19.841269841269842
+        }
+      },
+      "native_execute_usec": {
+        "p50": {
+          "baseline": 148,
+          "repair": 231,
+          "delta": 83,
+          "percent": 56.08108108108109
+        },
+        "p95": {
+          "baseline": 262,
+          "repair": 371,
+          "delta": 109,
+          "percent": 41.603053435114504
+        },
+        "p99": {
+          "baseline": 390,
+          "repair": 573,
+          "delta": 183,
+          "percent": 46.92307692307692
+        },
+        "maximum": {
+          "baseline": 416,
+          "repair": 595,
+          "delta": 179,
+          "percent": 43.02884615384615
+        },
+        "count": {
+          "baseline": 284,
+          "repair": 284,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "physics_segment_usec": {
+        "p50": {
+          "baseline": 118,
+          "repair": 132,
+          "delta": 14,
+          "percent": 11.864406779661017
+        },
+        "p95": {
+          "baseline": 1404,
+          "repair": 2046,
+          "delta": 642,
+          "percent": 45.72649572649573
+        },
+        "p99": {
+          "baseline": 2247,
+          "repair": 2143,
+          "delta": -104,
+          "percent": -4.6283934134401425
+        },
+        "maximum": {
+          "baseline": 2247,
+          "repair": 2143,
+          "delta": -104,
+          "percent": -4.6283934134401425
+        },
+        "count": {
+          "baseline": 52,
+          "repair": 52,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "publication_to_presented_usec": {
+        "p50": {
+          "baseline": 11584,
+          "repair": 11466,
+          "delta": -118,
+          "percent": -1.018646408839779
+        },
+        "p95": {
+          "baseline": 15375,
+          "repair": 15277,
+          "delta": -98,
+          "percent": -0.6373983739837399
+        },
+        "p99": {
+          "baseline": 15505,
+          "repair": 27229,
+          "delta": 11724,
+          "percent": 75.61431796194776
+        },
+        "maximum": {
+          "baseline": 21423,
+          "repair": 27254,
+          "delta": 5831,
+          "percent": 27.218410119964524
+        },
+        "count": {
+          "baseline": 105,
+          "repair": 120,
+          "delta": 15,
+          "percent": 14.285714285714285
+        }
+      },
+      "queue_wait_usec": {
+        "p50": {
+          "baseline": 17,
+          "repair": 21,
+          "delta": 4,
+          "percent": 23.52941176470588
+        },
+        "p95": {
+          "baseline": 979,
+          "repair": 48,
+          "delta": -931,
+          "percent": -95.097037793667
+        },
+        "p99": {
+          "baseline": 1741,
+          "repair": 429,
+          "delta": -1312,
+          "percent": -75.35898908673177
+        },
+        "maximum": {
+          "baseline": 1988,
+          "repair": 651,
+          "delta": -1337,
+          "percent": -67.25352112676056
+        },
+        "count": {
+          "baseline": 284,
+          "repair": 284,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "receipt_delivery_usec": {
+        "p50": {
+          "baseline": 1792,
+          "repair": 1972,
+          "delta": 180,
+          "percent": 10.044642857142858
+        },
+        "p95": {
+          "baseline": 11496,
+          "repair": 11841,
+          "delta": 345,
+          "percent": 3.001043841336117
+        },
+        "p99": {
+          "baseline": 13917,
+          "repair": 23767,
+          "delta": 9850,
+          "percent": 70.77674786232664
+        },
+        "maximum": {
+          "baseline": 77680,
+          "repair": 77527,
+          "delta": -153,
+          "percent": -0.19696189495365604
+        },
+        "count": {
+          "baseline": 284,
+          "repair": 284,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "receipt_roundtrip_usec": {
+        "p50": {
+          "baseline": 3329,
+          "repair": 3704,
+          "delta": 375,
+          "percent": 11.264644037248422
+        },
+        "p95": {
+          "baseline": 12318,
+          "repair": 13625,
+          "delta": 1307,
+          "percent": 10.610488715700601
+        },
+        "p99": {
+          "baseline": 15225,
+          "repair": 25652,
+          "delta": 10427,
+          "percent": 68.48604269293924
+        },
+        "maximum": {
+          "baseline": 80268,
+          "repair": 79835,
+          "delta": -433,
+          "percent": -0.5394428663975681
+        },
+        "count": {
+          "baseline": 284,
+          "repair": 284,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "receipt_value_accounting_usec": {
+        "p50": {
+          "baseline": 159,
+          "repair": 226,
+          "delta": 67,
+          "percent": 42.138364779874216
+        },
+        "p95": {
+          "baseline": 230,
+          "repair": 302,
+          "delta": 72,
+          "percent": 31.30434782608696
+        },
+        "p99": {
+          "baseline": 252,
+          "repair": 337,
+          "delta": 85,
+          "percent": 33.730158730158735
+        },
+        "maximum": {
+          "baseline": 1337,
+          "repair": 1695,
+          "delta": 358,
+          "percent": 26.776364996260284
+        },
+        "count": {
+          "baseline": 284,
+          "repair": 284,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "semantic_interval_usec": {
+        "p50": {
+          "baseline": 15728,
+          "repair": 15535,
+          "delta": -193,
+          "percent": -1.2271108850457781
+        },
+        "p95": {
+          "baseline": 52600,
+          "repair": 75647,
+          "delta": 23047,
+          "percent": 43.81558935361217
+        },
+        "p99": {
+          "baseline": 116225,
+          "repair": 116063,
+          "delta": -162,
+          "percent": -0.13938481393848137
+        },
+        "maximum": {
+          "baseline": 116225,
+          "repair": 116063,
+          "delta": -162,
+          "percent": -0.13938481393848137
+        },
+        "count": {
+          "baseline": 38,
+          "repair": 38,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "snapshot_usec": {
+        "p50": {
+          "baseline": 874,
+          "repair": 1371,
+          "delta": 497,
+          "percent": 56.8649885583524
+        },
+        "p95": {
+          "baseline": 1079,
+          "repair": 1576,
+          "delta": 497,
+          "percent": 46.06116774791474
+        },
+        "p99": {
+          "baseline": 1139,
+          "repair": 1603,
+          "delta": 464,
+          "percent": 40.73748902546093
+        },
+        "maximum": {
+          "baseline": 1179,
+          "repair": 2577,
+          "delta": 1398,
+          "percent": 118.57506361323156
+        },
+        "count": {
+          "baseline": 284,
+          "repair": 284,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "terrain_install_usec": {
+        "p50": {
+          "baseline": 70,
+          "repair": 90,
+          "delta": 20,
+          "percent": 28.57142857142857
+        },
+        "p95": {
+          "baseline": 169,
+          "repair": 206,
+          "delta": 37,
+          "percent": 21.893491124260358
+        },
+        "p99": {
+          "baseline": 223,
+          "repair": 227,
+          "delta": 4,
+          "percent": 1.7937219730941705
+        },
+        "maximum": {
+          "baseline": 342,
+          "repair": 366,
+          "delta": 24,
+          "percent": 7.017543859649122
+        },
+        "count": {
+          "baseline": 230,
+          "repair": 230,
+          "delta": 0,
+          "percent": 0.0
+        }
+      }
+    },
+    "ui_stages_usec": {
+      "frame_callback_usec": {
+        "p50": {
+          "baseline": 5938,
+          "repair": 6087,
+          "delta": 149,
+          "percent": 2.5092623779050185
+        },
+        "p95": {
+          "baseline": 7117,
+          "repair": 7245,
+          "delta": 128,
+          "percent": 1.7985106084024167
+        },
+        "p99": {
+          "baseline": 8251,
+          "repair": 9729,
+          "delta": 1478,
+          "percent": 17.91298024481881
+        },
+        "maximum": {
+          "baseline": 9535,
+          "repair": 9774,
+          "delta": 239,
+          "percent": 2.506554798112218
+        },
+        "count": {
+          "baseline": 131,
+          "repair": 156,
+          "delta": 25,
+          "percent": 19.083969465648856
+        }
+      },
+      "input_to_host_usec": {
+        "p50": {
+          "baseline": 301923,
+          "repair": 364059,
+          "delta": 62136,
+          "percent": 20.58008167645393
+        },
+        "p95": {
+          "baseline": 859562,
+          "repair": 1049885,
+          "delta": 190323,
+          "percent": 22.141858295271312
+        },
+        "p99": {
+          "baseline": 989913,
+          "repair": 1240791,
+          "delta": 250878,
+          "percent": 25.34343927193602
+        },
+        "maximum": {
+          "baseline": 1003052,
+          "repair": 1241508,
+          "delta": 238456,
+          "percent": 23.77304466767426
+        },
+        "count": {
+          "baseline": 153,
+          "repair": 153,
+          "delta": 0,
+          "percent": 0.0
+        }
+      },
+      "publication_interval_usec": {
+        "p50": {
+          "baseline": 16001,
+          "repair": 16005,
+          "delta": 4,
+          "percent": 0.024998437597650146
+        },
+        "p95": {
+          "baseline": 46523,
+          "repair": 48007,
+          "delta": 1484,
+          "percent": 3.1898200889882427
+        },
+        "p99": {
+          "baseline": 50985,
+          "repair": 78703,
+          "delta": 27718,
+          "percent": 54.36500931646563
+        },
+        "maximum": {
+          "baseline": 124248,
+          "repair": 123242,
+          "delta": -1006,
+          "percent": -0.8096709806194063
+        },
+        "count": {
+          "baseline": 104,
+          "repair": 119,
+          "delta": 15,
+          "percent": 14.423076923076922
+        }
+      },
+      "publication_upload_usec": {
+        "p50": {
+          "baseline": 86,
+          "repair": 99,
+          "delta": 13,
+          "percent": 15.11627906976744
+        },
+        "p95": {
+          "baseline": 1653,
+          "repair": 3984,
+          "delta": 2331,
+          "percent": 141.016333938294
+        },
+        "p99": {
+          "baseline": 2531,
+          "repair": 4364,
+          "delta": 1833,
+          "percent": 72.42196760173844
+        },
+        "maximum": {
+          "baseline": 7110,
+          "repair": 6105,
+          "delta": -1005,
+          "percent": -14.135021097046414
+        },
+        "count": {
+          "baseline": 105,
+          "repair": 120,
+          "delta": 15,
+          "percent": 14.285714285714285
+        }
+      }
+    },
+    "completed_tick_counts": {
+      "baseline": 38,
+      "repair": 38
+    },
+    "accounting_equal": true,
+    "source_scope": "The same153-action script includes a96-point burst; callback and tick counts can differ because this is real asynchronous UI progression, not a forced identical temporal trace."
+  },
+  "lab_frame_drift": {
+    "headless": [
+      {
+        "name": "empty_lab",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 1153.0,
+            "repair": 1613.0,
+            "delta": 460.0,
+            "percent": 39.8959236773634
+          },
+          "p95": {
+            "baseline": 1226.0,
+            "repair": 1674.0,
+            "delta": 448.0,
+            "percent": 36.541598694942905
+          },
+          "p99": {
+            "baseline": 1320.0,
+            "repair": 1751.0,
+            "delta": 431.0,
+            "percent": 32.651515151515156
+          },
+          "maximum": {
+            "baseline": 1872.0,
+            "repair": 2700.0,
+            "delta": 828.0,
+            "percent": 44.230769230769226
+          }
+        }
+      },
+      {
+        "name": "inert_moving",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 1978.0,
+            "repair": 2715.0,
+            "delta": 737.0,
+            "percent": 37.25985844287158
+          },
+          "p95": {
+            "baseline": 2096.0,
+            "repair": 2816.0,
+            "delta": 720.0,
+            "percent": 34.35114503816794
+          },
+          "p99": {
+            "baseline": 2145.0,
+            "repair": 2886.0,
+            "delta": 741.0,
+            "percent": 34.54545454545455
+          },
+          "maximum": {
+            "baseline": 2309.0,
+            "repair": 3378.0,
+            "delta": 1069.0,
+            "percent": 46.297098310957125
+          }
+        }
+      },
+      {
+        "name": "reacting_one",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 1975.0,
+            "repair": 2718.0,
+            "delta": 743.0,
+            "percent": 37.620253164556964
+          },
+          "p95": {
+            "baseline": 2096.0,
+            "repair": 2802.0,
+            "delta": 706.0,
+            "percent": 33.68320610687023
+          },
+          "p99": {
+            "baseline": 2161.0,
+            "repair": 2943.0,
+            "delta": 782.0,
+            "percent": 36.186950485886165
+          },
+          "maximum": {
+            "baseline": 2829.0,
+            "repair": 4538.0,
+            "delta": 1709.0,
+            "percent": 60.41003888299753
+          }
+        }
+      },
+      {
+        "name": "reacting_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2947.0,
+            "repair": 4023.0,
+            "delta": 1076.0,
+            "percent": 36.51170682049542
+          },
+          "p95": {
+            "baseline": 3141.0,
+            "repair": 4143.0,
+            "delta": 1002.0,
+            "percent": 31.900668576886343
+          },
+          "p99": {
+            "baseline": 3211.0,
+            "repair": 4305.0,
+            "delta": 1094.0,
+            "percent": 34.07038305823731
+          },
+          "maximum": {
+            "baseline": 4236.0,
+            "repair": 5817.0,
+            "delta": 1581.0,
+            "percent": 37.3229461756374
+          }
+        }
+      },
+      {
+        "name": "perforated",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2006.0,
+            "repair": 2727.0,
+            "delta": 721.0,
+            "percent": 35.94217347956132
+          },
+          "p95": {
+            "baseline": 2099.0,
+            "repair": 2888.0,
+            "delta": 789.0,
+            "percent": 37.58932825154835
+          },
+          "p99": {
+            "baseline": 2189.0,
+            "repair": 2967.0,
+            "delta": 778.0,
+            "percent": 35.54134307903152
+          },
+          "maximum": {
+            "baseline": 2439.0,
+            "repair": 3685.0,
+            "delta": 1246.0,
+            "percent": 51.08651086510865
+          }
+        }
+      },
+      {
+        "name": "saturated_output",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2039.0,
+            "repair": 2754.0,
+            "delta": 715.0,
+            "percent": 35.06620892594409
+          },
+          "p95": {
+            "baseline": 2173.0,
+            "repair": 2846.0,
+            "delta": 673.0,
+            "percent": 30.971007823285778
+          },
+          "p99": {
+            "baseline": 2285.0,
+            "repair": 2963.0,
+            "delta": 678.0,
+            "percent": 29.671772428884026
+          },
+          "maximum": {
+            "baseline": 3161.0,
+            "repair": 5146.0,
+            "delta": 1985.0,
+            "percent": 62.7965833596963
+          }
+        }
+      },
+      {
+        "name": "dormant_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2937.0,
+            "repair": 3983.0,
+            "delta": 1046.0,
+            "percent": 35.614572693224375
+          },
+          "p95": {
+            "baseline": 3115.0,
+            "repair": 4124.0,
+            "delta": 1009.0,
+            "percent": 32.391653290529696
+          },
+          "p99": {
+            "baseline": 3250.0,
+            "repair": 5031.0,
+            "delta": 1781.0,
+            "percent": 54.800000000000004
+          },
+          "maximum": {
+            "baseline": 4146.0,
+            "repair": 6597.0,
+            "delta": 2451.0,
+            "percent": 59.11722141823444
+          }
+        }
+      },
+      {
+        "name": "wake_burst_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2995.0,
+            "repair": 4075.0,
+            "delta": 1080.0,
+            "percent": 36.060100166944906
+          },
+          "p95": {
+            "baseline": 3212.0,
+            "repair": 4240.0,
+            "delta": 1028.0,
+            "percent": 32.004981320049815
+          },
+          "p99": {
+            "baseline": 3296.0,
+            "repair": 4365.0,
+            "delta": 1069.0,
+            "percent": 32.43325242718447
+          },
+          "maximum": {
+            "baseline": 4600.0,
+            "repair": 5930.0,
+            "delta": 1330.0,
+            "percent": 28.913043478260867
+          }
+        }
+      }
+    ],
+    "rendered": [
+      {
+        "name": "empty_lab",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 2150.0,
+            "repair": 3039.0,
+            "delta": 889.0,
+            "percent": 41.348837209302324
+          },
+          "p95": {
+            "baseline": 2692.0,
+            "repair": 3550.0,
+            "delta": 858.0,
+            "percent": 31.872213967310547
+          },
+          "p99": {
+            "baseline": 2808.0,
+            "repair": 3699.0,
+            "delta": 891.0,
+            "percent": 31.73076923076923
+          },
+          "maximum": {
+            "baseline": 3591.0,
+            "repair": 57983.0,
+            "delta": 54392.0,
+            "percent": 1514.6755778334725
+          }
+        }
+      },
+      {
+        "name": "inert_moving",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3665.0,
+            "repair": 5646.0,
+            "delta": 1981.0,
+            "percent": 54.0518417462483
+          },
+          "p95": {
+            "baseline": 4770.0,
+            "repair": 6198.0,
+            "delta": 1428.0,
+            "percent": 29.937106918238992
+          },
+          "p99": {
+            "baseline": 4936.0,
+            "repair": 6321.0,
+            "delta": 1385.0,
+            "percent": 28.059157212317665
+          },
+          "maximum": {
+            "baseline": 7096.0,
+            "repair": 8195.0,
+            "delta": 1099.0,
+            "percent": 15.487598647125141
+          }
+        }
+      },
+      {
+        "name": "reacting_one",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3671.0,
+            "repair": 5670.0,
+            "delta": 1999.0,
+            "percent": 54.453827295014975
+          },
+          "p95": {
+            "baseline": 4775.0,
+            "repair": 6197.0,
+            "delta": 1422.0,
+            "percent": 29.780104712041883
+          },
+          "p99": {
+            "baseline": 4935.0,
+            "repair": 6414.0,
+            "delta": 1479.0,
+            "percent": 29.969604863221882
+          },
+          "maximum": {
+            "baseline": 6405.0,
+            "repair": 14411.0,
+            "delta": 8006.0,
+            "percent": 124.9960967993755
+          }
+        }
+      },
+      {
+        "name": "reacting_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 5245.0,
+            "repair": 6968.0,
+            "delta": 1723.0,
+            "percent": 32.85033365109628
+          },
+          "p95": {
+            "baseline": 5760.0,
+            "repair": 7593.0,
+            "delta": 1833.0,
+            "percent": 31.822916666666668
+          },
+          "p99": {
+            "baseline": 6023.0,
+            "repair": 8523.0,
+            "delta": 2500.0,
+            "percent": 41.50755437489623
+          },
+          "maximum": {
+            "baseline": 7742.0,
+            "repair": 15096.0,
+            "delta": 7354.0,
+            "percent": 94.9883750968742
+          }
+        }
+      },
+      {
+        "name": "perforated",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 4526.0,
+            "repair": 5853.0,
+            "delta": 1327.0,
+            "percent": 29.319487406098098
+          },
+          "p95": {
+            "baseline": 5018.0,
+            "repair": 6463.0,
+            "delta": 1445.0,
+            "percent": 28.79633320047828
+          },
+          "p99": {
+            "baseline": 5232.0,
+            "repair": 6709.0,
+            "delta": 1477.0,
+            "percent": 28.230122324159023
+          },
+          "maximum": {
+            "baseline": 7534.0,
+            "repair": 17784.0,
+            "delta": 10250.0,
+            "percent": 136.04990708786832
+          }
+        }
+      },
+      {
+        "name": "saturated_output",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 3721.0,
+            "repair": 5846.0,
+            "delta": 2125.0,
+            "percent": 57.10830421929589
+          },
+          "p95": {
+            "baseline": 4891.0,
+            "repair": 6415.0,
+            "delta": 1524.0,
+            "percent": 31.15927213248824
+          },
+          "p99": {
+            "baseline": 5102.0,
+            "repair": 6732.0,
+            "delta": 1630.0,
+            "percent": 31.948255586044688
+          },
+          "maximum": {
+            "baseline": 7465.0,
+            "repair": 16753.0,
+            "delta": 9288.0,
+            "percent": 124.4206296048225
+          }
+        }
+      },
+      {
+        "name": "dormant_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 5302.0,
+            "repair": 6918.0,
+            "delta": 1616.0,
+            "percent": 30.479064503960767
+          },
+          "p95": {
+            "baseline": 5730.0,
+            "repair": 7266.0,
+            "delta": 1536.0,
+            "percent": 26.806282722513092
+          },
+          "p99": {
+            "baseline": 6213.0,
+            "repair": 8133.0,
+            "delta": 1920.0,
+            "percent": 30.90294543698696
+          },
+          "maximum": {
+            "baseline": 12343.0,
+            "repair": 15695.0,
+            "delta": 3352.0,
+            "percent": 27.15709308920036
+          }
+        }
+      },
+      {
+        "name": "wake_burst_three",
+        "samples_each": 1200,
+        "frame_usec": {
+          "p50": {
+            "baseline": 5391.0,
+            "repair": 7014.0,
+            "delta": 1623.0,
+            "percent": 30.105731775180857
+          },
+          "p95": {
+            "baseline": 5926.0,
+            "repair": 7283.0,
+            "delta": 1357.0,
+            "percent": 22.89908876139048
+          },
+          "p99": {
+            "baseline": 6232.0,
+            "repair": 7574.0,
+            "delta": 1342.0,
+            "percent": 21.534017971758665
+          },
+          "maximum": {
+            "baseline": 8310.0,
+            "repair": 15686.0,
+            "delta": 7376.0,
+            "percent": 88.76052948255115
+          }
+        }
+      }
+    ]
+  },
+  "environment_evidence": {
+    "process_resources": {
+      "baseline": {
+        "objectshard_worker_profile_0": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_worker_profile_4000": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_continuous_play_rendered": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_profile_headless": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_profile_rendered": {
+          "available": false,
+          "scope": "direct_process_only"
+        }
+      },
+      "repair": {
+        "objectshard_worker_profile_0": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_worker_profile_4000": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_continuous_play_rendered": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_profile_headless": {
+          "available": false,
+          "scope": "direct_process_only"
+        },
+        "objectshard_profile_rendered": {
+          "available": false,
+          "scope": "direct_process_only"
+        }
+      }
+    },
+    "baseline_renderer_lines": [
+      "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    ],
+    "repair_renderer_lines": [
+      "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    ]
+  },
+  "native_pe_sections": {
+    ".text": {
+      "baseline": {
+        "bytes": 3759616,
+        "offset": 1024,
+        "sha256": "e5a05758120fbd9173141aef7417fa4544f5425d36d80c3a89b1647ea503ee37"
+      },
+      "repair": {
+        "bytes": 3759616,
+        "offset": 1024,
+        "sha256": "e5a05758120fbd9173141aef7417fa4544f5425d36d80c3a89b1647ea503ee37"
+      },
+      "identical": true
+    },
+    ".rdata": {
+      "baseline": {
+        "bytes": 732672,
+        "offset": 3760640,
+        "sha256": "dc4b251f5b0b301cecc8ae0dbdcef9af07a6d0cd31d06efab8a4c94077036657"
+      },
+      "repair": {
+        "bytes": 732672,
+        "offset": 3760640,
+        "sha256": "978e2f88c22b4b0f498cb4929c7841bc03633579c3f06e8a8d3c6212d2272804"
+      },
+      "identical": false
+    },
+    ".buildid": {
+      "baseline": {
+        "bytes": 512,
+        "offset": 4493312,
+        "sha256": "6c7a9044dd2abb13c462a6d1db332f4c7c4fcc80aaba439d8811cd9d6bb78ac9"
+      },
+      "repair": {
+        "bytes": 512,
+        "offset": 4493312,
+        "sha256": "24737e1585f7f7534478af44a530c66d899bccb69b7ffc705dfc15dcfa51171f"
+      },
+      "identical": false
+    },
+    ".data": {
+      "baseline": {
+        "bytes": 1024,
+        "offset": 4493824,
+        "sha256": "3877dafa820c04f9cb3feef9a4362b29b8c468bbfd50ec89f4baa1c8f35e6852"
+      },
+      "repair": {
+        "bytes": 1024,
+        "offset": 4493824,
+        "sha256": "3877dafa820c04f9cb3feef9a4362b29b8c468bbfd50ec89f4baa1c8f35e6852"
+      },
+      "identical": true
+    },
+    ".pdata": {
+      "baseline": {
+        "bytes": 70144,
+        "offset": 4494848,
+        "sha256": "120357ee2cb6f3b1a2b4da50daca7628659ffe52d22dedbb6aab55cdad21a96f"
+      },
+      "repair": {
+        "bytes": 70144,
+        "offset": 4494848,
+        "sha256": "120357ee2cb6f3b1a2b4da50daca7628659ffe52d22dedbb6aab55cdad21a96f"
+      },
+      "identical": true
+    },
+    ".tls": {
+      "baseline": {
+        "bytes": 512,
+        "offset": 4564992,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      "repair": {
+        "bytes": 512,
+        "offset": 4564992,
+        "sha256": "076a27c79e5ace2a3d47f9dd2e83e4ff6ea8872b3c2218f66c92b89b55f36560"
+      },
+      "identical": true
+    },
+    ".reloc": {
+      "baseline": {
+        "bytes": 16384,
+        "offset": 4565504,
+        "sha256": "bc2ac13889f0f04e5c414d0ebc73cc3a9f5990f972657cf0960b955b04e5b159"
+      },
+      "repair": {
+        "bytes": 16384,
+        "offset": 4565504,
+        "sha256": "bc2ac13889f0f04e5c414d0ebc73cc3a9f5990f972657cf0960b955b04e5b159"
+      },
+      "identical": true
+    },
+    "/4": {
+      "baseline": {
+        "bytes": 14336,
+        "offset": 4581888,
+        "sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+      },
+      "repair": {
+        "bytes": 14336,
+        "offset": 4581888,
+        "sha256": "ed53a4e691f5353d94b50e555c6dfe28ca594aa96f37bd08e4813474f4e094e1"
+      },
+      "identical": true
+    },
+    "/18": {
+      "baseline": {
+        "bytes": 512,
+        "offset": 4596224,
+        "sha256": "938083405ea94361785394d2c78417fcd6defc27afcc1aee1ca3a89ab8134725"
+      },
+      "repair": {
+        "bytes": 512,
+        "offset": 4596224,
+        "sha256": "938083405ea94361785394d2c78417fcd6defc27afcc1aee1ca3a89ab8134725"
+      },
+      "identical": true
+    },
+    "/58": {
+      "baseline": {
+        "bytes": 59392,
+        "offset": 4596736,
+        "sha256": "e0fb8aaed4a546f7589c2d0854b143df63a1d2089f3c60a4fa0fe0458f8061c6"
+      },
+      "repair": {
+        "bytes": 59392,
+        "offset": 4596736,
+        "sha256": "e0fb8aaed4a546f7589c2d0854b143df63a1d2089f3c60a4fa0fe0458f8061c6"
+      },
+      "identical": true
+    },
+    "/70": {
+      "baseline": {
+        "bytes": 46080,
+        "offset": 4656128,
+        "sha256": "e526df028307a04d289b2e73b1a13d77dc80116f34b79fff158e787f061e10bd"
+      },
+      "repair": {
+        "bytes": 46080,
+        "offset": 4656128,
+        "sha256": "e526df028307a04d289b2e73b1a13d77dc80116f34b79fff158e787f061e10bd"
+      },
+      "identical": true
+    },
+    "/82": {
+      "baseline": {
+        "bytes": 92672,
+        "offset": 4702208,
+        "sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+      },
+      "repair": {
+        "bytes": 92672,
+        "offset": 4702208,
+        "sha256": "28cf9fa6c61168708fbc0908c5b03f8f562f5c2234d4c439f7ab7a78c0b744b3"
+      },
+      "identical": true
+    },
+    "/33": {
+      "baseline": {
+        "bytes": 7168,
+        "offset": 4794880,
+        "sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+      },
+      "repair": {
+        "bytes": 7168,
+        "offset": 4794880,
+        "sha256": "35760caf576e92c42182dfdc810af4ea394ce9edf5546cd4a38f64a2c35a589a"
+      },
+      "identical": true
+    },
+    "/47": {
+      "baseline": {
+        "bytes": 31744,
+        "offset": 4802048,
+        "sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+      },
+      "repair": {
+        "bytes": 31744,
+        "offset": 4802048,
+        "sha256": "8d15fc79e114afe137636733f83c50289b0c5fa6f7648eed57c35a50c837e5a6"
+      },
+      "identical": true
+    }
+  },
+  "native_differing_byte_count": 14,
+  "unchanged_runtime_hotpaths": {
+    "godot/scripts/object_shard_worker_host.gd": "aa7ddb16b584937c3859ffe4e463f4773c4192c82bd326177971cb4ff42a31ba",
+    "godot/scripts/object_shard_native_worker.gd": "29c45f0a9744f226ce604dcd6ddc36f1b059cc10d76a143c3d6d3bf175bca7bf",
+    "godot/scripts/object_shard_physics_bridge.gd": "3c0f1af7488746b4b80c9d72fb38fba0409dbc7eff2c66078a3d96726fc9d82b",
+    "godot/scripts/object_shard_lab_session.gd": "9de3c25a5cd6d3b2f54a8b0d3ba138ad52d18129d7cd49dae125f1a2032517cb",
+    "godot/tests/profile_object_shard_worker.gd": "e882f6cab48a2cf0be098390721c7bf216312481d5336106c4855a7687e24895",
+    "godot/tests/profile_object_shard_lab.gd": "d287b5cbb4323b4d1e45d2744eb75071be4ee27dbe2be5ee031174148f8cbde4",
+    "godot/tests/test_object_shard_continuous_play.gd": "fcc416770e2343dc43ebbfe61c51d0ef562893af092f0ff27bd9e8ec21a6eee0",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    "tools/build_native_extension_windows.sh": "fe592da436240d0dbbe550dc50a51dd8ffa1eb060550c8033bd16e57d93476c8",
+    "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414"
+  },
+  "interpretation": [
+    "The observed regression is retained: the same 240-interval pump workload takes longer and the same 153-action UI burst has larger queue/presentation tails. No performance equivalence to the superseded baseline is claimed.",
+    "Headless pump profiles do not instantiate the repaired owner scene. They retain identical script/runtime interface inputs, canonical publications, accounting, cadence target and workload counts; native execution, snapshot and value-accounting medians rose in the new actual run.",
+    "All 6,075,904 actual DLL bytes compared. Only a temporary export-filename suffix and CodeView build identity differ; no executable instruction or numerical constant delta was observed. Fresh exact-source compilation and custody are independently established.",
+    "Same pinned engine and selected Rapier, same reported software renderer, but resource sampling is unavailable in both Windows trials. There is no retained CPU utilization, host scheduling or hardware evidence that proves a cause.",
+    "Inference only: broad measured per-stage cost increases and extra callback cycles are compatible with execution-cost/scheduling differences; these trials do not establish runner variance or causation by the navigation changes.",
+    "Unchanged registered Lab limits still pass. These do not constrain the new burst input latency. The observed 1.9-second tail remains a practical limitation for owner evaluation; no 60 FPS or universally responsive editing claim is supported.",
+    "No additional campaign was commissioned: existing evidence identifies the actual stage/cadence difference and the limits of attribution without weakening budgets or treating a repeated trial as a replacement."
+  ],
+  "status": "investigated; negative timing drift retained; causal attribution unresolved",
+  "native_metadata_only_difference": {
+    "differing_bytes": 14,
+    "export_name_random_temporary_suffix": {
+      "offset": 4131197,
+      "bytes": 6,
+      "baseline": "2kcN6P",
+      "repair": "Vzaadq"
+    },
+    "codeview_build_identifier": {
+      "offset": 4493344,
+      "bytes": 8,
+      "prefix": "RSDS"
+    },
+    "text_code_identical": true,
+    "all_other_bytes_identical": true,
+    "scope": "All 6,075,904 actual DLL bytes compared. Only a temporary export-filename suffix and CodeView build identity differ; no executable instruction or numerical constant delta was observed."
+  }
+}

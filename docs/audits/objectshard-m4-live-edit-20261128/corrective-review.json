@@ -1,0 +1,142 @@
+{
+  "schema": "objectshard-live-edit-corrective-review-v1",
+  "recorded_utc": "2026-11-28T07:10:39.208022+00:00",
+  "predecessor_candidate": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "failed_campaign": 46118132005,
+  "focused_preview_observer": {
+    "source": "dc043ceefd057eadd72816471ad25ad90500962e",
+    "run": 46119197243,
+    "application": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50"
+  },
+  "disposition": "local corrective candidate; exact-source hosted and independent Windows package qualification pending",
+  "files_sha256": {
+    "godot/scripts/object_shard_workbench_overlay.gd": "0dcc05fb0b6a24730f5ff9df2284f8003d588abddd5d7a6de9de709f8740f154",
+    "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+    "godot/tests/test_object_shard_m4_camera_lifecycle.gd": "3c89237077671cd90c913ec7fb538330f869c9489d17bab79d8cf526cad0c322",
+    "godot/tests/test_object_shard_m4_live_input.gd": "3d7ae014fcea09ab68d27b8216a7ca0fff0d28cd5f36c65eb83608f65f5de989",
+    "godot/tests/test_object_shard_m4_edit_preview_render.gd": "c6c5c2e29e76f0669c8a8c10552ac74a4f16274d4b533fefa3a61ad8a8d598c4",
+    "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd": "39b3a56416920bab356272ba885afde627f13f19d98144d7a51971e9b8d5e8a7",
+    "tools/objectshard/qualify_native_presentation.py": "c2c93eeb5a915acdd949f501a36f5fb3fb7f13fa4e56ce40b5d6114573418b07",
+    "tools/objectshard/verify_workbench_package.ps1": "938835e6f956a0a06cad66c2d0bae4b788c6ac958726bc8eb553d01710c758c4",
+    "tools/objectshard/test_workbench_package_inputs.py": "f81ca56b8e91f192833ff7856c7ef31767a9f8f9630a4947ab7e78beff9b8b3a",
+    "tools/objectshard/production_runtime_request.json": "415c77a8dffd5fa2fc130e6f282f564b57e690da40568a77e5283a32c22b1bf4"
+  },
+  "local_before_after": {
+    "camera_before": {
+      "bytes": 30679,
+      "sha256": "29939be1131a88830431b8c0291b796b0fcbdaa32caa64284552011917259bd8",
+      "completion": [
+        {
+          "schema": "objectshard-m4-camera-lifecycle-v1",
+          "checks": 214,
+          "failures": [
+            "late layout resize updates the retained material view before another process callback",
+            "late layout resize synchronizes material clipping with the actual terrain rectangle",
+            "late layout resize synchronizes the retained material canvas transform immediately"
+          ],
+          "source_commit": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50+late-layout-regression"
+        }
+      ],
+      "raw_log_retention": "outside repository; compact identity only"
+    },
+    "camera_after": {
+      "bytes": 29141,
+      "sha256": "ac8255cb2496e6cf15863663babca90b51164efd7e54b8e0d0bc4072df9c99df",
+      "completion": [
+        {
+          "schema": "objectshard-m4-camera-lifecycle-v1",
+          "checks": 214,
+          "failures": [],
+          "source_commit": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50+late-layout-fix"
+        }
+      ],
+      "raw_log_retention": "outside repository; compact identity only"
+    },
+    "input_before": {
+      "bytes": 87977,
+      "sha256": "22c147f3731513b9de5c34f439505555d427f4803736326e00c1f46d9f55a7b0",
+      "completion": [
+        {
+          "schema": "objectshard-m4-live-input-v1",
+          "checks": 106,
+          "failures": [
+            "structural Escape cancellation cannot fall through to the ordinary pause shortcut",
+            "physical Window resize cancels structural intent even when the logical stretched canvas keeps its size"
+          ],
+          "source_commit": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50+input-cancellation-regression"
+        }
+      ],
+      "raw_log_retention": "outside repository; compact identity only"
+    },
+    "input_after": {
+      "bytes": 87211,
+      "sha256": "fc664b96e8f78cc586daff6e8d1740ffc17d3a9572d2a65726879acc3511e6fb",
+      "completion": [
+        {
+          "schema": "objectshard-m4-live-input-v1",
+          "checks": 105,
+          "failures": [],
+          "source_commit": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50+input-cancellation-fix"
+        }
+      ],
+      "raw_log_retention": "outside repository; compact identity only"
+    },
+    "scene_refusal_after": {
+      "bytes": 501,
+      "sha256": "343797332c5620f4ffd5d5190e04e10ff86135506c8785988c218e32093c5ab9",
+      "completion": [
+        {
+          "schema": "objectshard-m4-ordinary-scene-refusal-v1",
+          "checks": 36,
+          "failures": 0
+        }
+      ],
+      "raw_log_retention": "outside repository; compact identity only"
+    },
+    "python_after": {
+      "bytes": 185,
+      "sha256": "959cd1996ea56d586d9d31d9ffb88a3498130c17ae1e7d9cbdac345f1d6e3011",
+      "completion": [],
+      "raw_log_retention": "outside repository; compact identity only"
+    }
+  },
+  "corrections": [
+    {
+      "finding": "Portable PowerShell verifier retained the five-scene entry and omitted new required files.",
+      "change": "Synchronize exact nine-scene/54-file contract with Python; retain all native, engine, inventory and provenance refusal checks.",
+      "regression": "New cross-platform mirror assertion rejects exact old source. Actual PowerShell7.4.6 executes all86 Python contracts with no skips; C independently executes package-input subset6/6."
+    },
+    {
+      "finding": "Late Main-thread Container resize changed terrain pixel rectangle after overlay process sync, causing one-draw held-camera displacement.",
+      "change": "Subscribe existing overlay view synchronization to actual terrain Control.resized; disconnect with overlay lifetime.",
+      "regression": "Real mounted Workbench214-check fixture fails precisely three immediate late-layout assertions before fix and passes after. All prior camera assertions remain."
+    },
+    {
+      "finding": "Cancelling a structural gesture with Escape also reached Main unhandled Escape-to-Pause shortcut.",
+      "change": "Consume Escape only when an active structural intent was cancelled; retain ordinary idle Escape behavior.",
+      "regression": "Actual Input.parse_input_event route now verifies unchanged pause state and zero material admission."
+    },
+    {
+      "finding": "Physical Window resizing can preserve logical canvas dimensions under canvas_items stretch, leaving a captured gesture active.",
+      "change": "Cancel structural admission on owning Window.size_changed, with lifetime cleanup.",
+      "regression": "Actual Window change cancels intent; preview verifies changed physical framebuffer/transform and retained camera-correct outlines. Prior mandatory logical-reflow premise is explicitly replaced because actual1920x1080→1360x765 captures preserved1880x853 logical size."
+    },
+    {
+      "finding": "Retained scene-refusal test expected three structural tools and an old internal string.",
+      "change": "Require exact seven tool labels/indices plus clear refusal text and current diagnostic OwnerNotAttached/refused increment with no admission.",
+      "regression": "All queue, ordinary-brush no-fallback, native mutation and World identity assertions retained; corrected36-check fixture passes."
+    },
+    {
+      "finding": "New actual preview would otherwise first run late in the full Windows matrix.",
+      "change": "Include the unchanged preview fixture in existing early native presentation lane, validating10 outlines and12 SHA-bound PNGs in addition to retained camera/brush cases.",
+      "regression": "Full source and extracted replay remain required; early lane cannot substitute for evaluator qualification."
+    }
+  ],
+  "independent_reviews": [
+    "A and C reviewed late-layout owner/physics separation.",
+    "C reviewed PowerShell parity and ran actual PowerShell subset independently.",
+    "A reviewed expanded early PNG/receipt validation.",
+    "C independently inspected all12 original Windows preview captures and identified Escape pause fallthrough.",
+    "Principal checked96 final native benchmark inputs against canonical ace Git blobs; native implementation is unchanged by these corrections."
+  ]
+}
