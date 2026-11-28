@@ -469,8 +469,12 @@ jobs:
                    "Original scene population differs")
               held_prefix = next(n.rsplit("/", 1)[0] for n in held.namelist() if n.endswith("/SUMMARY.json"))
               for field, relative in (("project_sha256", "project.godot"), ("override_sha256", "override.cfg")):
-                  need(startup[field] == sha(read(held, held_prefix + "/project/" + relative)),
-                       "Actual original staged project/override differs")
+                  staged_path = held_prefix + "/project/" + relative
+                  # Stock Safe can have no override.cfg; the original observer
+                  # records FileAccess.get_sha256's empty absence value.
+                  expected_hash = ("" if relative == "override.cfg" and staged_path not in held.namelist()
+                                   else sha(read(held, staged_path)))
+                  need(startup[field] == expected_hash, "Actual original staged project/override differs")
               proof, frames = [], {}
               if contact:
                   columns = report["trace_columns"]

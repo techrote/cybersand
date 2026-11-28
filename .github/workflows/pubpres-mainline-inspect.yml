@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        role: [spawn]
+        role: [wave512, wave1024, sustained-wave512, sustained-mixed2048]
     steps:
       - name: Authenticate original final artifacts and independently reduce retained observations
         env:
@@ -41,8 +41,10 @@ jobs:
           ENGINE = "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
           # Each immutable tuple is (artifact ID, exact ZIP bytes, SHA256, exact artifact name, kind, case).
           ROLES = {
-              "spawn": (15263701529, 6208989, "c0db8bc7b629750c5f4a91eab0fa6e9c29e1b8c455630c3bf277fad32cf7a826",
-                        "pubpres-mainline-spawn-windows-46144440297-1", "spawn", None),
+              "wave512": (15264340599, 62247320, "800730b55f901f397f92c32f2097f37db64113a6abd8c7e66c53a198abdf89c0", "pubpres-mainline-performance-windows-wave_512_follow-46144440297-1", "performance", "wave_512_follow"),
+              "wave1024": (15263811985, 61775606, "9df17293edf343d29034f426120682187a6268ffeb2c85e74d6b0265ecc7ddc8", "pubpres-mainline-performance-windows-wave_1024_follow_4-46144440297-1", "performance", "wave_1024_follow_4"),
+              "sustained-wave512": (15263757954, 17994967, "a324ea5792e594b969b966971809028cdbfba511f95b0fe755fe752b585a002d", "pubpres-mainline-sustained-windows-wave512-46144440297-1", "sustained", "wave512"),
+              "sustained-mixed2048": (15263364621, 17803090, "20a4fd54a752c16eb1d3acefa376d8fb9e100ac94cd5f8fb24685f4715ba4fd1", "pubpres-mainline-sustained-windows-mixed2048-46144440297-1", "sustained", "mixed2048"),
           }
           ROLE = os.environ["INSPECTION_ROLE"]
           AID, SIZE, SHA, NAME, KIND, CASE = ROLES[ROLE]
@@ -389,21 +391,6 @@ jobs:
                   verified=[]; matches={}
                   for index,(role,modes) in enumerate(plan):
                       arm=next((a for a in summary["arms"] if a["index"]==index and a["plan"]["role"]==role),None)
-                      emit("ORIGINAL_SPAWN_ARM_EXECUTION",{
-                          "index":index,"role":role,"plan":arm.get("plan") if arm else None,
-                          "exit_code":arm.get("exit_code") if arm else None,"timed_out":arm.get("timed_out") if arm else None,
-                          "error":arm.get("error") if arm else None,"pass":arm.get("pass") if arm else None,
-                          "original_result_population":len(arm.get("results",[])) if arm else 0})
-                      if arm is None or arm.get("pass") is not True:
-                          # An admission refusal can precede every scene. Preserve and
-                          # show its original top-level error and driver invocation.
-                          failed_logs(prefix+str(index)+"-"+role+"/")
-                          for leaf in (str(index)+"-driver.log",str(index)+"-request.json"):
-                              raw=read(prefix+leaf,False,16*1024**2)
-                              if raw is None: continue
-                              text=raw.decode("utf-8-sig",errors="replace")
-                              if len(text)>32000: text=text[:16000]+"\n[BOUNDED EXCERPT; full original retained]\n"+text[-16000:]
-                              emit("ORIGINAL_FAILURE_LOG",{"file":prefix+leaf,"text":text})
                       for scene in registration["scenes"]:
                           for mode in modes:
                               folder=prefix+str(index)+"-"+role+"/"+scene+"-"+mode+"/"
