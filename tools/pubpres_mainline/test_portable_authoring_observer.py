@@ -53,6 +53,61 @@ print('probe-source-controls-passed')
         self.assertEqual(completed.returncode, 0, completed.stderr.decode("utf-8", errors="replace"))
         self.assertIn(b"probe-source-controls-passed", completed.stdout)
 
+    def test_negative_control_accepts_behavior_without_collect2_path_credit(self):
+        program = r'''
+import sys, types
+from pathlib import Path
+sys.modules['ramcache_strata_lab_package'] = types.ModuleType('ramcache_strata_lab_package')
+sys.modules['lab'] = types.ModuleType('lab')
+sys.path.insert(0, str(Path(sys.argv[1]) / 'tools/pubpres_mainline'))
+from portable_authoring import _negative_control_attempt_valid, _original_unicode_control
+markers = ['collect2.exe: fatal error: cannot find', "'ld'", 'compilation terminated.']
+good = {
+    'status': 'reproduced_expected_failure_behavior_only',
+    'expected_failure_observed': True, 'compiler_exit': 1,
+    'expected_failure_markers': markers, 'expected_failure_markers_seen': markers,
+    'compiler_stderr': "collect2.exe: fatal error: cannot find 'ld'\\ncompilation terminated.",
+    'executable_absent': True, 'expected_absent_processes': ['ld.exe'],
+    'expected_absent_processes_observed': [], 'observer_errors': [],
+    'compiler_root_observed': True,
+    'required_actual_processes_observed': ['as.exe', 'cc1plus.exe', 'g++.exe'],
+    'actual_process_paths_inside_bundle': True, 'collect2_path_credit': False,
+    'fully_observed_process_chain': False,
+}
+assert _negative_control_attempt_valid(good)
+# If a future sampler catches collect2, retain its real observation while this
+# negative-only contract still grants no positive candidate path credit.
+observed = {**good, 'collect2_process_observed': True,
+            'collect2_observed_paths': ['C:/original/cxx/collect2.exe']}
+assert _negative_control_attempt_valid(observed)
+for key, value in [
+    ('compiler_exit', 0),
+    ('expected_absent_processes_observed', ['ld.exe']),
+    ('observer_errors', ['snapshot enumeration failed']),
+    ('compiler_root_observed', False),
+    ('required_actual_processes_observed', ['cc1plus.exe', 'g++.exe']),
+    ('actual_process_paths_inside_bundle', False),
+    ('collect2_path_credit', True),
+    ('fully_observed_process_chain', True),
+]:
+    assert not _negative_control_attempt_valid({**good, key: value}), key
+skipped = _original_unicode_control(Path('unused-parent'), None, None, [])
+assert skipped['status'] == 'not_run_prerequisite_failed'
+assert skipped['qualification_credit'] == 'none' and skipped['attempts'] == []
+mismatched = _original_unicode_control(Path('unused-parent'), None, None, [
+    {'label': 'ascii', 'minimal_compile_link_execute': {'source_sha256': 'a' * 64}},
+    {'label': 'unicode', 'minimal_compile_link_execute': {'source_sha256': 'b' * 64}},
+])
+assert mismatched['status'] == 'failed_source_mismatch' and mismatched['attempts'] == []
+print('negative-control-contract-controls-passed')
+'''
+        completed = subprocess.run(
+            [sys.executable, "-I", "-B", "-c", program, str(ROOT)], cwd=ROOT,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False, timeout=30,
+            env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"})
+        self.assertEqual(completed.returncode, 0, completed.stderr.decode("utf-8", errors="replace"))
+        self.assertIn(b"negative-control-contract-controls-passed", completed.stdout)
+
     def test_pid_query_races_are_warnings_without_process_credit(self):
         program = r'''
 import ctypes, sys, threading

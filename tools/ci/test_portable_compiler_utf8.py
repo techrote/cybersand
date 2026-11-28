@@ -1,6 +1,7 @@
 """Pure contract tests for the candidate GNU Fusion-manifest metadata tool."""
 from __future__ import annotations
 
+import json
 import struct
 import unittest
 import xml.etree.ElementTree as ET
@@ -158,6 +159,40 @@ class PEInspectionTests(unittest.TestCase):
         self.assertTrue(candidate._protected_source_root(__import__("pathlib").Path(r"C:\mingw64")))
         self.assertTrue(candidate._protected_source_root(__import__("pathlib").Path(r"C:\mingw64\bin")))
         self.assertFalse(candidate._protected_source_root(__import__("pathlib").Path(r"C:\mingw64-copy")))
+
+    def test_section_failure_diagnostic_pins_changed_bytes_without_payload_dump(self):
+        before_data = _synthetic_pe(_existing_manifest())
+        after_data = bytearray(before_data)
+        after_data[0x210] ^= 0x55
+        before = candidate._pe_inspect_bytes(before_data)
+        after = candidate._pe_inspect_bytes(bytes(after_data))
+        diagnostic = candidate._section_mismatch_diagnostic(
+            "bin/as.exe", before_data, bytes(after_data), before, after, after)
+        text = json.dumps(diagnostic, sort_keys=True)
+        self.assertLess(len(text), 100_000)
+        self.assertEqual(diagnostic["failure"], "non-resource PE section identity changed")
+        self.assertEqual(diagnostic["before_sha256"], candidate._sha_bytes(before_data))
+        self.assertEqual(diagnostic["after_sha256"], candidate._sha_bytes(bytes(after_data)))
+        changed = diagnostic["changed_nonresource_sections"]
+        self.assertEqual(len(changed), 1)
+        self.assertEqual(changed[0]["before"]["name"], ".text")
+        raw_diff = changed[0]["raw_diff"]["raw_byte_diff"]
+        self.assertEqual(raw_diff["changed_byte_count"], 1)
+        self.assertEqual(raw_diff["ranges"][0]["before_file_offset_start"], 0x210)
+        self.assertTrue(diagnostic["resource_preservation"]["non_target_resources_exact"])
+
+    def test_raw_byte_diff_retains_bounded_first_and_last_ranges(self):
+        before = bytes(1024)
+        after = bytearray(before)
+        for offset in range(0, len(after), 2):
+            after[offset] = 1
+        diff = candidate._bounded_byte_diff(before, bytes(after), max_ranges=8)
+        self.assertEqual(diff["changed_byte_count"], 512)
+        self.assertEqual(diff["changed_range_count"], 512)
+        self.assertEqual(diff["omitted_range_count"], 504)
+        self.assertEqual(len(diff["ranges"]), 8)
+        self.assertEqual(diff["first_changed_offset"], 0)
+        self.assertEqual(diff["last_changed_offset"], 1022)
 
 
 class ReceiptProofTests(unittest.TestCase):

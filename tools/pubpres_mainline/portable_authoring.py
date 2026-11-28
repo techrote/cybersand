@@ -723,9 +723,11 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
         paths.setdefault(Path(row["image_path"]).name.casefold(), []).append(row["image_path"])
     needed = {"g++.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe"}
     expected_absent = {"ld.exe"} if not expected_link_success else set()
-    required = needed - expected_absent
+    required = (needed - expected_absent if expected_link_success
+                else {"g++.exe", "cc1plus.exe", "as.exe"})
     all_seen = required <= set(paths)
     expected_absent_observed = sorted(expected_absent & set(paths))
+    collect2_observed = "collect2.exe" in paths
     role_observations = {
         name: [{"pid": row["pid"],
                 "creation_filetime_100ns": row["creation_filetime_100ns"],
@@ -759,7 +761,7 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
         expected_failure = (expected_failure_observed and all_seen and not expected_absent_observed
                             and observed_inside and compiler_root_observed
                             and not observed["observer_errors"])
-        status = "reproduced_expected_failure" if expected_failure else "failed"
+        status = "reproduced_expected_failure_behavior_only" if expected_failure else "failed"
     return {"status": status,
             "qualification_credit": "positive_compiler_control" if expected_link_success else "negative_control_only",
             "expected_behavior": "compile_link_execute" if expected_link_success else "collect2_missing_ld_failure",
@@ -787,6 +789,11 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
             "required_actual_processes_missing": sorted(required - set(paths)),
             "expected_absent_processes": sorted(expected_absent),
             "expected_absent_processes_observed": expected_absent_observed,
+            "process_roles_not_observed": sorted(needed - set(paths)),
+            "collect2_process_observed": collect2_observed,
+            "collect2_observed_paths": paths.get("collect2.exe", []),
+            "collect2_path_credit": False if not expected_link_success else collect2_observed,
+            "fully_observed_process_chain": False if not expected_link_success else None,
             "required_role_observations": role_observations,
             "compiler_root_observed": compiler_root_observed,
             "actual_process_paths_inside_bundle": observed_inside,
@@ -804,6 +811,26 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
 def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
                               path_variants: list[dict]) -> dict:
     """Reproduce the admitted compiler failure without the corrected compiler preparation."""
+    positive_sources = [
+        {"label": row.get("label"), "sha256": row.get("minimal_compile_link_execute", {}).get("source_sha256")}
+        for row in path_variants
+        if type(row.get("minimal_compile_link_execute")) is dict
+        and type(row["minimal_compile_link_execute"].get("source_sha256")) is str]
+    positive_hashes = [row["sha256"] for row in positive_sources]
+    if not positive_hashes:
+        return {"status": "not_run_prerequisite_failed", "qualification_credit": "none",
+                "reason": "No corrected candidate compiler probe produced a source hash; skip the original-toolchain copy and negative attempts.",
+                "candidate_probe_sources": positive_sources, "attempt_limit": 3,
+                "attempt_count": 0, "attempts": [], "same_probe_source_as_corrected_controls": False,
+                "collect2_path_credit": False, "fully_observed_process_chain": False}
+    if len(set(positive_hashes)) != 1:
+        return {"status": "failed_source_mismatch", "qualification_credit": "none",
+                "reason": "Corrected candidate probes used different source bytes; the original negative control is not comparable.",
+                "candidate_probe_sources": positive_sources, "attempt_limit": 3,
+                "attempt_count": 0, "attempts": [], "same_probe_source_as_corrected_controls": False,
+                "collect2_path_credit": False, "fully_observed_process_chain": False}
+    expected_positive_hash = positive_hashes[0]
+
     control_root = parent / "Ω"
     dependencies = control_root / "dependencies"
     compiler_source = args.compiler_root.resolve()
@@ -813,6 +840,9 @@ def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
     source_gxx_sha = sha(source_gxx)
     need(source_gxx_sha == EXPECTED_GCC_SHA256,
          "The original Unicode control compiler differs from the admitted GCC identity")
+    registered_compiler = portable_stack.portable_compiler_utf8
+    source_registered_hashes = registered_compiler._assert_registered_tree(
+        compiler_source, expect_original=True)
     need(not control_root.exists(), "Refuse to overwrite the original Unicode compiler control")
     copied_compiler = dependencies / "cxx"
     copy_ignore = portable_stack._ignore_compiler_python_cache
@@ -821,6 +851,10 @@ def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
     copied_gxx_sha = sha(copied_gxx)
     need(copied_gxx_sha == source_gxx_sha,
          "The copied original compiler identity differs from its admitted source")
+    copied_registered_hashes = registered_compiler._assert_registered_tree(
+        copied_compiler, expect_original=True)
+    need(copied_registered_hashes == source_registered_hashes,
+         "The copied original compiler's registered PE executable population differs from source")
     utf8_receipt = copied_compiler / "CYBERSAND-COMPILER-UTF8.json"
     need(not utf8_receipt.exists(),
          "The negative-control compiler unexpectedly contains corrected UTF-8 preparation")
@@ -835,35 +869,29 @@ def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
     with _environment_scope(env):
         identity = _tool_identity(package, env)
 
-    positive_hashes = [row.get("minimal_compile_link_execute", {}).get("source_sha256")
-                       for row in path_variants]
-    positive_hashes = [value for value in positive_hashes if type(value) is str]
-    expected_positive_hash = (positive_hashes[0] if positive_hashes
-                              and len(set(positive_hashes)) == 1 else None)
     attempts: list[dict] = []
     for index in range(3):
         probe_directory = package / "authoring-temp" / f"original-unicode-attempt-{index + 1}"
-        with _environment_scope(env):
-            attempt = _mini_link_test(package, env, firewall, expected_link_success=False,
-                                      probe_directory=probe_directory)
+        try:
+            with _environment_scope(env):
+                attempt = _mini_link_test(package, env, firewall, expected_link_success=False,
+                                          probe_directory=probe_directory)
+        except BaseException as error:
+            attempt = {"status": "failed", "error": type(error).__name__ + ": " + str(error),
+                       "source_sha256": None, "expected_failure_observed": False,
+                       "executable_absent": False, "expected_absent_processes_observed": [],
+                       "observer_errors": ["attempt execution: " + type(error).__name__ + ": " + str(error)],
+                       "collect2_process_observed": False, "collect2_path_credit": False,
+                       "fully_observed_process_chain": False}
         attempt["attempt"] = index + 1
         attempts.append(attempt)
-        if (not attempt["expected_failure_observed"] or attempt["observer_errors"]
-                or attempt["expected_absent_processes_observed"]):
-            break
-        if attempt["status"] == "reproduced_expected_failure":
-            break
 
-    same_source = (expected_positive_hash is not None and bool(attempts)
-                   and all(row["source_sha256"] == expected_positive_hash for row in attempts))
-    fully_observed_attempts = [row for row in attempts
-                               if row["status"] == "reproduced_expected_failure"]
-    all_attempts_reproduced = bool(attempts) and all(row["expected_failure_observed"]
-                                                      and row["executable_absent"]
-                                                      and not row["expected_absent_processes_observed"]
-                                                      for row in attempts)
-    status = ("reproduced_expected_failure" if same_source and all_attempts_reproduced
-              and fully_observed_attempts else "failed")
+    same_source = (len(attempts) == 3 and all(row.get("source_sha256") == expected_positive_hash
+                                              for row in attempts))
+    valid_attempts = [row for row in attempts if _negative_control_attempt_valid(row)]
+    all_attempts_reproduced = (len(attempts) == 3 and len(valid_attempts) == 3)
+    status = ("reproduced_expected_failure_behavior_only" if same_source and all_attempts_reproduced
+              else "failed")
     return {
         "status": status,
         "qualification_credit": "negative_control_only",
@@ -873,6 +901,9 @@ def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
         "compiler_copied_root": str(copied_compiler.resolve()),
         "compiler_source_gxx_sha256": source_gxx_sha,
         "compiler_copied_gxx_sha256": copied_gxx_sha,
+        "registered_original_executable_sha256": source_registered_hashes,
+        "registered_copied_executable_sha256": copied_registered_hashes,
+        "registered_source_and_copy_equal": source_registered_hashes == copied_registered_hashes,
         "compiler_utf8_preparation_present": utf8_receipt.exists(),
         "copy_method": "portable_stack.lab.copy_portable_tree with the production embedded-Python-cache ignore callback; no UTF-8 preparation",
         "copy_ignore": getattr(copy_ignore, "__name__", str(copy_ignore)),
@@ -881,15 +912,48 @@ def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
         "compiler_executables_blocked": compiler_rules,
         "compiler_readback": identity,
         "expected_positive_source_sha256": expected_positive_hash,
+        "candidate_probe_sources": positive_sources,
         "attempt_source_sha256s": [row["source_sha256"] for row in attempts],
         "same_probe_source_as_corrected_controls": same_source,
         "attempt_limit": 3,
         "attempt_count": len(attempts),
-        "fully_observed_expected_failure_attempts": [row["attempt"] for row in fully_observed_attempts],
+        "behaviorally_reproduced_attempts": [row["attempt"] for row in valid_attempts],
+        "fully_observed_process_chain_attempts": [],
+        "fully_observed_process_chain": False,
+        "collect2_process_observed_attempts": [row["attempt"] for row in attempts
+                                                if row.get("collect2_process_observed") is True],
+        "collect2_unobserved_attempts": [row["attempt"] for row in attempts
+                                         if row.get("collect2_process_observed") is not True],
+        "collect2_path_credit": False,
+        "negative_control_contract": "Behavioral reproduction only: every attempt requires the owned original g++ root, correlated in-tree cc1plus/as, exit 1 with all expected collect2 missing-ld diagnostic markers, no executable, no ld process, and no fatal observer errors. The diagnostic does not grant collect2 process-path credit; the candidate positive controls must prove collect2 and ld paths.",
         "evidence_join_policy": "Each attempt has its own suspended compiler root and process lineage; process roles are never joined across attempts.",
         "all_actual_attempts_reproduced_expected_failure_without_executable": all_attempts_reproduced,
         "attempts": attempts,
     }
+
+
+def _negative_control_attempt_valid(row: dict) -> bool:
+    """Validate behavior-only proof without crediting an unobserved collect2 path."""
+    expected_markers = ["collect2.exe: fatal error: cannot find", "'ld'", "compilation terminated."]
+    stderr = row.get("compiler_stderr", "").casefold()
+    return (
+        row.get("status") == "reproduced_expected_failure_behavior_only"
+        and row.get("expected_failure_observed") is True
+        and row.get("compiler_exit") == 1
+        and row.get("expected_failure_markers") == expected_markers
+        and row.get("expected_failure_markers_seen") == expected_markers
+        and all(marker.casefold() in stderr for marker in expected_markers)
+        and row.get("executable_absent") is True
+        and row.get("expected_absent_processes") == ["ld.exe"]
+        and not row.get("expected_absent_processes_observed")
+        and not row.get("observer_errors")
+        and row.get("compiler_root_observed") is True
+        and set(row.get("required_actual_processes_observed", []))
+        == {"g++.exe", "cc1plus.exe", "as.exe"}
+        and row.get("actual_process_paths_inside_bundle") is True
+        and row.get("collect2_path_credit") is False
+        and row.get("fully_observed_process_chain") is False
+    )
 
 
 def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgressRules | None) -> dict:
@@ -1122,6 +1186,14 @@ def run(args) -> dict:
                 item = {**describe_path(label, install), "status": "failed",
                         "effective_authoring_environment": environment_record,
                         "error": type(error).__name__ + ": " + str(error)}
+                diagnostic = install / "dependencies/cxx/CYBERSAND-COMPILER-UTF8-FAILURE.json"
+                if diagnostic.is_file():
+                    try:
+                        need(diagnostic.stat().st_size <= 1_048_576,
+                             "Compiler metadata failure diagnostic exceeds one MiB")
+                        item["compiler_metadata_failure"] = json.loads(diagnostic.read_bytes())
+                    except BaseException as diagnostic_error:
+                        item["compiler_metadata_failure_read_error"] = str(diagnostic_error)
             report["path_variants"].append(item)
             report["actual_materials_lab"] = report["actual_materials_lab"] or item.get("material_lab_world")
             report["status"] = "passed" if all(row["status"] == "passed" for row in report["path_variants"]) else "failed"
@@ -1143,7 +1215,8 @@ def run(args) -> dict:
                 "status": "failed", "qualification_credit": "negative_control_only",
                 "error": type(error).__name__ + ": " + str(error)}
         report["status"] = ("passed" if all(row["status"] == "passed" for row in report["path_variants"])
-                            and report["original_unicode_control"].get("status") == "reproduced_expected_failure"
+                            and report["original_unicode_control"].get("status") ==
+                            "reproduced_expected_failure_behavior_only"
                             else "failed")
         write_json(output / "portable-authoring-witness.json", report)
         control = report["original_unicode_control"]
@@ -1151,7 +1224,8 @@ def run(args) -> dict:
         print(json.dumps({"path": "original_unicode_control", "status": control["status"],
                           "attempt_count": len(attempts),
                           "failure_reproduced": control.get("all_actual_attempts_reproduced_expected_failure_without_executable"),
-                          "fully_observed_attempts": control.get("fully_observed_expected_failure_attempts", []),
+                          "behaviorally_reproduced_attempts": control.get("behaviorally_reproduced_attempts", []),
+                          "collect2_path_credit": control.get("collect2_path_credit", False),
                           "ld_reported": control.get("compiler_readback", {}).get("ld", {}).get("reported_by_compiler")},
                          ensure_ascii=True, sort_keys=True), flush=True)
     finally:
@@ -1180,8 +1254,9 @@ def run(args) -> dict:
     need(all(row["status"] == "passed" for row in report["path_variants"]),
          "At least one portable compiler installation path failed")
     need(type(report["original_unicode_control"]) is dict
-         and report["original_unicode_control"].get("status") == "reproduced_expected_failure",
-         "Original Unicode compiler negative control did not reproduce the admitted collect2 missing-ld failure")
+         and report["original_unicode_control"].get("status") ==
+         "reproduced_expected_failure_behavior_only",
+         "Original Unicode compiler negative behavior control did not meet its bounded contract")
     need(report["actual_materials_lab"] is not None,
          "The combined adverse path did not execute the actual Materials Lab World backend")
     report["status"] = "passed"

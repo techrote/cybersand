@@ -225,6 +225,14 @@ outbound blocks for its tools and both generated World probes. Neither that
 candidate implementation nor a local resource-API control is an extracted
 evaluator pass. The complete newly built archive remains a separate gate.
 
+The [first hosted candidate attempt](../audits/pubpres-delivery-recovery-20261128/utf8-first-hosted-refusal.json)
+refused preparation because Windows resource updating changed a non-resource
+section identity in `bin/as.exe`. No corrected compiler or Lab execution was
+credited. A bounded PE mismatch receipt now preserves before/after section and
+header diagnostics while retaining that refusal. Original Unicode retries grant
+only failure-behavior evidence, with unobserved `collect2` paths explicit; every
+successful candidate control still requires the actual complete compiler chain.
+
 ## Owner route and subsequent ObjectShard integration
 
 The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)

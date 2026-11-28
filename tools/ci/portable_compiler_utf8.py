@@ -23,6 +23,7 @@ import xml.etree.ElementTree as ET
 
 SCHEMA = "cybersand.portable-compiler-utf8-v1"
 RECEIPT_NAME = "CYBERSAND-COMPILER-UTF8.json"
+FAILURE_RECEIPT_NAME = "CYBERSAND-COMPILER-UTF8-FAILURE.json"
 RT_MANIFEST = 24
 CREATEPROCESS_MANIFEST_RESOURCE_ID = 1
 ASSEMBLY_NS = "urn:schemas-microsoft-com:asm.v1"
@@ -331,6 +332,222 @@ def _pe_inspect_bytes(data: bytes) -> dict:
             "sections": sections,
             "nonresource_sections": nonresource_sections,
             "nonresource_sections_sha256": _sha_bytes(_canonical(nonresource_sections))}
+
+
+def _pe_header_diagnostics(data: bytes) -> dict:
+    """Return bounded PE header and data-directory facts for failure evidence."""
+    pe_offset = struct.unpack_from("<I", data, 0x3C)[0]
+    coff = pe_offset + 4
+    machine, sections, timestamp, symbol_table, symbol_count, optional_size, characteristics = \
+        struct.unpack_from("<HHIIIHH", data, coff)
+    optional = coff + 20
+    magic = struct.unpack_from("<H", data, optional)[0]
+    is_plus = magic == 0x20B
+    directory_count_offset = optional + (108 if is_plus else 92)
+    directories_offset = optional + (112 if is_plus else 96)
+    directory_count = struct.unpack_from("<I", data, directory_count_offset)[0]
+    def u16(offset: int) -> int:
+        return struct.unpack_from("<H", data, optional + offset)[0]
+    def u32(offset: int) -> int:
+        return struct.unpack_from("<I", data, optional + offset)[0]
+    def u64(offset: int) -> int:
+        return struct.unpack_from("<Q", data, optional + offset)[0]
+    fields = {
+        "magic": magic,
+        "linker_version": [data[optional + 2], data[optional + 3]],
+        "size_of_code": u32(4),
+        "size_of_initialized_data": u32(8),
+        "size_of_uninitialized_data": u32(12),
+        "address_of_entry_point": u32(16),
+        "base_of_code": u32(20),
+        "image_base": u64(24) if is_plus else u32(28),
+        "section_alignment": u32(32),
+        "file_alignment": u32(36),
+        "os_version": [u16(40), u16(42)],
+        "image_version": [u16(44), u16(46)],
+        "subsystem_version": [u16(48), u16(50)],
+        "win32_version_value": u32(52),
+        "size_of_image": u32(56),
+        "size_of_headers": u32(60),
+        "checksum": u32(64),
+        "subsystem": u16(68),
+        "dll_characteristics": u16(70),
+        "stack_reserve": u64(72) if is_plus else u32(72),
+        "stack_commit": u64(80) if is_plus else u32(76),
+        "heap_reserve": u64(88) if is_plus else u32(80),
+        "heap_commit": u64(96) if is_plus else u32(84),
+        "loader_flags": u32(104 if is_plus else 88),
+        "number_of_rva_and_sizes": directory_count,
+    }
+    directory_names = ("export", "import", "resource", "exception", "security", "base_relocation",
+                       "debug", "architecture", "global_pointer", "tls", "load_config", "bound_import",
+                       "iat", "delay_import", "clr", "reserved")
+    directories = {}
+    for index, name in enumerate(directory_names[:min(directory_count, len(directory_names))]):
+        rva, size = struct.unpack_from("<II", data, directories_offset + index * 8)
+        directories[name] = {"rva_or_file_offset": rva, "size": size}
+    return {"pe_offset": pe_offset,
+            "coff": {"machine": machine, "number_of_sections": sections,
+                     "timestamp": timestamp, "pointer_to_symbol_table": symbol_table,
+                     "number_of_symbols": symbol_count, "size_of_optional_header": optional_size,
+                     "characteristics": characteristics},
+            "optional_header": fields, "data_directories": directories}
+
+
+def _bounded_byte_diff(before: bytes, after: bytes, *, max_ranges: int = 32,
+                       sample_bytes: int = 48) -> dict:
+    """Describe changed spans without retaining executable contents."""
+    common = min(len(before), len(after))
+    first: list[dict] = []
+    tail: list[dict] = []
+    first_capacity = max_ranges // 2
+    tail_capacity = max_ranges - first_capacity
+    range_count = 0
+    changed_bytes = 0
+    first_offset = None
+    last_end = None
+    index = 0
+    while index < common:
+        if before[index] == after[index]:
+            index += 1
+            continue
+        start = index
+        while index < common and before[index] != after[index]:
+            index += 1
+        old_chunk, new_chunk = before[start:index], after[start:index]
+        changed_bytes += sum(left != right for left, right in zip(old_chunk, new_chunk))
+        record = {"offset_start": start, "offset_end_exclusive": index,
+                  "before_length": len(old_chunk), "after_length": len(new_chunk),
+                  "before_sha256": _sha_bytes(old_chunk), "after_sha256": _sha_bytes(new_chunk),
+                  "before_sample_hex": old_chunk[:sample_bytes].hex(),
+                  "after_sample_hex": new_chunk[:sample_bytes].hex()}
+        if first_offset is None:
+            first_offset = start
+        last_end = index
+        range_count += 1
+        if len(first) < first_capacity:
+            first.append(record)
+        elif tail_capacity:
+            tail.append(record)
+            if len(tail) > tail_capacity:
+                del tail[0]
+    if len(before) != len(after):
+        start = common
+        old_chunk, new_chunk = before[start:], after[start:]
+        changed_bytes += max(len(old_chunk), len(new_chunk))
+        record = {"offset_start": start, "offset_end_exclusive": max(len(before), len(after)),
+                  "before_length": len(old_chunk), "after_length": len(new_chunk),
+                  "before_sha256": _sha_bytes(old_chunk), "after_sha256": _sha_bytes(new_chunk),
+                  "before_sample_hex": old_chunk[:sample_bytes].hex(),
+                  "after_sample_hex": new_chunk[:sample_bytes].hex()}
+        if first_offset is None:
+            first_offset = start
+        last_end = max(len(before), len(after))
+        range_count += 1
+        if len(first) < first_capacity:
+            first.append(record)
+        elif tail_capacity:
+            tail.append(record)
+            if len(tail) > tail_capacity:
+                del tail[0]
+    ranges = first + tail
+    return {"before_length": len(before), "after_length": len(after),
+            "changed_byte_count": changed_bytes, "changed_range_count": range_count,
+            "first_changed_offset": first_offset,
+            "last_changed_offset": None if last_end is None else last_end - 1,
+            "omitted_range_count": max(0, range_count - len(ranges)), "ranges": ranges}
+
+
+def _section_diff_detail(before_data: bytes, after_data: bytes,
+                         before_section: dict, after_section: dict) -> dict:
+    before_chunk = before_data[before_section["raw_pointer"]:
+                               before_section["raw_pointer"] + before_section["raw_size"]]
+    after_chunk = after_data[after_section["raw_pointer"]:
+                             after_section["raw_pointer"] + after_section["raw_size"]]
+    diff = _bounded_byte_diff(before_chunk, after_chunk)
+    for item in diff["ranges"]:
+        item["before_file_offset_start"] = before_section["raw_pointer"] + item["offset_start"]
+        item["after_file_offset_start"] = after_section["raw_pointer"] + item["offset_start"]
+    return {"before_virtual_zero_fill_bytes": max(0, before_section["virtual_size"] - before_section["raw_size"]),
+            "after_virtual_zero_fill_bytes": max(0, after_section["virtual_size"] - after_section["raw_size"]),
+            "before_raw_padding_bytes": max(0, before_section["raw_size"] - before_section["virtual_size"]),
+            "after_raw_padding_bytes": max(0, after_section["raw_size"] - after_section["virtual_size"]),
+            "raw_byte_diff": diff}
+
+
+def _section_mismatch_diagnostic(relative: str, before_data: bytes, after_data: bytes,
+                                 before: dict, after_api: dict, after: dict) -> dict:
+    before_sections = before["sections"]
+    after_sections = after["sections"]
+    changed_sections = []
+    for index in range(max(len(before_sections), len(after_sections))):
+        old = before_sections[index] if index < len(before_sections) else None
+        new = after_sections[index] if index < len(after_sections) else None
+        if old == new:
+            continue
+        changed_fields = {}
+        if old is not None and new is not None:
+            for field in ("name", "virtual_size", "virtual_address", "raw_size", "raw_pointer",
+                          "characteristics", "sha256"):
+                if old.get(field) != new.get(field):
+                    changed_fields[field] = {"before": old.get(field), "after": new.get(field)}
+            raw_detail = _section_diff_detail(before_data, after_data, old, new)
+        else:
+            raw_detail = None
+            changed_fields["section_population"] = {"before": old, "after": new}
+        changed_sections.append({"index": index, "before": old, "after": new,
+                                 "changed_fields": changed_fields, "raw_diff": raw_detail})
+
+    old_non_target = {key: row for key, row in before["resources"].items()
+                      if not _is_target_resource(row)}
+    new_non_target = {key: row for key, row in after["resources"].items()
+                      if not _is_target_resource(row)}
+    old_targets = {key: row for key, row in before["resources"].items()
+                   if _is_target_resource(row)}
+    new_targets = {key: row for key, row in after["resources"].items()
+                   if _is_target_resource(row)}
+    old_header = _pe_header_diagnostics(before_data)
+    new_header = _pe_header_diagnostics(after_data)
+    header_changes = {key: {"before": old_header.get(key), "after": new_header.get(key)}
+                      for key in old_header if old_header.get(key) != new_header.get(key)}
+    old_header_size = old_header["optional_header"]["size_of_headers"]
+    new_header_size = new_header["optional_header"]["size_of_headers"]
+    resource_changes = []
+    for key in sorted(set(old_non_target) | set(new_non_target)):
+        old = old_non_target.get(key)
+        new = new_non_target.get(key)
+        if old != new:
+            resource_changes.append({"key": key, "before": old, "after": new})
+    return {"schema": "cybersand.portable-compiler-utf8-failure-v1",
+            "failure": "non-resource PE section identity changed",
+            "stage": "portable GNU resource metadata preparation",
+            "binary_relative_path": relative,
+            "registered_original_sha256": CORE_EXECUTABLE_SHA256[relative],
+            "before_sha256": _sha_bytes(before_data),
+            "after_sha256": _sha_bytes(after_data),
+            "before_file_size": len(before_data), "after_file_size": len(after_data),
+            "before_sections": before_sections, "after_sections": after_sections,
+            "changed_sections": changed_sections,
+            "changed_nonresource_sections": [row for row in changed_sections
+                                             if (row["index"] != before.get("resource_section_index")
+                                                 and row["index"] != after.get("resource_section_index"))],
+            "pe_headers_before": old_header, "pe_headers_after": new_header,
+            "pe_header_changed_fields": header_changes,
+            "pe_header_raw_diff": _bounded_byte_diff(before_data[:old_header_size],
+                                                     after_data[:new_header_size]),
+            "whole_file_raw_diff": _bounded_byte_diff(before_data, after_data),
+            "resource_api_section_metadata": {
+                "after_update_resource_before_metadata_repair": after_api["sections"],
+                "after_metadata_repair": after["sections"]},
+            "resource_preservation": {
+                "before_non_target_resources": old_non_target,
+                "after_non_target_resources": new_non_target,
+                "non_target_resources_exact": old_non_target == new_non_target,
+                "changed_non_target_resources": resource_changes,
+                "before_target_manifests": old_targets,
+                "after_target_manifests": new_targets,
+                "before_resource_count": len(before["resources"]),
+                "after_resource_count": len(after["resources"])}}
 
 
 def inspect_pe(path: Path) -> dict:
@@ -736,8 +953,12 @@ def prepare(root: str | os.PathLike[str]) -> dict:
         after, prepared_checksum = _restore_resource_data_entry_metadata(path, before, after_api)
         after_data = path.read_bytes()
         _need(not after["certificate_table_present"], "Resource update unexpectedly produced a signed image")
-        _need(before["nonresource_sections"] == after["nonresource_sections"],
-              "A non-resource PE section changed during metadata update: " + relative)
+        if before["nonresource_sections"] != after["nonresource_sections"]:
+            diagnostic = _section_mismatch_diagnostic(
+                relative, before_data, after_data, before, after_api, after)
+            _write_atomic(compiler_root / FAILURE_RECEIPT_NAME, diagnostic)
+            _need(False, "A non-resource PE section changed during metadata update: " + relative
+                  + f"; bounded diagnostics written to {FAILURE_RECEIPT_NAME}")
         after_payloads = _all_resource_payloads(after_data)
         after_targets = _target_manifest_rows(after)
         _need(bool(after_targets), "Updated compiler has no process manifest resource: " + relative)

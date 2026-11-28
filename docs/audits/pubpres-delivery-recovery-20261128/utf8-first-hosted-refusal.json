@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-28",
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "source_commit": "da5cd3eb5cd8ca523154ec02048ea9d58e3484b5",
+  "run": "https://github.com/techrote/cybersand/actions/runs/46167923820",
+  "artifact": "https://github.com/techrote/cybersand/actions/runs/46167923820/artifacts/15271804026",
+  "artifact_sha256": "ae5b4e20c3b1a12025b0f376fea2c99f2eaed8206ae75c55e13f5065d1062781",
+  "witness_sha256": "33228c05e701ed177983ed52ece2a63c740867db585a4404238ab943476d4796",
+  "result": "failed before corrected compiler or Materials Lab execution",
+  "compiler_population": "All 13,764 original compiler files admitted against immutable failed archive manifest",
+  "boundary": "CompilerMetadataError: A non-resource PE section changed during metadata update: bin/as.exe",
+  "other_paths": "Refused missing verified prepared-compiler receipt; no positive execution credit",
+  "original_negative": "All three original Unicode compiler attempts exited 1 with missing-ld stderr and no executable. collect2 was unobserved by sampler; the then-current full-chain contract refused all attempts. No positive path or authoring qualification credit.",
+  "next_action": "Preserve the strict nonresource section guard and capture bounded before/after PE diagnostics before repairing the actual mismatch. Negative reproduction will grant behavior-only credit with pinned originals and explicit unobserved collect2 paths; positive controls remain strict.",
+  "complete_extracted_package": "not run; blocked by focused candidate preparation",
+  "physical_owner_acceptance": "HOLD",
+  "merge_authorized": false
+}
