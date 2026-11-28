@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import math
 import ntpath
@@ -20,6 +21,9 @@ import stat
 import struct
 import subprocess
 import sys
+import tempfile
+import time
+import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,6 +49,284 @@ MATERIALIZED = {
 MAXIMUM_UNCOMPRESSED_BYTES = 4 * 1024**3
 SOURCE_BOOTSTRAP_FILES = {"source/godot/.godot/" + name for name in
     (".gdignore", "extension_list.cfg", "global_script_class_cache.cfg")}
+
+# Six actual source lanes passed on N. Its later archive extraction failed before
+# Godot because an empty Git refs directory was absent from the files-only ZIP.
+# Reuse is fixed to this one immutable campaign and these packaging-only paths;
+# it does not turn that failed overall run into a successful release or relabel
+# any original source receipt. Actual extracted tests still execute current HEAD.
+QUALIFIED_SOURCE = "d414774ddc582cbc03d74e119937665368dc3476"
+QUALIFIED_TREE = "7b947640ef8133b8af627782edc15464f6b3e383"
+QUALIFIED_RUN = 46105901845
+QUALIFIED_ATTEMPT = 1
+QUALIFIED_FAILED_PACKAGE_JOB = 140865019088
+QUALIFIED_INPUT_COUNT = 1603
+QUALIFIED_ASSET_COUNT = 6
+REUSE_ALLOWED_PATHS = frozenset({
+    "tools/package_ramcache_strata.py", "tools/ci/test_ramcache_strata_qualification.py",
+    "tools/ci/ramcache_strata_lab_package.py", "tools/ci/test_ramcache_strata_lab_package.py",
+    "tools/ci/ramcache-strata-integration-request.json",
+    ".github/workflows/ramcache-strata-integration.yml",
+    "docs/operations/ramcache-strata-integration.md",
+})
+QUALIFIED_CAMPAIGNS = {
+    "linux-ramcache": (140858585142, 15247602809, 18344923,
+        "7aeb965a34348729856e158a781830310f047e22d5ff9a623e85baf39929be9b",
+        "ec65e645ca1f104cd423225428e07f9832d12d7aa33aecd1fb1c0cb84faf8ef7"),
+    "linux-strata": (140858585127, 15248076054, 49537048,
+        "a1eb99b5778bc66c038b39e64ccb2d5d4b588b5be33e52d30ccde7e204c20d07",
+        "99691b124064a0db92652a867dbe1b7d3d3c4aaaca01bce16226c943e6b81af9"),
+    "linux-shared": (140858585134, 15247967633, 29757783,
+        "2bba66f32dc0888800148a1c44418787c6ef344932d3a06ed5415e07c5567fdb",
+        "8ed5b0fa7c29f491fc3f28f4b4211fce4a904f32a5e3194c42b6d5ba258b6d4c"),
+    "win32-ramcache": (140858585128, 15248401093, 13206810,
+        "98a22a2cdf02c4cb32922a43fc0617b301aac2be1c0876944bdf7b4ad7df95a5",
+        "26951cbf375ae141158c4611e77cb7db9cdb6a35f4dbf359a292e62f13fe1480"),
+    "win32-strata": (140858585114, 15248406051, 33517211,
+        "b8f1a6283c5576061b27185379d197a70f0ba454fbedd16a89e22fbe52d4b247",
+        "142419edb21e045b5440050a1dcebf95aa380b70ba555ca2323e43a88a3fc0dd"),
+    "win32-shared": (140858585177, 15248312416, 20005499,
+        "8741d4e9f035e0ef5189946a30629933301caa6ca15362931f555fb83cffcf8a",
+        "a4d6073e68f24b046cd569baa2b4ca35e88c23eb945283468b15587e0fb6a2f0"),
+}
+QUALIFIED_DEPENDENCIES = (15248128137, 85321005,
+    "e067efe59e9eee348759fda823687c1c24d73dd8acaee62a2ebc6f26a465f98f")
+
+
+def git_entries(commit: str) -> dict:
+    entries = {}
+    for row in q.custody.git("ls-tree", "-rz", commit).split(b"\0"):
+        if row:
+            metadata, name = row.split(b"\t", 1)
+            entries[name.decode()] = metadata.decode().split()
+    return entries
+
+
+def git_blobs(commit: str, names) -> dict:
+    names = sorted(set(names))
+    for name in names:
+        safe_name(name)
+        require("\n" not in name and "\r" not in name, "Unbounded Git input name")
+    result = subprocess.run(["git", "-C", str(ROOT), "cat-file", "--batch"],
+        input="".join(commit + ":" + name + "\n" for name in names).encode(),
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=120)
+    stream, blobs = io.BytesIO(result.stdout), {}
+    for name in names:
+        header = stream.readline().decode().strip().split()
+        require(len(header) == 3 and header[1] == "blob" and header[2].isdigit(),
+                "Missing immutable Git blob: " + name)
+        data = stream.read(int(header[2]))
+        require(len(data) == int(header[2]) and stream.read(1) == b"\n"
+                and hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest() == header[0],
+                "Git blob readback changed: " + name)
+        blobs[name] = data
+    require(not stream.read(), "Unexpected immutable Git blob output")
+    return blobs
+
+
+def qualification_reuse_proof(source: dict | None = None) -> dict:
+    source = q.identity() if source is None else source
+    require(source.get("source_commit") == q.custody.git("rev-parse", "HEAD").decode().strip()
+            and source.get("source_tree") == q.custody.git("rev-parse", "HEAD^{tree}").decode().strip()
+            and source.get("local_delta") == [], "Reuse target is not exact current committed source")
+    require(q.custody.git("rev-parse", QUALIFIED_SOURCE + "^{tree}").decode().strip() == QUALIFIED_TREE,
+            "Original qualified source tree changed")
+    q.custody.git("merge-base", "--is-ancestor", QUALIFIED_SOURCE, "HEAD")
+    before, after = git_entries(QUALIFIED_SOURCE), git_entries("HEAD")
+    changed = sorted(name for name in set(before) | set(after) if before.get(name) != after.get(name))
+    require(set(changed) <= REUSE_ALLOWED_PATHS, "Source reuse includes non-packaging changes: " + ", ".join(changed))
+    require(all(name in before and name in after and before[name][:2] == after[name][:2]
+                and before[name][0] in ("100644", "100755") and before[name][1] == "blob" for name in changed),
+            "Packaging reuse added, removed, linked or changed the mode of a source path")
+    inputs, assets = source.get("source_inputs_sha256", {}), source.get("source_assets_sha256", {})
+    require(len(inputs) == QUALIFIED_INPUT_COUNT and len(assets) == QUALIFIED_ASSET_COUNT,
+            "Qualified source input inventory changed")
+    old = git_blobs(QUALIFIED_SOURCE, {*inputs, *assets, *changed})
+    current = git_blobs("HEAD", {*inputs, *assets, *changed})
+    require(inputs == {name: hashlib.sha256(q.normalized_text(current[name])).hexdigest() for name in inputs}
+            and assets == {name: hashlib.sha256(current[name]).hexdigest() for name in assets},
+            "Current source ledger differs from immutable Git inputs")
+    original = {**source, "source_commit": QUALIFIED_SOURCE, "source_tree": QUALIFIED_TREE,
+                "source_inputs_sha256": {name: hashlib.sha256(q.normalized_text(old[name])).hexdigest() for name in inputs},
+                "source_assets_sha256": {name: hashlib.sha256(old[name]).hexdigest() for name in assets}}
+    require(original["source_assets_sha256"] == assets
+            and all(original["source_inputs_sha256"][name] == inputs[name] for name in inputs if name not in REUSE_ALLOWED_PATHS),
+            "Functional qualification input or artwork changed")
+    trees = {}
+    for name in ("godot", "native", "examples", "materials", "third_party"):
+        prior = q.custody.git("rev-parse", QUALIFIED_SOURCE + ":" + name).decode().strip()
+        require(prior == q.custody.git("rev-parse", "HEAD:" + name).decode().strip(),
+                "Protected application tree changed: " + name)
+        trees[name] = prior
+    return {"schema": "ramcache-strata-packaging-source-reuse-v1", "source_commit": source["source_commit"],
+            "source_tree": source["source_tree"], "qualification_source_identity": original,
+            "original_run_id": QUALIFIED_RUN, "original_run_attempt": QUALIFIED_ATTEMPT,
+            "original_run_conclusion": "failure", "original_source_lanes": "all six passed",
+            "allowed_packaging_paths": sorted(REUSE_ALLOWED_PATHS), "protected_tree_identities": trees,
+            "changed_paths": {name: {"before_blob": before[name][2], "after_blob": after[name][2],
+                "before_sha256": hashlib.sha256(old[name]).hexdigest(),
+                "after_sha256": hashlib.sha256(current[name]).hexdigest()} for name in changed},
+            "native_reuse": q.native_reuse(), "functional_reader_unchanged": True,
+            "fresh_current_installed_required": ["ordinary CMD first", "persistent CMD normal WM_CLOSE and reopen",
+                "ramcache", "strata", "lab", "bundled native compilation", "loaded modules", "payload hashes"],
+            "scope": "Original N execution receipts retained; only explicit packaging metadata/tools/tests/workflow/runbook changes apply to the current package. No source receipt is relabelled."}
+
+
+def qualified_artifact_pins() -> dict:
+    pins = {"ramcache-strata-" + name + "-" + QUALIFIED_SOURCE + "-1":
+            {"id": row[1], "size_in_bytes": row[2], "digest": "sha256:" + row[3]}
+            for name, row in QUALIFIED_CAMPAIGNS.items()}
+    artifact, size, digest = QUALIFIED_DEPENDENCIES
+    pins["ramcache-strata-dependencies-" + QUALIFIED_SOURCE + "-1"] = {
+        "id": artifact, "size_in_bytes": size, "digest": "sha256:" + digest}
+    return pins
+
+
+def authenticate_qualification_metadata(metadata: dict) -> None:
+    run, jobs, artifacts = (metadata.get(key, {}) for key in ("run", "jobs", "artifacts"))
+    require(run.get("id") == QUALIFIED_RUN and run.get("head_sha") == QUALIFIED_SOURCE
+            and run.get("run_attempt") == QUALIFIED_ATTEMPT and run.get("event") == "push"
+            and run.get("head_branch") == "main" and run.get("status") == "completed"
+            and run.get("conclusion") == "failure", "Original failed overall workflow identity changed")
+    for label, pin in QUALIFIED_CAMPAIGNS.items():
+        platform, mode = label.split("-")
+        name = ("Windows" if platform == "win32" else "Linux") + " graphical " + mode
+        matches = [row for row in jobs.get("jobs", []) if row.get("id") == pin[0] or row.get("name") == name]
+        require(len(matches) == 1, "Missing/duplicate original source lane: " + label)
+        row = matches[0]
+        require(row.get("id") == pin[0] and row.get("run_id") == QUALIFIED_RUN and row.get("run_attempt") == QUALIFIED_ATTEMPT
+                and row.get("head_sha") == QUALIFIED_SOURCE and row.get("status") == "completed"
+                and row.get("conclusion") == "success"
+                and row.get("name") == name,
+                "Original source lane did not pass at N: " + label)
+    failed = [row for row in jobs.get("jobs", []) if row.get("id") == QUALIFIED_FAILED_PACKAGE_JOB]
+    require(len(failed) == 1 and failed[0].get("status") == "completed" and failed[0].get("conclusion") == "failure"
+            and failed[0].get("run_id") == QUALIFIED_RUN and failed[0].get("head_sha") == QUALIFIED_SOURCE
+            and failed[0].get("run_attempt") == QUALIFIED_ATTEMPT,
+            "Original package failure was omitted or relabelled")
+    for name, pin in qualified_artifact_pins().items():
+        matches = [row for row in artifacts.get("artifacts", []) if row.get("id") == pin["id"] or row.get("name") == name]
+        require(len(matches) == 1, "Missing/duplicate original artifact: " + name)
+        row = matches[0]
+        require(row.get("name") == name and all(row.get(key) == value for key, value in pin.items())
+                and row.get("expired") is False and row.get("workflow_run", {}).get("id") == QUALIFIED_RUN
+                and row["workflow_run"].get("head_sha") == QUALIFIED_SOURCE,
+                "Original artifact identity differs from its immutable pin: " + name)
+
+
+def reuse_admission(args) -> dict:
+    proof = qualification_reuse_proof()
+    if args.metadata is not None:
+        metadata = q.read(args.metadata)
+    else:
+        token = os.environ.get("CYBERSAND_QUALIFICATION_TOKEN", "")
+        require(token, "Read-only Actions token required to authenticate original artifact metadata")
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, req, fp, code, msg, headers, newurl):
+                return None
+        opener = urllib.request.build_opener(NoRedirect)
+        metadata = {}
+        for key, suffix in (("run", ""), ("jobs", "/attempts/1/jobs?per_page=100"),
+                            ("artifacts", "/artifacts?per_page=100")):
+            request = urllib.request.Request("https://api.github.com/repos/techrote/cybersand/actions/runs/" +
+                str(QUALIFIED_RUN) + suffix, headers={"Authorization": "Bearer " + token,
+                    "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"})
+            with opener.open(request, timeout=60) as response:
+                data = response.read(4 * 1024**2 + 1)
+            require(len(data) <= 4 * 1024**2, "Unbounded original workflow metadata")
+            metadata[key] = json.loads(data)
+    authenticate_qualification_metadata(metadata)
+    result = {"schema": "ramcache-strata-reuse-admission-v1", "status": "passed",
+              "source_commit": proof["source_commit"], "source_tree": proof["source_tree"],
+              "proof": proof, "original_workflow_metadata": metadata}
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    write_json(args.output, result)
+    return result
+
+
+def validate_qualified_summary(path: Path, label: str, source: dict) -> dict:
+    require(label in QUALIFIED_CAMPAIGNS and sha(path) == QUALIFIED_CAMPAIGNS[label][4],
+            "Original qualification summary changed: " + label)
+    report = q.read(path)
+    platform, mode = label.split("-")
+    require(report.get("source_identity") == source and source.get("source_commit") == QUALIFIED_SOURCE
+            and report.get("run_id") == str(QUALIFIED_RUN) and report.get("run_attempt") == str(QUALIFIED_ATTEMPT)
+            and report.get("platform") == platform and report.get("mode") == mode
+            and report.get("status") == "passed" and report.get("completed") is True
+            and report.get("input_custody") == report.get("independent_verification") == "passed",
+            "Original source receipt is incomplete, cross-source or relabelled: " + label)
+    return report
+
+
+def replay_qualified_campaigns(evidence: Path, proof: dict) -> tuple[dict, dict]:
+    source = proof["qualification_source_identity"]
+    reports, executions = {}, {}
+    environment = lab.lab.clean_git_environment()
+    environment.update(GIT_LFS_SKIP_SMUDGE="1", PYTHONDONTWRITEBYTECODE="1")
+    for key in ("PYTHONHOME", "PYTHONPATH", "PYTHONSTARTUP"):
+        environment.pop(key, None)
+    # The original Strata reader resolves nested optics.identity() from its own
+    # checkout. Execute that unchanged reader at N; never override its identity.
+    with tempfile.TemporaryDirectory(prefix="ramcache-strata-qualified-source-") as temporary:
+        historical = Path(temporary) / "source"
+        subprocess.run(["git", "-C", str(ROOT), "-c", "core.autocrlf=false", "worktree", "add", "--detach",
+            str(historical), QUALIFIED_SOURCE], env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+            check=True, timeout=300)
+        try:
+            reader = historical / "tools/ci/ramcache_strata_qualification.py"
+            reader_hash = sha(reader)
+            require(reader_hash == source["source_inputs_sha256"]["tools/ci/ramcache_strata_qualification.py"]
+                    and reader_hash == sha(ROOT / "tools/ci/ramcache_strata_qualification.py"),
+                    "Original functional reader changed")
+            for label in QUALIFIED_CAMPAIGNS:
+                folder = (evidence / label).resolve(strict=True)
+                path = folder / "integration.json"
+                validate_qualified_summary(path, label, source)
+                command = [sys.executable, "-B", str(reader), "verify", str(folder)]
+                started = time.monotonic()
+                child = subprocess.run(command, cwd=historical, env=environment, stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE, timeout=300)
+                require(child.returncode == 0, "Unchanged N reader rejected " + label + ": " +
+                        child.stderr.decode("utf-8", errors="replace")[-8192:])
+                stdout = child.stdout.decode("utf-8")
+                require(not child.stderr and json.loads(stdout) == {"status": "passed", "source": QUALIFIED_SOURCE},
+                        "Original reader context/terminal differs: " + label)
+                validate_qualified_summary(path, label, source)
+                reports[label] = path
+                executions[label] = {"command": command, "reader_sha256": reader_hash,
+                    "reader_git_head": QUALIFIED_SOURCE, "reader_git_tree": QUALIFIED_TREE,
+                    "original_summary_sha256": sha(path), "exit_code": 0, "stdout": stdout,
+                    "stderr": "", "seconds": round(time.monotonic() - started, 3), "timeout_seconds": 300}
+        finally:
+            subprocess.run(["git", "-C", str(ROOT), "worktree", "remove", str(historical)],
+                env=environment, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=120)
+    return reports, {"schema": "ramcache-strata-original-source-replay-v1", "status": "passed",
+        "execution_source": QUALIFIED_SOURCE, "execution_tree": QUALIFIED_TREE,
+        "applicability_target": proof["source_commit"], "source_workflow_run": QUALIFIED_RUN,
+        "source_workflow_attempt": QUALIFIED_ATTEMPT, "source_workflow_conclusion": "failure",
+        "executions": executions, "source_identity_override_used": False,
+        "scope": "Unmodified N readers replayed all original functional evidence at N; no Godot rerun or receipt relabelling. Actual current-source extracted qualification is separate and mandatory."}
+
+
+def validate_qualified_replay(record: dict, proof: dict) -> None:
+    require(record.get("schema") == "ramcache-strata-original-source-replay-v1" and record.get("status") == "passed"
+            and record.get("execution_source") == QUALIFIED_SOURCE and record.get("execution_tree") == QUALIFIED_TREE
+            and record.get("applicability_target") == proof["source_commit"]
+            and record.get("source_workflow_run") == QUALIFIED_RUN and record.get("source_workflow_attempt") == 1
+            and record.get("source_workflow_conclusion") == "failure" and record.get("source_identity_override_used") is False
+            and set(record.get("executions", {})) == set(QUALIFIED_CAMPAIGNS), "Incomplete original-source replay")
+    reader_hash = proof["qualification_source_identity"]["source_inputs_sha256"]["tools/ci/ramcache_strata_qualification.py"]
+    for label, row in record["executions"].items():
+        command = row.get("command", [])
+        require(isinstance(command, list) and len(command) == 5 and command[1] == "-B" and command[3] == "verify"
+                and command[2].replace("\\", "/").endswith("/source/tools/ci/ramcache_strata_qualification.py")
+                and command[4].replace("\\", "/").endswith("/" + label)
+                and row.get("reader_git_head") == QUALIFIED_SOURCE and row.get("reader_git_tree") == QUALIFIED_TREE
+                and row.get("reader_sha256") == reader_hash and row.get("original_summary_sha256") == QUALIFIED_CAMPAIGNS[label][4]
+                and row.get("exit_code") == 0 and row.get("stderr") == "" and row.get("timeout_seconds") == 300
+                and type(row.get("seconds")) in (int, float) and math.isfinite(row["seconds"]) and 0 <= row["seconds"] <= 300
+                and json.loads(row.get("stdout", "")) == {"status": "passed", "source": QUALIFIED_SOURCE},
+                "Original reader execution is missing, changed or cross-source: " + label)
 
 
 def payload(folder: Path) -> dict:
@@ -147,8 +429,11 @@ the current area. Return to the ordinary Workbench to use layered authoring.
 ## Qualification and accepted limits
 
 The owner accepted the two preceding evaluator builds on Windows 11/NVIDIA TITAN RTX.
-This combined archive receives fresh hosted Linux/Windows and extracted-Windows
-qualification; it has not been physically retested on that GPU.
+The unchanged application passed six original Linux/Windows source campaigns at
+`{QUALIFIED_SOURCE}` in run `{QUALIFIED_RUN}`. Their original identities are retained;
+that run's later failed packaging check remains recorded. This packaging successor
+has a separately verified change boundary and fresh extracted-Windows qualification.
+It has not been physically retested on the owner's GPU.
 
 Optional enhanced optics retain their documented cost. The owner's 90% Classic-speed
 gate waiver applies only to optional profiles. Original extracted Strata measurements
@@ -237,15 +522,24 @@ def verify(folder: Path, *, pristine=False) -> dict:
                 "source/tools/material_catalogue/lab.py", "dependencies/python/python.exe",
                 "dependencies/git/cmd/git.exe", "dependencies/cxx/bin/g++.exe"}
     require(required <= set(names), "Incomplete integrated owner application")
+    proof = qualification_reuse_proof(source)
+    require(record.get("qualification_source_identity") == proof["qualification_source_identity"]
+            and record.get("qualification_reuse") == proof,
+            "Source qualification was relabelled or its packaging-only applicability changed")
+    metadata_path = folder / "qualification/original-run-metadata.json"
+    replay_path = folder / "qualification/original-source-replay.json"
+    require(sha(metadata_path) == record.get("qualification_metadata_sha256")
+            and sha(replay_path) == record.get("qualification_replay_sha256"),
+            "Original workflow metadata or strict reader replay changed")
+    authenticate_qualification_metadata(q.read(metadata_path))
+    validate_qualified_replay(q.read(replay_path), proof)
     summaries = record.get("qualification", {})
     require(set(summaries) == {platform + "-" + mode for platform in ("linux", "win32") for mode in q.MODES},
             "Six required source campaigns missing")
     for name, digest in summaries.items():
         path = folder / "qualification" / (name + ".json")
-        report = q.read(path)
-        require(sha(path) == digest and report.get("source_identity") == source and report.get("status") == "passed"
-                and report.get("completed") is True and report.get("input_custody") == "passed"
-                and name == report.get("platform", "") + "-" + report.get("mode", ""), "Packaged source campaign changed")
+        validate_qualified_summary(path, name, proof["qualification_source_identity"])
+        require(sha(path) == digest, "Packaged original source campaign changed")
     components = {component: sum((folder / name).stat().st_size for name in names
                                 if name.startswith(component + "/"))
                   for component in ("source", "dependencies", "qualification")}
@@ -260,17 +554,18 @@ def verify(folder: Path, *, pristine=False) -> dict:
 def build(args):
     admitted = q.admission()
     source = admitted["source_identity"]
+    proof = qualification_reuse_proof(source)
+    reuse = q.read(args.qualification_admission)
+    require(reuse.get("schema") == "ramcache-strata-reuse-admission-v1" and reuse.get("status") == "passed"
+            and reuse.get("source_commit") == source["source_commit"]
+            and reuse.get("source_tree") == source["source_tree"] and reuse.get("proof") == proof,
+            "Packaging-only source evidence reuse was not admitted for this exact target")
+    authenticate_qualification_metadata(reuse.get("original_workflow_metadata", {}))
     runtime = q.custody.windows.verify_retained_runtime(ROOT)
     output = args.output.resolve()
     require(not output.exists(), "Refusing to overwrite evaluator output")
-    reports = {}
-    for platform in ("linux", "win32"):
-        for mode in q.MODES:
-            path = args.evidence / (platform + "-" + mode)
-            report = q.verify(path, source)
-            require(report["platform"] == platform and report["mode"] == mode,
-                    "Campaign location differs from original platform/mode")
-            reports[platform + "-" + mode] = path / "integration.json"
+    reports, replay = replay_qualified_campaigns(args.evidence, proof)
+    validate_qualified_replay(replay, proof)
     dependencies = args.dependencies.resolve(strict=True)
     for name, digest in DEPENDENCIES.items():
         require(sha(dependencies / name) == digest, "Portable dependency mismatch: " + name)
@@ -301,6 +596,10 @@ def build(args):
         target = output / "qualification" / (name + ".json")
         shutil.copyfile(path, target)
         qualification[name] = sha(target)
+    metadata_path = output / "qualification/original-run-metadata.json"
+    replay_path = output / "qualification/original-source-replay.json"
+    write_json(metadata_path, reuse["original_workflow_metadata"])
+    write_json(replay_path, replay)
     component_bytes = {name: sum(p.stat().st_size for p in (output / name).rglob("*") if p.is_file())
                        for name in ("source", "dependencies", "qualification")}
     component_bytes["root_files"] = sum(p.stat().st_size for p in output.iterdir() if p.is_file())
@@ -309,7 +608,10 @@ def build(args):
               "source_commit": source["source_commit"], "source_tree": source["source_tree"], "runtime": runtime,
               "native_reuse": admitted["native_reuse"], "classic_default": True, "objectshard_m4_included": False,
               "performance_policy": admitted["performance_policy"], "physical_gpu_acceptance_for_this_archive": False,
-              "qualification": qualification, "component_bytes_before_manifest": component_bytes, "source_repository": source_repository,
+              "qualification": qualification, "qualification_source_identity": proof["qualification_source_identity"],
+              "qualification_reuse": proof, "qualification_metadata_sha256": sha(metadata_path),
+              "qualification_replay_sha256": sha(replay_path),
+              "component_bytes_before_manifest": component_bytes, "source_repository": source_repository,
               "materialized_lfs": materialized, "offline_authoring_dependencies": offline_dependencies,
               "regenerated_imports_sha256": omitted, "files_sha256": payload(output),
               "workflow_url": "https://github.com/techrote/cybersand/actions/runs/" + os.environ.get("GITHUB_RUN_ID", ""),
@@ -654,8 +956,11 @@ def installed(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
+    reuse = commands.add_parser("reuse-admission")
+    reuse.add_argument("--output", type=Path, required=True)
+    reuse.add_argument("--metadata", type=Path)
     make = commands.add_parser("build")
-    for name in ("dependencies", "evidence", "output", "archive"):
+    for name in ("dependencies", "evidence", "output", "archive", "qualification-admission"):
         make.add_argument("--" + name, type=Path, required=True)
     check = commands.add_parser("verify")
     check.add_argument("package", type=Path)
@@ -664,7 +969,8 @@ def main():
     for name in ("archive", "installation", "output"):
         execute.add_argument("--" + name, type=Path, required=True)
     args = parser.parse_args()
-    result = build(args) if args.command == "build" else installed(args) if args.command == "installed" else verify(args.package, pristine=args.pristine)
+    result = (reuse_admission(args) if args.command == "reuse-admission" else build(args) if args.command == "build"
+              else installed(args) if args.command == "installed" else verify(args.package, pristine=args.pristine))
     print(json.dumps({"status": "passed", "source_commit": result["source_commit"],
                       "archive_sha256": result.get("sha256", result.get("archive", {}).get("sha256"))}))
     return 0

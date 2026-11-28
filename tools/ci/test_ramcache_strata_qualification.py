@@ -7,6 +7,7 @@ import hashlib
 import json
 from pathlib import Path
 import struct
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -511,6 +512,199 @@ class IntegrationControls(unittest.TestCase):
             else:
                 values[3] += "SCRIPT ERROR: actual launch failed\n"
             self.reject(lambda: package.validate_launcher_execution(*values, source))
+
+
+class FixedSourceReuseControls(unittest.TestCase):
+    def metadata(self):
+        run = {"id": package.QUALIFIED_RUN, "head_sha": package.QUALIFIED_SOURCE,
+               "run_attempt": 1, "event": "push", "head_branch": "main",
+               "status": "completed", "conclusion": "failure"}
+        jobs = []
+        for label, pin in package.QUALIFIED_CAMPAIGNS.items():
+            platform, mode = label.split("-")
+            jobs.append({"id": pin[0], "run_id": package.QUALIFIED_RUN, "run_attempt": 1,
+                         "head_sha": package.QUALIFIED_SOURCE, "status": "completed", "conclusion": "success",
+                         "name": ("Windows" if platform == "win32" else "Linux") + " graphical " + mode})
+        jobs.append({"id": package.QUALIFIED_FAILED_PACKAGE_JOB, "run_id": package.QUALIFIED_RUN,
+                     "run_attempt": 1, "head_sha": package.QUALIFIED_SOURCE, "status": "completed", "conclusion": "failure"})
+        artifacts = [{**pin, "name": name, "expired": False,
+                      "workflow_run": {"id": package.QUALIFIED_RUN, "head_sha": package.QUALIFIED_SOURCE}}
+                     for name, pin in package.qualified_artifact_pins().items()]
+        return {"run": run, "jobs": {"jobs": jobs}, "artifacts": {"artifacts": artifacts}}
+
+    def test_pinned_successful_lanes_do_not_relabel_failed_overall_run(self):
+        original = self.metadata()
+        package.authenticate_qualification_metadata(original)
+        for section, key, value in (("run", "conclusion", "success"), ("run", "run_attempt", 2),
+                                    ("run", "head_sha", "0" * 40), ("run", "event", "pull_request")):
+            changed = copy.deepcopy(original)
+            changed[section][key] = value
+            with self.subTest(key=key), self.assertRaises(RuntimeError):
+                package.authenticate_qualification_metadata(changed)
+        for change in ("missing-job", "duplicate-job", "wrong-job-id", "failed-lane", "cross-source-job", "hidden-package-failure",
+                       "missing-artifact", "duplicate-artifact", "artifact-sha", "artifact-run", "expired-artifact"):
+            changed = copy.deepcopy(original)
+            jobs, artifacts = changed["jobs"]["jobs"], changed["artifacts"]["artifacts"]
+            if change == "missing-job": jobs.pop(0)
+            elif change == "duplicate-job": jobs.append(dict(jobs[0]))
+            elif change == "wrong-job-id": jobs[0]["id"] += 1
+            elif change == "failed-lane": jobs[0]["conclusion"] = "failure"
+            elif change == "cross-source-job": jobs[0]["head_sha"] = "0" * 40
+            elif change == "hidden-package-failure": jobs[-1]["conclusion"] = "success"
+            elif change == "missing-artifact": artifacts.pop(0)
+            elif change == "duplicate-artifact": artifacts.append(dict(artifacts[0]))
+            elif change == "artifact-sha": artifacts[0]["digest"] = "sha256:" + "0" * 64
+            elif change == "artifact-run": artifacts[0]["workflow_run"]["id"] += 1
+            else: artifacts[0]["expired"] = True
+            with self.subTest(change=change), self.assertRaises(RuntimeError):
+                package.authenticate_qualification_metadata(changed)
+
+    def test_original_summary_pins_and_source_fields_are_both_required(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "integration.json"
+            source = {"source_commit": package.QUALIFIED_SOURCE}
+            original = {"source_identity": source, "run_id": str(package.QUALIFIED_RUN), "run_attempt": "1",
+                        "platform": "linux", "mode": "ramcache", "status": "passed", "completed": True,
+                        "input_custody": "passed", "independent_verification": "passed"}
+            def check(value, pin_original=False):
+                path.write_text(json.dumps(value))
+                pin = list(package.QUALIFIED_CAMPAIGNS["linux-ramcache"])
+                pin[4] = digest(json.dumps(original if pin_original else value).encode())
+                with mock.patch.dict(package.QUALIFIED_CAMPAIGNS, {"linux-ramcache": tuple(pin)}):
+                    package.validate_qualified_summary(path, "linux-ramcache", source)
+            check(original)
+            for key, value in (("source_identity", {"source_commit": "0" * 40}),
+                               ("run_id", "1"), ("run_attempt", "2"), ("platform", "win32"),
+                               ("mode", "shared"), ("status", "failed"), ("completed", False),
+                               ("independent_verification", "failed")):
+                with self.subTest(key=key), self.assertRaises(RuntimeError):
+                    check(dict(original, **{key: value}))
+            with self.assertRaises(RuntimeError):
+                check(dict(original, forged="unbound extra record"), pin_original=True)
+
+    def test_historical_reader_receipt_requires_old_context_and_all_six_cases(self):
+        source = {"source_inputs_sha256": {"tools/ci/ramcache_strata_qualification.py": "a" * 64}}
+        proof = {"source_commit": "b" * 40, "qualification_source_identity": source}
+        record = {"schema": "ramcache-strata-original-source-replay-v1", "status": "passed",
+                  "execution_source": package.QUALIFIED_SOURCE, "execution_tree": package.QUALIFIED_TREE,
+                  "applicability_target": proof["source_commit"], "source_workflow_run": package.QUALIFIED_RUN,
+                  "source_workflow_attempt": 1, "source_workflow_conclusion": "failure",
+                  "source_identity_override_used": False, "executions": {}}
+        for label, pin in package.QUALIFIED_CAMPAIGNS.items():
+            record["executions"][label] = {
+                "command": ["/python", "-B", "/isolated/source/tools/ci/ramcache_strata_qualification.py", "verify", "/original/" + label],
+                "reader_git_head": package.QUALIFIED_SOURCE, "reader_git_tree": package.QUALIFIED_TREE,
+                "reader_sha256": "a" * 64, "original_summary_sha256": pin[4], "exit_code": 0,
+                "stdout": json.dumps({"status": "passed", "source": package.QUALIFIED_SOURCE}),
+                "stderr": "", "timeout_seconds": 300, "seconds": 1.0}
+        package.validate_qualified_replay(record, proof)
+        for key, value in (("source_identity_override_used", True), ("execution_source", "b" * 40),
+                           ("applicability_target", package.QUALIFIED_SOURCE), ("source_workflow_conclusion", "success")):
+            with self.subTest(key=key), self.assertRaises(RuntimeError):
+                package.validate_qualified_replay(dict(record, **{key: value}), proof)
+        for key, value in (("reader_git_head", "b" * 40), ("reader_sha256", "c" * 64),
+                           ("original_summary_sha256", "c" * 64), ("exit_code", 1), ("timeout_seconds", 600),
+                           ("seconds", 301), ("stderr", "actual verification error"),
+                           ("stdout", json.dumps({"status": "passed", "source": "b" * 40}))):
+            changed = copy.deepcopy(record)
+            changed["executions"]["linux-strata"][key] = value
+            with self.subTest(key=key), self.assertRaises(RuntimeError):
+                package.validate_qualified_replay(changed, proof)
+        changed = copy.deepcopy(record)
+        changed["executions"].pop("win32-shared")
+        with self.assertRaises(RuntimeError): package.validate_qualified_replay(changed, proof)
+
+
+class PackagingScopeGitControls(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory(prefix="ramcache-strata-reuse-scope-")
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.git("init")
+        self.git("config", "user.name", "Fixture")
+        self.git("config", "user.email", "fixture@example.invalid")
+        self.git("config", "core.autocrlf", "false")
+        names = {*package.REUSE_ALLOWED_PATHS, "tools/ci/ramcache_strata_qualification.py",
+                 "godot/main.gd", "native/src/world.cpp", "examples/scene.json",
+                 "materials/catalogue.json", "third_party/dependency.json"}
+        self.input_names = sorted(names)
+        for name in names: self.write(name, b"unchanged fixture bytes\n")
+        self.asset = "godot/data/asset.png"
+        self.write(self.asset, b"\x89PNG\r\nraw artwork\x00")
+        self.git("add", ".")
+        self.git("commit", "-qm", "qualified application")
+        self.qualified = self.git("rev-parse", "HEAD").decode().strip()
+        self.qualified_tree = self.git("rev-parse", "HEAD^{tree}").decode().strip()
+        self.write("tools/package_ramcache_strata.py", b"corrected package metadata only\n")
+        self.git("add", ".")
+        self.git("commit", "-qm", "packaging correction")
+        self.accepted = self.git("rev-parse", "HEAD").decode().strip()
+
+    def git(self, *args):
+        return subprocess.check_output(["git", "-C", str(self.root), *args], stderr=subprocess.PIPE)
+
+    def write(self, name, data):
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+
+    def identity(self):
+        return {"source_commit": self.git("rev-parse", "HEAD").decode().strip(),
+                "source_tree": self.git("rev-parse", "HEAD^{tree}").decode().strip(), "local_delta": [],
+                "source_inputs_sha256": {name: digest(q.normalized_text((self.root / name).read_bytes())) for name in self.input_names},
+                "source_assets_sha256": {self.asset: digest((self.root / self.asset).read_bytes())}}
+
+    def proof(self, source=None):
+        with mock.patch.multiple(package, ROOT=self.root, QUALIFIED_SOURCE=self.qualified,
+                                 QUALIFIED_TREE=self.qualified_tree, QUALIFIED_INPUT_COUNT=len(self.input_names),
+                                 QUALIFIED_ASSET_COUNT=1), mock.patch.object(q.custody, "git", side_effect=self.git), \
+                mock.patch.object(q, "native_reuse", return_value={"native_input_count": 114}):
+            return package.qualification_reuse_proof(self.identity() if source is None else source)
+
+    def test_real_git_proof_preserves_original_ledger_and_exact_protected_trees(self):
+        proof = self.proof()
+        self.assertEqual(set(proof["changed_paths"]), {"tools/package_ramcache_strata.py"})
+        self.assertEqual(proof["qualification_source_identity"]["source_commit"], self.qualified)
+        self.assertEqual(proof["source_commit"], self.accepted)
+        self.assertEqual(proof["qualification_source_identity"]["source_inputs_sha256"]["tools/package_ramcache_strata.py"],
+                         digest(b"unchanged fixture bytes\n"))
+        self.assertEqual(set(proof["protected_tree_identities"]), {"godot", "native", "examples", "materials", "third_party"})
+
+    def test_every_product_fixture_native_or_unregistered_git_change_refuses_reuse(self):
+        for name in ("godot/main.gd", "native/src/world.cpp", "examples/scene.json", "materials/catalogue.json",
+                     "third_party/dependency.json", "tools/ci/ramcache_strata_qualification.py", "tools/unregistered.py",
+                     self.asset):
+            self.git("reset", "--hard", self.accepted)
+            self.write(name, b"unqualified change\n")
+            self.git("add", ".")
+            self.git("commit", "-qm", "inadmissible change")
+            with self.subTest(name=name), self.assertRaises(RuntimeError): self.proof()
+
+    def test_claimed_input_and_asset_hashes_must_match_git(self):
+        for field, key in (("source_inputs_sha256", "godot/main.gd"), ("source_assets_sha256", self.asset)):
+            source = self.identity()
+            source[field][key] = "0" * 64
+            with self.subTest(field=field), self.assertRaises(RuntimeError): self.proof(source)
+        source = self.identity(); source["source_commit"] = self.qualified
+        with self.assertRaises(RuntimeError): self.proof(source)
+        source = self.identity(); source["local_delta"] = ["godot/main.gd"]
+        with self.assertRaises(RuntimeError): self.proof(source)
+        source = self.identity(); source["source_inputs_sha256"].pop("godot/main.gd")
+        with self.assertRaises(RuntimeError): self.proof(source)
+
+    def test_allowed_path_deletion_or_mode_change_is_not_a_packaging_modification(self):
+        name = "tools/package_ramcache_strata.py"
+        self.git("update-index", "--chmod=+x", name)
+        self.git("commit", "-qm", "inadmissible mode")
+        with self.assertRaises(RuntimeError): self.proof()
+        self.git("reset", "--hard", self.accepted)
+        self.git("rm", name)
+        self.git("commit", "-qm", "inadmissible removal")
+        # Supply the previous complete ledger: the whole-tree check must reject
+        # the removed path before any source-ledger reconstruction is attempted.
+        claimed = {"source_commit": self.git("rev-parse", "HEAD").decode().strip(),
+                   "source_tree": self.git("rev-parse", "HEAD^{tree}").decode().strip(), "local_delta": []}
+        with self.assertRaises(RuntimeError): self.proof(claimed)
 
 
 if __name__ == "__main__":

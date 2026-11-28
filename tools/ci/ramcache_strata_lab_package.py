@@ -26,6 +26,7 @@ WINDOWS_LFS = frozenset({
 })
 LFS_POINTER = re.compile(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n")
 HISTORY_SCOPE = "self-contained HEAD ancestry; no original checkout configuration"
+PORTABLE_SOURCE_REF = "refs/heads/portable-source"
 TOOL_PATHS = {"python": "python/python.exe", "git": "git/cmd/git.exe", "compiler": "cxx/bin/g++.exe"}
 
 
@@ -58,9 +59,18 @@ def relative(name: str) -> str:
 
 
 def git(root: Path, *args: str, executable=None) -> bytes:
-    return subprocess.check_output([str(executable or "git"), "-C", str(root), *args],
-                                   env=lab.clean_git_environment(), timeout=300,
-                                   stderr=subprocess.PIPE)
+    try:
+        return subprocess.check_output([str(executable or "git"), "-C", str(root), *args],
+                                       env=lab.clean_git_environment(), timeout=300,
+                                       stderr=subprocess.PIPE)
+    except subprocess.CalledProcessError as error:
+        raw = error.stderr or b""
+        detail = raw[:4096].decode("utf-8", errors="replace").strip()
+        if len(raw) > 4096:
+            detail += " [stderr truncated]"
+        operation = args[0] if args else "<no operation>"
+        raise RuntimeError("Portable source Git command failed (exit " + str(error.returncode)
+                           + ", " + operation + "): " + detail) from error
 
 
 def inventory(root: Path, *, git_executable=None) -> dict[str, str]:
@@ -81,6 +91,10 @@ def inventory(root: Path, *, git_executable=None) -> dict[str, str]:
 def stage_source(repository: Path, source_commit: str, destination: Path) -> dict:
     """Retain only HEAD ancestry and canonical committed bytes, with no remotes."""
     history = lab.clean_source_repository(repository, source_commit, destination)
+    # A detached HEAD-only clone can have an empty refs directory. Git requires
+    # that directory, but the portable archive deliberately contains only files.
+    # One exact loose ref preserves it without adding history or a reflog.
+    git(destination, "-c", "core.logAllRefUpdates=false", "update-ref", PORTABLE_SOURCE_REF, source_commit)
     original = inventory(destination)
     # Checkout/archive conversion honors explicit eol=crlf even when autocrlf is
     # disabled. Restore changed files from immutable blobs, never from the donor
@@ -122,6 +136,13 @@ def verify_source(source: Path, record: dict, *, expected_source: str, expected_
     require(dotgit.is_dir() and not dotgit.is_symlink(), "Portable source needs its own real Git database")
     for path in source.rglob("*"):
         require(not path.is_symlink(), "Portable source contains a symbolic link: " + str(path.relative_to(source)))
+    anchor = dotgit / PORTABLE_SOURCE_REF
+    require(anchor.is_file(), "Portable source needs its exact loose reference: " + PORTABLE_SOURCE_REF)
+    require(anchor.read_bytes() == (expected_source + "\n").encode("ascii"),
+            "Portable source loose reference differs from qualified source")
+    require((dotgit / "HEAD").is_file()
+            and (dotgit / "HEAD").read_bytes() == (expected_source + "\n").encode("ascii"),
+            "Portable source HEAD must remain detached at qualified source")
     for name in ("objects/info/alternates", "objects/info/http-alternates", "shallow", "info/grafts"):
         require(not (dotgit / name).exists(), "Portable history depends on external/replaced objects: " + name)
     require(not (dotgit / "hooks").exists(), "Portable source must not retain hooks")

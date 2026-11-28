@@ -171,6 +171,37 @@ That diagnostic is packaging evidence, not a new application pass. The original
 failure remains recorded; the corrected final-main package still requires all
 source campaigns and actual extracted launcher/authoring/reopen gates above.
 
+The next [main campaign](https://github.com/techrote/cybersand/actions/runs/46105901845)
+passed all six source lanes and strict archive admission, then stopped before
+Godot launch when the extracted source was not recognized as a Git repository.
+Three independent files-only ZIP reproductions identified the missing empty
+`.git/refs` directory. A real loose `refs/heads/portable-source` reference now
+points exactly to the qualified source commit, while HEAD remains detached.
+That authenticated file survives an ordinary unzip without requiring metadata
+repair by the owner or a special test extractor. Its creation adds no reflog,
+configuration, objects or unrelated history. Missing, altered or linked refs
+are refused; failed Git queries retain a bounded original diagnostic.
+
+For this specific packaging-only successor, the six successful source
+campaigns at `d414774ddc582cbc03d74e119937665368dc3476` may be reused under a
+strict, source-owned proof. Their original run, attempt, artifact and report
+hashes remain pinned, and their unchanged original readers execute in an
+isolated checkout of that exact source. The complete Git delta to the shipped
+application must contain only the seven explicitly registered packaging,
+packaging-test, workflow, request and runbook files. All application, native,
+dependency, fixture and functional qualification-driver files remain unchanged.
+Any other modification refuses reuse.
+
+The evaluator manifest records its current application identity separately from
+the original source-qualification identity and the full reuse proof. The six
+original reports are never rewritten or presented as new-source executions;
+the earlier overall workflow remains failed because its package failed.
+Every new archive still requires fresh execution of its actual current-source
+CMD launchers, persistent close/reopen, RAMCACHE, Strata, portable Materials Lab,
+loaded-module and post-execution payload checks. An application or functional
+qualification change requires new source campaigns rather than this bounded
+packaging reuse route.
+
 Hosted Linux software rendering and Windows ANGLE/Microsoft Basic execution
 qualify those environments. Only the original evaluators received the owner's
 physical TITAN RTX evaluation; the new package is not described as physically

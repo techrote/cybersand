@@ -13,6 +13,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: ramcache-strata-integration-${{ github.run_id }}
@@ -33,6 +34,8 @@ jobs:
     if: github.repository == 'techrote/cybersand' && (github.ref == 'refs/heads/feat/strata-theatre-003-20261125' || github.ref == 'refs/heads/main')
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    outputs:
+      reuse: ${{ steps.reuse.outputs.reuse }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -49,18 +52,31 @@ jobs:
           python3 tools/ci/test_verify_ramcache_strata_goblin_storage.py
           python3 tools/ci/test_ramcache_strata_lab_package.py
           python3 tools/ci/ramcache_strata_qualification.py admit --output build/integration-admission.json
+      - name: Authenticate original six successful source lanes and packaging-only applicability
+        id: reuse
+        env:
+          CYBERSAND_QUALIFICATION_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/package_ramcache_strata.py reuse-admission --output build/qualification-reuse-admission.json
+          echo 'reuse=true' >> "$GITHUB_OUTPUT"
       - name: Preserve exact admission receipt
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ramcache-strata-admission-${{ github.sha }}-${{ github.run_attempt }}
-          path: build/integration-admission.json
+          path: |
+            build/integration-admission.json
+            build/qualification-reuse-admission.json
           if-no-files-found: warn
           retention-days: 90
 
   linux:
     name: Linux graphical ${{ matrix.mode }}
     needs: admission
+    # The fixed N run's six actual source receipts remain unchanged. Only a
+    # proved packaging-only successor can skip these redundant source reruns.
+    if: needs.admission.outputs.reuse != 'true'
     runs-on: ubuntu-24.04
     # Aggregate bounds derive from all admitted child ceilings plus setup;
     # individual registered test deadlines are not extended by this ceiling.
@@ -122,6 +138,7 @@ jobs:
   windows:
     name: Windows graphical ${{ matrix.mode }}
     needs: admission
+    if: needs.admission.outputs.reuse != 'true'
     runs-on: windows-2022
     timeout-minutes: ${{ matrix.minutes }}
     strategy:
@@ -218,6 +235,7 @@ jobs:
   package:
     name: Definitive archive and cold actual Windows launcher
     needs: [admission, linux, windows]
+    if: always() && needs.admission.result == 'success' && needs.admission.outputs.reuse == 'true' && needs.linux.result == 'skipped' && needs.windows.result == 'skipped'
     runs-on: windows-2022
     # Extracted feature and portable Lab aggregates retain their registered child budgets. This
     # is a ceiling, not an extended deadline for any individual failed test.
@@ -235,15 +253,24 @@ jobs:
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Download every original same-source source campaign
+      - name: Download exact current packaging applicability admission
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          pattern: ramcache-strata-*-*-${{ github.sha }}-${{ github.run_attempt }}
+          name: ramcache-strata-admission-${{ github.sha }}-${{ github.run_attempt }}
+          path: admission
+      - name: Download fixed N originals without relabelling their source
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46105901845
+          pattern: ramcache-strata-*-*-d414774ddc582cbc03d74e119937665368dc3476-1
           path: original-evidence
-      - name: Download authenticated same-source portable dependencies
+      - name: Download pinned original portable engine and notices
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: ramcache-strata-dependencies-${{ github.sha }}-${{ github.run_attempt }}
+          github-token: ${{ github.token }}
+          run-id: 46105901845
+          name: ramcache-strata-dependencies-d414774ddc582cbc03d74e119937665368dc3476-1
           path: dependencies
       - name: Verify originals and package exact application and runtimes
         run: |
@@ -260,7 +287,7 @@ jobs:
           '@ | python -
           if ($LASTEXITCODE -ne 0) { throw 'Original artifact inventory admission failed' }
           $archive = "build/CyberSand-RAMCACHE-Strata-Workbench-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
-          python tools/package_ramcache_strata.py build --dependencies dependencies --evidence evidence --output build/evaluator --archive $archive
+          python tools/package_ramcache_strata.py build --dependencies dependencies --evidence evidence --qualification-admission admission/qualification-reuse-admission.json --output build/evaluator --archive $archive
           if ($LASTEXITCODE -ne 0) { throw 'Exact source/runtime evaluator build refused' }
           'INTEGRATION_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
       - name: Execute shipped CMD first and repeat extracted save and reopen
