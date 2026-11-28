@@ -1,4 +1,4 @@
-name: RAMCACHE Strata portable verifier diagnosis
+name: RAMCACHE Strata portable verifier environment diagnosis
 
 on:
   push:
@@ -20,7 +20,7 @@ env:
 
 jobs:
   verifier:
-    name: Exercise exact shipped Windows hash verifier and adverse controls
+    name: Exercise shipped Windows verifier and observer module environment
     runs-on: windows-2022
     timeout-minutes: 15
     defaults:
@@ -29,22 +29,22 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
-          ref: 5cfc06472df8fbbba7f86e49285efff711eac02b
+          ref: 746f95512606ffa61b446a4c93321b66f883b4e1
           fetch-depth: 0
           lfs: false
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
-      - name: Execute tracked Windows pristine altered and missing-file controls
+      - name: Execute tracked Windows verifier and observer-environment controls
         run: |
           python -B tools/ci/test_ramcache_strata_qualification.py WindowsVerifierControls
           if ($LASTEXITCODE -ne 0) { throw 'Tracked Windows verifier controls failed' }
-      - name: Independently record actual Windows 5.1 verifier outcomes
+      - name: Independently record actual Windows 5.1 verifier and module outcomes
         run: |
           $driver = @'
           #!/usr/bin/env python3
-          """Exercise the exact shipped payload verifier on standard Windows, without publishing."""
+          """Exercise exact shipped verification and the legacy observer environment on Windows."""
           from __future__ import annotations
           
           import argparse
@@ -85,10 +85,10 @@ jobs:
               output.mkdir(parents=True)
               started = time.monotonic()
               report = {
-                  "schema": "ramcache-strata-payload-verifier-diagnostic-v1",
+                  "schema": "ramcache-strata-payload-verifier-diagnostic-v2",
                   "status": "running", "diagnostic_only": True,
                   "full_installed_qualification_executed": False,
-                  "scope": "Exact shipped Verify Package.ps1 on valid, altered and missing files under the production portable environment; no evaluator or release publication.",
+                  "scope": "Exact shipped Verify Package.ps1 on valid, altered and missing files plus unchanged observer commands/hash algorithms under its child-only corrected module environment; no actual loaded-module/evaluator acceptance or release publication.",
                   "expected_source": args.expected_source,
                   "runner_script_sha256": sha(Path(__file__)),
                   "workflow_run": os.environ.get("GITHUB_RUN_ID", ""),
@@ -126,7 +126,8 @@ jobs:
                   require(head == args.expected_source and not git("status", "--porcelain"), "Wrong or dirty source checkout")
                   report.update(source_commit=head, source_tree=tree)
                   report["production_inputs_sha256"] = {name: sha(repository / name) for name in (
-                      "tools/package_ramcache_strata.py", "tools/ci/ramcache_strata_lab_package.py", "tools/package_materials_lab_candidate.py")}
+                      "tools/package_ramcache_strata.py", "tools/ci/ramcache_strata_lab_package.py", "tools/package_materials_lab_candidate.py",
+                      "tools/ci/check_windows_package_modules.ps1")}
                   fixture = output / "verifier fixture with spaces"
                   (fixture / "payload").mkdir(parents=True)
                   payloads = {"payload/000-empty.bin": b"", "payload/001-abc.bin": b"abc",
@@ -173,6 +174,42 @@ jobs:
                   missing.write_bytes(payloads["payload/000-empty.bin"])
                   require({name: sha(fixture / name) for name in expected} == expected, "Fixture restoration or original file custody failed")
                   require(script.read_bytes() == package.VERIFY_PS1.encode("utf-8"), "Test altered the shipped verifier")
+                  original_environment = dict(environment)
+                  module_environment = package.windows_powershell_environment(environment)
+                  require(environment == original_environment, "Observer preparation altered its parent environment")
+                  require(module_environment == {key: value for key, value in environment.items() if key.upper() != "PSMODULEPATH"},
+                          "Observer environment changed more than the inherited PowerShell module path")
+                  require(module_environment["PATH"] == environment["PATH"], "Observer lost the actual portable application PATH")
+                  probe = output / "module-observer-command-probe.ps1"
+                  probe.write_text(r'''param([string]$Root)
+          $ErrorActionPreference = 'Stop'
+          $commands = [ordered]@{}
+          foreach ($name in @('Get-FileHash', 'Get-Process', 'Start-Process', 'Get-Content', 'ConvertFrom-Json')) {
+              $resolved = Get-Command -Name $name -ErrorAction Stop
+              $commands[$name] = [ordered]@{ name = [string]$resolved.Name; type = [string]$resolved.CommandType; module = [string]$resolved.ModuleName }
+          }
+          $hashes = [ordered]@{}
+          foreach ($name in @('payload/000-empty.bin', 'payload/001-abc.bin', 'payload/002-multiblock.bin')) {
+              $hashes[$name] = (Get-FileHash -LiteralPath (Join-Path $Root $name) -Algorithm SHA256).Hash.ToLowerInvariant()
+          }
+          [ordered]@{ version = $PSVersionTable.PSVersion.ToString(); module_path = $env:PSModulePath; commands = $commands; hashes = $hashes } | ConvertTo-Json -Depth 6
+          ''', encoding="utf-8", newline="\n")
+                  code, log = command("module-observer-command-probe", prefix + ["-File", str(probe), "-Root", str(fixture)], module_environment, fixture)
+                  require(code == 0, "Actual legacy observer command/module admission failed")
+                  observed = json.loads(log)
+                  command_names = ("Get-FileHash", "Get-Process", "Start-Process", "Get-Content", "ConvertFrom-Json")
+                  require(observed.get("version", "").startswith("5.1.") and set(observed.get("commands", {})) == set(command_names),
+                          "Legacy observer command inventory or PowerShell version differs")
+                  for name in command_names:
+                      require(observed["commands"][name]["name"] == name and observed["commands"][name]["type"], "Observer command failed resolution: " + name)
+                  require(observed.get("hashes") == {name: expected[name] for name in (
+                      "payload/000-empty.bin", "payload/001-abc.bin", "payload/002-multiblock.bin")}, "Get-FileHash disagrees with independent known-answer payloads")
+                  require({name: sha(fixture / name) for name in expected} == expected and script.read_bytes() == package.VERIFY_PS1.encode("utf-8"),
+                          "Observer command probe modified original fixture inputs")
+                  report["module_observer_environment"] = {"removed_keys": sorted(key for key in environment if key.upper() == "PSMODULEPATH"),
+                      "parent_unchanged": True, "portable_path_unchanged": True, "other_variables_unchanged": True,
+                      "probe_script_sha256": sha(probe), "observed": observed,
+                      "scope": "Actual WinPS command discovery and known-answer hashing only; final copied-application loaded-module probe still required."}
                   require(git("rev-parse", "HEAD") == head and git("rev-parse", "HEAD^{tree}") == tree and not git("status", "--porcelain"),
                           "Diagnostic changed source identity")
                   report["cases"] = {"valid": "accepted", "altered": "rejected with exact changed-file marker",
@@ -199,8 +236,8 @@ jobs:
           '@
           $driver = $driver.Replace("`r`n", "`n").TrimEnd([char[]]"`r`n") + "`n"
           [System.IO.File]::WriteAllText("$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py", $driver, [System.Text.UTF8Encoding]::new($false))
-          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne '52876151a504450bdfa8b90cd88c58b1cdabfd8e027c800ce7ebb1158820cb7b') { throw 'External verifier diagnostic driver bytes changed' }
-          python -B "$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py" --repository "$env:GITHUB_WORKSPACE" --expected-source 5cfc06472df8fbbba7f86e49285efff711eac02b --output "$env:RUNNER_TEMP/ramcache-verifier-diagnostic"
+          if ((Get-FileHash "$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py" -Algorithm SHA256).Hash.ToLowerInvariant() -ne '1cdd76f66b7ed93c5303f99a156476d094804155ac96344eaa095eac22c4bfd6') { throw 'External verifier diagnostic driver bytes changed' }
+          python -B "$env:RUNNER_TEMP/ramcache_strata_verifier_diagnostic.py" --repository "$env:GITHUB_WORKSPACE" --expected-source 746f95512606ffa61b446a4c93321b66f883b4e1 --output "$env:RUNNER_TEMP/ramcache-verifier-diagnostic"
           if ($LASTEXITCODE -ne 0) { throw 'Actual independent Windows verifier diagnostic failed' }
       - name: Preserve original verifier evidence without publishing an evaluator
         if: always()
