@@ -13,6 +13,13 @@ read before treating the foundation as accepted. The positively evaluated
 physical owner application remains the earlier `9f212725` reference.
 Neither a merged text preview nor hosted execution grants physical acceptance.
 
+All 26 final-source core application gates also passed at 65f, including the
+six actual cross-feature suites. The original registered matched-performance
+cohorts did not qualify, and the original spawn/package harness failures remain
+in the ledger. Separately identified harness follow-ups preserve every 65f
+application byte; they do not change this integration foundation or confer
+owner acceptance. Consult their final recorded scope before reusing evidence.
+
 | Role | Exact identity |
 |---|---|
 | Final PUBPRES application | [`65f71aaf4be3a67896bafac7f5220a0cb25a8fb7`](https://github.com/techrote/cybersand/tree/65f71aaf4be3a67896bafac7f5220a0cb25a8fb7) |
@@ -20,7 +27,7 @@ Neither a merged text preview nor hosted execution grants physical acceptance.
 | Reconciled accepted main | `50e3bcb839211eac2abe1e065750cbcba4d36f8c` |
 | Guarded native publication | `427c0ea3b6326f3ebda71fbbff7e40564757de2b`, tree `7bb3a0eabf3b2a7ad74b3dd15d1539eca410fe77` |
 | Original native build | `b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34`, tree `5d292e17fdeba0466ee744d8d23e719039908c7f` |
-| Fully hosted-gated Q4 application | `ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae`; [all 26 required gates](https://github.com/techrote/cybersand/actions/runs/46140937427) passed |
+| Q4 registered core qualification | `ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae`; [all 26 required gates](https://github.com/techrote/cybersand/actions/runs/46140937427) passed |
 | Frozen ObjectShard preview source | `c4e10e3ca629c491f7340c6f383adcc347200fa5`, tree `e88fd1a1d89d10bf4482cb619174325390ced44d` |
 | Frozen PUBPRES preview source | `0670733eb0a418c8580458a9c5dd9aff24f342c6`, tree `3df9cc4f11b0ef0a3009830a78720bf41bb9f1a9` |
 
@@ -42,6 +49,11 @@ remote PUBPRES source. Re-run a disposable preview against the actual qualified
 M4 source and the final PUBPRES commit before editing; do not transplant the
 old preview tree or merge unfinished M4 development into the PUBPRES branch.
 
+A read-only refresh on 28 November 2026 at 13:06 UTC still found accepted main
+at `50e3bcb839211eac2abe1e065750cbcba4d36f8c` and PR #754 open/Draft at
+`8064c73270dee2ce1a0d53316aae334136335483`, based on that same main.
+No branch, feature or qualification campaign was modified.
+
 The later observed M4 head `8064c73270dee2ce1a0d53316aae334136335483`
 advanced three commits and six paths from frozen c4e. The parent independently
 inspected that delta and reported no shared production-runtime changes.
@@ -49,6 +61,48 @@ The dated movement appendix below retains those exact paths. It gives no
 current-HEAD compatibility credit. Refresh the live PR and accepted-main
 identities close to the next integration and preserve any new movement as a
 separate observation.
+
+### Nearclosure source movement — 13:44:58 UTC
+
+A fresh read-only API check found accepted main unchanged at
+`50e3bcb839211eac2abe1e065750cbcba4d36f8c` and PUBPRES #767 still open/Draft,
+unmerged, at frozen `65f71aaf4be3a67896bafac7f5220a0cb25a8fb7`.
+ObjectShard #754 was also open/Draft and unmerged, but had advanced to
+`47b7d5787b82d2cc480844e17db64a64074e9ec4`, tree
+`22951aa2aa55ca8bf7e01bd4ab8397c0019b7fba`, against the same main.
+
+The exact [8064 → 47b comparison](https://github.com/techrote/cybersand/compare/8064c73270dee2ce1a0d53316aae334136335483...47b7d5787b82d2cc480844e17db64a64074e9ec4)
+is sixteen commits ahead and zero behind, changing six paths:
+
+| Changed path | Observed scope |
+|---|---|
+| `.github/workflows/objectshard-m4-completion.yml` | Focused capacity/Windows probes and application-only recovery workflow |
+| `godot/scripts/shared_workbench.gd` | Still-held structural sweep retention after a bounded displayed-publication wait |
+| `godot/tests/run_art_workbench_final.gd` | Registered native readiness envelope |
+| `godot/tests/test_art_conversation_apply_preparation.gd` | Displayed Art fixture readiness |
+| `godot/tests/test_object_shard_m4_capacity_recovery.gd` | Role-array type correction |
+| `tools/ci/native_candidate_identity.py` | Explicit previously qualified Windows native reuse receipt |
+
+This interval **does change a shared production runtime file**. Its pointer
+pump no longer cancels a still-held structural sweep after the 250 ms display
+wait. It returns without blocking another physical interval, keeps the pointer
+pending, and allows a later callback to resample only after the exact edited
+publication is coherently displayed. Release still cancels unadmitted work.
+The next integration must review this handoff against PUBPRES's actual physical
+interval scheduling, precise presentation acknowledgements, continuous
+accepted-camera picking and retained ownership fences. It must not infer that
+a retained pointer has acquired a new geometry or display acknowledgement.
+
+The native reuse helper and its workflow are a separate source-custody concern;
+this read-only comparison is not an audit or approval of the new M4 reuse lane.
+The next combined candidate must bind its complete native/build dependency
+closure and actual resulting application qualification explicitly.
+
+The earlier statement that c4e → 8064 had no shared production-runtime changes
+applies only to that earlier three-commit interval. None of these sixteen later
+commits was absorbed into PUBPRES. No new merge preview, combined build, actual
+combined application test or compatibility acceptance was performed. Refresh
+the actual qualified M4 source again before subsequent integration.
 
 ### Contracts to preserve in the next integration
 
