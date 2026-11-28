@@ -94,17 +94,21 @@ func _run() -> void:
 	if not await f.open("tower") or not await _install_saturated_start():
 		await _finish()
 		return
-	var parent: Dictionary = _special_shard()
-	if not f.expect(not parent.is_empty(),"special connected parent is present in the saturated owner publication"):
-		await _finish()
-		return
-	var parent_id: int = int(parent.id)
-	var before_wood: int = f.material_count(7)
-	var before_refusals: int = int(f.frame().get("metrics",{}).get("fragment_refusals",0))
+	# Do not identify the carrier by authored storage origin: promotion/geometry
+	# publication may normalize retained storage. The exact displayed bridge-cell
+	# witness is the production ownership identity and remains valid after that
+	# normalization.
 	var target: Dictionary = _target_for_source(Vector2i(28,123))
 	if not f.expect(not target.is_empty(),"single bridge cell has an exact displayed native witness"):
 		await _finish()
 		return
+	var parent_id: int = int(target.owner)
+	var parent: Dictionary = _shard(parent_id)
+	if not f.expect(parent_id>0 and not parent.is_empty(),"bridge witness resolves its connected saturated parent"):
+		await _finish()
+		return
+	var before_wood: int = f.material_count(7)
+	var before_refusals: int = int(f.frame().get("metrics",{}).get("fragment_refusals",0))
 	var before_results: int = f.bench.object_shard_m4_port.results.size()
 	var queued: Dictionary = f.bench.object_shard_m4_action(target.position,"erase",f.runtime().visible_observation(),target)
 	var wait_condition_observed: bool = f.bench.object_shard_m4_port.pending_count()>0 or not f.runtime().physics_ready()
