@@ -1,5 +1,6 @@
 #include "cyber_object_shard_lab.hpp"
 #include "cybersand/object_shard_contact.hpp"
+#include "cybersand/material_appearance.hpp"
 
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/variant/packed_byte_array.hpp>
@@ -607,11 +608,19 @@ Dictionary CyberObjectShardLab::snapshot(bool include_world) {
             row["rectangles"] = rectangles;
             if (cached.handle!=handle || cached.material_revision!=shard.material_revision()) {
             PackedInt32Array states_a, states_b, temperature, roles, incarnations;
-            PackedByteArray cell_materials, cell_pixels;
+            PackedByteArray cell_materials, cell_pixels, render_cells;
             cell_materials.resize(shard.area()); cell_pixels.resize(shard.area() * 4);
+            render_cells.resize(shard.area() * 2);
             for (std::size_t index = 0; index < shard.area(); ++index) {
                 const auto cell = shard.payload(index);
                 cell_materials.ptrw()[index] = static_cast<std::uint8_t>(cell.material);
+                // The ordinary palette consumes material + projected visual
+                // condition. Reuse that read-only contract for owned cells;
+                // raw state_a is not a universal condition channel.
+                render_cells.ptrw()[index * 2] = static_cast<std::uint8_t>(cell.material);
+                render_cells.ptrw()[index * 2 + 1] = cybersand::project_visual_state(
+                    cell.material, cell.state_a, cell.state_b,
+                    coordinator_->world().config().water_experiment_policy);
                 states_a.push_back(cell.state_a); states_b.push_back(cell.state_b);
                 temperature.push_back(cell.temperature); roles.push_back(static_cast<std::int32_t>(shard.role(index)));
                 incarnations.push_back(static_cast<std::int32_t>(shard.schedule(index).incarnation));
@@ -619,6 +628,7 @@ Dictionary CyberObjectShardLab::snapshot(bool include_world) {
             }
             Dictionary carriers;
             carriers["materials"] = cell_materials; carriers["rgba"] = cell_pixels;
+            carriers["render_cells"] = render_cells;
             carriers["states_a"] = states_a; carriers["states_b"] = states_b; carriers["temperature"] = temperature;
             carriers["roles"] = roles; carriers["incarnations"] = incarnations;
             cached={handle,shard.material_revision(),carriers};

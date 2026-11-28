@@ -59,6 +59,7 @@ var _object_shard_pointer_tool: int = -1
 var _object_shard_pointer_local: Vector2 = Vector2(-1,-1)
 var _object_shard_pointer_attempt: Array = []
 var _object_shard_tool_mode: int = -1
+var _object_shard_activity_until_ms: int = 0
 var applied: Dictionary = {}
 var pilot_slot := -1
 var _pilot_instance_id := 0
@@ -2057,6 +2058,30 @@ func object_shard_m4_status() -> Dictionary:
 		return {"ok": false, "ready": false, "outcome": "OrdinaryWorkerRequired"}
 	return object_shard_m4_port.interface_status(host.simulation_worker, host.latest_snapshot)
 
+func object_shard_user_status(now_ms: int = -1) -> String:
+	if host == null or not object_shard_m4_port.enabled: return "Off"
+	var runtime: RefCounted = host.object_shard_m4_runtime
+	var failure: String = str(runtime.held_reason)
+	if failure.is_empty(): failure = object_shard_m4_port.held_reason()
+	if not failure.is_empty():
+		return "Held: %s · Structures → Save diagnostics; Restore start to recover" % failure
+	if not runtime.owns_terrain(): return "Starting"
+	var now: int = Time.get_ticks_msec() if now_ms < 0 else now_ms
+	var rebuilding: bool = bool(runtime.frame.get("promotion",{}).get("present",false)) \
+		or bool(runtime.frame.get("reabsorption",{}).get("present",false))
+	for shard: Dictionary in runtime.frame.get("shards",[]):
+		rebuilding = rebuilding or bool(shard.get("geometry_pending",false))
+	if rebuilding or object_shard_m4_port.pending_count() > 0:
+		_object_shard_activity_until_ms = now + 450
+	if now < _object_shard_activity_until_ms: return "Editing / rebuilding"
+	# Short ACK/readiness phases are ordinary progression, not user states.
+	# A wait becomes visible only when its real outstanding receipt is slow.
+	if runtime._pending_serial != 0 and runtime._pending_since > 0 \
+		and Time.get_ticks_usec()-runtime._pending_since >= 500000:
+		return "Waiting for native transaction"
+	if host.paused: return "Paused" if runtime.physics_ready() else "Pausing"
+	return "Running"
+
 
 func object_shard_m4_action(pos: Vector2i, action: String,
 		observed: Dictionary = {}, witness: Dictionary = {}) -> Dictionary:
@@ -2339,7 +2364,7 @@ func _process(_delta: float) -> void:
 		# Status text does not need native/physics readbacks or deep receipt
 		# copies. Full source diagnostics remain an explicit evaluator action.
 		var runtime: RefCounted = host.object_shard_m4_runtime
-		_status.text += " · structures %s · %d/%d bodies" % [runtime.phase,runtime.bridge.bodies.size(),int(runtime.capabilities.get("max_bodies",16))]
+		_status.text += " · structures %s · %d/%d bodies" % [object_shard_user_status(),runtime.bridge.bodies.size(),int(runtime.capabilities.get("max_bodies",16))]
 		var admission: String = str(runtime.frame.get("admission",{}).get("reason",""))
 		if admission == "Discovering":
 			_status.text += " · finding structures: %d frontier cells" % int(runtime.frame.admission.get("frontier_cells",0))
@@ -2351,9 +2376,14 @@ func _process(_delta: float) -> void:
 			if shard.get("fragment_deferred",false):
 				_status.text += " · split waiting for body budget; surviving material remains in its physical parent"
 				break
+		if not str(runtime.held_reason).is_empty() or not object_shard_m4_port.held_reason().is_empty():
+			# The status label is capped at two lines. Put a protective refusal
+			# before routine cell/source counters so it cannot be clipped away.
+			_status.text = "Structures " + object_shard_user_status() + "\n" + _status.text
 	_status.tooltip_text = _status.text
 	if object_shard_m4_port.enabled:
 		var bounds: Dictionary = host.object_shard_m4_runtime.capabilities
+		_status.tooltip_text += "\nInternal structural phase: " + str(host.object_shard_m4_runtime.phase)
 		_status.tooltip_text += "\nMaterial-body bounds: %d cells per body, %d cells combined." % [int(bounds.get("max_body_area",16384)),int(bounds.get("max_total_area",65536))]
 	water_spray.refresh(context)
 	equipment.refresh(context)
