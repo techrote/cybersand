@@ -57,9 +57,10 @@ def startup_match(ready):
         "parameters", "workers_requested", "water_cells", "water_quantity", "construction_options")}}
 
 
-def qualify(arms, registration, sources):
+def qualify(arms, registration, sources, driver=None):
     """Fail closed on missing/reordered arms, source drift or changed fixtures."""
     common.require(len(arms) == len(registration["order"]), "Incomplete registered spawn comparison")
+    driver_source = driver if driver is not None else sources["C"]
     population = {}
     fixture_matches = {}
     native_by_role = {}
@@ -73,8 +74,8 @@ def qualify(arms, registration, sources):
                        and identity["source_tree"] == sources[role]["source_tree"] and identity["graphical"]
                        and identity["selected"] == common.SELECTORS
                        and identity["native_sha256"] == sources[role]["native_runtime_sha256"]
-                       and identity["driver"]["source_commit"] == sources["C"]["source_commit"]
-                       and identity["driver"]["source_tree"] == sources["C"]["source_tree"],
+                       and identity["driver"]["source_commit"] == driver_source["source_commit"]
+                       and identity["driver"]["source_tree"] == driver_source["source_tree"],
                        "Spawn source, graphical mode or selected policy differs")
         native_by_role.setdefault(role, identity["native_sha256"])
         common.require(native_by_role[role] == identity["native_sha256"], "Native runtime changed within a source role")
@@ -236,7 +237,7 @@ def main():
             except Exception as error:
                 report["failures"].append({"index": index, "error": str(error)})
             save()
-        report["comparison"] = qualify(report["arms"], registration, sources)
+        report["comparison"] = qualify(report["arms"], registration, sources, driver)
         report["complete"] = not report["failures"]
     except Exception as error:
         report["failures"].append({"error": str(error)})

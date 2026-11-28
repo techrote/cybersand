@@ -86,14 +86,21 @@ def platform_name():
 def runtime_record(root, directory, platform):
     """Replay the unchanged offline native/dependency reader on original bytes."""
     root, directory = Path(root).resolve(), Path(directory).resolve()
-    sys.path[:0] = [str(root / 'tools/pubpres_final_recovery'), str(root / 'tools/pubpres_final'), str(root / 'tools/pubpres_playability_build'),
-                   str(root / 'tools/pubpres_playability')]
-    from retained_runtime import make_binding
-    from runtime_replay import verify_recorded_runtime
+    # Reader implementation belongs to this measurement driver, while ``root``
+    # remains the independently measured application. Importing from the
+    # application can reuse a foreign cached reader and bypass its ownership
+    # guards when those files differ from the driver.
+    sys.path[:0] = [str(ROOT / 'tools/pubpres_final_recovery'), str(ROOT / 'tools/pubpres_final'),
+                    str(ROOT / 'tools/pubpres_playability_build'), str(ROOT / 'tools/pubpres_playability')]
+    import retained_runtime
+    import runtime_replay
+    require(Path(retained_runtime.__file__).resolve() == ROOT / 'tools/pubpres_final_recovery/retained_runtime.py'
+            and Path(runtime_replay.__file__).resolve() == ROOT / 'tools/pubpres_final/runtime_replay.py',
+            'Frozen runtime readers came from another measurement source')
     source = source_identity(root)
     record = json.loads((directory / 'PUBPRES-RUNTIME.json').read_bytes())
     original = {key: record[key] for key in ('source_commit', 'source_tree')}
-    checked = verify_recorded_runtime(root, original, directory, target_platform=platform)
+    checked = runtime_replay.verify_recorded_runtime(root, original, directory, target_platform=platform)
     require(record.get('toolchain_drift_allowed') is False
             and record.get('production_runtime_promotion') is False,
             'Mainline qualification requires an original pinned build without toolchain drift')
@@ -101,7 +108,7 @@ def runtime_record(root, directory, platform):
     # dependency, build driver and toolchain lock at both original and current
     # commits. A scripts-only application may retain those exact original bytes;
     # a native/build input change requires a fresh independent build.
-    checked['application_binding'] = make_binding(root, source, directory, target_platform=platform)
+    checked['application_binding'] = retained_runtime.make_binding(root, source, directory, target_platform=platform)
     return record, checked
 
 

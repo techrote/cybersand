@@ -59,6 +59,17 @@ class SpawnPair(unittest.TestCase):
         self.assertEqual(result["candidate_exact_physical"][0]["maximum_deficit_usec"], 30000)
         self.assertEqual(result["physical_owner_acceptance"], "HOLD")
 
+    def test_application_and_measurement_driver_identities_are_checked_separately(self):
+        arms, registration, sources = self.cohort()
+        driver = {"source_commit": "d" * 40, "source_tree": "e" * 40}
+        for arm in arms:
+            arm["identity"]["driver"] = dict(driver)
+        result = pair.qualify(arms, registration, sources, driver)
+        self.assertEqual(result["physical_owner_acceptance"], "HOLD")
+        self.assertEqual(sources["C"]["source_commit"], "C" * 40)
+        with self.assertRaisesRegex(ValueError, "Spawn source, graphical mode or selected policy differs"):
+            pair.qualify(arms, registration, sources)
+
     def test_missing_failed_and_reordered_arm_refused(self):
         for mutation in (lambda arms: arms.pop(), lambda arms: arms[1].update({"pass": False}),
                          lambda arms: arms[1].update({"index": 2}),
