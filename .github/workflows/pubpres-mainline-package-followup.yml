@@ -1,0 +1,317 @@
+name: PUBPRES frozen-source Windows package and independent extraction
+
+on:
+  push:
+    branches: [codex/pubpres-mainline-package-followup-001-20261128]
+    paths: ['.github/workflows/pubpres-mainline-package-followup.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-mainline-package-followup-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.eol
+  GIT_CONFIG_VALUE_1: lf
+  PYTHONUTF8: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PUBPRES_APPLICATION: '65f71aaf4be3a67896bafac7f5220a0cb25a8fb7'
+  PUBPRES_APPLICATION_TREE: 'f6b7b8d3d613b70cdcdf3643fb906934b3887173'
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  package-windows:
+    name: Complete source-exact Windows evaluator
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-mainline-package-followup-001-20261128'
+    runs-on: windows-2022
+    timeout-minutes: 75
+    defaults:
+      run: {shell: pwsh, working-directory: app}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+    outputs:
+      inner_sha256: ${{ steps.package.outputs.inner_sha256 }}
+      inner_bytes: ${{ steps.package.outputs.inner_bytes }}
+      manifest_sha256: ${{ steps.package.outputs.manifest_sha256 }}
+      artifact_id: ${{ steps.archive.outputs.artifact-id }}
+      artifact_digest: ${{ steps.archive.outputs.artifact-digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', path: driver, persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '65f71aaf4be3a67896bafac7f5220a0cb25a8fb7', path: app, persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46132881112
+          name: pubpres-mainline-runtimes-windows-46132881112-1
+          path: ${{ runner.temp }}/mainline-package-runtimes
+      - name: Download all three original current-source Windows feature records
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46144440297
+          pattern: pubpres-mainline-feature-windows-*-46144440297-1
+          path: ${{ runner.temp }}/mainline-package-features
+          merge-multiple: false
+      - name: Authenticate all original gates and run corrected external controls against frozen application code
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          @'
+          import hashlib, importlib.util, json, os, pathlib, sys, unittest, urllib.request
+          app = pathlib.Path.cwd().resolve()
+          driver = app.parent / "driver"
+          sys.path.insert(0, str(app / "tools/pubpres_mainline"))
+          import common, campaign_request, package, launcher, qualification
+          need = common.require
+          source = common.source_identity(app)
+          common.git(app, "diff", "--exit-code", "HEAD")
+          need(source == {"source_commit": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7", "source_tree": "f6b7b8d3d613b70cdcdf3643fb906934b3887173"}, "Application source/tree differs")
+          driver_source = common.source_identity(driver)
+          need(driver_source["source_commit"] == os.environ["GITHUB_SHA"]
+               and os.environ["GITHUB_REF"] == "refs/heads/codex/pubpres-mainline-package-followup-001-20261128"
+               and os.environ["GITHUB_REPOSITORY"] == "techrote/cybersand"
+               and os.environ["GITHUB_EVENT_NAME"] == "push", "Unregistered measurement driver")
+          common.git(driver, "merge-base", "--is-ancestor", source["source_commit"], "HEAD")
+          allowed = {".github/workflows/pubpres-mainline-package-followup.yml", "tools/pubpres_mainline/test_evaluator_boundaries.py"}
+          changed = set(common.git(driver, "diff", "--name-only", source["source_commit"], "HEAD").decode().splitlines())
+          need(changed == allowed, "Follow-up changed application, packaging, launcher or semantic-reader inputs")
+          request = campaign_request.validate_record(json.loads((app / campaign_request.REQUEST).read_bytes()))
+          need(request["phase"] == "delivery" and request["payload_sha256"] == campaign_request.fingerprint()
+               and request["publication_commit"] == "427c0ea3b6326f3ebda71fbbff7e40564757de2b"
+               and common.git(app, "show", "HEAD:" + campaign_request.REQUEST) == (app / campaign_request.REQUEST).read_bytes(),
+               "Original source seal or guarded publication differs")
+          for ancestor in (common.ACCEPTED_MAIN, common.OWNER_REFERENCE):
+              common.git(app, "merge-base", "--is-ancestor", ancestor, "HEAD")
+          for module, path in ((common, "common.py"), (package, "package.py"), (launcher, "launcher.py"), (qualification, "qualification.py")):
+              actual = pathlib.Path(module.__file__).resolve()
+              need(actual == app / "tools/pubpres_mainline" / path, "External test imported a foreign application validator")
+              need(actual.read_bytes().replace(b"\r\n", b"\n") == common.git(app, "show", "HEAD:tools/pubpres_mainline/" + path).replace(b"\r\n", b"\n"),
+                   "Original application validator bytes changed")
+          headers = {"Authorization": "Bearer " + os.environ["GH_TOKEN"], "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+          def api(path):
+              req = urllib.request.Request("https://api.github.com/repos/techrote/cybersand/" + path, headers=headers)
+              with urllib.request.urlopen(req, timeout=60) as response: raw = response.read(4*1024*1024+1)
+              need(len(raw) <= 4*1024*1024, "Bounded original metadata response exceeded")
+              return json.loads(raw)
+          original = api("actions/runs/46144440297")
+          need(original["run_attempt"] == 1 and original["head_sha"] == source["source_commit"]
+               and original["head_branch"] == campaign_request.BRANCH and original["event"] == "push"
+               and original["path"] == ".github/workflows/pubpres-mainline.yml", "Original final-source campaign identity differs")
+          response = api("actions/runs/46144440297/attempts/1/jobs?per_page=100")
+          need(response["total_count"] <= 100, "Original job population exceeds bound")
+          focuses = ("frozen", "water", "members", "held-placement", "mainline", "native-owner", "selected-water", "selected-members", "selected-held-placement")
+          required = {"admission", "source-gates"} | {"qualification-" + p + "-" + f for p in ("linux", "windows") for f in focuses} | {"features-" + p + "-" + m for p in ("linux", "windows") for m in ("ramcache", "strata", "shared")}
+          need(len(required) == 26, "Changed core gate population")
+          jobs = {}
+          for name in sorted(required):
+              matches = [j for j in response["jobs"] if j["name"] == name]
+              need(len(matches) == 1 and matches[0]["status"] == "completed" and matches[0]["conclusion"] == "success", "Original required gate did not pass: " + name)
+              jobs[name] = {"id": matches[0]["id"], "conclusion": matches[0]["conclusion"]}
+          fixed = {
+              "linux-ramcache": (15263054371,16572761,"69f737fc5b444ecd5ab37932e89a4cb535d1dec5ef17634ac7d69e7f3e217507"),
+              "linux-strata": (15263526488,47908526,"0740a38e04d19ce17e1e53bdafa11c85cd69b93d549d6ce94e9cafbca5d06496"),
+              "linux-shared": (15263227596,28568192,"227d6f42d77f30618ebe742fe22aa768c78d1151bcb2a1c6daeb57ce18310d5f"),
+              "windows-ramcache": (15263212722,13210728,"c68791a64419edc8c590979170738eb37f090946cab4f189b6851d4e1f7cb228"),
+              "windows-strata": (15264135635,33668904,"bdf334b2a340536ab514093feb06ca99cc0622529d98a6efd997a233bb2fe332"),
+              "windows-shared": (15263339625,20139344,"cdb3674b94e5d410a5c92f97da8e71ccf7d2f807d5b57ba3ff7d255f507b6550"),
+          }
+          artifacts = {}
+          for role, (identifier, size, digest) in fixed.items():
+              row = api("actions/artifacts/" + str(identifier))
+              need(row["id"] == identifier and row["size_in_bytes"] == size and row["digest"] == "sha256:" + digest
+                   and row["name"] == "pubpres-mainline-feature-" + role + "-46144440297-1" and not row["expired"]
+                   and row["workflow_run"]["id"] == 46144440297 and row["workflow_run"]["head_sha"] == source["source_commit"], "Original feature artifact differs")
+              artifacts[role] = row
+          test_path = driver / "tools/pubpres_mainline/test_evaluator_boundaries.py"
+          old = common.git(app, "show", "HEAD:tools/pubpres_mainline/test_evaluator_boundaries.py")
+          before = b"(root / common.NATIVE[platform]).write_text(pointer)"
+          after = b"(root / common.NATIVE[platform]).write_bytes(pointer.encode('ascii'))"
+          need(old.count(before) == 1 and test_path.read_bytes().replace(b"\r\n", b"\n") == old.replace(before, after).replace(b"\r\n", b"\n"),
+               "External test differs beyond the exact canonical-LF fixture correction")
+          need(common.git(driver, "rev-parse", "HEAD:tools/pubpres_mainline/test_evaluator_boundaries.py").decode().strip() == "1183e41bafafb7c95c70041aac67351f69927851", "Corrected test Git object differs")
+          spec = importlib.util.spec_from_file_location("_pubpres_external_delivery_controls", test_path)
+          module = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(module)
+          need(module.common is common and module.evaluator is package and module.launcher is launcher and module.qualification is qualification, "External test switched original validators")
+          suite = unittest.defaultTestLoader.loadTestsFromModule(module)
+          need(suite.countTestCases() == 8, "Original eight-control population changed")
+          outcome = unittest.TextTestRunner(verbosity=2).run(suite)
+          need(outcome.wasSuccessful(), "Corrected original eight delivery controls failed")
+          need(common.source_identity(app) == source, "Control execution changed the frozen application")
+          common.git(app, "diff", "--exit-code", "HEAD")
+          proof = {"schema":"pubpres-frozen-package-followup-v1", "application":source, "driver":driver_source,
+                   "original_final_run":46144440297, "original_attempt":1, "required_core_jobs":jobs, "feature_artifacts":artifacts,
+                   "original_package_failure_job":140983886467, "original_package_failure_artifact":15264171190,
+                   "external_test_git_blob":"1183e41bafafb7c95c70041aac67351f69927851",
+                   "tests":8, "tests_passed":True, "application_and_packaging_bytes_changed":False,
+                   "scope":"Corrected external synthetic pointer writer; every original validator, package input, launcher, fixture and extracted execution remains final65f. Workflow identity remains the separate follow-up driver."}
+          common.write_json(pathlib.Path(os.environ["RUNNER_TEMP"]) / "package-followup-custody.json", proof)
+          print(json.dumps({"application":source,"driver":driver_source,"core_jobs":26,"external_controls":8,"status":"passed"}))
+          
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Original source/gates or external delivery controls refused' }
+      - name: Admit final source, published runtime bytes and exact engine
+        run: |
+          python tools/ci/materialize_lfs.py --expected-source $env:PUBPRES_APPLICATION --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/package-runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-exact published runtime/dependency acquisition failed' }
+          python tools/pubpres_mainline/setup_graphics.py --runtime "$env:RUNNER_TEMP/mainline-package-runtimes/C" --output "$env:RUNNER_TEMP/mainline-package-graphics"
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned source/build/engine admission failed' }
+      - name: Stage accepted licensed portable dependency inputs
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'mainline-package-notices'
+          New-Item -ItemType Directory -Path $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 180 --output (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot licence/notice acquisition failed' }
+          }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 180 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Microsoft runtime licence acquisition failed' }
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 180 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Microsoft redistribution licence acquisition failed' }
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output "$env:RUNNER_TEMP/mainline-package-vc" -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Signed licensed Visual Studio release runtime staging failed' }
+      - name: Replay source-bound original feature receipts and build the complete evaluator
+        id: package
+        run: |
+          @'
+          import json, os, pathlib, sys
+          root = pathlib.Path.cwd().resolve()
+          sys.path.insert(0, str(root / 'tools/pubpres_mainline'))
+          import common, qualification, package
+          temporary = pathlib.Path(os.environ['RUNNER_TEMP'])
+          runtime = temporary / 'mainline-package-runtimes/C'
+          package.publication_identity(root, runtime)
+          common.install_runtime(root, runtime, root / 'godot', 'windows')
+          gates = {}
+          for mode in ('ramcache', 'strata', 'shared'):
+              folder = temporary / 'mainline-package-features' / ('pubpres-mainline-feature-windows-' + mode + '-' + '46144440297' + '-' + '1')
+              matches = list(folder.rglob(qualification.MANIFEST))
+              common.require(len(matches) == 1, 'Missing or ambiguous original current-source feature record: ' + mode)
+              record = qualification.verify(root, runtime, root / 'godot', matches[0].parent, 'windows')
+              common.require(record['mode'] == mode and record['source']['source_commit'] == os.environ['PUBPRES_APPLICATION'], 'Foreign feature source/mode')
+              gates[mode] = str(matches[0].parent)
+          common.write_json(temporary / 'mainline-package-gates.json', gates)
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Independent original same-source Windows feature replay refused' }
+          $gates = Get-Content -Raw "$env:RUNNER_TEMP/mainline-package-gates.json" | ConvertFrom-Json
+          $archive = "$env:RUNNER_TEMP/mainline-delivery/archive/CyberSand-PUBPRES-Mainline-Windows-$($env:PUBPRES_APPLICATION.Substring(0,12)).zip"
+          python tools/pubpres_mainline/package.py build --source "$PWD" --runtime "$env:RUNNER_TEMP/mainline-package-runtimes/C" --project "$PWD/godot" --godot-zip $env:GODOT_ARCHIVE --vc-runtime "$env:RUNNER_TEMP/mainline-package-vc" --notices "$env:RUNNER_TEMP/mainline-package-notices" --output "$env:RUNNER_TEMP/mainline-delivery/evaluator" --archive $archive --qualification $gates.ramcache --qualification $gates.strata --qualification $gates.shared
+          if ($LASTEXITCODE -ne 0) { throw 'Complete source-exact portable evaluator build refused' }
+          $receipt = Get-Content -Raw ($archive + '.json') | ConvertFrom-Json
+          if ($receipt.source_commit -ne $env:PUBPRES_APPLICATION -or $receipt.archive_sha256 -notmatch '^[a-f0-9]{64}$' -or $receipt.archive_bytes -le 0) { throw 'Final inner archive identity differs' }
+          "inner_sha256=$($receipt.archive_sha256)" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_OUTPUT
+          "inner_bytes=$($receipt.archive_bytes)" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_OUTPUT
+          "manifest_sha256=$($receipt.manifest_sha256)" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_OUTPUT
+      - name: Publish source-exact evaluator archive for separate independent extraction
+        id: archive
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-delivery/archive/
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+      - name: Preserve package custody evidence even after refusal
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-package-custody-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/package-followup-custody.json
+            ${{ runner.temp }}/mainline-package-gates.json
+            ${{ runner.temp }}/package-runtime-acquisition.json
+            ${{ runner.temp }}/mainline-package-graphics/GRAPHICS-SETUP.json
+            ${{ runner.temp }}/mainline-delivery/evaluator/PUBPRES-MAINLINE-EVALUATOR.json
+            ${{ runner.temp }}/mainline-delivery/archive/*.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  extracted-windows:
+    name: Independent extracted Windows application and authoring
+    needs: package-windows
+    runs-on: windows-2022
+    # Each unchanged production witness retains its own registered deadline.
+    # This aggregate ceiling does not extend a failed individual test.
+    timeout-minutes: 160
+    defaults:
+      run: {shell: pwsh, working-directory: app}
+    env:
+      JAVA_HOME: ''
+      PYTHONDONTWRITEBYTECODE: '1'
+      EXPECTED_INNER_SHA256: ${{ needs.package-windows.outputs.inner_sha256 }}
+      EXPECTED_INNER_BYTES: ${{ needs.package-windows.outputs.inner_bytes }}
+      EXPECTED_MANIFEST_SHA256: ${{ needs.package-windows.outputs.manifest_sha256 }}
+      EXPECTED_ARTIFACT_ID: ${{ needs.package-windows.outputs.artifact_id }}
+      EXPECTED_ARTIFACT_DIGEST: ${{ needs.package-windows.outputs.artifact_digest }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', path: driver, persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '65f71aaf4be3a67896bafac7f5220a0cb25a8fb7', path: app, persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Independently authenticate current-run evaluator artifact metadata
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($env:EXPECTED_ARTIFACT_ID -notmatch '^[0-9]+$' -or $env:EXPECTED_ARTIFACT_DIGEST -notmatch '^[a-f0-9]{64}$') { throw 'Missing exact uploaded artifact identity' }
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $artifact = Invoke-RestMethod -Headers $headers -Uri "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$env:EXPECTED_ARTIFACT_ID"
+          $expectedName = "pubpres-mainline-windows-evaluator-$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT"
+          if ($artifact.name -ne $expectedName -or $artifact.expired -or $artifact.digest -ne "sha256:$env:EXPECTED_ARTIFACT_DIGEST" -or $artifact.workflow_run.id -ne [long]$env:GITHUB_RUN_ID -or $artifact.workflow_run.head_sha -ne $env:GITHUB_SHA) { throw 'Independent live artifact metadata identifies a different source/run/archive' }
+          $artifact | ConvertTo-Json -Depth 20 | Set-Content -Encoding utf8 "$env:RUNNER_TEMP/evaluator-download-admission.json"
+      - name: Independently download the actual owner archive
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-mainline-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mainline-independent-archive
+      - name: Verify independent inner archive identity and execute the shipped package
+        run: |
+          @'
+          import hashlib, json, os, pathlib, zipfile
+          root = pathlib.Path(os.environ['RUNNER_TEMP']) / 'mainline-independent-archive'
+          archives = list(root.glob('*.zip'))
+          assert len(archives) == 1, 'Missing or ambiguous delivered inner ZIP'
+          archive = archives[0]
+          with archive.open('rb') as stream: actual = hashlib.file_digest(stream, 'sha256').hexdigest()
+          assert actual == os.environ['EXPECTED_INNER_SHA256'] and archive.stat().st_size == int(os.environ['EXPECTED_INNER_BYTES']), 'Independent inner ZIP hash/size differs'
+          with zipfile.ZipFile(archive) as bundle:
+              raw = bundle.read('PUBPRES-MAINLINE-EVALUATOR.json')
+              assert hashlib.sha256(raw).hexdigest() == os.environ['EXPECTED_MANIFEST_SHA256'], 'Independent package manifest differs'
+              record = json.loads(raw)
+              assert record['source_commit'] == os.environ['PUBPRES_APPLICATION'] and record['source_tree'] == os.environ['PUBPRES_APPLICATION_TREE'] and record['physical_owner_evaluated'] is False and record['merge_authorized'] is False
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as output:
+              output.write('INDEPENDENT_INNER_ARCHIVE=' + str(archive) + '\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Independent exact delivered archive integrity failed' }
+      - name: Execute the independently admitted shipped package
+        run: |
+          python tools/pubpres_mainline/extracted.py --archive $env:INDEPENDENT_INNER_ARCHIVE --sha256 $env:EXPECTED_INNER_SHA256 --installation "$env:RUNNER_TEMP/Owner (PUBPRES) Ω/nested/CyberSand Workbench" --output "$env:RUNNER_TEMP/mainline-extracted"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual shipped CMD, portable source/tools, authored persistence or extracted feature qualification failed' }
+      - name: Preserve independent extracted original evidence, including refusals
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-extracted-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-extracted/
+            ${{ runner.temp }}/evaluator-download-admission.json
+            ${{ runner.temp }}/Owner (PUBPRES) Ω/nested/CyberSand Workbench/diagnostics/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+

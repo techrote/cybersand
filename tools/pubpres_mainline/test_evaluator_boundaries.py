@@ -148,7 +148,7 @@ class DeliveryBoundaries(unittest.TestCase):
             for platform in ('linux', 'windows'):
                 binary = {'sha256': 'a'*64 if platform == 'windows' else 'b'*64, 'size': 17}
                 pointer = ('version https://git-lfs.github.com/spec/v1\noid sha256:' + binary['sha256'] + '\nsize 17\n')
-                (root / common.NATIVE[platform]).write_text(pointer)
+                (root / common.NATIVE[platform]).write_bytes(pointer.encode('ascii'))
                 manifest = {'kind': 'source-matched-pubpres-mainline-draft-runtime', 'status': 'validated-development-runtime',
                     'source_input_hash_kind': 'sha256-canonical-lf', 'source_commit': parent['source_commit'],
                     'build_commit': parent['source_commit'], 'source_inputs': original['source_inputs_sha256'],
