@@ -206,8 +206,9 @@ jobs:
                   offset += size + 12
               need(ended and offset == len(raw) and header is not None, "Incomplete PNG")
               width, height, depth, color, compression, filtering, interlace = header
-              need((width, height) == (1280, 720) and depth == 8 and color in (2, 6)
-                   and compression == filtering == interlace == 0, "Unexpected original framebuffer encoding")
+              need(0 < width <= 4096 and 0 < height <= 4096 and depth == 8 and color in (2, 6)
+                   and compression == filtering == interlace == 0,
+                   "Unexpected original framebuffer encoding: " + str(header))
               channels = 3 if color == 2 else 4
               stride = width * channels
               expected = (stride + 1) * height
@@ -241,13 +242,15 @@ jobs:
               def pixel(x, y):
                   need(type(x) is int and type(y) is int and 0 <= x < width and 0 <= y < height, "Pixel outside original frame")
                   return list(rows[y][x * channels:x * channels + 3])
-              return pixel
+              return pixel, [width, height]
           
           
           def framebuffer(bundle, folder, name, witness, contact=False):
               raw = read(bundle, folder + "/" + name, 2 * 1024**2)
               need(sha(raw) == witness["sha256"] and witness["file"] == name, "Original framebuffer hash differs")
-              pixel = png_pixels(raw)
+              pixel, dimensions = png_pixels(raw)
+              if not contact:
+                  need(dimensions == witness["pixels"], "PNG dimensions differ from the original observed viewport")
               samples = witness["samples_xy_rgb"] if contact else witness["samples"]
               need(len(samples) >= 2 and witness["movement_cells"] > .01 and witness["world"] > 0
                    and witness["session"] > 0 and witness["epoch"] >= 0 and witness["step"] > 0 and witness["upload"] > 0,
@@ -265,7 +268,7 @@ jobs:
                   pick = witness["pick"]
                   need(witness["selected"] == pick["instance_id"] == 1
                        and pick["epoch"] == witness["epoch"], "Actual contact Select identity differs")
-              return {"file": name, "bytes": len(raw), "sha256": sha(raw), "pixels_checked": len(points),
+              return {"file": name, "bytes": len(raw), "sha256": sha(raw), "pixels": dimensions, "pixels_checked": len(points),
                       "world": witness["world"], "session": witness["session"], "epoch": witness["epoch"],
                       "step": witness["step"], "upload": witness["upload"], "movement_cells": witness["movement_cells"]}, raw
           
