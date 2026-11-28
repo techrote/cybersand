@@ -63,8 +63,8 @@ Play World. That admission policy is not a new PUBPRES incompatibility.
 
 The accepted Ambient consumer now distinguishes native completion from material
 delivery. Early physical packets carry their true native World, tick, revision,
-backend and failure state; their absent render generation and serial are
-explicitly `-1`. They advance native freshness and retire a replaced World's
+backend and failure state. Their absent render generation is `-1`; the
+historical zero render serial continues to mean no material publication. They advance native freshness and retire a replaced World's
 sensor cache without allocating, copying or claiming material bytes.
 
 A genuine later material envelope may update that same World even after a newer

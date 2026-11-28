@@ -30,7 +30,7 @@ func completion(serial: int, tick: int, revision: int, generation := 3) -> Cyber
 	snapshot.simulation_world_revision = revision
 	snapshot.backend_name = "native-phased"
 	snapshot.render_world_generation = -1
-	snapshot.render_snapshot_serial = -1
+	snapshot.render_snapshot_serial = 0
 	return snapshot
 
 

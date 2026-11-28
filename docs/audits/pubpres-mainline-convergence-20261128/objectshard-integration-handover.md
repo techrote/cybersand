@@ -85,7 +85,8 @@ For input adaptation, preserve the candidate's repaired continuous accepted-fram
 The Ambient integration repair additionally makes the early packet contract
 explicit: a material-free native/physical completion carries genuine
 `physics_world_generation`, native tick/revision, backend and failure metadata,
-while `render_world_generation` and `render_snapshot_serial` are `-1`.
+while `render_world_generation` is `-1` and the established absent
+`render_snapshot_serial` is `0`.
 Combined publication continues to carry its genuine material identity.
 
 ObjectShard integration must preserve that distinction when adapting structural

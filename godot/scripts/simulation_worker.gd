@@ -4263,7 +4263,7 @@ func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
 	snapshot.physics_world_generation = source.physics_world_generation
 	# An early completion owns native freshness, never a material identity.
 	snapshot.render_world_generation = -1
-	snapshot.render_snapshot_serial = -1
+	snapshot.render_snapshot_serial = 0
 	snapshot.backend_name = source.backend_name
 	snapshot.simulation_failed = source.simulation_failed
 	snapshot.simulation_world_revision = source.simulation_world_revision

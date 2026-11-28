@@ -38,8 +38,9 @@ requires the resulting-source original native/Rapier integration workload.
 
 The existing worker and session remain the only native and physical owners.
 
-- Early packets explicitly mark absent render generation and render serial as
-  `-1`, and copy truthful backend and failure scalars from their native source.
+- Early packets explicitly mark absent render generation as `-1`, retain the
+  established absent render serial `0`, and copy truthful backend and failure
+  scalars from their native source.
   The coupling-only producer supplies its actual backend identity. Combined
   publication remains unchanged.
 - The session uses the genuine physical World identity where supplied. It sends
@@ -85,9 +86,25 @@ diagnostics at the existing progress-report cadence, failure and successful
 activation.
 
 Specialist B independently reviewed the owner/material contract and the new
-focused-reader fields. Specialist C independently checked the unchanged
+focused-reader fields. Specialist A independently reviewed both early-packet
+producer paths and confirmed that publication timing and ownership are unchanged. Specialist C independently checked the unchanged
 130-check test's source assumptions and final expected state of the 49-check
 controls. Hosted execution is required; local execution was unavailable when
 these source changes were prepared. Source review is not a passing runtime
 result. The definitive mission ledger records resulting-source outcomes and
 does not relabel the failed candidate as passing.
+
+## Established absence sentinel
+
+The inherited frozen publication fixture explicitly requires early
+`render_snapshot_serial == 0` with empty material bytes. The initial repair
+attempt used `-1` for both absent render fields; the compatible repair retains
+the established serial-zero contract and uses the explicitly absent World
+generation plus both empty payload arrays to select owner-only consumption.
+The new 49-check fixture mirrors serial zero. The consumer's internal material
+serial remains `-1` until a genuine material publication is ingested.
+
+No historical frozen fixture, watchdog, case population or acceptance threshold
+is changed. The failed initial qualification and actual raw diagnosis remain
+in the mission ledger; the compatible resulting source requires its own full
+qualification.

@@ -566,7 +566,7 @@ func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	if not _ambient_sensor_active:
 		_ambient_sensor_active = _ambient_perception.configure(extent, epoch)
 	if _ambient_sensor_active and snapshot != null:
-		if snapshot.render_world_generation < 0 and snapshot.render_snapshot_serial < 0 \
+		if snapshot.render_world_generation < 0 and snapshot.render_snapshot_serial == 0 \
 			and snapshot.render_patch_rectangles.is_empty() and snapshot.render_patch_cells.is_empty():
 			_ambient_perception.observe_native_owner(snapshot, extent, epoch)
 		else:

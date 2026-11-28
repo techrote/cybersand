@@ -252,3 +252,221 @@ require interpretation. All hosted graphics observations remain scoped to the
 actual software renderer. Physical owner acceptance of the newly reconciled
 application, extracted-package acceptance and mainline promotion remain separate
 gates.
+
+
+## Q2 resulting-source observations and remaining manual-Step scope
+
+This addendum preserves the preceding failures and their original scope. Q2
+executed application source
+`0670733eb0a418c8580458a9c5dd9aff24f342c6`, tree
+`3df9cc4f11b0ef0a3009830a78720bf41bb9f1a9`, in
+[run 46136935975](https://github.com/techrote/cybersand/actions/runs/46136935975).
+The following observations were independently read from the original Windows
+artifacts through the authenticated, read-only
+[forensic run 46139433127](https://github.com/techrote/cybersand/actions/runs/46139433127).
+That inspection verifies the whole original ZIP, its members and original
+record hashes. It does not execute the application or change its outcome.
+
+| Windows broad Water arm | Actual owner flags | Checks / failures | Observed draws | Composed body draws | Withheld body draws |
+|---|---|---:|---:|---:|---:|
+| Original legacy configuration | All three false | 213 / 0 | 4,821 | 16,853 | 6 across two draws |
+| Selected owner configuration | All three true | 213 / 0 | 4,818 | 16,852 | 3 in one draw |
+
+The three read-back flags are flight pacing, independent coupling clock and
+empty-effects admission. Both arms completed the entire registered population.
+All five actual mouse selections reached their expected actor identities, and
+all five framebuffer controls completed: initialized authoring, submerged,
+Water refill, restored authoring and multipart limb. Every restored pixel
+control reported maximum error zero. The adaptive submerged target was Barrel
+slot 1 in the legacy arm and Needle slot 2 in the selected arm. Therefore these
+successes do not replace the separate exact Scooper edge witness.
+
+Original Windows artifact custody:
+
+- Legacy: [artifact 15260681191](https://github.com/techrote/cybersand/actions/runs/46136935975/artifacts/15260681191),
+  18,193,777 bytes, ZIP SHA-256
+  `eb456b2cb0340eb2c6f88357c2b1c83e01bb5343f606274c5915db9909db3673`.
+  Native receipt: 1,821,100 bytes, SHA-256
+  `a0631b2e9037d02967a406a0160afb1731af8ca059c032540d7d88ff3940b040`.
+- Selected owner: [artifact 15260313964](https://github.com/techrote/cybersand/actions/runs/46136935975/artifacts/15260313964),
+  18,111,459 bytes, ZIP SHA-256
+  `b8f16bf7ceefd861856223d281d7f2a306df70d9d71585c93fc6dc0f7ba6184a`.
+  Native receipt: 1,817,841 bytes, SHA-256
+  `61dcbb5e12e6edd09e74f895505582cbbb95e4c3e241d13760e135ed942f9d1b`.
+
+The native processes exited zero without process timeout after 1,025.812 seconds
+and 571.078 seconds respectively. Those durations include the unchanged,
+deliberately expensive history tests and are not matched performance evidence.
+
+### The remaining omission is observed, bounded and not waived
+
+At real physical Step 131, Q2's selected arm withheld Needle slot 0, Barrel slot
+1 and Scooper slot 3 in draw 4,757. The legacy arm withheld the same members in
+draws 4,758 and 4,759. Every retained observation reports
+`material_in_swept_mask`, an unaccepted native response and per-body refusal
+`age`. No omission observations were dropped. The previously observed d906
+three-member, one-draw omission at Step 133 remains a separate earlier result.
+
+Here, `age` is the existing WorkbenchBridge admission check over body sample
+serials, the retained body-sample record and physical-step difference, with
+`MAX_AGE = 1`. It is not a measurement of GPU time or a wall-clock timeout.
+It must not be confused with the separate, nonrenewable 100 ms limit on retained
+presentation. Neither fence was relaxed.
+
+Both broad Q2 arms recorded `revalidated_held_body_frames = 0`. The new retained
+full-Water endpoint mechanism is positively exercised by the independent
+45-check controlled missing-response witness, including actual post-draw
+visibility, accepted-frame selection, original native/physical identities and
+expired-hold refusal. That positive witness does not establish that the broad
+contact-clipped cases have been repaired. Prior contact-clipped endpoints remain
+ineligible for this narrow fallback; a new contact proof was not invented to
+make the omission count zero.
+
+### Exact engineering reproduction and owner inspection
+
+The confirmed reproduction is the original
+`test_workbench_water_composition_native.gd` population. It constructs the
+512-cell basin with a solid floor and walls, Water, a nearby Sand region,
+Needle, Barrel, an initially airborne Needle and Scooper. It preserves the
+ordinary authored setup, native material and actual Rapier owners.
+
+Each registered paused-history stage first observes 280 ordinary paused draws.
+It then makes 2,056 genuine unchanged-body publications through the existing
+body-publication API to turn over the 2,048-entry Main history. It verifies that
+the original entry was actually evicted, that physical completion did not
+advance, and that a genuine immutable full material refresh preserves paused
+presentation. The later ordinary Step advances Rapier exactly once. The Q2
+omissions occur after this explicit adversary. Ordinary Pause itself is checked
+to manufacture no new body samples. A long pause alone is therefore not a
+demonstrated deterministic reproduction of this issue.
+
+For physical owner inspection, use the ordinary Workbench launcher and a
+512-cell Water basin with a solid bottom. Place Barrel and Scooper in the Water
+and allow them to settle against the bottom; include Needle if useful. Press
+F10 to start the existing recording, let it prime, then use ordinary Pause and
+one Step while watching the settled actors. Resume and repeat sparingly; record
+whether the disappearance was one draw, multiple draws, or sustained. This is
+an ordinary gameplay investigation route, not a claim that it reproduces the
+publication-history adversary. Stop recording with F10, allow finalization, and
+include the recording directory and saved authored start with the evaluator's
+diagnostic collection.
+
+A useful report identifies actor, canvas, camera mode, Fire state, whether a
+Step or scene restoration immediately preceded the event, and whether it also
+happens with recording off. The collector should retain actual physical step,
+draw observation, World/session/epoch, selected member/pose, material publication
+identity, native response refusal and presentation reason. An `age` refusal
+plus `material_in_swept_mask` is evidence of withheld presentation under the
+ownership policy; it is not proof that an opaque material legitimately covered
+all visible actor pixels. A valid current clip with opaque pixels, a deliberate
+policy-off framebuffer control and a missing/expired proof are distinct cases.
+
+### Q2 focused startup failure and the Q3 observer correction
+
+The new continuous-picking fixture failed before any of its four mouse controls
+in both Q2 platforms. Linux completed six checks and exited one after 76.48
+seconds; Windows completed six checks and exited one after 114.89 seconds.
+Both raw receipts have an empty `records` array and fail the initial
+`native material and accepted clipped Scooper presentation are installed`
+predicate. Neither process timed out at the outer watchdog. The Windows receipt
+SHA-256 is
+`e9140d0db410cf01ab4463200ffb55319356cb39a1fe8d8ad30eed7fbdb77ffb`;
+its original artifact is
+[15260700218](https://github.com/techrote/cybersand/actions/runs/46136935975/artifacts/15260700218).
+The Linux original is
+[15260590623](https://github.com/techrote/cybersand/actions/runs/46136935975/artifacts/15260590623).
+
+The observer incorrectly required completed contact authority while the newly
+authored owner was still paused. Its correction uses ordinary Play, waits for a
+real completed native/contact frame, and uses ordinary Pause before the mouse
+controls. It retains the initial exact authored-pose check, tests an explicitly
+visible continuous edge that is inside the unpadded collider while its truncated
+cell is outside, and requires the positive physical/manual-step baseline to
+remain unchanged through all four mouse events. The opaque-material and
+foreign-owner refusals remain. No production authority, fixture deadline or
+physical counter is weakened.
+
+Specialist A independently reviewed that observer correction. Specialist C
+reviewed the continuous-pick reader, then the added unchanged Ambient
+130-check native-perception population and new 49-check immutable-owner controls.
+The focused gate now has ten exact processes. The integration owner and this
+specialist independently checked agreement with the guarded publisher's raw
+reader. Because the local executor became unavailable, these final amendments
+have source-review status pending actual hosted execution; no local parse or
+execution pass is claimed for them.
+
+Q3 was dispatched as source
+`d9cc40b2da9ab447b9b25eef79158913e01fec01`, tree
+`591aeca0b4741c2f9b2a8eff1cf8f8dad0a3a108`, in
+[run 46139433132](https://github.com/techrote/cybersand/actions/runs/46139433132).
+Its results must be appended separately. In particular, a different omission
+count in a later run does not erase either original Q2 arm. The newly reconciled
+application remains HOLD pending the applicable resulting-source, extracted
+Windows and physical owner acceptance gates; this addendum grants no mainline
+promotion authorization.
+
+
+## Q3 corrected graphical witnesses: actual Linux and Windows results
+
+Q3's ten-process focused jobs completed successfully on both platforms:
+[Linux job 140961966435](https://github.com/techrote/cybersand/actions/runs/46139433132/job/140961966435)
+and
+[Windows job 140961966465](https://github.com/techrote/cybersand/actions/runs/46139433132/job/140961966465).
+This is the same `d9cc40b2da9ab447b9b25eef79158913e01fec01` source identified
+above. The focused success does not erase the Q2 six-check startup failures or
+grant full-application acceptance: the separate Q3 frozen jobs failed and their
+original evidence must be diagnosed and retained.
+
+| Actual focused graphical control | Linux | Windows |
+|---|---:|---:|
+| Retained endpoint assertions / failures | 45 / 0 | 45 / 0 |
+| Continuous Select assertions / failures | 28 / 0 | 28 / 0 |
+| Real physical and manual count throughout four mouse events | 3 / 3 | 3 / 3 |
+| Expired original hold-clock age refused | 100,003 us | 100,006 us |
+
+Both actual continuous-pick receipts show authored physical step zero, ordinary
+Play establishing completed contact, then Pause with accepted contact-clipped
+step three. The four real mouse events select actor 4, reject the opaque pixel,
+reject the foreign session, and select actor 4 after restoring the original
+owner. All four events preserve physical and manual completion count three.
+The exact continuous edge `(333.516754150391, 494.007049560547)` is visibly
+inside the admitted collider while its truncated point `(333, 494)` is outside.
+The sampled opaque point is inside the existing padded picking envelope but
+fails the actual clip; it is not described as unpadded collider interior.
+
+Both retained-endpoint receipts preserve physical proof step two and native
+sample two on the first retained draw. The original completion identity is
+unchanged. The second probe refuses the expired original clock. Actual
+selected-owner readbacks are all true in both cases and on both platforms.
+
+Original focused artifacts:
+
+- Linux: [artifact 15260937501](https://github.com/techrote/cybersand/actions/runs/46139433132/artifacts/15260937501),
+  35,685,414 bytes, SHA-256
+  `3369743b9cc3f004b13f4093b4508733f6a39dcdf129ae60164ee312dcdf02ab`.
+- Windows: [artifact 15261148703](https://github.com/techrote/cybersand/actions/runs/46139433132/artifacts/15261148703),
+  17,339,214 bytes, SHA-256
+  `083fca179bf6452a5613ecc5c55c5296fd844b32c676242823124d36c5d0e314`.
+
+The bounded exporter runs only after the actual process. This specialist
+independently decoded the original exported PNG bytes, recomputed their
+SHA-256 values, checked their receipt bindings and visually inspected the
+submerged Barrel and floor-contact Scooper images on both platforms. It did
+not generate replacement images. All ten distinct GDScript input hashes in
+those receipts were independently matched to exact source/blob contents.
+Reported native, Rapier and engine identities agree with the admitted runtimes;
+this remote inspection did not freshly download and rehash the binary files.
+
+Windows retained receipt SHA-256:
+`4ecaf84cc8a74c8f952b16d7fc9d67e6504a22e15c0948a2841d4cbfb80af191`
+(7,037 bytes). Windows continuous-pick receipt SHA-256:
+`ccecc538caecfe2a2e2b5c3d8778e61f65c80d2b5aac452aed1c123543d74124`
+(4,987 bytes).
+
+Windows original `held.png` SHA-256:
+`a77dfb39efb9ab0e1fbf4d57c011aa023cb10f014e7e44455d4d30fe85530678`
+(91,443 bytes). Windows original `continuous-pick.png` SHA-256:
+`84ba8687115774fbbff389d20305e6e3e5b9f89813ef3486a28aa41ea99a6735`
+(94,358 bytes). These are hosted graphical observations, not physical NVIDIA
+scanout or owner acceptance. The broad contact-history omission retains its
+separate scope above.
