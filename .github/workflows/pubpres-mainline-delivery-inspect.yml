@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        role: ["package"]
+        role: ["extracted"]
     steps:
       - name: Authenticate original source and archive; inspect original delivery records
         env:
@@ -32,7 +32,7 @@ jobs:
         run: |
           python3 - <<'PY'
           import hashlib, json, os, pathlib, stat, urllib.error, urllib.parse, urllib.request, zipfile
-          CONFIG = json.loads(r'''{"package":{"kind":"package","run":46147576269,"attempt":1,"source":"65f71aaf4be3a67896bafac7f5220a0cb25a8fb7","tree":"f6b7b8d3d613b70cdcdf3643fb906934b3887173","artifact":[15264827144,1336784,"02cabffed34cd70926b302e8c291b00757495371b153edcc8e3df48c763cd1cd","pubpres-mainline-package-custody-46147576269-1"],"inner_sha256":"75e2f9e3b7e92f97d9560844a4ad661c5c659d51a47ef49621a3dd93f7f7a692","inner_bytes":1415925691,"manifest_sha256":"3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6"}}''')
+          CONFIG = json.loads(r'''{"extracted":{"kind":"extracted","run":46147576269,"attempt":1,"source":"65f71aaf4be3a67896bafac7f5220a0cb25a8fb7","tree":"f6b7b8d3d613b70cdcdf3643fb906934b3887173","artifact":[15265833292,51332561,"7b134273b6b22bd79836f20c9c437f374c4ee60513f0e74f3f5f07c04bd5b7d2","pubpres-mainline-extracted-windows-46147576269-1"],"inner_sha256":"75e2f9e3b7e92f97d9560844a4ad661c5c659d51a47ef49621a3dd93f7f7a692","inner_bytes":1415925691,"manifest_sha256":"3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6"}}''')
           role = os.environ["INSPECTION_ROLE"]
           chosen = CONFIG[role]
           run_id, attempt = chosen["run"], chosen["attempt"]
@@ -322,6 +322,38 @@ jobs:
                                   present("ORIGINAL_" + basename.replace(".", "_").replace("-", "_").upper(), value)
                       else:
                           proof["original_failure_preserved"] = result.get("error")
+                          prefix = result_name[:-len("extracted-verification.json")]
+                          partial = result.get("extracted_modes", {})
+                          for mode in sorted(partial):
+                              require(mode in ("ramcache", "strata", "lab"), "Unexpected partial extracted mode")
+                              name = prefix + mode + "/pubpres-mainline-qualification.json"
+                              record = read_json(name)
+                              require(proof["records"][name]["sha256"] == partial[mode]["record_sha256"]
+                                      and record["source"] == {"source_commit": source, "source_tree": tree}
+                                      and record["platform"] == "windows" and record["mode"] == mode
+                                      and record["status"] == "passed"
+                                      and record["all_original_semantic_readers_replayed"] is True,
+                                      "Partial completed extracted receipt differs")
+                              report_name = prefix + mode + "/original/integration.json"
+                              raw = original(report_name)
+                              require(hashlib.sha256(raw).hexdigest() == record["original_report_sha256"],
+                                      "Partial original integration report differs")
+                              present("ORIGINAL_PARTIAL_EXTRACTED_" + mode.upper(), record)
+                          for basename in ("cold-launch-verification.json", "persistent-shortcut-verification.json"):
+                              name = prefix + basename
+                              if name in names:
+                                  present("ORIGINAL_PARTIAL_" + basename.replace(".", "_").replace("-", "_").upper(),
+                                          read_json(name))
+                          diagnostic_names = sorted(n for n in names if n.startswith(prefix) and
+                              (n == prefix + "lab-runner.log" or
+                               (n.startswith(prefix + "lab/") and
+                                (n.endswith("integration.json") or n.endswith("pubpres-mainline-qualification.json")))))
+                          present("ORIGINAL_FAILURE_RECORD_NAMES", diagnostic_names)
+                          for name in diagnostic_names:
+                              raw = original(name)
+                              decoded = raw.decode("utf-8-sig", errors="replace")
+                              present("ORIGINAL_FAILURE_RECORD", {"name": name, "bytes": len(raw),
+                                      "sha256": hashlib.sha256(raw).hexdigest(), "tail": decoded[-60000:]})
                   else:
                       raise ValueError("Unregistered data-only custody role")
               proof["status"] = "inspected"
