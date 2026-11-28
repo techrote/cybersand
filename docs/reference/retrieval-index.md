@@ -4,7 +4,7 @@ status: Current
 document-kind: navigation
 scope: Question-to-canonical-document routes; detailed answers belong to the linked contracts
 canonical-for: []
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-28
 related-documents: [../README.md, retrieval-corpus.json, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/atlas-agent-runner.md, ../architecture/pressure-optimization.md]
 ---
 
@@ -18,8 +18,10 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 | Can ordinary GCR clear/rebuild erase moving material occupancy? | [Composed occupancy contract](../research/objectshard-m4-workbench.md#occupancy-composition-protects-both-body-domains) |
 | Why can a large structure detach with a small severed Wall cap? | [Connected architecture and budgets](../research/objectshard-m4-workbench.md#connected-architecture-supported-materials-and-budgets) |
 | How are stale moving cuts and geometry/physics races prevented? | [Motion permits](../research/objectshard-m4-workbench.md#promotion-and-physical-motion-require-actual-installation) and [witnessed edits](../research/objectshard-m4-workbench.md#continuing-chemistry-and-witnessed-moving-edits) |
+| Can the same eraser follow a collapsing structure, and how are large brushes bounded? | [Native transactions](../research/objectshard-m4-workbench.md#bounded-native-structural-transactions) and [visible editing](../research/objectshard-m4-workbench.md#unified-visible-editing-and-scheduling) |
+| How do I diagnose a click that was never admitted or a cut waiting for presentation? | [Edit diagnostics](../research/objectshard-m4-workbench.md#bounded-edit-diagnostics) |
 | Does Save start preserve live moving shard state? | [Authoring and lifecycle](../research/objectshard-m4-workbench.md#ordinary-authoring-and-lifecycle) |
-| Do 26–30 headless ticks/s resolve the owner report below 10 FPS? | [Separate performance clocks](../research/objectshard-m4-workbench.md#performance-evidence-has-separate-clocks) |
+| How do native ticks, renderer callbacks and physical owner observations differ? | [Separate performance clocks](../research/objectshard-m4-workbench.md#performance-evidence-has-separate-clocks) |
 | How do I try the ordinary Windows Workbench evaluator? | [Workbench playtest guide](../operations/objectshard-workbench-playtest.md) |
 
 [Additive M4 questions](retrieval-questions-objectshard-m4.json) preserve the

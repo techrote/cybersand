@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "scope": "Local frozen native source; hosted committed-source qualification remains separate",
+  "input_digest": "1e95eb4ac91dfcac80daa55a53b86dc035d1c07e761028fd7ed0879e6c08744b",
+  "base_git_head": "327afc58227b246390b19c275f58df77ae2dd734",
+  "status": "passed",
+  "checks_reported": 7100,
+  "test_cases_reported": 0,
+  "suites": {
+    "coordinator": {
+      "binary_sha256": "e8317294ba1aa9f398106f9eff79d25c8e8e238ab9d3a0b1036aa82b9fadfa72",
+      "checks": 7100,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed",
+      "execution": {
+        "elapsed_seconds": 2.5107259700016584,
+        "returncode": 0,
+        "timed_out": false
+      }
+    }
+  },
+  "additional_invariants": [
+    "World payload/topology witness generation exhaustion refuses before debit",
+    "Two-body capacity retains an exact 56-cell two-island compound after 8-cell batch cut",
+    "Deleting the separate 1-cell blocker and servicing real semantic retirement releases capacity; staged split preserves 56 cells exactly",
+    "Material accounting records 9 intentional erased cells and no lost/duplicated survivors"
+  ],
+  "earlier_attempt": {
+    "status": "fixture premise corrected",
+    "checks": 7084,
+    "failures": 1,
+    "reason": "Initial test retried fragment admission before existing empty draining carrier retirement runs at next semantic exchange. Corrected test performs actual World tick, retains inventory assertions; production policy unchanged."
+  }
+}

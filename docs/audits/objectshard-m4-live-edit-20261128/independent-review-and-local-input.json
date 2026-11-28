@@ -1,0 +1,405 @@
+{
+  "schema": "objectshard-m4-independent-live-edit-review-v1",
+  "reviewer": "Specialist C, independent of native and interaction implementation authors",
+  "reviewed_at_utc": "2026-11-28T06:41:33.269012+00:00",
+  "base_commit": "327afc58227b246390b19c275f58df77ae2dd734",
+  "disposition": "local development evidence; pending exact-source hosted and independent Windows execution",
+  "reviewed_source_sha256": {
+    "native/src/object_shard.cpp": "34123096e28b665d4a8d20f2ee52393236d551c9818a103141025a9467525311",
+    "native/src/object_shard_coordinator.cpp": "fea358c03a0584aeaad2e1349e997a6f3080a1d6ae64f4d7805746258bc033f3",
+    "godot/native_extension/cyber_object_shard_lab.cpp": "839a51175e74072f86f05c61f517dc8615d2082f0f0e7d4a9b1ae3cd4cd2d698",
+    "godot/native_extension/cyber_native_cell_world.cpp": "73f5230cc4d455fa957b4c78b6bfe3d71330f81b8c8df95d06ee6e21f3ff4930",
+    "godot/scripts/shared_workbench.gd": "c91b0a0d1d05294f14935fcb4f6f12039d71fb3f2b8ad8457c4f92768fc5bb53",
+    "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+    "godot/scripts/object_shard_live_edit_footprint.gd": "4febd5f13dcde78ee6debd317d633f40ac02bf36ca5cc3cdd3ba670c2b605061",
+    "godot/scripts/object_shard_workbench_overlay.gd": "ddb7a3bc79810818ffe703644e9d4066c26a1289a519ac6ec8a91c4b6e7fa23d",
+    "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd": "4b38614d2f61803668b92665b983d2b8828f423bde205701214370a3739877ee",
+    ".github/workflows/objectshard-m4-completion.yml": "4e2213e84acc4b42b00f4c391931b9e4f49225ae0a765c5de79880b2145455ce",
+    "tools/objectshard/qualify_workbench.py": "9265c51cc6401c0a0cb0873ef7fc5354f5fa3e01ea9c3e784cdb136fc215302a",
+    "tools/objectshard/qualify_workbench_zip.py": "025016ec763e527fb142fee0aa645cc8c08248ef78c2d7119573a6519fb78e58",
+    "tools/objectshard/verify_workbench_package.py": "8964904c150a2cbcdc9bbfcc38bc2c83f1ac59b5e298151ce7257de5fe7d98e4",
+    "tools/objectshard/test_production_runtime.py": "a6c69d3646a41c869ae289f8804073127b25b97702a6db5d041e059a881aa385",
+    "godot/tests/test_object_shard_m4_edit_preview_render.gd": "9745b3b889ab36d721c5317263b301aa335f5a0ed19a6e262c40fe1719cc4bc3",
+    "godot/tests/test_object_shard_m4_live_stress.gd": "973b0c05ac1f5c2571cd01cc38d654758134c664f53282c1cff20aae077e2811",
+    "godot/tests/test_object_shard_m4_creative_constructions.gd": "cba67e978a0d66eab75413d56101945f4ad1f94c4230000f634cfc53d451382c",
+    "godot/scripts/object_shard_workbench_scenes.gd": "e21a96b4b3e63ebf3475d2b804bfa6ce0eb159369eed10ca2bf61aaf1cb950e1",
+    "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+    "docs/operations/objectshard-workbench-playtest.md": "b88f1608cefe4577e51d0520bac4b37f4900ec351f9d4144a17dd32c14a96a28"
+  },
+  "local_runtime": {
+    "engine": "Godot_v4.7-stable_linux.x86_64",
+    "native_sha256": "be2d5fbd542410750d1c83d246f3608f39901c7f7bc853c755cbc7ef78b8c00f",
+    "native_install_mtime_utc": "2026-11-28T06:15:00.645525596Z",
+    "scope": "locally compiled development binary; implementation continued concurrently; source hashes identify reviewed current files, not a claim that all later parser hardening was in this loaded binary",
+    "display": "headless",
+    "physical_owner_evaluation": false
+  },
+  "raw_logs": [
+    {
+      "path": "live-input-1.log",
+      "bytes": 86473,
+      "sha256": "553660b40996ab18a9811215cc900cf1fc6fa6c2429b3c6f4eb832db3d749b4f",
+      "schema": "objectshard-m4-live-input-v1",
+      "checks": 100,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "live-stress-1.log",
+      "bytes": 204039,
+      "sha256": "3aa5e5cdb31e70e428eaf6ec778cb37d0e7aa105b4a4eb7c312aad86cd85ee3f",
+      "schema": "objectshard-m4-live-stress-v1",
+      "checks": 210,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "live-stress-2.log",
+      "bytes": 205031,
+      "sha256": "854a24a0af05998dfcc3e51d469fdbb88fc32527918e6504ad3a841987252abd",
+      "schema": "objectshard-m4-live-stress-v1",
+      "checks": 210,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "live-stress-3.log",
+      "bytes": 214069,
+      "sha256": "0b8d968fe9abb4ccff78877576c0a6cd1277bc7a34b0a8677591a309fedfe0cb",
+      "schema": "objectshard-m4-live-stress-v1",
+      "checks": 213,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "live-tools-1.log",
+      "bytes": 363255,
+      "sha256": "f21078363b6c7b3ad13c3fe6ec09d4000fcb0966afe028664e94f59167946f47",
+      "schema": "objectshard-m4-live-tools-v1",
+      "checks": 209,
+      "failures": [
+        "complete body erasure closes material accounting with no orphan ownership"
+      ],
+      "status": "failed"
+    },
+    {
+      "path": "live-tools-2.log",
+      "bytes": 363291,
+      "sha256": "6635cd94ec5482b2d9fd684171ae7ad094affeaebba850e5e215f57c5b3f0d20",
+      "schema": "objectshard-m4-live-tools-v1",
+      "checks": 210,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "owner-authored-1.log",
+      "bytes": 21578,
+      "sha256": "e21dfa20121df59afa4c722f453f82a6364c26954b862088ae2dc3111962e450",
+      "schema": "objectshard-m4-owner-authored-v1",
+      "checks": 137,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "test_object_shard_live_edit_contract.log",
+      "bytes": 429,
+      "sha256": "f16bc5f0bf6c11855a8430e1fef9f06592aa142939a802852db2680972091e96",
+      "schema": "objectshard-live-edit-transport-contract-v1",
+      "checks": 60,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "test_object_shard_live_edit_diagnostics.log",
+      "bytes": 384,
+      "sha256": "8f6552f861a82c318388b2da358759531c2b5c937760572c1b7e60a40fead0ad",
+      "schema": "objectshard-live-edit-diagnostics-test-v1",
+      "checks": 26,
+      "failures": 0,
+      "status": "passed"
+    },
+    {
+      "path": "test_object_shard_m4_creative_scenes.log",
+      "bytes": 1550,
+      "sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d",
+      "schema": "objectshard-m4-creative-scenes-v1",
+      "checks": 61,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "test_object_shard_m4_disabled_input.log",
+      "bytes": 397,
+      "sha256": "8493586af3c24ce5dbb8179061b8fffec0554fcae7bbf4a92c9f7dcd188f4ade",
+      "schema": "objectshard-m4-disabled-input-v1",
+      "checks": 9,
+      "failures": [],
+      "status": "passed"
+    },
+    {
+      "path": "test_object_shard_m4_visible_footprints.log",
+      "bytes": 421,
+      "sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40",
+      "schema": "objectshard-m4-visible-footprints-v1",
+      "checks": 19,
+      "failures": [],
+      "status": "passed"
+    }
+  ],
+  "raw_log_archive": {
+    "path": "/tmp/cybersand-live-edit/evidence/c-testing/local-input-logs.tar.gz",
+    "sha256": "8f43169c7de3d02972c952278d01cd8583ade3d3a311987e8397a05dbb05925b",
+    "bytes": 84921,
+    "retention": "local transient evidence only; raw logs and archives are deliberately outside repository"
+  },
+  "superseded_test_premise": {
+    "log": "live-tools-1.log",
+    "failure": "complete-body removal compared all removed cells with Wood subtotal only",
+    "evidence": "tiny body owns 144 Wood plus three structural Wall support-cap cells; native correctly erased147 total",
+    "correction": "compare receipt against all-owned census and separately reconcile per-material subtotal",
+    "corrected_log": "live-tools-2.log",
+    "test_weakened": false
+  },
+  "stress": {
+    "final_log": "live-stress-3.log",
+    "checks": 213,
+    "owned_cohorts": {
+      "8/0": {
+        "awake": 0,
+        "callbacks": 2189,
+        "native_ticks": 969,
+        "owned": 8,
+        "wall_usec": 39025440
+      },
+      "8/1": {
+        "awake": 1,
+        "callbacks": 374,
+        "native_ticks": 152,
+        "owned": 8,
+        "wall_usec": 6425183
+      },
+      "8/2": {
+        "awake": 2,
+        "callbacks": 84,
+        "native_ticks": 35,
+        "owned": 8,
+        "wall_usec": 1350668
+      },
+      "8/3": {
+        "awake": 3,
+        "callbacks": 50,
+        "native_ticks": 22,
+        "owned": 8,
+        "wall_usec": 821019
+      },
+      "8/4": {
+        "awake": 4,
+        "callbacks": 3,
+        "native_ticks": 1,
+        "owned": 8,
+        "wall_usec": 43936
+      },
+      "8/5": {
+        "awake": 5,
+        "callbacks": 4,
+        "native_ticks": 1,
+        "owned": 8,
+        "wall_usec": 37635
+      },
+      "8/6": {
+        "awake": 6,
+        "callbacks": 3,
+        "native_ticks": 1,
+        "owned": 8,
+        "wall_usec": 40567
+      },
+      "8/7": {
+        "awake": 7,
+        "callbacks": 3,
+        "native_ticks": 1,
+        "owned": 8,
+        "wall_usec": 50491
+      },
+      "8/8": {
+        "awake": 8,
+        "callbacks": 77,
+        "native_ticks": 35,
+        "owned": 8,
+        "wall_usec": 1361642
+      }
+    },
+    "diagnostic_counts": {
+      "admitted": 12,
+      "attempt": 14,
+      "cancel": 12,
+      "presented": 12,
+      "receipt": 12,
+      "wait": 10
+    },
+    "stage_timings": {
+      "input_to_admission_usec": {
+        "count": 12,
+        "minimum_usec": 398,
+        "maximum_usec": 105890,
+        "samples_usec": [
+          2182,
+          30537,
+          56490,
+          52715,
+          495,
+          411,
+          30553,
+          408,
+          398,
+          105890,
+          29992,
+          509
+        ]
+      },
+      "admission_to_receipt_usec": {
+        "count": 12,
+        "minimum_usec": 5056,
+        "maximum_usec": 31398,
+        "samples_usec": [
+          5056,
+          11077,
+          16563,
+          17082,
+          9362,
+          12209,
+          9218,
+          18133,
+          18578,
+          30213,
+          15537,
+          31398
+        ]
+      },
+      "admission_to_publication_usec": {
+        "count": 12,
+        "minimum_usec": 9257,
+        "maximum_usec": 103938,
+        "samples_usec": [
+          11751,
+          11128,
+          103938,
+          81153,
+          9399,
+          12251,
+          9257,
+          97071,
+          37218,
+          30253,
+          15742,
+          82103
+        ]
+      }
+    },
+    "maximum_radius": [
+      {
+        "outcome": "Applied",
+        "requested_cells": 197,
+        "changed_cells": 197,
+        "removed_cells": 197,
+        "geometry_rebuilds": 1
+      },
+      {
+        "outcome": "Applied",
+        "requested_cells": 143,
+        "changed_cells": 143,
+        "removed_cells": 143,
+        "geometry_rebuilds": 1
+      }
+    ],
+    "measurement_scope": "concurrent local headless implementation fixture; per-stage clocks distinct from later test idle-boundary drain; no TITAN RTX or monitor-rate claim"
+  },
+  "review_conclusions": {
+    "native": [
+      "Complete witnessed target arrays are validated before cell deduplication; duplicates cannot conceal stale payloads. Valid different projected samples of one cell deduplicate only after validation.",
+      "Exact surviving collider cover is capacity-checked before the first material debit; the prepared cover is reused for one connectivity and mass reconstruction.",
+      "Actual erase debits are charged by material; native uncertain commit preserves changed-prefix accounting and quarantine.",
+      "World mutation journal generation capacity is checked before the batch mutates; stale global/material/witness/foreign owner and occupied foreground protections remain.",
+      "Geometry changes wake bodies and preserve surviving point velocity through the COM change; no-op ignition does not restart countdown or rebuild geometry.",
+      "Native protected-foreground regression directly seeds Product in a real collider hole over hidden World Brick and proves full batch refusal without erasure."
+    ],
+    "interaction": [
+      "Ordinary Eraser/right drag crosses terrain to detached bodies through the same production signal path; this was tested during real collapse.",
+      "Slice release stores one immutable bounded Main intent, reacquires witnesses at a safe boundary within two seconds, and cancels on owner/tool/camera/new-gesture changes.",
+      "Weathering seeds depend on capture-space cells; fresh authored replay resets application pass and reproduced the exact69 removed cells.",
+      "Visible occupied Cargo/Product occlude lower editable owners and terrain; synthetic publication tests qualify selection logic separately from native mutation.",
+      "Lifecycle-fuzz radius assertion legitimately expands to new adjustable tools while precision and whole-body settle remain fixed; cancellation and ownership assertions remain.",
+      "Final transport bounds malformed nested target data and verifies native receipt identity, second-and-later target echoes, requested/unique/eligible/changed/removed accounting, exact reconstruction count and selection. Input timestamps must be monotonic; invalid observation clocks are labelled invalid without inventing application success."
+    ],
+    "package": [
+      "Independent Windows job downloads the exact uploaded evaluator by immutable artifact ID into a fresh VM, then executes four shipped CMD extraction paths.",
+      "Package replay verifies source commit/tree/native input maps, exact script bytes, engine hash and location, candidate provenance, and Rapier identity.",
+      "runner.ROOT changes to the extracted package before executing application cases; the source checkout supplies the observer only, and no application source fallback exists.",
+      "Guarded native publication depends on this independent package job in addition to the retained source, native sanitizer and rendering gates."
+    ],
+    "presentation_test": [
+      "Actual viewport mouse warp plus Input.parse_input_event traverses the real GUI route; no direct cursor-position substitution.",
+      "Projection oracle independently inverts the actual content rectangle and camera; a real renderer draw with Line2D hidden supplies framebuffer control.",
+      "Escape, wheel zoom, middle pan, window resize and Structures controls are inspected; hosted execution is still required.",
+      "Hosted Linux screen expanded to1920x1200. The preview fixture centres a1920x1080 root even when Windows desktop is smaller, keeping central probe positions reachable; actual hosted window/pointer behaviour remains a required execution gate."
+    ]
+  },
+  "remaining": [
+    "Exact committed source qualification and final pinned native build remain the parent campaign gate.",
+    "Rendered cursor previews, Structures panel and tool image captures require hosted display; local sockets prevent graphical execution.",
+    "Final delivered archive extraction, hashes and hosted independent Windows receipts will be audited after artifact publication.",
+    "Physical owner performance and playfeel remain owner-pending."
+  ],
+  "representation": "compact review and selected machine observations; this document does not reproduce complete local raw execution logs",
+  "compact_local_receipts": "local-input-receipts.json",
+  "latest_c_local_checks": {
+    "creative_scene_recipes": 61,
+    "visible_footprints": 19,
+    "ordinary_disabled_input": 9,
+    "live_input": 100,
+    "live_tools": 210,
+    "owner_authored_start": 137,
+    "live_stress": 213,
+    "creative_constructions": 212,
+    "diagnostic_observer": 27,
+    "transport_contract": 60
+  },
+  "final_v5_local_verification": {
+    "sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+    "bytes": 6027152,
+    "all_five_c_cases_passed": true,
+    "binding": "driver checked native DLL-equivalent Linux .so hash before and after each process; exact local source remained uncommitted during run"
+  },
+  "final_v5_cases": [
+    {
+      "name": "test_object_shard_m4_creative_constructions-v5.log",
+      "checks": 212,
+      "exit_code": 0,
+      "native_unchanged": true
+    },
+    {
+      "name": "test_object_shard_m4_disabled_input-v5.log",
+      "checks": 9,
+      "exit_code": 0,
+      "native_unchanged": true
+    },
+    {
+      "name": "test_object_shard_m4_live_stress-v5.log",
+      "checks": 213,
+      "exit_code": 0,
+      "native_unchanged": true
+    },
+    {
+      "name": "test_object_shard_m4_live_tools-v5.log",
+      "checks": 210,
+      "exit_code": 0,
+      "native_unchanged": true
+    },
+    {
+      "name": "test_object_shard_m4_owner_authored-v5.log",
+      "checks": 137,
+      "exit_code": 0,
+      "native_unchanged": true
+    }
+  ],
+  "final_scalar_diagnostic_review": "Capture/admission diagnostics now report precision radius0, non-weather seed0, and material_filter. Scalar diagnostic values only; footprint construction, target resolution, native admission, cancellation and receipt authority are unchanged."
+}

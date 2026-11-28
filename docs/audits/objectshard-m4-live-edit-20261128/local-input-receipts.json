@@ -1,0 +1,2085 @@
+{
+  "schema": "objectshard-m4-local-live-input-receipts-v1",
+  "created_utc": "2026-11-28T06:34:09.001049+00:00",
+  "platform": "Linux local headless",
+  "release_qualification": false,
+  "raw_evidence_directory": "/tmp/cybersand-live-edit/evidence/c-testing",
+  "receipts": [
+    {
+      "log": "live-input-1.log",
+      "exit_code": 0,
+      "raw_log_sha256": "553660b40996ab18a9811215cc900cf1fc6fa6c2429b3c6f4eb832db3d749b4f",
+      "raw_log_bytes": 86473,
+      "footer_sha256": "16f9c4cc64de3281247d49325519266ab43af804bd0b714e4884fc2e3bd77bc3",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-live-input-v1",
+        "checks": 100,
+        "failures": [],
+        "scope": "actual ordinary native Workbench/shared Rapier and injected production mouse routes; renderer callbacks are not physical monitor proof",
+        "source_commit": ""
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": [],
+      "observations": {
+        "collapse_outcome": "Applied",
+        "collapse_edit": {
+          "requested_cells": 186,
+          "changed_cells": 186,
+          "removed_cells": 186,
+          "geometry_rebuilds": 1,
+          "changed_owners": 1,
+          "atomicity": "one_owner"
+        }
+      }
+    },
+    {
+      "log": "live-tools-1.log",
+      "exit_code": 1,
+      "raw_log_sha256": "f21078363b6c7b3ad13c3fe6ec09d4000fcb0966afe028664e94f59167946f47",
+      "raw_log_bytes": 363255,
+      "footer_sha256": "1fb3a30232e8e4e1400055241c9e3db67c3684820160d589cd3e4260a23b3ffe",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-live-tools-v1",
+        "checks": 209,
+        "failures": [
+          "complete body erasure closes material accounting with no orphan ownership"
+        ],
+        "scope": "actual ordinary native/shared Rapier and production pointer tools; deterministic replay is authored-start reconstruction, not a live checkpoint",
+        "source_commit": ""
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": [
+        "ERROR: M4_WORKBENCH: complete body erasure closes material accounting with no orphan ownership"
+      ]
+    },
+    {
+      "log": "live-tools-2.log",
+      "exit_code": 0,
+      "raw_log_sha256": "6635cd94ec5482b2d9fd684171ae7ad094affeaebba850e5e215f57c5b3f0d20",
+      "raw_log_bytes": 363291,
+      "footer_sha256": "0877c438aca690ceeae7dda07dcc68bbdb67e5cfec3350e6b172749594ca0501",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-live-tools-v1",
+        "checks": 210,
+        "failures": [],
+        "scope": "actual ordinary native/shared Rapier and production pointer tools; deterministic replay is authored-start reconstruction, not a live checkpoint",
+        "source_commit": ""
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": [],
+      "observations": {
+        "drill": {
+          "ok": true,
+          "outcome": "Accepted",
+          "requested_cells": 49,
+          "unique_cells": 49,
+          "changed_cells": 49,
+          "removed_cells": 49,
+          "geometry_rebuilds": 1,
+          "islands_before": 1,
+          "islands_after": 1,
+          "atomicity": "one_owner",
+          "seed": 0,
+          "probability_ppm": 1000000
+        },
+        "slice": {
+          "ok": true,
+          "outcome": "Accepted",
+          "requested_cells": 169,
+          "unique_cells": 169,
+          "changed_cells": 169,
+          "removed_cells": 169,
+          "geometry_rebuilds": 1,
+          "islands_before": 1,
+          "islands_after": 2,
+          "atomicity": "one_owner",
+          "seed": 0,
+          "probability_ppm": 1000000
+        },
+        "ignition": {
+          "ok": true,
+          "outcome": "Accepted",
+          "requested_cells": 49,
+          "unique_cells": 49,
+          "changed_cells": 49,
+          "removed_cells": 0,
+          "geometry_rebuilds": 0,
+          "islands_before": 1,
+          "islands_after": 1,
+          "atomicity": "one_owner",
+          "seed": 0,
+          "probability_ppm": 1000000
+        },
+        "reignition": {
+          "ok": true,
+          "outcome": "Accepted",
+          "requested_cells": 49,
+          "unique_cells": 49,
+          "changed_cells": 0,
+          "removed_cells": 0,
+          "geometry_rebuilds": 0,
+          "islands_before": 1,
+          "islands_after": 1,
+          "atomicity": "one_owner",
+          "seed": 0,
+          "probability_ppm": 1000000
+        },
+        "complete_removal": {
+          "ok": true,
+          "outcome": "Accepted",
+          "requested_cells": 147,
+          "unique_cells": 147,
+          "changed_cells": 147,
+          "removed_cells": 147,
+          "geometry_rebuilds": 1,
+          "islands_before": 1,
+          "islands_after": 0,
+          "atomicity": "one_owner",
+          "seed": 0,
+          "probability_ppm": 1000000
+        },
+        "complete_removal_before": {
+          "by_material": {
+            "1": 3,
+            "7": 144
+          },
+          "owned_cells": 147,
+          "wood": 144
+        },
+        "slice_admission_usec": 14088,
+        "weather_removed_coordinates": [
+          "(165, 413)",
+          "(165, 416)",
+          "(166, 411)",
+          "(166, 413)",
+          "(166, 416)",
+          "(166, 417)",
+          "(167, 410)",
+          "(167, 412)",
+          "(167, 414)",
+          "(167, 420)",
+          "(168, 412)",
+          "(168, 415)",
+          "(168, 416)",
+          "(168, 417)",
+          "(168, 421)",
+          "(169, 411)",
+          "(169, 414)",
+          "(169, 417)",
+          "(169, 419)",
+          "(169, 420)",
+          "(169, 421)",
+          "(169, 422)",
+          "(170, 409)",
+          "(170, 412)",
+          "(170, 413)",
+          "(170, 416)",
+          "(170, 420)",
+          "(170, 421)",
+          "(171, 412)",
+          "(171, 413)",
+          "(171, 415)",
+          "(171, 419)",
+          "(171, 422)",
+          "(171, 423)",
+          "(172, 409)",
+          "(172, 410)",
+          "(172, 412)",
+          "(172, 413)",
+          "(172, 416)",
+          "(172, 420)",
+          "(173, 409)",
+          "(173, 412)",
+          "(173, 413)",
+          "(173, 416)",
+          "(173, 418)",
+          "(173, 419)",
+          "(173, 421)",
+          "(173, 422)",
+          "(173, 423)",
+          "(174, 412)",
+          "(174, 417)",
+          "(174, 423)",
+          "(175, 412)",
+          "(175, 414)",
+          "(175, 416)",
+          "(175, 417)",
+          "(175, 421)",
+          "(176, 413)",
+          "(176, 414)",
+          "(176, 416)",
+          "(176, 420)",
+          "(176, 422)",
+          "(177, 412)",
+          "(177, 415)",
+          "(177, 418)",
+          "(177, 420)",
+          "(177, 421)",
+          "(178, 419)",
+          "(178, 420)"
+        ],
+        "weather_replay_equal": true
+      }
+    },
+    {
+      "log": "owner-authored-1.log",
+      "exit_code": 0,
+      "raw_log_sha256": "e21dfa20121df59afa4c722f453f82a6364c26954b862088ae2dc3111962e450",
+      "raw_log_bytes": 21578,
+      "footer_sha256": "b047e97502c6a60b255baf993efd4799772bc8079d7a1c576ebb1f4f677ffc60",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-owner-authored-v1",
+        "checks": 137,
+        "failures": [],
+        "scope": "actual native/Rapier reconstruction of exact owner-authored start; no prior live-state or physical-owner replay claim",
+        "source_commit": ""
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": []
+    },
+    {
+      "log": "live-stress-3.log",
+      "exit_code": 0,
+      "raw_log_sha256": "0b8d968fe9abb4ccff78877576c0a6cd1277bc7a34b0a8677591a309fedfe0cb",
+      "raw_log_bytes": 214069,
+      "footer_sha256": "5af940086070a4a675e5b8df9bbbb3f2d263b64d2de66ea01aae0c887aa9cf20",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-live-stress-v1",
+        "checks": 213,
+        "failures": [],
+        "scope": "actual production pointer path, native progression and shared Rapier; owned and awake cohorts are separate; test callback timings are not owner hardware benchmarks",
+        "source_commit": "local-live-edit-uncommitted"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": [],
+      "observations": {
+        "before_edits": {
+          "population": {
+            "awake": 0,
+            "owned": 8
+          },
+          "tick": 218
+        },
+        "after_edit_tick": 1255,
+        "after_edit_population": {
+          "awake": 1,
+          "owned": 8
+        },
+        "cohorts": {
+          "8/0": {
+            "awake": 0,
+            "callbacks": 2189,
+            "native_ticks": 969,
+            "owned": 8,
+            "wall_usec": 39025440
+          },
+          "8/1": {
+            "awake": 1,
+            "callbacks": 374,
+            "native_ticks": 152,
+            "owned": 8,
+            "wall_usec": 6425183
+          },
+          "8/2": {
+            "awake": 2,
+            "callbacks": 84,
+            "native_ticks": 35,
+            "owned": 8,
+            "wall_usec": 1350668
+          },
+          "8/3": {
+            "awake": 3,
+            "callbacks": 50,
+            "native_ticks": 22,
+            "owned": 8,
+            "wall_usec": 821019
+          },
+          "8/4": {
+            "awake": 4,
+            "callbacks": 3,
+            "native_ticks": 1,
+            "owned": 8,
+            "wall_usec": 43936
+          },
+          "8/5": {
+            "awake": 5,
+            "callbacks": 4,
+            "native_ticks": 1,
+            "owned": 8,
+            "wall_usec": 37635
+          },
+          "8/6": {
+            "awake": 6,
+            "callbacks": 3,
+            "native_ticks": 1,
+            "owned": 8,
+            "wall_usec": 40567
+          },
+          "8/7": {
+            "awake": 7,
+            "callbacks": 3,
+            "native_ticks": 1,
+            "owned": 8,
+            "wall_usec": 50491
+          },
+          "8/8": {
+            "awake": 8,
+            "callbacks": 77,
+            "native_ticks": 35,
+            "owned": 8,
+            "wall_usec": 1361642
+          }
+        },
+        "editing": {
+          "coalesced_waits": 0,
+          "counts": {
+            "admitted": 12,
+            "attempt": 14,
+            "cancel": 12,
+            "presented": 12,
+            "receipt": 12,
+            "wait": 10
+          },
+          "cross_owner_atomic": false,
+          "epoch": 5,
+          "events_dropped": 0,
+          "foreign_events_ignored": 0,
+          "identity": {
+            "port_generation": 3,
+            "session": 1,
+            "world_generation": 3,
+            "world_incarnation": 1
+          },
+          "max_events": 256,
+          "max_pending": 32,
+          "native_session_metrics": {
+            "batch_changed_cells": 418,
+            "batch_edits": 12,
+            "batch_geometry_ns": 888610,
+            "batch_geometry_rebuilds": 11,
+            "batch_mutation_ns": 69153,
+            "batch_requested_cells": 418,
+            "batch_target_ns": 215439,
+            "fragment_refusals": 0,
+            "fragments": 0,
+            "scope": "cumulative current native coordinator session; islands are geometry observations, not committed fragment counts"
+          },
+          "native_totals": {
+            "changed_cells": 418,
+            "changed_owners": 12,
+            "eligible_cells": 418,
+            "geometry_rebuilds": 11,
+            "removed_cells": 418,
+            "requested_cells": 418,
+            "unique_cells": 418
+          },
+          "pending": {},
+          "pending_capacity_drops": 0,
+          "pending_count": 0,
+          "recent": [
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  60,
+                  420
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 11
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 1,
+              "status": "input_not_yet_admitted",
+              "time_usec": 6681255
+            },
+            {
+              "detail": {
+                "input_phase": "motion",
+                "position": [
+                  455,
+                  420
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 11
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 2,
+              "status": "input_not_yet_admitted",
+              "time_usec": 6681328
+            },
+            {
+              "detail": {
+                "outcome": "SliceCommittedAwaitingSafeOpportunity",
+                "tool": 11
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 3,
+              "status": "input_waiting_for_admission",
+              "time_usec": 6681367
+            },
+            {
+              "detail": {
+                "action_id": 1,
+                "captured_usec": 6681350,
+                "domain": "terrain",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 0,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 48,
+                "sample_id": 3,
+                "seed": 0,
+                "stroke_id": 1,
+                "tool": 11
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 2182,
+              "kind": "admitted",
+              "sequence": 4,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 6683532
+            },
+            {
+              "detail": {
+                "outcome": "PlacementCommitted",
+                "pending": 1,
+                "tool": 11,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 5,
+              "status": "future_admission_cancelled",
+              "time_usec": 6683554
+            },
+            {
+              "admission_to_receipt_usec": 5056,
+              "detail": {
+                "action_id": 1,
+                "changed_cells": 48,
+                "changed_owners": 1,
+                "domain": "terrain",
+                "eligible_cells": 48,
+                "geometry_ns": 0,
+                "geometry_rebuilds": 0,
+                "input_admission_usec": 2074,
+                "input_to_receipt_usec": 7187,
+                "islands_after": 0,
+                "islands_before": 0,
+                "main_receipt_delivery_usec": 4563,
+                "mutation_ns": 19689,
+                "native_edit_ns": 29984,
+                "native_owner_service_usec": 104,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 48,
+                "requested_cells": 48,
+                "seed": 0,
+                "target_ns": 10295,
+                "transaction_id": 1,
+                "unique_cells": 48,
+                "worker_queue_usec": 446
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 6,
+              "status": "applied_awaiting_publication",
+              "time_usec": 6688588
+            },
+            {
+              "admission_to_publication_usec": 11751,
+              "detail": {
+                "action_id": 1,
+                "outcome": "Presented",
+                "publication_sequence": 3
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 7,
+              "status": "applied_publication_installed",
+              "time_usec": 6695283
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  40,
+                  307
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 8,
+              "status": "input_not_yet_admitted",
+              "time_usec": 14740015
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 0,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 9,
+              "status": "input_waiting_for_admission",
+              "time_usec": 14740067
+            },
+            {
+              "detail": {
+                "action_id": 2,
+                "captured_usec": 14739988,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 1,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 4,
+                "sample_id": 4,
+                "seed": 0,
+                "stroke_id": 2,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 30537,
+              "kind": "admitted",
+              "sequence": 10,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 14770525
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 11,
+              "status": "future_admission_cancelled",
+              "time_usec": 14771881
+            },
+            {
+              "admission_to_receipt_usec": 11077,
+              "detail": {
+                "action_id": 2,
+                "changed_cells": 4,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 4,
+                "geometry_ns": 72297,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 30367,
+                "input_to_receipt_usec": 41534,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 10686,
+                "mutation_ns": 23965,
+                "native_edit_ns": 99376,
+                "native_owner_service_usec": 192,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 4,
+                "requested_cells": 4,
+                "seed": 0,
+                "target_ns": 3114,
+                "transaction_id": 10,
+                "unique_cells": 4,
+                "worker_queue_usec": 289
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 12,
+              "status": "applied_awaiting_publication",
+              "time_usec": 14781602
+            },
+            {
+              "admission_to_publication_usec": 11128,
+              "detail": {
+                "action_id": 2,
+                "outcome": "Presented",
+                "publication_sequence": 434
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 13,
+              "status": "applied_publication_installed",
+              "time_usec": 14781653
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  96,
+                  303
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 14,
+              "status": "input_not_yet_admitted",
+              "time_usec": 23888745
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 0,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 15,
+              "status": "input_waiting_for_admission",
+              "time_usec": 23888889
+            },
+            {
+              "detail": {
+                "action_id": 3,
+                "captured_usec": 23888672,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 2,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 3,
+                "sample_id": 5,
+                "seed": 0,
+                "stroke_id": 3,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 56490,
+              "kind": "admitted",
+              "sequence": 16,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 23945162
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 17,
+              "status": "future_admission_cancelled",
+              "time_usec": 23947176
+            },
+            {
+              "admission_to_receipt_usec": 16563,
+              "detail": {
+                "action_id": 3,
+                "changed_cells": 3,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 3,
+                "geometry_ns": 65646,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 56240,
+                "input_to_receipt_usec": 72947,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 15954,
+                "mutation_ns": 922,
+                "native_edit_ns": 71886,
+                "native_owner_service_usec": 203,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 3,
+                "requested_cells": 3,
+                "seed": 0,
+                "target_ns": 5318,
+                "transaction_id": 11,
+                "unique_cells": 3,
+                "worker_queue_usec": 550
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 18,
+              "status": "applied_awaiting_publication",
+              "time_usec": 23961725
+            },
+            {
+              "admission_to_publication_usec": 103938,
+              "detail": {
+                "action_id": 3,
+                "outcome": "Presented",
+                "publication_sequence": 876
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 19,
+              "status": "applied_publication_installed",
+              "time_usec": 24049100
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  152,
+                  307
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 20,
+              "status": "input_not_yet_admitted",
+              "time_usec": 30331736
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 0,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 21,
+              "status": "input_waiting_for_admission",
+              "time_usec": 30331894
+            },
+            {
+              "detail": {
+                "action_id": 4,
+                "captured_usec": 30331690,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 3,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 4,
+                "sample_id": 6,
+                "seed": 0,
+                "stroke_id": 4,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 52715,
+              "kind": "admitted",
+              "sequence": 22,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 30384405
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 23,
+              "status": "future_admission_cancelled",
+              "time_usec": 30390610
+            },
+            {
+              "admission_to_receipt_usec": 17082,
+              "detail": {
+                "action_id": 4,
+                "changed_cells": 4,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 4,
+                "geometry_ns": 126946,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 52467,
+                "input_to_receipt_usec": 69636,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 16364,
+                "mutation_ns": 1473,
+                "native_edit_ns": 131975,
+                "native_owner_service_usec": 281,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 4,
+                "requested_cells": 4,
+                "seed": 0,
+                "target_ns": 3556,
+                "transaction_id": 12,
+                "unique_cells": 4,
+                "worker_queue_usec": 524
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 24,
+              "status": "applied_awaiting_publication",
+              "time_usec": 30401487
+            },
+            {
+              "admission_to_publication_usec": 81153,
+              "detail": {
+                "action_id": 4,
+                "outcome": "Presented",
+                "publication_sequence": 1168
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 25,
+              "status": "applied_publication_installed",
+              "time_usec": 30465558
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  208,
+                  303
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 26,
+              "status": "input_not_yet_admitted",
+              "time_usec": 38837270
+            },
+            {
+              "detail": {
+                "action_id": 5,
+                "captured_usec": 38837244,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 4,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 3,
+                "sample_id": 7,
+                "seed": 0,
+                "stroke_id": 5,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 495,
+              "kind": "admitted",
+              "sequence": 27,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 38837739
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 28,
+              "status": "future_admission_cancelled",
+              "time_usec": 38838822
+            },
+            {
+              "admission_to_receipt_usec": 9362,
+              "detail": {
+                "action_id": 5,
+                "changed_cells": 3,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 3,
+                "geometry_ns": 64856,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 308,
+                "input_to_receipt_usec": 9799,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 8851,
+                "mutation_ns": 911,
+                "native_edit_ns": 68351,
+                "native_owner_service_usec": 148,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 3,
+                "requested_cells": 3,
+                "seed": 0,
+                "target_ns": 2584,
+                "transaction_id": 13,
+                "unique_cells": 3,
+                "worker_queue_usec": 492
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 29,
+              "status": "applied_awaiting_publication",
+              "time_usec": 38847101
+            },
+            {
+              "admission_to_publication_usec": 9399,
+              "detail": {
+                "action_id": 5,
+                "outcome": "Presented",
+                "publication_sequence": 1558
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 30,
+              "status": "applied_publication_installed",
+              "time_usec": 38847138
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  264,
+                  307
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 31,
+              "status": "input_not_yet_admitted",
+              "time_usec": 38999226
+            },
+            {
+              "detail": {
+                "action_id": 6,
+                "captured_usec": 38999199,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 5,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 4,
+                "sample_id": 8,
+                "seed": 0,
+                "stroke_id": 6,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 411,
+              "kind": "admitted",
+              "sequence": 32,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 38999610
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 33,
+              "status": "future_admission_cancelled",
+              "time_usec": 39000830
+            },
+            {
+              "admission_to_receipt_usec": 12209,
+              "detail": {
+                "action_id": 6,
+                "changed_cells": 4,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 4,
+                "geometry_ns": 116792,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 271,
+                "input_to_receipt_usec": 12555,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 11715,
+                "mutation_ns": 1492,
+                "native_edit_ns": 121900,
+                "native_owner_service_usec": 248,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 4,
+                "requested_cells": 4,
+                "seed": 0,
+                "target_ns": 3616,
+                "transaction_id": 14,
+                "unique_cells": 4,
+                "worker_queue_usec": 321
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 34,
+              "status": "applied_awaiting_publication",
+              "time_usec": 39011819
+            },
+            {
+              "admission_to_publication_usec": 12251,
+              "detail": {
+                "action_id": 6,
+                "outcome": "Presented",
+                "publication_sequence": 1568
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 35,
+              "status": "applied_publication_installed",
+              "time_usec": 39011861
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  320,
+                  303
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 36,
+              "status": "input_not_yet_admitted",
+              "time_usec": 39169419
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 0,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 37,
+              "status": "input_waiting_for_admission",
+              "time_usec": 39169470
+            },
+            {
+              "detail": {
+                "action_id": 7,
+                "captured_usec": 39169392,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 6,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 3,
+                "sample_id": 9,
+                "seed": 0,
+                "stroke_id": 7,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 30553,
+              "kind": "admitted",
+              "sequence": 38,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 39199945
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 1,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 39,
+              "status": "input_waiting_for_admission",
+              "time_usec": 39200667
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 40,
+              "status": "future_admission_cancelled",
+              "time_usec": 39202022
+            },
+            {
+              "admission_to_receipt_usec": 9218,
+              "detail": {
+                "action_id": 7,
+                "changed_cells": 3,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 3,
+                "geometry_ns": 74631,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 30393,
+                "input_to_receipt_usec": 39709,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 8770,
+                "mutation_ns": 821,
+                "native_edit_ns": 78456,
+                "native_owner_service_usec": 155,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 3,
+                "requested_cells": 3,
+                "seed": 0,
+                "target_ns": 3004,
+                "transaction_id": 15,
+                "unique_cells": 3,
+                "worker_queue_usec": 391
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 41,
+              "status": "applied_awaiting_publication",
+              "time_usec": 39209163
+            },
+            {
+              "admission_to_publication_usec": 9257,
+              "detail": {
+                "action_id": 7,
+                "outcome": "Presented",
+                "publication_sequence": 1580
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 42,
+              "status": "applied_publication_installed",
+              "time_usec": 39209202
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  376,
+                  307
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 43,
+              "status": "input_not_yet_admitted",
+              "time_usec": 40906018
+            },
+            {
+              "detail": {
+                "action_id": 8,
+                "captured_usec": 40905991,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 7,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 4,
+                "sample_id": 10,
+                "seed": 0,
+                "stroke_id": 8,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 408,
+              "kind": "admitted",
+              "sequence": 44,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 40906399
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 45,
+              "status": "future_admission_cancelled",
+              "time_usec": 40907670
+            },
+            {
+              "admission_to_receipt_usec": 18133,
+              "detail": {
+                "action_id": 8,
+                "changed_cells": 4,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 4,
+                "geometry_ns": 65125,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 271,
+                "input_to_receipt_usec": 18466,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 17575,
+                "mutation_ns": 852,
+                "native_edit_ns": 69081,
+                "native_owner_service_usec": 159,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 4,
+                "requested_cells": 4,
+                "seed": 0,
+                "target_ns": 3104,
+                "transaction_id": 16,
+                "unique_cells": 4,
+                "worker_queue_usec": 461
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 46,
+              "status": "applied_awaiting_publication",
+              "time_usec": 40924532
+            },
+            {
+              "admission_to_publication_usec": 97071,
+              "detail": {
+                "action_id": 8,
+                "outcome": "Presented",
+                "publication_sequence": 1674
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 47,
+              "status": "applied_publication_installed",
+              "time_usec": 41003470
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  432,
+                  303
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 48,
+              "status": "input_not_yet_admitted",
+              "time_usec": 42122520
+            },
+            {
+              "detail": {
+                "action_id": 9,
+                "captured_usec": 42122493,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 8,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 3,
+                "sample_id": 11,
+                "seed": 0,
+                "stroke_id": 9,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 398,
+              "kind": "admitted",
+              "sequence": 49,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 42122891
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 50,
+              "status": "future_admission_cancelled",
+              "time_usec": 42124331
+            },
+            {
+              "admission_to_receipt_usec": 18578,
+              "detail": {
+                "action_id": 9,
+                "changed_cells": 3,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 3,
+                "geometry_ns": 64525,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 271,
+                "input_to_receipt_usec": 18885,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 18225,
+                "mutation_ns": 771,
+                "native_edit_ns": 68451,
+                "native_owner_service_usec": 145,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 3,
+                "requested_cells": 3,
+                "seed": 0,
+                "target_ns": 3155,
+                "transaction_id": 17,
+                "unique_cells": 3,
+                "worker_queue_usec": 244
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 51,
+              "status": "applied_awaiting_publication",
+              "time_usec": 42141469
+            },
+            {
+              "admission_to_publication_usec": 37218,
+              "detail": {
+                "action_id": 9,
+                "outcome": "Presented",
+                "publication_sequence": 1750
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 52,
+              "status": "applied_publication_installed",
+              "time_usec": 42160109
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  42,
+                  307
+                ],
+                "probability_ppm": 1000000,
+                "radius": 24,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 53,
+              "status": "input_not_yet_admitted",
+              "time_usec": 42303447
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 0,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 54,
+              "status": "input_waiting_for_admission",
+              "time_usec": 42303498
+            },
+            {
+              "detail": {
+                "action_id": 10,
+                "captured_usec": 42303418,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 1,
+                "probability_ppm": 1000000,
+                "radius": 24,
+                "requested_cells": 197,
+                "sample_id": 12,
+                "seed": 0,
+                "stroke_id": 10,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 105890,
+              "kind": "admitted",
+              "sequence": 55,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 42409308
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 1,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 56,
+              "status": "input_waiting_for_admission",
+              "time_usec": 42433006
+            },
+            {
+              "detail": {
+                "input_phase": "motion",
+                "position": [
+                  476,
+                  307
+                ],
+                "probability_ppm": 1000000,
+                "radius": 24,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 57,
+              "status": "input_not_yet_admitted",
+              "time_usec": 42435877
+            },
+            {
+              "admission_to_receipt_usec": 30213,
+              "detail": {
+                "action_id": 10,
+                "changed_cells": 197,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 197,
+                "geometry_ns": 121390,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 94676,
+                "input_to_receipt_usec": 135487,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 26913,
+                "mutation_ns": 9874,
+                "native_edit_ns": 291952,
+                "native_owner_service_usec": 2454,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 197,
+                "requested_cells": 197,
+                "seed": 0,
+                "target_ns": 160688,
+                "transaction_id": 18,
+                "unique_cells": 197,
+                "worker_queue_usec": 11444
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 58,
+              "status": "applied_awaiting_publication",
+              "time_usec": 42439521
+            },
+            {
+              "admission_to_publication_usec": 30253,
+              "detail": {
+                "action_id": 10,
+                "outcome": "Presented",
+                "publication_sequence": 1762
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 59,
+              "status": "applied_publication_installed",
+              "time_usec": 42439561
+            },
+            {
+              "detail": {
+                "action_id": 11,
+                "captured_usec": 42435855,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 1,
+                "probability_ppm": 1000000,
+                "radius": 24,
+                "requested_cells": 143,
+                "sample_id": 13,
+                "seed": 0,
+                "stroke_id": 10,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 29992,
+              "kind": "admitted",
+              "sequence": 60,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 42465847
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 1,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 61,
+              "status": "input_waiting_for_admission",
+              "time_usec": 42467353
+            },
+            {
+              "detail": {
+                "outcome": "PointerReleased",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 62,
+              "status": "future_admission_cancelled",
+              "time_usec": 42479076
+            },
+            {
+              "admission_to_receipt_usec": 15537,
+              "detail": {
+                "action_id": 11,
+                "changed_cells": 143,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 143,
+                "geometry_ns": 58637,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 27934,
+                "input_to_receipt_usec": 45018,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 12848,
+                "mutation_ns": 7341,
+                "native_edit_ns": 79318,
+                "native_owner_service_usec": 1692,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 143,
+                "requested_cells": 143,
+                "seed": 0,
+                "target_ns": 13340,
+                "transaction_id": 19,
+                "unique_cells": 143,
+                "worker_queue_usec": 2544
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 63,
+              "status": "applied_awaiting_publication",
+              "time_usec": 42481384
+            },
+            {
+              "admission_to_publication_usec": 15742,
+              "detail": {
+                "action_id": 11,
+                "outcome": "Presented",
+                "publication_sequence": 1764
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 64,
+              "status": "applied_publication_installed",
+              "time_usec": 42481589
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  83,
+                  323
+                ],
+                "probability_ppm": 1000000,
+                "radius": 2,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 65,
+              "status": "input_not_yet_admitted",
+              "time_usec": 55968935
+            },
+            {
+              "detail": {
+                "outcome": "WaitingForPhysicalReceipt",
+                "pending": 0,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "wait",
+              "sequence": 66,
+              "status": "input_waiting_for_admission",
+              "time_usec": 55968988
+            },
+            {
+              "detail": {
+                "outcome": "InputCancelled",
+                "pending": 0,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 67,
+              "status": "future_admission_cancelled",
+              "time_usec": 55969070
+            },
+            {
+              "detail": {
+                "input_phase": "press",
+                "position": [
+                  83,
+                  323
+                ],
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "seed": 4242,
+                "tool": 10
+              },
+              "epoch": 5,
+              "kind": "attempt",
+              "sequence": 68,
+              "status": "input_not_yet_admitted",
+              "time_usec": 56267235
+            },
+            {
+              "detail": {
+                "action_id": 12,
+                "captured_usec": 56267198,
+                "domain": "structural",
+                "input_kind": "pointer_event",
+                "outcome": "QueuedOnOrdinaryWorker",
+                "owner": 1,
+                "probability_ppm": 1000000,
+                "radius": 1,
+                "requested_cells": 2,
+                "sample_id": 15,
+                "seed": 0,
+                "stroke_id": 12,
+                "tool": 10
+              },
+              "epoch": 5,
+              "input_to_admission_usec": 509,
+              "kind": "admitted",
+              "sequence": 69,
+              "status": "admitted_awaiting_receipt",
+              "time_usec": 56267707
+            },
+            {
+              "detail": {
+                "outcome": "InputCancelled",
+                "pending": 1,
+                "tool": 10,
+                "unadmitted_domains": 0
+              },
+              "epoch": 5,
+              "kind": "cancel",
+              "sequence": 70,
+              "status": "future_admission_cancelled",
+              "time_usec": 56267749
+            },
+            {
+              "admission_to_receipt_usec": 31398,
+              "detail": {
+                "action_id": 12,
+                "changed_cells": 2,
+                "changed_owners": 1,
+                "domain": "structural",
+                "eligible_cells": 2,
+                "geometry_ns": 57765,
+                "geometry_rebuilds": 1,
+                "input_admission_usec": 378,
+                "input_to_receipt_usec": 31793,
+                "islands_after": 1,
+                "islands_before": 1,
+                "main_receipt_delivery_usec": 30699,
+                "mutation_ns": 1042,
+                "native_edit_ns": 62472,
+                "native_owner_service_usec": 142,
+                "outcome": "Applied",
+                "probability_ppm": 1000000,
+                "removed_cells": 2,
+                "requested_cells": 2,
+                "seed": 0,
+                "target_ns": 3665,
+                "transaction_id": 20,
+                "unique_cells": 2,
+                "worker_queue_usec": 574
+              },
+              "epoch": 5,
+              "kind": "receipt",
+              "sequence": 71,
+              "status": "applied_awaiting_publication",
+              "time_usec": 56299105
+            },
+            {
+              "admission_to_publication_usec": 82103,
+              "detail": {
+                "action_id": 12,
+                "outcome": "Presented",
+                "publication_sequence": 2506
+              },
+              "epoch": 5,
+              "kind": "presented",
+              "sequence": 72,
+              "status": "applied_publication_installed",
+              "time_usec": 56349810
+            }
+          ],
+          "retired": false,
+          "schema": "objectshard-live-edit-diagnostics-v1",
+          "scope": "bounded current-session input and authenticated execution observations; no live-state checkpoint or hardware presentation proof",
+          "sequence": 72,
+          "timing_scope": "monotonic Main observations; native timing fields remain separately labelled and must not be summed with enclosing spans"
+        },
+        "maximum_radius": [
+          {
+            "outcome": "Applied",
+            "requested_cells": 197,
+            "unique_cells": 197,
+            "changed_cells": 197,
+            "removed_cells": 197,
+            "geometry_rebuilds": 1,
+            "native_edit_ns": 291952
+          },
+          {
+            "outcome": "Applied",
+            "requested_cells": 143,
+            "unique_cells": 143,
+            "changed_cells": 143,
+            "removed_cells": 143,
+            "geometry_rebuilds": 1,
+            "native_edit_ns": 79318
+          }
+        ]
+      }
+    },
+    {
+      "log": "creative-constructions-1.log",
+      "exit_code": 0,
+      "raw_log_sha256": "0ed929d4468b8ea4cbbac0782f7c8423d95e14b80280138e1a08cab527508d0f",
+      "raw_log_bytes": 76112,
+      "footer_sha256": "2890e4fdeb0fca41a6aadb09d20b9b6294d590cc550cba37003cf5fb96e11ea6",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-creative-constructions-v1",
+        "checks": 212,
+        "failures": [],
+        "scope": "new authored demonstrations reconstructed in the actual native Workbench/shared Rapier and edited through production mouse events; no restored live body checkpoint",
+        "source_commit": "local-live-edit-uncommitted"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": [],
+      "observations": {
+        "perforated": {
+          "body_count": 1,
+          "wood_before": 384,
+          "brick_before": 7491,
+          "owned_edit": {
+            "ok": true,
+            "changed_cells": 9,
+            "removed_cells": 9,
+            "geometry_rebuilds": 1,
+            "atomicity": "one_owner"
+          }
+        },
+        "weathered": {
+          "body_count": 1,
+          "wood_before": 4543,
+          "brick_before": 0,
+          "owned_edit": {
+            "ok": true,
+            "changed_cells": 6,
+            "removed_cells": 6,
+            "geometry_rebuilds": 1,
+            "atomicity": "one_owner"
+          }
+        },
+        "editing_yard": {
+          "body_count": 1,
+          "wood_before": 7990,
+          "brick_before": 896,
+          "owned_edit": {
+            "ok": true,
+            "changed_cells": 6,
+            "removed_cells": 6,
+            "geometry_rebuilds": 1,
+            "atomicity": "one_owner"
+          },
+          "ordinary_edit": {
+            "domain": "terrain",
+            "ok": true,
+            "changed_cells": 13,
+            "removed_cells": 13,
+            "geometry_rebuilds": 0
+          }
+        }
+      }
+    },
+    {
+      "log": "test_object_shard_m4_creative_scenes.log",
+      "exit_code": 0,
+      "raw_log_sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d",
+      "raw_log_bytes": 1550,
+      "footer_sha256": "72a653b536ae635f3e3b111409bb33ab2d28b5b402b4e5f1dc55067ddaddfa6f",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-creative-scenes-v1",
+        "checks": 61,
+        "failures": [],
+        "scope": "authored-start recipe and material geometry; live physics qualification is separate"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": []
+    },
+    {
+      "log": "test_object_shard_m4_visible_footprints.log",
+      "exit_code": 0,
+      "raw_log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40",
+      "raw_log_bytes": 421,
+      "footer_sha256": "62b8273e70c8a82a64aa5522be132634a6c1807f1eb01a3f7210ff66a9622bcd",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-visible-footprints-v1",
+        "checks": 19,
+        "failures": [],
+        "scope": "bounded pure footprint geometry and synthetic copied-publication occlusion; no native or physical execution claim"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": []
+    },
+    {
+      "log": "test_object_shard_m4_disabled_input.log",
+      "exit_code": 0,
+      "raw_log_sha256": "8493586af3c24ce5dbb8179061b8fffec0554fcae7bbf4a92c9f7dcd188f4ade",
+      "raw_log_bytes": 397,
+      "footer_sha256": "3750d1e50c9638432393f9bd080692e6ca2e9d8203bdbbce86faed01198ac778",
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-disabled-input-v1",
+        "checks": 9,
+        "failures": [],
+        "scope": "actual ordinary native Workbench with Structures disabled and injected production canvas input"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": []
+    },
+    {
+      "log": "test_object_shard_live_edit_contract.log",
+      "exit_code": 0,
+      "raw_log_sha256": "f16bc5f0bf6c11855a8430e1fef9f06592aa142939a802852db2680972091e96",
+      "raw_log_bytes": 429,
+      "footer_sha256": "f2d623ae863d870bc0cc9502800ce735a6fe1a8da61201e5811849bbd6dd4838",
+      "footer_selected_fields": {
+        "schema": "objectshard-live-edit-transport-contract-v1",
+        "checks": 60,
+        "failures": [],
+        "scope": "value-only hostile receipt, payload and target authentication; native execution and input integration are separate"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": []
+    },
+    {
+      "log": "test_object_shard_live_edit_diagnostics-final.log",
+      "exit_code": 0,
+      "raw_log_sha256": "20d4d3f266b73948b00ce7ea8fc6ee848932095845ff34f17e0339a68400c85e",
+      "raw_log_bytes": 384,
+      "footer_sha256": "493500dee501773191170eb4aeee966e8df706a05e4234cce8481b73f25393a1",
+      "footer_selected_fields": {
+        "schema": "objectshard-live-edit-diagnostics-test-v1",
+        "checks": 27,
+        "failures": 0,
+        "scope": "bounded observational bookkeeping; no native or physical execution claim"
+      },
+      "representation": "selected machine footer fields; complete raw log is retained locally outside repository",
+      "error_excerpts": []
+    },
+    {
+      "log": "test_object_shard_m4_creative_constructions-v5.log",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/f0d1839ea2a3/cybersand/godot",
+          "--script",
+          "res://tests/test_object_shard_m4_creative_constructions.gd",
+          "--",
+          "--objectshard-m4-workbench"
+        ],
+        "started_utc": "2026-11-28T06:36:51.418502+00:00",
+        "seconds": 13.614614907997748,
+        "exit_code": 0,
+        "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+        "native_unchanged": true,
+        "script_sha256": "cba67e978a0d66eab75413d56101945f4ad1f94c4230000f634cfc53d451382c",
+        "log_sha256": "52bd929751b771c3d62c211ca22590f78d11793fc8f500bebccd4acf1c09bb41",
+        "log_bytes": 75942
+      },
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-creative-constructions-v1",
+        "checks": 212,
+        "failures": [],
+        "scope": "new authored demonstrations reconstructed in the actual native Workbench/shared Rapier and edited through production mouse events; no restored live body checkpoint",
+        "source_commit": "local-v5-uncommitted"
+      },
+      "footer_sha256": "97d0fb9c1219a8c987c4b0404063435071f99604045c4d04bb515ae912145712",
+      "representation": "selected final-v5 machine receipt fields; raw log retained outside repository"
+    },
+    {
+      "log": "test_object_shard_m4_disabled_input-v5.log",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/f0d1839ea2a3/cybersand/godot",
+          "--script",
+          "res://tests/test_object_shard_m4_disabled_input.gd"
+        ],
+        "started_utc": "2026-11-28T06:37:13.791641+00:00",
+        "seconds": 5.429684092003299,
+        "exit_code": 0,
+        "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+        "native_unchanged": true,
+        "script_sha256": "0d92a6ee15c94031cc98e38d6cfbdba5f8643bb1b9d529eaff11c7bdb15cb4cd",
+        "log_sha256": "8493586af3c24ce5dbb8179061b8fffec0554fcae7bbf4a92c9f7dcd188f4ade",
+        "log_bytes": 397
+      },
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-disabled-input-v1",
+        "checks": 9,
+        "failures": [],
+        "scope": "actual ordinary native Workbench with Structures disabled and injected production canvas input"
+      },
+      "footer_sha256": "3750d1e50c9638432393f9bd080692e6ca2e9d8203bdbbce86faed01198ac778",
+      "representation": "selected final-v5 machine receipt fields; raw log retained outside repository"
+    },
+    {
+      "log": "test_object_shard_m4_live_stress-v5.log",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/f0d1839ea2a3/cybersand/godot",
+          "--script",
+          "res://tests/test_object_shard_m4_live_stress.gd",
+          "--",
+          "--objectshard-m4-workbench"
+        ],
+        "started_utc": "2026-11-28T06:36:36.128717+00:00",
+        "seconds": 41.72362808399703,
+        "exit_code": 0,
+        "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+        "native_unchanged": true,
+        "script_sha256": "973b0c05ac1f5c2571cd01cc38d654758134c664f53282c1cff20aae077e2811",
+        "log_sha256": "dd06c95c4c3af7e7140dc6db623e3210abc5bab10877b121d6bd05d7e8baa817",
+        "log_bytes": 209124
+      },
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-live-stress-v1",
+        "checks": 213,
+        "failures": [],
+        "scope": "actual production pointer path, native progression and shared Rapier; owned and awake cohorts are separate; test callback timings are not owner hardware benchmarks",
+        "source_commit": "local-v5-uncommitted"
+      },
+      "footer_sha256": "0a2823e95f91db3964c10313e024509697c9febaa037fb5f72c0d5f0242208e8",
+      "representation": "selected final-v5 machine receipt fields; raw log retained outside repository"
+    },
+    {
+      "log": "test_object_shard_m4_live_tools-v5.log",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/f0d1839ea2a3/cybersand/godot",
+          "--script",
+          "res://tests/test_object_shard_m4_live_tools.gd",
+          "--",
+          "--objectshard-m4-workbench"
+        ],
+        "started_utc": "2026-11-28T06:36:36.128159+00:00",
+        "seconds": 15.283938045002287,
+        "exit_code": 0,
+        "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+        "native_unchanged": true,
+        "script_sha256": "c42f8cfc44a1d4d98a4c1713ee9809cc8701c6af1aa731918a627665b6763ffa",
+        "log_sha256": "9e8c1069bba0233066134058611ffb189c9402902c916ee29dfd2ada4cf3d245",
+        "log_bytes": 363231
+      },
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-live-tools-v1",
+        "checks": 210,
+        "failures": [],
+        "scope": "actual ordinary native/shared Rapier and production pointer tools; deterministic replay is authored-start reconstruction, not a live checkpoint",
+        "source_commit": "local-v5-uncommitted"
+      },
+      "footer_sha256": "7e784463558d20b0d8d5b361de8463c02e96863c636f4e6089c68925c6e5bb09",
+      "representation": "selected final-v5 machine receipt fields; raw log retained outside repository"
+    },
+    {
+      "log": "test_object_shard_m4_owner_authored-v5.log",
+      "execution": {
+        "command": [
+          "/workspace/scratch/9b78ce6eff8d/runtime/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/f0d1839ea2a3/cybersand/godot",
+          "--script",
+          "res://tests/test_object_shard_m4_owner_authored.gd",
+          "--",
+          "--objectshard-m4-workbench"
+        ],
+        "started_utc": "2026-11-28T06:37:05.037764+00:00",
+        "seconds": 8.749525541003095,
+        "exit_code": 0,
+        "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+        "native_unchanged": true,
+        "script_sha256": "d5f1f048467d741c2185850e8489fe03fe33ec08eac27fb2072d393fbfa471ce",
+        "log_sha256": "1eb401c4a09ff22ad622d69becfcf35ca0f9eb02795c63b31b755b657aab57be",
+        "log_bytes": 21601
+      },
+      "footer_selected_fields": {
+        "schema": "objectshard-m4-owner-authored-v1",
+        "checks": 137,
+        "failures": [],
+        "scope": "actual native/Rapier reconstruction of exact owner-authored start; no prior live-state or physical-owner replay claim",
+        "source_commit": "local-v5-uncommitted"
+      },
+      "footer_sha256": "73aa1da1ad8b4d61a95c439fe98af2848ec6cd0a0051d29121db4102cbd02937",
+      "representation": "selected final-v5 machine receipt fields; raw log retained outside repository"
+    }
+  ],
+  "execution_command_pattern": "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/NAME.gd [-- --objectshard-m4-workbench for mounted fixtures only]",
+  "operation_watchdog_seconds": 300,
+  "fixture_execution_budget_seconds": 1200,
+  "local_compiler_qualification": "development compiler exception only; hosted pinned compilation still required",
+  "limitations": [
+    "Working-tree development receipts are not committed exact-source release qualification.",
+    "No local graphical display was available.",
+    "Hosted and extracted Windows qualification remain separate gates."
+  ],
+  "final_native_v5": {
+    "sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+    "bytes": 6027152,
+    "all_five_c_cases_passed": true,
+    "binding": "driver checked native DLL-equivalent Linux .so hash before and after each process; exact local source remained uncommitted during run"
+  }
+}

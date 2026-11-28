@@ -20,7 +20,7 @@ WINDOWS_RECIPROCAL_BINDING = "godot/tools/swarm004-runtime.windows.json"
 
 ENTRY = {"scene": "godot/main.tscn", "startup_scene": "godot/feature_launcher.tscn", "host": "ordinary-workbench",
          "launcher": "Open Workbench.cmd", "opt_in": True, "rendering_driver": RENDERING_DRIVER,
-         "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress"]}
+         "scenario_ids": ["tower", "viaduct", "timber", "mixed", "stress", "perforated", "weathered", "editing_yard", "owner_tower"]}
 REQUIRED = {
     NATIVE, RAPIER, "Godot_v4.7-stable_win64.exe", "Godot_v4.7-stable_win64_console.exe",
     "Godot-LICENSE.txt", "Godot-COPYRIGHT.txt", "vcruntime140.dll",
@@ -29,7 +29,22 @@ REQUIRED = {
     "godot/feature_launcher.tscn", "godot/scripts/feature_launcher.gd",
     "godot/scripts/main.gd", "godot/scripts/shared_workbench.gd", "godot/scripts/simulation_worker.gd",
     "godot/scripts/object_shard_m4_runtime.gd", "godot/scripts/object_shard_workbench_scenes.gd",
+    "godot/data/objectshard_owner_tower2_authored_start.json",
+    "godot/scripts/object_shard_live_edit_diagnostics.gd",
+    "godot/tests/test_object_shard_live_edit_diagnostics.gd",
+    "godot/tests/test_object_shard_live_edit_contract.gd",
+    "godot/tests/test_object_shard_m4_creative_scenes.gd",
+    "godot/tests/test_object_shard_m4_creative_constructions.gd",
+    "godot/tests/test_object_shard_m4_edit_preview_render.gd",
+    "godot/tests/test_object_shard_m4_disabled_input.gd",
+    "godot/tests/test_object_shard_m4_live_input.gd",
+    "godot/tests/test_object_shard_m4_live_tools.gd",
+    "godot/tests/test_object_shard_m4_live_stress.gd",
+    "godot/tests/test_object_shard_m4_owner_authored.gd",
+    "godot/tests/test_object_shard_m4_visible_footprints.gd",
+    "godot/tests/support/object_shard_m4_live_input_fixture.gd",
     "godot/scripts/object_shard_physics_bridge.gd", "godot/tests/test_object_shard_m4_workbench_completion.gd",
+    "godot/tests/test_object_shard_physics_bridge.gd", "godot/tests/test_object_shard_rest_contacts.gd",
     "godot/tests/test_object_shard_m4_material_only_workbench.gd",
     "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
     "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",

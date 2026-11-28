@@ -1,0 +1,52 @@
+{
+  "schema": "objectshard-live-edit-principal-review-v1",
+  "reviewed_utc": "2026-11-28T06:38:58.024109+00:00",
+  "reviewer": "Astra principal integration owner",
+  "source_scope": "Frozen implementation bytes before API publication; final hosted source identity recorded separately.",
+  "files_sha256": {
+    "native/include/cybersand/object_shard.hpp": "6dce507e2a4d3bc94c747fc7128c95fdf7c3f930211ba41a19a5a08968629b33",
+    "native/include/cybersand/object_shard_coordinator.hpp": "b8c8d49cc6ff4b19ae3067b306f7decd14e209e66ffe87e39d82a2dbf73f2134",
+    "native/include/cybersand/object_shard_mutation.hpp": "e73d1ffb38fd601f2b24f150fe38cdbb33ea480d94421373c516b6f8375ad679",
+    "native/src/object_shard.cpp": "34123096e28b665d4a8d20f2ee52393236d551c9818a103141025a9467525311",
+    "native/src/object_shard_coordinator.cpp": "fea358c03a0584aeaad2e1349e997a6f3080a1d6ae64f4d7805746258bc033f3",
+    "godot/native_extension/cyber_object_shard_lab.cpp": "839a51175e74072f86f05c61f517dc8615d2082f0f0e7d4a9b1ae3cd4cd2d698",
+    "godot/native_extension/cyber_native_cell_world.cpp": "73f5230cc4d455fa957b4c78b6bfe3d71330f81b8c8df95d06ee6e21f3ff4930",
+    "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+    "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+    "godot/scripts/simulation_worker.gd": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+    "godot/scripts/shared_workbench.gd": "c91b0a0d1d05294f14935fcb4f6f12039d71fb3f2b8ad8457c4f92768fc5bb53",
+    "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+    "godot/scripts/object_shard_live_edit_diagnostics.gd": "fd3b8271d703ce337bb612e8361c5ba9ad00646f78a1aebd30e785b82bd9ff9f",
+    ".github/workflows/objectshard-m4-completion.yml": "4e2213e84acc4b42b00f4c391931b9e4f49225ae0a765c5de79880b2145455ce",
+    "tools/objectshard/qualify_workbench.py": "9265c51cc6401c0a0cb0873ef7fc5354f5fa3e01ea9c3e784cdb136fc215302a",
+    "tools/objectshard/verify_workbench_package.py": "8964904c150a2cbcdc9bbfcc38bc2c83f1ac59b5e298151ce7257de5fe7d98e4"
+  },
+  "findings": [
+    "Exact native shape-cover capacity is checked against all selected removals before the first debit. The prepared cover remains intact through cell writes and is reused for one final connectivity/mass reconstruction.",
+    "All duplicate witnesses are validated before deduplication. Native and Main visible selection agree on occupied highest-owner foreground; uncuttable Cargo/Product cannot expose hidden terrain.",
+    "Intentional material debit is explicitly accounted. Known unexpected partial World write is read back/accounted and quarantined; transport uncertainty holds further edits without claiming rollback.",
+    "The existing Main bridge installs actual mass/COM/inertia/colliders, retains angular velocity and adjusts linear velocity for the rotated COM shift. This preserves surviving material-point velocities without claiming momentum conservation of deleted material.",
+    "Native batch receipts are bound to source targets/selection and operation-specific counts. Ordered terminal processing preserves every terrain authored edit; a greatest-edit publication fence drains applied observations without resolving unknown completion.",
+    "Current input is offered between physical intervals; no native/Rapier concurrent mutation is introduced. Freehand release drops unadmitted work, while Slice has an explicit one-shot release commit and two-second safe-admission deadline.",
+    "Bounded diagnostics retain attempts before admission, native refusal reasons, uncertainty and publication separately. Full owner/transport identity resets history; idle receipt processing has a constant-time unchanged-result path.",
+    "Independent Windows job consumes the immutable uploaded evaluator artifact by ID, executes actual launchers from fresh extractions and runs package-only tests with the packaged engine. Guarded publication waits for this separate job.",
+    "Current main RAMCACHE ancestry is retained; Strata/main shared Workbench conflicts are documented and no unrelated mergedown is performed.",
+    "Final scalar diagnostic review records effective precision radius zero, nonweather seed zero and material_filter without changing mutation or scheduling."
+  ],
+  "root_local_checks": {
+    "diagnostic_observer_checks": 27,
+    "retained_physics_bridge_checks": 28,
+    "retained_rest_contact_checks": 37,
+    "objectshard_python_tests": 85,
+    "python_platform_skips": 1,
+    "documentation": "passed after materializing five exact pinned companion files",
+    "historical_m11": "18 retained records and 28 original source hashes passed",
+    "provider_policy": "passed",
+    "diff_check": "passed"
+  },
+  "qualification_limits": [
+    "Local native development runtime uses explicit GCC14.2 drift; pinned hosted builds and extracted Windows execution are still required.",
+    "Preview fixture is parsed and independently reviewed locally; socket restrictions prevent local graphical execution.",
+    "No physical owner acceptance or automatic merge/Ready promotion."
+  ]
+}

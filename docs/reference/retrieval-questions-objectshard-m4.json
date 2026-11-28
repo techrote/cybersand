@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "Additive M4 ordinary Workbench questions; frozen M0\u2013M3 fixtures unchanged, implementation distinct from source-bound qualification and physical owner acceptance.",
+  "purpose": "Additive M4 ordinary Workbench questions; frozen M0–M3 fixtures unchanged, implementation distinct from source-bound qualification and physical owner acceptance.",
   "questions": [
     {
       "id": "OBJECTSHARDM4WORLD",
@@ -25,7 +25,7 @@
         "research/objectshard-m4-workbench.md"
       ],
       "facts": [
-        "Immutable GCR IDs1\u201348 and mutable shard IDs49\u201364 are composed from staged inputs before the transient mask is published.",
+        "Immutable GCR IDs 1–4080 and mutable shard IDs 4081–4096 are composed from staged inputs before the transient mask is published.",
         "The adapter resolves derived overlap with immutable GCR priority without transferring inventory; strict native composition rejects overlapping domains.",
         "Capacity and stale-revision refusal preserve prior occupancy; genuine partial failure quarantines the owner."
       ],
@@ -137,12 +137,80 @@
       ],
       "facts": [
         "Extract the whole verified package and run Open Workbench.cmd.",
-        "The Structures panel offers five native material recipes with ordinary support cuts and witnessed moving tools.",
+        "The Structures panel offers nine authored demonstration recipes and unified terrain/structural erasing, precision cuts, Slice, Drill, Weathering and Area ignition.",
         "Record exact source/runtime, scene and camera and physical Windows/NVIDIA displayed performance separately."
       ],
       "sources": [
         "../../tools/objectshard/package_windows_workbench.py",
         "../../godot/scripts/object_shard_workbench_scenes.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARDM4BATCH",
+      "query": "How does a large structural brush avoid rebuilding collision geometry independently for every removed cell?",
+      "canonical": [
+        "research/objectshard-m4-workbench.md"
+      ],
+      "facts": [
+        "One native transaction admits at most 4096 exact targets for one owner, validates all witnesses and deduplicates before mutation.",
+        "Exact surviving shape capacity is preflighted before debit; one changed structural owner gets one connectivity, mass and geometry rebuild.",
+        "Cross-owner strokes are deterministic sequential transactions, not whole-gesture atomic operations."
+      ],
+      "sources": [
+        "../../godot/scripts/shared_workbench.gd",
+        "../../native/src/object_shard_coordinator.cpp",
+        "../../godot/scripts/object_shard_live_edit_diagnostics.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARDM4UNIFIED",
+      "query": "Can the same ordinary eraser cut supports and then edit falling and sleeping fragments without switching tools?",
+      "canonical": [
+        "research/objectshard-m4-workbench.md"
+      ],
+      "facts": [
+        "With Structures enabled, ordinary eraser and Paint right-drag route visible terrain and owned material through the same bounded editing interaction.",
+        "Foreground owned material including visible nonstructural Cargo or Product occludes terrain and lower owners; fresh targets are acquired at safe physics boundaries.",
+        "Freehand release cancels unadmitted work; Slice release commits one bounded line with a two-second admission deadline and explicit cancellation."
+      ],
+      "sources": [
+        "../../godot/scripts/shared_workbench.gd",
+        "../../native/src/object_shard_coordinator.cpp",
+        "../../godot/scripts/object_shard_live_edit_diagnostics.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARDM4WEATHER",
+      "query": "Does seeded weathering actually remove native structural material and can repeated ignition reset combustion forever?",
+      "canonical": [
+        "research/objectshard-m4-workbench.md"
+      ],
+      "facts": [
+        "Weathering applies deterministic lattice-coordinate selection with density, seed/pass and optional material filter through authoritative native removal.",
+        "Reproducibility requires the same authored start, footprints and pass sequence; it is not deterministic live physical replay.",
+        "Area ignition selects unburnt Wood and preserves an already-burning countdown."
+      ],
+      "sources": [
+        "../../godot/scripts/shared_workbench.gd",
+        "../../native/src/object_shard_coordinator.cpp",
+        "../../godot/scripts/object_shard_live_edit_diagnostics.gd"
+      ]
+    },
+    {
+      "id": "OBJECTSHARDM4DIAGNOSTICS",
+      "query": "How can diagnostics distinguish a pointer click never admitted from an applied structural edit not yet presented?",
+      "canonical": [
+        "research/objectshard-m4-workbench.md"
+      ],
+      "facts": [
+        "The bounded always-on observer records attempts, wait/refusal, admission, authenticated receipt, displayed publication, cancellation and uncertain/partial completion separately.",
+        "Native counts and timings are retained without full target arrays; performance recording remains optional and physical display cadence is a separate claim.",
+        "World replacement resets session identity, and authored-start saves do not serialize moving damage or body poses."
+      ],
+      "sources": [
+        "../../godot/scripts/shared_workbench.gd",
+        "../../native/src/object_shard_coordinator.cpp",
+        "../../godot/scripts/object_shard_live_edit_diagnostics.gd"
       ]
     }
   ]

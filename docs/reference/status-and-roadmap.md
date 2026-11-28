@@ -4,30 +4,31 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
 
-## ObjectShard M4 ordinary Workbench — 2026-11-24
+## ObjectShard M4 live structural editing — 2026-11-28
 
-The opt-in [M4 candidate](../research/objectshard-m4-workbench.md) implements the
-ordinary native World/worker and existing Main Rapier integration in Draft/HOLD
-PR #754. It adds bounded connected architecture, composed GCR/shard occupancy,
-actual promotion and pose receipts, continuing moving Wood chemistry, source-bound
-moving edits and authored-start lifecycle controls. The
-[owner guide](../operations/objectshard-workbench-playtest.md) describes its
-ordinary construction/collapse starts. Live-state persistence is not claimed.
+The opt-in [M4 candidate](../research/objectshard-m4-workbench.md) remains on
+Draft/HOLD PR #754. The owner positively evaluated the reliability-convergence
+Windows source `b7d889b9`; later live-edit changes require their own qualification.
+The implementation now adds one-owner bounded native batches, the unified
+eraser, swept radius controls, slices, drilling, seeded weathering, area ignition
+and bounded input-to-publication diagnostics. Native World/worker authority and
+Main's existing Rapier owner are retained. The [owner guide](../operations/objectshard-workbench-playtest.md)
+covers nine authored starts; saving remains authored-start-only.
 
-Completion requires source-matched native/sanitizer and Linux/Windows ordinary
-Workbench qualification, graphical evidence and a verified Windows evaluator.
-Physical Windows/NVIDIA display rate and playfeel remain separate owner
-observations. The historical 134 Windows checks and 26–30 headless semantic
-ticks/s do not qualify these current integration changes. The earlier below-10-FPS
-owner report remains part of the performance decision. Preserve all historical
-donors and separate active programmes; no default activation or promotion is
-authorized.
+The [live-edit ledger](../audits/objectshard-m4-live-edit-20261128/README.md)
+separates implementation, local checks, hosted execution, extracted evaluator
+verification and physical owner acceptance. Existing RAMCACHE ancestry is retained.
+Mainline Strata/shared Workbench and portable-package changes need a subsequent
+focused reconciliation; no unrestricted mergedown or PUBPRES import is included.
+Impact, repair, welding, stress, M5 high-population scheduling and durable live
+body saves remain outside this mission. No merge, Ready or default promotion is
+authorized by this candidate.
 
 ## ObjectShard M0–M3 research candidates — 2026-11-22
 

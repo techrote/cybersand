@@ -115,8 +115,10 @@ This integration remains Draft/HOLD pending explicit owner acceptance.
 ## Destructible Workbench structures — Draft/HOLD candidate
 
 The opt-in [ordinary Workbench candidate](docs/operations/objectshard-workbench-playtest.md)
-adds a Structures panel, authored collapse scenes and witnessed moving-material
-edits through the ordinary native World, worker and Main Rapier space. Its
+adds a Structures panel, nine authored demonstration starts and unified erasing
+through terrain, collapse and sleeping fragments. Bounded native batches support
+precision cuts, adjustable swept erasing, slices, drilling, seeded weathering and
+area ignition through the ordinary World, worker and Main Rapier space. Its
 [M4 integration contract](docs/research/objectshard-m4-workbench.md) defines
 same-World ownership, composed occupancy, bounded structural admission, scoped
 save/reopen and separate progression/render measurements. PR #754 remains

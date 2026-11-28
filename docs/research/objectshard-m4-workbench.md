@@ -10,35 +10,35 @@ related-documents: [objectshard-001.md, objectshard-m3-preflight.md, ../operatio
 
 # ObjectShard M4 ordinary Workbench integration
 
-**Engineering-qualified reliability-convergence candidate; PR #754 remains Draft/HOLD.** This contract describes the opt-in ordinary
-Workbench implementation. The [28 November evidence](../audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
-records the current candidate's qualification state; the 25 November completion
-below remains historical evidence for its exact source. It does not change accepted-main defaults, grant
-merge or Ready authority, qualify retained production binaries, or record
-physical Windows/NVIDIA acceptance. Use the
-[ordinary Workbench playtest guide](../operations/objectshard-workbench-playtest.md)
-for the user-facing controls and evaluator. The separate Lab and M3 rehearsal
-remain independent facilities with their original evidence and limits.
-The current [physics investigation](../audits/objectshard-m4-reliability-20261128/physics.md)
-and [matched throughput evidence](../audits/objectshard-m4-reliability-20261128/throughput.md)
-record their exact source, native runtime and measurement limitations.
+**Live structural editing candidate; PR #754 remains Draft/HOLD.** This contract
+describes the opt-in ordinary Workbench implementation, including the bounded
+native editing interface introduced by OBJECTSHARD-M4-LIVE-EDIT-001. Source
+implementation, local checks, hosted qualification, extracted-package verification
+and physical owner evaluation are separate claims. The
+[live-edit evidence ledger](../audits/objectshard-m4-live-edit-20261128/README.md)
+records each completed gate and its exact identities. Use the
+[Workbench playtest guide](../operations/objectshard-workbench-playtest.md)
+for controls and the delivered evaluator. Ordinary launch defaults and the
+separate Lab/M3 facilities retain their existing scopes.
 
-## Current engineering qualification — 28 November 2026
+## Positively evaluated predecessor — 28 November 2026
 
-Application/build/package source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`
-passed [campaign 46103413203](https://github.com/techrote/cybersand/actions/runs/46103413203),
-including the native, Linux, Windows, actual renderer and clean portable
-launcher/replay gates. The guarded runtime publication is
-`d5bb74cdc8b3350ea85ba7899e46d6d0038074b8`; its exact parent is the qualified
-source and its only changes are the two native binaries and their manifests.
-The [verified evaluator](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001)
-contains the 96,694,450-byte inner archive identified by SHA-256
-`04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7`.
-The [delivery record](../audits/objectshard-m4-reliability-20261128/delivery-record.json)
-binds the complete source/runtime/package tuple and independent reviews.
-Physical owner evaluation, the eight-awake-body throughput objective and later
-Strata/shared Workbench reconciliation remain open; no merge or Ready promotion
-is authorised by these engineering results.
+The reliability-convergence application `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`
+passed [campaign 46103413203](https://github.com/techrote/cybersand/actions/runs/46103413203).
+Its guarded runtime publication is `d5bb74cdc8b3350ea85ba7899e46d6d0038074b8`;
+[the historical delivery record](../audits/objectshard-m4-reliability-20261128/delivery-record.json)
+binds its native runtime and evaluator. Those results do not qualify later edits.
+
+The owner subsequently reported good collapse, detached rendering, settling and
+precision cutting on Windows 11, Ryzen 5 5600X and TITAN RTX with Godot 4.7 ANGLE.
+The supplied [recording summary](../audits/objectshard-m4-live-edit-20261128/owner-evidence-summary.json)
+records 48.45 native ticks/s without owned bodies and 30.11 with seven owned
+bodies, alongside 59.93 renderer callbacks/s in that cohort. Seven owned does not
+mean seven simultaneously awake; the final seven bodies were sleeping. The
+42.35-tick/s one-body observation spans only two intervals and is not a robust
+benchmark. These are predecessor observations, not performance claims for the
+live-edit candidate. The authored tower recipe and erosion screenshot are
+preserved separately from live-state checkpointing.
 
 ## Historical completion decision — 25 November 2026
 
@@ -303,12 +303,118 @@ refusal; it is never re-hit against a different World cell. Successful receipts
 copy the original target and separately identify the resulting transaction and
 post-edit revisions. Geometry changes must be installed before more motion.
 
-The ordinary pointer tools expose that cell-level authority directly: a
-one-cell cursor, disabled ordinary paint radius and at most one outstanding
-moving-cell request. A held pointer supplies only its current position after
-each native/geometry barrier. Release, tool change, pan, resize and navigation
-cancel the intent. A stationary igniter does not repeatedly reset an already
-burning cell's reaction lifetime.
+## Bounded native structural transactions
+
+The worker's existing `object_shard_workbench_action` boundary accepts either an
+exact precision `target`, or `targets` containing 1–4,096 copied exact cell
+witnesses for one owner. The batch repeats the original target as `target` for
+compatibility. A terrain batch instead specifies `domain: terrain` and 1–4,096
+`terrain_cells`; its observation retains the exact displayed World revision.
+Requests never carry a mutable World, shard pointer or physics object.
+
+A structural batch validates every witness before selection or debit, including
+session, owner, body generation, pose serial, geometry/applied-physics revision,
+material revision, local index, payload, temperature and incarnation. Duplicate
+indices collapse to one cell. The optional selection contains integer
+`probability_ppm` (0–1,000,000), nonnegative `seed` and `material_filter` (-1 or a
+supported material). Deterministic hashing uses the seed and captured lattice
+coordinates; fragment cropping preserves those coordinates.
+
+Erasure preflights the exact surviving rectangle cover and revision capacities
+before the first write. It reuses that cover, performs one connectivity/mass
+reconstruction for the changed owner and publishes one geometry revision. Shape
+capacity refusal preserves all material. A no-op performs no geometry rebuild.
+A defensive failure after the first debit quarantines the owner and reports
+uncertain completion with actual known debits; it cannot be reported as a proven
+no-write refusal. Intentional removal enters the authored-destruction ledger;
+survivors keep one authoritative owner. Complete removal retires the physical
+body after the ordinary acknowledgement protocol. Disconnected islands use the
+retained child reservation/transfer protocol and its existing capacity policy.
+
+Main installs the exact new shape, mass, inertia and centre of mass before more
+motion. Angular velocity is retained and linear velocity is adjusted by the
+rotated COM displacement so surviving material points retain their velocities.
+This open-system removal does not claim conservation of the removed material's
+momentum. Changed geometry wakes sleeping bodies; a no-op does not invent a wake.
+Ignition selects unburnt Wood only, changes its authoritative combustion state
+and does not reset an already-burning countdown.
+
+Terrain batches preflight residency, exact World revision and cell witnesses,
+protected physical occupancy and visible owned material before bounded mutation
+under the same exclusive worker. They do not rebuild an owned body's geometry.
+The existing terrain installer and support discovery subsequently handle changed
+support. A facade revision is published once for an actual World change.
+
+## Unified visible editing and scheduling
+
+With Structures enabled, ordinary **Eraser**, Paint right-drag and the dedicated
+**Structural eraser** share this ownership-aware route. The same held interaction
+can remove terrain supports, cut a falling body and edit settled material.
+Structures-disabled ordinary painting keeps its existing route. Foreground
+selection matches the overlay's stable owner ordering. A visible Cargo/Product
+cell also occludes lower bodies and terrain even though it is not an eligible
+structural cut target. Empty holes expose the material behind them.
+
+The shared radius is 0–24 cells. Circular footprints and swept discs are bounded
+to 4,096 unique cells, 65,536 candidate probes and 2,048 line steps. A long freehand
+stroke advances through bounded capsules; only the current segment and current
+pointer remain retained. Release cancels all unadmitted remainder. At most one
+native edit is outstanding, with a 30-transactions/s admission ceiling. Input
+gets a fresh displayed-witness opportunity before Main acquires the next physical
+interval; it cannot mutate concurrently with Rapier. Admission, native completion,
+geometry installation and displayed publication remain separate fences.
+
+A footprint crossing owners runs in deterministic owner order with fresh visible
+acquisition at each transaction. Earlier owners can complete before a later
+refusal or cancellation: the gesture is **not cross-owner atomic**. Moving or
+fragmenting material cannot authorize stale captured witnesses. Hidden terrain
+is never selected through foreground owned material. Drill and Slice deliberately
+commit one visible owner per placement, preferring the endpoint's owner; the
+status reports any other intersected owners and asks for another placement.
+
+**Precision cut** retains the exact one-cell behavior independently of radius.
+**Drill** commits one circular hole per press. **Slice** previews a line while
+dragging and release inside the canvas commits one immutable line intent; it has
+up to two seconds to acquire a safe fresh witness. A too-large slice refuses
+before mutation. Escape, tool changes, camera changes, resize, replacement and
+new gestures cancel that unadmitted intent. Freehand release never commits a
+future stroke. Pause/resume cancels existing gestures and deliberate paused
+editing can start a fresh gesture.
+
+**Weathering** uses the same authoritative removal transaction with adjustable
+density, seed and optional selected-material filtering. Each admitted pass
+advances the recorded seed; resetting the scene or setting the seed restarts the
+sequence. It is reproducible for the same authored start, footprint and pass
+sequence, not a cosmetic shader or a claim of deterministic physical replay.
+**Area ignition** shares adjustable/swept footprints and the unchanged Wood
+combustion law. Impact, repair, addition, welding, stress and fatigue remain
+deferred.
+
+## Bounded edit diagnostics
+
+The always-on input observer retains at most 256 recent events and 32 unresolved
+observational actions, with cumulative counters and coalesced waits. It records
+actual pointer attempts before admission guards, tool/footprint/seed, admission
+waits and refusals, native receipts, requested/unique/changed/removed cells,
+changed owners, geometry rebuilds, island counts, cancellation and uncertain or
+partial outcomes. Scene identity retires previous observations. Nested target
+arrays and full publications are never retained in that history.
+
+Input-to-admission, worker queue, native service, native target/mutation/geometry,
+Main delivery and publication timings have explicit distinct scopes. Enclosing
+and nested durations must not be summed. Main's existing bridge diagnostics
+report actual geometry installation cost; the native snapshot reports committed
+fragment counts and capacity refusals separately from a cut's resulting island
+count. **Save diagnostics** exports this editing section alongside the retained
+optional performance recording. A submitted action is never labeled applied;
+an authenticated applied receipt can still await a coherent displayed publication.
+No observer acknowledgement proves physical monitor presentation.
+
+Only acknowledged ordinary terrain erasure is added to the authored-start edit
+journal, and its worst-case journal capacity is reserved before mutation. Save
+waits for pending/uncertain edits. Detached damage and live poses are not saved
+as a rigid-body checkpoint. The owner-supplied tower is an additional authored
+recipe, not a serialized live state.
 
 A successful edit receipt can reach the child Workbench before Main consumes
 the corresponding native publication. Equality of Main's two retained frames

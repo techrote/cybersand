@@ -2392,7 +2392,8 @@ func _pump_object_shard_pointer(pressed: bool = false) -> bool:
 		uploaded,runtime.visible_observation(),action,origin,{} if owner==0 else targets[0],captured,targets,terrain,selection)
 	var detail: Dictionary = {"outcome":result.outcome,"tool":mode,"domain":"terrain" if owner==0 else "structural",
 		"owner":owner,"requested_cells":values.size(),"action_id":result.get("action_id",0),
-		"radius":int(_brush.value),"seed":selection.seed,"probability_ppm":selection.probability_ppm,
+		"radius":0 if mode==CUT_MOVING_TOOL else int(_brush.value),"seed":selection.seed,"probability_ppm":selection.probability_ppm,
+		"material_filter":selection.material_filter,
 		"captured_usec":captured,"stroke_id":_object_shard_stroke_id,"sample_id":_object_shard_segment.sample_id,
 		"input_kind":_object_shard_segment.input_kind}
 	_object_shard_edit_probe.record("admitted" if result.get("ok",false) else "uncertain" if result.get("may_have_executed",false) else "refused",detail)
@@ -2456,9 +2457,10 @@ func _world_input(event: InputEvent) -> void:
 	if capture_mode>=0 and ((event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]) \
 			or (event is InputEventMouseMotion and _object_shard_pointer_tool>=0 and not _object_shard_slice_committing)):
 		var captured_cell: Vector2i = _object_shard_cell_from_local(event.position)
-		_object_shard_edit_probe.record("attempt",{"tool":capture_mode,"radius":int(_brush.value),
+		_object_shard_edit_probe.record("attempt",{"tool":capture_mode,"radius":0 if capture_mode in [CUT_MOVING_TOOL,SETTLE_MOVING_TOOL] else int(_brush.value),
 			"position":captured_cell,"input_phase":"press" if event is InputEventMouseButton else "motion",
-			"seed":int(_erosion_seed.value)+_erosion_pass,"probability_ppm":roundi(_erosion_density.value*10000.0) if capture_mode==WEATHERING_TOOL else 1000000})
+			"seed":int(_erosion_seed.value)+_erosion_pass if capture_mode==WEATHERING_TOOL else 0,"probability_ppm":roundi(_erosion_density.value*10000.0) if capture_mode==WEATHERING_TOOL else 1000000,
+			"material_filter":paint_editor.material_id if capture_mode==WEATHERING_TOOL and _erosion_material_only.button_pressed and paint_editor!=null else -1})
 	if object_shard_m4_port.enabled and not host.object_shard_m4_runtime.materials_ready():
 		# Preparation admits no paint/cut through an earlier actor or PAINT
 		# interceptor, but the retained canvas remains navigable.
@@ -2606,8 +2608,8 @@ func _process(_delta: float) -> void:
 				_object_shard_seen_result = identity
 				var native: Dictionary = terminal.get("native_receipt",{})
 				var details: Dictionary = {"outcome":terminal.get("outcome","Unknown"),"action_id":terminal.get("action_id",0)}
-				for key: String in ["requested_cells","unique_cells","eligible_cells","changed_cells","removed_cells","changed_owners","geometry_rebuilds","native_edit_ns","target_ns","mutation_ns","geometry_ns","islands_before","islands_after","transaction_id","seed","probability_ppm"]:
-					details[key] = native.get(key,0)
+				for key: String in ["requested_cells","unique_cells","eligible_cells","changed_cells","removed_cells","changed_owners","geometry_rebuilds","native_edit_ns","target_ns","mutation_ns","geometry_ns","islands_before","islands_after","transaction_id","seed","probability_ppm","material_filter"]:
+					details[key] = native.get(key,-1 if key=="material_filter" else 0)
 				details["domain"] = native.get("domain","structural")
 				for key: String in terminal.get("refusal",{}): details[key] = terminal.refusal[key]
 				for key: String in terminal.get("timing",{}): details[key] = terminal.timing[key]

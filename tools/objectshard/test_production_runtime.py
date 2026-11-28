@@ -24,13 +24,23 @@ class ObjectShardPublicationTests(unittest.TestCase):
         runner = profile.engine.runner
         cases = {c.name: c for c in runner.discover_cases()}
         aimed = {name for name, case in cases.items() if "--objectshard-m4-workbench" in case.flags}
+        # Live mouse tests compose the same mounted Main fixture through a
+        # narrowly named input adapter; it adds event delivery, not a different
+        # World owner. Keep this dependency explicit instead of accepting every
+        # script whose name happens to mention ObjectShard.
+        input_fixture = profile.engine.ROOT / "godot/tests/support/object_shard_m4_live_input_fixture.gd"
+        input_source = input_fixture.read_text(encoding="utf-8")
+        self.assertIn('preload("res://tests/support/object_shard_m4_workbench_fixture.gd")', input_source)
+        self.assertIn("f = Fixture.new(tree)", input_source)
         mounted = {path.stem for path in (profile.engine.ROOT / "godot/tests").glob("test_object_shard_m4*.gd")
-                   if "object_shard_m4_workbench_fixture.gd" in path.read_text(encoding="utf-8")}
+                   if any(helper in path.read_text(encoding="utf-8") for helper in
+                          ("object_shard_m4_workbench_fixture.gd", "object_shard_m4_live_input_fixture.gd"))}
         self.assertEqual(aimed, mounted | {"test_object_shard_m4_workbench_scene_refusal",
                                           "test_object_shard_m4_material_only_workbench"})
         for name in aimed:
             self.assertEqual(cases[name].flags[-2:], ("--", "--objectshard-m4-workbench"))
         self.assertNotIn("--objectshard-m4-workbench", cases["test_object_shard_m4_workbench_port"].flags)
+        self.assertNotIn("--objectshard-m4-workbench", cases["test_object_shard_m4_disabled_input"].flags)
         overlay = cases["test_object_shard_m4_overlay_identity"]
         self.assertTrue(overlay.requires_display)
         self.assertTrue(profile.engine.runner.architecture_context.windows_applicable(overlay))

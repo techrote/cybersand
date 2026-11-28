@@ -3,8 +3,9 @@ extends RefCounted
 # Ordinary authored Workbench starts. Every visible structure consists of native
 # material cells; the controller never animates or pre-spawns a shard body.
 const Setup = preload("res://scripts/workbench_setup.gd")
-const IDS := ["tower", "viaduct", "timber", "mixed", "stress"]
-const LABELS := ["Multi-storey tower", "Three-span viaduct", "Burning timber workshop", "Wood, brick and liquids", "Eight-body collapse"]
+const IDS := ["tower", "viaduct", "timber", "mixed", "stress", "perforated", "weathered", "editing_yard", "owner_tower"]
+const LABELS := ["Multi-storey tower", "Three-span viaduct", "Burning timber workshop", "Wood, brick and liquids", "Eight-body collapse", "Perforated brick wall", "Weathered timber shed", "Structural editing yard", "Owner's eroded tower start"]
+const OWNER_TOWER_PATH := "res://data/objectshard_owner_tower2_authored_start.json"
 const WALL: int = 1
 const WOOD: int = 7
 const BRICK: int = 43
@@ -25,13 +26,31 @@ static func manifest(id: String) -> Dictionary:
 			for x: int in range(61,454,56):
 				supports.append(Rect2i(x,372,2,92))
 				cuts.append(Rect2i(x-1,374,4,90))
+		"perforated", "weathered":
+			for x: int in [142,210]:
+				supports.append(Rect2i(x,364,4,100))
+				cuts.append(Rect2i(x-1,366,6,98))
+		"editing_yard":
+			for x: int in [142,210]:
+				supports.append(Rect2i(x,344,4,120))
+				cuts.append(Rect2i(x-1,346,6,118))
+		"owner_tower":
+			# The owner saved an authored-start sequence, including prior brush
+			# marks. It contains no rigid-body checkpoint or replayed live poses.
+			return {"id":id,"extent":Vector2i(512,512),"cut_rects":cuts,"support_rects":supports,
+				"expected_min_bodies":0,"authored_start_only":true,
+				"instructions":"The owner's saved construction and brush marks. Play discovers current disconnected material afresh; detached poses and sleeping state were not saved."}
 		_: return {}
 	return {"id":id, "extent":Vector2i(512,512), "cut_rects":cuts,"support_rects":supports,
 		"expected_min_bodies":8 if id == "stress" else 3 if id == "viaduct" else 1,
-		"instructions":"Play to attach. Erase the lower support stems for a full drop; a narrow cut leaves stumps the building can land on. Use Cut moving / Ignite moving on detached material. Pause for exact deliberate cuts. Save start reopens the authored arrangement."}
+		"instructions":"Erase the lower support stems for a full drop. Keep erasing as material falls and settles. Slice a beam, drill a hole, weather an edge or ignite Wood. Pause for deliberate cuts. Save start reopens the authored arrangement, not live body poses."}
 
 static func create(id: String, policy: PackedInt32Array) -> Dictionary:
 	if id not in IDS: return {}
+	if id == "owner_tower":
+		var authored: Variant = JSON.parse_string(FileAccess.get_file_as_string(OWNER_TOWER_PATH))
+		if not authored is Dictionary or not Setup.validate(authored).is_empty(): return {}
+		return authored.duplicate(true)
 	var data: Dictionary = Setup.fresh(policy, Vector2i(512,512))
 	var e: Array = data.edits
 	_box(e, 0, 464, 512, 48, WALL)
@@ -94,7 +113,43 @@ static func create(id: String, policy: PackedInt32Array) -> Dictionary:
 				_box(e,x,332,44,4,WOOD)
 				_box(e,x,364,44,8,WOOD)
 				_box(e,x+21,372,2,92,WALL)
+		"perforated":
+			# A single connected load-bearing wall with real circular openings.
+			# The small lower holes also give drilling a visible starting route.
+			_box(e,128,268,96,96,BRICK)
+			for y: int in [288,316,344]:
+				for x: int in [148,176,204]: _hole(e,Vector2i(x,y),7)
+			_box(e,128,360,96,4,WOOD)
+			for x: int in [142,210]: _box(e,x,364,4,100,WALL)
+		"weathered":
+			# A connected, hollow timber shed. Its pitting is ordinary authored
+			# Empty material, so every opening affects later physical geometry.
+			_box(e,128,268,96,8,WOOD)
+			_box(e,128,276,8,88,WOOD)
+			_box(e,216,276,8,88,WOOD)
+			_box(e,172,276,8,88,WOOD)
+			for y: int in [300,328,356]: _box(e,128,y,96,8,WOOD)
+			for y: int in [282,310,338]:
+				for x: int in [129,173,217]: _hole(e,Vector2i(x+2,y),1)
+			for x: int in [146,161,190,205]: _hole(e,Vector2i(x,302),1)
+			for x: int in [142,210]: _box(e,x,364,4,100,WALL)
+		"editing_yard":
+			# A supported movable panel beside a rooted ordinary wall. Cutting
+			# only the panel's feet produces both ownership domains together.
+			_box(e,128,276,96,68,WOOD)
+			_hole(e,Vector2i(152,300),8)
+			_hole(e,Vector2i(200,300),8)
+			for x: int in [142,210]: _box(e,x,344,4,120,WALL)
+			_box(e,256,332,56,8,BRICK)
+			_box(e,256,340,8,124,WOOD)
+			_box(e,304,340,8,124,WOOD)
+			_box(e,256,420,56,8,BRICK)
 	return data
 
 static func _box(edits: Array, x: int, y: int, w: int, h: int, material: int) -> void:
 	edits.append([x,y,w,h,material])
+
+static func _hole(edits: Array, center: Vector2i, radius: int) -> void:
+	for dy: int in range(-radius,radius+1):
+		var dx: int = floori(sqrt(float(radius*radius-dy*dy)))
+		_box(edits,center.x-dx,center.y+dy,dx*2+1,1,0)

@@ -722,9 +722,10 @@ and routed to their real physics owner instead of being hidden in interaction ru
 
 The [M4 ordinary Workbench contract](research/objectshard-m4-workbench.md) owns
 the Draft/HOLD same-World integration, Main-space physics, occupancy composition,
-structural material bounds, exact moving-cell edits and performance evidence
-rules. Use the [ordinary Workbench evaluator guide](operations/objectshard-workbench-playtest.md)
-for five authored collapse starts, pause/reset, scoped authored saves and the
+structural material bounds, exact and bounded multi-cell editing, visible-owner
+selection and separate performance evidence rules. Use the [ordinary Workbench evaluator guide](operations/objectshard-workbench-playtest.md)
+for nine authored demonstration starts, creative editing, pause/reset, scoped
+authored saves and the
 remaining physical Windows/NVIDIA observations. The
 [24 November source recovery](audits/2026-11-24-objectshard-m4-source-recovery.md)
 preserves all donor identities and historical negative evidence. The

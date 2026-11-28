@@ -252,6 +252,11 @@ PERSISTENT_PROFILE_CASES = frozenset({
 OBJECTSHARD_WORKBENCH_CASES = frozenset({
     "test_object_shard_m4_camera_lifecycle", "test_object_shard_m4_remote_barrel",
     "test_object_shard_m4_brush_revision",
+    "test_object_shard_m4_live_input", "test_object_shard_m4_live_tools",
+    "test_object_shard_m4_live_stress",
+    "test_object_shard_m4_creative_constructions",
+    "test_object_shard_m4_edit_preview_render",
+    "test_object_shard_m4_owner_authored",
     "test_object_shard_m4_receipt_scheduling",
     "test_object_shard_m4_workbench_completion", "test_object_shard_m4_material_only_workbench",
     "test_object_shard_m4_fragment_reabsorption", "test_object_shard_m4_lifecycle_adverse",

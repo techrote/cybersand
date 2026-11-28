@@ -29,6 +29,8 @@ from process_resources import run_observed_case
 FOCUSED = (
     ("test_object_shard_lab", "objectshard-lab-integration-test-v1"),
     ("test_object_shard_fragment_motion", "objectshard-fragment-motion-v1"),
+    ("test_object_shard_physics_bridge", "objectshard-physics-bridge-test-v1"),
+    ("test_object_shard_rest_contacts", "objectshard-rest-contact-test-v1"),
     ("test_object_shard_m4_remote_barrel", "objectshard-m4-remote-barrel-v1"),
     ("test_object_shard_m4_small_fragment_chain", "objectshard-m4-small-fragment-native-chain-v1"),
     ("test_object_shard_m4_sparse_parent_motion", "objectshard-m4-sparse-parent-motion-v1"),
@@ -37,6 +39,16 @@ FOCUSED = (
     ("test_object_shard_m4_camera_lifecycle", "objectshard-m4-camera-lifecycle-v1"),
     ("test_object_shard_m4_receipt_scheduling", "objectshard-m4-receipt-scheduling-v1"),
     ("test_object_shard_m4_latency_probe", "objectshard-m4-workbench-probe-test-v1"),
+    ("test_object_shard_live_edit_diagnostics", "objectshard-live-edit-diagnostics-test-v1"),
+    ("test_object_shard_live_edit_contract", "objectshard-live-edit-transport-contract-v1"),
+    ("test_object_shard_m4_creative_scenes", "objectshard-m4-creative-scenes-v1"),
+    ("test_object_shard_m4_creative_constructions", "objectshard-m4-creative-constructions-v1"),
+    ("test_object_shard_m4_disabled_input", "objectshard-m4-disabled-input-v1"),
+    ("test_object_shard_m4_live_input", "objectshard-m4-live-input-v1"),
+    ("test_object_shard_m4_live_tools", "objectshard-m4-live-tools-v1"),
+    ("test_object_shard_m4_live_stress", "objectshard-m4-live-stress-v1"),
+    ("test_object_shard_m4_owner_authored", "objectshard-m4-owner-authored-v1"),
+    ("test_object_shard_m4_visible_footprints", "objectshard-m4-visible-footprints-v1"),
     ("test_object_shard_m4_edit_delivery_fence", "objectshard-m4-edit-delivery-fence-v1"),
     ("test_object_shard_m4_optional_diagnostics", "objectshard-m4-optional-diagnostics-v1"),
     ("test_object_shard_m4_same_world_extension", "objectshard-m4-actual-godot-sameworld-v1"),
@@ -308,7 +320,7 @@ def qualify(args: argparse.Namespace) -> dict:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
             flags = runner.script_case_flags(name)
-            graphical_diagnostics = (args.render and name.endswith("optional_diagnostics")) or ((args.render or args.package) and name.endswith(("camera_lifecycle", "brush_revision")))
+            graphical_diagnostics = (args.render and name.endswith("optional_diagnostics")) or ((args.render or args.package) and name.endswith(("camera_lifecycle", "brush_revision", "live_input", "live_tools", "live_stress", "creative_constructions", "disabled_input", "owner_authored")))
             if name.endswith("camera_lifecycle"):
                 flags += ("--output=" + str(output / "camera-lifecycle-captures"),)
             if graphical_diagnostics:
@@ -339,10 +351,13 @@ def qualify(args: argparse.Namespace) -> dict:
             # source and clean extracted application execute these real draws.
             for name, schema in (("test_object_shard_m4_overlay_identity", "objectshard-m4-overlay-identity-v1"),
                                  ("test_object_shard_m4_material_preparation_render", "objectshard-m4-material-preparation-v1"),
+                                 ("test_object_shard_m4_edit_preview_render", "objectshard-m4-edit-preview-render-v1"),
                                  ("test_object_shard_m4_material_presentation_render", "objectshard-m4-material-presentation-v1")):
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
                          "--script", "res://tests/" + name + ".gd", "--",
                          "--output=" + str(output / "material-presentation-captures"))
+                if name == "test_object_shard_m4_edit_preview_render":
+                    flags += ("--objectshard-m4-workbench",)
                 cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), schema))
         if args.profile:
             for workload, recording in (("disabled", "off"), ("empty", "off"), ("tower", "off"),

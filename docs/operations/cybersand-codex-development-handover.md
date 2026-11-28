@@ -4,29 +4,31 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-27
+last-reviewed: 2026-11-28
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
 
-## ObjectShard M4 ordinary Workbench — 2026-11-24
+## ObjectShard M4 live structural editing — 2026-11-28
 
-Continue the owner-authorized completion on Draft/HOLD PR #754 using the
-[M4 contract](../research/objectshard-m4-workbench.md) and
-[ordinary Workbench guide](objectshard-workbench-playtest.md). The implementation
-attaches inside the ordinary native owner and worker, shares Main's real Rapier
-space, composes immutable/mutable occupancy and admits source-bound moving edits.
-The [recovered source ledger](../audits/2026-11-24-objectshard-m4-source-recovery.md)
-distinguishes principal source, the November 23 receipt-pacing experiment and
-historical Windows/semantic evidence. Preserve the donor PRs and failed results.
+Continue on Draft/HOLD PR #754 using the [M4 contract](../research/objectshard-m4-workbench.md),
+[owner guide](objectshard-workbench-playtest.md) and
+[live-edit evidence ledger](../audits/objectshard-m4-live-edit-20261128/README.md).
+The positively evaluated reliability predecessor is `b7d889b9`; its final evidence
+HEAD was `327afc58`. New editing adds bounded native transactions and unified
+input while preserving ordinary worker/native authority and Main Rapier ownership.
+The owner recording and exact authored tower recipe are retained with source and
+scope. Authored-start reconstruction is not a live rigid-body checkpoint.
 
-Qualification must exercise the ordinary Workbench, reset/reopen, active bodies,
-native material conservation and actual loaded runtime. Headless semantic ticks
-or a Lab pass cannot resolve the earlier displayed rate below 10 FPS. Keep the
-PUBPRES, Equipment, Actor Compose and RAMCACHE branches separate; document only
-the shared native/physics seams. No merge, Ready, default activation,
-compatibility bypass or unqualified runtime publication is authorized.
+Qualification must use exact source-matched native runtimes, actual Workbench
+input, retained regressions and the extracted Windows evaluator. Keep local,
+hosted, package and physical-owner claims distinct. The latest accepted main
+at mission inspection was `50e3bcb8`; RAMCACHE is in branch ancestry, while Strata
+and later shared Workbench changes require a subsequent focused reconciliation.
+No merge, Ready promotion, M5 implementation, unrelated PUBPRES import or
+unqualified runtime publication is authorized. Preserve failed runs and all
+prior exact-source evidence.
 
 ## ObjectShard M0–M3 — 2026-11-22
 

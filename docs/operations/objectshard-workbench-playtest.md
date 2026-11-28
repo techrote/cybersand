@@ -10,28 +10,24 @@ related-documents: [objectshard-m3-preflight-playtest.md, ../research/objectshar
 
 # Destructible structures in the ordinary Workbench
 
-This guide covers the **28 November reliability-convergence candidate**.
-The [qualified Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001)
-uses application source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`.
-Its inner `objectshard-workbench-evaluator.zip` is **96,694,450 bytes**, SHA-256
-`04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7`.
-The actual shipped launcher and 32 clean extracted replay cases passed, followed
-by independent archive verification. The packaged guide retains its exact
-qualified source version; this repository paragraph adds the final download identity.
-PR #754 remains **Draft/HOLD** for physical Windows 11/NVIDIA evaluation. The
-[convergence evidence](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
-separates completed qualification from work still pending; the older successful
-campaign below does not qualify later source changes. The candidate uses the ordinary
-Workbench canvas, painting, Water controls, actors and Rapier space. The
-independent ObjectShard Lab and M3 rehearsal remain available as historical
-test facilities. Their results do not qualify this integration.
-The [physics findings](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/physics.md)
-and [controlled timing comparisons](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/throughput.md)
-are available for technical review. The physical-machine checks below remain
-necessary, including the multi-body rate; the provisional eight-active-body
-performance objective has not been declared passed.
-Those technical links open the current mission evidence on GitHub. The
-packaged manifest identifies this evaluator's exact frozen source and runtime.
+This guide describes **OBJECTSHARD-M4-LIVE-EDIT-001**, the opt-in live structural
+editing candidate on PR #754. Use the complete Windows evaluator linked from
+that PR's current delivery record. Its bundled
+`objectshard-workbench-manifest.json` identifies the exact application source,
+native runtime, engine, rendering driver and file inventory. The manifest and
+qualification receipts belong to that particular archive; earlier evaluator
+results do not qualify later changes.
+
+The ordinary eraser now follows material through support removal, collapse and
+sleeping fragments. The same bounded native editing path supplies a structural
+eraser, deliberate slices, circular drilling, deterministic weathering and area
+ignition. Precision cutting remains available. The ordinary native World,
+simulation worker and Main Rapier space remain authoritative.
+
+PR #754 stays **Draft/HOLD** for physical owner evaluation and later mainline
+reconciliation. Hosted execution and extracted-package verification are separate
+from physical Windows 11/Ryzen 5600X/TITAN RTX playfeel and throughput. The
+independent ObjectShard Lab and M3 rehearsal retain their original scopes.
 
 ## Open the evaluator
 
@@ -64,7 +60,7 @@ budget must show a refusal while preserving existing ownership.
 For your own construction, use **Details** to set **New width** and **height**
 to 512 or 1,024, create the **New blank** canvas, then choose **Enable on current
 canvas**. The ordinary 2,048-cell default exceeds this candidate's supported
-extent and is visibly refused. Loading any of the five demonstration starts
+extent and is visibly refused. Loading any of the demonstration starts
 sets up a supported canvas directly.
 
 In the consolidated candidate, ground actors and their equipment can share
@@ -89,36 +85,37 @@ portable evaluator supplies one; an arbitrary retained DLL is not a substitute.
 
 ## Short owner evaluation route
 
-Start with the exact delivered archive and keep recording **off** for the first
-pass. The normal **Open Workbench.cmd** opens **Multi-storey tower**. In the top
-Workbench toolbar, **Structures…** is between **Art batches** and **Batch Lab…**.
-The camera selector is beside **Water Lab…**, with **−** and **+** immediately
-after it. The first selector on the next row chooses **Paint**, actor tools or
-the moving-material tools. The compact drawing row contains the drawing-tool
-selector, material selector, **Radius**, map name, **Save start [Ctrl+S]** and
-**Load start**.
+Start with the delivered archive and keep performance recording **off** for the
+first pass. **Open Workbench.cmd** opens **Multi-storey tower**. The first mode
+selector on the lower toolbar contains **Paint** and the structural tools. The
+ordinary drawing row supplies **Eraser**, material, **Radius** and **Save start**.
+**Structures…** contains the demonstration starts and weathering controls.
 
-| Check | Exact controls and action | Expected visible result |
+| Step | Action | Expected result |
 | --- | --- | --- |
-| Tower and reference barrel | Choose **Structures… → Multi-storey tower**. Close the panel if needed. Use **Play / Pause [P]** beside **Pilot**. Keep the next-row mode on **Paint**, choose **Eraser** in the drawing row or press **E**, and remove the two narrow support stems below the tower's bottom floor. | The tower at the left detaches and falls. The separate barrel on the far right should remain on its floor until an actual contact reaches it. A small notch can leave stumps that legitimately support the tower; remove more of the lower stems for a full drop. |
-| Repeated small fragments | In the next-row mode selector choose **Cut moving**. Click a visible wooden edge, then hold and move slowly across another edge. Pause for a precise cut if needed. | One visible cell is targeted at a time; the cursor follows that cell. Geometry changes and detached pieces remain physical. Short transaction waits are normal. Ordinary recoverable cuts should not leave the World permanently Held. |
-| Active-body speed | Resume with **Play / Pause [P]**, leave the camera fixed and watch a fresh fall with recording off. Repeat the same view with timing recording on. | Visible collapse and ordinary material simulation continue. The status line below the controls reads **structures Running** with the admitted body count. A smooth window alone is not evidence of fast semantic progression; retain a diagnostic comparison if the fall remains slow. |
-| Camera during collapse | Over the World, wheel to zoom and middle-drag to pan. Select **Overview** in the top-row camera selector to return to the whole canvas. Resize the window, then repeat while paused. | Terrain, structural textures and actor positions remain aligned. Structures stay inside the aspect-fitted World rectangle. A Held scene, if one occurs, must remain inspectable with the same controls. |
-| Detached appearance | Zoom in before cutting, then inspect the same brick and timber after release and rotation. Use **Pause** to compare a stable view. | Detached brick, timber, concrete and metal use the ordinary material finishes. Patterns stay attached to the captured material coordinates as the body rotates, with genuine empty holes. Cuts and burning update the material view after acknowledgement. |
-| Eight-body demonstration | Choose **Structures… → Eight-body collapse**, then **Play**. Erase each narrow support underneath the eight frames. | The status body count grows toward eight, the frames fall independently, and camera controls remain usable. The existing 16-body budget still applies; this is not a larger-budget stress mode. |
-| Diagnostic recording/export | Open **Structures…**. Below the five scene buttons turn on **Record performance timings (optional)**. Play for about 15 seconds, turn it off, then click **Save diagnostics** immediately below. | The panel's message beneath the buttons displays the saved JSON path. **Open diagnostics folder**, beside **Save diagnostics**, opens it. Save even with recording off after a refusal: the file still includes current ownership and refusal details. |
-| Authored save/reopen | Before cutting, choose a distinctive map name in the drawing row and click **Save start [Ctrl+S]** next to it. Close with **Menu [F2]**, reopen the Workbench, enter the same name and click **Load start** beside Save. | The authored construction and ordinary brush edits reopen. Moving poses, moving-cell cuts and evolved chemistry are not a live checkpoint. **Restore start**, next to **Reset selected [R]**, rebuilds the current authored recipe; choose the original Structures scene button to reload an intact demonstration. |
+| 1 | Load **Multi-storey tower**, then press **Play [P]**. | Native material, actors and physical structures share the ordinary Workbench. |
+| 2 | Choose ordinary **Eraser** or **Structural eraser**; set Radius around 6–10. Right-drag in Paint also erases. | The circular preview shows the removal width. Radius zero targets one cell. |
+| 3 | Remove the two narrow support stems below the bottom floor. | The building detaches and falls. A narrow notch can leave real supporting stumps; remove more stem for a full drop. |
+| 4 | Continue the same erasing interaction on the falling structure. | The brush edits visible owned material with fresh native witnesses. Bounded segments avoid a native reconstruction for every cell. |
+| 5 | Let fragments settle, then cut their edges. | Sleeping material remains editable and changed geometry wakes the affected body as needed. No Settle conversion is required. |
+| 6 | Choose **Drill**, set Radius 4–12 and click a wall. | One deliberate circular placement removes real structural material. |
+| 7 | Choose **Slice**, drag across a beam and release inside the canvas. | The preview becomes one committed bounded cut. Escape cancels before admission. |
+| 8 | Choose **Weathering**. In **Structures…**, set density and seed; hold briefly at an edge. | Sparse real material is removed. Continued application advances the recorded seed pass to create progressively worn material. |
+| 9 | Choose **Area ignition** and apply a bounded brush to Wood. | Several eligible cells ignite. Existing burning countdowns continue without being restarted by another application. |
+| 10 | Zoom with the wheel, pan with middle-drag, resize, pause and resume. | Targeting and material appearance stay aligned. Navigation or pause transitions cancel the previous held stroke. |
+| 11 | Enable **Record performance timings**, perform sustained edits, stop recording and choose **Save diagnostics**. | The JSON includes separate semantic/render timing, bounded input history and native completion outcomes. |
+| 12 | Name the construction and use **Save start [Ctrl+S]**. Reopen it using **Load start**. | The authored construction and acknowledged ordinary terrain cuts are reconstructed. Live body poses and moving-material damage are not a checkpoint. |
 
-The status line presents **Starting**, **Running**, **Paused/Pausing**,
-**Editing / rebuilding**, and an explicit **Waiting for native transaction**
-only for a sustained receipt wait. Internal phases remain in the tooltip and
-exported diagnostics. **Held** is placed first in the status line, with its
-reason and the visible route **Structures → Save diagnostics; Restore start**.
-A capacity refusal still preserves the owned material and remains explicit.
-If the reason is **MaterialPreparationFailed**, save diagnostics, close the
-application and start it again. That preparation failure names the restart
-route in the status line; **Restore start** does not restart process-local
-shader preparation.
+A submitted request is not reported as an applied edit. The status distinguishes
+waiting for a safe opportunity, admitted work, native completion and pending
+presentation. **Held** shows its reason and the recovery route
+**Structures → Save diagnostics; Restore start**. Capacity and stale-target
+refusals preserve the existing owner rather than implying a successful cut.
+
+The first material admission may show **Preparing structure materials…**. Wait
+for preparation to finish. If it reports **MaterialPreparationFailed**, save
+diagnostics and restart the application; Restore start does not restart the
+process-local shader preparation.
 
 ## First collapse
 
@@ -131,16 +128,34 @@ transferred into coherent physical bodies only after genuine geometry and
 mass installation receipts. The falling material should keep its identity,
 interact with the terrain, and remain available for further edits.
 
-In the first mode selector, choose **Cut moving** for a witnessed edit of a
-moving structure, or **Ignite moving** to ignite supported combustible
-material. These tools mark
-one visible cell, and the ordinary paint radius is disabled. Hold and move
-slowly to make successive edits; each edit waits for the preceding native and
-geometry receipts. Releasing the button or switching tools cancels the held
-intent. No interpolated stroke is stored for later replay. Pause for a
-deliberate cut when a rapidly moving target is difficult to select. If the
-observed target changed before execution, a stale-target refusal is a safe
-outcome; it must not erase unrelated native terrain.
+Continue erasing when the structure becomes a body. A foreground body blocks
+ordinary material behind it: the tool does not dig through visible structural,
+cargo or product pixels into hidden terrain. Where bodies overlap, the visible
+front owner wins for each sampled cell; real holes reveal lower material.
+
+| Tool | Interaction and controls | Material result |
+| --- | --- | --- |
+| **Precision cut** | Click or hold; the radius control is disabled for this mode. | One exact visible structural cell per transaction, preserving the predecessor's fine weathering use. |
+| **Structural eraser** | Hold and drag; Radius 0–24, or **[** and **]**. Ordinary Eraser and Paint right-drag use this path when Structures is enabled. | Circular or swept removal through ordinary terrain and structural owners. Long movements are serviced as bounded capsules while the pointer remains held. |
+| **Slice** | Drag a line and release inside the canvas. Radius sets its width; Escape cancels. | One deliberate bounded owner cut, admitted at a safe boundary. An oversized slice refuses with a request to shorten or narrow it. |
+| **Weathering** | Hold a circular brush. **Structures…** supplies removal percentage, seed and **Only selected material**. | Native deterministic selection removes a sparse subset. Effective seed/pass and counts appear in diagnostics. A fresh authored scene resets the pass. |
+| **Drill** | Click at the center of the intended opening. Radius sets the hole size. | One circular owner placement; unlike freehand erase, holding does not drag a trail of holes. |
+| **Area ignition** | Hold or drag with adjustable Radius. | Eligible unburning Wood ignites through the native material law; existing countdowns are not reset. |
+
+Freehand brushes may intersect several owners. Each admitted native transaction
+is atomic for one owner and contains at most **4,096 requested cells**. A held
+brush services affected domains in a deterministic bounded sequence, acquiring
+new witnesses after each publication. The entire gesture is **not** an atomic
+cross-owner operation. Slice and Drill deliberately select one owner per
+placement; the status reports other intersected owners so another placement can
+address them.
+
+Release terminates every unadmitted freehand remainder. A Slice release is its
+explicit one-shot commit: it may wait briefly for the current physical interval
+to finish, but later pointer movement does not extend that committed line.
+Escape, a tool change, camera movement, pause/resume or scene replacement cancels
+future admission. Already admitted native work still completes its authoritative
+receipt and publication. A fresh scene never receives a previous scene's stroke.
 
 Ordinary painting remains available around the moving structures. Use Sand,
 Water and Fire to observe coupled behavior. Switching tools or camera modes
@@ -160,7 +175,7 @@ explicit conversion snaps its origin to the nearest cell. A moving, oblique,
 overlapping or otherwise busy body is refused and stays physically owned.
 You can paint or erase the returned cells with the ordinary tools.
 
-## Five demonstration starts
+## Demonstration starts
 
 | Start | What to try | What to observe |
 | --- | --- | --- |
@@ -169,6 +184,10 @@ You can paint or erase the returned cells with the ordinary tools.
 | Burning timber workshop | Ignite timber, release it, and keep playing. | Combustion continues under moving material ownership; products and geometry changes are visible. |
 | Wood, brick and liquids | Release the mixed structure into Sand and Water, then introduce Fire. | Structural materials stay in coherent bodies while surrounding materials retain their native simulation. |
 | Eight-body collapse | Release the supports and alternate overview/follow camera. | Multiple active bodies, bounded admission, continuing progression and usable authoring. |
+| Perforated brick wall | Enlarge its real circular openings, slice between them, then remove its supports. | Drilled holes and surviving webs determine native connectivity. |
+| Weathered timber shed | Add sparse erosion to edges and joints before burning or release. | Existing pits and new weathering are Empty material, so they change geometry and fracture behavior. |
+| Structural editing yard | Release the supported panel beside the rooted wing. | Ordinary terrain and detached material coexist, with one eraser and visible foreground selection. |
+| Owner's eroded tower start | Reopen the owner's supplied authored construction and continue editing. | The saved brush marks are preserved. Play discovers bodies afresh; original live poses, sleep state and chemistry were not serialized. |
 
 These starts are ordinary material-cell recipes. They do not pre-spawn
 animated shard bodies or substitute a scripted visual collapse for physics.
@@ -204,13 +223,18 @@ still be displayed poorly. The candidate's diagnostics separate:
 - Main callback and physics work durations.
 - Renderer post-draw callback intervals, grouped by body count, pause state and
   camera mode.
-- Native/Rapier ownership, geometry and moving-cell receipt outcomes.
+- Native/Rapier ownership, geometry and material transaction outcomes.
+- Pointer attempts, tools, radius, density, effective seed, admission waits and cancellations.
+- Requested, unique, eligible, changed and removed cells, plus owner rebuild counts.
+- Native receipts and presentation fences, including refusal, no eligible material,
+  incomplete multi-owner gestures and uncertain completion.
 
 Renderer callbacks establish that the engine submitted work; they do not prove
 the exact frame displayed by the NVIDIA driver. Headless runs cannot establish
-displayed FPS. The owner's previous diagnostic measured approximately 17–24
-native semantic ticks per second before the protective halt. A headless 60 Hz
-callback cannot establish that physical-machine performance has improved.
+displayed FPS. A smooth renderer callback cadence does not establish the same native semantic
+rate. Count all owned bodies separately from simultaneously awake bodies, and
+retain each measurement window; a brief one-body observation is not a robust
+performance benchmark.
 
 Performance recording is **off by default**, including in the portable
 evaluator. Ordinary play retains the full native, Rapier, chemistry and
@@ -225,7 +249,9 @@ normal portable-evaluator control.
 
 **Save diagnostics** writes a local JSON snapshot of the current scene, camera,
 source identity, renderer and native/physics receipts, together with the
-recorded timings when available. Saving while recording is off remains useful
+recorded timings when available. Editing retains at most 256 recent events with
+cumulative counters even when performance recording is off. Every fresh scene
+has a separate identity; no old recording is treated as current execution. Saving while recording is off remains useful
 for ownership/refusal diagnosis; an empty timing section means no recording was
 made. No files are written automatically. The panel shows the saved path;
 **Open diagnostics folder** opens that directory.
@@ -278,12 +304,21 @@ This guide itself grants no merge, Ready or default-promotion authority.
 
 ## Historical evaluator and evidence
 
-The owner evaluated the later [Windows artifact 15176676582](https://github.com/techrote/cybersand/actions/runs/45944204842/artifacts/15176676582),
+The [28 November reliability-convergence evaluator](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001)
+used application source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`.
+Its inner archive was 96,694,450 bytes, SHA-256
+`04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7`.
+The owner positively evaluated that baseline and demonstrated attractive fine
+erosion with its precision tool. That archive predates the batched tools in this
+guide and must not be presented as their qualified evaluator.
+
+
+An earlier owner evaluation used [Windows artifact 15176676582](https://github.com/techrote/cybersand/actions/runs/45944204842/artifacts/15176676582),
 with application source `efe3bc19c68a9b9e292821ef28b735caec538915` and observed
 PR head `1ec3f214662f7d5a0a38ff727b684c15b41c067b`. The physical motion halt,
 barrel/camera observations and measured 17–24 semantic ticks/s from that
-evaluation motivated this convergence mission. The older completion below is
-retained as historical engineering evidence, not as qualification of this fix.
+evaluation motivated the predecessor reliability-convergence mission. The older
+completion below remains historical engineering evidence for its exact source.
 
 The [frozen November 25 Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170)
 contains **objectshard-workbench-evaluator.zip**, **93,388,322 bytes**, SHA-256
@@ -301,7 +336,7 @@ cargo transfer. See the
 [final engineering decision](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/2026-11-25-objectshard-m4-final-decision.md)
 and [complete performance analysis](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-recovery-20261125/final-performance-5f.md).
 These results do not establish physical NVIDIA presentation speed.
-The packaged guide remains its exact qualified source version; this repository
-page records that delivery. For a newer extracted candidate, the included
+The November 25 package retains its own source-versioned guide. For a newer
+extracted candidate, the included
 `objectshard-workbench-manifest.json` identifies its own source, dependencies
 and file hashes.
