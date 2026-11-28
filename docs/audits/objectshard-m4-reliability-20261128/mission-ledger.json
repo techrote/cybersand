@@ -111,6 +111,19 @@
       "cold_preparation_seconds": 43.458,
       "first_subsequent_capture_ms": 820.9,
       "timing_scope": "Frame wait/readback included; not pure compilation or physical owner hardware."
+    },
+    {
+      "kind": "frozen source release campaign",
+      "source": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+      "run": 46099370014,
+      "status": "FAILED native gate; independent platform lanes continue",
+      "presentation_linux": "PASS",
+      "presentation_windows": "PASS",
+      "linux_workbench": "headless physical/regression/profile matrix PASS; graphical running",
+      "windows_native": "PASS source-matched build; DLL execution qualification ongoing",
+      "native_sanitizers": "FAIL: two obsolete single-cell .201-radian refusal assertions in external_fire; chemistry checks did not fail",
+      "package": "not yet available",
+      "publication": "hard-blocked by failed native dependency; exact-ref lease revoked when next source is published"
     }
   ],
   "delivery": null,
@@ -158,14 +171,14 @@
     "last_main_observed_utc": "2026-11-28T02:40:59Z",
     "last_main_observed": "9920e7a7369f24e2818313c007cc33616c1a6a83"
   },
-  "phase": "Source freeze for final guarded native publication and Windows qualification",
+  "phase": "Refreeze after geometry-contract test correction; production inputs unchanged",
   "current_source_note": "All demonstrated local correctness defects corrected and independently reviewed. Final native publication, combined graphical/source qualification and extracted Windows delivery remain pending.",
   "throughput_exploratory": {
     "tower_clean_pairs": "17.96/19.47 ->53.30/55.15 semantic ticks/s; full6s1/1awake cohort",
     "eight_clean_pairs": "15.76/14.96 ->29.36/29.75 semantic ticks/s in actual8/8awake cohorts; candidate active portions~3s, not fullwindow",
     "limitation": "Local shared execution host/headless60callbackcap; physical Windows not measured; fullmatrix and finalcorrectedsource pending"
   },
-  "last_updated_utc": "2026-11-28T02:40:59Z",
+  "last_updated_utc": "2026-11-28T03:08:26Z",
   "performance_final_local": {
     "paired_runs": 52,
     "measurement_source": "19485bbb5e474f0d4d90c40617a36b3120552f5b",
@@ -191,6 +204,35 @@
     "sequence": 4,
     "mode": "guarded source-leased Linux/Windows publication",
     "ref_rule": "Hold integration ref unchanged after triggering until publisher terminal",
-    "status": "prepared; not yet dispatched"
+    "status": "sequence4 unconsumed; repaired source dispatch prepared"
+  },
+  "frozen_source": {
+    "commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+    "tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+    "run": 46099370014,
+    "url": "https://github.com/techrote/cybersand/actions/runs/46099370014",
+    "ref_frozen": false
+  },
+  "publication_lease_decision": {
+    "previous_source": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+    "previous_run": 46099370014,
+    "reason": "Native dependency failed; publish-runtime requires its success with no always bypass. Existing exact-source guard and force-with-lease(ref:54a) additionally reject any stale write. Root may safely advance to repaired test source without waiting for unrelated running lanes.",
+    "review": "Release specialist verified workflow and producer lease; source/runtime protections unchanged."
+  },
+  "test_contract_repair": {
+    "production_changes": [],
+    "test": "native/tests/test_object_shard_external_fire.cpp",
+    "correction": "Retain Unsupported and unchanged pose/serial assertions above actual geometry-specific angular limit; add fixed .201 accepted pose/serial and unchanged semantic time controls.",
+    "local_sanitizer_results": {
+      "external_fire_checks": 3689,
+      "contact_coordinator_checks": 87235,
+      "failures": 0
+    },
+    "review": "Independent physics, throughput and integration review; original failed run retained."
+  },
+  "next_campaign": {
+    "scope": "Complete pinned native, Linux/Windows Workbench, source/extracted graphical/package qualification and guarded publication",
+    "early_gui_lane": "Additional parallel exact-source Windows native camera/brush lane; full matrices remain mandatory; publisher also requires early lane success",
+    "request_sequence": 4
   }
 }

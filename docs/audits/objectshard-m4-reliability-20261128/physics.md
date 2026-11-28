@@ -268,3 +268,34 @@ gates. Large empty storage still costs native scans and retained memory, but
 does not by itself constrain physical motion. Later M5 experiments may compact
 or hierarchically represent that storage only while preserving carrier identity,
 curved contact proofs, geometry barriers and the single semantic clock.
+
+## Hosted native angular-fixture reconciliation
+
+The first final-source campaign, `46099370014` at `54a7719e`, exposed two
+remaining historical assertions in the external-Fire test: its singleton Wood
+body still expected a `0.201`-radian pose to be unsupported and unchanged.
+That premise conflicts with the corrected occupied-geometry contract. This
+was an assertion failure, with no sanitizer diagnostic or Fire lifecycle
+failure. The same hosted run passed storage (8,271), contact (81,255),
+coordinator (5,980), admission (28,092), chemistry (4,472) and all 192 existing
+ordinary-World test cases under ASan/UBSan. The complete native gate correctly
+failed; its later benchmarks and material-unit/parity stages did not execute.
+
+Test-only commits `ae90072ad` and `f5bd3aec4` preserve the angular rejection and
+unchanged pose/serial checks just beyond the actual geometry-specific ceiling.
+They add a fixed `0.201` positive control with exact accepted rotation and
+pose-acknowledgement identity, no semantic time, and the existing duplicate
+receipt remaining Stale. Independent numerical bounds, large/slender `0.20`
+refusals, chemistry, Fire-opportunity and quantity assertions are unchanged.
+The throughput specialist independently reviewed this correction. A bounded
+scan found no other obsolete singleton angular-refusal premise.
+
+The final repaired external-Fire suite passes **3,689 checks** with local
+ASan/UBSan. A separate requested contact/coordinator consistency replay passes
+**87,235 checks** with the same sanitizers. All 126 production/native inputs
+remain identical to the failed hosted source and the final native build;
+no application or native runtime correction was needed. The failed hosted
+artifact and exact assertions, initial repaired replay (3,688 checks), final
+ACK-identity replay and source hashes are preserved in
+`physics-external-fire-fixture-repair.json`. These focused passes do not replace
+the complete repaired-source hosted qualification.

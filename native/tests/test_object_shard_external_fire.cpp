@@ -1,4 +1,5 @@
 #include "cybersand/object_shard_coordinator.hpp"
+#include "cybersand/object_shard_contact.hpp"
 #include "cybersand/material_lifecycle.hpp"
 #include <array>
 #include <cstdio>
@@ -176,9 +177,20 @@ void stale_target_and_motion_rejection() {
     CHECK(moving.accept_motion(sample).outcome==Outcome::Unsupported);
     CHECK(moving.world().completed_tick_index()==tick);
     CHECK(moving.snapshot().bodies[0].pose.x==original.x);
-    sample=poses(moving);sample[0].rotation+=.201;
+    const auto domain=contact::motion_domain(*moving.registry().find(moving_h));
+    const auto envelope=contact::motion_envelope(domain);
+    CHECK(domain.valid && envelope.max_rotation>.201);
+    // Keep the absolute angular refusal, now at the occupied-geometry bound.
+    // A one-cell offcut's ordinary .201-radian motion is no longer corruption.
+    sample=poses(moving);sample[0].rotation+=envelope.max_rotation+.001;
     CHECK(moving.accept_motion(sample).outcome==Outcome::Unsupported);
     CHECK(moving.snapshot().bodies[0].pose.rotation==original.rotation);
+    CHECK(moving.snapshot().bodies[0].pose.pose_serial==original.pose_serial);
+    sample=poses(moving);sample[0].rotation+=.201;
+    CHECK(moving.accept_motion(sample).outcome==Outcome::Accepted);
+    CHECK(moving.snapshot().bodies[0].pose.rotation==sample[0].rotation);
+    CHECK(moving.snapshot().bodies[0].pose.pose_serial==sample[0].pose_serial);
+    CHECK(moving.world().completed_tick_index()==tick);
     sample=poses(moving);CHECK(moving.accept_motion(sample).outcome==Outcome::Accepted);
     CHECK(moving.accept_motion(sample).outcome==Outcome::Stale);
     CHECK(moving.world().completed_tick_index()==tick);
