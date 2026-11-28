@@ -7,6 +7,8 @@ const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const ObjectShardM4Port = preload("res://scripts/object_shard_m4_workbench_port.gd")
 const ObjectShardScenes = preload("res://scripts/object_shard_workbench_scenes.gd")
+const ObjectShardFootprint = preload("res://scripts/object_shard_live_edit_footprint.gd")
+const ObjectShardEditDiagnostics = preload("res://scripts/object_shard_live_edit_diagnostics.gd")
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
 const Fleet = Setup.Fleet
 const ActorCatalog = Setup.ActorCatalog
@@ -15,9 +17,11 @@ const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const RESPONSE_LABELS := ["LA-SA · selective arrivals","LA · all events","LA · events off","RFT · fixed 20"]
 const ZOOMS := [Vector2i(240,135),Vector2i(480,270),Vector2i(960,540)]
 const TOOL_NAMES := ["Paint","Place body","Select body","Move selected","Place source","Grab physical part","Place / rotate (paused)"]
-enum { CUT_MOVING_TOOL = 7, IGNITE_MOVING_TOOL, SETTLE_MOVING_TOOL }
-const MOVING_EDIT_TOOLS := [CUT_MOVING_TOOL, IGNITE_MOVING_TOOL]
-const MOVING_TOOLS := [CUT_MOVING_TOOL, IGNITE_MOVING_TOOL, SETTLE_MOVING_TOOL]
+enum { CUT_MOVING_TOOL = 7, IGNITE_MOVING_TOOL, SETTLE_MOVING_TOOL,
+	STRUCTURAL_ERASER_TOOL, SLICE_TOOL, WEATHERING_TOOL, DRILL_TOOL }
+const MOVING_EDIT_TOOLS := [CUT_MOVING_TOOL, IGNITE_MOVING_TOOL, STRUCTURAL_ERASER_TOOL, SLICE_TOOL, WEATHERING_TOOL, DRILL_TOOL]
+const MOVING_TOOLS := [CUT_MOVING_TOOL, IGNITE_MOVING_TOOL, SETTLE_MOVING_TOOL, STRUCTURAL_ERASER_TOOL, SLICE_TOOL, WEATHERING_TOOL, DRILL_TOOL]
+const STRUCTURAL_TOOL_NAMES := ["Precision cut", "Area ignition", "Settle into canvas", "Structural eraser", "Slice", "Weathering", "Drill"]
 var actor_interaction: RefCounted
 var _pending_sandbox_demo := ""
 var _generated_dialog := preload("res://scripts/workbench_generator_dialog.gd").new()
@@ -60,6 +64,28 @@ var _object_shard_pointer_local: Vector2 = Vector2(-1,-1)
 var _object_shard_pointer_attempt: Array = []
 var _object_shard_tool_mode: int = -1
 var _object_shard_activity_until_ms: int = 0
+var _object_shard_edit_probe = ObjectShardEditDiagnostics.new()
+var _object_shard_diagnostic_identity: Dictionary = {}
+var _object_shard_pointer_source_tool: int = -1
+var _object_shard_pointer_capture_usec: int = 0
+var _object_shard_consumed_capture_usec: int = 0
+var _object_shard_stroke_id: int = 0
+var _object_shard_sample_id: int = 0
+var _object_shard_pointer_start: Vector2i = Vector2i(-1,-1)
+var _object_shard_pointer_previous: Vector2i = Vector2i(-1,-1)
+var _object_shard_pointer_camera: Array = []
+var _object_shard_segment: Dictionary = {}
+var _object_shard_slice_committing: bool = false
+var _object_shard_slice_commit_usec: int = 0
+var _object_shard_wait_since: int = 0
+var _object_shard_wait_reason: String = ""
+var _object_shard_last_admission_usec: int = 0
+var _object_shard_last_presented_action: int = 0
+var _object_shard_last_transport_hold: String = ""
+var _erosion_density := SpinBox.new()
+var _erosion_seed := SpinBox.new()
+var _erosion_material_only := CheckButton.new()
+var _erosion_pass: int = 0
 var applied: Dictionary = {}
 var pilot_slot := -1
 var _pilot_instance_id := 0
@@ -239,6 +265,11 @@ func _spin(row: Control, caption: String, field: SpinBox, low: float, high: floa
 
 func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host = controller
+	_erosion_density.min_value = 1
+	_erosion_density.max_value = 100
+	_erosion_density.value = 25
+	_erosion_seed.max_value = 1000000000
+	_erosion_seed.value = 4242
 	object_shard_m4_port.enabled = not host.has_method(&"persistent_operation_allowed") and "--objectshard-m4-workbench" in OS.get_cmdline_user_args()
 	# No previous Art conversation or profile session is read at game startup.
 	_art_history_session = {"state":"no_session","source":"","error":""}
@@ -287,11 +318,7 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		_cancel()
 		_update_object_shard_tool_controls())
 	if object_shard_m4_port.enabled:
-		# These tools require an exact already-displayed native target witness.
-		# Until the same-World adapter and overlay exist, they visibly refuse.
-		_tool.add_item("Cut moving")
-		_tool.add_item("Ignite moving")
-		_tool.add_item("Settle into canvas")
+		for label: String in STRUCTURAL_TOOL_NAMES: _tool.add_item(label)
 	var names: Array = []
 	_model_ids = _compact_model_ids()
 	for id: String in _model_ids: names.append(ActorCatalog.entry(id).get("name",id))
@@ -312,7 +339,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 		elif not applied.is_empty(): applied.material = Setup.MATERIALS[i])
 	_spin(row,"Radius",_brush,2,24,1,8)
 	_brush.value_changed.connect(func(value: float) -> void:
-		if not applied.is_empty(): applied.brush = maxi(2,int(value)))
+		if not applied.is_empty(): applied.brush = maxi(2,int(value))
+		_cancel_object_shard_pointer())
 	_button(row,"Source at X/Y",func() -> void: place_source(Vector2i(entered_position())))
 	_button(row,"Burst [B]",burst)
 	_stream.text = "Stream ≤600 ticks"
@@ -995,6 +1023,8 @@ func _poll_flatten() -> void:
 		str(_material_baseline.extent),_material_baseline.cells.size()]
 
 func _exit_tree() -> void:
+	for control: Control in [_erosion_density,_erosion_seed,_erosion_material_only]:
+		if is_instance_valid(control) and control.get_parent()==null: control.free()
 	object_shard_m4_port.retire("WorkbenchExit")
 	if actor_interaction != null: actor_interaction.cancel("closed")
 	cancel_flatten("Flatten cancelled during shutdown; no baseline was adopted.")
@@ -1098,6 +1128,11 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water,authoring_patch)
 	if not ok: return refuse(host.microscenario_error)
 	object_shard_m4_port.retire("WorldReplacement")
+	_cancel_object_shard_pointer("WorldReplacement")
+	_object_shard_diagnostic_identity.clear()
+	_erosion_pass = 0
+	_object_shard_last_transport_hold = ""
+	_object_shard_edit_probe.reset({"port_generation":object_shard_m4_port.generation})
 	if host.has_method("object_shard_m4_latency_report") and host.object_shard_m4_probe.enabled:
 		host.object_shard_m4_probe.retire("WorkbenchReplacement")
 	_pending_staged_liquid_selection = retained_selection
@@ -1605,6 +1640,8 @@ func _save_block_reason() -> String:
 		return "No acknowledged authored start is available to save."
 	if not host.pending_microscenario_apply.is_empty() or step_pending or is_flatten_pending():
 		return "Wait for the current owner transaction before saving."
+	if object_shard_m4_port.enabled and (object_shard_m4_port.pending_count()>0 or not object_shard_m4_port.held_reason().is_empty()):
+		return "Wait for acknowledged structural edit completion before saving the authored start."
 	# Admission is not completion. Ordinary brush commands and both editors
 	# retain the shared owner boundary until native work/receipts are settled.
 	var edits: Dictionary = host.simulation_worker.paint_state()
@@ -1845,6 +1882,7 @@ func stream(enabled: bool) -> bool:
 
 func _set_view(origin: Vector2, size: Vector2i) -> void:
 	if applied.is_empty(): return
+	if origin!=host.camera_origin or size!=host.current_view_size: _cancel_object_shard_pointer("CameraChanged")
 	var extent := Setup.extent_of(applied)
 	host.current_view_size = size.min(extent)
 	host.camera_origin = origin.clamp(Vector2.ZERO,Vector2(extent-host.current_view_size))
@@ -1876,7 +1914,20 @@ func _input(event: InputEvent) -> void:
 	# even when its prior native receipt is still pending.
 	if event is InputEventMouseButton and not event.pressed \
 		and event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]:
-		_cancel_object_shard_pointer()
+		# A Slice has an explicit release-to-commit route inside the canvas.
+		# Other releases retire every unadmitted capsule, including off-canvas.
+		if _object_shard_pointer_tool != SLICE_TOOL or host == null \
+				or not host.world_view.get_global_rect().has_point(event.position):
+			_cancel_object_shard_pointer("PointerReleased")
+			_drag_button = 0
+	if event is InputEventKey and event.pressed and not event.echo and object_shard_m4_port.enabled:
+		if event.keycode==KEY_ESCAPE:
+			_cancel_object_shard_pointer("Cancelled")
+			_drag_button = 0
+		elif event.keycode in [KEY_BRACKETLEFT,KEY_BRACKETRIGHT] and _tool.selected in MOVING_TOOLS:
+			_brush.value = clampi(int(_brush.value)+(-1 if event.keycode==KEY_BRACKETLEFT else 1),0,24)
+			get_viewport().set_input_as_handled()
+			return
 	if actor_interaction != null and actor_interaction.global_input(event):
 		get_viewport().set_input_as_handled()
 		return
@@ -1932,9 +1983,7 @@ func enable_object_shard() -> bool:
 	object_shard_m4_port.enabled = true
 	_reserve_object_shard_status_height()
 	if _tool.item_count == TOOL_NAMES.size():
-		_tool.add_item("Cut moving")
-		_tool.add_item("Ignite moving")
-		_tool.add_item("Settle into canvas")
+		for label: String in STRUCTURAL_TOOL_NAMES: _tool.add_item(label)
 	host.object_shard_m4_runtime.enable(host)
 	message = "Structures enabled for this session. Press Play to attach to the existing native World. Supported canvases are 512 or 1024 cells per side."
 	return true
@@ -1957,21 +2006,40 @@ func open_object_shard_controls() -> void:
 	if _object_shard_window == null:
 		_object_shard_window = Window.new()
 		_object_shard_window.title = "Destructible structures · experimental"
-		_object_shard_window.size = Vector2i(740,470)
+		_object_shard_window.size = Vector2i(740,650)
 		_object_shard_window.transient = true
 		_object_shard_window.close_requested.connect(func() -> void: _object_shard_window.hide())
 		add_child(_object_shard_window)
 		var column := VBoxContainer.new()
 		column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		_object_shard_window.add_child(column)
+		var scroll := ScrollContainer.new()
+		scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		scroll.offset_left = 12
+		scroll.offset_right = -12
+		scroll.offset_top = 12
+		scroll.offset_bottom = -12
+		_object_shard_window.add_child(scroll)
+		column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		scroll.add_child(column)
 		var description := Label.new()
-		description.text = "Enable on the current canvas or load a playable construction.\nErase lower support stems for a full drop; a narrow cut leaves stumps to land on.\nCut moving / Ignite moving affect one visible cell at a time; hold and move slowly.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
+		description.text = "Enable on the current canvas or load a playable construction.\nErase lower support stems for a full drop; a narrow cut leaves stumps to land on.\nEraser follows material through collapse. Radius and [ ] set brush width.\nSlice: drag and release; Drill: click. Weathering density/seed are below.\nPause, then Settle into canvas returns a still, nearly aligned body to material cells.\nUp to 16 bodies; each must fit 16,384 cells of bounds. Restore start replaces the scene.\nSave start stores the authored construction, not a live physics checkpoint."
 		column.add_child(description)
 		_button(column,"Enable on current canvas",enable_object_shard)
 		for i: int in range(ObjectShardScenes.IDS.size()):
 			var id: String = ObjectShardScenes.IDS[i]
 			_button(column,ObjectShardScenes.LABELS[i],func() -> void:
 				if load_object_shard_scene(id): _object_shard_window.hide())
+		var weather_row := _row(column)
+		_spin(weather_row,"Weathering %",_erosion_density,1,100,1,_erosion_density.value)
+		_erosion_density.value_changed.connect(func(_value: float) -> void: _cancel_object_shard_pointer("WeatheringDensityChanged"))
+		_spin(weather_row,"Seed",_erosion_seed,0,1000000000,1,_erosion_seed.value)
+		_erosion_seed.value_changed.connect(func(_value: float) -> void:
+			_erosion_pass = 0
+			_cancel_object_shard_pointer("WeatheringSeedChanged"))
+		_erosion_material_only.text = "Only selected material"
+		_erosion_material_only.tooltip_text = "Weathering affects only the material selected in the ordinary material list."
+		_erosion_material_only.toggled.connect(func(_enabled: bool) -> void: _cancel_object_shard_pointer("WeatheringMaterialFilterChanged"))
+		weather_row.add_child(_erosion_material_only)
 		_object_shard_recording = CheckButton.new()
 		_object_shard_recording.text = "Record performance timings (optional)"
 		_object_shard_recording.tooltip_text = "Start a fresh bounded recording. Stop to keep the last recording, then Save diagnostics. No files are written automatically."
@@ -2035,6 +2103,7 @@ func save_object_shard_diagnostics() -> Dictionary:
 		"visible_observation":host.object_shard_m4_runtime.visible_observation(),
 		"runtime":host.object_shard_m4_runtime.diagnostics(),
 		"probe":host.object_shard_m4_probe.summary(),
+		"editing":object_shard_edit_diagnostics(),
 		"scope":"explicit local diagnostic snapshot; native progression and renderer callbacks are distinct; physical monitor presentation is not verified"}
 	var file: FileAccess = FileAccess.open(path,FileAccess.WRITE)
 	if file == null:
@@ -2121,86 +2190,275 @@ func _pick(pos: Vector2i) -> void:
 			return
 	select_instance(0)
 
-func _cancel_object_shard_pointer() -> void:
+func object_shard_edit_diagnostics() -> Dictionary:
+	var value: Dictionary = _object_shard_edit_probe.snapshot()
+	if host != null and host.object_shard_m4_runtime != null:
+		var metrics: Dictionary = host.object_shard_m4_runtime.publication.get("metrics",{})
+		var native: Dictionary = {"scope":"cumulative current native coordinator session; islands are geometry observations, not committed fragment counts"}
+		for key: String in ["fragments","fragment_refusals","batch_edits","batch_requested_cells","batch_changed_cells","batch_geometry_rebuilds","batch_target_ns","batch_mutation_ns","batch_geometry_ns"]:
+			if metrics.has(key): native[key] = metrics[key]
+		value["native_session_metrics"] = native
+	return value
+
+func _cancel_object_shard_pointer(reason: String = "InputCancelled") -> void:
+	if _object_shard_pointer_tool >= 0:
+		_object_shard_edit_probe.record("cancel",{"outcome":reason,"tool":_object_shard_pointer_tool,
+			"pending":object_shard_m4_port.pending_count(),"unadmitted_domains":_object_shard_segment.get("remaining",[]).size()})
 	_object_shard_pointer_tool = -1
+	_object_shard_pointer_source_tool = -1
+	_object_shard_pointer_capture_usec = 0
 	_object_shard_pointer_local = Vector2(-1,-1)
 	_object_shard_pointer_attempt.clear()
+	_object_shard_pointer_camera.clear()
+	_object_shard_segment.clear()
+	_object_shard_wait_since = 0
+	_object_shard_wait_reason = ""
+	_object_shard_slice_committing = false
+	_object_shard_slice_commit_usec = 0
+
+func _object_shard_input_mode(event: InputEvent = null) -> int:
+	if not object_shard_m4_port.enabled: return -1
+	if _tool.selected in MOVING_TOOLS: return _tool.selected
+	if _tool.selected != 0: return -1
+	if _object_shard_pointer_tool==STRUCTURAL_ERASER_TOOL and _object_shard_pointer_source_tool==0:
+		return STRUCTURAL_ERASER_TOOL
+	if event is InputEventMouseButton and event.button_index==MOUSE_BUTTON_RIGHT: return STRUCTURAL_ERASER_TOOL
+	if event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_RIGHT: return STRUCTURAL_ERASER_TOOL
+	if paint_editor != null and (paint_editor.tool_name()=="Eraser" \
+			or (paint_editor.tool_name()=="Brush" and paint_editor.material_id==0)):
+		return STRUCTURAL_ERASER_TOOL
+	return -1
 
 func _update_object_shard_tool_controls() -> void:
 	var mode: int = _tool.selected if object_shard_m4_port.enabled else -1
 	if mode == _object_shard_tool_mode: return
 	_object_shard_tool_mode = mode
-	_cancel_object_shard_pointer()
+	_cancel_object_shard_pointer("ToolChanged")
 	if paint_editor != null: paint_editor.cancel_preview()
-	var exact: bool = mode in MOVING_TOOLS
-	_brush.editable = not exact
-	_brush.tooltip_text = "Moving material tools target one visible cell; the ordinary paint radius does not apply." if exact \
-		else "Radius in cells. Zero paints one cell; [ and ] adjust width."
-	_tool.tooltip_text = "One visible owned cell per native receipt. Hold and move slowly; release stops immediately. No stroke is queued." if mode in MOVING_EDIT_TOOLS \
-		else "Pause, then click one visible owned cell to return its whole settled body." if mode == SETTLE_MOVING_TOOL else ""
+	_brush.editable = mode not in [CUT_MOVING_TOOL,SETTLE_MOVING_TOOL]
+	_brush.tooltip_text = "Precision cut removes exactly one visible owned cell." if mode==CUT_MOVING_TOOL \
+		else "Radius in cells. Zero targets one cell; [ and ] adjust width."
+	_tool.tooltip_text = "Drag a line, then release inside the canvas to commit one bounded owner transaction at the next safe opportunity (within 2 seconds). Escape cancels before admission." if mode==SLICE_TOOL \
+		else "Click to drill one circular hole. Radius sets the opening." if mode==DRILL_TOOL \
+		else "Hold to erode material. Structures… sets density, seed and material filter." if mode==WEATHERING_TOOL \
+		else "Pause, then click one visible body to return its settled material." if mode==SETTLE_MOVING_TOOL \
+		else "Hold and drag to edit visible material. Terrain and moving structures share this interaction; release cancels unadmitted work."
+
+func _object_shard_cell_from_local(point: Vector2) -> Vector2i:
+	var pixel: Vector2i = host.view_pixel_from_local_point(point)
+	return Vector2i(-1,-1) if pixel.x<0 else Vector2i(host.camera_origin.floor())+pixel
 
 func _update_object_shard_cursor() -> void:
 	if host.brush_preview == null: return
-	if not object_shard_m4_port.enabled or _tool.selected not in MOVING_TOOLS:
+	var mode: int = _object_shard_input_mode()
+	if mode<0:
 		if paint_editor != null: host.brush_preview.hide()
 		return
-	var pixel: Vector2i = host.view_pixel_from_local_point(host.world_view.get_local_mouse_position())
-	if pixel.x < 0:
+	var pos: Vector2i = _object_shard_cell_from_local(host.world_view.get_local_mouse_position())
+	if pos.x<0:
 		host.brush_preview.hide()
 		return
 	var area: Rect2 = host.view_content_rect()
 	var scale: Vector2 = area.size/Vector2(host.current_view_size)
-	var corner: Vector2 = area.position+Vector2(pixel)*scale
-	host.brush_preview.points = PackedVector2Array([corner,corner+Vector2(scale.x,0),
-		corner+scale,corner+Vector2(0,scale.y),corner])
+	var radius: int = 0 if mode in [CUT_MOVING_TOOL,SETTLE_MOVING_TOOL] else clampi(int(_brush.value),0,24)
+	var first: Vector2 = Vector2(_object_shard_pointer_start if mode==SLICE_TOOL and _object_shard_pointer_tool==SLICE_TOOL else pos)+Vector2(0.5,0.5)
+	var last: Vector2 = Vector2(pos)+Vector2(0.5,0.5)
+	var points: PackedVector2Array = ObjectShardFootprint.outline(first,last,float(radius))
+	for i: int in points.size(): points[i] = area.position+(points[i]-host.camera_origin.floor())*scale
+	host.brush_preview.points = points
 	host.brush_preview.show()
 
-func _pump_object_shard_pointer(pressed: bool = false) -> void:
-	if _object_shard_pointer_tool not in MOVING_EDIT_TOOLS: return
-	if _drag_button == 0 or _tool.selected != _object_shard_pointer_tool or busy() or applied.is_empty():
-		_cancel_object_shard_pointer()
-		return
-	var pixel: Vector2i = host.view_pixel_from_local_point(_object_shard_pointer_local)
-	if pixel.x < 0:
-		_cancel_object_shard_pointer()
-		return
-	var pos := Vector2i(host.camera_origin.floor())+pixel
+func _object_shard_wait(reason: String) -> bool:
+	if _object_shard_wait_reason!=reason:
+		_object_shard_wait_reason = reason
+		_object_shard_edit_probe.record("wait",{"outcome":reason,"tool":_object_shard_pointer_tool,
+			"pending":object_shard_m4_port.pending_count()})
+	message = "Structural edit waiting: "+reason+(". Escape cancels this committed slice before admission." if _object_shard_slice_committing else ". Release cancels unadmitted work.")
+	return true
+
+func object_shard_edit_opportunity() -> bool:
+	# Invoked immediately before Main seeks another Rapier motion permit.
+	# A fresh visible publication gets one bounded user-edit admission first.
+	return _pump_object_shard_pointer()
+
+func _pump_object_shard_pointer(pressed: bool = false) -> bool:
+	if _object_shard_pointer_tool not in MOVING_EDIT_TOOLS: return false
+	if (_drag_button == 0 and not _object_shard_slice_committing) or _tool.selected != _object_shard_pointer_source_tool or busy() or applied.is_empty():
+		_cancel_object_shard_pointer("InputNoLongerActive")
+		return false
+	if _object_shard_pointer_tool==SLICE_TOOL:
+		if not _object_shard_slice_committing: return false
+		if Time.get_ticks_usec()-_object_shard_slice_commit_usec>2000000:
+			_object_shard_edit_probe.record("refused",{"outcome":"SliceAdmissionDeadline","tool":SLICE_TOOL})
+			_cancel_object_shard_pointer("SliceAdmissionDeadline")
+			message = "Committed slice could not acquire a safe visible frame within two seconds; no native submission remains."
+			return false
+	if _object_shard_pointer_camera != [host.camera_origin.floor(),host.current_view_size,host.world_view.size]:
+		_cancel_object_shard_pointer("CameraChanged")
+		return false
+	var pos: Vector2i = _object_shard_cell_from_local(_object_shard_pointer_local)
+	if pos.x<0:
+		_cancel_object_shard_pointer("OutsideCanvas")
+		return false
 	var runtime: RefCounted = host.object_shard_m4_runtime
-	var action: String = "erase" if _object_shard_pointer_tool == CUT_MOVING_TOOL else "ignite"
+	var mode: int = _object_shard_pointer_tool
+	var action: String = "ignite" if mode==IGNITE_MOVING_TOOL else "erase"
 	if not runtime.capabilities.get("attached",false):
-		# Preserve the real port's explicit unbound refusal. A press before
-		# attachment never becomes a deferred edit in a later World.
-		if pressed: object_shard_m4_action(pos,action)
-		_cancel_object_shard_pointer()
-		return
+		if pressed: message = "Structures are not attached yet; press again when ready."
+		_object_shard_edit_probe.record("refused",{"outcome":"OwnerNotAttached","tool":mode})
+		_cancel_object_shard_pointer("OwnerNotAttached")
+		return false
 	if not runtime.held_reason.is_empty() or not object_shard_m4_port.held_reason().is_empty():
-		_cancel_object_shard_pointer()
-		return
+		_cancel_object_shard_pointer("OwnerHeld")
+		return false
 	if object_shard_m4_port.pending_count()>0 or not runtime.physics_ready():
-		if pressed: message = "Holding one-cell tool: waiting for the current native/physics receipt."
-		return
-	if int(runtime.publication.get("publication_sequence",-1))!=int(runtime.frame.get("publication_sequence",-2)): return
-	if not object_shard_m4_port.latest_edit_presented(runtime.publication,runtime.capabilities):
-		if pressed: message = "Holding one-cell tool: waiting for the previous material edit to finish."
-		return
-	var attempt: Array = [runtime.publication.get("publication_sequence",-1),pos,_object_shard_pointer_tool]
-	if attempt==_object_shard_pointer_attempt: return
-	_object_shard_pointer_attempt = attempt
-	var target: Dictionary = runtime.visible_target(pos)
-	if target.is_empty():
-		if pressed: message = "Point at a visible moving material cell; this tool does not paint ordinary terrain."
-		return
-	# A stationary igniter must not reset the same cell's burn countdown on
-	# each publication. Future cells passing the held pointer remain eligible.
-	if action=="ignite" and (int(target.expected.material)!=7 or int(target.expected.state_b)>0):
-		if pressed: message = "Ignite moving targets unburning Wood."
-		return
-	# Keep only the current held pointer. Re-read its visible native witness
-	# after every receipt/geometry barrier; never replay a stored stroke or
-	# retry a previously rejected source identity.
-	object_shard_m4_action(pos,action,runtime.visible_observation(),target)
+		return _object_shard_wait("WaitingForPhysicalReceipt")
+	if int(runtime.publication.get("publication_sequence",-1))!=int(runtime.frame.get("publication_sequence",-2)) \
+			or not object_shard_m4_port.latest_edit_presented(runtime.publication,runtime.capabilities):
+		# Leave one process opportunity for the completed coherent frame to upload.
+		# A failed upload cannot indefinitely starve physical progression.
+		if _object_shard_wait_since==0: _object_shard_wait_since = Time.get_ticks_usec()
+		if Time.get_ticks_usec()-_object_shard_wait_since>250000:
+			_object_shard_edit_probe.record("refused",{"outcome":"DisplayedPublicationDeadline","tool":mode})
+			_cancel_object_shard_pointer("DisplayedPublicationDeadline")
+			return false
+		return _object_shard_wait("WaitingForDisplayedPublication")
+	_object_shard_wait_since = 0
+	_object_shard_wait_reason = ""
+	# At most 30 transactions/s, even when paused. The native transaction itself
+	# is bounded separately; this interval does not create a stored input queue.
+	if not pressed and Time.get_ticks_usec()-_object_shard_last_admission_usec<33333: return false
+	var current_groups: Dictionary = {}
+	if _object_shard_segment.is_empty():
+		var attempt: Array = [runtime.publication.get("publication_sequence",-1),pos,mode,_object_shard_pointer_previous,_erosion_pass if mode==WEATHERING_TOOL else 0]
+		if attempt==_object_shard_pointer_attempt: return false
+		_object_shard_pointer_attempt = attempt
+		var radius: int = 0 if mode==CUT_MOVING_TOOL else clampi(int(_brush.value),0,24)
+		var first: Vector2i = _object_shard_pointer_start if mode==SLICE_TOOL else _object_shard_pointer_previous
+		if mode in [CUT_MOVING_TOOL,DRILL_TOOL]: first = pos
+		var footprint: Dictionary = ObjectShardFootprint.build(first,pos,radius,Setup.extent_of(applied),mode!=SLICE_TOOL)
+		if not footprint.ok:
+			_object_shard_edit_probe.record("refused",{"outcome":footprint.outcome,"tool":mode})
+			message = "Structural footprint is too large; use a narrower or shorter slice."
+			_cancel_object_shard_pointer("FootprintCapacity")
+			return false
+		current_groups = runtime.visible_edit_groups(footprint.cells,mode!=CUT_MOVING_TOOL)
+		var owners: Array = current_groups.keys()
+		owners.sort()
+		# Centre owner has precedence for deliberately placed drill/slice actions.
+		if mode in [DRILL_TOOL,SLICE_TOOL]:
+			var centre: Dictionary = runtime.visible_target(pos)
+			var preferred: int = int(centre.get("owner",0))
+			if owners.has(preferred): owners.erase(preferred); owners.push_front(preferred)
+		if owners.is_empty():
+			_object_shard_pointer_previous = footprint.end
+			_object_shard_edit_probe.record("no_eligible",{"outcome":"NoEligibleVisibleMaterial","tool":mode,"requested_cells":footprint.cells.size()})
+			if pressed or mode==SLICE_TOOL: message = "No eligible visible material in this footprint."
+			if mode==SLICE_TOOL: _cancel_object_shard_pointer("NoEligibleVisibleMaterial")
+			return false
+		var source_captured: int = _object_shard_pointer_capture_usec
+		var input_kind: String = "pointer_event"
+		if source_captured<=_object_shard_consumed_capture_usec:
+			source_captured = Time.get_ticks_usec()
+			input_kind = "held_resample"
+		_object_shard_consumed_capture_usec = source_captured
+		_object_shard_segment = {"cells":footprint.cells,"end":footprint.end,"remaining":owners,
+			"requested_owners":owners.size(),"captured_usec":source_captured,"input_kind":input_kind,"sample_id":_object_shard_sample_id}
+	if current_groups.is_empty(): current_groups = runtime.visible_edit_groups(_object_shard_segment.cells,mode!=CUT_MOVING_TOOL)
+	while not _object_shard_segment.remaining.is_empty() and not current_groups.has(_object_shard_segment.remaining[0]):
+		_object_shard_segment.remaining.pop_front()
+	if _object_shard_segment.remaining.is_empty():
+		_object_shard_pointer_previous = _object_shard_segment.end
+		_object_shard_segment.clear()
+		return false
+	var owner: int = int(_object_shard_segment.remaining.pop_front())
+	var values: Array = current_groups[owner]
+	var targets: Array = values if owner>0 else []
+	var terrain: Array = values if owner==0 else []
+	if owner==0 and action=="erase" and not _object_shard_terrain_history_capacity(terrain.size()):
+		_object_shard_edit_probe.record("refused",{"outcome":"AuthoredStartCapacity","tool":mode,"requested_cells":terrain.size()})
+		message = "Starting construction edit capacity reached. Save and simplify its authored recipe before more terrain erasure."
+		_cancel_object_shard_pointer("AuthoredStartCapacity")
+		return false
+	var selection: Dictionary = {"probability_ppm":roundi(_erosion_density.value*10000.0) if mode==WEATHERING_TOOL else 1000000,
+		"seed":int(_erosion_seed.value)+_erosion_pass if mode==WEATHERING_TOOL else 0,
+		"material_filter":paint_editor.material_id if mode==WEATHERING_TOOL and _erosion_material_only.button_pressed and paint_editor != null else -1}
+	var origin: Vector2i = terrain[0] if owner==0 else targets[0].position
+	var uploaded: Dictionary = {"world_generation":host.last_uploaded_world_generation,
+		"world_revision":host.last_uploaded_revision,"render_serial":host.last_uploaded_render_snapshot_serial}
+	var admitted_now: int = Time.get_ticks_usec()
+	var captured: int = int(_object_shard_segment.captured_usec)
+	var result: Dictionary = object_shard_m4_port.queue_intent(host.simulation_worker,host.latest_snapshot,
+		uploaded,runtime.visible_observation(),action,origin,{} if owner==0 else targets[0],captured,targets,terrain,selection)
+	var detail: Dictionary = {"outcome":result.outcome,"tool":mode,"domain":"terrain" if owner==0 else "structural",
+		"owner":owner,"requested_cells":values.size(),"action_id":result.get("action_id",0),
+		"radius":int(_brush.value),"seed":selection.seed,"probability_ppm":selection.probability_ppm,
+		"captured_usec":captured,"stroke_id":_object_shard_stroke_id,"sample_id":_object_shard_segment.sample_id,
+		"input_kind":_object_shard_segment.input_kind}
+	_object_shard_edit_probe.record("admitted" if result.get("ok",false) else "uncertain" if result.get("may_have_executed",false) else "refused",detail)
+	if result.get("ok",false):
+		_object_shard_last_admission_usec = admitted_now
+		message = "Structural edit admitted · %d cells · waiting for native completion." % values.size()
+		if mode==WEATHERING_TOOL: _erosion_pass += 1
+	else:
+		message = "Structural edit "+str(result.outcome)+"; no success has been reported."
+	if mode in [DRILL_TOOL,SLICE_TOOL]:
+		if not _object_shard_segment.remaining.is_empty():
+			_object_shard_edit_probe.record("partial",{"outcome":"SingleOwnerPlacement","remaining_owners":_object_shard_segment.remaining.size(),"tool":mode})
+			message += " This placement targets one owner; repeat for other overlapping material."
+		_cancel_object_shard_pointer("PlacementCommitted")
+		_drag_button = 0
+	elif _object_shard_segment.remaining.is_empty():
+		_object_shard_pointer_previous = _object_shard_segment.end
+		_object_shard_segment.clear()
+	return result.get("ok",false)
+
+func _object_shard_terrain_history_capacity(maximum_changed: int) -> bool:
+	# Reserve a worst-case one-cell record for every possible acknowledged
+	# erasure. Never commit live material and discover an unrecordable start.
+	var rows: int = maximum_changed
+	for stamp: Array in applied.edits: rows += Setup.stamp_rows(stamp)
+	if applied.edits.size()+maximum_changed<=Setup.MAX_STAMPS and rows<=Setup.MAX_RUNS: return true
+	if not _generated_active.is_empty() or not _material_baseline.is_empty(): return false
+	var compacted: Dictionary = Setup.compact_edits(applied)
+	if compacted.has("error"): return false
+	rows = maximum_changed
+	for stamp: Array in compacted.edits: rows += Setup.stamp_rows(stamp)
+	if compacted.edits.size()+maximum_changed>Setup.MAX_STAMPS or rows>Setup.MAX_RUNS: return false
+	applied.edits = compacted.edits
+	return true
+
+func _record_object_shard_terrain_erase(cells: Array) -> void:
+	# Record only positively acknowledged ordinary-terrain erasure. Detached
+	# changes remain live material and are deliberately absent from start saves.
+	if cells.is_empty() or applied.is_empty(): return
+	var ordered: Array = cells.duplicate()
+	ordered.sort_custom(func(a: Vector2i,b: Vector2i) -> bool: return a.y<b.y or (a.y==b.y and a.x<b.x))
+	var row: Array = []
+	for cell: Vector2i in ordered:
+		if not row.is_empty() and int(row[1])==cell.y and int(row[0])+int(row[2])==cell.x:
+			row[2] = int(row[2])+1
+		else:
+			if not row.is_empty(): applied.edits.append(row)
+			row = [cell.x,cell.y,1,1,0]
+	if not row.is_empty(): applied.edits.append(row)
+	if paint_editor != null: paint_editor.invalidate_history("Structural live edit changed native material")
+	if applied.edits.size()>Setup.MAX_STAMPS:
+		var compacted: Dictionary = Setup.compact_edits(applied)
+		if not compacted.has("error"): applied.edits = compacted.edits
+
 
 func _world_input(event: InputEvent) -> void:
+	var event_capture_usec: int = Time.get_ticks_usec()
+	# Capture the user's attempt before eligibility/readiness guards, so a
+	# never-admitted press remains diagnosable with timings recording disabled.
+	var capture_mode: int = _object_shard_input_mode(event)
+	if capture_mode>=0 and ((event is InputEventMouseButton and event.pressed and event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]) \
+			or (event is InputEventMouseMotion and _object_shard_pointer_tool>=0 and not _object_shard_slice_committing)):
+		var captured_cell: Vector2i = _object_shard_cell_from_local(event.position)
+		_object_shard_edit_probe.record("attempt",{"tool":capture_mode,"radius":int(_brush.value),
+			"position":captured_cell,"input_phase":"press" if event is InputEventMouseButton else "motion",
+			"seed":int(_erosion_seed.value)+_erosion_pass,"probability_ppm":roundi(_erosion_density.value*10000.0) if capture_mode==WEATHERING_TOOL else 1000000})
 	if object_shard_m4_port.enabled and not host.object_shard_m4_runtime.materials_ready():
 		# Preparation admits no paint/cut through an earlier actor or PAINT
 		# interceptor, but the retained canvas remains navigable.
@@ -2224,7 +2482,8 @@ func _world_input(event: InputEvent) -> void:
 	# An M4 moving-body operation can never route through the ordinary terrain
 	# painter, including right drag or an active paint-editor interception.
 	_update_object_shard_tool_controls()
-	var m4_moving_tool: bool = object_shard_m4_port.enabled and _tool.selected in MOVING_TOOLS
+	var m4_mode: int = _object_shard_input_mode(event)
+	var m4_moving_tool: bool = m4_mode>=0
 	if not m4_moving_tool and actor_interaction != null and actor_interaction.world_input(event): return
 	if not m4_moving_tool and not applied.is_empty() and paint_editor != null \
 			and paint_editor.world_input(event): return
@@ -2250,8 +2509,21 @@ func _world_input(event: InputEvent) -> void:
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
+		if not event.pressed and _object_shard_pointer_tool==SLICE_TOOL:
+			# Release is the explicit commit for this one bounded line, not a
+			# continuing held pointer. No mouse motion can extend this operation.
+			_object_shard_pointer_local = event.position
+			_object_shard_slice_committing = true
+			_object_shard_slice_commit_usec = event_capture_usec
+			_object_shard_pointer_capture_usec = _object_shard_slice_commit_usec
+			_object_shard_sample_id += 1
+			_drag_button = 0
+			_object_shard_edit_probe.record("wait",{"outcome":"SliceCommittedAwaitingSafeOpportunity","tool":SLICE_TOOL})
+			message = "Slice committed; waiting for a safe visible edit opportunity. Escape cancels before native admission."
+			_pump_object_shard_pointer(true)
+			return
 		_drag_button = event.button_index if event.pressed else 0
-		if not event.pressed: _cancel_object_shard_pointer()
+		if not event.pressed: _cancel_object_shard_pointer("PointerReleased")
 		_last_cell = Vector2i(-1,-1)
 	elif event is InputEventMouseMotion:
 		if _pan:
@@ -2265,8 +2537,11 @@ func _world_input(event: InputEvent) -> void:
 		return
 	var pos := Vector2i(host.camera_origin.floor()) + pixel
 	if m4_moving_tool:
+		if _object_shard_slice_committing:
+			if not (event is InputEventMouseButton and event.pressed): return
+			_cancel_object_shard_pointer("NewGesture")
 		if _drag_button == 0: return
-		if _tool.selected == SETTLE_MOVING_TOOL:
+		if m4_mode == SETTLE_MOVING_TOOL:
 			_drag_button = 0
 			var result: Dictionary = host.object_shard_m4_runtime.request_reabsorption(pos)
 			if not result.get("ok",false): refuse("Settle into canvas: "+str(result.get("outcome","unavailable")))
@@ -2274,9 +2549,17 @@ func _world_input(event: InputEvent) -> void:
 		else:
 			var pressed: bool = event is InputEventMouseButton and event.pressed
 			if pressed:
-				_object_shard_pointer_tool = _tool.selected
+				_object_shard_stroke_id += 1
+				_object_shard_pointer_tool = m4_mode
+				_object_shard_pointer_source_tool = _tool.selected
+				_object_shard_pointer_start = pos
+				_object_shard_pointer_previous = pos
+				_object_shard_pointer_camera = [host.camera_origin.floor(),host.current_view_size,host.world_view.size]
 				_object_shard_pointer_attempt.clear()
+				_object_shard_segment.clear()
 			_object_shard_pointer_local = event.position
+			_object_shard_pointer_capture_usec = event_capture_usec
+			_object_shard_sample_id += 1
 			_pump_object_shard_pointer(pressed)
 		return
 	if _drag_button == 0 or pos == _last_cell: return
@@ -2297,20 +2580,67 @@ func _world_input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
 	if host == null: return
 	_update_object_shard_tool_controls()
+	if object_shard_m4_port.enabled:
+		var capabilities: Dictionary = host.object_shard_m4_runtime.capabilities
+		var identity: Dictionary = {"port_generation":object_shard_m4_port.generation,
+			"world_generation":capabilities.get("world_generation",0),"session":capabilities.get("session",0),
+			"world_incarnation":capabilities.get("world_incarnation",0),"owner_epoch":capabilities.get("owner_epoch",0),
+			"shard_session":capabilities.get("shard_session",0),"transport_generation":capabilities.get("transport_generation",0)}
+		if identity!=_object_shard_diagnostic_identity:
+			_object_shard_edit_probe.reset(identity)
+			_object_shard_diagnostic_identity = identity
+			_object_shard_last_transport_hold = ""
 	if object_shard_m4_port.enabled and object_shard_m4_port.pending_count() > 0:
-		object_shard_m4_port.poll_results(host.simulation_worker)
+		var polled: Dictionary = object_shard_m4_port.poll_results(host.simulation_worker)
+		if polled.get("may_have_executed",false) and str(polled.get("outcome",""))!=_object_shard_last_transport_hold:
+			_object_shard_last_transport_hold = str(polled.get("outcome",""))
+			_object_shard_edit_probe.record("uncertain",{"outcome":_object_shard_last_transport_hold,
+				"pending":object_shard_m4_port.pending_count(),"action_id":polled.get("action_id",0)})
 	if object_shard_m4_port.enabled and not object_shard_m4_port.results.is_empty():
-		var terminal: Dictionary = object_shard_m4_port.results.back()
-		var identity := Vector2i(int(terminal.get("port_generation",0)),int(terminal.get("action_id",0)))
-		if identity != _object_shard_seen_result:
-			_object_shard_seen_result = identity
-			if terminal.get("ok",false):
-				message = "Moving material %s applied · native transaction %d." % [
-					str(terminal.get("native_receipt",{}).get("operation","edit")),int(terminal.get("native_receipt",{}).get("transaction_id",0))]
-			elif terminal.get("outcome","")=="TargetChanged":
-				message = "Moving target changed before the native edit. Try its current position, or Pause for a deliberate cut."
-			else:
-				message = "Moving material edit: "+str(terminal.get("outcome","refused"))+". The native receipt did not authorize an edit."
+		var newest: Dictionary = object_shard_m4_port.results.back()
+		var newest_id := Vector2i(int(newest.get("port_generation",0)),int(newest.get("action_id",0)))
+		if newest_id.x==object_shard_m4_port.generation and (newest_id.x!=_object_shard_seen_result.x or newest_id.y>_object_shard_seen_result.y):
+			for terminal: Dictionary in object_shard_m4_port.results:
+				var identity := Vector2i(int(terminal.get("port_generation",0)),int(terminal.get("action_id",0)))
+				if identity.x!=object_shard_m4_port.generation or (identity.x==_object_shard_seen_result.x and identity.y<=_object_shard_seen_result.y): continue
+				_object_shard_seen_result = identity
+				var native: Dictionary = terminal.get("native_receipt",{})
+				var details: Dictionary = {"outcome":terminal.get("outcome","Unknown"),"action_id":terminal.get("action_id",0)}
+				for key: String in ["requested_cells","unique_cells","eligible_cells","changed_cells","removed_cells","changed_owners","geometry_rebuilds","native_edit_ns","target_ns","mutation_ns","geometry_ns","islands_before","islands_after","transaction_id","seed","probability_ppm"]:
+					details[key] = native.get(key,0)
+				details["domain"] = native.get("domain","structural")
+				for key: String in terminal.get("refusal",{}): details[key] = terminal.refusal[key]
+				for key: String in terminal.get("timing",{}): details[key] = terminal.timing[key]
+				_object_shard_edit_probe.record("uncertain" if terminal.get("may_have_executed",false) else "receipt",details)
+				if terminal.get("may_have_executed",false):
+					message = "Structural edit completion is uncertain; further edits are held. Restore start for a fresh owner."
+				elif terminal.get("ok",false):
+					if native.get("domain","")=="terrain" and native.get("operation","")=="erase":
+						_record_object_shard_terrain_erase(native.get("terrain_changed_cells",[]))
+					message = "Structural %s applied · %d changed cells · native transaction %d · presentation pending." % [
+						str(native.get("operation","edit")),int(native.get("changed_cells",1)),int(native.get("transaction_id",0))]
+					if int(native.get("changed_cells",1))==0:
+						message = "No eligible material changed · native no-op receipt %d." % int(native.get("transaction_id",0))
+						_object_shard_edit_probe.record("no_eligible",{"outcome":"NativeNoOp","action_id":terminal.get("action_id",0),
+							"requested_cells":native.get("requested_cells",0),"eligible_cells":native.get("eligible_cells",0)})
+					if int(native.get("probability_ppm",1000000))<1000000:
+						message += " Weathering seed %d." % int(native.get("seed",0))
+				elif terminal.get("outcome","")=="TargetChanged":
+					message = "Target changed before execution. Held brushes will acquire a fresh visible target."
+				else:
+					var refusal: Dictionary = terminal.get("refusal",{})
+					message = "Structural edit: "+str(refusal.get("native_outcome",terminal.get("outcome","refused")))+"."
+					if not str(refusal.get("detail","")).is_empty(): message += " "+str(refusal.detail)
+					elif refusal.get("native_outcome","")=="DestinationUnavailable": message += " Protected contact or foreground owned material blocks this edit."
+					else: message += " No material change was confirmed."
+		var runtime: RefCounted = host.object_shard_m4_runtime
+		if runtime.physics_ready() and object_shard_m4_port.latest_edit_presented(runtime.publication,runtime.capabilities):
+			for action_id: int in _object_shard_edit_probe.applied_pending_ids():
+				_object_shard_last_presented_action = action_id
+				_object_shard_edit_probe.record("presented",{"action_id":action_id,"outcome":"Presented",
+					"publication_sequence":runtime.publication.get("publication_sequence",0)})
+				if action_id==_object_shard_seen_result.y and message.begins_with("Structural ") and message.contains("presentation pending"):
+					message = message.replace("presentation pending","presented")
 	_pump_object_shard_pointer()
 	if actor_interaction != null: actor_interaction.poll()
 	if _ambient_overlay_id > 0 and is_instance_valid(_ambient_overlay):

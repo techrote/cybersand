@@ -441,6 +441,10 @@ func _install_terrain() -> Dictionary:
 
 func acquire_interval() -> bool:
 	if not physics_ready(): return false
+	# Offer fresh, displayed input a service opportunity between physical intervals.
+	# This runs only Main-side admission; all native mutation remains worker-owned.
+	if _host.shared_workbench != null and _host.shared_workbench.object_shard_edit_opportunity():
+		return false
 	# Must precede native-wrench consumption and actor controls. A rejected
 	# permit consumes no forces, inputs, actor ticks or physical time.
 	var expected: Dictionary = {}
@@ -665,26 +669,72 @@ func take_inventory_inspection(token: int) -> Dictionary:
 		return {"ok":false,"outcome":"InventoryInspectionRetired","token":token}
 	return _host.simulation_worker.object_shard_take_inventory_inspection(token)
 
+func _visible_shards_front_to_back() -> Array:
+	var shards: Array = publication.get("shards",[]).duplicate(false)
+	# Overlay z-order uses stable owner IDs; choosing the same maximum prevents
+	# editing a hidden body or ordinary terrain under a visible structural cell.
+	shards.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return int(a.id)>int(b.id))
+	return shards
+
+func _visible_shard_cell(position: Vector2i, shard: Dictionary, inverse: Transform2D) -> int:
+	var local: Vector2i = Vector2i((inverse*(Vector2(position)+Vector2(0.5,0.5))).floor())
+	if local.x < 0 or local.y < 0 or local.x >= int(shard.width) or local.y >= int(shard.height): return -1
+	var cell: int = local.y*int(shard.width)+local.x
+	return cell if int(shard.materials[cell])!=0 else -1
+
+func _visible_shard_target(position: Vector2i, shard: Dictionary, inverse: Transform2D) -> Dictionary:
+	var cell: int = _visible_shard_cell(position,shard,inverse)
+	if cell<0 or int(shard.roles[cell])!=1: return {}
+	var target: Dictionary = {"position":position,"owner":int(shard.id),"cell":cell,
+		"generation":int(shard.generation),"body_generation":int(shard.body_generation),
+		"geometry_revision":int(shard.geometry_revision),"applied_physics_revision":int(shard.applied_physics_revision),
+		"pose_serial":int(shard.pose_serial),"material_revision":int(shard.material_revision),
+		"incarnation":int(shard.incarnations[cell]),
+		"expected":{"material":int(shard.materials[cell]),"state_a":int(shard.states_a[cell]),
+			"state_b":int(shard.states_b[cell]),"temperature":int(shard.temperature[cell])}}
+	for key: String in ["session","owner_epoch","shard_session","world_incarnation","transport_generation","publication_sequence"]:
+		target[key] = publication[key]
+	return target
+
 func visible_target(position: Vector2i) -> Dictionary:
 	if publication.is_empty(): return {}
-	for shard: Dictionary in publication.get("shards",[]):
+	for shard: Dictionary in _visible_shards_front_to_back():
 		if not shard.get("owns_inventory",false): continue
-		var pose := Transform2D(float(shard.rotation),Vector2(float(shard.position_x),float(shard.position_y)))
-		var local: Vector2i = Vector2i((pose.affine_inverse()*(Vector2(position)+Vector2(0.5,0.5))).floor())
-		if local.x < 0 or local.y < 0 or local.x >= int(shard.width) or local.y >= int(shard.height): continue
-		var cell: int = local.y*int(shard.width)+local.x
-		if int(shard.roles[cell]) != 1: continue
-		var target: Dictionary = {"position":position,"owner":int(shard.id),"cell":cell,
-			"generation":int(shard.generation),"body_generation":int(shard.body_generation),
-			"geometry_revision":int(shard.geometry_revision),"applied_physics_revision":int(shard.applied_physics_revision),
-			"pose_serial":int(shard.pose_serial),"material_revision":int(shard.material_revision),
-			"incarnation":int(shard.incarnations[cell]),
-			"expected":{"material":int(shard.materials[cell]),"state_a":int(shard.states_a[cell]),
-				"state_b":int(shard.states_b[cell]),"temperature":int(shard.temperature[cell])}}
-		for key: String in ["session","owner_epoch","shard_session","world_incarnation","transport_generation","publication_sequence"]:
-			target[key] = publication[key]
-		return target
+		var inverse: Transform2D = Transform2D(float(shard.rotation),Vector2(float(shard.position_x),float(shard.position_y))).affine_inverse()
+		if _visible_shard_cell(position,shard,inverse)>=0:
+			# Cargo/products are visible foreground too. They cannot authorize
+			# cutting a different body or terrain through their drawn material.
+			return _visible_shard_target(position,shard,inverse)
 	return {}
+
+func visible_edit_groups(positions: Array, include_terrain: bool = true) -> Dictionary:
+	var groups: Dictionary = {}
+	if positions.size()>4096 or publication.is_empty(): return groups
+	var shards: Array = _visible_shards_front_to_back()
+	var inverses: Dictionary = {}
+	for shard: Dictionary in shards:
+		if shard.get("owns_inventory",false):
+			inverses[int(shard.id)] = Transform2D(float(shard.rotation),Vector2(float(shard.position_x),float(shard.position_y))).affine_inverse()
+	for position: Vector2i in positions:
+		var found: bool = false
+		for shard: Dictionary in shards:
+			if not inverses.has(int(shard.id)): continue
+			if _visible_shard_cell(position,shard,inverses[int(shard.id)])<0: continue
+			found = true
+			var target: Dictionary = _visible_shard_target(position,shard,inverses[int(shard.id)])
+			if target.is_empty(): break
+			var owner: int = int(target.owner)
+			if not groups.has(owner): groups[owner] = []
+			groups[owner].append(target)
+			found = true
+			break
+		if not found and include_terrain and _host.image != null \
+				and position.x>=0 and position.y>=0 and position.x<_host.image.get_width() and position.y<_host.image.get_height():
+			var material: int = roundi(_host.image.get_pixelv(position).r*255.0)
+			if material>0:
+				if not groups.has(0): groups[0] = []
+				groups[0].append(position)
+	return groups
 
 func _hold(reason: String, detail: Dictionary = {}) -> void:
 	if held_reason.is_empty(): held_reason = reason

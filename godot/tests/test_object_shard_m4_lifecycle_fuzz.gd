@@ -142,10 +142,14 @@ func _action(kind: String, random: RandomNumberGenerator, row: Dictionary) -> bo
 			return f.expect(f.tick()==tick+1 and f.runtime().physical_intervals==intervals+1 \
 				and f.host.physical_actor_session.tick==actor_tick+1,"fuzz Step advances native, Rapier and actor exactly once")
 		"tool":
-			var index: int = [0, f.bench.CUT_MOVING_TOOL, f.bench.IGNITE_MOVING_TOOL, f.bench.SETTLE_MOVING_TOOL][random.randi_range(0,3)]
+			var tool_population: Array = [0,f.bench.CUT_MOVING_TOOL,f.bench.IGNITE_MOVING_TOOL,f.bench.SETTLE_MOVING_TOOL,
+				f.bench.STRUCTURAL_ERASER_TOOL,f.bench.SLICE_TOOL,f.bench.WEATHERING_TOOL,f.bench.DRILL_TOOL]
+			var index: int = tool_population[random.randi_range(0,tool_population.size()-1)]
 			_set_tool(index)
 			row.selected_tool = index
-			return f.expect(f.bench._object_shard_pointer_tool==-1 and f.bench._brush.editable==(index==0),
+			# LIVE-EDIT-001 makes ignition and creative tools variable-radius;
+			# precision Cut and whole-body Settle remain exact-cell selectors.
+			return f.expect(f.bench._object_shard_pointer_tool==-1 and f.bench._brush.editable==(index not in [f.bench.CUT_MOVING_TOOL,f.bench.SETTLE_MOVING_TOOL]),
 				"fuzz tool switch leaves no held pointer intent and advertises the correct radius")
 		"paint":
 			_set_tool(0)

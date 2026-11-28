@@ -259,6 +259,11 @@ func present(value: Dictionary) -> void:
 				Vector2(float(shard.get("position_x",0.0)),float(shard.get("position_y",0.0))))
 	for id: Variant in textures.keys():
 		if not retained.has(id): _erase_texture(id)
+	# IDs can grow across many fragments; renderer z-indices cannot. Stable
+	# bounded ranks preserve the same highest-owner foreground picking order.
+	var ordered: Array = textures.keys()
+	ordered.sort()
+	for index: int in ordered.size(): textures[ordered[index]].sprite.z_index = index
 	_sync_view()
 
 func _erase_texture(id: Variant) -> void:

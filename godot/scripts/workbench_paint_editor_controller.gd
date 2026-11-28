@@ -133,6 +133,8 @@ func drag_region() -> Rect2i:
 	return Rect2i(anchor.min(cursor),anchor.max(cursor)-anchor.min(cursor)+Vector2i.ONE)
 
 func select_material(id: int) -> void:
+	if bench != null and bench.has_method("_cancel_object_shard_pointer"):
+		bench._cancel_object_shard_pointer("MaterialChanged")
 	if host != null and id not in host.simulation_worker.paint_materials():
 		_say("That material is unavailable in the loaded native runtime.")
 		return
@@ -146,6 +148,8 @@ func select_material(id: int) -> void:
 	if host != null: _say("%s · %s · radius %d" % [tool_name(),host.material_name(id),radius()])
 
 func select_tool(tool: String) -> void:
+	if bench != null and bench.has_method("_cancel_object_shard_pointer"):
+		bench._cancel_object_shard_pointer("PaintToolChanged")
 	var index := TOOLS.find(tool)
 	if index < 0: return
 	if bench != null and bench.get("actor_interaction") != null: bench.actor_interaction.cancel("paint_tool_selected")

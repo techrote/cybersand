@@ -1484,26 +1484,52 @@ func object_shard_same_world_capabilities() -> Dictionary:
 	_mutex.unlock()
 	return value
 
+static func _m4_target_payload_valid(target: Dictionary) -> bool:
+	if target.size()>24 or not target.get("expected") is Dictionary or target.expected.size()!=4: return false
+	for key: Variant in target:
+		if not key is String: return false
+		if key=="expected": continue
+		if not target[key] is int and not target[key] is Vector2i: return false
+	for key: Variant in target.expected:
+		if key not in ["material","state_a","state_b","temperature"] or not target.expected[key] is int: return false
+	return true
+
 static func _m4_action_payload_valid(request: Dictionary) -> bool:
-	if request.size() > 20 or request.get("operation","") not in ["erase","ignite","inspect","reabsorb"] \
+	if request.size()>28 or request.get("operation","") not in ["erase","ignite","inspect","reabsorb"] \
 		or not request.get("position") is Vector2i or not request.get("target") is Dictionary \
 		or not request.get("observation") is Dictionary: return false
 	for key: Variant in request:
 		if not key is String: return false
-		if key in ["target","observation"]: continue
+		if key in ["target","targets","terrain_cells","observation"]: continue
 		if not request[key] is int and not request[key] is String and not request[key] is Vector2i: return false
-	var target: Dictionary = request.target
-	if target.size() > 24 or not target.get("expected") is Dictionary or target.expected.size() != 4: return false
-	for key: Variant in target:
-		if not key is String: return false
-		if key == "expected": continue
-		if not target[key] is int and not target[key] is Vector2i: return false
-	for key: Variant in target.expected:
-		if key not in ["material","state_a","state_b","temperature"] or not target.expected[key] is int: return false
-	if request.observation.size() > 16: return false
+	var terrain: bool = request.get("domain","")=="terrain"
+	if request.get("domain","") not in ["","terrain"] or request.has("terrain_cells")!=terrain: return false
+	if terrain:
+		if request.get("operation") not in ["erase","ignite"] or request.has("targets") \
+				or not request.target.is_empty() or not request.get("terrain_cells") is Array \
+				or request.terrain_cells.is_empty() or request.terrain_cells.size()>4096: return false
+		for cell: Variant in request.terrain_cells:
+			if not cell is Vector2i: return false
+		if request.terrain_cells[0]!=request.position: return false
+	elif not _m4_target_payload_valid(request.target): return false
+	if request.has("targets"):
+		if not request.targets is Array or request.targets.is_empty() or request.targets.size()>4096 \
+				or request.get("operation") not in ["erase","ignite"]: return false
+		if request.targets[0]!=request.target or request.target.get("position")!=request.position: return false
+		for target: Variant in request.targets:
+			if not target is Dictionary or not _m4_target_payload_valid(target): return false
+			for key: String in ["owner","generation","body_generation","geometry_revision","applied_physics_revision","pose_serial","material_revision"]:
+				if not target.get(key) is int or target.get(key)!=request.target.get(key): return false
+			for key: String in ["session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+				if target.get(key)!=request.get(key): return false
+			if target.get("publication_sequence")!=request.observation.get("publication_sequence"): return false
+	if request.observation.size()>16: return false
 	for key: Variant in request.observation:
 		if not key is String or not request.observation[key] is int: return false
-	return true
+	for key: String in ["probability_ppm","seed","material_filter","captured_usec","admitted_usec"]:
+		if request.has(key) and not request[key] is int: return false
+	return int(request.get("probability_ppm",1000000))>=0 and int(request.get("probability_ppm",1000000))<=1000000 \
+		and int(request.get("seed",0))>=0 and int(request.get("material_filter",-1))>=-1
 
 func object_shard_queue_workbench_action(request: Dictionary) -> Dictionary:
 	_mutex.lock()
@@ -1551,15 +1577,27 @@ func _m4_drain_actions() -> void:
 	_m4_action_queue.clear()
 	_mutex.unlock()
 	for request: Dictionary in pending:
+		var service_started_usec: int = Time.get_ticks_usec()
 		var raw: Dictionary = {"ok":false,"outcome":"TargetChanged"}
 		if request.get("world_generation") == _world_generation and _m4_held.is_empty():
 			raw = _world.object_shard_workbench_action(request)
+		var service_completed_usec: int = Time.get_ticks_usec()
 		var accepted: bool = bool(raw.get("ok",false)) and bool(raw.get("accepted",false)) and bool(raw.get("same_world",false))
 		var terminal: Dictionary = {"outcome":"Applied" if accepted else \
 			("Capacity" if str(raw.get("outcome","")) == "Capacity" else "TargetChanged" if str(raw.get("outcome","")) in ["Stale","TargetChanged"] else "Refused")}
 		for key: String in ["action_id","port_generation","native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
 			terminal[key] = request.get(key)
-		if accepted:
+		terminal["transport_timing"] = {"captured_usec":request.get("captured_usec",0),
+			"admitted_usec":request.get("admitted_usec",0),"worker_started_usec":service_started_usec,
+			"worker_completed_usec":service_completed_usec}
+		if bool(raw.get("partial",false)) or str(raw.get("outcome",""))=="Quarantined":
+			# A failed native call can have crossed its write boundary. Preserve
+			# the bounded receipt and enter an uncertain terminal transport state;
+			# never classify that as a proven no-write refusal.
+			terminal["outcome"] = "Uncertain"
+			terminal["may_have_executed"] = true
+			terminal["native_receipt"] = raw.duplicate(true)
+		elif accepted:
 			var receipt: Dictionary = raw.duplicate(true)
 			# Native minted the mutation and exact source/result witnesses. Only
 			# worker-owned transport domains are added here, after validation.
