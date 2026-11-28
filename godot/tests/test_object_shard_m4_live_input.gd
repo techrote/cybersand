@@ -69,6 +69,23 @@ func _run() -> void:
 		input.release(); await _finish(); return
 	input.move(Vector2(140,452))
 	if not await f.until(func(): return _cell(Vector2i(140,448))==0,"fast pointer sweep removes the lower support without gaps"):
+		print("M4_FAST_SWEEP_DIAGNOSTICS ",JSON.stringify({
+			"editing":f.bench.object_shard_edit_diagnostics(),
+			"pointer_tool":f.bench._object_shard_pointer_tool,
+			"pointer_source_tool":f.bench._object_shard_pointer_source_tool,
+			"selected_tool":f.bench._tool.selected,
+			"drag_button":f.bench._drag_button,
+			"pointer_previous":f.bench._object_shard_pointer_previous,
+			"pointer_local":f.bench._object_shard_pointer_local,
+			"segment":f.bench._object_shard_segment,
+			"wait_reason":f.bench._object_shard_wait_reason,
+			"wait_since":f.bench._object_shard_wait_since,
+			"pending":f.bench.object_shard_m4_port.pending_count(),
+			"port_status":f.bench.object_shard_m4_port.last_status,
+			"latest_delivery":f.bench.object_shard_m4_port._latest_edit_delivery,
+			"publication":f.runtime().publication,
+			"frame":f.runtime().frame,
+		}))
 		input.release(); await _finish(); return
 	input.release()
 	if not await input.drain(): await _finish(); return
