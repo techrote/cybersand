@@ -1,0 +1,338 @@
+{
+  "schema": "pubpres-mainline-independent-delivery-custody-v1",
+  "observed_utc": "2026-11-28T11:54:24Z",
+  "reviewer": "integration_qualification",
+  "disposition": "Pre-publication custody checkpoint. Q4 application campaign, standard Documentation repair, guarded runtime publication, final source delivery and extracted Windows qualification remain separately gated.",
+  "source_roles": {
+    "accepted_main": {
+      "commit": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+      "tree": "ffbb3cdaf14c8971381df56317c2059f38954798"
+    },
+    "physically_evaluated_pubpres": {
+      "commit": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+      "tree": "ff8466056bf6cb736436a59181bbcb1245aced91"
+    },
+    "initial_pr_head": "957b4696b9f7987df18b4bf437e56ca3f391b956",
+    "native_build": {
+      "commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+      "tree": "5d292e17fdeba0466ee744d8d23e719039908c7f",
+      "run": 46132881112,
+      "attempt": 1,
+      "required_jobs": 6,
+      "status": "passed"
+    },
+    "q4_application": {
+      "commit": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+      "tree": "560fb1fb8c2a718b04fa251bfc2971947dcf0b31",
+      "run": 46140937427,
+      "attempt": 1,
+      "status": "running at checkpoint"
+    },
+    "publication": null,
+    "delivery": null,
+    "scheduling_only_successor": {
+      "commit": "0afe7de629cc6ca1461875a5a1482a063c4e47a4",
+      "tree": "c716ced6079f7b8e88562f524d70577e6ff4591b",
+      "application_campaign_source_unchanged": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+      "scope": "Exactly inspector, publisher guard, negative tests, owner-route documentation and scheduling-correction audit; Q4 continues at its frozen source."
+    }
+  },
+  "native": {
+    "linux": {
+      "archive_sha256": "3bc7f458df05f4f735a4c06a6ae5c06f773b28036291e66f748d249070fc0849",
+      "artifact_id": 15257739675,
+      "independent_receipt_sha256": "2ba7d2d3f4c27d12d37c38b68b153c1d9aa4740d94e4c03582b0235b43c6ca89",
+      "matched_toolchains": true,
+      "roles": {
+        "C": {
+          "binary_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "native_source_count": 115,
+          "original_manifest_sha256": "11acf99a7b78ac01a290a461d71c875cdd1212a43295c4cd8bba2a2d51c1a57f",
+          "source": {
+            "source_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+            "source_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f"
+          },
+          "binary_bytes": 5633848
+        },
+        "M": {
+          "binary_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+          "native_source_count": 114,
+          "original_manifest_sha256": "6b25fa2f71118aa936d25f02ef0df06dc683e354e72ae41fa9f15e5c396d7d1d",
+          "source": {
+            "source_commit": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+            "source_tree": "ffbb3cdaf14c8971381df56317c2059f38954798"
+          },
+          "binary_bytes": 5617072
+        },
+        "P": {
+          "binary_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+          "native_source_count": 110,
+          "original_manifest_sha256": "e4f86e1911101ace271d6aa558b26a498492eb61fb6e9e7efbfa7906abd13a30",
+          "source": {
+            "source_commit": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+            "source_tree": "ff8466056bf6cb736436a59181bbcb1245aced91"
+          },
+          "binary_bytes": 5362200
+        }
+      },
+      "run": 46132881112,
+      "scope": "Independent complete original build/dependency/native-input reader on each frozen source. Binary identity verified; no actual application or physical acceptance claimed.",
+      "status": "passed",
+      "archive_bytes": 6590597
+    },
+    "windows": {
+      "archive_sha256": "526238d54b20b6b288b314ae22543429bd11984a9c242d64b93a4ed7cca02ded",
+      "artifact_id": 15258800849,
+      "independent_receipt_sha256": "a527c094ee87df20a076b1fa6fb16adfca979b1bbf0712bfa95d398d60278604",
+      "matched_toolchains": true,
+      "roles": {
+        "C": {
+          "binary_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+          "native_source_count": 115,
+          "original_manifest_sha256": "127932e1c12e778149beaf8ba44ef0b81cd9f6bda60395add0086a1acaef1f99",
+          "source": {
+            "source_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+            "source_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f"
+          },
+          "binary_bytes": 6901760
+        },
+        "M": {
+          "binary_sha256": "e0a15be09681502c33b5a3282bae7db6e6e5bec7be39d3d74a64f96f060207b6",
+          "native_source_count": 114,
+          "original_manifest_sha256": "16708c7e15c597be8c99d3eac5bd5ce7ce6b337cc3472595ad6bc2f19973715c",
+          "source": {
+            "source_commit": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+            "source_tree": "ffbb3cdaf14c8971381df56317c2059f38954798"
+          },
+          "binary_bytes": 6884864
+        },
+        "P": {
+          "binary_sha256": "619818a83a2c3f4514c70d095871bc1b450eb6c89f6376c88c6bc80e278d4e8c",
+          "native_source_count": 110,
+          "original_manifest_sha256": "e36f2dd1d5c4203a8530b0fa6e2f64c32cf251db1178f89280e55e42c9daf9dc",
+          "source": {
+            "source_commit": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+            "source_tree": "ff8466056bf6cb736436a59181bbcb1245aced91"
+          },
+          "binary_bytes": 5903872
+        }
+      },
+      "run": 46132881112,
+      "scope": "Independent complete original build/dependency/native-input reader on each frozen source. PE bytes verified; no Windows execution or physical acceptance claimed.",
+      "status": "passed",
+      "archive_bytes": 7446214
+    }
+  },
+  "native_binding": {
+    "native_input_counts": {
+      "M": 114,
+      "P": 110,
+      "C": 115
+    },
+    "independent_original_readers_replayed": true,
+    "build_input_count": 8,
+    "full_build_input_map_status": "Retained by original runtime receipts and future committed native_input_binding; exact eight path/hash entries not reconstructed from memory in this checkpoint.",
+    "later_application_source_rule": "Original b7 build receipt remains unchanged. Reuse requires complete native/build input equality at actual source, then explicit retained-runtime binding; build source is not relabelled as application source.",
+    "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "matched_windows_godot_cpp_library_sha256": "5310c2ed1081f82994d03a13891bb71f4c65d4e42780667c93524225411876a9"
+  },
+  "engine": {
+    "version": "4.7-stable",
+    "commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "windows": {
+      "gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "archive_bytes": 83764371,
+      "archive_sha256": "02a5312236f4e0209c78bcb2f52135b1963e6b8888c873c9cee81459e60bcd71"
+    },
+    "linux": {
+      "executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c"
+    }
+  },
+  "dependencies": {
+    "rapier": {
+      "version": "0.35.2",
+      "windows": {
+        "bytes": 9987072,
+        "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "linux": {
+        "bytes": 117275416,
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    },
+    "gentek": {
+      "windows": {
+        "bytes": 3283968,
+        "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+      },
+      "linux": {
+        "bytes": 1554128,
+        "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+      }
+    }
+  },
+  "campaigns": [
+    {
+      "label": "Q1",
+      "source": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+      "run": 46134343592,
+      "status": "failed",
+      "adverse": [
+        "Six feature jobs refused dirty source after redundant generated recipe staging, before feature execution; strict source guard retained and duplicate workflow staging removed.",
+        "Actual Windows Water Select failed at subpixel Scooper boundary; real continuous accepted-frame input mapping repaired in successor.",
+        "Local SIGKILL/process-observer failures retained without acceptance credit."
+      ]
+    },
+    {
+      "label": "Q2",
+      "source": "0670733eb0a418c8580458a9c5dd9aff24f342c6",
+      "tree": "3df9cc4f11b0ef0a3009830a78720bf41bb9f1a9",
+      "run": 46136935975,
+      "attempt": 1,
+      "status": "failed",
+      "required_jobs": 26,
+      "passed": 22,
+      "failed": 4,
+      "adverse": [
+        "Both mounted shared suites timed out at explicit Ambient activation after ordinary native/Rapier progress passed.",
+        "Both targeted continuous-pick witnesses stopped during setup before actual mouse controls; real geometry/water placement witness corrected.",
+        "Original local raw-evidence transport failed exact byte authentication after truncated base64; strict guard refused, original failure retained."
+      ],
+      "independent_raw_replays": [
+        "Q2 Linux RAMCACHE all twelve original production cases and resources replayed by C.",
+        "Both original Water receipts inspected by C/B: 213 checks and zero failures per arm, but three selected-owner body withholds in one draw and six legacy body withholds in two draws remain."
+      ]
+    },
+    {
+      "label": "Q3",
+      "source": "d9cc40b2da9ab447b9b25eef79158913e01fec01",
+      "tree": "591aeca0b4741c2f9b2a8eff1cf8f8dad0a3a108",
+      "run": 46139433132,
+      "attempt": 1,
+      "status": "failed",
+      "adverse": [
+        "Both unchanged nineteen-case frozen suites each had eighteen valid cases; only the 64-check physical-publication case rejected the changed absence serial -1 instead of established zero.",
+        "Original experiment still admitted one early physical step before material release versus zero combined, nine actual callbacks each. Q4 restores the zero absence serial with render World -1 and empty payload; all nineteen original fixture sources unchanged."
+      ],
+      "passed_scopes": [
+        "All six Linux/Windows RAMCACHE, Strata and shared suites completed successfully.",
+        "Both focused ten-process gates passed, including unchanged 130-check native Ambient semantics, new 49-check owner/material controls, 45-check actual retained-render witness and corrected 28-check actual mouse witness.",
+        "Source gates and exact original local-evidence reassembly passed."
+      ],
+      "windows_feature_seconds": {
+        "ramcache": 747,
+        "strata": 1554,
+        "shared": 1293
+      },
+      "mounted_ambient_seconds": {
+        "linux": 20.12,
+        "windows": 56.5
+      }
+    },
+    {
+      "label": "Q4",
+      "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+      "tree": "560fb1fb8c2a718b04fa251bfc2971947dcf0b31",
+      "run": 46140937427,
+      "attempt": 1,
+      "status": "running at checkpoint",
+      "required_jobs": 26,
+      "known_passed_scopes": [
+        "source-gates",
+        "both unchanged nineteen-case frozen suites",
+        "Linux RAMCACHE",
+        "Linux Strata"
+      ],
+      "final_result": null
+    }
+  ],
+  "standard_checks_at_q4": {
+    "native": {
+      "run": 46140941513,
+      "status": "success",
+      "jobs": [
+        "candidate_ubsan",
+        "candidate_asan",
+        "windows_msvc",
+        "baseline_original_ubsan"
+      ]
+    },
+    "documentation": {
+      "run": 46140941585,
+      "job": 140966511016,
+      "status": "failure",
+      "reason": "Scheduling-policy test requires explicit max-parallel on read-only inspector matrix; ten tests, one failure.",
+      "repair": {
+        "workflow_before_blob": "45a52c76d35bbe5395d296eebae46ae76c82aebe",
+        "workflow_after_blob": "ee280abbd5726ccd98504379b61437b8304906f3",
+        "publisher_blob": "7510954d3dec62767c26547d3485a0bf797825a1",
+        "test_blob": "6420fbaf1671409e3b040701076c14f4b109d602",
+        "status": "Root and B independently reviewed; exact repair published in 0afe7de629cc6ca1461875a5a1482a063c4e47a4; standard successor Documentation and hosted 33-test execution pending."
+      }
+    },
+    "draft_skipped": [
+      {
+        "name": "Native C++ validation",
+        "run": 46140941491
+      },
+      {
+        "name": "GDExtension build and current Godot regression",
+        "run": 46140941620
+      },
+      {
+        "name": "Palette shader actual backend qualification",
+        "run": 46140941592
+      }
+    ],
+    "skip_is_pass": false
+  },
+  "original_local_evidence": {
+    "run": 46139433132,
+    "job": 140961966334,
+    "artifact_id": 15261147326,
+    "archive_bytes": 3076664,
+    "archive_sha256": "2cedc2a0b643704d0996df14e53484501ba49948366e02b62a9dda5abba2a72d",
+    "manifest_sha256": "d898b8c0a1604a42b084ff3d14c0be84cd5cf883945df6359db967efea47e38c",
+    "chunks": 25,
+    "status": "Exact original archives reassembled and byte authenticated; original failed observations remain failed."
+  },
+  "objectshard": {
+    "frozen_source": "c4e10e3ca629c491f7340c6f383adcc347200fa5",
+    "frozen_tree": "e88fd1a1d89d10bf4482cb619174325390ced44d",
+    "pubpres_preview_source": "0670733eb0a418c8580458a9c5dd9aff24f342c6",
+    "preview_tree": "15c385b675235af0bef65f748a03a64ae6414845",
+    "merge_preview_exit": 1,
+    "conflicted_paths": 11,
+    "combined_runtime_built": false,
+    "combined_application_executed": false,
+    "latest_reported_source": "8064c73270dee2ce1a0d53316aae334136335483",
+    "latest_observed_utc": "2026-11-28T11:45:00Z",
+    "movement_scope": "Three commits, six changed paths; parent independently inspected comparison and reported no shared production-runtime changes. Frozen c4e preview scope retained; no current-HEAD compatibility claim."
+  },
+  "acceptance": {
+    "implemented": true,
+    "independently_reviewed": true,
+    "local_scoped_tests": true,
+    "hosted_scoped_tests": true,
+    "resulting_source_fully_qualified": false,
+    "guarded_native_published": false,
+    "windows_package_built": false,
+    "extracted_package_qualified": false,
+    "new_source_physically_owner_evaluated": false,
+    "merge_authorized": false,
+    "actually_merged": false
+  },
+  "closure_fields_pending": [
+    "Q4 all26 exact-source gate conclusions",
+    "Standard Documentation successor result and exact scheduling guard tests",
+    "Guarded runtime publication source/tree/run, exact four-path diff and fresh remote LFS retrieval",
+    "Full published 115-native/eight-build input map",
+    "Final application source/tree, resulting-source all feature/presentation/native/provenance results",
+    "Matched three-source performance, paired spawn and sustained Fire/300-second results with unmet targets quantified",
+    "Inner ZIP filename, SHA256, bytes, manifest hash and direct artifact link",
+    "Independent actual extracted Windows launcher, native modules, save/reopen, diagnostics and three mode receipts",
+    "Exact owner physical acceptance and explicit merge authorization remain unavailable unless separately provided"
+  ]
+}
