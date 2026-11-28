@@ -1,0 +1,87 @@
+{
+  "registered_utc": "2026-11-27T14:56:06.465135+00:00",
+  "fixture_base_sha256": "62a3a46c4aaca59ed2329d81030370b16025f7fa64fe5bdd5e4be9f5386619f4",
+  "source_base": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "scope": "One fresh process per test-only change, then one process with restored fixture. All use normal equipment operations.",
+  "acceptance": "Each of 4 controls naturally exits 1 after 276 checks, with exactly the single named assertion error; restored process naturally exits 0 after 276 checks with no assertion errors. No unexpected script or engine diagnostics.",
+  "watchdog_seconds": 1200,
+  "plan": [
+    {
+      "case": "extra_world_owner",
+      "replacements_in_fixture_lifetime_function": [
+        [
+          "\tworld = null",
+          "\tvar reference_control := [world]\n\tworld = null"
+        ],
+        [
+          "\t_check(world_ref.get_ref() == null, \"equipment retained the native World between steps\")",
+          "\t_check(world_ref.get_ref() == null, \"equipment retained the native World between steps\")\n\treference_control.clear()"
+        ]
+      ],
+      "fixture_sha256": "c770650315676b2c06cf073ba90a22af2e368d902d08eeb47446e8078b47244b",
+      "expected_diagnostic": "equipment retained the native World between steps",
+      "expected_exit": 1,
+      "expected_assertion_failures": 1,
+      "expected_checks": 276
+    },
+    {
+      "case": "extra_runtime_owner",
+      "replacements_in_fixture_lifetime_function": [
+        [
+          "\truntime = null",
+          "\tvar reference_control := [runtime]\n\truntime = null"
+        ],
+        [
+          "\t_check(runtime_ref.get_ref() == null, \"snapshot retained the physical usable runtime\")",
+          "\t_check(runtime_ref.get_ref() == null, \"snapshot retained the physical usable runtime\")\n\treference_control.clear()"
+        ]
+      ],
+      "fixture_sha256": "b50608315a2485e8840d5c4f0aee216ca54094c109c79effa8abdd26611b72e5",
+      "expected_diagnostic": "snapshot retained the physical usable runtime",
+      "expected_exit": 1,
+      "expected_assertion_failures": 1,
+      "expected_checks": 276
+    },
+    {
+      "case": "extra_engine_owner",
+      "replacements_in_fixture_lifetime_function": [
+        [
+          "\truntime = null",
+          "\tvar reference_control := [runtime._engine]\n\truntime = null"
+        ],
+        [
+          "\t_check(engine_ref.get_ref() == null, \"equipment engine outlived its runtime owner\")",
+          "\t_check(engine_ref.get_ref() == null, \"equipment engine outlived its runtime owner\")\n\treference_control.clear()"
+        ]
+      ],
+      "fixture_sha256": "1dc85d9bfda31bf7fb863b108a1a2588f17f5e50f99b429560da572b67dbe7a1",
+      "expected_diagnostic": "equipment engine outlived its runtime owner",
+      "expected_exit": 1,
+      "expected_assertion_failures": 1,
+      "expected_checks": 276
+    },
+    {
+      "case": "altered_copied_stock",
+      "replacements_in_fixture_lifetime_function": [
+        [
+          "var objects: Array = deployment.get(\"objects\", [])",
+          "var objects: Array = deployment.get(\"objects\", [])\n\tobjects[0][\"stock\"] = int(objects[0][\"stock\"]) + 1"
+        ]
+      ],
+      "fixture_sha256": "b0e300feb6617e31092806d87bf613c87f743d4920f3402b87054c86da849e48",
+      "expected_diagnostic": "copied processor stock and deployment receipt did not survive resets and owner release",
+      "expected_exit": 1,
+      "expected_assertion_failures": 1,
+      "expected_checks": 276
+    },
+    {
+      "case": "restored",
+      "replacements_in_fixture_lifetime_function": [],
+      "fixture_sha256": "62a3a46c4aaca59ed2329d81030370b16025f7fa64fe5bdd5e4be9f5386619f4",
+      "expected_diagnostic": null,
+      "expected_exit": 0,
+      "expected_assertion_failures": 0,
+      "expected_checks": 276
+    }
+  ]
+}

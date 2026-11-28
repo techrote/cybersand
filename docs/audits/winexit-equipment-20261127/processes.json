@@ -1,0 +1,360 @@
+{
+  "date": "2026-11-27",
+  "source_base": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "source_tree": "6a90d3ea9ff8dada4b50053aa34d830accc50a42",
+  "changed_fixture": "godot/tests/test_physical_usables_runtime.gd",
+  "changed_fixture_sha256": "62a3a46c4aaca59ed2329d81030370b16025f7fa64fe5bdd5e4be9f5386619f4",
+  "native_build_source": "466d34506feb62132d5b1badd4a0f9ab4fbb6886",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "rapier_version": "0.35.2",
+  "timeout_seconds": 1200,
+  "windows": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "engine_filename": "Godot_v4.7-stable_win64.exe",
+    "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "native_sha256": "7afd394ff6e8b0e3165eab6980707a51bfbeccd8712291cc48a2f67b93102de6",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "linux": {
+    "platform": "Ubuntu 24.04.5 LTS / Linux-6.18.58.1-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+    "engine_filename": "Godot_v4.7-stable_linux.x86_64",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "native_sha256": "3d02d04ffc27654d141506920320c2525e59dc2331da7addfb9e43b94e136a88",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "common_args": [
+    "--headless",
+    "--path",
+    "<private-project>"
+  ],
+  "profile": "Fresh redirected application data per process on a private imported project per platform. The Workbench used the project worker setting. Fixture-specific settings are in the identified scripts.",
+  "control_registration_sha256_windows_crlf": "6373feea4f3a42a16cbae786cbbab225de46b82efdd9a059d3b61ba698863fc4",
+  "control_registration_sha256_git_lf": "3327817d71064e41418dcca99132684f996045b881ede0811b7a9fa4bac0f184",
+  "runs": [
+    {
+      "platform": "windows",
+      "case": "import",
+      "arguments": [
+        "--editor",
+        "--import"
+      ],
+      "started_utc": "2026-11-27T14:53:50.947726+00:00",
+      "seconds": 31.247,
+      "exit": 0,
+      "log_sha256": "365541cf25184a1c617c64846cfbe09f1c6952303365774039e2233c3fdd43d7"
+    },
+    {
+      "platform": "windows",
+      "case": "test_physical_usable_lifecycle",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usable_lifecycle.gd"
+      ],
+      "started_utc": "2026-11-27T14:54:22.201037+00:00",
+      "seconds": 1.792,
+      "exit": 0,
+      "log_sha256": "7328ef3f5d46248780ea126b655e1549b6cdc0b088e1ce794372ca9daf54a9a7",
+      "fixture_sha256": "246a6a0de7c3f546a5b68800eeaf10140da29769e0aa718c4fafcd3091e7e589",
+      "checks": 39,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "windows",
+      "case": "test_physical_usable_equipment",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usable_equipment.gd"
+      ],
+      "started_utc": "2026-11-27T14:54:23.997767+00:00",
+      "seconds": 2.075,
+      "exit": 0,
+      "log_sha256": "94e16781920d418f726714d38136df7087520a51727f3865899762618f558fc5",
+      "fixture_sha256": "4b26aeb3c312ee33a6737644e6ad21e25773b20aa55a1d6a1df49342629ba2cf",
+      "checks": 307,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "windows",
+      "case": "test_workbench_actor_manipulation",
+      "arguments": [
+        "--script",
+        "res://tests/test_workbench_actor_manipulation.gd"
+      ],
+      "started_utc": "2026-11-27T14:54:26.079383+00:00",
+      "seconds": 2.492,
+      "exit": 0,
+      "log_sha256": "ae431cf4bef5d8b19f7376ba8e82fdc9e8e93397a521ab20fef1613b4179db53",
+      "fixture_sha256": "a69bf5c61ad5e2323580506239f2a64ea19b20a5cf634c504abc641e764ed100",
+      "checks": 78,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "windows",
+      "case": "test_microscenario_workbench_lifecycle",
+      "arguments": [
+        "--script",
+        "res://tests/test_microscenario_workbench_lifecycle.gd"
+      ],
+      "started_utc": "2026-11-27T14:54:28.576152+00:00",
+      "seconds": 8.256,
+      "exit": 0,
+      "log_sha256": "65a8b66dd0a87b40afe8d319d3f6ffca5f95da52a5206458b0991ee3c00ed27d",
+      "fixture_sha256": "71c6741786d78f3de9e0a8751ffcaf0e84f3b9fdd03658aa64885f5b97552c60",
+      "checks": 15,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "windows",
+      "case": "workbench_start_and_quit",
+      "arguments": [
+        "--verbose",
+        "--max-fps",
+        "60",
+        "--quit-after",
+        "180",
+        "--",
+        "--workbench"
+      ],
+      "started_utc": "2026-11-27T14:54:36.841144+00:00",
+      "seconds": 10.288,
+      "exit": 0,
+      "log_sha256": "58247157da7536090d8b31e3c6caf81a603e4eca5c6a38ad144c3b37d43ab031",
+      "ready_marker": "SHARED_WORKBENCH_LAUNCH_READY"
+    },
+    {
+      "platform": "windows",
+      "case": "test_physical_usables_runtime_stock",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:54:57.789377+00:00",
+      "seconds": 2.214,
+      "exit": 0,
+      "log_sha256": "6625a78a868953de8de9440505bad086e096b67f2de2178df95c1b9edbcd3479",
+      "fixture_sha256": "8489328ed5a99e84820619d33d6e4e4f4ef402be2fb39bf4ce19d8383a1b03da",
+      "checks": 272,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "windows",
+      "case": "test_physical_usables_runtime_amended",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:55:00.025236+00:00",
+      "seconds": 2.084,
+      "exit": 0,
+      "log_sha256": "263ae9fdcf4032fa5e5e16bee20e34baf859e59b9fa4dacccc95dbdcd36e6ff0",
+      "fixture_sha256": "62a3a46c4aaca59ed2329d81030370b16025f7fa64fe5bdd5e4be9f5386619f4",
+      "checks": 276,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "windows",
+      "case": "extra_world_owner",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:13.907337+00:00",
+      "seconds": 2.379,
+      "exit": 1,
+      "log_sha256": "d94c224937593cf5c61265f14b8ab06183a4506826b70fc315af4c7853ba578a",
+      "fixture_sha256": "c770650315676b2c06cf073ba90a22af2e368d902d08eeb47446e8078b47244b",
+      "checks": 276,
+      "assertion_failures": 1,
+      "assertion_errors": [
+        "ERROR: USABLE002_NATIVE equipment retained the native World between steps"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "extra_runtime_owner",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:16.315769+00:00",
+      "seconds": 2.443,
+      "exit": 1,
+      "log_sha256": "fa443e0fa6eb1399256e96a93daba8a853ae474e2667d5d458c163a743f97113",
+      "fixture_sha256": "b50608315a2485e8840d5c4f0aee216ca54094c109c79effa8abdd26611b72e5",
+      "checks": 276,
+      "assertion_failures": 1,
+      "assertion_errors": [
+        "ERROR: USABLE002_NATIVE snapshot retained the physical usable runtime"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "extra_engine_owner",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:18.793360+00:00",
+      "seconds": 2.621,
+      "exit": 1,
+      "log_sha256": "f60da013024ecdbdd019cea852c6494b297d1912513583848d7e4be2a5d54f65",
+      "fixture_sha256": "1dc85d9bfda31bf7fb863b108a1a2588f17f5e50f99b429560da572b67dbe7a1",
+      "checks": 276,
+      "assertion_failures": 1,
+      "assertion_errors": [
+        "ERROR: USABLE002_NATIVE equipment engine outlived its runtime owner"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "altered_copied_stock",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:21.440462+00:00",
+      "seconds": 2.524,
+      "exit": 1,
+      "log_sha256": "7d52b19eb065781db3e42b70acb6ce5bb4803f7ca6dc39a3c16badcae5efc418",
+      "fixture_sha256": "b0e300feb6617e31092806d87bf613c87f743d4920f3402b87054c86da849e48",
+      "checks": 276,
+      "assertion_failures": 1,
+      "assertion_errors": [
+        "ERROR: USABLE002_NATIVE copied processor stock and deployment receipt did not survive resets and owner release"
+      ]
+    },
+    {
+      "platform": "windows",
+      "case": "restored",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:23.989268+00:00",
+      "seconds": 2.22,
+      "exit": 0,
+      "log_sha256": "263ae9fdcf4032fa5e5e16bee20e34baf859e59b9fa4dacccc95dbdcd36e6ff0",
+      "fixture_sha256": "62a3a46c4aaca59ed2329d81030370b16025f7fa64fe5bdd5e4be9f5386619f4",
+      "checks": 276,
+      "assertion_failures": 0,
+      "assertion_errors": []
+    },
+    {
+      "platform": "linux",
+      "case": "import",
+      "arguments": [
+        "--editor",
+        "--import"
+      ],
+      "started_utc": "2026-11-27T14:53:47.239710+00:00",
+      "seconds": 120.206,
+      "exit": 0,
+      "log_sha256": "149e196a907e2aabcb34da669d19b9928e16122f8dd21066a8225b3becdaa03f"
+    },
+    {
+      "platform": "linux",
+      "case": "test_physical_usable_lifecycle",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usable_lifecycle.gd"
+      ],
+      "started_utc": "2026-11-27T14:55:54.276314+00:00",
+      "seconds": 3.125,
+      "exit": 0,
+      "log_sha256": "62e13d8ae6a6c07cc96705c9c560d5651b8c0f43d267410185945a53338f6ac1",
+      "fixture_sha256": "246a6a0de7c3f546a5b68800eeaf10140da29769e0aa718c4fafcd3091e7e589",
+      "checks": 39,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "linux",
+      "case": "test_physical_usable_equipment",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usable_equipment.gd"
+      ],
+      "started_utc": "2026-11-27T14:55:57.424837+00:00",
+      "seconds": 4.089,
+      "exit": 0,
+      "log_sha256": "9a05ec55192c60ff3c59635de81a35948a603e9b973cfce5a2b4ba21876659bc",
+      "fixture_sha256": "4b26aeb3c312ee33a6737644e6ad21e25773b20aa55a1d6a1df49342629ba2cf",
+      "checks": 307,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "linux",
+      "case": "test_workbench_actor_manipulation",
+      "arguments": [
+        "--script",
+        "res://tests/test_workbench_actor_manipulation.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:01.536811+00:00",
+      "seconds": 4.185,
+      "exit": 0,
+      "log_sha256": "f246c2673439cd80e37eaf28c9af444dab31c7f5fd4114c2f18f2a785848e889",
+      "fixture_sha256": "a69bf5c61ad5e2323580506239f2a64ea19b20a5cf634c504abc641e764ed100",
+      "checks": 78,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "linux",
+      "case": "test_microscenario_workbench_lifecycle",
+      "arguments": [
+        "--script",
+        "res://tests/test_microscenario_workbench_lifecycle.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:05.760316+00:00",
+      "seconds": 22.767,
+      "exit": 0,
+      "log_sha256": "464acb6ce6f28e494bb736e5ef0c7cd96c1d266bcf6b82ffd608d018a3fd6617",
+      "fixture_sha256": "71c6741786d78f3de9e0a8751ffcaf0e84f3b9fdd03658aa64885f5b97552c60",
+      "checks": 15,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "linux",
+      "case": "workbench",
+      "arguments": [
+        "--quit-after",
+        "180",
+        "--",
+        "--workbench"
+      ],
+      "started_utc": "2026-11-27T14:56:30.100009+00:00",
+      "seconds": 36.11,
+      "exit": 0,
+      "log_sha256": "e1ce96ce11183a2d67f7f39ec5127491b85ce7cccdd4928a6f5a6388475b7bfa",
+      "ready_marker": "SHARED_WORKBENCH_LAUNCH_READY"
+    },
+    {
+      "platform": "linux",
+      "case": "physical_usables_runtime_stock",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:13.917346+00:00",
+      "seconds": 3.199,
+      "exit": 0,
+      "log_sha256": "bc58ac941c821d23d3c541432f17b339bd8518ac72b08b230fb3d824f7686f4f",
+      "fixture_sha256": "8489328ed5a99e84820619d33d6e4e4f4ef402be2fb39bf4ce19d8383a1b03da",
+      "checks": 272,
+      "assertion_failures": 0
+    },
+    {
+      "platform": "linux",
+      "case": "physical_usables_runtime_amended",
+      "arguments": [
+        "--script",
+        "res://tests/test_physical_usables_runtime.gd"
+      ],
+      "started_utc": "2026-11-27T14:56:17.206041+00:00",
+      "seconds": 3.218,
+      "exit": 0,
+      "log_sha256": "0c54d1800fe3e07f8cc71ad7d0637baa48b67eb86bb57b4383b77bf4d845c5d4",
+      "fixture_sha256": "62a3a46c4aaca59ed2329d81030370b16025f7fa64fe5bdd5e4be9f5386619f4",
+      "checks": 276,
+      "assertion_failures": 0
+    }
+  ]
+}
