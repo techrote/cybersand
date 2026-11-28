@@ -7,6 +7,8 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
+import zipfile
 
 import ramcache_strata_lab_package as package
 
@@ -56,6 +58,125 @@ class SourcePackageTests(unittest.TestCase):
     def verify(self, **kwargs):
         return package.verify_source(self.destination, self.record, expected_source=self.source,
                                      expected_tree=self.tree, materialized_lfs=kwargs.pop("materialized_lfs", {}), **kwargs)
+
+    def test_files_only_archive_preserves_exact_portable_history(self):
+        anchor = self.destination / ".git" / package.PORTABLE_SOURCE_REF
+        self.assertEqual(anchor.read_bytes(), (self.source + "\n").encode())
+        self.assertEqual((self.destination / ".git/HEAD").read_bytes(), (self.source + "\n").encode())
+        self.assertFalse((self.destination / ".git/logs" / package.PORTABLE_SOURCE_REF).exists())
+        self.assertEqual(package.git(self.destination, "for-each-ref", "--format=%(refname) %(objectname)").strip(),
+                         (package.PORTABLE_SOURCE_REF + " " + self.source).encode())
+        before = {path.relative_to(self.destination).as_posix(): path.read_bytes()
+                  for path in self.destination.rglob("*") if path.is_file()}
+        archive = self.root / "actual-files-only.zip"
+        with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as bundle:
+            for path in sorted(self.destination.rglob("*")):
+                if path.is_file():
+                    bundle.write(path, "source/" + path.relative_to(self.destination).as_posix())
+        extracted = self.root / "fresh extracted package"
+        with zipfile.ZipFile(archive) as bundle:
+            self.assertIsNone(bundle.testzip())
+            self.assertTrue(all(not item.is_dir() for item in bundle.infolist()))
+            self.assertIn("source/.git/" + package.PORTABLE_SOURCE_REF, bundle.namelist())
+            bundle.extractall(extracted)
+        self.destination = extracted / "source"
+        self.assertEqual({path.relative_to(self.destination).as_posix(): path.read_bytes()
+                          for path in self.destination.rglob("*") if path.is_file()}, before)
+        verified = self.verify()
+        self.assertEqual(verified["source_commit"], self.source)
+        self.assertEqual(verified["source_tree"], self.tree)
+        self.assertEqual(verified["remote_count"], 0)
+
+    def test_anchor_is_the_only_git_metadata_change_and_adds_no_excluded_history(self):
+        self.git("checkout", "-qb", "excluded-objectshard")
+        self.write("excluded.txt", b"unaccepted branch content\n")
+        self.git("add", "excluded.txt")
+        self.git("commit", "-qm", "excluded branch")
+        excluded = self.git("rev-parse", "HEAD").decode().strip()
+        self.git("checkout", "--detach", self.source)
+        self.git("remote", "add", "private", "https://example.invalid/private")
+        unrelated = self.root / "unreachable-object"
+        unrelated.write_bytes(b"unreachable donor object")
+        unreachable = self.git("hash-object", "-w", str(unrelated)).decode().strip()
+        original_clean = package.lab.clean_source_repository
+        original_metadata = {}
+
+        def capture_clean_repository(*args):
+            history = original_clean(*args)
+            dotgit = args[2] / ".git"
+            original_metadata.update({path.relative_to(dotgit).as_posix(): path.read_bytes()
+                                      for path in dotgit.rglob("*") if path.is_file()})
+            return history
+
+        self.destination = self.root / "bounded-metadata/source"
+        with mock.patch.object(package.lab, "clean_source_repository", side_effect=capture_clean_repository):
+            self.record = package.stage_source(self.donor, self.source, self.destination)
+        dotgit = self.destination / ".git"
+        self.assertEqual({path.relative_to(dotgit).as_posix(): path.read_bytes()
+                          for path in dotgit.rglob("*") if path.is_file()},
+                         {**original_metadata, package.PORTABLE_SOURCE_REF: (self.source + "\n").encode()})
+        self.verify()
+        for oid in (excluded, unreachable):
+            with self.subTest(excluded_oid=oid):
+                with self.assertRaisesRegex(RuntimeError, "Git command failed"):
+                    package.git(self.destination, "cat-file", "-e", oid)
+
+    def test_portable_reference_must_be_present_and_exact(self):
+        anchor = self.destination / ".git" / package.PORTABLE_SOURCE_REF
+        anchor.unlink()
+        with self.assertRaisesRegex(RuntimeError, "needs its exact loose reference"):
+            self.verify()
+        for contents in (b"", b"malformed\n", ("0" * 40 + "\n").encode(),
+                         (self.source + "\r\n").encode(), (self.source + "\nextra\n").encode()):
+            with self.subTest(contents=contents):
+                anchor.write_bytes(contents)
+                with self.assertRaisesRegex(RuntimeError, "loose reference differs"):
+                    self.verify()
+
+    def test_portable_reference_cannot_move_to_an_otherwise_valid_ancestor(self):
+        accepted_ancestor = self.source
+        self.git("commit", "--allow-empty", "-qm", "accepted successor")
+        self.source = self.git("rev-parse", "HEAD").decode().strip()
+        self.tree = self.git("rev-parse", "HEAD^{tree}").decode().strip()
+        self.destination = self.root / "successor/source"
+        self.record = package.stage_source(self.donor, self.source, self.destination)
+        self.verify()
+        package.git(self.destination, "merge-base", "--is-ancestor", accepted_ancestor, "HEAD")
+        package.git(self.destination, "-c", "core.logAllRefUpdates=false", "update-ref",
+                    package.PORTABLE_SOURCE_REF, accepted_ancestor)
+        with self.assertRaisesRegex(RuntimeError, "loose reference differs"):
+            self.verify()
+
+    def test_portable_head_must_stay_detached(self):
+        (self.destination / ".git/HEAD").write_text("ref: " + package.PORTABLE_SOURCE_REF + "\n")
+        self.assertEqual(package.git(self.destination, "rev-parse", "HEAD").decode().strip(), self.source)
+        with self.assertRaisesRegex(RuntimeError, "HEAD must remain detached"):
+            self.verify()
+
+    def test_portable_reference_cannot_be_a_symbolic_link(self):
+        anchor = self.destination / ".git" / package.PORTABLE_SOURCE_REF
+        external = self.root / "external-reference"
+        external.write_bytes(anchor.read_bytes())
+        anchor.unlink()
+        try:
+            anchor.symlink_to(external)
+        except (OSError, NotImplementedError) as error:
+            self.skipTest("Host cannot create the actual symlink control: " + str(error))
+        with self.assertRaisesRegex(RuntimeError, "contains a symbolic link"):
+            self.verify()
+
+    def test_failed_git_queries_retain_bounded_original_stderr(self):
+        with self.assertRaisesRegex(RuntimeError, "Portable source Git command failed.*rev-parse.*fatal:"):
+            package.git(self.destination, "rev-parse", "--verify", "refs/heads/missing-reference")
+        failure = subprocess.CalledProcessError(128, ["git", "remote"], stderr=b"original failure\n" + b"x" * 5000)
+        with mock.patch.object(package.subprocess, "check_output", side_effect=failure):
+            with self.assertRaises(RuntimeError) as caught:
+                package.git(self.destination, "remote")
+        message = str(caught.exception)
+        self.assertIn("exit 128, remote", message)
+        self.assertIn("original failure", message)
+        self.assertTrue(message.endswith(" [stderr truncated]"))
+        self.assertLess(len(message), 4300)
 
     def test_canonical_source_and_generated_imports(self):
         self.assertEqual((self.destination / "Launch.ps1").read_bytes(), b"Write-Output 'portable'\n")

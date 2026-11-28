@@ -171,6 +171,67 @@ That diagnostic is packaging evidence, not a new application pass. The original
 failure remains recorded; the corrected final-main package still requires all
 source campaigns and actual extracted launcher/authoring/reopen gates above.
 
+The next [main campaign](https://github.com/techrote/cybersand/actions/runs/46105901845)
+passed all six source lanes and strict archive admission, then stopped before
+Godot launch when the extracted source was not recognized as a Git repository.
+Three independent files-only ZIP reproductions identified the missing empty
+`.git/refs` directory. A real loose `refs/heads/portable-source` reference now
+points exactly to the qualified source commit, while HEAD remains detached.
+That authenticated file survives an ordinary unzip without requiring metadata
+repair by the owner or a special test extractor. Its creation adds no reflog,
+configuration, objects or unrelated history. Missing, altered or linked refs
+are refused; failed Git queries retain a bounded original diagnostic.
+
+For this specific packaging-only successor, the six successful source
+campaigns at `d414774ddc582cbc03d74e119937665368dc3476` may be reused under a
+strict, source-owned proof. Their original run, attempt, artifact and report
+hashes remain pinned, and their unchanged original readers execute in an
+isolated checkout of that exact source. The complete Git delta to the shipped
+application must contain only the seven explicitly registered packaging,
+packaging-test, workflow, request and runbook files. All application, native,
+dependency and fixture files, plus the source-campaign driver and reader, remain unchanged.
+Any other modification refuses reuse.
+
+The evaluator manifest records its current application identity separately from
+the original source-qualification identity and the full reuse proof. The six
+original reports are never rewritten or presented as new-source executions;
+the earlier overall workflow remains failed because its package failed.
+Every new archive still requires fresh execution of its actual current-source
+CMD launchers, persistent close/reopen, RAMCACHE, Strata, portable Materials Lab,
+loaded-module and post-execution payload checks. An application or functional
+qualification change requires new source campaigns rather than this bounded
+packaging reuse route.
+
+The [corrective Windows diagnostic](https://github.com/techrote/cybersand/actions/runs/46110191691)
+at `6a07ca01d19ad6b7fc6cf15a055fc5107deab23c` passed actual full ZIP extraction,
+pristine source and bundled-tool verification, ordinary CMD launch, persistent
+CMD normal close and fresh-process reopen, and all original payload hashes after
+execution. Its final shipped PowerShell verifier failed because `Get-FileHash`
+was unavailable in the sanitized environment. That overall diagnostic remains
+failed; its successful prefixes retain their original source identity.
+
+The shipped verifier now streams SHA-256 through .NET with explicit resource
+disposal, retaining the existing path, file-presence, hash and count assertions.
+Actual Windows good, altered and missing-file controls precede packaging, and
+the complete final archive still receives the actual shipped verifier check.
+The diagnostic also observed optional Godot Android-editor debug-keystore
+initialization through the runner's `JAVA_HOME`, as established by the pinned
+engine's [default Java path](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/platform/android/export/export.cpp)
+and [absent-keytool return](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/platform/android/export/export_plugin.cpp).
+The final cold desktop check
+clears that variable to establish operation without the hosted Java SDK; the
+owner's CMD and the application remain unchanged.
+
+The later module-observation subprocess also starts Windows PowerShell 5.1
+through Python. Its child environment now removes only the case-insensitive
+`PSModulePath` variable, following [Microsoft's documented startup contract](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6#starting-windows-powershell-from-powershell-7).
+This lets that interpreter construct its own compatible module lookup. The
+original module-observer script, commands, hash/path/PID assertions and deadlines
+are unchanged; the portable Python/Git/compiler PATH is preserved. Actual
+Windows known-answer controls establish command availability under that exact
+child environment, and the final installed campaign still must execute the
+complete original module observation.
+
 Hosted Linux software rendering and Windows ANGLE/Microsoft Basic execution
 qualify those environments. Only the original evaluators received the owner's
 physical TITAN RTX evaluation; the new package is not described as physically
