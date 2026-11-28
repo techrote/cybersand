@@ -347,13 +347,19 @@ jobs:
                           diagnostic_names = sorted(n for n in names if n.startswith(prefix) and
                               (n == prefix + "lab-runner.log" or
                                (n.startswith(prefix + "lab/") and
-                                (n.endswith("integration.json") or n.endswith("pubpres-mainline-qualification.json")))))
+                                (n.endswith("integration.json") or n.endswith("pubpres-mainline-qualification.json") or n.endswith("/material-lab-author/process.log")))))
                           present("ORIGINAL_FAILURE_RECORD_NAMES", diagnostic_names)
                           for name in diagnostic_names:
                               raw = original(name)
                               decoded = raw.decode("utf-8-sig", errors="replace")
-                              present("ORIGINAL_FAILURE_RECORD", {"name": name, "bytes": len(raw),
-                                      "sha256": hashlib.sha256(raw).hexdigest(), "tail": decoded[-60000:]})
+                              if name.endswith("/integration.json"):
+                                  detail = json.loads(raw.decode("utf-8-sig"))
+                                  detail_keys = list(detail)
+                                  detail = {key: detail.get(key) for key in ("status", "error", "failure", "failures", "mode", "cases", "commands", "results", "steps", "source_commit", "source_tree", "returncode") if key in detail}
+                                  present("ORIGINAL_FAILURE_INTEGRATION_SUMMARY", {"name": name, "original_keys": detail_keys, "original_sha256": hashlib.sha256(raw).hexdigest(), "fields": detail})
+                              else:
+                                  present("ORIGINAL_FAILURE_RECORD", {"name": name, "bytes": len(raw),
+                                          "sha256": hashlib.sha256(raw).hexdigest(), "tail": decoded[-60000:]})
                   else:
                       raise ValueError("Unregistered data-only custody role")
               proof["status"] = "inspected"
