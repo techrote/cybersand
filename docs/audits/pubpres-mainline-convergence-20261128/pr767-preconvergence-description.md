@@ -1,0 +1,58 @@
+## Fire-on owner retest — Draft/HOLD
+
+[Download the standalone Windows Workbench](https://github.com/techrote/cybersand/actions/runs/46084542128/artifacts/15237664774) for application `9f2127256a555d177536cbb5fad2be7dcb322c8e`. Open **Wave 512** or **Mixed 2048**, pilot the Needle in Follow, enable **Thruster fire**, then press Play. **Collect Results.cmd** records native nozzle outcomes, actual physical completions, material decisions and accepted pilot poses.
+
+The owner's TITAN RTX report exposed contact-dependent whole-body withholding and repeated displayed poses during steady physical motion. The owner build now clips visible chassis pixels against the published materials, checks the same pixels for picking and limits exhaust effects to the area the published material can influence.
+
+Two hosted Windows 90-second Fire-on patrols retained the Needle on **774/774 Wave512** and **640/640 Mixed2048** draws, with no frozen moving pose or catch-up jumps. Separate wall, Water and Fire contact tests passed framebuffer and mouse picking in both rooms. Software-rendered progression still fell short of 60 steps/s at **29.56 and 16.23 physical steps/s** respectively. The broad mounted suite also retained a one-draw manual-step Barrel omission when its native response was unavailable. [Exact release evidence](https://github.com/techrote/cybersand/actions/runs/46084542128/artifacts/15238453402) · [Qualification and limits](https://github.com/techrote/cybersand/blob/codex/pubpres-playability-final-001-20261124/docs/audits/2026-11-27-pubpres-definitive.md#downloadable-fire-on-retest)
+
+On 28 November the owner playtested the delivered Windows build and reported a substantial improvement. The earlier flyer flicker and hitch chains were no longer noticeable during play. The only issue they noticed was a brief slowdown at spawn. They associated it with fresh pixel material spawning midair. Its cause has not been measured.
+
+The owner playtest is recorded. Keep this PR in Draft for mainline reconciliation and the applicable integration checks. Stock Safe remains selected.
+
+## Repaired local owner retest, 27 November
+
+Application `6d638bc2a` uses Stock Safe and two material images. It repairs dry flyer withholding, keeps the clock for each actual native coupling response, and avoids offscreen and provably empty rendering work. The local Windows evaluator's collector now captures play. Its 51 verified archive entries cover four actual sessions. **Keep Draft/HOLD.**
+
+The 90-second continuously piloted, panning Follow flights showed a live Needle on every graphical draw. Linux llvmpipe completed 55.76 physical steps/s on Wave512 and 29.48 on Mixed2048. Hosted Windows ANGLE completed 45.03 and 21.05 respectively. Physical gap p95 on hosted Windows was 57 ms and 87 ms. Mixed2048 still had a 26-frame chain of >100 ms draw gaps. Windows headless sustained 60.02 and 58.77 steps/s. The separate 4,874-draw mounted Water replay retained 13 moving member omissions during submersion or entry. The rejected application's matched wider Linux flight produced 14.54 and 12.69 physical steps/s, with 1/1,304 and 433/1,143 dry pilot omissions respectively. Physical NVIDIA retest and remaining graphical performance are open. [Hosted flight receipts and framebuffers](https://github.com/techrote/cybersand/actions/runs/46077817334/artifacts/15235564004) · [Source and local evaluator identity](https://github.com/techrote/cybersand/blob/codex/pubpres-playability-final-001-20261124/docs/audits/2026-11-27-pubpres-definitive.md#owner-follow-flight-repair)
+
+## Physical owner playtest on 27 November
+
+**Owner rejected application 00478f29b for physical playability. Keep Draft/HOLD.** On native OpenGL on an NVIDIA TITAN RTX, Wave512 lost the former Follow position judder but exhibited hitch chains and intermittent flyer disappearance. The authored Mixed2048 launcher showed repeated hard flicker and slow, surging physics. This occurred on the ordinary owner scenes. The earlier hosted results remain valid within their recorded scope.
+
+The first launch of each scene spent roughly 40 s and 36 s respectively in Godot import. Both GUI processes exited normally. The two owner profiles retain launch identity and sampled process resources; the startup-only gameplay receipt cannot attribute individual hitches or missing draws. The five-minute hosted Mixed2048 control completed 118 fixed 1/60 s steps in its last ten seconds (0.197 simulated seconds per wall second). Continued progression alone did not establish real-time play. Physical acceptance remains failed pending a repaired evaluator and owner retest.
+
+## Download and decision
+
+The [standalone Windows Workbench](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225226778) ships official Godot 4.7 **Stock Safe**, Full two-slot material publication, Water composition enabled and all-worker native completion. The fallback launcher uses Stock Safe with Water composition off. **Draft / HOLD** for physical owner evaluation.
+
+Application `00478f29b9abaccb1e358137e8a9a48894c1690b` includes accepted main `7a15691a7c537d07ff10a1bc4da9d46491c0b9d6`. Its inner Windows ZIP is 105,500,799 bytes, SHA-256 `79abd9beb457a79b0735fbb78e962d72bebacf6ce01ca91200e323197bccc990`. Both platform runtimes were built from the application source. An independent check verified all 2,849 payload hashes. All 14 shipped CMD launches exited normally from a pristine path containing spaces. Each mode passed 215 graphical authoring checks and 71 fresh-process reopen checks. [Installed evaluator and collector receipts](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225376523)
+
+## Physical progression and presentation
+
+| Selected on hosted Windows | Main physical steps/s | Candidate physical steps/s | Candidate p95 gap | Candidate maximum gap |
+|---|---:|---:|---:|---:|
+| Wave512 | 14.06–15.42 | 18.53–18.61 | 158 ms | 162 ms |
+| Wave2048 | 3.82–4.03 | 4.86–5.23 | 325–406 ms | 570 ms |
+
+- Both sizes passed the pre-registered relative comparison on Windows and Linux. The Windows gains were 26.0% and 28.7%. The 100 ms p95 and 250 ms maximum targets remain open. On the 570 ms gap, the native packet was ready at 209 ms and the full-image upload occupied 212–562 ms. Four five-minute Windows sessions accepted 79/79 ordinary actions each and continued advancing through the final ten seconds. [Windows N/C/C/N](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15226565285) · [Linux N/C/C/N](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15224871286) · [Five-minute sessions](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223904133)
+- Grab and Place resolve the displayed member, accepted camera and current generation. The placement repair retains the limb contact through rotation and preserves fractional spawns in Save. Stock Safe passed 12 held-limb checks and 574 multipart checks. Build02 Safe0, Separate0 and Separate4 each passed 125 accepted-frame input checks. [Input receipts](https://github.com/techrote/cybersand/actions/runs/46030558777)
+- Selected Windows showed every body across 4,854 Water draws. Linux withheld 24 members across eight of 4,930 draws, including three with all bodies withheld. Every refusal exhausted the 2 ms guard. Both platforms preserved visibility through both long pauses and the first restored frame. The subsequent submission witness observed that first draw directly on Separate0 and Separate4, each passing 208 assertions. [Linux Water](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15224141603) · [Separate0](https://github.com/techrote/cybersand/actions/runs/46049916515/artifacts/15224592946) · [Separate4](https://github.com/techrote/cybersand/actions/runs/46049916515/artifacts/15223719219)
+- Selected native tests passed normal and sanitizer gates. Fifteen mainline graphical cases passed 2,165 checks across AMBIENT, Goblin, Material Audition, Actor Compose, native authoring, SWARM and Gentek. [Native results](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15225760841) · [Mainline case inventory](https://github.com/techrote/cybersand/blob/codex/pubpres-playability-final-001-20261124/docs/audits/2026-11-27-pubpres-cross-feature.json)
+
+## Timing and screenshots
+
+The owner supplied the FreeMass2048 reference as a deliberately pathological canvas. The FreeMass functional control passed. The large registered comparison reuses that reacting-room geometry with the Wave gameplay law, a Follow camera and a fixed Needle input tape. Its physical gaps remain stress-case results. The authored Wave and Mixed launcher sessions are separate evidence for ordinary interaction. All originally registered thresholds and failures remain recorded.
+
+The three primary timing groups totalled about 41 min 57 s of measured play and capture. Four five-minute sessions located 49/80 above-p95 observed physical gaps in the first 100 s, 16 in the middle and 15 in the last. The largest individual gaps occurred at 0:46, 0:43, 4:37 and 3:15 in Wave512, Wave1024, Wave2048 and Mixed2048. Short selected Windows benchmarks split two early and two late by concentration. [Session clocks and eight original screenshots](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15223904133) · [Small basin and reacting reference screenshots](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15226565285)
+
+## Experimental renderer decision
+
+The registered Water-off engine comparison ran all 16 observer calibrations and 12 timing captures on one Windows host. Separate4 actually deferred work in every candidate capture. Wave512 advanced at 9.46–9.59 steps/s versus 16.51–16.98 on Stock Safe, while its submitted material age p95 rose from 159 to 302–307 ms. At Wave2048, Separate4 advanced faster but had worse p95 gaps than the same build at Separate0. The original cross-engine exact JSON check refused two decimal spellings of the same single-precision coordinates; independent replay found identical physical vector bits, contacts and inputs through all 144 steps. Both registered numerical comparisons failed at both sizes. Custom Safe0 also withheld a selected body after Water refill on its Water-on gate. [Original timing and raw arm receipts](https://github.com/techrote/cybersand/actions/runs/46060454634/artifacts/15229833054) · [Water gate](https://github.com/techrote/cybersand/actions/runs/46046627411/artifacts/15227742439)
+
+## Owner evaluation and merge requirements
+
+Extract the Actions download and the Windows ZIP inside. Launch **Open Wave 512.cmd**, paint, pilot, Follow, grab, pause/step/resume, then **Save start**. Close normally, relaunch and **Load start**. Repeat with **Open Wave 2048.cmd**, **Open Mixed 2048.cmd** and their adjacent **Stock Safe Fallback** launchers. Close and run **Collect Results.cmd**.
+
+Physical Windows 11/NVIDIA display and input acceptance remain with the owner. Before merge, reconcile with then-current accepted main, requalify any changed application/runtime and record exact-head Documentation/provenance, Native, GDExtension/Godot and applicable scoped apparatus results after authorized Ready promotion. [Engineering decision and evidence](https://github.com/techrote/cybersand/blob/codex/pubpres-playability-final-001-20261124/docs/audits/2026-11-27-pubpres-definitive.md) · [Programme #717](https://github.com/techrote/cybersand/issues/717) · [Frozen #757](https://github.com/techrote/cybersand/pull/757) · [Frozen c2 rollback](https://github.com/techrote/cybersand/actions/runs/45452580606/artifacts/14952245528)
+

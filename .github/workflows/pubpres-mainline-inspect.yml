@@ -1,4 +1,4 @@
-name: PUBPRES original qualification inspection
+name: PUBPRES final original evidence inspection
 
 on:
   push:
@@ -10,214 +10,600 @@ permissions:
   actions: read
 
 concurrency:
-  group: pubpres-mainline-original-inspection-${{ github.run_id }}
+  group: pubpres-mainline-final-evidence-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
   inspect-original:
-    name: Inspect original Q3 frozen artifact (${{ matrix.role }})
+    name: Inspect final original evidence (${{ matrix.role }})
     if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-mainline-evidence-001-20261128'
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       max-parallel: 2
       matrix:
-        role: [linux-frozen, windows-frozen]
+        role: [spawn]
     steps:
-      - name: Authenticate original artifact and inspect bounded original records
+      - name: Authenticate original final artifacts and independently reduce retained observations
         env:
           GITHUB_TOKEN: ${{ github.token }}
           INSPECTION_ROLE: ${{ matrix.role }}
         run: |
           python3 - <<'PY'
-          import hashlib, json, os, pathlib, stat, urllib.error, urllib.parse, urllib.request, zipfile
+          import hashlib, itertools, json, math, os, pathlib, stat, statistics, urllib.error, urllib.parse, urllib.request, zipfile
           REPOSITORY = "techrote/cybersand"
-          SOURCE = "d9cc40b2da9ab447b9b25eef79158913e01fec01"
-          TREE = "591aeca0b4741c2f9b2a8eff1cf8f8dad0a3a108"
-          RUN, ATTEMPT = 46139433132, 1
+          SOURCE = "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7"
+          TREE = "f6b7b8d3d613b70cdcdf3643fb906934b3887173"
+          RUN, ATTEMPT = 46144440297, 1  # Authenticated original final delivery run.
+          MAIN = "50e3bcb839211eac2abe1e065750cbcba4d36f8c"
+          OWNER = "9f2127256a555d177536cbb5fad2be7dcb322c8e"
+          ENGINE = "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+          # Each immutable tuple is (artifact ID, exact ZIP bytes, SHA256, exact artifact name, kind, case).
           ROLES = {
-              "linux-frozen": (15260559908, 37063839, "ec1dc2392ffbcc50d81ecbb3aa2bdd188302617872ab3867e4e0ab56fa9dc65b",
-                               "pubpres-mainline-qualified-linux-frozen-46139433132-1"),
-              "windows-frozen": (15261133104, 18433189, "cb90960157b18c2f484689fd15a4de6cf46e05e849f911840cd018767f3232ea",
-                                 "pubpres-mainline-qualified-windows-frozen-46139433132-1"),
+              "spawn": (15263701529, 6208989, "c0db8bc7b629750c5f4a91eab0fa6e9c29e1b8c455630c3bf277fad32cf7a826",
+                        "pubpres-mainline-spawn-windows-46144440297-1", "spawn", None),
           }
-          role = os.environ["INSPECTION_ROLE"]
-          artifact_id, expected_bytes, expected_sha, expected_name = ROLES[role]
-          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / ("pubpres-original-inspection-" + role)
-          output.mkdir(exist_ok=False)
-          headers = {"Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
-                     "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+          ROLE = os.environ["INSPECTION_ROLE"]
+          AID, SIZE, SHA, NAME, KIND, CASE = ROLES[ROLE]
+          def need(ok, reason):
+              if not ok: raise ValueError(reason)
+          need(RUN > 0 and AID > 0 and 0 < SIZE < 1024**3 and len(SOURCE) == len(TREE) == 40
+               and len(SHA) == 64 and all(c in "0123456789abcdef" for c in SOURCE+TREE+SHA),
+               "Template requires fixed, independently verified final artifact custody")
+          out = pathlib.Path(os.environ["RUNNER_TEMP"]) / ("pubpres-final-evidence-" + ROLE)
+          out.mkdir(exist_ok=False)
+          headers = {"Authorization":"Bearer "+os.environ["GITHUB_TOKEN"],"Accept":"application/vnd.github+json",
+                     "X-GitHub-Api-Version":"2022-11-28"}
           def api(path):
-              request = urllib.request.Request("https://api.github.com/repos/" + REPOSITORY + path, headers=headers)
-              with urllib.request.urlopen(request, timeout=60) as response:
+              with urllib.request.urlopen(urllib.request.Request("https://api.github.com/repos/"+REPOSITORY+path,headers=headers),timeout=60) as response:
                   raw = response.read(1048577)
-              if len(raw) > 1048576: raise ValueError("Bounded original metadata response exceeded")
+              need(len(raw)<=1048576,"API metadata exceeds bounded scope")
               return json.loads(raw)
-          run = api("/actions/runs/" + str(RUN))
-          if not (run["id"] == RUN and run["run_attempt"] == ATTEMPT and run["head_sha"] == SOURCE
-                  and run["event"] == "push" and run["head_branch"] == "codex/pubpres-playability-final-001-20261124"
-                  and run["path"] == ".github/workflows/pubpres-mainline.yml"):
-              raise ValueError("Original qualification source/run/attempt/workflow differs")
-          metadata = api("/actions/artifacts/" + str(artifact_id))
-          if not (metadata["id"] == artifact_id and metadata["name"] == expected_name and not metadata["expired"]
-                  and metadata["size_in_bytes"] == expected_bytes and metadata["digest"] == "sha256:" + expected_sha
-                  and metadata["workflow_run"]["id"] == RUN and metadata["workflow_run"]["head_sha"] == SOURCE):
-              raise ValueError("Original artifact identity differs")
+          run = api("/actions/runs/"+str(RUN))
+          need(run["id"]==RUN and run["run_attempt"]==ATTEMPT and run["head_sha"]==SOURCE
+               and run["head_branch"]=="codex/pubpres-playability-final-001-20261124" and run["event"]=="push"
+               and run["path"]==".github/workflows/pubpres-mainline.yml","Original delivery run identity differs")
+          commit = api("/git/commits/"+SOURCE)
+          need(commit["sha"]==SOURCE and commit["tree"]["sha"]==TREE,"Original application tree differs")
+          meta = api("/actions/artifacts/"+str(AID))
+          need(meta["id"]==AID and meta["name"]==NAME and not meta["expired"] and meta["size_in_bytes"]==SIZE
+               and meta["digest"]=="sha256:"+SHA and meta["workflow_run"]["id"]==RUN
+               and meta["workflow_run"]["head_sha"]==SOURCE,"Original artifact custody differs")
           class NoRedirect(urllib.request.HTTPRedirectHandler):
-              def redirect_request(self, request, fp, code, message, response_headers, newurl):
-                  return None
-          request = urllib.request.Request("https://api.github.com/repos/" + REPOSITORY
-                                           + "/actions/artifacts/" + str(artifact_id) + "/zip", headers=headers)
+              def redirect_request(self, request, fp, code, message, response_headers, newurl): return None
+          request = urllib.request.Request("https://api.github.com/repos/"+REPOSITORY+"/actions/artifacts/"+str(AID)+"/zip",headers=headers)
           try:
-              urllib.request.build_opener(NoRedirect).open(request, timeout=60)
+              urllib.request.build_opener(NoRedirect).open(request,timeout=60)
           except urllib.error.HTTPError as response:
-              if response.code not in (301, 302, 303, 307, 308): raise
+              need(response.code in (301,302,303,307,308),"Unexpected artifact response")
               download = response.headers["Location"]
           else:
-              raise ValueError("Expected the authenticated artifact's signed download redirect")
-          parsed = urllib.parse.urlsplit(download)
-          if parsed.scheme != "https" or parsed.username or parsed.password:
-              raise ValueError("Invalid artifact download redirect")
-          # The GitHub credential never accompanies the separate signed storage request.
-          archive = output / "original-artifact.zip"
-          received, digest = 0, hashlib.sha256()
-          with urllib.request.urlopen(urllib.request.Request(download), timeout=90) as response, archive.open("xb") as stream:
+              raise ValueError("Authenticated artifact download did not redirect")
+          url = urllib.parse.urlsplit(download)
+          need(url.scheme=="https" and not url.username and not url.password,"Invalid signed artifact redirect")
+          archive = out / "original-artifact.zip"
+          received, archive_hash = 0, hashlib.sha256()
+          # The repository credential never accompanies the signed storage request.
+          with urllib.request.urlopen(urllib.request.Request(download),timeout=90) as response, archive.open("xb") as target:
               while block := response.read(1048576):
                   received += len(block)
-                  if received > expected_bytes: raise ValueError("Original archive exceeds its authenticated size")
-                  digest.update(block)
-                  stream.write(block)
-          if received != expected_bytes or digest.hexdigest() != expected_sha:
-              raise ValueError("Original archive bytes differ")
-          prefix = "mainline-qualified/"
-          summary_name = prefix + "SUMMARY.json"
-          expected_inventory = [("import", 2)] + [(name, 2) for name in (
-              "test_workbench_physics_publication", "test_workbench_physics_causal_trace",
-              "test_workbench_material_world_blend", "test_workbench_material_delivery_timing",
-              "test_physical_actor_integration", "test_render_cadence_worker",
-              "test_material_publication_deadline", "test_material_deadline_main_identity",
-              "test_material_publication_steps", "test_material_steps_main_identity")]
-          expected_inventory += [(name, 3) for name in (
-              "test_full_image_ring_publication", "test_full_image_ring_main_recovery",
-              "pubpres_full_image_ring_oracle", "test_workbench_material_world_blend",
-              "test_workbench_material_delivery_timing")]
-          expected_inventory += [("test_material_deadline_main_history", 2),
-                                 ("test_material_deadline_main_history", 3),
-                                 ("test_material_steps_main_history", 2)]
-          records, absent = {}, []
-          with zipfile.ZipFile(archive) as bundle:
-              items = bundle.infolist()
-              if not 0 < len(items) <= 10000 or sum(item.file_size for item in items) > 256 * 1024**2:
-                  raise ValueError("Original archive population/expansion exceeds inspection bound")
-              names, normalized_names = set(), set()
-              for item in items:
-                  name, relative = item.filename, pathlib.PurePosixPath(item.filename)
-                  parts = relative.parts
-                  mode = (item.external_attr >> 16) & 0o170000
-                  normalized = relative.as_posix()
-                  if (not parts or name in names or normalized in normalized_names or "\\" in name
-                          or ":" in name or relative.is_absolute() or ".." in parts
-                          or item.flag_bits & 1 or mode not in (0, stat.S_IFREG, stat.S_IFDIR)):
-                      raise ValueError("Unsafe, linked, encrypted or aliased original ZIP member")
-                  names.add(name)
-                  normalized_names.add(normalized)
-              if bundle.testzip() is not None:
-                  raise ValueError("Original archive CRC failure")
-              if summary_name not in names:
-                  raise ValueError("Missing original frozen SUMMARY")
-              def read_original(name):
-                  if name not in names:
-                      absent.append(name)
-                      return None
-                  info = bundle.getinfo(name)
-                  if info.is_dir() or info.file_size > 8 * 1024**2:
-                      raise ValueError("Requested original record exceeds bounded file scope")
-                  raw = bundle.read(name)
-                  target = output / name
-                  target.parent.mkdir(parents=True, exist_ok=True)
-                  target.write_bytes(raw)
-                  records[name] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
-                  return raw
-              raw_summary = read_original(summary_name)
-              summary = json.loads(raw_summary.decode("utf-8-sig"))
-              source = summary.get("source", {})
-              if not (summary.get("schema") == "pubpres-recovery-correctness-v1"
-                      and summary.get("focus") == "frozen"
-                      and source.get("source_commit") == SOURCE and source.get("source_tree") == TREE
-                      and source.get("qualified_exact_head") is True):
-                  raise ValueError("Original frozen receipt source/tree or scope differs")
-              outcomes = summary.get("outcomes", [])
-              if [(row.get("test"), row.get("slots")) for row in outcomes] != expected_inventory:
-                  raise ValueError("Original frozen19-case population differs")
-              if any(type(row.get("valid")) is not bool for row in outcomes):
-                  raise ValueError("Original outcome lacks an explicit validation status")
-              compact = {key: summary.get(key) for key in (
-                  "schema", "complete", "full_qualification", "physical_acceptance",
-                  "focus", "headless_only", "render_thread", "lookahead", "engine_sha256",
-                  "rapier_sha256", "final_source_mutations", "import_source_mutations")}
-              compact["source"] = {key: source.get(key) for key in
-                                   ("source_commit", "source_tree", "qualified_exact_head",
-                                    "working_tree_changes", "untracked_source_files")}
-              compact["outcomes"] = [{key: row.get(key) for key in
-                                     ("test", "slots", "graphical", "valid", "returncode",
-                                      "timed_out", "seconds", "failure", "error")} for row in outcomes]
-              compact_text = json.dumps(compact, indent=2)
-              if len(compact_text) > 96000:
-                  raise ValueError("Compact original frozen summary exceeds console bound")
-              print("ORIGINAL_FROZEN_SUMMARY_BEGIN " + role, flush=True)
-              print(compact_text, flush=True)
-              print("ORIGINAL_FROZEN_SUMMARY_END " + role, flush=True)
-              failed = [row for row in outcomes if not row["valid"]]
-              requested = []
-              for row in failed:
-                  case = prefix + row["test"] + "-slots" + str(row["slots"]) + "/"
-                  # Labels are admitted by the exact source-bound population above.
-                  requested += [case + "stdout.log", case + "process.json", case + "receipt.json"]
-                  direct_json = sorted(name for name in names if name.startswith(case)
-                                       and "/" not in name[len(case):] and name.endswith(".json"))
-                  if len(direct_json) > 16:
-                      raise ValueError("Failed original case has excessive direct receipt population")
-                  requested += direct_json
-                  if row["test"] == "pubpres_full_image_ring_oracle":
-                      requested.append(prefix + "ring-transition.json")
-              requested = list(dict.fromkeys(requested))
-              # Every failed case receives a bounded excerpt; original files and ZIP remain complete.
-              console_limit = min(96000, max(2048, 512000 // max(1, len(requested))))
-              for name in requested:
-                  raw = read_original(name)
-                  if raw is None:
-                      print("ORIGINAL_OPTIONAL_RECORD_ABSENT " + name, flush=True)
-                      continue
-                  text = raw.decode("utf-8-sig", errors="replace")
-                  print("\nORIGINAL_RECORD_BEGIN " + name, flush=True)
-                  if len(text) <= console_limit:
-                      print(text, flush=True)
+                  need(received<=SIZE,"Original archive exceeds its authenticated size")
+                  archive_hash.update(block); target.write(block)
+          need(received==SIZE and archive_hash.hexdigest()==SHA,"Original archive byte identity differs")
+          records, missing, issues = {}, [], []
+          def close(actual, expected, label):
+              if isinstance(expected,dict):
+                  need(isinstance(actual,dict),label+" is not a mapping")
+                  for key,value in expected.items(): close(actual.get(key),value,label+"."+key)
+              elif isinstance(expected,list):
+                  need(isinstance(actual,list) and len(actual)==len(expected),label+" population differs")
+                  for index,(a,b) in enumerate(zip(actual,expected)): close(a,b,label+"["+str(index)+"]")
+              elif type(expected) in (int,float):
+                  need(type(actual) in (int,float) and math.isfinite(actual) and math.isfinite(expected)
+                       and math.isclose(actual,expected,rel_tol=1e-10,abs_tol=1e-7),label+" differs")
+              else:
+                  need(actual==expected and (type(expected) is not bool or type(actual) is bool),label+" differs")
+          def distribution(values, nearest=False):
+              values=sorted(values)
+              if not values: return None
+              need(all(type(x) in (int,float) and math.isfinite(x) and x>=0 for x in values),"Invalid interval")
+              result={"count":len(values),"maximum_usec" if nearest else "max":values[-1]}
+              for q in (50,95,99):
+                  if nearest: value=values[math.ceil(len(values)*q/100)-1]
                   else:
-                      half = console_limit // 2
-                      print(text[:half] + "\n[BOUNDED CONSOLE EXCERPT: complete original file retained]\n" + text[-half:], flush=True)
-                  print("ORIGINAL_RECORD_END " + name, flush=True)
-          record = {"schema": "pubpres-mainline-original-failure-inspection-v1", "role": role,
-                    "original_source": SOURCE, "original_tree": TREE, "original_run": RUN,
-                    "original_attempt": ATTEMPT, "artifact": metadata,
-                    "zip_sha256": digest.hexdigest(), "zip_bytes": received,
-                    "records": records, "absent_optional_records": absent,
-                    "failed_original_cases": [{"test": row["test"], "slots": row["slots"],
-                                              "failure": row.get("failure")} for row in failed],
-                    "application_executed": False,
-                    "application_acceptance": "unchanged; failed arms remain failed",
-                    "scope": "Read-only original19-case frozen artifact custody and bounded diagnosis. No checkout, application execution, source, fixture, watchdog or original receipt changes."}
-          (output / "INSPECTION.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-          print(json.dumps({"original_source": SOURCE, "original_tree": TREE,
-                            "artifact_id": artifact_id, "archive_verified": True,
-                            "original_outcomes": len(outcomes), "failed_original_cases": record["failed_original_cases"],
-                            "records": records, "absent_optional_records": absent}), flush=True)
+                      position=(len(values)-1)*q/100; lower=math.floor(position); upper=math.ceil(position)
+                      value=values[lower]+(values[upper]-values[lower])*(position-lower)
+                  result["p"+str(q)+("_usec" if nearest else "")]=value
+              return result
+          def canonical(value): return json.dumps(value,sort_keys=True,separators=(",",":"),allow_nan=False).encode()
+          def gaps(times): return [b-a for a,b in zip(times,times[1:])]
+          def json_lines(raw):
+              lines=raw.decode("utf-8-sig").splitlines()
+              need(len(lines)<=500000,"Original trace exceeds bounded row population")
+              return [json.loads(line) for line in lines if line]
+          def emit(label,value):
+              text=json.dumps(value,sort_keys=True,allow_nan=False)
+              need(len(text)<=2*1024**2,"Reduced console view exceeds bounded scope; complete originals retained")
+              print(label+" "+text,flush=True)
+          def error_row(label,error):
+              issues.append({"scope":label,"error":str(error)})
+              print("ORIGINAL_REDUCTION_REFUSED "+json.dumps(issues[-1]),flush=True)
+          with zipfile.ZipFile(archive) as bundle:
+              members=bundle.infolist()
+              need(0<len(members)<=20000 and sum(x.file_size for x in members)<=1024**3,"ZIP population or expansion exceeds bound")
+              names, normalized=set(),set()
+              for item in members:
+                  path=pathlib.PurePosixPath(item.filename); mode=(item.external_attr>>16)&0o170000
+                  need(path.parts and item.filename not in names and path.as_posix() not in normalized
+                       and "\\" not in item.filename and ":" not in item.filename and not path.is_absolute()
+                       and ".." not in path.parts and not item.flag_bits&1 and mode in (0,stat.S_IFREG,stat.S_IFDIR),
+                       "Unsafe, aliased, linked or encrypted ZIP member")
+                  names.add(item.filename); normalized.add(path.as_posix())
+              need(bundle.testzip() is None,"Original ZIP CRC failure")
+              evidence_manifest=None
+              def read(name,required=True,limit=64*1024**2):
+                  if name not in names:
+                      if required: raise ValueError("Missing original record: "+name)
+                      missing.append(name); return None
+                  member=bundle.getinfo(name)
+                  need(not member.is_dir() and member.file_size<=limit,"Original record exceeds bounded file scope: "+name)
+                  raw=bundle.read(name); sha=hashlib.sha256(raw).hexdigest()
+                  if evidence_manifest is not None and name.startswith("spawn-pair/") and name!="spawn-pair/EVIDENCE-MANIFEST.json":
+                      key=name.removeprefix("spawn-pair/")
+                      need(evidence_manifest["files"].get(key)=={"bytes":len(raw),"sha256":sha},"Spawn original evidence manifest differs: "+key)
+                  destination=out/"original-records"/name; destination.parent.mkdir(parents=True,exist_ok=True)
+                  destination.write_bytes(raw); records[name]={"bytes":len(raw),"sha256":sha}
+                  return raw
+              def document(name,required=True):
+                  raw=read(name,required,16*1024**2)
+                  return json.loads(raw.decode("utf-8-sig")) if raw is not None else None
+              def failed_logs(folder):
+                  for leaf in ("stdout.log","stderr.log","godot.log","process.json","ADMISSION-FAILED.json"):
+                      raw=read(folder+leaf,False,16*1024**2)
+                      if raw is None: continue
+                      text=raw.decode("utf-8-sig",errors="replace")
+                      if len(text)>32000: text=text[:16000]+"\n[BOUNDED EXCERPT; full original retained]\n"+text[-16000:]
+                      emit("ORIGINAL_FAILURE_LOG",{"file":folder+leaf,"text":text})
+              def resources(folder,process,expected_source,pid):
+                  need(process["source_commit"]==expected_source and process["observed_application_pid"]==pid,
+                       "Owned process/source identity differs")
+                  raw=read(folder+"process-cpu.json")
+                  need(hashlib.sha256(raw).hexdigest()==process["process_cpu"]["sha256"],"CPU trace bytes differ")
+                  trace=json.loads(raw); samples=trace["samples"]; summary=trace["summary"]
+                  need(trace["source_commit"]==expected_source and trace["schema"]=="pubpres-final-process-cpu-v1"
+                       and summary==process["process_cpu"]["summary"] and summary["complete"]
+                       and 2<=len(samples)<=4096 and summary["dropped"]==0,"Incomplete original CPU population")
+                  identities={(r["pid"],r["creation_identity"],r["units_per_second"]) for r in samples}
+                  need(len(identities)==1 and samples[0]["pid"]==pid and samples[0]["units_per_second"]>0,
+                       "CPU creation identity or PID differs")
+                  need(all(b["elapsed_ms"]>a["elapsed_ms"] and b["user_units"]>=a["user_units"]
+                           and b["kernel_units"]>=a["kernel_units"] for a,b in zip(samples,samples[1:])),"CPU clock/accounting regressed")
+                  for row in samples:
+                      close(row["user_seconds"],row["user_units"]/row["units_per_second"],"CPU user units")
+                      close(row["kernel_seconds"],row["kernel_units"]/row["units_per_second"],"CPU kernel units")
+                  first,last=samples[0],samples[-1]; seconds=(last["elapsed_ms"]-first["elapsed_ms"])/1000
+                  user=(last["user_units"]-first["user_units"])/first["units_per_second"]
+                  kernel=(last["kernel_units"]-first["kernel_units"])/first["units_per_second"]
+                  recomputed={"samples":len(samples),"expected_pid":pid,"observed_interval_seconds":seconds,
+                              "observed_user_seconds":user,"observed_kernel_seconds":kernel,
+                              "mean_cpu_core_equivalents":(user+kernel)/seconds,
+                              "maximum_sample_gap_ms":max(b["elapsed_ms"]-a["elapsed_ms"] for a,b in zip(samples,samples[1:]))}
+                  close(summary,recomputed,"CPU summary")
+                  memory=document(folder+"process-memory.json")
+                  peak=max((r["peak_rss_bytes"] for r in memory if r.get("peak_rss_bytes") is not None),default=None)
+                  close(process["sampled_peak_rss_bytes"],peak,"Sampled process RSS")
+                  return {**recomputed,"sampled_peak_rss_bytes":peak,"sample_errors":len(trace["errors"]),
+                          "scope":"Actual owned process lifetime samples, including setup; not aligned to gameplay capture. Unobserved launch/exit CPU excluded. No GPU or physical-display observation."}
+              if KIND=="performance":
+                  prefix="mainline-performance/"; summary=document(prefix+"SUMMARY.json")
+                  need(summary["schema"]=="pubpres-mainline-three-source-result-v1","Unknown original performance schema")
+                  expected_sources={"M":MAIN,"P":OWNER,"C":SOURCE}; order=["M","P","C","C","P","M"]
+                  need(summary["registration"]["order"]==order and CASE in summary["registration"]["cases"]
+                       and summary["driver"]["source_commit"]==SOURCE and summary["driver"]["source_tree"]==TREE,
+                       "Performance source registration differs")
+                  need({k:v["source_commit"] for k,v in summary["sources"].items()}==expected_sources
+                       and summary["sources"]["C"]["source_tree"]==TREE,"Performance source roles differ")
+                  need(summary["registration"]["physical_targets"]=={"p95_ms":100,"maximum_ms":250},"Physical target registration changed")
+                  campaign=document(prefix+"campaign.json")
+                  original_case=next((r for r in summary["cases"] if r["case"]==CASE),{})
+                  original_arms=original_case.get("arms",[]); verified=[]; matches=[]
+                  for index,role in enumerate(order):
+                      folder=prefix+CASE+"/"+str(index)+"-"+role+"/"
+                      if folder+"receipt.json" not in names or folder+"analysis.json" not in names:
+                          failed_logs(folder); continue
+                      try:
+                          data=document(folder+"receipt.json"); analysis=document(folder+"analysis.json")
+                          recorded=next((r for r in original_arms if r["index"]==index and r["arm"]==role),None)
+                          need(recorded==analysis,"Original arm summary and analysis disagree")
+                          need(analysis["receipt_sha256"]==records[folder+"receipt.json"]["sha256"],"Receipt bytes changed")
+                          need(data["complete"] and not data["failures"] and data["observer_mode"]=="full"
+                               and data["source_identity"]["source_sha"]==expected_sources[role]
+                               and data["source_identity"]["engine_sha256"]==ENGINE,"Original source/engine/capture differs")
+                          raw=read(folder+"receipt-events.jsonl")
+                          need(hashlib.sha256(raw).hexdigest()==data["trace_sha256"],"Original event trace hash differs")
+                          events=json_lines(raw)
+                          need(events[0]["event"]=="identity" and events[0]["source"]==data["source_identity"],"Trace identity differs")
+                          events=events[1:]; start,end=data["capture_start_usec"],data["capture_end_usec"]; seconds=(end-start)/1e6
+                          need(10<=seconds<=90,"Frozen capture window differs")
+                          window=[r for r in events if start<=r["time_usec"]<=end]
+                          steps=sorted((r for r in window if r["event"]=="rapier_step"),key=lambda r:r["step"])
+                          native=sorted((r for r in window if r["event"]=="native_completion_observed"),key=lambda r:r["tick_index"])
+                          draws=sorted(r["time_usec"] for r in window if r["event"]=="framebuffer_draw")
+                          need(len(steps)>=144 and steps[0]["step"]==data["capture_physical_tick_start"]+1
+                               and all(abs(r["fixed_delta"]-1/60)<=1e-12 for r in steps),"Actual Rapier count/timestep differs")
+                          need(all(b["step"]==a["step"]+1 and b["manual_steps"]==a["manual_steps"]+1 and b["time_usec"]>=a["time_usec"]
+                                   for a,b in zip(steps,steps[1:])),"Actual Rapier/manual-step progression is discontinuous")
+                          need(all(b["tick_index"]==a["tick_index"]+1 and b["time_usec"]>=a["time_usec"] for a,b in zip(native,native[1:])),
+                               "Native semantic tick observations are discontinuous")
+                          need(len({(r["session"],r["epoch"]) for r in steps})==1 and len({r["world_generation"] for r in native})==1,
+                               "Physical/native owner changed inside registered window")
+                          pg=[x/1000 for x in gaps([r["time_usec"] for r in steps])]; dg=[x/1000 for x in gaps(draws)]
+                          primary={"duration_seconds":seconds,"completed_rapier_steps":len(steps),"completed_native_ticks":len(native),
+                                   "rapier_steps_per_second":len(steps)/seconds,"native_ticks_per_second":len(native)/seconds,
+                                   "completed_rapier_simulation_seconds":sum(r["fixed_delta"] for r in steps),
+                                   "physical_simulation_seconds_per_wall_second":sum(r["fixed_delta"] for r in steps)/seconds,
+                                   "physical_gap_ms":distribution(pg),"post_draw_callback_gap_ms":distribution(dg),
+                                   "physical_no_step_prefix_ms":(steps[0]["time_usec"]-start)/1000,
+                                   "physical_no_step_suffix_ms":(end-steps[-1]["time_usec"])/1000}
+                          stats=analysis["statistics"]; close(stats["windows"]["whole_capture"],primary,"Original whole-capture reduction")
+                          trajectories=hashlib.sha256(canonical([r["bodies"] for r in steps[:144]])).hexdigest()
+                          moves=hashlib.sha256(canonical([r["admitted_move"] for r in steps[:144]])).hexdigest()
+                          need(trajectories==stats["first_144_body_trajectory_sha256"] and moves==stats["first_144_admitted_moves_sha256"],
+                               "Original equal-step physical/input hashes differ")
+                          matches.append(stats["match"])
+                          process=document(folder+"process.json")
+                          need(process==analysis["process"] and process["exit_code"]==0 and not process["timed_out"]
+                               and not process["surviving_children_at_exit"],"Original owned process did not complete")
+                          cpu=resources(folder,process,expected_sources[role],data["process_id"])
+                          maximum=max(primary["physical_gap_ms"]["max"],primary["physical_no_step_prefix_ms"],primary["physical_no_step_suffix_ms"])
+                          chain=longest=0
+                          for value in pg:
+                              chain=chain+1 if value>100 else 0; longest=max(longest,chain)
+                          verified.append({"index":index,"role":role,"source":expected_sources[role],**primary,
+                              "renderer_callbacks_per_second":len(draws)/seconds,"physical_gap_counts_above_ms":{str(q):sum(x>q for x in pg) for q in (100,250,500,1000)},
+                              "longest_consecutive_physical_gaps_above100ms":longest,"maximum_including_censored_boundaries_ms":maximum,
+                              "p95_deficit_ms":max(0,primary["physical_gap_ms"]["p95"]-100),"maximum_deficit_ms":max(0,maximum-250),
+                              "first144_body_hash":trajectories,"first144_input_hash":moves,"process_resources":cpu,
+                              "reported_native_age_ms":stats["windows"]["whole_capture"].get("native_exact_to_rapier_ms"),
+                              "reported_material_age_ms":stats["windows"]["whole_capture"].get("material_age_at_main_end_ms"),
+                              "quantile_method":"Original frozen linear interpolation at (n-1)q; censoring is separate."})
+                      except Exception as error: error_row(folder,error); failed_logs(folder)
+                  pairs=[{"left":a["index"],"right":b["index"],"bodies_equal":a["first144_body_hash"]==b["first144_body_hash"],
+                          "admitted_moves_equal":a["first144_input_hash"]==b["first144_input_hash"]} for a,b in itertools.combinations(verified,2)]
+                  parity=len(pairs)==15 and all(p["bodies_equal"] and p["admitted_moves_equal"] for p in pairs)
+                  matched=len(matches)==6 and all(value==matches[0] for value in matches)
+                  if original_case.get("comparative_timing_qualified"): need(parity and matched,"Claimed comparative cohort failed independent parity/matching")
+                  if summary["complete"]: need(len(verified)==6 and not issues,"Complete original cohort lacks independently verified arms")
+                  reduction={"kind":"three_source_performance","case":CASE,"original_complete":summary["complete"],
+                             "original_failures":summary["failures"],"verified_arms":verified,"actual_equal_step_pairs":pairs,
+                             "all15_pairs_match":parity,"all_six_hardware_fixture_input_matches":matched,
+                             "reported_registered_direction":original_case.get("registered_direction"),
+                             "comparative_timing_qualified":bool(original_case.get("comparative_timing_qualified") and parity and matched),
+                             "physical_acceptance":"HOLD"}
+              elif KIND=="sustained":
+                  prefix="mainline-sustained/"; summary=document(prefix+"SUMMARY.json")
+                  need(summary["schema"]=="pubpres-mainline-sustained-v1"
+                       and summary["source"]["source_commit"]==SOURCE and summary["source"]["source_tree"]==TREE
+                       and summary["driver"]["source_commit"]==SOURCE and summary["driver"]["source_tree"]==TREE,
+                       "Original sustained source/driver identity differs")
+                  folder=prefix+CASE+"/"; original=next((r for r in summary["rows"] if r["case"]==CASE),None)
+                  reduction={"kind":"sustained_owner","case":CASE,"original_failures":summary["failures"],
+                             "original_reduction_present":original is not None,"registered_duration_seconds":300,
+                             "physical_acceptance":"HOLD","raw_session_available":folder+"session.json" in names}
+                  if not reduction["raw_session_available"]:
+                      failed_logs(folder)
+                  else:
+                      try:
+                          ready=document(folder+"startup.json"); data=document(folder+"session.json"); process=document(folder+"process.json")
+                          need(ready["source_commit"]==data["source"]==SOURCE and ready["scene"]==data["scene"]==CASE
+                               and ready["engine_sha256"]==ENGINE and ready["process_id"]==data["process_id"]==process["observed_application_pid"]
+                               and ready["native_sha256"]==summary["source"]["native_runtime"]["binary_sha256"]
+                               and ready["observer_sha256"]==summary["unchanged_observer_sha256"],
+                               "Sustained original engine/source/native/observer/process differs")
+                          need(ready["render_driver"]=="opengl3_angle" and ready["render_thread_inline"]
+                               and ready["recovery"]["task_completion"]["mode"]=="all_workers"
+                               and ready["recovery"]["water_enabled"] and not ready["recovery"]["actual_submission_enabled"]
+                               and ready["material_publication"]["backend"]=="full" and ready["material_publication"]["full_image_slots"]==2
+                               and all(ready[key+"_requested"]=="1" and ready[key+"_enabled"] is True
+                                       for key in ("flight_pacing","coupling_clock","empty_effects")),
+                               "Original sustained selected owner policy differs")
+                          duration=(data["ended_usec"]-data["began_usec"])/1e6
+                          steps=data["physical_observations"]; samples=data["resources"]
+                          need(duration>=300 and data["pulses"]==30 and not data["failures"] and len(steps)>=144 and len(samples)>=59,
+                               "Incomplete original300-second sustained population")
+                          need(all(row["accepted"] is True for row in data["actions"])
+                               and sum(row["action"].startswith("paint-") for row in data["actions"])==30,
+                               "Original sustained action or running-authoring population was refused")
+                          side,bodies=(512,1) if CASE=="wave512" else (2048,4)
+                          need(ready["extent"]==[side,side] and ready["authored_actor_count"]==bodies and data["actor_count"]==bodies+1
+                               and data["epoch"]>data["initial_epoch"],"Original sustained world/actor/ownership handoff differs")
+                          need(all(b[0]>a[0] and b[1]>a[1] for a,b in zip(steps,steps[1:]))
+                               and all(data["began_usec"]<=r[1]<=r[2]<=data["ended_usec"] for r in steps),
+                               "Sustained physical completion/observation clocks regressed")
+                          need(all(r["world"]==data["world"] and r["epoch"]==data["epoch"]
+                                   and r["backend"]=="full" and r["active_slots"]==2 for r in samples),
+                               "Sustained material or physical owner changed")
+                          eligible=[(a,b) for a,b in zip(steps,steps[1:]) if b[0]==a[0]+1 and a[6]==b[6]=="playing"]
+                          whole=[(b[1]-a[1])/1000 for a,b in eligible]
+                          late=[(b[1]-a[1])/1000 for a,b in eligible if a[1]>=data["began_usec"]+240000000]
+                          need(whole and late,"Sustained late playing completion pairs unavailable")
+                          computed={"case":CASE,"duration_seconds":duration,"completed_physical_steps":steps[-1][0]-data["initial_tick"],
+                              "observed_completions":len(steps),"missed_between_observations":sum(b[0]-a[0]-1 for a,b in zip(steps,steps[1:])),
+                              "whole_playing_gap_ms":distribution(whole),"last_minute_playing_gap_ms":distribution(late),
+                              "playing_gap_counts_above_ms":{str(v):sum(g>v for g in whole) for v in (100,250,500,1000)},
+                              "frame_gap_ms":distribution([v/1000 for v in data["frames_usec"]]),
+                              "unique_texture_rids":len({rid for row in samples for rid in row["texture_rids"]}),
+                              "peak_pending_terrain_chunks_at_sample":max(r["hard_queue"] for r in samples),
+                              "peak_rss_bytes":process["sampled_peak_rss_bytes"],
+                              "startup_sha256":records[folder+"startup.json"]["sha256"],"session_sha256":records[folder+"session.json"]["sha256"]}
+                          if original is not None: close(original,computed,"Original sustained reduction")
+                          for label in ("before","after"):
+                              raw=read(folder+label+".png")
+                              need(hashlib.sha256(raw).hexdigest()==data[label+"_sha256"],"Original sustained framebuffer hash differs")
+                          cpu=resources(folder,process,SOURCE,data["process_id"])
+                          first,last=samples[0],samples[-1]; resource_seconds=(last["time_usec"]-first["time_usec"])/1e6
+                          need(resource_seconds>0 and all(b["time_usec"]>a["time_usec"] and b["native_tick"]>=a["native_tick"]
+                               and b["physical_step"]>=a["physical_step"] for a,b in zip(samples,samples[1:])),
+                               "Sustained resource sample clocks/counters regressed")
+                          sampled_rates={"observed_span_seconds":resource_seconds,
+                              "native_ticks_per_second":(last["native_tick"]-first["native_tick"])/resource_seconds,
+                              "actual_physical_steps_per_second":(last["physical_step"]-first["physical_step"])/resource_seconds,
+                              "scope":"Counter deltas between the first/last5-second resource observations; includes intentional pauses. This is not a full native completion trace."}
+                          longest=chain=0
+                          for a,b in zip(steps,steps[1:]):
+                              chain=chain+1 if b[0]==a[0]+1 and a[6]==b[6]=="playing" and b[1]-a[1]>100000 else 0
+                              longest=max(longest,chain)
+                          reduction.update(independently_recomputed=computed,process_resources=cpu,sampled_counter_rates=sampled_rates,
+                              session_average_completed_physical_steps_per_second=computed["completed_physical_steps"]/duration,
+                              physical_counter_scope="Actual Rapier/manual/session equality is checked by the unchanged observer at each observed counter change; average includes intentional pause/manual/resume phases.",
+                              simulated_seconds_per_wall_second=None,
+                              simulated_time_unavailable_reason="Original sustained receipt does not record fixed_delta; no new time credit is fabricated.",
+                              eligible_consecutive_playing_pairs=len(eligible),all_observed_pairs=max(0,len(steps)-1),
+                              missing_before_first_observation=max(0,steps[0][0]-data["initial_tick"]-1),
+                              observed_completion_delay_ms=distribution([(r[2]-r[1])/1000 for r in steps]),
+                              completion_prefix_lower_bound_ms=(steps[0][1]-data["began_usec"])/1000,
+                              unfinished_terminal_suffix_lower_bound_ms=(data["ended_usec"]-steps[-1][1])/1000,
+                              longest_observed_consecutive_playing_gaps_above100ms=longest,
+                              p95_deficit_in_observed_playing_pairs_ms=max(0,computed["whole_playing_gap_ms"]["p95"]-100),
+                              maximum_deficit_in_observed_playing_pairs_ms=max(0,computed["whole_playing_gap_ms"]["max"]-250),
+                              actions=data["actions"],resource_samples=samples,
+                              frame_interval_scope="frames_usec contains process_frame polling intervals, not frame_post_draw, GPU execution or physical display intervals.",
+                              coverage_scope="Only consecutive authenticated playing completions enter gap distributions. Missed polling intervals and intentional paused/manual/resuming boundaries are excluded and reported. Unknown gaps are not zero; passing this observed subset does not certify all300seconds.",
+                              quantile_method="Original frozen linear interpolation at(n-1)q.")
+                      except Exception as error: error_row(folder,error); failed_logs(folder)
+              else:
+                  prefix="spawn-pair/"; evidence_manifest=document(prefix+"EVIDENCE-MANIFEST.json")
+                  need(isinstance(evidence_manifest.get("files"),dict)
+                       and all(prefix+name in names for name in evidence_manifest["files"]),"Spawn evidence inventory is missing original files")
+                  summary=document(prefix+"SUMMARY.json"); registration=summary["registration"]
+                  need(summary["schema"]=="pubpres-mainline-spawn-pair-result-v1"
+                       and summary["driver"]["source_commit"]==SOURCE and summary["driver"]["source_tree"]==TREE
+                       and registration["owner_reference"]==OWNER and registration["scenes"]==["wave512","mixed2048"],
+                       "Spawn source/registration differs")
+                  need({k:v["source_commit"] for k,v in summary["sources"].items()}=={"P":OWNER,"C":SOURCE}
+                       and summary["sources"]["C"]["source_tree"]==TREE,"Spawn source roles differ")
+                  expected_cases=["first-air-fire-off","warm-air-fire-off","warm-air-fire-on","near-material-fire-on","scene-replacement","post-replacement-spawn"]
+                  need(registration["cases"]==expected_cases and registration["physical_targets_ms"]=={"p95":100,"maximum":250},"Spawn cases/targets changed")
+                  plan=[("P",["off"]),("C",["on","off"]),("C",["off","on"]),("P",["off"])]
+                  verified=[]; matches={}
+                  for index,(role,modes) in enumerate(plan):
+                      arm=next((a for a in summary["arms"] if a["index"]==index and a["plan"]["role"]==role),None)
+                      emit("ORIGINAL_SPAWN_ARM_EXECUTION",{
+                          "index":index,"role":role,"plan":arm.get("plan") if arm else None,
+                          "exit_code":arm.get("exit_code") if arm else None,"timed_out":arm.get("timed_out") if arm else None,
+                          "error":arm.get("error") if arm else None,"pass":arm.get("pass") if arm else None,
+                          "original_result_population":len(arm.get("results",[])) if arm else 0})
+                      if arm is None or arm.get("pass") is not True:
+                          # An admission refusal can precede every scene. Preserve and
+                          # show its original top-level error and driver invocation.
+                          failed_logs(prefix+str(index)+"-"+role+"/")
+                          for leaf in (str(index)+"-driver.log",str(index)+"-request.json"):
+                              raw=read(prefix+leaf,False,16*1024**2)
+                              if raw is None: continue
+                              text=raw.decode("utf-8-sig",errors="replace")
+                              if len(text)>32000: text=text[:16000]+"\n[BOUNDED EXCERPT; full original retained]\n"+text[-16000:]
+                              emit("ORIGINAL_FAILURE_LOG",{"file":prefix+leaf,"text":text})
+                      for scene in registration["scenes"]:
+                          for mode in modes:
+                              folder=prefix+str(index)+"-"+role+"/"+scene+"-"+mode+"/"
+                              if folder+"spawn.json" not in names or folder+"REDUCED.json" not in names:
+                                  failed_logs(folder); continue
+                              try:
+                                  data=document(folder+"spawn.json"); ready=document(folder+"startup.json")
+                                  original=document(folder+"REDUCED.json"); process=document(folder+"process.json")
+                                  parent=next((r for r in arm["results"] if r["scene"]==scene and r["recording"]==mode),None) if arm else None
+                                  need(parent is not None and parent["spawn"]==data and parent["startup"]==ready
+                                       and parent["reduced"]==original and parent["process"]==process,"Spawn original arm/file join differs")
+                                  expected=OWNER if role=="P" else SOURCE
+                                  need(data["source"]==ready["source_commit"]==expected and data["engine_sha256"]==ENGINE
+                                       and ready["engine_sha256"]==ENGINE and data["graphical"] and data["recording"]==(mode=="on")
+                                       and ready["process_id"]==data["process_id"]==process["observed_application_pid"],
+                                       "Spawn source/engine/process/recording identity differs")
+                                  need([r["label"] for r in data["cases"]]==expected_cases and len(original["cases"])==6,"Spawn case population differs")
+                                  identity=arm["identity"]
+                                  need(identity["source"]==expected and identity["source_tree"]==summary["sources"][role]["source_tree"]
+                                       and identity["driver"]["source_commit"]==SOURCE and identity["driver"]["source_tree"]==TREE
+                                       and identity["native_sha256"]==data["native_sha256"]==ready["native_sha256"]
+                                       ==summary["sources"][role]["native_runtime_sha256"],"Spawn native/application/driver role differs")
+                                  need(ready["material_publication"]["backend"]=="full" and ready["material_publication"]["full_image_slots"]==2
+                                       and ready["recovery"]["task_completion"]["mode"]=="all_workers"
+                                       and ready["flight_pacing_enabled"] and ready["coupling_clock_enabled"]
+                                       and ready["empty_effects_enabled"] and ready["render_thread_inline"]
+                                       and ready["recovery"]["water_enabled"],"Selected original spawn policies differ")
+                                  match={key:ready[key] for key in ("scene","extent","authored_setup_sha256","authored_actor_count",
+                                      "engine_sha256","rapier_sha256","render_thread_inline","render_driver","display_server","adapter","platform")}
+                                  match["water"]={key:ready["wave_flow"][key] for key in
+                                      ("parameters","workers_requested","water_cells","water_quantity","construction_options")}
+                                  match["requests"]=[{key:r[key] for key in ("label","kind","fire","position","actor_instance")} for r in data["cases"]]
+                                  if scene not in matches: matches[scene]=match
+                                  need(matches[scene]==match,"Original spawn fixture/hardware/Water/request population differs")
+                                  if parent["pass"]:
+                                      need(process["exit_code"]==0 and not process["timed_out"] and not process["surviving_children_at_exit"]
+                                           and data["pass"] and not data["failures"],"Original spawn pass disagrees with actual process/observer")
+                                  cpu=resources(folder,process,expected,data["process_id"])
+                                  segment_names=sorted(name for name in names if name.startswith(folder+"segment-") and name.endswith(".jsonl"))
+                                  events=[]; schema=None; segment_headers=[]
+                                  for name in segment_names:
+                                      fields=None; header_count=0
+                                      for value in json_lines(read(name)):
+                                          if isinstance(value,dict) and value.get("schema")=="pubpres-owner-gameplay-v1":
+                                              header_count+=1
+                                              need(value.get("source_commit")==expected and value.get("pid")==data["process_id"]
+                                                   and value.get("scene")==scene and type(value.get("sequence")) is int and value["sequence"]>=0,
+                                                   "Original gameplay segment source/process/scene differs")
+                                              segment_headers.append({"file":name,**{key:value.get(key) for key in
+                                                  ("source_commit","scene","pid","main_instance","start_usec","sequence")}})
+                                          if isinstance(value,dict) and "fields" in value:
+                                              fields=value["fields"]
+                                              if schema is None: schema=fields
+                                              need(fields==schema,"Gameplay segment field schema changed")
+                                          elif isinstance(value,list):
+                                              need(fields is not None and value and value[0] in fields
+                                                   and len(value)==len(fields[value[0]]),"Malformed original gameplay clock row")
+                                              events.append((value[1],dict(zip(fields[value[0]],value))))
+                                      need(header_count==1,"Original segment must contain exactly one source-bound identity header")
+                                  need(len({r["sequence"] for r in segment_headers})==len(segment_names),"Original segment sequences are duplicated")
+                                  events.sort(key=lambda row:row[0])
+                                  steps=[row for _,row in events if row["type"]=="step"]
+                                  times=[r["usec"] for r in steps]; draws=[r["usec"] for _,r in events if r["type"]=="draw"]
+                                  loss=[row for _,row in events if row["type"]=="loss"]
+                                  closed=any(row["type"]=="close" for _,row in events)
+                                  need(not loss,"Original recorder loss invalidates exact tails")
+                                  if mode=="on": need(segment_names and times and draws and closed,"Original recording-on was incomplete")
+                                  else: need(not segment_names and not times and not draws,"Original recording-off emitted clock records")
+                                  close(original["recorded_actual_steps"],len(times),"Recorded actual Rapier steps")
+                                  close(original["recorded_draw_callbacks"],len(draws),"Recorded actual draw callbacks")
+                                  close(original["whole_recording_physical_gaps"],distribution(gaps(times),True),"Whole recorder physical gaps")
+                                  result_cases=[]
+                                  for case,saved in zip(data["cases"],original["cases"]):
+                                      start,end=case["request_usec"],case["end_usec"]; admitted=case["admitted_usec"]
+                                      def interval(sequence,context=False):
+                                          return distribution([b-a for a,b in zip(sequence,sequence[1:])
+                                              if start<=b and (a<=end if context else b<=end)],True)
+                                      def suffix(sequence):
+                                          before=[value for value in sequence if value<=end]
+                                          return end-before[-1] if before else None
+                                      exact=[r["usec"] for r in steps if r["usec"]>=start and r["epoch"]==case.get("epoch")]
+                                      primary={"label":case["label"],"accepted":case["accepted"],
+                                          "request_latency_usec":case["request_return_usec"]-start,
+                                          "owner_admission_observed_usec":admitted-start if admitted>=0 else None,
+                                          "first_completed_step_usec":exact[0]-start if exact else None,
+                                          "physical_gaps":interval(times),"physical_gap_context_both_boundaries":interval(times,True),
+                                          "physical_unfinished_suffix_usec":suffix(times),"draw_callback_gaps":interval(draws),
+                                          "draw_callback_gap_context_both_boundaries":interval(draws,True),
+                                          "draw_callback_unfinished_suffix_usec":suffix(draws),
+                                          "observed_draw_callback_gaps":interval(data.get("draw_callback_usec",[])),
+                                          "observed_draw_callback_gap_context_both_boundaries":interval(data.get("draw_callback_usec",[]),True),
+                                          "observed_draw_callback_unfinished_suffix_usec":suffix(data.get("draw_callback_usec",[])),
+                                          "process_sampled_completion_gaps_upper_bound":interval(data.get("observed_completion_usec",[]))}
+                                      for target,field,origin in (
+                                          ("first_observed_step_upper_bound_usec","first_observed_step_usec",start),
+                                          ("first_coherent_draw_observed_usec","first_coherent_draw_observed_usec",start),
+                                          ("input_admission_observed_usec","input_accepted_observed_usec",case["first_input_usec"]),
+                                          ("input_physical_application_observed_usec","input_applied_observed_usec",case["first_input_usec"]),
+                                          ("input_upward_pose_response_observed_usec","input_response_observed_usec",case["first_input_usec"])):
+                                          primary[target]=case.get(field,-1)-origin if case.get(field,-1)>=0 else None
+                                      seconds=(end-admitted)/1e6 if end>admitted>=0 else 0
+                                      rapier=case["final_rapier_steps"]-case["admission_rapier_steps"]
+                                      need(rapier==case["final_physical_steps"]-case["admission_physical_step"]
+                                           and rapier>=0 and case["physical_delta_seconds"]>0,"Actual spawn bridge/session count differs")
+                                      primary["post_admission"]={"wall_seconds":seconds,"physical_steps_per_second":rapier/seconds if seconds else None,
+                                          "native_ticks_per_second":(case["final_native_tick"]-case["admission_native_tick"])/seconds if seconds else None,
+                                          "simulated_seconds_per_wall_second":rapier/seconds*case["physical_delta_seconds"] if seconds else None}
+                                      owned=[t for t in exact if t<=end]
+                                      tail=distribution([b-a for a,b in zip(owned,owned[1:]) if a>=end-1000000],True)
+                                      band=max(50000,2*tail["p50_usec"]) if tail else None
+                                      settled=next((owned[i]-start for i in range(12,len(owned))
+                                          if max(gaps(owned[i-12:i+1]))<=band),None) if band is not None else None
+                                      primary["last_second_physical_gaps"]=tail
+                                      primary["cadence_return"]={"completed_usec_after_request":settled,"consecutive_intervals":12,
+                                          "maximum_interval_usec":band,"reference":"last-second p50 x2, minimum50ms"}
+                                      phases=[{"phase":r["phase"],"completed_usec":r["usec"],"duration_usec":r["duration_usec"],"details":r["details"]}
+                                          for _,r in events if r["type"]=="spawn" and r["request_serial"]==case["request_serial"] and start<=r["usec"]<=end]
+                                      primary["phases"]=phases
+                                      close(saved,primary,"Original spawn reduction")
+                                      first_owned=next((r for r in steps if r["usec"]>=start and r["epoch"]==case.get("epoch")),None)
+                                      primary["first_actual_completion_coverage"]=None if mode=="off" else {
+                                          "first_retained_step":first_owned["step"] if first_owned else None,
+                                          "first_retained_manual_steps":first_owned["manual_steps"] if first_owned else None,
+                                          "new_owner_first_step_retained":bool(first_owned and first_owned["step"]==1 and first_owned["manual_steps"]==1),
+                                          "within_observed_completion_upper_bound":bool(first_owned and first_owned["usec"]<=case["first_observed_step_usec"]),
+                                          "scope":"A fresh physical session resets both counters to0. If step1 is absent, the stored first-completion value is only the first retained completion; no initial clock is reconstructed."}
+                                      if primary["physical_gaps"]:
+                                          maximum=max(primary["physical_gaps"]["maximum_usec"],primary["physical_unfinished_suffix_usec"] or 0)
+                                          primary.update(maximum_including_unfinished_suffix_usec=maximum,
+                                              p95_deficit_usec=max(0,primary["physical_gaps"]["p95_usec"]-100000),
+                                              maximum_deficit_usec=max(0,maximum-250000))
+                                      result_cases.append(primary)
+                                  verified.append({"index":index,"role":role,"scene":scene,"recording":mode,
+                                      "original_pass":bool(parent["pass"] and data["pass"]),"cases":result_cases,
+                                      "recorded_actual_steps":len(times),"recorded_draw_callbacks":len(draws),
+                                      "whole_recording_physical_gaps":distribution(gaps(times),True),"process_resources":cpu,
+                                      "recorder_closed":closed if mode=="on" else None,"recorder_loss_intervals":len(loss),
+                                      "retained_segment_headers":sorted(segment_headers,key=lambda r:r["sequence"]),
+                                      "recorder_initial_segment_retained":any(r["sequence"]==0 for r in segment_headers) if mode=="on" else None,
+                                      "coverage_scope":"No retained loss row and a clean close do not alone exclude earlier ring rotation. Per-case first-step and retained-header observations remain explicit."})
+                              except Exception as error: error_row(folder,error); failed_logs(folder)
+                  comparisons=[]
+                  metric_names=("request_latency_usec","owner_admission_observed_usec","first_observed_step_upper_bound_usec",
+                      "first_coherent_draw_observed_usec","input_admission_observed_usec","input_physical_application_observed_usec",
+                      "input_upward_pose_response_observed_usec","observed_draw_callback_gaps.p95_usec",
+                      "observed_draw_callback_gaps.maximum_usec","post_admission.physical_steps_per_second",
+                      "post_admission.native_ticks_per_second","post_admission.simulated_seconds_per_wall_second")
+                  def at(row,name):
+                      for part in name.split("."):
+                          if not isinstance(row,dict): return None
+                          row=row.get(part)
+                      return row
+                  def compare(a,b):
+                      def sample(values):
+                          present=[x for x in values if x is not None]
+                          return {"values":values,"count":len(present),"minimum":min(present) if present else None,
+                                  "median":statistics.median(present) if present else None,"maximum":max(present) if present else None}
+                      left,right=sample(a),sample(b); complete=left["count"]==right["count"]==2
+                      return {"reference":left,"candidate":right,"both_repetitions_observed":complete,
+                              "candidate_minus_reference":right["median"]-left["median"] if complete else None,
+                              "candidate_to_reference_ratio":right["median"]/left["median"] if complete and left["median"]>0 else None}
+                  for scene in registration["scenes"]:
+                      groups={(role,mode):[p for p in verified if p["scene"]==scene and p["role"]==role and p["recording"]==mode]
+                              for role,mode in (("P","off"),("C","off"),("C","on"))}
+                      if not all(len(rows)==2 for rows in groups.values()): continue
+                      for index,label in enumerate(expected_cases):
+                          old=[r["cases"][index] for r in groups[("P","off")]]
+                          off=[r["cases"][index] for r in groups[("C","off")]]
+                          on=[r["cases"][index] for r in groups[("C","on")]]
+                          comparisons.append({"scene":scene,"case":label,
+                              "candidate_vs_owner_recording_off":{name:compare([at(r,name) for r in old],[at(r,name) for r in off]) for name in metric_names},
+                              "candidate_recording_on_vs_off":{name:compare([at(r,name) for r in off],[at(r,name) for r in on]) for name in metric_names}})
+                  if summary.get("comparison"):
+                      close(summary["comparison"]["comparisons"],comparisons,"Original paired spawn comparisons")
+                  if summary["complete"]: need(len(verified)==12 and len(comparisons)==12 and not issues,
+                                               "Complete spawn cohort lacks all12 original processes/comparisons")
+                  reduction={"kind":"paired_spawn","original_complete":summary["complete"],"original_failures":summary["failures"],
+                      "verified_processes":len(verified),"processes":verified,
+                      "independently_recomputed_comparisons":comparisons,
+                      "reported_candidate_exact_physical":summary.get("comparison",{}).get("candidate_exact_physical"),
+                      "quantile_method":"Spawn nearest-rank; primary gaps end inside the case. Original both-boundary context and right-censored unfinished suffixes remain.",
+                      "scope":"Candidate recording-on gives exact completion clocks. Owner/candidate off-mode process observations remain upper bounds. CPU draw callbacks do not measure GPU completion or physical presentation.",
+                      "physical_acceptance":"HOLD"}
+          record={"schema":"pubpres-final-evidence-inspection-v1","role":ROLE,"source":SOURCE,"tree":TREE,
+              "original_run":RUN,"original_attempt":ATTEMPT,"artifact":meta,"archive_sha256":SHA,"archive_bytes":SIZE,
+              "records":records,"missing_optional_records":missing,"integrity_errors":issues,
+              "application_executed":False,"original_acceptance_unchanged":True,
+              "scope":"Independent data-only replay of original recorded counters, clocks, source joins and process CPU. Original failed arms and unavailable evidence remain; no new application, GPU, monitor or owner acceptance.",
+              "reduction":reduction}
+          (out/"INSPECTION.json").write_text(json.dumps(record,indent=2,allow_nan=False)+"\n",encoding="utf-8")
+          emit("ORIGINAL_FINAL_REDUCTION",{"role":ROLE,"source":SOURCE,"artifact_id":AID,"integrity_errors":issues,"reduction":reduction})
+          emit("ORIGINAL_FINAL_CUSTODY",{"archive_sha256":SHA,"archive_bytes":SIZE,"records":records,"missing_optional_records":missing})
+          need(not issues,"Independent original evidence joins/reductions refused; retain complete originals")
+          
           PY
-      - name: Preserve the immutable original archive and diagnosis
+      - name: Retain complete immutable archives and independent data-only reductions
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: pubpres-mainline-original-inspection-${{ matrix.role }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/pubpres-original-inspection-${{ matrix.role }}/
+          name: pubpres-mainline-final-evidence-${{ matrix.role }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-final-evidence-${{ matrix.role }}/
           if-no-files-found: warn
           retention-days: 90
