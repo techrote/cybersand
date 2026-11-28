@@ -2429,8 +2429,15 @@ func _pump_object_shard_pointer(pressed: bool = false) -> bool:
 		# A failed upload cannot indefinitely starve physical progression.
 		if _object_shard_wait_since==0: _object_shard_wait_since = Time.get_ticks_usec()
 		if Time.get_ticks_usec()-_object_shard_wait_since>250000:
-			_object_shard_edit_probe.record("refused",{"outcome":"DisplayedPublicationDeadline","tool":mode})
-			_cancel_object_shard_pointer("DisplayedPublicationDeadline")
+			# Slow graphical schedules must not discard a still-held user sweep.
+			# After the bounded presentation wait, stop blocking another physical
+			# interval but retain the pointer. A later process callback may resample
+			# only after the exact edited publication is coherently displayed.
+			if _object_shard_wait_reason!="WaitingForDisplayedPublicationDeferred":
+				_object_shard_wait_reason = "WaitingForDisplayedPublicationDeferred"
+				_object_shard_edit_probe.record("wait",{"outcome":_object_shard_wait_reason,"tool":mode,
+					"pending":object_shard_m4_port.pending_count()})
+			message = "Structural edit retained while display catches up; simulation may continue. Release cancels unadmitted work."
 			return false
 		return _object_shard_wait("WaitingForDisplayedPublication")
 	_object_shard_wait_since = 0
