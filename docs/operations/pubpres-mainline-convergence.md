@@ -229,9 +229,16 @@ The [first hosted candidate attempt](../audits/pubpres-delivery-recovery-2026112
 refused preparation because Windows resource updating changed a non-resource
 section identity in `bin/as.exe`. No corrected compiler or Lab execution was
 credited. A bounded PE mismatch receipt now preserves before/after section and
-header diagnostics while retaining that refusal. Original Unicode retries grant
-only failure-behavior evidence, with unobserved `collect2` paths explicit; every
-successful candidate control still requires the actual complete compiler chain.
+header diagnostics while retaining that refusal. The
+[observed resource insertion](../audits/pubpres-delivery-recovery-20261128/utf8-resource-insertion-diagnostic.json)
+shows that Windows added `.rsrc` to the originally resource-free assembler and
+moved the final, byte-identical `.reloc` table together with its loader-directory
+pointer; all preceding compiler code/data sections remained identical. That
+observation does not authorize unrelated PE changes. Original Unicode retries
+grant only failure-behavior evidence, with unobserved `collect2` paths explicit;
+every successful candidate control still requires the actual complete compiler
+chain. The original core PE population is now inventoried before preparation so
+later refusals retain the other tools' original section/resource identities.
 
 ## Owner route and subsequent ObjectShard integration
 

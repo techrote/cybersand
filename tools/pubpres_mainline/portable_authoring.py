@@ -1129,6 +1129,17 @@ def run(args) -> dict:
                                            "observed_sha256": observed_gcc_sha}
             write_json(output / "portable-authoring-witness.json", report)
             raise RuntimeError("Refuse to attribute a reproduction to changed GCC; original compiler hash differs")
+        compiler_metadata = portable_stack.portable_compiler_utf8
+        original_pes = {}
+        for relative, expected_hash in compiler_metadata.CORE_EXECUTABLE_SHA256.items():
+            pe = compiler_metadata.inspect_pe(args.compiler_root / Path(relative))
+            need(pe["file_sha256"] == expected_hash,
+                 "Original compiler PE inventory differs from its admitted hash: " + relative)
+            original_pes[relative] = {key: pe[key] for key in (
+                "file_sha256", "resource_rva", "resource_size", "resource_section_index",
+                "certificate_table_present", "sections", "resources")}
+        report["original_compiler_pe_inventory"] = original_pes
+        write_json(output / "portable-authoring-witness.json", report)
         try:
             report["firewall_preflight"] = firewall.preflight()
             if report["firewall_preflight"].get("status") != "passed":

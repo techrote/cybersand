@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-28",
+  "source_commit": "1d65b84da34b5cbe1dc23398d619458ac864f901",
+  "run": "https://github.com/techrote/cybersand/actions/runs/46169119358",
+  "artifact": "https://github.com/techrote/cybersand/actions/runs/46169119358/artifacts/15273017112",
+  "artifact_sha256": "a4b322411de0505bee126aa537f77a61865315e276bb92c6f9a2b479926c6c71",
+  "witness_sha256": "494d36fafe34173004779d5ad636142f12643edacb7e6b7345658c9008c529ea",
+  "result": "failed; original strict nonresource section identity guard retained",
+  "binary": "bin/as.exe",
+  "original_resources": {
+    "rva_or_file_offset": 0,
+    "size": 0
+  },
+  "original_relocation_section": {
+    "characteristics": 1107296320,
+    "index": 9,
+    "name": ".reloc",
+    "raw_pointer": 1927680,
+    "raw_size": 18944,
+    "sha256": "f4697f8be0f287eae945e0cac56dbb21cfb208ae187e58ca36e209d7a78a0392",
+    "virtual_address": 1994752,
+    "virtual_size": 18544
+  },
+  "updated_relocation_section": {
+    "characteristics": 1107296320,
+    "index": 10,
+    "name": ".reloc",
+    "raw_pointer": 1928704,
+    "raw_size": 18944,
+    "sha256": "f4697f8be0f287eae945e0cac56dbb21cfb208ae187e58ca36e209d7a78a0392",
+    "virtual_address": 1998848,
+    "virtual_size": 18544
+  },
+  "all_other_nonresource_sections_exact": true,
+  "relocation_bytes_sizes_flags_unchanged": true,
+  "observation": "Windows inserted a new .rsrc section into the previously resource-free assembler and shifted the final .reloc section by one virtual page and 1024 file bytes. It updated the base-relocation data directory to the new .reloc RVA. No compiler instruction/data bytes changed. This is an observed API result on the exact registered binary, not a generic promise of UpdateResourceW.",
+  "original_negative_control": "not_run_prerequisite_failed",
+  "positive_compiler_or_lab_credit": false,
+  "next_action": "Implement and independently review an explicit bounded loader-relocation-table transition, preserving all code/data bytes and refusing unrelated nonresource changes. Re-execute full focused path and Lab controls afterwards."
+}
