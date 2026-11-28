@@ -1,271 +1,439 @@
 {
-  "acceptance": "Draft/HOLD. The native World and installed graphical evaluator receipts have their own scopes. Physical owner acceptance remains open.",
+  "acceptance": "Draft/HOLD. Successful original native and hosted source gates do not grant physical owner acceptance or mainline promotion. Final published-source extracted evaluator qualification is separate.",
   "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-  "build_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+  "build_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
   "build_custody": {
     "artifact": {
-      "attempt": 1,
-      "id": 15223746130,
-      "job": 140667984685,
-      "name": "pubpres-closure-shared-runtime-linux-46046627411-1",
-      "run": 46046627411,
-      "sha256": "cc77650f6e8b3247fcab0d73c91cef27516acc5aac21b984d6ae8c63d69a021f",
-      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
+      "bytes": 6590597,
+      "id": 15257739675,
+      "name": "pubpres-mainline-runtimes-linux-46132881112-1",
+      "sha256": "3bc7f458df05f4f735a4c06a6ae5c06f773b28036291e66f748d249070fc0849",
+      "url": "https://github.com/techrote/cybersand/actions/runs/46132881112/artifacts/15257739675"
     },
-    "build_log_sha256": "bb079e4edb63d1a26dbde46d7086f607a58c683727871923627e4ea2b55e1ab4",
-    "build_manifest_sha256": "4ba7c3c08d6a83ee1ea3c1ab738c1270b85416a4c4ba2adc0f7f7d1e157eaf8f",
-    "compiler_command": "/usr/bin/g++-13",
-    "dependency_manifest_sha256": "5bef9dc609375e5f46121121f4455951535939af5a1fb24ba51f61a8c8c96554",
-    "full_dependency_input_inventory": "C/GODOT-CPP-DEPENDENCY.json::source_inputs_sha256",
+    "attempt": 1,
+    "dependency_sha256": "8145fd1d8e0f05f51a032f4203106e9cdcbf3dfc3a57e62616b3432d3f2de6e9",
     "godot_cpp_library_sha256": "bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666",
-    "godot_cpp_tree": "1a7d1ea86a686531bde1db3538dda04b609fcc59",
-    "role": "C",
-    "shared_cohort_custody_sha256": "0a2204d0ad071b15932bd19f0de25d64dc687aaa7ec7cca2205b556e6bb45f6b",
-    "workflow": ".github/workflows/pubpres-closure.yml"
+    "log_sha256": "0d7514d21dbed92b56a8eb2ee06f1cace595c3472a94ac271c27946be0b46fcd",
+    "manifest_sha256": "11acf99a7b78ac01a290a461d71c875cdd1212a43295c4cd8bba2a2d51c1a57f",
+    "run": 46132881112,
+    "source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34"
   },
-  "build_inputs": {
-    "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
-    "tools/build_native_extension.sh": "9a38d32c93c8562803ea92d23903cdb40ce7a7e7d5a5ac5a36763c5f97153585",
-    "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
-    "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
-    "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
-    "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
-    "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
-    "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+  "cross_feature_evidence_scope": {
+    "all_six_exact_source_jobs_authenticated_success": true,
+    "final_delivery_reexecutes_all_features_and_independent_package_readers": true,
+    "original_semantic_readers_executed_by_each_job": true,
+    "raw_feature_readers_replayed_by_this_publisher": false
   },
   "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
   "godot_version": "4.7.stable.official.5b4e0cb0f",
-  "hosted_graphical_qualification": {
-    "artifact": {
-      "attempt": 1,
-      "id": 15224141603,
-      "job": 140674359240,
-      "name": "pubpres-closure-linux-evidence-46046627411-1",
-      "run": 46046627411,
-      "sha256": "3d49ad63a8181d03787f60318a2beea91a838007d9c3654003b9fef934496d83",
-      "source": "00478f29b9abaccb1e358137e8a9a48894c1690b"
+  "kind": "source-matched-pubpres-mainline-draft-runtime",
+  "native_gates": {
+    "normal": {
+      "artifact": {
+        "bytes": 20571,
+        "id": 15258714130,
+        "name": "pubpres-mainline-native-normal-46132881112-1",
+        "sha256": "53cdd2b8c68cc7a51c8bf19f23b5ea17cbf938c7413642d1348ff92bef2be806",
+        "url": "https://github.com/techrote/cybersand/actions/runs/46132881112/artifacts/15258714130"
+      },
+      "replay": {
+        "actual_process_success_authenticated": true,
+        "lifetime_checks": 509,
+        "log_sha256": "f980c2947ecad899d8ece2f2320068d5438b5cebeb674e42d5ff5b7882192800",
+        "raw_terminal_evidence_replayed": true,
+        "source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34"
+      }
     },
-    "held_placement": {
-      "checks": 12,
-      "epochs": [
-        1,
-        2
-      ],
-      "generation_refusal": true,
-      "installed_contact": [
-        262.975036621094,
-        161.500015258789
-      ],
-      "module_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
-      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
-      "receipt_sha256": "bacf21bb37527ab232442c0077fc5c5b15cfe887ce747395c16a28bc3f63cd16",
-      "release_target": [
-        262.975006103516,
-        161.5
-      ],
-      "schema": "workbench-stock-held-limb-placement-v1",
-      "step_after_release": 0,
-      "step_before": 0,
-      "summary_sha256": "11784cfe9f076323e952ded71a396334066c40c3e39b3b90cab9cdb8b58e1650"
+    "ownership": {
+      "artifact": {
+        "bytes": 730,
+        "id": 15257849845,
+        "name": "pubpres-mainline-native-ownership-46132881112-1",
+        "sha256": "75490a702effb8c2d388bb44494dd4b951eb5cef90114f728c0281179a49bb69",
+        "url": "https://github.com/techrote/cybersand/actions/runs/46132881112/artifacts/15257849845"
+      },
+      "replay": {
+        "actual_process_success_authenticated": true,
+        "lifetime_checks": 509,
+        "log_sha256": "de53f2ceab2fe2410ca1f465235d14a698a0bd0a847132baae9965a29bb36194",
+        "raw_terminal_evidence_replayed": true,
+        "source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34"
+      }
     },
-    "scope": "Source-matched hosted graphics. Each Water control was checked against decoded PNG pixels.",
-    "status": "passed",
-    "water": {
-      "stock-water": {
-        "channel_values": 1125,
-        "moving_png_sha256": "0984948eeb51ff0495a72539223741925b1cbb47377c8766c1ecb1e55f90eec2",
-        "observed_frames": 4930,
-        "receipt_sha256": "b0ecc275ef4ed83cf51de7d9b24e330a1b3d98ab8964d4eac3b8fb8f55a69b4a",
-        "restored_owner": {
-          "cells": 666,
-          "elapsed_usec": 249,
-          "entry_budget_usec": 1794,
-          "members": [
-            0,
-            1,
-            2,
-            3
-          ],
-          "pause_frames": [
-            2338,
-            2338
-          ],
-          "refusals": 0,
-          "rotated_coverage_reuses": 2,
-          "step": 0
-        },
-        "rgb_triplets": 375,
-        "withheld_body_draws": 24
+    "sanitizers": {
+      "artifact": {
+        "bytes": 16577,
+        "id": 15259167549,
+        "name": "pubpres-mainline-native-sanitizers-46132881112-1",
+        "sha256": "65a2dfe0f14f32bdd7adb7ae82355a417eb6a058f688b094e6504e17a2df157c",
+        "url": "https://github.com/techrote/cybersand/actions/runs/46132881112/artifacts/15259167549"
+      },
+      "replay": {
+        "actual_process_success_authenticated": true,
+        "lifetime_checks": 509,
+        "log_sha256": "b999bd5bbc6b157bfe81ab620ec91ad261f3d98e0fcd57e4c2e196d50bb52169",
+        "raw_terminal_evidence_replayed": true,
+        "source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34"
       }
     }
   },
-  "installed_package_qualification": null,
-  "kind": "source-matched-pubpres-draft-development-runtime",
-  "platform": "linux x86_64",
-  "publication_branch": "codex/pubpres-playability-final-001-20261124",
-  "publication_source_comparison": {
-    "additional_test_and_reader": {
-      "godot/tests/test_workbench_water_composition_native.gd": {
-        "publication_parent_sha256": "d0d8c8e9c877c5ff74acaafacfa7de293c75375bcd6da9c8b096f185f434d0d0",
-        "shipped_source_sha256": "63f36ca2c3497bf2a4eee3f641d2c990ec531217fc0c5f0863bced64c868bc79"
-      },
-      "tools/pubpres_final_recovery/run_qualification.py": {
-        "publication_parent_sha256": "dc1ed1a1b2a8910b018f5a31e6fbd55881fc641d7ac112dcc08d9c6dbf7189e9",
-        "shipped_source_sha256": "1c8ed201ace2452526cacf927f4861a737b0e3a32f9677c54d8b0a6630c05f24"
-      }
+  "native_input_binding": {
+    "application": {
+      "source_commit": "a9905b850f775603e0ac7af7c886947926b9b531",
+      "source_tree": "5d40af6a4bccf5b8ec11f5dfdd0ffbf8dff4c2f2"
     },
-    "package_source": "00478f29b9abaccb1e358137e8a9a48894c1690b",
-    "parent_tree": "d43d467a12679d4ed96278360f78c23809825b3c",
-    "publication_parent": "25c50624b3ee145039144118949616529ebc330c",
-    "scope": "The evaluator and runtime build use the stated package revision. The publication parent adds a Water fixture and reader observation of actual draw acceptance, together with evidence and a workflow request. Production, native and dependency inputs compare equal."
-  },
-  "qualification": {
-    "checks": 150,
-    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
-    "fixture": "godot/tests/test_pubpres_task_completion_native.gd",
-    "host": "GitHub-hosted Ubuntu 24.04",
+    "binary_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+    "build_inputs_sha256": {
+      "godot/native_extension/cyber_demo_bridge.hpp": "8e09e35203218d2f48aa1f74c3caa9d7cfd26d6a7679823c8ca2ae307f1aaffe",
+      "godot/native_extension/cyber_native_cell_world.cpp": "b1fd6f02787d3293795a681feb0893aadb7935c655fa61ec17a27b58ef47faf9",
+      "godot/native_extension/cyber_native_cell_world.hpp": "6aec9297fd67a219ad8cd21f598bc8893eb0e1143bf4b2c88bfb91b7ae4e6d2d",
+      "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+      "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+      "godot/native_extension/cyber_persistent_area_continuation.hpp": "cf4016cd0ed0240522f1c80e0ebda907adff261623e78a40830bfe113afff996",
+      "godot/native_extension/cyber_persistent_area_residency.hpp": "7f503d818aa52b3bf21d298b96d49740b3b9cab856ce81085ab21296d3c5a082",
+      "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+      "godot/native_extension/cyber_prepared_liquid_world.hpp": "4787da8332205117603c53d95d2742aa3808d2699e6211934f28d9319753aade",
+      "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+      "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+      "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+      "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+      "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+      "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+      "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+      "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+      "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+      "godot/native_extension/material_audition_adapter.inc": "9d4ea2d66d8ebfaa96933ace0709d0748335de7370801150e13f447f81b3a116",
+      "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+      "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+      "godot/native_extension/persistent_area_storage.cpp": "4418669d1e82b5bb3cd8d0fbe075a5cf474acef3c37253d775976b3e6d2fa5e3",
+      "godot/native_extension/persistent_area_storage.hpp": "004bbd028c7a9f298f0f322111830977fbd5f3875e5011bffc1d74d178a9e0a8",
+      "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+      "godot/native_extension/register_types.cpp": "95710dfa5e9dafd891dd4bc85b979a5f4062d665fee466bcda8d8fbcd78fc791",
+      "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+      "godot/native_extension/workbench_granular_coupling.inc": "db15dcc8cc55d4d197ab05ba127a6f38d30b4d1d88dbfc717435e3ac46645881",
+      "godot/native_extension/workbench_retained_setup.hpp": "801fd58a1560a57cd5d14383ee69b8d243d8245719f786806f196a5ec06edb36",
+      "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+      "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+      "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+      "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+      "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+      "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+      "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+      "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+      "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+      "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+      "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+      "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+      "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+      "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+      "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+      "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+      "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+      "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+      "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+      "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+      "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+      "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+      "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+      "native/include/cybersand/material_audition.hpp": "eae75d534293370f48212052ff0e36c397f29a983616652cf218235d9d4b9ff4",
+      "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+      "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+      "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+      "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+      "native/include/cybersand/persistent_area_continuation.hpp": "a20d29b7dfb9c33d7b050e875ba5f6a25c7aabcedbf8658b512cf14e7d82e043",
+      "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+      "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+      "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+      "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+      "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+      "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+      "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+      "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+      "native/include/cybersand/render_snapshot.hpp": "2b7cefd96ab65aced44d117682ca560f5530bf02fdb6ef4e21150c6ef9a456fb",
+      "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+      "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+      "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+      "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+      "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+      "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+      "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+      "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+      "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+      "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+      "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+      "native/include/cybersand/workbench_authoring_patch.hpp": "ac2b359e9b4daba1d6ef57fa65e813475d247dddb49cc634b0104262f0517314",
+      "native/include/cybersand/world.hpp": "e14e094d556d3cf04e1dead54cea856297b0c8a36c6b5867d7f6049c2338b16d",
+      "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+      "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+      "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+      "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+      "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+      "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+      "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+      "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+      "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+      "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+      "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+      "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+      "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+      "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+      "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+      "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+      "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+      "native/src/persistent_worker_pool.hpp": "ec16a2b99c478444cdf3577cc7e18bafe9498a24e543ab401ead3c811119ea8c",
+      "native/src/render_snapshot.cpp": "3239c4379f556f3a1e602d109b975e7d5522c3038dc7c9580e89a800c15f2f3c",
+      "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+      "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+      "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+      "native/src/world.cpp": "9cdc78a8f14122c68f1d0357d75bf9b40dcb62c9ca563b6f33de2f5a0ddbda10",
+      "native/src/world_ballistic.inc": "081e0a2e9454658326ed847e7c87e8042b38839835c32b2cd0038855b59548dc",
+      "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+      "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+      "native/src/world_material_audition.inc": "d9651d0d651c0b4272be4530303e2cec13478438ae241c170c5a19d2cecfb2fd",
+      "native/src/world_pressure.inc": "70c617cea5556bb6121aba3b09af37ee7774fb6c08719dcf60b7042b72566817",
+      "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+      "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+      "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+      "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+      "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+      "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+      "native/src/world_wave.inc": "9993b94ef76fcbab33dd332952b009fda29fdb3b7ae4ba6712aab1672f071585",
+      "third_party/native-toolchain.lock.json": "1d279b5fb4a09ae668c963dce794a3d7b7eac7d95aa88dc48fdf48189fc84414",
+      "tools/build_native_extension.sh": "4bc6bc179c763b3bd64d2a59c536e73ecb6b7d6677806b8457f3a5b747ec64a7",
+      "tools/build_pinned_godot_cpp.sh": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea",
+      "tools/pubpres_playability_build/build_runtime.py": "4d060035fce21ff0d17e72bc8ebc69cb2228fa6ec0a282055db4b68170245483",
+      "tools/pubpres_playability_build/dependency_custody.py": "ed8c842262d74b3fa1a8f1305baa21197d2387dfe46494513cc9753424e94681",
+      "tools/pubpres_playability_build/process_owner.py": "55590c18d86807d3d2afc640cf90dad380525e97adb67e9290c77823d34a5b8a",
+      "tools/requirements-build.txt": "6ef2d94fd9f11d4b4e95730c9c14468c739f51f22d175212b5019edd9dbe7409",
+      "tools/toolchains/g++": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+    },
+    "dependency_builder_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+    "original_build": {
+      "source_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
+      "source_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f"
+    },
+    "original_manifest_sha256": "11acf99a7b78ac01a290a461d71c875cdd1212a43295c4cd8bba2a2d51c1a57f",
     "platform": "linux",
-    "processes": [
-      {
-        "log_sha256": "80329aba7608fa3eb5e4bbba445a69a35eebc66c18d18462d7f2625a3cfd76e7",
-        "returncode": 0,
-        "test": "import",
-        "timed_out": false
-      },
-      {
-        "log_sha256": "d6d8fbc6123a4061c924cb5f970793a4fb579c1ef1f27dcd7fa3a26f7cebbf48",
-        "returncode": 0,
-        "test": "test_pubpres_task_completion_native",
-        "timed_out": false
-      }
+    "production_runtime_promotion": false,
+    "schema": "pubpres-native-identical-input-reuse-v1",
+    "scope": "New application, unchanged complete native/build inputs and retained original binary/receipts. This is input equivalence, not a build at the new application commit and not inherited gameplay qualification."
+  },
+  "platform": "linux x86_64",
+  "publication_attempt": "1",
+  "publication_branch": "codex/pubpres-playability-final-001-20261124",
+  "publication_run": "46143827387",
+  "publication_source_comparison": {
+    "non_execution_changes": [
+      ".github/pubpres-mainline-run.json",
+      ".github/workflows/pubpres-mainline-inspect.yml",
+      "docs/audits/2026-11-28-pubpres-mainline-owner-route.md",
+      "docs/audits/2026-11-28-pubpres-mainline-presentation.md",
+      "docs/audits/pubpres-mainline-convergence-20261128/independent-delivery-custody.json",
+      "docs/audits/pubpres-mainline-convergence-20261128/independent-delivery-custody.md",
+      "docs/audits/pubpres-mainline-convergence-20261128/inspection-scheduling-correction.md",
+      "docs/audits/pubpres-mainline-convergence-20261128/objectshard-integration-handover.md",
+      "docs/audits/pubpres-mainline-convergence-20261128/publication-platform-replay.md",
+      "tools/pubpres_mainline/publish_runtime.py",
+      "tools/pubpres_mainline/test_publication.py"
     ],
-    "raw_receipt": {
-      "checks": 150,
-      "engine": {
-        "build": "official",
-        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
-        "hex": 263936,
-        "major": 4,
-        "minor": 7,
-        "patch": 0,
-        "status": "stable",
-        "string": "4.7-stable (official)",
-        "timestamp": 0
-      },
-      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
-      "failures": [],
-      "native_descriptor_sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
-      "native_resource": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
-      "native_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
-      "observations": [
-        {
-          "candidate": {
-            "completed_dispatches": 204,
-            "completed_tasks": 810,
-            "mode": "actual_tasks",
-            "schema": "PUBPRES-TASK-COMPLETION-V1"
-          },
-          "candidate_completed_tick": 32,
-          "control": {
-            "completed_dispatches": 204,
-            "completed_tasks": 810,
-            "mode": "all_workers",
-            "schema": "PUBPRES-TASK-COMPLETION-V1"
-          },
-          "control_completed_tick": 32,
-          "physical_hash": "863aaf46ed19ed6b",
-          "stage": "matched_native"
+    "production_and_qualification_bytes_identical": true,
+    "publication_parent": "a9905b850f775603e0ac7af7c886947926b9b531",
+    "publication_parent_tree": "5d40af6a4bccf5b8ec11f5dfdd0ffbf8dff4c2f2",
+    "qualified_source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+    "qualified_tree": "560fb1fb8c2a718b04fa251bfc2971947dcf0b31",
+    "reviewed_inspector_scheduling_transition": {
+      "after_blob": "ee280abbd5726ccd98504379b61437b8304906f3",
+      "before_blob": "45a52c76d35bbe5395d296eebae46ae76c82aebe",
+      "change": "Add strategy.max-parallel: 2; read-only artifact contents unchanged",
+      "path": ".github/workflows/pubpres-mainline-inspect.yml"
+    }
+  },
+  "publication_workflow": ".github/workflows/pubpres-mainline.yml",
+  "qualification": {
+    "attempt": 1,
+    "outcomes": {
+      "frozen": {
+        "artifact": {
+          "bytes": 36970177,
+          "id": 15261379803,
+          "name": "pubpres-mainline-qualified-linux-frozen-46140937427-1",
+          "sha256": "ced11406ae8d316d83ed4fe4b0eedec8a5269052a1f912f0aaa8f61885234b8a",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15261379803"
         },
-        {
-          "after": {
-            "completed_dispatches": 36,
-            "completed_tasks": 132,
-            "mode": "all_workers",
-            "schema": "PUBPRES-TASK-COMPLETION-V1"
-          },
-          "before": {
-            "completed_dispatches": 0,
-            "completed_tasks": 0,
-            "mode": "all_workers",
-            "schema": "PUBPRES-TASK-COMPLETION-V1"
-          },
-          "completed_tick": 8,
-          "enabled": false,
-          "physical_hash": "53474db831f0c384",
-          "stage": "prepared_owner"
-        },
-        {
-          "after": {
-            "completed_dispatches": 36,
-            "completed_tasks": 132,
-            "mode": "actual_tasks",
-            "schema": "PUBPRES-TASK-COMPLETION-V1"
-          },
-          "before": {
-            "completed_dispatches": 0,
-            "completed_tasks": 0,
-            "mode": "actual_tasks",
-            "schema": "PUBPRES-TASK-COMPLETION-V1"
-          },
-          "completed_tick": 8,
-          "enabled": true,
-          "physical_hash": "53474db831f0c384",
-          "stage": "prepared_owner"
-        },
-        {
-          "error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
-          "stage": "refused_selector",
-          "type": 2
-        },
-        {
-          "error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
-          "stage": "refused_selector",
-          "type": 4
-        },
-        {
-          "error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
-          "stage": "refused_selector",
-          "type": 3
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 19,
+          "raw_native_and_graphical_readers_replayed": false,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "9d658cc32134eaf8ef1b42ad74796d6a82acda8d703370e8c8967c87b354bba4"
         }
-      ],
-      "platform": "Linux",
-      "process_id": 3296,
-      "schema": "pubpres-task-completion-native-v1",
-      "source_revision": "00478f29b9abaccb1e358137e8a9a48894c1690b",
-      "test_sha256": "a1291e0ef2485b9dba1eb18e4241ce76648dba91502b8107e7a1e0e8f526e684"
+      },
+      "held-placement": {
+        "artifact": {
+          "bytes": 33919025,
+          "id": 15261534315,
+          "name": "pubpres-mainline-qualified-linux-held-placement-46140937427-1",
+          "sha256": "c574cb9835d7e93a7c9a3bd0b63f4e8a62ad58ff98f3457c3503af31f9113014",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15261534315"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 2,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "4f340a7907a7f0adbb0818e4d832718a96f94c0bc1a713fa8b272e0293ff9448"
+        }
+      },
+      "mainline": {
+        "artifact": {
+          "bytes": 35685406,
+          "id": 15260814814,
+          "name": "pubpres-mainline-qualified-linux-mainline-46140937427-1",
+          "sha256": "4bd3684eeefda594e965a5d50ff80503d17dc3a777c2b2e4df4777a964f8cdc5",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15260814814"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 10,
+          "raw_native_and_graphical_readers_replayed": false,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "c534c8940bea7de1ab7d08fdb222f593a04450fcb29df445388fb698dbdb15a9"
+        }
+      },
+      "members": {
+        "artifact": {
+          "bytes": 33998563,
+          "id": 15261599024,
+          "name": "pubpres-mainline-qualified-linux-members-46140937427-1",
+          "sha256": "999f8a998f6e6dc308decd2c78c84b7af79dcae22d3cf97dad55ecbd25681ddd",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15261599024"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 4,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "769b11ddeecfbd9389d802a5f2c1c902a6c32c680cbd1959cdd2a5237d3e84bc"
+        }
+      },
+      "native-owner": {
+        "artifact": {
+          "bytes": 32422611,
+          "id": 15261459777,
+          "name": "pubpres-mainline-qualified-linux-native-owner-46140937427-1",
+          "sha256": "c1828a1f7039dd04744cdd0b27f2721267a32c22e35149216279491fc7afcbf8",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15261459777"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 2,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "2b842fffd67cac5f71eb08b13fcc41820d24868f0661888494178b8fb170657f"
+        }
+      },
+      "selected-held-placement": {
+        "artifact": {
+          "bytes": 33967721,
+          "id": 15262385367,
+          "name": "pubpres-mainline-qualified-linux-selected-held-placement-46140937427-1",
+          "sha256": "f50ea74545506543b2381370642c7fbb6beae5dc5f9bdf95a219c9718ea3c85e",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15262385367"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 2,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "cd94f88d8c96b0a34559a30612cdacafaee5fc55e74cada12a4ff541ab679c61"
+        }
+      },
+      "selected-members": {
+        "artifact": {
+          "bytes": 33991646,
+          "id": 15261004552,
+          "name": "pubpres-mainline-qualified-linux-selected-members-46140937427-1",
+          "sha256": "f209e3f74b887689d964cbc2a381caac3c48f8919e1f84666ad1ce62cda7eb77",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15261004552"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 4,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "f00a33bde4e62ce740b1e5c9d787b18f91088615007f1c1e446273e7b141d6ac"
+        }
+      },
+      "selected-water": {
+        "artifact": {
+          "bytes": 35749869,
+          "id": 15262140928,
+          "name": "pubpres-mainline-qualified-linux-selected-water-46140937427-1",
+          "sha256": "cf119fd62d77c584f53c5419b93097a94dafb68d19fa1aaeb743ab36ffcf7473",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15262140928"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 4,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "d9c73a2463d3c816b702e327106a368b9ffd4837b79cc68191a5ece2f62f86d1"
+        }
+      },
+      "water": {
+        "artifact": {
+          "bytes": 35827863,
+          "id": 15262065809,
+          "name": "pubpres-mainline-qualified-linux-water-46140937427-1",
+          "sha256": "5d8b6924999396d9a85931316fd0484968549aab237aaece34208ad8de8f6995",
+          "url": "https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15262065809"
+        },
+        "replay": {
+          "complete": true,
+          "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "native_sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+          "processes": 4,
+          "raw_native_and_graphical_readers_replayed": true,
+          "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae",
+          "summary_sha256": "169fdd838feaba051030dc2c7d5434e49fa4de45520ccc0b6fd4a7092e73bc33"
+        }
+      }
     },
-    "receipt_sha256": "b9310ad3dadc791730b49dfa12c897986d71eee8eaaa29a9706c8f4aea04062c",
-    "result": {
-      "actual_task_participation": true,
-      "checks": 150,
-      "invalid_selector_types": [
-        2,
-        3,
-        4
-      ],
-      "matched_native_world_turns": 32,
-      "prepared_owner_turns_each": 8,
-      "scope": "Actual native module/World ownership and equal-work fixture only; no rendered or performance acceptance."
-    },
-    "scope": "Actual isolated headless Godot import and mounted native World execution only.",
-    "source_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
-    "source_tree": "ad0d4c364f144f8a279f38bceb8e29a182361b1f",
-    "status": "passed",
-    "summary_sha256": "899ec93e2dd364dcde47ca9b2996af7b5da4d488fe13a6b684722f9a0c9b6cb7"
+    "run": 46140937427,
+    "source": "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae"
   },
   "schema_version": 1,
-  "sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
-  "size": 5362200,
-  "source_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+  "sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+  "size": 5633848,
+  "source_commit": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
   "source_input_hash_kind": "sha256-canonical-lf",
   "source_inputs": {
-    "godot/native_extension/cyber_demo_bridge.hpp": "4ac8fe03c2a90a14b4cda92d0bf519553ba804d191dd0ac7710ce960530b017b",
-    "godot/native_extension/cyber_native_cell_world.cpp": "0600455a3c648991c02a9dd6c8ae1ec69b8bdb1a19f5fbf9d7fed45a55a40fcb",
-    "godot/native_extension/cyber_native_cell_world.hpp": "c3d010e1a2ddc2a38da40947704715ae1f43d18c7ea778a079e15cbd2e5f8267",
+    "godot/native_extension/cyber_demo_bridge.hpp": "8e09e35203218d2f48aa1f74c3caa9d7cfd26d6a7679823c8ca2ae307f1aaffe",
+    "godot/native_extension/cyber_native_cell_world.cpp": "b1fd6f02787d3293795a681feb0893aadb7935c655fa61ec17a27b58ef47faf9",
+    "godot/native_extension/cyber_native_cell_world.hpp": "6aec9297fd67a219ad8cd21f598bc8893eb0e1143bf4b2c88bfb91b7ae4e6d2d",
     "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
     "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+    "godot/native_extension/cyber_persistent_area_continuation.hpp": "cf4016cd0ed0240522f1c80e0ebda907adff261623e78a40830bfe113afff996",
+    "godot/native_extension/cyber_persistent_area_residency.hpp": "7f503d818aa52b3bf21d298b96d49740b3b9cab856ce81085ab21296d3c5a082",
     "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
-    "godot/native_extension/cyber_prepared_liquid_world.hpp": "5e995e5c86a85857b6f9a581de698fba7d0d395f46b262c6774778aa1387eb64",
+    "godot/native_extension/cyber_prepared_liquid_world.hpp": "4787da8332205117603c53d95d2742aa3808d2699e6211934f28d9319753aade",
     "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
     "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
     "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
@@ -279,8 +447,10 @@
     "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
     "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
     "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+    "godot/native_extension/persistent_area_storage.cpp": "4418669d1e82b5bb3cd8d0fbe075a5cf474acef3c37253d775976b3e6d2fa5e3",
+    "godot/native_extension/persistent_area_storage.hpp": "004bbd028c7a9f298f0f322111830977fbd5f3875e5011bffc1d74d178a9e0a8",
     "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
-    "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+    "godot/native_extension/register_types.cpp": "95710dfa5e9dafd891dd4bc85b979a5f4062d665fee466bcda8d8fbcd78fc791",
     "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
     "godot/native_extension/workbench_granular_coupling.inc": "db15dcc8cc55d4d197ab05ba127a6f38d30b4d1d88dbfc717435e3ac46645881",
     "godot/native_extension/workbench_retained_setup.hpp": "801fd58a1560a57cd5d14383ee69b8d243d8245719f786806f196a5ec06edb36",
@@ -312,6 +482,7 @@
     "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
     "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
     "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+    "native/include/cybersand/persistent_area_continuation.hpp": "a20d29b7dfb9c33d7b050e875ba5f6a25c7aabcedbf8658b512cf14e7d82e043",
     "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
     "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
     "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
@@ -320,7 +491,7 @@
     "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
     "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
     "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
-    "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+    "native/include/cybersand/render_snapshot.hpp": "2b7cefd96ab65aced44d117682ca560f5530bf02fdb6ef4e21150c6ef9a456fb",
     "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
     "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
     "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
@@ -333,7 +504,7 @@
     "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
     "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
     "native/include/cybersand/workbench_authoring_patch.hpp": "ac2b359e9b4daba1d6ef57fa65e813475d247dddb49cc634b0104262f0517314",
-    "native/include/cybersand/world.hpp": "cc710aae3182b4f715c488f8f1cdf5da81d9486c3155e151ae06256cf640525d",
+    "native/include/cybersand/world.hpp": "e14e094d556d3cf04e1dead54cea856297b0c8a36c6b5867d7f6049c2338b16d",
     "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
     "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
     "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
@@ -351,12 +522,12 @@
     "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
     "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
     "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
-    "native/src/persistent_worker_pool.hpp": "9db7274e80edb54eea106e6876ad2c66a843a029b90583a2bd72d6546af7b793",
-    "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+    "native/src/persistent_worker_pool.hpp": "ec16a2b99c478444cdf3577cc7e18bafe9498a24e543ab401ead3c811119ea8c",
+    "native/src/render_snapshot.cpp": "3239c4379f556f3a1e602d109b975e7d5522c3038dc7c9580e89a800c15f2f3c",
     "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
     "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
     "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
-    "native/src/world.cpp": "fd7079d6cf4798275280eeb99ed996258482327c4bfeae64a2efb02655daac3e",
+    "native/src/world.cpp": "9cdc78a8f14122c68f1d0357d75bf9b40dcb62c9ca563b6f33de2f5a0ddbda10",
     "native/src/world_ballistic.inc": "081e0a2e9454658326ed847e7c87e8042b38839835c32b2cd0038855b59548dc",
     "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
     "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
@@ -370,15 +541,15 @@
     "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
     "native/src/world_wave.inc": "9993b94ef76fcbab33dd332952b009fda29fdb3b7ae4ba6712aab1672f071585"
   },
-  "source_tree": "ad0d4c364f144f8a279f38bceb8e29a182361b1f",
+  "source_tree": "5d292e17fdeba0466ee744d8d23e719039908c7f",
   "status": "validated-development-runtime",
   "supersedes": {
-    "build_commit": "ccc133d85d719ab19f92c87b44ec34a7284bd5ae",
+    "build_commit": "00478f29b9abaccb1e358137e8a9a48894c1690b",
     "sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1"
   },
   "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
-  "validated_platform": "linux x86_64; mounted native World fixture passed",
-  "validation_date": "2026-11-27",
+  "validated_platform": "linux x86_64; native and hosted graphical qualification passed",
+  "validation_date": "2026-11-28",
   "workflow_attempt": "1",
-  "workflow_run": "46046627411"
+  "workflow_run": "46132881112"
 }
