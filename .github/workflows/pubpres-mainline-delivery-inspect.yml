@@ -1,0 +1,329 @@
+name: PUBPRES final delivery custody inspection
+
+on:
+  push:
+    branches: [codex/pubpres-mainline-evidence-001-20261128]
+    paths: ['.github/workflows/pubpres-mainline-delivery-inspect.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-mainline-delivery-inspection-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    name: Inspect immutable delivery records (${{ matrix.role }})
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-mainline-evidence-001-20261128'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        role: ["package"]
+    steps:
+      - name: Authenticate original source and archive; inspect original delivery records
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          INSPECTION_ROLE: ${{ matrix.role }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, stat, urllib.error, urllib.parse, urllib.request, zipfile
+          CONFIG = json.loads(r'''{"package":{"kind":"package","run":46147576269,"attempt":1,"source":"65f71aaf4be3a67896bafac7f5220a0cb25a8fb7","tree":"f6b7b8d3d613b70cdcdf3643fb906934b3887173","artifact":[15264827144,1336784,"02cabffed34cd70926b302e8c291b00757495371b153edcc8e3df48c763cd1cd","pubpres-mainline-package-custody-46147576269-1"],"inner_sha256":"75e2f9e3b7e92f97d9560844a4ad661c5c659d51a47ef49621a3dd93f7f7a692","inner_bytes":1415925691,"manifest_sha256":"3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6"}}''')
+          role = os.environ["INSPECTION_ROLE"]
+          chosen = CONFIG[role]
+          run_id, attempt = chosen["run"], chosen["attempt"]
+          source, tree = chosen["source"], chosen["tree"]
+          driver, driver_tree = "7378ce8abe1f5cfa59a750b944970ddca70e6a42", "730a0d481ce873f7cdf3367679ab3ebe9afa2f1b"
+          if (run_id, attempt, source, tree) != (46147576269, 1, "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7", "f6b7b8d3d613b70cdcdf3643fb906934b3887173"):
+              raise ValueError("Unregistered frozen-application package follow-up")
+          artifact_id, expected_bytes, expected_sha, expected_name = chosen["artifact"]
+          if not (len(source) == len(tree) == 40 and 0 < expected_bytes <= 2 * 1024**3):
+              raise ValueError("Missing bounded final source/archive registration")
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / ("pubpres-delivery-inspection-" + role)
+          output.mkdir(exist_ok=False)
+          archive = output.parent / ("pubpres-original-delivery-" + role + ".zip")
+          headers = {"Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
+                     "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+          def require(value, message):
+              if not value: raise ValueError(message)
+          def api(path):
+              with urllib.request.urlopen(urllib.request.Request("https://api.github.com/repos/techrote/cybersand" + path, headers=headers), timeout=60) as response:
+                  raw = response.read(1048577)
+              require(len(raw) <= 1048576, "Bounded metadata response exceeded")
+              return json.loads(raw)
+          run = api("/actions/runs/" + str(run_id))
+          require(run["id"] == run_id and run["run_attempt"] == attempt and run["head_sha"] == driver
+                  and run["event"] == "push" and run["head_branch"] == "codex/pubpres-mainline-package-followup-001-20261128"
+                  and run["path"] == ".github/workflows/pubpres-mainline-package-followup.yml",
+                  "Original source/run/attempt/workflow differs")
+          commit = api("/git/commits/" + source)
+          require(commit["sha"] == source and commit["tree"]["sha"] == tree, "Original committed source tree differs")
+          driver_commit = api("/git/commits/" + driver)
+          require(driver_commit["sha"] == driver and driver_commit["tree"]["sha"] == driver_tree
+                  and [row["sha"] for row in driver_commit["parents"]] == [source],
+                  "Separate package driver is not the registered direct descendant")
+          comparison = api("/compare/" + source + "..." + driver)
+          expected_driver_files = {
+              ".github/workflows/pubpres-mainline-package-followup.yml": ("added", "5590bcb561ad388bc8515a5812b2b52697dec327"),
+              "tools/pubpres_mainline/test_evaluator_boundaries.py": ("modified", "1183e41bafafb7c95c70041aac67351f69927851"),
+          }
+          require(comparison["base_commit"]["sha"] == source and comparison["merge_base_commit"]["sha"] == source
+                  and comparison["ahead_by"] == 1 and comparison["behind_by"] == 0
+                  and len(comparison["commits"]) == 1 and comparison["commits"][0]["sha"] == driver
+                  and len(comparison["files"]) == 2
+                  and {row["filename"]: (row["status"], row["sha"]) for row in comparison["files"]} == expected_driver_files,
+                  "Driver changes exceed the reviewed workflow and external synthetic-LF test")
+          original = api("/actions/runs/46144440297")
+          require(original["head_sha"] == source and original["run_attempt"] == 1
+                  and original["event"] == "push" and original["head_branch"] == "codex/pubpres-playability-final-001-20261124"
+                  and original["path"] == ".github/workflows/pubpres-mainline.yml", "Original core campaign identity differs")
+          original_jobs = api("/actions/runs/46144440297/attempts/1/jobs?per_page=100")
+          require(original_jobs["total_count"] <= 100, "Original job population exceeds bounded metadata")
+          focuses = ("frozen", "water", "members", "held-placement", "mainline", "native-owner",
+                     "selected-water", "selected-members", "selected-held-placement")
+          required = {"admission", "source-gates"} | {
+              "qualification-" + platform + "-" + focus for platform in ("linux", "windows") for focus in focuses
+          } | {"features-" + platform + "-" + mode for platform in ("linux", "windows") for mode in ("ramcache", "strata", "shared")}
+          require(len(required) == 26, "Core gate population changed")
+          authenticated_jobs = {}
+          for name in sorted(required):
+              matches = [row for row in original_jobs["jobs"] if row["name"] == name]
+              require(len(matches) == 1 and matches[0]["status"] == "completed" and matches[0]["conclusion"] == "success",
+                      "Original required core gate did not pass: " + name)
+              authenticated_jobs[name] = {"id": matches[0]["id"], "conclusion": "success"}
+          fixed_features = {
+              "linux-ramcache": (15263054371, 16572761, "69f737fc5b444ecd5ab37932e89a4cb535d1dec5ef17634ac7d69e7f3e217507"),
+              "linux-strata": (15263526488, 47908526, "0740a38e04d19ce17e1e53bdafa11c85cd69b93d549d6ce94e9cafbca5d06496"),
+              "linux-shared": (15263227596, 28568192, "227d6f42d77f30618ebe742fe22aa768c78d1151bcb2a1c6daeb57ce18310d5f"),
+              "windows-ramcache": (15263212722, 13210728, "c68791a64419edc8c590979170738eb37f090946cab4f189b6851d4e1f7cb228"),
+              "windows-strata": (15264135635, 33668904, "bdf334b2a340536ab514093feb06ca99cc0622529d98a6efd997a233bb2fe332"),
+              "windows-shared": (15263339625, 20139344, "cdb3674b94e5d410a5c92f97da8e71ccf7d2f807d5b57ba3ff7d255f507b6550"),
+          }
+          metadata = api("/actions/artifacts/" + str(artifact_id))
+          require(metadata["id"] == artifact_id and metadata["name"] == expected_name and not metadata["expired"]
+                  and metadata["size_in_bytes"] == expected_bytes and metadata["digest"] == "sha256:" + expected_sha
+                  and metadata["workflow_run"]["id"] == run_id and metadata["workflow_run"]["head_sha"] == driver,
+                  "Original artifact identity differs")
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, fp, code, message, response_headers, newurl):
+                  return None
+          req = urllib.request.Request("https://api.github.com/repos/techrote/cybersand/actions/artifacts/" + str(artifact_id) + "/zip", headers=headers)
+          try:
+              urllib.request.build_opener(NoRedirect).open(req, timeout=60)
+          except urllib.error.HTTPError as reply:
+              require(reply.code in (301, 302, 303, 307, 308), "Artifact redirect refused")
+              download = reply.headers["Location"]
+          else:
+              raise ValueError("Expected signed artifact download redirect")
+          parsed = urllib.parse.urlsplit(download)
+          require(parsed.scheme == "https" and parsed.netloc and not parsed.username and not parsed.password,
+                  "Unsafe signed download URL")
+          # Never send the GitHub credential to the separate signed storage request.
+          received, hasher = 0, hashlib.sha256()
+          with urllib.request.urlopen(urllib.request.Request(download), timeout=180) as response, archive.open("xb") as stream:
+              while block := response.read(1048576):
+                  received += len(block)
+                  require(received <= expected_bytes, "Original archive exceeds registered size")
+                  hasher.update(block)
+                  stream.write(block)
+          require(received == expected_bytes and hasher.hexdigest() == expected_sha, "Original archive bytes differ")
+          proof = {"schema": "pubpres-mainline-frozen-delivery-custody-inspection-v2", "role": role,
+                   "original_source": source, "original_tree": tree, "original_run": run_id,
+                   "separate_driver": {"source_commit": driver, "source_tree": driver_tree,
+                                       "verified_two_path_delta": expected_driver_files},
+                   "original_required_core_jobs": authenticated_jobs,
+                   "original_attempt": attempt, "artifact": metadata, "zip_sha256": hasher.hexdigest(),
+                   "zip_bytes": received, "application_executed": False, "records": {}, "status": "running",
+                   "scope": "Read-only custody and cross-record inspection of immutable hosted delivery evidence; original execution outcomes are preserved, not replaced."}
+          def save():
+              (output / "INSPECTION.json").write_text(json.dumps(proof, indent=2) + "\n", encoding="utf-8")
+          save()
+          try:
+              with zipfile.ZipFile(archive) as bundle:
+                  items = bundle.infolist()
+                  require(0 < len(items) <= 100000 and sum(item.file_size for item in items) <= 8 * 1024**3,
+                          "Original archive population/expansion exceeds registered inspection bound")
+                  names, normalized = set(), set()
+                  for item in items:
+                      name, path = item.filename, pathlib.PurePosixPath(item.filename)
+                      mode = (item.external_attr >> 16) & 0o170000
+                      canonical = path.as_posix()
+                      require(path.parts and name not in names and canonical not in normalized
+                              and "\\" not in name and ":" not in name and not path.is_absolute()
+                              and ".." not in path.parts and not (item.flag_bits & 1)
+                              and mode in (0, stat.S_IFREG, stat.S_IFDIR),
+                              "Unsafe, aliased, encrypted or linked original member")
+                      names.add(name)
+                      normalized.add(canonical)
+                  require(bundle.testzip() is None, "Original archive CRC failure")
+                  def original(name):
+                      require(name in names, "Missing original record: " + name)
+                      info = bundle.getinfo(name)
+                      require(not info.is_dir() and info.file_size <= 32 * 1024**2, "Original record exceeds bound")
+                      raw = bundle.read(name)
+                      target = output / "records" / name
+                      target.parent.mkdir(parents=True, exist_ok=True)
+                      target.write_bytes(raw)
+                      proof["records"][name] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+                      return raw
+                  def one(basename):
+                      matches = sorted(n for n in names if pathlib.PurePosixPath(n).name == basename)
+                      require(len(matches) == 1, "Missing or ambiguous original " + basename)
+                      return matches[0]
+                  def read_json(name):
+                      return json.loads(original(name).decode("utf-8-sig"))
+                  def present(label, value, limit=240000):
+                      text = json.dumps(value, indent=2, ensure_ascii=False)
+                      require(len(text) <= limit, "Bounded console record exceeded: " + label)
+                      print(label + "_BEGIN " + role, flush=True)
+                      print(text, flush=True)
+                      print(label + "_END " + role, flush=True)
+                  if chosen["kind"] == "package":
+                      followup = read_json(one("package-followup-custody.json"))
+                      require(followup["schema"] == "pubpres-frozen-package-followup-v1"
+                              and followup["application"] == {"source_commit": source, "source_tree": tree}
+                              and followup["driver"] == {"source_commit": driver, "source_tree": driver_tree}
+                              and followup["original_final_run"] == 46144440297 and followup["original_attempt"] == 1
+                              and followup["original_package_failure_job"] == 140983886467
+                              and followup["original_package_failure_artifact"] == 15264171190
+                              and followup["external_test_git_blob"] == "1183e41bafafb7c95c70041aac67351f69927851"
+                              and followup["tests"] == 8 and followup["tests_passed"] is True
+                              and followup["application_and_packaging_bytes_changed"] is False
+                              and followup["required_core_jobs"] == authenticated_jobs
+                              and set(followup["feature_artifacts"]) == set(fixed_features),
+                              "Original package follow-up source, controls or core evidence differs")
+                      for feature_role, (identifier, size, digest) in fixed_features.items():
+                          recorded = followup["feature_artifacts"][feature_role]
+                          actual = api("/actions/artifacts/" + str(identifier))
+                          for item in (recorded, actual):
+                              require(item["id"] == identifier and item["size_in_bytes"] == size
+                                      and item["digest"] == "sha256:" + digest and not item["expired"]
+                                      and item["name"] == "pubpres-mainline-feature-" + feature_role + "-46144440297-1"
+                                      and item["workflow_run"]["id"] == 46144440297
+                                      and item["workflow_run"]["head_sha"] == source,
+                                      "Original feature artifact registration differs: " + feature_role)
+                      proof["frozen_application_followup"] = followup
+                      present("ORIGINAL_FROZEN_PACKAGE_FOLLOWUP", followup)
+                      manifest_name = one("PUBPRES-MAINLINE-EVALUATOR.json")
+                      manifest = read_json(manifest_name)
+                      receipt_names = sorted(n for n in names if n.endswith(".zip.json"))
+                      require(len(receipt_names) == 1, "Missing unique inner ZIP custody receipt")
+                      receipt = read_json(receipt_names[0])
+                      require(manifest["schema"] == receipt["schema"] == "pubpres-mainline-windows-evaluator-v1"
+                              and manifest["source_commit"] == receipt["source_commit"] == source
+                              and manifest["source_tree"] == receipt["source_tree"] == tree
+                              and receipt["manifest_sha256"] == proof["records"][manifest_name]["sha256"]
+                              and manifest["physical_owner_evaluated"] is False and manifest["merge_authorized"] is False
+                              and manifest["accepted_main"] == "50e3bcb839211eac2abe1e065750cbcba4d36f8c"
+                              and manifest["owner_reference"] == "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+                              "Package source, inner receipt or acceptance identity differs")
+                      require(manifest["file_count"] == len(manifest["files_sha256"])
+                              and 0 < manifest["expanded_bytes"] <= 4 * 1024**3
+                              and manifest["source_gate_modes"] == ["ramcache", "shared", "strata"],
+                              "Package file/feature population differs")
+                      require(receipt["archive_sha256"] == chosen["inner_sha256"]
+                              and receipt["archive_bytes"] == chosen["inner_bytes"]
+                              and receipt["manifest_sha256"] == chosen["manifest_sha256"],
+                              "Package receipt differs from separately registered package outputs")
+                      native = manifest["native_publication"]
+                      require(native["exact_four_path_result_verified"] is True
+                              and native["current_production_pointers_retained"] is True
+                              and native["mainline_merge_authorized"] is False
+                              and native["physical_owner_acceptance"] == "HOLD",
+                              "Package publication proof is incomplete")
+                      compact = {key: manifest.get(key) for key in (
+                          "schema", "mission", "source_commit", "source_tree", "accepted_main", "owner_reference",
+                          "engine", "source_repository", "materialized_dependencies", "selectors", "render_thread",
+                          "source_gate_modes", "source_gate_records_sha256", "physical_owner_evaluated", "merge_authorized",
+                          "native_publication", "file_count", "expanded_bytes")}
+                      compact["runtime"] = {key: manifest["runtime"].get(key) for key in (
+                          "schema", "cybersand_runtime", "rapier_runtime", "runtime_provenance", "original_build_receipt_sha256")}
+                      compact["native_source_input_count"] = len(manifest["runtime"].get("native_source_inputs", {}))
+                      compact["offline_authoring"] = {key: manifest["offline_authoring"].get(key) for key in (
+                          "schema", "tools", "compiler", "source_commit", "source_tree")}
+                      compact["original_inner_zip_receipt"] = receipt
+                      compact["manifest_bytes"] = proof["records"][manifest_name]
+                      proof["package_review"] = compact
+                      present("ORIGINAL_PACKAGE_CUSTODY", compact)
+                  elif chosen["kind"] == "extracted":
+                      result_name = one("extracted-verification.json")
+                      result = read_json(result_name)
+                      require(result["schema"] == "pubpres-mainline-extracted-evaluator-v1"
+                              and result["source_commit"] == source and result["source_tree"] == tree
+                              and result["physical_owner_evaluated"] is False and result["merge_authorized"] is False,
+                              "Extracted execution source or acceptance identity differs")
+                      require(result["archive"] == {"sha256": chosen["inner_sha256"], "bytes": chosen["inner_bytes"]}
+                              and result["manifest_sha256"] == chosen["manifest_sha256"],
+                              "Extracted archive/manifest differs from independently registered package outputs")
+                      proof["original_execution_status"] = result["status"]
+                      present("ORIGINAL_EXTRACTED_EXECUTION", result)
+                      if result["status"] == "passed":
+                          require(result["cold_cmd_was_first_engine_invocation"] is True
+                                  and set(result["extracted_modes"]) == {"ramcache", "strata", "lab"}
+                                  and result["offline_authoring"]["status"] == "passed"
+                                  and result["payload_after_execution"] == "all original payload and committed source bytes verified",
+                                  "Successful extracted record lacks required actual execution scopes")
+                          prefix = result_name[:-len("extracted-verification.json")]
+                          for mode in ("ramcache", "strata", "lab"):
+                              name = prefix + mode + "/pubpres-mainline-qualification.json"
+                              record = read_json(name)
+                              require(proof["records"][name]["sha256"] == result["extracted_modes"][mode]["record_sha256"]
+                                      and record["schema"] == "pubpres-mainline-cross-feature-v1"
+                                      and record["source"] == {"source_commit": source, "source_tree": tree}
+                                      and record["platform"] == "windows" and record["mode"] == mode
+                                      and record["status"] == "passed" and record["all_original_semantic_readers_replayed"] is True,
+                                      "Extracted original mode receipt differs")
+                              report_name = prefix + mode + "/original/integration.json"
+                              raw = original(report_name)
+                              require(hashlib.sha256(raw).hexdigest() == record["original_report_sha256"],
+                                      "Original extracted integration report differs")
+                              present("ORIGINAL_EXTRACTED_" + mode.upper(), {key: record.get(key) for key in (
+                                  "schema", "source", "mode", "platform", "status", "cases",
+                                  "all_original_semantic_readers_replayed", "original_report_sha256",
+                                  "physical_owner_evaluated")})
+                          for basename in ("cold-launch-verification.json", "persistent-shortcut-verification.json",
+                                           "runtime-modules.json", "portable-lab-source-snapshot.json"):
+                              name = prefix + basename
+                              value = read_json(name)
+                              if basename == "cold-launch-verification.json":
+                                  require(value == result["cold_launch"], "Original cold launcher record differs")
+                              if basename == "runtime-modules.json":
+                                  require(proof["records"][name]["sha256"] == result["runtime_modules"]["receipt_sha256"]
+                                          and value["status"] == "passed" and value["source_commit"] == source,
+                                          "Loaded module receipt differs")
+                              if basename == "portable-lab-source-snapshot.json":
+                                  require(proof["records"][name]["sha256"] == result["offline_authoring"]["source_snapshot_sha256"],
+                                          "Portable compiler source snapshot differs")
+                              if basename == "persistent-shortcut-verification.json":
+                                  require(isinstance(value, list) and len(value) == 2
+                                          and value[0]["profile"]["session_id"] == value[1]["profile"]["session_id"]
+                                          and set(value[0]["engine_process_ids"]).isdisjoint(value[1]["engine_process_ids"]),
+                                          "Original persistent fresh-process identity differs")
+                              if basename != "portable-lab-source-snapshot.json":
+                                  present("ORIGINAL_" + basename.replace(".", "_").replace("-", "_").upper(), value)
+                      else:
+                          proof["original_failure_preserved"] = result.get("error")
+                  else:
+                      raise ValueError("Unregistered data-only custody role")
+              proof["status"] = "inspected"
+          except BaseException as error:
+              proof.update(status="inspection_failed", error=type(error).__name__ + ": " + str(error))
+              raise
+          finally:
+              save()
+          print(json.dumps({"role": role, "source": source, "artifact_id": artifact_id,
+                            "archive_verified": True, "original_execution_status": proof.get("original_execution_status"),
+                            "records": proof["records"], "application_executed": False}), flush=True)
+          PY
+      - name: Preserve original selected receipts and custody review
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-delivery-inspection-${{ matrix.role }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-delivery-inspection-${{ matrix.role }}/
+          if-no-files-found: warn
+          retention-days: 90
