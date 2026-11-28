@@ -4215,6 +4215,7 @@ func _publish_coupling_completion(epoch: int) -> bool:
 	var source := CyberSimulationSnapshot.new()
 	source.rigid_body_epoch = epoch
 	source.physics_world_generation = _world_generation
+	source.backend_name = _backend_name
 	source.simulation_world_revision = int(_world.revision)
 	source.tick_index = int(_world.tick_index)
 	var required := int(_world.hard_surface_revision)
@@ -4260,6 +4261,11 @@ func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
 	var rigid_body_epoch: int = source.rigid_body_epoch
 	snapshot.rigid_body_epoch = rigid_body_epoch
 	snapshot.physics_world_generation = source.physics_world_generation
+	# An early completion owns native freshness, never a material identity.
+	snapshot.render_world_generation = -1
+	snapshot.render_snapshot_serial = -1
+	snapshot.backend_name = source.backend_name
+	snapshot.simulation_failed = source.simulation_failed
 	snapshot.simulation_world_revision = source.simulation_world_revision
 	snapshot.tick_index = source.tick_index
 	snapshot.paused = source.paused

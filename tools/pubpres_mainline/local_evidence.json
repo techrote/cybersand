@@ -1,27 +1,183 @@
 {
-  "schema": "pubpres-mainline-original-local-evidence-v1",
+  "schema": "pubpres-mainline-original-local-evidence-v2",
   "scope": "Original local engineering observations, including adverse arms. Not final-source Windows or physical-owner acceptance.",
   "archives": [
     {
       "role": "spawn",
       "filename": "spawn-original-local-evidence.tar.gz",
-      "git_blob": "cd43bf0bc0c89f163873ace5599d5cd2e93b409f",
+      "bytes": 1261587,
       "sha256": "3b98692ecd8e95ea83d6e1df2c2102776a74d0a8adeeccd80f41ae24bcdec951",
-      "bytes": 1261587
+      "assembled_git_blob": "9025baa1e02d0a94761d9e2f3ecd1a32471250a6",
+      "chunks": [
+        {
+          "offset": 0,
+          "bytes": 131072,
+          "sha256": "886f4fb4dd8cedea3e7deac05876467b4b2556434629dafabf762da02f26cdba",
+          "git_blob": "b116d6c5453b07a9ed266a6efc4b60bcbf6b4f51"
+        },
+        {
+          "offset": 131072,
+          "bytes": 131072,
+          "sha256": "600e3b3b6e65bf8d0bba6fec5f8474d753366c03ac39c0d244cb118eb6597cb6",
+          "git_blob": "a81813b4e9951d664b1d0937e4eaeb6718af3a37"
+        },
+        {
+          "offset": 262144,
+          "bytes": 131072,
+          "sha256": "75f1ca7356a62425a2ca3478c63a3ae97e9435f7a2d3fb010b88ffdc1820d0ca",
+          "git_blob": "984b3fdba4a2e1e06f3704a19c5055c02f137346"
+        },
+        {
+          "offset": 393216,
+          "bytes": 131072,
+          "sha256": "da572249d40e0c80d679cd5df5c78bb647231e1c76eb3ef6b0014ac242c2ff8d",
+          "git_blob": "1cb2c1c51e7bb743d33cdfc8ffebf4e9c742d8e9"
+        },
+        {
+          "offset": 524288,
+          "bytes": 131072,
+          "sha256": "dd7b2049bb4797792b3c54637996dfd8aa8586cd6342948a65e7710f8e8c7e19",
+          "git_blob": "3a4661191759ec06224ed84ec3ff31b595aede51"
+        },
+        {
+          "offset": 655360,
+          "bytes": 131072,
+          "sha256": "780675c642e5b54da082f6de87d834a86af741431db8f7a57b76589cba0a36c1",
+          "git_blob": "db38a5c83a61b55424e4f8e5e7e733842f3ec3ca"
+        },
+        {
+          "offset": 786432,
+          "bytes": 131072,
+          "sha256": "e4109a572656a66a6ba7d5961a5d5cd1ebf25345d413ccc09991c65fb5c1b2f2",
+          "git_blob": "e03d2cca236e0298f49c91057db699eb68bbe048"
+        },
+        {
+          "offset": 917504,
+          "bytes": 131072,
+          "sha256": "abe07a680668598ac819fd65d8f0637247dc125c33b2f91fabf9b2d7b88c86d9",
+          "git_blob": "afef99381aecdc460825ed2c46855aeb4030d421"
+        },
+        {
+          "offset": 1048576,
+          "bytes": 131072,
+          "sha256": "3c2aa68e4f8272bc5327a96d81e54c7abfa4d2becc772d4ee207c43afcd77047",
+          "git_blob": "52c85306c842b94e16d3d17e8f55921982d90d7c"
+        },
+        {
+          "offset": 1179648,
+          "bytes": 81939,
+          "sha256": "47a5dd3c3786d6df5bc5d9c5d552bcfcaa360f861a9de5e70b8428e9ecedb57a",
+          "git_blob": "55f608933f6ca98467bb0681deb81841cb5f9c70"
+        }
+      ]
     },
     {
       "role": "presentation",
       "filename": "retained-water-original-local-evidence.tar.gz",
-      "git_blob": "dfccdfffde327d2be8bfb6ff4ee819cd8203f6d9",
+      "bytes": 859227,
       "sha256": "6afbef1a2c5efde0363ced44efd534cd38be197def38f1be3a519eb42e67cdc7",
-      "bytes": 859227
+      "assembled_git_blob": "a50fbc60926ab70dcfda1f0ec848a29bde778dba",
+      "chunks": [
+        {
+          "offset": 0,
+          "bytes": 131072,
+          "sha256": "7b888ab894554e7d8723d29ef56a0d7fe5ec99a55c48af9736d1724d08da03d6",
+          "git_blob": "e74d1cff606c62017b1a08c1e075f0f2bf7bb541"
+        },
+        {
+          "offset": 131072,
+          "bytes": 131072,
+          "sha256": "b9a4f536f41e3c459b552d8f346474a7a9a1a3b3688ef581197c44c4929f3495",
+          "git_blob": "df0155e05eb119321b1c59d65a7f7d74260d598e"
+        },
+        {
+          "offset": 262144,
+          "bytes": 131072,
+          "sha256": "ec7ffe997f00a3d5b770cf55a8c4caaf0c9f1a7334ef0faa5c68d39ca1ef552c",
+          "git_blob": "2b6f2e1706d408f72988f0d2cb90efde2387cd37"
+        },
+        {
+          "offset": 393216,
+          "bytes": 131072,
+          "sha256": "15554a460fad5539c44c9ba24117ab716361c950680e5e9f14912e4b8475f5b4",
+          "git_blob": "901b05a0f12423a629814b8636da6687e67be462"
+        },
+        {
+          "offset": 524288,
+          "bytes": 131072,
+          "sha256": "24b38178ac733e7586235462162b10109ca0d922e0a8b80962b7be96b43a62bc",
+          "git_blob": "160918520eef8d67597617f6bd19b59bca5a99e9"
+        },
+        {
+          "offset": 655360,
+          "bytes": 131072,
+          "sha256": "0153756bf3948433f06887397d23022600b4fc7a5d3e52e35f9c49e22d061aa6",
+          "git_blob": "42c1a848fe73f2cde4fb19336113f7ea528652c4"
+        },
+        {
+          "offset": 786432,
+          "bytes": 72795,
+          "sha256": "e0794a6b927b17113959f4ee3c93a013ebf560649bad26dbe83b5d9d36238a06",
+          "git_blob": "4ad9e12772ad17e354005f175710d140a8112e34"
+        }
+      ]
     },
     {
       "role": "presentation-followup",
       "filename": "presentation-complete-local-evidence.tar.gz",
-      "git_blob": "e299cb70f480986dd23b76d91e09dcd4eb24c3a2",
+      "bytes": 964518,
       "sha256": "519a5fb08fd4d9f8aa1c55eecd37eaee605796a1ab3f74a3db966d10cd6da345",
-      "bytes": 964518
+      "assembled_git_blob": "343a18a94754155b0f220252077dcb1287e758db",
+      "chunks": [
+        {
+          "offset": 0,
+          "bytes": 131072,
+          "sha256": "172a72cb2e5502edfec3e266dd933e0d227279dfbe68b4b0518fde2c014bc4a5",
+          "git_blob": "020f2c515ce5c5e2f95cd1a36af00044774dfcea"
+        },
+        {
+          "offset": 131072,
+          "bytes": 131072,
+          "sha256": "9e6568343c88433fa949c8f3d32f76aa6a19ae49c294b43cae1690b3dffee32a",
+          "git_blob": "27810d3ddbfc9ff40a1ee08acb8411b8a119ef49"
+        },
+        {
+          "offset": 262144,
+          "bytes": 131072,
+          "sha256": "cb6eb1f15a61264dd9c64a4e7a31eade1cf21e5c8ec92a5f25aca706281ba597",
+          "git_blob": "5c7eab8bbbd2f9e494ace0d302228e5d77d439ab"
+        },
+        {
+          "offset": 393216,
+          "bytes": 131072,
+          "sha256": "b5f5ce7bf947150458275e1d0e999fcbee8e3bed2a7f4a517703987fc400118d",
+          "git_blob": "6abe011e0defa2041d3611c6330adba8fa2a09b2"
+        },
+        {
+          "offset": 524288,
+          "bytes": 131072,
+          "sha256": "d01310b86c8f965d8d1b4228f5e8144d0e38f33697d8a18c1f6e18e1e03768e4",
+          "git_blob": "b36242f5e234925cb44207fc9fc765f32c992c9c"
+        },
+        {
+          "offset": 655360,
+          "bytes": 131072,
+          "sha256": "9e456b9ad994a5f12b06c612996c45605e8f12c0cdbef50dc2f60d20862f7536",
+          "git_blob": "d80f8ee4f3b206935a8b7b3d6439556d83ba0534"
+        },
+        {
+          "offset": 786432,
+          "bytes": 131072,
+          "sha256": "1392f75620c89ed7860d1c3c590edfe97082e9de11c3dacb8e5970f661b6d043",
+          "git_blob": "71a5d60578a0a6cf82f6fe7a6cf9cb075a4a1fc8"
+        },
+        {
+          "offset": 917504,
+          "bytes": 47014,
+          "sha256": "b4bfad3a2811df036435fd99f27f4b376fe15021b911eb5591dc1c94edb6e16d",
+          "git_blob": "97824922e48563561f2fbb835496f034f8f0fc3d"
+        }
+      ]
     }
   ]
 }

@@ -69,3 +69,38 @@ The commit message explicitly preserves ObjectShard opt-in ownership, introduces
 A second frozen preview joins that exact source with PUBPRES checkpoint `7ec95a34bd6229286e158b7500093b7c5140882a`. It returns 1 with **11 conflicted paths** and conflict-marked preview tree `45058529364ec14ecd94d5d85f484204d9e3f911`. The common ancestor is now the accepted-main commit. The previous three documentation conflicts and `feature_launcher.gd` conflict disappear textually; `.gitattributes`, both platform native pointers and manifests, `cyber_native_cell_world.cpp`, `main.gd`, `shared_workbench.gd`, `simulation_worker.gd`, `material_palette.gdshader` and material compatibility still require reconciliation. The original 15-path preview is retained as historical evidence. [Full refreshed command, output and source identities](objectshard-current-main-preview.json).
 
 The contract-level handover above remains applicable. The subsequent joint integration must explicitly reconcile the separate Strata/ObjectShard admission boundary with PUBPRES's accepted Strata and coherent publication paths; a text merge must not silently activate unsupported combined modes. Refresh both final application identities before that mission. This update neither merges ObjectShard into PUBPRES nor modifies its active branch, and it does not justify restarting PUBPRES qualification against unrelated concurrent work.
+
+## Remotely consumable PUBPRES candidate
+
+The current source to consume for this handover is the exact remote PUBPRES candidate **`0670733eb0a418c8580458a9c5dd9aff24f342c6`**, tree **`3df9cc4f11b0ef0a3009830a78720bf41bb9f1a9`**. [Candidate source](https://github.com/techrote/cybersand/tree/0670733eb0a418c8580458a9c5dd9aff24f342c6). Its Q2 campaign is run [46136935975](https://github.com/techrote/cybersand/actions/runs/46136935975), attempt 1. This candidate is not accepted: both shared-feature arms subsequently failed in the Ambient default-off integration case, and diagnosis is in progress. Later repaired application, guarded publication and final delivery identities must be obtained from the definitive mission ledger before actual joint implementation.
+
+Earlier PUBPRES SHAs `5758c637140fc3ea749c7511797f4087a3eef481` and `7ec95a34bd6229286e158b7500093b7c5140882a` identify local review commits. The Git Data publication process preserves reviewed integrated content through separately identified remote commits; do not assume those local review commit objects are fetchable from GitHub or are ancestors of the remote candidate. Their original preview receipts remain local investigation records and are not relabeled as remote application qualification.
+
+Before the executor became unavailable, a fresh read-only preview used the remotely available PUBPRES commit and the separately frozen ObjectShard integration `c4e10e3ca629c491f7340c6f383adcc347200fa5`. It again had **11 conflicted paths** against common ancestor `50e3bcb839211eac2abe1e065750cbcba4d36f8c`. Its command, observed conflict list and conflict-marked preview tree `15c385b675235af0bef65f748a03a64ae6414845` are recovered in [objectshard-remote-candidate-preview.json](objectshard-remote-candidate-preview.json). The original local stdout file was not recovered after the executor failure; this metadata record does not claim to reproduce its complete bytes. The earlier frozen previews remain unchanged. No application branch, index or production source was changed; no combined application was built or executed.
+
+For input adaptation, preserve the candidate's repaired continuous accepted-frame Select coordinates: use the submitted camera mapping and existing owner/material clip checks, while retaining material-cell bounds for material authoring. Do not reinstate integer truncation for actor geometry or substitute a newer unpublished camera. The retained ordinary Water endpoint helper still requires its original physical owner, World and geometry and its original 100 ms deadline; contact-clipped retained endpoints need a distinct proof before support is extended. No new detached-body transaction or physical authority was introduced.
+
+## Native completion versus material consumers after reconciliation
+
+The Ambient integration repair additionally makes the early packet contract
+explicit: a material-free native/physical completion carries genuine
+`physics_world_generation`, native tick/revision, backend and failure metadata,
+while `render_world_generation` and `render_snapshot_serial` are `-1`.
+Combined publication continues to carry its genuine material identity.
+
+ObjectShard integration must preserve that distinction when adapting structural
+edit acknowledgements and detached-material presentation. An early physical
+completion may advance native freshness or retire an old World; it cannot
+certify a render upload, material history, material cache or presented detached
+geometry. A later same-World material envelope can carry a newer genuine
+material publication even after a newer physical envelope has been observed.
+Its older native metadata must not roll the consumer's current native
+freshness backward. Material baseline/patch validation and owner refusal remain
+separate.
+
+The Ambient consumer is an example of this reconciliation, not a new physical
+transaction owner. See
+[the Ambient publication audit](ambient-publication-reconciliation.md).
+The 067 merge preview above predates this narrow subsequent repair; resulting
+source runtime qualification and any later ObjectShard merge must use the final
+mission source identity, not inherit acceptance from this preview.

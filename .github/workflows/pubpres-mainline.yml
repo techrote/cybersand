@@ -158,6 +158,9 @@ jobs:
           else
             xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/pubpres_final_recovery/run_qualification.py --runtime "$BOUND_RUNTIME" --engine "$GODOT_EXE" --output "$out" --focus "$FOCUS" --render-thread safe --lookahead 0
           fi
+      - name: Expose bounded original rendered focus evidence
+        if: always() && matrix.focus == 'mainline'
+        run: python3 tools/pubpres_mainline/print_focus_evidence.py --root "$RUNNER_TEMP/mainline-qualified"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -217,6 +220,9 @@ jobs:
             python tools/pubpres_final_recovery/run_qualification.py --runtime $env:BOUND_RUNTIME --engine $env:GODOT_EXE --output $out --focus $env:FOCUS --render-thread safe --lookahead 0
           }
           if ($LASTEXITCODE -ne 0) { throw 'Actual Windows qualification failed; retain original evidence' }
+      - name: Expose bounded original rendered focus evidence
+        if: always() && matrix.focus == 'mainline'
+        run: python tools/pubpres_mainline/print_focus_evidence.py --root "$env:RUNNER_TEMP/mainline-qualified"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -403,7 +409,7 @@ jobs:
 
   original-local-evidence:
     needs: admission
-    if: needs.admission.outputs.phase == 'qualify'
+    if: needs.admission.outputs.phase == 'qualify' || needs.admission.outputs.phase == 'publish'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -420,7 +426,7 @@ jobs:
           if-no-files-found: error
 
   publish-qualified-runtime:
-    needs: admission
+    needs: [admission, original-local-evidence]
     if: needs.admission.outputs.phase == 'publish'
     runs-on: ubuntu-24.04
     timeout-minutes: 50

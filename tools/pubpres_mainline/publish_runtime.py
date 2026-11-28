@@ -42,6 +42,7 @@ sys.path.insert(0, str(ROOT / "tools/pubpres_final_recovery"))
 from identity import digest
 from run_focus import ENGINE_SHA256
 from retained_runtime import make_binding
+from run_regressions import terminal_json
 _spec = importlib.util.spec_from_file_location("pubpres_original_qualification", ROOT / "tools/pubpres_final_recovery/run_qualification.py")
 _original_qualification = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(_original_qualification)
@@ -163,7 +164,9 @@ def source_projection(reference):
     # Publication plumbing and dated engineering evidence may follow successful
     # execution. Every production byte, original reader and actual q adapter is
     # immutable across that join. Final delivery executes its complete source.
-    allowed = {request.REQUEST, WORKFLOW, "tools/pubpres_mainline/publish_runtime.py", "tools/pubpres_mainline/test_publication.py"}
+    allowed = {request.REQUEST, WORKFLOW, "tools/pubpres_mainline/publish_runtime.py",
+               "tools/pubpres_mainline/test_publication.py", "tools/pubpres_mainline/publish_local_evidence.py",
+               "tools/pubpres_mainline/local_evidence.json"}
     require(all(name in allowed or name.startswith("docs/audits/") for name in changed),
             "Unqualified source change after the exact successful application campaign")
     return {"qualified_source": reference, "qualified_tree": git("rev-parse", reference + "^{tree}"),
@@ -201,9 +204,17 @@ def replay_summary(directory, source, platform, focus, native):
         require(not PurePosixPath(name).is_absolute() and ".." not in PurePosixPath(name).parts, "Unsafe staged source member")
         if name not in {".godot/global_script_class_cache.cfg", ".godot/extension_list.cfg"}:
             require(digest(project / name) == expected, "Original staged execution byte changed: " + name)
-    expected_count = {"frozen": 19, "water": 4, "members": 4, "held-placement": 2, "mainline": 8, "native-owner": 2}[focus]
+    expected_count = {"frozen": 19, "water": 4, "members": 4, "held-placement": 2, "mainline": 10, "native-owner": 2}[focus]
     require(len(proof["outcomes"]) == expected_count and all(row.get("valid") is True and row.get("returncode") == 0
             and row.get("timed_out") is False for row in proof["outcomes"]), "Original process population failed or is incomplete")
+    if focus == "mainline":
+        expected_tests = ["import", "test_transport_profiles", "test_transport_profile_reuse", "test_microscenarios",
+                          "test_ambient_perception", "test_ambient_publication_owner",
+                          "verify_pubpres_owner_gameplay_rotation", "test_workbench_retained_water_hold",
+                          "test_workbench_retained_water_hold_native", "test_workbench_continuous_actor_pick"]
+        require([row.get("test") for row in proof["outcomes"]] == expected_tests
+                and [row.get("graphical") for row in proof["outcomes"]] == [False] * 8 + [True, True],
+                "Original focused process identities or graphical populations differ")
     if selected_owner:
         require(len(selected.get("processes", [])) == expected_count
                 and all(row.get("owner_flags") == flags for row in selected["processes"]),
@@ -214,6 +225,32 @@ def replay_summary(directory, source, platform, focus, native):
         log = folder / "stdout.log"
         text = log.read_text(encoding="utf-8", errors="replace")
         require(digest(log) == row["log_sha256"] and "ERROR:" not in text, "Original strict process log failed or changed")
+        if focus == "mainline" and row["test"] in ("test_ambient_perception", "test_ambient_publication_owner"):
+            marker = "AMBIENT_PERCEPTION " if row["test"] == "test_ambient_perception" else "AMBIENT_PUBLICATION_OWNER "
+            raw = terminal_json(text, marker)
+            require(raw == row.get("result") and raw.get("failures") == [],
+                    "Original Ambient terminal evidence changed or failed")
+            if row["test"] == "test_ambient_perception":
+                actual = raw.get("evidence", {}).get("native", {})
+                decisions = actual.get("composed_decisions", [])
+                require(raw.get("checks", 0) >= 130 and raw.get("physical_trajectory_evidence") is False
+                        and len(decisions) == 8 and actual.get("native_tick", 0) > 0
+                        and actual.get("native_revision", 0) > 0
+                        and actual.get("sensor", {}).get("sample_tick") == actual.get("native_tick")
+                        and [value.get("actors") for value in actual.get("benchmarks", [])] == [1, 4, 8]
+                        and all(value.get("native_tick", 0) > 0
+                                and value.get("material_tick") == value.get("native_tick") for value in decisions),
+                        "Original native Ambient material and complete decision population did not execute")
+            else:
+                actual = raw.get("evidence", {})
+                final_owner = actual.get("final", {})
+                require(raw.get("checks", 0) >= 49 and actual.get("native_simulation_executed") is False
+                        and final_owner.get("available") is True and final_owner.get("world_generation") == 5
+                        and final_owner.get("owner_snapshot_serial") == 20 and final_owner.get("current_tick") == 2
+                        and final_owner.get("sample_tick") == 2 and final_owner.get("publication_serial") == 3
+                        and final_owner.get("cache_bytes") == 8192 and final_owner.get("owner_refusal") == ""
+                        and final_owner.get("material_refusal") == "",
+                        "Original owner/material refusal controls did not execute without fabricated simulation")
         if focus in ("water", "members", "held-placement") and row["test"] != "import":
             actual = supplemental_result(row["test"], text, folder, proof["source"], project,
                 engine_sha=ENGINE_SHA256[platform], expected_inline=True, expected_lookahead=0,
@@ -251,11 +288,15 @@ def replay_summary(directory, source, platform, focus, native):
             else:
                 require(row["test"] == "test_workbench_continuous_actor_pick" and raw.get("checks", 0) >= 22
                         and raw.get("schema") == "pubpres-continuous-actor-pick-v1", "Unknown mounted graphical case")
+                baseline = raw.get("input_physical_step", -1)
+                require(type(baseline) is int and baseline > 0 and raw.get("input_manual_steps") == baseline
+                        and raw.get("final_input_physical_step") == baseline and raw.get("final_input_manual_steps") == baseline,
+                        "Real native/Rapier contact must precede mouse input without changing its completion count")
                 rows = raw.get("records", [])
-                require(len(rows) == 5 and [r.get("label") for r in rows[:4]] == ["visible_continuous_origin", "opaque_member_pixel", "foreign_owner", "restored_original_owner"]
+                require(len(rows) == 5 and [r.get("label") for r in rows[:4]] == ["visible_continuous_edge", "opaque_member_pixel", "foreign_owner", "restored_original_owner"]
                         and [r.get("selected") for r in rows[:4]] == [4, 0, 0, 4]
                         and [r.get("expected") for r in rows[:4]] == [4, 0, 0, 4]
-                        and all(r.get("physical_step") == 0 for r in rows[:4]), "Actual Select and refusal population differs")
+                        and all(r.get("physical_step") == baseline for r in rows[:4]), "Actual Select and refusal population differs")
                 for index, r in enumerate(rows[:4]):
                     require(r.get("mask_session") == r.get("session", -2) + (1 if index == 2 else 0)
                             and all(r.get(k, 0) > 0 for k in ("session", "epoch", "world")), "Select owner adversary differs")

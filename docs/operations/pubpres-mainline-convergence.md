@@ -42,7 +42,7 @@ combined-mailbox or actual-task completion experiments.
 | Input | Main/Workbench captures real keyboard and mouse requests; actor/session/epoch/control-lease admission remains authoritative. Picking uses the selected presented frame. |
 | Native admission | SimulationWorker exclusively owns its native World, applies admitted mutations and actor masks, and preserves failure/quarantine and retirement fences. |
 | Material/coupling | Native all-worker completion processes the actual material state and derives body feedback; no semantic ticks or body samples are fabricated. |
-| Physical packet | The worker publishes exact owner, geometry, native and material identities. Main validates the packet before physical admission. |
+| Physical packet | The worker publishes exact owner, geometry and native identities. Early packets explicitly lack material identity; combined packets carry their actual material envelope. Main validates the packet before physical admission. |
 | Physical completion | The Main-owned Rapier bridge records genuine completed steps. A new native tick or render callback is not a physical completion. |
 | Material publication | Immutable Full2 payloads update current/previous material histories. Acknowledgment follows actual accepted publication and respects World generation. |
 | Actor presentation | Coherent member selection uses the admitted physical sample, material history and Water clearance. Retention preserves the original endpoint and original proof age. |
@@ -58,6 +58,28 @@ all-worker completion policy is unchanged. Strata keeps its optical composition,
 ambient tile bounds and material histories. The persistent-area host still
 refuses layered Strata saves because its accepted persistence format owns one
 Play World. That admission policy is not a new PUBPRES incompatibility.
+
+## Ambient and separate publication envelopes
+
+The accepted Ambient consumer now distinguishes native completion from material
+delivery. Early physical packets carry their true native World, tick, revision,
+backend and failure state; their absent render generation and serial are
+explicitly `-1`. They advance native freshness and retire a replaced World's
+sensor cache without allocating, copying or claiming material bytes.
+
+A genuine later material envelope may update that same World even after a newer
+physical envelope has arrived. Its earlier native metadata cannot move the
+consumer's freshness backward. Full-baseline, patch bounds, material sample
+identity, current owner, backend, failure and age checks remain authoritative.
+Default-OFF policies return before material sensor work. No Main scheduling,
+native evolution, physical authority or publication acknowledgment changes.
+
+The original accepted 130-check native perception test, 49 additional immutable
+owner/material controls and the original mounted activation/disable/handback
+workload qualify this boundary separately. The original integrated activation
+timeout and its source are retained in the
+[Ambient reconciliation audit](../audits/pubpres-mainline-convergence-20261128/ambient-publication-reconciliation.md);
+source review alone is not runtime acceptance.
 
 ## Spawn latency, transport cache and bounded diagnostics
 
@@ -92,7 +114,9 @@ measure without the owner gameplay writer; startup identity still remains.
 Close normally before **Collect Results.cmd** to flush the final records. The
 collector exports logs and gameplay evidence locally; it excludes authored
 starts and private Art conversations. The optional tiny net graph in #792 is
-secondary and is not an acceptance prerequisite for this integration.
+deferred while integration and Windows qualification take priority. Its
+[implementation handover](../audits/2026-11-28-pubpres-netgraph-handover.md)
+maps the existing counters, bounded display design and required overhead checks.
 
 ## Missing native responses and retained submerged Barrel visibility
 
@@ -119,7 +143,8 @@ could place it outside a thin, clipped Scooper collider. Select now uses the
 continuous world coordinate from the same accepted-frame camera, as Grab already
 does. Unpadded geometry, opaque-material and foreign-owner refusals remain. The
 new mounted witness authors the exact recorded pose through ordinary native
-setup and sends real Select mouse events; full legacy and selected-owner Water
+setup, uses real Play/Pause to establish accepted contact, and sends real Select
+mouse events without advancing that paused physical count; full legacy and selected-owner Water
 arms remain required. The missing multipart control in the original failed run
 was downstream of the first picking failure, not an independent diagnosis.
 

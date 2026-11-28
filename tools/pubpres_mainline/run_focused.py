@@ -23,6 +23,8 @@ CASES = (
     ("test_transport_profiles", "TRANSPORT_PROFILES: preset/roundtrip/inheritance/pair/minimum/extreme/invalid-preservation passed", False),
     ("test_transport_profile_reuse", "PUBPRES_TRANSPORT_REUSE_RESULT ", False),
     ("test_microscenarios", "MICROSCENARIOS:", False),
+    ("test_ambient_perception", "AMBIENT_PERCEPTION ", False),
+    ("test_ambient_publication_owner", "AMBIENT_PUBLICATION_OWNER ", False),
     ("verify_pubpres_owner_gameplay_rotation", "PUBPRES_OWNER_GAMEPLAY_ROTATION_OK", False),
     ("test_workbench_retained_water_hold", "PUBPRES_RETAINED_WATER_HOLD_RESULT ", False),
     ("test_workbench_retained_water_hold_native", "PUBPRES_RETAINED_WATER_NATIVE_RESULT ", True),
@@ -52,7 +54,7 @@ def main():
               "native": native, "loaded_runtime": loaded, "engine_sha256": common.digest(engine),
               "selectors": common.SELECTORS, "outcomes": [], "complete": False,
               "physical_acceptance": "HOLD", "staged_input_files_sha256": authored,
-              "scope": "Original transport/native semantics, mutation/concurrency controls, actual bounded recorder and graphical retained endpoint; no physical monitor claim."}
+              "scope": "Original transport/native and Ambient semantics, immutable owner/material ordering, mutation/concurrency controls, actual bounded recorder and graphical retained endpoint; no physical monitor claim."}
     def save(): common.write_json(output / "SUMMARY.json", report)
     save()
     clean = {key: value for key, value in os.environ.items() if not key.startswith(("CYBERSAND_", "WB_COMBINED_"))}
@@ -76,13 +78,44 @@ def main():
         text = (folder / "stdout.log").read_text(encoding="utf-8", errors="replace")
         try:
             common.require(row["returncode"] == 0 and not row["timed_out"] and "ERROR:" not in text, "Owned fixture process failed")
-            if "RESULT " in marker:
+            if "RESULT " in marker or test in ("test_ambient_perception", "test_ambient_publication_owner"):
                 row["result"] = terminal_json(text, marker)
             elif marker:
                 common.require(text.count(marker) == 1, "Original completion marker absent or repeated")
                 if test == "test_microscenarios":
                     match = re.search(r"MICROSCENARIOS: (\d+) assertions; (\d+) failures", text)
                     common.require(match is not None and int(match[1]) > 0 and int(match[2]) == 0, "MicroScenario original assertions failed")
+            if test == "test_ambient_perception":
+                result = row["result"]
+                native_evidence = result.get("evidence", {}).get("native", {})
+                decisions = native_evidence.get("composed_decisions", [])
+                common.require(result.get("failures") == [] and result.get("checks", 0) >= 130
+                               and result.get("physical_trajectory_evidence") is False
+                               and len(decisions) == 8
+                               and native_evidence.get("native_tick", 0) > 0
+                               and native_evidence.get("native_revision", 0) > 0
+                               and native_evidence.get("sensor", {}).get("sample_tick") == native_evidence.get("native_tick")
+                               and [value.get("actors") for value in native_evidence.get("benchmarks", [])] == [1, 4, 8]
+                               and all(value.get("native_tick", 0) > 0
+                                       and value.get("material_tick") == value.get("native_tick")
+                                       for value in decisions),
+                               "Original Ambient native material and complete composed-decision population must pass")
+            elif test == "test_ambient_publication_owner":
+                result = row["result"]
+                evidence = result.get("evidence", {})
+                final_owner = evidence.get("final", {})
+                common.require(result.get("failures") == [] and result.get("checks", 0) >= 49
+                               and evidence.get("native_simulation_executed") is False
+                               and final_owner.get("available") is True
+                               and final_owner.get("world_generation") == 5
+                               and final_owner.get("owner_snapshot_serial") == 20
+                               and final_owner.get("current_tick") == 2
+                               and final_owner.get("sample_tick") == 2
+                               and final_owner.get("publication_serial") == 3
+                               and final_owner.get("cache_bytes") == 8192
+                               and final_owner.get("owner_refusal") == ""
+                               and final_owner.get("material_refusal") == "",
+                               "Ambient owner/material ordering and refusal controls must complete without fabricated simulation")
             if test == "test_workbench_continuous_actor_pick":
                 receipt = json.loads((folder / "receipt.json").read_bytes())
                 common.require(receipt.get("schema") == "pubpres-continuous-actor-pick-v1"
@@ -97,11 +130,17 @@ def main():
                     common.require(name.startswith("res://") and common.digest(project / name.removeprefix("res://")) == expected,
                                    "Mounted continuous picking source input differs")
                 records = receipt.get("records", [])
-                labels = ["visible_continuous_origin", "opaque_member_pixel", "foreign_owner", "restored_original_owner"]
+                labels = ["visible_continuous_edge", "opaque_member_pixel", "foreign_owner", "restored_original_owner"]
+                baseline = receipt.get("input_physical_step", -1)
+                common.require(type(baseline) is int and baseline > 0
+                               and receipt.get("input_manual_steps") == baseline
+                               and receipt.get("final_input_physical_step") == baseline
+                               and receipt.get("final_input_manual_steps") == baseline,
+                               "Real native/Rapier contact must precede mouse input without changing its completion count")
                 common.require(len(records) == 5 and [value.get("label") for value in records[:4]] == labels
                                and [value.get("selected") for value in records[:4]] == [4, 0, 0, 4]
                                and [value.get("expected") for value in records[:4]] == [4, 0, 0, 4]
-                               and all(value.get("physical_step") == 0 for value in records[:4]),
+                               and all(value.get("physical_step") == baseline for value in records[:4]),
                                "All continuous mouse selection and refusal controls must execute without physical credits")
                 for index, record in enumerate(records[:4]):
                     common.require(record.get("mask_session") == record.get("session", -2) + (1 if index == 2 else 0)

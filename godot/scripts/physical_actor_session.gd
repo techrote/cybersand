@@ -539,11 +539,15 @@ func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# World identity is required even when a profile requests no material IDs.
 	# Read only the accepted owner's immutable envelope; do not invent a World
 	# generation from a render frame counter, missing cache or wall-clock time.
+	var native_generation := -1
+	if snapshot != null:
+		native_generation = int(snapshot.physics_world_generation) if snapshot.physics_world_generation >= 0 \
+			else int(snapshot.render_world_generation)
 	if snapshot != null and snapshot.rigid_body_epoch == epoch \
 		and snapshot.serial >= 0 and snapshot.tick_index >= 0 \
-		and snapshot.render_world_generation >= 0 and snapshot.serial >= _ambient_world_serial \
-		and snapshot.render_world_generation >= _ambient_world_generation:
-		_ambient_world_generation = int(snapshot.render_world_generation)
+		and native_generation >= 0 and snapshot.serial >= _ambient_world_serial \
+		and native_generation >= _ambient_world_generation:
+		_ambient_world_generation = native_generation
 		_ambient_world_serial = int(snapshot.serial)
 	var needed := false
 	for slot: int in _ambient_slots:
@@ -562,7 +566,11 @@ func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	if not _ambient_sensor_active:
 		_ambient_sensor_active = _ambient_perception.configure(extent, epoch)
 	if _ambient_sensor_active and snapshot != null:
-		_ambient_perception.ingest_snapshot(snapshot, extent, epoch)
+		if snapshot.render_world_generation < 0 and snapshot.render_snapshot_serial < 0 \
+			and snapshot.render_patch_rectangles.is_empty() and snapshot.render_patch_cells.is_empty():
+			_ambient_perception.observe_native_owner(snapshot, extent, epoch)
+		else:
+			_ambient_perception.ingest_snapshot(snapshot, extent, epoch)
 		if not _ambient_perception.wants_full_refresh(): _ambient_refresh_requested = false
 
 
